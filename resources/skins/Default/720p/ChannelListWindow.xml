@@ -611,7 +611,7 @@
 <!-- Main Menu -->
 		<control type="group" id="100">
 			<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation> 
-			<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
+			<!--animation effect="slide" start="0,0" end="10,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation-->
 			<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 			<include>DefaultWindowFade</include>
 			<control type="group">

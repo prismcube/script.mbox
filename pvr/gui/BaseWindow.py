@@ -3,7 +3,14 @@ import pvr.ElisMgr
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
+from pvr.XBMCInterface import XBMC_GetVolume
 
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 class Action(object) :
 	ACTION_NONE					= 0
@@ -15,7 +22,12 @@ class Action(object) :
 	ACTION_PAGE_DOWN			= 6		#PageDown --> Channel Down
 	ACTION_SELECT_ITEM			= 7		# OK
 	ACTION_HIGHLIGHT_ITEM		= 8	
-	ACTION_PARENT_DIR			= 9		#Back
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+		ACTION_PARENT_DIR		= 9		#Back	
+	else :
+		ACTION_PARENT_DIR		= 92		#Back 	
+
+
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
 	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
@@ -212,10 +224,9 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			retVolume = xbmc.executehttpapi( 'getvolume' )
-			volume = int( retVolume[4:] )
-
+			volume =  XBMC_GetVolume( )		
 		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :
@@ -241,6 +252,34 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			if self.mCommander.Player_GetMute( ) :
 				self.mCommander.Player_SetMute( False )
 			self.mCommander.Player_SetVolume( volume )
+
+
+	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			aListControl.selectItem( aIdx )
+			if aIdx == aListControl.getSelectedPosition( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
+
+
+	def UpdateSetFocus( self, aControlId ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			self.setFocusId( aControlId )
+			if aControlId == self.getFocusId( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
 
 
 	def SetMediaCenter( self ) :
@@ -272,9 +311,28 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 
 
-	def AlarmDialog( self, aMsg1, aMsg2 ) :
-		command = 'Notification(%s,%s,2000)'% ( aMsg1, aMsg2 )
+	def NotificationDialog( self, aMsg1, aMsg2, aTimeMs = 2000, aImage = '' ) :
+		command = 'Notification(%s,%s,%s,%s)'% ( aMsg1, aMsg2, aTimeMs, aImage )
 		xbmc.executebuiltin( command )
+
+
+	def NotAvailAction( self ) :
+		self.setProperty( 'NotAvail', 'True' )
+		loopTime = 0.01
+		sleepTime = 0.2
+		while loopTime < 0.5 :
+			if loopTime > sleepTime :
+				#LOG_TRACE( '-------loopTime[%s]'% loopTime )
+				self.setProperty( 'NotAvail', 'False' )
+				if self.getProperty( 'NotAvail' ) == 'False' :
+					break
+
+			time.sleep( 0.05 )
+			loopTime += 0.05
+
+		if self.getProperty( 'NotAvail' ) != 'False' :
+			self.setProperty( 'NotAvail', 'False' )
+			LOG_TRACE( '-------confirm again : setProperty False' )
 
 
 	def SetPipLabel( self ) :

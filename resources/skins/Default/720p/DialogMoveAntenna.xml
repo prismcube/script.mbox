@@ -28,7 +28,6 @@
 				<onright>102</onright>
 				<label>-</label>
 				<font>-</font>
-				<onclick>PreviousMenu</onclick>
 				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
 			</control>

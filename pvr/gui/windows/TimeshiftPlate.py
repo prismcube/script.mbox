@@ -232,10 +232,10 @@ class TimeShiftPlate( BaseWindow ) :
 			else :
 				self.RestartAutomaticHide( )
 
-
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.GetFocusId( )
-			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT or \
+			   self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 				self.StopAutomaticHide( )
 
 			else :
@@ -319,7 +319,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -331,7 +330,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -361,9 +359,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GlobalAction( Action.ACTION_MUTE )
 			#xbmc.executebuiltin('xbmc.Action(mute)')
 			self.StopAutomaticHide( )
-		
+
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :	
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -379,7 +376,6 @@ class TimeShiftPlate( BaseWindow ) :
 					isOK = True
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-					from pvr.GuiHelper import RecordConflict
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
@@ -702,20 +698,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mWin.setProperty( aPropertyID, aValue )
 
 
-	def UpdateSetFocus( self, aControlId = E_CONTROL_ID_BUTTON_PLAY ) :
-		startTime = time.time()
-		loopTime = 0.0
-		sleepTime = 0.01
-		while loopTime < 1.5 :
-			self.setFocusId( aControlId )
-			if aControlId == self.getFocusId( ) :
-				break
-			time.sleep( sleepTime )
-			loopTime += sleepTime
-
-		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
-
-
 	@SetLock
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
@@ -941,7 +923,7 @@ class TimeShiftPlate( BaseWindow ) :
 		loopDelay = 0.02
 		while self.mEnableLocalThread :
 			if self.mRepeatTimeout <= count :
-				LOG_TRACE( 'repeat time[%s] <<<<'% self.mRepeatTimeout )
+				#LOG_TRACE( 'repeat time[%s] <<<<'% self.mRepeatTimeout )
 
 				#update localTime
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -1012,8 +994,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Create bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( MR_LANG( 'Add chapters automatically' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
+		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( MR_LANG( 'Start auto-chaptering' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
 		context.append( ContextItem( MR_LANG( 'Show all bookmarks' ), CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -1031,8 +1013,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def DoContextAction( self, aSelectAction ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
-			self.mDataCache.Player_CreateBookmark( )
-			self.InitBookmarkThumnail( )
+			ret = self.mDataCache.Player_CreateBookmark( )
+			if ret :
+				time.sleep(1)
+				self.InitBookmarkThumnail( )
 			self.RestartAutomaticHide( )
 
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
@@ -1041,7 +1025,12 @@ class TimeShiftPlate( BaseWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
 			dialog.SetDefaultProperty( playingRecord )
 			dialog.doModal( )
+
+			if dialog.IsDeleteBookmark( ) :
+				self.InitBookmarkThumnail( )
+
 			self.RestartAutomaticHide( )
+
 			#tempList = dialog.GetSelectedList( )
 			#LOG_TRACE('------------dialog list[%s]'% tempList )
 
@@ -1244,12 +1233,20 @@ class TimeShiftPlate( BaseWindow ) :
 					continue
 
 		#LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
-		thumCount = len( mBookmarkList ) - 1
+		thumbCount = len( mBookmarkList )
 		self.mThumbnailList = []
 		self.mBookmarkList = []
 		oldidx = -1
 		for num in range( 10 ) :
-			idx = thumCount * num / 10
+			if thumbCount <= num :
+				LOG_TRACE( 'break loop : thumbnail[%s] idx[%s]'% ( thumbCount, num ) )
+				break
+
+			if thumbCount > 10 :
+				idx = thumbCount * num / 10
+			else :
+				idx = num
+
 			if idx == oldidx :
 				continue
 
@@ -1258,9 +1255,9 @@ class TimeShiftPlate( BaseWindow ) :
 			if mfile :
 				self.mThumbnailList.append( mfile )
 				self.mBookmarkList.append( mBookmarkList[idx] )
-			#LOG_TRACE(' idx[%s] num[%s] max[%s] file[%s]'% (idx, num, thumCount, mfile ) )
+			#LOG_TRACE(' idx[%s] num[%s] max[%s] file[%s]'% (idx, num, thumbCount, mfile ) )
 
-		LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
+		#LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
 		self.ShowBookmark( )
 
 
@@ -1323,9 +1320,21 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mFlagUserMove = True
 		self.mAccelator += 1
-		accelatorMoving = pow( 1.5, self.mAccelator )
-		userMoving = self.mUserMoveTime * accelatorMoving * 1000
-		self.UpdateProgress( userMoving )
+		accelatorMoving = self.mTotalUserMoveTime
+		try :
+			if self.mAccelator < 10 :
+				accelatorMoving = pow( 1.5, self.mAccelator )
+			else :
+				self.mTotalUserMoveTime += 60
+				accelatorMoving = self.mTotalUserMoveTime
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]'% e )
+
+		userMoving = self.mUserMoveTime * accelatorMoving
+		userMovingMs = userMoving * 1000
+
+		self.UpdateProgress( userMovingMs )
+		#LOG_TRACE( '-----------accelator[%s] moving[%s]'% ( self.mAccelator, accelatorMoving ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
@@ -1340,9 +1349,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif self.mMode == ElisEnum.E_MODE_PVR :
 			timeFormat = TimeFormatEnum.E_AH_MM_SS
 
-		self.mTotalUserMoveTime += self.mUserMoveTime
-		lblCurrentTime = tempCurrentTime + self.mTotalUserMoveTime
-		self.mAsyncMove = self.mTimeshift_playTime + userMoving
+		lblCurrentTime = tempCurrentTime + userMoving
+		self.mAsyncMove = self.mTimeshift_playTime + userMovingMs
 
 		if self.mAsyncMove >= ( self.mTimeshift_endTime - 1000 ) :
 			lblCurrentTime  = tempEndTime - 1
@@ -1363,7 +1371,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer  = None
 
 
-	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
 		try :
 			if self.mFlagUserMove :
@@ -1377,17 +1384,18 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mTotalUserMoveTime = 0
 
 		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+			LOG_ERR( 'Error exception[%s]'% e )
 
 
 	def MoveToSeekFrame( self, aKey ) :
 		if aKey == 0 :
 			return -1
 
+		self.StopAutomaticHide( )
 		self.mFlag_OnEvent = False
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		self.mFlag_OnEvent = True
@@ -1399,5 +1407,5 @@ class TimeShiftPlate( BaseWindow ) :
 			if move :
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
-
+		self.RestartAutomaticHide( )
 

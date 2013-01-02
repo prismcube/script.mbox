@@ -7,6 +7,7 @@ PROGRESS_ID_SCAN				= 200
 LIST_ID_TV						= 400
 LIST_ID_RADIO					= 402
 BUTTON_ID_CANCEL				= 300
+BUTTON_ID_CLOSE					= 104
 
 
 # Scan MODE
@@ -81,9 +82,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
+		if focusId == BUTTON_ID_CANCEL or focusId == BUTTON_ID_CLOSE :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
-		if focusId == BUTTON_ID_CANCEL :
-			self.ScanAbort( )
 
 
 	def onFocus( self, controlId ) :
@@ -143,24 +144,10 @@ class DialogChannelSearch( BaseDialog ) :
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
 			ret = self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
-			if ret == False :
-				self.mEventBus.Deregister( self )
-				self.mDataCache.Channel_ReTune( )
-				self.CloseDialog( )
-				self.mDataCache.Channel_ReLoad( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed to complete' ) )				
-				dialog.doModal( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
-			if ret == False :
-				self.mEventBus.Deregister( self )
-				self.CloseDialog( )
-				self.mDataCache.Channel_ReLoad( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed to complete' ) )				
-				dialog.doModal( )
+
 		else :
 			self.mIsFinished = True
 
@@ -172,7 +159,9 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_ReTune( )
 			self.CloseDialog( )
 			self.mDataCache.LoadChannelList( )
-			self.mDataCache.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+			iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+			if iZapping and iZapping.mError == 0 :
+				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 		else :
 			self.AbortDialog.doModal( )

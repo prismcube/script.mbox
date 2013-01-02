@@ -15,6 +15,8 @@ E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update.html?product=ruby'
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download.html?key='
 
+E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
+
 E_CONTROL_ID_GROUP_PVS      = 9000
 E_CONTROL_ID_LABEL_TITLE    = 99
 E_CONTROL_ID_LABEL_VERSION  = 100
@@ -37,7 +39,6 @@ E_UPDATE_STEP_UPDATE_NOW  = 9
 E_UPDATE_STEP_ERROR_NETWORK = 10
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
-
 
 E_STRING_ATTENTION     = 0
 E_STRING_ERROR         = 1
@@ -599,7 +600,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
-			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not attempted' ), MR_LANG( 'Please check firmware version first' ) )
+			self.AddInputControl( E_Input02, '', MR_LANG( 'Not attempted' ), MR_LANG( 'Please check firmware version first' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
@@ -634,13 +635,15 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
 			if self.mShowProgressThread :
 				self.mShowProgressThread.SetResult( True )
 				self.mShowProgressThread = None
+			if threadDialog :
+				threadDialog.join( )
 			time.sleep( 1 )
 
 			if not ret :
@@ -923,10 +926,11 @@ class SystemUpdate( SettingWindow ) :
 			for timer in runningTimerList :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
+
+		from pvr.IpParser import *
 		"""
 		LOG_TRACE('1. update version ------' )
 		try :
-			from pvr.IpParser import *
 
 			fd = open( E_CURRENT_INFO, 'w' )
 
@@ -958,11 +962,20 @@ class SystemUpdate( SettingWindow ) :
 				fd.writelines( 'NetworkType=%s\n'% nType )
 				command = pvr.ElisMgr.GetInstance( ).GetCommander( )
 				if nType == NETWORK_ETHERNET :
+					ipInfo = IpParser( )
+					ipInfo.LoadEthernetType( )
+					ethType = 'dhcp'
+					if ipInfo.GetEthernetType( ) :
+						ethType = 'static'
+					fd.writelines( 'ethtype=%s\n'% ethType )
 					fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
 					fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
 					fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
 					fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
 				else :
+					wifiInfo = WirelessParser( )
+					wifiInfo.LoadWpaSupplicant( )
+					fd.writelines( 'devname=%s\n'% wifiInfo.GetWifidevice( ) )
 					rd = open( FILE_WPA_SUPPLICANT, 'r' )
 					wifiData = rd.readlines( )
 					rd.close( )
@@ -1002,7 +1015,7 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('4. make run script ------' )
 		try :
-			scriptFile = '%s/backup.sh'% E_DEFAULT_BACKUP_PATH
+			scriptFile = '%s.sh'% E_DEFAULT_BACKUP_PATH
 			fd = open( scriptFile, 'w' )
 			if fd :
 				fd.writelines( '#!/bin/sh\n' )
@@ -1022,28 +1035,15 @@ class SystemUpdate( SettingWindow ) :
 	def CheckCurrentVersion( self ) :
 		lbldesc = ''
 		try :
-			f = open( E_CURRENT_INFO, 'r' )
-			currInfo = f.readlines( )
-			f.close( )
-
-
 			iPVS = PVSClass( )
-			for line in currInfo :
-				value = ParseStringInPattern( '=', line )
-				#LOG_TRACE('-----------split[%s]'% value )
-				if not value or len( value ) < 2 :
-					continue
-
-				if value[0].lower() == 'version' :
-					if value[1].isdigit( ) :
-						#iPVS.mVersion = self.GetParseVersion( value[1] )
-						iPVS.mVersion = value[1]
-					else :
-						iPVS.mVersion = value[1]
-
-				elif value[0].lower() == 'date' :
-					iPVS.mDate = value[1]
-
+			ret = GetCurrentVersion( )
+			if not ret[0] :
+				ret[0] = MR_LANG( 'Unknown' )
+			if not ret[1] :
+				ret[1] = MR_LANG( 'Unknown' )
+			
+			iPVS.mVersion = ret[0]
+			iPVS.mDate = ret[1]
 			iPVS.mError = 0
 
 			lbldesc += '%s : %s\n'% ( MR_LANG( 'CURRENT VER.' ), iPVS.mVersion )
@@ -1051,7 +1051,6 @@ class SystemUpdate( SettingWindow ) :
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
 			self.mCurrData = iPVS
-
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
@@ -1063,53 +1062,81 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
 
-
 	def UpdateChannel( self ) :
-		kb = xbmc.Keyboard( PRISMCUBE_SERVER, MR_LANG( 'Enter server address' ), False )
-		kb.setHiddenInput( False )
-		kb.doModal( )
-		if kb.isConfirmed( ) :
-			self.OpenBusyDialog( )
-			updatelist = self.GetServerInfo( kb.getText( ) )
-			self.CloseBusyDialog( )
-			LOG_TRACE( 'updatelist = %s' % updatelist )
-			showtext = []
-			if updatelist :
-				for text in updatelist :
-					showtext.append( text[0] )
-				LOG_TRACE( 'showtext = %s' % showtext )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
+		parselist =  self.GetServerInfo( )
+		if parselist == None :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
+			self.CloseProgress( )
+			return
 
-				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
-				if ret >= 0 :
-					result = self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
-					if result == False :
-						self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+		LOG_TRACE( 'server info = %s' % parselist )
 
+		makelist = self.ParseList( parselist )
+
+		if makelist == None :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+			self.CloseProgress( )
+			return
+
+		self.CloseProgress( )
+		showtext = []
+		for text in makelist :
+			showtext.append( text[1] + '( ' + text[2] + ' )' )
+
+		dialog = xbmcgui.Dialog( )
+		ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
+		if ret >= 0 :
+			result = self.GetChannelUpdate( makelist[ret][0] )
+			if result :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG('Update finished'), MR_LANG('Updating channel list is finished successfully') )
+				dialog.doModal( )
 			else :
-				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
-	def GetServerInfo( self, aAddress ) :
+	def GetServerInfo( self ) :
+		parselist = None
 		try :
 			import urllib2
-			updatefile = urllib2.urlopen( aAddress + '/channel/package.xml' )
-			inputline = updatefile.readlines( )
-			updatefile.close( )
-			updatelist = []
-			for line in inputline :
-				updatelist.append( string.split( line ) )
+			f = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST, None, 20 )
+			if f :
+				parselist = f.read( )
+			f.close( )
+			return parselist
 
-			return updatelist
-			
+		except URLError, e:
+			if f.closed == False :
+				f.close( )
+			LOG_ERR( 'Error exception[%s]' % e.reason )
+			return None
+
+
+	def ParseList( self, aParseInfo ) :
+		try :
+			updatelist = string.split( aParseInfo )
+			templist = []
+			makelist = []
+			if len( updatelist ) % 3 == 0 :
+				for i in range( len( updatelist ) ) :
+					templist.append( updatelist[i] )
+					if ( i + 1 ) % 3 == 0 :
+						makelist.append( templist )
+						templist = []
+				LOG_TRACE( 'makelist = %s' % makelist )
+				return makelist
+			else :
+				return None
+
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]' % e )
 			return None
 
 
-	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list...' ), 30 )
-		ret = self.DownloadxmlFile( aAddress, aPath )
+	def GetChannelUpdate( self, aKey ) :
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+		ret = self.DownloadxmlFile( aKey )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
 			self.mCommander.System_SetDefaultChannelList( )
@@ -1122,12 +1149,13 @@ class SystemUpdate( SettingWindow ) :
 		else :
 			self.CloseProgress( )
 			return False
+		
 
 
-	def DownloadxmlFile( self, aAddress, aPath ) :
+	def DownloadxmlFile( self, aKey ) :
 		try :
 			import urllib2
-			updatefile = urllib2.urlopen( aAddress + aPath )
+			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST + '?key=%s' % aKey , None, 20 )
 			output = open( '/tmp/defaultchannel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )

@@ -22,7 +22,6 @@
 				<posy>36</posy>
 				<width>125</width>
 				<height>25</height>
-				<onclick>PreviousMenu</onclick>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<onup>400</onup>
@@ -82,10 +81,10 @@
 				<posy>110</posy>
 				<width>500</width>
 				<height>360</height>
-				<onleft>104</onleft>
+				<onleft>403</onleft>
 				<onright>401</onright>
-				<onup>400</onup>
-				<ondown>400</ondown>
+				<onup>104</onup>
+				<ondown>104</ondown>
 				<scrolltime>200</scrolltime>
 				<pagecontrol>401</pagecontrol>
 				<itemlayout height="40" width="500">
@@ -160,7 +159,7 @@
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<onleft>400</onleft>
 				<onright>403</onright>
-				<ondown>300</ondown>
+				<ondown>104</ondown>
 				<onup>104</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
@@ -187,10 +186,10 @@
 				<posy>110</posy>
 				<width>500</width>
 				<height>360</height>
-				<onleft>403</onleft>
-				<onright>104</onright>
-				<onup>402</onup>
-				<ondown>402</ondown>
+				<onleft>401</onleft>
+				<onright>403</onright>
+				<onup>104</onup>
+				<ondown>104</ondown>
 				<pagecontrol>403</pagecontrol>
 				<itemlayout height="40" width="500">
 					<control type="image">
@@ -264,7 +263,7 @@
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<onleft>401</onleft>
 				<onright>402</onright>
-				<ondown>300</ondown>
+				<ondown>104</ondown>
 				<onup>104</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>

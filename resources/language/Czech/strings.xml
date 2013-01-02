@@ -1260,4 +1260,17 @@
 	<string id="3854">CZE_No time info was given by that channel</string>
 	<string id="3855">CZE_</string>
 	<string id="3856">CZE_</string>
+	<string id="3857">CZE_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">CZE_</string>
+	<string id="3859">CZE_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">CZE_</string>
+	<string id="3861">CZE_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">CZE_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">CZE_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">CZE_</string>
+	<string id="3865">CZE_Downloading server information</string>
+	<string id="3866">CZE_Channel list update is ficished successfully</string>
+	<string id="3867">CZE_Update finished</string>
+	<string id="3868">CZE_Now updating your channel list</string>
+	<string id="3869">CZE_Updating channel list is finished successfully</string>
 </strings>

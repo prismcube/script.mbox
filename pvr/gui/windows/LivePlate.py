@@ -196,7 +196,6 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -222,7 +221,6 @@ class LivePlate( LivePlateWindow ) :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
 
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
@@ -582,13 +580,15 @@ class LivePlate( LivePlateWindow ) :
 				gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+				self.mEPGList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
 				#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
-				#LOG_TRACE('-------------------------------------epgList[%s]'% self.mEPGList )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
 					LOG_TRACE( 'EPGList is None\nLeave [%s]'% self.mEPGList )
 					return -1
+
+				#LOG_TRACE('-------------------------------------epgList len[%s]'% len( self.mEPGList ) )
 
 				self.mFlag_ChannelChanged = False
 
@@ -802,6 +802,10 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -831,7 +835,6 @@ class LivePlate( LivePlateWindow ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -845,7 +848,6 @@ class LivePlate( LivePlateWindow ) :
 				isOK = True
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
@@ -1048,10 +1050,11 @@ class LivePlate( LivePlateWindow ) :
 		if aKey == 0 :
 			return -1
 
+		self.StopAutomaticHide( )
 		self.mFlag_OnEvent = False
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		self.mFlag_OnEvent = True
@@ -1064,6 +1067,8 @@ class LivePlate( LivePlateWindow ) :
 			if self.mCurrentChannel.mNumber != int( inputNumber ) :
 				self.mJumpNumber = int( inputNumber )
 				self.ChannelTune( CURR_CHANNEL )
+
+		self.RestartAutomaticHide( )
 
 
 	def ShowPincodeDialog( self ) :

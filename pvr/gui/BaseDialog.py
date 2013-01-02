@@ -5,22 +5,29 @@ import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
+from pvr.XBMCInterface import XBMC_GetVolume
 
-
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
+    
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def __init__( self, *args, **kwargs ) :
 		xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
 		self.mWin = None
 		self.mWinId = 0
-		
+
 		self.mLastFocused = -1
 		self.mInitialized = False
-		
+
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mPlatform = pvr.Platform.GetPlatform( )
-		
+
 
 	@classmethod
 	def GetName( cls ) :
@@ -57,7 +64,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 				mExecute = False
 			else :
 				mExecute = True
-	
+
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
 			mExecute = True
@@ -74,9 +81,9 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			retVolume = xbmc.executehttpapi( 'getvolume' )
-			volume = int( retVolume[4:] )
+			volume =  XBMC_GetVolume( )
 
 		else :
 			volume = self.mCommander.Player_GetVolume( )

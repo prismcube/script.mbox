@@ -1,5 +1,6 @@
 from pvr.gui.WindowImport import *
 
+
 E_MOVETOJUMP_NUM_ID  = 210
 E_RESERVED_ID        = 211
 E_MOVETOJUMP_TIME_ID = 212
@@ -11,12 +12,12 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
+
 class DialogTimeshiftJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mMoveToNumber		= ''
 		self.mAsyncMoveTimer    = None
-		self.mTestTime          = 0
 
 		self.mMaxMoveNum		= E_INDEX_JUMP_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
@@ -40,6 +41,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 		self.SetLabelMoveToNumber( )
 		self.GetPreviewMove( )
 		self.RestartAsyncMove( )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
 	def onAction( self, aAction ) :
@@ -48,14 +50,12 @@ class DialogTimeshiftJump( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
@@ -86,20 +86,16 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		if aControlId == E_BUTTON_OK :
-			self.CloseDialog( )
+		pass
 
 
 	def onFocus( self, aControlId ) :
 		pass
 
 		
-	def SetDialogProperty( self, aMoveToFirstNum, aMoveToMax, aTestTime = None ) :
+	def SetDialogProperty( self, aMoveToFirstNum, aMoveToMax = E_INDEX_JUMP_MAX ) :
 		self.mMoveToNumber	= aMoveToFirstNum
 		self.mMaxMoveNum = aMoveToMax
-
-		if aTestTime:
-			self.mTestTime = aTestTime
 
 
 	def SetLabelMoveToNumber( self ) :
@@ -127,10 +123,10 @@ class DialogTimeshiftJump( BaseDialog ) :
 			return -1
 
 		#calculate current position
-		moveTime = (status.mEndTimeInMs - status.mStartTimeInMs) * ( int( self.mMoveToNumber ) / 100.0)
+		moveTime = ( status.mEndTimeInMs - status.mStartTimeInMs ) * ( int( self.mMoveToNumber ) / 100.0 )
 		self.mJumpIFrame = status.mStartTimeInMs + moveTime
 
-		if self.mJumpIFrame > status.mEndTimeInMs:
+		if self.mJumpIFrame > status.mEndTimeInMs :
 			self.mJumpIFrame = 0
 
 		elif self.mJumpIFrame < status.mStartTimeInMs :
@@ -176,5 +172,5 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 	def AsyncToMove( self ) :
 		self.mIsOk = E_DIALOG_STATE_YES
-		self.CloseDialog( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 

@@ -8,3 +8,4 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.GuiHelper import *
 from pvr.gui.GuiConfig import *
 from ElisEventClass import *
+from pvr.XBMCInterface import *

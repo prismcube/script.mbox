@@ -1260,4 +1260,17 @@
 	<string id="3854">ITA_No time info was given by that channel</string>
 	<string id="3855">ITA_</string>
 	<string id="3856">ITA_</string>
+	<string id="3857">ITA_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">ITA_</string>
+	<string id="3859">ITA_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">ITA_</string>
+	<string id="3861">ITA_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">ITA_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">ITA_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">ITA_</string>
+	<string id="3865">ITA_Downloading server information</string>
+	<string id="3866">ITA_Channel list update is ficished successfully</string>
+	<string id="3867">ITA_Update finished</string>
+	<string id="3868">ITA_Now updating your channel list</string>
+	<string id="3869">ITA_Updating channel list is finished successfully</string>
 </strings>

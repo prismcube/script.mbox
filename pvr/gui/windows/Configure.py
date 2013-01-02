@@ -213,10 +213,22 @@ class Configure( SettingWindow ) :
 					self.mInitialized = False
 					self.OpenBusyDialog( )
 					self.StopCheckNetworkTimer( )
-					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+					XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 			else :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
+
+		elif selectedId == E_HDMI_SETTING and groupId == E_SpinEx01 :
+			self.ControlSelect( )
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+			iconIndex = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				iconIndex = -1
+			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -387,7 +399,7 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), WinMgr.GetInstance( ).GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), XBMC_GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
 			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
@@ -466,7 +478,7 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
 			self.AddEnumControl( E_SpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI Color Space' ) )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI color space' ) )
 			self.AddEnumControl( E_SpinEx04, 'TV System', None, MR_LANG( 'Set your TV system format' ) )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]

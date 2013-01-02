@@ -35,7 +35,8 @@ class DialogBookmark( BaseDialog ) :
 		self.mThumbnailHash = {}
 		self.mMarkMode = False
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
-		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
+		self.mCtrlPos  = self.getControl( DIALOG_LABEL_POS_ID )
+		self.mIsDelete = False
 
 		self.InitList( )
 		self.mEventBus.Register( self )
@@ -48,7 +49,6 @@ class DialogBookmark( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mMarkList = None
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -80,18 +80,18 @@ class DialogBookmark( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
 			self.mMarkList = None
-			self.Close( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif aControlId == E_CONTROL_ID_LIST :
 			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
 				self.StartBookmarkPlayback( )
-				self.Close( )
+				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.StartBookmarkPlayback( )
-			self.Close( )		
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )	
 
 
 	def onFocus( self, aControlId ) :
@@ -251,6 +251,7 @@ class DialogBookmark( BaseDialog ) :
 			self.mMarkList.append( selectedPos )
 
 		for idx in self.mMarkList :
+			self.mIsDelete = True
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
 			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
@@ -340,6 +341,10 @@ class DialogBookmark( BaseDialog ) :
 
 	def GetCloseStatus( self ) :
 		return self.mIsOk
+
+
+	def IsDeleteBookmark( self ) :
+		return self.mIsDelete
 
 
 	def Close( self ) :

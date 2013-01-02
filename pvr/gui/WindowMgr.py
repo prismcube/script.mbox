@@ -6,13 +6,15 @@ import os
 import shutil
 import weakref
 
-
+from pvr.gui.GuiConfig import *
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.DataCacheMgr
+from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom
+
 
 WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
@@ -58,8 +60,12 @@ WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
 gWindowMgr = None
 
-E_ADD_XBMC_HTTP_FUNCTION			= True
-
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 def GetInstance( ) :
 	global gWindowMgr
@@ -80,9 +86,8 @@ class WindowMgr( object ) :
 		print 'scriptDir= %s' %self.mScriptDir
 
 		self.mDefaultLanguage = xbmc.getLanguage( )
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-		self.mSkinName = currentSkinName[4:]
-
+		self.mSkinName = XBMC_GetCurrentSkinName( )
+		
 		self.mLastId			= -1
 		self.mSkinFontPath		= []
 		self.mScriptFontPath	= []
@@ -148,7 +153,7 @@ class WindowMgr( object ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-			self.mLastId = 0
+			self.mLastId = WIN_ID_NULLWINDOW
 
 
 	def CloseWindow( self ) :
@@ -171,8 +176,8 @@ class WindowMgr( object ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-			self.mLastId = 0
-		
+			self.mLastId = WIN_ID_NULLWINDOW
+
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow
@@ -361,13 +366,13 @@ class WindowMgr( object ) :
 			
 
 	def CheckSkinChange( self ) :
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
-
-		if self.mSkinName != currentSkinName[4:] :
+	
+		currentSkinName = XBMC_GetCurrentSkinName( )
+		if self.mSkinName != currentSkinName :
 			LOG_TRACE( 'change skin name' )
-			self.mSkinName = currentSkinName[4:]
+			self.mSkinName = currentSkinName
 			return True
+
 		return False
 
 
@@ -378,49 +383,14 @@ class WindowMgr( object ) :
 	def LoadSkinPosition( self ) :
 		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			return
-	
-		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			from pvr.GuiHelper import GetInstanceSkinPosition		
-			strResolution = xbmc.executehttpapi( "getresolution( )" )
-			LOG_TRACE( 'resolution = %s' % strResolution )
-			resInfo = strResolution[4:].split( ':' )
-			LOG_TRACE( 'resInfo = %s' % resInfo )
-			width = int( resInfo[0] )
-			height = int( resInfo[1] )
-			fixelRate=  float( resInfo[2] )
-			left = int( resInfo[3] )
-			top = int( resInfo[4] )
-			right = int( resInfo[5] )
-			bottom = int( resInfo[6] )
 
-			LOG_TRACE( 'width=%d height=%d fixelRate=%f left=%d topt=%d right=%d bottom=%d' %( width, height, fixelRate, left, top, right, bottom ) )
-			
-			strZoom = xbmc.executehttpapi( "GetGUISetting(0, lookandfeel.skinzoom)" )
-			skinzoom = int( strZoom[4:] )
-			
-			LOG_TRACE( 'zoom=%d' %skinzoom )
+		resInfo = XBMC_GetResolution( )
+		skinzoom = XBMC_GetSkinZoom( )
 
-			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
-		else :		
-
-			try :
-				from pvr.GuiHelper import GetInstanceSkinPosition
-				userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
-
-				resolutionInfo	= ElementTree.parse( userDatePath )
-				root 			= resolutionInfo.getroot( )
-				resolution		= root.find( 'resolutions' )
-				
-				left			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'left' ).text )
-				top				= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'top' ).text )
-				right			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'right' ).text )
-				bottom			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'bottom' ).text )
-				zoom			= int( root.find( 'lookandfeel' ).find( 'skinzoom' ).text )
-
-				pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
-
-			except Exception, e :
-				LOG_ERR( 'Error exception[%s]' % e )
+		LOG_TRACE( 'resInfo=%s' %resInfo )
+		LOG_TRACE( 'skinzoom=%s' %skinzoom )
+		
+		pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( resInfo[0], resInfo[1], resInfo[2], resInfo[3],skinzoom)#( left, top, right, bottom, skinzoom )		
 
 
 	def CopyIncludeFile( self ) :
@@ -564,12 +534,3 @@ class WindowMgr( object ) :
 		return os.listdir( xbmc.translatePath( 'special://skin/language' ) )
 
 
-	def GetCurrentLanguage( self ) :
-		currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
-		LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
-		return currentLanguage[4:]
-
-
-	def SetCurrentLanguage( self, aLanguage ) :		
-		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
-		

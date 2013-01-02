@@ -182,14 +182,19 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
+				ret = self.mDataCache.ToggleTVRadio( )
+				if ret :
+					self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
+					self.Flush( )
+					self.Load( )
+					self.UpdateList( )
+					self.UpdatePlayStatus( )
+					self.SetRadioScreen( )
+
 				else :
-					self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-				self.Flush( )
-				self.Load( )
-				self.UpdateList( )
-				self.SetRadioScreen( self.mServiceType )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channel available' ) )
+					dialog.doModal( )
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -384,6 +389,13 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateListItem( self, aRecordInfo ) :
+		thumbIcon = 'RecIconSample.png'
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			thumbIcon = 'DefaultAudioNF.png'
+			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
+			if playOffset :
+				thumbIcon = 'DefaultAudioFO.png'
+
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
 		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
@@ -396,7 +408,8 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
@@ -405,6 +418,13 @@ class ArchiveWindow( BaseWindow ) :
 
 	@SetLock
 	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+		thumbIcon = 'RecIconSample.png'
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			thumbIcon = 'DefaultAudioNF.png'
+			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
+			if playOffset :
+				thumbIcon = 'DefaultAudioFO.png'
+
 		listindex = 0
 
 		for recInfo in self.mRecordList :
@@ -424,7 +444,8 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		if aIsStartEvent :
 			recItem.setProperty( 'Playing', 'True' )

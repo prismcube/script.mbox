@@ -1260,4 +1260,17 @@
 	<string id="3854">RUS_No time info was given by that channel</string>
 	<string id="3855">RUS_</string>
 	<string id="3856">RUS_</string>
+	<string id="3857">RUS_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">RUS_</string>
+	<string id="3859">RUS_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">RUS_</string>
+	<string id="3861">RUS_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">RUS_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">RUS_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">RUS_</string>
+	<string id="3865">RUS_Downloading server information</string>
+	<string id="3866">RUS_Channel list update is ficished successfully</string>
+	<string id="3867">RUS_Update finished</string>
+	<string id="3868">RUS_Now updating your channel list</string>
+	<string id="3869">RUS_Updating channel list is finished successfully</string>
 </strings>

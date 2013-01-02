@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
 
+from pvr.gui.GuiConfig import *
+
 MAIN_GROUP_ID					= 9100
 LIST_ID_FAV_ADDON				= 9050
 
@@ -31,6 +33,13 @@ BUTTON_ID_CONFIGURE				= 90106
 BUTTON_ID_CAS					= 90107
 BUTTON_ID_UPDATE				= 90108
 
+
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -64,7 +73,6 @@ class MainMenu( BaseWindow ) :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return	
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
@@ -76,10 +84,10 @@ class MainMenu( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
+			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings, PVR or Timeshift' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback, recordings\nand timeshift' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
@@ -111,7 +119,6 @@ class MainMenu( BaseWindow ) :
 					
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
@@ -141,7 +148,7 @@ class MainMenu( BaseWindow ) :
 			position = self.mCtrlFavAddonList.getSelectedPosition( )
 			if position != -1 :
 				self.SetMediaCenter( )
-				xbmc.executebuiltin( "runaddon(%s)" % self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
+				XBMC_RunAddon( self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
 
 		elif aControlId == BUTTON_ID_HELP :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HELP )
@@ -161,37 +168,33 @@ class MainMenu( BaseWindow ) :
 
 	def GetFavAddons( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-			currentSkinName = currentSkinName[4:]
-			if currentSkinName == 'skin.confluence' :
-				tmpList = xbmc.executehttpapi( "getfavourites()" )
+
+			currentSkinName = XBMC_GetCurrentSkinName( )
+			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
+				favoriteList = XBMC_GetFavAddons( )
+				self.SyncAddonsList( favoriteList )
 				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
 				self.mCtrlFavAddonList.reset( )
-				if tmpList != '<li>' :
-					tmpList = tmpList[4:].split( ':' )
-					tmpList = self.SyncAddonsList( tmpList )
-					if tmpList :
-						self.mFavAddonsList = []
-						for i in range( len( tmpList ) ) :
-							item = xbmcgui.ListItem(  xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' ) )
-							item.setProperty( 'AddonId', tmpList[i] )
-							self.mFavAddonsList.append( item )
-						self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
-
+				if len( favoriteList ) > 0 :
+					self.mFavAddonsList = []
+					for i in range( len( favoriteList ) ) :
+						item = xbmcgui.ListItem(  xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )
+						item.setProperty( 'AddonId', favoriteList[i] )
+						self.mFavAddonsList.append( item )
+					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
+						
 
 	def SyncAddonsList( self, aAddonList ) :
-		tmpList = xbmc.executehttpapi( "getaddons()" )
-		result = deepcopy( aAddonList )
-		if tmpList == '<li>' :
-			return None
-		else :
-			tmpList = tmpList[4:].split( ':' )
-			for i in range( len( aAddonList ) ) :
-				findaddon = False
-				for addon in tmpList :
-					if aAddonList[i] == addon :
-						findaddon = True
-				if findaddon == False :
-					del result[i]
+		addonList = XBMC_GetAddons( )
+		total = len( aAddonList )
+		for i in range( total ) :
+			findaddon = False
+			reversIndex = total - i - 1
+			LOG_TRACE( 'reversindex=%d' %reversIndex )
+			for addon in addonList :
+				if aAddonList[reversIndex] == addon :
+					findaddon = True
+			if findaddon == False :
+				del aAddonList[reversIndex]
 
-		return result
+

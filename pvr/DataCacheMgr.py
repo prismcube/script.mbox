@@ -5,15 +5,23 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
+from pvr.XBMCInterface import XBMC_SetVolume
 
+from pvr.gui.GuiConfig import *
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
 else :
-	from pvr.gui.GuiConfig import *
 	gFlagUseDB = False
 
+
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
@@ -108,6 +116,7 @@ class DataCacheMgr( object ) :
 
 		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
+		self.mRecoverBlank 						= False
 		self.mSkip 								= False
 		self.mIsRunningHiddentest 				= False
 		self.mStartMediaCenter					= False
@@ -218,13 +227,7 @@ class DataCacheMgr( object ) :
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		volumeString = 'setvolume(%s)'% lastVolume
-		xbmc.executehttpapi( volumeString )
-		#LOG_TRACE('set sync lastVolume[%s]'% lastVolume )
-
-		if lastMute or lastVolume <= 0 :
-			volumeString = 'Mute'
-			xbmc.executehttpapi( volumeString )
+		XBMC_SetVolume( lastVolume, lastMute )
 
 
 	def LoadTime( self ) :
@@ -913,60 +916,13 @@ class DataCacheMgr( object ) :
 
 
 	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
- 			self.mEpgDB = ElisEPGDB( )
- 			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
- 			self.mEpgDB.Close( )
-
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-
-		return eventList
+		return self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
 
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
-			if eventList :
-				eventList = eventList[0]
-
-		return eventList
-
-
-	def Epgevent_GetCurrentList( self ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-
-		return eventList
-
-
-	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 1, 1, 1 )
-
-		return eventList
-
-
-	def Epgevent_GetFollowingList( self ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
+		eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
+		if eventList :
+			eventList = eventList[0]
 
 		return eventList
 
@@ -1252,16 +1208,31 @@ class DataCacheMgr( object ) :
 	def Channel_TuneDefault( self, aCurrentChannel = None ) :
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
-			if self.Channel_GetCount( ) :
-				for iChannel in self.Channel_GetList( ) :
-					if aCurrentChannel.mName == iChannel.mName :
+			iChannelList = self.Channel_GetList( )
+			if self.Channel_GetCount( ) and iChannelList and len( iChannelList ) > 0 :
+				for iChannel in iChannelList :
+					if aCurrentChannel.mSid == iChannel.mSid and \
+					   aCurrentChannel.mTsid == iChannel.mTsid and \
+					   aCurrentChannel.mOnid == iChannel.mOnid :
 						isCurrentChannelDelete = False
+						aCurrentChannel = iChannel
 						break
+
+		#LOG_TRACE( '-----found ch[%s]'% isCurrentChannelDelete )
+		if not isCurrentChannelDelete :
+			if aCurrentChannel and aCurrentChannel.mError == 0 :
+				self.Channel_SetCurrent( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
+				#LOG_TRACE( '-------------1 tune[%s %s]'% ( aCurrentChannel.mNumber, aCurrentChannel.mName ) )
+				return
+
+			else :
+				isCurrentChannelDelete = True
 
 		if aCurrentChannel == None or isCurrentChannelDelete :
 			channelList = self.Channel_GetList( )
 			if channelList and len( channelList ) > 0 :
 				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
+				#LOG_TRACE( '-------------2 tune[%s %s]'% ( channelList[0].mNumber, channelList[0].mName ) )
 
 
 	def Channel_ReTune( self ) :
@@ -1315,10 +1286,15 @@ class DataCacheMgr( object ) :
 
 
 	def CheckCurrentChannelByAVBlank( self, aBlank ) :
-		channel = self.Channel_GetCurrent( )
-		if channel and channel.mLocked :
-			if aBlank != self.Get_Player_AVBlank( ) :
-				self.Player_AVBlank( aBlank )
+		if aBlank :
+			if self.Get_Player_AVBlank( ) :
+				self.mRecoverBlank = True
+				self.Player_AVBlank( False )
+		else :
+			if self.mRecoverBlank :
+				self.mRecoverBlank = False
+				if not self.Get_Player_AVBlank( ) :
+					self.Player_AVBlank( True )
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1342,9 +1318,14 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		self.CheckCurrentChannelByAVBlank( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
-		self.CheckCurrentChannelByAVBlank( True )
+
+		channel = self.Channel_GetCurrent( )
+		if channel and channel.mError == 0 :
+			self.Frontdisplay_SetMessage( channel.mName )
+
 		return ret
 
 
@@ -1365,9 +1346,13 @@ class DataCacheMgr( object ) :
 
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
-		self.CheckCurrentChannelByAVBlank( False )
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+		self.CheckCurrentChannelByAVBlank( True )
 		self.Frontdisplay_PlayPause( )
+		recInfo = self.Record_GetRecordInfoByKey( aRecordKey )
+		if recInfo and recInfo.mError == 0 :
+			self.Frontdisplay_SetMessage( recInfo.mChannelName )
+
 		return ret
 
 
@@ -1572,6 +1557,10 @@ class DataCacheMgr( object ) :
 
 	def Teletext_NotifyHide( self ) :
 		return self.mCommander.Teletext_NotifyHide( )
+
+
+	def Teletext_IsShowing( self ) :
+		return self.mCommander.Teletext_IsShowing( )
 
 
 	def Frontdisplay_SetMessage( self, aName ) :

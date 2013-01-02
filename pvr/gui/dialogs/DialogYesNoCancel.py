@@ -11,13 +11,13 @@ E_BODY_LABEL_1	= 200
 class DialogYesNoCancel( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mIsOk = E_DIALOG_STATE_NO
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.mTitle = ''
 		self.mLabel = ''
 
 
 	def onInit( self ) :
-		self.mIsOk = E_DIALOG_STATE_NO
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
 
@@ -28,25 +28,18 @@ class DialogYesNoCancel( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_BUTTON_YES :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.CloseDialog( )
-
 		elif aControlId == E_BUTTON_NO :
 			self.mIsOk = E_DIALOG_STATE_NO
-			self.CloseDialog( )
-
 		elif aControlId == E_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.CloseDialog( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
 
 	def IsOK( self ) :
 		return self.mIsOk

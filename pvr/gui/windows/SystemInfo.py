@@ -3,6 +3,14 @@ from subprocess import *
 import re
 
 
+#for test
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson 
+
 E_VERSION						=	0
 E_HDD							=	1
 
@@ -99,8 +107,37 @@ class SystemInfo( SettingWindow ) :
 		self.SetListControl( )
 		self.mPrevListItemID = -1
 		self.mInitialized = True
+		self.fetch_addon_info()
 
-
+	def fetch_addon_info( self ):
+		self.LIMIT = 30
+		json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"properties": ["name", "author", "summary", "version", "fanart", "thumbnail"]}, "id": 1}')
+		json_response = unicode(json_query, 'utf-8', errors='ignore')
+		jsonobject = simplejson.loads(json_response)
+		if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('addons'):
+			total = str( len( jsonobject['result']['addons'] ) )
+			# find plugins and scripts
+			addonlist = []
+			for item in jsonobject['result']['addons']:
+				if item['type'] == 'xbmc.python.script' or item['type'] == 'xbmc.python.pluginsource':
+					addonlist.append(item)
+			# randomize the list
+			#random.shuffle(addonlist)
+			count = 0
+			for item in addonlist:
+				count += 1
+				print "RandomAddon.%d.Name" % ( count ), item['name'] 
+				print "RandomAddon.%d.Author" % ( count ), item['author'] 
+				print "RandomAddon.%d.Summary" % ( count ), item['summary'] 
+				print "RandomAddon.%d.Version" % ( count ), item['version'] 
+				print "RandomAddon.%d.Path" % ( count ), item['addonid'] 
+				print "RandomAddon.%d.Fanart" % ( count ), item['fanart'] 
+				print "RandomAddon.%d.Thumb" % ( count ), item['thumbnail'] 
+				print "RandomAddon.%d.Type" % ( count ), item['type']
+				print "RandomAddon.Count" , total 
+				# stop if we've reached the number of items we need
+				if count == self.LIMIT:
+					break
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -183,7 +220,7 @@ class SystemInfo( SettingWindow ) :
 			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % self.GetProductName( ) )
 			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % self.GetProductNymber( ) )
 			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % self.GetHardwareVersion( ) )
-			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % self.GetSoftwareVersion( ) )
+			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Release Version : %s' ) % self.GetReleaseVersion( ) )
 			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % self.GetBootloaderVersion( ) )
 
 			self.CloseBusyDialog( )
@@ -237,11 +274,16 @@ class SystemInfo( SettingWindow ) :
 		return '1.00'
 
 
-	def GetSoftwareVersion( self ) :
-		version = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'version' )
-		if E_BETA_SOFTWARE :
-			version = 'Beta ' + version + ' ( Modified %s )' % E_BETA_DATE
-		return version
+	def GetReleaseVersion( self ) :
+		ret = GetCurrentVersion( )
+		if not ret[0] :
+			ret[0] = MR_LANG( 'Unknown' )
+			return ret[0]
+		if not ret[1] :
+			ret[1] = MR_LANG( 'Unknown' )
+
+		retInfo = ret[0] + ' ( %s )' % ret[1]
+		return retInfo
 
 
 	def RunningGetLastDate( self, aDirname ) :
@@ -284,14 +326,17 @@ class SystemInfo( SettingWindow ) :
 		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
 		cmd = "df -h | awk '/%s/ {print $2}'" % aName
-		total_size = Popen( cmd, shell=True, stdout=PIPE )
-		total_size = total_size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		total_size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		cmd = "df -h | awk '/%s/ {print $3}'" % aName
-		used_size = Popen( cmd, shell=True, stdout=PIPE )
-		used_size = used_size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		used_size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		cmd = "df -h | awk '/%s/ {print $5}'" % aName
-		percent = Popen( cmd, shell=True, stdout=PIPE )
-		percent = percent.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		percent = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		percent = int( re.sub( '%', '', percent ) )
 
 		return total_size, used_size, percent
@@ -330,8 +375,10 @@ class SystemInfo( SettingWindow ) :
 			else :
 				device = '/dev/sda'
 				cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
-				model = Popen( cmd, shell=True, stdout=PIPE )
-				model = model.stdout.read( ).strip( )
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				model = p.stdout.read( ).strip( )
+				p.stdout.close( )
+
 			return model
 
 		except Exception, e :
@@ -344,8 +391,9 @@ class SystemInfo( SettingWindow ) :
 		unit = ''
 		device = '/dev/sda'
 		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
-		size = Popen( cmd, shell=True, stdout=PIPE )
-		size = size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		size = re.sub( ',', '', size )
 		return size
 
@@ -357,8 +405,9 @@ class SystemInfo( SettingWindow ) :
 
 		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
 			if self.CheckExistsDisk( ) :
-				temperature = Popen( cmd, shell=True, stdout=PIPE )
-				temperature = temperature.stdout.read( ).strip( )
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				temperature = p.stdout.read( ).strip( )
+				p.stdout.close( )
 				if IsNumber( temperature ) == False :
 					temperature = MR_LANG( 'Unknown' )
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
@@ -372,8 +421,9 @@ class SystemInfo( SettingWindow ) :
 			return False
 
 		cmd = 'df'
-		parsing = Popen( cmd, shell=True, stdout=PIPE )
-		parsing = parsing.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		parsing = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		if parsing.count( '/dev/sda' ) >= 3 :
 			return True
 		else :

@@ -366,6 +366,8 @@ def execute(cmd):
 	ret = p.returncode
 	stderr = p.stderr.read()
 	stdout = p.stdout.read()
+	p.stderr.close()
+	p.stdout.close()
 
 	return (ret, stdout, stderr)
 

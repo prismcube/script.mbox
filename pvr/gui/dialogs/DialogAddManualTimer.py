@@ -43,6 +43,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mWekklyEnd = 0
 		self.mConflictTimer = None
 		self.mIsRunningTimer = False
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
 	def onInit( self ) :
@@ -62,13 +63,11 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mRecordName = self.mChannel.mName
 
 		self.Reload( )
-
-		self.mIsOk = E_DIALOG_STATE_CANCEL
-
 		self.DrawItem( )
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 		
 
 	def onAction( self, aAction ) :
@@ -78,9 +77,8 @@ class DialogAddManualTimer( SettingDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
-			self.Close( )
+			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			groupId = self.GetGroupId( focusId )
@@ -136,34 +134,24 @@ class DialogAddManualTimer( SettingDialog ) :
 			LOG_WARN( 'Unknown Action' )
 
 
-	def onClick( self, aControlId ) :
-
-		groupId = self.GetGroupId( aControlId )
-
-		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
-			if self.DoAddTimer() == False :
-				self.mIsOk = E_DIALOG_STATE_ERROR
-			
-			self.ResetAllControl( )
-			self.Close( )
-
-		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
-			self.mIsOk = E_DIALOG_STATE_NO
-			self.ResetAllControl( )
-			self.Close( )
-
-
 	def onFocus( self, aControlId ) :
 		pass
 
 
-	def onEvent( self, aEvent ) :
-		pass
-		"""
-		if xbmcgui.getCurrentWindowDialogId( ) == self.winId :
-			print 'Do Event'
-			pass
-		"""
+	def onClick( self, aControlId ) :
+		groupId = self.GetGroupId( aControlId )
+		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
+			if self.DoAddTimer( ) == False :
+				self.mIsOk = E_DIALOG_STATE_ERROR
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
+		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
+			self.mIsOk = E_DIALOG_STATE_NO
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
+		elif groupId == E_SETTING_DIALOG_BUTTON_CLOSE :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def GetErrorMessage( self ) :
@@ -189,11 +177,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def GetConflictTimer( self ) :
 		return self.mConflictTimer
-
-
-	def Close( self ) :
-		#self.mEventBus.Deregister( self )
-		self.CloseDialog( )
 
 
 	def Reload ( self ) :
@@ -344,17 +327,19 @@ class DialogAddManualTimer( SettingDialog ) :
 
 					self.SelectPosition( E_DialogSpinEx02, 0 )						
 					self.SetVisibleControl( E_DialogSpinDay, False )
+					self.SetEnableControl( E_DialogSpinDay, False )
 					#self.SetVisibleControl( E_DialogSpinEx02, True )
 					self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( startTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-					self.SetEnableControl( E_DialogSpinEx02, False )
 					
 					self.SetControlLabel2String( E_DialogInput02, TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
 					self.SetControlLabel2String( E_DialogInput03, TimeToString( endTime, TimeFormatEnum.E_HH_MM) )
 
 					if self.mIsRunningTimer == True :
+						self.SetEnableControl( E_DialogSpinEx02, False )					
 						self.SetEnableControl( E_DialogInput02, False )
 						self.SetFocus( E_DialogInput03 )
 					else :
+						self.SetEnableControl( E_DialogSpinEx02, True )					
 						self.SetFocus( E_DialogInput02 )
 
 				else :
@@ -507,21 +492,37 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def ChangeStartDay( self, aIsNext ) :
 
-		days = int( self.mDataCache.Datetime_GetLocalTime( )/ONE_DAY_SECONDS )
-		currentWeeekyStart = days * ONE_DAY_SECONDS
+		if self.mTimer and self.mRecordingMode == E_ONCE :
 
-		if aIsNext == True :
-			newWeekyStart = self.mWeeklyStart + ONE_DAY_SECONDS
+			if aIsNext == True :
+				newStart = self.mTimer.mStartTime + ONE_DAY_SECONDS
+			else :
+				newStart = self.mTimer.mStartTime - ONE_DAY_SECONDS		
+
+			if newStart < self.mDataCache.Datetime_GetLocalTime( ) :
+				newStart = self.mTimer.mStartTime
+
+			self.mTimer.mStartTime = newStart
+
+			LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+
 		else :
-			newWeekyStart = self.mWeeklyStart - ONE_DAY_SECONDS		
+			days = int( self.mDataCache.Datetime_GetLocalTime( )/ONE_DAY_SECONDS )
+			currentWeeekyStart = days * ONE_DAY_SECONDS
 
-		if newWeekyStart < currentWeeekyStart :
-			self.mWeeklyStart = currentWeeekyStart
-		else :
-			self.mWeeklyStart = newWeekyStart
+			if aIsNext == True :
+				newWeekyStart = self.mWeeklyStart + ONE_DAY_SECONDS
+			else :
+				newWeekyStart = self.mWeeklyStart - ONE_DAY_SECONDS		
 
-		LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-		self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			if newWeekyStart < currentWeeekyStart :
+				self.mWeeklyStart = currentWeeekyStart
+			else :
+				self.mWeeklyStart = newWeekyStart
+
+			LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 
 
 	def ShowRecordName( self ) :

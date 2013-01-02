@@ -227,7 +227,7 @@ class ManualScan( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )	
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select a satellite you wish to search channels from' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
 
 		if self.mIsManualSetup == 0 :
@@ -252,11 +252,11 @@ class ManualScan( SettingWindow ) :
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate
-		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transferred per second in the data stream' ) )
+		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transmitted per second in the data stream' ) )
 		
-		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
-		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select the type of channels you want to search for' ) )
-		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to search channels' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to start a channel search' ) )
 
 		self.InitControl( )
 		self.DisableControl( )

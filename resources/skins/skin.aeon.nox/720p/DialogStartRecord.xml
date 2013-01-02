@@ -19,8 +19,7 @@
 				<posy>36</posy>
 				<width>110</width>
 				<height>25</height>
-				<onclick>PreviousMenu</onclick>
-				<align>right</align>
+				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 				<focusedcolor>white</focusedcolor>

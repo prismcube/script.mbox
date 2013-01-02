@@ -139,7 +139,6 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -148,7 +147,6 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -157,7 +155,6 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MBOX_FF :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -168,6 +165,9 @@ class InfoPlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			pass
 			#ToDo warning msg
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		#test
 		elif actionId == 13: #'x'
@@ -378,7 +378,14 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			self.GlobalAction( Action.ACTION_MUTE )
+			if not self.mDataCache.Teletext_Show( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
+				dialog.doModal( )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -416,7 +423,7 @@ class InfoPlate( LivePlateWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( 'Create bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Add bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
 		context.append( ContextItem( 'Show all bookmarks',  CONTEXT_ACTION_SHOW_LIST ) )
 
 		self.mEventBus.Deregister( self )
@@ -588,7 +595,7 @@ class InfoPlate( LivePlateWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )

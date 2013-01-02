@@ -178,9 +178,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 
 		self.mAgeLimit = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		if self.mDataCache.mCacheReload :
-			self.mListItems = None
-			self.mDataCache.mCacheReload = False
+		#if self.mDataCache.mCacheReload :
+		self.mListItems = None
+		self.mDataCache.mCacheReload = False
 
 		#initialize get cache
 		zappingmode = None
@@ -293,7 +293,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.ShowRecordingStopDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -495,6 +494,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def DoModeChange( self, aType = FLAG_MODE_TV ) :
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			LOG_TRACE( 'Editing now...' )
+			return
+
 		if self.mUserMode.mServiceType != aType and self.mDataCache.Channel_GetCount( aType ) > 0 :
 			tmpUserMode = deepcopy( self.mUserMode )
 			self.mUserMode = deepcopy( self.mLastMode )
@@ -507,15 +510,15 @@ class ChannelListWindow( BaseWindow ) :
 			aMode = self.mUserMode.mMode
 			aSort = self.mUserMode.mSortingMode
 
+			self.ResetLabel( )
+			self.mCtrlListCHList.reset( )
 			self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 			self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+			#self.UpdateChannelList( )
 
-			self.mCtrlListCHList.reset( )
-			self.UpdateChannelList( )
 			self.mFlag_EditChanged = False
 			self.mLastMode = deepcopy( tmpUserMode )
 			self.mLastSlidePos = deepcopy( tmpUserSlidePos )
-
 
 			self.SetRadioScreen( aType )
 			propertyName = 'Last TV Number'
@@ -527,14 +530,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			#initialize get epg event
 			self.mFlag_ModeChanged = False
-			#self.mIsTune = False
-			self.ResetLabel( )
-			#self.Epgevent_GetCurrent( )
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
 			dialog.doModal( )
+
 
 		if self.mUserMode.mServiceType == FLAG_MODE_TV :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV,   True, E_TAG_SELECT )
@@ -921,28 +922,8 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
 				if self.mListCasList :
-					if idxSub == 0 :
-						caid = ElisEnum.E_FTA_CHANNEL
-					elif idxSub == 1 :
-						caid = ElisEnum.E_MEDIAGUARD
-					elif idxSub == 2 :
-						caid = ElisEnum.E_VIACCESS
-					elif idxSub == 3 :
-						caid = ElisEnum.E_NAGRA
-					elif idxSub == 4 :
-						caid = ElisEnum.E_IRDETO
-					elif idxSub == 5 :
-						caid = ElisEnum.E_CRYPTOWORKS
-					elif idxSub == 6 :
-						caid = ElisEnum.E_BETADIGITAL
-					elif idxSub == 7 :
-						caid = ElisEnum.E_NDS
-					elif idxSub == 8 :
-						caid = ElisEnum.E_CONAX
-					else :
-						caid = ElisEnum.E_OTHERS
-
 					zappingName = self.mListCasList[idxSub].mName
+					caid = self.mListCasList[idxSub].mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '' )
 					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
@@ -1318,7 +1299,7 @@ class ChannelListWindow( BaseWindow ) :
 		list_Mainmenu.append( MR_LANG( 'All CHANNELS' ) )
 		list_Mainmenu.append( MR_LANG( 'SATELLITE' )    )
 		list_Mainmenu.append( MR_LANG( 'FTA/CAS' )      )
-		list_Mainmenu.append( MR_LANG( 'FAVORITES' )     )
+		list_Mainmenu.append( MR_LANG( 'FAVORITES' )    )
 		list_Mainmenu.append( MR_LANG( 'MODE' ) )
 		#list_Mainmenu.append( MR_LANG( 'Back' ) )
 		testlistItems = []
@@ -1326,6 +1307,7 @@ class ChannelListWindow( BaseWindow ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
+
 
 		try :
 			if self.mFlag_EditChanged :
@@ -1560,8 +1542,11 @@ class ChannelListWindow( BaseWindow ) :
 					tsid = iChannel.mTsid
 					onid = iChannel.mOnid
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+					#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
+					iEPG = self.mCommander.Epgevent_GetList( sid, tsid, onid, 0, 0, 1 )
+					if iEPG :
+						iEPG = iEPG[0]
 					LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s] epg[%s] gmtTime[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid, iEPG, self.mDataCache.Datetime_GetGMTTime( ) ) )
 					if iEPG == None or iEPG.mError != 0 :
 						self.mNavEpg = 0
@@ -1648,20 +1633,6 @@ class ChannelListWindow( BaseWindow ) :
 			
 		else :
 			self.mWin.setProperty( aPropertyID, aValue )
-
-
-	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
-		startTime = time.time()
-		loopTime = 0.0
-		sleepTime = 0.01
-		while loopTime < 1.5 :
-			aListControl.selectItem( aIdx )
-			if aIdx == aListControl.getSelectedPosition( ) :
-				break
-			time.sleep( sleepTime )
-			loopTime += sleepTime
-
-		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
 
 
 	def UpdateChannelAndEPG( self ) :
@@ -2574,7 +2545,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, self.mChannelListHash, True )
+		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )
@@ -2604,7 +2575,6 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -2618,8 +2588,8 @@ class ChannelListWindow( BaseWindow ) :
 				isOK = True
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
+
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

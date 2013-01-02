@@ -55,7 +55,8 @@ class DialogExtendEPG( BaseDialog ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU :	
+			#self.mEPG = None
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -66,6 +67,7 @@ class DialogExtendEPG( BaseDialog ) :
 			
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.Close( )
+			#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif actionId == Action.ACTION_STOP :
 			self.Close( )

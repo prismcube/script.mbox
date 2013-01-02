@@ -115,7 +115,7 @@ class FirstInstallation( FTIWindow ) :
 						dialog.doModal( )
 						self.mInitialized = False
 						self.OpenBusyDialog( )
-						WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 						
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
@@ -190,7 +190,7 @@ class FirstInstallation( FTIWindow ) :
 		if aStep == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( XBMC_GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to the video and audio setup page' ) )
 
@@ -257,9 +257,9 @@ class FirstInstallation( FTIWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
-			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
-			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
+			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
@@ -322,7 +322,7 @@ class FirstInstallation( FTIWindow ) :
 		elif aStep == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Summary of First Installation' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( XBMC_GetCurrentLanguage( ) ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )

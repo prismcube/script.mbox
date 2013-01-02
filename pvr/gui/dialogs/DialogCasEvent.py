@@ -34,6 +34,7 @@ class DialogCasEvent( BaseDialog ) :
 
 		self.mCtrlList.reset( )
 		self.DrawItem( )
+		self.mSelectedIndex = -1
 
 
 	def onAction( self, aAction ) :
@@ -43,21 +44,16 @@ class DialogCasEvent( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mSelectedIndex = -1
-			self.Close( )
+			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 
 	def onClick( self, aControlId ) :
-		if aControlId == BUTTON_ID_CLOSE :
-			self.mSelectedIndex = -1
-			self.Close( )
-			return
-
-		self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
-		self.Close( )	
+		if aControlId != BUTTON_ID_CLOSE :
+			self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :
@@ -80,9 +76,6 @@ class DialogCasEvent( BaseDialog ) :
 		self.mCtrlBottomLabel.setLabel( self.mBottomTitle )
 
 
-	def Close( self ) :
-		self.CloseDialog( )
-
-
 	def GetSelectedIndex( self ) :
 		return self.mSelectedIndex
+
