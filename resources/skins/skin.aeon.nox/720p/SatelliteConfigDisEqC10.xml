@@ -7,6 +7,12 @@
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
 			<include>DefaultSatelliteConfigGroup</include>
+			<control type="group">
+				<posx>90</posx>
+				<posy>110</posy>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
+			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>
 	</controls>

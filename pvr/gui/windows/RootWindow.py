@@ -25,7 +25,7 @@ class RootWindow( BaseWindow ) :
 			"""
 
 		else :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
 
 		
 	def onAction( self, aAction ) :

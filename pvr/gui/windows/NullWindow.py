@@ -27,7 +27,7 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			if self.mDataCache.GetFristInstallation( ) :
+			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				return
 			else :
@@ -82,7 +82,6 @@ class NullWindow( BaseWindow ) :
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
-
 
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_MOVE_LEFT :

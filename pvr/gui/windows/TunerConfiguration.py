@@ -1,19 +1,22 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 
 
 E_MAIN_LIST_ID = 9000
 
 
-class TunerConfiguration( SettingWindow ) :
+class TunerConfiguration( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs)
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mListItems = []
 		self.mConfiguredCount = 0
+		self.mCtrlMainList = None
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+		self.mCtrlMainList = self.getControl( E_MAIN_LIST_ID )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )		
@@ -21,34 +24,45 @@ class TunerConfiguration( SettingWindow ) :
 		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
+		self.getControl( E_FIRST_TIME_INSTALLATION_PREV ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ), self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ) )
+		self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_PREV ), self.getControl( E_FIRST_TIME_INSTALLATION_PREV ) )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
 			return
 
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.getControl( E_MAIN_LIST_ID ).reset( )
+		if self.GetFristInstallation( ) :
+			self.onActionFTI( actionId )
+		else :
+			self.onActionNormal( actionId )
+
+
+	def onActionNormal( self, aActionId ) :
+		if aActionId == Action.ACTION_PREVIOUS_MENU or aActionId == Action.ACTION_PARENT_DIR :
+			self.mCtrlMainList.reset( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass			
 
-		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+	def onActionFTI( self, aActionId ) :
+		if aActionId == Action.ACTION_PREVIOUS_MENU or aActionId == Action.ACTION_PARENT_DIR :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+			dialog.doModal( )
 
-		elif actionId == Action.ACTION_MOVE_UP :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_DOWN :
-			pass
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
+				self.CloseFTI( )
+				self.mCtrlMainList.reset( )
+				self.CloseBusyDialog( )
+				WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_MAIN_LIST_ID : 
-			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
+			position = self.mCtrlMainList.getSelectedPosition( )
 
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
@@ -69,6 +83,10 @@ class TunerConfiguration( SettingWindow ) :
 						if self.mTunerMgr.CheckSameSatellite( ret ) :
 							self.mTunerMgr.AddConfiguredSatellite( ret )
 							self.AfterAction( )
+							if self.GetFristInstallation( ) :
+								bakupCount = self.GetAntennaCurrentCount( )
+								self.MakeAntennaSetupStepList( )
+								self.SetAntennaCurrentCount( bakupCount )
 					 	else :
 					 		self.CloseBusyDialog( )
 					 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -97,27 +115,44 @@ class TunerConfiguration( SettingWindow ) :
 							self.OpenBusyDialog( )
 							self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
 							self.AfterAction( )
+							if self.GetFristInstallation( ) :
+								bakupCount = self.GetAntennaCurrentCount( )
+								self.MakeAntennaSetupStepList( )
+								self.SetAntennaCurrentCount( bakupCount )
 
 			else :
-				config = self.mTunerMgr.GetConfiguredSatelliteList( )[ position ]
-				if config :
-					self.mTunerMgr.SetCurrentConfigIndex( position )
-					tunertype = self.mTunerMgr.GetCurrentTunerType( )
-
-					if tunertype == E_DISEQC_1_0 :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
-
-					elif tunertype == E_DISEQC_1_1 :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
-
-					elif tunertype == E_MOTORIZE_1_2 :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
-
-					elif tunertype == E_MOTORIZE_USALS or tunertype == E_SIMPLE_LNB :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
-
+				if self.GetFristInstallation( ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'Press the NEXT button to config satellites' ) )
+		 			dialog.doModal( )
 				else :
-					LOG_ERR( 'ERR : Cannot find configured satellite' )
+					config = self.mTunerMgr.GetConfiguredSatelliteList( )[ position ]
+					if config :
+						self.mTunerMgr.SetCurrentConfigIndex( position )
+						tunertype = self.mTunerMgr.GetCurrentTunerType( )
+
+						if tunertype == E_DISEQC_1_0 :
+							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
+
+						elif tunertype == E_DISEQC_1_1 :
+							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
+
+						elif tunertype == E_MOTORIZE_1_2 :
+							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
+
+						elif tunertype == E_MOTORIZE_USALS or tunertype == E_SIMPLE_LNB :
+							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+
+					else :
+						LOG_ERR( 'ERR : Cannot find configured satellite' )
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 
 
 	def onFocus( self, aControlId ) :
@@ -136,24 +171,20 @@ class TunerConfiguration( SettingWindow ) :
 				if config.mIsConfigUsed == 1 :
 					self.mConfiguredCount = self.mConfiguredCount + 1
 					satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
-					self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Press the OK button to setup %s' ) % satelliteName ) )
+					if self.GetFristInstallation( ) :
+						description = MR_LANG( 'Press the Next button to setup satellite' )
+					else :
+						description = MR_LANG( 'Press the OK button to setup %s' ) % satelliteName
+					self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, description ) )
 
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a new satellite to your satellite list' ) ) )
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete a satellite from your list' ) ) )
-		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
+		self.mCtrlMainList.addItems( self.mListItems )
 
 
 	def AfterAction( self ) :
-		self.mTunerMgr.SatelliteConfigSaveList( )
-		self.ReTune( )
-		self.mDataCache.LoadConfiguredSatellite( )
-		self.mDataCache.LoadConfiguredTransponder( )
+		self.mTunerMgr.SaveConfiguration( )
+		self.mDataCache.Channel_ReTune( )
 		self.LoadConfigedSatellite( )
 		self.CloseBusyDialog( )
 
-
-	def ReTune( self ) :
-		iChannel = self.mDataCache.Channel_GetCurrent( )
-		if iChannel :
-			self.mDataCache.Channel_InvalidateCurrent( )
-			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )

@@ -1,10 +1,11 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 import pvr.ScanHelper as ScanHelper
 
 
-class SatelliteConfigDisEqC11( SettingWindow ) :
+class SatelliteConfigDisEqC11( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
@@ -34,6 +35,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mDataCache.Player_AVBlank( False )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
 		self.mInitialized = True
 
 
@@ -43,13 +45,26 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.OpenBusyDialog( )
-			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			if self.mAvBlankStatus :
-				self.mDataCache.Player_AVBlank( True )
-			self.CloseBusyDialog( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			if self.GetFristInstallation( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )
+					self.mEventBus.Deregister( self )
+					ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+					self.CloseFTI( )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).CloseWindow( )
+			else :
+				self.OpenBusyDialog( )
+				self.mEventBus.Deregister( self )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+				if self.mAvBlankStatus :
+					self.mDataCache.Player_AVBlank( True )
+				self.CloseBusyDialog( )
+				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -158,6 +173,20 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 	 			else :
 	 				return
 
+	 	if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			self.mEventBus.Deregister( self )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			self.mEventBus.Deregister( self )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 
@@ -203,6 +232,9 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		else :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder for the satellite you have chosen' ) )			
 			self.mHasTransponder = False
+
+		if self.GetFristInstallation( ) :
+			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
 		
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]

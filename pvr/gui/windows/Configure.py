@@ -314,6 +314,8 @@ class Configure( SettingWindow ) :
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
+				if self.mCommander.Player_GetMute( ) :
+					self.mCommander.Player_SetMute( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
@@ -666,6 +668,8 @@ class Configure( SettingWindow ) :
 			if self.mHasChannel == False :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
+				self.SetEnableControl( E_SpinEx02, False )
+				self.SetEnableControl( E_SpinEx03, False )
 			else :
 				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 				if selectedIndex == TIME_AUTOMATIC :

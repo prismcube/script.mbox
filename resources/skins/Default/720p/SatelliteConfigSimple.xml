@@ -9,6 +9,11 @@
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
 			<include>DefaultSatelliteConfigGroup</include>
+			<control type="group">
+				<posy>10</posy>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
+			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>
 	</controls>

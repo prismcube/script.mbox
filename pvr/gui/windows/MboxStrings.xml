@@ -90,6 +90,8 @@
 	<string id="88">Go Parent</string>
 	<string id="89">Select Action</string>
 	<string id="90">To see all the other menus, press i button</string>
+	<string id="91">Previous</string>
+	<string id="92">Next</string>
 	<string id="93">Rewind</string>
 	<string id="94">Play</string>
 	<string id="95">Pause</string>
@@ -106,6 +108,7 @@
 	<string id="108">Move Position</string>
 	<string id="109">Add</string>
 	<string id="110">Access your favorite XBMC add-ons in a convenient way</string>
+	
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

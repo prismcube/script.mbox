@@ -319,160 +319,166 @@
 	</include>
 
 	<include name="DefaultFirstTimeInstallationButton">
-		<control type="button" id="7001">
-			<description>Prev button</description>
-			<posx>6</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texturenofocus border="5">views/multiplex_arrow2.png</texturenofocus>
-			<texturefocus border="5">aeon.nox/multiplex_arrowfocus2.png</texturefocus>
-			<onleft>7003</onleft>
-			<onright>7003</onright>
-		</control>
-		<control type="label" id="7005">
-			<posx>45</posx>
-			<posy>463</posy>
-			<width>200</width>
-			<height>40</height>
-			<font>Font_Reg20</font>
-			<textcolor>grey2</textcolor>
-			<align>left</align>
-			<aligny>center</aligny>
-			<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
-		</control>
-		<control type="label">
-			<posx>45</posx>
-			<posy>463</posy>
-			<width>200</width>
-			<height>40</height>
-			<font>Font_Reg20</font>
-			<textcolor>white</textcolor>
-			<align>left</align>
-			<aligny>center</aligny>
-			<label>$INFO[Control.GetLabel(7005)]</label>
-			<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
-		</control>
-		<control type="button" id="7003">
-			<description>Next button</description>
-			<posx>697</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texturenofocus border="5">views/multiplex_arrow.png</texturenofocus>
-			<texturefocus border="5">aeon.nox/multiplex_arrowfocus.png</texturefocus>
-			<onleft>7001</onleft>
-			<onright>7001</onright>
-		</control>
-		<control type="label" id="7008">
-			<posx>690</posx>
-			<posy>463</posy>
-			<width>200</width>
-			<height>40</height>
-			<font>Font_Reg20</font>
-			<textcolor>grey2</textcolor>
-			<align>right</align>
-			<aligny>center</aligny>
-			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
-		</control>
-		<control type="label">
-			<posx>690</posx>
-			<posy>463</posy>
-			<width>200</width>
-			<height>40</height>
-			<font>Font_Reg20</font>
-			<textcolor>white</textcolor>
-			<align>right</align>
-			<aligny>center</aligny>
-			<label>$INFO[Control.GetLabel(7008)]</label>
-			<visible>Control.IsVisible(7003) + Control.HasFocus(7003)</visible>
+		<control type="group">
+			<visible>substring(Window.Property(IsFTI),True)</visible>
+			<control type="button" id="7001">
+				<description>Prev button</description>
+				<posx>6</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texturenofocus border="5">views/multiplex_arrow2.png</texturenofocus>
+				<texturefocus border="5">aeon.nox/multiplex_arrowfocus2.png</texturefocus>
+				<onleft>7003</onleft>
+				<onright>7003</onright>
+			</control>
+			<control type="label" id="7005">
+				<posx>45</posx>
+				<posy>463</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>Font_Reg20</font>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
+			</control>
+			<control type="label">
+				<posx>45</posx>
+				<posy>463</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>Font_Reg20</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[Control.GetLabel(7005)]</label>
+				<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
+			</control>
+			<control type="button" id="7003">
+				<description>Next button</description>
+				<posx>697</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texturenofocus border="5">views/multiplex_arrow.png</texturenofocus>
+				<texturefocus border="5">aeon.nox/multiplex_arrowfocus.png</texturefocus>
+				<onleft>7001</onleft>
+				<onright>7001</onright>
+			</control>
+			<control type="label" id="7008">
+				<posx>690</posx>
+				<posy>463</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>Font_Reg20</font>
+				<textcolor>grey2</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
+			</control>
+			<control type="label">
+				<posx>690</posx>
+				<posy>463</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>Font_Reg20</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>$INFO[Control.GetLabel(7008)]</label>
+				<visible>Control.IsVisible(7003) + Control.HasFocus(7003)</visible>
+			</control>
 		</control>
 	</include>
 
 	<include name="DefaultFirstTimeInstallationStepImage">
-		<control type="image" id="8110">
-			<posx>250</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>
-		<control type="image" id="8111">
-			<posx>290</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>
-		<control type="image" id="8112">
-			<posx>330</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>
-		<control type="image" id="8113">
-			<posx>370</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>
-		<control type="image" id="8114">
-			<posx>410</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>
-		<control type="image" id="8115">
-			<posx>450</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
-		</control>	
-		<control type="image" id="8100">
-			<posx>250</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
-		</control>
-		<control type="image" id="8101">
-			<posx>290</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
-		</control>
-		<control type="image" id="8102">
-			<posx>330</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
-		</control>
-		<control type="image" id="8103">
-			<posx>370</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
-		</control>
-		<control type="image" id="8104">
-			<posx>410</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
-		</control>
-		<control type="image" id="8105">
-			<posx>450</posx>
-			<posy>470</posy>
-			<width>30</width>
-			<height>30</height>
-			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+		<control type="group">
+			<visible>substring(Window.Property(IsFTI),True)</visible>
+			<control type="image" id="8110">
+				<posx>250</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>
+			<control type="image" id="8111">
+				<posx>290</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>
+			<control type="image" id="8112">
+				<posx>330</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>
+			<control type="image" id="8113">
+				<posx>370</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>
+			<control type="image" id="8114">
+				<posx>410</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>
+			<control type="image" id="8115">
+				<posx>450</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-nofocus.png</texture>
+			</control>	
+			<control type="image" id="8100">
+				<posx>250</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
+			<control type="image" id="8101">
+				<posx>290</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
+			<control type="image" id="8102">
+				<posx>330</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
+			<control type="image" id="8103">
+				<posx>370</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
+			<control type="image" id="8104">
+				<posx>410</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
+			<control type="image" id="8105">
+				<posx>450</posx>
+				<posy>470</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
+			</control>
 		</control>
 	</include>
 

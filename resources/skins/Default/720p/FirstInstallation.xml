@@ -1,5 +1,6 @@
 <window id="3029">
 	<defaultcontrol always="true">9000</defaultcontrol>
+	<onload>SetProperty(IsFTI,True)</onload>
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<include>DefaultSettingHeaderWindow</include>
@@ -21,6 +22,7 @@
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>
 				<include>SpinEx03</include>
+				<include>SpinEx04</include>
 				<include>Input01</include>
 				<include>Input02</include>
 				<include>Input03</include>

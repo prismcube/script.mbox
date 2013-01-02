@@ -51,22 +51,22 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 			if aEvent.mType == ElisEnum.E_EOF_END :
-				if WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_NULLWINDOW and \
-				   WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_TIMESHIFT_PLATE :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW and \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE :
 					LOG_TRACE( 'CHECK onEVENT[%s] stop'% aEvent.getName( ) )
 					self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'Scramble' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'False' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'False' )
 				self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 			else :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
@@ -81,12 +81,12 @@ class GlobalEvent( object ) :
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
-			if WinMgr.GetInstance( ).mLastId not in AUTOPOWERDOWN_EXCEPTWINDOW :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) not in AUTOPOWERDOWN_EXCEPTWINDOW :
 				if self.mIsDialogOpend == False :
 					thread = threading.Timer( 0.3, self.AsyncPowerSave )
 					thread.start( )
 			else :
-				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).mLastId
+				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).GetLastWindowID( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			self.mDataCache.Player_AVBlank( False )
@@ -114,10 +114,10 @@ class GlobalEvent( object ) :
 		#elif self.mCommander.Subtitle_IsShowing( ) :
 		#TODO
 		else :
-			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			dialog.doModal( )
-			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 1 )
 			
 		self.mIsDialogOpend = False

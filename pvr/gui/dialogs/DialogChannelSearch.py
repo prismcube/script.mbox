@@ -85,6 +85,7 @@ class DialogChannelSearch( BaseDialog ) :
 		if focusId == BUTTON_ID_CANCEL :
 			self.ScanAbort( )
 
+
 	def onFocus( self, controlId ) :
 		pass
 
@@ -144,7 +145,7 @@ class DialogChannelSearch( BaseDialog ) :
 			ret = self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
 			if ret == False :
 				self.mEventBus.Deregister( self )
-				self.ReTune( )
+				self.mDataCache.Channel_ReTune( )
 				self.CloseDialog( )
 				self.mDataCache.Channel_ReLoad( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -165,27 +166,23 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ScanAbort( self ) :
-		if self.mIsFinished == False :
-			self.AbortDialog.doModal( )
-
-			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mCommander.Channelscan_Abort( )
-				self.mIsFinished = True
-
-			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 
-				return
-				
-			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
-				return
- 
-		if self.mIsFinished == True :
+		if self.mIsFinished :
 			self.mEventBus.Deregister( self )
 			if self.mScanMode == E_SCAN_SATELLITE :
-				self.ReTune( )
+				self.mDataCache.Channel_ReTune( )
 			self.CloseDialog( )
 			self.mDataCache.LoadChannelList( )
 			self.mDataCache.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
+		else :
+			self.AbortDialog.doModal( )
+			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mCommander.Channelscan_Abort( )
+				self.mIsFinished = True
+			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 
+				return
+			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
+				return
 
 
 	def onEvent( self, aEvent ) :
@@ -260,13 +257,4 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
 		dialog.doModal( )
 		self.mIsFinished = True
-
-
-	def ReTune( self ) :
-		channel = self.mDataCache.Channel_GetCurrent( )
-		if channel == None or channel.mError != 0 :
-			LOG_ERR( 'Load Channel_GetCurrent None' )
-		else :
-			self.mCommander.Channel_InvalidateCurrent( )
-			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 

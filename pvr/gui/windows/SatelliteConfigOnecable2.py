@@ -1,9 +1,10 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 
 
-class SatelliteConfigOnecable2( SettingWindow ) :
+class SatelliteConfigOnecable2( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mTunerIndex				= 0
 		self.mOneCablesatelliteCount	= 0
 
@@ -22,7 +23,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
 		self.LoadNoSignalState( )
-		self.mOneCablesatelliteCount = self.mTunerMgr.GetOneCableSatelliteCount( )
+		self.mOneCablesatelliteCount = len( self.mTunerMgr.GetConfiguredSatelliteList( ) )
 
 		if self.mLoadConfig == True :
 			self.LoadConfig( )
@@ -31,6 +32,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.InitConfig( )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
 		self.mInitialized = True
 
 
@@ -40,7 +42,18 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
+			if self.GetFristInstallation( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )
+					self.CloseFTI( )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).CloseWindow( )
+			else :
+				self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -58,8 +71,8 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.ControlDown( )
 
 
-	def onClick( self, controlId ) :
-		groupId = self.GetGroupId( controlId )
+	def onClick( self, aControlId ) :
+		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_SpinEx01 :
 			self.ControlSelect( )
@@ -89,6 +102,31 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 						self.mTempTunerPin[1] = int( dialog.GetString( ) )
 
 			self.InitConfig( )
+
+		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			self.ReLoadConfig( )
+			self.mLoadConfig = True
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+				if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please set a different value for each tuner' ) )
+					dialog.doModal( )
+					return
+				if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please set a different value for each tuner' ) )
+					dialog.doModal( )
+					return
+			self.SaveConfig( )
+			self.mLoadConfig = True
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
 
 
 	def onFocus( self, aControlId ) :
@@ -138,6 +176,9 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select number of Single Cable Routers for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select the frequency for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
 
+			if self.GetFristInstallation( ) :
+				self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, False )
 			self.SetEnableControls( disableControls, False )
@@ -151,6 +192,9 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter your PIN code for Tuner 2' ) )			
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select number of Single Cable Routers for Tuner 2' ) )			
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select the frequency for Tuner 2' ) )
+
+			if self.GetFristInstallation( ) :
+				self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, True )
@@ -260,3 +304,4 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				tuner2ConfigList[i].mOneCablePin = int( self.GetControlLabel2String( E_Input02 ) )
 				tuner2ConfigList[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx04 )
 				tuner2ConfigList[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] )
+

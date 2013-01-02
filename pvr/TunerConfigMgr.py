@@ -187,6 +187,18 @@ class TunerConfigMgr( object ) :
 		self.SatelliteSetFlag( self.mSimpleLnbList2, E_TUNER_2, E_SIMPLE_LNB )
 
 
+	def SaveConfiguration( self ) :
+		self.SatelliteConfigSaveList( )
+		self.mDataCache.LoadConfiguredSatellite( )
+		self.mDataCache.LoadConfiguredTransponder( )
+
+
+	def CancelConfiguration( self ) :
+		self.Restore( )
+		self.mDataCache.LoadConfiguredSatellite( )
+		self.mDataCache.LoadConfiguredTransponder( )
+
+
 	def SatelliteConfigSaveList( self ) :
 		LOG_TRACE( 'Save Satellite Config List!' )
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
@@ -240,6 +252,7 @@ class TunerConfigMgr( object ) :
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
 		if len( self.mOrgConfiguredList1 ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList1 )
+			
 		if len( self.mOrgConfiguredList2 ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList2 )
 
@@ -389,6 +402,7 @@ class TunerConfigMgr( object ) :
 
 
 	def GetOneCableSatelliteCount( self ) :
+		#return len( self.GetConfiguredSatelliteList( ) )
 		return self.mOnecableSatelliteCount
 
 
@@ -421,3 +435,37 @@ class TunerConfigMgr( object ) :
 					self.mDataCache.Player_AVBlank( True )
 					self.mDataCache.Channel_InvalidateCurrent( )
 					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+
+
+	def CompareCurrentConfiguredState( self ) :
+		configuredList1		= self.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )	
+		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		configuredList2		= self.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 ) 
+		currentconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+		if currentconfiguredList1 == None or currentconfiguredList2 == None or len( configuredList1 ) == 0 or len( configuredList1 ) == 0 :
+			return False
+
+		if len( configuredList1 ) != len( currentconfiguredList1 ) :
+			return False
+		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+			if len( configuredList2 ) != len( currentconfiguredList2 ) :
+				return False
+			
+		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+			for i in range( len( configuredList1 ) ) :
+				if configuredList1[i].__dict__ != currentconfiguredList1[i].__dict__ :
+					return False
+		else :
+			for i in range( len( configuredList1 ) ) :
+				if configuredList1[i].__dict__ != currentconfiguredList1[i].__dict__ :
+					return False
+			for i in range( len( configuredList2 ) ) :
+				if configuredList2[i].__dict__ != currentconfiguredList2[i].__dict__ :
+					return False
+		return True
+
+
+	def CompareConfigurationProperty( self ) :
+		if self.GetOriginalTunerConfig( ) != self.GetCurrentTunerConfig( ) :
+			return False
+		return True

@@ -1264,6 +1264,15 @@ class DataCacheMgr( object ) :
 				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
 
 
+	def Channel_ReTune( self ) :
+		channel = self.Channel_GetCurrent( )
+		if channel == None or channel.mError != 0 :
+			LOG_ERR( 'Load Channel_GetCurrent None' )
+		else :
+			self.Channel_InvalidateCurrent( )
+			self.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+
+
 	def Channel_InvalidateCurrent( self ) :
 		return self.mCommander.Channel_InvalidateCurrent( )
 
@@ -1710,20 +1719,6 @@ class DataCacheMgr( object ) :
 
 	def GetRunningHiddenTest( self ) :
 		return self.mIsRunningHiddentest
-
-
-	def SetFristInstallation( self, aFlag ) :
-		if aFlag :
-			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
-		else :
-			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
-
-
-	def GetFristInstallation( self ) :
-		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
-			return False
-		else :
-			return True
 
 	
 	def SetMediaCenter( self, aValue = False ) :

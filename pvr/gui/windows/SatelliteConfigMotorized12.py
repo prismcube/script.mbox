@@ -1,10 +1,11 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 import pvr.ScanHelper as ScanHelper
 
 
-class SatelliteConfigMotorized12( SettingWindow ) :
+class SatelliteConfigMotorized12( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedIndexLnbType = None
@@ -35,6 +36,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mDataCache.Player_AVBlank( False )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
 		self.mInitialized = True
 
 
@@ -44,13 +46,26 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.OpenBusyDialog( )
-			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			if self.mAvBlankStatus :
-				self.mDataCache.Player_AVBlank( True )
-			self.CloseBusyDialog( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			if self.GetFristInstallation( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )
+					self.mEventBus.Deregister( self )
+					ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+					self.CloseFTI( )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).CloseWindow( )
+			else :
+				self.OpenBusyDialog( )
+				self.mEventBus.Deregister( self )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+				if self.mAvBlankStatus :
+					self.mDataCache.Player_AVBlank( True )
+				self.CloseBusyDialog( )
+				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -176,10 +191,21 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		elif groupId == E_Input06 :
 			self.OpenBusyDialog( )
 			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.CloseBusyDialog( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			return
+
+		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			self.mEventBus.Deregister( self )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			self.mEventBus.Deregister( self )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -231,6 +257,9 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Rotation Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles' ) )
 		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press the OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save satellite positions and exit' ) )
+
+		if self.GetFristInstallation( ) :
+			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06 ]

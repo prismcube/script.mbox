@@ -83,12 +83,11 @@ class AutomaticScan( SettingWindow ) :
 			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
 
 		# Start Search
-		if groupId == E_Input02 :
+		elif groupId == E_Input02 :
 			if self.mSatelliteIndex == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
-
 			else :
 				configuredSatelliteList = []
 				config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
@@ -98,7 +97,7 @@ class AutomaticScan( SettingWindow ) :
 				dialog.SetConfiguredSatellite( configuredSatelliteList )				
 				dialog.doModal( )
 		
-		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
+		elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
 
 

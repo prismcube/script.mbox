@@ -1,9 +1,10 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 
 
-class SatelliteConfigOnecable( SettingWindow ) :
+class SatelliteConfigOnecable( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mSatelliteCount = 0
 		self.mSatelliteNamelist = []
 		self.mCurrentSatellite = None
@@ -32,11 +33,19 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Press the OK button to setup %s' ) % (self.mSatelliteNamelist[i]) )
 			startId += 100
 
+		if self.GetFristInstallation( ) :
+			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetEnableControl( E_Input01, False )
+		else :
+			self.SetEnableControl( E_Input01, True )
+
 		self.InitControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
+		time.sleep( 0.2 )
 		self.DisableControl( )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
 		self.mInitialized = True
 
 
@@ -46,24 +55,22 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.mSatelliteCount > 1 :
-				for i in range( self.mSatelliteCount - 1 ) :
-					satellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( i + 1 )
-					satellite.mIsOneCable = self.mCurrentSatellite.mIsOneCable
-					satellite.mOneCablePin = self.mCurrentSatellite.mOneCablePin
-					satellite.mOneCableMDU = self.mCurrentSatellite.mOneCableMDU
-					satellite.mOneCableLoFreq1 = self.mCurrentSatellite.mOneCableLoFreq1
-					satellite.mOneCableLoFreq2 = self.mCurrentSatellite.mOneCableLoFreq2
-					satellite.mOneCableUBSlot = self.mCurrentSatellite.mOneCableUBSlot
-					satellite.mOneCableUBFreq = self.mCurrentSatellite.mOneCableUBFreq
+			if self.GetFristInstallation( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.doModal( )
 
-			if self.mTunerMgr.GetOneCableSatelliteCount( ) < self.mSatelliteCount :
-				for i in range( self.mSatelliteCount ) :
-					if self.mTunerMgr.GetOneCableSatelliteCount( ) < ( i + 1 ) :
-						self.mTunerMgr.DeleteConfiguredSatellitebyIndex( i )
-
-			self.ResetAllControl( )
-			WinMgr.GetInstance( ).CloseWindow( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )
+					self.CloseAction( )
+					self.CloseFTI( )
+					self.ResetAllControl( )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).CloseWindow( )
+			else :
+				self.CloseAction( )
+				self.ResetAllControl( )
+				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -84,12 +91,26 @@ class SatelliteConfigOnecable( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
+		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			self.ResetAllControl( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			self.CloseAction( )
+			self.ResetAllControl( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+			return
+
 		if groupId == E_Input01 :
 			if len( self.mTunerMgr.GetConfiguredSatelliteList( ) ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
 	 			dialog.doModal( )
 			else :
+				self.CloseAction( )
 				self.ResetAllControl( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
@@ -127,15 +148,20 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			self.OpenBusyDialog( )
 			if self.mTunerMgr.CheckSameSatellite( ret ) :
 				self.mTunerMgr.AddConfiguredSatellite( ret )
-				self.mTunerMgr.SatelliteConfigSaveList( )
-				self.ReTune( )
-				self.mDataCache.LoadConfiguredSatellite( )
-				self.mDataCache.LoadConfiguredTransponder( )
-				self.LoadConfigedSatellite( )
-				self.CloseBusyDialog( )
-				self.mTunerMgr.SetCurrentConfigIndex( aPosition )
 				self.ResetAllControl( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+				if self.GetFristInstallation( ) :
+					bakupCount = self.GetAntennaCurrentCount( )
+					self.MakeAntennaSetupStepList( )
+					self.SetAntennaCurrentCount( bakupCount )
+					self.CloseBusyDialog( )
+					self.onInit( )
+				else :
+					self.mTunerMgr.SaveConfiguration( )
+					self.mDataCache.Channel_ReTune( )
+					self.LoadConfigedSatellite( )
+					self.mTunerMgr.SetCurrentConfigIndex( aPosition )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 		 	else :
 		 		self.CloseBusyDialog( )
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -176,9 +202,24 @@ class SatelliteConfigOnecable( SettingWindow ) :
 				self.mSatelliteNamelist.append( MR_LANG( 'None' ) )
 
 
-	def ReTune( self ) :
-		iChannel = self.mDataCache.Channel_GetCurrent( )
-		if iChannel :
-			self.mDataCache.Channel_InvalidateCurrent( )
-			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+	def CloseAction( self ) :
+		if self.mSatelliteCount > 1 :
+			for i in range( self.mSatelliteCount - 1 ) :
+				satellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( i + 1 )
+				satellite.mIsOneCable = self.mCurrentSatellite.mIsOneCable
+				satellite.mOneCablePin = self.mCurrentSatellite.mOneCablePin
+				satellite.mOneCableMDU = self.mCurrentSatellite.mOneCableMDU
+				satellite.mOneCableLoFreq1 = self.mCurrentSatellite.mOneCableLoFreq1
+				satellite.mOneCableLoFreq2 = self.mCurrentSatellite.mOneCableLoFreq2
+				satellite.mOneCableUBSlot = self.mCurrentSatellite.mOneCableUBSlot
+				satellite.mOneCableUBFreq = self.mCurrentSatellite.mOneCableUBFreq
+
+		if self.mTunerMgr.GetOneCableSatelliteCount( ) < self.mSatelliteCount :
+			for i in range( self.mSatelliteCount ) :
+				if self.mTunerMgr.GetOneCableSatelliteCount( ) < ( i + 1 ) :
+					self.mTunerMgr.DeleteConfiguredSatellitebyIndex( i )
+					if self.GetFristInstallation( ) :
+						bakupCount = self.GetAntennaCurrentCount( )
+						self.MakeAntennaSetupStepList( )
+						self.SetAntennaCurrentCount( bakupCount )
 

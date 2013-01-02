@@ -55,8 +55,8 @@
 				<width>750</width>
 				<height>450</height>
 				<itemgap>0</itemgap>
-				<onup>9000</onup>
-				<ondown>9000</ondown>
+				<onup>7001</onup>
+				<ondown>7003</ondown>
 				<itemlayout height="40" width="720">
 					<control type="image">
 						<posx>0</posx>
@@ -84,6 +84,7 @@
 						<width>750</width>
 						<height>40</height>
 						<texture>settings/settings_radiobuttonofffocus.png</texture>
+						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -97,6 +98,12 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="group">
+				<posx>90</posx>
+				<posy>110</posy>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>

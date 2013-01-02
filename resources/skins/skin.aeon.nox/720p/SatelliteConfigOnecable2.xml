@@ -16,6 +16,8 @@
 				<include>SpinEx05</include>
 				<include>Input01</include>
 				<include>Input02</include>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>

@@ -1,11 +1,10 @@
 from pvr.gui.WindowImport import *
-import pvr.TunerConfigMgr as ConfigMgr
+from pvr.gui.FTIWindow import FTIWindow
 
 
-class FirstInstallation( SettingWindow ) :
+class FirstInstallation( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
-		self.mStepNum					= 	E_STEP_SELECT_LANGUAGE
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mPrevStepNum				= 	E_STEP_SELECT_LANGUAGE
 		self.mAudioLanguageList			=	[]
 		self.mIsChannelSearch			=	False
@@ -31,7 +30,7 @@ class FirstInstallation( SettingWindow ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
-		self.SetListControl( self.mStepNum )
+		self.SetListControl( self.GetFTIStep( ) )
 		self.SetPipLabel( )
 		self.mLastFocused = self.getFocusId( )
 		self.mInitialized = True
@@ -44,15 +43,14 @@ class FirstInstallation( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Go to the configuration menu now?' ), MR_LANG( 'When you perform a factory reset,\nall your settings revert to factory defaults' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.ResetAllControl( )
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
 			else :
-				self.ResetAllControl( )
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).CloseWindow( )
 
-		self.mDataCache.SetFristInstallation( True )
+		self.SetFristInstallation( True )
+		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 
 
 	def onAction( self, aAction ) :
@@ -61,9 +59,8 @@ class FirstInstallation( SettingWindow ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.mStepNum == E_STEP_RESULT :
+			if self.GetFTIStep( ) == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Exit Installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
@@ -95,7 +92,7 @@ class FirstInstallation( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
-		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
+		if self.GetFTIStep( ) == E_STEP_SELECT_LANGUAGE :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
@@ -127,29 +124,37 @@ class FirstInstallation( SettingWindow ) :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
 
-		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
+		elif self.GetFTIStep( ) == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.OpenAntennaSetupWindow( )
+				self.setFocusId( E_FAKE_BUTTON )
+				time.sleep( 0.3 )
+				self.SetListControl( E_STEP_ANTENNA )
 			else :
 				self.ControlSelect( )
 
-		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
+		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
+			if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
+				self.ControlSelect( )
+				self.DisableControl( groupId )
+			elif groupId == E_SpinEx04 :
+				self.ControlSelect( )
+			elif groupId == E_FIRST_TIME_INSTALLATION_NEXT :
+				self.GotoAntennaNextStep( )
+
+		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.ChannelSearchConfig( groupId )
 
-		elif self.mStepNum == E_STEP_DATE_TIME :
+		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			self.TimeSetting( groupId )
 
-		elif self.mStepNum == E_STEP_RESULT :
+		elif self.GetFTIStep( ) == E_STEP_RESULT :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.Close( )
 
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
-			if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
-				self.OpenAntennaSetupWindow( )
-			else :
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
-				self.SetListControl( self.mPrevStepNum )
+			self.setFocusId( E_FAKE_BUTTON )
+			time.sleep( 0.3 )
+			self.SetListControl( self.mPrevStepNum )
 
 
 	def onFocus( self, aControlId ) :
@@ -162,9 +167,11 @@ class FirstInstallation( SettingWindow ) :
 
 	def Close( self ) :
 		self.OpenBusyDialog( )
-		self.ResetAllControl( )
-		self.mStepNum = E_STEP_SELECT_LANGUAGE
-		self.mDataCache.SetFristInstallation( False )
+		if self.GetFTIStep( ) == E_STEP_ANTENNA :
+			self.mTunerMgr.SaveConfiguration( )
+		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
+		self.SetFristInstallation( False )
+		self.mTunerMgr.SetNeedLoad( True )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
 		self.mDataCache.Player_AVBlank( False )
@@ -173,51 +180,60 @@ class FirstInstallation( SettingWindow ) :
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
-	def OpenAntennaSetupWindow( self ) :
-		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-
-
-	def SetResultAntennaStep( self, aResult ) :
-		if aResult == True :
-			self.mStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
-		else :
-			self.mStepNum = E_STEP_VIDEO_AUDIO		
-
-
 	def SetListControl( self, aStep ) :
+		self.getControl( 9000 ).setVisible( False )
 		self.ResetAllControl( )
-		self.mStepNum = aStep
-		self.DrawFirstTimeInstallationStep( self.mStepNum )
+		self.SetFTIStep( aStep )
+		self.DrawFTIStep( aStep )
+		self.SetPrevNextButtonLabel( aStep )
 
-		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
+		if aStep == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to the video and audio setup page' ) )
-			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_Input03, E_Input04, E_Input05, E_SpinEx03 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
 			self.setDefaultControl( )
-			return
+			self.getControl( 9000 ).setVisible( True )
 
-		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
+		elif aStep == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
-			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			self.SetVisibleControls( hideControlIds, False )
+			
+			self.InitControl( )
+			self.setDefaultControl( )
+			self.getControl( 9000 ).setVisible( True )
+
+		elif aStep == E_STEP_ANTENNA :
+			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
+			self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
+			self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
+			self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a control method for tuner 1' ) )
+			self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', MR_LANG( 'Tuner 2 Control' ), MR_LANG( 'Select a control method for tuner 2' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the video and audio setup page' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
@@ -225,11 +241,19 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
+			self.DisableControl( )
 			self.setDefaultControl( )
-			return
+			
+			if self.mTunerMgr.GetNeedLoad( ) == True :
+				self.mTunerMgr.LoadOriginalTunerConfig( )
+				self.mTunerMgr.Load( )
+				self.mTunerMgr.SetNeedLoad( False )
 
-		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
-			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
+			self.getControl( 9000 ).setVisible( True )
+
+		elif aStep == E_STEP_CHANNEL_SEARCH_CONFIG :
+			self.mPrevStepNum = E_STEP_ANTENNA
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
@@ -237,22 +261,21 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
-			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.DisableControl( self.mStepNum )
+			self.DisableControl( )
 			self.setDefaultControl( )
-			return
+			self.getControl( 9000 ).setVisible( True )
 
-		elif self.mStepNum == E_STEP_DATE_TIME :
+		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time and Date Setup' ) )
 
@@ -270,6 +293,8 @@ class FirstInstallation( SettingWindow ) :
 					self.mHasChannel = False
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
+					self.SetEnableControl( E_SpinEx02, False )
+					self.SetEnableControl( E_SpinEx03, False )
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time and Date' ), MR_LANG( 'When set to \'Automatic\', the time will be obtained by the receiver automatically from a specific channel that you select') )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
@@ -281,22 +306,20 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to and from summer and winter time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the summary of first installation page' ), MR_LANG( 'Go back to the channel search setup page' ) )
-			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.DisableControl( self.mStepNum )
+			self.DisableControl( )
 			self.setDefaultControl( )
+			self.getControl( 9000 ).setVisible( True )
 
-			return
-
-		elif self.mStepNum == E_STEP_RESULT :
+		elif aStep == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Summary of First Installation' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ) )
@@ -313,47 +336,69 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
 			self.AddPrevNextButton( MR_LANG( 'Exit the first installation' ), MR_LANG( 'Go back to the time and date setup page' ) )
-			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 			self.setDefaultControl( )
-			return
+			self.getControl( 9000 ).setVisible( True )
 
 
-	def SetPrevNextButtonLabel( self ) :
-		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
-			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
-
-		elif self.mStepNum == E_STEP_RESULT :
-			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Finish' ) )
-
-		else :
-			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
-			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
+	def GotoAntennaNextStep( self ) :
+		self.MakeAntennaSetupStepList( )
+		WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 
 
-	def DisableControl( self, aStep ) :
-		if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
+	def DisableControl( self, aControlID = None ) :
+		if self.GetFTIStep( ) == E_STEP_ANTENNA :
+			if aControlID == None or aControlID == E_SpinEx01 :
+				if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+					control = self.getControl( E_SpinEx02 + 3 )
+					time.sleep( 0.02 )
+					control.selectItem( E_SAMEWITH_TUNER )
+					self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
+					self.SetEnableControl( E_SpinEx02, False )
+				else :
+					self.SetEnableControl( E_SpinEx02, True )
+
+			if aControlID == None or aControlID == E_SpinEx02 or aControlID == E_SpinEx01 :
+				selectedIndex = self.mTunerMgr.GetCurrentTunerConfigType( )
+				if selectedIndex == E_SAMEWITH_TUNER :
+					if self.GetSelectedIndex( E_SpinEx03 ) != self.GetSelectedIndex( E_SpinEx04 ) :
+						control = self.getControl( E_SpinEx04 + 3 )
+						prop = self.mTunerMgr.GetTunerTypeByTunerIndex( E_TUNER_1 )
+						control.selectItem( prop )
+						self.SetProp( E_SpinEx04, prop )
+					self.SetEnableControl( E_SpinEx04, False )
+				else :
+					self.SetEnableControl( E_SpinEx04, True)
+
+			if aControlID == E_SpinEx03 :
+				if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+					control = self.getControl( E_SpinEx04 + 3 )
+					prop = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+					control.selectItem( prop )
+					self.SetProp( E_SpinEx04, prop )
+					self.SetEnableControl( E_SpinEx04, False )
+
+		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_Input01 ]
 			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 
-		elif self.mStepNum == E_STEP_DATE_TIME :
+		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
+				self.SetEnableControl( E_SpinEx02, False )
+				self.SetEnableControl( E_SpinEx03, False )
 			else :
 				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 				if selectedIndex == TIME_AUTOMATIC :
@@ -409,12 +454,7 @@ class FirstInstallation( SettingWindow ) :
 					if self.mSatelliteIndex == 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
-						dialog.doModal( )
-						self.OpenBusyDialog( )
-						zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
-						self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
-						self.CloseBusyDialog( )				
-						
+						dialog.doModal( )			
 					else :
 						configuredSatelliteList = []
 						config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
@@ -422,12 +462,7 @@ class FirstInstallation( SettingWindow ) :
 						configuredSatelliteList.append( config )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( configuredSatelliteList )				
-						dialog.doModal( )
-						
-						self.OpenBusyDialog( )
-						zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
-						self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
-						self.CloseBusyDialog( )				
+						dialog.doModal( )			
 						
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -447,7 +482,7 @@ class FirstInstallation( SettingWindow ) :
 				self.mIsChannelSearch = False
 			else :
 				self.mIsChannelSearch = True
-			self.DisableControl( self.mStepNum )
+			self.DisableControl( )
 
 		elif aControlId == E_SpinEx02 or aControlId == E_SpinEx03 :
 			self.ControlSelect( )
@@ -455,11 +490,11 @@ class FirstInstallation( SettingWindow ) :
 
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			self.DisableControl( self.mStepNum )
+			self.DisableControl( )
 
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			channelList = self.mDataCache.Channel_GetList( )
+			channelList = self.mDataCache.Channel_GetList( True )
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )

@@ -1,9 +1,10 @@
 from pvr.gui.WindowImport import *
+from pvr.gui.FTIWindow import FTIWindow
 
 
-class SatelliteConfigMotorizedUsals( SettingWindow ) :
+class SatelliteConfigMotorizedUsals( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
+		FTIWindow.__init__( self, *args, **kwargs )
 		self.mIsWest = 0
 		self.mIsSouth = 0
 		self.mLongitude	= 0
@@ -24,6 +25,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.InitConfig( )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.SetFTIGuiType( )
 		self.mInitialized = True
 
 
@@ -33,10 +35,22 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.SetLongitude( )
-			self.SetLatitude( )
-			self.ResetAllControl( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			if self.GetFristInstallation( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )
+					self.SetLongitude( )
+					self.SetLatitude( )
+					self.CloseFTI( )
+					self.CloseBusyDialog( )
+					WinMgr.GetInstance( ).CloseWindow( )
+			else :
+				self.SetLongitude( )
+				self.SetLatitude( )
+				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -89,13 +103,24 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		elif groupId == E_Input03 :
 			self.mCommander.Motorized_GotoNull( self.tunerIndex )
 
-
 		# Configure Satellites
 		elif groupId == E_Input04 :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
+
+		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			self.SetLongitude( )
+			self.SetLatitude( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.OpenBusyDialog( )
+			self.SetLongitude( )
+			self.SetLatitude( )
+			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 
 
 	def onFocus( self, aControlId ) :
@@ -120,7 +145,14 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '', MR_LANG( 'Rotates the moter to 0 as a reference point' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '', MR_LANG( 'Here you can setup satellites for Motorized USALS' ) )
 
+		if self.GetFristInstallation( ) :
+			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetEnableControl( E_Input04, False )
+		else :
+			self.SetEnableControl( E_Input04, True )
+
 		self.InitControl( )
+
 
 	def GetLongitude( self ) :
 		self.mLongitude = ElisPropertyInt( 'MyLongitude', self.mCommander ).GetProp( )
