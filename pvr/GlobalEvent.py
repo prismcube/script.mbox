@@ -92,7 +92,7 @@ class GlobalEvent( object ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
 			self.mDataCache.Player_AVBlank( False )
-			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
+			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
 
