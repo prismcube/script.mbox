@@ -32,7 +32,7 @@
 			<width>530</width>
 			<height>350</height>
 		</content>
-		<content name="[B]Note:[/B] If your Prismcube Ruby does not respond for some reason, press STANDBY button for 5 second then the system will automatically reboot.">
+		<content name="[B]Note:[/B] If your PRISMCUBE RUBY does not respond for some reason, press STANDBY button for 5 second then the system will automatically reboot.">
 			<type>textbox</type>
 			<posx>700</posx>
 			<posy>390</posy>
@@ -145,7 +145,7 @@
 			<width>900</width>
 			<height>200</height>
 		</content>
-		<content name="[B]1. CURRENT CHANNEL NUMBER AND NAME[/B][CR]Displays current TV/Radio channel number and name[CR][CR][B]2. PREVIOUS/NEXT PROGRAMME INFORMATION[/B][CR]Displays if previous/next EPG is provided. Press the DOWN button first then press the LEFT/RIGHT button to view previous/next EPG information.[CR][CR][B]3. PROGRAMME PROGRESS BAR[/B][CR]Displays programme start time, end time and progress bar.">
+		<content name="[B]1. CURRENT CHANNEL NUMBER AND NAME[/B][CR]Displays current TV/Radio channel number and name[CR][CR][B]2. PREVIOUS/NEXT PROGRAMME INFORMATION[/B][CR]Displays if previous/next EPG is provided. Press the DOWN ARROW button first then press the LEFT/RIGHT ARROW button to view previous/next EPG information.[CR][CR][B]3. PROGRAMME PROGRESS BAR[/B][CR]Displays programme start time, end time and progress bar.">
 			<type>textbox</type>
 			<posx>190</posx>
 			<posy>380</posy>
@@ -288,7 +288,7 @@
 			<width>560</width>
 			<height>299</height>
 		</content>
-		<content name="Automatic scan is for general users and the easiest way to search channels.[CR][CR][B]- Satellite:[/B] Select the satellite on which the transponder you wish to scan is located.[CR][CR][B]- Network Search:[/B] When set to Off, only the factory default transponders of the satellites you previously selected will be scanned for new channels. If this is set to On, the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels.[CR][CR][B]- Search Type:[/B] Select whether you wish to scan free and scrambled, free only or scrambled only.[CR][CR][B]- Start Search:[/B] Press the OK button to start a channel search.">
+		<content name="Automatic scan is for general users and the easiest way to search channels.[CR][CR][B]- Satellite:[/B] Select the satellite on which the transponder you wish to scan is located.[CR][CR][B]- Network Search:[/B] When set to Off, only the factory default transponders of the satellites you previously selected will be scanned for new channels. If this is set to On, the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels.[CR][CR][B]- Search Type:[/B] Select whether you wish to scan free and scrambled, free only or scrambled only.[CR][CR][B]- Start Search:[/B] Press OK button to start a channel search.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -322,7 +322,7 @@
 			<width>900</width>
 			<height>103</height>
 		</content>
-		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.[CR][CR]1. Press PAUSE button to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press PLAY button to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is On, Timeshift is activated whenever you change channel.[CR][CR]- If Off, Timeshift does not activate automatically.">
+		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.[CR][CR]1. Press the PAUSE button to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press the PLAY button to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is On, Timeshift is activated whenever you change channel.[CR][CR]- If Off, Timeshift does not activate automatically.">
 			<type>textbox</type>
 			<posx>200</posx>
 			<posy>300</posy>
@@ -356,7 +356,7 @@
 			<width>560</width>
 			<height>310</height>
 		</content>
-		<content name="PRISMCUBE RUBY provides a very easy to use Archive menu.[CR][CR]1. Select the programme that you want to playback and press OK button.[CR][CR]2. You can check if the selected programme is the one that you are looking for, through the PIG (Picture In Graphic).[CR][CR]3. Press OK button again to play the selected programme in the fullscreen.[CR][CR]4. Press i button to display the Archive context menu. You can playback from the last point, play from beginning, delete, lock and rename the media file in the menu.">
+		<content name="PRISMCUBE RUBY provides a very easy to use Archive menu.[CR][CR]1. Select the programme that you want to playback and press OK button.[CR][CR]2. You can check if the selected programme is the one that you are looking for, through the PIG (Picture In Graphic).[CR][CR]3. Press OK button again to play the selected programme in the fullscreen.[CR][CR]4. Press the i button to display the Archive context menu. You can playback from the last point, play from beginning, delete, lock and rename the media file in the menu.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -380,7 +380,7 @@
 			<width>900</width>
 			<height>200</height>
 		</content>
-		<content name="[B]1. PLAYBACK PROGRESS BAR[/B][CR][CR]- Press the FAST REWIND button to go back the recorded programme.[CR][CR]- Press the FAST FORWARD button to fast forward the programme.[CR][CR]- Each time you press the FAST REWIND/FAST FORWARD button, the speed increases (x2, x4, x16, x32, and x64).[CR][CR]- If you press the PLAY button, the FAST REWIND/FAST FORWARD operation stops and the recorded programme is played at normal speed.[CR][CR]- Press LEFT/RIGHT button to jump forward/backward by 10 seconds.">
+		<content name="[B]1. PLAYBACK PROGRESS BAR[/B][CR][CR]- Press the FAST REWIND button to go back the recorded programme.[CR][CR]- Press the FAST FORWARD button to fast forward the programme.[CR][CR]- Each time you press the FAST REWIND/FAST FORWARD button, the speed increases (x2, x4, x16, x32, and x64).[CR][CR]- If you press the PLAY button, the FAST REWIND/FAST FORWARD operation stops and the recorded programme is played at normal speed.[CR][CR]- Press the LEFT/RIGHT ARROW button to jump forward/backward by 10 seconds.">
 			<type>textbox</type>
 			<posx>80</posx>
 			<posy>305</posy>
@@ -404,7 +404,7 @@
 			<width>560</width>
 			<height>323</height>
 		</content>
-		<content name="[B]ADDING/DELETING BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD BOOKMARK on the menu to save the current viewing spot as a bookmark.[CR][CR]2. To see the bookmarks that you created, select SHOW ALL BOOKMARKS on the bookmark menu and press OK button.[CR][CR]3. Navigate the bookmarks by UP/DOWN button.[CR][CR]4. Press i button to display the context menu and select DELETE button to remove a bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK button to jump to the bookmark point.">
+		<content name="[B]ADDING/DELETING BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD BOOKMARK on the menu to save the current viewing spot as a bookmark.[CR][CR]2. To see the bookmarks that you created, select SHOW ALL BOOKMARKS on the bookmark menu and press OK button.[CR][CR]3. Navigate the bookmarks by using the UP/DOWN ARROW button.[CR][CR]4. Press the i button to display the context menu and select DELETE to remove a bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK button to jump to the bookmark point.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -447,7 +447,7 @@
 		</content>
 	</page>
 	
-	<page number="24" title="EPG - View Mode" location="(PRESS LEFT BUTTON > SELECT VIEW)">
+	<page number="24" title="EPG - View Mode" location="(PRESS LEFT ARROW BUTTON > SELECT VIEW)">
 		<content name="help/current.png">
 			<type>image</type>
 			<posx>40</posx>
@@ -506,7 +506,7 @@
 			<width>560</width>
 			<height>310</height>
 		</content>
-		<content name="The timer list shows all the recordings that are scheduled.[CR][CR][B]EDITING TIMERS[/B][CR][CR]1. Select the recording timer that you want to edit.[CR][CR]2. Press i button to display the EPG context menu.[CR][CR]3. Select EDIT TIMER and press OK button.[CR][CR]4. Here you can change the Start and End time of the timers that are previously scheduled.[CR][CR][B]DELETING TIMERS[/B][CR][CR]1. Select the recording timer that you want to delete.[CR][CR]2. Press i button to display the EPG context menu.[CR][CR]3. Select Delete Timer and press OK button.">
+		<content name="The timer list shows all the recordings that are scheduled.[CR][CR][B]EDITING TIMERS[/B][CR][CR]1. Select the recording timer that you want to edit.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select EDIT TIMER and press OK button.[CR][CR]4. Here you can change the Start and End time of the timers that are previously scheduled.[CR][CR][B]DELETING TIMERS[/B][CR][CR]1. Select the recording timer that you want to delete.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select Delete Timer and press OK button.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -523,7 +523,7 @@
 			<width>560</width>
 			<height>317</height>
 		</content>
-		<content name="You can delete, move, select, rename or lock the channels conveniently in the channel list menu.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press i button to display the channel list context menu.[CR][CR]2. Select EDIT CHANNELS on the menu and pressing OK button.[CR][CR]3. Select the channels you want to delete by pressing OK button.[CR][CR]4. Press i button again and select DELETE and press OK button to delete the channels previously selected.[CR][CR]5. Select SAVE AND EXIT on the context menu. When a message asking for confirmation will appear, press YES to save.">
+		<content name="You can delete, move, select, rename or lock the channels conveniently in the channel list menu.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press the i button to display the channel list context menu.[CR][CR]2. Select EDIT CHANNELS on the menu and pressing OK button.[CR][CR]3. Select the channels you want to delete by pressing OK button.[CR][CR]4. Press the i button again and select DELETE and press OK button to delete the channels previously selected.[CR][CR]5. Select SAVE AND EXIT on the context menu. When a message asking for confirmation will appear, press YES to save.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -540,7 +540,7 @@
 			<width>560</width>
 			<height>317</height>
 		</content>
-		<content name="[B]MOVING CHANNELS[/B][CR][CR]1. Select the channels you wish to move by pressing OK button.[CR][CR]2. Press i button to display the channel list context menu.[CR][CR]3. Select MOVE on the menu and press OK button.[CR][CR]4. You can move the selected channels by pressing UP/DOWN button.[CR][CR]5. Press OK to confirm.">
+		<content name="[B]MOVING CHANNELS[/B][CR][CR]1. Select the channels you wish to move by pressing OK button.[CR][CR]2. Press the i button to display the channel list context menu.[CR][CR]3. Select MOVE on the menu and press OK button.[CR][CR]4. You can move the selected channels by pressing the UP/DOWN ARROW button.[CR][CR]5. Press OK to confirm.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -557,7 +557,7 @@
 			<width>560</width>
 			<height>318</height>
 		</content>
-		<content name="[B]LOCKING/UNLOCKING CHANNELS[/B][CR][CR]1. Select the channels you want to lock by pressing OK button.[CR][CR]2. Press i button to display the channel list context menu.[CR][CR]3. Select LOCK on the menu and press OK button.[CR][CR]4. Enter your PIN code. The default password is 0000.[CR][CR]5. Lock icon will appear on the left side of the locked channels.[CR][CR]6. In the same way, you can unlock the locked channel.">
+		<content name="[B]LOCKING/UNLOCKING CHANNELS[/B][CR][CR]1. Select the channels you want to lock by pressing OK button.[CR][CR]2. Press the i button to display the channel list context menu.[CR][CR]3. Select LOCK on the menu and press OK button.[CR][CR]4. Enter your PIN code. The default password is 0000.[CR][CR]5. Lock icon will appear on the left side of the locked channels.[CR][CR]6. In the same way, you can unlock the locked channel.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -574,7 +574,7 @@
 			<width>560</width>
 			<height>318</height>
 		</content>
-		<content name="You can temporarily skip channels from the channel list.[CR][CR][B]SKIPPING CHANNELS[/B][CR][CR]1. Select the channels you want to skip by pressing OK button[CR][CR]2. Press i button to display the channel list context menu.[CR][CR]3. Select SKIP on the menu and press OK button.[CR][CR]4. In the same way, you can unskip the skipped channels.[CR][CR]Note: The skipped channels will not be displayed in the channel list. They are displayed only in the edit channels mode.">
+		<content name="You can temporarily skip channels from the channel list.[CR][CR][B]SKIPPING CHANNELS[/B][CR][CR]1. Select the channels you want to skip by pressing OK button[CR][CR]2. Press the i button to display the channel list context menu.[CR][CR]3. Select SKIP on the menu and press OK button.[CR][CR]4. In the same way, you can unskip the skipped channels.[CR][CR]Note: The skipped channels will not be displayed in the channel list. They are displayed only in the edit channels mode.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -608,7 +608,7 @@
 			<width>560</width>
 			<height>324</height>
 		</content>
-		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select the channels you want to add to your favorite group by pressing OK button.[CR][CR]2. Select ADD TO FAVORITE GROUP on the context menu and press OK.[CR][CR][B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press LEFT button on the remote control and select FAVORITE GROUPS.[CR][CR]2. Select a group from the list of available favorite groups.">
+		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select the channels you want to add to your favorite group by pressing OK button.[CR][CR]2. Select ADD TO FAVORITE GROUP on the context menu and press OK.[CR][CR][B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control and select FAVORITE GROUPS.[CR][CR]2. Select a group from the list of available favorite groups.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -617,7 +617,7 @@
 		</content>
 	</page>
 	
-	<page number="34" title="Channel List - Removing Channels from Favorite Group" location="(PRESS LEFT BUTTON > SELECT FAVORITE GROUPS > DELETE)">
+	<page number="34" title="Channel List - Removing Channels from Favorite Group" location="(PRESS LEFT ARROW BUTTON > SELECT FAVORITE GROUPS > DELETE)">
 		<content name="help/removing-channels.png">
 			<type>image</type>
 			<posx>40</posx>
@@ -625,7 +625,7 @@
 			<width>560</width>
 			<height>317</height>
 		</content>
-		<content name="[B]REMOVING CHANNELS FROM FAVORITE GROUP[/B][CR][CR]1. Press LEFT button on the remote control unit and select FAVORITE GROUPS.[CR][CR]2. Select a group you want to remove the channels from.[CR][CR]3. Select the channels that you want to delete by pressing OK button.[CR][CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
+		<content name="[B]REMOVING CHANNELS FROM FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control unit and select FAVORITE GROUPS.[CR][CR]2. Select a group you want to remove the channels from.[CR][CR]3. Select the channels that you want to delete by pressing OK button.[CR][CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -642,7 +642,7 @@
 			<width>560</width>
 			<height>317</height>
 		</content>
-		<content name="[B]RENAMING FAVORITE GROUPS[/B][CR][CR]1. To display the channel list's context menu, press i button and select EDIT CHANNELS on the menu.[CR][CR]2. Press i button again and select RENAME FAVORITE GROUP on the menu.[CR][CR]3. Select the favorite group you want to rename and press OK.[CR][CR]4. Enter a new name using the keypad.[CR][CR]5. Press DONE to confirm.">
+		<content name="[B]RENAMING FAVORITE GROUPS[/B][CR][CR]1. To display the channel list's context menu, press the i button and select EDIT CHANNELS on the menu.[CR][CR]2. Press the i button again and select RENAME FAVORITE GROUP on the menu.[CR][CR]3. Select the favorite group you want to rename and press OK.[CR][CR]4. Enter a new name using the keypad.[CR][CR]5. Press DONE to confirm.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
@@ -659,7 +659,7 @@
 			<width>560</width>
 			<height>316</height>
 		</content>
-		<content name="You can delete favorite channel groups.[CR][CR][B]DELETING FAVORITE GROUPS[/B][CR][CR]1. Display the channel list's context menu by pressing i button.[CR][CR]2. Select EDIT CHANNELS on the menu and press OK.[CR][CR]3. Press i button again and select DELETE FAVORITE GROUP.[CR][CR]4. Select the favorite group you want to delete.[CR][CR]5. Press OK to confirm.">
+		<content name="You can delete favorite channel groups.[CR][CR][B]DELETING FAVORITE GROUPS[/B][CR][CR]1. Display the channel list's context menu by pressing the i button.[CR][CR]2. Select EDIT CHANNELS on the menu and press OK.[CR][CR]3. Press the i button again and select DELETE FAVORITE GROUP.[CR][CR]4. Select the favorite group you want to delete.[CR][CR]5. Press OK to confirm.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>

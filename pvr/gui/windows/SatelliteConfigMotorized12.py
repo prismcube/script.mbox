@@ -229,7 +229,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Antenna' ), '', MR_LANG( 'You can control the movements of the motorized antenna here' ) )
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Rotation Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles' ) )
-		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press the OK button to apply the rotation limits for the motor' ) )
+		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save satellite positions and exit' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

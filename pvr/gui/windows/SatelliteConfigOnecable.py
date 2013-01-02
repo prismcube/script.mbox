@@ -29,7 +29,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
-			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Press the OK button to setup %s' ) % (self.mSatelliteNamelist[i]) )
+			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Press OK button to setup %s' ) % (self.mSatelliteNamelist[i]) )
 			startId += 100
 
 		self.InitControl( )

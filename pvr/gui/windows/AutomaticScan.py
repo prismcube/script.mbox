@@ -121,7 +121,7 @@ class AutomaticScan( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to start a channel search' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 			self.InitControl( )
 
 	

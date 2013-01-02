@@ -796,7 +796,7 @@ class ChannelListWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
 
-				LOG_TRACE( 'No exit by pressing cancel button' )
+				LOG_TRACE( 'No exit by pressing the cancel button' )
 
 			else :
 				if iChannel.mLocked :
