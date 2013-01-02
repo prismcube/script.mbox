@@ -426,6 +426,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.ShowRecordingInfo( )
 				self.mDataCache.mCacheReload = True
 
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				xbmc.executebuiltin('xbmc.Action(previousmenu)')
+
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
