@@ -25,7 +25,7 @@
 			<width>785</width>
 			<height>243</height>
 		</content>
-		<content name="[B]1. STANDBY LED BUTTON[/B][CR]Switches between operation and standby mode.[CR][CR][B]2. FRONT DISPLAY[/B][CR]Shows the channel name in operation mode and displays the current time in standby mode.[CR][CR][B]3. SMARTCARD SLOT[/B][CR]Pull the upper-right edge of the front panel to open the flap. Insert your Smartcard into the front slot to watch pay services.">
+		<content name="[B]1. STANDBY LED BUTTON[/B][CR]Switches between operation and standby modes.[CR][CR][B]2. FRONT DISPLAY[/B][CR]Shows the channel name in operation mode and displays the current time in standby mode.[CR][CR][B]3. SMARTCARD SLOT[/B][CR]Pull the upper-right edge of the front panel to open the flap. Insert your Smartcard into the front slot to watch pay services.">
 			<type>textbox</type>
 			<posx>130</posx>
 			<posy>390</posy>
@@ -73,7 +73,7 @@
 			<width>330</width>
 			<height>500</height>
 		</content>
-		<content name="[B]1. TV POWER:[/B] Turns your TV on/off.[CR][CR][B]2. STANDBY:[/B] Switches between operation and standby.[CR][CR][B]3. COLOR:[/B] Selects the color keys for interactive applications.[CR][CR][B]4. SOURCE:[/B] Controls the outputs of TV.[CR][CR][B]5. XBMC:[/B] Displays the XBMC Media Center.[CR][CR][B]6. TV/RADIO:[/B] Switches between TV and Radio mode.[CR][CR][B]7. RECORD:[/B] Records live programme.[CR][CR][B]8. STOP:[/B] Stops a recording or goes to the live programme.[CR][CR][B]9. PLAY/PAUSE:[/B] Play/Pause the live programme or recording.[CR][CR][B]10. FAST REWIND:[/B] Rewinds at high speed. Each time you press this button the rewind speed is increased.[CR][CR][B]11. FAST FORWARD:[/B] Fasts forward at high speed. Each time you press this button the fast forward speed is increased.[CR][CR][B]12. ARCHIVE:[/B] Displays the Archive window.">
+		<content name="[B]1. TV POWER:[/B] Turns your TV on/off.[CR][CR][B]2. STANDBY:[/B] Switches between operation and standby modes.[CR][CR][B]3. COLOR:[/B] Selects the color keys for interactive applications.[CR][CR][B]4. SOURCE:[/B] Controls the outputs of TV.[CR][CR][B]5. XBMC:[/B] Displays the XBMC Media Center.[CR][CR][B]6. TV/RADIO:[/B] Switches between TV and Radio modes.[CR][CR][B]7. RECORD:[/B] Records live programme.[CR][CR][B]8. STOP:[/B] Stops a recording or goes to the live programme.[CR][CR][B]9. PLAY/PAUSE:[/B] Play at normal speed/pause the live programme or recording.[CR][CR][B]10. FAST REWIND:[/B] Rewinds at high speed. Each time you press this button the rewind speed is increased.[CR][CR][B]11. FAST FORWARD:[/B] Fasts forward at high speed. Each time you press this button the fast forward speed is increased.[CR][CR][B]12. ARCHIVE:[/B] Displays the Archive window.">
 			<type>textbox</type>
 			<posx>640</posx>
 			<posy>90</posy>
@@ -121,7 +121,7 @@
 			<width>520</width>
 			<height>300</height>
 		</content>
-		<content name="[B]Note:[/B] To make best use of all PVR features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view will be limited while recording a live programme if connecting with a single cable using loop through.">
+		<content name="[B]Note:[/B] To make best use of all PVR features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
 			<type>textbox</type>
 			<posx>670</posx>
 			<posy>400</posy>
@@ -145,7 +145,7 @@
 			<width>900</width>
 			<height>200</height>
 		</content>
-		<content name="[B]1. CURRENT CHANNEL NUMBER AND NAME[/B][CR]Displays current TV/Radio channel number and name[CR][CR][B]2. PREVIOUS/NEXT PROGRAMME INFORMATION[/B][CR]Displays if previous/next EPG is provided. Press the DOWN ARROW button first then press the LEFT/RIGHT ARROW button to view previous/next EPG information.[CR][CR][B]3. PROGRAMME PROGRESS BAR[/B][CR]Displays programme start time, end time and progress bar.">
+		<content name="[B]1. CURRENT CHANNEL NUMBER AND NAME[/B][CR]Displays current TV/Radio channel number and name[CR][CR][B]2. PREVIOUS/NEXT PROGRAMME INFORMATION[/B][CR]Displays if previous/next EPG is provided. Press the DOWN ARROW button then press the LEFT/RIGHT ARROW button to view previous/next EPG information.[CR][CR][B]3. PROGRAMME PROGRESS BAR[/B][CR]Displays programme start time, end time and progress bar.">
 			<type>textbox</type>
 			<posx>190</posx>
 			<posy>380</posy>
@@ -305,12 +305,12 @@
 			<width>560</width>
 			<height>299</height>
 		</content>
-		<content name="Manual scan is more appropriate if you know which satellites you want to search and their parameters.[CR][CR][B]- Satellite:[/B] Select a satellite you wish to search channels from.[CR][CR][B]- Transponder Frequency:[/B] Select the transponder frequency for the selected satellite.[CR][CR][B]- DVB Type:[/B] Select the Digital Video Broadcasting type for the selected satellite.[CR][CR][B]- FEC:[/B] Select type and extent of the Forward Error Correction in the data stream.[CR][CR][B]- Polarization:[/B] Set the orientation of the electromagnetic waves received from the satellite.[CR][CR][B]- Symbol Rate:[/B] Set the amount of data, which is transmitted per second in the data stream.[CR][CR][B]- Network Search:[/B] When set to Off, only the factory default transponders of the satellites you previously will be scanned for new channels.[CR][CR][B]- Search Type:[/B] Select whether you wish to scan free and scrambled, free only or scrambled only.">
+		<content name="Manual scan is more appropriate if you know which satellites you want to search and their parameters.[CR][CR][B]- Satellite:[/B] Select the satellite on which the transponder you wish to scan is located.[CR][CR][B]- Transponder Frequency:[/B] Select the transponder frequency for the selected satellite.[CR][CR][B]- DVB Type:[/B] Select the Digital Video Broadcasting type for the selected satellite.[CR][CR][B]- FEC:[/B] Select the error control mode of data transmission for the selected satellite.[CR][CR][B]- Polarization:[/B] Select the direction of the electrical and magnetic fields of signals for the satellite above.[CR][CR][B]- Symbol Rate:[/B] Set the amount of data, which is transmitted per second in the data stream.[CR][CR][B]- Network Search:[/B] When set to Off, only the factory default transponders of the satellites you previously will be scanned for new channels.[CR][CR][B]- Search Type:[/B] Select whether you wish to scan free and scrambled, free only or scrambled only.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>
 			<width>610</width>
-			<height>505</height>
+			<height>510</height>
 		</content>
 	</page>
 	
@@ -322,7 +322,7 @@
 			<width>900</width>
 			<height>103</height>
 		</content>
-		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.[CR][CR]1. Press the PAUSE button to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press the PLAY button to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is On, Timeshift is activated whenever you change channel.[CR][CR]- If Off, Timeshift does not activate automatically.">
+		<content name="Now with PRISMCUBE RUBY never miss your favorite live Sports or Movie scene by pressing just one button.[CR][CR]1. Press the PAUSE button to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press the PLAY button to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is On, Timeshift is activated whenever you change channel.[CR][CR]- If Off, Timeshift does not activate automatically.">
 			<type>textbox</type>
 			<posx>200</posx>
 			<posy>300</posy>
@@ -356,7 +356,7 @@
 			<width>560</width>
 			<height>310</height>
 		</content>
-		<content name="PRISMCUBE RUBY provides a very easy to use Archive menu.[CR][CR]1. Select the programme that you want to playback and press OK button.[CR][CR]2. You can check if the selected programme is the one that you are looking for, through the PIG (Picture In Graphic).[CR][CR]3. Press OK button again to play the selected programme in the fullscreen.[CR][CR]4. Press the i button to display the Archive context menu. You can playback from the last point, play from beginning, delete, lock and rename the media file in the menu.">
+		<content name="PRISMCUBE RUBY provides a very easy to use Archive menu.[CR][CR]1. Select the programme that you want to playback and press OK button.[CR][CR]2. You can check through the PIG (Picture In Graphic) if the selected programme is the one that you are looking for.[CR][CR]3. Press OK button again to play the selected programme in the fullscreen.[CR][CR]4. Press the i button to display the Archive context menu. You can playback from the last point, play from beginning, delete, lock and rename the media file in the menu.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>115</posy>

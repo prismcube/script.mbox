@@ -244,11 +244,11 @@ class ManualScan( SettingWindow ) :
 			self.SetProp( E_SpinEx02, 1 )
 
 		# FEC
-		self.AddEnumControl( E_SpinEx03, 'FEC', MR_LANG( ' - FEC' ), MR_LANG( 'Select type and extent of the Foward Error Correction in the data stream' ) )
+		self.AddEnumControl( E_SpinEx03, 'FEC', MR_LANG( ' - FEC' ), MR_LANG( 'Select the error control mode of data transmission for the selected satellite' ) )
 		self.SetProp( E_SpinEx03, self.mConfigTransponder.mFECMode )
 
 		# POL
-		self.AddEnumControl( E_SpinEx04, 'Polarisation', MR_LANG( ' - Polarization' ), MR_LANG( 'Set the orientation of the electromagnetic waves received from the satellite' ) )
+		self.AddEnumControl( E_SpinEx04, 'Polarisation', MR_LANG( ' - Polarization' ), MR_LANG( 'Select the direction of the electrical and magnetic fields of signals for the satellite above' ) )
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate

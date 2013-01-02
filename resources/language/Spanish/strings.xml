@@ -1307,4 +1307,6 @@
 	<string id="3901">SPA_Select the uncommitted switch number</string>
 	<string id="3902">SPA_Set the amount of data, that is transmitted per second in the data stream</string>
 	<string id="3903">SPA_please wait after pressing OK button</string>
+	<string id="3904">SPA_Select the error control mode of data transmission for the selected satellite</string>
+	<string id="3905">SPA_Select the direction of the electrical and magnetic fields of signals for the satellite above</string>
 </strings>
