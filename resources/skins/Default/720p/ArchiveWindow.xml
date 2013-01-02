@@ -10,7 +10,16 @@
 			<height>720</height>
 			<texture background="true">backgrounds/videos.jpg</texture>
 			<include>DefaultWindowFade</include>
-			<visible>substring(Window.Property(ViewMode),common)</visible>
+			<visible>substring(Window.Property(ViewMode),common) + !Control.IsVisible(8800)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">backgrounds/music.jpg</texture>
+			<include>DefaultWindowFade</include>
+			<visible>substring(Window.Property(ViewMode),common) + Control.IsVisible(8800)</visible>
 		</control>
 		<control type="group">
 			<include>DefaultWindowFade</include>
@@ -20,7 +29,7 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">black-back.png</texture>
-				<visible>substring(Window.Property(ViewMode),common)</visible>
+				<visible>substring(Window.Property(ViewMode),common) + !Control.IsVisible(8800)</visible>
 			</control>
 			<control type="image">
 				<posx>0</posx>

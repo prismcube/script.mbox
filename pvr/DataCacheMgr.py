@@ -916,60 +916,13 @@ class DataCacheMgr( object ) :
 
 
 	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
- 			self.mEpgDB = ElisEPGDB( )
- 			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
- 			self.mEpgDB.Close( )
-
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-
-		return eventList
+		return self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
 
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
-			if eventList :
-				eventList = eventList[0]
-
-		return eventList
-
-
-	def Epgevent_GetCurrentList( self ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-
-		return eventList
-
-
-	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
-		else:
-			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 1, 1, 1 )
-
-		return eventList
-
-
-	def Epgevent_GetFollowingList( self ) :
-		eventList = None
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB = ElisEPGDB( )
-			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime( ) )
-			self.mEpgDB.Close( )
+		eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
+		if eventList :
+			eventList = eventList[0]
 
 		return eventList
 
@@ -1255,8 +1208,9 @@ class DataCacheMgr( object ) :
 	def Channel_TuneDefault( self, aCurrentChannel = None ) :
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
-			if self.Channel_GetCount( ) :
-				for iChannel in self.Channel_GetList( ) :
+			iChannelList = self.Channel_GetList( )
+			if self.Channel_GetCount( ) and iChannelList and len( iChannelList ) > 0 :
+				for iChannel in iChannelList :
 					if aCurrentChannel.mSid == iChannel.mSid and \
 					   aCurrentChannel.mTsid == iChannel.mTsid and \
 					   aCurrentChannel.mOnid == iChannel.mOnid :

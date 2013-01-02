@@ -389,6 +389,13 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateListItem( self, aRecordInfo ) :
+		thumbIcon = 'RecIconSample.png'
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			thumbIcon = 'DefaultAudioNF.png'
+			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
+			if playOffset :
+				thumbIcon = 'DefaultAudioFO.png'
+
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
 		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
@@ -401,7 +408,8 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
@@ -410,6 +418,13 @@ class ArchiveWindow( BaseWindow ) :
 
 	@SetLock
 	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+		thumbIcon = 'RecIconSample.png'
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			thumbIcon = 'DefaultAudioNF.png'
+			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
+			if playOffset :
+				thumbIcon = 'DefaultAudioFO.png'
+
 		listindex = 0
 
 		for recInfo in self.mRecordList :
@@ -429,7 +444,8 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		if aIsStartEvent :
 			recItem.setProperty( 'Playing', 'True' )
