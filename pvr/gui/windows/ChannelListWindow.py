@@ -922,28 +922,8 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
 				if self.mListCasList :
-					if idxSub == 0 :
-						caid = ElisEnum.E_FTA_CHANNEL
-					elif idxSub == 1 :
-						caid = ElisEnum.E_MEDIAGUARD
-					elif idxSub == 2 :
-						caid = ElisEnum.E_VIACCESS
-					elif idxSub == 3 :
-						caid = ElisEnum.E_NAGRA
-					elif idxSub == 4 :
-						caid = ElisEnum.E_IRDETO
-					elif idxSub == 5 :
-						caid = ElisEnum.E_CRYPTOWORKS
-					elif idxSub == 6 :
-						caid = ElisEnum.E_BETADIGITAL
-					elif idxSub == 7 :
-						caid = ElisEnum.E_NDS
-					elif idxSub == 8 :
-						caid = ElisEnum.E_CONAX
-					else :
-						caid = ElisEnum.E_OTHERS
-
 					zappingName = self.mListCasList[idxSub].mName
+					caid = self.mListCasList[idxSub].mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '' )
 					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
