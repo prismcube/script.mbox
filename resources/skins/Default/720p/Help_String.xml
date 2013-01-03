@@ -387,7 +387,7 @@
 			<width>600</width>
 			<height>400</height>
 		</content>
-		<content name="[B]2. PRESENT PLAYBACK POINT[/B][CR][CR]- Shows the current playing point on the Playback Progress Bar.[B][CR][CR]3. FUNCTION BUTTONS[/B][CR][CR]- Bookmark[CR]- Mute[CR]- Fast Rewind[CR]- Pause/Play[CR]- Stop[CR]- Fast Forward[CR]- Jump Rewind[CR]- Jump Forward">
+		<content name="[B]2. PRESENT PLAYBACK POINT[/B][CR][CR]- Shows the current playing point on the playback progress bar.[B][CR][CR]3. FUNCTION BUTTONS[/B][CR][CR]- Bookmark[CR]- Mute[CR]- Fast Rewind[CR]- Pause/Play[CR]- Stop[CR]- Fast Forward[CR]- Jump Rewind[CR]- Jump Forward">
 			<type>textbox</type>
 			<posx>710</posx>
 			<posy>305</posy>
@@ -404,7 +404,7 @@
 			<width>560</width>
 			<height>321</height>
 		</content>
-		<content name="[B]ADDING/DELETING BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD BOOKMARK on the menu to save the current viewing spot as a bookmark.[CR][CR]2. To see the bookmarks that you created, select SHOW ALL BOOKMARKS on the bookmark menu and press OK button.[CR][CR]3. Navigate the bookmarks by using the UP/DOWN ARROW button.[CR][CR]4. Press the i button to display the context menu and select DELETE to remove a bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK button to jump to the bookmark point.">
+		<content name="[B]ADDING/DELETING BOOKMARKS[/B][CR][CR]1. Press the BOOKMARK button on the PVR plate and select ADD BOOKMARK on the menu to save the current viewing spot as a bookmark.[CR][CR]2. To see the bookmarks that you created, select SHOW ALL BOOKMARKS on the bookmark menu. Press OK button.[CR][CR]3. Navigate the bookmarks by using the UP/DOWN ARROW button.[CR][CR]4. Press the i button to display the context menu. Select DELETE to remove a bookmark.[CR][CR]5. Select one of the bookmarks that you want to check. Press OK button to jump to the bookmark point.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -421,7 +421,7 @@
 			<width>560</width>
 			<height>322</height>
 		</content>
-		<content name="[B]AUTO CHAPTERING[/B][CR][CR]1. Select START AUTO-CHAPTERING on the bookmark's context menu to create bookmarks automatically.[CR][CR]2. Press OK button. Regardless of the length of the recording, 9 bookmarks are to be created.[CR][CR]3. Select one of the bookmarks that you want to check and press OK button to jump to the bookmark point.">
+		<content name="[B]AUTO CHAPTERING[/B][CR][CR]1. Select START AUTO-CHAPTERING on the bookmark context menu to create bookmarks automatically.[CR][CR]2. Press OK button. Regardless of the length of the recording, 9 bookmarks are to be created.[CR][CR]3. Select one of the bookmarks that you want to check. Press OK button to jump to the bookmark point.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -438,7 +438,7 @@
 			<width>560</width>
 			<height>310</height>
 		</content>
-		<content name="The Programme Guide displays the programme information of channels, in time and date order. It allows the viewer to take advantage of features such as programme summaries, search by subject or channel, immediate access to the selected programme and one-touch recording of programmes.[CR][CR]In the EPG context menu you can do the followings :[CR][CR][B]- ADD TIMER:[/B] Schedules a timer using EPG.[CR][CR][B]- ADD MANUAL TIMER:[/B] Reserves a timer manually.[CR][CR][B]- DELETE ALL TIMERS:[/B] Removes all the timers you added.[CR][CR][B]- SHOW ALL TIMERS:[/B] Displays all the timers in the list.[CR][CR][B]- SEARCH:[/B] Find EPG information via keyword search.[CR][CR][B]- EXTEND INFORMATION:[/B] Shows detailed information of programme.">
+		<content name="The Programme Guide displays the programme information of channels, in time and date order. It allows the viewer to take advantage of features such as programme summaries, search by subject or channel, immediate access to the selected programme and one-touch recording of programmes. The information supplied in the EPG is sent and updated by the channel broadcaster.[CR][CR]On the EPG context menu you can do the followings :[CR][CR][B]- ADD TIMER:[/B] Schedules a timer using EPG.[CR][CR][B]- ADD MANUAL TIMER:[/B] Reserves a timer manually.[CR][CR][B]- DELETE ALL TIMERS:[/B] Removes all the timers you added.[CR][CR][B]- SHOW ALL TIMERS:[/B] Displays all the timers in the list.[CR][CR][B]- SEARCH:[/B] Finds EPG information via keyword search.[CR][CR][B]- EXTEND INFORMATION:[/B] Shows detailed information of programme.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -455,7 +455,7 @@
 			<width>560</width>
 			<height>310</height>
 		</content>
-		<content name="Probably you have several hundred channels stored in the channel list.[CR]PRISMCUBE provides three view modes to help you sort your EPG list.[CR][CR][B]- CURRENT VIEW:[/B] It displays the programme events of channels in the current time. In this view you can browse through only those programme events that are now being broadcast and you can easily find the programme that you want to watch now.[CR][CR][B]- FOLLOWING VIEW:[/B] This mode shows the following programme event of each channel if the EPG data has been supplied by the channel provider.[CR][CR][B]- CHANNELS VIEW:[/B] This mode shows programme events of the selected channel in time order.">
+		<content name="Probably you have several hundred channels stored in the channel list.[CR]PRISMCUBE RUBY provides three view modes to help you sort your EPG list.[CR][CR][B]- CURRENT VIEW:[/B] It displays the programme events of channels in the current time. In this view you can browse through only those programme events that are now being broadcast and you can easily find the programme that you want to watch now.[CR][CR][B]- FOLLOWING VIEW:[/B] This mode shows the following programme event of each channel if the EPG data has been supplied by the channel provider.[CR][CR][B]- CHANNELS VIEW:[/B] This mode shows programme events of the selected channel in time order.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -472,7 +472,7 @@
 			<width>560</width>
 			<height>311</height>
 		</content>
-		<content name="Supposing that a hard disk drive is connected to your PRISMCUBE, you can schedule recording by using EPG.[CR][CR][B]ADDING TIMERS[/B][CR][CR]1. Select the channel and programme that you want to record.[CR][CR]2. Press REC button and Add Timer menu appears.[CR][CR]3. Select ADD and press OK. Timer recording icon appear on the selected programme.">
+		<content name="Supposing that a hard disk drive is connected to your PRISMCUBE RUBY, you can schedule recording by using EPG.[CR][CR][B]ADDING TIMERS[/B][CR][CR]1. Select the channel and programme that you want to record.[CR][CR]2. Press the REC button on the remote controller and Add Timer window appears.[CR][CR]3. Select ADD and press OK button. Timer recording icon appear on the selected programme.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -489,7 +489,7 @@
 			<width>560</width>
 			<height>309</height>
 		</content>
-		<content name="[B]ADDING MANUAL TIMERS[/B][CR][CR]1. Select the programme you want to record.[CR][CR]2. Press REC button and Add Manual Timer window appears.[CR][CR]3. There are three timer modes: Once/Daily/Weekly.[CR][CR]4. Set the Start Date of recording.[CR][CR]5. Set the Start and End Time of recording.[CR][CR]6. Select CONFIRM button and press OK.">
+		<content name="[B]ADDING MANUAL TIMERS[/B][CR][CR]1. Select the programme you want to record.[CR][CR]2. Press the REC button and Add Manual Timer window appears.[CR][CR]3. There are three timer modes: Once/Daily/Weekly.[CR][CR]4. Set the Start Date of recording.[CR][CR]5. Set the Start and End Time of recording.[CR][CR]6. Select CONFIRM button and press OK.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -506,7 +506,7 @@
 			<width>560</width>
 			<height>307</height>
 		</content>
-		<content name="The timer list shows all the recordings that are scheduled.[CR][CR][B]EDITING TIMERS[/B][CR][CR]1. Select the recording timer that you want to edit.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select EDIT TIMER and press OK button.[CR][CR]4. Here you can change the Start and End time of the timers that are previously scheduled.[CR][CR][B]DELETING TIMERS[/B][CR][CR]1. Select the recording timer that you want to delete.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select Delete Timer and press OK button.">
+		<content name="The timer list shows all the recordings that are scheduled.[CR][CR][B]EDITING TIMERS[/B][CR][CR]1. Select the recording timer that you want to edit.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select EDIT TIMER and press OK button.[CR][CR]4. Here you can change the Start and End time of the timers that are previously scheduled.[CR][CR][B]DELETING TIMERS[/B][CR][CR]1. Select the recording timer that you want to delete.[CR][CR]2. Press the i button to display the EPG context menu.[CR][CR]3. Select Delete Timer on the menu. Press OK button.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -515,7 +515,7 @@
 		</content>
 	</page>
 	
-	<page number="28" title="Channel List - Edit Channel List" location="(MAIN MENU > CHANNEL LIST > CONTEXT MENU > EDIT CHANNELS)">
+	<page number="28" title="Channel List - Edit Channels" location="(MAIN MENU > CHANNEL LIST > CONTEXT MENU > EDIT CHANNELS)">
 		<content name="help/deleting-channels.png">
 			<type>image</type>
 			<posx>40</posx>
@@ -523,7 +523,7 @@
 			<width>560</width>
 			<height>316</height>
 		</content>
-		<content name="You can delete, move, select, rename or lock the channels conveniently in the channel list menu.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press the i button to display the channel list context menu.[CR][CR]2. Select EDIT CHANNELS on the menu and pressing OK button.[CR][CR]3. Select the channels you want to delete by pressing OK button.[CR][CR]4. Press the i button again and select DELETE and press OK button to delete the channels previously selected.[CR][CR]5. Select SAVE AND EXIT on the context menu.[CR][CR]6. When a message asking for confirmation will appear, press YES to save.">
+		<content name="You can delete, move, select, rename or lock the channels conveniently in the Channel List window.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press the i button to display the channel list context menu.[CR][CR]2. Select EDIT CHANNELS on the menu and pressing OK button.[CR][CR]3. Select the channels you want to delete by pressing OK button.[CR][CR]4. Press the i button again and select DELETE and press OK button to delete the channels previously selected.[CR][CR]5. Select SAVE AND EXIT on the context menu.[CR][CR]6. When a message asking for confirmation will appear, press YES to save.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -574,7 +574,7 @@
 			<width>560</width>
 			<height>316</height>
 		</content>
-		<content name="You can temporarily skip channels from the channel list.[CR][CR][B]SKIPPING CHANNELS[/B][CR][CR]1. Select the channels you want to skip by pressing OK button.[CR][CR]2. Press the i button to display the channel list context menu.[CR][CR]3. Select SKIP on the menu and press OK button.[CR][CR]4. In the same way, you can unskip the skipped channels.[CR][CR]Note: The skipped channels will not be displayed in the channel list. They are displayed only in the edit channels mode.">
+		<content name="You can temporarily skip channels from the channel list.[CR][CR][B]SKIPPING CHANNELS[/B][CR][CR]1. Select the channels you want to skip by pressing OK button.[CR][CR]2. Press the i button to display the channel list context menu.[CR][CR]3. Select SKIP on the menu. Press OK button.[CR][CR]4. In the same way, you can unskip the skipped channels.[CR][CR]Note: The skipped channels will not be displayed in the channel list. They are displayed only in the edit channels mode.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -591,7 +591,7 @@
 			<width>560</width>
 			<height>316</height>
 		</content>
-		<content name="The entire channels in the channel list are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]1. Select CREATE NEW FAVORITE GROUP on the channel list context menu and Press OK button.[CR][CR]2. Enter a name for the favorite channel group.[CR][CR]3. Press DONE to confirm.[CR][CR]Note: You can switch between TV and Radio by simply pressing the TV/RADIO button and create a favorite channel group in both TV and Radio channels.">
+		<content name="The entire channels in the channel list are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]1. Select CREATE NEW FAVORITE GROUP on the channel list context menu and Press OK button.[CR][CR]2. Enter a name for your favorite channel group.[CR][CR]3. Press DONE to confirm.[CR][CR]Note: Switch between TV and Radio mode by simply pressing the TV/RADIO button. You can create a favorite channel group in both TV and Radio channels.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -608,7 +608,7 @@
 			<width>560</width>
 			<height>315</height>
 		</content>
-		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select the channels you want to add to your favorite group by pressing OK button.[CR][CR]2. Select ADD TO FAVORITE GROUP on the context menu and press OK.[CR][CR][B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control and select FAVORITE GROUPS.[CR][CR]2. Select a group from the list of available favorite groups.">
+		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select the channels you want to add to your favorite group by pressing OK button.[CR][CR]2. Select ADD TO FAVORITE GROUP on the context menu. Press OK.[CR][CR][B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control and select FAVORITE GROUPS.[CR][CR]2. Select a group from the list of available favorite groups.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -625,7 +625,7 @@
 			<width>560</width>
 			<height>318</height>
 		</content>
-		<content name="[B]REMOVING CHANNELS FROM FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control unit and select FAVORITE GROUPS.[CR][CR]2. Select a group you want to remove the channels from.[CR][CR]3. Select the channels that you want to delete by pressing OK button.[CR][CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
+		<content name="[B]REMOVING CHANNELS FROM FAVORITE GROUP[/B][CR][CR]1. Press the LEFT ARROW button on the remote control unit and select FAVORITE GROUPS.[CR][CR]2. Select the group you want to remove channels from.[CR][CR]3. Select the channels that you want to delete by pressing OK button.[CR][CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -642,7 +642,7 @@
 			<width>560</width>
 			<height>317</height>
 		</content>
-		<content name="[B]RENAMING FAVORITE GROUPS[/B][CR][CR]1. To display the channel list's context menu, press the i button and select EDIT CHANNELS on the menu.[CR][CR]2. Press the i button again and select RENAME FAVORITE GROUP on the menu.[CR][CR]3. Select the favorite group you want to rename and press OK.[CR][CR]4. Enter a new name using the keypad.[CR][CR]5. Press DONE to confirm.">
+		<content name="[B]RENAMING FAVORITE GROUPS[/B][CR][CR]1. To display the channel list's context menu, press the i button.[CR][CR]2. Select RENAME FAVORITE GROUP on the menu.[CR][CR]3. Select the favorite group you want to rename and press OK.[CR][CR]4. Enter a new name using the keypad.[CR][CR]5. Press DONE to confirm.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -659,7 +659,7 @@
 			<width>560</width>
 			<height>318</height>
 		</content>
-		<content name="You can delete favorite channel groups.[CR][CR][B]DELETING FAVORITE GROUPS[/B][CR][CR]1. Display the channel list's context menu by pressing the i button.[CR][CR]2. Select EDIT CHANNELS on the menu and press OK.[CR][CR]3. Press the i button again and select DELETE FAVORITE GROUP.[CR][CR]4. Select the favorite group you want to delete.[CR][CR]5. Press OK to confirm.">
+		<content name="You can delete favorite channel groups.[CR][CR][B]DELETING FAVORITE GROUPS[/B][CR][CR]1. Display the channel list's context menu by pressing the i button.[CR][CR]2. Select DELETE FAVORITE GROUP on the menu.[CR][CR]3. Select the favorite group you want to delete.[CR][CR]4. Press OK to confirm.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
@@ -727,7 +727,7 @@
 			<width>560</width>
 			<height>311</height>
 		</content>
-		<content name="When the add-on has finished downloading XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section.[CR][CR](e.g. skins in the appearance section of settings, YouTube in the video section of settings, etc)">
+		<content name="When the add-on has finished downloading, XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section.[CR][CR](e.g. skins in the appearance section of settings, YouTube in the video section of settings, etc)">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>120</posy>
