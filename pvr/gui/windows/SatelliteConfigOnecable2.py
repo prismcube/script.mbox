@@ -194,7 +194,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select a frequency for tuner 2' ) )
 
 			if self.GetFristInstallation( ) :
-				self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+				self.SetFTIPrevNextButton( )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, True )

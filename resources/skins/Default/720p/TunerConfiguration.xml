@@ -62,7 +62,6 @@
 					<textcolor>blue</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>$INFO[Container(9000).ListItem.Label2]</label>
 					<scroll>true</scroll>
 					<scrollspeed>100</scrollspeed>
 					<scrollsuffix>  |  </scrollsuffix>

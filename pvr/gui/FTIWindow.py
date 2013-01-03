@@ -81,6 +81,15 @@ class FTIWindow( SettingWindow ) :
 			self.SetPrevNextButtonLabel( E_STEP_ANTENNA )
 
 
+	def GetIsLastStep( self ) :
+		global gAntennaStepList
+		global gAntennaCurrentStep
+		if ( gAntennaCurrentStep + 1 ) == len( gAntennaStepList ) :
+			return True
+		else :
+			return False
+
+
 	def GetAntennaNextStepWindowId( self ) :
 		global gAntennaStepList
 		global gAntennaCurrentStep
@@ -189,19 +198,20 @@ class FTIWindow( SettingWindow ) :
 		gAntennaCurrentStep = aCount
 
 
+	def SetFTIPrevNextButton( self ) :
+		if self.GetIsLastStep( ) :
+			self.AddPrevNextButton( MR_LANG( 'Next Channel Search Step' ), MR_LANG( 'Go back to the config page' ) )
+		else :
+			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+
+
 	def CloseFTI( self ) :
-		#self.OpenBusyDialog( )
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
 		self.mTunerMgr.CancelConfiguration( )
 		self.mDataCache.Channel_ReTune( )
-		#self.mDataCache.LoadConfiguredSatellite( )
-		#self.mDataCache.LoadConfiguredTransponder( )
-		#self.mTunerMgr.SyncChannelBySatellite( )
-		#self.mDataCache.Channel_ReLoad( )
 		self.mDataCache.Player_AVBlank( False )
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 		self.mTunerMgr.SetNeedLoad( True )
 		self.SetVideoRestore( )
 		self.SetFristInstallation( False )
-		#self.CloseBusyDialog( )
 

@@ -34,7 +34,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 			startId += 100
 
 		if self.GetFristInstallation( ) :
-			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetFTIPrevNextButton( )
 			self.SetEnableControl( E_Input01, False )
 		else :
 			self.SetEnableControl( E_Input01, True )

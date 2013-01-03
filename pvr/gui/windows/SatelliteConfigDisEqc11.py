@@ -234,7 +234,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			self.mHasTransponder = False
 
 		if self.GetFristInstallation( ) :
-			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetFTIPrevNextButton( )
 		
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]
