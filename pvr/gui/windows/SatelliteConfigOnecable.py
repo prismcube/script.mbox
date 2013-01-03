@@ -33,7 +33,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Press OK button to setup %s' ) % (self.mSatelliteNamelist[i]) )
 			startId += 100
 
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.SetFTIPrevNextButton( )
 			self.SetEnableControl( E_Input01, False )
 		else :
@@ -55,7 +55,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -149,7 +149,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 			if self.mTunerMgr.CheckSameSatellite( ret ) :
 				self.mTunerMgr.AddConfiguredSatellite( ret )
 				self.ResetAllControl( )
-				if self.GetFristInstallation( ) :
+				if self.GetFirstInstallation( ) :
 					bakupCount = self.GetAntennaCurrentCount( )
 					self.MakeAntennaSetupStepList( )
 					self.SetAntennaCurrentCount( bakupCount )
@@ -218,7 +218,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 			for i in range( self.mSatelliteCount ) :
 				if self.mTunerMgr.GetOneCableSatelliteCount( ) < ( i + 1 ) :
 					self.mTunerMgr.DeleteConfiguredSatellitebyIndex( i )
-					if self.GetFristInstallation( ) :
+					if self.GetFirstInstallation( ) :
 						bakupCount = self.GetAntennaCurrentCount( )
 						self.MakeAntennaSetupStepList( )
 						self.SetAntennaCurrentCount( bakupCount )

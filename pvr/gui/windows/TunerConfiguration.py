@@ -38,7 +38,7 @@ class TunerConfiguration( FTIWindow ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.onActionFTI( actionId )
 		else :
 			self.onActionNormal( actionId )
@@ -81,7 +81,7 @@ class TunerConfiguration( FTIWindow ) :
 		 			dialog.doModal( )
 		 		elif self.mTunerMgr.GetCurrentTunerType( ) == E_SIMPLE_LNB and self.mConfiguredCount > 0 :
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'You can only have 1 satellites for Simple LNB' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'You can only have 1 satellite for Simple LNB' ) )
 		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
@@ -93,7 +93,7 @@ class TunerConfiguration( FTIWindow ) :
 						if self.mTunerMgr.CheckSameSatellite( ret ) :
 							self.mTunerMgr.AddConfiguredSatellite( ret )
 							self.AfterAction( )
-							if self.GetFristInstallation( ) :
+							if self.GetFirstInstallation( ) :
 								bakupCount = self.GetAntennaCurrentCount( )
 								self.MakeAntennaSetupStepList( )
 								self.SetAntennaCurrentCount( bakupCount )
@@ -125,15 +125,15 @@ class TunerConfiguration( FTIWindow ) :
 							self.OpenBusyDialog( )
 							self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
 							self.AfterAction( )
-							if self.GetFristInstallation( ) :
+							if self.GetFirstInstallation( ) :
 								bakupCount = self.GetAntennaCurrentCount( )
 								self.MakeAntennaSetupStepList( )
 								self.SetAntennaCurrentCount( bakupCount )
 
 			else :
-				if self.GetFristInstallation( ) :
+				if self.GetFirstInstallation( ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'Press the NEXT button to config satellites' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'Press the Next button to setup satellites' ) )
 		 			dialog.doModal( )
 				else :
 					config = self.mTunerMgr.GetConfiguredSatelliteList( )[ position ]
@@ -170,12 +170,12 @@ class TunerConfiguration( FTIWindow ) :
 			return
 
 		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
-			self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Prev!!!!!' ) )
+			self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Go back to the previous satellite configuration page' ) )
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			if self.GetIsLastStep( ) :
-				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Next Channel Search Step!!!!!' ) )
+				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Go to the Channel Search page' ) )
 			else :
-				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Next!!!!!' ) )
+				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Go to the next satellite configuration page' ) )
 
 
 	def LoadConfigedSatellite( self ) :
@@ -191,8 +191,8 @@ class TunerConfiguration( FTIWindow ) :
 					self.mConfiguredCount = self.mConfiguredCount + 1
 					satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
 
-					if self.GetFristInstallation( ) :
-						description = MR_LANG( 'Press the Next button to setup satellite' )
+					if self.GetFirstInstallation( ) :
+						description = MR_LANG( 'Press the Next button to setup satellites' )
 					else :
 						description = MR_LANG( 'Press OK button to setup %s' ) % satelliteName
 

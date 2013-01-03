@@ -45,7 +45,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -233,7 +233,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )			
 			self.mHasTransponder = False
 
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.SetFTIPrevNextButton( )
 		
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

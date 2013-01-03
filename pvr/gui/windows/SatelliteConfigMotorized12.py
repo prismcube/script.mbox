@@ -46,7 +46,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -258,7 +258,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save satellite positions and exit' ) )
 
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.SetFTIPrevNextButton( )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

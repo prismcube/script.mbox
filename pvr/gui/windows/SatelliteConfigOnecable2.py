@@ -42,7 +42,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -176,8 +176,8 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select a frequency for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 
-			if self.GetFristInstallation( ) :
-				self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			if self.GetFirstInstallation( ) :
+				self.AddPrevNextButton( MR_LANG( 'Go to the next satellite configuration page' ), MR_LANG( 'Go back to the previous satellite configuration page' ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, False )
@@ -193,7 +193,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 2' ) )			
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select a frequency for tuner 2' ) )
 
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				self.SetFTIPrevNextButton( )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]

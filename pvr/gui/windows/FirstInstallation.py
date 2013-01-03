@@ -49,7 +49,7 @@ class FirstInstallation( FTIWindow ) :
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).CloseWindow( )
 
-		self.SetFristInstallation( True )
+		self.SetFirstInstallation( True )
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 
 
@@ -171,7 +171,7 @@ class FirstInstallation( FTIWindow ) :
 			self.mTunerMgr.SaveConfiguration( )
 			self.mDataCache.Channel_ReTune( )
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
-		self.SetFristInstallation( False )
+		self.SetFirstInstallation( False )
 		self.mTunerMgr.SetNeedLoad( True )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
@@ -232,7 +232,7 @@ class FirstInstallation( FTIWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
 			self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a control method for tuner 1' ) )
 			self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', MR_LANG( 'Tuner 2 Control' ), MR_LANG( 'Select a control method for tuner 2' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the video and audio setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the satellite configuration page' ), MR_LANG( 'Go back to the video and audio setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )

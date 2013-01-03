@@ -35,7 +35,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.GetFristInstallation( ) :
+			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -145,7 +145,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '', MR_LANG( 'Rotates the moter to 0 as a reference point' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '', MR_LANG( 'Here you can setup satellites for Motorized USALS' ) )
 
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.SetFTIPrevNextButton( )
 			self.SetEnableControl( E_Input04, False )
 		else :

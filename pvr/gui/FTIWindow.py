@@ -18,7 +18,7 @@ class FTIWindow( SettingWindow ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
 
-	def SetFristInstallation( self, aFlag ) :
+	def SetFirstInstallation( self, aFlag ) :
 		if aFlag :
 			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
 			self.SetFTIWindowProperty( True )
@@ -27,7 +27,7 @@ class FTIWindow( SettingWindow ) :
 			self.SetFTIWindowProperty( False )
 
 
-	def GetFristInstallation( self ) :
+	def GetFirstInstallation( self ) :
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
 			return False
 		else :
@@ -76,7 +76,7 @@ class FTIWindow( SettingWindow ) :
 
 
 	def SetFTIGuiType( self ) :
-		if self.GetFristInstallation( ) :
+		if self.GetFirstInstallation( ) :
 			self.DrawFTIStep( E_STEP_ANTENNA )
 			self.SetPrevNextButtonLabel( E_STEP_ANTENNA )
 
@@ -200,9 +200,9 @@ class FTIWindow( SettingWindow ) :
 
 	def SetFTIPrevNextButton( self ) :
 		if self.GetIsLastStep( ) :
-			self.AddPrevNextButton( MR_LANG( 'Next Channel Search Step' ), MR_LANG( 'Go back to the config page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the channel search setup page' ), MR_LANG( 'Go back to the previous satellite configuration page' ) )
 		else :
-			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the next satellite configuration page' ), MR_LANG( 'Go back to the previous satellite configuration page' ) )
 
 
 	def CloseFTI( self ) :
@@ -213,5 +213,5 @@ class FTIWindow( SettingWindow ) :
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 		self.mTunerMgr.SetNeedLoad( True )
 		self.SetVideoRestore( )
-		self.SetFristInstallation( False )
+		self.SetFirstInstallation( False )
 
