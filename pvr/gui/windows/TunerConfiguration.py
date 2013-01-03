@@ -2,15 +2,17 @@ from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
 
-E_MAIN_LIST_ID = 9000
+E_MAIN_LIST_ID		= 9000
+E_DESCRIPTION_ID	= 1003
 
 
 class TunerConfiguration( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		FTIWindow.__init__( self, *args, **kwargs )
-		self.mListItems = []
-		self.mConfiguredCount = 0
-		self.mCtrlMainList = None
+		self.mListItems			= []
+		self.mConfiguredCount	= 0
+		self.mCtrlMainList		= None
+		self.mInitialized		= False
 
 
 	def onInit( self ) :
@@ -27,10 +29,12 @@ class TunerConfiguration( FTIWindow ) :
 		self.SetFTIGuiType( )
 		self.getControl( E_FIRST_TIME_INSTALLATION_PREV ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ), self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ) )
 		self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_PREV ), self.getControl( E_FIRST_TIME_INSTALLATION_PREV ) )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
 			return
 
@@ -38,6 +42,12 @@ class TunerConfiguration( FTIWindow ) :
 			self.onActionFTI( actionId )
 		else :
 			self.onActionNormal( actionId )
+
+		if actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+			if focusId == E_SUBMENU_LIST_ID :
+				position = self.mCtrlMainList.getSelectedPosition( )
+				desc = self.mListItems[ position ].getLabel2( )
+				self.getControl( E_DESCRIPTION_ID ).setLabel( desc )
 
 
 	def onActionNormal( self, aActionId ) :
@@ -156,7 +166,16 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.mInitialized == False :
+			return
+
+		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Prev!!!!!' ) )
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			if self.GetIsLastStep( ) :
+				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Next Channel Search Step!!!!!' ) )
+			else :
+				self.getControl( E_DESCRIPTION_ID ).setLabel( MR_LANG( 'Next!!!!!' ) )
 
 
 	def LoadConfigedSatellite( self ) :
@@ -182,6 +201,7 @@ class TunerConfiguration( FTIWindow ) :
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a new satellite to your satellite list' ) ) )
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete a satellite from your list' ) ) )
 		self.mCtrlMainList.addItems( self.mListItems )
+		self.getControl( E_DESCRIPTION_ID ).setLabel( self.mListItems[0].getLabel2( ) )
 
 
 	def AfterAction( self ) :

@@ -259,7 +259,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save satellite positions and exit' ) )
 
 		if self.GetFristInstallation( ) :
-			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetFTIPrevNextButton( )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06 ]

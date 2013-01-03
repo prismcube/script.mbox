@@ -146,7 +146,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '', MR_LANG( 'Here you can setup satellites for Motorized USALS' ) )
 
 		if self.GetFristInstallation( ) :
-			self.AddPrevNextButton( MR_LANG( 'Go to the next config page' ), MR_LANG( 'Go back to the config page' ) )
+			self.SetFTIPrevNextButton( )
 			self.SetEnableControl( E_Input04, False )
 		else :
 			self.SetEnableControl( E_Input04, True )
