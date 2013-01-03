@@ -108,7 +108,6 @@
 	<string id="108">Move Position</string>
 	<string id="109">Add</string>
 	<string id="110">Access your favorite XBMC add-ons in a convenient way</string>
-	
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
@@ -1316,4 +1315,18 @@
 	<string id="3903">please wait after pressing OK button</string>
 	<string id="3904">Select the error control mode of data transmission for the selected satellite</string>
 	<string id="3905">Select the direction of the electrical and magnetic fields of signals for the satellite above</string>
+	<string id="3906">Go back to the previous satellite configuration page</string>
+	<string id="3907">Go to the next satellite configuration page</string>
+	<string id="3908">Press the NEXT button to config satellites</string>
+	<string id="3909">Press the Next button to setup satellite</string>
+	<string id="3910">Go back to the config page</string>
+	<string id="3911">Go to the next config page</string>
+	<string id="3912">Tuner 2 Control</string>
+	<string id="3913">Go to the tuner confguration page</string>
+	<string id="3914">Next Channel Search Step</string>
+	<string id="3915">You can only have 1 satellite for Simple LNB</string>
+	<string id="3916">Press the Next button to setup satellites</string>
+	<string id="3917">Go to the Channel Search page</string>
+	<string id="3918">Go to the tuner configuration page</string>
+	<string id="3919">Go to the satellite configuration page</string>
 </strings>

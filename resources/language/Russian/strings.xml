@@ -90,6 +90,8 @@
 	<string id="88">RUS_Go Parent</string>
 	<string id="89">RUS_Select Action</string>
 	<string id="90">RUS_To see all the other menus, press i button</string>
+	<string id="91">RUS_Previous</string>
+	<string id="92">RUS_Next</string>
 	<string id="93">RUS_Rewind</string>
 	<string id="94">RUS_Play</string>
 	<string id="95">RUS_Pause</string>
@@ -1309,4 +1311,18 @@
 	<string id="3903">RUS_please wait after pressing OK button</string>
 	<string id="3904">RUS_Select the error control mode of data transmission for the selected satellite</string>
 	<string id="3905">RUS_Select the direction of the electrical and magnetic fields of signals for the satellite above</string>
+	<string id="3906">RUS_Go back to the previous satellite configuration page</string>
+	<string id="3907">RUS_Go to the next satellite configuration page</string>
+	<string id="3908">RUS_Press the NEXT button to config satellites</string>
+	<string id="3909">RUS_Press the Next button to setup satellite</string>
+	<string id="3910">RUS_Go back to the config page</string>
+	<string id="3911">RUS_Go to the next config page</string>
+	<string id="3912">RUS_Tuner 2 Control</string>
+	<string id="3913">RUS_Go to the tuner confguration page</string>
+	<string id="3914">RUS_Next Channel Search Step</string>
+	<string id="3915">RUS_You can only have 1 satellite for Simple LNB</string>
+	<string id="3916">RUS_Press the Next button to setup satellites</string>
+	<string id="3917">RUS_Go to the Channel Search page</string>
+	<string id="3918">RUS_Go to the tuner configuration page</string>
+	<string id="3919">RUS_Go to the satellite configuration page</string>
 </strings>
