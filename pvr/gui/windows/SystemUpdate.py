@@ -65,6 +65,7 @@ class PVSClass( object ) :
 		self.mFileName				= None
 		self.mDate					= None
 		self.mDescription			= []
+		self.mActions				= []
 		self.mMd5					= None
 		self.mSize					= 0		#zipSize
 		self.mUnpackSize			= 0		#fullSize
@@ -407,7 +408,7 @@ class SystemUpdate( SettingWindow ) :
 
 		if isDownload :
 			mPVSList = []
-			tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description']
+			tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action']
 			retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
 			if retList and len( retList ) > 0 :
 				for pvsData in retList :
@@ -432,6 +433,11 @@ class SystemUpdate( SettingWindow ) :
 						for item in pvsData[7] :
 							description += '%s\n'% item
 						iPVS.mDescription = description
+					if pvsData[8] :
+						actions = ''
+						for item in pvsData[8] :
+							actions += '%s\n'% item
+						iPVS.mActions = actions
 
 					iPVS.mName = MR_LANG( 'Downloading firmware' )
 					iPVS.mType = E_TYPE_ADDONS
@@ -999,12 +1005,13 @@ class SystemUpdate( SettingWindow ) :
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
+
 		LOG_TRACE('3. user settings ------' )
 		mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
+		#LOG_TRACE( 'mboxDir[%s]'% mboxDir )
 		backupFileList = [  '%s/resources/settings.xml'% mboxDir,
 							'%s/.xbmc/userdata/guisettings.xml'% E_DEFAULT_PATH_HDD 
 						 ]
-		#LOG_TRACE( 'mboxDir[%s]'% mboxDir )
 		try :
 			CopyToFile( backupFileList[0], '%s/%s'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[0] ) ) )
 			if not CheckHdd( ) :
@@ -1013,7 +1020,25 @@ class SystemUpdate( SettingWindow ) :
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
-		LOG_TRACE('4. make run script ------' )
+
+		LOG_TRACE('4. preprocess.sh ------' )
+		preprocessFile = '%s/preprocess.sh'% E_DEFAULT_BACKUP_PATH
+		try :
+			fd = open( preprocessFile, 'w' )
+
+			if fd :
+				if self.mPVSData and self.mPVSData.mActions :
+					fd.writelines( '#!/bin/sh\n' )
+					fd.writelines( '%s\n'% self.mPVSData.mActions )
+
+				fd.close( )
+				os.chmod( preprocessFile, 0755 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+
+		LOG_TRACE('5. make run script ------' )
 		try :
 			scriptFile = '%s.sh'% E_DEFAULT_BACKUP_PATH
 			fd = open( scriptFile, 'w' )
@@ -1022,8 +1047,11 @@ class SystemUpdate( SettingWindow ) :
 				fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[0] ), backupFileList[0] ) )
 				if not CheckHdd( ) :
 					fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[1] ), backupFileList[1] ) )
-				fd.close( )
 
+				if CheckDirectory( preprocessFile ) :
+					fd.writelines( '%s\n'% preprocessFile )
+
+				fd.close( )
 				os.chmod( scriptFile, 0755 )
 
 		except Exception, e :

@@ -688,7 +688,7 @@ def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
 					for element in node.findall( tagName ) :
 						#elementry = [ str(element.text), '%s\r\n'% str(element) ]
 						elementry = str( element.text )
-						if tagName == 'description' :
+						if tagName == 'description' or tagName == 'action' :
 							descList.append( elementry )
 						else :
 							lines.append( elementry )
