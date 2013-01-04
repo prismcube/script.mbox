@@ -325,10 +325,11 @@ class AllNavigation( object ) :
 						sock.send( msg )
 
 					else :
-						WinMgr.GetInstance( ).ShowWindow( winid, WinMgr.WIN_ID_NULLWINDOW )
-						time.sleep( testSleep )
+						continue
+						#WinMgr.GetInstance( ).ShowWindow( winid, WinMgr.WIN_ID_NULLWINDOW )
+						#time.sleep( testSleep )
 
-						xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+						#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 					time.sleep( testSleep )
 
