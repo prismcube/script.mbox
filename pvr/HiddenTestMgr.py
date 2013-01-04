@@ -325,7 +325,7 @@ class AllNavigation( object ) :
 						sock.send( msg )
 
 					else :
-						continue
+						pass
 						#WinMgr.GetInstance( ).ShowWindow( winid, WinMgr.WIN_ID_NULLWINDOW )
 						#time.sleep( testSleep )
 

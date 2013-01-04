@@ -1,21 +1,31 @@
 <scenarios>
 	<scenario>
 		<name>INFO PLATE TEST</name>
-		<loop repeat="100000">
+		<loop repeat="1000000">
 			<sendkey>VKEY_INFO</sendkey>
 			<sleep>7</sleep>
 		</loop>
 	</scenario>
 	<scenario>
 		<name>ZAPPING TEST</name>
-		<loop repeat="50000">
+		<loop repeat="1000000">
 			<sendkey>VKEY_PROG_DOWN</sendkey>
 			<sleep>5</sleep>
 		</loop>
 	</scenario>
 	<scenario>
+		<name>CHANNELIST TEST</name>
+		<sleep>5</sleep>
+		<sendkey>VKEY_OK</sendkey>
+		<sleep>5</sleep>
+		<loop repeat="1000000">
+			<sendkey>VKEY_DOWN</sendkey>
+			<sleep>5</sleep>
+		</loop>
+	</scenario>
+	<scenario>
 		<name>EPG WINDOW Test</name>
-		<loop repeat="50000">
+		<loop repeat="1000000">
 			<sendkey>VKEY_EPG</sendkey>
 			<sleep>8</sleep>
 			<sendkey>VKEY_BACK</sendkey>
@@ -25,7 +35,7 @@
 	<scenario>
 		<name>TIMESHIFT TEST</name>
 		<sleep>1</sleep>
-		<loop repeat="50000">
+		<loop repeat="1000000">
 			<sendkey>VKEY_PLAY</sendkey>
 			<sleep>1</sleep>
 			<sendkey>VKEY_STOP</sendkey>
