@@ -126,8 +126,10 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
 
-		if self.mAutomaticHide == True :
+		if self.mAutomaticHide :
 			self.StartAutomaticHide( )
+		else :
+			self.StopAutomaticHide( )
 
 		if self.mPincodeConfirmed :
 			self.ShowPincodeDialog( )
