@@ -89,7 +89,11 @@ class SystemUpdate( SettingWindow ) :
 		self.mProgress				= None
 		self.mChannelUpdateProgress = None
 		self.mIsDownload 			= False
+		self.mIsCencel 				= False
+		self.mLinkStatus 			= False
 		self.mGetDownloadThread     = None
+		self.mEnableLocalThread 	= False
+		self.mCheckEthernetThread 	= None
 		self.mStepPage              = E_UPDATE_STEP_HOME
 
 	def onInit( self )  :
@@ -108,27 +112,14 @@ class SystemUpdate( SettingWindow ) :
 		#self.mPVSData = None
 		#self.mCurrData = None
 		self.mIndexLastVersion = 0
-		self.mEnableLocalThread = False
-		self.mLinkStatus = False
-		self.mCheckEthernetThread = None
 		self.mShowProgressThread = None
-		self.mIsCencel = False
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		LOG_TRACE('-----------pvslist[%s] [%s]'% (len( self.mPVSList ), self.mPVSData) )
-		if self.mGetDownloadThread :
-			self.UpdateStepPage( E_UPDATE_STEP_READY )
-			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
-			self.UpdatePropertyGUI( 'ShowProgress', E_TAG_TRUE )
-			self.SetEnableControl( E_Input01, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Cancel') )
-
-		else :
-			self.UpdateStepPage( E_UPDATE_STEP_HOME )
+		self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
 		self.mInitialized = True
 
@@ -165,21 +156,20 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlDown( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
-			if self.mGetDownloadThread :
-				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_DOWNLOADING )
-				return
-
 			if self.mStepPage != E_UPDATE_STEP_HOME :
-				self.ShowContextMenu( )
+				if self.mGetDownloadThread :
+					self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_DOWNLOADING )
+					return
+
+				else :
+					self.ShowContextMenu( )
 
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
-			if self.mStepPage == E_UPDATE_STEP_HOME :
-				self.UpdateStepPage( E_UPDATE_STEP_READY )
-			else :
-				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
+			LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
+			self.LoadInit( )
 
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
@@ -190,6 +180,7 @@ class SystemUpdate( SettingWindow ) :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 			else :
+				LOG_TRACE('------------isDownload[%s] downThread[%s]'% ( self.mIsDownload, self.mGetDownloadThread ) )
 				if self.mIsDownload :
 					self.UpdateHandler( )
 					if self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
@@ -200,6 +191,7 @@ class SystemUpdate( SettingWindow ) :
 						self.mGetDownloadThread.join( )
 						self.mGetDownloadThread = None
 						self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+						LOG_TRACE( '------------cencel(download)' )
 					else :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
@@ -211,6 +203,56 @@ class SystemUpdate( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
+
+
+	def LoadInit( self ) :
+		if self.mPVSData and self.mPVSData.mError == 0 :
+			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
+			showProgress = E_TAG_FALSE
+			buttonFocus  = E_Input01
+			button1Enable = True
+			button2Enable = False
+			button2Label  = MR_LANG( 'Not attempted' )
+			button2Desc   = MR_LANG( 'Please check firmware version first' )
+			self.UpdateStepPage( E_UPDATE_STEP_READY )
+			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
+
+			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+			if CheckDirectory( tempFile ) and \
+			   os.stat( tempFile )[stat.ST_SIZE] == self.mPVSData.mSize :
+				self.mIsDownload = True
+				if self.mGetDownloadThread :
+					self.mIsCencel = True
+					self.mGetDownloadThread.join( )
+					self.mGetDownloadThread = None
+
+				buttonFocus  = E_Input02
+				button1Enable = False
+				button2Enable = True
+				button2Label  = MR_LANG( 'Install' )
+				button2Desc   = MR_LANG( 'Complete download, Press OK is install' )
+
+			elif self.mGetDownloadThread :
+				showProgress = E_TAG_TRUE
+				buttonFocus  = E_Input02
+				button1Enable = False
+				button2Enable = True
+				button2Label  = MR_LANG( 'Cancel' )
+				button2Desc   = MR_LANG( 'Downloading, Press OK is cencel' )
+
+			self.UpdatePropertyGUI( 'ShowProgress', showProgress )
+			self.SetEnableControl( E_Input01, button1Enable )
+			self.SetEnableControl( E_Input02, button2Enable )
+			self.SetFocusControl( buttonFocus )
+			self.SetControlLabel2String( E_Input02, button2Label )
+			self.EditDescription( E_Input02, button2Desc )
+			self.ShowDescription( E_Input02 )
+
+		else :
+			if self.mStepPage == E_UPDATE_STEP_HOME :
+				self.UpdateStepPage( E_UPDATE_STEP_READY )
+			else :
+				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
 
 	def OpenAnimation( self ) :
@@ -227,9 +269,14 @@ class SystemUpdate( SettingWindow ) :
 
 	def Close( self ) :
 
-		if self.mEnableLocalThread and self.mCheckEthernetThread :
+		if not self.mGetDownloadThread and \
+		   self.mEnableLocalThread and self.mCheckEthernetThread :
 			self.mEnableLocalThread = False
 			self.mCheckEthernetThread.join( )
+			self.mCheckEthernetThread = None
+
+			self.mIsCencel = False
+			self.mIsDownload = False
 
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
@@ -390,6 +437,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetEnableControl( E_Input02, False )
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not attempted') )
 			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
+			self.ShowDescription( E_Input02 )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
 			return False
 
@@ -408,6 +456,8 @@ class SystemUpdate( SettingWindow ) :
 
 		self.SetControlLabel2String( E_Input02, '%s'% label2 )
 		self.EditDescription( E_Input02, descLabel )
+		self.ShowDescription( E_Input02 )
+
 		self.UpdateLabelPVSInfo( )
 
 		return isInit
@@ -426,13 +476,13 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def Provisioning( self ) :
-		appURL = None
-		isDownload = False
-		self.mPVSData = None
-		self.mPVSList = []
-		self.ResetLabel( )
-
+		LOG_TRACE('----------downThread[%s]'% self.mGetDownloadThread )
 		if not self.mGetDownloadThread :
+			isDownload = False
+			self.mPVSData = None
+			self.mPVSList = []
+			self.ResetLabel( )
+
 			self.OpenBusyDialog( )
 			try :
 				CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
@@ -505,7 +555,7 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 				return
 
-
+		LOG_TRACE('----------pvsData[%s]'% self.mPVSData )
 		self.InitPVSData( )
 
 		if self.mPVSList and len( self.mPVSList ) > 0 :
@@ -541,6 +591,7 @@ class SystemUpdate( SettingWindow ) :
 		#LOG_TRACE( 'aContextAction=%d' %aContextAction )
 		if aContextAction == CONTEXT_ACTION_REFRESH_CONNECT :
 			self.mPVSData = None
+			self.mPVSList = []
 			self.ResetLabel( False )
 			try :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
@@ -549,6 +600,12 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( '%s/update'% usbPath )
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
+
+			self.mIsDownload = False
+			if self.mGetDownloadThread :
+				self.mIsCencel = True
+				self.mGetDownloadThread.join( )
+				self.mGetDownloadThread = None
 
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
@@ -578,6 +635,12 @@ class SystemUpdate( SettingWindow ) :
 
 			if select < 0 :
 				return
+
+			self.mIsDownload = False
+			if self.mGetDownloadThread :
+				self.mIsCencel = True
+				self.mGetDownloadThread.join( )
+				self.mGetDownloadThread = None
 
 			self.mPVSData = None
 			self.mPVSData = deepcopy( self.mPVSList[select] )
@@ -622,27 +685,35 @@ class SystemUpdate( SettingWindow ) :
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
 
-			if self.mEnableLocalThread and self.mCheckEthernetThread :
-				self.mEnableLocalThread = False
-				self.mCheckEthernetThread.join( )
-				self.mCheckEthernetThread = None
-			self.mEnableLocalThread = False
-
-			self.mPVSData = None
+			#self.mPVSData = None
 			self.ResetLabel( False )
 			self.UpdatePropertyGUI( 'CurrentDescription', '' )
 			self.UpdatePropertyGUI( 'ShowInfoLabel', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'ShowProgress', E_TAG_FALSE )
 
 		elif aStep == E_UPDATE_STEP_READY :
+			#showProgress  = E_TAG_FALSE
+			buttonFocus   = E_Input01
+			button2Enable = False
+			button2Label  = MR_LANG( 'Not attempted' )
+			button2Desc   = MR_LANG( 'Please check firmware version first' )
+			if self.mPVSData and len( self.mPVSList ) > 0 and self.mIsDownload :
+				#showProgress  = E_TAG_FALSE
+				buttonFocus   = E_Input02
+				button2Enable = True
+				button2Label = MR_LANG( 'Install')
+				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
-			self.AddInputControl( E_Input02, '', MR_LANG( 'Not attempted' ), MR_LANG( 'Please check firmware version first' ) )
-			self.SetEnableControl( E_Input02, False )
+			self.AddInputControl( E_Input02, '', button2Label, button2Desc )
+			self.SetEnableControl( E_Input02, button2Enable )
 
 			self.InitControl( )
-			self.SetFocusControl( E_Input01 )
+			self.SetFocusControl( buttonFocus )
 			self.UpdatePropertyGUI( 'ShowInfoLabel', E_TAG_TRUE )
+			self.UpdatePropertyGUI( 'ShowProgress', E_TAG_FALSE )
 
 			self.CheckCurrentVersion( )
 
@@ -650,8 +721,7 @@ class SystemUpdate( SettingWindow ) :
 			self.Provisioning( )
 
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
-			if self.mGetDownloadThread :
-				return
+			LOG_TRACE('-----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
 
 			self.mEnableLocalThread = True
 			self.mCheckEthernetThread = self.CheckEthernetThread( )
@@ -663,7 +733,7 @@ class SystemUpdate( SettingWindow ) :
 
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
-				#self.mCheckEthernetThread.join( )
+				self.mCheckEthernetThread.join( )
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
@@ -708,13 +778,15 @@ class SystemUpdate( SettingWindow ) :
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if usbPath :
 				time.sleep( 0.3 )
-				self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
+				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
 				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
 					self.mShowProgressThread = None
+				if threadDialog :
+					threadDialog.join( )
 				time.sleep( 1 )
 
 			else :
@@ -727,7 +799,6 @@ class SystemUpdate( SettingWindow ) :
 					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB )
 
 				stepResult = False
-
 
 		elif aStep == E_UPDATE_STEP_VERIFY :
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
@@ -743,6 +814,7 @@ class SystemUpdate( SettingWindow ) :
 			time.sleep( 0.3 )
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update' ) )
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the updating process' ) )
+			self.ShowDescription( E_Input02 )
 
 			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB DURING THE UPGRADING' )
 			line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
@@ -799,15 +871,31 @@ class SystemUpdate( SettingWindow ) :
 
 	@RunThread
 	def GetDownloadThread( self ) :
+		LOG_TRACE('-----------pvsData[%s]'% self.mPVSData )
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
 
-		#LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
+		LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
 		self.UpdatePropertyGUI( 'ShowProgress', E_TAG_TRUE )
 		self.SetEnableControl( E_Input01, False )
 		self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD )
 		self.UpdatePropertyGUI( 'ShowProgress', E_TAG_FALSE )
 		self.SetEnableControl( E_Input01, True )
+
+		button2Label  = MR_LANG( 'Download' )
+		button2Desc   = MR_LANG( 'Press OK button to download the firmware shown below' )
+		if self.mIsDownload :
+			button2Label = MR_LANG( 'Install')
+			button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+
+		self.SetControlLabel2String( E_Input02, button2Label )
+		self.EditDescription( E_Input02, button2Desc )
+		self.ShowDescription( E_Input02 )
+
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			self.UpdateHandler( )
+
+		self.mGetDownloadThread = None
 
 
 	def CheckInitDevice( self ) :
@@ -876,6 +964,7 @@ class SystemUpdate( SettingWindow ) :
 		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVS.mFileName )
 		if CheckDirectory( tempFile ) :
 			if os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
+				self.mIsDownload = True
 				return True
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -889,40 +978,49 @@ class SystemUpdate( SettingWindow ) :
 			elif ret == E_DIALOG_STATE_YES :
 				isResume = True
 
-		"""
-		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Waiting...' ) )
-
 		LOG_TRACE( '--------------reqFile[%s]'% reqFile )
-
-		self.mWorkingDownloader = DownloadFile( reqFile, tempFile )
-		if isResume :
-			self.mWorkingDownloader.resume( self.ShowProgress )
-		else :
-			self.mWorkingDownloader.download( self.ShowProgress )
-
-		self.mDialogProgress.close( )
-		self.mDialogProgress = None
-		"""
-
-		LOG_TRACE( '--------------reqFile[%s]'% reqFile )
-		self.SetControlLabel2String( E_Input02, MR_LANG( 'Cancel') )
-
-		self.mWorkingDownloader = DownloadFile( reqFile, tempFile )
-		if isResume :
-			self.mWorkingDownloader.resume( self.ShowProgress2 )
-		else :
-			self.mWorkingDownloader.download( self.ShowProgress2 )
-
-		if CheckDirectory( tempFile ) and os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
-			self.mIsDownload = True
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Install') )
+		#self.ProgressDialog( isResume, reqFile, tempFile )
+		self.ProgressNoDialog( isResume, reqFile, tempFile )
 
 		self.mWorkingItem = None
 		self.mWorkingDownloader = None
 		time.sleep( 0.3 )
 
 		return self.mIsDownload
+
+
+	def ProgressDialog( self, aIsResume, aRemoteFile, aDestFile ) :
+		self.mDialogProgress = xbmcgui.DialogProgress( )
+		self.mDialogProgress.create( self.mWorkingItem.mName, MR_LANG( 'Waiting...' ) )
+
+		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+
+		self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
+		if aIsResume :
+			self.mWorkingDownloader.resume( self.ShowProgress )
+		else :
+			self.mWorkingDownloader.download( self.ShowProgress )
+
+		self.mDialogProgress.close( )
+		self.mDialogProgress = None
+
+
+	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
+		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+
+		self.SetControlLabel2String( E_Input02, MR_LANG( 'Cancel' ) )
+		self.EditDescription( E_Input02, MR_LANG( 'Downloading, Press OK is cencel' ) )
+		self.ShowDescription( E_Input02 )
+
+		self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
+		if aIsResume :
+			self.mWorkingDownloader.resume( self.ShowProgress2 )
+		else :
+			self.mWorkingDownloader.download( self.ShowProgress2 )
+
+		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
+		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
+			self.mIsDownload = True
 
 
 	#this function is callback
@@ -943,21 +1041,27 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ShowProgress2( self, cursize = 0 ) :
-
 		if self.mWorkingItem.mSize :
 			#per = 1.0 * cursize / self.mWorkingItem.mSize * 100
-			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
 			percent = 1.0 * cursize / self.mWorkingItem.mSize * 100
-			self.mCtrlProgress.setPercent( percent )
-			self.mCtrlLabelPercent.setLabel( '%s%%'% int( percent ) )
+			#self.mCtrlProgress.setPercent( percent )
+			#self.mCtrlLabelPercent.setLabel( '{0:.2f}%(download)'.format( round( percent, 2 ) ) )
+			self.SetLabelThread( percent )
+			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, percent, self.mWorkingItem.mSize ) )
 
 			if self.mWorkingDownloader and self.mIsCencel or \
 			   self.mWorkingDownloader and self.mLinkStatus != True :
 				self.mWorkingDownloader.abort( True )
-				self.mIsDownload = False
 				self.mIsCencel = False
-				LOG_TRACE( '--------------abort' )
+				self.mIsDownload = False
+				LOG_TRACE( '--------------abort(download)' )
 
+
+	@RunThread
+	def SetLabelThread( self, aPercent ) :
+		self.mCtrlProgress.setPercent( aPercent )
+		self.mCtrlLabelPercent.setLabel( '{0:.2f}%(download)'.format( round( aPercent, 2 ) ) )
+	
 
 	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :
 		fileList = GetUnpackFiles( aZipFile )
@@ -988,7 +1092,7 @@ class SystemUpdate( SettingWindow ) :
 				break
 
 			if aShowProgress and dialogProgress.iscanceled( ) :
-				LOG_TRACE( '--------------abort' )
+				LOG_TRACE( '--------------abort(verified)' )
 				isVerify = False
 				break
 
