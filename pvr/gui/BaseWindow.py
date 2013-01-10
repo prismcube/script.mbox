@@ -226,7 +226,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			volume =  XBMC_GetVolume( )		
+			volume =  XBMC_GetVolume( )
 		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :

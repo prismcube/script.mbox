@@ -80,56 +80,56 @@
 						<label>SCRIPT57</label>
 						<label2>SCRIPT78</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
-						<icon>special://skin/backgrounds/weather.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="2">
 						<label>SCRIPT58</label>
 						<label2>SCRIPT79</label2>
 						<onclick>ActivateWindow(Pictures)</onclick>
-						<icon>special://skin/backgrounds/pictures.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="3">
 						<label>SCRIPT59</label>
 						<label2>SCRIPT81</label2>
 						<onclick>ActivateWindow(Music)</onclick>
-						<icon>special://skin/backgrounds/music.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="4">
 						<label>SCRIPT60</label>
 						<label2>SCRIPT80</label2>
 						<onclick>ActivateWindow(Videos)</onclick>
-						<icon>special://skin/backgrounds/videos.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="5">
 						<label>SCRIPT61</label>
 						<label2>SCRIPT82</label2>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-						<icon>special://skin/backgrounds/programs.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="6">
 						<label>SCRIPT62</label>
 						<label2>SCRIPT83</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
-						<icon>special://skin/backgrounds/system.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="7">
 						<label>SCRIPT63</label>
 						<label2>SCRIPT84</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
-						<icon>special://skin/backgrounds/appearance.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="8">
 						<label>SCRIPT64</label>
 						<label2></label2>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<visible>false</visible>
-						<icon>special://skin/backgrounds/pictures.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="9">
 						<label>SCRIPT65</label>
 						<label2>SCRIPT85</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
-						<icon>special://skin/backgrounds/skinsetting.jpg</icon>
+						<icon>backgrounds/settings.jpg</icon>
 					</item>
 				</content>
 			</control>

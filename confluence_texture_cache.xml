@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- maxsize mega byte -->
 <textures maxsize="30">
+	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>backgrounds/settings.jpg</texture>
 	<texture>RecIconSample.jpg</texture>	
 	<texture>pointer-nofocus.png</texture>

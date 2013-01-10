@@ -168,16 +168,22 @@ class MainMenu( BaseWindow ) :
 
 	def GetFavAddons( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-
+			return
 			currentSkinName = XBMC_GetCurrentSkinName( )
 			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
 				favoriteList = XBMC_GetFavAddons( )
-				self.SyncAddonsList( favoriteList )
+				return
+				LOG_TRACE( 'lael98 #1 favoriteList=%s' %favoriteList )
+				#self.SyncAddonsList( favoriteList )
+				LOG_TRACE( 'lael98 #2 favoriteList=%s' %favoriteList )				
 				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
 				self.mCtrlFavAddonList.reset( )
+				LOG_TRACE( 'lael98' )
 				if len( favoriteList ) > 0 :
 					self.mFavAddonsList = []
+					LOG_TRACE( 'lael98' )
 					for i in range( len( favoriteList ) ) :
+						LOG_TRACE( 'lael98 name=%s' %xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )					
 						item = xbmcgui.ListItem(  xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )
 						item.setProperty( 'AddonId', favoriteList[i] )
 						self.mFavAddonsList.append( item )
@@ -186,6 +192,7 @@ class MainMenu( BaseWindow ) :
 
 	def SyncAddonsList( self, aAddonList ) :
 		addonList = XBMC_GetAddons( )
+		LOG_TRACE( 'lael98 addonList=%s' %addonList )		
 		total = len( aAddonList )
 		for i in range( total ) :
 			findaddon = False

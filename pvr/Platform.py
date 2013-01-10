@@ -58,6 +58,9 @@ class Platform( object ) :
 
 		self.mXBMCVersion = 0.0
 		vs = xbmc.getInfoLabel( 'System.BuildVersion' )
+		
+		print 'xbmc version=%s' %vs
+
 		try : 
 			# sample input: '10.1 Git:Unknown'
 			self.mXBMCVersion = float( vs.split( )[0] )
@@ -66,7 +69,11 @@ class Platform( object ) :
 				# sample input: 'PRE-11.0 Git:Unknown'
 				self.mXBMCVersion = float( vs.split( )[0].split( '-' )[1] )
 			except ValueError :
-				print 'Cannot determine version of XBMC from build version: %s. Returning %s' % ( vs, version )
+				try :
+					# sample input : 12.0-BETA3 Git:20121206-ae60d24
+					self.mXBMCVersion = float( vs.split( )[0].split( '-' )[0] )
+				except ValueError :
+					print 'Cannot determine version of XBMC from build version: %s. Returning %s' % ( vs, self.mXBMCVersion )
 
 		print 'xbmc version=%s' %self.mXBMCVersion
 

@@ -531,6 +531,12 @@ class WindowMgr( object ) :
 
 
 	def GetLanguageList( self ) :
-		return os.listdir( xbmc.translatePath( 'special://skin/language' ) )
+		#LOG_TRACE( 'lael98 language list #1 = %s' %xbmc.translatePath( 'special://skin/language' ) )
+		#LOG_TRACE( 'lael98 language list #2 = %s' %xbmc.translatePath( 'special://xbmc/language/' ) )		
+		#return os.listdir( xbmc.translatePath( 'special://skin/language' ) )
+		languageList =  os.listdir( xbmc.translatePath( 'special://xbmc/language/' ) )
+		languageList.sort()
+		return languageList
+		#self.mRecordList.sort( self.ByTitle )		
 
 
