@@ -7,7 +7,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture background="true">backgrounds/videos.jpg</texture>
+			<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
 			<include>DefaultWindowFade</include>
 		</control>
 		<control type="group">

@@ -2,6 +2,15 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+			<include>DefaultWindowFade</include>
+		</control>
+	
 		<include>DefaultSettingHeaderWindow</include>
 		<control type="group">
 			<posx>90</posx>
@@ -80,56 +89,47 @@
 						<label>SCRIPT57</label>
 						<label2>SCRIPT78</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="2">
 						<label>SCRIPT58</label>
 						<label2>SCRIPT79</label2>
 						<onclick>ActivateWindow(Pictures)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="3">
 						<label>SCRIPT59</label>
 						<label2>SCRIPT81</label2>
 						<onclick>ActivateWindow(Music)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="4">
 						<label>SCRIPT60</label>
 						<label2>SCRIPT80</label2>
 						<onclick>ActivateWindow(Videos)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="5">
 						<label>SCRIPT61</label>
 						<label2>SCRIPT82</label2>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="6">
 						<label>SCRIPT62</label>
 						<label2>SCRIPT83</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="7">
 						<label>SCRIPT63</label>
 						<label2>SCRIPT84</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="8">
 						<label>SCRIPT64</label>
 						<label2></label2>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<visible>false</visible>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 					<item id="9">
 						<label>SCRIPT65</label>
 						<label2>SCRIPT85</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
-						<icon>backgrounds/settings.jpg</icon>
 					</item>
 				</content>
 			</control>
