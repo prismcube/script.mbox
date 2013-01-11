@@ -422,6 +422,9 @@ def CheckDirectory( aPath ) :
 
 
 def CheckHdd( ) :
+	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+		return False
+	
 	cmd = 'df'
 	p = Popen( cmd, shell=True, stdout=PIPE )
 	parsing = p.stdout.read( ).strip( )

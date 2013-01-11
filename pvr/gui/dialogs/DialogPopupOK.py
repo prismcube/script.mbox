@@ -15,6 +15,7 @@ class DialogPopupOK( BaseDialog ) :
 		self.mLabel1 = ''
 		self.mLabel2 = ''
 		self.mLabel3 = ''
+		self.mStayCount = 0
 
 
 	def onInit( self ) :
@@ -26,6 +27,8 @@ class DialogPopupOK( BaseDialog ) :
 		self.getControl( E_BODY_LABEL_2 ).setLabel( self.mLabel2 )
 		self.getControl( E_BODY_LABEL_3 ).setLabel( self.mLabel3 )
 
+		self.mStayCount = self.GetStayCount( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -33,7 +36,10 @@ class DialogPopupOK( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.CloseDialog( )
+			if self.mStayCount < 1 :
+				self.CloseDialog( )
+
+			self.mStayCount -= 1
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -56,3 +62,13 @@ class DialogPopupOK( BaseDialog ) :
 		if self.mLabel2 == '' and self.mLabel3 == '' :
 			self.mLabel2 = self.mLabel1
 			self.mLabel1 = ''
+
+
+	def GetStayCount( self ) :
+		return self.mStayCount
+
+
+	def SetStayCount( self, aCount = 0 ) :
+		self.mStayCount = aCount
+
+

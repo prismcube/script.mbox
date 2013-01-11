@@ -108,6 +108,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
 		self.mLoopCount = 0
+		self.mShowOpenWindow = None
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -155,7 +156,15 @@ class LivePlate( LivePlateWindow ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )			
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				if self.mShowOpenWindow == WinMgr.WIN_ID_ARCHIVE_WINDOW :
+					if HasAvailableRecordingHDD( ) == False :
+						return
+						
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+				else :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.StopAutomaticHide( )
@@ -1091,7 +1100,14 @@ class LivePlate( LivePlateWindow ) :
 				self.ChannelTune( NEXT_CHANNEL )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
-				self.ChannelTune( PREV_CHANNEL )				
+				self.ChannelTune( PREV_CHANNEL )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
+				xbmc.executebuiltin( 'xbmc.Action(info)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
+				self.mShowOpenWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
+				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 			else :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
