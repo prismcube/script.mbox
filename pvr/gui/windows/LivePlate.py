@@ -637,9 +637,15 @@ class LivePlate( LivePlateWindow ) :
 			try :
 				#satellite
 				label = ''
-				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
-				if satellite :
-					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+					#self.UpdatePropertyGUI( E_XML_PROPERTY_FAV, 'True' )
+					label = self.mDataCache.Favoritegroup_GetCurrent( )
+
+				else :
+					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
+					if satellite :
+						label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 
 				#lock,cas
@@ -649,9 +655,7 @@ class LivePlate( LivePlateWindow ) :
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
 
-				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_FAV, 'True' )
-
+	
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 

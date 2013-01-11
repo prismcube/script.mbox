@@ -446,14 +446,13 @@ class SystemUpdate( SettingWindow ) :
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 
 			if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
+				isInit = 2
 				buttonFocus  = E_Input01
 				button2Enable = False
 				button2Label  = MR_LANG( 'Your system is up-to-date' )
 				button2Desc   = MR_LANG( 'Already updated to the latest version' )
 
-				self.mPVSData.mError = -1
 				self.ResetLabel( )
-				isInit = False
 
 			elif CheckDirectory( tempFile ) and \
 			     os.stat( tempFile )[stat.ST_SIZE] == self.mPVSData.mSize :
@@ -680,12 +679,18 @@ class SystemUpdate( SettingWindow ) :
 			ret = self.InitPVSData( )
 			self.mStepPage = E_UPDATE_STEP_READY
 			usbPath = self.mDataCache.USB_GetMountPath( )
-			if ret and usbPath :
-				RemoveDirectory( '%s/update'% usbPath )
-				self.SetFocusControl( E_Input02 )
 
 			if not ret :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
+
+			else :
+				if ret == 2 :
+					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
+
+				elif usbPath :
+					RemoveDirectory( '%s/update'% usbPath )
+					self.SetFocusControl( E_Input02 )
+
 
 		else :
 			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )

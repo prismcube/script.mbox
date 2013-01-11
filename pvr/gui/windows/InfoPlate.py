@@ -199,7 +199,7 @@ class InfoPlate( LivePlateWindow ) :
 				self.mCurrentEPG.mDuration = self.mPlayingRecord.mDuration
 
 		self.InitControlGUI( )
-		self.UpdateChannelAndEPG( )
+		self.UpdateChannelAndEPG( self.mCurrentEPG )
 
 
 	def onEvent( self, aEvent ) :
@@ -248,7 +248,7 @@ class InfoPlate( LivePlateWindow ) :
 				if rec.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
 
-				#if ch.mIsCA :
+				#if rec.mIsCA :
 				#	self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
 
 
@@ -260,6 +260,14 @@ class InfoPlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
 				label = TimeToString( rec.mStartTime + rec.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
+
+				if aEpg and aEpg.mError == 0 :
+					#component
+					setPropertyList = []
+					setPropertyList = GetPropertyByEPGComponent( aEpg )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )

@@ -1083,6 +1083,15 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Favoritegroup_Remove( aGroupName, aServieType )
 
 
+	def Favoritegroup_GetCurrent( self ) :
+		groupName = ''
+		zappingMode = self.Zappingmode_GetCurrent( )
+		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			groupName = zappingMode.mFavoriteGroup.mGroupName
+
+		return groupName
+
+
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
 		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
 
