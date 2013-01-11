@@ -405,7 +405,7 @@
 		</control>
 
 		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonDateTime</include>
+		<include>DefaultCommonTime</include>
 
 		<!-- Item Position and Page Number for common list-->
 		<control type="label">

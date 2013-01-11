@@ -2,7 +2,7 @@
 	<include name="DefaultSettingHeaderWindow">
 		<include>DefaultSettingsBackground</include>
 		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonDateTime</include>
+		<include>DefaultCommonTime</include>
 	</include>
 
 	<include name="DefaultSettingsBackground">
@@ -42,6 +42,43 @@
 		</control>
 	</include>
 
+	<include name="DefaultCommonTime">
+		<control type="label">
+			<description>time label</description>
+			<posx>20r</posx>
+			<posy>5</posy>
+			<width>200</width>
+			<height>30</height>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>font28_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[System.Time]</label>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+		</control>
+	</include>
+
+	<include name="DefaultCommonDate">
+		<control type="label">
+			<description>Date label</description>
+			<posx>20r</posx>
+			<posy>35</posy>
+			<width>200</width>
+			<height>15</height>
+			<align>right</align>
+			<aligny>center</aligny>
+			<font>font10</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[System.Date]</label>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+		</control>
+	</include>
+	<!--
+
 	<include name="DefaultCommonDateTime">
 		<control type="group">
             <posx>390r</posx>
@@ -74,6 +111,7 @@
             </control>
         </control>
 	</include>
+	-->
 
 	<include name="DefaultFakeButton">
 		<control type="button" id="999">
@@ -516,14 +554,19 @@
 		<animation effect="fade" start="100" end="0" time="300">WindowClose</animation>
 	</include>
 
+	<include name="DefaultWindowOpenCloseAnimation">
+		<animation effect="fade" time="250">WindowOpen</animation>
+		<animation effect="fade" time="250">WindowClose</animation>
+	</include>
+
 	<include name="DefaultBackgroundFade">
 		 <animation effect="fade" time="300">Visible</animation>
 		 <animation effect="fade" time="300">Hidden</animation>
 	</include>
 	
 	<include name="DefaultVisibleFadeEffect">
-		<animation effect="fade" time="300">Visible</animation>
-		<animation effect="fade" time="300">Hidden</animation>
+		<animation effect="fade" time="250">Visible</animation>
+		<animation effect="fade" time="250">Hidden</animation>
 	</include>
 	
 	<include name="DefaultDialogOpenEffect">

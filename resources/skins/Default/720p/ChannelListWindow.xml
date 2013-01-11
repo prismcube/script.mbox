@@ -59,7 +59,7 @@
 
 <!--  local time -->
 		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonDateTime</include>
+		<include>DefaultCommonTime</include>
 
 		<!-- PIP -->
 		<control type="image" id="8800">

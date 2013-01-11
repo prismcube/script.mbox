@@ -21,7 +21,7 @@ class MediaCenter( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Media Center' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Media Center' ) )
 		#LOG_TRACE( '--------------flag[%s]'% self.mDataCache.GetMediaCenter( ) )
 
 

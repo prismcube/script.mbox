@@ -234,7 +234,7 @@
 			</control>
 		</control>
 		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonDateTime</include>
+		<include>DefaultCommonTime</include>
 
 		<control type="group">
 			<include>DefaultWindowFade</include>				
