@@ -22,7 +22,7 @@ class Action(object) :
 	ACTION_PAGE_DOWN			= 6		#PageDown --> Channel Down
 	ACTION_SELECT_ITEM			= 7		# OK
 	ACTION_HIGHLIGHT_ITEM		= 8	
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		ACTION_PARENT_DIR		= 9		#Back	
 	else :
 		ACTION_PARENT_DIR		= 92		#Back 	
