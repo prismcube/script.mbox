@@ -22,6 +22,30 @@
 				<include>Input02</include>
 			</control>
 			<control type="group">
+				<posx>0</posx>
+				<posy>85</posy>
+				<visible>substring(Window.Property(ShowProgress),true)</visible>
+				<control type="progress" id="51">
+					<posx>0</posx>
+					<posy>15</posy>
+					<width>300</width>
+					<height>15</height>
+					<color>grey</color>
+					<border>0</border>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				</control>
+				<control type="label" id="52">
+					<posx>310</posx>
+					<posy>5</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+			</control>
+
+			<control type="group">
 				<posx>780</posx>
 				<posy>260</posy>
 				<control type="textbox">

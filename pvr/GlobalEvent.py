@@ -43,6 +43,7 @@ class GlobalEvent( object ) :
 			 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 			self.mDataCache.ReLoadChannelListByRecording( )
 			if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
+				#LOG_TRACE('hddFull, dialogOpen[%s]'% self.mIsHddFullDialogOpened )
 				if self.mIsHddFullDialogOpened == False :
 					thread = threading.Timer( 0.3, self.AsyncHddFull )
 					thread.start( )
@@ -95,14 +96,32 @@ class GlobalEvent( object ) :
 			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
+		elif aEvent.getName( ) == ElisEventShutdown.getName( ) :
+			#LOG_TRACE('-----------shutdown[%s] blank[%s]'% ( aEvent.mType, self.mDataCache.Channel_GetInitialBlank( ) ) )
+			if aEvent.mType == ElisEnum.E_STANDBY_POWER_ON :
+				thread = threading.Timer( 0.3, self.AsyncStandbyPowerON )
+				thread.start( )
+				return
 
-	def AsyncHddFull( self ):
+
+	def AsyncHddFull( self ) :
 		self.mIsHddFullDialogOpened = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+		dialog.SetStayCount( 1 )
 		dialog.doModal( )
 
 		self.mIsHddFullDialogOpened = False
+
+
+	def AsyncStandbyPowerON( self ) :
+		while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			time.sleep( 1 )
+
+		time.sleep( 1 )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
 	def AsyncPowerSave( self ) :

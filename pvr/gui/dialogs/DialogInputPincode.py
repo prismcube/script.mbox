@@ -11,6 +11,8 @@ MAX_PINCODE_LENGTH		= 4
 class DialogInputPincode( BaseDialog ) :
 	E_TUNE_NEXT_CHANNEL     = 1
 	E_TUNE_PREV_CHANNEL		= 2
+	E_SHOW_EPG_WINDOW       = 3
+	E_SHOW_ARCHIVE_WINDOW   = 4
 
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
@@ -60,7 +62,7 @@ class DialogInputPincode( BaseDialog ) :
 			try :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-					self.mNextAction =  self.E_TUNE_NEXT_CHANNEL					
+					self.mNextAction = self.E_TUNE_NEXT_CHANNEL
 					self.CloseDialog( )
 					
 			except Exception, e :
@@ -70,11 +72,29 @@ class DialogInputPincode( BaseDialog ) :
 			try :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-					self.mNextAction =  self.E_TUNE_PREV_CHANNEL										
+					self.mNextAction = self.E_TUNE_PREV_CHANNEL
 					self.CloseDialog( )
 
 			except Exception, e :
 				LOG_TRACE( 'Exception %s' %e )
+
+		elif actionId == Action.ACTION_SHOW_INFO :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				LOG_TRACE( 'Try again after stopping all your recordings first' )
+			else :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+					self.mNextAction = self.E_SHOW_EPG_WINDOW
+					self.CloseDialog( )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			if HasAvailableRecordingHDD( ) == False :
+				return
+
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+			   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				self.mNextAction = self.E_SHOW_ARCHIVE_WINDOW
+				self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :

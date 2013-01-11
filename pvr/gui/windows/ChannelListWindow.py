@@ -556,12 +556,16 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
 				self.mDataCache.SetSkipChannelView( True )
+
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
+				"""
+				# default mode AllChannel : enter EditMode
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
 				self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
 				self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
 				self.mUserSlidePos.mSub  = 0
+				"""
 
 				self.UpdateControlListSelectItem( self.mCtrlListMainmenu, self.mUserSlidePos.mMain )
 				self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
