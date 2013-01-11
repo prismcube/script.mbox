@@ -20,7 +20,7 @@ def XBMC_GetCurrentSkinName( ) :
 	LOG_TRACE( '' )
 	currentSkinName = 'Default'
 
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :	# for Frodo	
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :	# for Frodo	
 		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 		currentSkinName = currentSkinName[4:]
 
@@ -48,33 +48,38 @@ def XBMC_GetCurrentSkinName( ) :
 
 def XBMC_GetFavAddons( ) :
 	LOG_TRACE( '' )
-	start = time.time( )
-
 	favoriteList = []
 	
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		tmpList = xbmc.executehttpapi( "getfavourites()" )
 		if tmpList != '<li>' :
 			favoriteList = tmpList[4:].split( ':' )
+
+			addonList = XBMC_GetAddons( )
+			LOG_TRACE( 'lael98 addonList=%s' %addonList )		
+			total = len( aAddonList )
+			for i in range( total ) :
+				findaddon = False
+				reversIndex = total - i - 1
+				LOG_TRACE( 'reversindex=%d' %reversIndex )
+				for addon in addonList :
+					if addonList[reversIndex] == addon :
+						findaddon = True
+				if findaddon == False :
+					del addonList[reversIndex]
 
 	else :
 		json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddonFavourites", "params": {"properties": ["name", "author", "summary", "version", "fanart", "thumbnail","description"]}, "id": 1}')
 		json_response = unicode(json_query, 'utf-8', errors='ignore')
 		jsonobject = simplejson.loads(json_response)
 
-		end = time.time( )
-		print ' #0 diff time =%s' %( end  - start )
-		start = time.time( )
-
 		if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('addons'):
 			total = str( len( jsonobject['result']['addons'] ) )
 			for item in jsonobject['result']['addons']:
 				if item['type'] == 'xbmc.python.script' or item['type'] == 'xbmc.python.pluginsource':
-					favoriteList.append(item)
+					favoriteList.append(item['addonid'])
 
 	LOG_TRACE( 'favoriteList=%s' %favoriteList )
-	end = time.time( )
-	print ' #1 diff time =%s' %( end  - start )
 
 	
 	return favoriteList
@@ -83,7 +88,7 @@ def XBMC_GetFavAddons( ) :
 def XBMC_GetAddons( ) :
 	LOG_TRACE( '' )
 	addonList = []
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		tmpList = xbmc.executehttpapi( "getaddons()" )
 		if tmpList == '<li>' :
 			addonList = []		
@@ -108,7 +113,7 @@ def XBMC_GetAddons( ) :
 
 def XBMC_AddFavAddon( aAddonId ) :
 	LOG_TRACE( '' )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		xbmc.executehttpapi( "addfavourite(%s)" % aAddonId )
 	else :
 		LOG_ERR( 'ToDO ' )
@@ -116,7 +121,7 @@ def XBMC_AddFavAddon( aAddonId ) :
 
 def XBMC_RemoveFavAddon( aAddonId ) :
 	LOG_TRACE( '' )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		xbmc.executehttpapi( "removefavourite(%s)" %aAddonId )
 	else :
 		removeAddonFavString = '{"jsonrpc": "2.0", "method": "Addons.RemoveAddonFavourite", "params": {"addonid":"'+aAddonId+'"}, "id": 1}'
@@ -127,7 +132,7 @@ def XBMC_RemoveFavAddon( aAddonId ) :
 
 def XBMC_RunAddon( aAddonId ) :
 	LOG_TRACE( '' )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		xbmc.executebuiltin( "runaddon(%s)" %aAddonId )
 	else :
 		runAddonFavString = '{"jsonrpc": "2.0", "method": "Addons.ExecuteAddon", "params": {"addonid":"'+aAddonId+'"}, "id": 1}'
@@ -140,7 +145,7 @@ def XBMC_RunAddon( aAddonId ) :
 def XBMC_GetVolume( ) :	
 	LOG_TRACE( '' )
 	volume = 0
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		retVolume = xbmc.executehttpapi( 'getvolume' )
 		volume = int( retVolume[4:] )
 	else :
@@ -164,7 +169,7 @@ def XBMC_GetVolume( ) :
 def XBMC_GetMute( ) :	
 
 	volume = 0
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		retVolume = xbmc.executehttpapi( 'getvolume' )
 		volume = int( retVolume[4:] )
 		if volume == 0 :
@@ -184,7 +189,7 @@ def XBMC_GetMute( ) :
 
 def XBMC_SetVolume( aVolume, aIsMute=0 ) :	
 	LOG_TRACE( '' )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		volumeString = 'setvolume(%s)'% aVolume
 		if aIsMute or aVolume <= 0 :
 			volumeString = 'Mute'
@@ -204,7 +209,7 @@ def XBMC_GetResolution( ) :
 	right = 1280
 	bottom = 720
 
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		strResolution = xbmc.executehttpapi( "getresolution( )" )
 		resInfo =  strResolution[4:].split( ':' )
 		LOG_TRACE( 'resInfo = %s' % resInfo )
@@ -263,7 +268,7 @@ def XBMC_GetResolution( ) :
 def XBMC_GetSkinZoom( ) :
 	LOG_TRACE( '' )
 	skinzoom = 0
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		strZoom = xbmc.executehttpapi( "GetGUISetting(0, lookandfeel.skinzoom)" )
 		skinzoom = int( strZoom[4:] )
 	else :
@@ -295,7 +300,7 @@ def XBMC_GetSkinZoom( ) :
 
 def XBMC_GetCurrentLanguage( ) :
 	LOG_TRACE( '' )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
 		LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
 		return currentLanguage[4:]
@@ -307,7 +312,7 @@ def XBMC_GetCurrentLanguage( ) :
 
 def XBMC_SetCurrentLanguage( aLanguage ) :
 	LOG_TRACE( 'aLanguage=%s' %aLanguage )
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		LOG_TRACE( '' )
 		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
 	else :
@@ -320,7 +325,7 @@ def XBMC_SetLocalOffset( aLocalOffset ) :
 	LOG_TRACE( '' )
 	LOG_TRACE( 'SetLocalOffset=%d' %aLocalOffset )
 
-	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		xbmc.executehttpapi( 'setlocaloffset(%d)' %aLocalOffset )
 	else :
 		xbmc.setLocalOffset( aLocalOffset )

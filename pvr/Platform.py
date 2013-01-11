@@ -82,6 +82,18 @@ class Platform( object ) :
 		return self.mXBMCVersion
 
 
+	def GetFrodoVersion( self ) :
+		return 12.0
+
+
+	def GetEdenVersion( self ) :
+		return 11.0
+
+
+	def GetDahamaVersion( self ) :
+		return 10.0
+
+
 	def AddLibsToSysPath( self ) :
 
 		libs = [

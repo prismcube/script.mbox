@@ -127,7 +127,6 @@ class FavoriteAddons( BaseWindow ) :
 		self.mFavoriteAddonsIdList = []
 
 		favoriteList = XBMC_GetFavAddons( )
-		self.SyncAddonsList( favoriteList )
 		self.mCtrlCommonList.reset( )
 		self.mCtrlThumbnailList.reset( )
 
@@ -235,21 +234,6 @@ class FavoriteAddons( BaseWindow ) :
 			position = -2
 
 		return position
-
-
-
-	def SyncAddonsList( self, aAddonList ) :
-		addonList = XBMC_GetAddons( )
-		total = len( aAddonList )
-		for i in range( total ) :
-			findaddon = False
-			reversIndex = total - i - 1
-			LOG_TRACE( 'reversindex=%d' %reversIndex )
-			for addon in addonList :
-				if aAddonList[reversIndex] == addon :
-					findaddon = True
-			if findaddon == False :
-				del aAddonList[reversIndex]
 
 
 	def SetFocusList( self, aMode ) :
