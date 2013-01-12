@@ -30,7 +30,7 @@
 						<posy>40</posy>
 						<width>900</width>
 						<height>30</height>
-						<font>font16caps</font>
+						<font>font14</font>
 						<align>left</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>

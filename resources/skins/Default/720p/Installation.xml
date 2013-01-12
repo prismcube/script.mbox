@@ -79,27 +79,27 @@
 				</focusedlayout>
 			</control>
 			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
-				<width>804</width>
-				<height>50</height>
+				<posx>269</posx>
+				<posy>14</posy>
+				<width>802</width>
+				<height>45</height>
 				<texture border="5">black-back2.png</texture>
 			</control>
 			<control type="image">
 				<posx>268</posx>
-				<posy>10</posy>
+				<posy>15</posy>
 				<width>804</width>
-				<height>70</height>
+				<height>68</height>
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="label">
 				<description>header label</description>
 				<posx>300</posx>
-				<posy>20</posy>
+				<posy>35</posy>
 				<width>740</width>
 				<height>30</height>
-				<font>font16caps</font>
+				<font>font14</font>
 				<label>SCRIPT31</label>				
 				<align>left</align>
 				<aligny>center</aligny>
@@ -123,10 +123,10 @@
 				<colordiffuse>AAFFFFFF</colordiffuse>
 			</control>
 			<control type="image">
-				<posx>268</posx>
+				<posx>269</posx>
 				<posy>510</posy>
-				<width>804</width>
-				<height>118</height>
+				<width>802</width>
+				<height>116</height>
 				<texture border="5">black-back2.png</texture>
 			</control>
 			<control type="label">
@@ -167,7 +167,7 @@
 		<control type="image" id="8899">
 			<posx>362</posx>
 			<posy>112</posy>
-			<width>797</width>
+			<width>798</width>
 			<height>446</height>
 			<texture>video_pig_overlay.png</texture>
 			<visible>!Control.IsVisible(8800)</visible>

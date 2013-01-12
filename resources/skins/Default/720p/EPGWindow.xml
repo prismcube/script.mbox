@@ -12,6 +12,7 @@
 		</control>
 		<control type="group">
 			<include>DefaultWindowFade</include>
+			<!--
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -20,6 +21,7 @@
 				<texture border="20">black-back.png</texture>
 				<visible>true</visible>
 			</control>
+			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>128r</posy>

@@ -44,7 +44,7 @@ else:
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mCtrlFavAddonList = None
+		#self.mCtrlFavAddonList = None
 
 
 	def onInit( self ) :
@@ -52,7 +52,7 @@ class MainMenu( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
-		self.GetFavAddons( )
+		#self.GetFavAddons( )
 
 
 	def onAction( self, aAction ) :

@@ -1327,8 +1327,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
 		parselist =  self.GetServerInfo( )
 		if parselist == None :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
 			self.CloseProgress( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
 			return
 
 		LOG_TRACE( 'server info = %s' % parselist )
@@ -1336,8 +1336,8 @@ class SystemUpdate( SettingWindow ) :
 		makelist = self.ParseList( parselist )
 
 		if makelist == None :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 			self.CloseProgress( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 			return
 
 		self.CloseProgress( )
@@ -1367,10 +1367,8 @@ class SystemUpdate( SettingWindow ) :
 			f.close( )
 			return parselist
 
-		except URLError, e:
-			if f.closed == False :
-				f.close( )
-			LOG_ERR( 'Error exception[%s]' % e.reason )
+		except Exception, e:
+			LOG_ERR( 'Error exception[%s]' % e )
 			return None
 
 

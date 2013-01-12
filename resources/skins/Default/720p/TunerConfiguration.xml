@@ -47,7 +47,7 @@
 					<posy>20</posy>
 					<width>740</width>
 					<height>30</height>
-					<font>font16caps</font>
+					<font>font14</font>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>

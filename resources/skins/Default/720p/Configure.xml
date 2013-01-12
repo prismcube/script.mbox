@@ -83,16 +83,16 @@
 			</control>
 			<control type="image">
 				<posx>268</posx>
-				<posy>10</posy>
-				<width>790</width>
-				<height>618</height>
+				<posy>14</posy>
+				<width>800</width>
+				<height>612</height>
 				<texture border="5">black-back2.png</texture>
 			</control>
 			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
+				<posx>266</posx>
+				<posy>15</posy>
 				<width>804</width>
-				<height>100</height>
+				<height>90</height>
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
@@ -102,7 +102,7 @@
 				<posy>20</posy>
 				<width>740</width>
 				<height>30</height>
-				<font>font16caps</font>
+				<font>font14</font>
 				<label>SCRIPT55 - $INFO[Container(9000).ListItem.Label]</label>				
 				<align>left</align>
 				<aligny>center</aligny>
