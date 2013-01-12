@@ -1320,19 +1320,16 @@ class SystemUpdate( SettingWindow ) :
 
 	def UpdateChannel( self ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
-		parselist =  self.GetServerInfo( )
-		if parselist == None :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
+		if self.DownloadInfoFile( ) == False :
 			self.CloseProgress( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
 			return
 
-		LOG_TRACE( 'server info = %s' % parselist )
-
-		makelist = self.ParseList( parselist )
+		makelist = self.ParseList( )
 
 		if makelist == None :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 			self.CloseProgress( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 			return
 
 		self.CloseProgress( )
@@ -1352,35 +1349,27 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
-	def GetServerInfo( self ) :
-		parselist = None
+	def ParseList( self ) :
 		try :
-			import urllib2
-			f = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST, None, 20 )
-			if f :
-				parselist = f.read( )
-			f.close( )
-			return parselist
+			from elementtree import ElementTree
+			tree = ElementTree.parse( '/tmp/channel.xml' )
+			root = tree.getroot( )
 
-		except URLError, e:
-			if f.closed == False :
-				f.close( )
-			LOG_ERR( 'Error exception[%s]' % e.reason )
-			return None
-
-
-	def ParseList( self, aParseInfo ) :
-		try :
-			updatelist = string.split( aParseInfo )
-			templist = []
 			makelist = []
-			if len( updatelist ) % 3 == 0 :
-				for i in range( len( updatelist ) ) :
-					templist.append( updatelist[i] )
-					if ( i + 1 ) % 3 == 0 :
-						makelist.append( templist )
-						templist = []
-				LOG_TRACE( 'makelist = %s' % makelist )
+			templist = []
+
+			for channellist in root.findall( 'channellist' ) :
+				templist = []
+				name = channellist.find( 'name' ).text
+				date = channellist.find( 'date' ).text
+				key = channellist.find( 'key' ).text
+				templist.append( key )
+				templist.append( name )
+				templist.append( date )
+
+				makelist.append( templist )
+
+			if len( makelist ) != 0 :
 				return makelist
 			else :
 				return None
@@ -1413,6 +1402,19 @@ class SystemUpdate( SettingWindow ) :
 			import urllib2
 			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST + '?key=%s' % aKey , None, 20 )
 			output = open( '/tmp/defaultchannel.xml', 'wb' )
+			output.write( updatefile.read( ) )
+			output.close( )
+			return True
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]' % e )
+			return False
+
+
+	def DownloadInfoFile( self ) :
+		try :
+			import urllib2
+			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST, None, 20 )
+			output = open( '/tmp/channel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )
 			return True
