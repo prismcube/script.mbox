@@ -1528,8 +1528,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt )
 
 
-	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer ) :
-		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer )
+	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
+		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
 
 
 	def Timer_AddSeriesTimer( self, aEPGEvent ) :

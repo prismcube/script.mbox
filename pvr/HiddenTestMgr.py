@@ -235,6 +235,19 @@ class WaitEventSuite( TestSuite ) :
 		if aValue == 'stoprecord' :
 			return ElisEventRecordingStopped.getName( )
 
+
+class SendEventSuite( TestSuite ) :
+	def __init__( self, aName, aValue ) :
+		TestSuite.__init__( self, aName, aValue )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mEventName = aValue
+
+
+	def DoCommand( self ) :
+		if self.mEventName == 'settestmode' :
+			self.mCommander.Stress_Test_Mode( 1 )
+
+
 @RunThread
 def StartTest2( aScenario ) :
 	time.sleep( 0.5 )
