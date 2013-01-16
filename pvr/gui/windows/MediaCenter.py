@@ -18,6 +18,8 @@ class MediaCenter( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -26,6 +28,9 @@ class MediaCenter( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -36,9 +41,12 @@ class MediaCenter( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
  
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+
 

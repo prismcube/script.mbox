@@ -76,6 +76,8 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -143,6 +145,9 @@ class Configure( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :		
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -191,6 +196,9 @@ class Configure( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
@@ -385,6 +393,9 @@ class Configure( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )

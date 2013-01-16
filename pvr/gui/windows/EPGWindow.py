@@ -53,6 +53,8 @@ class EPGWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -111,6 +113,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		self.GetFocusId()
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -200,6 +205,8 @@ class EPGWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == BUTTON_ID_EPG_MODE :
 			self.mEventBus.Deregister( self )
@@ -231,7 +238,8 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onEvent( self, aEvent ) :

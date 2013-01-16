@@ -48,6 +48,7 @@ class MainMenu( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -56,6 +57,9 @@ class MainMenu( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -82,6 +86,9 @@ class MainMenu( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
 			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
@@ -162,6 +169,9 @@ class MainMenu( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId == E_FAKE_BUTTON :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 

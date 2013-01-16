@@ -100,7 +100,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
-
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -211,6 +212,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -321,6 +325,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onClick(self, aControlId):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
@@ -379,7 +385,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onFocus(self, controlId):
 		#LOG_TRACE( 'control %d' % controlId )
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def LoadChannelListHash( self ) :

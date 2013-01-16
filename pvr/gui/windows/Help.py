@@ -79,6 +79,8 @@ class Help( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
@@ -98,6 +100,9 @@ class Help( SettingWindow ) :
 
 		
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -108,6 +113,9 @@ class Help( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :		
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId == E_HELP_NEXT :
 			if self.mStepNum == TOTAL_STEPS :
 				self.Close( )
@@ -128,6 +136,9 @@ class Help( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 
