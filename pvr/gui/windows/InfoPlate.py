@@ -53,6 +53,8 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -94,6 +96,9 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -175,6 +180,9 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE )
 
@@ -183,7 +191,8 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def LoadInit( self ):

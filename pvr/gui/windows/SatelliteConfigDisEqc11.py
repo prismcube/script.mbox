@@ -15,6 +15,8 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -40,6 +42,9 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -83,6 +88,9 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 
 		#Satellite
@@ -191,6 +199,9 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :

@@ -9,6 +9,8 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -59,6 +61,9 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -87,6 +92,9 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			self.mIsCloseing = True
@@ -100,6 +108,9 @@ class ChannelSearch( SettingWindow ) :
 				
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 

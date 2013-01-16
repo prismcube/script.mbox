@@ -66,6 +66,8 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -135,6 +137,9 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -278,6 +283,9 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
@@ -325,7 +333,8 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onFocus(self, aControlId):
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def LoadInit( self ):

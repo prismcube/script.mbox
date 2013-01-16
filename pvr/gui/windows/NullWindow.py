@@ -16,6 +16,8 @@ class NullWindow( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		print "Garbage collector: collected %d objects." % (collected)
@@ -84,6 +86,9 @@ class NullWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -378,12 +383,16 @@ class NullWindow( BaseWindow ) :
 
 
 	def onClick(self, aControlId) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+
 		#print "onclick( ): control %s" % aControlId
 
 
 	def onFocus(self, aControlId) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+	
 		#print "onFocus( ): control %s" % aControlId
 		#self.mLastFocusId = aControlId
 
