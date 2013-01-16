@@ -19,6 +19,8 @@ class Installation( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),
 		MR_LANG( 'Antenna Setup' ),
@@ -55,6 +57,9 @@ class Installation( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -68,6 +73,9 @@ class Installation( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
 		if selectedId == MENU_ID_FIRSTINSTALLATION :
@@ -100,5 +108,7 @@ class Installation( BaseWindow ) :
 				dialog.doModal( )
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+
 

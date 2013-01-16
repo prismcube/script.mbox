@@ -54,6 +54,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -133,6 +135,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -204,6 +209,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == BUTTON_ID_VIEW_MODE :
 			self.RestoreLastRecordKey( )		
@@ -248,6 +255,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onFocus( self, controlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 

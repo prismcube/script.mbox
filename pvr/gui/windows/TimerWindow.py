@@ -26,6 +26,8 @@ class TimerWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -76,6 +78,9 @@ class TimerWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -118,12 +123,16 @@ class TimerWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
+		if self.IsActivate( ) == False  :
+			return
+		
 		if aControlId == BUTTON_ID_GO_PARENT :
 			self.GoParentTimer( )
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onEvent( self, aEvent ) :

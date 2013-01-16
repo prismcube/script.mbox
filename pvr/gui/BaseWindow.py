@@ -4,6 +4,7 @@ from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
 from pvr.XBMCInterface import XBMC_GetVolume
+from pvr.Util import SetLock, SetLock2
 
 import sys
 import os
@@ -120,11 +121,22 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
+		self.mIsActivate = False
 
 
 	@classmethod
 	def GetName( cls ):
 		return cls.__name__
+
+
+	def IsActivate( self ) :
+		return self.mIsActivate
+		
+
+	def SetActivate( self, aActivate ) :
+		SetLock2( True )
+		self.mIsActivate = aActivate
+		SetLock2( False )
 
 
 	def SetParentID( self, aWindowID ) :

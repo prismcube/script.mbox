@@ -97,6 +97,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mStepPage              = E_UPDATE_STEP_HOME
 
 	def onInit( self )  :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -125,6 +127,9 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -166,6 +171,9 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
@@ -199,6 +207,9 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 
