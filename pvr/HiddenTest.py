@@ -113,6 +113,8 @@ class HiddenTest( BaseWindow ) :
 			return SleepSuite( aNode.tag, aNode.text )
 		elif aNode.tag.lower( ) == 'waitevent' :
 			return WaitEventSuite( aNode.tag, aNode.text )
+		elif aNode.tag.lower( ) == 'sendevent' :
+			return SendEventSuite( aNode.tag, aNode.text )
 
 
 	def MakeChildLoop( self, aNode ) :
