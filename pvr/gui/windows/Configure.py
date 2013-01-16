@@ -269,6 +269,12 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
 
+
+		elif selectedId == E_PARENTAL and groupId == E_SpinEx02 :
+			self.ControlSelect( )
+			propertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyAge( propertyAge )
+
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )			

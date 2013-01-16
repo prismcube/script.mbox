@@ -123,6 +123,17 @@ def ConnectSocket( ) :
 	return True
 
 
+def CloseSocket( ) :
+	sock.close( )
+
+
+def SendCommand( aCmd ) :
+	if ConnectSocket( ) :
+		msg = struct.pack( '3i', *[ 1, KeyCode[ aCmd ], 0 ] )
+		sock.send( msg )
+		CloseSocket( )
+
+
 @RunThread
 def StartTest( aScenario ) :
 	time.sleep( 0.5 )

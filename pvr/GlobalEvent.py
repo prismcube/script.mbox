@@ -23,6 +23,7 @@ class GlobalEvent( object ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mIsDialogOpend	= False
 		self.mIsHddFullDialogOpened = False
+		self.mEventId = None
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.SendLocalOffsetToXBMC( )		
 
@@ -35,6 +36,32 @@ class GlobalEvent( object ) :
 	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
 			return
+
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+			channel = self.mDataCache.Channel_GetCurrent( )
+			if not channel or channel.mError != 0 :
+				return -1
+
+			if channel.mSid != aEvent.mSid or channel.mTsid != aEvent.mTsid or channel.mOnid != aEvent.mOnid :
+				#LOG_TRACE('ignore event, same event')
+				return -1
+
+			iEPG = self.mDataCache.GetEpgeventCurrent( )
+			if iEPG and iEPG.mError == 0 :
+				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s] age[%s] limit[%s]'% ( aEvent.mEventId, self.mEventId, iEPG.mEventName, iEPG.mAgeRating, self.mDataCache.GetPropertyAge( ) ) )
+			else :
+				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
+
+			if not iEPG or self.mEventId != aEvent.mEventId :
+				self.mEventId = aEvent.mEventId
+				self.mDataCache.Epgevent_GetPresent( )
+				#is Age? agerating check
+				if ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
+					LOG_TRACE('---------------------parentLock')
+					self.mDataCache.SetPincodeDialog( True )
+					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+					thread.start( )
+
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
@@ -69,6 +96,9 @@ class GlobalEvent( object ) :
 			else :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+				self.mDataCache.SetParentLock( True )
+				self.mDataCache.Epgevent_GetPresent( )
+
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
@@ -173,4 +203,40 @@ class GlobalEvent( object ) :
 		self.mDataCache.LoadTime( )
 		localOffset = self.mDataCache.Datetime_GetLocalOffset( )		
 		XBMC_SetLocalOffset( localOffset )
+
+
+	def ShowPincodeDialog( self ) :
+		LOG_TRACE('--------blank m/w[%s] mbox[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank() ) )
+		if not self.mDataCache.Get_Player_AVBlank( ) :
+			self.mDataCache.Player_AVBlank( True )
+		LOG_TRACE('--------blank m/w[%s] mbox[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank() ) )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+		dialog.doModal( )
+
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_TIMESHIFT_PLATE or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+
+			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
+				xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
+				xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
+				xbmc.executebuiltin( 'xbmc.Action(info)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
+				from pvr.HiddenTestMgr import SendCommand
+				SendCommand( 'VKEY_ARCHIVE' )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mDataCache.SetParentLock( False )
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
+
+		self.mDataCache.SetPincodeDialog( False )
 

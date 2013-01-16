@@ -48,7 +48,6 @@ class LivePlate( LivePlateWindow ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )
 
 		self.mLocalTime = 0
-		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mCurrentChannel = None
 		self.mLastChannel = None
 		self.mFakeChannel = None
@@ -132,8 +131,9 @@ class LivePlate( LivePlateWindow ) :
 		else :
 			self.StopAutomaticHide( )
 
-		if self.mPincodeConfirmed :
-			self.ShowPincodeDialog( )
+		if self.mPincodeConfirmed and ( not self.mDataCache.GetPincodeDialog( ) ) :
+			thread = threading.Timer( 0.3, self.ShowPincodeDialog )
+			thread.start( )
 			self.mPincodeConfirmed = False
 
 
@@ -329,7 +329,8 @@ class LivePlate( LivePlateWindow ) :
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				#iEPG = self.mDataCache.Epgevent_GetPresent( )
+				iEPG = self.mDataCache.GetEpgeventCurrent( )
 				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEPG = iEPG
 					self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
@@ -504,8 +505,8 @@ class LivePlate( LivePlateWindow ) :
 	@SetLock
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
 		iEPG = None
-		#iEPG = self.mDataCache.Epgevent_GetCurrent( aSid, aTsid, aOnid )
-		iEPG = self.mDataCache.Epgevent_GetPresent( )
+		#iEPG = self.mDataCache.Epgevent_GetPresent( )
+		iEPG = self.mDataCache.GetEpgeventCurrent( )
 		if iEPG == None or iEPG.mError != 0 :
 			return -1
 
@@ -575,7 +576,8 @@ class LivePlate( LivePlateWindow ) :
 
 				iEPG = None
 				#iEPG = self.mDataCache.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
-				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				#iEPG = self.mDataCache.Epgevent_GetPresent( )
+				iEPG = self.mDataCache.GetEpgeventCurrent( )
 				if iEPG == None or iEPG.mError != 0 :
 					#receive onEvent
 					self.mFlag_OnEvent = True
@@ -678,14 +680,10 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
 
-				"""
 				#is Age? agerating check
-				if self.mFlag_OnEvent == True :
-					isLimit = AgeLimit( self.mPropertyAge, aEpg.mAgeRating )
-					if isLimit == True :
-						self.mPincodeEnter |= FLAG_MASK_ADD
-						LOG_TRACE( 'AgeLimit[%s]'% isLimit )
-				"""
+				if ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
+					thread = threading.Timer( 0.3, self.ShowPincodeDialog )
+					thread.start( )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1046,6 +1044,7 @@ class LivePlate( LivePlateWindow ) :
 			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
 			#self.mFakeChannel.printdebug( )
 			if ret == True :
+				self.mDataCache.SetParentLock( True )
 				self.mCurrentEPG = None
 				self.InitControlGUI( )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
@@ -1087,9 +1086,15 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def ShowPincodeDialog( self ) :
+		if self.mDataCache.GetPincodeDialog( ) :
+			LOG_TRACE( 'Aleady pincode dialog' )
+			return
+
+		self.mDataCache.SetPincodeDialog( True )
 		self.mEventBus.Deregister( self )
 
-		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
+		if self.mCurrentChannel and self.mCurrentChannel.mLocked or \
+		   self.mDataCache.GetParentLock( ) :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
@@ -1110,11 +1115,12 @@ class LivePlate( LivePlateWindow ) :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
-				self.mShowOpenWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				from pvr.HiddenTestMgr import SendCommand
+				SendCommand( 'VKEY_ARCHIVE' )
 
 			else :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mDataCache.SetParentLock( False )
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
 
@@ -1128,5 +1134,6 @@ class LivePlate( LivePlateWindow ) :
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )
 
+		self.mDataCache.SetPincodeDialog( False )
 
 

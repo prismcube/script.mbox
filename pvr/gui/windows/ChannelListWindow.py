@@ -437,7 +437,8 @@ class ChannelListWindow( BaseWindow ) :
 		#self.Epgevent_GetCurrent( )
 		try :
 			iEPG = None
-			iEPG = self.mDataCache.Epgevent_GetPresent( )
+			#iEPG = self.mDataCache.Epgevent_GetPresent( )
+			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			if iEPG and iEPG.mError == 0:
 				self.mNavEpg = iEPG
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
@@ -671,8 +672,9 @@ class ChannelListWindow( BaseWindow ) :
 						#sid  = self.mNavChannel.mSid
 						#tsid = self.mNavChannel.mTsid
 						#onid = self.mNavChannel.mOnid
-						#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-						iEPG = self.mDataCache.Epgevent_GetPresent( )
+						#iEPG = self.mDataCache.Epgevent_GetPresent( )
+						iEPG = self.mDataCache.GetEpgeventCurrent( )
+						
 						if iEPG == None or iEPG.mError != 0 :
 							return -1
 
@@ -811,6 +813,7 @@ class ChannelListWindow( BaseWindow ) :
 					dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mDataCache.SetParentLock( False )
 						if self.mDataCache.Get_Player_AVBlank( ) :
 							self.mDataCache.Player_AVBlank( False )
 
@@ -1548,9 +1551,7 @@ class ChannelListWindow( BaseWindow ) :
 					iEPG = None
 					#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-					iEPG = self.mCommander.Epgevent_GetList( sid, tsid, onid, 0, 0, 1 )
-					if iEPG :
-						iEPG = iEPG[0]
+					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s] epg[%s] gmtTime[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid, iEPG, self.mDataCache.Datetime_GetGMTTime( ) ) )
 					if iEPG == None or iEPG.mError != 0 :
 						self.mNavEpg = 0

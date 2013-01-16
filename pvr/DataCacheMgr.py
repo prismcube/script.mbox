@@ -8,6 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_SetVolume
 
 from pvr.gui.GuiConfig import *
+from pvr.GuiHelper import AgeLimit
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
@@ -107,13 +108,16 @@ class DataCacheMgr( object ) :
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
 		self.mEPGList 							= None
+		self.mEPGData							= None
 
 		self.mChannelListDBTable				= E_TABLE_ALLCHANNEL
-		self.mEpgDB = None
-		self.mChannelDB = None
-		self.mTimerDB = None
-		self.mRecordDB = None
+		self.mEpgDB 							= None
+		self.mChannelDB 						= None
+		self.mTimerDB 							= None
+		self.mRecordDB 							= None
 
+		self.mParentLock						= True
+		self.mIsPincodeDialog					= False
 		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
 		self.mRecoverBlank 						= False
@@ -986,7 +990,12 @@ class DataCacheMgr( object ) :
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
 
+		self.mEPGData = iEPG
 		return iEPG
+
+
+	def GetEpgeventCurrent( self ) :
+		return self.mEPGData
 
 
 	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
@@ -1725,5 +1734,37 @@ class DataCacheMgr( object ) :
 
 	def GetMediaCenter( self ) :
 		return self.mStartMediaCenter
+
+
+	def SetPropertyAge( self, aAge ) :
+		self.mPropertyAge = aAge
+
+
+	def GetPropertyAge( self ) :
+		return self.mPropertyAge
+
+
+	def SetParentLock( self, aLock = True ) :
+		self.mParentLock = aLock
+
+
+	def GetParentLock( self ) :
+		isLimit = False
+
+		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
+		if self.Player_GetStatus( ).mMode == ElisEnum.E_MODE_LIVE and \
+		   self.mParentLock and ( self.mEPGData and self.mEPGData.mError == 0 ) :
+			isLimit = AgeLimit( self.mPropertyAge, self.mEPGData.mAgeRating )
+			LOG_TRACE( 'isLimit[%s]'% isLimit )
+
+		return isLimit
+
+
+	def SetPincodeDialog( self, aOnShow = False ) :
+		self.mIsPincodeDialog = aOnShow
+
+
+	def GetPincodeDialog( self ) :
+		return self.mIsPincodeDialog
 
 
