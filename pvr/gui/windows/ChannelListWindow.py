@@ -804,6 +804,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				LOG_TRACE( 'No exit by pressing the cancel button' )
 
+			"""
 			else :
 				if iChannel.mLocked :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
@@ -820,7 +821,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
-
+			"""
 
 		#refresh info
 		if iChannel :

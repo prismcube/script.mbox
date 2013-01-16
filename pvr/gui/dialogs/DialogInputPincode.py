@@ -37,6 +37,9 @@ class DialogInputPincode( BaseDialog ) :
 		self.mInputNumber = ''		
 		self.mCtrlInputLabel.setLabel( self.mInputNumber )
 
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -44,6 +47,9 @@ class DialogInputPincode( BaseDialog ) :
 			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :

@@ -538,7 +538,12 @@ class ArchiveWindow( BaseWindow ) :
 			currentPlayingRecord = self.mPlayingRecord		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
-				if recInfo.mLocked == True :
+				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
+				if iEPG and iEPG.mError == 0 :
+					LOG_TRACE('----------------pvr ageRating[%s]'% iEPG.mAgeRating )
+				else :
+					LOG_TRACE('----------------pvr epg[%s]'% iEPG )
+				if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
 					if self.CheckPincode( ) == False :
 						return False
 
