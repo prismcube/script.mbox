@@ -13,6 +13,7 @@ class RootWindow( BaseWindow ) :
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
 		if self.mInitialized == False :
+			self.CheckFirstRun( )
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.mInitialized = True
@@ -44,4 +45,19 @@ class RootWindow( BaseWindow ) :
  
 	def onFocus( self, aControlId ) :
 		LOG_TRACE( '' )
+
+
+	def CheckFirstRun( self ) :
+		if CheckDirectory( '/tmp/isrunning' ) :
+			self.mCommander.AppMediaPlayer_Control( 0 )
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				self.mDataCache.Channel_InvalidateCurrent( )
+				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+
+			self.UpdateVolume( )
+			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+			self.mDataCache.SetMediaCenter( False )
+		else :
+			os.system( 'touch /tmp/isrunning' )
 
