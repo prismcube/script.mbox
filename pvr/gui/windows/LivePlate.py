@@ -1062,7 +1062,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
-				self.UpdateChannelAndEPG( iEPG )
+				self.UpdateChannelAndEPG( )
 
 			else :
 				LOG_ERR('Tune failed')

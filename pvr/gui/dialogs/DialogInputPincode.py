@@ -44,6 +44,7 @@ class DialogInputPincode( BaseDialog ) :
 			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 				isClose = True
 			if not isClose :
+				LOG_TRACE( '---------------------Cancel parentLock' )
 				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
