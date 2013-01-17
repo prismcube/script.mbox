@@ -53,8 +53,6 @@ class LivePlate( LivePlateWindow ) :
 		self.mFakeChannel = None
 		self.mZappingMode = None
 		self.mFlag_OnEvent = True
-		self.mPropertyAge = 0
-		self.mPropertyPincode = -1
 		self.mPincodeConfirmed = False
 
 		self.mAutomaticHideTimer = None	
@@ -111,8 +109,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
 
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		self.mBannerTimeout = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -183,20 +180,30 @@ class LivePlate( LivePlateWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-		
+			self.RestartAutomaticHide( )
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :			
 				self.EPGNavigation( PREV_EPG )
+				self.StopAutomaticHide( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-		
+			self.RestartAutomaticHide( )
 			self.GetFocusId( )
-			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG:
+			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG :
 				self.EPGNavigation( NEXT_EPG )
+				self.StopAutomaticHide( )
+
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.RestartAutomaticHide( )
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG or self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :
+				self.StopAutomaticHide( )
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.RestartAutomaticHide( )
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG or self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :
+				self.StopAutomaticHide( )
 
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTune( NEXT_CHANNEL )
@@ -691,10 +698,12 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
 
+				"""
 				#is Age? agerating check
 				if ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
 					thread = threading.Timer( 0.3, self.ShowPincodeDialog )
 					thread.start( )
+				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1014,9 +1023,7 @@ class LivePlate( LivePlateWindow ) :
 	
 	def StartAutomaticHide( self ) :
 		#LOG_TRACE('-----hide START')		
-		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
-		bannerTimeout = prop.GetProp( )
-		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer = threading.Timer( self.mBannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start( )
 
 
@@ -1104,8 +1111,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mDataCache.SetPincodeDialog( True )
 		self.mEventBus.Deregister( self )
 
-		if self.mCurrentChannel and self.mCurrentChannel.mLocked or \
-		   self.mDataCache.GetParentLock( ) :
+		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 

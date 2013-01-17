@@ -1296,7 +1296,8 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_GetInitialBlank( self ) :
-		return self.mCommander.Channel_GetInitialBlank( )
+		self.mAVBlankStatus = self.mCommander.Channel_GetInitialBlank( )
+		return self.mAVBlankStatus
 
 
 	def Get_Player_AVBlank( self ) :
@@ -1313,6 +1314,7 @@ class DataCacheMgr( object ) :
 				self.mRecoverBlank = False
 				if not self.Get_Player_AVBlank( ) :
 					self.Player_AVBlank( True )
+					LOG_TRACE('---------------------last blank')
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1748,13 +1750,21 @@ class DataCacheMgr( object ) :
 		self.mParentLock = aLock
 
 
-	def GetParentLock( self ) :
+	def GetParentLock( self, aCheckEPG = None ) :
 		isLimit = False
 
+		iEPG = self.mEPGData
+		iMode= self.Player_GetStatus( ).mMode
+		iLock= self.mParentLock
+		if aCheckEPG :
+			iEPG = aCheckEPG
+			iMode= ElisEnum.E_MODE_LIVE
+			iLock= True
+
 		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
-		if self.Player_GetStatus( ).mMode == ElisEnum.E_MODE_LIVE and \
-		   self.mParentLock and ( self.mEPGData and self.mEPGData.mError == 0 ) :
-			isLimit = AgeLimit( self.mPropertyAge, self.mEPGData.mAgeRating )
+		if iMode == ElisEnum.E_MODE_LIVE and \
+		   iLock and ( iEPG and iEPG.mError == 0 ) :
+			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating )
 			LOG_TRACE( 'isLimit[%s]'% isLimit )
 
 		return isLimit

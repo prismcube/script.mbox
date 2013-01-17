@@ -18,16 +18,16 @@
 					<texture border="20">DialogBack.png</texture>
 				</control>
 				<control type="image">
-					<posx>30</posx>
-					<posy>10</posy>
-					<width>765</width>
-					<height>618</height>
+					<posx>29</posx>
+					<posy>16</posy>
+					<width>770</width>
+					<height>608</height>
 					<texture border="5">black-back2.png</texture>
 				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>10</posy>
-					<width>804</width>
+					<posy>13</posy>
+					<width>801</width>
 					<height>100</height>
 					<aspectratio>stretch</aspectratio>
 					<texture>GlassTitleBar.png</texture>
