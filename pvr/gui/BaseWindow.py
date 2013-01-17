@@ -8,6 +8,8 @@ from pvr.Util import SetLock, SetLock2
 
 import sys
 import os
+import copy
+
 if sys.version_info < (2, 7):
     import simplejson
 else:
@@ -105,6 +107,14 @@ class Property( object ) :
 			log.debug('ERR listItem=%s name=%s value=%s' % ( aListItem, aName, aValue ) )
 
 
+class RelayAction( object ) :
+	def __init__( self, aActionId ) :
+		self.mActionId = aActionId
+		
+	def getId( self ) :
+		return self.mActionId
+
+
 class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def __init__( self, *args, **kwargs ) :
 		xbmcgui.WindowXML.__init__( self, *args, **kwargs )
@@ -122,6 +132,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
 		self.mIsActivate = False
+		self.mRelayAction = None
 
 
 	@classmethod
@@ -139,6 +150,28 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		SetLock2( False )
 
 
+	def SetRelayAction( self, aAction ) :
+		LOG_TRACE( 'RelayAction TEST = %d' %aAction.getId() )
+		self.mRelayAction = aAction
+		LOG_TRACE( 'RelayAction TEST = %d' %self.mRelayAction.getId() )
+
+	def ClearRelayAction( self ) :
+		LOG_TRACE( 'RelayAction TEST' )	
+		self.mRelayAction = None
+
+
+	def DoRelayAction( self ) :
+		LOG_TRACE( 'RelayAction TEST' )
+		if self.mRelayAction :
+			LOG_TRACE( 'RelayAction TEST = %d' %self.mRelayAction.getId() )
+			LOG_TRACE( 'RelayAction TEST' )
+			self.onAction( self.mRelayAction )
+			LOG_TRACE( 'RelayAction TEST' )
+			self.mRelayAction = None
+	
+		LOG_TRACE( 'RelayAction TEST' )
+
+		
 	def SetParentID( self, aWindowID ) :
 		self.mParentID = aWindowID
 

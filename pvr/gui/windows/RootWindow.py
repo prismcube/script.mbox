@@ -29,7 +29,12 @@ class RootWindow( BaseWindow ) :
 
 		
 	def onAction( self, aAction ) :
-		LOG_TRACE( '' )
+		LOG_TRACE( 'RealyAction TEST action=%d' %aAction.getId() )
+
+		relayAction = RelayAction( aAction.getId() )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).SetRelayAction( relayAction )
+
+
 		"""
 		actionId = aAction.getId( )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
