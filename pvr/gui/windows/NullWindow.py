@@ -71,6 +71,8 @@ class NullWindow( BaseWindow ) :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
 
+		self.DoRelayAction( )
+
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
@@ -86,7 +88,9 @@ class NullWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		LOG_TRACE( 'action=%d' % aAction.getId( ) )
 		if self.IsActivate( ) == False  :
+			LOG_TRACE( 'SKIP' )
 			return
 	
 		actionId = aAction.getId( )

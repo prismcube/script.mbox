@@ -427,7 +427,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@SetLock
-	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :	
 		thumbIcon = 'RecIconSample.png'
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'

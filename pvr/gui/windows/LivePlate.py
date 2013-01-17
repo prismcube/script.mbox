@@ -137,7 +137,9 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
+		LOG_TRACE( 'action=%d' %aAction.getId( ) )	
 		if self.IsActivate( ) == False  :
+			LOG_TRACE( 'SKIP' )		
 			return
 	
 		actionId = aAction.getId( )

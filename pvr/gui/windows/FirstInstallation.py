@@ -11,7 +11,6 @@ class FirstInstallation( FTIWindow ) :
 		self.mConfiguredSatelliteList 	=	[]
 		self.mFormattedList				=	[]
 		self.mSatelliteIndex			=	0
-		self.mLastFocused				=	-1
 
 		self.mDate				= 0
 		self.mTime				= 0
@@ -34,8 +33,7 @@ class FirstInstallation( FTIWindow ) :
 		self.LoadNoSignalState( )
 		self.SetListControl( self.GetFTIStep( ) )
 		self.SetPipLabel( )
-		self.mLastFocused = self.getFocusId( )
-		self.mInitialized = True
+		
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -53,6 +51,7 @@ class FirstInstallation( FTIWindow ) :
 
 		self.SetFirstInstallation( True )
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
@@ -171,13 +170,13 @@ class FirstInstallation( FTIWindow ) :
 	
 		if self.mInitialized == False :
 			return
-		if self.mLastFocused != aControlId :
+		else :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def Close( self ) :
 		self.OpenBusyDialog( )
+		self.mInitialized = False
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
 			self.mDataCache.Channel_ReTune( )
@@ -193,7 +192,6 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def SetListControl( self, aStep ) :
-		self.getControl( 9000 ).setVisible( False )
 		self.ResetAllControl( )
 		self.SetFTIStep( aStep )
 		self.DrawFTIStep( aStep )
@@ -214,8 +212,8 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.setDefaultControl( )
-			self.getControl( 9000 ).setVisible( True )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
@@ -233,8 +231,8 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.setDefaultControl( )
-			self.getControl( 9000 ).setVisible( True )
 
 		elif aStep == E_STEP_ANTENNA :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
@@ -262,8 +260,6 @@ class FirstInstallation( FTIWindow ) :
 				self.mTunerMgr.Load( )
 				self.mTunerMgr.SetNeedLoad( False )
 
-			self.getControl( 9000 ).setVisible( True )
-
 		elif aStep == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.mPrevStepNum = E_STEP_ANTENNA
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
@@ -285,7 +281,6 @@ class FirstInstallation( FTIWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( )
 			self.setDefaultControl( )
-			self.getControl( 9000 ).setVisible( True )
 
 		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
@@ -329,7 +324,6 @@ class FirstInstallation( FTIWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( )
 			self.setDefaultControl( )
-			self.getControl( 9000 ).setVisible( True )
 
 		elif aStep == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
@@ -357,8 +351,8 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.setDefaultControl( )
-			self.getControl( 9000 ).setVisible( True )
 
 
 	def GotoAntennaNextStep( self ) :

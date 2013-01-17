@@ -148,7 +148,8 @@ class WindowMgr( object ) :
 					self.mWindows[aWindowId].SetParentID( WIN_ID_NULLWINDOW )
 				SetLock2( True )
 				self.mLastId = aWindowId
-				SetLock2( False )				
+				SetLock2( False )
+				self.mWindows[self.mLastId].ClearRelayAction( )
 				self.mWindows[currentId].close( )
 				self.mWindows[currentId].SetActivate( False )				
 

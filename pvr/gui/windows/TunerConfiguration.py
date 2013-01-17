@@ -12,7 +12,6 @@ class TunerConfiguration( FTIWindow ) :
 		self.mListItems			= []
 		self.mConfiguredCount	= 0
 		self.mCtrlMainList		= None
-		self.mInitialized		= False
 
 
 	def onInit( self ) :
