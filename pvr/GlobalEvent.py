@@ -86,15 +86,7 @@ class GlobalEvent( object ) :
 			self.CheckParentLock( E_PARENTLOCK_INIT )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				iconIndex = ElisEnum.E_ICON_1080i
-				if aEvent.mVideoHeight <= 576 :
-					iconIndex = -1
-				elif aEvent.mVideoHeight <= 720 :
-					iconIndex = ElisEnum.E_ICON_720p
-
-				self.mDataCache.Frontdisplay_Resolution( iconIndex )
+			self.mDataCache.Frontdisplay_ResolutionByIdentified( aEvent )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) not in AUTOPOWERDOWN_EXCEPTWINDOW :
@@ -207,9 +199,9 @@ class GlobalEvent( object ) :
 					self.mDataCache.Player_AVBlank( True )
 
 				self.mDataCache.SetPincodeDialog( True )
-				self.ShowPincodeDialog( )
-				#thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-				#thread.start( )
+				#self.ShowPincodeDialog( )
+				thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+				thread.start( )
 			else :
 				self.mDataCache.Player_AVBlank( False )
 
@@ -228,17 +220,17 @@ class GlobalEvent( object ) :
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
 						LOG_TRACE('---------------------parentLock')
 						self.mDataCache.SetPincodeDialog( True )
-						self.ShowPincodeDialog( )
-						#thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-						#thread.start( )
+						#self.ShowPincodeDialog( )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread.start( )
 
 				else :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if iChannel and ( not iChannel.mLocked ) and self.mDataCache.Get_Player_AVBlank( ) :
+						LOG_TRACE( '--------------- Release parentLock' )
 						self.mDataCache.Player_AVBlank( False )
 
 
-	@RunThread
 	def ShowPincodeDialog( self ) :
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
