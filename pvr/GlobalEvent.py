@@ -6,6 +6,8 @@ import pvr.ElisMgr
 AUTOPOWERDOWN_EXCEPTWINDOW = [ WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_FIRST_INSTALLATION ]
 gGlobalEvent = None
 
+E_PARENTLOCK_INIT = 0
+E_PARENTLOCK_EIT  = 1
 
 def GetInstance( ) :
 	global gGlobalEvent
@@ -23,6 +25,7 @@ class GlobalEvent( object ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mIsDialogOpend	= False
 		self.mIsHddFullDialogOpened = False
+		self.mEventId = None
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.SendLocalOffsetToXBMC( )		
 
@@ -35,6 +38,15 @@ class GlobalEvent( object ) :
 	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
 			return
+
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+			channel = self.mDataCache.Channel_GetCurrent( )
+			if not channel or channel.mError != 0 :
+				return -1
+			if channel.mSid != aEvent.mSid or channel.mTsid != aEvent.mTsid or channel.mOnid != aEvent.mOnid :
+				#LOG_TRACE('ignore event, same event')
+				return -1
+			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
@@ -60,15 +72,17 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
-				self.mDataCache.Frontdisplay_Resolution( )
+				#self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'False' )
-				self.mDataCache.Frontdisplay_Resolution( )
+				#self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 			else :
+				self.CheckParentLock( E_PARENTLOCK_INIT )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
@@ -92,7 +106,8 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
-			self.mDataCache.Player_AVBlank( False )
+			self.mDataCache.Channel_GetInitialBlank( )
+			self.CheckParentLock( E_PARENTLOCK_INIT )
 			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
@@ -120,7 +135,8 @@ class GlobalEvent( object ) :
 			time.sleep( 1 )
 
 		time.sleep( 1 )
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+		self.CheckParentLock( E_PARENTLOCK_INIT )
 		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
@@ -173,4 +189,83 @@ class GlobalEvent( object ) :
 		self.mDataCache.LoadTime( )
 		localOffset = self.mDataCache.Datetime_GetLocalOffset( )		
 		XBMC_SetLocalOffset( localOffset )
+
+
+	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None ) :
+		if aCmd == E_PARENTLOCK_INIT :
+			#default blank
+			self.mDataCache.SetParentLock( True )
+			self.mDataCache.Epgevent_GetPresent( )
+			iEPG = self.mDataCache.GetEpgeventCurrent( )
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG )  )
+
+			if iChannel and iChannel.mLocked or \
+			   iEPG and ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
+
+				self.mDataCache.SetPincodeDialog( True )
+				thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+				thread.start( )
+			else :
+				self.mDataCache.Player_AVBlank( False )
+
+		elif aCmd == E_PARENTLOCK_EIT :
+			iEPG = self.mDataCache.GetEpgeventCurrent( )
+			if iEPG and iEPG.mError == 0 :
+				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s] age[%s] limit[%s]'% ( aEvent.mEventId, self.mEventId, iEPG.mEventName, iEPG.mAgeRating, self.mDataCache.GetPropertyAge( ) ) )
+			else :
+				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
+
+			if not iEPG or self.mEventId != aEvent.mEventId :
+				self.mEventId = aEvent.mEventId
+				self.mDataCache.Epgevent_GetPresent( )
+				#is Age? agerating check
+				if self.mDataCache.GetParentLock( ) :
+					if ( not self.mDataCache.GetPincodeDialog( ) ) :
+						LOG_TRACE('---------------------parentLock')
+						self.mDataCache.SetPincodeDialog( True )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread.start( )
+
+				else :
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					if iChannel and ( not iChannel.mLocked ) and self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( False )
+
+
+	def ShowPincodeDialog( self ) :
+		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
+		if not self.mDataCache.Get_Player_AVBlank( ) :
+			self.mDataCache.Player_AVBlank( True )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+		dialog.doModal( )
+
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_TIMESHIFT_PLATE or \
+		   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+
+			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
+				xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
+				xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
+				xbmc.executebuiltin( 'xbmc.Action(info)' )
+
+			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
+				from pvr.HiddenTestMgr import SendCommand
+				SendCommand( 'VKEY_ARCHIVE' )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mDataCache.SetParentLock( False )
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
+
+		self.mDataCache.SetPincodeDialog( False )
 

@@ -85,6 +85,8 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -152,6 +154,9 @@ class Configure( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :		
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -200,6 +205,9 @@ class Configure( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
@@ -288,6 +296,12 @@ class Configure( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
+
+
+		elif selectedId == E_PARENTAL and groupId == E_SpinEx02 :
+			self.ControlSelect( )
+			propertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyAge( propertyAge )
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -399,6 +413,9 @@ class Configure( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )

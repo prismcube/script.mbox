@@ -75,6 +75,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
@@ -182,6 +184,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -342,6 +347,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onClick( self, aControlId ):
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId >= E_CONTROL_ID_BUTTON_REWIND and aControlId <= E_CONTROL_ID_BUTTON_JUMP_FF :
 			self.StopAutomaticHide( )
 			self.TimeshiftAction( aControlId )
@@ -397,7 +405,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onFocus( self, aControlId ):
 		#LOG_TRACE( 'control %d' % controlId )
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onEvent( self, aEvent ) :

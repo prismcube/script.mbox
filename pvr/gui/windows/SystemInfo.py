@@ -70,6 +70,8 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onInit( self )  :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -139,6 +141,9 @@ class SystemInfo( SettingWindow ) :
 				if count == self.LIMIT:
 					break
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -187,10 +192,14 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
