@@ -203,28 +203,7 @@ class NullWindow( BaseWindow ) :
 					if iCurrentCh.mNumber != int(inputNumber) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
-							if jumpChannel.mLocked :
-								if not self.mDataCache.Get_Player_AVBlank( ) :
-									self.mDataCache.Player_AVBlank( True )
-								dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-								dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
-								dialog.doModal( )
-
-								if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
-									xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
-
-								elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
-									xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
-
-								if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-									if self.mDataCache.Get_Player_AVBlank( ) :
-										self.mDataCache.Player_AVBlank( False )
-							else :
-								if self.mDataCache.Get_Player_AVBlank( ) :
-									self.mDataCache.Player_AVBlank( False )
-
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
-
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )

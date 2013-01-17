@@ -720,22 +720,8 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
-
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.UpdateChannelList( )
-
-			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
-				pass
-				"""
-				ch = self.mDataCache.Channel_GetCurrent( )
-				isLimit = False
-				if self.mNavEpg :
-					isLimit = AgeLimit( self.mAgeLimit, self.mNavEpg.mAgeRating )
-
-				if ch.mLocked or isLimit :
-					pass
-					#ToDO : pincode question
-				"""
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -810,25 +796,6 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 				LOG_TRACE( 'No exit by pressing the cancel button' )
-
-			"""
-			else :
-				if iChannel.mLocked :
-					if not self.mDataCache.Get_Player_AVBlank( ) :
-						self.mDataCache.Player_AVBlank( True )
-
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-					dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
-					dialog.doModal( )
-					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mDataCache.SetParentLock( False )
-						if self.mDataCache.Get_Player_AVBlank( ) :
-							self.mDataCache.Player_AVBlank( False )
-
-				else :
-					if self.mDataCache.Get_Player_AVBlank( ) :
-						self.mDataCache.Player_AVBlank( False )
-			"""
 
 		#refresh info
 		if iChannel :
@@ -1718,15 +1685,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
-
-
-				"""
-				#is Age? agerating check
-				isLimit = AgeLimit( self.mAgeLimit, self.mNavEpg.mAgeRating )
-				if isLimit == True :
-					#ToDO : popup
-					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
-				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )

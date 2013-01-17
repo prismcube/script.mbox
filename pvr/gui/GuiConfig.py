@@ -237,6 +237,8 @@ E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
 E_DIALOG_STATE_ERROR	= 4
 
+E_CHECK_PARENTLOCK		= 1
+
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'

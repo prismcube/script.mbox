@@ -79,10 +79,11 @@ class GlobalEvent( object ) :
 				#self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 			else :
-				self.CheckParentLock( E_PARENTLOCK_INIT )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
+		elif aEvent.getName( ) == ElisEventChannelChangeResult( ).getName( ) :
+			self.CheckParentLock( E_PARENTLOCK_INIT )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
@@ -206,8 +207,9 @@ class GlobalEvent( object ) :
 					self.mDataCache.Player_AVBlank( True )
 
 				self.mDataCache.SetPincodeDialog( True )
-				thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-				thread.start( )
+				self.ShowPincodeDialog( )
+				#thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+				#thread.start( )
 			else :
 				self.mDataCache.Player_AVBlank( False )
 
@@ -226,8 +228,9 @@ class GlobalEvent( object ) :
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
 						LOG_TRACE('---------------------parentLock')
 						self.mDataCache.SetPincodeDialog( True )
-						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-						thread.start( )
+						self.ShowPincodeDialog( )
+						#thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						#thread.start( )
 
 				else :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -235,6 +238,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_AVBlank( False )
 
 
+	@RunThread
 	def ShowPincodeDialog( self ) :
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
@@ -242,6 +246,7 @@ class GlobalEvent( object ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+		dialog.SetCheckStatus( E_CHECK_PARENTLOCK )
 		dialog.doModal( )
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or \
@@ -259,8 +264,9 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
-				from pvr.HiddenTestMgr import SendCommand
-				SendCommand( 'VKEY_ARCHIVE' )
+				#from pvr.HiddenTestMgr import SendCommand
+				#SendCommand( 'VKEY_ARCHIVE' )
+				xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.mDataCache.SetParentLock( False )

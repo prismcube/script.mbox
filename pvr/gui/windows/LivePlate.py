@@ -125,15 +125,15 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
 
-		if self.mAutomaticHide :
-			self.StartAutomaticHide( )
-		else :
-			self.StopAutomaticHide( )
-
 		if self.mPincodeConfirmed and ( not self.mDataCache.GetPincodeDialog( ) ) :
 			thread = threading.Timer( 0.3, self.ShowPincodeDialog )
 			thread.start( )
 			self.mPincodeConfirmed = False
+
+		if self.mAutomaticHide :
+			self.StartAutomaticHide( )
+		else :
+			self.StopAutomaticHide( )
 
 
 	def onAction( self, aAction ) :
@@ -388,7 +388,8 @@ class LivePlate( LivePlateWindow ) :
 			#	LOG_TRACE('----------------------------receive epg')
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
-				pass
+				iEPG = self.mDataCache.GetEpgeventCurrent( )
+				self.UpdateChannelAndEPG( iEPG )
 
 			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -695,13 +696,6 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
-
-				"""
-				#is Age? agerating check
-				if ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
-					thread = threading.Timer( 0.3, self.ShowPincodeDialog )
-					thread.start( )
-				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1010,8 +1004,8 @@ class LivePlate( LivePlateWindow ) :
 	def AsyncAutomaticHide( self ) :
 		#LOG_TRACE('DO WinId=%s'% xbmcgui.getCurrentWindowId( ) )
 		#LOG_TRACE('DO DlgWinId=%s'% xbmcgui.getCurrentWindowDialogId( ) )
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-		#self.Close( )
+		if not self.mDataCache.GetPincodeDialog( ) :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def RestartAutomaticHide( self ) :
@@ -1066,8 +1060,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
-				self.UpdateChannelAndEPG( )
-				self.ShowPincodeDialog( )
+				self.UpdateChannelAndEPG( iEPG )
 
 			else :
 				LOG_ERR('Tune failed')
@@ -1130,8 +1123,9 @@ class LivePlate( LivePlateWindow ) :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_ARCHIVE_WINDOW :
-				from pvr.HiddenTestMgr import SendCommand
-				SendCommand( 'VKEY_ARCHIVE' )
+				#from pvr.HiddenTestMgr import SendCommand
+				#SendCommand( 'VKEY_ARCHIVE' )
+				xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
 
 			else :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
