@@ -103,9 +103,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.AddEnumControl( E_DialogSpinEx01, 'HDMI Format' )
 			self.AddEnumControl( E_DialogSpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ) )
 			self.AddEnumControl( E_DialogSpinEx03, 'HDMI Color Space' )
-			self.AddEnumControl( E_DialogSpinEx04, 'TV System' )
 			
-			visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+			visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
@@ -116,7 +115,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 		self.SetAutoHeight( True )
