@@ -188,6 +188,7 @@ class DataCacheMgr( object ) :
 	def Load( self ) :
 
 		self.LoadVolumeToSetGUI( )
+		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
 		self.LoadZappingmode( )
@@ -1603,6 +1604,26 @@ class DataCacheMgr( object ) :
 
 		#LOG_TRACE('---------Front aResolution[%s] mIsHD[%s]'% ( aResolution, mIsHD ) )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, mIsHD )
+
+
+	def Frontdisplay_ResolutionByIdentified( self, aEvent = None ) :
+		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+		iconIndex = ElisEnum.E_ICON_1080i
+		if not aEvent :
+			if hdmiFormat == '576p' :
+				iconIndex = -1
+			elif hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+
+			self.Frontdisplay_Resolution( iconIndex )
+		else :
+			if hdmiFormat == 'Automatic' :
+				if aEvent.mVideoHeight <= 576 :
+					iconIndex = -1
+				elif aEvent.mVideoHeight <= 720 :
+					iconIndex = ElisEnum.E_ICON_720p
+
+				self.Frontdisplay_Resolution( iconIndex )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
