@@ -539,7 +539,7 @@
 								<posy>5</posy>
 								<width>82</width>
 								<height>20</height>
-								<texture>dolbydigitalplus.png</texture>
+								<texture>dolbydigital.png</texture>
 							</control>
 						</control>
 						<control type="group" id="312">

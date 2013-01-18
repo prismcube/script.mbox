@@ -360,7 +360,7 @@
 								<posy>6</posy>
 								<width>102</width>
 								<height>26</height>
-								<texture>dolbydigitalplus.png</texture>
+								<texture>dolbydigital.png</texture>
 							</control>
 						</control>
 						<control type="group" id="607">
