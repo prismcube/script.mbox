@@ -62,17 +62,17 @@
 			</control>
 
 			<control type="image" id="202">
-				<posx>575</posx>
-				<posy>90</posy>
-				<width>90</width>
-				<height>40</height>
+				<posx>610</posx>
+				<posy>97</posy>
+				<width>102</width>
+				<height>26</height>
 				<texture>dolbydigital.png</texture>
 				<visible>substring(Window.Property(HasDolby),true)</visible>					
 				<description>audio dolby</description>
 			</control>
 
 			<control type="image" id="203">
-				<posx>655</posx>
+				<posx>730</posx>
 				<posy>90</posy>
 				<width>90</width>
 				<height>40</height>
