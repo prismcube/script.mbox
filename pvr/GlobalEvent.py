@@ -193,15 +193,15 @@ class GlobalEvent( object ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG )  )
 
-			if iChannel and iChannel.mLocked or \
-			   iEPG and ( not self.mDataCache.GetPincodeDialog( ) ) and self.mDataCache.GetParentLock( ) :
+			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 				if not self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( True )
 
-				self.mDataCache.SetPincodeDialog( True )
-				#self.ShowPincodeDialog( )
-				thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-				thread.start( )
+				if ( not self.mDataCache.GetPincodeDialog( ) ) :
+					self.mDataCache.SetPincodeDialog( True )
+					#self.ShowPincodeDialog( )
+					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+					thread.start( )
 			else :
 				self.mDataCache.Player_AVBlank( False )
 
