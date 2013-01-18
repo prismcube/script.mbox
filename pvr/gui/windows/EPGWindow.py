@@ -53,6 +53,8 @@ class EPGWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -111,6 +113,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		self.GetFocusId()
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -200,6 +205,8 @@ class EPGWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == BUTTON_ID_EPG_MODE :
 			self.mEventBus.Deregister( self )
@@ -231,7 +238,8 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onEvent( self, aEvent ) :
@@ -1220,6 +1228,7 @@ class EPGWindow( BaseWindow ) :
 				return
 
 			if self.mSelectChannel.mNumber != self.mCurrentChannel.mNumber :
+				"""
 				if self.mSelectChannel.mLocked == True :
 					if self.ShowPincodeDialog( ) == False :
 						return
@@ -1227,6 +1236,7 @@ class EPGWindow( BaseWindow ) :
 				else :
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
+				"""
 
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 					self.mDataCache.Player_Stop( )
@@ -1234,20 +1244,21 @@ class EPGWindow( BaseWindow ) :
 				self.mCurrentChannel = self.mSelectChannel
 				self.UpdateCurrentChannel( )				
 
-			"""
 			channel = self.mDataCache.Channel_GetCurrent( )
+			"""
 			if channel.mLocked == True :
 				if self.ShowPincodeDialog( ) == False :
 					return
+			"""
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
 			self.RestartEPGUpdateTimer( 5 )
-			"""
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				LOG_TRACE( '' )
 				channel = self.mChannelList[ selectedPos ]
+				"""
 				if channel.mLocked == True :				
 					if self.ShowPincodeDialog( ) == False :
 						return
@@ -1255,6 +1266,7 @@ class EPGWindow( BaseWindow ) :
 				else :
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
+				"""
 
 				self.StopEPGUpdateTimer( )
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -1369,6 +1381,7 @@ class EPGWindow( BaseWindow ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
 
+		self.mDataCache.SetPincodeDialog( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 		dialog.doModal( )
@@ -1376,13 +1389,15 @@ class EPGWindow( BaseWindow ) :
 		ret = False
 		
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
 
 			ret = True
 
 		self.mEventBus.Register( self )
-		
+		self.mDataCache.SetPincodeDialog( False )
+
 		return ret
 
 

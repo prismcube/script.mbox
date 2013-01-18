@@ -39,6 +39,8 @@ class FavoriteAddons( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 01'
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 02'
@@ -76,6 +78,9 @@ class FavoriteAddons( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -90,6 +95,9 @@ class FavoriteAddons( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if aControlId == BUTTON_ID_VIEW_MODE :	
 			if self.mViewMode == E_VIEW_MODE_LIST :
 				self.mViewMode = E_VIEW_MODE_THUMBNAIL
@@ -120,7 +128,8 @@ class FavoriteAddons( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def UpdateListItem( self ) :

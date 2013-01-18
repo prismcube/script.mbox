@@ -14,6 +14,7 @@ from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.DataCacheMgr
 from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom
+from pvr.Util import SetLock, SetLock2
 
 
 WIN_ID_ROOTWINDOW 					= 0
@@ -134,21 +135,29 @@ class WindowMgr( object ) :
 				LOG_ERR( 'Invalid Window ID=%d' %aWindowId )
 				return
 				
-			if self.mLastId > 0 :
-				LOG_TRACE( 'LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+			currentId = self.mLastId
+			
+			if currentId > 0 :
+				LOG_TRACE( 'LastWindow=%s' %self.mWindows[currentId].GetName( ) )		
 				if aParentId == 0 :
-					self.mWindows[aWindowId].SetParentID( self.mLastId )
+					self.mWindows[aWindowId].SetParentID( currentId )
 				elif aParentId > 0 :
 					self.mWindows[aWindowId].SetParentID( aParentId )				
 				else :
 					LOG_ERR( 'Invalid Parent Window ID=%d' %aParentId )
 					self.mWindows[aWindowId].SetParentID( WIN_ID_NULLWINDOW )
-				self.mWindows[self.mLastId].close( )
+				SetLock2( True )
+				self.mLastId = aWindowId
+				SetLock2( False )
+				self.mWindows[self.mLastId].ClearRelayAction( )
+				self.mWindows[currentId].close( )
+				self.mWindows[currentId].SetActivate( False )				
+
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
 
 			LOG_ERR( 'ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )
-			self.mLastId = aWindowId
+			#self.mLastId = aWindowId
 			#self.mWindows[aWindowId].doModal( )
 
 		except Exception, ex :
@@ -158,21 +167,25 @@ class WindowMgr( object ) :
 
 	def CloseWindow( self ) :
 		try :
-			if self.mLastId  > 0 :
-				parentId = self.mWindows[self.mLastId].GetParentID( )			
-				LOG_ERR( 'LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
-				self.mWindows[self.mLastId].close( )
+			currentId = self.mLastId
+			if currentId  > 0 :
+				parentId = self.mWindows[currentId].GetParentID( )			
+				LOG_ERR( 'LastWindow=%s' %self.mWindows[currentId].GetName( ) )		
 				if parentId > 0 :
-					self.mLastId = parentId
-					LOG_ERR( 'ShowWindow=%s' %self.mWindows[parentId].GetName( ) )									
-					self.mWindows[parentId].doModal( )
+					LOG_ERR( 'ShowWindow=%s' %self.mWindows[parentId].GetName( ) )
+					SetLock2( True )					
+					self.mLastId = parentId					
+					SetLock2( False )
+					self.mWindows[currentId].close( )
+					self.mWindows[currentId].SetActivate( False )										
+					#self.mWindows[parentId].doModal( )
 				else :				
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
 			else :
-				LOG_ERR( 'Invaild Window ID=%d' %self.mLastId )
+				LOG_ERR( 'Invaild Window ID=%d' %currentId )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

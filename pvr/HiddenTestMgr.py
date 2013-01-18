@@ -123,6 +123,17 @@ def ConnectSocket( ) :
 	return True
 
 
+def CloseSocket( ) :
+	sock.close( )
+
+
+def SendCommand( aCmd ) :
+	if ConnectSocket( ) :
+		msg = struct.pack( '3i', *[ 1, KeyCode[ aCmd ], 0 ] )
+		sock.send( msg )
+		CloseSocket( )
+
+
 @RunThread
 def StartTest( aScenario ) :
 	time.sleep( 0.5 )
@@ -234,6 +245,19 @@ class WaitEventSuite( TestSuite ) :
 	def MappingEventName( self, aValue ) :
 		if aValue == 'stoprecord' :
 			return ElisEventRecordingStopped.getName( )
+
+
+class SendEventSuite( TestSuite ) :
+	def __init__( self, aName, aValue ) :
+		TestSuite.__init__( self, aName, aValue )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mEventName = aValue
+
+
+	def DoCommand( self ) :
+		if self.mEventName == 'settestmode' :
+			self.mCommander.Stress_Test_Mode( 1 )
+
 
 @RunThread
 def StartTest2( aScenario ) :

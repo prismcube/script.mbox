@@ -17,6 +17,12 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
+E_VIDEO_HDMI			= 0
+E_VIDEO_ANALOG			= 1
+
+E_16_9					= 0
+E_4_3					= 1
+
 TIME_SEC_CHECK_NET_STATUS = 0.05
 
 
@@ -74,14 +80,19 @@ class Configure( SettingWindow ) :
 		self.mEnableLocalThread = False
 		self.mProgressThread	= None
 
+		self.mVideoOutput		= E_VIDEO_HDMI
+		self.mAnalogAscpect		= E_16_9
+
 
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
 		MR_LANG( 'Recording Option' ),
 		MR_LANG( 'Audio Setting' ),
-		MR_LANG( 'HDMI Setting' ),
+		MR_LANG( 'Video Setting' ),
 		MR_LANG( 'Network Setting' ),
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'HDD Format' ),
@@ -143,6 +154,9 @@ class Configure( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :		
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -191,6 +205,9 @@ class Configure( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
@@ -218,17 +235,28 @@ class Configure( SettingWindow ) :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
 
-		elif selectedId == E_HDMI_SETTING and groupId == E_SpinEx01 :
-			self.ControlSelect( )
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				return
-			iconIndex = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '720p' :
-				iconIndex = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				iconIndex = -1
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+		elif selectedId == E_HDMI_SETTING :
+			if groupId == E_SpinEx01 :
+				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
+				self.SetListControl( )
+
+			if self.mVideoOutput == E_VIDEO_HDMI :
+				self.ControlSelect( )
+				if groupId == E_SpinEx02 :					
+					hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+					if hdmiFormat == 'Automatic' :
+						return
+					iconIndex = ElisEnum.E_ICON_1080i
+					if hdmiFormat == '720p' :
+						iconIndex = ElisEnum.E_ICON_720p
+					elif hdmiFormat == '576p' :
+						iconIndex = -1
+					self.mDataCache.Frontdisplay_Resolution( iconIndex )
+			else :
+				self.ControlSelect( )
+				if groupId == E_SpinEx02 :
+					self.mAnalogAscpect = self.GetSelectedIndex( E_SpinEx02 )
+					self.SetListControl( ) 
 
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -268,6 +296,12 @@ class Configure( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
+
+
+		elif selectedId == E_PARENTAL and groupId == E_SpinEx02 :
+			self.ControlSelect( )
+			propertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyAge( propertyAge )
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -379,6 +413,9 @@ class Configure( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -423,7 +460,6 @@ class Configure( SettingWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( E_LANGUAGE )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -443,7 +479,6 @@ class Configure( SettingWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( E_PARENTAL )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -462,7 +497,6 @@ class Configure( SettingWindow ) :
 			
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -479,25 +513,41 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_HDMI_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
-			self.AddEnumControl( E_SpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI color space' ) )
-			self.AddEnumControl( E_SpinEx04, 'TV System', None, MR_LANG( 'Set your TV system format' ) )
+			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+			if self.mVideoOutput == E_VIDEO_HDMI :
+				self.AddEnumControl( E_SpinEx02, 'HDMI Format', MR_LANG( ' - HDMI Format' ), MR_LANG( 'Set the display\'s HDMI resolution' ) )
+				self.AddEnumControl( E_SpinEx03, 'Show 4:3', MR_LANG( ' - TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
+				self.AddEnumControl( E_SpinEx04, 'HDMI Color Space', MR_LANG( ' - HDMI Color Space' ), MR_LANG( 'Set RGB or YUV for HDMI color space' ) )
+				
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			self.SetVisibleControls( hideControlIds, False )
+				hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				self.SetVisibleControls( hideControlIds, False )
 
-			self.InitControl( )
-			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
+				self.InitControl( )
+				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+			else :
+				self.AddEnumControl( E_SpinEx02, 'TV Aspect', MR_LANG( ' - TV Aspect Ratio' ), MR_LANG( 'Set aspect ratio of your TV' ) )
+				if self.mAnalogAscpect == E_16_9 :
+					self.AddEnumControl( E_SpinEx03, 'Picture 16:9', MR_LANG( ' - Picture Format' ), MR_LANG( 'Set picture format according to TV aspect ratio' ) )
+				else :
+					self.AddEnumControl( E_SpinEx03, 'Picture 4:3', MR_LANG( ' - Picture Format' ), MR_LANG( 'Set picture format according to TV aspect ratio' ) )
+
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				self.SetVisibleControls( hideControlIds, False )
+
+				self.InitControl( )
+				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
 		elif selectedId == E_NETWORK_SETTING :
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
@@ -587,7 +637,6 @@ class Configure( SettingWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( E_TIME_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )	
-			return
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -608,7 +657,6 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -623,7 +671,6 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -642,7 +689,6 @@ class Configure( SettingWindow ) :
 
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
 
 		else :
 			LOG_ERR( 'Cannot find selected ID' )

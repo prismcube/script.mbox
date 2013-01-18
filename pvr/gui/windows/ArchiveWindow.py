@@ -54,6 +54,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -133,6 +135,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -204,6 +209,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == BUTTON_ID_VIEW_MODE :
 			self.RestoreLastRecordKey( )		
@@ -248,6 +255,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onFocus( self, controlId ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		if self.mInitialized == False :
 			return
 
@@ -417,7 +427,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@SetLock
-	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :	
 		thumbIcon = 'RecIconSample.png'
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
@@ -538,7 +548,9 @@ class ArchiveWindow( BaseWindow ) :
 			currentPlayingRecord = self.mPlayingRecord		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
-				if recInfo.mLocked == True :
+				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
+				#iEPG.printdebug()
+				if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
 					if self.CheckPincode( ) == False :
 						return False
 

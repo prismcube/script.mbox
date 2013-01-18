@@ -1,6 +1,6 @@
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import BaseWindow, LivePlateWindow, Action
+from pvr.gui.BaseWindow import BaseWindow, LivePlateWindow, Action, RelayAction
 from pvr.gui.BaseDialog import BaseDialog, SettingDialog
 from pvr.gui.SettingWindow import SettingWindow
 from pvr.Util import RunThread, SetLock, SetLock2, TimeToString, TimeFormatEnum

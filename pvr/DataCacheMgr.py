@@ -8,6 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_SetVolume
 
 from pvr.gui.GuiConfig import *
+from pvr.GuiHelper import AgeLimit
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
@@ -107,13 +108,16 @@ class DataCacheMgr( object ) :
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
 		self.mEPGList 							= None
+		self.mEPGData							= None
 
 		self.mChannelListDBTable				= E_TABLE_ALLCHANNEL
-		self.mEpgDB = None
-		self.mChannelDB = None
-		self.mTimerDB = None
-		self.mRecordDB = None
+		self.mEpgDB 							= None
+		self.mChannelDB 						= None
+		self.mTimerDB 							= None
+		self.mRecordDB 							= None
 
+		self.mParentLock						= True
+		self.mIsPincodeDialog					= False
 		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
 		self.mRecoverBlank 						= False
@@ -184,6 +188,7 @@ class DataCacheMgr( object ) :
 	def Load( self ) :
 
 		self.LoadVolumeToSetGUI( )
+		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
 		self.LoadZappingmode( )
@@ -986,7 +991,12 @@ class DataCacheMgr( object ) :
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
 
+		self.mEPGData = iEPG
 		return iEPG
+
+
+	def GetEpgeventCurrent( self ) :
+		return self.mEPGData
 
 
 	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
@@ -1287,7 +1297,8 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_GetInitialBlank( self ) :
-		return self.mCommander.Channel_GetInitialBlank( )
+		self.mAVBlankStatus = self.mCommander.Channel_GetInitialBlank( )
+		return self.mAVBlankStatus
 
 
 	def Get_Player_AVBlank( self ) :
@@ -1304,6 +1315,7 @@ class DataCacheMgr( object ) :
 				self.mRecoverBlank = False
 				if not self.Get_Player_AVBlank( ) :
 					self.Player_AVBlank( True )
+					LOG_TRACE('---------------------last blank')
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1528,8 +1540,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt )
 
 
-	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer ) :
-		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer )
+	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
+		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
 
 
 	def Timer_AddSeriesTimer( self, aEPGEvent ) :
@@ -1592,6 +1604,26 @@ class DataCacheMgr( object ) :
 
 		#LOG_TRACE('---------Front aResolution[%s] mIsHD[%s]'% ( aResolution, mIsHD ) )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, mIsHD )
+
+
+	def Frontdisplay_ResolutionByIdentified( self, aEvent = None ) :
+		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+		iconIndex = ElisEnum.E_ICON_1080i
+		if not aEvent :
+			if hdmiFormat == '576p' :
+				iconIndex = -1
+			elif hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+
+			self.Frontdisplay_Resolution( iconIndex )
+		else :
+			if hdmiFormat == 'Automatic' :
+				if aEvent.mVideoHeight <= 576 :
+					iconIndex = -1
+				elif aEvent.mVideoHeight <= 720 :
+					iconIndex = ElisEnum.E_ICON_720p
+
+				self.Frontdisplay_Resolution( iconIndex )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
@@ -1725,5 +1757,45 @@ class DataCacheMgr( object ) :
 
 	def GetMediaCenter( self ) :
 		return self.mStartMediaCenter
+
+
+	def SetPropertyAge( self, aAge ) :
+		self.mPropertyAge = aAge
+
+
+	def GetPropertyAge( self ) :
+		return self.mPropertyAge
+
+
+	def SetParentLock( self, aLock = True ) :
+		self.mParentLock = aLock
+
+
+	def GetParentLock( self, aCheckEPG = None ) :
+		isLimit = False
+
+		iEPG = self.mEPGData
+		iMode= self.Player_GetStatus( ).mMode
+		iLock= self.mParentLock
+		if aCheckEPG :
+			iEPG = aCheckEPG
+			iMode= ElisEnum.E_MODE_LIVE
+			iLock= True
+
+		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
+		if iMode == ElisEnum.E_MODE_LIVE and \
+		   iLock and ( iEPG and iEPG.mError == 0 ) :
+			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating )
+			LOG_TRACE( 'isLimit[%s]'% isLimit )
+
+		return isLimit
+
+
+	def SetPincodeDialog( self, aOnShow = False ) :
+		self.mIsPincodeDialog = aOnShow
+
+
+	def GetPincodeDialog( self ) :
+		return self.mIsPincodeDialog
 
 

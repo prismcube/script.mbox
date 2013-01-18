@@ -16,6 +16,8 @@ class NullWindow( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetActivate( True )
+
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		print "Garbage collector: collected %d objects." % (collected)
@@ -69,6 +71,8 @@ class NullWindow( BaseWindow ) :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
 
+		self.DoRelayAction( )
+
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
@@ -84,6 +88,11 @@ class NullWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		LOG_TRACE( 'action=%d' % aAction.getId( ) )
+		if self.IsActivate( ) == False  :
+			LOG_TRACE( 'SKIP' )
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -157,7 +166,7 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_PAGE_UP :
@@ -171,7 +180,7 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
@@ -198,28 +207,7 @@ class NullWindow( BaseWindow ) :
 					if iCurrentCh.mNumber != int(inputNumber) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
-							if jumpChannel.mLocked :
-								if not self.mDataCache.Get_Player_AVBlank( ) :
-									self.mDataCache.Player_AVBlank( True )
-								dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-								dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
-								dialog.doModal( )
-
-								if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
-									xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
-
-								elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
-									xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
-
-								if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-									if self.mDataCache.Get_Player_AVBlank( ) :
-										self.mDataCache.Player_AVBlank( False )
-							else :
-								if self.mDataCache.Get_Player_AVBlank( ) :
-									self.mDataCache.Player_AVBlank( False )
-
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
-
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
@@ -378,12 +366,16 @@ class NullWindow( BaseWindow ) :
 
 
 	def onClick(self, aControlId) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+
 		#print "onclick( ): control %s" % aControlId
 
 
 	def onFocus(self, aControlId) :
-		pass
+		if self.IsActivate( ) == False  :
+			return
+	
 		#print "onFocus( ): control %s" % aControlId
 		#self.mLastFocusId = aControlId
 
@@ -411,7 +403,7 @@ class NullWindow( BaseWindow ) :
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :

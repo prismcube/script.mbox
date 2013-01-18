@@ -21,6 +21,7 @@ class DialogInputPincode( BaseDialog ) :
 		self.mCtrlInputLabel = None
 		self.mInputNumber = ''
 		self.mNextAction = 0
+		self.mCheckStatus = None
 
 
 	def onInit( self ) :
@@ -37,6 +38,15 @@ class DialogInputPincode( BaseDialog ) :
 		self.mInputNumber = ''		
 		self.mCtrlInputLabel.setLabel( self.mInputNumber )
 
+		if self.mCheckStatus == E_CHECK_PARENTLOCK :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			isClose = False
+			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
+				isClose = True
+			if not isClose :
+				LOG_TRACE( '---------------------Cancel parentLock' )
+				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -44,6 +54,8 @@ class DialogInputPincode( BaseDialog ) :
 			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -129,6 +141,10 @@ class DialogInputPincode( BaseDialog ) :
 
 	def SetTitleLabel( self, aTitleLabel ) :
 		self.mTitleLabel = aTitleLabel
+
+
+	def SetCheckStatus( self, aCheck = None ) :
+		self.mCheckStatus = aCheck
 
 
 	def InputNumber( self, aNumber ) :

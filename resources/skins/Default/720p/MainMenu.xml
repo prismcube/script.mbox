@@ -313,7 +313,7 @@
 						<visible>true</visible>
 					</item>
 					<item id="7">
-						<label>SCRIPT77</label>
+						<label>SCRIPT48</label>
 						<label2>SCRIPT71</label2>
 						<onclick>SendClick(90700)</onclick>
 						<visible>true</visible>

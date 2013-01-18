@@ -100,7 +100,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
-
+		self.SetActivate( True )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -211,6 +212,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
+		if self.IsActivate( ) == False  :
+			return
+	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -321,6 +325,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onClick(self, aControlId):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
+		if self.IsActivate( ) == False  :
+			return
 
 		if aControlId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
@@ -379,7 +385,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onFocus(self, controlId):
 		#LOG_TRACE( 'control %d' % controlId )
-		pass
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def LoadChannelListHash( self ) :
@@ -437,7 +444,8 @@ class ChannelListWindow( BaseWindow ) :
 		#self.Epgevent_GetCurrent( )
 		try :
 			iEPG = None
-			iEPG = self.mDataCache.Epgevent_GetPresent( )
+			#iEPG = self.mDataCache.Epgevent_GetPresent( )
+			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			if iEPG and iEPG.mError == 0:
 				self.mNavEpg = iEPG
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
@@ -671,8 +679,9 @@ class ChannelListWindow( BaseWindow ) :
 						#sid  = self.mNavChannel.mSid
 						#tsid = self.mNavChannel.mTsid
 						#onid = self.mNavChannel.mOnid
-						#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-						iEPG = self.mDataCache.Epgevent_GetPresent( )
+						#iEPG = self.mDataCache.Epgevent_GetPresent( )
+						iEPG = self.mDataCache.GetEpgeventCurrent( )
+						
 						if iEPG == None or iEPG.mError != 0 :
 							return -1
 
@@ -711,22 +720,8 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
-
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.UpdateChannelList( )
-
-			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
-				pass
-				"""
-				ch = self.mDataCache.Channel_GetCurrent( )
-				isLimit = False
-				if self.mNavEpg :
-					isLimit = AgeLimit( self.mAgeLimit, self.mNavEpg.mAgeRating )
-
-				if ch.mLocked or isLimit :
-					pass
-					#ToDO : pincode question
-				"""
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -801,23 +796,6 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 				LOG_TRACE( 'No exit by pressing the cancel button' )
-
-			else :
-				if iChannel.mLocked :
-					if not self.mDataCache.Get_Player_AVBlank( ) :
-						self.mDataCache.Player_AVBlank( True )
-
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-					dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
-					dialog.doModal( )
-					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						if self.mDataCache.Get_Player_AVBlank( ) :
-							self.mDataCache.Player_AVBlank( False )
-
-				else :
-					if self.mDataCache.Get_Player_AVBlank( ) :
-						self.mDataCache.Player_AVBlank( False )
-
 
 		#refresh info
 		if iChannel :
@@ -1548,9 +1526,7 @@ class ChannelListWindow( BaseWindow ) :
 					iEPG = None
 					#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-					iEPG = self.mCommander.Epgevent_GetList( sid, tsid, onid, 0, 0, 1 )
-					if iEPG :
-						iEPG = iEPG[0]
+					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s] epg[%s] gmtTime[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid, iEPG, self.mDataCache.Datetime_GetGMTTime( ) ) )
 					if iEPG == None or iEPG.mError != 0 :
 						self.mNavEpg = 0
@@ -1709,15 +1685,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
-
-
-				"""
-				#is Age? agerating check
-				isLimit = AgeLimit( self.mAgeLimit, self.mNavEpg.mAgeRating )
-				if isLimit == True :
-					#ToDO : popup
-					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
-				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
