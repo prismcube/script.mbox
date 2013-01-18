@@ -2,9 +2,22 @@ import xbmc
 import xbmcgui
 import sys
 import time
+import thread
 
+from pvr.gui.GuiConfig import *
 from gui.BaseDialog import BaseDialog
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+import pvr.Platform
+import pvr.ElisMgr
+import pvr.DataCacheMgr
+from pvr.XBMCInterface import XBMC_GetVolume
+
+
+XBMC_WINDOW_DIALOG_KEYBOARD			= 10103
+XBMC_WINDOW_DIALOG_NUMERIC			= 10109
+XBMC_WINDOW_DIALOG_SELECT			= 12000
+XBMC_WINDOW_DIALOG_PROGRESS			= 10101
+
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
@@ -46,7 +59,16 @@ def GetInstance( ) :
 class DialogMgr( object ) :
 	def __init__( self ) :
 		self.mDialogs = {}
+		self.mShowingCount = 0
+		self.mVolume = 0
 
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mPlatform =  pvr.Platform.GetPlatform( )
+
+		self.mLock = thread.allocate_lock()
+		thread.start_new_thread( self.AsyncCheckVolume,() )
+		
 
 	def GetDialog( self, aDialogId ) :
 		import pvr.Platform 
@@ -158,4 +180,47 @@ class DialogMgr( object ) :
 		except Exception, ex :
 			LOG_ERR( '-----------------------> except[%s]' %ex )
 
+
+	def AsyncCheckVolume	( self ) :
+		currentID = -1
+		while( 1 ) :
+			currentID = xbmcgui.getCurrentWindowDialogId( )
+			if currentID == XBMC_WINDOW_DIALOG_KEYBOARD or currentID == XBMC_WINDOW_DIALOG_NUMERIC or \
+				currentID == XBMC_WINDOW_DIALOG_SELECT or currentID == XBMC_WINDOW_DIALOG_PROGRESS :
+				LOG_TRACE( 'Volume check TEST : currentID=%d' %currentID )
+				if self.mDataCache.GetMediaCenter( ) == False :
+					LOG_TRACE( 'Volume check TEST : Update Volume ' )
+					self.UpdateVolume( )
+			time.sleep(0.5)
+
+
+	def UpdateVolume( self, aVolumeStep = -1 ) :
+		volume = 0
+		if self.mPlatform.IsPrismCube( ) :
+			volume =  XBMC_GetVolume( )
+		else :
+			volume = self.mCommander.Player_GetVolume( )
+			if aVolumeStep != -1 :
+				if aVolumeStep == 0 :
+					if self.mCommander.Player_GetMute( ) :
+						self.mCommander.Player_SetMute( False )
+						return
+					else :
+						volume = aVolumeStep
+
+				else :
+					volume += aVolumeStep / 2
+
+		LOG_TRACE( 'GET VOLUME=%d' %volume )
+		if volume :
+			if volume > MAX_VOLUME :
+				volume = MAX_VOLUME
+
+			if volume <= 0 :
+				volume = 0
+				self.mCommander.Player_SetMute( True )
+			else :
+				if self.mCommander.Player_GetMute( ) :
+					self.mCommander.Player_SetMute( False )
+				self.mCommander.Player_SetVolume( volume )
 
