@@ -1,7 +1,10 @@
 from pvr.gui.WindowImport import *
 
+#xml control id
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= 21
 E_CONTROL_ID_LABEL_CHANNEL_SORT			= 22
+E_CONTROL_ID_SCROLLBAR_CHANNEL			= 61
+E_CONTROL_ID_SCROLLBAR_SUBMENU			= 203
 E_CONTROL_ID_GROUP_MAINMENU 			= 100
 E_CONTROL_ID_BUTTON_MAINMENU 			= 101
 E_CONTROL_ID_LIST_MAINMENU				= 102
@@ -21,7 +24,6 @@ E_CONTROL_ID_LABEL_CAREER_INFO			= 308
 E_CONTROL_ID_GROUP_LOCKED_INFO			= 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
 E_CONTROL_ID_GROUP_HELPBOX				= 600
-
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -57,8 +59,6 @@ E_SLIDE_MENU_MODE       = 4
 E_CONTROL_FOCUSED       = 9991
 E_SLIDE_CLOSE           = 9999
 
-#xml control id
-E_CONTROL_ID_SCROLLBAR = 61
 
 class SlidePosition( object ) :
 	def __init__( self ) :
@@ -157,7 +157,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mNavEpg = None
 		self.mNavChannel = None
 		self.mCurrentChannel = None
-		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
 		self.mFlag_ModeChanged = False
 		self.mFlag_DeleteAll = False
@@ -177,11 +176,13 @@ class ChannelListWindow( BaseWindow ) :
 		self.LoadNoSignalState( )
 
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
+		self.mAgeLimit = self.mDataCache.GetPropertyAge( )
 
-		self.mAgeLimit = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		#if self.mDataCache.mCacheReload :
-		self.mListItems = None
-		self.mDataCache.mCacheReload = False
+		if self.mDataCache.GetChannelReloadStatus( ) :
+			self.mListItems = None
+			self.mDataCache.LoadZappingList( )
+
+		#self.mDataCache.SetChannelReloadStatus( False )
 
 		#initialize get cache
 		zappingmode = None
@@ -236,7 +237,6 @@ class ChannelListWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.GetFocusId( )
 			#LOG_TRACE( 'item select, action ID[%s]'% actionId )
-
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 				if position == E_SLIDE_MENU_ALLCHANNEL :
@@ -247,22 +247,28 @@ class ChannelListWindow( BaseWindow ) :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
+				position = self.mCtrlListMainmenu.getSelectedPosition( )
+				if position == E_SLIDE_MENU_ALLCHANNEL :
+					self.UpdateControlGUI( E_SLIDE_CLOSE )
+
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_MAINMENU :
+				self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_MAINMENU )
+				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
-				self.mSlideOpenFlag = True
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId( )
-			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == E_CONTROL_ID_SCROLLBAR :
+			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == E_CONTROL_ID_SCROLLBAR_CHANNEL :
 				if self.mMoveFlag :
 					self.SetMoveMode( FLAG_OPT_MOVE_UPDOWN, actionId )
 					return
-
 				else :
 					self.RestartAsyncEPG( )
 
@@ -318,9 +324,6 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				self.DoModeChange( FLAG_MODE_TV )
 
-		elif actionId == 13: #'x'
-			#this is test
-			LOG_TRACE( 'language[%s]'% xbmc.getLanguage( ) )
 
 
 	def onClick(self, aControlId):
@@ -1041,7 +1044,6 @@ class ChannelListWindow( BaseWindow ) :
 			idx1 = self.mUserSlidePos.mMain
 			idx2 = self.mUserSlidePos.mSub
 
-
 		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, idx1 )
 		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, idx2 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, idx1 )
@@ -1264,7 +1266,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, True, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
-			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )			
+			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
 		else :
 			#opt btn visible
@@ -1272,7 +1274,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
-			
+	
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset( )
 		self.mCtrlListSubmenu.reset( )
@@ -1302,7 +1304,7 @@ class ChannelListWindow( BaseWindow ) :
 				#Favorite list
 				self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType )
 
-			else:
+			else :
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
 				self.mListCasList = self.mDataCache.Fta_cas_GetList( )
 				self.mListFavorite = self.mDataCache.Favorite_GetList( )
@@ -2568,7 +2570,7 @@ class ChannelListWindow( BaseWindow ) :
 			dialog.doModal( )	
 
 		if isOK :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def ShowRecordingStopDialog( self ) :
@@ -2584,7 +2586,7 @@ class ChannelListWindow( BaseWindow ) :
 				isOK = True
 
 		if isOK == True :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def LoadRecordingInfo( self ) :

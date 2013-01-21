@@ -399,7 +399,7 @@ class NullWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.mDataCache.mCacheReload = True
+				self.mDataCache.SetChannelReloadStatus( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
@@ -516,7 +516,7 @@ class NullWindow( BaseWindow ) :
 			dialog.doModal( )
 
 		if isOK :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def ShowRecordingStopDialog( self ) :
@@ -532,7 +532,7 @@ class NullWindow( BaseWindow ) :
 				isOK = True
 
 		if isOK :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def Close( self ) :

@@ -109,7 +109,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
 
-		self.mBannerTimeout = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -343,7 +343,7 @@ class LivePlate( LivePlateWindow ) :
 		self.ShowRecordingInfo( )
 		self.InitControlGUI( )
 		#self.GetEPGListByChannel( )
-
+		"""
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
@@ -357,6 +357,7 @@ class LivePlate( LivePlateWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+		"""
 
 
 	def onEvent(self, aEvent):
@@ -883,7 +884,7 @@ class LivePlate( LivePlateWindow ) :
 			dialog.doModal( )
 
 		if isOK :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def ShowRecordingStopDialog( self ) :
@@ -900,7 +901,7 @@ class LivePlate( LivePlateWindow ) :
 				isOK = True
 
 		if isOK :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def SetAudioVideoContext( self ) :
@@ -1058,10 +1059,10 @@ class LivePlate( LivePlateWindow ) :
 			if ret == True :
 				self.mDataCache.SetParentLock( True )
 				self.mCurrentEPG = None
-				self.InitControlGUI( )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
+				self.InitControlGUI( )
 				self.UpdateChannelAndEPG( )
 
 			else :
