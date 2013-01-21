@@ -621,7 +621,7 @@
                     <posy>0</posy>
                     <width>500</width>
                     <height>720</height>
-                    <texture>MediaBladeSub_Part1.png</texture>
+                    <texture>black-back_noAlpha.png</texture>
                     <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
 					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>

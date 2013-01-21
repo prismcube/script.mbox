@@ -101,7 +101,7 @@
 					<posy>0</posy>
 					<width>1</width>
 					<height>720</height>
-					<texture>MediaBladeSub_Part1.png</texture>
+					<texture>black-back_noAlpha.png</texture>
 					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 				<control type="image">
