@@ -15,7 +15,7 @@ import pvr.Platform
 import pvr.DataCacheMgr
 from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom
 from pvr.Util import SetLock, SetLock2
-
+import pvr.gui.DialogMgr as DiaMgr
 
 WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
@@ -107,6 +107,8 @@ class WindowMgr( object ) :
 		self.RootWindow( )
 		
 		self.CreateAllWindows( )
+
+		DiaMgr.GetInstance( )
 
 
 	def GetWindow( self, aWindowId ) :
