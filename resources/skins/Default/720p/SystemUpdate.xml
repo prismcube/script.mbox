@@ -79,50 +79,50 @@
 					<visible>substring(Window.Property(VersionInfo),true)</visible>
 				</control>
 				<control type="label" id="99">
-					<posx>5</posx>
-					<posy>0</posy>
+					<posx>50</posx>
+					<posy>15</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="100">
-					<posx>5</posx>
-					<posy>35</posy>
+					<posx>50</posx>
+					<posy>50</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="101">
-					<posx>5</posx>
-					<posy>60</posy>
+					<posx>50</posx>
+					<posy>75</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="102">
-					<posx>5</posx>
-					<posy>85</posy>
+					<posx>50</posx>
+					<posy>100</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label">
-					<posx>5</posx>
-					<posy>110</posy>
+					<posx>50</posx>
+					<posy>125</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Window.Property(DescriptionTitle)]</label>
 				</control>
 				<control type="textbox" id="103">
-					  <posx>20</posx>
-					  <posy>135</posy>
+					  <posx>55</posx>
+					  <posy>150</posy>
 					  <width>680</width>
-					  <height>220</height>
+					  <height>210</height>
 					  <visible>true</visible>
 					  <colordiffuse>FFFFFFFF</colordiffuse>
 					  <font>font12</font>
