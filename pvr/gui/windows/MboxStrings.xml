@@ -108,6 +108,14 @@
 	<string id="108">Move Position</string>
 	<string id="109">Add</string>
 	<string id="110">Access your favorite XBMC add-ons in a convenient way</string>
+	<string id="111">Follow five simple steps for getting your PRISMCUBE RUBY ready for use</string>
+	<string id="112">Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="113">Perform a quick and easy automatic channel scan or search channels manually</string>
+	<string id="114">Add, delete or rename satellites</string>
+	<string id="115">Add new transponders or edit the transponders already exist</string>
+	<string id="116">Configure the general settings for your digital satellite receiver</string>
+	<string id="117">Setup Smartcard or CI-Module configuration for watching pay channels</string>
+	<string id="118">Get the latest updates on your PRISMCUBE RUBY</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
@@ -1329,4 +1337,30 @@
 	<string id="3917">Go to the Channel Search page</string>
 	<string id="3918">Go to the tuner configuration page</string>
 	<string id="3919">Go to the satellite configuration page</string>
+	<string id="3920">Do you want install now ?</string>
+	<string id="3921">UPDATE READY</string>
+	<string id="3922">Please insert a USB flash drive and press OK button</string>
+	<string id="3923">Downloading...</string>
+	<string id="3924">Press OK button to cancel the downloading</string>
+	<string id="3925">Complete download, Press OK is install</string>
+	<string id="3926">Analog</string>
+	<string id="3927">Video Setting</string>
+	<string id="3928">Select HDMI or Analog for your video output</string>
+	<string id="3929"> - HDMI Format</string>
+	<string id="3930"> - TV Screen Format</string>
+	<string id="3931"> - HDMI Color Space</string>
+	<string id="3932"> - TV Aspect Ratio</string>
+	<string id="3933">Set aspect ratio of your TV</string>
+	<string id="3934"> - Picture Format</string>
+	<string id="3935">Set picture format according to TV aspect ratio</string>
+	<string id="3936">Do you want to install the firmware now?</string>
+	<string id="3937">Download firmware complete</string>
+	<string id="3938">Press OK to cancel downloading firmware updates</string>
+	<string id="3939">Copy to USB</string>
+	<string id="3940">Download complete. Press OK to copy firmware files to USB</string>
+	<string id="3941">Update now</string>
+	<string id="3942">Follow the instructions on front panel display during the firmware installation process</string>
+	<string id="3943">Continue interrupted downloads?</string>
+	<string id="3944">Resume downloading files</string>
+	<string id="3945">Your channel list has been successfully updated</string>
 </strings>
