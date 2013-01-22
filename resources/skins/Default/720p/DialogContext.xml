@@ -11,15 +11,15 @@
 			<control type="image">
 				<description>background top image</description>
 				<posx>0</posx>
-				<posy>-54</posy>
-				<width>370</width>
-				<height>54</height>
+				<posy>-35</posy>
+				<width>350</width>
+				<height>30</height>
 				<texture border="45,45,45,0">DialogContextTop.png</texture>
 			</control>
 			<control type="button" id="103">
 				<description>Close Window button</description>
 				<posx>260</posx>
-				<posy>-24</posy>
+				<posy>-30</posy>
 				<width>64</width>
 				<height>32</height>
 				<onup>102</onup>
@@ -31,37 +31,37 @@
 				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
 			</control>
-			<control type="image">
+			<!--control type="image">
 				<posx>34</posx>
 				<posy>-6</posy>
 				<width>297</width>
 				<height>4</height>
 				<texture>separator.png</texture>
-			</control>
+			</control-->
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>370</width>
+				<width>350</width>
 				<texture border="45,0,45,0">DialogContextMiddle.png</texture>
 			</control>
 			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
-				<width>370</width>
-				<height>50</height>
+				<width>350</width>
+				<height>25</height>
 				<texture border="45,0,45,49">DialogContextBottom.png</texture>
 			</control>
 			<control type="list" id="102">
-				<posx>34</posx>
+				<posx>26</posx>
 				<posy>0</posy>
 				<width>297</width>
-				<height>456</height>						<!--Change ProPerty ItemHeight * MAX_ITEM(12) -->
+				<height>456</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<onleft>103</onleft>
 				<onright>103</onright>
-				<itemlayout width="297" height="38" >		<!--Change ProPerty ItemHeight-->
+				<itemlayout width="297" height="38" >		<!--Change Property ItemHeight-->
 					<!-- is mark? -->
 					<control type="image">
 						<posx>5</posx>
@@ -75,7 +75,7 @@
 						<posx>150</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<height>38</height>					<!--Change Property ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -83,12 +83,12 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>		
 				</itemlayout>
-				<focusedlayout width="297" height="38">		<!--Change ProPerty ItemHeight-->
+				<focusedlayout width="297" height="38">		<!--Change Property ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<height>38</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-focus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
@@ -105,7 +105,7 @@
 						<posx>150</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<height>38</height>					<!--Change Property ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>
