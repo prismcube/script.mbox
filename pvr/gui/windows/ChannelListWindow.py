@@ -124,10 +124,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlRadioButtonTV          = self.getControl( E_CONTROL_ID_RADIOBUTTON_TV )
 		self.mCtrlRadioButtonRadio       = self.getControl( E_CONTROL_ID_RADIOBUTTON_RADIO )
 
-		#ch list
-		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
-		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
-
 		#info
 		self.mCtrlLabelChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
 		self.mCtrlLabelEPGName           = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
@@ -140,6 +136,11 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 		self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
 
+		#ch list
+		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
+		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
+
+		self.mCtrlListCHList.reset( )
 
 		self.mIsTune = False
 		self.mIsMark = True
@@ -405,7 +406,7 @@ class ChannelListWindow( BaseWindow ) :
 	def Initialize( self ):
 		self.LoadRecordingInfo( )
 
-		#aleady cache load
+		#already cache load
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.LoadChannelListHash( )
 		label = ''
@@ -1393,9 +1394,10 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[LIST] START[%s]'% starttime
 
 		#no channel is set Label comment
+		self.mCtrlListCHList.reset( )	
+		
 		if self.mChannelList == None :
 			self.mListItems = None
-			self.mCtrlListCHList.reset( )
 			label = MR_LANG( 'No Channel' )			
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
@@ -1434,7 +1436,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 		#get last channel
 		iChannel = None
