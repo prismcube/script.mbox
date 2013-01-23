@@ -93,9 +93,9 @@
 		<content name="[B]13. EPG:[/B] Displays the EPG window.[CR][CR][B]14. ARROW BUTTONS:[/B] Navigates through the menu options.[CR][CR][B]15. OK:[/B] Selects a menu or confirms the selected operation. Displays the channel list in live mode.[CR][CR][B]16. BACK:[/B] Moves one step back from the current menu.[CR][CR][B]17. MENU:[/B] Displays the main menu.[CR][CR][B]18. VOL+/VOL:[/B] Adjusts the audio volume.[CR][CR][B]19. i (Information):[/B] Displays the channel and programme information.[CR][CR][B]20. P+/P-:[/B] Changes the channel.[CR][CR][B]21. MUTE:[/B] Mutes and unmutes the audio.[CR][CR][B]22. TELETEXT:[/B] Displays the teletext information of the current channel if the channel provides teletext.[CR][CR][B]23. SUBTITLE:[/B] Displays the subtitle option.[CR][CR][B]24. NUM LOCK:[/B] Enables NUMERIC buttons to enter a TV/Radio channel number.">
 			<type>textbox</type>
 			<posx>640</posx>
-			<posy>110</posy>
+			<posy>90</posy>
 			<width>600</width>
-			<height>490</height>
+			<height>525</height>
 		</content>
 	</page>
 	
@@ -308,9 +308,9 @@
 		<content name="Manual scan is more appropriate if you know which satellites you want to search and their parameters.[CR][CR][B]- Satellite:[/B] Select the satellite on which the transponder you wish to scan is located.[CR][CR][B]- Transponder Frequency:[/B] Select the transponder frequency for the selected satellite.[CR][CR][B]- DVB Type:[/B] Select the Digital Video Broadcasting type for the selected satellite.[CR][CR][B]- FEC:[/B] Select the error control mode of data transmission for the selected satellite.[CR][CR][B]- Polarization:[/B] Select the direction of the electrical and magnetic fields of signals for the satellite above.[CR][CR][B]- Symbol Rate:[/B] Set the amount of data, which is transmitted per second in the data stream.[CR][CR][B]- Network Search:[/B] When set to Off, only the factory default transponders of the satellites you previously will be scanned for new channels.[CR][CR][B]- Search Type:[/B] Select whether you wish to scan free and scrambled, free only or scrambled only.">
 			<type>textbox</type>
 			<posx>630</posx>
-			<posy>120</posy>
+			<posy>105</posy>
 			<width>610</width>
-			<height>500</height>
+			<height>505</height>
 		</content>
 	</page>
 	
