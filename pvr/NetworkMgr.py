@@ -1,5 +1,11 @@
 from pvr.gui.GuiConfig import *
-import dbus
+
+gUseDbus = True
+
+try :
+	import dbus
+except :
+	gUseDbus = False
 
 
 gNetworkMgr = None
@@ -34,6 +40,9 @@ class NetworkMgr( object ) :
 
 
 	def LoadEthernetService( self ) :
+		if gUseDbus == False :
+			return False
+			
 		try :
 			self.mEthernetServicePath = None
 			self.mEthernetServiceObejct = None
@@ -61,6 +70,9 @@ class NetworkMgr( object ) :
 
 
 	def GetEthernetServiceState( self ) :
+		if gUseDbus == False :
+			return False
+	
 		try :
 			if self.mEthernetServiceObejct :
 				property = self.mEthernetServiceObejct.GetProperties( )
@@ -78,6 +90,9 @@ class NetworkMgr( object ) :
 
 
 	def SetEthernetServiceConnect( self, aFlag ) :
+		if gUseDbus == False :
+			return
+	
 		try :
 			if self.mEthernetServiceObejct :
 				if aFlag :
@@ -95,6 +110,9 @@ class NetworkMgr( object ) :
 		netmask		= 'None'
 		gateway		= 'None'
 		nameserver	= 'None'
+
+		if gUseDbus == False :
+			return 'None', 'None', 'None', 'None'
 
 		try :
 			property = self.mEthernetServiceObejct.GetProperties( )
@@ -122,6 +140,9 @@ class NetworkMgr( object ) :
 
 
 	def ConnectEthernet( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
+		if gUseDbus == False :
+			return False
+	
 		try :
 			if aMethod == NET_DHCP :
 				ipv4_configuration = { 'Method': dbus.String( 'dhcp', variant_level = 1 ) }
@@ -146,6 +167,9 @@ class NetworkMgr( object ) :
 
 
 	def GetEthernetMethod( self ) :
+		if gUseDbus == False :
+			return NET_DHCP
+	
 		try :
 			property = self.mEthernetServiceObejct.GetProperties( )
 
@@ -166,6 +190,9 @@ class NetworkMgr( object ) :
 
 
 	def WaitConfigurationService( self, aService ) :
+		if gUseDbus == False :
+			return
+	
 		for i in range( CONFIGURATION_TIMEOUT ) :
 			time.sleep( 1 )
 			try :
@@ -180,6 +207,9 @@ class NetworkMgr( object ) :
 
 
 	def CheckInternetState( self ) :
+		if gUseDbus == False :
+			return 'Disconnected'
+	
 		service = self.GetCurrentServiceObject( )
 		if service :
 			try :
