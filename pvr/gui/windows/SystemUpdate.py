@@ -7,6 +7,7 @@ import stat
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
+E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
@@ -289,7 +290,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def AsyncCompleteDialog( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'UPDATE READY' ), MR_LANG( 'Do you want install now ?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Download firmware complete' ), MR_LANG( 'Do you want to install the firmware now?' ) )
 		dialog.doModal( )
 
 		answer = dialog.IsOK( )
@@ -450,7 +451,7 @@ class SystemUpdate( SettingWindow ) :
 			button1Enable = False
 			button2Enable = True
 			button2Label  = MR_LANG( 'Cancel' )
-			button2Desc   = MR_LANG( 'Downloading, Press OK is cancel' )
+			button2Desc   = MR_LANG( 'Press OK to cancel downloading firmware updates' )
 
 		else :
 			self.mIsDownload = False
@@ -470,8 +471,8 @@ class SystemUpdate( SettingWindow ) :
 				self.mIsDownload = True
 				buttonFocus  = E_Input02
 				button2Enable = True
-				button2Label  = MR_LANG( 'Install' )
-				button2Desc   = MR_LANG( 'Complete download, Press OK is install' )
+				button2Label  = MR_LANG( 'Copy to USB' )
+				button2Desc   = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 
 			else :
 				buttonFocus  = E_Input02
@@ -637,7 +638,7 @@ class SystemUpdate( SettingWindow ) :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				usbPath = self.mDataCache.USB_GetMountPath( )
 				if usbPath :
-					RemoveDirectory( '%s/update'% usbPath )
+					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
 
@@ -699,7 +700,7 @@ class SystemUpdate( SettingWindow ) :
 					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 				elif usbPath :
-					RemoveDirectory( '%s/update'% usbPath )
+					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 					self.SetFocusControl( E_Input02 )
 
 
@@ -831,7 +832,7 @@ class SystemUpdate( SettingWindow ) :
 				time.sleep( 0.3 )
 				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
-				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize )
+				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize, E_DEFAULT_DIR_UNZIP )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
@@ -863,8 +864,8 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update' ) )
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the updating process' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update now' ) )
+			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
 			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB DURING THE UPGRADING' )
@@ -937,8 +938,8 @@ class SystemUpdate( SettingWindow ) :
 		button2Desc   = MR_LANG( 'Press OK button to download the firmware shown below' )
 
 		if self.mIsDownload :
-			button2Label = MR_LANG( 'Install')
-			button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+			button2Label = MR_LANG( 'Copy to USB')
+			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 
 			if self.mWinId == xbmcgui.getCurrentWindowId( ) and \
 			   self.mStepPage > E_UPDATE_STEP_READY and self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
@@ -1027,7 +1028,7 @@ class SystemUpdate( SettingWindow ) :
 				return True
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Resume downloads' ), MR_LANG( 'Continue broken or interrupted downloads?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Resume downloading files' ), MR_LANG( 'Continue interrupted downloads?' ) )
 			dialog.doModal( )
 
 			ret = dialog.IsOK( )
@@ -1068,7 +1069,7 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
 
 		self.SetControlLabel2String( E_Input02, MR_LANG( 'Cancel' ) )
-		self.EditDescription( E_Input02, MR_LANG( 'Downloading, Press OK is cancel' ) )
+		self.EditDescription( E_Input02, MR_LANG( 'Press OK to cancel downloading firmware updates' ) )
 		self.ShowDescription( E_Input02 )
 
 		self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
@@ -1121,7 +1122,7 @@ class SystemUpdate( SettingWindow ) :
 		if aPercent > 100 :
 			aPercent = 100
 		self.mCtrlProgress.setPercent( aPercent )
-		self.mCtrlLabelPercent.setLabel( '{0:.2f}%(download)'.format( round( aPercent, 2 ) ) )
+		self.mCtrlLabelPercent.setLabel( '{0:.2f}% downloaded'.format( round( aPercent, 2 ) ) )
 
 
 	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :
@@ -1362,7 +1363,7 @@ class SystemUpdate( SettingWindow ) :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Update finished'), MR_LANG('Updating channel list is finished successfully') )
+				dialog.SetDialogProperty( MR_LANG('Update finished'), MR_LANG('Your channel list has been successfully updated') )
 				dialog.doModal( )
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )

@@ -158,6 +158,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mScanMode == E_SCAN_SATELLITE :
 				self.mDataCache.Channel_ReTune( )
 			self.CloseDialog( )
+			self.mDataCache.Channel_Save( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
 			iZapping = self.mDataCache.Zappingmode_GetCurrent( )

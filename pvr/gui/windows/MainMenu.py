@@ -92,11 +92,13 @@ class MainMenu( BaseWindow ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
 			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
+				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+					self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback, recordings\nand timeshift' ) )
 				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
+				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+					self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INSTALLATION )
@@ -118,12 +120,14 @@ class MainMenu( BaseWindow ) :
 					if self.mPlatform.IsPrismCube( ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 					else :
-						self.getControl( MAIN_GROUP_ID ).setVisible( False )
+						if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+							self.getControl( MAIN_GROUP_ID ).setVisible( False )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 						dialog.doModal( )
-						self.getControl( MAIN_GROUP_ID ).setVisible( True )
-					
+						if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+							self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :

@@ -377,7 +377,7 @@
 			<textureslidernib>ScrollBarNib.png</textureslidernib>
 			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 			<onleft>49</onleft>
-			<onright>49</onright>
+			<onright>101</onright>
 			<ondown>61</ondown>
 			<onup>61</onup>
 			<showonepage>false</showonepage>
@@ -509,7 +509,7 @@
 					<control type="grouplist">
 						<posx>0</posx>
 						<posy>100</posy>
-						<width>190</width>
+						<width>240</width>
 						<height>30</height>
 						<itemgap>1</itemgap>
 						<visible>true</visible>
@@ -529,27 +529,27 @@
 							</control>
 						</control>
 						<control type="group" id="311">
-							<posx>55</posx>
+							<posx>60</posx>
 							<posy>0</posy>
 							<width>65</width>
 							<height>30</height>
 							<visible>substring(Window.Property(HasDolby),true)</visible>
 							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>65</width>
-								<height>30</height>
+								<posx>20</posx>
+								<posy>5</posy>
+								<width>82</width>
+								<height>20</height>
 								<texture>dolbydigital.png</texture>
 							</control>
 						</control>
 						<control type="group" id="312">
-							<posx>110</posx>
+							<posx>120</posx>
 							<posy>0</posy>
 							<width>65</width>
 							<height>30</height>
 							<visible>substring(Window.Property(HasHD),true)</visible>
 							<control type="image">
-								<posx>0</posx>
+								<posx>52</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
@@ -621,7 +621,7 @@
                     <posy>0</posy>
                     <width>500</width>
                     <height>720</height>
-                    <texture>MediaBladeSub_Part1.png</texture>
+                    <texture>black-back_noAlpha.png</texture>
                     <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
 					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>
@@ -685,7 +685,7 @@
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
 					<onleft>49</onleft>
-					<onright></onright>
+					<onright>49</onright>
 					<onup>Control.SetFocus(102,4)</onup>
 					<ondown>Control.SetFocus(102,0)</ondown>
 				</control>
@@ -786,7 +786,7 @@
 						<height>430</height>
 						<align>center</align>
 						<onleft>102</onleft>
-						<onright>203</onright>
+						<onright>49</onright>
 						<onup>112</onup>
 						<ondown>112</ondown>
 						<pagecontrol>203</pagecontrol>
@@ -852,7 +852,7 @@
 						<height>430</height>
 						<align>center</align>
 						<onleft>102</onleft>
-						<onright>9002</onright>
+						<onright>49</onright>
 						<onup>9002</onup>
 						<ondown>9002</ondown>
 						<focusposition>113</focusposition>
@@ -877,7 +877,7 @@
 								<focusedcolor>white</focusedcolor>
 								<label>SCRIPT6</label>
 								<onleft>102</onleft>
-								<onright>113</onright>
+								<onright>49</onright>
 								<onup>114</onup>
 								<ondown>114</ondown>
 							</control>
@@ -891,7 +891,7 @@
 								<focusedcolor>white</focusedcolor>
 								<label>SCRIPT7</label>
 								<onleft>102</onleft>
-								<onright>114</onright>
+								<onright>49</onright>
 								<onup>113</onup>
 								<ondown>113</ondown>
 							</control>
@@ -913,7 +913,7 @@
 						<showonepage>false</showonepage>
 						<orientation>vertical</orientation>
 						<onleft>112</onleft>
-						<onright>112</onright>
+						<onright></onright>
 						<ondown>203</ondown>
 						<onup>203</onup>
 					</control>

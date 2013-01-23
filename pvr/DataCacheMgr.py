@@ -160,8 +160,10 @@ class DataCacheMgr( object ) :
 					record.printdebug( )
 			"""
 
-		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
+		self.mPropertyChannelBannerTime = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+		self.mPropertyPlaybackBannerTime = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
 
 		self.mRecordingCount = 0
 
@@ -1765,6 +1767,22 @@ class DataCacheMgr( object ) :
 
 	def GetPropertyAge( self ) :
 		return self.mPropertyAge
+
+
+	def SetPropertyChannelBannerTime( self, aTime ) :
+		self.mPropertyChannelBannerTime = aTime
+
+
+	def GetPropertyChannelBannerTime( self ) :
+		return self.mPropertyChannelBannerTime
+
+
+	def SetPropertyPlaybackBannerTime( self, aTime ) :
+		self.mPropertyPlaybackBannerTime = aTime
+
+
+	def GetPropertyPlaybackBannerTime( self ) :
+		self.mPropertyPlaybackBannerTime = aTime
 
 
 	def SetParentLock( self, aLock = True ) :

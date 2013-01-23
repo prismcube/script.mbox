@@ -392,6 +392,16 @@ class Configure( SettingWindow ) :
 	 		self.ControlSelect( )
 	 		self.mCommander.Power_Save_Mode( )
 
+		elif selectedId == E_ETC and groupId == E_SpinEx04 :
+			self.ControlSelect( )
+			propertyBanner = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyChannelBannerTime( propertyBanner )
+
+		elif selectedId == E_ETC and groupId == E_SpinEx05 :
+			self.ControlSelect( )
+			propertyBanner = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyPlaybackBannerTime( propertyBanner )
+
 		else :
 			self.ControlSelect( )
 

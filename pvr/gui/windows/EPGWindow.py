@@ -262,6 +262,10 @@ class EPGWindow( BaseWindow ) :
 
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
+		
+		self.mCtrlList.reset( )
+		self.mCtrlBigList.reset( )
+		
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
@@ -531,6 +535,8 @@ class EPGWindow( BaseWindow ) :
 				return
 
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+
+			strNoEvent = MR_LANG( 'No event' )
 			
 			for i in range( len( self.mChannelList ) ) :
 				channel = self.mChannelList[i]
@@ -567,11 +573,11 @@ class EPGWindow( BaseWindow ) :
 
 					else :
 						if aUpdateOnly == False :					
-							listItem = xbmcgui.ListItem( tempChannelName, MR_LANG( 'No event' ) )
+							listItem = xbmcgui.ListItem( tempChannelName, strNoEvent  )
 						else:
 							listItem = self.mListItems[i]
 							listItem.setLabel( tempChannelName )
-							listItem.setLabel2( MR_LANG( 'No event' ) )
+							listItem.setLabel2( strNoEvent )
 
 						listItem.setProperty( 'StartTime', '' )
 						listItem.setProperty( 'Duration', '' )						
@@ -609,7 +615,9 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
-		
+				
+			strNoEvent = MR_LANG( 'No event' )
+
 			for i in range( len( self.mChannelList ) ) :
 				channel = self.mChannelList[i]
 				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
@@ -644,11 +652,11 @@ class EPGWindow( BaseWindow ) :
 						
 					else :
 						if aUpdateOnly == False :
-							listItem = xbmcgui.ListItem( tempChannelName, MR_LANG( 'No event' ) )
+							listItem = xbmcgui.ListItem( tempChannelName, strNoEvent )
 						else :
 							listItem = self.mListItems[i]
 							listItem.setLabel( tempChannelName )
-							listItem.setLabel2( MR_LANG( 'No event' ) )
+							listItem.setLabel2( strNoEvent )
 						
 						listItem.setProperty( 'StartTime', '' )
 						listItem.setProperty( 'Duration', '' )						
@@ -1520,7 +1528,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			percent = 0
 
-		LOG_TRACE( 'Percent=%d' %percent )
+		#LOG_TRACE( 'Percent=%d' %percent )
 		return percent
 
 

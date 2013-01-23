@@ -392,7 +392,7 @@ class TimeShiftPlate( BaseWindow ) :
 				dialog.doModal( )
 
 			if isOK :
-				self.mDataCache.mCacheReload = True
+				self.mDataCache.SetChannelReloadStatus( True )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.StopAutomaticHide( )
@@ -433,7 +433,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				self.ShowRecordingInfo( )
-				self.mDataCache.mCacheReload = True
+				self.mDataCache.SetChannelReloadStatus( True )
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				xbmc.executebuiltin('xbmc.Action(previousmenu)')
@@ -1174,7 +1174,7 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
 
 		if RunningRecordCount :
-			self.mDataCache.mCacheReload = True
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	@RunThread
@@ -1307,8 +1307,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	
 	def StartAutomaticHide( self ) :
-		prop = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander )
-		bannerTimeout = prop.GetProp( )
+		bannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start( )
 

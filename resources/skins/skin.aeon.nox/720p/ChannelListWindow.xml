@@ -347,7 +347,7 @@
 					<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 					<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 					<onleft>49</onleft>
-					<onright>49</onright>
+					<onright>101</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
 				</control>
@@ -755,7 +755,7 @@
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
 					<onleft>49</onleft>
-					<onright></onright>
+					<onright>49</onright>
 					<onup>Control.SetFocus(102,4)</onup>
 					<ondown>Control.SetFocus(102,0)</ondown>
 				</control>
@@ -856,7 +856,7 @@
 						<height>430</height>
 						<align>center</align>
 						<onleft>102</onleft>
-						<onright>203</onright>
+						<onright>49</onright>
 						<onup>112</onup>
 						<ondown>112</ondown>
 						<pagecontrol>203</pagecontrol>
@@ -922,7 +922,7 @@
 						<height>430</height>
 						<align>center</align>
 						<onleft>102</onleft>
-						<onright>9002</onright>
+						<onright>49</onright>
 						<onup>9002</onup>
 						<ondown>9002</ondown>
 						<focusposition>113</focusposition>
@@ -955,7 +955,7 @@
 								<focusedcolor>white</focusedcolor>
 								<label>SCRIPT6</label>
 								<onleft>102</onleft>
-								<onright>113</onright>
+								<onright>49</onright>
 								<onup>114</onup>
 								<ondown>114</ondown>
 							</control>
@@ -977,7 +977,7 @@
 								<focusedcolor>white</focusedcolor>
 								<label>SCRIPT7</label>
 								<onleft>102</onleft>
-								<onright>114</onright>
+								<onright>49</onright>
 								<onup>113</onup>
 								<ondown>113</ondown>
 							</control>
@@ -1005,7 +1005,7 @@
 						<showonepage>false</showonepage>
 						<orientation>vertical</orientation>
 						<onleft>112</onleft>
-						<onright>112</onright>
+						<onright></onright>
 						<ondown>203</ondown>
 						<onup>203</onup>
 					</control>
