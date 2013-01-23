@@ -11,7 +11,7 @@ from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import AgeLimit
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
-	from pvr.IpParser import *
+	#from pvr.IpParser import *
 
 else :
 	gFlagUseDB = False
@@ -167,7 +167,7 @@ class DataCacheMgr( object ) :
 
 		self.mRecordingCount = 0
 
-		pvr.BackupSettings.BackupSettings( )
+		#pvr.BackupSettings.BackupSettings( )
 		self.Load( )
 
 
@@ -216,17 +216,17 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :		
-			LoadNetworkType( )
-			dev = GetCurrentNetworkType( )
-			if dev == NETWORK_ETHERNET :
-				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
-			elif dev == NETWORK_WIRELESS :
-				wifi = WirelessParser( )
-				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+			import pvr.NetworkMgr as NetMgr
+			if NetMgr.GetInstance( ).LoadEthernetService( ) :
+				if NetMgr.GetInstance( ).GetEthernetServiceState( ) == False :
+					NetMgr.GetInstance( ).SetEthernetServiceConnect( True )
+
+				addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetEthernetAddress( )
+				LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
+				NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			else :
-				LOG_ERR( 'Error Network Setting' )
-			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+				LOG_ERR( 'Ethernet device not configured' )
 
 
 	def LoadVolumeToSetGUI( self ) :
