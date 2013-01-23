@@ -1289,6 +1289,8 @@ class SystemUpdate( SettingWindow ) :
 			fd = open( scriptFile, 'w' )
 			if fd :
 				fd.writelines( '#!/bin/sh\n' )
+				fd.writelines( 'modprobe usb_storage\n' )
+				fd.writelines( 'sleep 3\n' )
 				fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[0] ), backupFileList[0] ) )
 				if not CheckHdd( ) :
 					fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[1] ), backupFileList[1] ) )
