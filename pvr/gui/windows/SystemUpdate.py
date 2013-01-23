@@ -1145,7 +1145,7 @@ class SystemUpdate( SettingWindow ) :
 		for item in fileList :
 			idx += 1
 			if aShowProgress :
-				dialogProgress.update( 1.0 * idx / totalFiles * 100 )
+				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
 			unpackFile = '%s/%s'% ( usbPath, item[1] )
 			unpackSize = GetFileSize( unpackFile )
 			if item[0] != unpackSize :
