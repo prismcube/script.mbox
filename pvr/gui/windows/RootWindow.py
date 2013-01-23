@@ -17,7 +17,10 @@ class RootWindow( BaseWindow ) :
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.mInitialized = True
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
+			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
+			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).show( )
 			
 			"""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -26,9 +29,12 @@ class RootWindow( BaseWindow ) :
 			"""
 
 		else :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
+			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
+			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).show( )
 
-		
+
 	def onAction( self, aAction ) :
 		LOG_TRACE( 'RealyAction TEST action=%d' %aAction.getId() )
 
