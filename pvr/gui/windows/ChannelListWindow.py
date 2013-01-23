@@ -1612,10 +1612,8 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		if aPropertyID == E_XML_PROPERTY_EDITINFO or aPropertyID == E_XML_PROPERTY_MOVE :
-			LOG_TRACE( 'aPropertyID=%s aValue=%s' %( aProperty, aValue) ) 
-			self.setProperty( aPropertyID, aValue )
-			#rootWinow = xbmcgui.Window( 13000 )
-			#rootWinow.setProperty( aPropertyID, aValue )			
+			rootWinow = xbmcgui.Window( 10000 )
+			rootWinow.setProperty( aPropertyID, aValue )			
 			
 		else :
 			self.mWin.setProperty( aPropertyID, aValue )
