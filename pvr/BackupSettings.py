@@ -1,7 +1,7 @@
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import *
 import pvr.ElisMgr
-from pvr.IpParser import *
+#from pvr.IpParser import *
 
 
 class NetworkInfo( object ) :
@@ -127,6 +127,7 @@ class BackupSettings( object ) :
 		if iNet.mError != 0 :
 			return
 
+		"""
 		SetCurrentNetworkType( iNet.mType )
 		if iNet.mType == NETWORK_ETHERNET or iNet.mType == '0' :
 			SetIpAddressProperty( iNet.mIpaddr, iNet.mSubnet, iNet.mGwaddr, iNet.mDns )
@@ -139,6 +140,6 @@ class BackupSettings( object ) :
 			#ToDO : wifi set
 
 		#ToDO : wifi, network restart
-
+		"""
 
 

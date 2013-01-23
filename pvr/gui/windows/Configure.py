@@ -1,8 +1,7 @@
 from pvr.gui.WindowImport import *
+import pvr.NetworkMgr as NetMgr
 import pvr.Platform
 
-if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
 E_PARENTAL				= 1
@@ -31,57 +30,51 @@ class Configure( SettingWindow ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
 
-		self.mCtrlLeftGroup 	= None
-		self.mGroupItems 		= []
-		self.mLastFocused 		= E_SUBMENU_LIST_ID
-		self.mPrevListItemID 	= -1
+		self.mCtrlLeftGroup 		= None
+		self.mGroupItems 			= []
+		self.mLastFocused 			= E_SUBMENU_LIST_ID
+		self.mPrevListItemID 		= -1
 
-		self.mRunningNetwork	= False
-		self.mUseNetworkType	= NETWORK_ETHERNET
+		self.mRunningNetwork		= False
+		self.mUseNetworkType		= NETWORK_ETHERNET
 
-		self.mSavedNetworkType	= NET_DHCP
-		self.mSavedIpAddr		= 'None'
-		self.mSavedSubNet		= 'None'
-		self.mSavedGateway		= 'None'
-		self.mSavedDns			= 'None'
+		self.mEthernetConnectMethod	= NET_DHCP
+		self.mEthernetIpAddress		= 'None'
+		self.mEthernetNetmask		= 'None'
+		self.mEthernetGateway		= 'None'
+		self.mEthernetNamesServer	= 'None'
 
-		self.mTempNetworkType	= NET_DHCP
-		self.mTempIpAddr		= 'None'
-		self.mTempSubNet		= 'None'
-		self.mTempGateway		= 'None'
-		self.mTempDns			= 'None'
+		self.mReLoadEthernetInformation	= False
+		self.mVisibleParental		= False
 
-		self.mReLoadIp			= False
-		self.mVisibleParental	= False
+		self.mDate					= 0
+		self.mTime					= 0
+		self.mSetupChannel			= None
+		self.mHasChannel			= False
 
-		self.mDate				= 0
-		self.mTime				= 0
-		self.mSetupChannel		= None
-		self.mHasChannel		= False
+		self.mSavedTimeMode			= TIME_MANUAL
+		self.mSavedTimeChannel		= 0
+		self.mSavedLocalOffset		= 0
+		self.mSavedSummerTime		= 0
 
-		self.mSavedTimeMode		= TIME_MANUAL
-		self.mSavedTimeChannel	= 0
-		self.mSavedLocalOffset	= 0
-		self.mSavedSummerTime	= 0
+		self.mIpParser				= None
+		self.mProgress				= None
 
-		self.mIpParser			= None
-		self.mProgress			= None
+		self.mWireless				= None
+		self.mHiddenSsid			= 'None'
+		self.mUseHiddenId			= NOT_USE_HIDDEN_SSID
+		self.mCurrentSsid			= 'None'
+		self.mEncryptType			= ENCRYPT_TYPE_WEP
+		self.mPassWord 				= None
 
-		self.mWireless			= None
-		self.mHiddenSsid		= 'None'
-		self.mUseHiddenId		= NOT_USE_HIDDEN_SSID
-		self.mCurrentSsid		= 'None'
-		self.mEncryptType		= ENCRYPT_TYPE_WEP
-		self.mPassWord 			= None
+		self.mCheckNetworkTimer		= None
+		self.mStateNetLink			= 'Busy'
 
-		self.mCheckNetworkTimer	= None
-		self.mStateNetLink		= 'Busy'
+		self.mEnableLocalThread	 	= False
+		self.mProgressThread		= None
 
-		self.mEnableLocalThread = False
-		self.mProgressThread	= None
-
-		self.mVideoOutput		= E_VIDEO_HDMI
-		self.mAnalogAscpect		= E_16_9
+		self.mVideoOutput			= E_VIDEO_HDMI
+		self.mAnalogAscpect			= E_16_9
 
 
 	def onInit( self ) :
@@ -127,15 +120,9 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		if self.mPlatform.IsPrismCube( ) :
-			self.mIpParser = IpParser( )
-			self.mWireless = WirelessParser( )
-			self.LoadEhternetInformation( )
-			self.LoadWifi( )
-			self.mUseNetworkType = GetCurrentNetworkType( )
 
 		self.mVisibleParental = False
-		self.mReLoadIp = False
+		self.mReLoadEthernetInformation = True
 
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -172,10 +159,8 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
-				self.mReLoadIp = True
+				self.mReLoadEthernetInformation = True
 				self.mVisibleParental = False
-				if self.mPlatform.IsPrismCube( ) :
-					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -183,10 +168,8 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
-				self.mReLoadIp = True
+				self.mReLoadEthernetInformation = True
 				self.mVisibleParental = False
-				if self.mPlatform.IsPrismCube( ) :
-					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
@@ -266,6 +249,7 @@ class Configure( SettingWindow ) :
 	 			return
 
 			if groupId == E_SpinEx05 :
+				return
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
 				self.SetListControl( )
 				self.setDefaultControl( )
@@ -431,7 +415,7 @@ class Configure( SettingWindow ) :
 					self.mLastFocused = aControlId
 				if selectedId != self.mPrevListItemID :
 					self.mPrevListItemID =selectedId
-					self.mReLoadIp = True
+					self.mReLoadEthernetInformation = True
 					self.mVisibleParental = False
 				self.SetListControl( )
 
@@ -550,54 +534,66 @@ class Configure( SettingWindow ) :
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
 		elif selectedId == E_NETWORK_SETTING :
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
-			self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
-			if self.mUseNetworkType == NETWORK_WIRELESS :
-				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
-				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
-				self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press OK button to connect to the AP you have chosen' ) )
+			if self.mPlatform.IsPrismCube( ) :
+				self.OpenBusyDialog( )
+				self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
+				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
+				if self.mUseNetworkType == NETWORK_WIRELESS :
+					self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
+					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
+					self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
+					self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
+					self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press OK button to connect to the AP you have chosen' ) )
 
-				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]
-				self.SetVisibleControls( visibleControlIds, True )
-				self.SetEnableControls( visibleControlIds, True )
+					visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]
+					self.SetVisibleControls( visibleControlIds, True )
+					self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input05, E_Input06 ]
-				self.SetVisibleControls( hideControlIds, False )
-				
-				self.InitControl( )
-				time.sleep( 0.2 )
-				self.DisableControl( E_WIFI )
-				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input05, E_Input06 ]
+					self.SetVisibleControls( hideControlIds, False )
+					
+					self.InitControl( )
+					time.sleep( 0.2 )
+					self.DisableControl( E_WIFI )
+					self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+
+				else :
+					if self.mReLoadEthernetInformation == True :
+						self.LoadEthernetInformation( )				
+						self.mReLoadEthernetInformation = False
+
+					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mEthernetConnectMethod, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
+					self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mEthernetIpAddress, MR_LANG( 'Enter your IP address' ) )
+					self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mEthernetNetmask, MR_LANG( 'Enter your subnet mask' ) )
+					self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mEthernetGateway, MR_LANG( 'Enter your gateway' ) )
+					self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mEthernetNamesServer, MR_LANG( 'Enter the DNS server address' ) )
+					self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press OK button to save the IP address settings' ) )
+
+					visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+					self.SetVisibleControls( visibleControlIds, True )
+					self.SetEnableControls( visibleControlIds, True )
+
+					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+					self.SetVisibleControls( hideControlIds, False )
+					
+					self.InitControl( )
+					time.sleep( 0.2 )
+					self.DisableControl( E_ETHERNET )
+					self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+
+				self.SetEnableControl( E_Input07, False )
+				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
+					self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
+
+				self.CloseBusyDialog( )
 
 			else :
-				if self.mReLoadIp == True :
-					self.ReLoadEthernetIp( )
-					self.mReLoadIp = False
-					
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
-				self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mTempIpAddr, MR_LANG( 'Enter your IP address' ) )
-				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
-				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press OK button to save the IP address settings' ) )
-
-				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-				self.SetVisibleControls( visibleControlIds, True )
-				self.SetEnableControls( visibleControlIds, True )
-
-				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
-				
+				self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
-				time.sleep( 0.2 )
-				self.DisableControl( E_ETHERNET )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-
-			self.SetEnableControl( E_Input07, False )
-			if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
-				self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
 		elif selectedId == E_TIME_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -704,7 +700,7 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, True )
 		elif aSelectedItem == E_ETHERNET :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-			if self.mTempNetworkType == NET_DHCP :
+			if self.mEthernetConnectMethod == NET_DHCP :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
@@ -755,94 +751,56 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_Input03, True )
 					self.SetEnableControl( E_SpinEx02, False )
 					self.SetEnableControl( E_SpinEx03, False )
-					
-					
-	def LoadEhternetInformation( self ) :
-		self.LoadEthernetType( )
-		self.LoadEthernetAddress( )
 
 
-	def LoadEthernetType( self ) :
-		ret = self.mIpParser.LoadEthernetType( )
-		if ret == True :
-			self.mSavedNetworkType	= self.mIpParser.GetEthernetType( )
-			self.mTempNetworkType	= self.mIpParser.GetEthernetType( )
-		else :
-			self.mSavedNetworkType	= NET_DHCP
-			self.mTempNetworkType	= NET_DHCP
-			LOG_ERR( 'Cannot read network type( dhcp/static )' )
-
-
-	def LoadEthernetAddress( self ) :
-		self.mIpParser.LoadEthernetAddress( )
-		if GetCurrentNetworkType( ) != NETWORK_ETHERNET :
-			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = 'None', 'None', 'None', 'None'
-			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = 'None', 'None', 'None', 'None'
-		else :
-			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = self.mIpParser.GetEthernetAddress( )
-			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = self.mIpParser.GetEthernetAddress( )
+	def LoadEthernetInformation( self ) :
+		self.mEthernetConnectMethod = NetMgr.GetInstance( ).GetEthernetMethod( )
+		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetEthernetAddress( )
 
 
 	def ConnectEthernet( self ) :
-		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
-		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr.strip( ), self.mTempSubNet.strip( ), self.mTempGateway.strip( ), self.mTempDns.strip( ) )
-		SetCurrentNetworkType( NETWORK_ETHERNET )
+		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
+		ret = NetMgr.GetInstance( ).ConnectEthernet( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 		if ret == False :
-			time.sleep( 0.5 )
+			time.sleep( 2 )
+			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
  			dialog.doModal( )
 		else :
-			if self.mTempNetworkType == NET_DHCP :
-				self.mSavedNetworkType = self.mTempNetworkType
-				self.LoadEthernetAddress( )
-				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.SetListControl( )
-			else :
-				self.mSavedIpAddr = self.mTempIpAddr
-				self.mSavedSubNet = self.mTempSubNet
-				self.mSavedGateway = self.mTempGateway
-				self.mSavedDns = self.mTempDns
-				self.mSavedNetworkType = self.mTempNetworkType
-				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-		self.CloseProgress( )
-
-
-	def ReLoadEthernetIp( self ) :
-		self.mTempIpAddr			= self.mSavedIpAddr
-		self.mTempSubNet			= self.mSavedSubNet
-		self.mTempGateway			= self.mSavedGateway
-		self.mTempDns				= self.mSavedDns
-		self.mTempNetworkType		= self.mSavedNetworkType
+			self.LoadEthernetInformation( )
+			self.SetListControl( )
+			NetMgr.GetInstance( ).SetNetworkProperty( self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
+			self.CloseProgress( )
 
 
 	def EthernetSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			if self.mTempNetworkType == NET_DHCP :
-				self.mTempNetworkType = NET_STATIC
+			if self.mEthernetConnectMethod == NET_DHCP :
+				self.mEthernetConnectMethod = NET_STATIC
 			else :
-				self.mTempNetworkType = NET_DHCP
+				self.mEthernetConnectMethod = NET_DHCP
 			self.DisableControl( E_ETHERNET )
 			
 		elif aControlId == E_Input01 :
-			self.mTempIpAddr = self.ShowIpInputDialog( self.mTempIpAddr )
+			self.mEthernetIpAddress = self.ShowIpInputDialog( self.mEthernetIpAddress )
 			self.SetListControl( )
 
 		elif aControlId == E_Input02 :
-			self.mTempSubNet = self.ShowIpInputDialog( self.mTempSubNet )
+			self.mEthernetNetmask = self.ShowIpInputDialog( self.mEthernetNetmask )
 			self.SetListControl( )
 
 		elif aControlId == E_Input03 :
-			self.mTempGateway = self.ShowIpInputDialog( self.mTempGateway )
+			self.mEthernetGateway = self.ShowIpInputDialog( self.mEthernetGateway )
 			self.SetListControl( )
 
 		elif aControlId == E_Input04 :
-			self.mTempDns = self.ShowIpInputDialog( self.mTempDns )
+			self.mEthernetNamesServer = self.ShowIpInputDialog( self.mEthernetNamesServer )
 			self.SetListControl( )
 
 		elif aControlId == E_Input05 :
-			if self.mTempNetworkType == NET_STATIC :
-				if self.mTempIpAddr == 'None' or self.mTempSubNet == 'None' or self.mTempGateway == 'None' or self.mTempDns == 'None' :
+			if self.mEthernetConnectMethod == NET_STATIC :
+				if self.mEthernetIpAddress == 'None' or self.mEthernetNetmask == 'None' or self.mEthernetGateway == 'None' or self.mEthernetNamesServer == 'None' :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
@@ -1055,7 +1013,7 @@ class Configure( SettingWindow ) :
 
 
 	def CheckNetworkStatus( self ) :
-		self.mStateNetLink = xbmc.getInfoLabel( 'System.internetstate' )
+		self.mStateNetLink = NetMgr.GetInstance( ).CheckInternetState( )
 		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
 		self.SetControlLabel2String( E_Input07, self.mStateNetLink )
 
@@ -1077,7 +1035,7 @@ class Configure( SettingWindow ) :
 		count = 0
 		while self.mEnableLocalThread :
 			if self.mRunningNetwork == False and self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
-				if ( count % 60 ) == 0 :
+				if ( count % 20 ) == 0 :
 					self.CheckNetworkStatus( )
 			count = count + 1
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )
