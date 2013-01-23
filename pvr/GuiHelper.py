@@ -582,7 +582,7 @@ def GetCurrentVersion( ) :
 	return retInfo
 
 
-def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0 ) :
+def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0, aUnzipPath = 'update_ruby' ) :
 	isCopy = False
 	cmd = 'unzip -o %s -d %s'% ( aZipFile, aUsbPath )
 
@@ -590,7 +590,7 @@ def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0 ) :
 		LOG_TRACE( '------------check usb[%s]'% aUsbPath )
 		return isCopy
 
-	RemoveDirectory( '%s/update'% aUsbPath )
+	RemoveDirectory( '%s/%s'% ( aUsbPath, aUnzipPath ) )
 	usbSize = GetDeviceSize( aUsbPath )
 	if usbSize <= aUnpackSize :
 		return -1

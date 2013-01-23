@@ -7,6 +7,7 @@ import stat
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
+E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
@@ -637,7 +638,7 @@ class SystemUpdate( SettingWindow ) :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				usbPath = self.mDataCache.USB_GetMountPath( )
 				if usbPath :
-					RemoveDirectory( '%s/update'% usbPath )
+					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
 
@@ -699,7 +700,7 @@ class SystemUpdate( SettingWindow ) :
 					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 				elif usbPath :
-					RemoveDirectory( '%s/update'% usbPath )
+					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 					self.SetFocusControl( E_Input02 )
 
 
@@ -831,7 +832,7 @@ class SystemUpdate( SettingWindow ) :
 				time.sleep( 0.3 )
 				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
-				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize )
+				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize, E_DEFAULT_DIR_UNZIP )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
