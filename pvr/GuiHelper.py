@@ -554,6 +554,17 @@ def GetUnpackFiles( aZipFile ) :
 	return fileList
 
 
+def GetUnpackDirectory( aZipFile ) :
+	unzipDir = False
+
+	fileList = GetUnpackFiles( aZipFile )
+	if fileList and len( fileList ) > 0 and fileList[0][0] == 4096 and fileList[0][1] :
+		LOG_TRACE( '---------------size[%s] dirName[%s]'% ( fileList[0][0], fileList[0][1] ) )
+		unzipDir = fileList[0][1].strip( '/' )
+
+	return unzipDir
+
+
 def GetSTBVersion( ) :
 	stbversion = ''
 	openFile = '/etc/stbversion'
@@ -702,7 +713,7 @@ def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
 				else :
 					lines.append('')
 
-			LOG_TRACE( 'parse[%s]'% lines )
+			#LOG_TRACE( 'parse[%s]'% lines )
 			if lines :
 				lists.append( lines )
 
