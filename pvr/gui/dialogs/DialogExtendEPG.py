@@ -18,23 +18,23 @@ class DialogExtendEPG( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
-		self.mWin.setProperty( 'EPGTitle', self.mEPG.mEventName )
-		self.mWin.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
+		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
+		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
 
 		if self.mEPG.mHasHDVideo :
-			self.mWin.setProperty( 'HasHD', 'true' )
+			self.setProperty( 'HasHD', 'true' )
 		else :
-			self.mWin.setProperty( 'HasHD', 'false' )			
+			self.setProperty( 'HasHD', 'false' )			
 		
 		if self.mEPG.mHasDolbyDigital :
-			self.mWin.setProperty( 'HasDolby', 'true' )
+			self.setProperty( 'HasDolby', 'true' )
 		else :
-			self.mWin.setProperty( 'HasDolby', 'false' )
+			self.setProperty( 'HasDolby', 'false' )
 
 		if self.mEPG.mHasSubtitles :
-			self.mWin.setProperty( 'HasSubtitle', 'true' )
+			self.setProperty( 'HasSubtitle', 'true' )
 		else :
-			self.mWin.setProperty( 'HasSubtitle', 'false' )
+			self.setProperty( 'HasSubtitle', 'false' )
 
 		
 		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
@@ -44,7 +44,7 @@ class DialogExtendEPG( BaseDialog ) :
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-		self.mWin.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
+		self.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
 
 		self.mEventBus.Register( self )
 

@@ -28,9 +28,9 @@ class NullWindow( BaseWindow ) :
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_LIVE :
-			self.mWin.setProperty( 'PvrPlay', 'False' )
+			self.setProperty( 'PvrPlay', 'False' )
 		else :
-			self.mWin.setProperty( 'PvrPlay', 'True' )
+			self.setProperty( 'PvrPlay', 'True' )
 
 		if self.mInitialized == False :
 			self.mInitialized = True

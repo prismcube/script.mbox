@@ -191,7 +191,7 @@ class Help( SettingWindow ) :
 					self.getControl( E_HELP_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
 					self.getControl( E_HELP_IMAGE ).setWidth( content.mWidth )
 					self.getControl( E_HELP_IMAGE ).setHeight( content.mHeight )
-					self.mWin.setProperty('imagepath', content.mDescription )
+					self.setProperty('imagepath', content.mDescription )
 					
 				elif content.mType == "textbox" :
 					self.getControl( E_HELP_TEXTBOX + contentcount ).setPosition( content.mPositionX , content.mPositionY )
@@ -199,11 +199,11 @@ class Help( SettingWindow ) :
 					self.getControl( E_HELP_TEXTBOX + contentcount ).setHeight( content.mHeight )
 					
 					if contentcount == 0:
-						self.mWin.setProperty( 'label', content.mDescription )
+						self.setProperty( 'label', content.mDescription )
 					elif contentcount == 1:
-						self.mWin.setProperty( 'label1', content.mDescription )
+						self.setProperty( 'label1', content.mDescription )
 					elif contentcount == 2:
-						self.mWin.setProperty( 'label2', content.mDescription )
+						self.setProperty( 'label2', content.mDescription )
 
 					self.getControl( E_HELP_TEXTBOX + contentcount ).setVisible( True )
 					contentcount += 1

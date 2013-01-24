@@ -327,7 +327,7 @@ class SystemUpdate( SettingWindow ) :
 		if aPropertyID == None :
 			return
 
-		self.mWin.setProperty( aPropertyID, aValue )
+		self.setProperty( aPropertyID, aValue )
 
 
 	def ResetLabel( self, aControls = True ) :

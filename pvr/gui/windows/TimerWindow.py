@@ -149,7 +149,7 @@ class TimerWindow( BaseWindow ) :
 
 
 	def UpdateTimerMode( self ) :
-		self.mWin.setProperty( 'TimerMode', 'true' )
+		self.setProperty( 'TimerMode', 'true' )
 
 
 	def Flush( self ) :

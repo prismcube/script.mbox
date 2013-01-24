@@ -283,14 +283,14 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateViewMode( self ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
-			self.mWin.setProperty( 'EPGMode', 'channel' )
+			self.setProperty( 'EPGMode', 'channel' )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
-			self.mWin.setProperty( 'EPGMode', 'current' )
+			self.setProperty( 'EPGMode', 'current' )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
-			self.mWin.setProperty( 'EPGMode', 'following' )
+			self.setProperty( 'EPGMode', 'following' )
 		else :
 			self.mEPGMode = E_VIEW_LIST 		
-			self.mWin.setProperty( 'EPGMode', 'channel' )
+			self.setProperty( 'EPGMode', 'channel' )
 			
 		LOG_TRACE( '---------------------self.mEPGMode=%d' %self.mEPGMode )
 
@@ -390,7 +390,7 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateSelcetedPosition( self ) :
 		if self.mChannelList == None :
-			self.mWin.setProperty( 'SelectedPosition', '0' )
+			self.setProperty( 'SelectedPosition', '0' )
 			return
 
 		selectedPos = 0
@@ -400,7 +400,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
 
-		self.mWin.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
+		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
 
 	def FocusCurrentChannel( self ) :
@@ -453,9 +453,9 @@ class EPGWindow( BaseWindow ) :
 				else :
 					self.mCtrlEPGDescription.setText( '' )
 
-				self.mWin.setProperty( 'HasHD', HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-				self.mWin.setProperty( 'HasDolby', HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.mWin.setProperty( 'HasSubtitle', HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				self.setProperty( 'HasHD', HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
+				self.setProperty( 'HasDolby', HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+				self.setProperty( 'HasSubtitle', HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
 			else :
 				self.ResetEPGInfomation( )
 
@@ -469,9 +469,9 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlDurationLabel.setLabel( '' )
 		self.mCtrlEPGDescription.setText( '' )
 		
-		self.mWin.setProperty( 'HasSubtitle', 'False' )
-		self.mWin.setProperty( 'HasDolby', 'False' )
-		self.mWin.setProperty( 'HasHD', 'False' )
+		self.setProperty( 'HasSubtitle', 'False' )
+		self.setProperty( 'HasDolby', 'False' )
+		self.setProperty( 'HasHD', 'False' )
 
 
 	def UpdateListUpdateOnly( self ) :

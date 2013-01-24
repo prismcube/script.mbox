@@ -1616,7 +1616,7 @@ class ChannelListWindow( BaseWindow ) :
 			rootWinow.setProperty( aPropertyID, aValue )			
 			
 		else :
-			self.mWin.setProperty( aPropertyID, aValue )
+			self.setProperty( aPropertyID, aValue )
 
 
 	def UpdateChannelAndEPG( self ) :

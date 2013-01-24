@@ -815,7 +815,7 @@ class LivePlate( LivePlateWindow ) :
 		if aPropertyID == None :
 			return
 
-		self.mWin.setProperty( aPropertyID, aValue )
+		self.setProperty( aPropertyID, aValue )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ) :

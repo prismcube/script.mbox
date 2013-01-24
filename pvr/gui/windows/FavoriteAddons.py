@@ -162,23 +162,23 @@ class FavoriteAddons( BaseWindow ) :
 	def UpdateViewMode( self ) :
 		if self.mViewMode == E_VIEW_MODE_LIST :
 			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
-			self.mWin.setProperty( 'Addons_ViewMode', 'list' )
+			self.setProperty( 'Addons_ViewMode', 'list' )
 		elif self.mViewMode == E_VIEW_MODE_THUMBNAIL :
 			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'THUMBNAIL' ) ) )
-			self.mWin.setProperty( 'Addons_ViewMode', 'thumbnail' )
+			self.setProperty( 'Addons_ViewMode', 'thumbnail' )
 		else :
 			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
-			self.mWin.setProperty( 'Addons_ViewMode', 'list' )
+			self.setProperty( 'Addons_ViewMode', 'list' )
 			LOG_WARN( 'Unknown view mode' )
 
 
 	def UpdateAscending( self ) :
 		if self.mAscending == True :
-			self.mWin.setProperty( 'Ascending', 'true' )
-			self.mWin.setProperty( 'Addons_Sort', 'true' )
+			self.setProperty( 'Ascending', 'true' )
+			self.setProperty( 'Addons_Sort', 'true' )
 		else :
-			self.mWin.setProperty( 'Ascending', 'false' )
-			self.mWin.setProperty( 'Addons_Sort', 'false' )
+			self.setProperty( 'Ascending', 'false' )
+			self.setProperty( 'Addons_Sort', 'false' )
 
 
 	def ByName( self, aArg1, aArg2 ) :

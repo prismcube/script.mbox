@@ -62,9 +62,9 @@ class ArchiveWindow( BaseWindow ) :
 		status = self.mDataCache.Player_GetStatus( )
 		
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			self.mWin.setProperty( 'PvrPlay', 'True' )
+			self.setProperty( 'PvrPlay', 'True' )
 		else :
-			self.mWin.setProperty( 'PvrPlay', 'False' )
+			self.setProperty( 'PvrPlay', 'False' )
 		
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
@@ -149,7 +149,7 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				#self.mDataCache.Player_Stop( )
 				#self.mPlayingRecord	= None
-				#self.mWin.setProperty( 'PvrPlay', 'False' )
+				#self.setProperty( 'PvrPlay', 'False' )
 				self.Close( )
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -303,16 +303,16 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateViewMode( self ) :
 		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
-			self.mWin.setProperty( 'ViewMode', 'common' )
+			self.setProperty( 'ViewMode', 'common' )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
-			self.mWin.setProperty( 'ViewMode', 'thumbnail' )
+			self.setProperty( 'ViewMode', 'thumbnail' )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
-			self.mWin.setProperty( 'ViewMode', 'posterwrap' )
+			self.setProperty( 'ViewMode', 'posterwrap' )
 		elif self.mViewMode == E_VIEW_FANART :			
-			self.mWin.setProperty( 'ViewMode', 'panart' )
+			self.setProperty( 'ViewMode', 'panart' )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
-			self.mWin.setProperty( 'ViewMode', 'common' )
+			self.setProperty( 'ViewMode', 'common' )
 		
 
 	def UpdateSortMode( self ) :
@@ -322,9 +322,9 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateAscending( self ) :
 		LOG_TRACE( '--------------------- %d' % self.mAscending[self.mSortMode] )	
 		if self.mAscending[self.mSortMode] == True :
-			self.mWin.setProperty( 'Ascending', 'true' )
+			self.setProperty( 'Ascending', 'true' )
 		else :
-			self.mWin.setProperty( 'Ascending', 'false' )
+			self.setProperty( 'Ascending', 'false' )
 	
 
 	def Flush( self ) :
@@ -565,7 +565,7 @@ class ArchiveWindow( BaseWindow ) :
 				SetLock2( True )
 				self.mPlayingRecord = recInfo
 				SetLock2( False )				
-				self.mWin.setProperty( 'PvrPlay', 'True' )
+				self.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
@@ -951,9 +951,9 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateSelectedPosition( self ) :
 		selectedPos = self.GetSelectedPosition( )
 		if selectedPos < 0 :
-			self.mWin.setProperty( 'SelectedPosition', '0' )
+			self.setProperty( 'SelectedPosition', '0' )
 		else :
-			self.mWin.setProperty( 'SelectedPosition', '%d' % ( selectedPos + 1 ) )
+			self.setProperty( 'SelectedPosition', '%d' % ( selectedPos + 1 ) )
 
 
 	def UpdateArchiveInfomation( self ) :
@@ -969,10 +969,10 @@ class ArchiveWindow( BaseWindow ) :
 			"""
 			
 			if recInfo :
-				self.mWin.setProperty( 'ChannelName', recInfo.mChannelName )
-				self.mWin.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
-				self.mWin.setProperty( 'RecDuration',  '%dMin' %( recInfo.mDuration/60 ) )
-				self.mWin.setProperty( 'RecName', recInfo.mRecordName )
+				self.setProperty( 'ChannelName', recInfo.mChannelName )
+				self.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
+				self.setProperty( 'RecDuration',  '%dMin' %( recInfo.mDuration/60 ) )
+				self.setProperty( 'RecName', recInfo.mRecordName )
 			else :
 				self.ResetArchiveInfomation( )
 		else :
@@ -980,10 +980,10 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ResetArchiveInfomation( self ) :
-		self.mWin.setProperty( 'ChannelName', '' )
-		self.mWin.setProperty( 'RecDate', '' )
-		self.mWin.setProperty( 'RecDuration',  '' )
-		self.mWin.setProperty( 'RecName', '' )				
+		self.setProperty( 'ChannelName', '' )
+		self.setProperty( 'RecDate', '' )
+		self.setProperty( 'RecDuration',  '' )
+		self.setProperty( 'RecName', '' )				
 
 
 	def RestoreLastRecordKey( self ) :
@@ -1046,7 +1046,7 @@ class ArchiveWindow( BaseWindow ) :
 				
 		else :
 			self.mPlayingRecord = None
-			self.mWin.setProperty( 'PvrPlay', 'False' )
+			self.setProperty( 'PvrPlay', 'False' )
 			if self.mEnableThread == True and self.mPlayProgressThread :
 				self.mEnableThread = False
 				self.mPlayProgressThread.join( )
