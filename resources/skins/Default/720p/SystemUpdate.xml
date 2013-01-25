@@ -23,7 +23,7 @@
 			</control>
 			<control type="group">
 				<posx>0</posx>
-				<posy>85</posy>
+				<posy>90</posy>
 				<visible>substring(Window.Property(ShowProgress),true)</visible>
 				<control type="progress" id="51">
 					<posx>0</posx>

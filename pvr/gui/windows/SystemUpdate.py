@@ -74,10 +74,28 @@ class PVSClass( object ) :
 		self.mMd5					= None
 		self.mSize					= 0		#zipSize
 		self.mUnpackSize			= 0		#fullSize
+		self.mUnzipDir				= 'update_ruby'
 		self.mVersion				= 0
 		self.mId					= None
 		self.mType					= None
 		self.mError					= -1
+
+	def printdebug( self ):
+		print 'Class  PVSClass'
+		print 'mKey= %s'% self.mKey
+		print 'mName= %s'%self.mName
+		print 'mFileName= %s'%self.mFileName
+		print 'mDate= %d'%self.mDate
+		print 'mDescription= %s'%self.mDescription
+		print 'mActions= %s'%self.mActions
+		print 'mMd5= %s'%self.mMd5
+		print 'mSize= %s'%self.mSize
+		print 'mUnpackSize= %s'%self.mUnpackSize
+		print 'mUnzipDir= %s'%self.mUnzipDir
+		print 'mVersion= %s'%self.mVersion
+		print 'mId= %s'%self.mId
+		print 'mType= %s'%self.mType
+		print 'mError= %s'%self.mError
 
 
 class SystemUpdate( SettingWindow ) :
@@ -164,7 +182,8 @@ class SystemUpdate( SettingWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			if self.mStepPage != E_UPDATE_STEP_HOME :
 				if self.mGetDownloadThread :
-					self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_DOWNLOADING )
+					#self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_DOWNLOADING )
+					LOG_ERR( 'Now Downloading' )
 					return
 
 				else :
@@ -530,7 +549,7 @@ class SystemUpdate( SettingWindow ) :
 
 			if isDownload :
 				mPVSList = []
-				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action']
+				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action', 'unzipdir']
 				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
 				if retList and len( retList ) > 0 :
 					for pvsData in retList :
@@ -560,6 +579,8 @@ class SystemUpdate( SettingWindow ) :
 							for item in pvsData[8] :
 								actions += '%s\n'% item
 							iPVS.mActions = actions
+						if pvsData[9] :
+							iPVS.mUnzipDir = pvsData[9]
 
 						iPVS.mName = MR_LANG( 'Downloading firmware' )
 						iPVS.mType = E_TYPE_ADDONS
@@ -631,14 +652,25 @@ class SystemUpdate( SettingWindow ) :
 	def DoContextAction( self, aContextAction ) :
 		#LOG_TRACE( 'aContextAction=%d' %aContextAction )
 		if aContextAction == CONTEXT_ACTION_REFRESH_CONNECT :
-			self.mPVSData = None
-			self.mPVSList = []
-			self.ResetLabel( False )
+			"""
+			if self.mPVSData and self.mPVSData.mError == 0 :
+				global E_DEFAULT_DIR_UNZIP
+				tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+				unzipDir = GetUnpackDirectory( tempFile ) :
+				if unzipDir and unzipDir != E_DEFAULT_DIR_UNZIP :
+					E_DEFAULT_DIR_UNZIP = '%s'% unzipDir
+					LOG_TRACE( '--------catched unzip directory[%s]'% E_DEFAULT_DIR_UNZIP )
+			"""
+
 			try :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				usbPath = self.mDataCache.USB_GetMountPath( )
 				if usbPath :
 					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
+					if self.mPVSList and len( self.mPVSList ) > 0 :
+						for iPVS in self.mPVSList :
+							RemoveDirectory( '%s/%s'% ( usbPath, iPVS.mUnzipDir ) )
+
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
 
@@ -648,6 +680,9 @@ class SystemUpdate( SettingWindow ) :
 				self.mGetDownloadThread.join( )
 				self.mGetDownloadThread = None
 
+			self.mPVSData = None
+			self.mPVSList = []
+			self.ResetLabel( False )
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
@@ -688,6 +723,10 @@ class SystemUpdate( SettingWindow ) :
 			if select == 0 : #lastest version
 				self.mPVSData.mType = E_TYPE_PRISMCUBE
 
+			global E_DEFAULT_DIR_UNZIP
+			if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
+				E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
+
 			ret = self.InitPVSData( )
 			self.mStepPage = E_UPDATE_STEP_READY
 			usbPath = self.mDataCache.USB_GetMountPath( )
@@ -701,8 +740,8 @@ class SystemUpdate( SettingWindow ) :
 
 				elif usbPath :
 					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
+					RemoveDirectory( '%s/%s'% ( usbPath, self.mPVSData.mUnzipDir ) )
 					self.SetFocusControl( E_Input02 )
-
 
 		else :
 			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )
@@ -938,6 +977,10 @@ class SystemUpdate( SettingWindow ) :
 		button2Desc   = MR_LANG( 'Press OK button to download the firmware shown below' )
 
 		if self.mIsDownload :
+			global E_DEFAULT_DIR_UNZIP
+			if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
+				E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
+
 			button2Label = MR_LANG( 'Copy to USB')
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 
@@ -1178,7 +1221,6 @@ class SystemUpdate( SettingWindow ) :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
 
-		from pvr.IpParser import *
 		"""
 		LOG_TRACE('1. update version ------' )
 		try :
@@ -1207,45 +1249,50 @@ class SystemUpdate( SettingWindow ) :
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
-			fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'w' )
-			if fd :
-				nType = GetCurrentNetworkType( )
-				fd.writelines( 'NetworkType=%s\n'% nType )
-				command = pvr.ElisMgr.GetInstance( ).GetCommander( )
-				if nType == NETWORK_ETHERNET :
-					ipInfo = IpParser( )
-					ipInfo.LoadEthernetType( )
-					ethType = 'dhcp'
-					if ipInfo.GetEthernetType( ) :
-						ethType = 'static'
-					fd.writelines( 'ethtype=%s\n'% ethType )
-					fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
-					fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
-					fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
-					fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
-				else :
-					wifiInfo = WirelessParser( )
-					wifiInfo.LoadWpaSupplicant( )
-					fd.writelines( 'devname=%s\n'% wifiInfo.GetWifidevice( ) )
-					rd = open( FILE_WPA_SUPPLICANT, 'r' )
-					wifiData = rd.readlines( )
-					rd.close( )
-					if wifiData :
-						for line in wifiData :
-							value = ParseStringInPattern( '=', line )
-							#LOG_TRACE('-----------split[%s]'% value )
-							if not value or len( value ) < 2 :
-								continue
+			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
+				from pvr.IpParser import *
 
-							if not value[0] :
-								continue
+				fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'w' )
+				if fd :
+					nType = GetCurrentNetworkType( )
+					fd.writelines( 'NetworkType=%s\n'% nType )
+					command = pvr.ElisMgr.GetInstance( ).GetCommander( )
+					if nType == NETWORK_ETHERNET :
+						ipInfo = IpParser( )
+						ipInfo.LoadEthernetType( )
+						ethType = 'dhcp'
+						if ipInfo.GetEthernetType( ) :
+							ethType = 'static'
+						fd.writelines( 'ethtype=%s\n'% ethType )
+						fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
+						fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
+						fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
+						fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
+					else :
+						wifiInfo = WirelessParser( )
+						wifiInfo.LoadWpaSupplicant( )
+						fd.writelines( 'devname=%s\n'% wifiInfo.GetWifidevice( ) )
+						rd = open( FILE_WPA_SUPPLICANT, 'r' )
+						wifiData = rd.readlines( )
+						rd.close( )
+						if wifiData :
+							for line in wifiData :
+								value = ParseStringInPattern( '=', line )
+								#LOG_TRACE('-----------split[%s]'% value )
+								if not value or len( value ) < 2 :
+									continue
 
-							if value[0][0] == '#' or ( value[1] and value[1][0] ) == '{' : 
-								continue
+								if not value[0] :
+									continue
 
-							fd.writelines( '%s=%s\n'% ( value[0], value[1] ) )
+								if value[0][0] == '#' or ( value[1] and value[1][0] ) == '{' : 
+									continue
 
-				fd.close( )
+								fd.writelines( '%s=%s\n'% ( value[0], value[1] ) )
+					fd.close( )
+			else :
+				pass
+				#ToDO : frodo configure
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
