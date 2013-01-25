@@ -165,6 +165,7 @@ class NullWindow( BaseWindow ) :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
+				self.mDataCache.SetAVBlankByChannel( prevChannel )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
@@ -179,6 +180,7 @@ class NullWindow( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				self.mDataCache.SetAVBlankByChannel( nextChannel )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
@@ -208,6 +210,7 @@ class NullWindow( BaseWindow ) :
 					if iCurrentCh.mNumber != int(inputNumber) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
+							self.mDataCache.SetAVBlankByChannel( jumpChannel )
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
 
 			else :
@@ -217,7 +220,6 @@ class NullWindow( BaseWindow ) :
 
 				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
-
 					move = dialog.GetMoveToJump( )
 					if move :
 						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )

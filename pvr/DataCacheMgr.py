@@ -1307,7 +1307,7 @@ class DataCacheMgr( object ) :
 		return self.mAVBlankStatus
 
 
-	def CheckCurrentChannelByAVBlank( self, aBlank ) :
+	def SetAVBlankByArchive( self, aBlank ) :
 		if aBlank :
 			if self.Get_Player_AVBlank( ) :
 				self.mRecoverBlank = True
@@ -1318,6 +1318,22 @@ class DataCacheMgr( object ) :
 				if not self.Get_Player_AVBlank( ) :
 					self.Player_AVBlank( True )
 					LOG_TRACE('---------------------last blank')
+
+
+	def SetAVBlankByChannel( self, aChannel = None ) :
+		iChannel = None
+		if not aChannel :
+			iChannel = self.Channel_GetCurrent( )
+		else :
+			iChannel = aChannel
+
+		if iChannel and iChannel.mLocked :
+			if not self.Get_Player_AVBlank( ) :
+				self.Player_AVBlank( True )
+
+		else :
+			if self.Get_Player_AVBlank( ) :
+				self.Player_AVBlank( False )
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1341,7 +1357,7 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
-		self.CheckCurrentChannelByAVBlank( False )
+		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
 
@@ -1370,7 +1386,7 @@ class DataCacheMgr( object ) :
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
-		self.CheckCurrentChannelByAVBlank( True )
+		self.SetAVBlankByArchive( True )
 		self.Frontdisplay_PlayPause( )
 		recInfo = self.Record_GetRecordInfoByKey( aRecordKey )
 		if recInfo and recInfo.mError == 0 :

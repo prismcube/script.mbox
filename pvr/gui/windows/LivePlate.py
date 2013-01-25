@@ -124,9 +124,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
 
-		if self.mPincodeConfirmed and ( not self.mDataCache.GetPincodeDialog( ) ) :
-			thread = threading.Timer( 0.3, self.ShowPincodeDialog )
-			thread.start( )
+		if self.mPincodeConfirmed :
+			self.mDataCache.SetAVBlankByChannel( )
 			self.mPincodeConfirmed = False
 
 		if self.mAutomaticHide :
@@ -1057,6 +1056,7 @@ class LivePlate( LivePlateWindow ) :
 			#self.mFakeChannel.printdebug( )
 			if ret == True :
 				self.mDataCache.SetParentLock( True )
+				self.mDataCache.SetAVBlankByChannel( self.mFakeChannel )
 				self.mCurrentEPG = None
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.mFakeChannel = self.mCurrentChannel

@@ -525,7 +525,7 @@
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
-								<texture>IconTeletext.png</texture>
+								<texture>IconSubtitle.png</texture>
 							</control>
 						</control>
 						<control type="group" id="311">

@@ -73,7 +73,7 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 		return ElisEnum.E_HasDolbyDigital
 	
 	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
-		#return 'IconTeletext.png' #ToDO -> support multi skin
+		#return 'IconSubtitle.png' #ToDO -> support multi skin
 		return ElisEnum.E_HasSubtitles
 	
 	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio :

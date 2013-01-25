@@ -39,6 +39,7 @@
 	<texture>TSIconRewind.png</texture>
 	<texture>TSIconFastForward.png</texture>
 	<texture>IconTeletext.png</texture>
+	<texture>IconSubtitle.png</texture>
 	<texture>dolbydigital.png</texture>
 	<texture>OverlayHD.png</texture>
 	<!-- channel list-->
