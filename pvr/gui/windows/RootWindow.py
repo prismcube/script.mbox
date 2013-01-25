@@ -28,7 +28,7 @@ class RootWindow( BaseWindow ) :
 		else :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
 
-		
+
 	def onAction( self, aAction ) :
 		LOG_TRACE( 'RealyAction TEST action=%d' %aAction.getId() )
 

@@ -153,7 +153,7 @@ class WindowMgr( object ) :
 				SetLock2( False )
 				self.mWindows[self.mLastId].ClearRelayAction( )
 				self.mWindows[currentId].close( )
-				self.mWindows[currentId].SetActivate( False )				
+				self.mWindows[currentId].SetActivate( False )
 
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
@@ -179,7 +179,7 @@ class WindowMgr( object ) :
 					self.mLastId = parentId					
 					SetLock2( False )
 					self.mWindows[currentId].close( )
-					self.mWindows[currentId].SetActivate( False )										
+					self.mWindows[currentId].SetActivate( False )
 					#self.mWindows[parentId].doModal( )
 				else :				
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	

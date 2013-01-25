@@ -662,7 +662,7 @@
 		<control type="group" id="100">
 			<posy>25</posy>
 			<animation effect="slide" start="0,0" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation> 
-			<animation effect="slide" start="0,0" end="-300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Control.HasFocus(61)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Control.HasFocus(50) | Control.HasFocus(61)">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-300,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 			<!-- 2'nd slide -->
@@ -676,7 +676,7 @@
 					<texture background="true">views/listpanel_black.png</texture>
 					<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
                     <animation effect="slide" end="0,-10" time="300" easing="in" tween="cubic" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
+					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1) | Control.HasFocus(103)">Conditional</animation>
                 </control>
                 <control type="image">
 					<posx>-290</posx>
@@ -686,7 +686,7 @@
 					<texture background="true">views/listpanel_back_noreflect.png</texture>
     				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
 	                <animation effect="slide" end="0,-10" time="300" easing="in" tween="cubic" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
+					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1) | Control.HasFocus(103)">Conditional</animation>
                 </control>
 			</control>
 			<!-- 1'st slide -->
@@ -766,8 +766,8 @@
 					<height>600</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
-					<onup></onup>
-					<ondown></ondown>
+					<onup>103</onup>
+					<ondown>103</ondown>
 					<scrolltime>300</scrolltime>
 					<textcolor>grey3</textcolor>
 					<movement>10</movement>
@@ -917,7 +917,7 @@
 					<!-- sub main 2 -->
 					<control type="grouplist" id="9002">
 						<posx>15</posx>
-						<posy>160</posy>
+						<posy>140</posy>
 						<width>210</width>
 						<height>430</height>
 						<align>center</align>

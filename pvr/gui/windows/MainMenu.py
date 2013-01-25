@@ -92,12 +92,12 @@ class MainMenu( BaseWindow ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
 			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
-				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
 					self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback, recordings\nand timeshift' ) )
 				dialog.doModal( )
-				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
+				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
 					self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :

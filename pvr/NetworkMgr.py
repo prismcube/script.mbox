@@ -1,5 +1,11 @@
 from pvr.gui.GuiConfig import *
-import dbus
+
+gUseDbus = True
+
+try :
+	import dbus
+except :
+	gUseDbus = False
 
 
 gNetworkMgr = None
@@ -59,6 +65,9 @@ class NetworkMgr( object ) :
 
 
 	def LoadEthernetService( self ) :
+		if gUseDbus == False :
+			return False
+			
 		try :
 			ethernetServicePath = None
 			self.mEthernetServiceObejct = None
@@ -87,6 +96,9 @@ class NetworkMgr( object ) :
 
 
 	def LoadWifiService( self ) :
+		if gUseDbus == False :
+			return False
+
 		try :
 			SSID = self.GetConfiguredSSID( )
 			LOG_TRACE( 'LoadWifiService ssid = %s' % SSID )
@@ -106,6 +118,9 @@ class NetworkMgr( object ) :
 
 
 	def LoadWifiTechnology( self ) :
+		if gUseDbus == False :
+			return False
+
 		self.mWifiTechnologyObject = None
 		try :
 			wifiTechnologyPath = None
@@ -132,6 +147,9 @@ class NetworkMgr( object ) :
 
 
 	def GetWifiTechnologyPower( self ) :
+		if gUseDbus == False :
+			return True
+
 		try :
 			if self.mWifiTechnologyObject :
 				property = self.mWifiTechnologyObject.GetProperties( )
@@ -149,6 +167,9 @@ class NetworkMgr( object ) :
 
 
 	def SetWifiTechnologyPower( self, aFlag ) :
+		if gUseDbus == False :
+			return
+
 		try :
 			if self.mWifiTechnologyObject :
 				self.mWifiTechnologyObject.SetProperty( 'Powered', aFlag )
@@ -166,6 +187,9 @@ class NetworkMgr( object ) :
 		
 
 	def GetConfiguredSSID( self ) :
+		if gUseDbus == False :
+			return None
+
 		try :
 			if os.path.exists( WIFI_CONFIGURED_PATH ) :
 				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
@@ -185,6 +209,9 @@ class NetworkMgr( object ) :
 
 
 	def GetConfiguredPassword( self ) :
+		if gUseDbus == False :
+			return None
+
 		try :
 			if os.path.exists( WIFI_CONFIGURED_PATH ) :
 				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
@@ -205,6 +232,9 @@ class NetworkMgr( object ) :
 
 
 	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
+		if gUseDbus == False :
+			return False
+
 		try :
 			openFile = open( WIFI_CONFIGURED_PATH, 'w' )
 			words = '[service_home]\n'
@@ -225,6 +255,9 @@ class NetworkMgr( object ) :
 
 
 	def GetConfiguredWifiServicePath( self, aSSID ) :
+		if gUseDbus == False :
+			return None
+
 		aplist = self.GetSearchedWifiApList( )
 
 		if len( aplist ) > 0 :
@@ -237,6 +270,9 @@ class NetworkMgr( object ) :
 
 
 	def GetSearchedWifiApList( self ) :
+		if gUseDbus == False :
+			return []
+
 		try :
 			bus = dbus.SystemBus( )
 			manager = dbus.Interface( bus.get_object( 'net.connman', '/' ), 'net.connman.Manager' )
@@ -266,6 +302,9 @@ class NetworkMgr( object ) :
 
 
 	def GetServiceState( self, aService ) :
+		if gUseDbus == False :
+			return False
+
 		try :
 			if aService :
 				property = aService.GetProperties( )
@@ -284,6 +323,9 @@ class NetworkMgr( object ) :
 
 
 	def SetServiceConnect( self, aService, aFlag ) :
+		if gUseDbus == False :
+			return False
+	
 		try :
 			if aService :
 				if aFlag :
@@ -316,6 +358,9 @@ class NetworkMgr( object ) :
 
 
 	def RestartConnman( self ) :
+		if gUseDbus == False :
+			return False
+	
 		try :
 			LOG_TRACE( 'start RestartConnman' )
 			os.system( 'systemctl restart connman.service' )
@@ -345,6 +390,9 @@ class NetworkMgr( object ) :
 		gateway		= 'None'
 		nameserver	= 'None'
 
+		if gUseDbus == False :
+			return 'None', 'None', 'None', 'None'
+
 		try :
 			property = aService.GetProperties( )
 
@@ -371,6 +419,9 @@ class NetworkMgr( object ) :
 
 
 	def ConnectEthernet( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
+		if gUseDbus == False :
+			return False
+	
 		try :
 			if self.LoadEthernetService( ) :
 				if aMethod == NET_DHCP :
@@ -400,6 +451,9 @@ class NetworkMgr( object ) :
 
 
 	def GetEthernetMethod( self ) :
+		if gUseDbus == False :
+			return NET_DHCP
+	
 		try :
 			property = self.mEthernetServiceObejct.GetProperties( )
 
@@ -438,6 +492,9 @@ class NetworkMgr( object ) :
 
 
 	def CheckInternetState( self ) :
+		if gUseDbus == False :
+			return 'Disconnected'
+	
 		service = self.GetCurrentServiceObject( )
 		if service :
 			try :

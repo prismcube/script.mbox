@@ -623,7 +623,7 @@
                     <height>720</height>
                     <texture>black-back_noAlpha.png</texture>
                     <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1) | Control.HasFocus(103)">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>-12</posx>
@@ -632,7 +632,7 @@
                     <height>720</height>
                     <texture>MediaBladeSub_Part2.png</texture>
                     <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1) | Control.HasFocus(103)">Conditional</animation>
                 </control>
 			</control>
 
@@ -696,8 +696,8 @@
 					<height>600</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
-					<onup></onup>
-					<ondown></ondown>
+					<onup>103</onup>
+					<ondown>103</ondown>
 					<scrolltime>300</scrolltime>
 					<textcolor>grey3</textcolor>
 					<movement>10</movement>
@@ -847,7 +847,7 @@
 					<!-- sub main 2 -->
 					<control type="grouplist" id="9002">
 						<posx>10</posx>
-						<posy>170</posy>
+						<posy>150</posy>
 						<width>230</width>
 						<height>430</height>
 						<align>center</align>

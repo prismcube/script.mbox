@@ -75,8 +75,10 @@ class NullWindow( BaseWindow ) :
 
 		"""
 		currentStack = inspect.stack( )
-		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
+		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s] count[%s] type[%s]'% (sys.getrecursionlimit( ), len(currentStack), currentStack.count, type(currentStack) ) )
 		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
+		for i in range(len(currentStack)) :
+			LOG_TRACE( 'currentStack[%s][%s]'% (i,currentStack[i]) )
 
 		startTime= self.mStartTimeForTest
 		lastTime = time.time( ) + 7200
