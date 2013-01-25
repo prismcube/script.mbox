@@ -42,7 +42,6 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' )]
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )

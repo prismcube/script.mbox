@@ -20,7 +20,6 @@ class ManualScan( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
 		self.VisibleTuneStatus( False )
@@ -40,8 +39,8 @@ class ManualScan( SettingWindow ) :
 			self.SetConfigTransponder( )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
-			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
-			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			ScanHelper.GetInstance( ).ScanHelper_Start( self )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( False )
 			self.SetPipLabel( )
@@ -73,7 +72,7 @@ class ManualScan( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
 			if self.mAvBlankStatus :
 				self.mDataCache.Player_AVBlank( True )
@@ -168,7 +167,7 @@ class ManualScan( SettingWindow ) :
 		# Start Search
 		elif groupId == E_Input04 :
 			self.OpenBusyDialog( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin, False )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
 			
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
@@ -179,7 +178,7 @@ class ManualScan( SettingWindow ) :
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
 
-			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
+			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
@@ -210,7 +209,7 @@ class ManualScan( SettingWindow ) :
 			self.ControlSelect( )
 			return
 
-		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 
 	def onFocus( self, aControlId ) :
@@ -232,7 +231,7 @@ class ManualScan( SettingWindow ) :
 
 	def UpdateStatus( self, aEvent ) :
 		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
-			ScanHelper.GetInstance( ).ScanHerper_Progress( self.mWin, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 
 
 	def InitConfig( self ) :

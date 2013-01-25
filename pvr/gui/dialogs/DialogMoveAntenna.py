@@ -26,7 +26,6 @@ class DialogMoveAntenna( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )	
 
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 

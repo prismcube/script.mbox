@@ -50,7 +50,6 @@ class MainMenu( BaseWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
 		#self.GetFavAddons( )

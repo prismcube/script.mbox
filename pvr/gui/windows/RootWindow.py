@@ -8,7 +8,6 @@ class RootWindow( BaseWindow ) :
 
 	def onInit( self ) :
 		#self.mWinId = xbmcgui.getCurrentWindowId( )
-		#self.mWin = xbmcgui.Window( self.mWinId )
 
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized

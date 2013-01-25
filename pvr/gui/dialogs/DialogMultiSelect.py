@@ -24,7 +24,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
 		self.mMarkList = []
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )

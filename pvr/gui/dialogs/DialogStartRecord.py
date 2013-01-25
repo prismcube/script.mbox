@@ -39,7 +39,6 @@ class DialogStartRecord( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
 		
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
 		self.SetHeaderLabel( MR_LANG( 'Start Recording' ) )

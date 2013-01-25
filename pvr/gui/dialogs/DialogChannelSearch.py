@@ -30,7 +30,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mIsFinished = False	
 		self.mTimer = None

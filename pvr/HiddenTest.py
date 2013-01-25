@@ -16,7 +16,6 @@ class HiddenTest( BaseWindow ) :
 		self.SetActivate( True )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 		self.CheckTestFile( )
 
 

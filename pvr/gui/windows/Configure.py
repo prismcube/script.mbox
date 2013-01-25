@@ -111,7 +111,6 @@ class Configure( SettingWindow ) :
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )

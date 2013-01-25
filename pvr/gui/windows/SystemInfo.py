@@ -73,7 +73,6 @@ class SystemInfo( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mGroupItems = []
 

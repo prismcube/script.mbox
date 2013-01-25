@@ -119,7 +119,6 @@ class SystemUpdate( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
 		self.mCtrlLabelTitle          = self.getControl( E_CONTROL_ID_LABEL_TITLE )

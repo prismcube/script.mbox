@@ -82,7 +82,6 @@ class Help( SettingWindow ) :
 		self.SetActivate( True )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
 		
 		if self.mInitialized == False :

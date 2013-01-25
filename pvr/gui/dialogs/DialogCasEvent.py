@@ -25,7 +25,6 @@ class DialogCasEvent( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlTitleLabel = self.getControl( LABEL_ID_TITLE )
 		self.mCtrlSubTitleLabel = self.getControl( LABEL_ID_SUB_TITLE )

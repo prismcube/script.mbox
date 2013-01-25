@@ -18,7 +18,6 @@ class DialogAddTimer( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
 

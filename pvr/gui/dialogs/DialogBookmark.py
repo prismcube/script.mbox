@@ -29,7 +29,6 @@ class DialogBookmark( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
 		self.mMarkList = []
 		self.mThumbnailHash = {}

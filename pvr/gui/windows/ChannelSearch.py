@@ -12,7 +12,6 @@ class ChannelSearch( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
 

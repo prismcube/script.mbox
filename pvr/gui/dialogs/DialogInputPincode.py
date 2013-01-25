@@ -26,7 +26,6 @@ class DialogInputPincode( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.mNextAction = 0		

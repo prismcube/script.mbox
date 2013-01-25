@@ -18,7 +18,6 @@ class TunerConfiguration( FTIWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainList = self.getControl( E_MAIN_LIST_ID )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
