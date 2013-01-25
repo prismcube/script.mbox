@@ -212,7 +212,7 @@
 				</control>
 			</control>
 		</control>
-		<control type="group">
+		<!--control type="group">
 			<posy>35r</posy>
 			<animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
 			<animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
@@ -244,7 +244,7 @@
 				<titlecolor>blue</titlecolor>
 				<visible>true</visible>
 			</control>
-		</control>
+		</control-->
 	</controls>
 </window>
 
