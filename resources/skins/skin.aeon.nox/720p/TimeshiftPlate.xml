@@ -31,8 +31,8 @@
 		<control type="group">
 			<posx>0</posx>
 			<posy>490</posy>
-			<animation effect="fade" start="0" end="100" time="400" condition="ControlGroup(501).IsVisible">Conditional</animation>
-			<animation effect="fade" start="100" end="0" time="400" condition="!ControlGroup(501).IsVisible">Conditional</animation>
+			<animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(500)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(500)">Conditional</animation>
 			<control type="group" id="501">
 				<visible>substring(Window.Property(BookMarkShow),true)</visible>
 				<control type="list" id="500">
