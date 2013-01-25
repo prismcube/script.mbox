@@ -2552,8 +2552,14 @@ class ChannelListWindow( BaseWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		isChangeDuration = False
+		if self.mRecordInfo1 or self.mRecordInfo2 :
+			pos = self.mCurrentPosition
+			if self.mCtrlListCHList.getListItem( pos ).getProperty( E_XML_PROPERTY_RECORDING ) == E_TAG_TRUE :
+				isChangeDuration = True
+
 		isOK = False
-		if isRunRec < 2 :
+		if isRunRec < 2 or isChangeDuration :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 

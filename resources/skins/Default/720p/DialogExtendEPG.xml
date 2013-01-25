@@ -50,13 +50,12 @@
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>				
 			
-
 			<control type="image" id="201">
 				<posx>520</posx>
 				<posy>90</posy>
 				<width>60</width>
 				<height>40</height>
-				<texture>IconTeletext.png</texture>
+				<texture>IconSubtitle.png</texture>
 				<visible>substring(Window.Property(HasSubtitle),true)</visible>					
 				<description>Subtitle</description>
 			</control>
