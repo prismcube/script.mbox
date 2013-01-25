@@ -16,7 +16,6 @@ class DialogExtendEPG( BaseDialog ) :
 	def onInit( self ) :
 		LOG_TRACE( '' )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
 		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )

@@ -20,7 +20,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.InitProperty( )
 		self.SetHeaderLabel( self.mDialogTitle )

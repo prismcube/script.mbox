@@ -27,7 +27,6 @@ class DialogNormalNumeric( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.getControl( E_HEADER_LABEL ).setLabel( self.mTitleLabel )

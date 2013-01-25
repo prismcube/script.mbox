@@ -20,7 +20,6 @@ class DialogPopupOK( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel1 )

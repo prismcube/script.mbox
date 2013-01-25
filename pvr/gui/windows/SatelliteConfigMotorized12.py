@@ -19,10 +19,9 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mEventBus.Register( self )
-		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
+		ScanHelper.GetInstance( ).ScanHelper_Start( self )
 
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
@@ -33,7 +32,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
-		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 		self.mDataCache.Player_AVBlank( False )
 		self.setDefaultControl( )
@@ -59,14 +58,14 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
 					self.mEventBus.Deregister( self )
-					ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
 				self.OpenBusyDialog( )
 				self.mEventBus.Deregister( self )
-				ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 				if self.mAvBlankStatus :
 					self.mDataCache.Player_AVBlank( True )
 				self.CloseBusyDialog( )
@@ -205,18 +204,18 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
-		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 
 	def onFocus( self, aControlId ) :
@@ -240,7 +239,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 	def UpdateStatus( self, aEvent ) :
 		freq = self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ).mFrequency
 		if aEvent.mFrequency == freq :			
-			ScanHelper.GetInstance( ).ScanHerper_Progress( self.mWin, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 
 
 	def InitConfig( self ) :

@@ -8,7 +8,6 @@ class RootWindow( BaseWindow ) :
 
 	def onInit( self ) :
 		#self.mWinId = xbmcgui.getCurrentWindowId( )
-		#self.mWin = xbmcgui.Window( self.mWinId )
 
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
@@ -17,10 +16,7 @@ class RootWindow( BaseWindow ) :
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.mInitialized = True
-			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
-			else :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).show( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
 			
 			"""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -29,10 +25,7 @@ class RootWindow( BaseWindow ) :
 			"""
 
 		else :
-			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
-			else :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).show( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
 
 
 	def onAction( self, aAction ) :

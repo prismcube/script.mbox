@@ -14,7 +14,6 @@ class ConditionalAccess( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mEventBus.Register( self )
 

@@ -23,7 +23,6 @@ class NullWindow( BaseWindow ) :
 		print "Garbage collector: collected %d objects." % (collected)
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )

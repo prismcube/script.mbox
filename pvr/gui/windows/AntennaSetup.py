@@ -10,7 +10,6 @@ class AntennaSetup( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 

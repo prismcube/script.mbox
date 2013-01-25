@@ -57,7 +57,6 @@ class ArchiveWindow( BaseWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		status = self.mDataCache.Player_GetStatus( )
 		

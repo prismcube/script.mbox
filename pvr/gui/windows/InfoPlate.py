@@ -56,7 +56,6 @@ class InfoPlate( LivePlateWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )

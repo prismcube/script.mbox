@@ -48,7 +48,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )

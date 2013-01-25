@@ -14,7 +14,6 @@ class EditSatellite( SettingWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )

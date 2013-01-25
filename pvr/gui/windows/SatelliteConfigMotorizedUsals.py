@@ -16,7 +16,6 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %s Config : Motorized, Usals' ) % ( self.tunerIndex + 1 ) )
