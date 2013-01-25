@@ -3,7 +3,9 @@ import dbus
 
 
 gNetworkMgr = None
-CONFIGURATION_TIMEOUT = 20
+CONFIGURATION_TIMEOUT = 30
+
+WIFI_CONFIGURED_PATH = '/var/lib/connman/wifi.config'
 
 
 def GetInstance( ) :
@@ -18,39 +20,108 @@ def GetInstance( ) :
 
 class NetworkMgr( object ) :
 	def __init__( self ) :
-		self.mEthernetServicePath		= None
 		self.mEthernetServiceObejct		= None
+		self.mWifiTechnologyObject		= None
+		self.mWifiServiceObejct			= None
 
 
 	def GetCurrentServiceType( self ) :
-		return NETWORK_ETHERNET
+		from ElisProperty import ElisPropertyEnum
+		import pvr.ElisMgr
+		if ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).GetProp( ) == NETWORK_ETHERNET :
+			return NETWORK_ETHERNET
+		else :
+			return NETWORK_WIRELESS
+
+
+	def SetCurrentServiceType( self, aType ) :
+		from ElisProperty import ElisPropertyEnum
+		import pvr.ElisMgr
+		if aType == NETWORK_ETHERNET :
+			ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_ETHERNET )
+		else :
+			ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_WIRELESS )
 
 
 	def GetCurrentServiceObject( self ) :
 		if self.GetCurrentServiceType( ) == NETWORK_ETHERNET :
 			return self.mEthernetServiceObejct
 		else :
-			return self.mEthernetServiceObejct
+			return self.mWifiServiceObejct
+
+
+	def GetCurrentEthernetService( self ) :
+		return self.mEthernetServiceObejct
+
+
+	def GetCurrentWifiService( self ) :
+		return self.mWifiServiceObejct
 
 
 	def LoadEthernetService( self ) :
 		try :
-			self.mEthernetServicePath = None
+			ethernetServicePath = None
 			self.mEthernetServiceObejct = None
 			bus = dbus.SystemBus( )
 			manager = dbus.Interface( bus.get_object( 'net.connman', '/' ), 'net.connman.Manager' )
 			services = manager.GetServices( )
 
 			for entry in services :
-				path = entry[0]
 				properties = entry[1]
 				for key in properties.keys( ) :
 					if properties['Type'] == 'ethernet' :
-						self.mEthernetServicePath = path
+						ethernetServicePath = entry[0]
 						break
 
-			if self.mEthernetServicePath :
-				self.mEthernetServiceObejct = dbus.Interface( bus.get_object( 'net.connman', self.mEthernetServicePath ),'net.connman.Service' )
+			if ethernetServicePath :
+				self.mEthernetServiceObejct = dbus.Interface( bus.get_object( 'net.connman', ethernetServicePath ),'net.connman.Service' )
+				return True
+			else :
+				return False
+
+		except dbus.DBusException, error :
+			ethernetServicePath = None
+			self.mEthernetServiceObejct = None
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return False
+
+
+	def LoadWifiService( self ) :
+		try :
+			SSID = self.GetConfiguredSSID( )
+			LOG_TRACE( 'LoadWifiService ssid = %s' % SSID )
+			if SSID :
+				path = self.GetConfiguredWifiServicePath( SSID )
+				LOG_TRACE( 'LoadWifiService path = %s' % path )
+				if path :
+					bus = dbus.SystemBus( )
+					self.mWifiServiceObejct = dbus.Interface( bus.get_object( 'net.connman', path ), 'net.connman.Service' )
+					return True
+				else :
+					return False
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return False
+
+
+	def LoadWifiTechnology( self ) :
+		self.mWifiTechnologyObject = None
+		try :
+			wifiTechnologyPath = None
+			bus = dbus.SystemBus( )
+			manager = dbus.Interface( bus.get_object( 'net.connman', '/' ), 'net.connman.Manager' )
+
+			technologies = manager.GetTechnologies( )
+			for entry in technologies :
+				properties = entry[1]
+				for key in properties.keys( ) :
+					if properties['Type'] == 'wifi' :
+						wifiTechnologyPath = entry[0]
+						break
+
+			if wifiTechnologyPath :
+				self.mWifiTechnologyObject = dbus.Interface( bus.get_object( 'net.connman', wifiTechnologyPath ), 'net.connman.Technology' )
 				return True
 			else :
 				return False
@@ -60,44 +131,222 @@ class NetworkMgr( object ) :
 			return False
 
 
-	def GetEthernetServiceState( self ) :
+	def GetWifiTechnologyPower( self ) :
 		try :
-			if self.mEthernetServiceObejct :
-				property = self.mEthernetServiceObejct.GetProperties( )
+			if self.mWifiTechnologyObject :
+				property = self.mWifiTechnologyObject.GetProperties( )
+				if property['Powered'] == 1 :
+					return True
+				else :
+					return False
+			else :
+				LOG_ERR( 'mWifiTechnologyObject is None' )
+				return True
 
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return True
+
+
+	def SetWifiTechnologyPower( self, aFlag ) :
+		try :
+			if self.mWifiTechnologyObject :
+				self.mWifiTechnologyObject.SetProperty( 'Powered', aFlag )
+				for i in range( CONFIGURATION_TIMEOUT ) :
+					time.sleep( 1 )
+					property = self.mWifiTechnologyObject.GetProperties( )
+					if property['Powered'] == True :
+						time.sleep( 5 )
+						return
+			else :
+				LOG_ERR( 'mWifiTechnologyObject is None' )
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+		
+
+	def GetConfiguredSSID( self ) :
+		try :
+			if os.path.exists( WIFI_CONFIGURED_PATH ) :
+				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'Name') :
+						words = string.split( line )
+						return words[2]
+				return None
+			else :
+				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
+	def GetConfiguredPassword( self ) :
+		try :
+			if os.path.exists( WIFI_CONFIGURED_PATH ) :
+				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'Passphrase') :
+						words = string.split( line )
+						return words[2]
+				inputFile.close( )
+				return None
+			else :
+				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
+	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
+		try :
+			openFile = open( WIFI_CONFIGURED_PATH, 'w' )
+			words = '[service_home]\n'
+			words += 'Type = wifi\n'
+			words += 'Name = ' + aSSID + '\n'
+			if aPassword != '' :
+				words += 'Passphrase = ' + aPassword + '\n'
+			if aIsHidden == USE_HIDDEN_SSID :
+				words += 'Hidden = True\n'
+
+			openFile.write( words )
+			openFile.close( )
+			return True
+
+		except Exception, e :				
+			LOG_ERR( 'WriteWifiConfigFile Error exception[%s]' % e )
+			return False
+
+
+	def GetConfiguredWifiServicePath( self, aSSID ) :
+		aplist = self.GetSearchedWifiApList( )
+
+		if len( aplist ) > 0 :
+			for ap in aplist :
+				if str( ap[0] ) == aSSID :
+					LOG_TRACE( 'Find matched SSID = %s' % ap[0] )
+					return ap[1]
+		LOG_ERR( 'GetConfiguredWifiServicePath is None' )
+		return None
+
+
+	def GetSearchedWifiApList( self ) :
+		try :
+			bus = dbus.SystemBus( )
+			manager = dbus.Interface( bus.get_object( 'net.connman', '/' ), 'net.connman.Manager' )
+
+			servicelist = []
+			for path, properties in manager.GetServices( ) :
+				if properties[ 'Type' ] == 'wifi' :
+					if 'Name' in properties.keys( ) :
+						name = properties[ 'Name' ]
+					else:
+						name = '{Hidden}'
+
+					Security = None
+					if 'Security' in properties.keys( ) :
+						Security = '['
+						for i in properties[ 'Security' ]:
+							Security += ' ' + str( i )
+						Security += ' ]'
+					servicelist.append( [ name, path, str( int ( properties[ 'Strength' ] ) ), Security ] )
+
+			LOG_TRACE( 'GetSearchedWifiApList = %s' % servicelist )
+			return servicelist
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return []
+
+
+	def GetServiceState( self, aService ) :
+		try :
+			if aService :
+				property = aService.GetProperties( )
+				self.WaitConfigurationService( aService )
 				if property['State'] == 'idle' or property['State'] == 'disconnect' :
 					return False
-				else :
+				elif property['State'] == 'ready' or property['State'] == 'online' :
 					return True
 			else :
-				LOG_ERR( 'Ethernet service is empty' )
+				LOG_ERR( 'service is empty' )
+				return None
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 			return False
 
 
-	def SetEthernetServiceConnect( self, aFlag ) :
+	def SetServiceConnect( self, aService, aFlag ) :
 		try :
-			if self.mEthernetServiceObejct :
+			if aService :
 				if aFlag :
-					self.mEthernetServiceObejct.Connect( timeout=60000 )
+					self.DisConnectOtherTypeNetwork( aService )
+					time.sleep( 1 )
+					aService.Connect( timeout=60000 )
 				else :
+					aService.Disconnect( )
+				self.WaitConfigurationService( aService )
+				return True
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return False
+
+
+	def DisConnectOtherTypeNetwork( self, aService ) :
+		try :
+			property = aService.GetProperties( )
+			
+			if property[ 'Type' ] == 'wifi' :
+				if self.mEthernetServiceObejct :
 					self.mEthernetServiceObejct.Disconnect( )
-				self.WaitConfigurationService( self.mEthernetServiceObejct )
+			elif property[ 'Type' ] == 'ethernet' :
+				if self.mWifiServiceObejct :
+					self.mWifiServiceObejct.Disconnect( )
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 
 
-	def GetEthernetAddress( self ) :
+	def RestartConnman( self ) :
+		try :
+			LOG_TRACE( 'start RestartConnman' )
+			os.system( 'systemctl restart connman.service' )
+			time.sleep( 12 )
+			LOG_TRACE( 'end RestartConnman sleep 12 second' )
+
+			if self.LoadEthernetService( ) == False :
+				LOG_ERR( 'Ethernet device not configured' )
+				return False
+
+			if self.LoadWifiTechnology( ) :
+				if self.GetWifiTechnologyPower( ) == False :
+					self.SetWifiTechnologyPower( True )
+			else :
+				LOG_ERR( 'LoadWifiTechnology fail' % e )
+				return False
+			
+			return True
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
+
+
+	def GetServiceAddress( self, aService ) :
 		address		= 'None'
 		netmask		= 'None'
 		gateway		= 'None'
 		nameserver	= 'None'
 
 		try :
-			property = self.mEthernetServiceObejct.GetProperties( )
+			property = aService.GetProperties( )
 
 			for key in property.keys( ) :
 				if key == 'Nameservers' :
@@ -123,22 +372,27 @@ class NetworkMgr( object ) :
 
 	def ConnectEthernet( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
 		try :
-			if aMethod == NET_DHCP :
-				ipv4_configuration = { 'Method': dbus.String( 'dhcp', variant_level = 1 ) }
+			if self.LoadEthernetService( ) :
+				if aMethod == NET_DHCP :
+					LOG_TRACE( 'ConnectEthernet DHCP' )
+					ipv4_configuration = { 'Method': dbus.String( 'dhcp', variant_level = 1 ) }
+				else :
+					LOG_TRACE( 'ConnectEthernet STATIC' )
+					ipv4_configuration = { 'Method': dbus.String( 'manual', variant_level = 1 ) }
+					ipv4_configuration[ 'Address'] = dbus.String( aAddress, variant_level = 1 )
+					ipv4_configuration[ 'Netmask'] = dbus.String( aNetmask, variant_level = 1 )
+					ipv4_configuration[ 'Gateway'] = dbus.String( aGateway, variant_level = 1 )
+					self.mEthernetServiceObejct.SetProperty( 'Nameservers.Configuration', dbus.Array( [ aNameServer ], signature = dbus.Signature( 's' ) ) )
+
+				self.mEthernetServiceObejct.SetProperty( 'IPv4.Configuration', ipv4_configuration )
+
+				if self.GetServiceState( self.mEthernetServiceObejct ) == False :
+					if self.SetServiceConnect( self.mEthernetServiceObejct, True ) == False :
+						return False
+				return True
+
 			else :
-				ipv4_configuration = { 'Method': dbus.String( 'manual', variant_level = 1 ) }
-				ipv4_configuration[ 'Address'] = dbus.String( aAddress, variant_level = 1 )
-				ipv4_configuration[ 'Netmask'] = dbus.String( aNetmask, variant_level = 1 )
-				ipv4_configuration[ 'Gateway'] = dbus.String( aGateway, variant_level = 1 )
-				self.mEthernetServiceObejct.SetProperty( 'Nameservers.Configuration', dbus.Array( [ aNameServer ], signature = dbus.Signature( 's' ) ) )
-
-			self.mEthernetServiceObejct.SetProperty( 'IPv4.Configuration', ipv4_configuration )
-
-			if self.GetEthernetServiceState( ) == False :
-				self.SetEthernetServiceConnect( True )
-
-			self.WaitConfigurationService( self.mEthernetServiceObejct )
-			return True
+				return False
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
@@ -166,17 +420,21 @@ class NetworkMgr( object ) :
 
 
 	def WaitConfigurationService( self, aService ) :
-		for i in range( CONFIGURATION_TIMEOUT ) :
-			time.sleep( 1 )
-			try :
-				property = aService.GetProperties( )
-				if property['State'] != 'configuration' :
-					return
-			except dbus.DBusException, error :                                  
-				LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+		try :
+			for i in range( CONFIGURATION_TIMEOUT ) :
+				time.sleep( 1 )
+				try :
+					property = aService.GetProperties( )
+					if property['State'] != 'configuration' and property['State'] != 'association' :
+						return
 
-		aService.Disconnect( )
-		time.sleep( 1 )
+				except dbus.DBusException, error :                                  
+					LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+
+			time.sleep( 1 )
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 
 
 	def CheckInternetState( self ) :
@@ -194,6 +452,9 @@ class NetworkMgr( object ) :
 			except dbus.DBusException, error :    
 				return 'Disconnected'
 				LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+
+		else :
+			return 'Disconnected'
 
 
 	def SetNetworkProperty( self, aAddress, aNetmask, aGateway, aNameserver ) :

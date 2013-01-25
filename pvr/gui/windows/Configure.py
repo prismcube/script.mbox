@@ -35,7 +35,7 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 			= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 		= -1
 
-		self.mRunningNetwork		= False
+		#self.mRunningNetwork		= False
 		self.mUseNetworkType		= NETWORK_ETHERNET
 
 		self.mEthernetConnectMethod	= NET_DHCP
@@ -124,11 +124,13 @@ class Configure( SettingWindow ) :
 		self.mVisibleParental = False
 		self.mReLoadEthernetInformation = True
 
+		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
-
+		
 
 	def Close( self ) :
 		self.OpenBusyDialog( )
@@ -249,7 +251,6 @@ class Configure( SettingWindow ) :
 	 			return
 
 			if groupId == E_SpinEx05 :
-				return
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
 				self.SetListControl( )
 				self.setDefaultControl( )
@@ -546,10 +547,11 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
 				self.OpenBusyDialog( )
-				self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+				#self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
+					self.LoadWifiInformation( )
 					self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
 					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
 					self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
@@ -765,7 +767,7 @@ class Configure( SettingWindow ) :
 
 	def LoadEthernetInformation( self ) :
 		self.mEthernetConnectMethod = NetMgr.GetInstance( ).GetEthernetMethod( )
-		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetEthernetAddress( )
+		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetServiceAddress( NetMgr.GetInstance( ).GetCurrentEthernetService( ) )
 
 
 	def ConnectEthernet( self ) :
@@ -815,46 +817,47 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
 					return
-			self.mRunningNetwork = True
 			self.ConnectEthernet( )
-			self.mRunningNetwork = False
+			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_ETHERNET )
 
 
 	def WifiSetting( self, aControlId ) :
-		apList = []
 		if aControlId == E_SpinEx01 :
 			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
 			self.DisableControl( E_WIFI )
 
 		elif aControlId == E_Input01 :
-			self.mRunningNetwork = True
-			dev = self.mWireless.GetWifidevice( )
-			if dev == None :
-				time.sleep( 0.5 )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Device not found' ) )
-				dialog.doModal( )
-				self.mRunningNetwork = False
-				return
 			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
-			apList = self.mWireless.ScanWifiAP( dev )
-			self.CloseProgress( )
-			time.sleep( 0.5 )
-			dialog = xbmcgui.Dialog( )
-			if apList == None :
-				ret = dialog.select( MR_LANG( 'Select AP' ), [ MR_LANG( 'No AP list' ) ] )
+			if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
+				if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
+					NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
 			else :
-				apNameList = []
-				for ap in apList :
-					apNameList.append( ap[0] + MR_LANG( '    - quality : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
-				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
-				if ret >= 0 :
-					self.mCurrentSsid = apList[ret][0]
-					self.mEncryptType = self.mWireless.ApInfoToEncrypt( apList[ret][2] )
-					self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
-					self.DisableControl( E_WIFI )
-			self.mRunningNetwork = False
+				self.CloseProgress( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
+				dialog.doModal( )
+				return
+
+			apList = NetMgr.GetInstance( ).GetSearchedWifiApList( )
+			
+			if len( apList ) == 0 :
+				self.CloseProgress( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi Service not found' ) )
+				dialog.doModal( )
+				return
+			self.CloseProgress( )
+
+			dialog = xbmcgui.Dialog( )
+			apNameList = []
+			for ap in apList :
+				apNameList.append( ap[0] + MR_LANG( '    - Strength : %s Encryption : %s' ) % ( ap[2], ap[3] ) )
+			dialog = xbmcgui.Dialog( )
+			ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
+			if ret >= 0 :
+				self.mCurrentSsid = apList[ret][0]
+				self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
+				self.DisableControl( E_WIFI )
 
 		elif aControlId == E_Input02 :
 			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )
@@ -865,45 +868,46 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 		elif aControlId == E_Input04 :
-			dev = self.mWireless.GetWifidevice( )
-			if apList == None or dev == None :
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 60 )
+
+			if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
+				NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
+			else :
+				NetMgr.GetInstance( ).WriteWifiConfigFile( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
+
+			state = True
+			if NetMgr.GetInstance( ).RestartConnman( ) == False :
+				state = False
+
+			if NetMgr.GetInstance( ).LoadWifiService( ) :
+				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
+				if NetMgr.GetInstance( ).SetServiceConnect( wifi, True ) == False :
+					state = False
+			else :
+				state = False
+
+			if state == False :
+				self.CloseProgress( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'AP or device not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
 				dialog.doModal( )
 				return
-			if self.mEncryptType == ENCRYPT_TYPE_WPA and ( len( self.mPassWord ) < 8 or len( self.mPassWord ) > 64 ) :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password must be between 8 and 64 characters' ) )
-				dialog.doModal( )
-				return
-			if self.mEncryptType == ENCRYPT_TYPE_WEP and  len( self.mPassWord ) < 6 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password length is invalid' ) )
-				dialog.doModal( )
-				return
-			self.mRunningNetwork = True
-			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
-			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
-			ret2 = self.mWireless.ConnectWifi( dev )
-			SetCurrentNetworkType( NETWORK_WIRELESS )
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
-			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+
+			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )			
+			addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
+			LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
+			NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
+			self.SetListControl( )
 			self.CloseProgress( )
-			if ret1 == False or ret2 == False :
-				time.sleep( 0.5 )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to save the WiFi configuration' ) )
-				dialog.doModal( )
-			self.mRunningNetwork = False
 
 
-	def LoadWifi( self ) :
-		if self.mWireless.LoadWpaSupplicant( ) == True :
-			self.mCurrentSsid		= self.mWireless.GetCurrentSsid( )
-			self.mEncryptType		= self.mWireless.GetEncryptType( )
-			self.mPassWord 			= self.mWireless.GetPassword( )
-		else :
-			LOG_ERR( 'Load WPA Supplicant failed' )
+	def LoadWifiInformation( self ) :
+		self.mCurrentSsid = NetMgr.GetInstance( ).GetConfiguredSSID( )
+		if self.mCurrentSsid == None :
+			self.mCurrentSsid = 'None'
+		self.mPassWord = NetMgr.GetInstance( ).GetConfiguredPassword( )
+		if self.mPassWord == None :
+			self.mPassWord = ''
 
 
 	def ShowIpInputDialog( self, aIpAddr ) :
@@ -1044,8 +1048,8 @@ class Configure( SettingWindow ) :
 	def AsyncCheckNetworkTimer( self ) :
 		count = 0
 		while self.mEnableLocalThread :
-			if self.mRunningNetwork == False and self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
-				if ( count % 20 ) == 0 :
+			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
+				if ( count % 50 ) == 0 :
 					self.CheckNetworkStatus( )
 			count = count + 1
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )

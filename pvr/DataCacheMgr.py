@@ -216,17 +216,46 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
+		self.InitNetwork( )
+
+
+	def InitNetwork( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			import pvr.NetworkMgr as NetMgr
+			ethernet = None
 			if NetMgr.GetInstance( ).LoadEthernetService( ) :
-				if NetMgr.GetInstance( ).GetEthernetServiceState( ) == False :
-					NetMgr.GetInstance( ).SetEthernetServiceConnect( True )
-
-				addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetEthernetAddress( )
-				LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
-				NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
+				ethernet = NetMgr.GetInstance( ).GetCurrentEthernetService( )
 			else :
 				LOG_ERR( 'Ethernet device not configured' )
+				
+			if ElisPropertyEnum( 'Network Type', self.mCommander ).GetProp( ) == NETWORK_ETHERNET :
+				if ethernet :
+					state = NetMgr.GetInstance( ).GetServiceState( ethernet )
+					if state and state == False :
+						NetMgr.GetInstance( ).SetServiceConnect( ethernet, True )
+
+					addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( ethernet )
+					LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
+					NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
+				else :
+					LOG_ERR( 'Ethernet device not configured' )
+			else :
+				if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
+					if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
+						NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
+
+					if NetMgr.GetInstance( ).LoadWifiService( ) :
+						wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
+						if NetMgr.GetInstance( ).SetServiceConnect( wifi, True ) :
+							addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
+							LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
+							NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
+						else :
+							LOG_ERR( 'Wifi conect fail' )
+					else :
+						LOG_ERR( 'Wifi service not configured' )
+				else :
+					LOG_ERR( 'Wifi device not configured' )
 
 
 	def LoadVolumeToSetGUI( self ) :

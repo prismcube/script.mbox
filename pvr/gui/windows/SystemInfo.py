@@ -198,9 +198,6 @@ class SystemInfo( SettingWindow ) :
 				versionHardware			= version_info.mHwVersion
 				versionBootloader		= version_info.mLoadVersion
 
-			print 'dhkim test version_info.mHwVersion = %s' % versionHardware
-			print 'dhkim test version_info.mLoadVersion = %s' % versionBootloader
-
 			visibleControlIds	= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			hideControlIds		= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
 			for i in range( len( hideControlIds ) ) :
