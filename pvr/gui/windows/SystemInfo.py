@@ -34,6 +34,8 @@ PROGRESS_ID_HDD_SIZE_RECORD		=	2704
 
 TIME_SEC_CHECK_HDD_TEMP			=	0.05
 
+LIST_ID_MENU					=	9000
+
 
 class SystemInfo( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -107,6 +109,7 @@ class SystemInfo( SettingWindow ) :
 		
 		self.SetListControl( )
 		self.mPrevListItemID = -1
+		self.setFocusId( LIST_ID_MENU )
 		self.mInitialized = True
 
 

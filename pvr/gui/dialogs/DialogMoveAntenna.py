@@ -51,6 +51,8 @@ class DialogMoveAntenna( BaseDialog ) :
 		start_y = E_WINDOW_HEIGHT / 2 - middley_height / 2
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
 
+		self.setFocusId( DIALOG_LIST_ID )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

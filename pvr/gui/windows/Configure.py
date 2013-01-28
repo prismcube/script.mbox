@@ -22,6 +22,8 @@ E_VIDEO_ANALOG			= 1
 E_16_9					= 0
 E_4_3					= 1
 
+LIST_ID_MENU			= 9000
+
 TIME_SEC_CHECK_NET_STATUS = 0.05
 
 
@@ -126,6 +128,7 @@ class Configure( SettingWindow ) :
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
+		self.setFocusId( LIST_ID_MENU )
 		self.mInitialized = True
 
 

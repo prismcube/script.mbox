@@ -58,6 +58,7 @@ class DialogContext( BaseDialog ) :
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
 
 		self.mSelectedIndex = -1
+		self.setFocusId( DIALOG_LIST_ID )
 
 
 	def onAction( self, aAction ) :
