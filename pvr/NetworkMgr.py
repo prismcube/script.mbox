@@ -40,7 +40,7 @@ class NetworkMgr( object ) :
 	def GetCurrentServiceType( self ) :
 		from ElisProperty import ElisPropertyEnum
 		import pvr.ElisMgr
-		if ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).GetProp( ) == NETWORK_ETHERNET :
+		if ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).GetProp( ) == NETWORK_ETHERNET :
 			return NETWORK_ETHERNET
 		else :
 			return NETWORK_WIRELESS
@@ -50,9 +50,9 @@ class NetworkMgr( object ) :
 		from ElisProperty import ElisPropertyEnum
 		import pvr.ElisMgr
 		if aType == NETWORK_ETHERNET :
-			ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_ETHERNET )
+			ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_ETHERNET )
 		else :
-			ElisPropertyEnum( 'Network Type', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_WIRELESS )
+			ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_WIRELESS )
 
 
 	def GetCurrentServiceObject( self ) :
@@ -235,6 +235,28 @@ class NetworkMgr( object ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
+
+
+	def GetIsConfiguredHiddenSSID( self ) :
+		if gUseNetwork == False :
+			return None
+
+		try :
+			if os.path.exists( WIFI_CONFIGURED_PATH ) :
+				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'Hidden' ) :
+						return True
+				inputFile.close( )
+				return False
+			else :
+				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				return False
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
 
 
 	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
