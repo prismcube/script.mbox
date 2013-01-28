@@ -891,13 +891,13 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
 				dialog.doModal( )
 				return
-
-			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )			
+	
 			addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
 			LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
 			NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.SetListControl( )
 			self.CloseProgress( )
+			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )
 
 
 	def LoadWifiInformation( self ) :
