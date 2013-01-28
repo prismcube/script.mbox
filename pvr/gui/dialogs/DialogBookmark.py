@@ -39,6 +39,7 @@ class DialogBookmark( BaseDialog ) :
 
 		self.InitList( )
 		self.mEventBus.Register( self )
+		self.setFocusId( E_CONTROL_ID_LIST )
 
 
 	def onAction( self, aAction ) :

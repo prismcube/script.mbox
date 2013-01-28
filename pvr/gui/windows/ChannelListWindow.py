@@ -210,6 +210,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
+		self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 
 	def onAction( self, aAction ) :
