@@ -11,9 +11,6 @@
 				<posy>110</posy>
 				<include>Input01</include>
 				<include>Input02</include>
-				<include>Input03</include>
-				<include>Input04</include>
-				<include>Input05</include>
 			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>

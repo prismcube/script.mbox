@@ -35,10 +35,6 @@ class ConditionalAccess( SettingWindow ) :
 			camName = cardinfo.mName
 		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
 		
-		self.AddInputControl( E_Input03, MR_LANG( 'Change PIN Code' ), '', MR_LANG( 'Change your PIN code' ) )
-		self.AddInputControl( E_Input04, MR_LANG( 'Maturity Rating' ), '', MR_LANG( 'Access maturity rating' ) )
-		self.AddInputControl( E_Input05, MR_LANG( 'Operator Message' ), '', MR_LANG( 'View operator message' ) )
-		
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )
 		self.SetPipLabel( )
