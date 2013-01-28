@@ -336,11 +336,12 @@ class NetworkMgr( object ) :
 			if aService :
 				if aFlag :
 					self.DisConnectOtherTypeNetwork( aService )
-					time.sleep( 1 )
+					time.sleep( 0.5 )
 					aService.Connect( timeout=60000 )
 				else :
 					aService.Disconnect( )
 				self.WaitConfigurationService( aService )
+				time.sleep( 0.5 )
 				return True
 
 		except dbus.DBusException, error :                                  
@@ -355,9 +356,11 @@ class NetworkMgr( object ) :
 			if property[ 'Type' ] == 'wifi' :
 				if self.mEthernetServiceObejct :
 					self.mEthernetServiceObejct.Disconnect( )
+					self.WaitConfigurationService( self.mEthernetServiceObejct )
 			elif property[ 'Type' ] == 'ethernet' :
 				if self.mWifiServiceObejct :
 					self.mWifiServiceObejct.Disconnect( )
+					self.WaitConfigurationService( self.mWifiServiceObejct )
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
