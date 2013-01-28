@@ -1,11 +1,12 @@
 from pvr.gui.GuiConfig import *
 
-gUseDbus = True
+
+gUseNetwork = True
 
 try :
 	import dbus
 except :
-	gUseDbus = False
+	gUseNetwork = False
 
 
 gNetworkMgr = None
@@ -18,6 +19,11 @@ def GetInstance( ) :
 	global gNetworkMgr
 	if not gNetworkMgr :
 		gNetworkMgr = NetworkMgr( )
+		import pvr
+		global gUseNetwork
+		if not pvr.Platform.GetPlatform( ).IsRootfUbiFs( ) :
+			gUseNetwork = False
+
 	else :
 		pass
 
@@ -65,7 +71,7 @@ class NetworkMgr( object ) :
 
 
 	def LoadEthernetService( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 			
 		try :
@@ -96,7 +102,7 @@ class NetworkMgr( object ) :
 
 
 	def LoadWifiService( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 
 		try :
@@ -118,7 +124,7 @@ class NetworkMgr( object ) :
 
 
 	def LoadWifiTechnology( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 
 		self.mWifiTechnologyObject = None
@@ -147,7 +153,7 @@ class NetworkMgr( object ) :
 
 
 	def GetWifiTechnologyPower( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return True
 
 		try :
@@ -167,7 +173,7 @@ class NetworkMgr( object ) :
 
 
 	def SetWifiTechnologyPower( self, aFlag ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return
 
 		try :
@@ -180,14 +186,14 @@ class NetworkMgr( object ) :
 						time.sleep( 5 )
 						return
 			else :
-				LOG_ERR( 'mWifiTechnologyObject is None' )
+				LOG_ERR( 'wifiTechnologyObject is None' )
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 		
 
 	def GetConfiguredSSID( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return None
 
 		try :
@@ -195,7 +201,7 @@ class NetworkMgr( object ) :
 				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
-					if line.startswith( 'Name') :
+					if line.startswith( 'Name' ) :
 						words = string.split( line )
 						return words[2]
 				return None
@@ -209,7 +215,7 @@ class NetworkMgr( object ) :
 
 
 	def GetConfiguredPassword( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return None
 
 		try :
@@ -217,7 +223,7 @@ class NetworkMgr( object ) :
 				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
-					if line.startswith( 'Passphrase') :
+					if line.startswith( 'Passphrase' ) :
 						words = string.split( line )
 						return words[2]
 				inputFile.close( )
@@ -232,7 +238,7 @@ class NetworkMgr( object ) :
 
 
 	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 
 		try :
@@ -255,7 +261,7 @@ class NetworkMgr( object ) :
 
 
 	def GetConfiguredWifiServicePath( self, aSSID ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return None
 
 		aplist = self.GetSearchedWifiApList( )
@@ -270,7 +276,7 @@ class NetworkMgr( object ) :
 
 
 	def GetSearchedWifiApList( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return []
 
 		try :
@@ -302,7 +308,7 @@ class NetworkMgr( object ) :
 
 
 	def GetServiceState( self, aService ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 
 		try :
@@ -323,7 +329,7 @@ class NetworkMgr( object ) :
 
 
 	def SetServiceConnect( self, aService, aFlag ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 	
 		try :
@@ -358,7 +364,7 @@ class NetworkMgr( object ) :
 
 
 	def RestartConnman( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 	
 		try :
@@ -390,7 +396,7 @@ class NetworkMgr( object ) :
 		gateway		= 'None'
 		nameserver	= 'None'
 
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return 'None', 'None', 'None', 'None'
 
 		try :
@@ -419,7 +425,7 @@ class NetworkMgr( object ) :
 
 
 	def ConnectEthernet( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return False
 	
 		try :
@@ -451,7 +457,7 @@ class NetworkMgr( object ) :
 
 
 	def GetEthernetMethod( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return NET_DHCP
 	
 		try :
@@ -492,7 +498,7 @@ class NetworkMgr( object ) :
 
 
 	def CheckInternetState( self ) :
-		if gUseDbus == False :
+		if gUseNetwork == False :
 			return 'Disconnected'
 	
 		service = self.GetCurrentServiceObject( )

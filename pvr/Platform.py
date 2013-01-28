@@ -95,7 +95,6 @@ class Platform( object ) :
 
 
 	def AddLibsToSysPath( self ) :
-
 		libs = [
 			'decorator', 
 			'odict',
@@ -190,6 +189,7 @@ class LinuxPlatform( Platform ) :
 	def GetName( self ) :
 		return "linux"
 
+
 	def IsLinux( self ) :
 		return True
 
@@ -203,12 +203,29 @@ class PrismCubePlatform( Platform ) :
 	def GetName( self ) :
 		return "PrismCube"
 
+
 	def IsLinux( self ) :
 		return True
 
 
 	def IsPrismCube( self ) :
 		return True
+
+
+	def IsRootfUbiFs( self ) :
+		try :
+			if os.path.exists( '/etc/mtab' ) :
+				inputFile = open( '/etc/mtab', 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'ubi0:rootfs' ) :
+						return True
+				return False
+			else :
+				return False
+
+		except Exception, e :
+			return False
 
 
 class WindowsPlatform( Platform ) :
