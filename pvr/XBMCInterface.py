@@ -194,10 +194,10 @@ def XBMC_SetVolume( aVolume, aIsMute=0 ) :
 		if aIsMute or aVolume <= 0 :
 			volumeString = 'Mute'
 		xbmc.executehttpapi( volumeString )
-		
+
 	else :
 		print 'E_ADD_XBMC_JSONRPC_FUNCTION: SetVolume %d ' % aVolume
-		setvolume_query = '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "value": "' + str(aVolume) + '"}, "id": 1}'
+		setvolume_query = '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": {"volume": %d}, "id": 1}' % aVolume
 		#setvolume_query = '{"jsonrpc": 2.0", "method": "Application.SetVolume", "params": { "value": "13"}, "id": 1}'
 		xbmc.executeJSONRPC ( setvolume_query )
 

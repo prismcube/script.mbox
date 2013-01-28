@@ -101,6 +101,8 @@ class GlobalEvent( object ) :
 				self.mDataCache.Player_Stop( )
 			self.mDataCache.Channel_GetInitialBlank( )
 			self.CheckParentLock( E_PARENTLOCK_INIT )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
