@@ -283,8 +283,9 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if HasAvailableRecordingHDD( ) == False :
 				return
-				
-			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+
+			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_PVR and \
+			   self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
 
 			self.Close( )
@@ -409,9 +410,8 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.SetChannelReloadStatus( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
-			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
-				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+			#elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+			#	xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 				if E_SUPPROT_HBBTV :

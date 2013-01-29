@@ -228,7 +228,7 @@ class DataCacheMgr( object ) :
 			else :
 				LOG_ERR( 'Ethernet device not configured' )
 				
-			if ElisPropertyEnum( 'Network Type', self.mCommander ).GetProp( ) == NETWORK_ETHERNET :
+			if NetMgr.GetInstance( ).GetCurrentServiceType( ) == NETWORK_ETHERNET :
 				if ethernet :
 					state = NetMgr.GetInstance( ).GetServiceState( ethernet )
 					if state and state == False :
@@ -240,6 +240,7 @@ class DataCacheMgr( object ) :
 				else :
 					LOG_ERR( 'Ethernet device not configured' )
 			else :
+				NetMgr.GetInstance( ).RestartConnman( )
 				if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
 					if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
 						NetMgr.GetInstance( ).SetWifiTechnologyPower( True )

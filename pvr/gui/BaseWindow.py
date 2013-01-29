@@ -3,7 +3,7 @@ import pvr.ElisMgr
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
-from pvr.XBMCInterface import XBMC_GetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
 from pvr.Util import SetLock, SetLock2
 
 import sys

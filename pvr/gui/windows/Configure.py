@@ -340,6 +340,7 @@ class Configure( SettingWindow ) :
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
+				self.mDataCache.LoadConfiguredSatellite( )
 				self.mDataCache.LoadConfiguredTransponder( )
 				self.mDataCache.LoadChannelList( )
 				iZapping = self.mDataCache.Zappingmode_GetCurrent( )
