@@ -80,7 +80,7 @@ class Help( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-
+		self.SetFrontdisplayMessage( 'Help' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
 		

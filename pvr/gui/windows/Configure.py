@@ -81,6 +81,7 @@ class Configure( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Configure' )
 		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
@@ -339,6 +340,7 @@ class Configure( SettingWindow ) :
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
+				self.mDataCache.LoadConfiguredSatellite( )
 				self.mDataCache.LoadConfiguredTransponder( )
 				self.mDataCache.LoadChannelList( )
 				iZapping = self.mDataCache.Zappingmode_GetCurrent( )
@@ -833,12 +835,19 @@ class Configure( SettingWindow ) :
 			if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
 				if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
 					NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
+
 			else :
-				self.CloseProgress( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
-				dialog.doModal( )
-				return
+				NetMgr.GetInstance( ).RestartConnman( )
+				if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
+					if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
+						NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
+				
+				else :
+					self.CloseProgress( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
+					dialog.doModal( )
+					return
 
 			apList = NetMgr.GetInstance( ).GetSearchedWifiApList( )
 			
@@ -878,23 +887,19 @@ class Configure( SettingWindow ) :
 				NetMgr.GetInstance( ).WriteWifiConfigFile( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
 
 			state = True
-			if NetMgr.GetInstance( ).RestartConnman( ) == False :
-				state = False
+			NetMgr.GetInstance( ).RestartConnman( )
 
 			if NetMgr.GetInstance( ).LoadWifiService( ) :
 				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
-				if NetMgr.GetInstance( ).SetServiceConnect( wifi, True ) == False :
-					state = False
+				NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
 			else :
-				state = False
-
-			if state == False :
 				self.CloseProgress( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
 				dialog.doModal( )
 				return
-	
+
+			time.sleep( 0.5 )
 			addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
 			LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
 			NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )

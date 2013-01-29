@@ -55,7 +55,7 @@ class ArchiveWindow( BaseWindow ) :
 	
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		status = self.mDataCache.Player_GetStatus( )
@@ -64,7 +64,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.setProperty( 'PvrPlay', 'True' )
 		else :
 			self.setProperty( 'PvrPlay', 'False' )
-		
+
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
@@ -266,12 +266,21 @@ class ArchiveWindow( BaseWindow ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+
 			elif aEvent.getName( ) == ElisEventPlaybackStarted.getName( ) :
 				self.UpdatePlayStopThumbnail( aEvent.mKey, True )
+
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
 				if self.mPlayingRecord :
 					self.UpdatePlayStopThumbnail( aEvent.mKey, False )
 					self.UpdatePlayStatus( )
+
+			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
+				isPlay = False
+				if self.mPlayingRecord :
+					isPlay = True
+				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, isPlay )
+				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
 
 	def InitControl( self ) :
@@ -462,6 +471,7 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Playing', 'False' )
 
 		xbmc.executebuiltin( 'container.update' )
+		self.SetFocusList( self.mViewMode )
 
 
 	def AddListItems( self ) :
@@ -865,6 +875,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.update' )
+			self.SetFocusList( self.mViewMode )
 
 
 	def DoStartMark( self ) :
@@ -1092,7 +1103,11 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def GetPlayingRecord( self ) :
-		return self.mPlayingRecord
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			return self.mPlayingRecord
+		else :
+			return None
 
 
 	def SetFocusList( self, aMode ) :

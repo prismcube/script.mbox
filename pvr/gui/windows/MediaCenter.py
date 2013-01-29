@@ -21,7 +21,7 @@ class MediaCenter( BaseWindow ) :
 		self.SetActivate( True )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-
+		self.mDataCache.SetAVBlankByArchive( True )
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Media Center' ) )
 		#LOG_TRACE( '--------------flag[%s]'% self.mDataCache.GetMediaCenter( ) )
 
@@ -36,6 +36,7 @@ class MediaCenter( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			xbmc.executebuiltin( 'PlayerControl(Stop)' )
+			self.mDataCache.SetAVBlankByArchive( False )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 

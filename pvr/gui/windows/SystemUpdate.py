@@ -117,7 +117,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def onInit( self )  :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'System Update' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )

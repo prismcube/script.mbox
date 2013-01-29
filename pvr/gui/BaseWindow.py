@@ -185,6 +185,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		return self.mFocusId
 
 
+	def SetFrontdisplayMessage( self, aMessage ) :
+		self.mDataCache.Frontdisplay_SetMessage( aMessage )
+
+
 	def GlobalAction( self, aActionId ) :
 		mExecute = False
 		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_MBOX_FF :

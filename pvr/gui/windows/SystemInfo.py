@@ -73,7 +73,7 @@ class SystemInfo( SettingWindow ) :
 
 	def onInit( self )  :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'System Info' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mGroupItems = []

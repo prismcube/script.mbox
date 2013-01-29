@@ -20,6 +20,7 @@ class Installation( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Installation' )
 		
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),

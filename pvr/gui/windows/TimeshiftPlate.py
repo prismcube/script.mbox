@@ -76,7 +76,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+		if playingRecord :
+			self.SetFrontdisplayMessage( playingRecord.mRecordName )
+		else :
+			self.mDataCache.Frontdisplay_SetCurrentMessage( )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
 
@@ -262,7 +267,7 @@ class TimeShiftPlate( BaseWindow ) :
 			prevChannel = None
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
 			if prevChannel :
-				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
+				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType, None, True )			
 				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
 				if self.mMode == ElisEnum.E_MODE_PVR :
 					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
@@ -281,7 +286,7 @@ class TimeShiftPlate( BaseWindow ) :
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
-				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType, None, True )
 				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
 				if self.mMode == ElisEnum.E_MODE_PVR :
 					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
@@ -341,8 +346,14 @@ class TimeShiftPlate( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
-			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def onClick( self, aControlId ):
@@ -1033,12 +1044,13 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
 			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
-			dialog.SetDefaultProperty( playingRecord )
-			dialog.doModal( )
+			if playingRecord :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
+				dialog.SetDefaultProperty( playingRecord )
+				dialog.doModal( )
 
-			if dialog.IsDeleteBookmark( ) :
-				self.InitBookmarkThumnail( )
+				if dialog.IsDeleteBookmark( ) :
+					self.InitBookmarkThumnail( )
 
 			self.RestartAutomaticHide( )
 
