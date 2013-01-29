@@ -67,6 +67,7 @@ class LivePlate( LivePlateWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.mDataCache.Frontdisplay_SetCurrentMessage( )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -1052,7 +1053,7 @@ class LivePlate( LivePlateWindow ) :
 	@SetLock
 	def AsyncTuneChannel( self ) :
 		try :
-			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
+			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType, None, True )
 			#self.mFakeChannel.printdebug( )
 			if ret == True :
 				self.mDataCache.SetParentLock( True )

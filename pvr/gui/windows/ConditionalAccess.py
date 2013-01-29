@@ -12,7 +12,7 @@ class ConditionalAccess( SettingWindow ) :
 			
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Conditional Access' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mEventBus.Register( self )

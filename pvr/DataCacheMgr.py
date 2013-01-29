@@ -590,7 +590,7 @@ class DataCacheMgr( object ) :
 			self.SetChannelReloadStatus( True )
 			self.Player_AVBlank( True )
 			#self.Channel_InvalidateCurrent( )
-			self.Frontdisplay_SetMessage('NoChannel')
+			#self.Frontdisplay_SetMessage('NoChannel')
 			LOG_TRACE('-------------------------------------------')
 
 		#if self.mChannelList and tmpChannelList :
@@ -792,7 +792,7 @@ class DataCacheMgr( object ) :
 		return self.mOldChannel
 
 
-	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None ) :
+	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -811,11 +811,15 @@ class DataCacheMgr( object ) :
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
-		self.Frontdisplay_SetMessage( channel.mName )
+
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		if aFrontMessage == True :		
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
 
-	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType ) :
+	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -827,7 +831,10 @@ class DataCacheMgr( object ) :
 
 		channel = self.Channel_GetCurrent( )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
-		self.Frontdisplay_SetMessage( channel.mName )
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+		if aFrontMessage == True :
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
+			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
 
@@ -1390,10 +1397,12 @@ class DataCacheMgr( object ) :
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
 
+		"""
 		channel = self.Channel_GetCurrent( )
 		if channel and channel.mError == 0 :
 			self.Frontdisplay_SetMessage( channel.mName )
-
+		"""
+		
 		return ret
 
 
@@ -1417,9 +1426,11 @@ class DataCacheMgr( object ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		self.SetAVBlankByArchive( True )
 		self.Frontdisplay_PlayPause( )
+		"""
 		recInfo = self.Record_GetRecordInfoByKey( aRecordKey )
 		if recInfo and recInfo.mError == 0 :
 			self.Frontdisplay_SetMessage( recInfo.mChannelName )
+		"""
 
 		return ret
 
@@ -1635,6 +1646,17 @@ class DataCacheMgr( object ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
+	def Frontdisplay_SetCurrentMessage( self ) :
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		if self.mChannelList and len( self.mChannelList ) > 0 :
+			if self.mCurrentChannel :
+				self.Frontdisplay_SetMessage( self.mCurrentChannel.mName )
+			else :
+				self.Frontdisplay_SetMessage('NoChannel')
+		else :
+			self.Frontdisplay_SetMessage('NoChannel')		
+
+
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
 		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
 
@@ -1799,6 +1821,8 @@ class DataCacheMgr( object ) :
 
 	
 	def SetMediaCenter( self, aValue = False ) :
+		if aValue == True :
+			self.Frontdisplay_SetMessage( 'Media Center' )
 		self.mStartMediaCenter = aValue
 
 

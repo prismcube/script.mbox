@@ -434,7 +434,7 @@ class TunerConfigMgr( object ) :
 				if ret :
 					self.mDataCache.Player_AVBlank( True )
 					self.mDataCache.Channel_InvalidateCurrent( )
-					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 
 
 	def CompareCurrentConfiguredState( self ) :

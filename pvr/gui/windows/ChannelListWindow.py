@@ -101,6 +101,7 @@ class ChannelListWindow( BaseWindow ) :
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Channel List' )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -499,7 +500,7 @@ class ChannelListWindow( BaseWindow ) :
 				if isDelete :
 					self.mDataCache.Player_AVBlank( True )
 					self.mDataCache.Channel_InvalidateCurrent( )
-					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 					self.mFlag_DeleteAll = True
 
 		return ret

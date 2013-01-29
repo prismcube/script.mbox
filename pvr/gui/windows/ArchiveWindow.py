@@ -55,7 +55,7 @@ class ArchiveWindow( BaseWindow ) :
 	
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		status = self.mDataCache.Player_GetStatus( )
@@ -64,7 +64,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.setProperty( 'PvrPlay', 'True' )
 		else :
 			self.setProperty( 'PvrPlay', 'False' )
-		
+
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
@@ -1092,7 +1092,11 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def GetPlayingRecord( self ) :
-		return self.mPlayingRecord
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			return self.mPlayingRecord
+		else :
+			return None
 
 
 	def SetFocusList( self, aMode ) :

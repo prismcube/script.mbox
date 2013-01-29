@@ -18,7 +18,7 @@ class ManualScan( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Manual Scan' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )

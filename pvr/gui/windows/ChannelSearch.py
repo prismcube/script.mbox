@@ -10,7 +10,7 @@ class ChannelSearch( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Channel Search' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
