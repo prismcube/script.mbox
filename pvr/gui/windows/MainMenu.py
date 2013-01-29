@@ -82,7 +82,13 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 
 	def onClick( self, aControlId ) :
@@ -161,10 +167,10 @@ class MainMenu( BaseWindow ) :
 					dialog.doModal( )
 					return
 
-				else :
-					self.mDataCache.Player_Stop( )
+				self.mDataCache.Player_Stop( )
 
 			self.SetMediaCenter( )
+			self.mDataCache.SetAVBlankByArchive( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :

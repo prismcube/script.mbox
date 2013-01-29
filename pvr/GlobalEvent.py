@@ -4,6 +4,23 @@ import pvr.ElisMgr
 
 
 AUTOPOWERDOWN_EXCEPTWINDOW = [ WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_FIRST_INSTALLATION ]
+PARENTLOCK_CHECKWINDOW = [ 
+	WinMgr.WIN_ID_NULLWINDOW,
+	WinMgr.WIN_ID_MAINMENU,
+	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
+	WinMgr.WIN_ID_LIVE_PLATE,
+	WinMgr.WIN_ID_CONFIGURE,
+	WinMgr.WIN_ID_ARCHIVE_WINDOW,
+	#WinMgr.WIN_ID_SYSTEM_INFO,
+	#WinMgr.WIN_ID_MEDIACENTER,
+	WinMgr.WIN_ID_EPG_WINDOW,
+	WinMgr.WIN_ID_TIMESHIFT_PLATE,
+	WinMgr.WIN_ID_INFO_PLATE
+	#WinMgr.WIN_ID_FAVORITE_ADDONS,
+	#WinMgr.WIN_ID_SYSTEM_UPDATE,
+	#WinMgr.WIN_ID_HELP
+	]
+
 gGlobalEvent = None
 
 E_PARENTLOCK_INIT = 0
@@ -188,6 +205,10 @@ class GlobalEvent( object ) :
 
 
 	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None ) :
+		if WinMgr.GetInstance( ).GetLastWindowID( ) not in PARENTLOCK_CHECKWINDOW :
+			LOG_TRACE( '--------parentLock check pass winid[%s]'% WinMgr.GetInstance( ).GetLastWindowID( ) )
+			return
+
 		if aCmd == E_PARENTLOCK_INIT :
 			#default blank
 			self.mDataCache.SetParentLock( True )

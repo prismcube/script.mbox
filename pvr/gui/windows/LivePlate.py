@@ -126,8 +126,13 @@ class LivePlate( LivePlateWindow ) :
 		self.EPGProgressThread( )
 
 		if self.mPincodeConfirmed :
-			self.mDataCache.SetAVBlankByChannel( )
 			self.mPincodeConfirmed = False
+			if self.mInitialized == False :
+				self.mInitialized = True
+				thread = threading.Timer( 0.3, self.ShowPincodeDialog )
+				thread.start( )
+			else :
+				self.mDataCache.SetAVBlankByChannel( )
 
 		if self.mAutomaticHide :
 			self.StartAutomaticHide( )
@@ -211,7 +216,7 @@ class LivePlate( LivePlateWindow ) :
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
-			status = self.mDataCache.Player_GetStatus( )
+			status = self.mDataCache.Player_GetStatus( ) 
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
 				
