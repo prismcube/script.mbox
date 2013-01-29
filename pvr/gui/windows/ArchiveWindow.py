@@ -266,12 +266,21 @@ class ArchiveWindow( BaseWindow ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+
 			elif aEvent.getName( ) == ElisEventPlaybackStarted.getName( ) :
 				self.UpdatePlayStopThumbnail( aEvent.mKey, True )
+
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
 				if self.mPlayingRecord :
 					self.UpdatePlayStopThumbnail( aEvent.mKey, False )
 					self.UpdatePlayStatus( )
+
+			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
+				isPlay = False
+				if self.mPlayingRecord :
+					isPlay = True
+				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, isPlay )
+				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
 
 	def InitControl( self ) :
@@ -426,7 +435,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@SetLock
-	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :	
 		thumbIcon = 'RecIconSample.png'
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
@@ -462,6 +471,7 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Playing', 'False' )
 
 		xbmc.executebuiltin( 'container.update' )
+		self.SetFocusList( self.mViewMode )
 
 
 	def AddListItems( self ) :
@@ -865,6 +875,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.update' )
+			self.SetFocusList( self.mViewMode )
 
 
 	def DoStartMark( self ) :
