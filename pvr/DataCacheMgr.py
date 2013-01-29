@@ -5,7 +5,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_SetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
 
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import AgeLimit
@@ -264,7 +264,9 @@ class DataCacheMgr( object ) :
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		XBMC_SetVolume( lastVolume, lastMute )
+		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
+		if revisionVolume >= VOLUME_STEP :
+			XBMC_SetVolume( lastVolume, lastMute )
 
 
 	def LoadTime( self ) :

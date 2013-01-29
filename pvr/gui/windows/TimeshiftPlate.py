@@ -346,8 +346,14 @@ class TimeShiftPlate( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
-			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def onClick( self, aControlId ):
