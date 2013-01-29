@@ -351,7 +351,7 @@ class FirstInstallation( FTIWindow ) :
 
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.setDefaultControl( )
+			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
 
 
 	def GotoAntennaNextStep( self ) :
