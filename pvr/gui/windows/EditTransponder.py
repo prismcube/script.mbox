@@ -13,7 +13,7 @@ class EditTransponder( SettingWindow ) :
 			
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Edit Transponder' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )

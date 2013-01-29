@@ -49,6 +49,7 @@ class MainMenu( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Main Menu' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.CheckMediaCenter( )
