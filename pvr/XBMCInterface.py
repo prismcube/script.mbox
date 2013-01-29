@@ -303,11 +303,14 @@ def XBMC_GetCurrentLanguage( ) :
 	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
 		LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
-		return currentLanguage[4:]
+		capitalizedString  = currentLanguage[4:].capitalize( )
+		return capitalizedString
 	else :
 		currentLanguage = xbmc.getLanguage()
 		print 'Current Language = %s ' % currentLanguage
-		return currentLanguage
+		capitalizedString  = currentLanguage.capitalize( )
+		return capitalizedString
+		
 
 
 def XBMC_SetCurrentLanguage( aLanguage ) :
