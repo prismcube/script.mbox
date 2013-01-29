@@ -358,8 +358,8 @@ class NetworkMgr( object ) :
 		try :
 			if aService :
 				property = aService.GetProperties( )
-				if property['State'] == 'failure' :
-					print 'dhkim test error = %s' % property['Error']
+				#if property['State'] == 'failure' :
+				#	print 'dhkim test error = %s' % property['Error']
 				self.WaitConfigurationService( aService )
 				if property['State'] == 'idle' or property['State'] == 'disconnect' :
 					return False
@@ -570,8 +570,8 @@ class NetworkMgr( object ) :
 						
 						property = aService.GetProperties( )
 						print 'dhkim test WaitConfigurationService = %s' %  property['State']
-						if property['State'] != 'failure' :
-							print 'dhkim test error = %s' % property['Error']
+						#if property['State'] != 'failure' :
+						#	print 'dhkim test error = %s' % property['Error']
 						if property['State'] != 'configuration' and property['State'] != 'association' :
 							return
 
