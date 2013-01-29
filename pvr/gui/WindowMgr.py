@@ -48,9 +48,11 @@ WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
 WIN_ID_TIMER_WINDOW					= 30
 WIN_ID_INFO_PLATE					= 31
-WIN_ID_FAVORITE_ADDONS				= 32
+#WIN_ID_FAVORITE_ADDONS				= 32
+WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_HELP							= 34
+
 
 
 WIN_ID_HIDDEN_TEST					= 99
@@ -305,8 +307,14 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
 
+			"""
 			from pvr.gui.windows.FavoriteAddons import FavoriteAddons
 			self.mWindows[WIN_ID_FAVORITE_ADDONS]=FavoriteAddons( 'FavoriteAddons.xml', self.mScriptDir )
+			"""
+			
+			from pvr.gui.windows.Favorites import Favorites
+			self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
+			
 
 			from pvr.gui.windows.Help import Help
 			self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
