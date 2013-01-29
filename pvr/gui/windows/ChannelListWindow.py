@@ -101,6 +101,7 @@ class ChannelListWindow( BaseWindow ) :
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Channel List' )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -312,7 +313,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.GoToPreviousWindow( WinMgr.WIN_ID_EPG_WINDOW )
+				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+					msg = MR_LANG( 'Try again after stopping all your recordings first' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+					dialog.doModal( )
+				else :
+					self.GoToPreviousWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -499,7 +506,7 @@ class ChannelListWindow( BaseWindow ) :
 				if isDelete :
 					self.mDataCache.Player_AVBlank( True )
 					self.mDataCache.Channel_InvalidateCurrent( )
-					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 					self.mFlag_DeleteAll = True
 
 		return ret
@@ -770,7 +777,7 @@ class ChannelListWindow( BaseWindow ) :
 			idx = self.mCtrlListCHList.getSelectedPosition( )
 			iChannel = self.mChannelList[idx]
 
-
+		"""
 		if self.mFlag_ModeChanged :
 			isBlank = False
 			if iChannel.mServiceType == FLAG_MODE_RADIO :
@@ -778,6 +785,7 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank )
+		"""
 
 		if self.mIsPVR :
 			self.mIsPVR = False
@@ -1170,7 +1178,7 @@ class ChannelListWindow( BaseWindow ) :
 									isBlank = True
 									lastServiceType = 'Last Radio Number'
 
-								self.mDataCache.Player_VideoBlank( isBlank )
+								#self.mDataCache.Player_VideoBlank( isBlank )
 								lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
 								ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mUserMode.mServiceType )
 

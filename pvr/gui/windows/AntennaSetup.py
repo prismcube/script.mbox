@@ -9,6 +9,8 @@ class AntennaSetup( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		
+		self.SetFrontdisplayMessage( 'Antenna Setup' )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )

@@ -85,6 +85,11 @@ class InfoPlate( LivePlateWindow ) :
 		#get channel
 		self.LoadInit( )
 
+		if self.mPlayingRecord :
+			self.SetFrontdisplayMessage( self.self.mPlayingRecord.mRecordName )
+		else :
+			self.mDataCache.Frontdisplay_SetCurrentMessage( )
+
 		#run thread
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True

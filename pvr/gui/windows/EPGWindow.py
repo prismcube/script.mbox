@@ -54,7 +54,7 @@ class EPGWindow( BaseWindow ) :
 	
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'EPG' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'EPG' ) )
@@ -522,6 +522,7 @@ class EPGWindow( BaseWindow ) :
 					#self.setFocusId( LIST_ID_COMMON_EPG )
 				else :
 					xbmc.executebuiltin( 'container.update' )
+					self.SetFocusList( self.mEPGMode )
 					#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CHANNEL)
 				
 			except Exception, ex :
@@ -603,7 +604,8 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.addItems( self.mListItems )
 				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
-				xbmc.executebuiltin( 'container.update' )			
+				xbmc.executebuiltin( 'container.update' )
+				self.SetFocusList( self.mEPGMode )
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)
 
 			self.mDebugEnd = time.time( )
@@ -682,7 +684,8 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.addItems( self.mListItems )
 				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
-				xbmc.executebuiltin( 'container.update' )			
+				xbmc.executebuiltin( 'container.update' )
+				self.SetFocusList( self.mEPGMode )
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)
 
 

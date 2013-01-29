@@ -81,6 +81,7 @@ class Configure( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Configure' )
 		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),

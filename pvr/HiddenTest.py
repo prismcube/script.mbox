@@ -14,7 +14,7 @@ class HiddenTest( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-
+		self.SetFrontdisplayMessage( 'Hidden Test' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.CheckTestFile( )
 

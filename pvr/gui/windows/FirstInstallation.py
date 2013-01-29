@@ -25,7 +25,7 @@ class FirstInstallation( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'First Installation' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
@@ -454,7 +454,7 @@ class FirstInstallation( FTIWindow ) :
 						if ret :
 							self.mDataCache.Player_AVBlank( True )
 							self.mDataCache.Channel_InvalidateCurrent( )
-							self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+							#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 
 					if self.mSatelliteIndex == 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )

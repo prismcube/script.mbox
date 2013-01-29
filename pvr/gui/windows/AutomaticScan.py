@@ -11,7 +11,7 @@ class AutomaticScan( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetFrontdisplayMessage( 'Automatic Scan' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( 'Automatic Scan' )

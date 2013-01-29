@@ -20,7 +20,11 @@ class NullWindow( BaseWindow ) :
 
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
-		print "Garbage collector: collected %d objects." % (collected)
+		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+		if playingRecord :
+			self.SetFrontdisplayMessage( playingRecord.mRecordName )
+		else :
+			self.mDataCache.Frontdisplay_SetCurrentMessage( )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -164,7 +168,7 @@ class NullWindow( BaseWindow ) :
 			prevChannel = None
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
 			if prevChannel :
-				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
+				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType, None, True )			
 				self.mDataCache.SetAVBlankByChannel( prevChannel )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -179,7 +183,7 @@ class NullWindow( BaseWindow ) :
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
-				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType, None, True )
 				self.mDataCache.SetAVBlankByChannel( nextChannel )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -211,7 +215,7 @@ class NullWindow( BaseWindow ) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
 							self.mDataCache.SetAVBlankByChannel( jumpChannel )
-							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, False )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
@@ -247,6 +251,13 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					msg = MR_LANG( 'Try again after stopping playback' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+					dialog.doModal( )
+					return
+
 				self.mDataCache.Player_Stop( )
 
 			self.Close( )

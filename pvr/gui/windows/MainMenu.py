@@ -49,6 +49,7 @@ class MainMenu( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Main Menu' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.CheckMediaCenter( )
@@ -81,7 +82,13 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 
 	def onClick( self, aControlId ) :
@@ -134,21 +141,37 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
+			self.SetMediaCenter( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			self.SetMediaCenter( )
-			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_LIVE :
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					msg = MR_LANG( 'Try again after stopping playback' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+					dialog.doModal( )
+					return
+
 				self.mDataCache.Player_Stop( )
 
-			if aControlId == BUTTON_ID_MEDIA_CENTER :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			self.SetMediaCenter( )
+			self.mDataCache.SetAVBlankByArchive( True )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
