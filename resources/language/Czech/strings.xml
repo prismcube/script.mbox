@@ -74,7 +74,7 @@
 	<string id="72">CZE_Learn how to get the most out of PRISMCUBE RUBY</string>
 	<string id="73">CZE_Install</string>
 	<string id="74">CZE_Channel</string>
-	<string id="75">CZE_Add-ons</string>
+	<string id="75">CZE_Favorites</string>
 	<string id="76">CZE_Media</string>
 	<string id="77">CZE_Version</string>
 	<string id="78">CZE_Get current weather and weather forecast for thousands of cities around the world</string>
@@ -1359,4 +1359,12 @@
 	<string id="3943">CZE_Continue interrupted downloads?</string>
 	<string id="3944">CZE_Resume downloading files</string>
 	<string id="3945">CZE_Your channel list has been successfully updated</string>
+	<string id="3946">CZE_Not Supported</string>
+	<string id="3947">CZE_Wifi device not found</string>
+	<string id="3948">CZE_Wifi Service not found</string>
+	<string id="3949">CZE_    - Strength : %s Encryption : %s</string>
+	<string id="3950">CZE_Wifi setup failed to complete</string>
+	<string id="3951"></string>
+	<string id="3952">CZE_No channels available for the selected mode</string>
+	<string id="3953">CZE_Try again after stopping playback and timeshift</string>
 </strings>
