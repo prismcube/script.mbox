@@ -74,7 +74,7 @@
 	<string id="72">GER_Learn how to get the most out of PRISMCUBE RUBY</string>
 	<string id="73">GER_Install</string>
 	<string id="74">GER_Channel</string>
-	<string id="75">GER_Add-ons</string>
+	<string id="75">GER_Favorites</string>
 	<string id="76">GER_Media</string>
 	<string id="77">GER_Version</string>
 	<string id="78">GER_Get current weather and weather forecast for thousands of cities around the world</string>
@@ -1359,4 +1359,12 @@
 	<string id="3943">GER_Continue interrupted downloads?</string>
 	<string id="3944">GER_Resume downloading files</string>
 	<string id="3945">GER_Your channel list has been successfully updated</string>
+	<string id="3946">GER_Not Supported</string>
+	<string id="3947">GER_Wifi device not found</string>
+	<string id="3948">GER_Wifi Service not found</string>
+	<string id="3949">GER_    - Strength : %s Encryption : %s</string>
+	<string id="3950">GER_Wifi setup failed to complete</string>
+	<string id="3951"> recordings and timeshift</string>
+	<string id="3952">GER_No channels available for the selected mode</string>
+	<string id="3953">GER_Try again after stopping playback and timeshift</string>
 </strings>
