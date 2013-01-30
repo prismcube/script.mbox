@@ -142,7 +142,7 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_EPG :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				msg = MR_LANG( 'Try again after stopping playback' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )

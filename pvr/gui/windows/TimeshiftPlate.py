@@ -333,7 +333,7 @@ class TimeShiftPlate( BaseWindow ) :
 				
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback' ) )
 				dialog.doModal( )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
@@ -347,7 +347,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping all your recordings first' )
+				msg = MR_LANG( 'Try again after stopping playback' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )

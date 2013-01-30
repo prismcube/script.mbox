@@ -1370,4 +1370,5 @@
 	<string id="3950">Wifi setup failed to complete</string>
 	<string id="3951">Try again after stopping playback</string>
 	<string id="3952">No channels available for the selected mode</string>
+	<string id="3953">Try again after stopping playback and timeshift</string>
 </strings>
