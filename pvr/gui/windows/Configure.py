@@ -37,7 +37,6 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 			= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 		= -1
 
-		#self.mRunningNetwork		= False
 		self.mUseNetworkType		= NETWORK_ETHERNET
 
 		self.mEthernetConnectMethod	= NET_DHCP
@@ -832,22 +831,12 @@ class Configure( SettingWindow ) :
 
 		elif aControlId == E_Input01 :
 			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
-			if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
-				if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
-					NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
-
-			else :
-				NetMgr.GetInstance( ).RestartConnman( )
-				if NetMgr.GetInstance( ).LoadWifiTechnology( ) :
-					if NetMgr.GetInstance( ).GetWifiTechnologyPower( ) == False :
-						NetMgr.GetInstance( ).SetWifiTechnologyPower( True )
-				
-				else :
-					self.CloseProgress( )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
-					dialog.doModal( )
-					return
+			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) == False :
+				self.CloseProgress( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
+				dialog.doModal( )
+				return
 
 			apList = NetMgr.GetInstance( ).GetSearchedWifiApList( )
 			
@@ -879,23 +868,29 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 		elif aControlId == E_Input04 :
-			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 60 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
 
-			if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
-				NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
-			else :
-				NetMgr.GetInstance( ).WriteWifiConfigFile( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
+			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) :
+				if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
+					NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
+				else :
+					NetMgr.GetInstance( ).WriteWifiConfigFile( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
 
-			state = True
-			NetMgr.GetInstance( ).RestartConnman( )
-
-			if NetMgr.GetInstance( ).LoadWifiService( ) :
-				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
-				NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
+				if NetMgr.GetInstance( ).LoadWifiService( ) :
+					wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
+					NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )
+					NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
+					NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+				else :
+					self.CloseProgress( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
+					dialog.doModal( )
+					return
 			else :
 				self.CloseProgress( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi device not found' ) )
 				dialog.doModal( )
 				return
 
@@ -905,7 +900,6 @@ class Configure( SettingWindow ) :
 			NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.SetListControl( )
 			self.CloseProgress( )
-			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )
 
 
 	def LoadWifiInformation( self ) :
