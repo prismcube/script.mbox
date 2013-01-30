@@ -201,8 +201,7 @@ class SystemUpdate( SettingWindow ) :
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				#self.UpdateChannel( )
-				self.CheckItems( )
+				self.UpdateChannel( )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
