@@ -552,7 +552,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
 			dialog.doModal( )
 
 
