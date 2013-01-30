@@ -54,13 +54,12 @@ class NetworkMgr( object ) :
 		else :
 			ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_WIRELESS )
 
-	"""
+
 	def GetCurrentServiceObject( self ) :
 		if self.GetCurrentServiceType( ) == NETWORK_ETHERNET :
 			return self.mEthernetServiceObejct
 		else :
 			return self.mWifiServiceObejct
-	"""
 
 
 	def GetCurrentEthernetService( self ) :
@@ -358,8 +357,8 @@ class NetworkMgr( object ) :
 		try :
 			if aService :
 				property = aService.GetProperties( )
-				if property['State'] == 'failure' :
-					print 'dhkim test error = %s' % property['Error']
+				#if property['State'] == 'failure' :
+				#	print 'dhkim test error = %s' % property['Error']
 				self.WaitConfigurationService( aService )
 				if property['State'] == 'idle' or property['State'] == 'disconnect' :
 					return False
@@ -570,8 +569,8 @@ class NetworkMgr( object ) :
 						
 						property = aService.GetProperties( )
 						print 'dhkim test WaitConfigurationService = %s' %  property['State']
-						if property['State'] != 'failure' :
-							print 'dhkim test error = %s' % property['Error']
+						#if property['State'] != 'failure' :
+						#	print 'dhkim test error = %s' % property['Error']
 						if property['State'] != 'configuration' and property['State'] != 'association' :
 							return
 
@@ -587,11 +586,13 @@ class NetworkMgr( object ) :
 	def CheckInternetState( self ) :
 		if gUseNetwork == False :
 			return 'Disconnected'
-	
+		"""
 		if self.GetCurrentEthernetService( ) :
 			service = self.GetCurrentEthernetService( )
 		else :
 			service = self.GetCurrentWifiService( )
+		"""
+		service = self.GetCurrentServiceObject( )
 		print 'dhkim test CheckInternetState service = %s' % service
 		if service :
 			try :
