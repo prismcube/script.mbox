@@ -15,6 +15,7 @@ E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update.html?product=ruby'
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download.html?key='
+E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download.html?unzipfiles='
 
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
@@ -741,6 +742,14 @@ class SystemUpdate( SettingWindow ) :
 				elif usbPath :
 					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 					RemoveDirectory( '%s/%s'% ( usbPath, self.mPVSData.mUnzipDir ) )
+
+					#toDO
+					#request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
+					#isExist = GetURLpage( request, '/tmp/unziplist' )
+					#LOG_TRACE('-------------request[%s] ret[%s]'% ( request, isExist ) )
+
+					#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+					#RemoveUnzipFiles( usbPath, tempFile )
 					self.SetFocusControl( E_Input02 )
 
 		else :

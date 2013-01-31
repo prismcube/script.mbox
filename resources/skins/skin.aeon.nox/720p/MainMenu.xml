@@ -184,56 +184,56 @@
 						<item id="1">
 							<label>SCRIPT57</label>
 							<onclick>SendClick(90601)</onclick>
-							<onclick>ActivateWindow(Weather)</onclick>
+							<!--onclick>ActivateWindow(Weather)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="2">
 							<label>SCRIPT58</label>
 							<onclick>SendClick(90602)</onclick>
-							<onclick>ActivateWindow(Pictures)</onclick>
+							<!--onclick>ActivateWindow(Pictures)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="3">
 							<label>SCRIPT59</label>
 							<onclick>SendClick(90603)</onclick>
-							<onclick>ActivateWindow(Music)</onclick>
+							<!--onclick>ActivateWindow(Music)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="4">
 							<label>SCRIPT60</label>
 							<onclick>SendClick(90604)</onclick>
-							<onclick>ActivateWindow(Videos)</onclick>
+							<!--onclick>ActivateWindow(Videos)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="5">
 							<label>SCRIPT61</label>
 							<onclick>SendClick(90605)</onclick>
-							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+							<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="6">
 							<label>SCRIPT62</label>
 							<onclick>SendClick(90606)</onclick>
-							<onclick>ActivateWindow(Settings)</onclick>
+							<!--onclick>ActivateWindow(Settings)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="7">
 							<label>SCRIPT63</label>
 							<onclick>SendClick(90607)</onclick>
-							<onclick>ActivateWindow(FileManager)</onclick>
+							<!--onclick>ActivateWindow(FileManager)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="8">
 							<label>SCRIPT64</label>
 							<onclick>SendClick(90608)</onclick>
-							<onclick>ActivateWindow(Profiles)</onclick>
+							<!--onclick>ActivateWindow(Profiles)</onclick-->
 							<!--<visible>Container(9000).HasFocus(5)</visible>-->
 							<visible>false</visible>
 						</item>
 						<item id="9">
 							<label>SCRIPT65</label>
 							<onclick>SendClick(90609)</onclick>
-							<onclick>ActivateWindow(SystemInfo)</onclick>
+							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 					</content>
