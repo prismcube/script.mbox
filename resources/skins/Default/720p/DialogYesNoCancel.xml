@@ -16,10 +16,10 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>530</width>
-				<height>90</height>
+				<posx>18</posx>
+				<posy>14</posy>
+				<width>564</width>
+				<height>78</height>
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
@@ -85,7 +85,7 @@
 			<control type="button" id="303">
 				<description>Close Window button</description>
 				<posx>520</posx>
-				<posy>9</posy>
+				<posy>15</posy>
 				<width>64</width>
 				<height>32</height>
 				<label>-</label>

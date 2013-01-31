@@ -1,6 +1,6 @@
 <window>
 	<defaultcontrol always="true">102</defaultcontrol>
-	<onload>SetProperty(ItemHeight,42)</onload>					<!--Input Item Height-->
+	<onload>SetProperty(ItemHeight,40)</onload>					<!--Input Item Height-->
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
@@ -11,15 +11,15 @@
 			<control type="image">
 				<description>background top image</description>
 				<posx>0</posx>
-				<posy>-45</posy>
+				<posy>-30</posy>
 				<width>350</width>
-				<height>45</height>
-				<texture border="45,45,45,0">DialogContextTop.png</texture>
+				<height>30</height>
+				<texture border="20,19,20,0">DialogContextTop.png</texture>
 			</control>
 			<control type="button" id="103">
 				<description>Close Window button</description>
 				<posx>270</posx>
-				<posy>-33</posy>
+				<posy>-24</posy>
 				<width>64</width>
 				<height>32</height>
 				<onup>102</onup>
@@ -31,40 +31,33 @@
 				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
 			</control>
-			<!--control type="image">
-				<posx>34</posx>
-				<posy>-6</posy>
-				<width>297</width>
-				<height>4</height>
-				<texture>separator.png</texture>
-			</control-->
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>350</width>
-				<texture border="45,0,45,0">DialogContextMiddle.png</texture>
+				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
 			</control>
 			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
 				<width>350</width>
-				<height>50</height>
-				<texture border="45,0,45,49">DialogContextBottom.png</texture>
+				<height>25</height>
+				<texture border="20,0,19,20">DialogContextBottom.png</texture>
 			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
-				<posy>0</posy>
+				<posy>5</posy>
 				<width>310</width>
-				<height>504</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<height>480</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<onleft>103</onleft>
 				<onright>103</onright>
-				<itemlayout width="310" height="42" >		<!--Change Property ItemHeight-->
+				<itemlayout width="310" height="40" >		<!--Change Property ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
-						<posy>0</posy>
+						<posy>1</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-nofocus.png</texture>
@@ -91,10 +84,10 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>		
 				</itemlayout>
-				<focusedlayout width="310" height="42">		<!--Change Property ItemHeight-->
+				<focusedlayout width="310" height="40">		<!--Change Property ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
-						<posy>0</posy>
+						<posy>1</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-focus.png</texture>

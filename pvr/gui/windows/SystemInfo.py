@@ -227,6 +227,8 @@ class SystemInfo( SettingWindow ) :
 
 			if self.CheckExistsDisk( ) :
 				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
+
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )

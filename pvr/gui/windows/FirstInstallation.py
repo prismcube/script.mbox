@@ -176,14 +176,14 @@ class FirstInstallation( FTIWindow ) :
 	def Close( self ) :
 		self.OpenBusyDialog( )
 		self.mInitialized = False
-		if self.GetFTIStep( ) == E_STEP_ANTENNA :
-			self.mTunerMgr.SaveConfiguration( )
-			self.mDataCache.Channel_ReTune( )
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
 		self.SetFirstInstallation( False )
 		self.mTunerMgr.SetNeedLoad( True )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
+		if self.GetFTIStep( ) == E_STEP_ANTENNA :
+			self.mTunerMgr.SaveConfiguration( )
+		self.mDataCache.Channel_TuneDefault( )
 		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )

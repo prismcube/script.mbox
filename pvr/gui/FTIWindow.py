@@ -208,7 +208,7 @@ class FTIWindow( SettingWindow ) :
 	def CloseFTI( self ) :
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
 		self.mTunerMgr.CancelConfiguration( )
-		self.mDataCache.Channel_ReTune( )
+		self.mDataCache.Channel_TuneDefault( )
 		self.mDataCache.Player_AVBlank( False )
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 		self.mTunerMgr.SetNeedLoad( True )

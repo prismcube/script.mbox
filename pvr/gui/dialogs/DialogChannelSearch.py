@@ -9,7 +9,6 @@ LIST_ID_RADIO					= 402
 BUTTON_ID_CANCEL				= 300
 BUTTON_ID_CLOSE					= 104
 
-
 # Scan MODE
 E_SCAN_NONE					= 0
 E_SCAN_SATELLITE			= 1
@@ -90,7 +89,7 @@ class DialogChannelSearch( BaseDialog ) :
 		pass
 
 
-	def DrawItem( self ) :
+	def DrawItem( self ) :		
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
 			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i].mName )
@@ -169,15 +168,15 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
-			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 
+				self.ScanAbort( )
+			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO :
 				return
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
 
 
 	def onEvent( self, aEvent ) :
-		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
-
+		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId or xbmcgui.getCurrentWindowDialogId( ) != XBMC_WINDOW_DIALOG_INVALID :
 			if aEvent.getName( ) == ElisEventScanAddChannel.getName( ) :
 				self.UpdateAddChannel( aEvent )
 
@@ -236,7 +235,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def ShowResult( self ) :
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
-		searchResult = MR_LANG( 'TV channels : %d \nRadio channels : %d' ) %( tvCount, radioCount )
+		searchResult = MR_LANG( 'TV channels : %d \nRadio channels : %d' ) % ( tvCount, radioCount )
 
 		try :
 			self.AbortDialog.close( )

@@ -1117,9 +1117,13 @@ class Configure( SettingWindow ) :
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			mediasize = dialog.GetString( )
-		self.OpenBusyDialog( )
-		ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
-		ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
-		self.mDataCache.Player_AVBlank( True )
-		self.mCommander.Make_Dedicated_HDD( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Media partition size is %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.OpenBusyDialog( )
+			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
+			ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
+			self.mDataCache.Player_AVBlank( True )
+			self.mCommander.Make_Dedicated_HDD( )
 

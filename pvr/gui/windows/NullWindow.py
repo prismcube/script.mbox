@@ -103,7 +103,7 @@ class NullWindow( BaseWindow ) :
 			return
 
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_MOVE_LEFT :
+		if actionId == Action.ACTION_PREVIOUS_MENU :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
