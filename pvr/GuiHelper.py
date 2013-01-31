@@ -417,6 +417,51 @@ def RemoveDirectory( aPath ) :
 	return ret
 
 
+def RemoveUnzipFiles( aUsbPath, aZipFile = False, aReqFile = False ) :
+	fileList = None
+
+	try :
+		if aZipFile :
+			if not CheckDirectory( aZipFile ) :
+				#LOG_TRACE('not exist unzipfile[%s]'% aZipFile )
+				return False
+			fileList = GetUnpackFiles( aZipFile )
+
+			if not fileList or len( fileList ) < 1 :
+				#LOG_TRACE( 'no delete files' )
+				return False
+
+			for iFile in fileList :
+				if iFile[0].strip( ) :
+					delFile = '%s/%s'% ( aUsbPath, iFile[0].strip( ) )
+					RemoveDirectory( delFile )
+					#LOG_TRACE('delete file[%s]'% delFile )
+
+		else :
+			if not CheckDirectory( aReqFile ) :
+				#LOG_TRACE('not exist reqFile[%s]'% aReqFile )
+				return False
+
+			fd = open( aReqFile, 'r' )
+			fileList = fd.readlines( )
+			fd.close( )
+
+			if not fileList or len( fileList ) < 1 :
+				#LOG_TRACE( 'no delete files' )
+				return False
+
+			for iFile in fileList :
+				if iFile.strip( ) :
+					delFile = '%s/%s'% ( aUsbPath, iFile.strip( ) )
+					RemoveDirectory( delFile )
+					#LOG_TRACE('delete file[%s]'% delFile )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+	return True
+
+
 def CheckDirectory( aPath ) :
 	return os.path.exists( aPath )
 
@@ -601,7 +646,8 @@ def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0, aUnzipPath = 'update_ruby'
 		LOG_TRACE( '------------check usb[%s]'% aUsbPath )
 		return isCopy
 
-	RemoveDirectory( '%s/%s'% ( aUsbPath, aUnzipPath ) )
+	#RemoveDirectory( '%s/%s'% ( aUsbPath, aUnzipPath ) )
+	RemoveUnzipFiles( aUsbPath, False, aUnzipPath )
 	usbSize = GetDeviceSize( aUsbPath )
 	if usbSize <= aUnpackSize :
 		return -1

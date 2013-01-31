@@ -195,21 +195,20 @@
 					</control>	
 				</itemlayout>
 				<focusedlayout height="40" width="700">
-					<control type="image">
+					<!--control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
+						<visible>substring(Window(10000).Property(isEmpty),true)</visible>
+					</control-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
-						<visible>!substring(Window(10000).Property(isEdit),true)</visible>
+						<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 					</control>
 					<control type="image">
@@ -217,7 +216,7 @@
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
-						<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true)</visible>
+						<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 						<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
 					</control>
 					<!--control type="image">

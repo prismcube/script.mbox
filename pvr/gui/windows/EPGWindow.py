@@ -9,7 +9,7 @@ LIST_ID_BIG_EPG					= 3510
 SCROLL_ID_COMMON_EPG			= 3501
 SCROLL_ID_BIG_EPG				= 3511
 
-
+BUTTON_ID_SEARCH				= 202
 LABEL_ID_TIME					= 300
 LABEL_ID_DATE					= 301
 LABEL_ID_DURATION				= 302
@@ -234,6 +234,10 @@ class EPGWindow( BaseWindow ) :
 
 		elif aControlId == LIST_ID_COMMON_EPG :
 			pass
+
+		elif aControlId == BUTTON_ID_SEARCH :
+			self.SetFocusList( self.mEPGMode )
+			self.DoContextAction( CONTEXT_SEARCH )
 
 
 	def onFocus( self, aControlId ) :

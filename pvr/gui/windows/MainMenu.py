@@ -52,6 +52,8 @@ class MainMenu( BaseWindow ) :
 		self.SetFrontdisplayMessage( 'Main Menu' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		if self.mDataCache.GetMediaCenter( ) == True :
+			self.mDataCache.SetAVBlankByArchive( False )
 		self.CheckMediaCenter( )
 		#self.GetFavAddons( )
 
@@ -171,7 +173,26 @@ class MainMenu( BaseWindow ) :
 
 			self.SetMediaCenter( )
 			self.mDataCache.SetAVBlankByArchive( True )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			if aControlId == BUTTON_ID_MEDIA_CENTER :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			elif aControlId == BUTTON_ID_MEDIA_WEATHER :
+				xbmc.executebuiltin( 'ActivateWindow(Weather)' )
+			elif aControlId == BUTTON_ID_MEDIA_PICTURES :
+				xbmc.executebuiltin( 'ActivateWindow(Pictures)' )
+			elif aControlId == BUTTON_ID_MEDIA_MUSICS :
+				xbmc.executebuiltin( 'ActivateWindow(Music)' )
+			elif aControlId == BUTTON_ID_MEDIA_VIDEOS :
+				xbmc.executebuiltin( 'ActivateWindow(Videos)' )
+			elif aControlId == BUTTON_ID_MEDIA_PROGRAMS :
+				xbmc.executebuiltin( 'ActivateWindow(Programs,Addons,return)' )
+			elif aControlId == BUTTON_ID_MEDIA_SETTINGS :
+				xbmc.executebuiltin( 'ActivateWindow(Settings)' )
+			elif aControlId == BUTTON_ID_MEDIA_FILE_MGR :
+				xbmc.executebuiltin( 'ActivateWindow(FileManager)' )
+			elif aControlId == BUTTON_ID_MEDIA_PROFILES :
+				xbmc.executebuiltin( 'ActivateWindow(Profiles)' )
+			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
+				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
