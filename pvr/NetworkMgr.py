@@ -107,14 +107,13 @@ class NetworkMgr( object ) :
 
 		try :
 			SSID = self.GetConfiguredSSID( )
-			LOG_TRACE( 'dhkim test LoadWifiService ssid = %s' % SSID )
+			LOG_TRACE( 'LoadWifiService ssid = %s' % SSID )
 			if SSID :
 				path = self.GetConfiguredWifiServicePath( SSID )
-				LOG_TRACE( 'dhkim test LoadWifiService path = %s' % path )
+				LOG_TRACE( 'LoadWifiService path = %s' % path )
 				if path :
 					bus = dbus.SystemBus( )
 					self.mWifiServiceObejct = dbus.Interface( bus.get_object( 'net.connman', path ), 'net.connman.Service' )
-					self.SetAutoConnect( self.mWifiServiceObejct, False )
 					return True
 				else :
 					return False
@@ -124,7 +123,7 @@ class NetworkMgr( object ) :
 			return False
 
 
-	def LoadWifiTechnology( self ) :
+	def LoadSetWifiTechnology( self ) :
 		if gUseNetwork == False :
 			return False
 
@@ -143,8 +142,9 @@ class NetworkMgr( object ) :
 						break
 
 			if wifiTechnologyPath :
-				print 'dhkim test wifiTechnologyPath = %s' % wifiTechnologyPath
 				self.mWifiTechnologyObject = dbus.Interface( bus.get_object( 'net.connman', wifiTechnologyPath ), 'net.connman.Technology' )
+				if self.GetWifiTechnologyPower( ) == False :
+					self.SetWifiTechnologyPower( True )
 				return True
 			else :
 				return False
@@ -279,6 +279,7 @@ class NetworkMgr( object ) :
 
 			openFile.write( words )
 			openFile.close( )
+			time.sleep( 1 )
 			return True
 
 		except Exception, e :				
@@ -295,8 +296,9 @@ class NetworkMgr( object ) :
 		if len( aplist ) > 0 :
 			for ap in aplist :
 				if str( ap[0] ) == aSSID :
-					LOG_TRACE( 'dhkim test Find matched SSID = %s' % ap[0] )
+					LOG_TRACE( 'Find matched SSID = %s' % ap[0] )
 					return ap[1]
+
 		LOG_ERR( 'GetConfiguredWifiServicePath is None' )
 		return None
 
@@ -312,6 +314,7 @@ class NetworkMgr( object ) :
 			servicelist = []
 			for path, properties in manager.GetServices( ) :
 				if properties[ 'Type' ] == 'wifi' :
+					
 					if 'Name' in properties.keys( ) :
 						name = properties[ 'Name' ]
 					else:
@@ -325,7 +328,7 @@ class NetworkMgr( object ) :
 						Security += ' ]'
 					servicelist.append( [ name, path, str( int ( properties[ 'Strength' ] ) ), Security ] )
 
-			LOG_TRACE( 'dhkim test GetSearchedWifiApList = %s' % servicelist )
+			LOG_TRACE( 'GetSearchedWifiApList = %s' % servicelist )
 			return servicelist
 
 		except dbus.DBusException, error :                                  
@@ -339,11 +342,8 @@ class NetworkMgr( object ) :
 
 		try :
 			if aService :
-				print 'dhkim test autoconnect set'
 				aService.SetProperty( 'AutoConnect', aFlag )
-				prop = aService.GetProperties( )
-				
-				print 'dhkim test autoconnect = %s' % prop['AutoConnect']
+				time.sleep( 0.5 )
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
@@ -357,9 +357,6 @@ class NetworkMgr( object ) :
 		try :
 			if aService :
 				property = aService.GetProperties( )
-				#if property['State'] == 'failure' :
-				#	print 'dhkim test error = %s' % property['Error']
-				self.WaitConfigurationService( aService )
 				if property['State'] == 'idle' or property['State'] == 'disconnect' :
 					return False
 				elif property['State'] == 'ready' or property['State'] == 'online' :
@@ -379,18 +376,10 @@ class NetworkMgr( object ) :
 	
 		try :
 			if aService :
-				print 'dhkim test SetServiceConnect = %s' % aService
 				if aFlag :
-					print 'dhkim test aService connect!!!!!'
 					self.DisConnectOtherTypeNetwork( aService )
-					time.sleep( 0.5 )
-					print 'dhkim test SetServiceConnect #1'
-					#if self.GetServiceState( aService ) == False :
-					#	print 'dhkim test already connected'
-					print 'dhkim test Service.Connect = %s' % aService
-					self.WaitConfigurationService( aService )
+					time.sleep( 1 )
 					aService.Connect( timeout=60000 )
-					print 'dhkim test SetServiceConnect #2'
 				else :
 					aService.Disconnect( )
 					time.sleep( 0.5 )
@@ -409,57 +398,20 @@ class NetworkMgr( object ) :
 
 	def DisConnectOtherTypeNetwork( self, aService ) :
 		try :
-			print 'dhkim test DisConnectOtherTypeNetwork = %s' % aService
 			property = aService.GetProperties( )
-			print 'dhkim test property = %s' % property[ 'Type' ]
 			if property[ 'Type' ] == 'wifi' :
-				print 'dhkim test DisConnectOtherTypeNetwork #1'
 				if self.mEthernetServiceObejct :
-					print 'dhkim test ethernet disconnect!!!! %s' % self.mEthernetServiceObejct
-					#self.mEthernetServiceObejct.Disconnect( )
-					self.SetServiceConnect( self.mEthernetServiceObejct, False )
-					#self.WaitConfigurationService( self.mEthernetServiceObejct )
-					#self.mEthernetServiceObejct = None
-					print 'dhkim test ethernet disconnect!!!!'
+					self.mEthernetServiceObejct.Disconnect( )
+					self.WaitConfigurationService( self.mEthernetServiceObejct )
+					self.mEthernetServiceObejct = None
 			elif property[ 'Type' ] == 'ethernet' :
-				print 'dhkim test DisConnectOtherTypeNetwork #2'
 				if self.mWifiServiceObejct :
-					print 'dhkim test wifi disconnect!!!!'
-					print 'dhkim test wifi disconnect!!!! %s' % self.mWifiServiceObejct
-					self.SetServiceConnect( self.mWifiServiceObejct, False )
-					#self.mWifiServiceObejct.Disconnect( )
-					#self.WaitConfigurationService( self.mWifiServiceObejct )
-					#self.mWifiServiceObejct = None
-					print 'dhkim test wifi disconnect!!!!'
+					self.mWifiServiceObejct.Disconnect( )
+					self.WaitConfigurationService( self.mWifiServiceObejct )
+					self.mWifiServiceObejct = None
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
-
-
-	def RestartConnman( self ) :
-		if gUseNetwork == False :
-			return
-	
-		try :
-			if self.mWifiServiceObejct :
-				self.SetServiceConnect( self.mWifiServiceObejct, False )
-			LOG_TRACE( 'dhkim test start RestartConnman' )
-			os.system( 'systemctl restart connman.service' )
-			time.sleep( 20 )
-			LOG_TRACE( 'dhkim test end RestartConnman sleep 20 second' )
-
-			if self.LoadEthernetService( ) == False :
-				LOG_ERR( 'Ethernet device not configured' )
-
-			if self.LoadWifiTechnology( ) :
-				if self.GetWifiTechnologyPower( ) == False :
-					self.SetWifiTechnologyPower( True )
-			else :
-				LOG_ERR( 'LoadWifiTechnology fail' )
-			
-		except Exception, e :
-			LOG_ERR( 'Error exception[%s]' % e )
-			return
 
 
 	def GetServiceAddress( self, aService ) :
@@ -508,10 +460,8 @@ class NetworkMgr( object ) :
 			if self.LoadEthernetService( ) :
 				if self.mEthernetServiceObejct :
 					if aMethod == NET_DHCP :
-						LOG_TRACE( 'dhkim test ConnectEthernet DHCP' )
 						ipv4_configuration = { 'Method': dbus.String( 'dhcp', variant_level = 1 ) }
 					else :
-						LOG_TRACE( 'dhkim test ConnectEthernet STATIC' )
 						ipv4_configuration = { 'Method': dbus.String( 'manual', variant_level = 1 ) }
 						ipv4_configuration[ 'Address'] = dbus.String( aAddress, variant_level = 1 )
 						ipv4_configuration[ 'Netmask'] = dbus.String( aNetmask, variant_level = 1 )
@@ -566,11 +516,7 @@ class NetworkMgr( object ) :
 				for i in range( CONFIGURATION_TIMEOUT ) :
 					time.sleep( 1 )
 					try :
-						
 						property = aService.GetProperties( )
-						print 'dhkim test WaitConfigurationService = %s' %  property['State']
-						#if property['State'] != 'failure' :
-						#	print 'dhkim test error = %s' % property['Error']
 						if property['State'] != 'configuration' and property['State'] != 'association' :
 							return
 
@@ -586,19 +532,13 @@ class NetworkMgr( object ) :
 	def CheckInternetState( self ) :
 		if gUseNetwork == False :
 			return 'Disconnected'
-		"""
-		if self.GetCurrentEthernetService( ) :
-			service = self.GetCurrentEthernetService( )
-		else :
-			service = self.GetCurrentWifiService( )
-		"""
+
 		service = self.GetCurrentServiceObject( )
-		print 'dhkim test CheckInternetState service = %s' % service
 		if service :
 			try :
 				property = service.GetProperties( )
 				if property['State'] == 'failure' :
-					print 'dhkim test error = %s' % property['Error']
+					LOG_ERR( 'Internet State error = %s' % property['Error'] )
 				
 				if property['State'] != 'configuration' :
 					if property['State'] == 'online' :

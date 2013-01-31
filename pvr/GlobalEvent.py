@@ -44,7 +44,8 @@ class GlobalEvent( object ) :
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.SendLocalOffsetToXBMC( )		
+		self.SendLocalOffsetToXBMC( )
+		self.mPowerSaveDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )		
 
 
 	@classmethod
@@ -108,8 +109,9 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) not in AUTOPOWERDOWN_EXCEPTWINDOW :
 				if self.mIsDialogOpend == False :
-					thread = threading.Timer( 0.3, self.AsyncPowerSave )
-					thread.start( )
+					self.ShowPowerSave( )
+					#thread = threading.Timer( 0.3, self.AsyncPowerSave )
+					#thread.start( )
 			else :
 				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).GetLastWindowID( )
 
@@ -153,20 +155,22 @@ class GlobalEvent( object ) :
 		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
-	def AsyncPowerSave( self ) :
+	def ShowPowerSave( self ) :
 		self.mIsDialogOpend = True
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
+		#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
 
 		if self.mCommander.Teletext_IsShowing( ) :
 			self.mCommander.Teletext_Hide( )
-			dialog.doModal( )
+			#dialog.doModal( )
+			self.mPowerSaveDialog.show( )
 			self.mCommander.Teletext_Show( )
 		#elif self.mCommander.Subtitle_IsShowing( ) :
 		#TODO
 		else :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 0 )
-			dialog.doModal( )
+			#dialog.doModal( )
+			self.mPowerSaveDialog.show( )			
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 1 )
 			
