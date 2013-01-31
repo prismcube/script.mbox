@@ -10,6 +10,8 @@ E_TYPE_ADDONS = 2
 E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
+E_DOWNLOAD_PATH_FWURL     = '/tmp/fwUrl'
+E_DOWNLOAD_PATH_UNZIPFILES ='/tmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
@@ -550,7 +552,7 @@ class SystemUpdate( SettingWindow ) :
 
 			if isDownload :
 				mPVSList = []
-				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action', 'unzipdir']
+				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action']
 				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
 				if retList and len( retList ) > 0 :
 					for pvsData in retList :
@@ -580,8 +582,8 @@ class SystemUpdate( SettingWindow ) :
 							for item in pvsData[8] :
 								actions += '%s\n'% item
 							iPVS.mActions = actions
-						if pvsData[9] :
-							iPVS.mUnzipDir = pvsData[9]
+						#if pvsData[9] :
+						#	iPVS.mUnzipDir = pvsData[9]
 
 						iPVS.mName = MR_LANG( 'Downloading firmware' )
 						iPVS.mType = E_TYPE_ADDONS
@@ -667,10 +669,13 @@ class SystemUpdate( SettingWindow ) :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				usbPath = self.mDataCache.USB_GetMountPath( )
 				if usbPath :
-					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
+					#RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
 					if self.mPVSList and len( self.mPVSList ) > 0 :
 						for iPVS in self.mPVSList :
-							RemoveDirectory( '%s/%s'% ( usbPath, iPVS.mUnzipDir ) )
+							#RemoveDirectory( '%s/%s'% ( usbPath, iPVS.mUnzipDir ) )
+							request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, iPVS.mKey )
+							if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+								RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
@@ -724,9 +729,9 @@ class SystemUpdate( SettingWindow ) :
 			if select == 0 : #lastest version
 				self.mPVSData.mType = E_TYPE_PRISMCUBE
 
-			global E_DEFAULT_DIR_UNZIP
-			if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
-				E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
+			#global E_DEFAULT_DIR_UNZIP
+			#if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
+			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
 			ret = self.InitPVSData( )
 			self.mStepPage = E_UPDATE_STEP_READY
@@ -740,16 +745,12 @@ class SystemUpdate( SettingWindow ) :
 					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 				elif usbPath :
-					RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
-					RemoveDirectory( '%s/%s'% ( usbPath, self.mPVSData.mUnzipDir ) )
+					#RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
+					#RemoveDirectory( '%s/%s'% ( usbPath, self.mPVSData.mUnzipDir ) )
+					request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
+					if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+						RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
-					#toDO
-					#request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
-					#isExist = GetURLpage( request, '/tmp/unziplist' )
-					#LOG_TRACE('-------------request[%s] ret[%s]'% ( request, isExist ) )
-
-					#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
-					#RemoveUnzipFiles( usbPath, tempFile )
 					self.SetFocusControl( E_Input02 )
 
 		else :
@@ -880,7 +881,7 @@ class SystemUpdate( SettingWindow ) :
 				time.sleep( 0.3 )
 				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
-				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize, E_DEFAULT_DIR_UNZIP )
+				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize, E_DOWNLOAD_PATH_UNZIPFILES )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
@@ -986,9 +987,9 @@ class SystemUpdate( SettingWindow ) :
 		button2Desc   = MR_LANG( 'Press OK button to download the firmware shown below' )
 
 		if self.mIsDownload :
-			global E_DEFAULT_DIR_UNZIP
-			if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
-				E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
+			#global E_DEFAULT_DIR_UNZIP
+			#if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
+			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
 			button2Label = MR_LANG( 'Copy to USB')
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
@@ -1044,15 +1045,19 @@ class SystemUpdate( SettingWindow ) :
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
-		isExist = GetURLpage( request, '/tmp/fwUrl' )
-		#LOG_TRACE('-------------request[%s] ret[%s]'% ( request, isExist ) )
+		isExist = GetURLpage( request, E_DOWNLOAD_PATH_FWURL )
+		#LOG_TRACE('-------------req fwUrl[%s] ret[%s]'% ( request, isExist ) )
 
 		if isExist == False :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
+		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, aPVS.mKey )
+		isExist = GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES )
+		#LOG_TRACE('-------------req unzipfiles[%s] ret[%s]'% ( request, isExist ) )
+
 		tagNames = ['url']
-		retList = ParseStringInXML( '/tmp/fwUrl', tagNames, 'urlinfo' )
+		retList = ParseStringInXML( E_DOWNLOAD_PATH_FWURL, tagNames, 'urlinfo' )
 		#LOG_TRACE('------------ret urlinfo[%s]'% retList )
 		if retList and len( retList ) > 0 :
 			reqFile = retList[0][0]
