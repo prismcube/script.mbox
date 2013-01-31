@@ -222,7 +222,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateViewMode( )
 			self.InitControl( )
 			self.UpdateList( )
-			self.SelectLastRecordKey( )						
+			self.SelectLastRecordKey( )
+			self.SetFocusList( self.mViewMode )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
