@@ -261,7 +261,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
-			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST :
+			LOG_TRACE('--------------focus[%s]'% self.mFocusId )
+			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
@@ -1402,13 +1403,22 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[LIST] START[%s]'% starttime
 
 		#no channel is set Label comment
-		self.mCtrlListCHList.reset( )	
-		
+		self.mCtrlListCHList.reset( )
+		xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
+
 		if self.mChannelList == None :
+			if self.mFlag_DeleteAll :
+				self.mListItems = None
+				label = MR_LANG( 'No Channel' )			
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
+
+			self.mListItems = []
+			listItem = xbmcgui.ListItem( 'empty channel' )
+			self.mListItems.append( listItem )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_TRUE )
 			self.mListItems = None
-			label = MR_LANG( 'No Channel' )			
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 			return 
 
 		reloadPos = False

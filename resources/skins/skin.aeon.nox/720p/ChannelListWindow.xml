@@ -223,7 +223,7 @@
 								<posy>-4</posy>
 								<width>743</width>
 								<height>47</height>
-								<visible>!substring(Window(13000).Property(isEdit),true)</visible>
+								<visible>!substring(Window(13000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 								<texture background="true">views/listpanel_selectbar.png</texture>
 								<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(50)">Conditional</animation>
 							</control>
@@ -232,7 +232,7 @@
 								<posy>-4</posy>
 								<width>743</width>
 								<height>47</height>
-								<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true)</visible>
+								<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 								<texture>listpanel_selectbar.png</texture>
 							</control>
 							<!--control type="image">

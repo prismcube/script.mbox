@@ -417,6 +417,21 @@ def RemoveDirectory( aPath ) :
 	return ret
 
 
+def RemoveUnzipFiles( aUsbPath, aUnzipFile ) :
+	if not CheckDirectory( aUnzipFile ) :
+		LOG_TRACE('not exist unzipfile[%s]'% aUnzipFile )
+		return
+
+	fileList = GetUnpackFiles( aZipFile )
+	if not fileList :
+		return False
+
+	for iFile in fileList :
+		delFile = '%s/%s'% ( aUsbPath, iFile[0] )
+		RemoveDirectory( delFile )
+		LOG_TRACE('delete file[%s]'% iFile[0] )
+
+
 def CheckDirectory( aPath ) :
 	return os.path.exists( aPath )
 
