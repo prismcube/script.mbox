@@ -173,12 +173,12 @@
 					<onup>9010</onup>
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
-					<control type="radiobutton" id="200">
+					<!--control type="radiobutton" id="200">
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>SCRIPT8</label>
-					</control>
+					</control-->
 					<control type="button" id="202">
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>

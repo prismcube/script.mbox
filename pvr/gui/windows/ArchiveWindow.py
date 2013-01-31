@@ -71,6 +71,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateList( )
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
+			self.SetFocusList( self.mViewMode )
 			return
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -126,7 +127,7 @@ class ArchiveWindow( BaseWindow ) :
 		
 		self.InitControl( )
 		self.UpdateList( )
-		self.SelectLastRecordKey( )		
+		self.SelectLastRecordKey( )	
 		self.UpdatePlayStatus( )
 
 		self.SetFocusList( self.mViewMode )
@@ -221,7 +222,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateViewMode( )
 			self.InitControl( )
 			self.UpdateList( )
-			self.SelectLastRecordKey( )						
+			self.SelectLastRecordKey( )
+			self.SetFocusList( self.mViewMode )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
@@ -594,7 +596,8 @@ class ArchiveWindow( BaseWindow ) :
 			position = self.mCtrlFanartList.getSelectedPosition( )		
 		else :
 			position = -1
-
+		
+		
 		return position
 
 
@@ -968,7 +971,6 @@ class ArchiveWindow( BaseWindow ) :
 
 	def UpdateArchiveInfomation( self ) :
 		selectedPos = self.GetSelectedPosition( )
-		
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 			recInfo = self.mRecordList[ selectedPos ]
 			"""
@@ -1014,16 +1016,18 @@ class ArchiveWindow( BaseWindow ) :
 				break;
 			selectedPos += 1
 
-		LOG_TRACE( 'SelectPos=%d' %selectedPos )
-
 		if self.mViewMode == E_VIEW_LIST :
-			self.mCtrlCommonList.selectItem( selectedPos )
+			self.UpdateControlListSelectItem( self.mCtrlCommonList, selectedPos )
+			#self.mCtrlCommonList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :
-			self.mCtrlThumbnailList.selectItem( selectedPos )
+			self.UpdateControlListSelectItem( self.mCtrlThumbnailList, selectedPos )
+			#self.mCtrlThumbnailList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :
-			self.mCtrlPosterwrapList.selectItem( selectedPos )
+			self.UpdateControlListSelectItem( self.mCtrlPosterwrapList, selectedPos )
+			#self.mCtrlPosterwrapList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_FANART :
-			self.mCtrlFanartList.selectItem( selectedPos )
+			self.UpdateControlListSelectItem( self.mCtrlFanartList, selectedPos )
+			#self.mCtrlFanartList.selectItem( selectedPos )
 		else :
 			LOG_WARN( 'Unknown View Mode' )
 
