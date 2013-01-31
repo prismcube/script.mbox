@@ -327,7 +327,9 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			pass
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No service' ) )
+			dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )

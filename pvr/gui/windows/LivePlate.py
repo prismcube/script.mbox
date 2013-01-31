@@ -287,6 +287,9 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -844,6 +847,11 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				return
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No service' ) )
+			dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
