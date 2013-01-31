@@ -61,10 +61,16 @@ class TimerWindow( BaseWindow ) :
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
-		self.mChannelList = self.mDataCache.Channel_GetList( )
+		#self.mChannelList = self.mDataCache.Channel_GetList( )
+		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mCurrentMode.mServiceType )
+		self.mChannelListHash = {}
 
+		LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
+		
 		if self.mChannelList :
-			LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
+			for channel in self.mChannelList :
+				self.mChannelListHash[ '%d:%d:%d' %( channel.mSid, channel.mTsid, channel.mOnid) ] = channel
+	
 		
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
@@ -144,6 +150,10 @@ class TimerWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.SetVideoRestore( )
+
+		self.mChannelList = []
+		self.mChannelListHash = {}
+		
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -222,9 +232,13 @@ class TimerWindow( BaseWindow ) :
 
 					weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
-					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
+					channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
+
 					#channel.printdebug()
-					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+					if channel :
+						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+					else :
+						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
 					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )							
 
@@ -249,9 +263,14 @@ class TimerWindow( BaseWindow ) :
 			else :
 				for i in range( len( self.mTimerList ) ) :
 					timer = self.mTimerList[i]
-					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
+
+					channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
+
 					#channel.printdebug()
-					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+					if channel :
+						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+					else :
+						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
 					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
 
@@ -523,5 +542,11 @@ class TimerWindow( BaseWindow ) :
 
 		else :
 			self.Close( )
+
+
+	def GetChannelByIDs( self, aSid, aTsid, aOnid ) :
+		if self.mChannelListHash == None or len( self.mChannelListHash ) <= 0 :
+			return None
+		return self.mChannelListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
