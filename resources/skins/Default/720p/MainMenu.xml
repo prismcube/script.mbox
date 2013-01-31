@@ -127,48 +127,48 @@
 					<control type="button" id="90601">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT57</label>
-						<onclick>ActivateWindow(Weather)</onclick>
+						<!--onclick>ActivateWindow(Weather)</onclick-->
 					</control>
 					<control type="button" id="90602">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT58</label>
-						<onclick>ActivateWindow(Pictures)</onclick>
+						<!--onclick>ActivateWindow(Pictures)</onclick-->
 					</control>
 					<control type="button" id="90603">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT59</label>
-						<onclick>ActivateWindow(Music)</onclick>
+						<!--onclick>ActivateWindow(Music)</onclick-->
 					</control>
 					<control type="button" id="90604">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT60</label>
-						<onclick>ActivateWindow(Videos)</onclick>
+						<!--onclick>ActivateWindow(Videos)</onclick-->
 					</control>
 					<control type="button" id="90605">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT61</label>
-						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+						<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 					</control>
 					<control type="button" id="90606">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT62</label>
-						<onclick>ActivateWindow(Settings)</onclick>
+						<!--onclick>ActivateWindow(Settings)</onclick-->
 					</control>
 					<control type="button" id="90607">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT63</label>
-						<onclick>ActivateWindow(FileManager)</onclick>
+						<!--onclick>ActivateWindow(FileManager)</onclick-->
 					</control>
 					<control type="button" id="90608">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT64</label>
-						<onclick>ActivateWindow(Profiles)</onclick>
+						<!--onclick>ActivateWindow(Profiles)</onclick-->
 						<visible>False</visible>
 					</control>
 					<control type="button" id="90609">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>SCRIPT65</label>
-						<onclick>ActivateWindow(SystemInfo)</onclick>
+						<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 					</control>
 					<control type="image" id="90610">
 						<width>35</width>
