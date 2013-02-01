@@ -76,6 +76,7 @@ class Configure( SettingWindow ) :
 
 		self.mVideoOutput			= E_VIDEO_HDMI
 		self.mAnalogAscpect			= E_16_9
+		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 
 
 	def onInit( self ) :
@@ -392,19 +393,8 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find a hard drive' ) )
 	 			dialog.doModal( )
 
-	 	elif selectedId == E_ETC and groupId == E_SpinEx02 :
-	 		self.ControlSelect( )
-	 		self.mCommander.Power_Save_Mode( )
-
-		elif selectedId == E_ETC and groupId == E_SpinEx04 :
-			self.ControlSelect( )
-			propertyBanner = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
-			self.mDataCache.SetPropertyChannelBannerTime( propertyBanner )
-
-		elif selectedId == E_ETC and groupId == E_SpinEx05 :
-			self.ControlSelect( )
-			propertyBanner = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
-			self.mDataCache.SetPropertyPlaybackBannerTime( propertyBanner )
+	 	elif selectedId == E_ETC :
+	 		self.ETCSetting( groupId )
 
 		else :
 			self.ControlSelect( )
@@ -451,7 +441,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -470,7 +460,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -490,7 +480,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -506,7 +496,7 @@ class Configure( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, True )
 			self.SetVisibleControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -525,7 +515,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
@@ -541,7 +531,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
@@ -565,7 +555,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input05, E_Input06 ]
+					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_Input05, E_Input06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
@@ -589,7 +579,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
@@ -604,7 +594,7 @@ class Configure( SettingWindow ) :
 				self.CloseBusyDialog( )
 
 			else :
-				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
@@ -641,7 +631,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )				
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -663,7 +653,7 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -677,7 +667,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -690,8 +680,9 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
+			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'Rss Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable rss feed in main menu' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
@@ -776,16 +767,16 @@ class Configure( SettingWindow ) :
 	def ConnectEthernet( self ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
 		ret = NetMgr.GetInstance( ).ConnectEthernet( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
+		time.sleep( 2 )
 		if ret == False :
-			time.sleep( 2 )
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
  			dialog.doModal( )
 		else :
 			self.LoadEthernetInformation( )
-			self.SetListControl( )
 			NetMgr.GetInstance( ).SetNetworkProperty( self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
+			self.SetListControl( )
 			self.CloseProgress( )
 
 
@@ -868,7 +859,7 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 		elif aControlId == E_Input04 :
-			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
 
 			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) :
 				if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
@@ -1029,6 +1020,7 @@ class Configure( SettingWindow ) :
 
 	def CheckNetworkStatus( self ) :
 		self.mStateNetLink = NetMgr.GetInstance( ).CheckInternetState( )
+		#self.mStateNetLink = xbmc.getInfoLabel( 'System.internetstate' )
 		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
 		self.SetControlLabel2String( E_Input07, self.mStateNetLink )
 
@@ -1127,3 +1119,28 @@ class Configure( SettingWindow ) :
 			self.mDataCache.Player_AVBlank( True )
 			self.mCommander.Make_Dedicated_HDD( )
 
+
+	def ETCSetting( self, aGroupId ) :
+		if aGroupId == E_SpinEx02 :
+	 		self.ControlSelect( )
+	 		self.mCommander.Power_Save_Mode( )
+
+		elif aGroupId == E_SpinEx04 :
+			self.ControlSelect( )
+			propertyBanner = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyChannelBannerTime( propertyBanner )
+
+		elif aGroupId == E_SpinEx05 :
+			self.ControlSelect( )
+			propertyBanner = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
+			self.mDataCache.SetPropertyPlaybackBannerTime( propertyBanner )
+
+		elif aGroupId == E_SpinEx06 :
+			if self.mRssfeed :
+				self.mRssfeed = 0
+			else :
+				self.mRssfeed = 1
+			SetSetting( 'RSS_FEED', '%d' % self.mRssfeed )
+
+		else :
+			self.ControlSelect( )

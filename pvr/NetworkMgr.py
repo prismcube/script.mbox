@@ -467,8 +467,10 @@ class NetworkMgr( object ) :
 						ipv4_configuration[ 'Netmask'] = dbus.String( aNetmask, variant_level = 1 )
 						ipv4_configuration[ 'Gateway'] = dbus.String( aGateway, variant_level = 1 )
 						self.mEthernetServiceObejct.SetProperty( 'Nameservers.Configuration', dbus.Array( [ aNameServer ], signature = dbus.Signature( 's' ) ) )
+						time.sleep( 0.5 )
 
 					self.mEthernetServiceObejct.SetProperty( 'IPv4.Configuration', ipv4_configuration )
+					time.sleep( 1 )
 
 					if self.GetServiceState( self.mEthernetServiceObejct ) == False :
 						if self.SetServiceConnect( self.mEthernetServiceObejct, True ) == False :

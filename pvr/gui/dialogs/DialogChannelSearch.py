@@ -18,13 +18,13 @@ E_SCAN_TRANSPONDER			= 2
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mScanMode = E_SCAN_NONE
-		self.mIsFinished = True
-		self.mTransponderList = []
-		self.mConfiguredSatelliteList = []
-		self.mLongitude = 0
-		self.mBand = 0
-		self.mSatelliteFormatedName = None
+		self.mScanMode					= E_SCAN_NONE
+		self.mIsFinished				= True
+		self.mTransponderList			= []
+		self.mConfiguredSatelliteList	= []
+		self.mLongitude					= 0
+		self.mBand						= 0
+		self.mSatelliteFormatedName		= None
 
 
 	def onInit( self ) :
@@ -123,18 +123,18 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def SetConfiguredSatellite( self, aConfiguredSatelliteList ) :
+		self.mScanMode = E_SCAN_SATELLITE 
 		self.mConfiguredSatelliteList = aConfiguredSatelliteList
 		config = self.mConfiguredSatelliteList[0]
 		self.mLongitude = config.mLongitude
 		self.mBand = config.mBand
-		self.mScanMode = E_SCAN_SATELLITE 
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
 
 	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
 		self.mScanMode = E_SCAN_TRANSPONDER	
 		self.mLongitude = aLongitude
-		self.mBand = aBand		
+		self.mBand = aBand
 		self.mTransponderList = aTransponderList
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
@@ -152,10 +152,8 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanAbort( self ) :
 		if self.mIsFinished :
+			xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 			self.mEventBus.Deregister( self )
-			if self.mScanMode == E_SCAN_SATELLITE :
-				self.mDataCache.Channel_ReTune( )
-			self.CloseDialog( )
 			self.mDataCache.Channel_Save( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
@@ -163,6 +161,15 @@ class DialogChannelSearch( BaseDialog ) :
 			if iZapping and iZapping.mError == 0 :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
+			if self.mScanMode == E_SCAN_TRANSPONDER :
+				self.mCommander.ScanHelper_Start( )
+			else :
+				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
+					self.mDataCache.Channel_ReTune( )
+				else :
+					self.mDataCache.Channel_TuneDefault( )
+			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+			self.CloseDialog( )
 		else :
 			self.AbortDialog.doModal( )
 			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :

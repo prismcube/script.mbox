@@ -1,7 +1,6 @@
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import *
 import pvr.ElisMgr
-#from pvr.IpParser import *
 
 
 class NetworkInfo( object ) :

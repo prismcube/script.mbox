@@ -369,7 +369,8 @@
 				<textcolor>blue</textcolor>
 				<titlecolor>blue</titlecolor>
 				<headlinecolor>white</headlinecolor>
-			</control>
+				<visible>substring(Window.Property(RssShow),True)</visible>
+			</control> 
 			<control type="image">
 				<description>RSS background</description>
 				<posx>1250</posx>
@@ -377,6 +378,7 @@
 				<width>24</width>
 				<height>24</height>
 				<texture>icon-rss.png</texture>
+				<visible>substring(Window.Property(RssShow),True)</visible>
 			</control>
 		</control>
 

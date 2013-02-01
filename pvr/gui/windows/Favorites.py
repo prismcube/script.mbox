@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.gui.GuiConfig import *
 
 import sys
 import os

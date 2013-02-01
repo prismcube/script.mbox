@@ -178,7 +178,6 @@ class ManualScan( SettingWindow ) :
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
 
-			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :

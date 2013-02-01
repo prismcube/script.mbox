@@ -1,7 +1,5 @@
 from pvr.gui.WindowImport import *
 
-from pvr.gui.GuiConfig import *
-
 MAIN_GROUP_ID					= 9100
 LIST_ID_FAV_ADDON				= 9050
 
@@ -36,7 +34,7 @@ BUTTON_ID_UPDATE				= 90108
 
 import sys
 import os
-if sys.version_info < (2, 7):
+if sys.version_info < (2, 7) :
     import simplejson
 else:
     import json as simplejson
@@ -49,6 +47,7 @@ class MainMenu( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetVisibleRss( )
 		self.SetFrontdisplayMessage( 'Main Menu' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -241,6 +240,11 @@ class MainMenu( BaseWindow ) :
 						item.setProperty( 'AddonId', favoriteList[i] )
 						self.mFavAddonsList.append( item )
 					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
+
+
+	def SetVisibleRss( self ) :
+		if int( GetSetting( 'RSS_FEED' ) ) == 1 :
+			self.setProperty( 'RssShow', 'True' )
+		else :
+			self.setProperty( 'RssShow', 'False' )
 						
-
-
