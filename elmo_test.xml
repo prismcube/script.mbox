@@ -42,4 +42,16 @@
 			<sleep>1</sleep>
 		</loop>
 	</scenario>
+	<scenario>
+		<name>PVR TEST</name>
+		<sleep>1</sleep>
+		<loop repeat="1000000">
+			<sendkey>VKEY_PLAY</sendkey>
+			<sleep>5</sleep>
+			<sendkey>VKEY_MEDIA</sendkey>
+			<sleep>5</sleep>
+			<sendkey>VKEY_BACK</sendkey>
+			<sleep>7</sleep>
+		</loop>
+	</scenario>
 </scenarios>

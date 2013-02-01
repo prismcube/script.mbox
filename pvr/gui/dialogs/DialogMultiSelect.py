@@ -31,6 +31,7 @@ class DialogMultiSelect( BaseDialog ) :
 
 		self.InitList( )
 		self.mEventBus.Register( self )
+		self.SetFocusList( E_CONTROL_ID_LIST )
 
 
 	def onAction( self, aAction ) :
@@ -71,6 +72,9 @@ class DialogMultiSelect( BaseDialog ) :
 	def onFocus( self, aControlId ) :
 		pass
 
+
+	def SetFocusList( self, aControlId ) :
+		self.setFocusId( aControlId )
 
 
 	def onEvent( self, aEvent ) :
