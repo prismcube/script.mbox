@@ -328,7 +328,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No service' ) )
+			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
 			dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :

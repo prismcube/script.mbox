@@ -850,7 +850,7 @@ class LivePlate( LivePlateWindow ) :
 				return
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No service' ) )
+			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
 			dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
