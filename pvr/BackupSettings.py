@@ -61,67 +61,72 @@ class BackupSettings( object ) :
 		iNet = NetworkInfo( )
 
 		if networkData :
-			for line in networkData :
-				value = ParseStringInPattern( '=', line )
-				#LOG_TRACE('-----------split[%s]'% value )
-				if not value or len( value ) < 2 :
-					continue
+			try :
+				for line in networkData :
+					value = ParseStringInPattern( '=', line )
+					#LOG_TRACE('-----------split[%s]'% value )
+					if not value or len( value ) < 2 :
+						continue
 
-				if not value[0] :
-					continue
+					if not value[0] :
+						continue
 
-				if value[0][0] == '#' or ( value[1] and value[1][0] ) == '{' : 
-					continue
+					if value[0][0] == '#' or ( value[1] and value[1][0] ) == '{' : 
+						continue
 
-				LOG_TRACE( '%s=%s\n'% ( value[0], value[1] ) )
+					LOG_TRACE( '%s=%s\n'% ( value[0], value[1] ) )
 
-				if value[0] == 'NetworkType' :
-					if value[1].isdigit( ) :
-						iNet.mType = int( value[1] )
-					else :
-						iNet.mType = value[1]
-				elif value[0] == 'ethtype' :
-					ethType = NET_DHCP
-					if value[1] == 'static' :
-						ethType = NET_STATIC
-					iNet.mEthType = ethType
-				elif value[0] == 'ipaddr' :
-					iNet.mIpaddr = value[1]
-				elif value[0] == 'subnet' :
-					iNet.mSubnet = value[1]
-				elif value[0] == 'gateway' :
-					iNet.mGwaddr = value[1]
-				elif value[0] == 'dns' :
-					iNet.mDns = value[1]
+					if value[0] == 'NetworkType' :
+						if value[1].isdigit( ) :
+							iNet.mType = int( value[1] )
+						else :
+							iNet.mType = value[1]
+					elif value[0] == 'ethtype' :
+						ethType = NET_DHCP
+						if value[1] == 'static' :
+							ethType = NET_STATIC
+						iNet.mEthType = ethType
+					elif value[0] == 'ipaddr' :
+						iNet.mIpaddr = value[1]
+					elif value[0] == 'subnet' :
+						iNet.mSubnet = value[1]
+					elif value[0] == 'gateway' :
+						iNet.mGwaddr = value[1]
+					elif value[0] == 'dns' :
+						iNet.mDns = value[1]
 
-				elif value[0] == 'devname' :
-					iNet.mWinfo_mDevName = value[1]
-				elif value[0] == 'ctrl_interface' :
-					iNet.mWinfo_ctrl_interface = value[1]
-				elif value[0] == 'eapol_version' :
-					iNet.mWinfo_meapol_version = value[1]
-				elif value[0] == 'fast_reauth' :
-					iNet.mWinfo_fast_reauth = value[1]
-				elif value[0] == 'ap_scan' :
-					iNet.mWinfo_ap_scan = value[1]
-				elif value[0] == 'ssid' :
-					#check \" \"
-					iNet.mWinfo_ssid = value[1]
-				elif value[0] == 'scan_ssid' :
-					iNet.mWinfo_scan_ssid = value[1]
-				elif value[0] == 'key_mgmt' :
-					iNet.mWinfo_key_mgmt = value[1]
-				elif value[0] == 'proto' :
-					iNet.mWinfo_proto = value[1]
-				elif value[0] == 'pairwise' :
-					iNet.mWinfo_pairwise = value[1]
-				elif value[0] == 'group' :
-					iNet.mWinfo_group = value[1]
-				elif value[0] == 'psk' :
-					#check \" \"
-					iNet.mWinfo_psk = value[1]
+					elif value[0] == 'devname' :
+						iNet.mWinfo_mDevName = value[1]
+					elif value[0] == 'ctrl_interface' :
+						iNet.mWinfo_ctrl_interface = value[1]
+					elif value[0] == 'eapol_version' :
+						iNet.mWinfo_meapol_version = value[1]
+					elif value[0] == 'fast_reauth' :
+						iNet.mWinfo_fast_reauth = value[1]
+					elif value[0] == 'ap_scan' :
+						iNet.mWinfo_ap_scan = value[1]
+					elif value[0] == 'ssid' :
+						#check \" \"
+						iNet.mWinfo_ssid = value[1]
+					elif value[0] == 'scan_ssid' :
+						iNet.mWinfo_scan_ssid = value[1]
+					elif value[0] == 'key_mgmt' :
+						iNet.mWinfo_key_mgmt = value[1]
+					elif value[0] == 'proto' :
+						iNet.mWinfo_proto = value[1]
+					elif value[0] == 'pairwise' :
+						iNet.mWinfo_pairwise = value[1]
+					elif value[0] == 'group' :
+						iNet.mWinfo_group = value[1]
+					elif value[0] == 'psk' :
+						#check \" \"
+						iNet.mWinfo_psk = value[1]
 
-			iNet.mError = 0
+				iNet.mError = 0
+
+			except Exception, e :
+				iNet.mError = -1
+				LOG_TRACE( 'except[%s]'% e )
 
 
 		if iNet.mError != 0 :
