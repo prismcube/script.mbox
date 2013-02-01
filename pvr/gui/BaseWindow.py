@@ -338,6 +338,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def CheckMediaCenter( self ) :
 		if self.mDataCache.GetMediaCenter( ) == True :
+			xbmc.executebuiltin( 'PlayerControl(Stop)' )		
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
