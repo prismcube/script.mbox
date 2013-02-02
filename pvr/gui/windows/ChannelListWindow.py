@@ -423,6 +423,11 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
 			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :	#show pip
+				self.setProperty( 'PvrPlay', 'False' )
+			else :
+				self.setProperty( 'PvrPlay', 'True' )
+
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				if iChannel :
 					self.mNavChannel = iChannel
@@ -505,8 +510,9 @@ class ChannelListWindow( BaseWindow ) :
 				isBackup = self.mDataCache.Channel_Backup( )
 				isDelete = self.mDataCache.Channel_DeleteAll( )
 				if isDelete :
-					self.mDataCache.Player_AVBlank( True )
-					self.mDataCache.Channel_InvalidateCurrent( )
+					#if not self.mDataCache.Get_Player_AVBlank( ) :
+					#	self.mDataCache.Player_AVBlank( True )
+					#self.mDataCache.Channel_InvalidateCurrent( )
 					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 					self.mFlag_DeleteAll = True
 
@@ -618,6 +624,17 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
 				#self.mCtrlListCHList.reset( )
+				iChannel = self.mDataCache.Channel_GetCurrent( )
+				if self.mFlag_DeleteAll and iChannel :
+					self.mCommander.AppMediaPlayer_Control( 1 )
+					time.sleep(1)
+					self.mCommander.AppMediaPlayer_Control( 0 )
+
+					#self.mDataCache.Channel_InvalidateCurrent( )
+					#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).setProperty( 'Signal', 'False' )
+					self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+
 				self.Close( )
 
 				if aGoToWindow :
@@ -625,7 +642,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-			LOG_TRACE( 'go out Cancel' )
+			LOG_TRACE( 'go out window' )
 
 		else :
 			if self.mMarkList :

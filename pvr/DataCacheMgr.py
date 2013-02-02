@@ -587,8 +587,9 @@ class DataCacheMgr( object ) :
 		if newCount < 1 :
 			LOG_TRACE('count=%d'% newCount)
 			self.SetChannelReloadStatus( True )
-			self.Player_AVBlank( True )
-			#self.Channel_InvalidateCurrent( )
+			#if not self.Get_Player_AVBlank( ) :
+			#	self.Player_AVBlank( True )
+			self.Channel_InvalidateCurrent( )
 			#self.Frontdisplay_SetMessage('NoChannel')
 			LOG_TRACE('-------------------------------------------')
 

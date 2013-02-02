@@ -86,7 +86,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.LoadInit( )
 
 		if self.mPlayingRecord :
-			self.SetFrontdisplayMessage( self.self.mPlayingRecord.mRecordName )
+			self.SetFrontdisplayMessage( self.mPlayingRecord.mRecordName )
 		else :
 			self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
