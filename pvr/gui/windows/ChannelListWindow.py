@@ -2217,7 +2217,8 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
 				if ret :
 					self.LoadFavoriteGroupList( )
-				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+				#self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+				return
 
 		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
 			if aGroupName :
@@ -2226,8 +2227,9 @@ class ChannelListWindow( BaseWindow ) :
 				if ret :
 					self.LoadFavoriteGroupList( )
 
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
+				#self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
 				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
+				return
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
 			if aGroupName :
@@ -2437,7 +2439,15 @@ class ChannelListWindow( BaseWindow ) :
 			name = ''
 			name = kb.getText( )
 			if name :
+				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name :
+					LOG_TRACE( 'can not fav.rename : same name' )
+					return
+
 				groupName = result + name
+
+			else :
+				LOG_TRACE('no favName or cencel')
+				return
 
 		#LOG_TRACE( 'mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
@@ -2455,10 +2465,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.LoadFavoriteGroupList( )
 			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
-			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
+			if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE :
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-			else :
-				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+			#else :
+			#	self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 
 	def ShowContextMenu( self ) :
