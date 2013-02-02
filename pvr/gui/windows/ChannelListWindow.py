@@ -623,9 +623,7 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
-				#self.mCtrlListCHList.reset( )
-				iChannel = self.mDataCache.Channel_GetCurrent( )
-				if self.mFlag_DeleteAll and iChannel :
+				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
 					self.mCommander.AppMediaPlayer_Control( 1 )
 					time.sleep(1)
 					self.mCommander.AppMediaPlayer_Control( 0 )
@@ -1421,7 +1419,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		self.mCtrlListCHList.reset( )
-		xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
+		if E_SUPPORT_FRODO_EMPTY_LISTITEM :
+			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
 
 		if self.mChannelList == None :
 			if self.mFlag_DeleteAll :
@@ -1430,12 +1429,14 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 
-			self.mListItems = []
-			listItem = xbmcgui.ListItem( 'empty channel' )
-			self.mListItems.append( listItem )
-			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
-			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_TRUE )
-			self.mListItems = None
+			if E_SUPPORT_FRODO_EMPTY_LISTITEM :
+				self.mListItems = []
+				listItem = xbmcgui.ListItem( 'empty channel' )
+				self.mListItems.append( listItem )
+				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+				xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_TRUE )
+				self.mListItems = None
+
 			return 
 
 		reloadPos = False

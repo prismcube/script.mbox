@@ -22,6 +22,9 @@ PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
 # SUPPORT : SKIN RELOAD 'Q' KEY
 E_SUPPORT_USE_KEY_Q = False
 
+# Frodo issue support, list empty
+E_SUPPORT_FRODO_EMPTY_LISTITEM = True
+
 ############################ Windows ############################
 # Setting Window Control Ids
 E_SpinEx01			= 1100
