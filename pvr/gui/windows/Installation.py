@@ -54,6 +54,7 @@ class Installation( BaseWindow ) :
 
 		self.mCtrlLeftGroup = self.getControl( MAIN_LIST_ID )
 		self.mCtrlLeftGroup.addItems( groupItems )
+		self.setFocusId( MAIN_LIST_ID )
 
 
 	def onAction( self, aAction ) :
