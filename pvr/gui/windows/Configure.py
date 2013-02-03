@@ -357,7 +357,7 @@ class Configure( SettingWindow ) :
 				if self.mCommander.Player_GetMute( ) :
 					xbmc.executebuiltin( 'xbmc.Action(volumeup)' )
 					self.mCommander.Player_SetMute( False )
-				self.mDataCache.Player_AVBlank( True )
+				#self.mDataCache.Player_AVBlank( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :

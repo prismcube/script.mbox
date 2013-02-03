@@ -33,6 +33,8 @@ class ManualScan( SettingWindow ) :
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 		if len( self.mConfiguredSatelliteList ) > 0 :
+			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
+			self.mDataCache.Player_AVBlank( True )
 			self.mEventBus.Register( self )
 			self.SetVisibleControls( hideControlIds, True )
 			self.LoadTransponderList( )
@@ -41,8 +43,6 @@ class ManualScan( SettingWindow ) :
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
-			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
-			self.mDataCache.Player_AVBlank( False )
 			self.SetPipLabel( )
 			self.mInitialized = True
 		else :
@@ -76,6 +76,9 @@ class ManualScan( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if self.mAvBlankStatus :
 				self.mDataCache.Player_AVBlank( True )
+			else :
+				self.mDataCache.Player_AVBlank( False )
+
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -231,6 +234,12 @@ class ManualScan( SettingWindow ) :
 	def UpdateStatus( self, aEvent ) :
 		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
 			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			if aEvent.mIsLocked :
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( False )
+			else :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 
 
 	def InitConfig( self ) :

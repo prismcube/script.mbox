@@ -326,9 +326,9 @@
 
 	<include name="DefaultDialogCommonSetting">
 		<control type="image">
-			<posx>40</posx>
+			<posx>20</posx>
 			<posy>11</posy>
-			<width>530</width>
+			<width>580</width>
 			<height>110</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>GlassTitleBar.png</texture>

@@ -624,13 +624,15 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
 				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
-					self.mCommander.AppMediaPlayer_Control( 1 )
-					time.sleep(1)
-					self.mCommander.AppMediaPlayer_Control( 0 )
+					if not self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( True )
+					#self.mCommander.AppMediaPlayer_Control( 1 )
+					#time.sleep(1)
+					#self.mCommander.AppMediaPlayer_Control( 0 )
 
 					#self.mDataCache.Channel_InvalidateCurrent( )
 					#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).setProperty( 'Signal', 'False' )
+					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).setProperty( 'Signal', 'False' )
 					self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 				self.Close( )

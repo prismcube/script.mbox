@@ -175,7 +175,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.AddLabelControl( E_LABEL_RECORD_NAME )
 				self.SetControlLabelString( E_LABEL_RECORD_NAME, self.mTimer.mName )
 
-				self.SetVisibleControl(E_DialogSpinEx01, False )
+				self.SetVisibleControl( E_DialogSpinEx01, False )
 
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
