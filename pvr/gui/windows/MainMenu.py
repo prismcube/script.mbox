@@ -173,7 +173,8 @@ class MainMenu( BaseWindow ) :
 			self.SetMediaCenter( )
 			self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+				xbmc.executebuiltin( 'ActivateWindow(Home)' )			
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 			elif aControlId == BUTTON_ID_MEDIA_WEATHER :
 				xbmc.executebuiltin( 'ActivateWindow(Weather)' )
 			elif aControlId == BUTTON_ID_MEDIA_PICTURES :
