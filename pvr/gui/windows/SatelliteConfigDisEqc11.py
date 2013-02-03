@@ -16,6 +16,8 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
+		self.mDataCache.Player_AVBlank( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -32,8 +34,6 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
-		self.mDataCache.Player_AVBlank( False )
 		self.setDefaultControl( )
 		self.SetPipLabel( )
 		self.SetFTIGuiType( )
@@ -58,6 +58,10 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 					self.OpenBusyDialog( )
 					self.mEventBus.Deregister( self )
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+					if self.mAvBlankStatus :
+						self.mDataCache.Player_AVBlank( True )
+					else :
+						self.mDataCache.Player_AVBlank( False )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
@@ -67,6 +71,8 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 				if self.mAvBlankStatus :
 					self.mDataCache.Player_AVBlank( True )
+				else :
+					self.mDataCache.Player_AVBlank( False )
 				self.CloseBusyDialog( )
 				WinMgr.GetInstance( ).CloseWindow( )
 
@@ -184,6 +190,10 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			if self.mAvBlankStatus :
+				self.mDataCache.Player_AVBlank( True )
+			else :
+				self.mDataCache.Player_AVBlank( False )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
@@ -191,6 +201,10 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			if self.mAvBlankStatus :
+				self.mDataCache.Player_AVBlank( True )
+			else :
+				self.mDataCache.Player_AVBlank( False )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
@@ -218,6 +232,12 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		freq = self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ).mFrequency
 		if aEvent.mFrequency == freq :			
 			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			if aEvent.mIsLocked :
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( False )
+			else :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 
 
 	def InitConfig( self ) :

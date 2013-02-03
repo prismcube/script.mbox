@@ -1,6 +1,5 @@
 from pvr.gui.WindowImport import *
 
-from pvr.gui.GuiConfig import *
 
 LIST_ID_COMMOM_LIST			= 3400
 LIST_ID_COMMOM_THUMBNAIL	= 3500
@@ -18,7 +17,7 @@ CONTEXT_RUN_FAVORITE		= 2
 
 import sys
 import os
-if sys.version_info < (2, 7):
+if sys.version_info < (2, 7) :
     import simplejson
 else:
     import json as simplejson

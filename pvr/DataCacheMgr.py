@@ -117,6 +117,7 @@ class DataCacheMgr( object ) :
 		self.mRecordDB 							= None
 
 		self.mParentLock						= True
+		self.mParentLockPass					= False
 		self.mIsPincodeDialog					= False
 		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
@@ -167,7 +168,7 @@ class DataCacheMgr( object ) :
 
 		self.mRecordingCount = 0
 
-		#pvr.BackupSettings.BackupSettings( )
+		pvr.BackupSettings.BackupSettings( )
 		self.Load( )
 
 
@@ -586,8 +587,9 @@ class DataCacheMgr( object ) :
 		if newCount < 1 :
 			LOG_TRACE('count=%d'% newCount)
 			self.SetChannelReloadStatus( True )
-			self.Player_AVBlank( True )
-			#self.Channel_InvalidateCurrent( )
+			#if not self.Get_Player_AVBlank( ) :
+			#	self.Player_AVBlank( True )
+			self.Channel_InvalidateCurrent( )
 			#self.Frontdisplay_SetMessage('NoChannel')
 			LOG_TRACE('-------------------------------------------')
 
@@ -1852,6 +1854,14 @@ class DataCacheMgr( object ) :
 		self.mPropertyPlaybackBannerTime = aTime
 
 
+	def SetParentLockPass( self, aPass = False ) :
+		self.mParentLockPass = aPass
+
+
+	def GetParentLockPass( self ) :
+		return self.mParentLockPass
+
+
 	def SetParentLock( self, aLock = True ) :
 		self.mParentLock = aLock
 
@@ -1859,13 +1869,13 @@ class DataCacheMgr( object ) :
 	def GetParentLock( self, aCheckEPG = None ) :
 		isLimit = False
 
-		iEPG = self.mEPGData
-		iMode= self.Player_GetStatus( ).mMode
-		iLock= self.mParentLock
+		iEPG  = self.mEPGData
+		iMode = self.Player_GetStatus( ).mMode
+		iLock = self.mParentLock
 		if aCheckEPG :
-			iEPG = aCheckEPG
-			iMode= ElisEnum.E_MODE_LIVE
-			iLock= True
+			iEPG  = aCheckEPG
+			iMode = ElisEnum.E_MODE_LIVE
+			iLock = True
 
 		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
 		if iMode == ElisEnum.E_MODE_LIVE and \

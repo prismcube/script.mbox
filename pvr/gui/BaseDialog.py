@@ -490,14 +490,8 @@ class SettingDialog( BaseDialog ) :
 
 
 	def SetVisibleControl( self, aControlId, aVisible ) :
-		count = len( self.mControlList )
-
-		for i in range( count ) :
-			ctrlItem = self.mControlList[i]
-			if aControlId == ctrlItem.mControlId :
-				ctrlItem.mVisible = aVisible
-				control = self.getControl( aControlId )
-				control.setVisible( aVisible )
+		control = self.getControl( aControlId )
+		control.setVisible( aVisible )
 
 
 	def SetVisibleControls( self, aControlIds, aVisible ) :

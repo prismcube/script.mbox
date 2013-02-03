@@ -219,7 +219,14 @@ class GlobalEvent( object ) :
 
 			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 				if not self.mDataCache.Get_Player_AVBlank( ) :
-					self.mDataCache.Player_AVBlank( True )
+
+					if self.mDataCache.GetParentLockPass( ) :
+						self.mDataCache.SetParentLock( False )
+						self.mDataCache.SetParentLockPass( False )
+						LOG_TRACE( '--------parentLock check pass mediaCenter out' )
+						return
+					else :
+						self.mDataCache.Player_AVBlank( True )
 
 				if ( not self.mDataCache.GetPincodeDialog( ) ) :
 					self.mDataCache.SetPincodeDialog( True )
@@ -227,7 +234,8 @@ class GlobalEvent( object ) :
 					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
 					thread.start( )
 			else :
-				self.mDataCache.Player_AVBlank( False )
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( False )
 
 		elif aCmd == E_PARENTLOCK_EIT :
 			iEPG = self.mDataCache.GetEpgeventCurrent( )

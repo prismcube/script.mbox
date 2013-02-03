@@ -423,6 +423,11 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
 			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :	#show pip
+				self.setProperty( 'PvrPlay', 'False' )
+			else :
+				self.setProperty( 'PvrPlay', 'True' )
+
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				if iChannel :
 					self.mNavChannel = iChannel
@@ -505,8 +510,9 @@ class ChannelListWindow( BaseWindow ) :
 				isBackup = self.mDataCache.Channel_Backup( )
 				isDelete = self.mDataCache.Channel_DeleteAll( )
 				if isDelete :
-					self.mDataCache.Player_AVBlank( True )
-					self.mDataCache.Channel_InvalidateCurrent( )
+					#if not self.mDataCache.Get_Player_AVBlank( ) :
+					#	self.mDataCache.Player_AVBlank( True )
+					#self.mDataCache.Channel_InvalidateCurrent( )
 					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 					self.mFlag_DeleteAll = True
 
@@ -617,7 +623,18 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
-				#self.mCtrlListCHList.reset( )
+				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
+					if not self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( True )
+					#self.mCommander.AppMediaPlayer_Control( 1 )
+					#time.sleep(1)
+					#self.mCommander.AppMediaPlayer_Control( 0 )
+
+					#self.mDataCache.Channel_InvalidateCurrent( )
+					#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).setProperty( 'Signal', 'False' )
+					self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+
 				self.Close( )
 
 				if aGoToWindow :
@@ -625,7 +642,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-			LOG_TRACE( 'go out Cancel' )
+			LOG_TRACE( 'go out window' )
 
 		else :
 			if self.mMarkList :
@@ -1404,7 +1421,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		self.mCtrlListCHList.reset( )
-		xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
+		if E_SUPPORT_FRODO_EMPTY_LISTITEM :
+			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
 
 		if self.mChannelList == None :
 			if self.mFlag_DeleteAll :
@@ -1413,12 +1431,14 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 
-			self.mListItems = []
-			listItem = xbmcgui.ListItem( 'empty channel' )
-			self.mListItems.append( listItem )
-			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
-			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_TRUE )
-			self.mListItems = None
+			if E_SUPPORT_FRODO_EMPTY_LISTITEM :
+				self.mListItems = []
+				listItem = xbmcgui.ListItem( 'empty channel' )
+				self.mListItems.append( listItem )
+				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+				xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_TRUE )
+				self.mListItems = None
+
 			return 
 
 		reloadPos = False
@@ -2217,7 +2237,8 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
 				if ret :
 					self.LoadFavoriteGroupList( )
-				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+				#self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+				return
 
 		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
 			if aGroupName :
@@ -2226,8 +2247,9 @@ class ChannelListWindow( BaseWindow ) :
 				if ret :
 					self.LoadFavoriteGroupList( )
 
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
+				#self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
 				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
+				return
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
 			if aGroupName :
@@ -2437,7 +2459,15 @@ class ChannelListWindow( BaseWindow ) :
 			name = ''
 			name = kb.getText( )
 			if name :
+				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name :
+					LOG_TRACE( 'can not fav.rename : same name' )
+					return
+
 				groupName = result + name
+
+			else :
+				LOG_TRACE('no favName or cencel')
+				return
 
 		#LOG_TRACE( 'mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
@@ -2455,10 +2485,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.LoadFavoriteGroupList( )
 			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
-			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
+			if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE :
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-			else :
-				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+			#else :
+			#	self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 
 	def ShowContextMenu( self ) :

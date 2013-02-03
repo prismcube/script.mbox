@@ -184,7 +184,8 @@ class FirstInstallation( FTIWindow ) :
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
 		self.mDataCache.Channel_TuneDefault( )
-		self.mDataCache.Player_AVBlank( False )
+		#if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
+		#	self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )

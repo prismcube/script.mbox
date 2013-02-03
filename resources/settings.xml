@@ -11,6 +11,10 @@
 	<!-- Favorite Addons -->
 	<setting id="ADDON_VIEW_MODE" type="enum" label="ViewMode" values="0|1" default="1" />
 	<setting id="Addons_Sort" type="enum" label="SortMode" values="0|1" default="1" />
+
+	<!-- Main Menu Rss Feed -->
+	<setting id="RSS_FEED" type="enum" label="Rssfeed" values="0|1" default="1" />
+	
 	<!--
 	<setting id="Username" type="text" label="config" default="default" />
 	<setting id="testbool" type="bool" label="config" default="true" />

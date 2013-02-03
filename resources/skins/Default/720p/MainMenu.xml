@@ -356,7 +356,7 @@
 				<font>font12</font>
 				<label>$INFO[Container(9000).ListItem.Label2]</label>
 				<align>right</align>
-				<textcolor>white</textcolor>                
+				<textcolor>white</textcolor>
 			</control>
 			<control type="rss">
 				<description>RSS feed</description>
@@ -369,7 +369,8 @@
 				<textcolor>blue</textcolor>
 				<titlecolor>blue</titlecolor>
 				<headlinecolor>white</headlinecolor>
-			</control>
+				<visible>substring(Window.Property(RssShow),True)</visible>
+			</control> 
 			<control type="image">
 				<description>RSS background</description>
 				<posx>1250</posx>
@@ -377,6 +378,7 @@
 				<width>24</width>
 				<height>24</height>
 				<texture>icon-rss.png</texture>
+				<visible>substring(Window.Property(RssShow),True)</visible>
 			</control>
 		</control>
 

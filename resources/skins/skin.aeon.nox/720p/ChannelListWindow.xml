@@ -513,7 +513,7 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<visible>substring(Window.Property(Signal),False)</visible>
+						<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 					</control>
 					<control type="label">
 						<posx>90</posx>
@@ -525,7 +525,7 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<visible>substring(Window.Property(Signal),Scramble)</visible>
+						<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 					</control>
 				</control>
 				<control type="group">

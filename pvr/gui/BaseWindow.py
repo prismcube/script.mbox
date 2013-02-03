@@ -338,12 +338,14 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def CheckMediaCenter( self ) :
 		if self.mDataCache.GetMediaCenter( ) == True :
+			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+				self.mDataCache.SetParentLockPass( True )
 
 			self.UpdateVolume( )
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
