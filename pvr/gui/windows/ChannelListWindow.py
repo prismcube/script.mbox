@@ -510,10 +510,6 @@ class ChannelListWindow( BaseWindow ) :
 				isBackup = self.mDataCache.Channel_Backup( )
 				isDelete = self.mDataCache.Channel_DeleteAll( )
 				if isDelete :
-					#if not self.mDataCache.Get_Player_AVBlank( ) :
-					#	self.mDataCache.Player_AVBlank( True )
-					#self.mDataCache.Channel_InvalidateCurrent( )
-					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 					self.mFlag_DeleteAll = True
 
 		return ret
@@ -626,14 +622,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( True )
-					#self.mCommander.AppMediaPlayer_Control( 1 )
-					#time.sleep(1)
-					#self.mCommander.AppMediaPlayer_Control( 0 )
-
-					#self.mDataCache.Channel_InvalidateCurrent( )
-					#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).setProperty( 'Signal', 'False' )
-					self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+					#self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 				self.Close( )
 
