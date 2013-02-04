@@ -75,9 +75,11 @@ class ManualScan( SettingWindow ) :
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
 			if self.mAvBlankStatus :
-				self.mDataCache.Player_AVBlank( True )
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 			else :
-				self.mDataCache.Player_AVBlank( False )
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( False )
 
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :

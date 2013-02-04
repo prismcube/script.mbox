@@ -58,10 +58,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 					self.OpenBusyDialog( )
 					self.mEventBus.Deregister( self )
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
-					if self.mAvBlankStatus :
-						self.mDataCache.Player_AVBlank( True )
-					else :
-						self.mDataCache.Player_AVBlank( False )
+					self.RestoreAvBlank( )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
@@ -70,10 +67,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 				self.mEventBus.Deregister( self )
 				#self.ResetAllControl( )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
-				if self.mAvBlankStatus :
-					self.mDataCache.Player_AVBlank( True )
-				else :
-					self.mDataCache.Player_AVBlank( False )
+				self.RestoreAvBlank( )
 				self.CloseBusyDialog( )
 				WinMgr.GetInstance( ).CloseWindow( )
 
@@ -185,10 +179,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
-			if self.mAvBlankStatus :
-				self.mDataCache.Player_AVBlank( True )
-			else :
-				self.mDataCache.Player_AVBlank( False )
+			self.RestoreAvBlank( )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaPrevStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
@@ -196,10 +187,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
-			if self.mAvBlankStatus :
-				self.mDataCache.Player_AVBlank( True )
-			else :
-				self.mDataCache.Player_AVBlank( False )
+			self.RestoreAvBlank( )
 			WinMgr.GetInstance( ).ShowWindow( self.GetAntennaNextStepWindowId( ), WinMgr.WIN_ID_MAINMENU )
 			return
 
@@ -286,4 +274,13 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			self.SetEnableControl( E_Input03, False )
 		else :
 			self.SetEnableControl( E_Input03, True )
+
+
+	def RestoreAvBlank( self ) :
+		if self.mAvBlankStatus :
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
+		else :
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
 
