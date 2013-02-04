@@ -182,6 +182,7 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
+			self.setProperty( 'ViewProgress', 'True' )
 
 
 		# Manual Setup

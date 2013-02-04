@@ -222,7 +222,8 @@ class LivePlate( LivePlateWindow ) :
 				
 			self.SetMediaCenter( )
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+			xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
