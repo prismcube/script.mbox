@@ -48,6 +48,7 @@ class NullWindow( BaseWindow ) :
 				return
 
 		self.mEventBus.Register( self )
+		self.CheckNochannel( )
 		self.LoadNoSignalState( )
 
 		if E_SUPPROT_HBBTV == True :
@@ -580,3 +581,9 @@ class NullWindow( BaseWindow ) :
 			#self.mDataCache.Channel_InvalidateCurrent( )
 			#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 			#print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType )
+
+
+	def CheckNochannel( self ) :
+		channel = self.mDataCache.Channel_GetList( )
+		if not channel or len( channel ) < 1 :
+			self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
