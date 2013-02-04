@@ -23,7 +23,7 @@ PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
 E_SUPPORT_USE_KEY_Q = False
 
 # Frodo issue support, list empty
-E_SUPPORT_FRODO_EMPTY_LISTITEM = True
+E_SUPPORT_FRODO_EMPTY_LISTITEM = False
 
 ############################ Windows ############################
 # Setting Window Control Ids
