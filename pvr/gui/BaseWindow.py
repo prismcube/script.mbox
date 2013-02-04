@@ -133,6 +133,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mPlatform = pvr.Platform.GetPlatform( )
 		self.mIsActivate = False
 		self.mRelayAction = None
+		self.setProperty( 'IsCustomWindow', 'True' )
 
 
 	@classmethod
