@@ -774,6 +774,31 @@ def ParseStringInPattern( aToken, aData ) :
 	return re.split( aToken, aData.strip( ) )
 
 
+def SetDefaultSettingInXML( ) :
+	mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
+	xmlFile = '%s/resources/settings.xml' % mboxDir
+	#LOG_TRACE('-----dir[%s] file[%s]'% (mboxDir, xmlFile ) )
+	tagNames = [ 'VIEW_MODE', 'SORT_MODE', 'EPG_MODE', 'ADDON_VIEW_MODE', 'Addons_Sort', 'RSS_FEED' ]
+
+	if not CheckDirectory( xmlFile ) :
+		LOG_TRACE( 'error, file not found settings.xml[%s]'% xmlFile )
+		return False
+
+	ret = False
+	parseTree = ElementTree.parse( xmlFile )
+	treeRoot = parseTree.getroot( )
+
+	for node in treeRoot.findall( 'setting' ) :
+		for tagName in tagNames :
+			if node.get( 'id' ) == tagName :
+				default = int( node.get( 'default' ) )
+				LOG_TRACE( 'id[%s] value : [%s] -> [%s]'% ( tagName, GetSetting( tagName ), default ) )
+				SetSetting( tagName, '%d'% default )
+				ret = True
+
+	return ret
+
+
 class GuiSkinPosition( object ) :
 	def __init__( self ) :
 		self.mLeft	 = 0

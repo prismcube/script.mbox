@@ -1,5 +1,6 @@
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import *
+import pvr.Platform
 import pvr.ElisMgr
 
 
@@ -53,6 +54,10 @@ class BackupSettings( object ) :
 
 
 	def SetNetwork( self ) :
+		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) == pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
+			LOG_TRACE( 'passed network setting by Frodo version' )
+			return
+	
 		fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'r' )
 		networkData = fd.readlines( )
 		fd.close( )

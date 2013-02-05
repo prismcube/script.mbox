@@ -134,6 +134,7 @@ E_MAX_RECORD_COUNT				= 2
 
 # Volume
 VOLUME_STEP						= 4
+DEFAULT_VOLUME					= 75
 MAX_VOLUME						= 100
 
 # Time Mode
