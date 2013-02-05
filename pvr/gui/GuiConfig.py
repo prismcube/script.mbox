@@ -25,6 +25,11 @@ E_SUPPORT_USE_KEY_Q = False
 # Frodo issue support, list empty
 E_SUPPORT_FRODO_EMPTY_LISTITEM = False
 
+# SHOWING MODE
+E_MODE_SHOW				= 0
+E_MODE_DOMODAL			= 1
+E_WINDOW_ATIVATE_MODE	= E_MODE_DOMODAL
+
 ############################ Windows ############################
 # Setting Window Control Ids
 E_SpinEx01			= 1100
