@@ -473,6 +473,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateChannelAndEPG( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
+
 	def DoDeleteAll( self ) :
 		ret = E_DIALOG_STATE_NO
 
