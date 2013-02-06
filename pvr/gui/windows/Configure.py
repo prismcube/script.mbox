@@ -336,7 +336,7 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
+				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
@@ -349,15 +349,12 @@ class Configure( SettingWindow ) :
 				self.mDataCache.SetChannelReloadStatus( True )
 	 			from ElisProperty import ResetHash
 				ResetHash( )
+				self.mDataCache.SetDefaultByFactoryReset( )
 				self.mInitialized = False
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
-				if self.mCommander.Player_GetMute( ) :
-					xbmc.executebuiltin( 'xbmc.Action(volumeup)' )
-					self.mCommander.Player_SetMute( False )
-				#self.mDataCache.Player_AVBlank( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
@@ -766,18 +763,20 @@ class Configure( SettingWindow ) :
 
 	def ConnectEthernet( self ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
+		NetMgr.GetInstance( ).WriteEthernetConfig( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
+		NetMgr.GetInstance( ).DisConnectWifi( )
+		NetMgr.GetInstance( ).DeleteConfigFile( )
 		time.sleep( 0.5 )
 		ret = NetMgr.GetInstance( ).ConnectEthernet( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 		time.sleep( 1 )
-		NetMgr.GetInstance( ).DisConnectWifi( )
 		if ret == False :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
  			dialog.doModal( )
 		else :
-			self.LoadEthernetInformation( )
 			NetMgr.GetInstance( ).SetNetworkProperty( self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
+			self.mReLoadEthernetInformation = True
 			self.SetListControl( )
 			self.CloseProgress( )
 
@@ -814,9 +813,7 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 					return
 
-			NetMgr.GetInstance( ).WriteEthernetConfig( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 			self.ConnectEthernet( )
-			NetMgr.GetInstance( ).DeleteConfigFile( )
 
 
 	def WifiSetting( self, aControlId ) :

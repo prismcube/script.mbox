@@ -1900,6 +1900,10 @@ class DataCacheMgr( object ) :
 		self.Frontdisplay_Resolution( ElisEnum.E_ICON_1080i )
 
 		#3. network : dhcp
+		LOG_TRACE( '>>>>>>>> Default init : Network <<<<<<<<' )
+		import pvr.NetworkMgr as NetMgr
+		NetMgr.GetInstance( ).ResetNetwork( )
+		
 		#4. time setting : m/w (Time and Date, Local time offset, Summer Time)
 
 		#5. epg, archive

@@ -39,6 +39,15 @@ class NetworkMgr( object ) :
 		self.mBusyConfigFile			= False
 
 
+	def ResetNetwork( self ) :
+		self.WriteEthernetConfig( NET_DHCP )
+		self.ConnectEthernet( NET_DHCP )
+		time.sleep( 1 )
+		self.DisConnectWifi( )
+		self.DeleteConfigFile( )
+		time.sleep( 1 )
+
+
 	def GetCurrentServiceType( self ) :
 		if gUseNetwork == False :
 			return None
@@ -464,8 +473,6 @@ class NetworkMgr( object ) :
 					time.sleep( 1 )
 					self.WaitConfigurationService( aService )
 
-				aService = None
-				time.sleep( 0.5 )
 				return True
 			else :
 				return False
@@ -510,8 +517,8 @@ class NetworkMgr( object ) :
 		if aService :
 			try :
 				self.WaitConfigurationService( aService )
-				property = aService.GetProperties( )
 
+				property = aService.GetProperties( )
 				for key in property.keys( ) :
 					if key == 'Nameservers' :
 						if len( property[key] ) != 0 :
