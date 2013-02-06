@@ -231,10 +231,6 @@ class DataCacheMgr( object ) :
 				
 			if NetMgr.GetInstance( ).GetCurrentServiceType( ) == NETWORK_ETHERNET :
 				if ethernet :
-					state = NetMgr.GetInstance( ).GetServiceState( ethernet )
-					if state and state == False :
-						NetMgr.GetInstance( ).SetServiceConnect( ethernet, True )
-
 					addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( ethernet )
 					LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
 					NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
@@ -244,11 +240,10 @@ class DataCacheMgr( object ) :
 				if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) :
 					if NetMgr.GetInstance( ).LoadWifiService( ) :
 						wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
-						NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
-						NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
-						addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
-						LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
-						NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
+						if wifi :
+							addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( wifi )
+							LOG_TRACE( 'Network address = %s, %s, %s, %s' % ( addressIp, addressMask, addressGateway, addressNameServer ) )
+							NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
 					else :
 						LOG_ERR( 'Wifi service not configured' )
 				else :

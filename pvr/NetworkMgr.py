@@ -9,10 +9,11 @@ except :
 	gUseNetwork = False
 
 
-gNetworkMgr = None
-CONFIGURATION_TIMEOUT = 30
+gNetworkMgr					= None
+CONFIGURATION_TIMEOUT		= 30
 
-WIFI_CONFIGURED_PATH = '/var/lib/connman/wifi.config'
+NETWORK_CONFIG_PATH			= '/config/network.config'
+WIFI_CONFIGURED_PATH		= '/var/lib/connman/wifi.config'
 
 
 def GetInstance( ) :
@@ -35,24 +36,93 @@ class NetworkMgr( object ) :
 		self.mEthernetServiceObejct		= None
 		self.mWifiTechnologyObject		= None
 		self.mWifiServiceObejct			= None
+		self.mBusyConfigFile			= False
 
 
 	def GetCurrentServiceType( self ) :
-		from ElisProperty import ElisPropertyEnum
-		import pvr.ElisMgr
-		if ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).GetProp( ) == NETWORK_ETHERNET :
+		if gUseNetwork == False :
+			return None
+
+		try :
+			nettype = NETWORK_ETHERNET
+			if os.path.exists( NETWORK_CONFIG_PATH ) :
+				self.mBusyConfigFile = True
+				inputFile = open( NETWORK_CONFIG_PATH, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'networktype' ) :
+						word = string.split( line )[2]
+						if word != 'ethernet' :
+							nettype = NETWORK_WIRELESS
+
+				inputFile.close( )
+				self.mBusyConfigFile = False
+				return nettype
+			else :
+				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				return NETWORK_ETHERNET
+
+		except Exception, e :
+			self.mBusyConfigFile = False
+			LOG_ERR( 'Error exception[%s]' % e )
 			return NETWORK_ETHERNET
-		else :
-			return NETWORK_WIRELESS
 
 
-	def SetCurrentServiceType( self, aType ) :
-		from ElisProperty import ElisPropertyEnum
-		import pvr.ElisMgr
-		if aType == NETWORK_ETHERNET :
-			ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_ETHERNET )
-		else :
-			ElisPropertyEnum( 'Use WLAN', pvr.ElisMgr.GetInstance( ).GetCommander( ) ).SetProp( NETWORK_WIRELESS )
+	def WriteEthernetConfig( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
+		if gUseNetwork == False :
+			return False
+
+		try :
+			self.mBusyConfigFile = True
+			openFile = open( NETWORK_CONFIG_PATH, 'w' )
+			words = 'networktype = ethernet\n'
+			if aMethod == NET_DHCP :
+				words += 'method = dhcp\n'
+			else :
+				words += 'method = static\n'
+				words += 'address = %s\n' % aAddress
+				words += 'netmask = %s\n' % aNetmask
+				words += 'gateway = %s\n' % aGateway
+				words += 'nameserver = %s\n' % aNameServer
+
+			openFile.write( words )
+			openFile.close( )
+			self.mBusyConfigFile = False
+			time.sleep( 0.5 )
+			return True
+
+		except Exception, e :
+			self.mBusyConfigFile = False
+			LOG_ERR( 'WriteEthernetConfig Error exception[%s]' % e )
+			return False
+
+
+	def WriteWifiConfig( self, aSSID, aPassword, aIsHidden ) :
+		if gUseNetwork == False :
+			return False
+
+		try :
+			self.mBusyConfigFile = True
+			openFile = open( NETWORK_CONFIG_PATH, 'w' )
+			words = 'networktype = wifi\n'
+			words += 'ssid = ' + aSSID + '\n'
+			if aPassword != '' :
+				words += 'passphrase = ' + aPassword + '\n'
+			if aIsHidden == USE_HIDDEN_SSID :
+				words += 'hidden = True\n'
+			else :
+				words += 'hidden = False\n'
+
+			openFile.write( words )
+			openFile.close( )
+			self.mBusyConfigFile = False
+			time.sleep( 0.5 )
+			return True
+
+		except Exception, e :
+			self.mBusyConfigFile = False
+			LOG_ERR( 'WriteWifiConfig Error exception[%s]' % e )
+			return False
 
 
 	def GetCurrentServiceObject( self ) :
@@ -106,6 +176,7 @@ class NetworkMgr( object ) :
 			return False
 
 		try :
+			self.mWifiServiceObejct = None
 			SSID = self.GetConfiguredSSID( )
 			LOG_TRACE( 'LoadWifiService ssid = %s' % SSID )
 			if SSID :
@@ -201,16 +272,16 @@ class NetworkMgr( object ) :
 			return None
 
 		try :
-			if os.path.exists( WIFI_CONFIGURED_PATH ) :
-				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+			if os.path.exists( NETWORK_CONFIG_PATH ) :
+				inputFile = open( NETWORK_CONFIG_PATH, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
-					if line.startswith( 'Name' ) :
+					if line.startswith( 'ssid' ) :
 						words = string.split( line )
 						return words[2]
 				return None
 			else :
-				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				LOG_ERR( '%s path is not exist' % NETWORK_CONFIG_PATH )
 				return None
 
 		except Exception, e :
@@ -223,17 +294,17 @@ class NetworkMgr( object ) :
 			return None
 
 		try :
-			if os.path.exists( WIFI_CONFIGURED_PATH ) :
-				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+			if os.path.exists( NETWORK_CONFIG_PATH ) :
+				inputFile = open( NETWORK_CONFIG_PATH, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
-					if line.startswith( 'Passphrase' ) :
+					if line.startswith( 'passphrase' ) :
 						words = string.split( line )
 						return words[2]
 				inputFile.close( )
 				return None
 			else :
-				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				LOG_ERR( '%s path is not exist' % NETWORK_CONFIG_PATH )
 				return None
 
 		except Exception, e :
@@ -246,16 +317,16 @@ class NetworkMgr( object ) :
 			return None
 
 		try :
-			if os.path.exists( WIFI_CONFIGURED_PATH ) :
-				inputFile = open( WIFI_CONFIGURED_PATH, 'r' )
+			if os.path.exists( NETWORK_CONFIG_PATH ) :
+				inputFile = open( NETWORK_CONFIG_PATH, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
-					if line.startswith( 'Hidden' ) :
+					if line.startswith( 'hidden' ) :
 						return True
 				inputFile.close( )
 				return False
 			else :
-				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				LOG_ERR( '%s path is not exist' % NETWORK_CONFIG_PATH )
 				return False
 
 		except Exception, e :
@@ -350,6 +421,14 @@ class NetworkMgr( object ) :
 			return False
 
 
+	def DeleteConfigFile( self ) :
+		try :
+			os.system( 'rm -rf /var/lib/connman/wifi*' )
+
+		except Exception, e :				
+			print 'WriteWifiConfigFile Error exception[%s]' % e
+
+
 	def GetServiceState( self, aService ) :
 		if gUseNetwork == False :
 			return False
@@ -377,14 +456,14 @@ class NetworkMgr( object ) :
 		try :
 			if aService :
 				if aFlag :
-					self.DisConnectOtherTypeNetwork( aService )
-					time.sleep( 1 )
 					aService.Connect( timeout=60000 )
+					time.sleep( 1 )
+					self.WaitConfigurationService( aService )
 				else :
 					aService.Disconnect( )
-					time.sleep( 0.5 )
+					time.sleep( 1 )
+					self.WaitConfigurationService( aService )
 
-				self.WaitConfigurationService( aService )
 				aService = None
 				time.sleep( 0.5 )
 				return True
@@ -396,19 +475,24 @@ class NetworkMgr( object ) :
 			return False
 
 
-	def DisConnectOtherTypeNetwork( self, aService ) :
+	def DisConnectEthernet( self ) :
 		try :
-			property = aService.GetProperties( )
-			if property[ 'Type' ] == 'wifi' :
-				if self.mEthernetServiceObejct :
-					self.mEthernetServiceObejct.Disconnect( )
-					self.WaitConfigurationService( self.mEthernetServiceObejct )
-					self.mEthernetServiceObejct = None
-			elif property[ 'Type' ] == 'ethernet' :
-				if self.mWifiServiceObejct :
-					self.mWifiServiceObejct.Disconnect( )
-					self.WaitConfigurationService( self.mWifiServiceObejct )
-					self.mWifiServiceObejct = None
+			self.LoadEthernetService( )
+			if self.mEthernetServiceObejct :
+				self.SetServiceConnect( self.mEthernetServiceObejct, False )
+				self.mEthernetServiceObejc = None
+
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+
+
+	def DisConnectWifi( self ) :
+		try :
+			if self.LoadSetWifiTechnology( ) :
+				if self.LoadWifiService( ) :
+					if self.mWifiServiceObejct :
+						self.SetServiceConnect( self.mWifiServiceObejct, False )
+						self.mWifiServiceObejct = None
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
@@ -425,6 +509,7 @@ class NetworkMgr( object ) :
 
 		if aService :
 			try :
+				self.WaitConfigurationService( aService )
 				property = aService.GetProperties( )
 
 				for key in property.keys( ) :
@@ -490,25 +575,28 @@ class NetworkMgr( object ) :
 		if gUseNetwork == False :
 			return NET_DHCP
 
-		if self.mEthernetServiceObejct :
-			try :
-				property = self.mEthernetServiceObejct.GetProperties( )
+		try :
+			nettype = NET_DHCP
+			if os.path.exists( NETWORK_CONFIG_PATH ) :
+				self.mBusyConfigFile = True
+				inputFile = open( NETWORK_CONFIG_PATH, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'method' ) :
+						word = string.split( line )[2]
+						if word != 'dhcp' :
+							nettype =  NET_STATIC
 
-				for key in property.keys( ) :
-					if key == 'IPv4' :
-						for val in property[key].keys( ) :
-							if val == 'Method' :
-								if property[key][val] == 'dhcp' :
-									return NET_DHCP
-								else :
-									return NET_STATIC
+				inputFile.close( )
+				self.mBusyConfigFile = False
+				return nettype
+			else :
+				LOG_ERR( '%s path is not exist' % WIFI_CONFIGURED_PATH )
+				return nettype
 
-				return NET_DHCP
-
-			except dbus.DBusException, error :                                  
-				LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
-				return NET_DHCP
-		else :
+		except Exception, e :
+			self.mBusyConfigFile = False
+			LOG_ERR( 'Error exception[%s]' % e )
 			return NET_DHCP
 
 
@@ -534,6 +622,9 @@ class NetworkMgr( object ) :
 	def CheckInternetState( self ) :
 		if gUseNetwork == False :
 			return 'Disconnected'
+
+		if self.mBusyConfigFile :
+			return 'Busy CF'
 
 		service = self.GetCurrentServiceObject( )
 		if service :

@@ -766,8 +766,10 @@ class Configure( SettingWindow ) :
 
 	def ConnectEthernet( self ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
+		time.sleep( 0.5 )
 		ret = NetMgr.GetInstance( ).ConnectEthernet( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
-		time.sleep( 2 )
+		time.sleep( 1 )
+		NetMgr.GetInstance( ).DisConnectWifi( )
 		if ret == False :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -811,8 +813,10 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
 					return
+
+			NetMgr.GetInstance( ).WriteEthernetConfig( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 			self.ConnectEthernet( )
-			NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_ETHERNET )
+			NetMgr.GetInstance( ).DeleteConfigFile( )
 
 
 	def WifiSetting( self, aControlId ) :
@@ -822,6 +826,7 @@ class Configure( SettingWindow ) :
 
 		elif aControlId == E_Input01 :
 			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
+			time.sleep( 0.5 )
 			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) == False :
 				self.CloseProgress( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -860,18 +865,24 @@ class Configure( SettingWindow ) :
 
 		elif aControlId == E_Input04 :
 			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
+			time.sleep( 0.5 )
 
 			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) :
 				if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
 					NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
+					NetMgr.GetInstance( ).WriteWifiConfig( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
 				else :
 					NetMgr.GetInstance( ).WriteWifiConfigFile( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
+					NetMgr.GetInstance( ).WriteWifiConfig( self.mHiddenSsid, self.mPassWord, self.mUseHiddenId )
 
 				if NetMgr.GetInstance( ).LoadWifiService( ) :
 					wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
-					NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )
+					
+					#NetMgr.GetInstance( ).SetCurrentServiceType( NETWORK_WIRELESS )
 					NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
 					NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+					time.sleep( 1 )
+					NetMgr.GetInstance( ).DisConnectEthernet( )
 				else :
 					self.CloseProgress( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
