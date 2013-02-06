@@ -8,7 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
@@ -1887,5 +1887,48 @@ class DataCacheMgr( object ) :
 
 	def GetPincodeDialog( self ) :
 		return self.mIsPincodeDialog
+
+
+	def SetDefaultByFactoryReset( self ) :
+		LOG_TRACE('-------factory reset')
+		#1. pincode : m/w (super pin)
+		#2. video : 1080i, normal, RGB
+		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
+		ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropString( '1080i' )
+		ElisPropertyEnum( 'Show 4:3', self.mCommander ).SetPropString( 'Normal (Pillarbox)' )
+		ElisPropertyEnum( 'HDMI Color Space', self.mCommander ).SetPropString( 'RGB' )
+		self.Frontdisplay_Resolution( ElisEnum.E_ICON_1080i )
+
+		#3. network : dhcp
+		#4. time setting : m/w (Time and Date, Local time offset, Summer Time)
+
+		#5. epg, archive
+		ret = SetDefaultSettingInXML( )
+		LOG_TRACE( '>>>>>>>> Default init : epg,archive ret[%s] <<<<<<<<'% ret )
+
+		#6. volume : 75db
+		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
+		if self.mCommander.Player_GetMute( ) :
+			self.mCommander.Player_SetMute( False )
+		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
+		XBMC_SetVolume( DEFAULT_VOLUME )
+
+		#7. ageRating
+		LOG_TRACE( '>>>>>>>> Default init : AgeLimit <<<<<<<<' )
+		ElisPropertyEnum( 'Age Limit', self.mCommander ).SetPropString( 'No Limit' )
+		self.SetPropertyAge( 0 )
+
+		#8. channelList, LivePlate
+		LOG_TRACE( '>>>>>>>> Default init : Channel <<<<<<<<' )
+		zappingmode = self.Zappingmode_GetCurrent( )
+		zappingmode.mMode = ElisEnum.E_MODE_ALL
+		zappingmode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+		zappingmode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
+		self.Zappingmode_SetCurrent( zappingmode )
+		#self.Channel_Save( )
+		self.Channel_ReLoad( )
+
+		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 

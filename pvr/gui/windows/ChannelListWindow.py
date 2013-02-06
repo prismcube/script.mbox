@@ -473,6 +473,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateChannelAndEPG( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
+
 	def DoDeleteAll( self ) :
 		ret = E_DIALOG_STATE_NO
 
@@ -531,6 +532,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserMode.mServiceType = aType
 			aMode = self.mUserMode.mMode
 			aSort = self.mUserMode.mSortingMode
+			if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO and aSort == ElisEnum.E_SORT_BY_HD :
+				self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
 
 			self.ResetLabel( )
 			self.mCtrlListCHList.reset( )
@@ -896,6 +899,8 @@ class ChannelListWindow( BaseWindow ) :
 					nextSort = ElisEnum.E_SORT_BY_ALPHABET
 				elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
 					nextSort = ElisEnum.E_SORT_BY_HD
+					if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+						nextSort = ElisEnum.E_SORT_BY_NUMBER
 
 				idxMain = self.mUserSlidePos.mMain
 				idxSub  = self.mUserSlidePos.mSub

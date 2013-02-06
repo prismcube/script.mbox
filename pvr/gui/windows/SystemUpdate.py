@@ -1303,46 +1303,6 @@ class SystemUpdate( SettingWindow ) :
 
 								fd.writelines( '%s=%s\n'% ( value[0], value[1] ) )
 					fd.close( )
-			else :
-				import pvr.NetworkMgr as NetMgr
-				fd = open( '%s/network.conf' % E_DEFAULT_BACKUP_PATH, 'w' )
-				if fd :
-					nType = NetMgr.GetInstance( ).GetCurrentServiceType( )
-					if nType == NETWORK_ETHERNET :
-						fd.writelines( 'NetworkType=ethtype\n' )
-					else :
-						fd.writelines( 'NetworkType=wifitype\n' )
-					if nType == NETWORK_ETHERNET :
-						NetMgr.GetInstance( ).LoadEthernetService( )
-						ethernet = NetMgr.GetInstance( ).GetCurrentEthernetService( )
-						if ethernet :
-							addressIp, addressMask, addressGateway, addressNameServer = NetMgr.GetInstance( ).GetServiceAddress( ethernet )
-							ethType = NetMgr.GetInstance( ).GetEthernetMethod( )
-							if ethType == NET_STATIC :
-								ethType = 'static'
-							else :
-								ethType = 'dhcp'
-							fd.writelines( 'ethtype=%s\n' % ethType )
-							fd.writelines( 'ipaddr=%s\n' % addressIp )
-							fd.writelines( 'subnet=%s\n' % addressMask )
-							fd.writelines( 'gateway=%s\n' % addressGateway )
-							fd.writelines( 'dns=%s\n' % addressNameServer )
-					else :
-						SSID = NetMgr.GetInstance( ).GetConfiguredSSID( )
-						if SSID :
-							fd.writelines( 'SSID=%s\n' % SSID )
-							password = NetMgr.GetInstance( ).GetConfiguredPassword( )
-							if password :
-								fd.writelines( 'Passphrase=%s\n' % password )
-							else :
-								fd.writelines( 'Passphrase=None\n' )
-							isHiidenSsid = NetMgr.GetInstance( ).GetIsConfiguredHiddenSSID( )
-							if isHiidenSsid :
-								fd.writelines( 'Hidden=True\n' )
-							else :
-								fd.writelines( 'Hidden=False\n' )
-
-					fd.close( )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )

@@ -83,6 +83,8 @@ class Action(object) :
 	ACTION_SHOW_GUI				= 18	#tab --> xbmc
 
 
+	ACTION_MBOX_RESERVED21		= 431
+
 	# re defined for another platform
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 		ACTION_MBOX_XBMC			= ACTION_SHOW_GUI
