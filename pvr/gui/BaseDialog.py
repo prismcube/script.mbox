@@ -5,7 +5,7 @@ import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
-from pvr.XBMCInterface import XBMC_GetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
 
 import sys
 import os
@@ -83,6 +83,18 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) and \
+			   aVolumeStep == 0 : 
+				mute = True
+				if self.mCommander.Player_GetMute( ) :
+					mute = False
+				self.mCommander.Player_SetMute( mute )
+				#if XBMC_GetMute( ) != mute :
+				#	XBMC_SetVolume( volume, mute )
+				#	LOG_TRACE( 'mute sync' )
+
+				return
+
 			volume =  XBMC_GetVolume( )
 
 		else :

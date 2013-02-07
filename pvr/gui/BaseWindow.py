@@ -278,7 +278,20 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) and \
+			   aVolumeStep == 0 : 
+				mute = True
+				if self.mCommander.Player_GetMute( ) :
+					mute = False
+				self.mCommander.Player_SetMute( mute )
+				#if XBMC_GetMute( ) != mute :
+				#	XBMC_SetVolume( volume, mute )
+				#	LOG_TRACE( 'mute sync' )
+
+				return
+
 			volume =  XBMC_GetVolume( )
+
 		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :
