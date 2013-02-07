@@ -2,7 +2,7 @@ import sys
 import re
 
 
-FILE_TEMP	=	'/tmp/ip_temp'
+FILE_TEMP	=	'/mtmp/ip_temp'
 
 
 def Get_name( aCell ) :

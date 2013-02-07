@@ -569,7 +569,7 @@ def GetFileSize( aFile ) :
 
 
 def GetUnpackFiles( aZipFile ) :
-	tFile = '/tmp/test'
+	tFile = '/mtmp/test'
 	#cmd = "unzip -l /mnt/hdd0/program/download/update.2012.10.10.zip | awk '{print $1, $4}' > %s"% tFile
 	cmd = "unzip -l %s | awk '{print $1, $4}' > %s"% ( aZipFile, tFile )
 	fileList = []

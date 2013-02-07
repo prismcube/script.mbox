@@ -76,7 +76,7 @@ class RootWindow( BaseWindow ) :
 
 
 	def CheckFirstRun( self ) :
-		if CheckDirectory( '/tmp/isrunning' ) :
+		if CheckDirectory( '/mtmp/isrunning' ) :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
@@ -87,5 +87,5 @@ class RootWindow( BaseWindow ) :
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 		else :
-			os.system( 'touch /tmp/isrunning' )
+			os.system( 'touch /mtmp/isrunning' )
 

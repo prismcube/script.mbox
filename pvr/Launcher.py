@@ -82,7 +82,7 @@ class Launcher( object ):
 
 	def InitWindowMgr( self ):
 		if self.CheckFactoryTest( ) == True :
-			strFactoryPath = '/tmp/script.factorytest'
+			strFactoryPath = '/mtmp/script.factorytest'
 			#strFactoryPath = '/usr/share/xbmc/addons/script.factorytest'
 			#strFactoryPath = '/home/root/.xbmc/addons/script.factorytest'
 			print 'FactoryTest : strFactoryPath=%s' %strFactoryPath
@@ -137,6 +137,6 @@ class Launcher( object ):
 	def CheckFactoryTest( self ) :
 		# ToDO
 		#check from /var/
-		ret = os.path.isfile('/tmp/factorytest')
+		ret = os.path.isfile('/mtmp/factorytest')
 		return ret
 		
