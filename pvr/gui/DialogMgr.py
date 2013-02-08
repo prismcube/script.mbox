@@ -17,7 +17,16 @@ XBMC_WINDOW_DIALOG_KEYBOARD			= 10103
 XBMC_WINDOW_DIALOG_NUMERIC			= 10109
 XBMC_WINDOW_DIALOG_SELECT			= 12000
 XBMC_WINDOW_DIALOG_PROGRESS			= 10101
+XBMC_WINDOW_DIALOG_BUSY				= 10138
+XBMC_WINDOW_DIALOG_YES_NO			= 10100
+XBMC_WINDOW_DIALOG_OK				= 12002
 
+XBMC_WINDOW_DIALOGS = [
+	XBMC_WINDOW_DIALOG_KEYBOARD,
+	XBMC_WINDOW_DIALOG_NUMERIC,
+	XBMC_WINDOW_DIALOG_SELECT,
+	XBMC_WINDOW_DIALOG_PROGRESS,
+	XBMC_WINDOW_DIALOG_BUSY ]
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
@@ -181,12 +190,11 @@ class DialogMgr( object ) :
 			LOG_ERR( '-----------------------> except[%s]' %ex )
 
 
-	def AsyncCheckVolume	( self ) :
+	def AsyncCheckVolume( self ) :
 		currentID = -1
 		while( 1 ) :
 			currentID = xbmcgui.getCurrentWindowDialogId( )
-			if currentID == XBMC_WINDOW_DIALOG_KEYBOARD or currentID == XBMC_WINDOW_DIALOG_NUMERIC or \
-				currentID == XBMC_WINDOW_DIALOG_SELECT or currentID == XBMC_WINDOW_DIALOG_PROGRESS :
+			if currentID in XBMC_WINDOW_DIALOGS :
 				LOG_TRACE( 'Volume check TEST : currentID=%d' %currentID )
 				if self.mDataCache.GetMediaCenter( ) == False :
 					LOG_TRACE( 'Volume check TEST : Update Volume ' )
@@ -212,15 +220,14 @@ class DialogMgr( object ) :
 					volume += aVolumeStep / 2
 
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
-		if volume :
-			if volume > MAX_VOLUME :
-				volume = MAX_VOLUME
+		if volume > MAX_VOLUME :
+			volume = MAX_VOLUME
 
-			if volume <= 0 :
-				volume = 0
-				self.mCommander.Player_SetMute( True )
-			else :
-				if self.mCommander.Player_GetMute( ) :
-					self.mCommander.Player_SetMute( False )
-				self.mCommander.Player_SetVolume( volume )
+		if volume <= 0 :
+			volume = 0
+			self.mCommander.Player_SetMute( True )
+		else :
+			if self.mCommander.Player_GetMute( ) :
+				self.mCommander.Player_SetMute( False )
+			self.mCommander.Player_SetVolume( volume )
 
