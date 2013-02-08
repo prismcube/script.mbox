@@ -50,7 +50,7 @@ class NetworkMgr( object ) :
 
 	def GetCurrentServiceType( self ) :
 		if gUseNetwork == False :
-			return None
+			return NETWORK_ETHERNET
 
 		try :
 			nettype = NETWORK_ETHERNET
