@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import time
 
 
 E_INPUT_LABEL			= 4
@@ -28,7 +29,8 @@ class DialogInputPincode( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.mIsOk = E_DIALOG_STATE_CANCEL
-		self.mNextAction = 0		
+		self.mNextAction = 0
+		self.mIsValidateThread = None
 
 		self.DrawKeyboard( )
 		
@@ -38,13 +40,7 @@ class DialogInputPincode( BaseDialog ) :
 		self.mCtrlInputLabel.setLabel( self.mInputNumber )
 
 		if self.mCheckStatus == E_CHECK_PARENTLOCK :
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-			isClose = False
-			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
-				isClose = True
-			if not isClose :
-				LOG_TRACE( '---------------------Cancel parentLock' )
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.mIsValidateThread = self.CheckValidate( )
 
 
 	def onAction( self, aAction ) :
@@ -55,6 +51,7 @@ class DialogInputPincode( BaseDialog ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
+			self.Close( )
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -74,6 +71,7 @@ class DialogInputPincode( BaseDialog ) :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction = self.E_TUNE_NEXT_CHANNEL
+					self.Close( )
 					self.CloseDialog( )
 					
 			except Exception, e :
@@ -84,6 +82,7 @@ class DialogInputPincode( BaseDialog ) :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction = self.E_TUNE_PREV_CHANNEL
+					self.Close( )
 					self.CloseDialog( )
 
 			except Exception, e :
@@ -96,6 +95,7 @@ class DialogInputPincode( BaseDialog ) :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction = self.E_SHOW_EPG_WINDOW
+					self.Close( )
 					self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
@@ -105,6 +105,7 @@ class DialogInputPincode( BaseDialog ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
 			   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mNextAction = self.E_SHOW_ARCHIVE_WINDOW
+				self.Close( )
 				self.CloseDialog( )
 
 
@@ -115,6 +116,12 @@ class DialogInputPincode( BaseDialog ) :
 
 	def onFocus( self, aControlId ):
 		pass
+
+
+	def Close( self ) :
+		if self.mIsValidateThread :
+			self.mCheckStatus = False
+			self.mIsValidateThread.join( )
 
 
 	def IsOK( self ) :
@@ -160,6 +167,7 @@ class DialogInputPincode( BaseDialog ) :
 				LOG_TRACE( 'pinValue = %d : %d' %( savedPincode, int( self.mInputNumber ) ) )
 				if savedPincode == int( self.mInputNumber ) :
 					self.mIsOk = E_DIALOG_STATE_YES
+					self.Close( )
 					xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 				else : #Wrong PinCode
 					self.mInputNumber = ''
@@ -189,5 +197,27 @@ class DialogInputPincode( BaseDialog ) :
 
 		else :
 			self.mCtrlInputLabel.setLabel( '' )
+
+
+	@RunThread
+	def CheckValidate( self ) :
+		isClose = False
+		while self.mCheckStatus == E_CHECK_PARENTLOCK :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if ( iChannel and iChannel.mLocked ) or self.mDataCache.GetParentLock( ) :
+				LOG_TRACE( 'Checked self : pincode parentLock True' )
+				#pass
+			else :
+				isClose = True
+				break
+
+			time.sleep( 1 )
+
+
+		if isClose :
+			LOG_TRACE( '---------------------Checked self : parentLock False, Close dialog' )
+			self.mCheckStatus = False
+			self.mIsValidateThread = None
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
