@@ -125,6 +125,7 @@ class DataCacheMgr( object ) :
 		self.mSkip 								= False
 		self.mIsRunningHiddentest 				= False
 		self.mStartMediaCenter					= False
+		self.mDefaultHideWatched				= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1473,10 +1474,10 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Record_GetCount( aServiceType )
 
 
-	def Record_GetList( self, aServiceType ) :
+	def Record_GetList( self, aServiceType, aHideWatched = False ) :
 		if SUPPORT_RECORD_DATABASE == True :	
 			recordDB = ElisRecordDB( )
-			recordList = recordDB.Record_GetList( aServiceType )		
+			recordList = recordDB.Record_GetList( aServiceType, aHideWatched )
 			recordDB.Close( )
 			return recordList
 
@@ -1889,6 +1890,14 @@ class DataCacheMgr( object ) :
 		return self.mIsPincodeDialog
 
 
+	def SetDefaultHideWatched( self, aHideWatched = False ) :
+		self.mDefaultHideWatched = aHideWatched
+
+
+	def GetDefaultHideWatched( self ) :
+		return self.mDefaultHideWatched
+
+
 	def SetDefaultByFactoryReset( self ) :
 		LOG_TRACE('-------factory reset')
 		#1. pincode : m/w (super pin)
@@ -1907,6 +1916,7 @@ class DataCacheMgr( object ) :
 		#4. time setting : m/w (Time and Date, Local time offset, Summer Time)
 
 		#5. epg, archive
+		self.SetDefaultHideWatched( True )
 		ret = SetDefaultSettingInXML( )
 		LOG_TRACE( '>>>>>>>> Default init : epg,archive ret[%s] <<<<<<<<'% ret )
 
