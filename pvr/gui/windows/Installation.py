@@ -17,11 +17,6 @@ class Installation( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mCtrlLeftGroup = None
 
-
-	def onInit( self ) :
-		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Installation' )
-		
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),
 		MR_LANG( 'Antenna Setup' ),
@@ -30,7 +25,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Edit Transponder' ),
 		MR_LANG( 'Configuration' ),
 		MR_LANG( 'CAS' ),
-		MR_LANG( 'Update' )]
+		MR_LANG( 'Update' ) ]
 
 		self.mDescriptionList = [
 		MR_LANG( 'Follow five simple steps for getting your PRISMCUBE RUBY ready for use' ),
@@ -40,7 +35,12 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Add new transponders or edit the transponders already exist' ),
 		MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
 		MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
-		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' )]
+		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+
+
+	def onInit( self ) :
+		self.SetActivate( True )
+		self.SetFrontdisplayMessage( 'Installation' )
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
