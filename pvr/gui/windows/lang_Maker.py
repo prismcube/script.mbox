@@ -444,6 +444,7 @@ def verify_defineString():
 
 
 ################# 2.Collection string of property class in source file 'property.py'
+sys.path.append( os.path.join( os.getcwd() + '/../../../../script.mbox', 'libs', 'beautifulsoup' ) )
 from BeautifulSoup import BeautifulSoup
 def findStringInXML(soup, reqStr) :
 
