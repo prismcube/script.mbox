@@ -216,7 +216,7 @@ class NullWindow( BaseWindow ) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
 							self.mDataCache.SetAVBlankByChannel( jumpChannel )
-							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, False )
+							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )

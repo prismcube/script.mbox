@@ -1367,4 +1367,12 @@
 	<string id="3951"></string>
 	<string id="3952">RUS_No channels available for the selected mode</string>
 	<string id="3953">RUS_Try again after stopping playback and timeshift</string>
+	<string id="3954">RUS_No subtitles</string>
+	<string id="3955">RUS_Sorry, this option is not implemented yet</string>
+	<string id="3956">RUS_Enable rss feed in main menu</string>
+	<string id="3957">RUS_Rss Feed</string>
+	<string id="3958">RUS_Media partition size is %s GB</string>
+	<string id="3959">RUS_Update complete</string>
+	<string id="3960">RUS_Your channel list has been updated successfully</string>
+	<string id="3961">RUS_Temperature : Busy</string>
 </strings>

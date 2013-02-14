@@ -1367,4 +1367,12 @@
 	<string id="3951">Try again after stopping playback</string>
 	<string id="3952">No channels available for the selected mode</string>
 	<string id="3953">Try again after stopping playback and timeshift</string>
+	<string id="3954">No subtitles</string>
+	<string id="3955">Sorry, this option is not implemented yet</string>
+	<string id="3956">Enable rss feed in main menu</string>
+	<string id="3957">Rss Feed</string>
+	<string id="3958">Media partition size is %s GB</string>
+	<string id="3959">Update complete</string>
+	<string id="3960">Your channel list has been updated successfully</string>
+	<string id="3961">Temperature : Busy</string>
 </strings>
