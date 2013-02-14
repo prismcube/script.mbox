@@ -1367,4 +1367,12 @@
 	<string id="3951"></string>
 	<string id="3952">DUT_No channels available for the selected mode</string>
 	<string id="3953">DUT_Try again after stopping playback and timeshift</string>
+	<string id="3954">DUT_No subtitles</string>
+	<string id="3955">DUT_Sorry, this option is not implemented yet</string>
+	<string id="3956">DUT_Enable rss feed in main menu</string>
+	<string id="3957">DUT_Rss Feed</string>
+	<string id="3958">DUT_Media partition size is %s GB</string>
+	<string id="3959">DUT_Update complete</string>
+	<string id="3960">DUT_Your channel list has been updated successfully</string>
+	<string id="3961">DUT_Temperature : Busy</string>
 </strings>
