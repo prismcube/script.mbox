@@ -10,7 +10,41 @@ gNoParseList = {}
 E_DIR_RESULT = os.getcwd() + '/changeTest'
 
 E_ID_SINGLE_CONVERT = 50000
-
+WIN_ID_ROOTWINDOW 					= 0
+WIN_ID_NULLWINDOW 					= 1
+WIN_ID_MAINMENU 					= 2
+WIN_ID_CHANNEL_LIST_WINDOW			= 3
+WIN_ID_LIVE_PLATE					= 4
+WIN_ID_CONFIGURE					= 5
+WIN_ID_ANTENNA_SETUP				= 6
+WIN_ID_TUNER_CONFIGURATION			= 7
+WIN_ID_CONFIG_SIMPLE				= 8
+WIN_ID_CONFIG_MOTORIZED_12			= 9
+WIN_ID_CONFIG_MOTORIZED_USALS		= 10
+WIN_ID_CONFIG_ONECABLE				= 12
+WIN_ID_CONFIG_ONECABLE_2			= 13
+WIN_ID_CONFIG_DISEQC_10				= 14
+WIN_ID_CONFIG_DISEQC_11				= 15
+WIN_ID_CHANNEL_SEARCH				= 16
+WIN_ID_AUTOMATIC_SCAN				= 17
+WIN_ID_MANUAL_SCAN					= 18
+WIN_ID_TIMESHIFT_PLATE				= 19
+WIN_ID_CHANNEL_EDIT_WINDOW			= 20
+WIN_ID_EDIT_SATELLITE				= 21
+WIN_ID_EDIT_TRANSPONDER				= 22
+WIN_ID_ARCHIVE_WINDOW				= 23
+WIN_ID_SYSTEM_INFO					= 24
+WIN_ID_INSTALLATION					= 25
+WIN_ID_MEDIACENTER					= 26
+WIN_ID_EPG_WINDOW					= 27
+WIN_ID_CONDITIONAL_ACCESS			= 28
+WIN_ID_FIRST_INSTALLATION			= 29
+WIN_ID_TIMER_WINDOW					= 30
+WIN_ID_INFO_PLATE					= 31
+#WIN_ID_FAVORITE_ADDONS				= 32
+WIN_ID_FAVORITES					= 32
+WIN_ID_SYSTEM_UPDATE				= 33
+WIN_ID_HELP							= 34
 E_IDS_SINGLE_WINDOW = {
 	'TunerConfiguration.xml' : 50000,
 	'ManualScan.xml' : None,
@@ -257,19 +291,37 @@ def test( ) :
 	print strs
 
 
+def test2( ) :
+	InitDir( )
+	global E_ID_SINGLE_CONVERT 
+
+	mboxDir = os.path.abspath( currDir + '/../script.mbox' )
+
+	testSource = [ 'RootWindow.xml', 'NullWindow.xml', 'MainMenu.xml', 'ChannelListWindow.xml', 'LivePlate.xml'  ]
+
+	idDefault = 1000000
+	count = 0
+	global E_ID_SINGLE_CONVERT 
+	for item in testSource :
+		E_ID_SINGLE_CONVERT = idDefault + ( count * 100000 )
+		iFile = os.path.join( mboxDir, item )
+		ParseSource( iFile )
+		count += 1
+
+
 if __name__ == "__main__":
 
 	nameSelf = os.path.basename(sys.argv[0])
 	gNoParseList[nameSelf] = nameSelf
 	param = sys.argv[1:]
 
-
 	if len(param) > 0 :
 		if param[0] == 'debug' :
 			global gDebug
 			gDebug = True
 
-	AutoMakeSingleIDs( )
+	#AutoMakeSingleIDs( )
 	#test( )
+	test2( )
 
 
