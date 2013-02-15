@@ -506,7 +506,7 @@ def CheckEthernet( aEthName ) :
 	return status
 
 
-def CheckMD5Sum( aSourceFile, aMd5 ) :
+def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 	isVerify = False
 	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
 
@@ -519,8 +519,11 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 		readMd5 = p.stdout.read( ).strip( )
 		p.stdout.close( )
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
-		if readMd5 == aMd5 :
-			isVerify = True
+		if aMd5 :
+			if readMd5 == aMd5 :
+				isVerify = True
+		else :
+			isVerify = readMd5
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
@@ -585,10 +588,15 @@ def GetUnpackFiles( aZipFile ) :
 			pars = re.split(' ', line )
 			if pars[0].isdigit( ) :
 				pars[0] = int( pars[0] )
+				pars[1] = pars[1].rstrip( )
 				if pars[0] == 0 :
-					pars[0] = 4096	#directory size block
+					#pars[0] = 4096	#directory size block
+					continue
 
-				pars[1] = re.sub( '\n', '', pars[1] )
+				if pars[1] and os.path.splitext( pars[1] )[1] == '.md5' :
+					continue
+
+				#pars[1] = re.sub( '\n', '', pars[1] )
 				if pars[1] :
 					fileList.append( pars )
 
@@ -597,6 +605,27 @@ def GetUnpackFiles( aZipFile ) :
 		return False
 
 	return fileList
+
+
+def GetUnpackByMD5( aFile ) :
+	value = ''
+	openFile = '%s.md5'% aFile
+	if not CheckDirectory( openFile ) :
+		return False
+
+	try :
+		fp = open( openFile, 'r' )
+		ret = fp.readline( ).strip( )
+		fp.close( )
+
+		pars = re.split(' ', ret )
+		if pars and len( pars ) > 0 :
+			value = pars[0].strip()
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] Can not open[%s]'% ( e, openFile ) )
+
+	return value
 
 
 def GetUnpackDirectory( aZipFile ) :
