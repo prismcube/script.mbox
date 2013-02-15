@@ -1367,4 +1367,12 @@
 	<string id="3951"></string>
 	<string id="3952">FRE_No channels available for the selected mode</string>
 	<string id="3953">FRE_Try again after stopping playback and timeshift</string>
+	<string id="3954">FRE_No subtitles</string>
+	<string id="3955">FRE_Sorry, this option is not implemented yet</string>
+	<string id="3956">FRE_Enable rss feed in main menu</string>
+	<string id="3957">FRE_Rss Feed</string>
+	<string id="3958">FRE_Media partition size is %s GB</string>
+	<string id="3959">FRE_Update complete</string>
+	<string id="3960">FRE_Your channel list has been updated successfully</string>
+	<string id="3961">FRE_Temperature : Busy</string>
 </strings>

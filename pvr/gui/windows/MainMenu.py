@@ -2,6 +2,8 @@ from pvr.gui.WindowImport import *
 
 MAIN_GROUP_ID					= 9100
 LIST_ID_FAV_ADDON				= 9050
+LABEL_ID_SUB_DESCRIPTION		= 100
+BUTTON_ID_FAVORITE_EXTRA		= 101
 
 BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
@@ -43,6 +45,26 @@ class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		#self.mCtrlFavAddonList = None
+		self.mSubDescriptionInstall = [
+			MR_LANG( 'Follow five simple steps for getting your PRISMCUBE RUBY ready for use' ),
+			MR_LANG( 'Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2' ),
+			MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
+			MR_LANG( 'Add, delete or rename satellites' ),
+			MR_LANG( 'Add new transponders or edit the transponders already exist' ),
+			MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
+			MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
+			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+
+		self.mSubDescriptionMedia = [
+			MR_LANG( 'Get current weather and weather forecast for thousands of cities around the world' ),
+			MR_LANG( 'Access your picture collection and view them as a slideshow with transition effects' ),
+			MR_LANG( 'Browse through your source folders and play music files' ),
+			MR_LANG( 'Playback videos from the beginning or resume viewing from the moment you stopped' ),
+			MR_LANG( 'Run your installed add-ons which enhance the features and functions of XBMC' ),
+			MR_LANG( 'Configure the general settings of XBMC' ),
+			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
+			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
+			MR_LANG( 'Display detailed information about your system status' ) ]
 
 
 	def onInit( self ) :
@@ -218,9 +240,15 @@ class MainMenu( BaseWindow ) :
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
-		if aControlId == E_FAKE_BUTTON :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
+		if aControlId >= BUTTON_ID_FIRSTINSTALLATION and aControlId <= BUTTON_ID_UPDATE :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionInstall[ aControlId - 1 - BUTTON_ID_INSTALLATION ] )
+
+		elif aControlId >= BUTTON_ID_MEDIA_WEATHER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionMedia[ aControlId - 1 - BUTTON_ID_MEDIA_CENTER ] )			
+
+		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorite in a convenient way' ) )
 
 
 	def GetFavAddons( self ) :

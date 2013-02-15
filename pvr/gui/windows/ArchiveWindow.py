@@ -4,7 +4,8 @@ from pvr.gui.WindowImport import *
 BUTTON_ID_VIEW_MODE				= 100
 BUTTON_ID_SORT_MODE				= 101
 TOGGLEBUTTON_ID_ASC				= 102
-RADIIOBUTTON_ID_EXTRA			= 104
+RADIOBUTTON_ID_EXTRA			= 104
+RADIOBUTTON_ID_WATCHED			= 200
 
 LABEL_ID_PLAY_NAME				= 401
 PROGRESS_ID_PLAY_PROGRESS		= 402
@@ -93,6 +94,10 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
 			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
+			self.mCtrlHideWatched = self.getControl( RADIOBUTTON_ID_WATCHED )
+			if self.mDataCache.GetDefaultHideWatched( ) :
+				self.mDataCache.SetDefaultHideWatched( False )
+				self.mCtrlHideWatched.setSelected( False )
 
 			self.mAscending = []
 			self.mAscending = [ False, False, False, False, False ]
@@ -251,8 +256,13 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateList( )
 			self.SelectLastRecordKey( )						
 
-		elif aControlId == RADIIOBUTTON_ID_EXTRA :
+		elif aControlId == RADIOBUTTON_ID_EXTRA :
 			pass
+
+		elif aControlId == RADIOBUTTON_ID_WATCHED :
+			self.Load( )
+			self.UpdateList( )
+			self.SetFocusList( self.mViewMode )
 
 
 	def onFocus( self, controlId ) :
@@ -278,6 +288,12 @@ class ArchiveWindow( BaseWindow ) :
 					self.UpdatePlayStatus( )
 
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
+				if self.mCtrlHideWatched.isSelected( ) :
+					self.Load( )
+					self.UpdateList( )
+					self.SetFocusList( self.mViewMode )
+					return
+
 				isPlay = False
 				if self.mPlayingRecord :
 					isPlay = True
@@ -348,7 +364,10 @@ class ArchiveWindow( BaseWindow ) :
 
 		LOG_TRACE( '----------------------------------->' )
 		try :
-			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType )
+			isHideWatched = False
+			if self.mCtrlHideWatched.isSelected( ) :
+				isHideWatched = True
+			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType, isHideWatched )
 			if self.mRecordList == None :
 				self.mRecordCount = 0
 			else :
@@ -437,7 +456,11 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@SetLock
-	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :	
+	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
+		if not self.mRecordList or len( self.mRecordList ) < 1 :
+			LOG_TRACE( 'RecordList item is empty' )
+			return
+
 		thumbIcon = 'RecIconSample.png'
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'

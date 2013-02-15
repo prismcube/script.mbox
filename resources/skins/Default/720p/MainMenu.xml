@@ -41,7 +41,7 @@
 				<posx>0</posx>
 				<posy>70</posy>
 				<onup>9000</onup>
-				<ondown>21</ondown>
+				<ondown>101</ondown>
 
 				<!-- Install Sub -->
 				<control type="grouplist" id="9010">
@@ -51,7 +51,7 @@
 					<height>35</height>
 					<align>center</align>
 					<onup>9000</onup>
-					<ondown>21</ondown>
+					<ondown>101</ondown>
 					<itemgap>0</itemgap>
 					<orientation>Horizontal</orientation>
 					<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
@@ -111,7 +111,7 @@
 					<height>35</height>
 					<align>center</align>
 					<onup>9000</onup>
-					<ondown>21</ondown>
+					<ondown>101</ondown>
 					<itemgap>0</itemgap>
 					<orientation>Horizontal</orientation>
 					<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
@@ -200,9 +200,9 @@
 				<height>60</height>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
-				<onup>21</onup>
+				<onup>101</onup>
 				<ondown condition="Control.IsVisible(9001)">9001</ondown>
-				<ondown condition="!Control.IsVisible(9001)">21</ondown>
+				<ondown condition="!Control.IsVisible(9001)">101</ondown>
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>300</scrolltime>
 				<focusposition>2</focusposition>
@@ -349,12 +349,24 @@
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<control type="label">
 				<description>MainMenuDescription</description>
+				<visible>Control.HasFocus(9000)</visible>
 				<posx>1250</posx>
 				<posy>-27</posy>
 				<width>1145</width>
 				<height>30</height>
 				<font>font12</font>
 				<label>$INFO[Container(9000).ListItem.Label2]</label>
+				<align>right</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="100">
+				<description>MainMenuDescription</description>
+				<visible>!Control.HasFocus(9000)</visible>
+				<posx>1250</posx>
+				<posy>-27</posy>
+				<width>1145</width>
+				<height>30</height>
+				<font>font12</font>
 				<align>right</align>
 				<textcolor>white</textcolor>
 			</control>
@@ -383,11 +395,11 @@
 		</control>
 
 		<!-- Favorite addons -->
-		<control type="group" id="10">
+		<control type="group">
 			<posx>20</posx>
 			<posy>55r</posy>
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<control type="button" id="21">
+			<control type="button" id="101">
 				<description>Favourites push button</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -399,8 +411,8 @@
 				<onclick>SendClick(90500)</onclick>
 				<texturefocus border="5">floor_buttonFO.png</texturefocus>
 				<texturenofocus border="5">floor_button.png</texturenofocus>
-				<onleft>21</onleft>
-				<onright>21</onright>
+				<onleft>101</onleft>
+				<onright>101</onright>
 				<onup condition="Control.IsVisible(9001)">9001</onup>
 				<onup condition="!Control.IsVisible(9001)">9000</onup>
 				<ondown>9000</ondown>
