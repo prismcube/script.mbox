@@ -1203,6 +1203,53 @@ class SystemUpdate( SettingWindow ) :
 			if aShowProgress :
 				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
 			unpackFile = '%s/%s'% ( usbPath, item[1] )
+			iFileMD5 = GetUnpackByMD5( unpackFile )
+			iRealMD5 = CheckMD5Sum( unpackFile )
+			LOG_TRACE( '--------------verify check file[%s] get[%s] md5[%s]'% ( unpackFile, iFileMD5, iRealMD5 ) )
+			if not iFileMD5 or not iRealMD5 or iFileMD5 != iRealMD5 :
+				LOG_TRACE( '--------------verify err file[%s] get[%s] md5[%s]'% ( unpackFile, iFileMD5, iRealMD5 ) )
+				isVerify = False
+				break
+
+			if aShowProgress and dialogProgress.iscanceled( ) :
+				LOG_TRACE( '--------------abort(verified)' )
+				isVerify = False
+				break
+
+			time.sleep( 0.2 )
+
+		if aShowProgress :
+			dialogProgress.close( )
+
+		self.CloseBusyDialog( )
+		time.sleep( 0.3 )
+
+		return isVerify
+
+
+	#--deprecated, old check
+	def VerifiedUnPack_Old( self, aZipFile, aShowProgress = True ) :
+		fileList = GetUnpackFiles( aZipFile )
+		if not fileList :
+			return False
+
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			return False
+
+		self.OpenBusyDialog( )
+		if aShowProgress :
+			dialogProgress = xbmcgui.DialogProgress( )
+			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
+
+		isVerify = True
+		totalFiles = len( fileList )
+		idx = 0
+		for item in fileList :
+			idx += 1
+			if aShowProgress :
+				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
+			unpackFile = '%s/%s'% ( usbPath, item[1] )
 			unpackSize = GetFileSize( unpackFile )
 			if item[0] != unpackSize :
 				LOG_TRACE( '--------------verify err pack[%s] unPack[%s] file[%s]'% ( item[0], unpackSize, unpackFile ) )
