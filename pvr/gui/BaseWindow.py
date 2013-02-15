@@ -117,9 +117,43 @@ class RelayAction( object ) :
 		return self.mActionId
 
 
-class BaseWindow( xbmcgui.WindowXML, Property ) :
+class SingleWindow( object ) :
 	def __init__( self, *args, **kwargs ) :
-		xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+			self.mRootWindow = args[0]
+
+	def getProperty( self, aKey ) :
+		return self.mRootWindow.getProperty( aKey )
+
+	def setProperty( self, aKey, aValue ) :
+		self.mRootWindow.setProperty( aKey, aValue )
+
+	def getControl( self, aControlId ) :
+		control = self.mRootWindow.getControl( aControlId )
+		LOG_TRACE( 'aControlId=%d control=%s' %( aControlId, control ) )
+		return control
+		
+	def setFocusId( self, aControlId ) :
+		self.mRootWindow.setFocusId( aControlId )	
+
+	def getFocusId( self  ) :
+		self.mRootWindow.getFocusId(  )	
+
+
+#class BaseWindow( xbmcgui.WindowXML, Property. ) :
+class BaseWindow( SingleWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+			SingleWindow.__init__( self, *args, **kwargs )
+		else :
+			xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+
+		self.BaseInit( )
+
+	def SetRootWindow( self, aRootWindow ) :
+		self.mRootWindow = aRootWindow		
+		
+
+	def BaseInit( self ):
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
@@ -136,7 +170,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mIsActivate = False
 		self.mRelayAction = None
 		self.setProperty( 'IsCustomWindow', 'True' )
-
+	
 
 	@classmethod
 	def GetName( cls ):

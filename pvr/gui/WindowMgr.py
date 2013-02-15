@@ -113,6 +113,10 @@ class WindowMgr( object ) :
 		DiaMgr.GetInstance( )
 
 
+	def GetCurrentWindow( self ) :
+		return weakref.proxy( self.mWindows[self.mLastId] )
+
+
 	def GetWindow( self, aWindowId ) :
 		LOG_TRACE( 'GetWindow ID=%d' % aWindowId )
 		try :
@@ -153,11 +157,18 @@ class WindowMgr( object ) :
 				SetLock2( True )
 				self.mLastId = aWindowId
 				SetLock2( False )
-				self.mWindows[self.mLastId].ClearRelayAction( )
-				self.mWindows[currentId].close( )
-				self.mWindows[currentId].SetActivate( False )
-				if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :					
-					xbmc.executebuiltin('xbmc.Action(dvbres21)')				
+
+
+				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+					LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					self.mWindows[aWindowId].onInit( )				
+				else :
+					self.mWindows[self.mLastId].ClearRelayAction( )
+					self.mWindows[currentId].close( )
+					self.mWindows[currentId].SetActivate( False )
+					if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :					
+						xbmc.executebuiltin('xbmc.Action(dvbres21)')				
 
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
@@ -182,14 +193,27 @@ class WindowMgr( object ) :
 					SetLock2( True )					
 					self.mLastId = parentId					
 					SetLock2( False )
-					self.mWindows[currentId].close( )
-					self.mWindows[currentId].SetActivate( False )
-					if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
-						xbmc.executebuiltin('xbmc.Action(dvbres21)')					
+
+					if E_SUPPORT_SINGLE_WINDOW_MODE == True :					
+						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						self.mWindows[aWindowId].onInit( )									
+					else :
+						self.mWindows[currentId].close( )
+						self.mWindows[currentId].SetActivate( False )
+						if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
+							xbmc.executebuiltin('xbmc.Action(dvbres21)')
+					
 					#self.mWindows[parentId].doModal( )
 				else :				
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
-					self.mLastId = WIN_ID_NULLWINDOW					
+					self.mLastId = WIN_ID_NULLWINDOW
+
+					if E_SUPPORT_SINGLE_WINDOW_MODE == True :					
+						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						self.mWindows[aWindowId].onInit( )									
+					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
 			else :
@@ -202,7 +226,10 @@ class WindowMgr( object ) :
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow
-		self.mRootWindow = RootWindow( 'RootWindow.xml', self.mScriptDir )
+		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+			self.mRootWindow = RootWindow( 'SingleRootWindow.xml', self.mScriptDir )
+		else :
+			self.mRootWindow = RootWindow( 'RootWindow.xml', self.mScriptDir )		
 
 
 	def CreateAllWindows( self ) :
@@ -216,71 +243,135 @@ class WindowMgr( object ) :
 			import inspect
 			for member in inspect.getmembers( self.mWindows[WIN_ID_NULLWINDOW] ) :
 				LOG_TRACE( 'member=%s' %member[0] )
-			"""				
+			"""
 			from pvr.gui.windows.NullWindow import NullWindow
-			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
+			else :
+				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
+
+				
 			LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
 
 			from pvr.gui.windows.MainMenu import MainMenu
-			self.mWindows[WIN_ID_MAINMENU]=MainMenu( 'MainMenu.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_MAINMENU] = MainMenu( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_MAINMENU]=MainMenu( 'MainMenu.xml', self.mScriptDir )
 
 			from pvr.gui.windows.ChannelListWindow import ChannelListWindow
-			self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow( 'ChannelListWindow.xml', self.mScriptDir )
-			#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW] = ChannelListWindow( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow( 'ChannelListWindow.xml', self.mScriptDir )
 
 			from pvr.gui.windows.LivePlate import LivePlate
-			self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate( 'LivePlate.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_LIVE_PLATE] = LivePlate( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate( 'LivePlate.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
-			self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate( 'TimeshiftPlate.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_TIMESHIFT_PLATE] = TimeShiftPlate( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate( 'TimeshiftPlate.xml', self.mScriptDir )
 
 			from pvr.gui.windows.Configure import Configure	
-			self.mWindows[WIN_ID_CONFIGURE]=Configure( 'Configure.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIGURE] = Configure( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIGURE]=Configure( 'Configure.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.Installation import Installation	
-			self.mWindows[WIN_ID_INSTALLATION]=Installation( 'Installation.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_INSTALLATION] = Installation( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_INSTALLATION]=Installation( 'Installation.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.AntennaSetup import AntennaSetup
-			self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup( 'AntennaSetup.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_ANTENNA_SETUP] = AntennaSetup( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup( 'AntennaSetup.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.TunerConfiguration import TunerConfiguration
-			self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration( 'TunerConfiguration.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_TUNER_CONFIGURATION] = TunerConfiguration( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration( 'TunerConfiguration.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple( 'SatelliteConfigSimple.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_SIMPLE] = SatelliteConfigSimple( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple( 'SatelliteConfigSimple.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals( 'SatelliteConfigMotorizedUsals.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS] = SatelliteConfigMotorizedUsals( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals( 'SatelliteConfigMotorizedUsals.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12( 'SatelliteConfigMotorized12.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12] = SatelliteConfigMotorized12( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12( 'SatelliteConfigMotorized12.xml', self.mScriptDir )
 
 			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
-			self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable( 'SatelliteConfigOnecable.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_ONECABLE] = SatelliteConfigOnecable( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable( 'SatelliteConfigOnecable.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
-			self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2( 'SatelliteConfigOnecable2.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_ONECABLE_2] = SatelliteConfigOnecable2( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2( 'SatelliteConfigOnecable2.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10( 'SatelliteConfigDisEqC10.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_DISEQC_10] = SatelliteConfigDisEqC10( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10( 'SatelliteConfigDisEqC10.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11( 'SatelliteConfigDisEqC11.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONFIG_DISEQC_11] = SatelliteConfigDisEqC11( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11( 'SatelliteConfigDisEqC11.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ChannelSearch import ChannelSearch
-			self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch( 'ChannelSearch.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CHANNEL_SEARCH] = ChannelSearch( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch( 'ChannelSearch.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.AutomaticScan import AutomaticScan	
-			self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan( 'AutomaticScan.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_AUTOMATIC_SCAN] = AutomaticScan( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan( 'AutomaticScan.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ManualScan import ManualScan
-			self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan( 'ManualScan.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_MANUAL_SCAN] = ManualScan( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan( 'ManualScan.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EditSatellite import EditSatellite
-			self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite( 'EditSatellite.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_EDIT_SATELLITE] = EditSatellite( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite( 'EditSatellite.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EditTransponder import EditTransponder
-			self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder( 'EditTransponder.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_EDIT_TRANSPONDER] = EditTransponder( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder( 'EditTransponder.xml', self.mScriptDir )
 
 			"""
 			#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
@@ -288,28 +379,52 @@ class WindowMgr( object ) :
 			"""
 
 			from pvr.gui.windows.SystemInfo import SystemInfo
-			self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo( 'SystemInfo.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo( 'SystemInfo.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ArchiveWindow import ArchiveWindow
-			self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow( 'ArchiveWindow.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow( 'ArchiveWindow.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EPGWindow import EPGWindow
-			self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow( 'EPGWindow.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow( 'EPGWindow.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.MediaCenter import MediaCenter
-			self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter( 'MediaCenter.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter( 'MediaCenter.xml', self.mScriptDir )
 
 			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
-			self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess( 'ConditionalAccess.xml', self.mScriptDir ) 
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess( 'ConditionalAccess.xml', self.mScriptDir ) 
 
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
-			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimerWindow import TimerWindow
-			self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
 
 			from pvr.gui.windows.InfoPlate import InfoPlate
-			self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
 
 			"""
 			from pvr.gui.windows.FavoriteAddons import FavoriteAddons
@@ -317,17 +432,30 @@ class WindowMgr( object ) :
 			"""
 			
 			from pvr.gui.windows.Favorites import Favorites
-			self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
 			
 
 			from pvr.gui.windows.Help import Help
-			self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_HELP] = Help( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
-			self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 
 			from pvr.HiddenTest import HiddenTest
-			self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
+			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow  )
+			else :
+				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
+
 
 			"""
 			#test

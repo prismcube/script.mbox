@@ -30,6 +30,17 @@ E_MODE_SHOW				= 0
 E_MODE_DOMODAL			= 1
 E_WINDOW_ATIVATE_MODE	= E_MODE_DOMODAL
 
+# SUPPORT SINGLE WINDOW
+E_SUPPORT_SINGLE_WINDOW_MODE	= True
+
+if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+	E_BASE_WINDOW_ID			= 1000000
+	E_BASE_WINDOW_UNIT			= 100000	
+else :
+	E_BASE_WINDOW_ID			= 0
+	E_BASE_WINDOW_UNIT			= 1
+
+
 ############################ Windows ############################
 # Setting Window Control Ids
 E_SpinEx01			= 1100
