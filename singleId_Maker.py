@@ -295,7 +295,8 @@ def test2( ) :
 	InitDir( )
 	global E_ID_SINGLE_CONVERT 
 
-	mboxDir = os.path.abspath( currDir + '/../script.mbox' )
+	mboxDir = os.path.abspath( os.getcwd() + '/../script.mbox' )
+	confluenceDir = os.path.join( mboxDir, 'resources/skins/Default/720p' )
 
 	testSource = [ 'RootWindow.xml', 'NullWindow.xml', 'MainMenu.xml', 'ChannelListWindow.xml', 'LivePlate.xml'  ]
 
@@ -304,7 +305,7 @@ def test2( ) :
 	global E_ID_SINGLE_CONVERT 
 	for item in testSource :
 		E_ID_SINGLE_CONVERT = idDefault + ( count * 100000 )
-		iFile = os.path.join( mboxDir, item )
+		iFile = os.path.join( confluenceDir, item )
 		ParseSource( iFile )
 		count += 1
 
