@@ -82,7 +82,7 @@ E_IDS_SINGLE_WINDOW = {
 	}
 
 E_ID_EXCEPTION = [
-	8800,
+#	8800,
 	8899
 	]
 
@@ -266,6 +266,45 @@ def test( ) :
 
 	print strs
 
+"""
+WIN_ID_NULLWINDOW 					= 1
+WIN_ID_MAINMENU 					= 2
+WIN_ID_CHANNEL_LIST_WINDOW			= 3
+WIN_ID_LIVE_PLATE					= 4
+
+WIN_ID_CONFIGURE					= 5
+WIN_ID_ANTENNA_SETUP				= 6
+WIN_ID_TUNER_CONFIGURATION			= 7
+WIN_ID_CONFIG_SIMPLE				= 8
+WIN_ID_CONFIG_MOTORIZED_12			= 9
+WIN_ID_CONFIG_MOTORIZED_USALS		= 10
+WIN_ID_CONFIG_ONECABLE				= 12
+WIN_ID_CONFIG_ONECABLE_2			= 13
+WIN_ID_CONFIG_DISEQC_10				= 14
+WIN_ID_CONFIG_DISEQC_11				= 15
+WIN_ID_CHANNEL_SEARCH				= 16
+WIN_ID_AUTOMATIC_SCAN				= 17
+WIN_ID_MANUAL_SCAN					= 18
+WIN_ID_TIMESHIFT_PLATE				= 19
+WIN_ID_CHANNEL_EDIT_WINDOW			= 20
+WIN_ID_EDIT_SATELLITE				= 21
+WIN_ID_EDIT_TRANSPONDER				= 22
+WIN_ID_ARCHIVE_WINDOW				= 23
+WIN_ID_SYSTEM_INFO					= 24
+WIN_ID_INSTALLATION					= 25
+WIN_ID_MEDIACENTER					= 26
+WIN_ID_EPG_WINDOW					= 27
+WIN_ID_CONDITIONAL_ACCESS			= 28
+WIN_ID_FIRST_INSTALLATION			= 29
+WIN_ID_TIMER_WINDOW					= 30
+WIN_ID_INFO_PLATE					= 31
+#WIN_ID_FAVORITE_ADDONS				= 32
+WIN_ID_FAVORITES					= 32
+WIN_ID_SYSTEM_UPDATE				= 33
+WIN_ID_HELP							= 34
+WIN_ID_HIDDEN_TEST					= 99
+"""
+
 
 def test2( ) :
 	InitDir( )
@@ -274,7 +313,14 @@ def test2( ) :
 	mboxDir = os.path.abspath( os.getcwd() + '/../script.mbox' )
 	confluenceDir = os.path.join( mboxDir, 'resources/skins/Default/720p' )
 
-	testSource = [ 'RootWindow.xml', 'NullWindow.xml', 'MainMenu.xml', 'ChannelListWindow.xml', 'LivePlate.xml'  ]
+	testSource = [ 'mbox_includes.xml',
+	'NullWindow.xml', 'MainMenu.xml', 'ChannelListWindow.xml', 'LivePlate.xml', 'Configure.xml',
+	'AntennaSetup.xml', 'TunerConfiguration.xml', ' SatelliteConfigSimple.xml', 'SatelliteConfigMotorized12.xml', 'SatelliteConfigMotorizedUsals.xml',
+	'skip.xml', 'SatelliteConfigOnecable.xml', 'SatelliteConfigOnecable2.xml', 'SatelliteConfigDisEqC10.xml', 'SatelliteConfigDisEqC11.xml',
+	'ChannelSearch.xml', 'AutomaticScan.xml','ManualScan.xml','TimeshiftPlate.xml', 'skip.xml',
+	'EditSatellite.xml', 'EditTransponder.xml', 'ArchiveWindow.xml', 'SystemInfo.xml', 'Installation.xml',
+	'MediaCenter.xml', 'EPGWindow.xml', 'ConditionalAccess.xml', 'FirstInstallation.xml', 'TimerWindow.xml',
+	'skip.xml', 'Favorites.xml', 'SystemUpdate.xml', 'Help.xml' ]
 
 	idDefault = 1000000
 	count = 0

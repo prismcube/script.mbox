@@ -118,7 +118,7 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, aDescriptionNext ) )
 
 
-	def ShowDescription( self, aFocusId ) :
+	def ShowDescription( self, aFocusId, aCustomId=0 ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -126,7 +126,10 @@ class SettingWindow( BaseWindow ) :
 			if self.HasControlItem( ctrlItem, aFocusId ) :
 				if ctrlItem.mDescription == None :
 					return False
-				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
+				if aCustomId > 0 :
+					self.getControl( aCustomId ).setLabel( ctrlItem.mDescription )				
+				else :
+					self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
 		return False
 
 

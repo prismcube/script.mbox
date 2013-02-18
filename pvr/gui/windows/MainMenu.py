@@ -73,7 +73,7 @@ class MainMenu( BaseWindow ) :
 
 
 	def onInit( self ) :
-		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )
+		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetVisibleRss( )
 		self.SetFrontdisplayMessage( 'Main Menu' )

@@ -1,5 +1,12 @@
 from pvr.gui.WindowImport import *
 
+E_ANTENNA_SETUP_BASE_ID				=  WinMgr.WIN_ID_ANTENNA_SETUP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+E_ANTENNA_SETUP_SUBMENU_LIST_ID		=  E_ANTENNA_SETUP_BASE_ID + 9000
+
+
+E_ANTENNA_SETUP_DEFAULT_FOCUS_ID	=  E_ANTENNA_SETUP_SUBMENU_LIST_ID
+
+
 
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -7,13 +14,14 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
+
 		self.SetActivate( True )
 		
 		self.SetFrontdisplayMessage( 'Antenna Setup' )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
+		self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( False )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )
@@ -26,9 +34,11 @@ class AntennaSetup( SettingWindow ) :
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', MR_LANG( 'Tuner 2 Control' ), MR_LANG( 'Select a control method for tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
-		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
+		self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( True )
+		self.setFocusId( E_ANTENNA_SETUP_DEFAULT_FOCUS_ID )		
 
 		self.InitControl( )
+
 		time.sleep( 0.2 )
 		self.DisableControl( )
 		self.setDefaultControl( )
@@ -57,7 +67,9 @@ class AntennaSetup( SettingWindow ) :
 				self.mTunerMgr.Load( )
 				self.mTunerMgr.SetNeedLoad( False )
 
-		
+
+
+
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return

@@ -136,7 +136,7 @@ class SingleWindow( object ) :
 		self.mRootWindow.setFocusId( aControlId )	
 
 	def getFocusId( self  ) :
-		self.mRootWindow.getFocusId(  )	
+		return self.mRootWindow.getFocusId(  )	
 
 
 #class BaseWindow( xbmcgui.WindowXML, Property. ) :
@@ -178,16 +178,19 @@ class BaseWindow( SingleWindow ) :
 
 
 	def IsActivate( self ) :
-		return self.mIsActivate
+		return True	#not use
+		#return self.mIsActivate
 		
 
 	def SetActivate( self, aActivate ) :
+		return
 		SetLock2( True )
 		self.mIsActivate = aActivate
 		SetLock2( False )
 
 
 	def SetRelayAction( self, aAction ) :
+		return
 		LOG_TRACE( 'RelayAction TEST = %d' %aAction.getId() )
 		self.mRelayAction = aAction
 		LOG_TRACE( 'RelayAction TEST = %d' %self.mRelayAction.getId() )

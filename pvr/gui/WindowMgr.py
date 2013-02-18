@@ -197,7 +197,7 @@ class WindowMgr( object ) :
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :					
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mWindows[aWindowId].onInit( )									
+						self.mWindows[currentId].onInit( )									
 					else :
 						self.mWindows[currentId].close( )
 						self.mWindows[currentId].SetActivate( False )
@@ -553,19 +553,24 @@ class WindowMgr( object ) :
 		print 'skinName=%s' %skinName
 
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
+
+		mboxInclude = 'mbox_includes.xml'
+
+		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+			mboxInclude = 'mbox_single_includes.xml'
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
-			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml' )
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', mboxInclude )
 
 		else : 
-			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml' )
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', skinName, '720p', mboxInclude )
 
 			if not os.path.isfile( mboxIncludePath ) :
-				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml' )			
+				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', mboxInclude )			
 			
 		print 'mboxIncludePath=%s' %mboxIncludePath	
 
-		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir( ), '720p', 'mbox_includes.xml' )
+		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir( ), '720p', mboxInclude )
 		print 'skinIncludePath=%s' %skinIncludePath	
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
 

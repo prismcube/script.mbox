@@ -97,9 +97,10 @@ class RootWindow( xbmcgui.WindowXML ) :
 		
  
 	def onFocus( self, aControlId ) :
-		LOG_TRACE( '' )
+		LOG_TRACE( '------------------------------###############################------------------------------ focus=%d' %aControlId )
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :		
-			WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )				
+			LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )		
+			WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )
 		
 
 	def CheckFirstRun( self ) :
