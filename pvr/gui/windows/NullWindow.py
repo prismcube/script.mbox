@@ -329,9 +329,34 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
-			dialog.doModal( )
+			subTitleCount = self.mCommander.Subtitle_GetCount( )
+			if subTitleCount > 0 :
+				context = []
+				structSubTitle = []
+				for i in range( subTitleCount ) :
+					structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
+					context.append( ContextItem( structSubTitle[i].mLanguage[11:], i ) )
+
+				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+
+				selectAction = dialog.GetSelectedAction( )
+				if selectAction == -1 :
+					return
+				elif selectAction >= 0 and subTitleCount > selectAction :
+					self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+					self.mCommander.Subtitle_Show( )
+
+				elif selectAction == subTitleCount :
+					self.mCommander.Subtitle_Hide( )
+
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'No teletext available' ) )
+				dialog.doModal( )	
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )
