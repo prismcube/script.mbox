@@ -50,6 +50,7 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
 		self.LoadNoSignalState( )
+		#self.CheckSubTitle( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
@@ -330,12 +331,41 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			subTitleCount = self.mCommander.Subtitle_GetCount( )
+			print 'dhkim test subTitleCount = %s' % subTitleCount
 			if subTitleCount > 0 :
+				isShowing = False
+				if self.mCommander.Subtitle_IsShowing( ) :
+					self.mCommander.Subtitle_Hide( )
+					isShowing = True
+
+				selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
+
+				#####
+				if selectedSubtitle :
+					print 'dhkim test selected subtitle'
+					selectedSubtitle.printdebug( )
+				#####
+			
 				context = []
 				structSubTitle = []
+
 				for i in range( subTitleCount ) :
+					isRunning = ''
 					structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
-					context.append( ContextItem( structSubTitle[i].mLanguage[11:], i ) )
+					print 'dhkim test ####'
+					self.mCommander.Subtitle_Get( i ).printdebug( )
+					print 'dhkim test ####'
+
+					if selectedSubtitle :
+						if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
+							isRunning = 'Running '
+					
+					if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+						subType = 'DVB'
+					else :
+						subType = 'TTX'
+
+					context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
 				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
 
@@ -344,8 +374,9 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 				selectAction = dialog.GetSelectedAction( )
-				if selectAction == -1 :
-					return
+				if selectAction == -1 and isShowing :
+					self.mCommander.Subtitle_Show( )
+
 				elif selectAction >= 0 and subTitleCount > selectAction :
 					self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
 					self.mCommander.Subtitle_Show( )
@@ -581,6 +612,9 @@ class NullWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
+		if self.mCommander.Subtitle_IsShowing( ) :
+			self.mCommander.Subtitle_Hide( )
+
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
@@ -613,3 +647,9 @@ class NullWindow( BaseWindow ) :
 		channel = self.mDataCache.Channel_GetList( )
 		if not channel or len( channel ) < 1 :
 			self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+
+
+	def CheckSubTitle( self ) :
+		selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
+		if selectedSubtitle :
+			self.mCommander.Subtitle_Show( )
