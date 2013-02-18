@@ -14,27 +14,36 @@ else:
 E_VERSION						=	0
 E_HDD							=	1
 
-GROUP_ID_MAIN					=	3000
+E_SYSTEM_INFO_BASE_ID			=  WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
-LABEL_ID_PRODUCT_NAME			=	2500
-LABEL_ID_PRODUCT_NUMBER			=	2501
-LABEL_ID_HARDWARE_VERSION		=	2502
-LABEL_ID_SOFTWARE_VERSION		=	2503
-LABEL_ID_BOOTLOADER_VERSION		=	2504
+GROUP_ID_MAIN					=	E_SYSTEM_INFO_BASE_ID + 3000
 
-LABEL_ID_HDD_NAME				=	2600
-LABEL_ID_HDD_SIZE_MEDIA			=	2602
-LABEL_ID_HDD_SIZE_PROGRAM		=	2603
-LABEL_ID_HDD_SIZE_RECORD		=	2604
-LABEL_ID_HDD_TEMEPERATURE		=	2605
+LABEL_ID_PRODUCT_NAME			=	E_SYSTEM_INFO_BASE_ID + 2500
+LABEL_ID_PRODUCT_NUMBER			=	E_SYSTEM_INFO_BASE_ID + 2501
+LABEL_ID_HARDWARE_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2502
+LABEL_ID_SOFTWARE_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2503
+LABEL_ID_BOOTLOADER_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2504
 
-PROGRESS_ID_HDD_SIZE_MEDIA		=	2702
-PROGRESS_ID_HDD_SIZE_PROGRAM	=	2703
-PROGRESS_ID_HDD_SIZE_RECORD		=	2704
+LABEL_ID_HDD_NAME				=	E_SYSTEM_INFO_BASE_ID + 2600
+LABEL_ID_HDD_SIZE_MEDIA			=	E_SYSTEM_INFO_BASE_ID + 2602
+LABEL_ID_HDD_SIZE_PROGRAM		=	E_SYSTEM_INFO_BASE_ID + 2603
+LABEL_ID_HDD_SIZE_RECORD		=	E_SYSTEM_INFO_BASE_ID + 2604
+LABEL_ID_HDD_TEMEPERATURE		=	E_SYSTEM_INFO_BASE_ID + 2605
+
+PROGRESS_ID_HDD_SIZE_MEDIA		=	E_SYSTEM_INFO_BASE_ID + 2702
+PROGRESS_ID_HDD_SIZE_PROGRAM	=	E_SYSTEM_INFO_BASE_ID + 2703
+PROGRESS_ID_HDD_SIZE_RECORD		=	E_SYSTEM_INFO_BASE_ID + 2704
+
+
+E_SYSTEM_INFO_SUBMENU_LIST_ID	=   E_SYSTEM_INFO_BASE_ID + 9000
+E_SYSTEM_INFO_DEFAULT_FOCUS_ID	=   E_SYSTEM_INFO_SUBMENU_LIST_ID
+
+
 
 TIME_SEC_CHECK_HDD_TEMP			=	0.05
 
-LIST_ID_MENU					=	9000
+
+
 
 
 class SystemInfo( SettingWindow ) :
@@ -60,7 +69,7 @@ class SystemInfo( SettingWindow ) :
 		
 		self.mGroupItems 				= []
 		self.mCheckHddTempTimer			= None
-		self.mLastFocused 				= E_SUBMENU_LIST_ID
+		self.mLastFocused 				= E_SYSTEM_INFO_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0
 		self.mEnableLocalThread 		= True
 
@@ -72,6 +81,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onInit( self )  :
+		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )		
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'System Info' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -83,7 +93,7 @@ class SystemInfo( SettingWindow ) :
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
 
-		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
+		self.mCtrlLeftGroup = self.getControl( E_SYSTEM_INFO_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
 		self.mCtrlVersionProductName	= self.getControl( LABEL_ID_PRODUCT_NAME )
@@ -109,7 +119,6 @@ class SystemInfo( SettingWindow ) :
 		
 		self.SetListControl( )
 		self.mPrevListItemID = -1
-		self.setFocusId( LIST_ID_MENU )
 		self.mInitialized = True
 
 
@@ -134,12 +143,12 @@ class SystemInfo( SettingWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
+			if focusId == E_SYSTEM_INFO_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
 				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 				self.SetListControl( )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
+			if focusId == E_SYSTEM_INFO_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
 				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 				self.SetListControl( )
 
@@ -176,7 +185,7 @@ class SystemInfo( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
-			if aControlId == E_SUBMENU_LIST_ID :
+			if aControlId == E_SYSTEM_INFO_SUBMENU_LIST_ID :
 				self.SetListControl( )
 				if self.mLastFocused != aControlId :
 					self.mLastFocused = aControlId
