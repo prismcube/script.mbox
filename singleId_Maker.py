@@ -15,6 +15,7 @@ E_ID_BASE = 1000000
 E_ID_SINGLE_CONVERT = 1000000
 
 E_IDS_SINGLE_WINDOW = [
+	['mbox_includes.xml', 0],
 	['NullWindow.xml', 1],
 	['MainMenu.xml', 2],
 	['ChannelListWindow.xml', 3],
@@ -33,7 +34,7 @@ E_IDS_SINGLE_WINDOW = [
 	['AutomaticScan.xml', 17],
 	['ManualScan.xml', 18],
 	['TimeshiftPlate.xml', 19],
-	['ChannelEditWindow.xml', 20],
+	#['ChannelEditWindow.xml', 20],
 	['EditSatellite.xml', 21],
 	['EditTransponder.xml', 22],
 	['ArchiveWindow.xml', 23],
@@ -44,7 +45,7 @@ E_IDS_SINGLE_WINDOW = [
 	['ConditionalAccess.xml', 28],
 	['FirstInstallation.xml', 29],
 	['TimerWindow.xml', 30],
-	['InfoPlate.xml', 31],
+	#['InfoPlate.xml', 31],
 	['Favorites.xml', 32],
 	['SystemUpdate.xml', 33],
 	['Help.xml', 34],
@@ -64,7 +65,7 @@ E_FILE_EXCEPTION = [
 	'confluence_texture_cache.xml',
 	'confluence_texture_cache.xml',
 	'elmo_test.xml',
-	'mbox_includes.xml',
+	#'mbox_includes.xml',
 	#'hiddentest.xml',
 	'help_string.xml',
 	'loading.xml'
@@ -77,12 +78,15 @@ E_PATTERN_STRINGS = [
 	'<onright>(.*)\d+(.*)</onright>',
 	'<onup>(.*)\d+(.*)</onup>',
 	'<ondown>(.*)\d+(.*)</ondown>',
-	'<onclick>\d+</onclick>',
+	'<onclick>(.*)\d+(.*)</onclick>',
+	'<pagecontrol>(.*)\d+(.*)</pagecontrol>',
 
 	#'<onleft>SetFocus\(\d+\)</onleft>',
 	#'<onright>SetFocus\(\d+\)</onright>',
 	#'<onup>SetFocus\(\d+\)</onup>',
 	#'<ondown>SetFocus\(\d+\)</ondown>',
+	#'Control\.Move\(\d+(.*)\)',
+	'\)\">\d+<\/(.*)',
 	'Control\.\D*\(\d+\)',
 	'ControlGroup\(\d+\)\.',
 	'Container\(\d+\)\.'
@@ -216,8 +220,6 @@ def AutoMakeSingleIDs( ) :
 		gParseList[iFile[0]] = iFile[1]
 
 	InitDir( )
-	#openFile = confluenceDir + 'LivePlate.xml'
-	#ParseSource( openFile )
 	FindallSource( confluenceDir, '[a-zA-Z0-9]\w*.xml' )
 	print '\nChangeAll *.xml files[%s]'% gCount
 	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed..')
@@ -225,21 +227,25 @@ def AutoMakeSingleIDs( ) :
 
 
 def test( ) :
-	#strs = '<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | !Control.IsVisible(15)">conditional</animation>'
-	#ret = re.findall( E_PATTERN_STRINGS[9], strs, re.I )
-	#strs = '<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(3620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>'
-	#strs = '<defaultcontrol always="true">3621</defaultcontrol>'
-	#strs = '<defaultcontrol>2222</defaultcontrol>'
-	#strs = '<onup>Control.SetFocus(102,4)</onup>'
-	strs = '<ondown condition="Control.IsVisible(9001)">9001</ondown>'
+	testWord = []
+	testWord.append( '<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | !Control.IsVisible(15)">conditional</animation>' )
+	testWord.append( '<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(3620).HasFocus(1)) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>' )
+	testWord.append( '<defaultcontrol always="true">3621</defaultcontrol>' )
+	testWord.append( '<defaultcontrol>2222</defaultcontrol>' )
+	testWord.append( '<onup>Control.SetFocus(102,4)</onup>' )
+	testWord.append( '<ondown condition="Control.IsVisible(9001)">9001</ondown>' )
+	testWord.append( '<onclick>Control.Move(1903,-1)</onclick>' )
+	testWord.append( '<pagecontrol>203</pagecontrol>' )
+	testWord.append( '<visible>![Container(102).HasFocus(1) | Container(102).HasFocus(5)]</visible>' )
+	testWord.append( '<onclick>SendClick(100)</onclick>' )
+	for strs in testWord :
+		for pattern in E_PATTERN_STRINGS :
+			ret = re.findall( pattern, strs, re.I )
+			if ret :
+				p = re.compile( pattern )
+				strs = p.sub(ChangeIds, strs )
 
-	for pattern in E_PATTERN_STRINGS :
-		ret = re.findall( pattern, strs, re.I )
-		if ret :
-			p = re.compile( pattern )
-			strs = p.sub(ChangeIds, strs )
-
-	print strs
+		print strs
 
 
 def test2( ) :
