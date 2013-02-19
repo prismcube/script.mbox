@@ -9,6 +9,7 @@ from types import *
 gDebug = False
 gParseList   = {}
 gNoParseList = {}
+gIDsMboxInclude = {}
 E_DIR_RESULT = os.getcwd() + '/changeTest'
 
 E_ID_BASE = 1000000
@@ -203,6 +204,16 @@ def ChangeIds( aMatch ) :
 	changeid = E_ID_SINGLE_CONVERT + int( idnumber )
 	#print '----id[%s -> %s] match[%s]'% ( idnumber, changeid, aMatch.group() )
 
+	if E_ID_SINGLE_CONVERT == E_ID_BASE and int( idnumber ) >= 999 :
+		if gIDsMboxInclude.get( idnumber, -1 ) == -1 :
+			gIDsMboxInclude[idnumber] = idnumber
+			#print 'base[%s]'% idnumber
+	else :
+		if gIDsMboxInclude.get( idnumber, -1 ) == idnumber :
+			print '--------get[%s]'% gIDsMboxInclude.get( idnumber, -1 )
+			changeid = E_ID_BASE + int( idnumber )
+
+
 	for pattern in E_PATTERN_EXCEPTION :
 		value = re.findall( pattern, aMatch.group() )
 		if value and value[0] == aMatch.group() :
@@ -231,6 +242,7 @@ def AutoMakeSingleIDs( ) :
 		gParseList[iFile[0]] = iFile[1]
 
 	InitDir( )
+	ParseSource( '%s/mbox_includes.xml'% confluenceDir  )
 	FindallSource( confluenceDir, '[a-zA-Z0-9]\w*.xml' )
 	print '\nChangeAll *.xml files[%s]'% gCount
 	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed..')
