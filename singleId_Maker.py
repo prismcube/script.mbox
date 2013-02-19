@@ -6,80 +6,51 @@ import os, re, shutil, time, sys, glob
 import sgmllib, string
 from types import *
 
+gDebug = False
+gParseList   = {}
 gNoParseList = {}
 E_DIR_RESULT = os.getcwd() + '/changeTest'
 
-E_ID_SINGLE_CONVERT = 50000
-WIN_ID_ROOTWINDOW 					= 0
-WIN_ID_NULLWINDOW 					= 1
-WIN_ID_MAINMENU 					= 2
-WIN_ID_CHANNEL_LIST_WINDOW			= 3
-WIN_ID_LIVE_PLATE					= 4
-WIN_ID_CONFIGURE					= 5
-WIN_ID_ANTENNA_SETUP				= 6
-WIN_ID_TUNER_CONFIGURATION			= 7
-WIN_ID_CONFIG_SIMPLE				= 8
-WIN_ID_CONFIG_MOTORIZED_12			= 9
-WIN_ID_CONFIG_MOTORIZED_USALS		= 10
-WIN_ID_CONFIG_ONECABLE				= 12
-WIN_ID_CONFIG_ONECABLE_2			= 13
-WIN_ID_CONFIG_DISEQC_10				= 14
-WIN_ID_CONFIG_DISEQC_11				= 15
-WIN_ID_CHANNEL_SEARCH				= 16
-WIN_ID_AUTOMATIC_SCAN				= 17
-WIN_ID_MANUAL_SCAN					= 18
-WIN_ID_TIMESHIFT_PLATE				= 19
-WIN_ID_CHANNEL_EDIT_WINDOW			= 20
-WIN_ID_EDIT_SATELLITE				= 21
-WIN_ID_EDIT_TRANSPONDER				= 22
-WIN_ID_ARCHIVE_WINDOW				= 23
-WIN_ID_SYSTEM_INFO					= 24
-WIN_ID_INSTALLATION					= 25
-WIN_ID_MEDIACENTER					= 26
-WIN_ID_EPG_WINDOW					= 27
-WIN_ID_CONDITIONAL_ACCESS			= 28
-WIN_ID_FIRST_INSTALLATION			= 29
-WIN_ID_TIMER_WINDOW					= 30
-WIN_ID_INFO_PLATE					= 31
-#WIN_ID_FAVORITE_ADDONS				= 32
-WIN_ID_FAVORITES					= 32
-WIN_ID_SYSTEM_UPDATE				= 33
-WIN_ID_HELP							= 34
-E_IDS_SINGLE_WINDOW = {
-	'TunerConfiguration.xml' : 50000,
-	'ManualScan.xml' : None,
-	'EditSatellite.xml' : None,
-	'SystemUpdate.xml' : None,
-	'FirstInstallation.xml' : None,
-	'ChannelSearch.xml' : None,
-	'Installation.xml' : None,
-	'TimeshiftPlate.xml' : None,
-	'Help_String.xml' : None,
-	'MediaCenter.xml' : None,
-	'LivePlate.xml' : None,
-	'SystemInfo.xml' : None,
-	'AutomaticScan.xml' : None,
-	'AntennaSetup.xml' : None,
-	'ArchiveWindow.xml' : None,
-	'SatelliteConfigMotorized12.xml' : None,
-	'ChannelListWindow.xml' : None,
-	'EditTransponder.xml' : None,
-	'MainMenu.xml' : None,
-	'ConditionalAccess.xml' : None,
-	'SatelliteConfigSimple.xml' : None,
-	'Favorites.xml' : None,
-	'FavoriteAddons.xml' : None,
-	'Configure.xml' : None,
-	'SatelliteConfigDisEqC11.xml' : None,
-	'Help.xml' : None,
-	'EPGWindow.xml' : None,
-	'TimerWindow.xml' : None,
-	'SatelliteConfigOnecable.xml' : None,
-	'NullWindow.xml' : None,
-	'SatelliteConfigMotorizedUsals.xml' : None,
-	'SatelliteConfigOnecable2.xml' : None,
-	'SatelliteConfigDisEqC10.xml' : None
-	}
+E_ID_BASE = 1000000
+E_ID_SINGLE_CONVERT = 1000000
+
+E_IDS_SINGLE_WINDOW = [
+	['NullWindow.xml', 1],
+	['MainMenu.xml', 2],
+	['ChannelListWindow.xml', 3],
+	['LivePlate.xml', 4],
+	['Configure.xml', 5],
+	['AntennaSetup.xml', 6],
+	['TunerConfiguration.xml', 7],
+	['SatelliteConfigSimple.xml', 8],
+	['SatelliteConfigMotorized12.xml', 9],
+	['SatelliteConfigMotorizedUsals.xml', 10],
+	['SatelliteConfigOnecable.xml', 12],
+	['SatelliteConfigOnecable2.xml', 13],
+	['SatelliteConfigDisEqC10.xml', 14],
+	['SatelliteConfigDisEqC11.xml', 15],
+	['ChannelSearch.xml', 16],
+	['AutomaticScan.xml', 17],
+	['ManualScan.xml', 18],
+	['TimeshiftPlate.xml', 19],
+	['ChannelEditWindow.xml', 20],
+	['EditSatellite.xml', 21],
+	['EditTransponder.xml', 22],
+	['ArchiveWindow.xml', 23],
+	['SystemInfo.xml', 24],
+	['Installation.xml', 25],
+	['MediaCenter.xml', 26],
+	['EPGWindow.xml', 27],
+	['ConditionalAccess.xml', 28],
+	['FirstInstallation.xml', 29],
+	['TimerWindow.xml', 30],
+	['InfoPlate.xml', 31],
+	['Favorites.xml', 32],
+	['SystemUpdate.xml', 33],
+	['Help.xml', 34],
+	['HiddenTest.xml', 99]
+	]
+
 
 E_ID_EXCEPTION = [
 #	8800,
@@ -94,7 +65,7 @@ E_FILE_EXCEPTION = [
 	'confluence_texture_cache.xml',
 	'elmo_test.xml',
 	'mbox_includes.xml',
-	'hiddentest.xml',
+	#'hiddentest.xml',
 	'help_string.xml',
 	'loading.xml'
 	]
@@ -150,19 +121,21 @@ def FindallSource(aDir, patternStr, reqFile=None):
 
 			else :
 				if gNoParseList.get( fname.lower() ) == fname.lower() :
-					#print gNoParseList.get(fname)
+					#print 'noParse[%s]'% gNoParseList.get(fname)
+					continue
+
+				if gParseList.get( fname, -1 ) == -1 :
+					#print 'noParse[%s]'% fname
 					continue
 
 				filename = os.path.splitext( fname )
 				if filename[1] == '.xml' :
-					gCount += 1
 
 					global E_ID_SINGLE_CONVERT 
-					E_ID_SINGLE_CONVERT = E_IDS_SINGLE_WINDOW.get( fname, None )
-					if not E_ID_SINGLE_CONVERT :
-						E_ID_SINGLE_CONVERT = 100000 * gCount 
+					E_ID_SINGLE_CONVERT = E_ID_BASE + ( 100000 * gParseList.get( fname ) )
 
-					print '%s[%s]%s'% ( gCount, E_ID_SINGLE_CONVERT , fname )
+					gCount += 1
+					print '%s[%s]%s'% ( gCount, E_ID_SINGLE_CONVERT , fname ),
 					ParseSource( '%s/%s'% (aDir, fname) )
 					#sys.exit( 11 )
 
@@ -170,7 +143,6 @@ def FindallSource(aDir, patternStr, reqFile=None):
 	return retlist
 
 
-gDebug = False
 def ParseSource( aSourceFile ) :
 	if not aSourceFile :
 		return
@@ -209,14 +181,14 @@ def ParseSource( aSourceFile ) :
 				line = lineM
 
 		if isMatch and gDebug :
-			print count, line
+			print '\033[1;%sm%s\t%s\033[1;m'% ( 30, count, line )
 
 		fp.writelines( '%s\n'% line )
 		count += 1
 
 	fp.close( )
 
-	print '---->changed[%s]'% countM
+	print '\033[1;%sm---->changed[%s]\033[1;m'% ( 32, countM )
 
 
 def ChangeIds( aMatch ) :
@@ -239,6 +211,9 @@ def AutoMakeSingleIDs( ) :
 
 	for iFile in E_FILE_EXCEPTION :
 		gNoParseList[iFile] = iFile
+
+	for iFile in E_IDS_SINGLE_WINDOW :
+		gParseList[iFile[0]] = iFile[1]
 
 	InitDir( )
 	#openFile = confluenceDir + 'LivePlate.xml'
@@ -265,45 +240,6 @@ def test( ) :
 			strs = p.sub(ChangeIds, strs )
 
 	print strs
-
-"""
-WIN_ID_NULLWINDOW 					= 1
-WIN_ID_MAINMENU 					= 2
-WIN_ID_CHANNEL_LIST_WINDOW			= 3
-WIN_ID_LIVE_PLATE					= 4
-
-WIN_ID_CONFIGURE					= 5
-WIN_ID_ANTENNA_SETUP				= 6
-WIN_ID_TUNER_CONFIGURATION			= 7
-WIN_ID_CONFIG_SIMPLE				= 8
-WIN_ID_CONFIG_MOTORIZED_12			= 9
-WIN_ID_CONFIG_MOTORIZED_USALS		= 10
-WIN_ID_CONFIG_ONECABLE				= 12
-WIN_ID_CONFIG_ONECABLE_2			= 13
-WIN_ID_CONFIG_DISEQC_10				= 14
-WIN_ID_CONFIG_DISEQC_11				= 15
-WIN_ID_CHANNEL_SEARCH				= 16
-WIN_ID_AUTOMATIC_SCAN				= 17
-WIN_ID_MANUAL_SCAN					= 18
-WIN_ID_TIMESHIFT_PLATE				= 19
-WIN_ID_CHANNEL_EDIT_WINDOW			= 20
-WIN_ID_EDIT_SATELLITE				= 21
-WIN_ID_EDIT_TRANSPONDER				= 22
-WIN_ID_ARCHIVE_WINDOW				= 23
-WIN_ID_SYSTEM_INFO					= 24
-WIN_ID_INSTALLATION					= 25
-WIN_ID_MEDIACENTER					= 26
-WIN_ID_EPG_WINDOW					= 27
-WIN_ID_CONDITIONAL_ACCESS			= 28
-WIN_ID_FIRST_INSTALLATION			= 29
-WIN_ID_TIMER_WINDOW					= 30
-WIN_ID_INFO_PLATE					= 31
-#WIN_ID_FAVORITE_ADDONS				= 32
-WIN_ID_FAVORITES					= 32
-WIN_ID_SYSTEM_UPDATE				= 33
-WIN_ID_HELP							= 34
-WIN_ID_HIDDEN_TEST					= 99
-"""
 
 
 def test2( ) :
@@ -343,8 +279,8 @@ if __name__ == "__main__":
 			global gDebug
 			gDebug = True
 
-	#AutoMakeSingleIDs( )
+	AutoMakeSingleIDs( )
 	#test( )
-	test2( )
+	#test2( )
 
 
