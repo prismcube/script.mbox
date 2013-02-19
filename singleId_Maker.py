@@ -52,27 +52,8 @@ E_IDS_SINGLE_WINDOW = [
 	['HiddenTest.xml', 99]
 	]
 
-
-E_ID_EXCEPTION = [
-#	8800,
-	8899
-	]
-
-E_FILE_EXCEPTION = [
-	'rootwindow.xml',
-	'settings.xml',
-	'addon.xml',
-	'confluence_texture_cache.xml',
-	'confluence_texture_cache.xml',
-	'elmo_test.xml',
-	#'mbox_includes.xml',
-	#'hiddentest.xml',
-	'help_string.xml',
-	'loading.xml'
-	]
-
 E_PATTERN_STRINGS = [
-	'id=\"\d+\"',
+	'(.*)id=\"\d+\"',
 	'<defaultcontrol(.*)>\d+</defaultcontrol>',
 	'<onleft>(.*)\d+(.*)</onleft>',
 	'<onright>(.*)\d+(.*)</onright>',
@@ -90,6 +71,28 @@ E_PATTERN_STRINGS = [
 	'Control\.\D*\(\d+\)',
 	'ControlGroup\(\d+\)\.',
 	'Container\(\d+\)\.'
+	]
+
+E_ID_EXCEPTION = [
+#	8800,
+	8899
+	]
+
+E_PATTERN_EXCEPTION = [
+	'\s*<item id=\"\d+\"'
+	]
+
+E_FILE_EXCEPTION = [
+	'rootwindow.xml',
+	'settings.xml',
+	'addon.xml',
+	'confluence_texture_cache.xml',
+	'confluence_texture_cache.xml',
+	'elmo_test.xml',
+	#'mbox_includes.xml',
+	#'hiddentest.xml',
+	'help_string.xml',
+	'loading.xml'
 	]
 
 
@@ -200,6 +203,14 @@ def ChangeIds( aMatch ) :
 	changeid = E_ID_SINGLE_CONVERT + int( idnumber )
 	#print '----id[%s -> %s] match[%s]'% ( idnumber, changeid, aMatch.group() )
 
+	for pattern in E_PATTERN_EXCEPTION :
+		value = re.findall( pattern, aMatch.group() )
+		if value and value[0] == aMatch.group() :
+			#print '----pattern[%s] match[%s] except[%s]'% ( pattern, aMatch.group(), value[0] )
+			changeid = idnumber
+			return aMatch.group()
+
+
 	value = re.sub( '\d+', '%s'% changeid, aMatch.group(), 1 )
 	if int( idnumber ) in E_ID_EXCEPTION :
 		value = aMatch.group()
@@ -238,6 +249,7 @@ def test( ) :
 	testWord.append( '<pagecontrol>203</pagecontrol>' )
 	testWord.append( '<visible>![Container(102).HasFocus(1) | Container(102).HasFocus(5)]</visible>' )
 	testWord.append( '<onclick>SendClick(100)</onclick>' )
+	testWord.append( '<item id="6">' )  #<-- must be no changed
 	for strs in testWord :
 		for pattern in E_PATTERN_STRINGS :
 			ret = re.findall( pattern, strs, re.I )
@@ -282,7 +294,6 @@ if __name__ == "__main__":
 
 	if len(param) > 0 :
 		if param[0] == 'debug' :
-			global gDebug
 			gDebug = True
 
 	AutoMakeSingleIDs( )
