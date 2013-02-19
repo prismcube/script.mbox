@@ -133,8 +133,9 @@ class EditTransponder( SettingWindow ) :
 					dialog.doModal( )
 					self.CloseBusyDialog( )
 					return
-				self.mTransponderIndex = 0
+				
 				self.mDataCache.LoadConfiguredTransponder( )
+				self.mTransponderIndex = self.GetEditedPosition( frequency )
 				self.InitConfig( )
 				self.CloseBusyDialog( )
 			else :
@@ -179,8 +180,9 @@ class EditTransponder( SettingWindow ) :
 						dialog.doModal( )
 						self.CloseBusyDialog( )
 						return
-					self.mTransponderIndex = 0
+					
 					self.mDataCache.LoadConfiguredTransponder( )
+					self.mTransponderIndex = self.GetEditedPosition( frequency )
 					self.InitConfig( )
 					self.CloseBusyDialog( )
 				else :
@@ -276,3 +278,14 @@ class EditTransponder( SettingWindow ) :
 
 	def ByFrequency( self, aArg1, aArg2 ) :
 		return cmp( aArg1.mFrequency, aArg2.mFrequency )
+
+
+	def GetEditedPosition( self, aFrequency ) :
+		transponderlist = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
+		transponderlist.sort( self.ByFrequency )
+		for i in range( len( transponderlist ) ) :
+			if transponderlist[i].mFrequency == aFrequency :
+				return i
+
+		return 0
+				
