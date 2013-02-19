@@ -204,14 +204,19 @@ def ChangeIds( aMatch ) :
 	changeid = E_ID_SINGLE_CONVERT + int( idnumber )
 	#print '----id[%s -> %s] match[%s]'% ( idnumber, changeid, aMatch.group() )
 
-	if E_ID_SINGLE_CONVERT == E_ID_BASE and int( idnumber ) >= 999 :
+	if E_ID_SINGLE_CONVERT == E_ID_BASE and int( idnumber ) >= 999 and int( idnumber ) < 8800 :
 		if gIDsMboxInclude.get( idnumber, -1 ) == -1 :
 			gIDsMboxInclude[idnumber] = idnumber
 			#print 'base[%s]'% idnumber
 	else :
-		if gIDsMboxInclude.get( idnumber, -1 ) == idnumber :
-			print '--------get[%s]'% gIDsMboxInclude.get( idnumber, -1 )
-			changeid = E_ID_BASE + int( idnumber )
+
+		ret = re.findall( 'id=\"\d+\"', aMatch.group() )
+		if ret and ret[0][:3] == 'id=' :
+			pass
+		else :
+			if gIDsMboxInclude.get( idnumber, -1 ) == idnumber :
+				#print '--------get[%s]'% gIDsMboxInclude.get( idnumber, -1 )
+				changeid = E_ID_BASE + int( idnumber )
 
 
 	for pattern in E_PATTERN_EXCEPTION :
