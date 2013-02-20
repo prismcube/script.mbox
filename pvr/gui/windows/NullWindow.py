@@ -13,6 +13,7 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = True
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
+			self.mSubTitleIsShow = False
 
 
 	def onInit( self ) :
@@ -50,7 +51,7 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
 		self.LoadNoSignalState( )
-		#self.CheckSubTitle( )
+		self.CheckSubTitle( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
@@ -356,7 +357,7 @@ class NullWindow( BaseWindow ) :
 					self.mCommander.Subtitle_Get( i ).printdebug( )
 					print 'dhkim test ####'
 
-					if selectedSubtitle :
+					if selectedSubtitle and isShowing :
 						if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
 							isRunning = 'Running '
 					
@@ -382,6 +383,7 @@ class NullWindow( BaseWindow ) :
 					self.mCommander.Subtitle_Show( )
 
 				elif selectAction == subTitleCount :
+					self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
 					self.mCommander.Subtitle_Hide( )
 
 			else :
@@ -613,7 +615,10 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 
 		if self.mCommander.Subtitle_IsShowing( ) :
+			self.mSubTitleIsShow = True
 			self.mCommander.Subtitle_Hide( )
+		else :
+			self.mSubTitleIsShow = False
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
@@ -650,6 +655,5 @@ class NullWindow( BaseWindow ) :
 
 
 	def CheckSubTitle( self ) :
-		selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
-		if selectedSubtitle :
+		if self.mSubTitleIsShow :
 			self.mCommander.Subtitle_Show( )
