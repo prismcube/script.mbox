@@ -4903,7 +4903,7 @@
 						<width>720</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(3500))</visible>
+						<visible>!Control.HasFocus(3500)</visible>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
