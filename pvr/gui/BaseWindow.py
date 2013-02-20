@@ -129,7 +129,7 @@ class SingleWindow( object ) :
 
 	def getControl( self, aControlId ) :
 		control = self.mRootWindow.getControl( aControlId )
-		LOG_TRACE( 'aControlId=%d control=%s' %( aControlId, control ) )
+		#LOG_TRACE( 'aControlId=%d control=%s' %( aControlId, control ) )
 		return control
 		
 	def setFocusId( self, aControlId ) :
@@ -204,7 +204,6 @@ class BaseWindow( SingleWindow ) :
 		LOG_TRACE( 'RelayAction TEST' )
 		if self.mRelayAction :
 			LOG_TRACE( 'RelayAction TEST = %d' %self.mRelayAction.getId() )
-			LOG_TRACE( 'RelayAction TEST' )
 			self.onAction( self.mRelayAction )
 			LOG_TRACE( 'RelayAction TEST' )
 			self.mRelayAction = None

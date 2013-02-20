@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
+E_CONFIG_MOTORIZED_USALS_BASE_ID = WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class SatelliteConfigMotorizedUsals( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :

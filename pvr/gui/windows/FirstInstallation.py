@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
+E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class FirstInstallation( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :

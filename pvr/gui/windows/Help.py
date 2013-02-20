@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 from elementtree import ElementTree
 
+E_HELP_BASE_ID = WinMgr.WIN_ID_HELP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+
 
 E_STEP_FEATURES					=	1
 E_STEP_FRONT_PLATE				=	2
@@ -42,23 +44,19 @@ E_STEP_MEDIACENTER	 			=	37
 E_STEP_MEDIACENTER_SETTINGS		=	38
 E_STEP_INSTALL_ADDONS			=	39
 E_STEP_ADDONS					=	40
-	
+
 TOTAL_STEPS 					=	40
-
-E_SETTING_PAGENUM				= 	1004
-
-E_HELP_IMAGE					=	100
-E_HELP_TEXTBOX					= 	200
 E_MAXIMUM_TEXTBOX_NUM			=	3
 
-E_HELP_PREV						=	7000
-E_HELP_NEXT						=	7001	
-E_HELP_PREV_LABEL				=	7005
-E_HELP_NEXT_LABEL				=	7006
-
-E_HELP_CONTETNT					= 	8500
-
-E_GROUP_LIST_CONTROL			=	9000
+E_CONTROL_ID_LABEL_PAGENUM		= 	1004 + E_HELP_BASE_ID
+E_CONTROL_ID_IMAGE				=	100 + E_HELP_BASE_ID
+E_CONTROL_ID_TEXTBOX			= 	200 + E_HELP_BASE_ID
+E_CONTROL_ID_BUTTON_PREV		=	7000 + E_HELP_BASE_ID
+E_CONTROL_ID_BUTTON_NEXT		=	7001 + E_HELP_BASE_ID
+E_CONTROL_ID_LABEL_PREV			=	7005 + E_HELP_BASE_ID
+E_CONTROL_ID_LABEL_NEXT			=	7006 + E_HELP_BASE_ID
+E_CONTROL_ID_GROUP_CONTETNT		= 	8500 + E_HELP_BASE_ID
+E_CONTROL_ID_GROUP_PAGE			=	9000 + E_HELP_BASE_ID
 
 HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
@@ -82,7 +80,7 @@ class Help( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Help' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
+		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( False )
 		
 		if self.mInitialized == False :
 			helpString = self.getProperty( 'HelpString' )
@@ -95,7 +93,7 @@ class Help( SettingWindow ) :
 			LOG_TRACE('HELP STRING=%s' %self.mHelpString )
 
 		self.SetListControl( self.mStepNum )
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
+		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :
@@ -115,7 +113,7 @@ class Help( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if aControlId == E_HELP_NEXT :
+		if aControlId == E_CONTROL_ID_BUTTON_NEXT :
 			if self.mStepNum == TOTAL_STEPS :
 				self.Close( )
 			else :
@@ -123,10 +121,10 @@ class Help( SettingWindow ) :
 				self.SetListControl( self.mStepNum +1 )
 				self.setFocusId( aControlId )	
 
-		if aControlId == E_HELP_PREV :
+		if aControlId == E_CONTROL_ID_BUTTON_PREV :
 			self.OpenAnimation( )
 			if self.mPrevStepNum == 1 :
-				self.setFocusId ( E_HELP_NEXT )
+				self.setFocusId ( E_CONTROL_ID_BUTTON_NEXT )
 			else :
 				self.setFocusId( aControlId )
 			
@@ -154,7 +152,7 @@ class Help( SettingWindow ) :
 							
 	def SetTextboxInvisible( self, aTextboxNum ) :
 		for i in range( aTextboxNum ) :
-			self.getControl( E_HELP_TEXTBOX + i ).setVisible( False )
+			self.getControl( E_CONTROL_ID_TEXTBOX + i ).setVisible( False )
 
 
 	def SetListControl( self, aStep ) :
@@ -162,7 +160,7 @@ class Help( SettingWindow ) :
 		self.mStepNum = aStep
 		self.mPrevStepNum = self.mStepNum -1
 		self.DrawContents( self.mListContent, self.mStepNum )
-		self.getControl( E_HELP_CONTETNT ).setVisible( True )
+		self.getControl( E_CONTROL_ID_GROUP_CONTETNT ).setVisible( True )
 		self.AddPrevNextButton( )
 		self.SetPrevNextButtonLabel( )
 
@@ -184,18 +182,18 @@ class Help( SettingWindow ) :
 			if int( content.mPageNum ) == aStep :
 				self.getControl( E_SETTING_HEADER_TITLE ).setLabel( content.mTitle )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( content.mLocation )
-				self.getControl( E_SETTING_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, TOTAL_STEPS ) )
+				self.getControl( E_CONTROL_ID_LABEL_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, TOTAL_STEPS ) )
 				
 				if content.mType == "image" :
-					self.getControl( E_HELP_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
-					self.getControl( E_HELP_IMAGE ).setWidth( content.mWidth )
-					self.getControl( E_HELP_IMAGE ).setHeight( content.mHeight )
+					self.getControl( E_CONTROL_ID_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
+					self.getControl( E_CONTROL_ID_IMAGE ).setWidth( content.mWidth )
+					self.getControl( E_CONTROL_ID_IMAGE ).setHeight( content.mHeight )
 					self.setProperty('imagepath', content.mDescription )
 					
 				elif content.mType == "textbox" :
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setPosition( content.mPositionX , content.mPositionY )
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setWidth( content.mWidth )
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setHeight( content.mHeight )
+					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setPosition( content.mPositionX , content.mPositionY )
+					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setWidth( content.mWidth )
+					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setHeight( content.mHeight )
 					
 					if contentcount == 0:
 						self.setProperty( 'label', content.mDescription )
@@ -204,33 +202,33 @@ class Help( SettingWindow ) :
 					elif contentcount == 2:
 						self.setProperty( 'label2', content.mDescription )
 
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setVisible( True )
+					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setVisible( True )
 					contentcount += 1
 
 
 	def SetPrevNextButtonLabel( self ) :
 		if self.mStepNum == E_STEP_FEATURES :
-			self.SetVisibleControl( E_HELP_PREV, False )
-			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
+			self.SetVisibleControl( E_CONTROL_ID_BUTTON_PREV, False )
+			self.getControl( E_CONTROL_ID_LABEL_NEXT ).setLabel( MR_LANG( 'Next' ) )
 
 		elif self.mStepNum == TOTAL_STEPS :
-			self.getControl( E_HELP_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
-			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Finish' ) )
+			self.getControl( E_CONTROL_ID_LABEL_PREV ).setLabel( MR_LANG( 'Previous' ) )
+			self.getControl( E_CONTROL_ID_LABEL_NEXT ).setLabel( MR_LANG( 'Finish' ) )
 
 		else :
-			self.SetVisibleControl( E_HELP_PREV, True )
-			self.getControl( E_HELP_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
-			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
+			self.SetVisibleControl( E_CONTROL_ID_BUTTON_PREV, True )
+			self.getControl( E_CONTROL_ID_LABEL_PREV ).setLabel( MR_LANG( 'Previous' ) )
+			self.getControl( E_CONTROL_ID_LABEL_NEXT ).setLabel( MR_LANG( 'Next' ) )
 
 	
 	def AddPrevNextButton( self ) :
 		if self.mStepNum == E_STEP_FEATURES :
-			self.getControl( E_HELP_PREV ).setVisible( False )
-			self.getControl( E_HELP_NEXT ).setVisible( True )
+			self.getControl( E_CONTROL_ID_BUTTON_PREV ).setVisible( False )
+			self.getControl( E_CONTROL_ID_BUTTON_NEXT ).setVisible( True )
 			
 		else :
-			self.getControl( E_HELP_PREV ).setVisible( True )
-			self.getControl( E_HELP_NEXT ).setVisible( True )
+			self.getControl( E_CONTROL_ID_BUTTON_PREV ).setVisible( True )
+			self.getControl( E_CONTROL_ID_BUTTON_NEXT ).setVisible( True )
 				
 
 class PageContent :

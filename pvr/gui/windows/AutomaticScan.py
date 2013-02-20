@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
 
+E_AUTOMATIC_SCAN_BASE_ID = WinMgr.WIN_ID_AUTOMATIC_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class AutomaticScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :

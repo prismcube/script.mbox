@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
 
+E_CHANNEL_SEARCH_BASE_ID = WinMgr.WIN_ID_CHANNEL_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class ChannelSearch( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :

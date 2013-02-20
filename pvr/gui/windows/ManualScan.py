@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 import pvr.ScanHelper as ScanHelper
 
+E_MANUAL_SCAN_BASE_ID = WinMgr.WIN_ID_MANUAL_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class ManualScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :

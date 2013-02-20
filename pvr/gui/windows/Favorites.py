@@ -1,13 +1,13 @@
 from pvr.gui.WindowImport import *
-
 import sys
 import os
 
-XBMC_WINDOW_DIALOG_FAVOURITES		= 10134
+E_FAVORITES_BASE_ID = WinMgr.WIN_ID_FAVORITES * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
+XBMC_WINDOW_DIALOG_FAVOURITES		= 10134
 E_TIMEOUT_INTERVAL					= 0.5
 
-    
+
 class Favorites( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )

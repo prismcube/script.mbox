@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
+E_CONFIG_ONECABLE_BASE_ID = WinMgr.WIN_ID_CONFIG_ONECABLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class SatelliteConfigOnecable( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :

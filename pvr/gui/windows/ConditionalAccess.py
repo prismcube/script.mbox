@@ -1,8 +1,9 @@
 from pvr.gui.WindowImport import *
 
+E_CONDITIONAL_ACCESS_BASE_ID = WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
-CAS_SLOT_NUM_1					= 0
-CAS_SLOT_NUM_2					= 1
+CAS_SLOT_NUM_1 = 0
+CAS_SLOT_NUM_2 = 1
 
 
 class ConditionalAccess( SettingWindow ) :

@@ -2,6 +2,8 @@ from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 import pvr.ScanHelper as ScanHelper
 
+E_CONFIG_SIMPLE_BASE_ID	= WinMgr.WIN_ID_CONFIG_SIMPLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+
 
 class SatelliteConfigSimple( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
