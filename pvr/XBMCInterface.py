@@ -203,6 +203,13 @@ def XBMC_SetVolume( aVolume, aIsMute=0 ) :
 		#setvolume_query = '{"jsonrpc": 2.0", "method": "Application.SetVolume", "params": { "value": "13"}, "id": 1}'
 		xbmc.executeJSONRPC ( setvolume_query )
 
+def XBMC_SetVolumeByBuiltin( aVolume, aIsVisible ) :
+	LOG_TRACE( '' )
+	if aVolume <=  0 :
+		xbmc.executebuiltin( 'mute( )' )
+	else :
+		print 'XMBC_BUILTIN_FUNCTION: SetVolume %d ' % aVolume
+		xbmc.executebuiltin( 'SetVolume( %s, %s )' %( aVolume, aIsVisible ) )
 
 def XBMC_GetResolution( ) :
 	LOG_TRACE( '' )
