@@ -121,6 +121,7 @@ class LivePlate( LivePlateWindow ) :
 		self.LoadInit( )
 
 		#run thread
+
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
@@ -348,24 +349,28 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def LoadInit( self ):
-		self.ShowRecordingInfo( )
-		self.InitControlGUI( )
-		#self.GetEPGListByChannel( )
-		"""
+		#1. Show epg infomation
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
-				#iEPG = self.mDataCache.Epgevent_GetPresent( )
-				iEPG = self.mDataCache.GetEpgeventCurrent( )
-				if iEPG and iEPG.mError == 0 :
-					self.mCurrentEPG = iEPG
-					self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				#iEPG = self.mDataCache.GetEpgeventCurrent( )
+				self.mCurrentEPG = None
 
-				self.UpdateChannelAndEPG( self.mCurrentEPG )
+				if iEPG and iEPG.mError == 0 :
+					if self.mCurrentChannel.mSid == iEPG.mSid and self.mCurrentChannel.mTsid == iEPG.mTsid and self.mCurrentChannel.mOnid == iEPG.mOnid : 
+						self.mCurrentEPG = iEPG
+						self.UpdateEpgGUI( self.mCurrentEPG )						
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-		"""
+
+		#2. Show recording Info
+		self.ShowRecordingInfo( )		
+
+		#3. Show Front disply
+		if self.mCurrentEPG :
+			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 
 	def onEvent(self, aEvent):
@@ -662,6 +667,11 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def UpdateChannelAndEPG( self, aEpg = None ):
+		self.UpdateChannelGUI( )
+		self.UpdateEpgGUI( aEpg )
+
+
+	def UpdateChannelGUI( self ) :
 		ch = self.mCurrentChannel
 		if ch :
 			try :
@@ -690,6 +700,7 @@ class LivePlate( LivePlateWindow ) :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	def UpdateEpgGUI( self, aEpg ) :
 		if aEpg :
 			try :
 				#epg name
