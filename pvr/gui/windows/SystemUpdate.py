@@ -10,8 +10,8 @@ E_TYPE_ADDONS = 2
 E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
-E_DOWNLOAD_PATH_FWURL     = '/tmp/fwUrl'
-E_DOWNLOAD_PATH_UNZIPFILES ='/tmp/unziplist'
+E_DOWNLOAD_PATH_FWURL     = '/mtmp/fwUrl'
+E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
@@ -1475,7 +1475,7 @@ class SystemUpdate( SettingWindow ) :
 	def ParseList( self ) :
 		try :
 			from elementtree import ElementTree
-			tree = ElementTree.parse( '/tmp/channel.xml' )
+			tree = ElementTree.parse( '/mtmp/channel.xml' )
 			root = tree.getroot( )
 
 			makelist = []
@@ -1506,7 +1506,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
-			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
+			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
 			self.mCommander.System_SetDefaultChannelList( )
 			self.mDataCache.LoadAllSatellite( )
 			self.mTunerMgr.SyncChannelBySatellite( )
@@ -1524,7 +1524,7 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			import urllib2
 			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST + '?key=%s' % aKey , None, 20 )
-			output = open( '/tmp/defaultchannel.xml', 'wb' )
+			output = open( '/mtmp/defaultchannel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )
 			return True
@@ -1537,7 +1537,7 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			import urllib2
 			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST, None, 20 )
-			output = open( '/tmp/channel.xml', 'wb' )
+			output = open( '/mtmp/channel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )
 			return True
