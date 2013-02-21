@@ -156,8 +156,8 @@ class WindowMgr( object ) :
 				self.mWindows[self.mLastId].ClearRelayAction( )
 				self.mWindows[currentId].close( )
 				self.mWindows[currentId].SetActivate( False )
-				if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :					
-					xbmc.executebuiltin('xbmc.Action(dvbres21)')				
+				#if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :					
+				#	xbmc.executebuiltin('xbmc.Action(dvbres21)')				
 
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
@@ -184,8 +184,8 @@ class WindowMgr( object ) :
 					SetLock2( False )
 					self.mWindows[currentId].close( )
 					self.mWindows[currentId].SetActivate( False )
-					if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
-						xbmc.executebuiltin('xbmc.Action(dvbres21)')					
+					#if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
+					#	xbmc.executebuiltin('xbmc.Action(dvbres21)')					
 					#self.mWindows[parentId].doModal( )
 				else :				
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
