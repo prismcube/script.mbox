@@ -267,6 +267,7 @@ E_TAG_SET_SELECT_POSITION 	= 'selectItem'
 E_TAG_GET_SELECT_POSITION 	= 'getItem'
 
 # XML Property Name
+E_XML_PROPERTY_TELETEXT   = 'HasTeletext'	 
 E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
 E_XML_PROPERTY_DOLBY      = 'HasDolby'
 E_XML_PROPERTY_HD         = 'HasHD'

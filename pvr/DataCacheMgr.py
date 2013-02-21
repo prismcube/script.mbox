@@ -116,6 +116,8 @@ class DataCacheMgr( object ) :
 		self.mTimerDB 							= None
 		self.mRecordDB 							= None
 
+		self.mPMTEvent							= None
+
 		self.mParentLock						= True
 		self.mParentLockPass					= False
 		self.mIsPincodeDialog					= False
@@ -790,6 +792,8 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
+		self.mPMTEvent = None #reset cached PMT Event
+		
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -1799,6 +1803,14 @@ class DataCacheMgr( object ) :
 				self.LoadChannelList( )
 
 		return ret
+
+
+	def SetCurrentPMTEvent( self, aPMTEvent ) :
+		self.mPMTEvent = aPMTEvent
+
+
+	def GetCurrentPMTEvent( self ) :
+		return self.mPMTEvent;
 
 
 	def SetLockedState( self, aIsLock ) :

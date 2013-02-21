@@ -56,7 +56,7 @@ class GlobalEvent( object ) :
 		if not WinMgr.gWindowMgr :
 			return
 
-		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :                                     
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if not channel or channel.mError != 0 :
 				return -1
@@ -64,6 +64,11 @@ class GlobalEvent( object ) :
 				#LOG_TRACE('ignore event, same event')
 				return -1
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
+
+		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+			LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+			aEvent.printdebug( )
+			self.mDataCache.SetCurrentPMTEvent( aEvent )			
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )

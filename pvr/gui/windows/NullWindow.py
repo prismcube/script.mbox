@@ -327,69 +327,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			subTitleCount = self.mCommander.Subtitle_GetCount( )
-			print 'dhkim test subTitleCount = %s' % subTitleCount
-			if subTitleCount > 0 :
-				isShowing = False
-				if self.mCommander.Subtitle_IsShowing( ) :
-					self.mCommander.Subtitle_Hide( )
-					isShowing = True
-
-				selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
-
-				#####
-				if selectedSubtitle :
-					print 'dhkim test selected subtitle'
-					selectedSubtitle.printdebug( )
-				#####
-			
-				context = []
-				structSubTitle = []
-
-				for i in range( subTitleCount ) :
-					isRunning = ''
-					structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
-					print 'dhkim test ####'
-					self.mCommander.Subtitle_Get( i ).printdebug( )
-					print 'dhkim test ####'
-
-					if selectedSubtitle and isShowing :
-						if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
-							isRunning = 'Running '
-					
-					if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
-						subType = 'DVB'
-					else :
-						subType = 'TTX'
-
-					context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
-
-				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
-
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-
-				selectAction = dialog.GetSelectedAction( )
-				if selectAction == -1 and isShowing :
-					self.mCommander.Subtitle_Show( )
-
-				elif selectAction >= 0 and subTitleCount > selectAction :
-					self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
-					self.mCommander.Subtitle_Show( )
-
-				elif selectAction == subTitleCount :
-					self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
-					self.mCommander.Subtitle_Hide( )
-
-			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'No teletext available' ) )
-				dialog.doModal( )	
+			self.ShowSubtitle( )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )
@@ -657,3 +599,65 @@ class NullWindow( BaseWindow ) :
 	def CheckSubTitle( self ) :
 		if self.mSubTitleIsShow :
 			self.mCommander.Subtitle_Show( )
+
+
+	def ShowSubtitle( self ) :
+			subTitleCount = self.mCommander.Subtitle_GetCount( )
+			print 'dhkim test subTitleCount = %s' % subTitleCount
+			if subTitleCount > 0 :
+				isShowing = False
+				if self.mCommander.Subtitle_IsShowing( ) :
+					self.mCommander.Subtitle_Hide( )
+					isShowing = True
+
+				selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
+
+				#####
+				if selectedSubtitle :
+					print 'dhkim test selected subtitle'
+					selectedSubtitle.printdebug( )
+				#####
+			
+				context = []
+				structSubTitle = []
+
+				for i in range( subTitleCount ) :
+					isRunning = ''
+					structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
+					print 'dhkim test ####'
+					self.mCommander.Subtitle_Get( i ).printdebug( )
+					print 'dhkim test ####'
+
+					if selectedSubtitle and isShowing :
+						if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
+							isRunning = 'Running '
+					
+					if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+						subType = 'DVB'
+					else :
+						subType = 'TTX'
+
+					context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+
+				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+
+				selectAction = dialog.GetSelectedAction( )
+				if selectAction == -1 and isShowing :
+					self.mCommander.Subtitle_Show( )
+
+				elif selectAction >= 0 and subTitleCount > selectAction :
+					self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+					self.mCommander.Subtitle_Show( )
+
+				elif selectAction == subTitleCount :
+					self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
+					self.mCommander.Subtitle_Hide( )
+
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+				dialog.doModal( )				

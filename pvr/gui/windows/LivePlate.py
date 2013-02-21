@@ -403,6 +403,11 @@ class LivePlate( LivePlateWindow ) :
 			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 			#	LOG_TRACE('----------------------------receive epg')
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				iEPG = self.mDataCache.GetEpgeventCurrent( )
 				self.UpdateChannelAndEPG( iEPG )
@@ -715,6 +720,7 @@ class LivePlate( LivePlateWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )				
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
@@ -791,6 +797,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT,'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
@@ -829,9 +836,28 @@ class LivePlate( LivePlateWindow ) :
 		#	self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		if aPropertyID == E_XML_PROPERTY_TELETEXT :
+			if pmtEvent and pmtEvent.mTTXCount > 0 :
+				LOG_TRACE( '-------------- Teletext updated by PMT cache -------------------' )
+				self.setProperty( aPropertyID, 'True' )
+				return True
+
+		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
+			if pmtEvent and pmtEvent.mSubCount > 0 :
+				LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )			
+				self.setProperty( aPropertyID, 'True' )
+				return True
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
+			return
+
+		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
+			LOG_TRACE( '-------------- return by cached data -------------------' )					
 			return
 
 		self.setProperty( aPropertyID, aValue )
@@ -861,9 +887,8 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
-			dialog.doModal( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
