@@ -243,6 +243,11 @@ class InfoPlate( LivePlateWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
  				self.ShowRecordingInfo( )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -278,9 +283,10 @@ class InfoPlate( LivePlateWindow ) :
 					#component
 					setPropertyList = []
 					setPropertyList = GetPropertyByEPGComponent( aEpg )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
+					self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -333,24 +339,25 @@ class InfoPlate( LivePlateWindow ) :
 		self.mCtrlBtnPrevEpg.setVisible( False )
 		self.mCtrlBtnNextEpg.setVisible( False )
 
-		tvValue = 'True'
-		raValue = 'False'
+		tvValue = E_TAG_TRUE
+		raValue = E_TAG_FALSE
 		if self.mPlayingRecord :
 			if self.mPlayingRecord.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-				tvValue = 'False'
-				raValue = 'True'
+				tvValue = E_TAG_FALSE
+				raValue = E_TAG_TRUE
 		else :
-			tvValue = 'False'
-			raValue = 'False'
+			tvValue = E_TAG_FALSE
+			raValue = E_TAG_FALSE
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,      tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -383,9 +390,19 @@ class InfoPlate( LivePlateWindow ) :
 			self.mCtrlLblRec2.setLabel( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+		return ret
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
+			return
+
+		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
+			#LOG_TRACE( '-------------- return by cached data -------------------' )
 			return
 
 		self.setProperty( aPropertyID, aValue )
