@@ -139,7 +139,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLockedInfo        = self.getControl( E_CONTROL_ID_GROUP_LOCKED_INFO )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
-		self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
+		#self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
 
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -1288,7 +1288,7 @@ class ChannelListWindow( BaseWindow ) :
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel List' ) )
+			#self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, True, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
@@ -1296,7 +1296,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else :
 			#opt btn visible
-			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Edit Channel List' ) )
+			#self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Edit Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )

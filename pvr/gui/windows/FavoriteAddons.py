@@ -44,7 +44,7 @@ class FavoriteAddons( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 02'
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Favorite Add-ons' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Favorite Add-ons' ) )
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 03'
 
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) == False :

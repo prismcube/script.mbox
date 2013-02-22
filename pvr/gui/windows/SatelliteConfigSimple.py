@@ -34,6 +34,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
+		self.SetSingleWindowPosition( E_CONFIG_SIMPLE_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.setDefaultControl( )
@@ -242,7 +243,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 			self.SetFTIPrevNextButton( )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03 ]
 			hideControlIds = [ E_Input02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input04, E_Input05, E_Input06 ]
 		else :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_Input01, E_Input02 ]

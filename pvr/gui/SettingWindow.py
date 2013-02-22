@@ -56,11 +56,11 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ResetAllControl( self ) :
-		del self.mControlList[:]
+		self.mControlList = []
 
 
 	def SetSettingWindowLabel( self, aLabel ) :
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
 
 		

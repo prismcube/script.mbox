@@ -14,14 +14,13 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
-
 		self.SetActivate( True )
-		
 		self.SetFrontdisplayMessage( 'Antenna Setup' )
-
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( False )
+
+		#self.SetSingleWindowPosition( E_ANTENNA_SETUP_BASE_ID )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )
@@ -34,8 +33,8 @@ class AntennaSetup( SettingWindow ) :
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', MR_LANG( 'Tuner 2 Control' ), MR_LANG( 'Select a control method for tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
-		self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( True )
-		self.setFocusId( E_ANTENNA_SETUP_DEFAULT_FOCUS_ID )		
+		#self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( True )
+		#self.setFocusId( E_ANTENNA_SETUP_DEFAULT_FOCUS_ID )		
 
 		self.InitControl( )
 
@@ -66,8 +65,6 @@ class AntennaSetup( SettingWindow ) :
 				self.mTunerMgr.LoadOriginalTunerConfig( )
 				self.mTunerMgr.Load( )
 				self.mTunerMgr.SetNeedLoad( False )
-
-
 
 
 	def onAction( self, aAction ) :

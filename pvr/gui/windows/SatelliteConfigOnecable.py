@@ -22,7 +22,8 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
-		
+
+		self.SetSingleWindowPosition( E_CONFIG_ONECABLE_BASE_ID )
 		self.AddInputControl( E_Input01, MR_LANG( 'Initial Setup' ), '', MR_LANG( 'Configure the initial settings for OneCable' ) )
 		
 		listitem = []

@@ -30,7 +30,7 @@ class TimerWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( 'Timer List' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
 		self.mSelectedWeeklyTimer = 0
 
 		self.mListItems = []

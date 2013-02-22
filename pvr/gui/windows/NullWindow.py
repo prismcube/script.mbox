@@ -2,6 +2,8 @@ from pvr.gui.WindowImport import *
 import sys, inspect, time
 import gc
 
+E_NULL_WINDOW_BASE_ID				=  WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -17,7 +19,7 @@ class NullWindow( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-
+		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )

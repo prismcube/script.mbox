@@ -127,7 +127,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
@@ -137,6 +137,7 @@ class Configure( SettingWindow ) :
 
 		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 
+		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )

@@ -1,6 +1,9 @@
 from pvr.gui.WindowImport import *
 
 
+E_EDIT_TRANSPONDER_BASE_ID				=  WinMgr.WIN_ID_EDIT_TRANSPONDER * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+
+
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -17,6 +20,8 @@ class EditTransponder( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )
+
+		self.SetSingleWindowPosition( E_EDIT_TRANSPONDER_BASE_ID )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :

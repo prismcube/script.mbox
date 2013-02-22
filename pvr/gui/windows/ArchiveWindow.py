@@ -81,7 +81,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetFocusList( self.mViewMode )
 			return
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
 
 		self.mRecordCount = 0
 		self.mSelectedIndex = 0

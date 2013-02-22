@@ -125,6 +125,8 @@ class SystemUpdate( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'System Update' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_SYSTEM_UPDATE_BASE_ID )
+
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
 		self.mCtrlLabelTitle          = self.getControl( E_CONTROL_ID_LABEL_TITLE )
 		self.mCtrlLabelDate           = self.getControl( E_CONTROL_ID_LABEL_DATE )

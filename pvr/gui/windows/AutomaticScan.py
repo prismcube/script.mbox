@@ -24,6 +24,8 @@ class AutomaticScan( SettingWindow ) :
 
 		self.LoadFormattedSatelliteNameList( )
 
+		self.SetSingleWindowPosition( E_AUTOMATIC_SCAN_BASE_ID )
+
 		hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.LoadNoSignalState( )

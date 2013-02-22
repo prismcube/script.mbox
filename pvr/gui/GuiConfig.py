@@ -40,6 +40,8 @@ if E_SUPPORT_SINGLE_WINDOW_MODE :
 	E_BASE_WINDOW_UNIT	= 100000
 
 
+E_SETTING_CONTROL_GROUPID	= 11000001
+
 
 ############################ Windows ############################
 # Setting Window Control Ids

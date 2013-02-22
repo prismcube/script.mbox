@@ -443,6 +443,259 @@ class BaseWindow( SingleWindow ) :
 		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
 
 
+	def SetSingleWindowPosition( self, aWindowId ) :
+		if E_SUPPORT_SINGLE_WINDOW_MODE :
+			import pvr.gui.WindowMgr as WinMgr
+			if aWindowId == WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+			
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+			
+			elif aWindowId == WinMgr.WIN_ID_CONFIGURE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingPip', 'False' )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 380, 110 )
+
+			elif aWindowId == WinMgr.WIN_ID_ANTENNA_SETUP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+			
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_CONFIG_DISEQC_10 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
+				aWindowId == WinMgr.WIN_ID_CONFIG_DISEQC_11 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
+				aWindowId == WinMgr.WIN_ID_CONFIG_MOTORIZED_12 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
+				aWindowId == WinMgr.WIN_ID_CONFIG_SIMPLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				
+				print 'dhkim test SetSingleWindowPosition diseqc!!'
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_TUNER_CONFIGURATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02, E_Input03, E_Input04 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_CONFIG_ONECABLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_CONFIG_ONECABLE_2 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_CHANNEL_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_AUTOMATIC_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_MANUAL_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+			elif aWindowId == WinMgr.WIN_ID_EDIT_SATELLITE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_EDIT_TRANSPONDER * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'True' )
+				self.setProperty( 'SettingPip', 'True' )
+				visibleControlIds = [ E_Input01, E_Input02 ]
+				for i in range( len( visibleControlIds ) ) :
+					self.getControl( visibleControlIds[i] ).setVisible( True )
+					self.getControl( visibleControlIds[i] ).setEnabled( True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 857, 170 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+				overlayImage.setVisible( True )
+
+				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				settingControlGroup.setPosition( 80, 120 )
+
+			elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'SettingPip', 'False' )
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+				
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 362, 112 )
+				overlayImage.setWidth( 798 )
+				overlayImage.setHeight( 446 )
+				overlayImage.setVisible( True )
+
+			else :
+				print 'dhkim test SetSingleWindowPosition else!!'
+				print 'dhkim test getProperty SettingBackground False'
+				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'SettingPip', 'False' )
+				print 'dhkim test getProperty SettingBackground = %s' % self.getProperty( 'SettingBackground' )
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				for i in range( len( hideControlIds ) ) :
+					self.getControl( hideControlIds[i] ).setVisible( False )
+
+
 class LivePlateWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )

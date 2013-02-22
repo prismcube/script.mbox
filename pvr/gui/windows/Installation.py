@@ -49,7 +49,7 @@ class Installation( BaseWindow ) :
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 		groupItems = []

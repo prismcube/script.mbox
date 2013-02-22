@@ -20,6 +20,7 @@ class ChannelSearch( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
+		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
 		self.AddInputControl( E_Input01, MR_LANG( 'Automatic scan' ), '', MR_LANG( 'Search TV and radio channels without entering any satellite information' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'Manual scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
 

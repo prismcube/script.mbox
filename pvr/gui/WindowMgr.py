@@ -185,31 +185,38 @@ class WindowMgr( object ) :
 	def CloseWindow( self ) :
 		try :
 			currentId = self.mLastId
+			print 'dhkim test CloseWindow #1'
 			if currentId  > 0 :
+				print 'dhkim test CloseWindow #2'
 				parentId = self.mWindows[currentId].GetParentID( )			
 				LOG_ERR( 'LastWindow=%s' %self.mWindows[currentId].GetName( ) )		
 				if parentId > 0 :
+					print 'dhkim test CloseWindow #3'
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[parentId].GetName( ) )
 					SetLock2( True )					
 					self.mLastId = parentId					
 					SetLock2( False )
 
-					if E_SUPPORT_SINGLE_WINDOW_MODE == True :					
+					if E_SUPPORT_SINGLE_WINDOW_MODE == True :	
+						print 'dhkim test CloseWindow #4 currentid = %s' % currentId
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mWindows[currentId].onInit( )									
+						self.mWindows[parentId].onInit( )									
 					else :
+						print 'dhkim test CloseWindow #5'
 						self.mWindows[currentId].close( )
 						self.mWindows[currentId].SetActivate( False )
 						if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
 							xbmc.executebuiltin('xbmc.Action(dvbres21)')
 					
 					#self.mWindows[parentId].doModal( )
-				else :				
+				else :
+					print 'dhkim test CloseWindow #6'
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW
 
-					if E_SUPPORT_SINGLE_WINDOW_MODE == True :					
+					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+						print 'dhkim test CloseWindow #7'
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mWindows[aWindowId].onInit( )									

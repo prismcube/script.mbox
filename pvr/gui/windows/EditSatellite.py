@@ -1,6 +1,9 @@
 from pvr.gui.WindowImport import *
 
 
+E_EDIT_SATELLITE_BASE_ID				=  WinMgr.WIN_ID_EDIT_SATELLITE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+
+
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -17,6 +20,8 @@ class EditSatellite( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'Edit Satellite' )
 		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
+
+		self.SetSingleWindowPosition( E_EDIT_SATELLITE_BASE_ID )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :

@@ -35,6 +35,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
+		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_12_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.setDefaultControl( )

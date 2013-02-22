@@ -4,7 +4,8 @@ from pvr.gui.FTIWindow import FTIWindow
 E_TUNER_CONFIGURATION_BASE_ID = WinMgr.WIN_ID_TUNER_CONFIGURATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 E_MAIN_LIST_ID		= 9000 + E_TUNER_CONFIGURATION_BASE_ID
-E_DESCRIPTION_ID	= 1003 + E_TUNER_CONFIGURATION_BASE_ID
+#E_DESCRIPTION_ID	= 1003 + E_TUNER_CONFIGURATION_BASE_ID
+E_DESCRIPTION_ID	= 1003 + E_BASE_WINDOW_ID
 
 
 class TunerConfiguration( FTIWindow ) :
@@ -17,12 +18,14 @@ class TunerConfiguration( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
+		self.SetSingleWindowPosition( E_TUNER_CONFIGURATION_BASE_ID )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mCtrlMainList = self.getControl( E_MAIN_LIST_ID )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )		
+		#self.getControl( 1701002 ).setLabel( headerLabel )
 		self.SetSettingWindowLabel( headerLabel )
 		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
@@ -50,9 +53,13 @@ class TunerConfiguration( FTIWindow ) :
 			self.onActionNormal( actionId )
 
 		if actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == E_SUBMENU_LIST_ID :
+			print 'dhkim test ##1'
+			if focusId == E_MAIN_LIST_ID :
+				print 'dhkim test ##2'
 				position = self.mCtrlMainList.getSelectedPosition( )
+				print 'dhkim test position = %s' % position 
 				desc = self.mListItems[ position ].getLabel2( )
+				print 'dhkim test desc = %s' % desc
 				self.getControl( E_DESCRIPTION_ID ).setLabel( desc )
 
 

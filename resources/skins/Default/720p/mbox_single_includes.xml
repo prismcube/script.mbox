@@ -1,6 +1,6 @@
 <includes>
 	<include name="DefaultSettingHeaderWindow">
-		<include>DefaultSettingsBackground</include>
+		<!--<include>DefaultSettingsBackground</include>-->
 		<include>DefaultMiniTitle</include>
 		<include>DefaultCommonTime</include>
 	</include>
@@ -314,11 +314,11 @@
 	</include>
 
 	<include name="DefaultSettingWindowEffect">
-		<animation type="WindowOpen" reversible="false">
+		<animation type="Visible" reversible="false">
 			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 			<effect type="fade" start="0" end="100" time="300" />
 		</animation>
-		<animation type="WindowClose" reversible="false">
+		<animation type="Hidden" reversible="false">
 			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
 			<effect type="fade" start="100" end="0" time="300" />
 		</animation>

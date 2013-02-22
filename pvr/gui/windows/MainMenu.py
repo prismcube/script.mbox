@@ -75,6 +75,7 @@ class MainMenu( BaseWindow ) :
 	def onInit( self ) :
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
+		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
 		self.SetVisibleRss( )
 		self.SetFrontdisplayMessage( 'Main Menu' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )

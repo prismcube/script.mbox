@@ -34,6 +34,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
+		self.SetSingleWindowPosition( E_CONFIG_DISEQC_11_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.setDefaultControl( )
