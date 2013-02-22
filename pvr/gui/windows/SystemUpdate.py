@@ -384,7 +384,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_CORRUPT :
 			line = MR_LANG( 'File is corrupted, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_USB_NOT :
-			line = MR_LANG( 'Please insert a USB flash drive and press OK' )
+			line = MR_LANG( 'Please insert a USB flash memory and press OK' )
 		elif aMsg == E_STRING_CHECK_VERIFY :
 			line = MR_LANG( 'File verification failed, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_FINISH :
@@ -394,7 +394,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_DISKFULL :
 			line = MR_LANG( 'Insufficient disk space' )
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
-			line = MR_LANG( 'Not enough space on USB flash drive' )
+			line = MR_LANG( 'Not enough space on your USB flash memory' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
 			line = MR_LANG( 'Cannot connect to server' )
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :

@@ -5,7 +5,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_SetVolumeByBuiltin
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML
@@ -1943,10 +1943,14 @@ class DataCacheMgr( object ) :
 
 		#6. volume : 75db
 		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
-		mute = self.mCommander.Player_GetMute( )
-		if mute :
+		muteByPlayer = self.mCommander.Player_GetMute( )
+		muteByXBMC = XBMC_GetMute( )
+
+		if muteByPlayer :
 			self.mCommander.Player_SetMute( False )
-			xbmc.executebuiltin( 'mute( )' )
+			if muteByXBMC :
+				xbmc.executebuiltin( 'mute( )' )
+
 		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
 		#XBMC_SetVolume( DEFAULT_VOLUME )
 		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
