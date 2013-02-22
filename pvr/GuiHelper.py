@@ -173,6 +173,25 @@ def HasEPGComponent( aEPG, aFlag ) :
 	return 'False'
 
 
+def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
+	if pmtEvent :
+		pmtEvent.printdebug()
+	else :
+		LOG_TRACE( '---------------pmtEvent None' )
+
+	if aPropertyID == 'HasTeletext' :
+		if pmtEvent and pmtEvent.mTTXCount > 0 :
+			LOG_TRACE( '-------------- Teletext updated by PMT cache -------------------' )
+			self.setProperty( aPropertyID, 'True' )
+			return True
+
+	elif aPropertyID == 'HasSubtitle' :
+		if pmtEvent and pmtEvent.mSubCount > 0 :
+			LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )
+			self.setProperty( aPropertyID, 'True' )
+			return True
+
+
 def GetSelectedLongitudeString( aLongitude, aName ) :
 	ret = ''
 

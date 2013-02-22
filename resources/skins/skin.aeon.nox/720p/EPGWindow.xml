@@ -371,13 +371,27 @@
 						<control type="grouplist">
 							<posx>0</posx>
 							<posy>215</posy>
-							<width>190</width>
+							<width>250</width>
 							<height>30</height>
 							<itemgap>1</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
-							<control type="group" id="310">
+							<control type="group" id="313">
 								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasTeletext),True)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>30</height>
+									<texture>IconTeletext.png</texture>
+								</control>
+							</control>
+							<control type="group" id="310">
+								<posx>55</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
@@ -391,7 +405,7 @@
 								</control>
 							</control>
 							<control type="group" id="311">
-								<posx>55</posx>
+								<posx>110</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
@@ -405,7 +419,7 @@
 								</control>
 							</control>
 							<control type="group" id="312">
-								<posx>110</posx>
+								<posx>165</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>

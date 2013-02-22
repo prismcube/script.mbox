@@ -67,6 +67,7 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
+		self.mNavChannel = None
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -254,6 +255,11 @@ class EPGWindow( BaseWindow ) :
 				self.UpdateListUpdateOnly( )
 				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+
 			"""
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				self.DoCurrentEITReceived( aEvent )
@@ -405,6 +411,9 @@ class EPGWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
+		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+			self.mNavChannel = self.mChannelList[ selectedPos ]
+
 
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
@@ -456,9 +465,11 @@ class EPGWindow( BaseWindow ) :
 				else :
 					self.mCtrlEPGDescription.setText( '' )
 
-				self.setProperty( 'HasHD', HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-				self.setProperty( 'HasDolby', HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( 'HasSubtitle', HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				self.setProperty( E_XML_PROPERTY_DOLBY,    HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
+
 			else :
 				self.ResetEPGInfomation( )
 
@@ -471,10 +482,33 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlDateLabel.setLabel( '' )
 		self.mCtrlDurationLabel.setLabel( '' )
 		self.mCtrlEPGDescription.setText( '' )
-		
-		self.setProperty( 'HasSubtitle', 'False' )
-		self.setProperty( 'HasDolby', 'False' )
-		self.setProperty( 'HasHD', 'False' )
+
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+
+
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		#ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+
+		if aPropertyID == E_XML_PROPERTY_TELETEXT :
+			if pmtEvent and pmtEvent.mTTXCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
+					aValue = True
+
+		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
+			if pmtEvent and pmtEvent.mSubCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+					aValue = True
+
+		self.setProperty( aPropertyID, '%s'% aValue )
+		return aValue
 
 
 	def UpdateListUpdateOnly( self ) :

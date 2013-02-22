@@ -405,7 +405,7 @@ class LivePlate( LivePlateWindow ) :
 			#	LOG_TRACE('----------------------------receive epg')
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				
@@ -839,22 +839,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
 		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		if pmtEvent :
-			pmtEvent.printdebug()
-		else :
-			LOG_TRACE( '---------------pmtEvent None' )
-
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				LOG_TRACE( '-------------- Teletext updated by PMT cache -------------------' )
-				self.setProperty( aPropertyID, 'True' )
-				return True
-
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )
-				self.setProperty( aPropertyID, 'True' )
-				return True
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+		return ret
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :

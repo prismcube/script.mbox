@@ -20,21 +20,33 @@ class DialogExtendEPG( BaseDialog ) :
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
 		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
 
-		if self.mEPG.mHasHDVideo :
-			self.setProperty( 'HasHD', 'true' )
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
+
+		setPropertyList = []
+		setPropertyList = GetPropertyByEPGComponent( self.mEPG )
+		LOG_TRACE('--------component[%s]'% setPropertyList )
+
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+		self.setProperty( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+		self.setProperty( E_XML_PROPERTY_HD,       setPropertyList[2] )
+
+		"""
+		if self.mEPG.mHasSubtitles :
+			self.setProperty( 'HasSubtitle', 'True' )
 		else :
-			self.setProperty( 'HasHD', 'false' )			
+			self.setProperty( 'HasSubtitle', 'False' )
+
+		if self.mEPG.mHasHDVideo :
+			self.setProperty( 'HasHD', 'True' )
+		else :
+			self.setProperty( 'HasHD', 'False' )
 		
 		if self.mEPG.mHasDolbyDigital :
-			self.setProperty( 'HasDolby', 'true' )
+			self.setProperty( 'HasDolby', 'True' )
 		else :
-			self.setProperty( 'HasDolby', 'false' )
-
-		if self.mEPG.mHasSubtitles :
-			self.setProperty( 'HasSubtitle', 'true' )
-		else :
-			self.setProperty( 'HasSubtitle', 'false' )
-
+			self.setProperty( 'HasDolby', 'False' )
+		"""
 		
 		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
 		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
@@ -109,4 +121,5 @@ class DialogExtendEPG( BaseDialog ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
-		
+
+
