@@ -132,7 +132,7 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def Close( self ) :
-		self.mEventBus.Deregister( self )
+		#self.mEventBus.Deregister( self )
 		self.mEnableThread = False
 		if self.mRecordingProgressThread :
 			self.mRecordingProgressThread.join( )
@@ -271,8 +271,10 @@ class DialogStartRecord( SettingDialog ) :
 
 	def ChangeEndTime( self ) :
 		try :
+			"""
 			if self.mTimer :
 				return;
+			"""
 
 			strEndTime = self.GetControlLabel2String( E_DialogInput02 )
 			tempList = strEndTime.split( ':', 1 )
@@ -292,22 +294,35 @@ class DialogStartRecord( SettingDialog ) :
 				return
 
 			self.mDurationChanged = True
+
+			if self.mTimer :
+				tmpStartTime = self.mTimer.mStartTime			
+				tmpEndTime = self.mTimer.mStartTime + self.mTimer.mDuration
+			else :
+				tmpStartTime = self.mStartTime
+				tmpEndTime = self.mEndTime				
 						
-			LOG_TRACE( 'Before endTime=%d' %self.mEndTime )			
-			days = int( self.mEndTime / ( 24*3600 ) )
+			LOG_TRACE( 'Before End Time=%s' %TimeToString( tmpEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+			days = int( tmpEndTime / ( 24*3600 ) )
 			LOG_TRACE( 'days %d' %days )						
-			self.mEndTime = days *( 24*3600 ) + endHour*3600 + endMin*60
+			tmpEndTime = days *( 24*3600 ) + endHour*3600 + endMin*60
 
-			LOG_TRACE( 'After endTime=%d' %self.mEndTime )
+			LOG_TRACE( 'After endTime=%d' %tmpEndTime )
 
-			if self.mEndTime < self.mStartTime :
-				self.mEndTime = self.mStartTime + 24*3600
+			if tmpEndTime < tmpStartTime :
+				tmpEndTime = tmpEndTime + 24*3600
 
 			LOG_TRACE( 'End Hour=%d End Min=%d' %( endHour, endMin ) )
-			LOG_TRACE( 'Changed End Time=%s' %TimeToString( self.mEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE( 'Changed End Time=%s' %TimeToString( tmpEndTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 
-			duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )
-			self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
+			if self.mTimer :
+				duration = int( tmpEndTime/60 ) - int( self.mTimer.mStartTime/60 )
+				self.mTimer.mDuration = duration * 60
+			else :
+				self.mEndTime = tmpEndTime			
+				duration = int( tmpEndTime/60 ) - int( self.mStartTime/60 )
+				
+			self.SetControlLabel2String( E_DialogInput02, TimeToString( tmpEndTime, TimeFormatEnum.E_HH_MM ) )
 			self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG('mins') ) )
 
 		except Exception, ex :
@@ -339,7 +354,11 @@ class DialogStartRecord( SettingDialog ) :
 					else :
 						self.mEndTime = self.mStartTime + duration * 60
 
-				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
+				if self.mTimer :
+					self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration , TimeFormatEnum.E_HH_MM ) )
+				else :
+					self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
+
 				self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG( 'mins' ) ) )
 
 		except Exception, ex :
