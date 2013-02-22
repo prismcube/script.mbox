@@ -3,7 +3,7 @@ import pvr.ElisMgr
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_GetMute
 from pvr.Util import SetLock, SetLock2
 
 import sys
@@ -283,6 +283,8 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
 					mute = False
+				if XBMC_GetMute( ) :
+					mute = True
 				self.mCommander.Player_SetMute( mute )
 				#if XBMC_GetMute( ) != mute :
 				#	XBMC_SetVolume( volume, mute )
