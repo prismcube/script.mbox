@@ -420,7 +420,8 @@ class DialogStartRecord( SettingDialog ) :
 				if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
 					copyTimeshift = 0
 
-				expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+				#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+				expectedDuration =  self.mEndTime - self.mStartTime
 
 				LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
