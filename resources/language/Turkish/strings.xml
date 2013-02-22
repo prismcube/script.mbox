@@ -108,8 +108,8 @@
 	<string id="108">TUR_Move Position</string>
 	<string id="109">TUR_Add</string>
 	<string id="110">TUR_Access your favorite XBMC add-ons in a convenient way</string>
-	<string id="111">TUR_Follow five simple steps for getting your PRISMCUBE RUBY ready for use</string>
-	<string id="112">TUR_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="111">TUR_Take the following steps for getting your PRISMCUBE RUBY ready for use</string>
+	<string id="112">TUR_Select the cable connection type on your STB and configure DiSEqC setup</string>
 	<string id="113">TUR_Perform a quick and easy automatic channel scan or search channels manually</string>
 	<string id="114">TUR_Add, delete or rename satellites</string>
 	<string id="115">TUR_Add new transponders or edit the transponders already exist</string>
@@ -1375,4 +1375,16 @@
 	<string id="3959">TUR_Update complete</string>
 	<string id="3960">TUR_Your channel list has been updated successfully</string>
 	<string id="3961">TUR_Temperature : Busy</string>
+	<string id="3962">TUR_No teletext</string>
+	<string id="3963">TUR_No subtitle</string>
+	<string id="3964">TUR_No subtitle available</string>
+	<string id="3965">TUR_To backup your user data and XBMC add-ons, insert a USB flash memory</string>
+	<string id="3966">TUR_Not enough space on USB flash memory</string>
+	<string id="3967">TUR_Please insert a USB flash memory</string>
+	<string id="3968">TUR_Take the following steps for getting your PRISMCUBE RUBY ready for use</string>
+	<string id="3969">TUR_Select the cable connection type on your STB and configure DiSEqC setup</string>
+	<string id="3970">TUR_Please insert a USB flash memory and press OK</string>
+	<string id="3971">TUR_Not enough space on your USB flash memory</string>
+	<string id="3972">TUR_Access your favorite in a convenient way</string>
+	<string id="3973">TUR_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
 </strings>
