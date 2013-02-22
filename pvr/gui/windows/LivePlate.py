@@ -360,7 +360,8 @@ class LivePlate( LivePlateWindow ) :
 				if iEPG and iEPG.mError == 0 :
 					if self.mCurrentChannel.mSid == iEPG.mSid and self.mCurrentChannel.mTsid == iEPG.mTsid and self.mCurrentChannel.mOnid == iEPG.mOnid : 
 						self.mCurrentEPG = iEPG
-						self.UpdateEpgGUI( self.mCurrentEPG )						
+						self.UpdateEpgGUI( self.mCurrentEPG )
+						LOG_TRACE('-----------------init pmt')
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -404,7 +405,7 @@ class LivePlate( LivePlateWindow ) :
 			#	LOG_TRACE('----------------------------receive epg')
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				
@@ -720,10 +721,10 @@ class LivePlate( LivePlateWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )				
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -782,25 +783,25 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,    '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
 
-		tvValue = 'True'
-		raValue = 'False'
+		tvValue = E_TAG_TRUE
+		raValue = E_TAG_FALSE
 		if self.mCurrentChannel :
 			if self.mCurrentChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-				tvValue = 'False'
-				raValue = 'True'
+				tvValue = E_TAG_FALSE
+				raValue = E_TAG_TRUE
 		else :
-			tvValue = 'False'
-			raValue = 'False'
+			tvValue = E_TAG_FALSE
+			raValue = E_TAG_FALSE
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,      tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT,'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -838,6 +839,11 @@ class LivePlate( LivePlateWindow ) :
 
 	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
 		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		if pmtEvent :
+			pmtEvent.printdebug()
+		else :
+			LOG_TRACE( '---------------pmtEvent None' )
+
 		if aPropertyID == E_XML_PROPERTY_TELETEXT :
 			if pmtEvent and pmtEvent.mTTXCount > 0 :
 				LOG_TRACE( '-------------- Teletext updated by PMT cache -------------------' )
@@ -846,7 +852,7 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
 			if pmtEvent and pmtEvent.mSubCount > 0 :
-				LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )			
+				LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )
 				self.setProperty( aPropertyID, 'True' )
 				return True
 
@@ -857,7 +863,7 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
-			LOG_TRACE( '-------------- return by cached data -------------------' )					
+			#LOG_TRACE( '-------------- return by cached data -------------------' )
 			return
 
 		self.setProperty( aPropertyID, aValue )

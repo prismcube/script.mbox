@@ -66,9 +66,10 @@ class GlobalEvent( object ) :
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
 
 		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-			LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
-			aEvent.printdebug( )
-			self.mDataCache.SetCurrentPMTEvent( aEvent )			
+			LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
+			if aEvent :
+				aEvent.printdebug( )
+				self.mDataCache.SetCurrentPMTEvent( aEvent )
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )

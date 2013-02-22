@@ -792,8 +792,11 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
-		self.mPMTEvent = None #reset cached PMT Event
-		
+		#self.mPMTEvent = None #reset cached PMT Event
+		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
+		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
+			self.mPMTEvent = None
+
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -821,6 +824,11 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
+		#self.mPMTEvent = None #reset cached PMT Event
+		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
+		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
+			self.mPMTEvent = None
+
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -1810,7 +1818,7 @@ class DataCacheMgr( object ) :
 
 
 	def GetCurrentPMTEvent( self ) :
-		return self.mPMTEvent;
+		return self.mPMTEvent
 
 
 	def SetLockedState( self, aIsLock ) :

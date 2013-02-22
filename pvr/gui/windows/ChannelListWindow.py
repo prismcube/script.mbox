@@ -744,6 +744,11 @@ class ChannelListWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.UpdateChannelList( )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -787,16 +792,6 @@ class ChannelListWindow( BaseWindow ) :
 			idx = self.mCtrlListCHList.getSelectedPosition( )
 			iChannel = self.mChannelList[idx]
 
-		"""
-		if self.mFlag_ModeChanged :
-			isBlank = False
-			if iChannel.mServiceType == FLAG_MODE_RADIO :
-				isBlank = True
-			else :
-				isBlank = False
-			self.mDataCache.Player_VideoBlank( isBlank )
-		"""
-
 		if self.mIsPVR :
 			self.mIsPVR = False
 			self.mDataCache.Player_Stop( )
@@ -818,6 +813,7 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 				LOG_TRACE( 'No exit by pressing the cancel button' )
+
 
 		#refresh info
 		if iChannel :
@@ -1520,6 +1516,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
@@ -1638,6 +1635,26 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		if aPropertyID == E_XML_PROPERTY_TELETEXT :
+			if pmtEvent and pmtEvent.mTTXCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
+					aValue = True
+
+		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
+			if pmtEvent and pmtEvent.mSubCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+					aValue = True
+
+		self.setProperty( aPropertyID, '%s'% aValue )
+		return aValue
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
@@ -1645,9 +1662,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aPropertyID == E_XML_PROPERTY_EDITINFO or aPropertyID == E_XML_PROPERTY_MOVE :
 			rootWinow = xbmcgui.Window( 10000 )
-			rootWinow.setProperty( aPropertyID, aValue )			
-			
+			rootWinow.setProperty( aPropertyID, aValue )
+
 		else :
+			if self.UpdatePropertyByCacheData( aPropertyID ) == True :
+				LOG_TRACE( '-------------- return by cached data' )
+				return
+
 			self.setProperty( aPropertyID, aValue )
 
 
@@ -1718,6 +1739,7 @@ class ChannelListWindow( BaseWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
