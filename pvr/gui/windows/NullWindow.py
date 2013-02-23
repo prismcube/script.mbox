@@ -642,7 +642,7 @@ class NullWindow( BaseWindow ) :
 						ten = ( structSubTitle[i].mSubId/16 )
 						one = (structSubTitle[i].mSubId % 16)
 
-						context.append( ContextItem( isRunning + subType + ' Subtitle ' +  '( ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+						context.append( ContextItem( isRunning + subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
 					else :	
 						context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
