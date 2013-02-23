@@ -355,6 +355,8 @@ class Configure( SettingWindow ) :
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
