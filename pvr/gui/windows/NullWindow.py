@@ -636,8 +636,15 @@ class NullWindow( BaseWindow ) :
 						subType = 'DVB'
 					else :
 						subType = 'TTX'
+					print 'structSubTitle[i].mLanguage = ' , structSubTitle[i]
+					print 'structSubTitle[i].mLanguage[0] = %d ' % len( structSubTitle[i].mLanguage )
+					if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
+						ten = ( structSubTitle[i].mSubId/16 )
+						one = (structSubTitle[i].mSubId % 16)
 
-					context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+						context.append( ContextItem( isRunning + subType + ' Subtitle ' +  '( ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+					else :	
+						context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
 				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
 
