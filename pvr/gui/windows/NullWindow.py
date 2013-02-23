@@ -646,7 +646,7 @@ class NullWindow( BaseWindow ) :
 					else :	
 						context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
-				context.append( ContextItem( MR_LANG( 'None' ), subTitleCount ) )
+				context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 				dialog.SetProperty( context )
