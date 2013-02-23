@@ -123,7 +123,7 @@ class GlobalEvent( object ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
 			self.mDataCache.Channel_GetInitialBlank( )
-			self.CheckParentLock( E_PARENTLOCK_INIT )
+			self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
@@ -210,7 +210,7 @@ class GlobalEvent( object ) :
 		XBMC_SetLocalOffset( localOffset )
 
 
-	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None ) :
+	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None, aForce=False ) :
 		if WinMgr.GetInstance( ).GetLastWindowID( ) not in PARENTLOCK_CHECKWINDOW :
 			LOG_TRACE( '--------parentLock check pass winid[%s]'% WinMgr.GetInstance( ).GetLastWindowID( ) )
 			return
@@ -240,7 +240,7 @@ class GlobalEvent( object ) :
 					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
 					thread.start( )
 			else :
-				if self.mDataCache.Get_Player_AVBlank( ) :
+				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
 					self.mDataCache.Player_AVBlank( False )
 
 		elif aCmd == E_PARENTLOCK_EIT :
