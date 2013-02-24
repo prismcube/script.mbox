@@ -16,13 +16,13 @@ class ConditionalAccess( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'Conditional Access' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_CONDITIONAL_ACCESS_BASE_ID )
+
 		self.mEventBus.Register( self )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Conditional Access' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
-
-		self.SetSingleWindowPosition( E_CONDITIONAL_ACCESS_BASE_ID )
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
 		smartCardName = MR_LANG( 'Not inserted' )

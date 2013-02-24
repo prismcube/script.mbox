@@ -29,11 +29,13 @@ class FirstInstallation( FTIWindow ) :
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'First Installation' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
+		
 		self.SetFirstInstallation( True )
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
-		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
+		
 		self.SetListControl( self.GetFTIStep( ) )
 		self.SetPipLabel( )
 		
