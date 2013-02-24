@@ -49,6 +49,8 @@ class Installation( BaseWindow ) :
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
+
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )

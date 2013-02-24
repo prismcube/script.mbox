@@ -462,7 +462,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -492,7 +491,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -502,7 +500,6 @@ class BaseWindow( SingleWindow ) :
 				aWindowId == WinMgr.WIN_ID_CONFIG_MOTORIZED_12 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
 				aWindowId == WinMgr.WIN_ID_CONFIG_SIMPLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				
-				print 'dhkim test SetSingleWindowPosition diseqc!!'
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -563,7 +560,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -604,7 +600,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -625,7 +620,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -646,7 +640,6 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
@@ -667,14 +660,13 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
-				overlayImage.setVisible( True )
 
 				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'False' )
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingPip', 'True' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
@@ -683,14 +675,31 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setPosition( 362, 112 )
 				overlayImage.setWidth( 798 )
 				overlayImage.setHeight( 446 )
-				overlayImage.setVisible( True )
+
+			elif aWindowId == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingPip', 'True' )
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 835, 133 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+
+			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingPip', 'True' )
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 850, 118 )
+				overlayImage.setWidth( 352 )
+				overlayImage.setHeight( 198 )
+
+			elif aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingPip', 'True' )
+				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+				overlayImage.setPosition( 849, 118 )
+				overlayImage.setWidth( 350 )
+				overlayImage.setHeight( 198 )
 
 			else :
-				print 'dhkim test SetSingleWindowPosition else!!'
-				print 'dhkim test getProperty SettingBackground False'
 				self.setProperty( 'SettingBackground', 'False' )
 				self.setProperty( 'SettingPip', 'False' )
-				print 'dhkim test getProperty SettingBackground = %s' % self.getProperty( 'SettingBackground' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )

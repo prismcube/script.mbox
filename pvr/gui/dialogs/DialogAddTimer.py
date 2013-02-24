@@ -1,6 +1,10 @@
 from pvr.gui.WindowImport import *
 
 
+DIALOG_HEADER_LABEL				= 3005
+DIALOG_BUTTON_CLOSE	= 6995
+
+
 # Control IDs
 E_LABEL_RECORD_NAME			= 101
 E_LABEL_EPG_START_TIME		= 102
@@ -19,7 +23,8 @@ class DialogAddTimer( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
+		#self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
+		self.getControl( DIALOG_HEADER_LABEL ).setLabel( MR_LANG( 'Add Timer' ) )
 
 		self.Reload( )
 		self.mEventBus.Register( self )
@@ -38,13 +43,13 @@ class DialogAddTimer( BaseDialog ) :
 			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+			if focusId == DIALOG_BUTTON_CLOSE :
 				self.setFocusId( E_BUTTON_ADD )
 			elif focusId == E_BUTTON_ADD or focusId == E_BUTTON_CANCEL :
-				self.setFocusId( E_SETTING_DIALOG_BUTTON_CLOSE )
+				self.setFocusId( DIALOG_BUTTON_CLOSE )
 			
 		#elif actionId == Action.ACTION_MOVE_DOWN :
-		#	if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+		#	if focusId == DIALOG_BUTTON_CLOSE :
 		#		self.setFocusId( E_BUTTON_ADD )
 
 
@@ -55,7 +60,7 @@ class DialogAddTimer( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_YES
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
-		elif focusId == E_BUTTON_CANCEL or focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+		elif focusId == E_BUTTON_CANCEL or focusId == DIALOG_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 

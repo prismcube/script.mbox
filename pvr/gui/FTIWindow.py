@@ -21,14 +21,16 @@ class FTIWindow( SettingWindow ) :
 	def SetFirstInstallation( self, aFlag ) :
 		if aFlag :
 			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
-			self.setProperty( 'IsFTI', 'True' )
-			return
-			self.SetFTIWindowProperty( True )
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				self.setProperty( 'IsFTI', 'True' )
+			else :
+				self.SetFTIWindowProperty( True )
 		else :
 			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
-			self.setProperty( 'IsFTI', 'False' )
-			return
-			self.SetFTIWindowProperty( False )
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				self.setProperty( 'IsFTI', 'False' )
+			else :
+				self.SetFTIWindowProperty( False )
 
 
 	def GetFirstInstallation( self ) :

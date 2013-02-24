@@ -18,9 +18,9 @@ class AntennaSetup( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'Antenna Setup' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( False )
+		#self.getControl( E_ANTENNA_SETUP_SUBMENU_LIST_ID ).setVisible( False )
 
-		#self.SetSingleWindowPosition( E_ANTENNA_SETUP_BASE_ID )
+		self.SetSingleWindowPosition( E_ANTENNA_SETUP_BASE_ID )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )

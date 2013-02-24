@@ -105,6 +105,8 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Enter' )
 		self.setFocusId( E_CHANNEL_LIST_DEFAULT_FOCUS_ID )
 
+		self.SetSingleWindowPosition( E_CHANNEL_LIST_BASE_ID )
+
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Channel List' )
 		

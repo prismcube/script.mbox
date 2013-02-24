@@ -63,6 +63,8 @@ class EPGWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( 'EPG' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_EPG_WINDOW_BASE_ID )
+
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'EPG' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )

@@ -65,6 +65,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
+
 		status = self.mDataCache.Player_GetStatus( )
 		
 		if status.mMode == ElisEnum.E_MODE_PVR :
