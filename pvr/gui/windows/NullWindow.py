@@ -690,14 +690,10 @@ class NullWindow( BaseWindow ) :
 				self.mCommander.Subtitle_Hide( )
 
 		else :
+			self.CloseSubTitle( )		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
 			dialog.doModal( )
+			self.CheckSubTitle( )
 
-			else :
-				self.CloseSubTitle( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
-				dialog.doModal( )
-				self.CheckSubTitle( )
 
