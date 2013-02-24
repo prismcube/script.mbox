@@ -108,6 +108,7 @@ class NullWindow( BaseWindow ) :
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
+				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 	 			dialog.doModal( )
@@ -117,6 +118,7 @@ class NullWindow( BaseWindow ) :
 	 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
 			 			dialog.doModal( )
+			 			self.CheckSubTitle( )
 			 			return
 					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 						self.Close( )
@@ -125,6 +127,7 @@ class NullWindow( BaseWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 			 			dialog.doModal( )
+			 			self.CheckSubTitle( )			 			
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
@@ -146,9 +149,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping playback' )
+				self.CloseSubTitle( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
+	 			self.CheckSubTitle( )				
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
@@ -205,10 +210,11 @@ class NullWindow( BaseWindow ) :
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-
+				self.CloseSubTitle( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
+				self.CheckSubTitle( )				
 
 				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
@@ -221,9 +227,11 @@ class NullWindow( BaseWindow ) :
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 			else :
+				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
 				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
+				self.CheckSubTitle( )
 
 				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
@@ -234,7 +242,9 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
-				self.ShowRecordingStopDialog( )			
+				self.CloseSubTitle( )			
+				self.ShowRecordingStopDialog( )
+				self.CheckSubTitle( )
 
 			else :
 				self.mDataCache.Player_Stop( )
@@ -256,9 +266,11 @@ class NullWindow( BaseWindow ) :
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				if status.mMode == ElisEnum.E_MODE_PVR :
 					msg = MR_LANG( 'Try again after stopping playback' )
+					self.CloseSubTitle( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 					dialog.doModal( )
+					self.CheckSubTitle( )					
 					return
 
 				self.mDataCache.Player_Stop( )
@@ -277,19 +289,25 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
+					self.CloseSubTitle( )				
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
 					dialog.doModal( )
+					self.CheckSubTitle( )					
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping playback' )
+				self.CloseSubTitle( )				
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
+				self.CheckSubTitle( )				
 			else :
+				self.CloseSubTitle( )
 				self.ShowRecordingStartDialog( )
+				self.CheckSubTitle( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if HasAvailableRecordingHDD( ) == False :
@@ -326,9 +344,11 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
+				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
+				self.CheckSubTitle( )				
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.ShowSubtitle( )
@@ -511,10 +531,10 @@ class NullWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+	
 		isOK = False
 		if runningCount < 2 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
@@ -556,12 +576,9 @@ class NullWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
-		if self.mCommander.Subtitle_IsShowing( ) :
-			self.mSubTitleIsShow = True
-			self.mCommander.Subtitle_Hide( )
-		else :
-			self.mSubTitleIsShow = False
+		self.CloseSubTitle( )
 
+		
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
@@ -594,6 +611,14 @@ class NullWindow( BaseWindow ) :
 		channel = self.mDataCache.Channel_GetList( )
 		if not channel or len( channel ) < 1 :
 			self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+
+
+	def CloseSubTitle( self ) :
+		if self.mCommander.Subtitle_IsShowing( ) :
+			self.mSubTitleIsShow = True
+			self.mCommander.Subtitle_Hide( )
+		else :
+			self.mSubTitleIsShow = False
 
 
 	def CheckSubTitle( self ) :
@@ -665,6 +690,9 @@ class NullWindow( BaseWindow ) :
 					self.mCommander.Subtitle_Hide( )
 
 			else :
+				self.CloseSubTitle( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
-				dialog.doModal( )				
+				dialog.doModal( )
+				self.CheckSubTitle( )
+
