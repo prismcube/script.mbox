@@ -645,9 +645,9 @@ class NullWindow( BaseWindow ) :
 		
 			context = []
 			structSubTitle = []
+			selectedIndex = -1
 
 			for i in range( subTitleCount ) :
-				isRunning = ''
 				structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
 				print 'dhkim test ####'
 				self.mCommander.Subtitle_Get( i ).printdebug( )
@@ -655,7 +655,7 @@ class NullWindow( BaseWindow ) :
 
 				if selectedSubtitle and isShowing :
 					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
-						isRunning = 'Running '
+						selectedIndex = i
 				
 				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
 					subType = 'DVB'
@@ -667,14 +667,17 @@ class NullWindow( BaseWindow ) :
 					ten = ( structSubTitle[i].mSubId/16 )
 					one = (structSubTitle[i].mSubId % 16)
 
-					context.append( ContextItem( isRunning + subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+					context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
 				else :	
-					context.append( ContextItem( isRunning + subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+					context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
 			context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
 
+			if selectedIndex < 0 :
+				selectedIndex = subTitleCount
+
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
+			dialog.SetProperty( context, selectedIndex )
 			dialog.doModal( )
 
 			selectAction = dialog.GetSelectedAction( )
