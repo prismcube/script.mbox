@@ -10,12 +10,13 @@
 	<controls>
 		<!-- Default BackgroundImage -->
 		<control type="image">
+			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
-			<visible>!substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1400000)</visible>
+			<visible>!substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),1000000)</visible>
 			<!--<visible>substring(Window.Property(TVRadio),true)</visible>-->
 		</control>
 
@@ -55,7 +56,6 @@
 			<defaultcontrol always="true">1109000</defaultcontrol>
 			<allowoverlay>yes</allowoverlay>
 			<backgroundcolor>0x00ffffff</backgroundcolor>
-			<!--
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -63,15 +63,6 @@
 				<height>720</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true)</visible>
-			</control>
-			-->
-			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>font35_title</font>
-				<label>NullWindow</label>
-				<textcolor>grey2</textcolor>
 			</control>
 			<control type="label">
 				<posx>550</posx>
@@ -108,8 +99,10 @@
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
+			<!--
 			<include>DefaultCommonTime</include>
 			<include>DefaultCommonDate</include>
+			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>70r</posy>
@@ -4383,7 +4376,8 @@
 		<!-- Setting Window Controls -->
 		<control type="group" id="11000001">
 			<posy>10</posy>
-			<visible>!substring(Window.Property(CurrentWindow),1100000) | !substring(Window.Property(CurrentWindow),1200000) | !substring(Window.Property(CurrentWindow),1400000) | !substring(Window.Property(CurrentWindow),3500000)</visible>
+			<visible>substring(Window.Property(SettingBackground),True) | substring(Window.Property(CurrentWindow),1500000)</visible>
+			<!--<visible>!substring(Window.Property(CurrentWindow),1100000) | !substring(Window.Property(CurrentWindow),1200000) | !substring(Window.Property(CurrentWindow),1400000) | !substring(Window.Property(CurrentWindow),3500000)</visible>-->
 			<include>DefaultSettingWindowEffect</include>	
 			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
 				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />

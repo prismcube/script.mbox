@@ -86,6 +86,8 @@ class SystemInfo( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'System Info' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetSingleWindowPosition( E_SYSTEM_INFO_BASE_ID )
+
 		self.mGroupItems = []
 
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'Version' ) ) )
