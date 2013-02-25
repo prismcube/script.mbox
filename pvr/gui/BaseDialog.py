@@ -5,7 +5,7 @@ import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
+from pvr.XBMCInterface import XBMC_GetVolume
 
 import sys
 import os
