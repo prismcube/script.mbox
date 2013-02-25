@@ -386,6 +386,15 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		xbmc.executebuiltin( command )
 
 
+	def EventReceivedDialog( self, aDialog ) :
+		ret = aDialog.GetCloseStatus( )
+		if ret == Action.ACTION_PLAYER_PLAY :
+			xbmc.executebuiltin('xbmc.Action(play)')
+
+		elif ret == Action.ACTION_STOP :
+			xbmc.executebuiltin('xbmc.Action(stop)')
+
+
 	def NotAvailAction( self ) :
 		self.setProperty( 'NotAvail', 'True' )
 		loopTime = 0.01

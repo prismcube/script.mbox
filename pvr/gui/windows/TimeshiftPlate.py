@@ -1005,15 +1005,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.BookMarkContext( )
 
 
-	def EventReceivedDialog( self, aDialog ) :
-		ret = aDialog.GetCloseStatus( )
-		if ret == Action.ACTION_PLAYER_PLAY :
-			xbmc.executebuiltin('xbmc.Action(play)')
-
-		elif ret == Action.ACTION_STOP :
-			xbmc.executebuiltin('xbmc.Action(stop)')
-
-
 	def BookMarkContext( self ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )

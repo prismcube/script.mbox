@@ -144,8 +144,12 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
+			pass
+			"""
+			#deprecate
 			self.Close( )
 			WinMgr.GetInstance( ).CloseWindow( )
+			"""
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if HasAvailableRecordingHDD( ) == False :
@@ -448,15 +452,6 @@ class InfoPlate( LivePlateWindow ) :
 			self.mEventBus.Deregister( self )
 			self.AudioVideoContext( )
 			self.mEventBus.Register( self )
-
-
-	def EventReceivedDialog( self, aDialog ) :
-		ret = aDialog.GetCloseStatus( )
-		if ret == Action.ACTION_PLAYER_PLAY :
-			xbmc.executebuiltin('xbmc.Action(play)')
-
-		elif ret == Action.ACTION_STOP :
-			xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def BookMarkContext( self ) :
