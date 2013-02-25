@@ -81,6 +81,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onInit( self )  :
+		print 'dhkim test onInit'
 		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )		
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'System Info' )		
@@ -93,7 +94,7 @@ class SystemInfo( SettingWindow ) :
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'Version' ) ) )
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
+		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
 
 		self.mCtrlLeftGroup = self.getControl( E_SYSTEM_INFO_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -118,10 +119,12 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlLeftGroup.selectItem( position )
 		
 		self.StartCheckHddTempTimer( )
-		
+		print 'dhkim test ###1'
 		self.SetListControl( )
+		print 'dhkim test ###2'
 		self.mPrevListItemID = -1
 		self.mInitialized = True
+		print 'dhkim test ###3'
 
 
 	def onAction( self, aAction ) :
@@ -186,8 +189,10 @@ class SystemInfo( SettingWindow ) :
 	
 		if self.mInitialized == False :
 			return
+
 		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
 			if aControlId == E_SYSTEM_INFO_SUBMENU_LIST_ID :
+				print 'dhkim test aControlId = %s' % aControlId
 				self.SetListControl( )
 				if self.mLastFocused != aControlId :
 					self.mLastFocused = aControlId
@@ -196,6 +201,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def SetListControl( self ) :
+		print 'dhkim test SetListControl'
 		self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( GROUP_ID_MAIN ).setVisible( False )

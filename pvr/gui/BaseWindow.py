@@ -694,12 +694,16 @@ class BaseWindow( SingleWindow ) :
 				overlayImage.setHeight( 198 )
 
 			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
-				self.setProperty( 'DafultBackgroundImage', 'True' )
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
-				overlayImage.setPosition( 850, 118 )
-				overlayImage.setWidth( 352 )
-				overlayImage.setHeight( 198 )
+				if self.getProperty( 'ViewMode' ) == 'common' :
+					self.setProperty( 'SettingPip', 'True' )
+					overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+					overlayImage.setPosition( 850, 118 )
+					overlayImage.setWidth( 352 )
+					overlayImage.setHeight( 198 )
+				else :
+					self.setProperty( 'SettingPip', 'False' )
+				#self.setProperty( 'DafultBackgroundImage', 'True' )
+				
 
 			elif aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
@@ -711,6 +715,20 @@ class BaseWindow( SingleWindow ) :
 
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'DafultBackgroundImage', 'True' )
+
+			elif aWindowId == WinMgr.WIN_ID_LIVE_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'DafultBackgroundImage', 'False' )
+				self.setProperty( 'SettingPip', 'False' )
+				for i in range( E_CTRL_BTN_INFO_MAX ) :
+					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
+
+			elif aWindowId == WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'DafultBackgroundImage', 'False' )
+				self.setProperty( 'SettingPip', 'False' )
+				for i in range( E_CTRL_BTN_INFO_MAX ) :
+					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )				
 
 			else :
 				self.setProperty( 'SettingBackground', 'False' )

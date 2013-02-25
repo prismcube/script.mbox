@@ -53,7 +53,7 @@
 
 		<control type="group" id="9003">
 			<include>DefaultWindowFade</include>		
-			<include>DefaultBigEPGView</include> <!-- Default Big View id = 3510 -->			
+			<include>DefaultBigTimerView</include> <!-- Default Big View id = 3510 -->			
 		</control>
 
 		<!-- PIP -->

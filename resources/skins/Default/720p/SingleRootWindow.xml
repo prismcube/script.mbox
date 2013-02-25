@@ -16,16 +16,11 @@
 			<width>1280</width>
 			<height>720</height>
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
-			<visible>!substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),1000000)</visible>
 			<!--<visible>substring(Window.Property(TVRadio),true)</visible>-->
 		</control>
 
 		<include>DefaultFakeButton</include>
 
-		<!-- Time & Date -->
-		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonTime</include>
-	
 		<!-- Setting Window Backfround Include -->
 		<control type="group">
 			<visible>substring(Window.Property(SettingBackground),True)</visible>
@@ -47,8 +42,6 @@
 				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
 		</control>
-
-
 
 		<!-- *********** NULLWindow ********** -->
 		<control type="group" id="1100000">
@@ -1492,7 +1485,7 @@
 		<control type="group" id="1400000">
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			<visible>substring(Window.Property(CurrentWindow),1400000)</visible>
+			<visible>substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),4100000)</visible>
 			<defaultcontrol always="true">1003621</defaultcontrol>
 			<!--
 			<control type="image">
@@ -2736,7 +2729,6 @@
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
 			<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 			<defaultcontrol always="true">3309003</defaultcontrol>
-			<!--
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -2746,7 +2738,6 @@
 				<include>DefaultWindowFade</include>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
-			-->
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
@@ -3959,6 +3950,207 @@
 			</control>
 		</control>
 
+		<!-- *********** Timer Window ********** -->
+		<control type="group" id="4000000">
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
+			<defaultcontrol always="true">4009003</defaultcontrol>
+			<control type="group">
+				<include>DefaultWindowFade</include>
+				<control type="image">
+					<posx>0</posx>
+					<posy>128r</posy>
+					<width>1280</width>
+					<height>128</height>
+					<texture>floor.png</texture>
+					<include>DefaultVisibleFadeEffect</include>
+					<visible>true</visible>
+				</control>
+				<control type="group">
+					<include>DefaultVisibleFadeEffect</include>
+					<visible>true</visible>
+					<control type="image">
+						<posx>40</posx>
+						<posy>40</posy>
+						<width>1200</width>
+						<height>620</height>
+						<texture border="20">ContentPanel.png</texture>
+					</control>
+					<control type="image">
+						<posx>40</posx>
+						<posy>645</posy>
+						<width>1200</width>
+						<height>600</height>
+						<aspectratio aligny="top">keep</aspectratio>
+						<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
+					</control>
+				</control>
+			</control>
+
+			<control type="group" id="4009003">
+				<include>DefaultWindowFade</include>
+				<include>DefaultBigTimerView</include> <!-- Default Big View id = 3510 -->
+			</control>
+
+			<control type="group">
+				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1</width>
+						<height>720</height>
+						<texture>MediaBladeSub_Part1.png</texture>
+						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>12</width>
+						<height>720</height>
+						<texture>MediaBladeSub_Part2.png</texture>
+						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
+					</control>
+				</control>
+				<control type="group" id="4009001">
+					<posx>-220</posx>
+					<posy>0</posy>
+					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(4009001).HasFocus + !Control.HasFocus(4000101)">conditional</animation>
+					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">WindowClose</animation>
+					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">conditional</animation>
+
+					<control type="button">
+						<description>Fake button for mouse control</description>
+						<posx>-15</posx>
+						<posy>0</posy>
+						<width>245</width>
+						<height>720</height>
+						<label>-</label>
+						<font>-</font>
+						<texturenofocus>-</texturenofocus>
+						<texturefocus>-</texturefocus>
+						<visible>true</visible>
+					</control>
+
+					<control type="image">
+						<posx>185</posx>
+						<posy>120</posy>
+						<width>40</width>
+						<height>40</height>
+						<texture>MediaSubSet.png</texture>
+					</control>
+					<control type="grouplist" id="4009010">
+						<posx>10</posx>
+						<posy>170</posy>
+						<width>240</width>
+						<height>550</height>
+						<onleft>4009000</onleft>
+						<onright>4009000</onright>
+						<onup>4009010</onup>
+						<ondown>4009010</ondown>
+						<itemgap>0</itemgap>
+						<control type="radiobutton" id="4000200">
+							<description>Stack Toggle</description>
+							<textwidth>170</textwidth>
+							<include>DefaultButtonMediaSubCommonValues</include>
+							<label>SCRIPT8</label>
+						</control>
+						<control type="button" id="4000202">
+							<textwidth>170</textwidth>
+							<include>DefaultButtonMediaSubCommonValues</include>
+							<label>SCRIPT29</label>
+						</control>
+					</control>
+				</control>
+				<include>DefaultSideBladeLeft</include>
+				<control type="image">
+					<description>LOGO</description>
+					<posx>-230</posx>
+					<posy>50</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>Confluence_Logo.png</texture>
+				</control>
+				<control type="group" id="4009000">
+					<posx>-250</posx>
+					<posy>130</posy>
+					<!--
+					<include>CommonNowPlaying</include>
+					-->
+					<control type="button" id="4000100">
+						<description>View As button</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<include>DefaultButtonCommonValues</include>
+						<label>SCRIPT88</label>
+						<onleft>4009003</onleft>
+						<onright>4009003</onright>
+						<onup>4009003</onup>
+						<ondown>4009003</ondown>
+					</control>
+				</control>
+			</control>
+
+			<control type="group" id="4009020">
+				<posx>850</posx>
+				<posy>400</posy>
+				<include>DefaultWindowFade</include>
+				<control type="label" id="4000300">
+					<posx>0</posx>
+					<posy>0</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>00:00-00:00</label>
+				</control>
+
+				<control type="label" id="4000301">
+					<posx>150</posx>
+					<posy>0</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label></label>
+				</control>
+
+				<control type="label" id="4000302">
+					<posx>0</posx>
+					<posy>30</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label></label>
+				</control>
+
+				<control type="image" id="4000310">
+					<posx>0</posx>
+					<posy>60</posy>
+					<width>60</width>
+					<height>30</height>
+					<description>video HD</description>
+				</control>
+
+				<control type="image" id="4000311">
+					<posx>55</posx>
+					<posy>60</posy>
+					<width>65</width>
+					<height>30</height>
+					<description>audio dolby</description>
+				</control>
+
+				<control type="image" id="4000312">
+					<posx>110</posx>
+					<posy>60</posy>
+					<width>65</width>
+					<height>30</height>
+					<description>subtitle</description>
+				</control>
+			</control>
+		</control>
+
 		<!-- *********** InfoPlate ********** -->		
 
 		<!-- *********** Favorite ********** -->
@@ -4317,6 +4509,10 @@
 			<!--<include>DefaultFakeButton</include>-->
 		</control>
 
+		<!-- Time & Date -->
+		<include>DefaultCommonTime</include>
+		<include>DefaultCommonDate</include>
+
 		<!-- PIP Image & Radio Image -->
 		<control type="group">
 			<visible>substring(Window.Property(SettingPip),True)</visible>
@@ -4342,7 +4538,7 @@
 				<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
 				<texture>video_pig_overlay.png</texture>
-				<visible>!Control.IsVisible(1008800)</visible>
+				<!--<visible>!Control.IsVisible(1008800)</visible>-->
 			</control>
 			<control type="group">
 				<include>DefaultWindowFade</include>
@@ -4377,7 +4573,6 @@
 		<control type="group" id="11000001">
 			<posy>10</posy>
 			<visible>substring(Window.Property(SettingBackground),True) | substring(Window.Property(CurrentWindow),1500000)</visible>
-			<!--<visible>!substring(Window.Property(CurrentWindow),1100000) | !substring(Window.Property(CurrentWindow),1200000) | !substring(Window.Property(CurrentWindow),1400000) | !substring(Window.Property(CurrentWindow),3500000)</visible>-->
 			<include>DefaultSettingWindowEffect</include>	
 			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
 				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />

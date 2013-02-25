@@ -65,8 +65,6 @@ class ArchiveWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
-
 		status = self.mDataCache.Player_GetStatus( )
 		
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -75,6 +73,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.setProperty( 'PvrPlay', 'False' )
 
 		if self.mPlayingRecord :
+			self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
 			self.UpdateList( )
@@ -167,7 +166,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_SELECT_ITEM or actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
 				if	self.mMarkMode == True :
 					self.DoMarkToggle( )
@@ -272,6 +271,12 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateList( )
 			self.SetFocusList( self.mViewMode )
 
+		elif aControlId == LIST_ID_COMMON_RECORD or aControlId == LIST_ID_THUMBNAIL_RECORD or aControlId == LIST_ID_POSTERWRAP_RECORD or aControlId == LIST_ID_FANART_RECORD :
+			if	self.mMarkMode == True :
+				self.DoMarkToggle( )
+			else :
+				self.StartRecordPlayback( True )
+
 
 	def onFocus( self, controlId ) :
 		if self.IsActivate( ) == False  :
@@ -347,6 +352,8 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			self.mViewMode = E_VIEW_LIST 		
 			self.setProperty( 'ViewMode', 'common' )
+
+		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 		
 
 	def UpdateSortMode( self ) :
@@ -392,7 +399,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.LoadNoSignalState( )
 		else :
 			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
-		self.OpenBusyDialog( )
+		#self.OpenBusyDialog( )
 
 		try :
 			if not self.mRecordList or self.mRecordList == None :
@@ -431,7 +438,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" % ex )
 
 		self.AddListItems( )
-		self.CloseBusyDialog( )
+		#self.CloseBusyDialog( )
 		LOG_TRACE( 'UpdateList END' )
 
 

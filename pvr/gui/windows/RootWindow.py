@@ -69,7 +69,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 			LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
-		else :		
+		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
 
 				if aAction.getId() == Action.ACTION_MBOX_RESERVED21 :
@@ -92,7 +92,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :		
+		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )				
 		
  

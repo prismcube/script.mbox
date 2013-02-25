@@ -73,12 +73,13 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onInit( self ) :
-		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )	
+		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
-		self.SetSingleWindowPosition( E_LIVE_PLATE_BASE_ID )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+
+		self.SetSingleWindowPosition( E_LIVE_PLATE_BASE_ID )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )

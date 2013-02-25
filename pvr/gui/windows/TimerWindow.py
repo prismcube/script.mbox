@@ -3,7 +3,7 @@ from pvr.gui.WindowImport import *
 E_TIMER_WINDOW_BASE_ID			=  WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
 BUTTON_ID_GO_PARENT				= E_TIMER_WINDOW_BASE_ID + 100
-LIST_ID_BIG_EPG					= E_TIMER_WINDOW_BASE_ID + 3510
+LIST_ID_BIG_TIMER				= E_BASE_WINDOW_ID + 3610
 
 LABEL_ID_TIME					= E_TIMER_WINDOW_BASE_ID + 300
 LABEL_ID_DATE					= E_TIMER_WINDOW_BASE_ID + 301
@@ -38,7 +38,7 @@ class TimerWindow( BaseWindow ) :
 		self.mListItems = []
 		self.mTimerList = []
 
-		self.mCtrlBigList = self.getControl( LIST_ID_BIG_EPG )
+		self.mCtrlBigList = self.getControl( LIST_ID_BIG_TIMER )
 
 		self.mCtrlTimeLabel = self.getControl( LABEL_ID_TIME )
 		self.mCtrlDateLabel = self.getControl( LABEL_ID_DATE )
@@ -117,11 +117,11 @@ class TimerWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if self.mFocusId == LIST_ID_BIG_EPG :
+			if self.mFocusId == LIST_ID_BIG_TIMER :
 				pass
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
-			if self.mFocusId == LIST_ID_BIG_EPG :
+			if self.mFocusId == LIST_ID_BIG_TIMER :
 				pass
 		
 		elif actionId == Action.ACTION_CONTEXT_MENU:

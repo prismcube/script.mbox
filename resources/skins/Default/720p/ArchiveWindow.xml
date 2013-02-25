@@ -10,7 +10,7 @@
 			<height>720</height>
 			<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
 			<include>DefaultWindowFade</include>
-			<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+			<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) + substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
 		</control>
 		<control type="group">
 			<include>DefaultWindowFade</include>

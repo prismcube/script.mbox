@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 
-E_INFO_PLATE_BASE_ID = WinMgr.WIN_ID_LIVE_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+E_INFO_PLATE_BASE_ID = WinMgr.WIN_ID_LIVE_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
 E_CONTROL_ID_IMAGE_RECORDING1 			= 10 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_LABEL_RECORDING1 			= 11 + E_INFO_PLATE_BASE_ID
@@ -27,6 +27,8 @@ E_CONTROL_DEFAULT_HIDE = [
 	E_CONTROL_ID_BUTTON_START_RECORDING,
 	E_CONTROL_ID_BUTTON_STOP_RECORDING
 ]
+
+E_INFO_PLATE_DEFAULT_FOCUS_ID			=  E_BASE_WINDOW_ID + 3621
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
@@ -55,9 +57,11 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onInit( self ) :
+		self.setFocusId( E_INFO_PLATE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.SetSingleWindowPosition( WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )

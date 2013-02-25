@@ -53,13 +53,9 @@ class TunerConfiguration( FTIWindow ) :
 			self.onActionNormal( actionId )
 
 		if actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			print 'dhkim test ##1'
 			if focusId == E_MAIN_LIST_ID :
-				print 'dhkim test ##2'
 				position = self.mCtrlMainList.getSelectedPosition( )
-				print 'dhkim test position = %s' % position 
 				desc = self.mListItems[ position ].getLabel2( )
-				print 'dhkim test desc = %s' % desc
 				self.getControl( E_DESCRIPTION_ID ).setLabel( desc )
 
 
