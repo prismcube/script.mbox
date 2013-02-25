@@ -16,6 +16,7 @@ class DialogPopupOK( BaseDialog ) :
 		self.mLabel2 = ''
 		self.mLabel3 = ''
 		self.mStayCount = 0
+		self.mIsOk = None
 
 
 	def onInit( self ) :
@@ -31,6 +32,7 @@ class DialogPopupOK( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.mIsOk = actionId
 		if self.GlobalAction( actionId ) :
 			return
 
@@ -43,6 +45,12 @@ class DialogPopupOK( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
+		elif actionId == Action.ACTION_STOP :
+			self.CloseDialog( )
+
+		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.CloseDialog( )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_BUTTON_OK :
@@ -51,6 +59,17 @@ class DialogPopupOK( BaseDialog ) :
 
 	def onFocus( self, aControlId ) :
 		pass
+
+
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
+
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
+
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( 'EventRecv EOF_END' )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def SetDialogProperty( self, aTitle='', aLabel1='', aLabel2='', aLabel3='' ) :
@@ -69,5 +88,9 @@ class DialogPopupOK( BaseDialog ) :
 
 	def SetStayCount( self, aCount = 0 ) :
 		self.mStayCount = aCount
+
+
+	def GetCloseStatus( self ) :
+		return self.mIsOk
 
 
