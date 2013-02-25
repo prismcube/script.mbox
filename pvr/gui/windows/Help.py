@@ -1,66 +1,27 @@
 from pvr.gui.WindowImport import *
 from elementtree import ElementTree
 
-
 E_STEP_FEATURES					=	1
-E_STEP_FRONT_PLATE				=	2
-E_STEP_REAR_PLATE				=	3
-E_STEP_REMOTE1					=	4
-E_STEP_REMOTE2					=	5
-E_STEP_CONNECTING				=	6
-E_STEP_INFO_PLATE				=	7
-E_STEP_FIRST_INSTALLATION		=	8
-E_STEP_SIMPLE_LNB				=	9
-E_STEP_DISEQC_1					=	10
-E_STEP_DISEQC_1_1				=	11
-E_STEP_DISEQC_1_2				=	12
-E_STEP_USALS					=	13
-E_STEP_ONECABLE					=	14
-E_STEP_AUTO_SCAN				=	15
-E_STEP_MANUAL_SCAN				=	16
-E_STEP_TIMESHIFT				=	17
-E_STEP_RECORDING				=	18
-E_STEP_ARCHIVE					=	19
-E_STEP_PVR						=	20
-E_STEP_BOOKMARK					=	21
-E_STEP_AUTOCHAPERING			=	22
-E_STEP_EPG						=	23
-E_STEP_VIEW_MODE				=	24
-E_STEP_EPG_TIMER				=	25
-E_STEP_MANUAL_TIMER				=	26
-E_STEP_EDIT_TIMER				=	27
-E_STEP_EDIT_CHANNEL_LIST		=	28
-E_STEP_MOVING_CHANNELS			=	29
-E_STEP_LOCKING_CHANNELS			=	30
-E_STEP_SKIPPING_CHANNELS		=	31
-E_STEP_CREATING_FAV				=	32
-E_STEP_ADDING_CHANNELS			=	33
-E_STEP_REMOVING_CHANNELS		=	34
-E_STEP_RENAMING_FAV				=	35
-E_STEP_DELETING_FAV				=	36
-E_STEP_MEDIACENTER	 			=	37
-E_STEP_MEDIACENTER_SETTINGS		=	38
-E_STEP_INSTALL_ADDONS			=	39
-E_STEP_ADDONS					=	40
-	
-TOTAL_STEPS 					=	40
+HELP_STEPS 						=	40
 
 E_SETTING_PAGENUM				= 	1004
 
 E_HELP_IMAGE					=	100
+
 E_HELP_TEXTBOX					= 	200
 E_MAXIMUM_TEXTBOX_NUM			=	3
 
+# Help Button & Label Ids
 E_HELP_PREV						=	7000
 E_HELP_NEXT						=	7001	
 E_HELP_PREV_LABEL				=	7005
 E_HELP_NEXT_LABEL				=	7006
 
-E_HELP_CONTETNT					= 	8500
+E_HELP_CONTETNT				= 	8500
 
 E_GROUP_LIST_CONTROL			=	9000
 
-HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+#HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
 
 class Help( SettingWindow ) :
@@ -71,11 +32,12 @@ class Help( SettingWindow ) :
 		self.mRoot 					=	None
 		self.mListContent 			=	[]
 
-		if not self.mPlatform.IsPrismCube( ) :
-			global HELP_STRING
-			HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+		#if not self.mPlatform.IsPrismCube( ) :
+		#	global HELP_STRING
+		#	HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
-		self.mHelpString				=  	HELP_STRING		
+		#self.mHelpString				=  	HELP_STRING	
+		self.mHelpString				=  	None	
 
 
 	def onInit( self ) :
@@ -85,14 +47,13 @@ class Help( SettingWindow ) :
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
 		
 		if self.mInitialized == False :
-			helpString = self.getProperty( 'HelpString' )
-			
+			helpString = self.getProperty( 'HelpString' )		
 			if helpString :
 				self.mHelpString =  os.path.join( WinMgr.GetInstance( ).GetSkinXMLPath(),  helpString )
 
 			self.MakeContentList( )
 			self.mInitialized = True
-			LOG_TRACE('HELP STRING=%s' %self.mHelpString )
+			LOG_TRACE( 'HELP STRING = %s' %self.mHelpString )
 
 		self.SetListControl( self.mStepNum )
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
@@ -103,7 +64,6 @@ class Help( SettingWindow ) :
 			return
 	
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
 			return
 
@@ -116,7 +76,7 @@ class Help( SettingWindow ) :
 			return
 	
 		if aControlId == E_HELP_NEXT :
-			if self.mStepNum == TOTAL_STEPS :
+			if self.mStepNum == HELP_STEPS :
 				self.Close( )
 			else :
 				self.OpenAnimation( )
@@ -177,14 +137,14 @@ class Help( SettingWindow ) :
 
 
 	def DrawContents ( self, aList, aStep ) :
-		contentcount = 0
+		contentCount = 0
 		self.SetTextboxInvisible( E_MAXIMUM_TEXTBOX_NUM )
 		
 		for content in aList :
 			if int( content.mPageNum ) == aStep :
 				self.getControl( E_SETTING_HEADER_TITLE ).setLabel( content.mTitle )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( content.mLocation )
-				self.getControl( E_SETTING_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, TOTAL_STEPS ) )
+				self.getControl( E_SETTING_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, HELP_STEPS ) )
 				
 				if content.mType == "image" :
 					self.getControl( E_HELP_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
@@ -193,19 +153,19 @@ class Help( SettingWindow ) :
 					self.setProperty('imagepath', content.mDescription )
 					
 				elif content.mType == "textbox" :
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setPosition( content.mPositionX , content.mPositionY )
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setWidth( content.mWidth )
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setHeight( content.mHeight )
+					self.getControl( E_HELP_TEXTBOX + contentCount ).setPosition( content.mPositionX , content.mPositionY )
+					self.getControl( E_HELP_TEXTBOX + contentCount ).setWidth( content.mWidth )
+					self.getControl( E_HELP_TEXTBOX + contentCount ).setHeight( content.mHeight )
 					
-					if contentcount == 0:
+					if contentCount == 0:
 						self.setProperty( 'label', content.mDescription )
-					elif contentcount == 1:
+					elif contentCount == 1:
 						self.setProperty( 'label1', content.mDescription )
-					elif contentcount == 2:
+					elif contentCount == 2:
 						self.setProperty( 'label2', content.mDescription )
 
-					self.getControl( E_HELP_TEXTBOX + contentcount ).setVisible( True )
-					contentcount += 1
+					self.getControl( E_HELP_TEXTBOX + contentCount ).setVisible( True )
+					contentCount += 1
 
 
 	def SetPrevNextButtonLabel( self ) :
@@ -213,7 +173,7 @@ class Help( SettingWindow ) :
 			self.SetVisibleControl( E_HELP_PREV, False )
 			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 
-		elif self.mStepNum == TOTAL_STEPS :
+		elif self.mStepNum == HELP_STEPS :
 			self.getControl( E_HELP_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Finish' ) )
 

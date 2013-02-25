@@ -282,9 +282,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			   aVolumeStep == 0 : 
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
-					mute = False
-				if XBMC_GetMute( ) :
-					mute = True
+					if XBMC_GetMute( ) :
+						mute = True
+					else :
+						mute = False
 				self.mCommander.Player_SetMute( mute )
 				#if XBMC_GetMute( ) != mute :
 				#	XBMC_SetVolume( volume, mute )

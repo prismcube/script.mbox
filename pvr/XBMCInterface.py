@@ -182,6 +182,7 @@ def XBMC_GetMute( ) :
 
 		if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('muted'):
 			muted = jsonobject['result']['muted']
+			LOG_TRACE('---------------xbmc muted = %s' %muted)
 			return muted
 			
 	return False
