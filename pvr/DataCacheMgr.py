@@ -5,7 +5,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML

@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import sys, inspect, time
+import sys, inspect, time, threading
 import gc
 
 
@@ -14,6 +14,7 @@ class NullWindow( BaseWindow ) :
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			self.mSubTitleIsShow = False
+			self.mIsShowDialog = False
 
 
 	def onInit( self ) :
@@ -148,12 +149,8 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping playback' )
-				self.CloseSubTitle( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
-	 			self.CheckSubTitle( )				
+				self.DialogPopupOK( actionId )
+
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
@@ -265,12 +262,7 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				if status.mMode == ElisEnum.E_MODE_PVR :
-					msg = MR_LANG( 'Try again after stopping playback' )
-					self.CloseSubTitle( )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-					dialog.doModal( )
-					self.CheckSubTitle( )					
+					self.DialogPopupOK( actionId )
 					return
 
 				self.mDataCache.Player_Stop( )
@@ -289,21 +281,13 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
-					self.CloseSubTitle( )				
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
-					dialog.doModal( )
-					self.CheckSubTitle( )					
+					self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping playback' )
-				self.CloseSubTitle( )				
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
-				self.CheckSubTitle( )				
+				self.DialogPopupOK( actionId )
+
 			else :
 				self.CloseSubTitle( )
 				self.ShowRecordingStartDialog( )
@@ -344,11 +328,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
-				self.CloseSubTitle( )			
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
-				dialog.doModal( )
-				self.CheckSubTitle( )				
+				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.ShowSubtitle( )
@@ -699,4 +679,66 @@ class NullWindow( BaseWindow ) :
 			dialog.doModal( )
 			self.CheckSubTitle( )
 
+
+	def DialogPopupOK( self, aAction ) :
+		if self.mIsShowDialog == False :
+			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
+			thread.start( )
+		else :
+			LOG_TRACE( 'Already opened, Dialog' )
+
+
+	def ShowDialog( self, aAction ) :
+		self.mIsShowDialog = True
+
+		head= MR_LANG( 'Attention' )
+		msg = ''
+		dialogId = DiaMgr.DIALOG_ID_POPUP_OK
+		extendData = None
+		if aAction == Action.ACTION_SHOW_INFO :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+			iPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+			if iPlayingRecord :
+				iCurrentEPG = self.mDataCache.RecordItem_GetEventInfo( iPlayingRecord.mRecordKey )
+				if iCurrentEPG == None or iCurrentEPG.mError != 0 :
+					iCurrentEPG = ElisIEPGEvent()
+					iCurrentEPG.mEventName = iPlayingRecord.mRecordName
+					iCurrentEPG.mEventDescription = ''
+					iCurrentEPG.mStartTime = iPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
+					iCurrentEPG.mDuration = iPlayingRecord.mDuration
+
+				dialogId = DiaMgr.DIALOG_ID_EXTEND_EPG
+				extendData = iCurrentEPG
+
+			else :
+				head = MR_LANG( 'Error' )
+				msg = MR_LANG( 'EPG None' )
+
+		elif aAction == Action.ACTION_MBOX_TEXT :
+			head = MR_LANG( 'No teletext' )
+			msg = MR_LANG( 'No teletext available' )
+
+		elif aAction == Action.ACTION_MBOX_XBMC :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == Action.ACTION_MBOX_RECORD :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == Action.ACTION_MBOX_TVRADIO :
+			head = MR_LANG( 'Error' )
+			msg = MR_LANG( 'No channels available for the selected mode' )
+
+		self.CloseSubTitle( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( dialogId )
+		if dialogId == DiaMgr.DIALOG_ID_EXTEND_EPG and extendData :
+			dialog.SetEPG( extendData )
+		else :
+			dialog.SetDialogProperty( head, msg )
+		dialog.doModal( )
+		self.CheckSubTitle( )
+
+		self.EventReceivedDialog( dialog )
+
+		self.mIsShowDialog = False
 

@@ -135,6 +135,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 		self.mThumbnailList = []
 		self.mBookmarkList = []
+		self.mPlayingRecordInfo = None
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -771,6 +772,11 @@ class TimeShiftPlate( BaseWindow ) :
 				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
 				tempEndTime =  localTime
 
+			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
+				self.mTimeshift_staTime = 0.0
+				self.mTimeshift_endTime = self.mPlayingRecordInfo.mDuration * 1000
+				#LOG_TRACE( 'resetting pvr start[%s] end[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime ) )
+
 
 			#Speed label
 			self.mSpeed  = status.mSpeed
@@ -1005,15 +1011,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.BookMarkContext( )
 
 
-	def EventReceivedDialog( self, aDialog ) :
-		ret = aDialog.GetCloseStatus( )
-		if ret == Action.ACTION_PLAYER_PLAY :
-			xbmc.executebuiltin('xbmc.Action(play)')
-
-		elif ret == Action.ACTION_STOP :
-			xbmc.executebuiltin('xbmc.Action(stop)')
-
-
 	def BookMarkContext( self ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
@@ -1230,6 +1227,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			self.mCtrlBookMarkList.reset( )
 			return
+
+		self.mPlayingRecordInfo = playingRecord
 
 		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 		#LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )

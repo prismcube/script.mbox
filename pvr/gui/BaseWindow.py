@@ -282,9 +282,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			   aVolumeStep == 0 : 
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
-					mute = False
-				if XBMC_GetMute( ) :
-					mute = True
+					if XBMC_GetMute( ) :
+						mute = True
+					else :
+						mute = False
 				self.mCommander.Player_SetMute( mute )
 				#if XBMC_GetMute( ) != mute :
 				#	XBMC_SetVolume( volume, mute )
@@ -383,6 +384,15 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def NotificationDialog( self, aMsg1, aMsg2, aTimeMs = 2000, aImage = '' ) :
 		command = 'Notification(%s,%s,%s,%s)'% ( aMsg1, aMsg2, aTimeMs, aImage )
 		xbmc.executebuiltin( command )
+
+
+	def EventReceivedDialog( self, aDialog ) :
+		ret = aDialog.GetCloseStatus( )
+		if ret == Action.ACTION_PLAYER_PLAY :
+			xbmc.executebuiltin('xbmc.Action(play)')
+
+		elif ret == Action.ACTION_STOP :
+			xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def NotAvailAction( self ) :

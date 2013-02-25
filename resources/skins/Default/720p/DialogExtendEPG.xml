@@ -55,8 +55,8 @@
 					<posx>450</posx>
 					<posy>90</posy>
 					<width>400</width>
-					<height>40</height>
-					<itemgap>10</itemgap>
+					<height>50</height>
+					<itemgap>25</itemgap>
 					<align>right</align>
 					<orientation>horizontal</orientation>
 					<control type="image">
@@ -77,9 +77,9 @@
 					</control>
 					<control type="image">
 						<posx>0</posx>
-						<posy>7</posy>
-						<width>102</width>
-						<height>26</height>
+						<posy>0</posy>
+						<width>122</width>
+						<height>31</height>
 						<texture>dolbydigital.png</texture>
 					<visible>substring(Window.Property(HasDolby),true)</visible>
 					</control>
