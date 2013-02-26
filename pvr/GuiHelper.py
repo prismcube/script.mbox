@@ -174,22 +174,30 @@ def HasEPGComponent( aEPG, aFlag ) :
 
 
 def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
-	if pmtEvent :
-		pmtEvent.printdebug()
-	else :
+	if not pmtEvent :
 		LOG_TRACE( '---------------pmtEvent None' )
+		return False
 
+	ret = False
 	if aPropertyID == 'HasTeletext' :
-		if pmtEvent and pmtEvent.mTTXCount > 0 :
-			LOG_TRACE( '-------------- Teletext updated by PMT cache -------------------' )
+		if pmtEvent.mTTXCount > 0 :
+			#LOG_TRACE( '-------------- Teletext updated by PMT cache' )
 			self.setProperty( aPropertyID, 'True' )
-			return True
+			ret = True
 
 	elif aPropertyID == 'HasSubtitle' :
-		if pmtEvent and pmtEvent.mSubCount > 0 :
-			LOG_TRACE( '-------------- Subtitle updated by PMT cache -------------------' )
+		if pmtEvent.mSubCount > 0 :
+			#LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
 			self.setProperty( aPropertyID, 'True' )
-			return True
+			ret = True
+
+	elif aPropertyID == 'HasDolbyPlus' :
+		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+		if pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+			self.setProperty( aPropertyID, 'True' )
+			ret = True
+
+	return ret
 
 
 def GetSelectedLongitudeString( aLongitude, aName ) :

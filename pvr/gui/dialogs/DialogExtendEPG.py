@@ -28,7 +28,8 @@ class DialogExtendEPG( BaseDialog ) :
 		LOG_TRACE('--------component[%s]'% setPropertyList )
 
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-		self.setProperty( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
+			self.setProperty( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
 		self.setProperty( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 		"""
