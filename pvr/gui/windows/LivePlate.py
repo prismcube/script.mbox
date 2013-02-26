@@ -909,8 +909,10 @@ class LivePlate( LivePlateWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+
 		isOK = False
-		if runningCount < 2 :
+		if runningCount < 2 or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
