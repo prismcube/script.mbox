@@ -1506,7 +1506,7 @@ class SystemUpdate( SettingWindow ) :
 			dialog.doModal( )
 			return
 
-		self.OpenBusyDialog( )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 		shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
 		os.system( 'sync' )
 	
@@ -1520,7 +1520,7 @@ class SystemUpdate( SettingWindow ) :
 		os.remove( UPDATE_TEMP_CHANNEL )
 		os.system( 'sync' )		
 
-		self.CloseBusyDialog( )
+		self.CloseProgress( )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
@@ -1537,7 +1537,7 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		#check usb file
-		self.OpenBusyDialog( )		
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 		filePath = os.path.join( usbPath, 'updatechannel' )
 		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
 		if not os.path.exists( filePath ) :
@@ -1553,7 +1553,7 @@ class SystemUpdate( SettingWindow ) :
 		os.remove( UPDATE_TEMP_CHANNEL )
 		os.system( 'sync' )		
 		
-		self.CloseBusyDialog( )		
+		self.CloseProgress( )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your channel list has been exported successfully') )
