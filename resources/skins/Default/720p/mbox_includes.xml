@@ -2550,6 +2550,106 @@
 		</control>
 	</include>
 
+	<include name="Input08">
+		<control type="group" id="2800">
+			<width>750</width>
+			<height>40</height>
+			<defaultcontrol always="true">2801</defaultcontrol>
+			<control type="button" id="2801">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control.IsVisible(2800)</visible>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>750</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+			</control>
+			<control type="list" id="2803">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>750</width>
+				<height>40</height>						
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="720">
+				</itemlayout>
+				<focusedlayout height="40" width="720">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>680</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(2800)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>680</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(2800) + ![Control.HasFocus(2801)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>680</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(2800) + Control.HasFocus(2801)</visible>
+					</control>
+					<control type="label">
+						<posx>736</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(2800)</visible>
+					</control>
+					<control type="label">
+						<posx>736</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(2800) + ![Control.HasFocus(2801)]</visible>
+					</control>
+					<control type="label">
+						<posx>736</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(2800) + Control.HasFocus(2801)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
 	<include name="DialogSpinEx01">
 		<control type="group" id="6110">
 			<width>550</width>

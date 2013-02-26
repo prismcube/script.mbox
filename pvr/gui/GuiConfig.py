@@ -49,6 +49,7 @@ E_Input04			= 2400
 E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
+E_Input08			= 2800
 
 # Info Plate Buttons
 E_CTRL_GROUP_INFO = 3620
