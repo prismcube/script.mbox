@@ -256,7 +256,11 @@ class DataCacheMgr( object ) :
 	def LoadVolumeToSetGUI( self ) :
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
-		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
+		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
+
+		if lastMute :
+			self.mCommander.Player_SetMute( False )
+			LOG_TRACE( 'mute off' )
 
 		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
 		if revisionVolume >= VOLUME_STEP :
