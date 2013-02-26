@@ -477,7 +477,12 @@ class DataCacheMgr( object ) :
 		if tmptransponderList and tmptransponderList[0].mError == 0 :
 			transponderList = []
 	 		for i in range( len( tmptransponderList ) ) :
-				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
+	 			if tmptransponderList[i].mPolarization == ElisEnum.E_LNB_HORIZONTAL :
+	 				polarization = MR_LANG( 'Horizontal' )
+	 			else :
+	 				polarization = MR_LANG( 'Vertical' )
+	 				
+				transponderList.append( '%d %d MHz %d KS/s %s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate, polarization ) )
 
 		return transponderList
 

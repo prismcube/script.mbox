@@ -608,7 +608,6 @@ class NullWindow( BaseWindow ) :
 
 	def ShowSubtitle( self ) :
 		subTitleCount = self.mCommander.Subtitle_GetCount( )
-		print 'dhkim test subTitleCount = %s' % subTitleCount
 		if subTitleCount > 0 :
 			isShowing = False
 			if self.mCommander.Subtitle_IsShowing( ) :
@@ -619,7 +618,6 @@ class NullWindow( BaseWindow ) :
 
 			#####
 			if selectedSubtitle :
-				print 'dhkim test selected subtitle'
 				selectedSubtitle.printdebug( )
 			#####
 		
@@ -629,9 +627,7 @@ class NullWindow( BaseWindow ) :
 			for i in range( subTitleCount ) :
 				isRunning = ''
 				structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
-				print 'dhkim test ####'
 				self.mCommander.Subtitle_Get( i ).printdebug( )
-				print 'dhkim test ####'
 
 				if selectedSubtitle and isShowing :
 					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
