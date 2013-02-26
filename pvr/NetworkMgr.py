@@ -10,7 +10,7 @@ except :
 
 
 gNetworkMgr					= None
-CONFIGURATION_TIMEOUT		= 30
+CONFIGURATION_TIMEOUT		= 10
 
 NETWORK_CONFIG_PATH			= '/config/network.config'
 WIFI_CONFIGURED_PATH		= '/var/lib/connman/wifi.config'

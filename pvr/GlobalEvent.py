@@ -68,7 +68,7 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
 			LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
 			if aEvent :
-				aEvent.printdebug( )
+				#aEvent.printdebug( )
 				self.mDataCache.SetCurrentPMTEvent( aEvent )
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :

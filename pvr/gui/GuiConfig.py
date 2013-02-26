@@ -49,6 +49,7 @@ E_Input04			= 2400
 E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
+E_Input08			= 2800
 
 # Info Plate Buttons
 E_CTRL_GROUP_INFO = 3620
@@ -270,6 +271,7 @@ E_TAG_GET_SELECT_POSITION 	= 'getItem'
 E_XML_PROPERTY_TELETEXT   = 'HasTeletext'	 
 E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
 E_XML_PROPERTY_DOLBY      = 'HasDolby'
+E_XML_PROPERTY_DOLBYPLUS  = 'HasDolbyPlus'
 E_XML_PROPERTY_HD         = 'HasHD'
 E_XML_PROPERTY_MARK       = 'iMark'
 E_XML_PROPERTY_SKIP       = 'iSkip'

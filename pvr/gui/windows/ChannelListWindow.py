@@ -748,6 +748,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -1519,6 +1520,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
@@ -1651,6 +1653,14 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
 					aValue = True
 
+		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
+			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+			if pmtEvent and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
+					aValue = True
+
 		self.setProperty( aPropertyID, '%s'% aValue )
 		return aValue
 
@@ -1658,7 +1668,7 @@ class ChannelListWindow( BaseWindow ) :
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
 
 		if aPropertyID == E_XML_PROPERTY_EDITINFO or aPropertyID == E_XML_PROPERTY_MOVE :
 			rootWinow = xbmcgui.Window( 10000 )
@@ -1667,7 +1677,7 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			if self.UpdatePropertyByCacheData( aPropertyID ) == True :
 				LOG_TRACE( '-------------- return by cached data' )
-				return
+				return True
 
 			self.setProperty( aPropertyID, aValue )
 
@@ -1741,7 +1751,8 @@ class ChannelListWindow( BaseWindow ) :
 				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
