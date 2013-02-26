@@ -81,7 +81,6 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onInit( self )  :
-		print 'dhkim test onInit'
 		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )		
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'System Info' )		
@@ -119,12 +118,9 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlLeftGroup.selectItem( position )
 		
 		self.StartCheckHddTempTimer( )
-		print 'dhkim test ###1'
 		self.SetListControl( )
-		print 'dhkim test ###2'
 		self.mPrevListItemID = -1
 		self.mInitialized = True
-		print 'dhkim test ###3'
 
 
 	def onAction( self, aAction ) :
@@ -190,18 +186,18 @@ class SystemInfo( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 
+		"""
 		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
 			if aControlId == E_SYSTEM_INFO_SUBMENU_LIST_ID :
-				print 'dhkim test aControlId = %s' % aControlId
 				self.SetListControl( )
 				if self.mLastFocused != aControlId :
 					self.mLastFocused = aControlId
 				if self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
 					self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
+		"""
 
 
 	def SetListControl( self ) :
-		print 'dhkim test SetListControl'
 		self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( GROUP_ID_MAIN ).setVisible( False )

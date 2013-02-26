@@ -160,6 +160,10 @@ class WindowMgr( object ) :
 
 
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+					#self.mRootWindow.setProperty( 'CurrentWindow', 'Null' )
+					#self.mRootWindow.setProperty( 'SettingPip', 'False' )
+					#self.mRootWindow.setProperty( 'SettingBackground', 'False' )
+					#time.sleep( 0.3 )
 					LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
@@ -167,8 +171,8 @@ class WindowMgr( object ) :
 					self.mWindows[self.mLastId].ClearRelayAction( )
 					self.mWindows[currentId].close( )
 					self.mWindows[currentId].SetActivate( False )
-					if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :					
-						xbmc.executebuiltin('xbmc.Action(dvbres21)')				
+					if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
+						xbmc.executebuiltin('xbmc.Action(dvbres21)')
 
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
@@ -196,7 +200,12 @@ class WindowMgr( object ) :
 
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :	
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						#self.mRootWindow.setProperty( 'CurrentWindow', 'Null' )
+						#self.mRootWindow.setProperty( 'SettingPip', 'False' )
+						#self.mRootWindow.setProperty( 'SettingBackground', 'False' )
+						#time.sleep( 0.3 )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						
 						self.mWindows[parentId].onInit( )									
 					else :
 						self.mWindows[currentId].close( )

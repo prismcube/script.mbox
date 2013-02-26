@@ -88,8 +88,8 @@
 
 		<!-- *********** MainMenu ********** -->
 		<control type="group" id="1200000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="300">Hidden</animation>
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
 			<!--
@@ -102,8 +102,8 @@
 				<width>1280</width>
 				<height>90</height>
 				<texture>floor.png</texture>
-				<animation effect="fade" time="250">WindowOpen</animation>
-				<animation effect="fade" time="250">WindowClose</animation>
+				<animation effect="fade" time="250">Visible</animation>
+				<animation effect="fade" time="250">Hidden</animation>
 			</control>
 			<control type="image">
 				<description>LOGO</description>
@@ -120,11 +120,11 @@
 			<!-- Sub Menu -->
 			<control type="group">
 				<posy>400</posy>
-				<animation type="WindowOpen" reversible="false">
+				<animation type="Visible" reversible="false">
 					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 					<effect type="fade" start="0" end="100" time="300" />
 				</animation>
-				<animation type="WindowClose" reversible="false">
+				<animation type="Hidden" reversible="false">
 					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
 					<effect type="fade" start="100" end="0" time="300" />
 				</animation>
@@ -565,8 +565,7 @@
 
 		<!-- *********** ChannelList ********** -->	
 		<control type="group" id="1300000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
@@ -2441,12 +2440,10 @@
 
 		<!-- *********** Configure ********** -->	
 		<control type="group" id="1500000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1500000)</visible>
 			<defaultcontrol always="true">1509000</defaultcontrol>
-
-			<include>DefaultSettingHeaderWindow</include>
+			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>90</posx>
 				<posy>50</posy>
@@ -2591,12 +2588,11 @@
 
 		<!-- *********** TunerConfiguration ********** -->
 		<control type="group" id="1700000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1700000)</visible>
 			<defaultcontrol always="true">1709000</defaultcontrol>
 
-			<include>DefaultSettingHeaderWindow</include>
+			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>80</posx>
 				<posy>110</posy>
@@ -2725,8 +2721,7 @@
 
 		<!-- *********** Archive ********** -->
 		<control type="group" id="3300000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 			<defaultcontrol always="true">3309003</defaultcontrol>
 			<control type="image">
@@ -3111,11 +3106,14 @@
 
 		<!-- *********** SystemInfo ********** -->
 		<control type="group" id="3400000">
+			<include>DefaultSettingWindowEffect</include>
+			<!--
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
 			<visible>substring(Window.Property(CurrentWindow),3400000)</visible>
 			<defaultcontrol always="true">3409000</defaultcontrol>
-			<include>DefaultSettingHeaderWindow</include>
+			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>90</posx>
 				<posy>50</posy>
@@ -3329,12 +3327,14 @@
 
 		<!-- *********** Installation ********** -->
 		<control type="group" id="3500000">
+			<include>DefaultSettingWindowEffect</include>
+			<!--
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
 			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
 			<defaultcontrol always="true">3509000</defaultcontrol>
-
-			<include>DefaultSettingHeaderWindow</include>
+			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>90</posx>
 				<posy>50</posy>
@@ -3538,8 +3538,11 @@
 
 		<!-- *********** EPG ********** -->
 		<control type="group" id="3700000">
+			<!--
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),3700000)</visible>
 			<defaultcontrol always="true">3709003</defaultcontrol>
 			<!--
@@ -3952,8 +3955,11 @@
 
 		<!-- *********** Timer Window ********** -->
 		<control type="group" id="4000000">
+			<!--
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
 			<defaultcontrol always="true">4009003</defaultcontrol>
 			<control type="group">
@@ -4155,8 +4161,7 @@
 
 		<!-- *********** Favorite ********** -->
 		<control type="group" id="4200000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),4200000)</visible>
 			<defaultcontrol always="true">4209000</defaultcontrol>
 			<allowoverlay>no</allowoverlay>
@@ -4175,12 +4180,11 @@
 
 		<!-- *********** SystemUpdate ********** -->
 		<control type="group" id="4300000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),4300000)</visible>
 			<defaultcontrol always="false">4309000</defaultcontrol>
 			<allowoverlay>no</allowoverlay>
-			<include>DefaultSettingHeaderWindow</include>
+			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>80</posx>
 				<posy>110</posy>
@@ -4339,8 +4343,7 @@
 
 		<!-- *********** Help ********** -->
 		<control type="group" id="4400000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),4400000)</visible>
 			<defaultcontrol always="true">4407001</defaultcontrol>
 			<allowoverlay>no</allowoverlay>
@@ -4515,27 +4518,28 @@
 
 		<!-- PIP Image & Radio Image -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingPip),True)</visible>
 			<control type="image" id="1008800">
+				<visible>substring(Window.Property(SettingPip),True)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>
-				<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out">Visible</animation>
+				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">Visible</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">Hidden</animation>
-				<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
+				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true)</visible>
 			</control>
 			<control type="image" id="8899">
+				<visible>substring(Window.Property(SettingPip),True)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>
-				<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out">Visible</animation>
+				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">Visible</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">Hidden</animation>
-				<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
+				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
 				<texture>video_pig_overlay.png</texture>
 				<!--<visible>!Control.IsVisible(1008800)</visible>-->
