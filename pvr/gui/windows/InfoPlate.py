@@ -251,6 +251,7 @@ class InfoPlate( LivePlateWindow ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -289,7 +290,8 @@ class InfoPlate( LivePlateWindow ) :
 					setPropertyList = GetPropertyByEPGComponent( aEpg )
 					self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+					if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
 					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
@@ -361,6 +363,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
@@ -403,11 +406,11 @@ class InfoPlate( LivePlateWindow ) :
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
 
 		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
 			#LOG_TRACE( '-------------- return by cached data -------------------' )
-			return
+			return True
 
 		self.setProperty( aPropertyID, aValue )
 

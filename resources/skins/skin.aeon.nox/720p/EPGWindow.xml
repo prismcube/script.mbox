@@ -409,13 +409,27 @@
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasDolby),True)</visible>
+								<visible>substring(Window.Property(HasDolby),True) + !Control.IsVisible(314)</visible>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>65</width>
 									<height>30</height>
 									<texture>dolbydigital.png</texture>
+								</control>
+							</control>
+							<control type="group" id="314">
+								<posx>110</posx>
+								<posy>0</posy>
+								<width>65</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasDolbyPlus),True)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>65</width>
+									<height>30</height>
+									<texture>dolbydigitalplus.png</texture>
 								</control>
 							</control>
 							<control type="group" id="312">
