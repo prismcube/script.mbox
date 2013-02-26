@@ -1,24 +1,31 @@
 from pvr.gui.WindowImport import *
+import pvr.ScanHelper as ScanHelper
 
 
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mTransponderList	= []
-		self.mSatelliteIndex	= 0
-		self.mTransponderIndex	= 0
-		self.mLongitude			= 0
-		self.mBand				= 0
+		self.mTransponderList		= []
+		self.mSatelliteIndex		= 0
+		self.mTransponderIndex		= 0
+		self.mLongitude				= 0
+		self.mBand					= 0
+		self.mIsStartedScanHelper	= False
+		self.mAvBlankStatus			= False
+		self.mNetworkSearch			= 1
+		self.mSearchMode			= 0
 
 			
 	def onInit( self ) :
 		self.SetActivate( True )
+		
 		self.SetFrontdisplayMessage( 'Edit Transponder' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )
+		self.VisibleTuneStatus( False )
 
-		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -33,6 +40,13 @@ class EditTransponder( SettingWindow ) :
 			else :
 				WinMgr.GetInstance( ).CloseWindow( )
 		else :
+			self.mNetworkSearch = ElisPropertyEnum( 'Network Search', self.mCommander ).GetProp( )
+			self.mSearchMode = ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).GetProp( )
+			ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( 1 )
+			ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
+			self.mEventBus.Register( self )
+			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
+			self.mDataCache.Player_AVBlank( True )
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
@@ -52,8 +66,16 @@ class EditTransponder( SettingWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
+			ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( self.mNetworkSearch )
+			ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
+			self.RestoreAvBlank( )
+			self.mEventBus.Deregister( self )
+			self.mIsStartedScanHelper = False
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -70,6 +92,24 @@ class EditTransponder( SettingWindow ) :
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
+
+
+	def onEvent( self, aEvent ) :
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
+			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+				self.UpdateStatus( aEvent )
+
+
+	def UpdateStatus( self, aEvent ) :
+		freq = self.mDataCache.GetTransponderListByIndex( self.mLongitude, self.mBand, self.mTransponderIndex ).mFrequency
+		if aEvent.mFrequency == freq :
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			if aEvent.mIsLocked :
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( False )
+			else :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 			
 
 	def onClick( self, aControlId ) :
@@ -86,6 +126,7 @@ class EditTransponder( SettingWindow ) :
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
+				self.mTransponderIndex = 0
 				self.InitConfig( )
 
 		# Select frequency
@@ -223,6 +264,25 @@ class EditTransponder( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info available' ), MR_LANG( 'Add a new transponder first' ) )
 				dialog.doModal( )
 
+		elif groupId == E_Input08 :
+			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+				self.OpenBusyDialog( )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
+				
+				transponderList = []
+				transponderList.append( self.mTransponderList[self.mTransponderIndex] )
+
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.SetTransponder( self.mLongitude, self.mBand, transponderList )
+				dialog.doModal( )
+				self.setProperty( 'ViewProgress', 'True' )
+				self.InitConfig( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info available' ), MR_LANG( 'Add a new transponder first' ) )
+				dialog.doModal( )
+
 		
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -242,9 +302,9 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
 
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
-		self.mTransponderList.sort( self.ByFrequency )
 
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+			self.mTransponderList.sort( self.ByFrequency )
 			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, MR_LANG( 'Select the frequency of the data stream, in which the channel is encoded' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
@@ -258,6 +318,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( 'Add Transponder' ), '', MR_LANG( 'Add a new transponder to the list' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'Delete a transponder from the list' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
+		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )		
 		
 		self.InitControl( )
 		self.SetEnableControl( E_Input03, False )
@@ -268,6 +329,19 @@ class EditTransponder( SettingWindow ) :
 			self.SetEnableControls( visiblecontrolIds, True )
 		else :
 			self.SetEnableControls( visiblecontrolIds, False )
+
+		if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
+			if self.mIsStartedScanHelper == False :
+				ScanHelper.GetInstance( ).ScanHelper_Start( self )
+				self.mIsStartedScanHelper = True
+
+			configuredsatellite = self.GetConfiguredSatellite( self.mLongitude, self.mBand )
+			if configuredsatellite :
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, configuredsatellite, self.mTransponderList[self.mTransponderIndex] )
+		else :
+			if self.mIsStartedScanHelper :
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+				self.mIsStartedScanHelper = False
 
 
 	def	GetSatelliteInfo( self, aIndex ) :
@@ -288,4 +362,38 @@ class EditTransponder( SettingWindow ) :
 				return i
 
 		return 0
-				
+
+
+	def IsConfiguredSatellite( self, aLongitude, aBand ) :
+		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+		if configuredSatelliteList and configuredSatelliteList[0].mError == 0 :
+			for satellite in configuredSatelliteList :
+				if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
+					return True
+		else :
+			return False
+			
+		return False
+
+
+	def GetConfiguredSatellite( self, aLongitude, aBand ) :
+		configuredSatellite = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		for satellite in configuredSatellite :
+			if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+				return satellite
+
+		configuredSatellite = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+		for satellite in configuredSatellite :
+			if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+				return satellite
+
+		return None
+
+
+	def RestoreAvBlank( self ) :
+		if self.mAvBlankStatus :
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
+		else :
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )

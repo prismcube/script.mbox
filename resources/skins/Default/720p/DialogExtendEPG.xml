@@ -81,7 +81,15 @@
 						<width>122</width>
 						<height>31</height>
 						<texture>dolbydigital.png</texture>
-					<visible>substring(Window.Property(HasDolby),true)</visible>
+						<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(201)</visible>
+					</control>
+					<control type="image" id="201">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>122</width>
+						<height>31</height>
+						<texture>dolbydigitalplus.png</texture>
+						<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 					</control>
 					<control type="image">
 						<posx>0</posx>

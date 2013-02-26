@@ -477,7 +477,12 @@ class DataCacheMgr( object ) :
 		if tmptransponderList and tmptransponderList[0].mError == 0 :
 			transponderList = []
 	 		for i in range( len( tmptransponderList ) ) :
-				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
+	 			if tmptransponderList[i].mPolarization == ElisEnum.E_LNB_HORIZONTAL :
+	 				polarization = MR_LANG( 'Horizontal' )
+	 			else :
+	 				polarization = MR_LANG( 'Vertical' )
+	 				
+				transponderList.append( '%d %d MHz %d KS/s %s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate, polarization ) )
 
 		return transponderList
 
@@ -1783,19 +1788,27 @@ class DataCacheMgr( object ) :
 			zappingMode = self.Zappingmode_GetCurrent( )
 			self.Channel_InvalidateCurrent( )
 
-			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
-				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_TV )				
-			else :
-				lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
-				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_RADIO )				
+			lastChannelProperty = 'Last TV Number'
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+				lastChannelProperty = 'Last Radio Number'
 
-			channel = self.Channel_GetCurrent( )
-			#LOG_TRACE( '----- get Current Channel after zappingMode channge' )
+			iChannel = None
+			#1.default channel, First Channel
+			if self.mChannelList and len( self.mChannelList ) > 0 :
+				iChannel = self.mChannelList[0]
+				#LOG_TRACE( 'default Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
 
-			#is last channel tune fail then no1. tune
-			if not channel and self.mChannelList and len( self.mChannelList ) > 0 :
-				self.Channel_SetCurrent( 1, zappingMode.mServiceType )							
+			#2.find channel, Exist last Channel
+			lastChannelNumber = ElisPropertyInt( lastChannelProperty, self.mCommander ).GetProp( )
+			cacheChannel = self.mChannelListHash.get( lastChannelNumber, None )
+			if cacheChannel :
+				iChannel = cacheChannel.mChannel
+				#LOG_TRACE( 'find last Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+
+			if iChannel :
+				self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+				#LOG_TRACE( 'tune Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+
 
 		except Exception, e :
 			LOG_ERR( 'Exception [%s]'% e )

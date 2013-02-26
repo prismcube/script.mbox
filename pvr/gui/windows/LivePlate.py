@@ -408,7 +408,8 @@ class LivePlate( LivePlateWindow ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
-				
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				iEPG = self.mDataCache.GetEpgeventCurrent( )
 				self.UpdateChannelAndEPG( iEPG )
@@ -723,7 +724,8 @@ class LivePlate( LivePlateWindow ) :
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
@@ -801,6 +803,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
@@ -846,11 +849,11 @@ class LivePlate( LivePlateWindow ) :
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
 
 		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
 			#LOG_TRACE( '-------------- return by cached data -------------------' )
-			return
+			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -881,7 +884,6 @@ class LivePlate( LivePlateWindow ) :
 
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
 
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
@@ -907,8 +909,10 @@ class LivePlate( LivePlateWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+
 		isOK = False
-		if runningCount < 2 :
+		if runningCount < 2 or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 

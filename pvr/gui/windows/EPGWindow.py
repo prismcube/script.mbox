@@ -264,6 +264,7 @@ class EPGWindow( BaseWindow ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				if self.mFirstTune == True :
@@ -476,7 +477,8 @@ class EPGWindow( BaseWindow ) :
 
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-				self.setProperty( E_XML_PROPERTY_DOLBY,    HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
 				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 			else :
@@ -495,6 +497,7 @@ class EPGWindow( BaseWindow ) :
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
@@ -514,6 +517,15 @@ class EPGWindow( BaseWindow ) :
 				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
 				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
 					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+					aValue = True
+
+
+		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
+			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+			if pmtEvent and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
 					aValue = True
 
 		self.setProperty( aPropertyID, '%s'% aValue )
