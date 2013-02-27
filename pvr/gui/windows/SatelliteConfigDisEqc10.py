@@ -12,6 +12,8 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 		self.mSelectedTransponderIndex = 0
 		self.mHasTransponder = False
 		self.mAvBlankStatus = False
+		self.mNetworkSearch			= 1
+		self.mSearchMode			= 0
 
 
 	def onInit( self ) :
@@ -23,6 +25,11 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self )
+
+		self.mNetworkSearch = ElisPropertyEnum( 'Network Search', self.mCommander ).GetProp( )
+		self.mSearchMode = ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).GetProp( )
+		ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( 1 )
+		ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
@@ -56,6 +63,8 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
+					ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( self.mNetworkSearch )
+					ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 					self.mEventBus.Deregister( self )
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 					self.RestoreAvBlank( )
@@ -64,6 +73,8 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
 				self.OpenBusyDialog( )
+				ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( self.mNetworkSearch )
+				ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 				self.mEventBus.Deregister( self )
 				#self.ResetAllControl( )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
@@ -175,6 +186,24 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 	 			else :
 	 				return
 
+	 	elif groupId == E_Input04 :
+	 		if self.mTransponderList :
+	 			self.OpenBusyDialog( )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
+				
+				transponderList = []
+				transponderList.append( self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.SetTransponder( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, transponderList )
+				dialog.doModal( )
+				self.setProperty( 'ViewProgress', 'True' )
+	 		else :
+	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info available' ), MR_LANG( 'Add a new transponder first' ) )
+				dialog.doModal( )
+
 		if aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
 			self.mEventBus.Deregister( self )
@@ -242,24 +271,28 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 			self.mHasTransponder = True
 		else :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )			
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 			self.mHasTransponder = False
+
+		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.GetFirstInstallation( ) :
 			self.SetFTIPrevNextButton( )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03 ]
-			hideControlIds = [ E_Input02, E_SpinEx06, E_Input04, E_Input05 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03, E_Input04 ]
+			hideControlIds = [ E_Input02, E_SpinEx06, E_Input05 ]
 		else :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03 ]
-			hideControlIds = [ E_SpinEx02, E_SpinEx06, E_Input04, E_Input05 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx06, E_Input05 ]
 			
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )
 
 		self.SetVisibleControls( hideControlIds, False )
 		self.InitControl( )
+		if self.GetFirstInstallation( ) :
+			self.SetVisibleControl( E_Input04, False )
 		self.DisableControl( )
 
 

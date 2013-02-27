@@ -318,7 +318,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( 'Add Transponder' ), '', MR_LANG( 'Add a new transponder to the list' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'Delete a transponder from the list' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
-		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )		
+		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 		
 		self.InitControl( )
 		self.SetEnableControl( E_Input03, False )
