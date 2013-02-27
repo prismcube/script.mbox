@@ -25,19 +25,28 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mLongitude					= 0
 		self.mBand						= 0
 		self.mSatelliteFormatedName		= None
+		self.mNewTVChannelList			= []
+		self.mNewRadioChannelList		= []
+		self.mTvListItems				= []
+		self.mRadioListItems			= []
+		self.mCtrlProgress				= None
+		self.mCtrlTransponderInfo		= None
+		self.mAbortDialog				= None
+		self.mStoreTVChannel			= []
+		self.mStoreRadioChannel			= []
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.mIsFinished = False	
-		self.mTimer = None
-
-		self.mNewTVChannelList = []
-		self.mNewRadioChannelList = []
-
-		self.mTvListItems = []
-		self.mRadioListItems =[]
+		self.mIsFinished			= False	
+		self.mTimer					= None
+		self.mNewTVChannelList		= []
+		self.mNewRadioChannelList	= []
+		self.mTvListItems			= []
+		self.mRadioListItems		= []
+		self.mStoreTVChannel		= []
+		self.mStoreRadioChannel		= []
 
 		self.getControl( LIST_ID_TV ).reset( )
 		self.getControl( LIST_ID_RADIO ).reset( )
@@ -50,8 +59,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.ScanStart( )
 		self.DrawItem( )
 
-		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		self.AbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ) )
+		self.mAbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		self.mAbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ) )
 
 
 	def onAction( self, aAction ) :
@@ -162,6 +171,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 			if self.mScanMode == E_SCAN_TRANSPONDER :
+				#self.DefaultTuneDiseqc12( )
 				self.mCommander.ScanHelper_Start( )
 			else :
 				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
@@ -171,14 +181,14 @@ class DialogChannelSearch( BaseDialog ) :
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.CloseDialog( )
 		else :
-			self.AbortDialog.doModal( )
-			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mAbortDialog.doModal( )
+			if self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
 				self.ScanAbort( )
-			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO :
+			elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_NO :
 				return
-			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
+			elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
 
 
@@ -223,6 +233,8 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
+			#if self.mScanMode == E_SCAN_TRANSPONDER :
+			#	self.DefaultTuneDiseqc12( )
 			self.mCtrlProgress.setPercent( 100 )
 			self.mTimer = threading.Timer( 0.5, self.ShowResult )
 			self.mTimer.start( )
@@ -232,8 +244,10 @@ class DialogChannelSearch( BaseDialog ) :
 	def UpdateAddChannel( self, aEvent ) :
 		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mNewTVChannelList.append( aEvent.mIChannel )
+			self.mStoreTVChannel.append( aEvent.mIChannel )
 		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mNewRadioChannelList.append( aEvent.mIChannel )
+			self.mStoreRadioChannel.append( aEvent.mIChannel )
 		else : 
 			LOG_ERR( 'Unknown service type = %s' % aEvent.mIChannel.mServiceType )
 		self.DrawItem( )
@@ -245,7 +259,7 @@ class DialogChannelSearch( BaseDialog ) :
 		searchResult = MR_LANG( 'TV channels : %d \nRadio channels : %d' ) % ( tvCount, radioCount )
 
 		try :
-			self.AbortDialog.close( )
+			self.mAbortDialog.close( )
 		except Exception, ex :
 			LOG_TRACE( 'except close dialog' )
 
@@ -254,3 +268,47 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.doModal( )
 		self.mIsFinished = True
 
+
+	def DefaultTuneDiseqc12( self ) :
+		if self.IsDiseqc12( ) :
+			print 'dhkim test DefaultTuneDiseqc12 #1'
+			if len( self.mStoreTVChannel ) > 0 :
+				for channel in self.mStoreTVChannel :
+				
+					print 'dhkim test self.mNewTVChannelList in channel = %s' % channel
+					print 'dhkim test channel.mNumber = %s' % channel.mNumber
+					print 'dhkim test channel.mServiceType = %s' % channel.mServiceType
+					print 'dhkim test channel.mIsCA = %s' % channel.mIsCA
+					
+					if not channel.mIsCA :
+						self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+						return
+
+				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
+				return
+
+			if len( self.mStoreRadioChannel ) > 0 :
+				for channel in self.mStoreRadioChannel :
+					if not channel.mIsCA :
+						self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+						return
+
+				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
+				return
+
+
+	def IsDiseqc12( self ) :
+		tunerNumber = self.mDataCache.GetTunerIndexBySatellite( self.mLongitude, self.mBand )
+		print 'dhkim test tunerNumber = %s' % tunerNumber
+		if tunerNumber == E_TUNER_1 :
+			tunertype = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+		elif tunerNumber == E_TUNER_2 :
+			tunertype = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
+
+		print 'dhkim test tunertype = %s' % tunertype
+		if tunertype == E_MOTORIZE_1_2 :
+			return True
+		else :
+			return False
+	
+		
