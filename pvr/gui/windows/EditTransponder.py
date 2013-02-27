@@ -266,18 +266,24 @@ class EditTransponder( SettingWindow ) :
 
 		elif groupId == E_Input08 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
-				self.OpenBusyDialog( )
-				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-				
-				transponderList = []
-				transponderList.append( self.mTransponderList[self.mTransponderIndex] )
+				if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
+					self.OpenBusyDialog( )
+					ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
+					
+					transponderList = []
+					transponderList.append( self.mTransponderList[self.mTransponderIndex] )
 
-				self.CloseBusyDialog( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-				dialog.SetTransponder( self.mLongitude, self.mBand, transponderList )
-				dialog.doModal( )
-				self.setProperty( 'ViewProgress', 'True' )
-				self.InitConfig( )
+					self.CloseBusyDialog( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+					dialog.SetTransponder( self.mLongitude, self.mBand, transponderList )
+					dialog.doModal( )
+					self.setProperty( 'ViewProgress', 'True' )
+					self.InitConfig( )
+				else :
+					satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Satellite %s is not configured' ) % satellitename, MR_LANG( 'Configure %s satellite first' ) % satellitename )
+					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info available' ), MR_LANG( 'Add a new transponder first' ) )
