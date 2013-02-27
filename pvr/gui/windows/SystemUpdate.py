@@ -795,6 +795,8 @@ class SystemUpdate( SettingWindow ) :
 
 			self.SetEnableControl( E_Input03, True )
 			self.SetEnableControl( E_Input04, True )
+			self.SetVisibleControl( E_Input03, True )
+			self.SetVisibleControl( E_Input04, True )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
@@ -823,6 +825,11 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
 			self.AddInputControl( E_Input02, '', button2Label, button2Desc )
 			self.SetEnableControl( E_Input02, button2Enable )
+
+			self.SetEnableControl( E_Input03, False )
+			self.SetEnableControl( E_Input04, False )
+			self.SetVisibleControl( E_Input03, False )
+			self.SetVisibleControl( E_Input04, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1595,7 +1602,7 @@ class SystemUpdate( SettingWindow ) :
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
-			self.mCommander.System_SetDefaultChannelList( )
+			#self.mCommander.System_SetDefaultChannelList( )
 			self.mDataCache.LoadAllSatellite( )
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
