@@ -276,6 +276,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		#blocking by avBlank
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------blocking avblank' )
+			return
+
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
 			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) and \
