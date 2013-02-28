@@ -555,24 +555,33 @@ class InfoPlate( LivePlateWindow ) :
  	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+			if isRunningTimerList :
+				runningRecordCount = len( isRunningTimerList )
+
+			#LOG_TRACE( "runningRecordCount=%d" %runningRecordCount )
 
 			strLabelRecord1 = ''
 			strLabelRecord2 = ''
 			setPropertyRecord1 = 'False'
 			setPropertyRecord2 = 'False'
-			if isRunRec == 1 :
+			if isRunRec == 1 and runningRecordCount == 1 :
 				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
-			elif isRunRec == 2 :
+			elif isRunRec == 2 and runningRecordCount == 2 :
 				setPropertyRecord1 = 'True'
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[1]
+				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
