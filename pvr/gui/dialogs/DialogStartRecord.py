@@ -145,7 +145,9 @@ class DialogStartRecord( SettingDialog ) :
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		self.mTimer = self.mDataCache.GetRunnigTimerByChannel( )
 
-		if self.mTimer == None :
+		if self.mTimer :
+			self.SetHeaderLabel( MR_LANG( 'Edit Recording' ) )
+		else :
 			self.mOTRInfo = self.mDataCache.Timer_GetOTRInfo( )
 			self.mOTRInfo.printdebug( )
 			self.CheckValidEPG( )
@@ -179,7 +181,7 @@ class DialogStartRecord( SettingDialog ) :
 
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
-				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration, TimeFormatEnum.E_HH_MM ) )
+				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration , TimeFormatEnum.E_HH_MM ) )
 				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d(%s)' %( int( self.mTimer.mDuration/60 ), MR_LANG('mins') ) )
 
 			else :
@@ -375,7 +377,11 @@ class DialogStartRecord( SettingDialog ) :
 						endTime = self.mTimer.mStartTime + self.mTimer.mDuration						
 					else :
 						endTime = self.mTimer.mStartTime + self.mTimer.mDuration
-						
+
+					#Normalize EndTime
+					tmpEndTime = int( endTime/60 )
+					endTime = tmpEndTime * 60
+
 					LOG_TRACE( 'NEW END TIME : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
 					if self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime ) == True :
 						self.mIsOk = E_DIALOG_STATE_YES
@@ -421,6 +427,9 @@ class DialogStartRecord( SettingDialog ) :
 					copyTimeshift = 0
 
 				#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+				#Normalize EndTime
+				tmpEndTime = int( self.mEndTime/60 )
+				self.mEndTime = tmpEndTime * 60
 				expectedDuration =  self.mEndTime - self.mStartTime
 
 				LOG_TRACE( 'expectedDuration=%d' %expectedDuration )

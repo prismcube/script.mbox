@@ -1406,7 +1406,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def AsyncAutomaticHide( self ) :
-		return
 		if self.mSpeed == 100 :
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			#LOG_TRACE('HIDE : TimeShiftPlate')

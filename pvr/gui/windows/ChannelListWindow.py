@@ -1440,7 +1440,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( False )
 
 			for iChannel in self.mChannelList :
-				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+				lblTPnum = 'TP1'
+				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+				if mTPnum == E_CONFIGURED_TUNER_2 :
+					lblTPnum = 'TP1'
+				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+					lblTPnum = 'TP1, TP2'
+
+				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ), lblTPnum )
 
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )

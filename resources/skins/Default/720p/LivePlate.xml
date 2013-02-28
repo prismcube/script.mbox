@@ -11,6 +11,14 @@
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
+		<control type="image" id="10">
+			<posx>1200</posx>
+			<posy>45</posy>
+			<width>60</width>
+			<height>25</height>
+			<texture>i_record.png</texture>
+			<visible>substring(Window.Property(RecordBlinkingIcon),true)</visible>
+		</control>
 		<control type="group">
 			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" time="400">WindowClose</animation>
@@ -324,6 +332,13 @@
 						<texture>IconFavFocus.png</texture>
 						<visible>substring(Window.Property(iFav),true)</visible>
 					</control>
+					<!--control type="label">
+						<posx>250</posx>
+						<posy>1</posy>
+						<width>100</width>
+						<height>30</height>
+						<label>$INFO[Window.Property(iTPnum)]</label>
+					</control-->
 				</control>
 
 				<control type="group">

@@ -104,6 +104,7 @@ class DataCacheMgr( object ) :
 		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
+		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
@@ -544,6 +545,10 @@ class DataCacheMgr( object ) :
 		return tunerEx
 
 
+	def GetTunerIndexByChannel( self, aNumber ) :
+		return self.mTPListByChannelHash.get( aNumber, -1 )
+
+
 	def GetChangeDBTableChannel( self ) :
 		ret = -1
 		if SUPPORT_CHANNEL_DATABASE	== True :
@@ -667,6 +672,11 @@ class DataCacheMgr( object ) :
 					LOG_ERR( "Exception %s" %ex)
 				
 				prevChannel = channel
+
+
+				if channel and channel.mError == 0 :
+					self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
 
 
 	def LoadZappingmode( self ) :
