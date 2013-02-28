@@ -330,6 +330,14 @@
 						<texture>IconFavFocus.png</texture>
 						<visible>substring(Window.Property(iFav),true)</visible>
 					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>1</posy>
+						<width>100</width>
+						<height>30</height>
+						<label>$INFO[Window.Property(iTPnum)]</label>
+					</control>
+
 				</control>
 
 				<control type="group">
