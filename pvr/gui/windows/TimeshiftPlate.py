@@ -226,7 +226,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				self.mUserMoveTime = -10
+				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
@@ -243,7 +243,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				self.mUserMoveTime = 10
+				self.mUserMoveTime = 1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
@@ -1488,26 +1488,21 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def StartAsyncMoveByTime( self ) :
-		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
-		self.mAsyncShiftTimer.start( )
-
 		self.mFlagUserMove = True
-		self.mAccelator += 1
-		accelatorMoving = self.mTotalUserMoveTime
-		try :
-			if self.mAccelator < 10 :
-				accelatorMoving = pow( 1.5, self.mAccelator )
-			else :
-				self.mTotalUserMoveTime += 60
-				accelatorMoving = self.mTotalUserMoveTime
-		except Exception, e :
-			LOG_ERR( 'Error exception[%s]'% e )
 
-		userMoving = self.mUserMoveTime * accelatorMoving
+		self.mAccelator += self.mUserMoveTime
+		self.mTotalUserMoveTime = self.mAccelator * 10
+		#accelatorMoving = self.mAccelator / 100
+		accelatorMoving = pow( 1.2, abs( self.mAccelator ) ) * self.mUserMoveTime
+
+
+		userMoving = self.mTotalUserMoveTime + accelatorMoving
 		userMovingMs = userMoving * 1000
 
+		#draw = threading.Timer( 0.01, self.UpdateProgress, [userMovingMs] )
+		#draw.start( )
 		self.UpdateProgress( userMovingMs )
-		#LOG_TRACE( '-----------accelator[%s] moving[%s]'% ( self.mAccelator, accelatorMoving ) )
+		#LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
@@ -1534,6 +1529,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+
+		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove )
+		self.mAsyncShiftTimer.start( )
 
 
 	def StopAsyncMove( self ) :
