@@ -1300,10 +1300,14 @@ class DataCacheMgr( object ) :
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
 
-		self.Channel_TuneDefault( mCurrentChannel )
+		#self.Channel_TuneDefault( mCurrentChannel )
+		self.Channel_TuneDefault( False, mCurrentChannel )
 
 
-	def Channel_TuneDefault( self, aCurrentChannel = None ) :
+	def Channel_TuneDefault( self, aDefault = True, aCurrentChannel = None ) :
+		if aDefault :
+			aCurrentChannel = self.Channel_GetCurrent( )
+
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
 			iChannelList = self.Channel_GetList( )

@@ -33,8 +33,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( 1 )
 		ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 
-		self.mCurrentSatellite = deepcopy(self.mTunerMgr.GetCurrentConfiguredSatellite( ))
-		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
+		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
+		#self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
