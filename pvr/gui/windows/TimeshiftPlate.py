@@ -136,6 +136,8 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mThumbnailList = []
 		self.mBookmarkList = []
 		self.mPlayingRecordInfo = None
+		self.mBookmarkButton = []
+		self.mJumpToOffset = []
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -218,6 +220,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
+				#self.RestartAsyncMove( E_CONTROL_ID_BUTTON_JUMP_RR )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -234,6 +237,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
+				#self.RestartAsyncMove( E_CONTROL_ID_BUTTON_JUMP_FF )
 				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -575,23 +579,15 @@ class TimeShiftPlate( BaseWindow ) :
 			if self.mSpeed == 0 :
 				return
 
-			self.InitTimeShift( )
-			prevJump = self.mTimeshift_playTime - 10000
-			if prevJump < self.mTimeshift_staTime :
-				prevJump = self.mTimeshift_staTime + 1000
-			ret = self.mDataCache.Player_JumpToIFrame( prevJump )
-			#LOG_TRACE('JumpRR ret[%s]'% ret )
+			self.JumpToTrack( aFocusId )
+			#self.RestartAsyncMove( aFocusId )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_FF :
 			if self.mSpeed == 0 :
 				return
 
-			self.InitTimeShift( )
-			nextJump = self.mTimeshift_playTime + 10000
-			if nextJump > self.mTimeshift_endTime :
-				nextJump = self.mTimeshift_endTime - 1000
-			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
-			#LOG_TRACE('JumpFF ret[%s]'% ret )
+			self.JumpToTrack( aFocusId )
+			#self.RestartAsyncMove( aFocusId )
 
 		return ret
 
@@ -1118,6 +1114,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def ShowBookmark( self ) :
 		#self.StopAutomaticHide( )
 
+		#1.show thumbnail on plate
 		self.mCtrlBookMarkList.reset( )
 		if len( self.mBookmarkList ) < 1 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
@@ -1135,6 +1132,36 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlBookMarkList.addItems( listItems )
 
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
+
+
+		#2.show mark on progress
+		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
+			for i in range( len( self.mBookmarkButton ) ) :
+				self.removeControl( self.mBookmarkButton[i] )
+
+			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
+
+		self.mBookmarkButton = []
+		#self.mBookmarkIdx = 0
+
+		if len( self.mThumbnailList ) < 1 :
+			return
+
+		#LOG_TRACE('---------getWidth[%s] getPos[%s] endTime[%s]'% ( self.mCtrlProgress.getWidth( ), self.mCtrlProgress.getPosition( ), self.mTimeshift_endTime ) )
+		pos = self.mCtrlProgress.getPosition( )
+		posy = 645 + pos[1]
+		defaultPos = 90 + pos[0]
+		defaultWidth = self.mCtrlProgress.getWidth( )
+		for i in range( len( self.mBookmarkList ) ) :
+			#posx = defaultPos + i * 100
+			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
+			posx = defaultPos + defaultWidth * ratioX
+			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', 'StepFO.png' )
+			self.addControl( button )
+			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
+			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
+
+			self.mBookmarkButton.append( button )
 
 
 	def ShowRecordingInfo( self ) :
@@ -1224,6 +1251,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitBookmarkThumnail( self ) :
+		self.LoadToBookmark( )
+		self.InitShiftPostion( )
+
+
+	def LoadToBookmark( self ) :
 		#ToDO
 		if self.mMode != ElisEnum.E_MODE_PVR :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
@@ -1292,6 +1324,61 @@ class TimeShiftPlate( BaseWindow ) :
 		self.ShowBookmark( )
 
 
+	def InitShiftPostion( self ) :
+		#timeshift or has not bookmark
+		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
+		section = mediaTime / 10
+		offset = 0
+		self.mJumpToOffset = []
+
+		if self.mBookmarkList and len( self.mBookmarkList ) > 0 :
+			for item in self.mBookmarkList :
+				self.mJumpToOffset.append( item.mTimeMs )
+		else :
+			self.mJumpToOffset.append( 0 )
+			for i in range( 1, 10 ) :
+				offset += section
+				self.mJumpToOffset.append( offset )
+
+
+	def JumpToTrack( self, aDirection ) :
+		self.InitTimeShift( )
+		if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+			self.InitShiftPostion( )
+
+		"""
+		direction = 1
+		if aDirection == E_CONTROL_ID_BUTTON_JUMP_RR :
+			direction = -1
+		jump = self.mTimeshift_playTime + ( direction * 10000 )
+		if jump < self.mTimeshift_staTime :
+			jump = self.mTimeshift_staTime + 1000
+
+		elif jump > self.mTimeshift_endTime :
+			jump = self.mTimeshift_endTime - 1000
+		"""
+
+		current = self.mTimeshift_playTime
+		tot = len(self.mJumpToOffset)
+		if aDirection == E_CONTROL_ID_BUTTON_JUMP_FF :
+			for idx in range( tot ) :
+				if current < self.mJumpToOffset[idx] :
+					#LOG_TRACE('--------------ff idx[%s]'% idx )
+					break
+		else :
+			for idx in range( tot - 1, -1, -1 ) :
+				#reasen by revision playing speed, - 10sec
+				if current - 10000 > self.mJumpToOffset[idx] :
+					#LOG_TRACE('--------------rr idx[%s]'% idx )
+					break
+
+		jump = self.mJumpToOffset[idx]
+		ret = self.mDataCache.Player_JumpToIFrame( jump )
+		#LOG_TRACE('----------ret[%s] current[%s] idx[%s] jump[%s] offset[%s]'% ( ret, current, idx, jump, self.mJumpToOffset ) )
+
+		return jump
+
+
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
@@ -1301,6 +1388,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
+
+		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
+			for i in range( len( self.mBookmarkButton ) ) :
+				self.removeControl( self.mBookmarkButton[i] )
 
 		self.StopAsyncMove( )
 		self.StopAutomaticHide( )
@@ -1315,6 +1406,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def AsyncAutomaticHide( self ) :
+		return
 		if self.mSpeed == 100 :
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			#LOG_TRACE('HIDE : TimeShiftPlate')
@@ -1339,12 +1431,53 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAutomaticHideTimer = None
 
 
-	def RestartAsyncMove( self ) :
+	def RestartAsyncMove( self, aKey = E_CONTROL_ID_BUTTON_JUMP_FF ) :
 		self.StopAsyncMove( )
-		self.StartAsyncMove( )
+		self.StartAsyncMoveByTime( )
+		#self.StartAsyncMoveByMark( aKey )
 
 
-	def StartAsyncMove( self ) :
+	def StartAsyncMoveByMark( self, aKey ) :
+		#ToDo : Tunning issue
+		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove ) 				
+		self.mAsyncShiftTimer.start( )
+
+		self.mFlagUserMove = True
+
+		userMovingMs = self.JumpToTrack( aKey )
+		self.UpdateProgress( userMovingMs )
+		#LOG_TRACE( '-----------accelator[%s] moving[%s]'% ( self.mAccelator, accelatorMoving ) )
+
+		tempStartTime   = self.mTimeshift_staTime / 1000
+		tempCurrentTime = self.mTimeshift_curTime / 1000
+		tempEndTime     = self.mTimeshift_endTime / 1000
+		timeFormat      = TimeFormatEnum.E_HH_MM_SS
+		if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+			duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000
+			tempStartTime = self.mLocalTime - duration
+			#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000 )
+			tempCurrentTime = tempStartTime + userMovingMs
+			tempEndTime =  self.mLocalTime
+
+		elif self.mMode == ElisEnum.E_MODE_PVR :
+			timeFormat = TimeFormatEnum.E_AH_MM_SS
+
+		lblCurrentTime = tempCurrentTime + userMovingMs
+		self.mAsyncMove = userMovingMs
+
+		"""
+		if self.mAsyncMove >= ( self.mTimeshift_endTime - 1000 ) :
+			lblCurrentTime  = tempEndTime - 1
+			self.mAsyncMove = self.mTimeshift_endTime - 1000
+		elif self.mAsyncMove <= ( self.mTimeshift_staTime + 1000 ) :
+			lblCurrentTime  = tempStartTime + 1
+			self.mAsyncMove = self.mTimeshift_staTime + 1000
+		"""
+		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+
+
+	def StartAsyncMoveByTime( self ) :
 		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start( )
 
@@ -1402,6 +1535,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def AsyncUpdateCurrentMove( self ) :
+		self.SetActivate( False )
 		try :
 			if self.mFlagUserMove :
 				ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
@@ -1415,6 +1549,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
+
+		self.SetActivate( True )
 
 
 	def MoveToSeekFrame( self, aKey ) :
