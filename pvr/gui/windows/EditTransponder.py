@@ -282,7 +282,7 @@ class EditTransponder( SettingWindow ) :
 				else :
 					satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Satellite %s is not configured' ) % satellitename, MR_LANG( 'Configure %s satellite first' ) % satellitename )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Satellite %s is not configured' ) % satellitename, MR_LANG( 'Configure the satellite first before you scan channels' ) )
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
