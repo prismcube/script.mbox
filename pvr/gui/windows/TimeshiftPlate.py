@@ -52,6 +52,8 @@ E_PROGRESS_WIDTH_MAX = 980
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 
+E_DEFAULT_TRACK_MOVE = 10
+
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -1491,9 +1493,11 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mFlagUserMove = True
 
 		self.mAccelator += self.mUserMoveTime
-		self.mTotalUserMoveTime = self.mAccelator * 10
+		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
 		#accelatorMoving = self.mAccelator / 100
-		accelatorMoving = pow( 1.2, abs( self.mAccelator ) ) * self.mUserMoveTime
+		accelatorMoving = pow( 1.5, abs( self.mAccelator ) )
+		if self.mAccelator < 0 :
+			accelatorMoving = accelatorMoving * -1
 
 
 		userMoving = self.mTotalUserMoveTime + accelatorMoving
@@ -1502,7 +1506,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#draw = threading.Timer( 0.01, self.UpdateProgress, [userMovingMs] )
 		#draw.start( )
 		self.UpdateProgress( userMovingMs )
-		#LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
+		LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
