@@ -272,24 +272,24 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def DefaultTuneDiseqc12( self ) :
-		if self.IsDiseqc12( ) :
-			if len( self.mStoreTVChannel ) > 0 :
-				for channel in self.mStoreTVChannel :
-					if not channel.mIsCA :
-						self.ChannelTune( channel )
-						return
+		#if self.IsDiseqc12( ) :
+		if len( self.mStoreTVChannel ) > 0 :
+			for channel in self.mStoreTVChannel :
+				if not channel.mIsCA :
+					self.ChannelTune( channel )
+					return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
-				return
+			self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
+			return
 
-			if len( self.mStoreRadioChannel ) > 0 :
-				for channel in self.mStoreRadioChannel :
-					if not channel.mIsCA :
-						self.ChannelTune( channel )
-						return
+		if len( self.mStoreRadioChannel ) > 0 :
+			for channel in self.mStoreRadioChannel :
+				if not channel.mIsCA :
+					self.ChannelTune( channel )
+					return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
-				return
+			self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
+			return
 
 
 	def IsDiseqc12( self ) :

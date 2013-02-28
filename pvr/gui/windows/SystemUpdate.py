@@ -1500,7 +1500,7 @@ class SystemUpdate( SettingWindow ) :
 		#check usb mount
 		usbPath = self.mDataCache.USB_GetMountPath( )
 		if not usbPath :
-			LOG_TRACE( 'Not Exist USB' )
+			LOG_TRACE( 'USB not found' )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 			return
 
@@ -1509,7 +1509,7 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
 		if not os.path.exists( filePath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG('WARNING'), '%s %s' %( MR_LANG( 'Can not found' ), filePath ) )
+			dialog.SetDialogProperty( MR_LANG('Error'), '%s %s' %( MR_LANG( 'File not found' ), filePath ) )
 			dialog.doModal( )
 			return
 

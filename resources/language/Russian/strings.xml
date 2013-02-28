@@ -1387,4 +1387,24 @@
 	<string id="3971">RUS_Not enough space on your USB flash memory</string>
 	<string id="3972">RUS_Access your favorite in a convenient way</string>
 	<string id="3973">RUS_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">RUS_Start Channel Search</string>
+	<string id="3975">RUS_Edit Satellite Name</string>
+	<string id="3976">RUS_Edit Satellite Longitude</string>
+	<string id="3977">RUS_Longitude Direction : East</string>
+	<string id="3978">RUS_Longitude Direction : West</string>
+	<string id="3979">RUS_Disable subtitle</string>
+	<string id="3980">RUS_EPG None</string>
+	<string id="3981">RUS_Save satellite positions</string>
+	<string id="3982">RUS_Store Position</string>
+	<string id="3983">RUS_Same satellite already exists</string>
+	<string id="3984">RUS_Update Channels by Internet</string>
+	<string id="3985">RUS_Import Channels from USB</string>
+	<string id="3986">RUS_Import channel list via USB</string>
+	<string id="3987">RUS_Export Channels to USB</string>
+	<string id="3988">RUS_Export channel list via USB</string>
+	<string id="3989">RUS_File not found</string>
+	<string id="3990">RUS_Export complete</string>
+	<string id="3991">RUS_Your channel list has been exported successfully</string>
+	<string id="3992">RUS_Configure the satellite first before you scan channels</string>
+	<string id="3993">RUS_Satellite %s is not configured</string>
 </strings>

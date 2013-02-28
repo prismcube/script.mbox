@@ -1391,4 +1391,24 @@
 	<string id="3971">Not enough space on your USB flash memory</string>
 	<string id="3972">Access your favorite in a convenient way</string>
 	<string id="3973">To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">Start Channel Search</string>
+	<string id="3975">Edit Satellite Name</string>
+	<string id="3976">Edit Satellite Longitude</string>
+	<string id="3977">Longitude Direction : East</string>
+	<string id="3978">Longitude Direction : West</string>
+	<string id="3979">Disable subtitle</string>
+	<string id="3980">EPG None</string>
+	<string id="3981">Save satellite positions</string>
+	<string id="3982">Store Position</string>
+	<string id="3983">Same satellite already exists</string>
+	<string id="3984">Update Channels by Internet</string>
+	<string id="3985">Import Channels from USB</string>
+	<string id="3986">Import channel list via USB</string>
+	<string id="3987">Export Channels to USB</string>
+	<string id="3988">Export channel list via USB</string>
+	<string id="3989">File not found</string>
+	<string id="3990">Export complete</string>
+	<string id="3991">Your channel list has been exported successfully</string>
+	<string id="3992">Configure the satellite first before you scan channels</string>
+	<string id="3993">Satellite %s is not configured</string>
 </strings>

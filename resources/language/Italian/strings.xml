@@ -1387,4 +1387,24 @@
 	<string id="3971">ITA_Not enough space on your USB flash memory</string>
 	<string id="3972">ITA_Access your favorite in a convenient way</string>
 	<string id="3973">ITA_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">ITA_Start Channel Search</string>
+	<string id="3975">ITA_Edit Satellite Name</string>
+	<string id="3976">ITA_Edit Satellite Longitude</string>
+	<string id="3977">ITA_Longitude Direction : East</string>
+	<string id="3978">ITA_Longitude Direction : West</string>
+	<string id="3979">ITA_Disable subtitle</string>
+	<string id="3980">ITA_EPG None</string>
+	<string id="3981">ITA_Save satellite positions</string>
+	<string id="3982">ITA_Store Position</string>
+	<string id="3983">ITA_Same satellite already exists</string>
+	<string id="3984">ITA_Update Channels by Internet</string>
+	<string id="3985">ITA_Import Channels from USB</string>
+	<string id="3986">ITA_Import channel list via USB</string>
+	<string id="3987">ITA_Export Channels to USB</string>
+	<string id="3988">ITA_Export channel list via USB</string>
+	<string id="3989">ITA_File not found</string>
+	<string id="3990">ITA_Export complete</string>
+	<string id="3991">ITA_Your channel list has been exported successfully</string>
+	<string id="3992">ITA_Configure the satellite first before you scan channels</string>
+	<string id="3993">ITA_Satellite %s is not configured</string>
 </strings>

@@ -1387,4 +1387,24 @@
 	<string id="3971">DUT_Not enough space on your USB flash memory</string>
 	<string id="3972">DUT_Access your favorite in a convenient way</string>
 	<string id="3973">DUT_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">DUT_Start Channel Search</string>
+	<string id="3975">DUT_Edit Satellite Name</string>
+	<string id="3976">DUT_Edit Satellite Longitude</string>
+	<string id="3977">DUT_Longitude Direction : East</string>
+	<string id="3978">DUT_Longitude Direction : West</string>
+	<string id="3979">DUT_Disable subtitle</string>
+	<string id="3980">DUT_EPG None</string>
+	<string id="3981">DUT_Save satellite positions</string>
+	<string id="3982">DUT_Store Position</string>
+	<string id="3983">DUT_Same satellite already exists</string>
+	<string id="3984">DUT_Update Channels by Internet</string>
+	<string id="3985">DUT_Import Channels from USB</string>
+	<string id="3986">DUT_Import channel list via USB</string>
+	<string id="3987">DUT_Export Channels to USB</string>
+	<string id="3988">DUT_Export channel list via USB</string>
+	<string id="3989">DUT_File not found</string>
+	<string id="3990">DUT_Export complete</string>
+	<string id="3991">DUT_Your channel list has been exported successfully</string>
+	<string id="3992">DUT_Configure the satellite first before you scan channels</string>
+	<string id="3993">DUT_Satellite %s is not configured</string>
 </strings>
