@@ -1387,4 +1387,24 @@
 	<string id="3971">GER_Not enough space on your USB flash memory</string>
 	<string id="3972">GER_Access your favorite in a convenient way</string>
 	<string id="3973">GER_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">GER_Start Channel Search</string>
+	<string id="3975">GER_Edit Satellite Name</string>
+	<string id="3976">GER_Edit Satellite Longitude</string>
+	<string id="3977">GER_Longitude Direction : East</string>
+	<string id="3978">GER_Longitude Direction : West</string>
+	<string id="3979">GER_Disable subtitle</string>
+	<string id="3980">GER_EPG None</string>
+	<string id="3981">GER_Save satellite positions</string>
+	<string id="3982">GER_Store Position</string>
+	<string id="3983">GER_Same satellite already exists</string>
+	<string id="3984">GER_Update Channels by Internet</string>
+	<string id="3985">GER_Import Channels from USB</string>
+	<string id="3986">GER_Import channel list via USB</string>
+	<string id="3987">GER_Export Channels to USB</string>
+	<string id="3988">GER_Export channel list via USB</string>
+	<string id="3989">GER_File not found</string>
+	<string id="3990">GER_Export complete</string>
+	<string id="3991">GER_Your channel list has been exported successfully</string>
+	<string id="3992">GER_Configure the satellite first before you scan channels</string>
+	<string id="3993">GER_Satellite %s is not configured</string>
 </strings>
