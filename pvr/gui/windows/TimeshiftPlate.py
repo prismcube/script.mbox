@@ -170,7 +170,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.setProperty( 'IsXpeeding', 'False' )
 				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
-
 			#self.mPrekey = None
 
 		else :
@@ -188,16 +187,16 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mEnableLocalThread = True
 		self.mThreadProgress = self.PlayProgressThread( )
 		self.WaitToBuffering( )
-		if self.mPrekey == Action.ACTION_MOVE_LEFT :
-			#self.setProperty( 'IsXpeeding', 'False' )
-			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
-
-		self.mPrekey = None
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
+		if self.mPrekey == Action.ACTION_MOVE_LEFT :
+			self.StopAutomaticHide( )
+			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+
+		self.mPrekey = None
 		self.mInitialized = True
 
 
