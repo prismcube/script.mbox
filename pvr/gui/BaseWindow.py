@@ -276,16 +276,19 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		#blocking by avBlank
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------blocking avblank' )
+			return
+
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
 			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) and \
 			   aVolumeStep == 0 : 
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
-					if XBMC_GetMute( ) :
-						mute = True
-					else :
-						mute = False
+					mute = False
+
 				self.mCommander.Player_SetMute( mute )
 				#if XBMC_GetMute( ) != mute :
 				#	XBMC_SetVolume( volume, mute )

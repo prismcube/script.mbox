@@ -256,12 +256,24 @@ class DataCacheMgr( object ) :
 	def LoadVolumeToSetGUI( self ) :
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
-		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
+		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
+
+		if lastMute :
+			self.mCommander.Player_SetMute( False )
+			LOG_TRACE( 'mute off' )
 
 		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
 		if revisionVolume >= VOLUME_STEP :
 			#XBMC_SetVolume( lastVolume, lastMute )
 			XBMC_SetVolumeByBuiltin( lastVolume, False )
+
+
+	def LoadVolumeBySetGUI( self ) :
+		mute = XBMC_GetMute( )
+		volume = XBMC_GetVolume( )
+		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
+		self.mCommander.Player_SetMute( mute )
+		self.mCommander.Player_SetVolume( volume )
 
 
 	def LoadTime( self ) :
@@ -505,6 +517,21 @@ class DataCacheMgr( object ) :
 				if transponder :
 					return transponder[ aIndex ]
 		return None
+
+
+	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :
+		tunerEx = 0
+		if self.mConfiguredSatelliteListTuner1 :
+			for satellite in self.mConfiguredSatelliteListTuner1 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_1
+
+		if self.mConfiguredSatelliteListTuner2 :
+			for satellite in self.mConfiguredSatelliteListTuner2 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
+
+		return tunerEx
 
 
 	def GetChangeDBTableChannel( self ) :

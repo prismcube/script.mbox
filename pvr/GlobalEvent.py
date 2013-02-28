@@ -149,6 +149,11 @@ class GlobalEvent( object ) :
 
 
 	def AsyncStandbyPowerON( self ) :
+		#default mute off
+		mute = self.mCommander.Player_GetMute( )
+		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
+			xbmc.executebuiltin( 'xbmc.Action(mute)' )
+
 		while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			time.sleep( 1 )
@@ -242,6 +247,7 @@ class GlobalEvent( object ) :
 			else :
 				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
 					self.mDataCache.Player_AVBlank( False )
+					self.mDataCache.LoadVolumeBySetGUI( )
 
 		elif aCmd == E_PARENTLOCK_EIT :
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
@@ -267,6 +273,7 @@ class GlobalEvent( object ) :
 					if iChannel and ( not iChannel.mLocked ) and self.mDataCache.Get_Player_AVBlank( ) :
 						LOG_TRACE( '--------------- Release parentLock' )
 						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
 
 
 	def ShowPincodeDialog( self ) :
@@ -286,9 +293,11 @@ class GlobalEvent( object ) :
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
 				xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
@@ -302,6 +311,7 @@ class GlobalEvent( object ) :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 		self.mDataCache.SetPincodeDialog( False )
 

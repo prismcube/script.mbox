@@ -909,8 +909,10 @@ class LivePlate( LivePlateWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+
 		isOK = False
-		if runningCount < 2 :
+		if runningCount < 2 or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
@@ -1162,9 +1164,11 @@ class LivePlate( LivePlateWindow ) :
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
 				self.ChannelTune( NEXT_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				self.ChannelTune( PREV_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
@@ -1179,6 +1183,7 @@ class LivePlate( LivePlateWindow ) :
 					self.mDataCache.SetParentLock( False )
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
 
 				LOG_TRACE( 'Has no next action' )
 				if self.mAutomaticHide == True :
@@ -1186,6 +1191,7 @@ class LivePlate( LivePlateWindow ) :
 		else :
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )

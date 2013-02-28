@@ -49,10 +49,15 @@ class EPGWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-		self.mLock = thread.allocate_lock( )		
+		self.mLock = thread.allocate_lock( )
+		self.mEnableAysncTimer = False
+		self.mFirstTune = False
 
 	
 	def onInit( self ) :
+		self.mEnableAysncTimer = True
+		self.mFirstTune = False
+
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'EPG' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -261,13 +266,17 @@ class EPGWindow( BaseWindow ) :
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
-			"""
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-				self.DoCurrentEITReceived( aEvent )
-			"""
+				if self.mFirstTune == True :
+					self.mFirstTune = False
+					LOG_TRACE( '--------------- First Tune -----------------' )
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
+				#self.DoCurrentEITReceived( aEvent )
 
 
 	def Close( self ) :
+		self.mEnableAysncTimer = False
+		self.mFirstTune = False
 		self.mEventBus.Deregister( self )	
 
 		self.StopEPGUpdateTimer( )
@@ -513,7 +522,8 @@ class EPGWindow( BaseWindow ) :
 
 		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
 			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+			if pmtEvent and pmtEvent.mAudioCount > 0 and \
+			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
 				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
 				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
 					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
@@ -1311,7 +1321,8 @@ class EPGWindow( BaseWindow ) :
 					return
 			"""
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
-			self.RestartEPGUpdateTimer( 5 )
+			self.mFirstTune = True
+			#self.RestartEPGUpdateTimer( 5 )
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -1334,6 +1345,7 @@ class EPGWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
+				self.mFirstTune = True				
 				#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
@@ -1362,6 +1374,10 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
 		if self.mEPGUpdateTimer == None :
 			LOG_WARN( 'EPG update timer expired' )
+			return
+
+		if self.mEnableAysncTimer == False :
+			LOG_WARN( 'EnableAysncTimer is False' )		
 			return
 
 		self.Load( )
@@ -1452,6 +1468,7 @@ class EPGWindow( BaseWindow ) :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			ret = True
 

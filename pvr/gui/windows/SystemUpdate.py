@@ -3,6 +3,7 @@ from fileDownloader import DownloadFile
 from version import LooseVersion
 from copy import deepcopy
 import stat
+import shutil
 
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
@@ -65,6 +66,7 @@ E_STRING_CHECK_FAILED    = 13
 E_STRING_CHECK_HAVE_NONE = 14
 E_STRING_CHECK_DOWNLOADING    = 15
 
+UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
 class PVSClass( object ) :
 	def __init__( self ) :
@@ -204,7 +206,7 @@ class SystemUpdate( SettingWindow ) :
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				self.UpdateChannel( )
+				self.UpdateChannelsByInternet( )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -226,6 +228,14 @@ class SystemUpdate( SettingWindow ) :
 						LOG_TRACE( '------------cancel(download)' )
 					else :
 						self.mGetDownloadThread = self.GetDownloadThread( )
+
+		elif groupId == E_Input03 :
+			LOG_TRACE( 'Import Channels from USB' )
+			self.ImportChannelsFromUSB( )
+
+		elif groupId == E_Input04 :
+			LOG_TRACE( 'Export Channels to USB' )		
+			self.ExportChannelsToUSB( )
 
 
 	def onFocus( self, aControlId ) :
@@ -775,10 +785,18 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels by Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+
+			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import channel list via USB' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export channel list via USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
+
+			self.SetEnableControl( E_Input03, True )
+			self.SetEnableControl( E_Input04, True )
+			self.SetVisibleControl( E_Input03, True )
+			self.SetVisibleControl( E_Input04, True )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
@@ -807,6 +825,11 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
 			self.AddInputControl( E_Input02, '', button2Label, button2Desc )
 			self.SetEnableControl( E_Input02, button2Enable )
+
+			self.SetEnableControl( E_Input03, False )
+			self.SetEnableControl( E_Input04, False )
+			self.SetVisibleControl( E_Input03, False )
+			self.SetVisibleControl( E_Input04, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1441,7 +1464,7 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
 
-	def UpdateChannel( self ) :
+	def UpdateChannelsByInternet( self ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
 		if self.DownloadInfoFile( ) == False :
 			self.CloseProgress( )
@@ -1470,6 +1493,78 @@ class SystemUpdate( SettingWindow ) :
 				dialog.doModal( )
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+
+
+	def ImportChannelsFromUSB( self ) :
+		LOG_TRACE( '' )
+		#check usb mount
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			LOG_TRACE( 'Not Exist USB' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+			return
+
+		#check usb file
+		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
+		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+		if not os.path.exists( filePath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG('WARNING'), '%s %s' %( MR_LANG( 'Can not found' ), filePath ) )
+			dialog.doModal( )
+			return
+
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+		shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )
+	
+		self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
+		#self.mCommander.System_SetDefaultChannelList( )
+		self.mDataCache.LoadAllSatellite( )
+		self.mTunerMgr.SyncChannelBySatellite( )
+		self.mDataCache.Channel_ReLoad( )
+		self.mDataCache.Player_AVBlank( False )
+
+		os.remove( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )		
+
+		self.CloseProgress( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
+		dialog.doModal( )
+		
+	
+	def ExportChannelsToUSB( self ) :
+		LOG_TRACE( '' )
+		#check usb mount
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			LOG_TRACE( 'Not Exist USB' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+			return
+
+		#check usb file
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+		filePath = os.path.join( usbPath, 'updatechannel' )
+		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+		if not os.path.exists( filePath ) :
+			os.mkdir( filePath, 0777 )
+
+		self.mCommander.System_ExportChannelList( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )
+
+		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
+		shutil.copyfile( UPDATE_TEMP_CHANNEL, filePath )
+		os.system( 'sync' )
+
+		os.remove( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )		
+		
+		self.CloseProgress( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your channel list has been exported successfully') )
+		dialog.doModal( )
 
 
 	def ParseList( self ) :
@@ -1507,7 +1602,7 @@ class SystemUpdate( SettingWindow ) :
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
-			self.mCommander.System_SetDefaultChannelList( )
+			#self.mCommander.System_SetDefaultChannelList( )
 			self.mDataCache.LoadAllSatellite( )
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
