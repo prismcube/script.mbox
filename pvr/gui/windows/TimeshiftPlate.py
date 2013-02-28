@@ -166,7 +166,11 @@ class TimeShiftPlate( BaseWindow ) :
 				else :
 					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
-			self.mPrekey = None
+			elif self.mPrekey == Action.ACTION_MOVE_LEFT :
+				self.setProperty( 'IsXpeeding', 'False' )
+				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+
+			#self.mPrekey = None
 
 		else :
 			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
@@ -187,6 +191,12 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
+		if self.mPrekey == Action.ACTION_MOVE_LEFT :
+			self.StopAutomaticHide( )
+			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+
+		self.mPrekey = None
 		self.mInitialized = True
 
 
@@ -1221,9 +1231,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	@RunThread
+	#@RunThread
 	def WaitToBuffering( self ) :
-		while self.mEnableLocalThread :
+		#while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
 				waitTime = 0
 				self.OpenBusyDialog( )
@@ -1248,6 +1258,7 @@ class TimeShiftPlate( BaseWindow ) :
 						#LOG_TRACE('-----------repeat[%s] focused[%s] '% ( waitTime + 1,ret ) )
 
 			time.sleep( 1 )
+			LOG_TRACE('------')
 
 
 	def InitBookmarkThumnail( self ) :
