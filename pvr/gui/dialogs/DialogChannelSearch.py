@@ -14,6 +14,8 @@ E_SCAN_NONE					= 0
 E_SCAN_SATELLITE			= 1
 E_SCAN_TRANSPONDER			= 2
 
+INVALID_CHANNEL					= 65534
+
 
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -171,7 +173,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 			if self.mScanMode == E_SCAN_TRANSPONDER :
-				#self.DefaultTuneDiseqc12( )
+				self.DefaultTuneDiseqc12( )
 				self.mCommander.ScanHelper_Start( )
 			else :
 				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
@@ -233,8 +235,8 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
-			#if self.mScanMode == E_SCAN_TRANSPONDER :
-			#	self.DefaultTuneDiseqc12( )
+			if self.mScanMode == E_SCAN_TRANSPONDER :
+				self.DefaultTuneDiseqc12( )
 			self.mCtrlProgress.setPercent( 100 )
 			timer = threading.Timer( 0.5, self.ShowResult )
 			timer.start( )
@@ -271,26 +273,19 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def DefaultTuneDiseqc12( self ) :
 		if self.IsDiseqc12( ) :
-			print 'dhkim test DefaultTuneDiseqc12 #1'
 			if len( self.mStoreTVChannel ) > 0 :
 				for channel in self.mStoreTVChannel :
-				
-					print 'dhkim test self.mNewTVChannelList in channel = %s' % channel
-					print 'dhkim test channel.mNumber = %s' % channel.mNumber
-					print 'dhkim test channel.mServiceType = %s' % channel.mServiceType
-					print 'dhkim test channel.mIsCA = %s' % channel.mIsCA
-					
 					if not channel.mIsCA :
-						self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+						self.ChannelTune( channel )
 						return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
+				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
 				return
 
 			if len( self.mStoreRadioChannel ) > 0 :
 				for channel in self.mStoreRadioChannel :
 					if not channel.mIsCA :
-						self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+						self.ChannelTune( channel )
 						return
 
 				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
@@ -299,16 +294,24 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def IsDiseqc12( self ) :
 		tunerNumber = self.mDataCache.GetTunerIndexBySatellite( self.mLongitude, self.mBand )
-		print 'dhkim test tunerNumber = %s' % tunerNumber
-		if tunerNumber == E_TUNER_1 :
+		tunertype = None
+		if tunerNumber == E_CONFIGURED_TUNER_1 :
 			tunertype = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-		elif tunerNumber == E_TUNER_2 :
+		elif tunerNumber == E_CONFIGURED_TUNER_2 :
 			tunertype = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
+		else :
+			tunertype = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 
-		print 'dhkim test tunertype = %s' % tunertype
 		if tunertype == E_MOTORIZE_1_2 :
 			return True
 		else :
 			return False
-	
-		
+
+
+	def ChannelTune( self, aChannel ) :
+		if aChannel.mNumber == INVALID_CHANNEL :
+			channel = self.mCommander.Channel_GetByTwolDs( aChannel.mSid, aChannel.mOnid )
+			if channel :
+				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+		else :
+			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType )
