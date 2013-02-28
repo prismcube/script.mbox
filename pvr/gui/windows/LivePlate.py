@@ -813,6 +813,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
+		"""
 		#tpnum
 		lblTPnum = 'TP1'
 		mTPnum = self.mDataCache.GetTunerIndexByChannel( self.mCurrentChannel.mNumber )
@@ -821,6 +822,7 @@ class LivePlate( LivePlateWindow ) :
 		elif mTPnum == E_CONFIGURED_TUNER_1_2 :
 			lblTPnum = 'TP1, TP2'
 		self.UpdatePropertyGUI( 'iTPnum', lblTPnum )
+		"""
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
