@@ -268,6 +268,14 @@ class DataCacheMgr( object ) :
 			XBMC_SetVolumeByBuiltin( lastVolume, False )
 
 
+	def LoadVolumeBySetGUI( self ) :
+		mute = XBMC_GetMute( )
+		volume = XBMC_GetVolume( )
+		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
+		self.mCommander.Player_SetMute( mute )
+		self.mCommander.Player_SetVolume( volume )
+
+
 	def LoadTime( self ) :
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
