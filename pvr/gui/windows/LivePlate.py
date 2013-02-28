@@ -43,10 +43,13 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
+E_NOMAL_BLINKING_TIME		= 0.2
+
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )
 
+		self.mRecordBlinkingTimer	= None	
 		self.mLocalTime = 0
 		self.mCurrentChannel = None
 		self.mLastChannel = None
@@ -421,6 +424,10 @@ class LivePlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
+
+				self.StopBlickingIconTimer( )
+				self.setProperty( 'RecordBlinkingIcon', 'False' )
+				 
  				self.ShowRecordingInfo( )
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
@@ -891,7 +898,11 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.ShowRecordingStartDialog( )
+			if RECORD_WIDTHOUT_ASKING == True :
+				self.StartRecordingWithoutAsking( )				
+			else :
+				self.ShowRecordingStartDialog( )
+		
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
 			self.ShowRecordingStopDialog( )
@@ -900,6 +911,114 @@ class LivePlate( LivePlateWindow ) :
 			self.SetAudioVideoContext( )
 
 		self.RestartAutomaticHide( )
+
+
+	def StartRecordingWithoutAsking( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+		isOK = True
+
+		if mTimer :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal( )
+
+			isOK = dialog.IsOK( )
+			if isOK != E_DIALOG_STATE_YES :
+				isOK = False
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+				RecordConflict( dialog.GetConflictTimer( ) )
+
+			return 
+
+		elif runningCount < 2 :
+			copyTimeshift = 0
+			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
+			localTime = self.mDataCache.Datetime_GetLocalTime( )				
+			
+			if otrInfo.mTimeshiftAvailable :
+				if otrInfo.mHasEPG == True :			
+					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+				
+					copyTimeshift  = localTime - otrInfo.mEventStartTime
+					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
+					if copyTimeshift > timeshiftRecordSec :
+						copyTimeshift = timeshiftRecordSec
+					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+
+			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
+
+			if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
+				copyTimeshift = 0
+
+			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+			expectedDuration = otrInfo.mEventEndTime - localTime
+
+			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
+
+			if expectedDuration < 0:
+				LOG_ERR( 'Error : Already Passed' )
+				expectedDuration = 0
+
+			ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, 0,  0, 0 )
+
+			#if ret[0].mParam == -1 or ret[0].mError == -1 :
+			LOG_ERR( 'StartDialog ret=%s ' %ret )
+			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
+				LOG_ERR( 'StartDialog ' )
+				RecordConflict( ret )
+
+		else:
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
+			dialog.doModal( )
+
+		if isOK :
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.StartBlickingIconTimer( )
+			
+			self.mDataCache.SetChannelReloadStatus( True )
+
+
+	def RestartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
+		self.StopBlickingIconTimer( )
+		self.StartBlickingIconTimer( aTimeout )
+
+
+	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
+		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
+		self.mRecordBlinkingTimer .start( )
+	
+
+	def StopBlickingIconTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
+			self.mRecordBlinkingTimer.cancel( )
+			del self.mRecordBlinkingTimer
+			
+		self.mRecordBlinkingTimer = None
+
+
+	def AsyncBlinkingIcon( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mRecordBlinkingTimer == None :
+			LOG_WARN( 'Blinking Icon update timer expired' )
+			return
+
+		if self.getProperty( 'RecordBlinkingIcon' ) == 'True' :
+			self.setProperty( 'RecordBlinkingIcon', 'False' )
+		else :
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+
+		self.RestartBlickingIconTimer( )
 
 
 	def ShowRecordingStartDialog( self ) :
@@ -1031,6 +1150,9 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+
+		self.StopBlickingIconTimer( )
+		self.setProperty( 'RecordBlinkingIcon', 'False' )		
 
 		self.StopAsyncTune( )
 		self.StopAutomaticHide( )

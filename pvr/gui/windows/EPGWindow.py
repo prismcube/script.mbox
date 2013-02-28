@@ -1174,7 +1174,7 @@ class EPGWindow( BaseWindow ) :
 						if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY	:
 							if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
 								return timer
-						elif self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+						elif self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 							return timer
 			else :
 				for i in range( len( self.mTimerList ) ) :
@@ -1225,7 +1225,7 @@ class EPGWindow( BaseWindow ) :
 
 					else :
 						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
-							if self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+							if self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 								LOG_TRACE( '------------------- found by manual timer-------------------------' )
 								return timer
 						
@@ -1236,10 +1236,10 @@ class EPGWindow( BaseWindow ) :
 
 
 	def HasOverlapped( self, aStartTime, aEndTime, aStartTime2, aEndTime2 ) :
-		if ( aStartTime >= aStartTime2 and aStartTime < aEndTime2 ) or \
-			( aEndTime >= aStartTime2 and aEndTime < aEndTime2 )  or \
-			( aStartTime >= aStartTime2 and aEndTime < aEndTime2 ) or \
-			( aStartTime2 >= aStartTime and aEndTime2 < aEndTime ) :
+		if ( aStartTime >= aStartTime2 and aStartTime <= aEndTime2 ) or \
+			( aEndTime >= aStartTime2 and aEndTime <= aEndTime2 )  or \
+			( aStartTime >= aStartTime2 and aEndTime <= aEndTime2 ) or \
+			( aStartTime2 >= aStartTime and aEndTime2 <= aEndTime ) :
 			return True
 
 		return False
@@ -1267,7 +1267,7 @@ class EPGWindow( BaseWindow ) :
 
 			weeklyStartTime = dateLeft*24*3600 + aTimer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
-			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime, weeklyStartTime + weeklyTimer.mDuration ) == True :
+			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime, weeklyStartTime + weeklyTimer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 				LOG_TRACE( '------------------- found by weekly timer -------------------------' )
 				return True
 
