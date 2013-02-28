@@ -104,6 +104,7 @@ class DataCacheMgr( object ) :
 		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
+		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
@@ -266,6 +267,14 @@ class DataCacheMgr( object ) :
 		if revisionVolume >= VOLUME_STEP :
 			#XBMC_SetVolume( lastVolume, lastMute )
 			XBMC_SetVolumeByBuiltin( lastVolume, False )
+
+
+	def LoadVolumeBySetGUI( self ) :
+		mute = XBMC_GetMute( )
+		volume = XBMC_GetVolume( )
+		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
+		self.mCommander.Player_SetMute( mute )
+		self.mCommander.Player_SetVolume( volume )
 
 
 	def LoadTime( self ) :
@@ -459,6 +468,16 @@ class DataCacheMgr( object ) :
 		return MR_LANG( 'Unknown' )
 
 
+	def GetSatelliteName( self, aLongitude, aBand ) :
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		satellite = self.mAllSatelliteListHash.get( hashKey, None )
+
+		if satellite :
+			return satellite.mName
+
+		return MR_LANG( 'Unknown' )
+
+
 	def GetTransponderListBySatellite( self, aLongitude, aBand ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
@@ -509,6 +528,25 @@ class DataCacheMgr( object ) :
 				if transponder :
 					return transponder[ aIndex ]
 		return None
+
+
+	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :
+		tunerEx = 0
+		if self.mConfiguredSatelliteListTuner1 :
+			for satellite in self.mConfiguredSatelliteListTuner1 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_1
+
+		if self.mConfiguredSatelliteListTuner2 :
+			for satellite in self.mConfiguredSatelliteListTuner2 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
+
+		return tunerEx
+
+
+	def GetTunerIndexByChannel( self, aNumber ) :
+		return self.mTPListByChannelHash.get( aNumber, -1 )
 
 
 	def GetChangeDBTableChannel( self ) :
@@ -634,6 +672,11 @@ class DataCacheMgr( object ) :
 					LOG_ERR( "Exception %s" %ex)
 				
 				prevChannel = channel
+
+
+				if channel and channel.mError == 0 :
+					self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
 
 
 	def LoadZappingmode( self ) :
@@ -1277,10 +1320,14 @@ class DataCacheMgr( object ) :
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
 
-		self.Channel_TuneDefault( mCurrentChannel )
+		#self.Channel_TuneDefault( mCurrentChannel )
+		self.Channel_TuneDefault( False, mCurrentChannel )
 
 
-	def Channel_TuneDefault( self, aCurrentChannel = None ) :
+	def Channel_TuneDefault( self, aDefault = True, aCurrentChannel = None ) :
+		if aDefault :
+			aCurrentChannel = self.Channel_GetCurrent( )
+
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
 			iChannelList = self.Channel_GetList( )

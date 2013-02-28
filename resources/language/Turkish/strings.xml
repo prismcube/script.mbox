@@ -1387,4 +1387,24 @@
 	<string id="3971">TUR_Not enough space on your USB flash memory</string>
 	<string id="3972">TUR_Access your favorite in a convenient way</string>
 	<string id="3973">TUR_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">TUR_Start Channel Search</string>
+	<string id="3975">TUR_Edit Satellite Name</string>
+	<string id="3976">TUR_Edit Satellite Longitude</string>
+	<string id="3977">TUR_Longitude Direction : East</string>
+	<string id="3978">TUR_Longitude Direction : West</string>
+	<string id="3979">TUR_Disable subtitle</string>
+	<string id="3980">TUR_EPG None</string>
+	<string id="3981">TUR_Save satellite positions</string>
+	<string id="3982">TUR_Store Position</string>
+	<string id="3983">TUR_Same satellite already exists</string>
+	<string id="3984">TUR_Update Channels by Internet</string>
+	<string id="3985">TUR_Import Channels from USB</string>
+	<string id="3986">TUR_Import channel list via USB</string>
+	<string id="3987">TUR_Export Channels to USB</string>
+	<string id="3988">TUR_Export channel list via USB</string>
+	<string id="3989">TUR_File not found</string>
+	<string id="3990">TUR_Export complete</string>
+	<string id="3991">TUR_Your channel list has been exported successfully</string>
+	<string id="3992">TUR_Configure the satellite first before you scan channels</string>
+	<string id="3993">TUR_Satellite %s is not configured</string>
 </strings>

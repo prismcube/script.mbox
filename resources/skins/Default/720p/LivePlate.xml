@@ -61,7 +61,7 @@
 
 <!-- Rec info -->
 			<control type="group">
-				<posx>300r</posx>
+				<posx>450r</posx>
 				<posy>540</posy>
 				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
 				<control type="group">
@@ -70,7 +70,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(10)</visible>
@@ -84,7 +84,7 @@
 						<visible>substring(Window.Property(ViewRecord1),true)</visible>
 					</control>
 					<control type="label" id="11">
-						<posx>121</posx>
+						<posx>116</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -97,7 +97,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(15)</visible>
@@ -111,7 +111,7 @@
 						<visible>substring(Window.Property(ViewRecord2),true)</visible>
 					</control>
 					<control type="label" id="16">
-						<posx>100</posx>
+						<posx>95</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -331,6 +331,13 @@
 						<height>30</height>
 						<texture>IconFavFocus.png</texture>
 						<visible>substring(Window.Property(iFav),true)</visible>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>1</posy>
+						<width>100</width>
+						<height>30</height>
+						<label>$INFO[Window.Property(iTPnum)]</label>
 					</control>
 				</control>
 

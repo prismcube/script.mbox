@@ -1387,4 +1387,24 @@
 	<string id="3971">FRE_Not enough space on your USB flash memory</string>
 	<string id="3972">FRE_Access your favorite in a convenient way</string>
 	<string id="3973">FRE_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">FRE_Start Channel Search</string>
+	<string id="3975">FRE_Edit Satellite Name</string>
+	<string id="3976">FRE_Edit Satellite Longitude</string>
+	<string id="3977">FRE_Longitude Direction : East</string>
+	<string id="3978">FRE_Longitude Direction : West</string>
+	<string id="3979">FRE_Disable subtitle</string>
+	<string id="3980">FRE_EPG None</string>
+	<string id="3981">FRE_Save satellite positions</string>
+	<string id="3982">FRE_Store Position</string>
+	<string id="3983">FRE_Same satellite already exists</string>
+	<string id="3984">FRE_Update Channels by Internet</string>
+	<string id="3985">FRE_Import Channels from USB</string>
+	<string id="3986">FRE_Import channel list via USB</string>
+	<string id="3987">FRE_Export Channels to USB</string>
+	<string id="3988">FRE_Export channel list via USB</string>
+	<string id="3989">FRE_File not found</string>
+	<string id="3990">FRE_Export complete</string>
+	<string id="3991">FRE_Your channel list has been exported successfully</string>
+	<string id="3992">FRE_Configure the satellite first before you scan channels</string>
+	<string id="3993">FRE_Satellite %s is not configured</string>
 </strings>

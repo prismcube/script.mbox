@@ -522,7 +522,8 @@ class EPGWindow( BaseWindow ) :
 
 		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
 			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+			if pmtEvent and pmtEvent.mAudioCount > 0 and \
+			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
 				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
 				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
 					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
@@ -1467,6 +1468,7 @@ class EPGWindow( BaseWindow ) :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			ret = True
 

@@ -813,6 +813,15 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
+		#tpnum
+		lblTPnum = 'TP1'
+		mTPnum = self.mDataCache.GetTunerIndexByChannel( self.mCurrentChannel.mNumber )
+		if mTPnum == E_CONFIGURED_TUNER_2 :
+			lblTPnum = 'TP1'
+		elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+			lblTPnum = 'TP1, TP2'
+		self.UpdatePropertyGUI( 'iTPnum', lblTPnum )
+
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
@@ -1112,24 +1121,32 @@ class LivePlate( LivePlateWindow ) :
  	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+
+			if isRunningTimerList :
+				runningRecordCount = len( isRunningTimerList )
+
+			#LOG_TRACE( "runningRecordCount=%d" %runningRecordCount )
 
 			strLabelRecord1 = ''
 			strLabelRecord2 = ''
 			setPropertyRecord1 = 'False'
 			setPropertyRecord2 = 'False'
-			if isRunRec == 1 :
+			if isRunRec == 1 and runningRecordCount == 1 :
 				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
-			elif isRunRec == 2 :
+			elif isRunRec == 2 and runningRecordCount == 2 :
 				setPropertyRecord1 = 'True'
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[1]
+				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 			btnValue = True
 			if isRunRec >= 2 :
@@ -1286,9 +1303,11 @@ class LivePlate( LivePlateWindow ) :
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
 				self.ChannelTune( NEXT_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				self.ChannelTune( PREV_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
@@ -1303,6 +1322,7 @@ class LivePlate( LivePlateWindow ) :
 					self.mDataCache.SetParentLock( False )
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
 
 				LOG_TRACE( 'Has no next action' )
 				if self.mAutomaticHide == True :
@@ -1310,6 +1330,7 @@ class LivePlate( LivePlateWindow ) :
 		else :
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )
