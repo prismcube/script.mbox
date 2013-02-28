@@ -242,7 +242,7 @@ class EditTransponder( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					self.OpenBusyDialog( )				
+					self.OpenBusyDialog( )
 					tmplist = []
 					tmplist.append( self.mTransponderList[self.mTransponderIndex] )
 					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
@@ -253,9 +253,9 @@ class EditTransponder( SettingWindow ) :
 						self.CloseBusyDialog( )
 						return
 					self.mTransponderIndex = 0
-					self.mDataCache.LoadConfiguredTransponder( )			 		
+					self.mDataCache.LoadConfiguredTransponder( )
 					self.InitConfig( )
-					self.CloseBusyDialog( )					
+					self.CloseBusyDialog( )
 				else :
 					return
 

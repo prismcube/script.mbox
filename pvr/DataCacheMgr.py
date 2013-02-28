@@ -467,6 +467,16 @@ class DataCacheMgr( object ) :
 		return MR_LANG( 'Unknown' )
 
 
+	def GetSatelliteName( self, aLongitude, aBand ) :
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		satellite = self.mAllSatelliteListHash.get( hashKey, None )
+
+		if satellite :
+			return satellite.mName
+
+		return MR_LANG( 'Unknown' )
+
+
 	def GetTransponderListBySatellite( self, aLongitude, aBand ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
