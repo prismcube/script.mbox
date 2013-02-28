@@ -71,7 +71,7 @@
 					<posy>80</posy>
 					<width>38</width>
 					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture border="5">OSDStopNF.png</texture>
+					<texture border="5">OSDPauseNF.png</texture>
 					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
 				</control>
 				<control type="image">
