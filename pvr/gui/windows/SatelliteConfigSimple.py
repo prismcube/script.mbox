@@ -177,6 +177,18 @@ class SatelliteConfigSimple( FTIWindow ) :
 		elif groupId == E_SpinEx03 :
 			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
+		# Committed Switch
+		elif groupId == E_SpinEx04 :
+			self.mCurrentSatellite.mDisEqcMode = self.GetSelectedIndex( E_SpinEx04 )
+
+		# Uncommitted Switch
+		elif groupId == E_SpinEx05 :
+			self.mCurrentSatellite.mDisEqc11 = self.GetSelectedIndex( E_SpinEx05 )
+		
+		# DiSEqC Repeat
+		elif groupId == E_SpinEx06 :
+			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx06 )
+
 		# Transponer
 		elif groupId == E_Input03 :
 			if self.mTransponderList :
@@ -268,6 +280,12 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Tone Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'When set to \'On\', LNBs will be switched between low and high band' ) )
 
+		if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS :
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ), MR_LANG( 'Select the committed switch number' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11, MR_LANG( 'Select the uncommitted switch number' ) )
+			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'DiSEqC Repeat' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'When set to \'On\', DiSEqC repeats its command' ) )
+
+
 		if self.mTransponderList :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )	
 		else :
@@ -275,12 +293,21 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
-		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04 ]
-			hideControlIds = [ E_Input02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
+		if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS :
+			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03, E_Input04 ]
+				hideControlIds = [ E_Input02, E_Input05, E_Input06, E_Input07 ]
+			else :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input04 ]
+				hideControlIds = [ E_SpinEx02,  E_Input05, E_Input06, E_Input07 ]
+
 		else :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_Input01, E_Input02, E_Input04 ]
-			hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
+			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04 ]
+				hideControlIds = [ E_Input02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
+			else :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_Input01, E_Input02, E_Input04 ]
+				hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05,  E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
 
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )
