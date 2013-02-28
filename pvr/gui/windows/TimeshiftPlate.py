@@ -1155,7 +1155,7 @@ class TimeShiftPlate( BaseWindow ) :
 		for i in range( len( self.mBookmarkList ) ) :
 			#posx = defaultPos + i * 100
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-			posx = defaultPos + defaultWidth * ratioX
+			posx = int( defaultPos + defaultWidth * ratioX )
 			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', 'StepFO.png' )
 			self.addControl( button )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
