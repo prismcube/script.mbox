@@ -512,18 +512,18 @@ class DataCacheMgr( object ) :
 
 
 	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :
+		tunerEx = 0
 		if self.mConfiguredSatelliteListTuner1 :
 			for satellite in self.mConfiguredSatelliteListTuner1 :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
-					return E_TUNER_1
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_1
 
 		if self.mConfiguredSatelliteListTuner2 :
 			for satellite in self.mConfiguredSatelliteListTuner2 :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
-					return E_TUNER_2
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
 
-		LOG_ERR( 'GetTunerIndexBySatellite not found' )
-		return E_TUNER_1
+		return tunerEx
 
 
 	def GetChangeDBTableChannel( self ) :

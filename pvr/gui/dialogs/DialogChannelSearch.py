@@ -40,7 +40,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.mIsFinished			= False	
-		self.mTimer					= None
+		#self.mTimer					= None
 		self.mNewTVChannelList		= []
 		self.mNewRadioChannelList	= []
 		self.mTvListItems			= []
@@ -236,8 +236,8 @@ class DialogChannelSearch( BaseDialog ) :
 			#if self.mScanMode == E_SCAN_TRANSPONDER :
 			#	self.DefaultTuneDiseqc12( )
 			self.mCtrlProgress.setPercent( 100 )
-			self.mTimer = threading.Timer( 0.5, self.ShowResult )
-			self.mTimer.start( )
+			timer = threading.Timer( 0.5, self.ShowResult )
+			timer.start( )
 
 
 	@SetLock
