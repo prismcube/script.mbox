@@ -16,6 +16,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 
 	def onInit( self ) :
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetActivate( True )
 		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 		self.mDataCache.Player_AVBlank( True )
@@ -25,7 +26,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self )
 
-		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
+		self.mCurrentSatellite = deepcopy(self.mTunerMgr.GetCurrentConfiguredSatellite( ))
+		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
@@ -172,6 +174,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
 			dialog.doModal( )
+			#self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
+			print 'self.tunerIndex=%d , self.mTunerMgr.GetCurrentConfigIndex( ) + 1= %d' %(self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1)
 			return
 
 		# Action
