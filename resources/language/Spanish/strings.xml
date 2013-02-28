@@ -1387,4 +1387,24 @@
 	<string id="3971">SPA_Not enough space on your USB flash memory</string>
 	<string id="3972">SPA_Access your favorite in a convenient way</string>
 	<string id="3973">SPA_To backup your user data and XBMC add-ons,\n insert a USB flash memory</string>
+	<string id="3974">SPA_Start Channel Search</string>
+	<string id="3975">SPA_Edit Satellite Name</string>
+	<string id="3976">SPA_Edit Satellite Longitude</string>
+	<string id="3977">SPA_Longitude Direction : East</string>
+	<string id="3978">SPA_Longitude Direction : West</string>
+	<string id="3979">SPA_Disable subtitle</string>
+	<string id="3980">SPA_EPG None</string>
+	<string id="3981">SPA_Save satellite positions</string>
+	<string id="3982">SPA_Store Position</string>
+	<string id="3983">SPA_Same satellite already exists</string>
+	<string id="3984">SPA_Update Channels by Internet</string>
+	<string id="3985">SPA_Import Channels from USB</string>
+	<string id="3986">SPA_Import channel list via USB</string>
+	<string id="3987">SPA_Export Channels to USB</string>
+	<string id="3988">SPA_Export channel list via USB</string>
+	<string id="3989">SPA_File not found</string>
+	<string id="3990">SPA_Export complete</string>
+	<string id="3991">SPA_Your channel list has been exported successfully</string>
+	<string id="3992">SPA_Configure the satellite first before you scan channels</string>
+	<string id="3993">SPA_Satellite %s is not configured</string>
 </strings>
