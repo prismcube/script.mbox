@@ -189,6 +189,10 @@ class SatelliteConfigSimple( FTIWindow ) :
 		elif groupId == E_SpinEx06 :
 			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx06 )
 
+		elif groupId == E_SpinEx04 :
+			self.ControlSelect( )
+
+
 		# Transponer
 		elif groupId == E_Input03 :
 			if self.mTransponderList :
@@ -291,6 +295,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 		else :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
+		self.AddEnumControl( E_SpinEx07, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS :
