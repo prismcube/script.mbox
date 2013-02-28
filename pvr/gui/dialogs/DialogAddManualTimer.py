@@ -234,7 +234,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 				if self.mEPG :
 					startTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
-					duraton = self.mEPG.mDuration
+					duration = self.mEPG.mDuration
 					self.mRecordName = self.mEPG.mEventName					
 				else :
 					self.mRecordName = self.mChannel.mName
@@ -573,6 +573,10 @@ class DialogAddManualTimer( SettingDialog ) :
 					#if self.mRecordingMode == E_ONCE :
 					startTime = self.mTimer.mStartTime
 					endTime = startTime + self.mTimer.mDuration
+					#Normalize EndTime
+					tmpEndTime = int( endTime/60 )
+					endTime = endTime * 60
+
 					LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 					LOG_TRACE( 'endTime=%s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )						
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
@@ -614,6 +618,11 @@ class DialogAddManualTimer( SettingDialog ) :
 						endTime = startTime + self.mTimer.mDuration
 						LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 						LOG_TRACE( 'endTime=%s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )						
+
+						#Normalize EndTime
+						tmpEndTime = int( endTime/60 )
+						endTime = tmpEndTime * 60
+						self.mTimer.mDuration = endTime - startTime
 						
 						ret = self.mDataCache.Timer_AddManualTimer( self.mTimer.mChannelNo, self.mTimer.mServiceType, self.mTimer.mStartTime, self.mTimer.mDuration, self.mTimer.mName, True )
 
@@ -632,16 +641,26 @@ class DialogAddManualTimer( SettingDialog ) :
 							if weeklyTimer == None :
 								if self.mUsedWeeklyList[i].mUsed == True : #Add New WeeklyTimer
 									LOG_TRACE( 'Edit Weekly Add New' )
+									#Normalize EndTime
+									tmpEndTime = int( ( self.mUsedWeeklyList[i].mStartTime + self.mUsedWeeklyList[i].mDuration )/60 )
+									endTime = tmpEndTime * 60
+									self.mUsedWeeklyList[i].mDuration = endTime - self.mUsedWeeklyList[i].mStartTime
+
 									ret = self.mDataCache.Timer_AddOneWeeklyTimer( self.mTimer.mTimerId, self.mUsedWeeklyList[i].mDate, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
 									LOG_TRACE( 'ret=%s' %ret )									
 							else :
 								if self.mUsedWeeklyList[i].mUsed == False : #Delete WeeklyTimer
-									LOG_TRACE( 'Edit Weekly Delete' )								
+									LOG_TRACE( 'Edit Weekly Delete' )
 									ret = self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
 									weeklyTimer.mStartTime, weeklyTimer.mDuration )
 									LOG_TRACE( 'ret=%s' %ret )
 								else : #Change Timer
-									LOG_TRACE( 'Edit Weekly Change' )								
+									LOG_TRACE( 'Edit Weekly Change' )
+									#Normalize EndTime
+									tmpEndTime = int( ( self.mUsedWeeklyList[i].mStartTime + self.mUsedWeeklyList[i].mDuration )/60 )
+									endTime = tmpEndTime * 60
+									self.mUsedWeeklyList[i].mDuration = endTime - self.mUsedWeeklyList[i].mStartTime
+
 									ret = self.mDataCache.Timer_EditOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
 									weeklyTimer.mStartTime, weeklyTimer.mDuration, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
 									LOG_TRACE( 'ret=%s' %ret )
@@ -700,6 +719,11 @@ class DialogAddManualTimer( SettingDialog ) :
 
 						timer.mStartTime = self.mUsedWeeklyList[i].mStartTime
 						timer.mDuration = self.mUsedWeeklyList[i].mDuration
+
+						#Normalize EndTime
+						tmpEndTime = int( ( timer.mStartTime + timer.mDuration )/60 )
+						endTime = tmpEndTime * 60
+						timer.mDuration = endTime - timer.mStartTime
 						
 						weeklyTimerList.append( timer )
 
