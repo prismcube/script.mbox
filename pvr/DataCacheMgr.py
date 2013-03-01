@@ -1189,6 +1189,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_SkipByNumber( aSet, aType, aNumList )
 
 
+	def Channel_GetViewingTuner( self ) :
+		return self.mCommander.Channel_GetViewingTuner( )
+	
+
 	def Favoritegroup_AddChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_AddChannel( aGroupName, aNumber, aServieType )
 

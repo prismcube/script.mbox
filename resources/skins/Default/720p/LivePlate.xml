@@ -332,6 +332,22 @@
 						<texture>IconFavFocus.png</texture>
 						<visible>substring(Window.Property(iFav),true)</visible>
 					</control>
+					<control type="image">
+						<posx>110</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconT1.png</texture>
+						<visible>substring(Window.Property(iTuner1),true)</visible>
+					</control>
+					<control type="image">
+						<posx>145</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconT2.png</texture>
+						<visible>substring(Window.Property(iTuner2),true)</visible>
+					</control>
 					<!--control type="label">
 						<posx>250</posx>
 						<posy>1</posy>
