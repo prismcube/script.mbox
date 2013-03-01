@@ -362,6 +362,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			self.SetFTIPrevNextButton( )
 			self.SetVisibleControl( E_Input07, False )
 			self.SetEnableControl( E_Input07, False )
+			self.SetVisibleControl( E_SpinEx05, False )
+			self.SetEnableControl( E_SpinEx05, False )
 
 		self.InitControl( )
 		self.DisableControl( )

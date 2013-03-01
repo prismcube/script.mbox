@@ -319,6 +319,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 			self.SetFTIPrevNextButton( )
 			self.SetVisibleControl( E_Input04, False )
 			self.SetEnableControl( E_Input04, False )
+			self.SetVisibleControl( E_SpinEx07, False )
+			self.SetEnableControl( E_SpinEx07, False )
 
 		self.InitControl( )
 		self.DisableControl( )
