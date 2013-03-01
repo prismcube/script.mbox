@@ -174,32 +174,34 @@ class TimeShiftPlate( BaseWindow ) :
 
 			#self.mPrekey = None
 
-		else :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mSpeed == 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			self.UpdateSetFocus( defaultFocus )
 
 		self.InitBookmarkThumnail( )
 
 		#run thread
 		self.mEventBus.Register( self )
-
 		self.mEnableLocalThread = True
 		self.mThreadProgress = self.PlayProgressThread( )
 		self.WaitToBuffering( )
-
-		if self.mAutomaticHide == True :
-			self.StartAutomaticHide( )
 
 		if self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
 			self.StopAutomaticHide( )
 			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
 
+		if self.mPrekey == None :
+			defaultFocus = E_CONTROL_ID_BUTTON_CURRENT
+			if self.mSpeed != 100 :
+				defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+
+			self.UpdateSetFocus( defaultFocus )
+
+
 		self.mPrekey = None
-		self.mInitialized = True
+		if self.mInitialized == False :
+			self.mAutomaticHide = True
+			self.mInitialized = True
+
+		self.RestartAutomaticHide( )
 
 
 	def onAction( self, aAction ) :
@@ -1426,7 +1428,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide( )
-		self.StartAutomaticHide( )
+		if self.mAutomaticHide :
+			self.StartAutomaticHide( )
 
 	
 	def StartAutomaticHide( self ) :
