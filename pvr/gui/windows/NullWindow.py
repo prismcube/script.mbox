@@ -25,11 +25,15 @@ class NullWindow( BaseWindow ) :
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-		if playingRecord :
-			self.SetFrontdisplayMessage( playingRecord.mRecordName )
-		else :
-			self.mDataCache.Frontdisplay_SetCurrentMessage( )
-		
+		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
+		try :
+			if playingRecord :
+				self.SetFrontdisplayMessage( playingRecord.mRecordName )
+			else :
+				self.mDataCache.Frontdisplay_SetCurrentMessage( )
+		except Exception, e :
+			LOG_TRACE('except[%s]'% e )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.CheckMediaCenter( )

@@ -124,6 +124,23 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
+					<control type="image">
+						<posx>590</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(ListItem.Property(iTuner1),true)</visible>
+						<texture>IconT1.png</texture>
+					</control>
+					<!-- is Tuner2 -->
+					<control type="image">
+						<posx>620</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(ListItem.Property(iTuner2),true)</visible>
+						<texture>IconT2.png</texture>
+					</control>
 					<!-- is cas? -->
 					<control type="image">
 						<posx>650</posx>
@@ -195,7 +212,7 @@
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<control type="label">
-						<posx>600</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>80</width>
 						<height>40</height>
@@ -232,22 +249,24 @@
 						<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 						<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
 					</control>
-					<!--control type="image">
-						<posx>605</posx>
+					<!-- is Tuner1 -->
+					<control type="image">
+						<posx>590</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
-						<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
-						<texture>DI_Info.png</texture>
+						<visible>substring(ListItem.Property(iTuner1),true)</visible>
+						<texture>IconT1.png</texture>
 					</control>
+					<!-- is Tuner2 -->
 					<control type="image">
 						<posx>620</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
-						<visible>!Control.IsVisible(600)</visible>
-						<texture>DI_Ok.png</texture>
-					</control-->
+						<visible>substring(ListItem.Property(iTuner2),true)</visible>
+						<texture>IconT2.png</texture>
+					</control>
 					<!-- is cas? -->
 					<control type="image">
 						<posx>650</posx>
@@ -332,7 +351,7 @@
 						<visible>!substring(Window(10000).Property(isMove),true)</visible>
 					</control>
 					<control type="label">
-						<posx>600</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>80</width>
 						<height>40</height>

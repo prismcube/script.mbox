@@ -1440,14 +1440,16 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( False )
 
 			for iChannel in self.mChannelList :
+				"""
 				lblTPnum = 'T1'
 				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
 				if mTPnum == E_CONFIGURED_TUNER_2 :
 					lblTPnum = 'T1'
 				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
 					lblTPnum = 'T1, T2'
+				"""
 
-				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ), lblTPnum )
+				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
@@ -1469,6 +1471,17 @@ class ChannelListWindow( BaseWindow ) :
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+
+
+				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+				if mTPnum == E_CONFIGURED_TUNER_1 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+
 
 				self.mListItems.append( listItem )
 
@@ -1842,6 +1855,16 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+
+			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+			if mTPnum == E_CONFIGURED_TUNER_1 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
+				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+
 			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
 			self.mListItems.append(listItem)
