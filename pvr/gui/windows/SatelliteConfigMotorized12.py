@@ -205,8 +205,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
 			dialog.doModal( )
-			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-			print 'self.tunerIndex=%d , self.mTunerMgr.GetCurrentConfigIndex( ) + 1= %d' %(self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1)
+			#self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
+			#print 'self.tunerIndex=%d , self.mTunerMgr.GetCurrentConfigIndex( ) + 1= %d' %(self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1)
 			return
 			
 		# Network ON/Off

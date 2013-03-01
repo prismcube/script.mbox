@@ -351,6 +351,7 @@ class EPGWindow( BaseWindow ) :
 		gmtFrom = self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
+		LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 		LOG_ERR( 'START : localoffset=%d' %self.mLocalOffset )
 		LOG_ERR( 'START : %s' % TimeToString( gmtFrom+self.mLocalOffset, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 		LOG_ERR( 'START : %d : %d %d' % ( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
@@ -362,10 +363,12 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex )
 
 		if self.mEPGList == None or self.mEPGList[0].mError != 0 :
+			LOG_TRACE( 'NO EPG' )
 			self.mEPGList = None
 			return
 
 		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+			LOG_TRACE( 'NO EPG' )
 			return
 
 		LOG_ERR( 'self.mEPGList COUNT=%d' %len(self.mEPGList ) )
@@ -552,7 +555,16 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlList.reset( )
 				return
 
-			try :		
+			try :
+				if aUpdateOnly == True :
+					if len( self.mEPGList ) != len( self.mListItems ) :
+						LOG_TRACE( 'UpdateOnly------------>Create' )
+						aUpdateOnly = False 
+						self.mLock.acquire( )	
+						self.mListItems = []
+						self.mLock.release( )
+						
+					
 				for i in range( len( self.mEPGList ) ) :
 					epgEvent = self.mEPGList[i]
 					#epgEvent.printdebug()

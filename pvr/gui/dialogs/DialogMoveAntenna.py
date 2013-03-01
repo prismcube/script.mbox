@@ -125,7 +125,7 @@ class DialogMoveAntenna( BaseDialog ) :
 				self.mCommander.Motorized_SetEastLimit( self.mTunerIndex )			
 
 			elif selectedIndex == E_SAVE_POSITION :	
-				self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).etCurrentConfigIndex( ) + 1 )			
+				self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).GetCurrentConfigIndex( ) + 1 )			
 
 			else :
 				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
