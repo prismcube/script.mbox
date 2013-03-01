@@ -10,7 +10,7 @@ E_LIMIT_RESET				= 5
 E_WEST_LIMIT				= 6
 E_EAST_LIMIT				= 7
 E_SAVE_POSITION				= 8
-E_CLOSE						= 9
+#E_CLOSE						= 9
 
 
 DIALOG_MAIN_GROUP_ID		= 9000
@@ -34,7 +34,7 @@ class DialogMoveAntenna( BaseDialog ) :
 
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
-		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Close' ) ]
+		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Store Position' ) ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
