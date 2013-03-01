@@ -161,10 +161,11 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			self.Close( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )			
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
@@ -298,7 +299,8 @@ class NullWindow( BaseWindow ) :
 					self.ShowRecordingStartDialog( )
 				self.CheckSubTitle( )
 		
-		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or \
+		     actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			if HasAvailableRecordingHDD( ) == False :
 				return
 

@@ -135,6 +135,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mInitialized = True
 				thread = threading.Timer( 0.3, self.ShowPincodeDialog )
 				thread.start( )
+				self.mAutomaticHide = True
 			else :
 				self.mDataCache.SetAVBlankByChannel( )
 
