@@ -697,10 +697,17 @@ class LivePlate( LivePlateWindow ) :
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
 				if ch.mIsCA :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
+
+
+				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
+				if mTPnum == 0 :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+				elif mTPnum == 1 :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
 	
 			except Exception, e :
@@ -805,6 +812,8 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
 
 		"""
 		#tpnum
