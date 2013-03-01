@@ -168,7 +168,7 @@ class TimeShiftPlate( BaseWindow ) :
 				else :
 					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
-			elif self.mPrekey == Action.ACTION_MOVE_LEFT :
+			elif self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
 				self.setProperty( 'IsXpeeding', 'False' )
 				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
@@ -193,7 +193,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
-		if self.mPrekey == Action.ACTION_MOVE_LEFT :
+		if self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
 			self.StopAutomaticHide( )
 			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
