@@ -8,7 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
@@ -724,6 +724,35 @@ class DataCacheMgr( object ) :
 		return self.mZappingMode
 
 
+	def GetModeInfoByZappingMode( self, aChannel = None ) :
+		mName = ''
+		if aChannel == None :
+			aChannel = self.Channel_GetCurrent( )
+		zappingMode = self.Zappingmode_GetCurrent( )
+
+		if not zappingMode or zappingMode.mError != 0 :
+			return mName
+
+		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			mName = zappingMode.mFavoriteGroup.mGroupName
+
+		elif self.mZappingMode.mMode == ElisEnum.E_MODE_SATELLITE :
+			mName = zappingMode.mSatelliteInfo.mName
+
+		elif self.mZappingMode.mMode == ElisEnum.E_MODE_CAS :
+			mName = zappingMode.mCasInfo.mName
+
+		else :
+			if aChannel and aChannel.mError == 0 :
+				satellite = self.Satellite_GetByChannelNumber( aChannel.mNumber )
+				if satellite :
+					mName = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+
+		LOG_TRACE( '--------------mname[%s]'% mName )
+		return mName
+
+
+
 	def Fta_cas_GetList( self, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
 		if aServiceType :
 			return self.mCommander.Fta_cas_GetList( aServiceType )
@@ -1190,15 +1219,6 @@ class DataCacheMgr( object ) :
 
 	def Favoritegroup_Remove( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Remove( aGroupName, aServieType )
-
-
-	def Favoritegroup_GetCurrent( self ) :
-		groupName = ''
-		zappingMode = self.Zappingmode_GetCurrent( )
-		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			groupName = zappingMode.mFavoriteGroup.mGroupName
-
-		return groupName
 
 
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :

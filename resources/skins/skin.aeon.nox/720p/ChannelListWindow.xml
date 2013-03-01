@@ -601,7 +601,7 @@
 						<control type="grouplist">
 							<posx>0</posx>
 							<posy>140</posy>
-							<width>190</width>
+							<width>250</width>
 							<height>30</height>
 							<itemgap>1</itemgap>
 							<visible>true</visible>

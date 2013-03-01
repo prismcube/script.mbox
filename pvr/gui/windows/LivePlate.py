@@ -509,6 +509,7 @@ class LivePlate( LivePlateWindow ) :
 			self.InitControlGUI( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
+			self.UpdateChannelGUI( )
 			return
 
 		if self.mAutomaticHide == True :
@@ -690,16 +691,7 @@ class LivePlate( LivePlateWindow ) :
 		if ch :
 			try :
 				#satellite
-				label = ''
-				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-					#self.UpdatePropertyGUI( E_XML_PROPERTY_FAV, 'True' )
-					label = self.mDataCache.Favoritegroup_GetCurrent( )
-
-				else :
-					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
-					if satellite :
-						label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-
+				label = self.mDataCache.GetModeInfoByZappingMode( ch )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 
 				#lock,cas
