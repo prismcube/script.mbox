@@ -68,19 +68,24 @@ class DialogMoveAntenna( BaseDialog ) :
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
+			self.mCtrlList.selectItem( E_MOVE_WEST )
 			self.mCommander.Motorized_GoWest( self.mTunerIndex )
 
-		elif actionId == Action.ACTION_MBOX_FF :
-			self.mCommander.Motorized_GoEast( self.mTunerIndex )
-
-		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			self.mCommander.Motorized_Stop( self.mTunerIndex )
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.mCtrlList.selectItem( E_STEP_WEST )
 			self.mCommander.Motorized_StepWest( self.mTunerIndex )
 
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+			self.mCtrlList.selectItem( E_STOP )
+			self.mCommander.Motorized_Stop( self.mTunerIndex )
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.mCtrlList.selectItem( E_STEP_EAST )
 			self.mCommander.Motorized_StepEast( self.mTunerIndex )
+
+		elif actionId == Action.ACTION_MBOX_FF :
+			self.mCtrlList.selectItem( E_MOVE_EAST )
+			self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
