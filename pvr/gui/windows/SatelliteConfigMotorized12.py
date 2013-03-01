@@ -42,7 +42,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( 1 )
 		ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 
-		self.mCurrentSatellite = deepcopy( self.mTunerMgr.GetCurrentConfiguredSatellite( ) )
+		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
@@ -80,6 +80,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 					ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 					self.mEventBus.Deregister( self )
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+					self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_ON					
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
@@ -181,6 +182,18 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		elif groupId == E_SpinEx03 :
 			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
+		# Committed Switch
+		elif groupId == E_SpinEx06:
+			self.mCurrentSatellite.mDisEqcMode = self.GetSelectedIndex( E_SpinEx06 )
+
+		# Uncommitted Switch
+		elif groupId == E_SpinEx07 :
+			self.mCurrentSatellite.mDisEqc11 = self.GetSelectedIndex( E_SpinEx07 )
+		
+		# DiSEqC Repeat
+		elif groupId == E_SpinEx08 :
+			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx08 )
+
 		# Transponer
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
@@ -192,41 +205,48 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 	 			else :
 	 				return
 
-		# Rotate Satellite Dish
+
+		#Rotate Satellite Dish
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
 			dialog.doModal( )
-			#self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
+			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
 			print 'self.tunerIndex=%d , self.mTunerMgr.GetCurrentConfigIndex( ) + 1= %d' %(self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1)
 			return
-
+			
+		# Network ON/Off
+		elif groupId == E_SpinEx05 :
+			self.ControlSelect( )
+			
+		#
 		# Action
-		elif groupId == E_SpinEx04 :
-			return
-
+		#elif groupId == E_SpinEx04 :
+		#	return
+		#
 		# Antenna Action
-		elif groupId == E_Input05 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Rotation limits' ), MR_LANG( 'Do you want to apply the rotation limits above?' ) )
-			dialog.doModal( )
-
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				selected = self.GetSelectedIndex( E_SpinEx04 )
-				if selected == 0 :
-					self.mCommander.Motorized_ResetLimit( self.tunerIndex )
-				elif selected == 1 :
-					self.mCommander.Motorized_SetEastLimit( self.tunerIndex )
-				elif selected == 2 :			
-					self.mCommander.Motorized_SetWestLimit( self.tunerIndex )
-			return
-
+		#elif groupId == E_Input05 :
+		#	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		#	dialog.SetDialogProperty( MR_LANG( 'Rotation limits' ), MR_LANG( 'Do you want to apply the rotation limits above?' ) )
+		#	dialog.doModal( )
+		#
+		#	if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+		#		selected = self.GetSelectedIndex( E_SpinEx04 )
+		#		if selected == 0 :
+		#			self.mCommander.Motorized_ResetLimit( self.tunerIndex )
+		#		elif selected == 1 :
+		#			self.mCommander.Motorized_SetEastLimit( self.tunerIndex )
+		#		elif selected == 2 :			
+		#			self.mCommander.Motorized_SetWestLimit( self.tunerIndex )
+		#	return
+		#
 		# Store Position
-		elif groupId == E_Input06 :
-			self.OpenBusyDialog( )
-			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-			time.sleep( 0.5 )
-			self.CloseBusyDialog( )
-			return
+		#elif groupId == E_Input06 :
+		#	self.OpenBusyDialog( )
+		#	self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
+		#	time.sleep( 0.5 )
+		#	self.CloseBusyDialog( )
+		#	return
+
 
 		elif groupId == E_Input07 :
 	 		if self.mTransponderList :
@@ -309,23 +329,34 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Tone Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'When set to \'On\', LNBs will be switched between low and high band' ) )	
 
+		self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ), MR_LANG( 'Select the committed switch number' ) )
+		self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11, MR_LANG( 'Select the uncommitted switch number' ) )
+		self.AddUserEnumControl( E_SpinEx08, MR_LANG( 'DiSEqC Repeat' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'When set to \'On\', DiSEqC repeats its command' ) )
+
 		if self.mTransponderList :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )		
 		else :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Antenna' ), '', MR_LANG( 'You can control the movements of the motorized antenna here' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+
+		"""
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Rotation Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles' ) )
 		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position' ), '', MR_LANG( 'Save satellite positions' ) )
+		"""
+
 		self.AddInputControl( E_Input07, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input02 ]
+			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input07 ]			
+			hideControlIds = [  E_Input02 ]
 		else :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			hideControlIds = [ E_SpinEx02, E_SpinEx06, E_SpinEx05 ]
+			#visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03,  E_Input07 ]			
+			hideControlIds = [ E_SpinEx02 ]
 			
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )

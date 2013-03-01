@@ -6,7 +6,12 @@ E_STEP_WEST					= 1
 E_STOP						= 2
 E_STEP_EAST					= 3
 E_MOVE_EAST					= 4
-E_CLOSE						= 5
+E_LIMIT_RESET				= 5
+E_WEST_LIMIT				= 6
+E_EAST_LIMIT				= 7
+E_SAVE_POSITION				= 8
+#E_CLOSE						= 9
+
 
 DIALOG_MAIN_GROUP_ID		= 9000
 DIALOG_WIDTH				= 370
@@ -29,7 +34,7 @@ class DialogMoveAntenna( BaseDialog ) :
 
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
-		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Close' ) ]
+		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Store Position' ) ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
@@ -38,7 +43,7 @@ class DialogMoveAntenna( BaseDialog ) :
 			self.mCtrlList.addItem( context[i] )
 
 		# Set Dialog Size
-		height = 6 * itemHeight
+		height = 9 * itemHeight
 		self.getControl( DIALOG_MIDDLE_IMAGE_ID ).setHeight( height )
 
 		# Set Dialog Bottom Image
@@ -110,6 +115,19 @@ class DialogMoveAntenna( BaseDialog ) :
 			elif selectedIndex == E_MOVE_EAST :
 				self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
+			elif selectedIndex == E_LIMIT_RESET :
+				self.mCommander.Motorized_ResetLimit( self.mTunerIndex )			
+			
+			elif selectedIndex == E_WEST_LIMIT :
+				self.mCommander.Motorized_SetWestLimit( self.mTunerIndex )
+
+			elif selectedIndex == E_EAST_LIMIT :
+				self.mCommander.Motorized_SetEastLimit( self.mTunerIndex )			
+
+			elif selectedIndex == E_SAVE_POSITION :	
+				self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).etCurrentConfigIndex( ) + 1 )			
+
 			else :
 				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
 

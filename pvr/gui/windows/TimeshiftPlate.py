@@ -52,6 +52,8 @@ E_PROGRESS_WIDTH_MAX = 980
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 
+E_DEFAULT_TRACK_MOVE = 10
+
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -166,7 +168,11 @@ class TimeShiftPlate( BaseWindow ) :
 				else :
 					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
-			self.mPrekey = None
+			elif self.mPrekey == Action.ACTION_MOVE_LEFT :
+				self.setProperty( 'IsXpeeding', 'False' )
+				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+
+			#self.mPrekey = None
 
 		else :
 			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
@@ -187,6 +193,12 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
+		if self.mPrekey == Action.ACTION_MOVE_LEFT :
+			self.StopAutomaticHide( )
+			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+
+		self.mPrekey = None
 		self.mInitialized = True
 
 
@@ -216,7 +228,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				self.mUserMoveTime = -10
+				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
@@ -233,7 +245,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				self.mUserMoveTime = 10
+				self.mUserMoveTime = 1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
@@ -1155,7 +1167,7 @@ class TimeShiftPlate( BaseWindow ) :
 		for i in range( len( self.mBookmarkList ) ) :
 			#posx = defaultPos + i * 100
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-			posx = defaultPos + defaultWidth * ratioX
+			posx = int( defaultPos + defaultWidth * ratioX )
 			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', 'StepFO.png' )
 			self.addControl( button )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
@@ -1221,9 +1233,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	@RunThread
+	#@RunThread
 	def WaitToBuffering( self ) :
-		while self.mEnableLocalThread :
+		#while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
 				waitTime = 0
 				self.OpenBusyDialog( )
@@ -1248,6 +1260,7 @@ class TimeShiftPlate( BaseWindow ) :
 						#LOG_TRACE('-----------repeat[%s] focused[%s] '% ( waitTime + 1,ret ) )
 
 			time.sleep( 1 )
+			LOG_TRACE('------')
 
 
 	def InitBookmarkThumnail( self ) :
@@ -1477,26 +1490,23 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def StartAsyncMoveByTime( self ) :
-		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
-		self.mAsyncShiftTimer.start( )
-
 		self.mFlagUserMove = True
-		self.mAccelator += 1
-		accelatorMoving = self.mTotalUserMoveTime
-		try :
-			if self.mAccelator < 10 :
-				accelatorMoving = pow( 1.5, self.mAccelator )
-			else :
-				self.mTotalUserMoveTime += 60
-				accelatorMoving = self.mTotalUserMoveTime
-		except Exception, e :
-			LOG_ERR( 'Error exception[%s]'% e )
 
-		userMoving = self.mUserMoveTime * accelatorMoving
+		self.mAccelator += self.mUserMoveTime
+		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
+		#accelatorMoving = self.mAccelator / 100
+		accelatorMoving = pow( 1.5, abs( self.mAccelator ) )
+		if self.mAccelator < 0 :
+			accelatorMoving = accelatorMoving * -1
+
+
+		userMoving = self.mTotalUserMoveTime + accelatorMoving
 		userMovingMs = userMoving * 1000
 
+		#draw = threading.Timer( 0.01, self.UpdateProgress, [userMovingMs] )
+		#draw.start( )
 		self.UpdateProgress( userMovingMs )
-		#LOG_TRACE( '-----------accelator[%s] moving[%s]'% ( self.mAccelator, accelatorMoving ) )
+		LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
@@ -1523,6 +1533,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+
+		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove )
+		self.mAsyncShiftTimer.start( )
 
 
 	def StopAsyncMove( self ) :

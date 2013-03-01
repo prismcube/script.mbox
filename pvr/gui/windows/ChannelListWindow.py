@@ -1440,12 +1440,12 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( False )
 
 			for iChannel in self.mChannelList :
-				lblTPnum = 'TP1'
+				lblTPnum = 'T1'
 				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
 				if mTPnum == E_CONFIGURED_TUNER_2 :
-					lblTPnum = 'TP1'
+					lblTPnum = 'T1'
 				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-					lblTPnum = 'TP1, TP2'
+					lblTPnum = 'T1, T2'
 
 				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ), lblTPnum )
 

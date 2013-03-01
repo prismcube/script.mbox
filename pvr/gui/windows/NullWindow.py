@@ -298,7 +298,7 @@ class NullWindow( BaseWindow ) :
 					self.ShowRecordingStartDialog( )
 				self.CheckSubTitle( )
 		
-		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_MOVE_LEFT :
 			if HasAvailableRecordingHDD( ) == False :
 				return
 

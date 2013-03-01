@@ -424,11 +424,11 @@ class LivePlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-
 				self.StopBlickingIconTimer( )
 				self.setProperty( 'RecordBlinkingIcon', 'False' )
 				 
  				self.ShowRecordingInfo( )
+				self.RestartAutomaticHide( ) 				
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.mJumpNumber = aEvent.mChannelNo
@@ -910,7 +910,8 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			if RECORD_WIDTHOUT_ASKING == True :
-				self.StartRecordingWithoutAsking( )				
+				self.StartRecordingWithoutAsking( )
+				return
 			else :
 				self.ShowRecordingStartDialog( )
 		
@@ -991,6 +992,9 @@ class LivePlate( LivePlateWindow ) :
 			dialog.doModal( )
 
 		if isOK :
+			LOG_TRACE( 'STOP automatic hide' )
+			self.StopAutomaticHide( )
+
 			self.setProperty( 'RecordBlinkingIcon', 'True' )
 			self.StartBlickingIconTimer( )
 			
@@ -1121,6 +1125,7 @@ class LivePlate( LivePlateWindow ) :
 
 
  	def ShowRecordingInfo( self ) :
+ 		LOG_TRACE( '---------ShowRecInfo------' )
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
