@@ -1127,7 +1127,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.StopAutomaticHide( )
 
 		#1.show thumbnail on plate
-		self.mCtrlBookMarkList.reset( )
+		self.Flush( )
 		if len( self.mBookmarkList ) < 1 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			LOG_TRACE( 'bookmark None, show False' )
@@ -1147,12 +1147,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		#2.show mark on progress
-		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-			for i in range( len( self.mBookmarkButton ) ) :
-				self.removeControl( self.mBookmarkButton[i] )
-
-			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
-
 		self.mBookmarkButton = []
 		#self.mBookmarkIdx = 0
 
@@ -1269,26 +1263,25 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def LoadToBookmark( self ) :
-		#ToDO
+		self.mThumbnailList = []
+		self.mBookmarkList = []
+		self.Flush( )
+
 		if self.mMode != ElisEnum.E_MODE_PVR :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
-			self.mCtrlBookMarkList.reset( )
 			return
 
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		#LOG_TRACE('--------record[%s]'% playingRecord.mRecordKey )
 		if playingRecord == None or playingRecord.mError != 0 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
-			self.mCtrlBookMarkList.reset( )
 			return
 
 		self.mPlayingRecordInfo = playingRecord
-
 		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 		#LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )
 		if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
-			self.mCtrlBookMarkList.reset( )
 			return 
 
 		#for item in mBookmarkList :
@@ -1310,8 +1303,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		#LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
 		thumbCount = len( mBookmarkList )
-		self.mThumbnailList = []
-		self.mBookmarkList = []
 		oldidx = -1
 		for num in range( 10 ) :
 			if thumbCount <= num :
@@ -1402,12 +1393,21 @@ class TimeShiftPlate( BaseWindow ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
 
-		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-			for i in range( len( self.mBookmarkButton ) ) :
-				self.removeControl( self.mBookmarkButton[i] )
-
+		self.Flush( )
 		self.StopAsyncMove( )
 		self.StopAutomaticHide( )
+
+
+	def Flush( self ) :
+		self.mCtrlBookMarkList.reset( )
+		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
+			for i in range( len( self.mBookmarkButton ) ) :
+				try :
+					self.removeControl( self.mBookmarkButton[i] )
+				except Exception, e :
+					LOG_TRACE( 'except[%s]'% e )
+			self.mBookmarkButton = []
+			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
 
 
 	def SetAutomaticHide( self, aHide=True ) :
