@@ -544,6 +544,21 @@ class NullWindow( BaseWindow ) :
 			copyTimeshift = 0
 			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
 			localTime = self.mDataCache.Datetime_GetLocalTime( )				
+
+			#check ValidEPG
+			hasValidEPG = False
+			if otrInfo.mHasEPG :
+				if localTime >= otrInfo.mEventStartTime  and localTime < otrInfo.mEventEndTime :
+					hasValidEPG = True
+
+			if hasValidEPG == False :
+				otrInfo.mHasEPG = False
+				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+				otrInfo.mExpectedRecordDuration = prop.GetProp( )
+				otrInfo.mEventStartTime = localTime
+				otrInfo.mEventEndTime = localTime +	otrInfo.mExpectedRecordDuration
+				otrInfo.mEventName = self.mDataCache.Channel_GetCurrent( ).mName
+
 			
 			if otrInfo.mTimeshiftAvailable :
 				if otrInfo.mHasEPG == True :			
