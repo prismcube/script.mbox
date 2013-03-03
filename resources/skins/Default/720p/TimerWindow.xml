@@ -90,6 +90,7 @@
 					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 			</control>
+			<!--
 			<control type="group" id="9001">
 				<posx>-220</posx>
 				<posy>0</posy>
@@ -97,7 +98,6 @@
 				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">conditional</animation>
 				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">WindowClose</animation>
 				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">conditional</animation>
-
 				<control type="button">
 					<description>Fake button for mouse control</description>
 					<posx>-15</posx>
@@ -110,7 +110,6 @@
 					<texturefocus>-</texturefocus>
 					<visible>true</visible>
 				</control>
-
 				<control type="image">
 					<posx>185</posx>
 					<posy>120</posy>
@@ -141,6 +140,7 @@
 					</control>
 				</control>
 			</control>
+			-->
 			<include>DefaultSideBladeLeft</include>
 			<control type="image">
 				<description>LOGO</description>
@@ -154,19 +154,16 @@
 			<control type="group" id="9000">
 				<posx>-250</posx>
 				<posy>130</posy>
-				<!--
-				<include>CommonNowPlaying</include>
-				-->
 				<control type="button" id="100">
 					<description>View As button</description>
 					<posx>0</posx>
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label>SCRIPT88</label>
-					<onleft>9003</onleft>
-					<onright>9003</onright>
-					<onup>9003</onup>
-					<ondown>9003</ondown>
+					<onleft>3510</onleft>
+					<onright>3510</onright>
+					<onup>3510</onup>
+					<ondown>3510</ondown>
 				</control>
 			</control>
 		</control>

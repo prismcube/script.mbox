@@ -184,6 +184,11 @@ E_EPG_DB_CF_GET_BY_FOLLOWING	= 2
 FLAG_ZAPPING_LOAD   			= 0
 FLAG_ZAPPING_CHANGE 			= 1
 
+
+# CAM SLOT NUM ( now only accept 1 slot )
+CAS_SLOT_NUM_1					= 0
+CAS_SLOT_NUM_2					= 1
+
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ MR_LANG( 'Off' ), MR_LANG( 'On' ) ]
 USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
@@ -294,6 +299,11 @@ E_XML_PROPERTY_TV         = 'ServiceTypeTV'
 E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
 E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
 E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
+E_XML_PROPERTY_HOTKEY_RED    = 'iHotkeyRed'
+E_XML_PROPERTY_HOTKEY_GREEN  = 'iHotkeyGreen'
+E_XML_PROPERTY_HOTKEY_YELLOW = 'iHotkeyYellow'
+E_XML_PROPERTY_HOTKEY_BLUE   = 'iHotkeyBlue'
+
 
 # Context Action
 CONTEXT_ACTION_LOCK				= 1 

@@ -124,7 +124,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 			volume = 0
 			self.mCommander.Player_SetMute( True )
 		else :
-			if self.mCommander.Player_GetMute( ) == True :
+			if self.mCommander.Player_GetMute( ) :
 				self.mCommander.Player_SetMute( False )
 			self.mCommander.Player_SetVolume( volume )
 

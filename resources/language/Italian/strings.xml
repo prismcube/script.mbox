@@ -1407,4 +1407,13 @@
 	<string id="3991">ITA_Your channel list has been exported successfully</string>
 	<string id="3992">ITA_Configure the satellite first before you scan channels</string>
 	<string id="3993">ITA_Satellite %s is not configured</string>
+	<string id="3994">ITA_Cam initialized</string>
+	<string id="3995">ITA_Cam removed</string>
+	<string id="3996">ITA_Edit Recording</string>
+	<string id="3997">ITA_East Limit</string>
+	<string id="3998">ITA_West Limit</string>
+	<string id="3999">ITA_Enable RSS feed in the main menu</string>
+	<string id="4000">ITA_RSS Feed</string>
+	<string id="4001">ITA_CAM initialized</string>
+	<string id="4002">ITA_CAM removed</string>
 </strings>

@@ -1407,4 +1407,13 @@
 	<string id="3991">FRE_Your channel list has been exported successfully</string>
 	<string id="3992">FRE_Configure the satellite first before you scan channels</string>
 	<string id="3993">FRE_Satellite %s is not configured</string>
+	<string id="3994">FRE_Cam initialized</string>
+	<string id="3995">FRE_Cam removed</string>
+	<string id="3996">FRE_Edit Recording</string>
+	<string id="3997">FRE_East Limit</string>
+	<string id="3998">FRE_West Limit</string>
+	<string id="3999">FRE_Enable RSS feed in the main menu</string>
+	<string id="4000">FRE_RSS Feed</string>
+	<string id="4001">FRE_CAM initialized</string>
+	<string id="4002">FRE_CAM removed</string>
 </strings>
