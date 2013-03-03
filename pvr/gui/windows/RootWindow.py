@@ -18,7 +18,7 @@ class RootWindow( BaseWindow ) :
 					self.mCommander.AppHBBTV_Ready( 0 )
 				self.mInitialized = True
 				WinMgr.GetInstance( ).mLastId =  WinMgr.WIN_ID_NULLWINDOW
-			xbmc.executebuiltin('xbmc.Action(dvbres21)')
+				xbmc.executebuiltin('xbmc.Action(dvbres21)')
 
 		else :
 			if self.mInitialized == False :
@@ -54,9 +54,11 @@ class RootWindow( BaseWindow ) :
 				if self.mInitialized == False :
 					pass
 				else :
-					print '>>>>>>now domodal'
+					print '>>>>>>now domodal WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
-					print '<<<<<<now domodal out'
+					print '<<<<<<now domodal out'					
+					xbmc.executebuiltin('xbmc.Action(dvbres21)')					
+
 
 
 		"""
