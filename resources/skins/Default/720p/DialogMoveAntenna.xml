@@ -45,52 +45,6 @@
 				<height>25</height>
 				<texture border="20,0,19,20">DialogContextBottom.png</texture>
 			</control>
-			<control type="group">
-				<posx>20</posx>
-				<posy>5</posy>
-				<width>310</width>
-				<height>500</height>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>38</width>
-					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture border="5">OSDRewindNF.png</texture>
-					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>40</posy>
-					<width>38</width>
-					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture flipx="true" border="5">OSDPlayNF.png</texture>
-					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>80</posy>
-					<width>38</width>
-					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture border="5">OSDPauseNF.png</texture>
-					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>120</posy>
-					<width>38</width>
-					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture border="5">OSDPlayNF.png</texture>
-					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>160</posy>
-					<width>38</width>
-					<height>38</height>					<!--Change Property ItemHeight-->
-					<texture border="5">OSDForwardNF.png</texture>
-					<animation effect="fade" start="100" end="40" time="0" condition="!Control.HasFocus(102)">Conditional</animation>
-				</control>
-			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
 				<posy>5</posy>
@@ -109,6 +63,18 @@
 						<texture border="5">button-nofocus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
 					<control type="label">
 						<posx>150</posx>
 						<posy>0</posy>
@@ -119,7 +85,7 @@
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
 						<label>$INFO[ListItem.Label]</label>
-					</control>		
+					</control>
 				</itemlayout>
 				<focusedlayout width="297" height="38">		<!--Change ProPerty ItemHeight-->
 					<control type="image">
@@ -128,6 +94,18 @@
 						<width>310</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
 						<texture border="5">button-focus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">

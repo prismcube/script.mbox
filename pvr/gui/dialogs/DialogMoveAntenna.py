@@ -35,12 +35,20 @@ class DialogMoveAntenna( BaseDialog ) :
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
 		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Store Position' ) ]
+		icon = [ 'OSDRewindNF.png', 'OSDLeft.png', 'OSDPauseNF.png', 'OSDRight.png', 'OSDForwardNF.png' ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
-		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
+
+		self.mListItems = []
 
 		for i in range( len( context ) ) :
-			self.mCtrlList.addItem( context[i] )
+			mMotorizedItem = xbmcgui.ListItem( context[i] )
+			if i < len( icon ) :
+				mMotorizedItem.setProperty( 'HotKey', icon[i] )
+			self.mListItems.append( mMotorizedItem )
+
+		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
+		self.mCtrlList.addItems( self.mListItems )
 
 		# Set Dialog Size
 		height = 9 * itemHeight
