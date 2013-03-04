@@ -52,7 +52,9 @@ E_PROGRESS_WIDTH_MAX = 980
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 
-E_DEFAULT_TRACK_MOVE = 10
+E_DEFAULT_TRACK_MOVE = 10	#mili sec
+E_MOVE_BY_TIME = 0
+E_MOVE_BY_MARK = 1
 
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -234,7 +236,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
-				#self.RestartAsyncMove( E_CONTROL_ID_BUTTON_JUMP_RR )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -251,7 +252,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
-				#self.RestartAsyncMove( E_CONTROL_ID_BUTTON_JUMP_FF )
 				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -593,15 +593,15 @@ class TimeShiftPlate( BaseWindow ) :
 			if self.mSpeed == 0 :
 				return
 
-			self.JumpToTrack( aFocusId )
-			#self.RestartAsyncMove( aFocusId )
+			#self.JumpToTrack( aFocusId )
+			self.RestartAsyncMove( aFocusId )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_FF :
 			if self.mSpeed == 0 :
 				return
 
-			self.JumpToTrack( aFocusId )
-			#self.RestartAsyncMove( aFocusId )
+			#self.JumpToTrack( aFocusId )
+			self.RestartAsyncMove( aFocusId )
 
 		return ret
 
@@ -979,7 +979,7 @@ class TimeShiftPlate( BaseWindow ) :
 			count = count + loopDelay
 			
 
-	def UpdateProgress( self, aUserMoving = 0 ):
+	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ):
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
@@ -987,6 +987,8 @@ class TimeShiftPlate( BaseWindow ) :
 			#calculate current position
 			totTime = self.mTimeshift_endTime - self.mTimeshift_staTime
 			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
+			if aMoveBy == E_MOVE_BY_MARK :
+				curTime = self.mTimeshift_staTime + aUserMoving
 
 			if totTime > 0 and curTime >= 0 :
 				self.mProgress_idx = (curTime / float(totTime))  * 100.0
@@ -1352,18 +1354,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			self.InitShiftPostion( )
 
-		"""
-		direction = 1
-		if aDirection == E_CONTROL_ID_BUTTON_JUMP_RR :
-			direction = -1
-		jump = self.mTimeshift_playTime + ( direction * 10000 )
-		if jump < self.mTimeshift_staTime :
-			jump = self.mTimeshift_staTime + 1000
-
-		elif jump > self.mTimeshift_endTime :
-			jump = self.mTimeshift_endTime - 1000
-		"""
-
+		stayOn = 1
 		current = self.mTimeshift_playTime
 		tot = len(self.mJumpToOffset)
 		if aDirection == E_CONTROL_ID_BUTTON_JUMP_FF :
@@ -1372,14 +1363,23 @@ class TimeShiftPlate( BaseWindow ) :
 					#LOG_TRACE('--------------ff idx[%s]'% idx )
 					break
 		else :
+			stayOn = -1
 			for idx in range( tot - 1, -1, -1 ) :
 				#reasen by revision playing speed, - 10sec
 				if current - 10000 > self.mJumpToOffset[idx] :
 					#LOG_TRACE('--------------rr idx[%s]'% idx )
 					break
 
+		idx = idx + self.mAccelator
+		if idx < 0 :
+			idx = 0
+			self.mAccelator -= stayOn
+		elif idx >= tot :
+			idx = tot - 1
+			self.mAccelator -= stayOn
+
 		jump = self.mJumpToOffset[idx]
-		ret = self.mDataCache.Player_JumpToIFrame( jump )
+		#ret = self.mDataCache.Player_JumpToIFrame( jump )
 		#LOG_TRACE('----------ret[%s] current[%s] idx[%s] jump[%s] offset[%s]'% ( ret, current, idx, jump, self.mJumpToOffset ) )
 
 		return jump
@@ -1446,22 +1446,29 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAutomaticHideTimer = None
 
 
-	def RestartAsyncMove( self, aKey = E_CONTROL_ID_BUTTON_JUMP_FF ) :
+	def RestartAsyncMove( self, aMoveTrack = None ) :
 		self.StopAsyncMove( )
-		self.StartAsyncMoveByTime( )
-		#self.StartAsyncMoveByMark( aKey )
+		if aMoveTrack :
+			self.StartAsyncMoveByMark( aMoveTrack )
+		else :
+			self.StartAsyncMoveByTime( )
 
 
-	def StartAsyncMoveByMark( self, aKey ) :
-		#ToDo : Tunning issue
-		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove ) 				
-		self.mAsyncShiftTimer.start( )
+	def StartAsyncMoveByMark( self, aMoveTrack ) :
+		if aMoveTrack != E_CONTROL_ID_BUTTON_JUMP_FF and aMoveTrack != E_CONTROL_ID_BUTTON_JUMP_RR :
+			return
 
 		self.mFlagUserMove = True
 
-		userMovingMs = self.JumpToTrack( aKey )
-		self.UpdateProgress( userMovingMs )
-		#LOG_TRACE( '-----------accelator[%s] moving[%s]'% ( self.mAccelator, accelatorMoving ) )
+		userMovingMs = self.JumpToTrack( aMoveTrack )
+		#async idx, apply to second time
+		moveTrack = 1
+		if aMoveTrack == E_CONTROL_ID_BUTTON_JUMP_RR :
+			moveTrack = -1
+		self.mAccelator += moveTrack
+
+		self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
+		#LOG_TRACE( '-----------key[%s] moving[%s] accelator[%s]'% ( aMoveTrack, userMovingMs, self.mAccelator ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
@@ -1471,25 +1478,20 @@ class TimeShiftPlate( BaseWindow ) :
 			duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000
 			tempStartTime = self.mLocalTime - duration
 			#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000 )
-			tempCurrentTime = tempStartTime + userMovingMs
 			tempEndTime =  self.mLocalTime
 
 		elif self.mMode == ElisEnum.E_MODE_PVR :
+			tempCurrentTime = 0
 			timeFormat = TimeFormatEnum.E_AH_MM_SS
 
-		lblCurrentTime = tempCurrentTime + userMovingMs
+		lblCurrentTime = tempCurrentTime + ( userMovingMs / 1000 )
 		self.mAsyncMove = userMovingMs
 
-		"""
-		if self.mAsyncMove >= ( self.mTimeshift_endTime - 1000 ) :
-			lblCurrentTime  = tempEndTime - 1
-			self.mAsyncMove = self.mTimeshift_endTime - 1000
-		elif self.mAsyncMove <= ( self.mTimeshift_staTime + 1000 ) :
-			lblCurrentTime  = tempStartTime + 1
-			self.mAsyncMove = self.mTimeshift_staTime + 1000
-		"""
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+
+		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove )
+		self.mAsyncShiftTimer.start( )
 
 
 	def StartAsyncMoveByTime( self ) :
@@ -1506,10 +1508,8 @@ class TimeShiftPlate( BaseWindow ) :
 		userMoving = self.mTotalUserMoveTime + accelatorMoving
 		userMovingMs = userMoving * 1000
 
-		#draw = threading.Timer( 0.01, self.UpdateProgress, [userMovingMs] )
-		#draw.start( )
 		self.UpdateProgress( userMovingMs )
-		LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
+		#LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
