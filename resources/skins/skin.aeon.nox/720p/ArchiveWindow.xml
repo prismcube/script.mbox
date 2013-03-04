@@ -410,7 +410,7 @@
 		</control>
 		<include>DefaultMiniTitle</include>
 
-		<!-- Right smoll Box -->
+		<!-- Right small Box -->
 		<control type="group">
 			<include>Animation_CommonFade</include>
 			<posx>30</posx>

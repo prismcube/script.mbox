@@ -41,11 +41,12 @@ class DialogMoveAntenna( BaseDialog ) :
 
 		self.mListItems = []
 
+		# Set Menu and Icons
 		for i in range( len( context ) ) :
-			mMotorizedItem = xbmcgui.ListItem( context[i] )
+			motorizedItem = xbmcgui.ListItem( context[i] )
 			if i < len( icon ) :
-				mMotorizedItem.setProperty( 'HotKey', icon[i] )
-			self.mListItems.append( mMotorizedItem )
+				motorizedItem.setProperty( 'HotKey', icon[i] )
+			self.mListItems.append( motorizedItem )
 
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
 		self.mCtrlList.addItems( self.mListItems )
