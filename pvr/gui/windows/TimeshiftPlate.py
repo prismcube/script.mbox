@@ -150,53 +150,18 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.InitLabelInfo( )
 		self.InitTimeShift( )
-
-		label = self.GetModeValue( )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
-
-		self.GetNextSpeed( E_ONINIT )
-
-		if self.mPrekey :
-			if self.mPrekey == Action.ACTION_MBOX_REWIND :
-				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
-
-			elif self.mPrekey == Action.ACTION_MBOX_FF :
-				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
-
-			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				self.setProperty( 'IsXpeeding', 'False' )
-				if self.mSpeed == 100 :
-					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
-				else :
-					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-
-			elif self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
-				self.setProperty( 'IsXpeeding', 'False' )
-				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-
-			#self.mPrekey = None
-
-
-		self.InitBookmarkThumnail( )
-
 		#run thread
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.mThreadProgress = self.PlayProgressThread( )
 		self.WaitToBuffering( )
 
-		if self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
-			self.StopAutomaticHide( )
-			self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+		label = self.GetModeValue( )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
-		if self.mPrekey == None :
-			defaultFocus = E_CONTROL_ID_BUTTON_CURRENT
-			if self.mSpeed != 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-
-			self.UpdateSetFocus( defaultFocus )
-
+		self.GetNextSpeed( E_ONINIT )
+		self.InitBookmarkThumnail( )
+		self.InitPreviousAction( )
 
 		self.mPrekey = None
 		if self.mInitialized == False :
@@ -469,6 +434,61 @@ class TimeShiftPlate( BaseWindow ) :
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
+
+
+	def InitPreviousAction( self ) :
+		if self.mPrekey :
+			if self.mPrekey == Action.ACTION_MBOX_REWIND :
+				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
+
+			elif self.mPrekey == Action.ACTION_MBOX_FF :
+				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+
+			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				self.setProperty( 'IsXpeeding', 'False' )
+				if self.mSpeed == 100 :
+					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+				else :
+					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+
+			elif self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
+				self.setProperty( 'IsXpeeding', 'False' )
+				self.StopAutomaticHide( )
+
+				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
+				limitLoop = 0
+				while self.mSpeed != 100 or self.mMode == ElisEnum.E_MODE_LIVE :
+					time.sleep( 0.5 )
+					limitLoop += 1
+					oldCurrent = self.mTimeshift_curTime
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
+					waitAction = 0
+					while oldCurrent == self.mTimeshift_curTime :
+						#wait to async play
+						time.sleep( 0.5 )
+						waitAction += 1
+						#LOG_TRACE( '----------play wait[%s] oldCurrent[%s] nowCurrent[%s]'% ( waitAction, oldCurrent, self.mTimeshift_curTime ) )
+						if waitAction > 20 :
+							break
+
+					#LOG_TRACE('-----------play again[%s]'% limitLoop )
+					if limitLoop > 20 :
+						break
+
+				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
+
+
+		else :
+			defaultFocus = E_CONTROL_ID_BUTTON_CURRENT
+			if self.mSpeed != 100 :
+				defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+
+			self.UpdateSetFocus( defaultFocus )
+
+		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
 
 
 	def TimeshiftAction( self, aFocusId ) :
@@ -1231,9 +1251,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	#@RunThread
+	@RunThread
 	def WaitToBuffering( self ) :
-		#while self.mEnableLocalThread :
+		while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
 				waitTime = 0
 				self.OpenBusyDialog( )
@@ -1249,16 +1269,21 @@ class TimeShiftPlate( BaseWindow ) :
 					waitTime = 0
 					while waitTime < 5 :
 						ret = self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
-						self.UpdateSetFocus( E_CONTROL_ID_BUTTON_PAUSE )
+
+						defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
+						if self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
+							defaultFocus = E_CONTROL_ID_BUTTON_CURRENT
+
+						self.UpdateSetFocus( defaultFocus )
 
 						if self.mSpeed == 100 and ret :
 							break
 						time.sleep( 1 )
 						waitTime += 1
-						#LOG_TRACE('-----------repeat[%s] focused[%s] '% ( waitTime + 1,ret ) )
+						LOG_TRACE('-----------repeat[%s] focused[%s] '% ( waitTime, defaultFocus ) )
 
 			time.sleep( 1 )
-			LOG_TRACE('------')
+			#LOG_TRACE('------')
 
 
 	def InitBookmarkThumnail( self ) :
@@ -1477,7 +1502,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000
 			tempStartTime = self.mLocalTime - duration
-			#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000 )
+			tempCurrentTime = tempStartTime
 			tempEndTime =  self.mLocalTime
 
 		elif self.mMode == ElisEnum.E_MODE_PVR :
