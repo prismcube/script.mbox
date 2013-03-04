@@ -339,11 +339,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
 
 
-	def UpdateSetFocus( self, aControlId ) :
+	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
 		startTime = time.time()
 		loopTime = 0.0
 		sleepTime = 0.01
-		while loopTime < 1.5 :
+		while loopTime < ( 1.5 + aUserTime ) :
 			self.setFocusId( aControlId )
 			if aControlId == self.getFocusId( ) :
 				break

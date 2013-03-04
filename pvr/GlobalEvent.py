@@ -21,6 +21,15 @@ PARENTLOCK_CHECKWINDOW = [
 	#WinMgr.WIN_ID_HELP
 	]
 
+CIMMI_CHECKWINDOW = [
+	WinMgr.WIN_ID_NULLWINDOW,
+	WinMgr.WIN_ID_MAINMENU,
+	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
+	WinMgr.WIN_ID_LIVE_PLATE,
+	WinMgr.WIN_ID_EPG_WINDOW,
+	WinMgr.WIN_ID_CONDITIONAL_ACCESS
+]
+
 gGlobalEvent = None
 
 E_PARENTLOCK_INIT = 0
@@ -44,7 +53,11 @@ class GlobalEvent( object ) :
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.SendLocalOffsetToXBMC( )		
+		self.SendLocalOffsetToXBMC( )
+
+		self.mDialogShowParental = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		self.mDialogShowEvent = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CAS_EVENT )
+		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 
 
 	@classmethod
@@ -55,6 +68,31 @@ class GlobalEvent( object ) :
 	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
 			return
+
+		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
+			if WinMgr.GetInstance( ).GetLastWindowID( ) in CIMMI_CHECKWINDOW :
+				if aEvent.mInserted :
+					try :
+						self.mDialogCasClose.close( )
+					except Exception, ex :
+						LOG_TRACE( 'except close dialog' )
+					self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
+				else :
+					try :
+						self.mDialogShowParental.close( )
+						self.mDialogShowEvent.close( )
+						thread = threading.Timer( 0.3, self.ShowRemovedCamDialog )
+						thread.start( )
+					except Exception, ex :
+						LOG_TRACE( 'except close dialog' )
+
+		if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
+			thread = threading.Timer( 0.3, self.ShowEventDialog, [ aEvent ] )
+			thread.start( )
+
+		if aEvent.getName( ) == ElisEventCIMMIShowEnq.getName( ) :
+			thread = threading.Timer( 0.3, self.ShowParentalDialog, [ aEvent ] )
+			thread.start( )
 
 		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :                                     
 			channel = self.mDataCache.Channel_GetCurrent( )
@@ -315,3 +353,27 @@ class GlobalEvent( object ) :
 
 		self.mDataCache.SetPincodeDialog( False )
 
+
+	def ShowEventDialog( self, aEvent ) :
+		self.mDialogShowEvent.SetProperty( aEvent )
+		self.mDialogShowEvent.doModal( )
+		ret = self.mDialogShowEvent.GetSelectedIndex( )
+		if ret >= 0 :
+			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, ret + 1 )
+		else :
+			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, 0 )
+
+
+	def ShowParentalDialog( self, aEvent ) :
+		self.mDialogShowParental.SetDialogProperty( '%s' % aEvent.mEnqData.mText, '', aEvent.mEnqData.mAnswerTextLen, aEvent.mEnqData.mBlindAnswer )
+		self.mDialogShowParental.doModal( )
+
+		if self.mDialogShowParental.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 1, self.mDialogShowParental.GetString( ), len( self.mDialogShowParental.GetString( ) ) )
+		else :
+			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 0, 'None', 4 )
+
+
+	def ShowRemovedCamDialog( self ) :
+		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Cam Removed' ) )
+		self.mDialogCasClose.doModal( )

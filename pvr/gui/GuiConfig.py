@@ -184,6 +184,11 @@ E_EPG_DB_CF_GET_BY_FOLLOWING	= 2
 FLAG_ZAPPING_LOAD   			= 0
 FLAG_ZAPPING_CHANGE 			= 1
 
+
+# CAM SLOT NUM ( now only accept 1 slot )
+CAS_SLOT_NUM_1					= 0
+CAS_SLOT_NUM_2					= 1
+
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ MR_LANG( 'Off' ), MR_LANG( 'On' ) ]
 USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
