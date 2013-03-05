@@ -353,9 +353,9 @@ class Configure( SettingWindow ) :
 				globalEvent = pvr.GlobalEvent.GetInstance( )
 				globalEvent.SendLocalOffsetToXBMC( )
 				self.mInitialized = False
+				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
-				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				time.sleep( 1 )
 				self.CloseProgress( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
