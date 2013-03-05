@@ -1,14 +1,7 @@
 <window id="3003">
-	<type>window</type>
-	<coordinates>
-		<system>1</system>
-		<posx>0</posx>
-		<posy>0</posy>
-	</coordinates>
 	<defaultcontrol always="true">49</defaultcontrol>
 	<onload>SetProperty(ItemHeight,40)</onload>
 	<allowoverlay>no</allowoverlay>
-
 	<controls>
 
 <!-- bg design -->
@@ -50,10 +43,17 @@
 					<posx>40</posx>
 					<posy>40</posy>
 					<width>1200</width>
-					<height>620</height>
+					<height>625</height>
 					<texture border="20">ContentPanelRED.png</texture>
 					<visible>substring(Window(10000).Property(isEdit),true)</visible>
 				</control>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>653</posy>
+				<width>1200</width>
+				<height>64</height>
+				<texture border="15">ContentPanelMirror.png</texture>
 			</control>
 		</control>
 
