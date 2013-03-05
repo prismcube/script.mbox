@@ -299,6 +299,11 @@ E_XML_PROPERTY_TV         = 'ServiceTypeTV'
 E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
 E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
 E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
+E_XML_PROPERTY_HOTKEY_RED    = 'iHotkeyRed'
+E_XML_PROPERTY_HOTKEY_GREEN  = 'iHotkeyGreen'
+E_XML_PROPERTY_HOTKEY_YELLOW = 'iHotkeyYellow'
+E_XML_PROPERTY_HOTKEY_BLUE   = 'iHotkeyBlue'
+
 
 # Context Action
 CONTEXT_ACTION_LOCK				= 1 

@@ -357,6 +357,76 @@
 					</control-->
 				</control>
 
+				<!-- color key -->
+				<control type="group">
+					<control type="grouplist">
+						<posx>380r</posx>
+						<posy>-35</posy>
+						<width>300</width>
+						<height>40</height>
+						<itemgap>5</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-red.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>AUD</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>VDO</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-yellow.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus.png</texture>
+							</control>
+						</control>
+					</control>
+				</control>
+
+				<!-- component -->
 				<control type="group">
 					<control type="grouplist">
 						<posx>750</posx>
