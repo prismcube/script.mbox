@@ -312,7 +312,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 					volume += aVolumeStep / 2
 
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
-
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
 
