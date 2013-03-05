@@ -296,6 +296,12 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
 
+		#elif actionId == Action.ACTION_COLOR_RED :
+		#	self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+
+		#elif actionId == Action.ACTION_COLOR_YELLOW :
+		#	self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -376,6 +382,11 @@ class LivePlate( LivePlateWindow ) :
 		#3. Show Front disply
 		if self.mCurrentEPG :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 
 	def onEvent(self, aEvent):
@@ -922,7 +933,7 @@ class LivePlate( LivePlateWindow ) :
 			self.ShowRecordingStopDialog( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.SetAudioVideoContext( )
+			self.ShowAudioVideoContext( )
 
 		self.RestartAutomaticHide( )
 
@@ -1099,7 +1110,7 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def SetAudioVideoContext( self ) :
+	def ShowAudioVideoContext( self ) :
 		context = []
 		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
 		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
@@ -1112,12 +1123,16 @@ class LivePlate( LivePlateWindow ) :
 		if selectAction == -1 :
 			return
 
+		self.DoContextAction( selectAction )
+
+
+	def DoContextAction( self, aSelectAction ) :
 		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
 
- 		else :
+ 		elif selectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
