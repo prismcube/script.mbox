@@ -1411,4 +1411,13 @@
 	<string id="3991">Your channel list has been exported successfully</string>
 	<string id="3992">Configure the satellite first before you scan channels</string>
 	<string id="3993">Satellite %s is not configured</string>
+	<string id="3994">Cam initialized</string>
+	<string id="3995">Cam removed</string>
+	<string id="3996">Edit Recording</string>
+	<string id="3997">East Limit</string>
+	<string id="3998">West Limit</string>
+	<string id="3999">Enable RSS feed in the main menu</string>
+	<string id="4000">RSS Feed</string>
+	<string id="4001">CAM initialized</string>
+	<string id="4002">CAM removed</string>
 </strings>
