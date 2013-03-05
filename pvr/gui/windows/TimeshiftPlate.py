@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import time
+import time, math
 
 #control ids
 E_CONTROL_ID_IMAGE_RECORDING1 		= 10
@@ -479,6 +479,16 @@ class TimeShiftPlate( BaseWindow ) :
 					#LOG_TRACE('-----------play again[%s]'% limitLoop )
 					if limitLoop > 20 :
 						break
+
+				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+
+				self.mUserMoveTime = 1
+				if self.mPrekey == Action.ACTION_MOVE_LEFT :
+					self.mUserMoveTime = -1
+
+				self.mFlagUserMove = True
+				self.StopAutomaticHide( )
+				self.RestartAsyncMove( )
 
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
@@ -1532,13 +1542,41 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAccelator += self.mUserMoveTime
 		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
 		#accelatorMoving = self.mAccelator / 100
+
 		accelatorMoving = pow( 1.5, abs( self.mAccelator ) )
+
 		if self.mAccelator < 0 :
 			accelatorMoving = accelatorMoving * -1
 
+		userMoving = self.mTotalUserMoveTime + accelatorMoving
+		userMovingMs = userMoving * 1000
+
+		"""
+		#ToDO
+		accelatorMoving = pow( 1.5, abs( self.mAccelator + self.mUserMoveTime ) )
+		self.mMovingPeek = accelatorMoving
+
+		currentDuration = self.mTimeshift_endTime - self.mTimeshift_curTime
+
+		if (accelatorMoving * 1000) > currentDuration / 2 :
+			self.mAccelator -= self.mUserMoveTime
+			accelatorMoving = self.mAccelatorMoving + abs( self.mMovingPeek - pow( 1.5, abs( self.mAccelator ) )  )
+
+		self.mAccelator += self.mUserMoveTime
+		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
+
+
+		if self.mAccelator < 0 :
+			accelatorMoving = accelatorMoving * -1
 
 		userMoving = self.mTotalUserMoveTime + accelatorMoving
 		userMovingMs = userMoving * 1000
+	
+		if userMovingMs >= self.mTimeshift_endTime :
+			userMovingMs = self.mTimeshift_endTime - 1000
+		elif userMovingMs <= self.mTimeshift_staTime :
+			userMovingMs = self.mTimeshift_staTime + 1000
+		"""
 
 		self.UpdateProgress( userMovingMs )
 		#LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
@@ -1593,6 +1631,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mUserMoveTime = 0
 				self.mAsyncMove = 0
 				self.mTotalUserMoveTime = 0
+				self.mAccelatorMoving = 0
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )

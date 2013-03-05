@@ -308,8 +308,12 @@ class NullWindow( BaseWindow ) :
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
-			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_PVR and \
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_PVR and \
 			   self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				return -1
+
+			if actionId == Action.ACTION_MOVE_RIGHT and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
 
 			self.Close( )
