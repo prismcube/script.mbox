@@ -1407,4 +1407,13 @@
 	<string id="3991">RUS_Your channel list has been exported successfully</string>
 	<string id="3992">RUS_Configure the satellite first before you scan channels</string>
 	<string id="3993">RUS_Satellite %s is not configured</string>
+	<string id="3994">RUS_Cam initialized</string>
+	<string id="3995">RUS_Cam removed</string>
+	<string id="3996">RUS_Edit Recording</string>
+	<string id="3997">RUS_East Limit</string>
+	<string id="3998">RUS_West Limit</string>
+	<string id="3999">RUS_Enable RSS feed in the main menu</string>
+	<string id="4000">RUS_RSS Feed</string>
+	<string id="4001">RUS_CAM initialized</string>
+	<string id="4002">RUS_CAM removed</string>
 </strings>

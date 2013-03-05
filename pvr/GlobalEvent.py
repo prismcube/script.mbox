@@ -21,14 +21,6 @@ PARENTLOCK_CHECKWINDOW = [
 	#WinMgr.WIN_ID_HELP
 	]
 
-CIMMI_CHECKWINDOW = [
-	WinMgr.WIN_ID_NULLWINDOW,
-	WinMgr.WIN_ID_MAINMENU,
-	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
-	WinMgr.WIN_ID_LIVE_PLATE,
-	WinMgr.WIN_ID_EPG_WINDOW,
-	WinMgr.WIN_ID_CONDITIONAL_ACCESS
-]
 
 gGlobalEvent = None
 
@@ -58,6 +50,7 @@ class GlobalEvent( object ) :
 		self.mDialogShowParental = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 		self.mDialogShowEvent = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CAS_EVENT )
 		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 
 
 	@classmethod
@@ -70,21 +63,7 @@ class GlobalEvent( object ) :
 			return
 
 		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
-			if WinMgr.GetInstance( ).GetLastWindowID( ) in CIMMI_CHECKWINDOW :
-				if aEvent.mInserted :
-					try :
-						self.mDialogCasClose.close( )
-					except Exception, ex :
-						LOG_TRACE( 'except close dialog' )
-					self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
-				else :
-					try :
-						self.mDialogShowParental.close( )
-						self.mDialogShowEvent.close( )
-						thread = threading.Timer( 0.3, self.ShowRemovedCamDialog )
-						thread.start( )
-					except Exception, ex :
-						LOG_TRACE( 'except close dialog' )
+			self.CamInsertRemove( aEvent.mInserted )
 
 		if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
 			thread = threading.Timer( 0.3, self.ShowEventDialog, [ aEvent ] )
@@ -354,6 +333,35 @@ class GlobalEvent( object ) :
 		self.mDataCache.SetPincodeDialog( False )
 
 
+	def CamInsertRemove( self, aInserted ) :
+		if aInserted :
+			try :
+				self.mDialogCasClose.mClosed = True
+				self.mDialogCasClose.close( )
+				thread = threading.Timer( 0.3, self.ShowInitCamDialog )
+				thread.start( )
+			except Exception, ex :
+				LOG_TRACE( 'except close dialog' )
+			#self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
+		else :
+			try :
+				self.mDialogShowParental.close( )
+				self.mDialogShowEvent.close( )
+				self.mDialogShowInit.mClosed = True
+				self.mDialogShowInit.close( )
+				thread = threading.Timer( 0.3, self.ShowRemovedCamDialog )
+				thread.start( )
+			except Exception, ex :
+				LOG_TRACE( 'except close dialog' )
+
+
+	def ShowInitCamDialog( self ) :
+		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) )
+		self.mDialogShowInit.SetAutoCloseTime( 5 )
+		self.mDialogShowInit.doModal( )
+
+
 	def ShowEventDialog( self, aEvent ) :
 		self.mDialogShowEvent.SetProperty( aEvent )
 		self.mDialogShowEvent.doModal( )
@@ -375,5 +383,7 @@ class GlobalEvent( object ) :
 
 
 	def ShowRemovedCamDialog( self ) :
-		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Cam Removed' ) )
+		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) )
+		self.mDialogCasClose.SetAutoCloseTime( 5 )
 		self.mDialogCasClose.doModal( )

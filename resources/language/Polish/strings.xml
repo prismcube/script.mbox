@@ -1407,4 +1407,13 @@
 	<string id="3991">POL_Your channel list has been exported successfully</string>
 	<string id="3992">POL_Configure the satellite first before you scan channels</string>
 	<string id="3993">POL_Satellite %s is not configured</string>
+	<string id="3994">POL_Cam initialized</string>
+	<string id="3995">POL_Cam removed</string>
+	<string id="3996">POL_Edit Recording</string>
+	<string id="3997">POL_East Limit</string>
+	<string id="3998">POL_West Limit</string>
+	<string id="3999">POL_Enable RSS feed in the main menu</string>
+	<string id="4000">POL_RSS Feed</string>
+	<string id="4001">POL_CAM initialized</string>
+	<string id="4002">POL_CAM removed</string>
 </strings>

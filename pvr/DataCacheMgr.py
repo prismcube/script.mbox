@@ -2031,12 +2031,9 @@ class DataCacheMgr( object ) :
 
 		#6. volume : 75db
 		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
-		muteByPlayer = self.mCommander.Player_GetMute( )
-		muteByXBMC = XBMC_GetMute( )
-
-		if muteByPlayer :
+		if self.mCommander.Player_GetMute( ) :
 			self.mCommander.Player_SetMute( False )
-			if muteByXBMC :
+			if XBMC_GetMute( ) == True :
 				xbmc.executebuiltin( 'mute( )' )
 
 		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
