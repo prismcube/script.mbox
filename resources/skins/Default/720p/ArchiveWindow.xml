@@ -126,8 +126,11 @@
 					<posy>210</posy>
 					<width>240</width>
 					<height>550</height>
-					<onleft>9000</onleft>
-					<onright>3400</onright>
+					<onleft>104</onleft>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
 					<onup>9010</onup>
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
@@ -157,8 +160,14 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
-					<onleft>9003</onleft>
-					<onright>9003</onright>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
 					<onup>104</onup>
 					<ondown>101</ondown>
 				</control>
@@ -167,7 +176,10 @@
 					<posx>0</posx>
 					<posy>40</posy>
 					<include>DefaultButtonCommonValues</include>
-					<onleft>9003</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
 					<onright>102</onright>
 					<onup>100</onup>
 					<ondown>104</ondown>
@@ -178,7 +190,10 @@
 					<posx>220</posx>
 					<posy>53</posy>
 					<onleft>101</onleft>
-					<onright>9003</onright>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
 					<onup>101</onup>
 					<ondown>104</ondown>
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
@@ -197,7 +212,10 @@
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
 					<label>SCRIPT9</label>
-					<onleft>9003</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
 					<onright>9010</onright>
 					<onup>101</onup>
 					<ondown>100</ondown>

@@ -4440,12 +4440,10 @@
 				<onright>100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(3400) + substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="group">
 				<posx>850</posx>
 				<posy>100</posy>
-				<visible>Control.IsVisible(3400)+substring(Window.Property(ViewMode),common)</visible>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>

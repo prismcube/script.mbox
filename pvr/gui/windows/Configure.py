@@ -350,13 +350,14 @@ class Configure( SettingWindow ) :
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mDataCache.SetDefaultByFactoryReset( )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 				self.mInitialized = False
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
+				time.sleep( 1 )
 				self.CloseProgress( )
-				globalEvent = pvr.GlobalEvent.GetInstance( )
-				globalEvent.SendLocalOffsetToXBMC( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :

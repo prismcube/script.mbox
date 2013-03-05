@@ -154,8 +154,9 @@
 					<posy>170</posy>
 					<width>240</width>
 					<height>550</height>
-					<onleft>9000</onleft>
-					<onright>9000</onright>
+					<onleft>101</onleft>
+					<onright condition="substring(Window.Property(EPGMode),channel)">3500</onright>
+					<onright condition="!substring(Window.Property(EPGMode),channel)">3510</onright>
 					<onup>9010</onup>
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
@@ -194,8 +195,10 @@
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label></label>
-					<onleft>9003</onleft>
-					<onright>9003</onright>
+					<onleft condition="substring(Window.Property(EPGMode),channel)">3500</onleft>
+					<onleft condition="!substring(Window.Property(EPGMode),channel)">3510</onleft>
+					<onright condition="substring(Window.Property(EPGMode),channel)">3500</onright>
+					<onright condition="!substring(Window.Property(EPGMode),channel)">3510</onright>
 					<onup>101</onup>
 					<ondown>101</ondown>
 				</control>
@@ -213,7 +216,8 @@
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
 					<label>SCRIPT9</label>
-					<onleft>9003</onleft>
+					<onleft condition="substring(Window.Property(EPGMode),channel)">3500</onleft>
+					<onleft condition="!substring(Window.Property(EPGMode),channel)">3510</onleft>
 					<onright>9010</onright>
 					<onup>100</onup>
 					<ondown>100</ondown>

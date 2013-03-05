@@ -228,7 +228,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.InitControl( )
 			self.UpdateList( )
 			self.SelectLastRecordKey( )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
@@ -262,7 +262,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == RADIOBUTTON_ID_WATCHED :
 			self.Load( )
 			self.UpdateList( )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 
 
 	def onFocus( self, controlId ) :
@@ -291,7 +291,7 @@ class ArchiveWindow( BaseWindow ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
 					self.UpdateList( )
-					self.SetFocusList( self.mViewMode )
+					#self.SetFocusList( self.mViewMode )
 					return
 
 				isPlay = False
@@ -496,7 +496,7 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Playing', 'False' )
 
 		xbmc.executebuiltin( 'container.update' )
-		self.SetFocusList( self.mViewMode )
+		#self.SetFocusList( self.mViewMode )
 
 
 	def AddListItems( self ) :
@@ -902,7 +902,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.update' )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 
 
 	def DoStartMark( self ) :
