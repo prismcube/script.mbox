@@ -82,7 +82,7 @@ class TimerWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )	
 		self.mInitialized = True
-		self.setFocusId( LIST_ID_BIG_EPG )
+		self.setFocusId( LIST_ID_BIG_TIMER )
 
 
 	def onAction( self, aAction ) :
