@@ -5,10 +5,10 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
@@ -104,6 +104,7 @@ class DataCacheMgr( object ) :
 		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
+		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
@@ -115,6 +116,8 @@ class DataCacheMgr( object ) :
 		self.mChannelDB 						= None
 		self.mTimerDB 							= None
 		self.mRecordDB 							= None
+
+		self.mPMTEvent							= None
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -254,11 +257,24 @@ class DataCacheMgr( object ) :
 	def LoadVolumeToSetGUI( self ) :
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
-		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
+		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
+
+		if lastMute :
+			self.mCommander.Player_SetMute( False )
+			LOG_TRACE( 'mute off' )
 
 		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
 		if revisionVolume >= VOLUME_STEP :
-			XBMC_SetVolume( lastVolume, lastMute )
+			#XBMC_SetVolume( lastVolume, lastMute )
+			XBMC_SetVolumeByBuiltin( lastVolume, False )
+
+
+	def LoadVolumeBySetGUI( self ) :
+		mute = XBMC_GetMute( )
+		volume = XBMC_GetVolume( )
+		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
+		self.mCommander.Player_SetMute( mute )
+		self.mCommander.Player_SetVolume( volume )
 
 
 	def LoadTime( self ) :
@@ -452,6 +468,16 @@ class DataCacheMgr( object ) :
 		return MR_LANG( 'Unknown' )
 
 
+	def GetSatelliteName( self, aLongitude, aBand ) :
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		satellite = self.mAllSatelliteListHash.get( hashKey, None )
+
+		if satellite :
+			return satellite.mName
+
+		return MR_LANG( 'Unknown' )
+
+
 	def GetTransponderListBySatellite( self, aLongitude, aBand ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
@@ -474,7 +500,12 @@ class DataCacheMgr( object ) :
 		if tmptransponderList and tmptransponderList[0].mError == 0 :
 			transponderList = []
 	 		for i in range( len( tmptransponderList ) ) :
-				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
+	 			if tmptransponderList[i].mPolarization == ElisEnum.E_LNB_HORIZONTAL :
+	 				polarization = MR_LANG( 'Horizontal' )
+	 			else :
+	 				polarization = MR_LANG( 'Vertical' )
+	 				
+				transponderList.append( '%d %d MHz %d KS/s %s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate, polarization ) )
 
 		return transponderList
 
@@ -497,6 +528,25 @@ class DataCacheMgr( object ) :
 				if transponder :
 					return transponder[ aIndex ]
 		return None
+
+
+	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :
+		tunerEx = 0
+		if self.mConfiguredSatelliteListTuner1 :
+			for satellite in self.mConfiguredSatelliteListTuner1 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_1
+
+		if self.mConfiguredSatelliteListTuner2 :
+			for satellite in self.mConfiguredSatelliteListTuner2 :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
+					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
+
+		return tunerEx
+
+
+	def GetTunerIndexByChannel( self, aNumber ) :
+		return self.mTPListByChannelHash.get( aNumber, -1 )
 
 
 	def GetChangeDBTableChannel( self ) :
@@ -624,6 +674,11 @@ class DataCacheMgr( object ) :
 				prevChannel = channel
 
 
+				if channel and channel.mError == 0 :
+					self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
+
+
 	def LoadZappingmode( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mZappingMode = self.Zappingmode_GetCurrent( True )
@@ -667,6 +722,35 @@ class DataCacheMgr( object ) :
 				self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 
 		return self.mZappingMode
+
+
+	def GetModeInfoByZappingMode( self, aChannel = None ) :
+		mName = ''
+		if aChannel == None :
+			aChannel = self.Channel_GetCurrent( )
+		zappingMode = self.Zappingmode_GetCurrent( )
+
+		if not zappingMode or zappingMode.mError != 0 :
+			return mName
+
+		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			mName = zappingMode.mFavoriteGroup.mGroupName
+
+		elif self.mZappingMode.mMode == ElisEnum.E_MODE_SATELLITE :
+			mName = zappingMode.mSatelliteInfo.mName
+
+		elif self.mZappingMode.mMode == ElisEnum.E_MODE_CAS :
+			mName = zappingMode.mCasInfo.mName
+
+		else :
+			if aChannel and aChannel.mError == 0 :
+				satellite = self.Satellite_GetByChannelNumber( aChannel.mNumber )
+				if satellite :
+					mName = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+
+		LOG_TRACE( '--------------mname[%s]'% mName )
+		return mName
+
 
 
 	def Fta_cas_GetList( self, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
@@ -789,6 +873,11 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
+		#self.mPMTEvent = None #reset cached PMT Event
+		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
+		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
+			self.mPMTEvent = None
+
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -816,6 +905,11 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
+		#self.mPMTEvent = None #reset cached PMT Event
+		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
+		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
+			self.mPMTEvent = None
+
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -1095,6 +1189,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_SkipByNumber( aSet, aType, aNumList )
 
 
+	def Channel_GetViewingTuner( self ) :
+		return self.mCommander.Channel_GetViewingTuner( )
+	
+
 	def Favoritegroup_AddChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_AddChannel( aGroupName, aNumber, aServieType )
 
@@ -1125,15 +1223,6 @@ class DataCacheMgr( object ) :
 
 	def Favoritegroup_Remove( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Remove( aGroupName, aServieType )
-
-
-	def Favoritegroup_GetCurrent( self ) :
-		groupName = ''
-		zappingMode = self.Zappingmode_GetCurrent( )
-		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			groupName = zappingMode.mFavoriteGroup.mGroupName
-
-		return groupName
 
 
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
@@ -1255,10 +1344,14 @@ class DataCacheMgr( object ) :
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
 
-		self.Channel_TuneDefault( mCurrentChannel )
+		#self.Channel_TuneDefault( mCurrentChannel )
+		self.Channel_TuneDefault( False, mCurrentChannel )
 
 
-	def Channel_TuneDefault( self, aCurrentChannel = None ) :
+	def Channel_TuneDefault( self, aDefault = True, aCurrentChannel = None ) :
+		if aDefault :
+			aCurrentChannel = self.Channel_GetCurrent( )
+
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
 			iChannelList = self.Channel_GetList( )
@@ -1770,19 +1863,27 @@ class DataCacheMgr( object ) :
 			zappingMode = self.Zappingmode_GetCurrent( )
 			self.Channel_InvalidateCurrent( )
 
-			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
-				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_TV )				
-			else :
-				lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
-				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_RADIO )				
+			lastChannelProperty = 'Last TV Number'
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+				lastChannelProperty = 'Last Radio Number'
 
-			channel = self.Channel_GetCurrent( )
-			#LOG_TRACE( '----- get Current Channel after zappingMode channge' )
+			iChannel = None
+			#1.default channel, First Channel
+			if self.mChannelList and len( self.mChannelList ) > 0 :
+				iChannel = self.mChannelList[0]
+				#LOG_TRACE( 'default Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
 
-			#is last channel tune fail then no1. tune
-			if not channel and self.mChannelList and len( self.mChannelList ) > 0 :
-				self.Channel_SetCurrent( 1, zappingMode.mServiceType )							
+			#2.find channel, Exist last Channel
+			lastChannelNumber = ElisPropertyInt( lastChannelProperty, self.mCommander ).GetProp( )
+			cacheChannel = self.mChannelListHash.get( lastChannelNumber, None )
+			if cacheChannel :
+				iChannel = cacheChannel.mChannel
+				#LOG_TRACE( 'find last Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+
+			if iChannel :
+				self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+				#LOG_TRACE( 'tune Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+
 
 		except Exception, e :
 			LOG_ERR( 'Exception [%s]'% e )
@@ -1798,6 +1899,14 @@ class DataCacheMgr( object ) :
 				self.LoadChannelList( )
 
 		return ret
+
+
+	def SetCurrentPMTEvent( self, aPMTEvent ) :
+		self.mPMTEvent = aPMTEvent
+
+
+	def GetCurrentPMTEvent( self ) :
+		return self.mPMTEvent
 
 
 	def SetLockedState( self, aIsLock ) :
@@ -1924,8 +2033,12 @@ class DataCacheMgr( object ) :
 		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
 		if self.mCommander.Player_GetMute( ) :
 			self.mCommander.Player_SetMute( False )
+			if XBMC_GetMute( ) == True :
+				xbmc.executebuiltin( 'mute( )' )
+
 		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
-		XBMC_SetVolume( DEFAULT_VOLUME )
+		#XBMC_SetVolume( DEFAULT_VOLUME )
+		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
 
 		#7. ageRating
 		LOG_TRACE( '>>>>>>>> Default init : AgeLimit <<<<<<<<' )

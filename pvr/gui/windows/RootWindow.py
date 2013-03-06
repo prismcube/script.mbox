@@ -27,7 +27,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 				if E_SUPPROT_HBBTV == True :
 					self.mCommander.AppHBBTV_Ready( 0 )
 				self.mInitialized = True
-
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			else :
@@ -104,7 +103,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		
 
 	def CheckFirstRun( self ) :
-		if CheckDirectory( '/tmp/isrunning' ) :
+		if CheckDirectory( '/mtmp/isrunning' ) :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
@@ -119,5 +118,5 @@ class RootWindow( xbmcgui.WindowXML ) :
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 		else :
-			os.system( 'touch /tmp/isrunning' )
+			os.system( 'touch /mtmp/isrunning' )
 

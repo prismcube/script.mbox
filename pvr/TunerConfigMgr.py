@@ -297,9 +297,11 @@ class TunerConfigMgr( object ) :
 			aSatellite.mMotorizedData = aSatellite.mSlotNumber + 1
 			aSatellite.mIsConfigUsed = 1
 			aSatellite.mFrequencyLevel = 0
+			"""
 			aSatellite.mDisEqc11 = 0
 			aSatellite.mDisEqcMode = 0
 			aSatellite.mDisEqcRepeat = 0
+			"""
 
 		elif aType == E_MOTORIZE_USALS :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
@@ -307,9 +309,11 @@ class TunerConfigMgr( object ) :
 			aSatellite.mMotorizedData = 0
 			aSatellite.mIsConfigUsed = 1
 			aSatellite.mFrequencyLevel = 0
+			"""
 			aSatellite.mDisEqc11 = 0
 			aSatellite.mDisEqcMode = 0
 			aSatellite.mDisEqcRepeat = 0
+			"""
 			
 		elif aType == E_ONE_CABLE :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF

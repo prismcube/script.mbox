@@ -21,6 +21,7 @@ PARENTLOCK_CHECKWINDOW = [
 	#WinMgr.WIN_ID_HELP
 	]
 
+
 gGlobalEvent = None
 
 E_PARENTLOCK_INIT = 0
@@ -44,7 +45,12 @@ class GlobalEvent( object ) :
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.SendLocalOffsetToXBMC( )		
+		self.SendLocalOffsetToXBMC( )
+
+		self.mDialogShowParental = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		self.mDialogShowEvent = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CAS_EVENT )
+		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 
 
 	@classmethod
@@ -56,7 +62,18 @@ class GlobalEvent( object ) :
 		if not WinMgr.gWindowMgr :
 			return
 
-		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
+			self.CamInsertRemove( aEvent.mInserted )
+
+		if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
+			thread = threading.Timer( 0.3, self.ShowEventDialog, [ aEvent ] )
+			thread.start( )
+
+		if aEvent.getName( ) == ElisEventCIMMIShowEnq.getName( ) :
+			thread = threading.Timer( 0.3, self.ShowParentalDialog, [ aEvent ] )
+			thread.start( )
+
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :                                     
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if not channel or channel.mError != 0 :
 				return -1
@@ -64,6 +81,12 @@ class GlobalEvent( object ) :
 				#LOG_TRACE('ignore event, same event')
 				return -1
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
+
+		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+			LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
+			if aEvent :
+				#aEvent.printdebug( )
+				self.mDataCache.SetCurrentPMTEvent( aEvent )
 
 		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
@@ -117,7 +140,7 @@ class GlobalEvent( object ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
 			self.mDataCache.Channel_GetInitialBlank( )
-			self.CheckParentLock( E_PARENTLOCK_INIT )
+			self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
@@ -143,6 +166,11 @@ class GlobalEvent( object ) :
 
 
 	def AsyncStandbyPowerON( self ) :
+		#default mute off
+		mute = self.mCommander.Player_GetMute( )
+		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
+			xbmc.executebuiltin( 'xbmc.Action(mute)' )
+
 		while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			time.sleep( 1 )
@@ -204,7 +232,7 @@ class GlobalEvent( object ) :
 		XBMC_SetLocalOffset( localOffset )
 
 
-	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None ) :
+	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None, aForce=False ) :
 		if WinMgr.GetInstance( ).GetLastWindowID( ) not in PARENTLOCK_CHECKWINDOW :
 			LOG_TRACE( '--------parentLock check pass winid[%s]'% WinMgr.GetInstance( ).GetLastWindowID( ) )
 			return
@@ -234,8 +262,9 @@ class GlobalEvent( object ) :
 					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
 					thread.start( )
 			else :
-				if self.mDataCache.Get_Player_AVBlank( ) :
+				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
 					self.mDataCache.Player_AVBlank( False )
+					self.mDataCache.LoadVolumeBySetGUI( )
 
 		elif aCmd == E_PARENTLOCK_EIT :
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
@@ -261,6 +290,7 @@ class GlobalEvent( object ) :
 					if iChannel and ( not iChannel.mLocked ) and self.mDataCache.Get_Player_AVBlank( ) :
 						LOG_TRACE( '--------------- Release parentLock' )
 						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
 
 
 	def ShowPincodeDialog( self ) :
@@ -280,9 +310,11 @@ class GlobalEvent( object ) :
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
 				xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
@@ -296,6 +328,62 @@ class GlobalEvent( object ) :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 		self.mDataCache.SetPincodeDialog( False )
 
+
+	def CamInsertRemove( self, aInserted ) :
+		if aInserted :
+			try :
+				self.mDialogCasClose.mClosed = True
+				self.mDialogCasClose.close( )
+				thread = threading.Timer( 0.3, self.ShowInitCamDialog )
+				thread.start( )
+			except Exception, ex :
+				LOG_TRACE( 'except close dialog' )
+			#self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
+		else :
+			try :
+				self.mDialogShowParental.close( )
+				self.mDialogShowEvent.close( )
+				self.mDialogShowInit.mClosed = True
+				self.mDialogShowInit.close( )
+				thread = threading.Timer( 0.3, self.ShowRemovedCamDialog )
+				thread.start( )
+			except Exception, ex :
+				LOG_TRACE( 'except close dialog' )
+
+
+	def ShowInitCamDialog( self ) :
+		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) )
+		self.mDialogShowInit.SetAutoCloseTime( 5 )
+		self.mDialogShowInit.doModal( )
+
+
+	def ShowEventDialog( self, aEvent ) :
+		self.mDialogShowEvent.SetProperty( aEvent )
+		self.mDialogShowEvent.doModal( )
+		ret = self.mDialogShowEvent.GetSelectedIndex( )
+		if ret >= 0 :
+			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, ret + 1 )
+		else :
+			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, 0 )
+
+
+	def ShowParentalDialog( self, aEvent ) :
+		self.mDialogShowParental.SetDialogProperty( '%s' % aEvent.mEnqData.mText, '', aEvent.mEnqData.mAnswerTextLen, aEvent.mEnqData.mBlindAnswer )
+		self.mDialogShowParental.doModal( )
+
+		if self.mDialogShowParental.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 1, self.mDialogShowParental.GetString( ), len( self.mDialogShowParental.GetString( ) ) )
+		else :
+			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 0, 'None', 4 )
+
+
+	def ShowRemovedCamDialog( self ) :
+		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) )
+		self.mDialogCasClose.SetAutoCloseTime( 5 )
+		self.mDialogCasClose.doModal( )

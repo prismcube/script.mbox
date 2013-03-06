@@ -330,43 +330,59 @@ class SystemInfo( SettingWindow ) :
 		total_size = MR_LANG( 'Unknown' )
 		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
-		cmd = "df -h | awk '/%s/ {print $2}'" % aName
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		total_size = p.stdout.read( ).strip( )
-		p.stdout.close( )
-		cmd = "df -h | awk '/%s/ {print $3}'" % aName
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		used_size = p.stdout.read( ).strip( )
-		p.stdout.close( )
-		cmd = "df -h | awk '/%s/ {print $5}'" % aName
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		percent = p.stdout.read( ).strip( )
-		p.stdout.close( )
-		percent = int( re.sub( '%', '', percent ) )
+		try :
+			cmd = "df -h | awk '/%s/ {print $2}'" % aName
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			total_size = p.stdout.read( ).strip( )
+			total_size = total_size.split( '\n' )
+			total_size = total_size[0]
+			p.stdout.close( )
+			cmd = "df -h | awk '/%s/ {print $3}'" % aName
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			used_size = p.stdout.read( ).strip( )
+			used_size = used_size.split( '\n' )
+			used_size = used_size[0]
+			p.stdout.close( )
+			cmd = "df -h | awk '/%s/ {print $5}'" % aName
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			percent = p.stdout.read( ).strip( )
+			percent = percent.split( '\n' )
+			percent = percent[0]
+			p.stdout.close( )
+			percent = int( re.sub( '%', '', percent ) )
 
-		return total_size, used_size, percent
+			return total_size, used_size, percent
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' )
 
 
 	def GetRecordFreeSize( self ) :
 		total_size = MR_LANG( 'Unknown' )
 		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
-		if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
-			total_size	= self.mCommander.Record_GetPartitionSize( )
-			used_size	= total_size - self.mCommander.Record_GetFreeMBSize( )
-			percent		= int( used_size / float( total_size ) * 100 )
-			if used_size >= 1024 :
-				used_size	= '%sG' % int( used_size / float( 1024 ) )
+		try :
+			if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
+				total_size	= self.mCommander.Record_GetPartitionSize( )
+				used_size	= total_size - self.mCommander.Record_GetFreeMBSize( )
+				percent		= int( used_size / float( total_size ) * 100 )
+				if used_size >= 1024 :
+					used_size	= '%sG' % int( used_size / float( 1024 ) )
+				else :
+					used_size	= '%sM' % used_size
+				if total_size >= 1024 :
+					total_size = '%sG' % int( total_size / float( 1024 ) )
+				else :
+					total_size	= '%sM' % total_size
 			else :
-				used_size	= '%sM' % used_size
-			if total_size >= 1024 :
-				total_size = '%sG' % int( total_size / float( 1024 ) )
-			else :
-				total_size	= '%sM' % total_size
-		else :
-			LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Fail!!!' )
+				LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Fail!!!' )
 
-		return total_size, used_size, percent
+			return total_size, used_size, percent
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' )
 
 
 	def GetHDDName( self ) :

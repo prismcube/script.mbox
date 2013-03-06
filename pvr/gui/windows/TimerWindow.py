@@ -82,6 +82,7 @@ class TimerWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )	
 		self.mInitialized = True
+		self.setFocusId( LIST_ID_BIG_EPG )
 
 
 	def onAction( self, aAction ) :
@@ -190,6 +191,7 @@ class TimerWindow( BaseWindow ) :
 		self.mCtrlBigList.reset( )
 		self.mListItems = []
 		if self.mTimerList== None or len( self.mTimerList ) <= 0 :
+			self.mCtrlBigList.addItems( self.mListItems )
 			return
 			
 		try :
@@ -300,7 +302,7 @@ class TimerWindow( BaseWindow ) :
 					
 				self.mCtrlBigList.addItems( self.mListItems )
 
-				xbmc.executebuiltin( 'container.update' )
+			xbmc.executebuiltin( 'container.update' )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

@@ -363,10 +363,14 @@ class Configure( SettingWindow ) :
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mDataCache.SetDefaultByFactoryReset( )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 				self.mInitialized = False
+				#self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
+				time.sleep( 1 )
 				self.CloseProgress( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
@@ -378,7 +382,7 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format media partition?' ), MR_LANG( 'Formatting media partition cannot be undone!' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting media partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 120 )
@@ -386,7 +390,7 @@ class Configure( SettingWindow ) :
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format recording partition?' ), MR_LANG( 'Formatting recording partition cannot be undone!' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting recording partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 60 )
@@ -671,7 +675,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to first installation after restoring system to the factory default' ) )###daniel
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to first installation after restoring system to the factory default' ) )
 
 			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -690,7 +694,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
-			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'Rss Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable rss feed in main menu' ) )
+			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'RSS Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable RSS feed in the main menu' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1071,7 +1075,7 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'Your user data and XBMC add-ons will be backuped' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,\n insert a USB flash memory' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
@@ -1096,13 +1100,13 @@ class Configure( SettingWindow ) :
 			usbfreesize = GetDeviceSize( usbpath )
 			if ( size_addons + size_udata ) > usbfreesize :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash drive' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
 				dialog.doModal( )
 			else :
 				self.CopyBackupData( usbpath )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash drive' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash memory' ) )
 			dialog.doModal( )
 
 

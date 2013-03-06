@@ -1,9 +1,7 @@
 from pvr.gui.WindowImport import *
 
-E_CONDITIONAL_ACCESS_BASE_ID = WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
-CAS_SLOT_NUM_1 = 0
-CAS_SLOT_NUM_2 = 1
+E_CONDITIONAL_ACCESS_BASE_ID = WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 
 class ConditionalAccess( SettingWindow ) :
@@ -80,15 +78,6 @@ class ConditionalAccess( SettingWindow ) :
 			
 		elif groupId == E_Input02 :
 			self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
-
-		elif groupId == E_Input03 :
-			pass
-
-		elif groupId == E_Input04 :
-			pass
-
-		elif groupId == E_Input05 :
-			pass
 				
 
 	def onFocus( self, aControlId ) :
@@ -105,29 +94,14 @@ class ConditionalAccess( SettingWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
-			if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
-				self.ShowEventDialog( aEvent )
-			elif aEvent.getName( ) == ElisEventCIMMIShowEnq.getName( ) :
-				self.ShowParentalDialog( aEvent )
+			if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
+				camName = MR_LANG( 'Not inserted' )
+				if aEvent.mInserted :
+					time.sleep( 1 )
+					if self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 ) == True :
+						cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
+						camName = cardinfo.mName
+					self.SetControlLabel2String( E_Input02, camName )
+				else :
+					self.SetControlLabel2String( E_Input02, camName )
 
-
-	def ShowEventDialog( self, aEvent ) :
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CAS_EVENT )
-		dialog.SetProperty( aEvent )
-		dialog.doModal( )
-		ret = dialog.GetSelectedIndex( )
-		if ret >= 0 :
-			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, ret + 1 )
-		else :
-			self.mCommander.Cicam_SendMenuAnswer( aEvent.mSlotNo, 0 )
-
-
-	def ShowParentalDialog( self, aEvent ) :
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( '%s' % aEvent.mEnqData.mText, '', aEvent.mEnqData.mAnswerTextLen, aEvent.mEnqData.mBlindAnswer )
-		dialog.doModal( )
-
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 1, dialog.GetString( ), len( dialog.GetString( ) ) )
-		else :
-			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 0, 'None', 4 )

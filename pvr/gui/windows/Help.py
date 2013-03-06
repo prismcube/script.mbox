@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from elementtree import ElementTree
 
+
 E_HELP_BASE_ID = WinMgr.WIN_ID_HELP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
 
@@ -58,7 +59,8 @@ E_CONTROL_ID_LABEL_NEXT			=	7006 + E_HELP_BASE_ID
 E_CONTROL_ID_GROUP_CONTETNT		= 	8500 + E_HELP_BASE_ID
 E_CONTROL_ID_GROUP_PAGE			=	9000 + E_HELP_BASE_ID
 
-HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+
+#HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
 
 class Help( SettingWindow ) :
@@ -69,11 +71,12 @@ class Help( SettingWindow ) :
 		self.mRoot 					=	None
 		self.mListContent 			=	[]
 
-		if not self.mPlatform.IsPrismCube( ) :
-			global HELP_STRING
-			HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+		#if not self.mPlatform.IsPrismCube( ) :
+		#	global HELP_STRING
+		#	HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
-		self.mHelpString				=  	HELP_STRING		
+		#self.mHelpString				=  	HELP_STRING	
+		self.mHelpString				=  	None	
 
 
 	def onInit( self ) :
@@ -83,14 +86,13 @@ class Help( SettingWindow ) :
 		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( False )
 		
 		if self.mInitialized == False :
-			helpString = self.getProperty( 'HelpString' )
-			
+			helpString = self.getProperty( 'HelpString' )		
 			if helpString :
 				self.mHelpString =  os.path.join( WinMgr.GetInstance( ).GetSkinXMLPath(),  helpString )
 
 			self.MakeContentList( )
 			self.mInitialized = True
-			LOG_TRACE('HELP STRING=%s' %self.mHelpString )
+			LOG_TRACE( 'HELP STRING = %s' %self.mHelpString )
 
 		self.SetListControl( self.mStepNum )
 		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( True )
@@ -101,7 +103,6 @@ class Help( SettingWindow ) :
 			return
 	
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
 			return
 
@@ -175,7 +176,7 @@ class Help( SettingWindow ) :
 
 
 	def DrawContents ( self, aList, aStep ) :
-		contentcount = 0
+		contentCount = 0
 		self.SetTextboxInvisible( E_MAXIMUM_TEXTBOX_NUM )
 		
 		for content in aList :
@@ -195,11 +196,11 @@ class Help( SettingWindow ) :
 					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setWidth( content.mWidth )
 					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setHeight( content.mHeight )
 					
-					if contentcount == 0:
+					if contentCount == 0:
 						self.setProperty( 'label', content.mDescription )
-					elif contentcount == 1:
+					elif contentCount == 1:
 						self.setProperty( 'label1', content.mDescription )
-					elif contentcount == 2:
+					elif contentCount == 2:
 						self.setProperty( 'label2', content.mDescription )
 
 					self.getControl( E_CONTROL_ID_TEXTBOX + contentcount ).setVisible( True )

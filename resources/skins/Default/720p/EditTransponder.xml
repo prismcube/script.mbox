@@ -17,6 +17,7 @@
 				<include>Input05</include>
 				<include>Input06</include>
 				<include>Input07</include>
+				<include>Input08</include>
 			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>

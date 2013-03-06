@@ -216,7 +216,7 @@ class DialogStopRecord( BaseDialog ) :
 			if expectedRecording < 0 :
 				expectedRecording = 0
 
-			if timer.mDuration < 0 :
+			if timer.mDuration <= 0 : #to avoid exception
 				timer.mDuration = 1
 
 			#self.mCtrlDuration[i].setLabel( '%d/%d Min' %(int(expectedRecording/60) , int(timer.mDuration/60) ) )

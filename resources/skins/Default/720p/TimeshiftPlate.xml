@@ -1,5 +1,5 @@
 <window type="windows" id="3019">
-	<!--defaultcontrol always="true">3705</defaultcontrol-->
+	<!--defaultcontrol always="true">202</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<onload>SetProperty(bookmarkIconFO,StepFO.png)</onload>
@@ -101,7 +101,7 @@
 
 <!-- Rec info -->
 			<control type="group">
-				<posx>300r</posx>
+				<posx>450r</posx>
 				<posy>570</posy>
 				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
 				<control type="group">
@@ -110,7 +110,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(10)</visible>
@@ -124,7 +124,7 @@
 						<visible>substring(Window.Property(ViewRecord1),true)</visible>
 					</control>
 					<control type="label" id="11">
-						<posx>121</posx>
+						<posx>116</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -137,7 +137,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(15)</visible>
@@ -151,7 +151,7 @@
 						<visible>substring(Window.Property(ViewRecord2),true)</visible>
 					</control>
 					<control type="label" id="16">
-						<posx>100</posx>
+						<posx>95</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -368,9 +368,76 @@
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
-
 			</control>
 
+			<!-- color key -->
+			<control type="group">
+				<control type="grouplist">
+					<posx>250r</posx>
+					<posy>600</posy>
+					<width>300</width>
+					<height>40</height>
+					<itemgap>5</itemgap>
+					<visible>true</visible>
+					<orientation>horizontal</orientation>
+					<control type="group">
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+						<control type="image">
+							<width>30</width>
+							<height>30</height>
+							<texture>settings-button-nofocus-red.png</texture>
+						</control>
+						<control type="label">
+							<posx>2</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<font>font10</font>
+							<label>BOK</label>
+						</control>
+					</control>
+					<control type="group">
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
+						<control type="image">
+							<width>30</width>
+							<height>30</height>
+							<texture>settings-button-nofocus-green.png</texture>
+						</control>
+						<control type="label">
+							<posx>3</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<font>font10</font>
+							<label>LST</label>
+						</control>
+					</control>
+					<control type="group">
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+						<control type="image">
+							<width>30</width>
+							<height>30</height>
+							<texture>settings-button-nofocus-yellow.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<width>30</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+						<control type="image">
+							<width>30</width>
+							<height>30</height>
+							<texture>settings-button-nofocus.png</texture>
+						</control>
+					</control>
+				</control>
+			</control>
 
 <!-- play section -->
 			<include>DefaultTimeshiftPlateGroup</include>

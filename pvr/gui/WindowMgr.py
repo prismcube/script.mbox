@@ -158,12 +158,7 @@ class WindowMgr( object ) :
 				self.mLastId = aWindowId
 				SetLock2( False )
 
-
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-					#self.mRootWindow.setProperty( 'CurrentWindow', 'Null' )
-					#self.mRootWindow.setProperty( 'SettingPip', 'False' )
-					#self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-					#time.sleep( 0.3 )
 					LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
@@ -200,12 +195,7 @@ class WindowMgr( object ) :
 
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :	
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						#self.mRootWindow.setProperty( 'CurrentWindow', 'Null' )
-						#self.mRootWindow.setProperty( 'SettingPip', 'False' )
-						#self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-						#time.sleep( 0.3 )
-						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						
+						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									
 					else :
 						self.mWindows[currentId].close( )
@@ -213,7 +203,6 @@ class WindowMgr( object ) :
 						if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
 							xbmc.executebuiltin('xbmc.Action(dvbres21)')
 					
-					#self.mWindows[parentId].doModal( )
 				else :
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW

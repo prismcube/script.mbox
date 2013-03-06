@@ -173,6 +173,33 @@ def HasEPGComponent( aEPG, aFlag ) :
 	return 'False'
 
 
+def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
+	if not pmtEvent :
+		LOG_TRACE( '---------------pmtEvent None' )
+		return False
+
+	ret = False
+	if aPropertyID == 'HasTeletext' :
+		if pmtEvent.mTTXCount > 0 :
+			#LOG_TRACE( '-------------- Teletext updated by PMT cache' )
+			self.setProperty( aPropertyID, 'True' )
+			ret = True
+
+	elif aPropertyID == 'HasSubtitle' :
+		if pmtEvent.mSubCount > 0 :
+			#LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+			self.setProperty( aPropertyID, 'True' )
+			ret = True
+
+	elif aPropertyID == 'HasDolbyPlus' :
+		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+		if pmtEvent.mAudioCount > 0 and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+			self.setProperty( aPropertyID, 'True' )
+			ret = True
+
+	return ret
+
+
 def GetSelectedLongitudeString( aLongitude, aName ) :
 	ret = ''
 
@@ -506,7 +533,7 @@ def CheckEthernet( aEthName ) :
 	return status
 
 
-def CheckMD5Sum( aSourceFile, aMd5 ) :
+def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 	isVerify = False
 	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
 
@@ -519,8 +546,11 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 		readMd5 = p.stdout.read( ).strip( )
 		p.stdout.close( )
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
-		if readMd5 == aMd5 :
-			isVerify = True
+		if aMd5 :
+			if readMd5 == aMd5 :
+				isVerify = True
+		else :
+			isVerify = readMd5
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
@@ -569,7 +599,7 @@ def GetFileSize( aFile ) :
 
 
 def GetUnpackFiles( aZipFile ) :
-	tFile = '/tmp/test'
+	tFile = '/mtmp/test'
 	#cmd = "unzip -l /mnt/hdd0/program/download/update.2012.10.10.zip | awk '{print $1, $4}' > %s"% tFile
 	cmd = "unzip -l %s | awk '{print $1, $4}' > %s"% ( aZipFile, tFile )
 	fileList = []
@@ -585,10 +615,15 @@ def GetUnpackFiles( aZipFile ) :
 			pars = re.split(' ', line )
 			if pars[0].isdigit( ) :
 				pars[0] = int( pars[0] )
+				pars[1] = pars[1].rstrip( )
 				if pars[0] == 0 :
-					pars[0] = 4096	#directory size block
+					#pars[0] = 4096	#directory size block
+					continue
 
-				pars[1] = re.sub( '\n', '', pars[1] )
+				if pars[1] and os.path.splitext( pars[1] )[1] == '.md5' :
+					continue
+
+				#pars[1] = re.sub( '\n', '', pars[1] )
 				if pars[1] :
 					fileList.append( pars )
 
@@ -597,6 +632,27 @@ def GetUnpackFiles( aZipFile ) :
 		return False
 
 	return fileList
+
+
+def GetUnpackByMD5( aFile ) :
+	value = ''
+	openFile = '%s.md5'% aFile
+	if not CheckDirectory( openFile ) :
+		return False
+
+	try :
+		fp = open( openFile, 'r' )
+		ret = fp.readline( ).strip( )
+		fp.close( )
+
+		pars = re.split(' ', ret )
+		if pars and len( pars ) > 0 :
+			value = pars[0].strip()
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] Can not open[%s]'% ( e, openFile ) )
+
+	return value
 
 
 def GetUnpackDirectory( aZipFile ) :

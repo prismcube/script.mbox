@@ -2,22 +2,22 @@ from pvr.gui.WindowImport import *
 
 E_ARCHIVE_WINDOW_BASE_ID			=  WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
-BUTTON_ID_VIEW_MODE				= E_ARCHIVE_WINDOW_BASE_ID + 100
-BUTTON_ID_SORT_MODE				= E_ARCHIVE_WINDOW_BASE_ID + 101
-TOGGLEBUTTON_ID_ASC				= E_ARCHIVE_WINDOW_BASE_ID + 102
-RADIOBUTTON_ID_EXTRA			= E_ARCHIVE_WINDOW_BASE_ID + 104
-RADIOBUTTON_ID_WATCHED			= E_ARCHIVE_WINDOW_BASE_ID + 200
+BUTTON_ID_VIEW_MODE					= E_ARCHIVE_WINDOW_BASE_ID + 100
+BUTTON_ID_SORT_MODE					= E_ARCHIVE_WINDOW_BASE_ID + 101
+TOGGLEBUTTON_ID_ASC					= E_ARCHIVE_WINDOW_BASE_ID + 102
+RADIOBUTTON_ID_EXTRA				= E_ARCHIVE_WINDOW_BASE_ID + 104
+RADIOBUTTON_ID_WATCHED				= E_ARCHIVE_WINDOW_BASE_ID + 200
 
-LABEL_ID_PLAY_NAME				= E_ARCHIVE_WINDOW_BASE_ID + 401
-PROGRESS_ID_PLAY_PROGRESS		= E_ARCHIVE_WINDOW_BASE_ID + 402
+LABEL_ID_PLAY_NAME					= E_ARCHIVE_WINDOW_BASE_ID + 401
+PROGRESS_ID_PLAY_PROGRESS			= E_ARCHIVE_WINDOW_BASE_ID + 402
 
-LABEL_ID_PLAY_START				= E_ARCHIVE_WINDOW_BASE_ID + 403
-LABEL_ID_PLAY_END				= E_ARCHIVE_WINDOW_BASE_ID + 404
+LABEL_ID_PLAY_START					= E_ARCHIVE_WINDOW_BASE_ID + 403
+LABEL_ID_PLAY_END					= E_ARCHIVE_WINDOW_BASE_ID + 404
 
-LIST_ID_COMMON_RECORD			= E_BASE_WINDOW_ID + 3400
-LIST_ID_THUMBNAIL_RECORD		= E_BASE_WINDOW_ID + 3410
-LIST_ID_POSTERWRAP_RECORD		= E_BASE_WINDOW_ID + 3420
-LIST_ID_FANART_RECORD			= E_BASE_WINDOW_ID + 3430
+LIST_ID_COMMON_RECORD				= E_BASE_WINDOW_ID + 3400
+LIST_ID_THUMBNAIL_RECORD			= E_BASE_WINDOW_ID + 3410
+LIST_ID_POSTERWRAP_RECORD			= E_BASE_WINDOW_ID + 3420
+LIST_ID_FANART_RECORD				= E_BASE_WINDOW_ID + 3430
 
 
 E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID	=  E_ARCHIVE_WINDOW_BASE_ID + 9003
@@ -235,7 +235,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.InitControl( )
 			self.UpdateList( )
 			self.SelectLastRecordKey( )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
@@ -269,7 +269,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == RADIOBUTTON_ID_WATCHED :
 			self.Load( )
 			self.UpdateList( )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 
 		elif aControlId == LIST_ID_COMMON_RECORD or aControlId == LIST_ID_THUMBNAIL_RECORD or aControlId == LIST_ID_POSTERWRAP_RECORD or aControlId == LIST_ID_FANART_RECORD :
 			if	self.mMarkMode == True :
@@ -304,7 +304,7 @@ class ArchiveWindow( BaseWindow ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
 					self.UpdateList( )
-					self.SetFocusList( self.mViewMode )
+					#self.SetFocusList( self.mViewMode )
 					return
 
 				isPlay = False
@@ -511,7 +511,7 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Playing', 'False' )
 
 		xbmc.executebuiltin( 'container.update' )
-		self.SetFocusList( self.mViewMode )
+		#self.SetFocusList( self.mViewMode )
 
 
 	def AddListItems( self ) :
@@ -592,6 +592,7 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mLastFocusItem == selectedPos and self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			self.Close( )
 			self.SetVideoRestore( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 		else :
 			currentPlayingRecord = self.mPlayingRecord		
@@ -916,7 +917,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.update' )
-			self.SetFocusList( self.mViewMode )
+			#self.SetFocusList( self.mViewMode )
 
 
 	def DoStartMark( self ) :

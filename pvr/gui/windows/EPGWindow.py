@@ -54,11 +54,17 @@ class EPGWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-		self.mLock = thread.allocate_lock( )		
+		self.mLock = thread.allocate_lock( )
+		self.mEnableAysncTimer = False
+		self.mFirstTune = False
 
 	
 	def onInit( self ) :
 		self.setFocusId( E_EPG_WINDOW_DEFAULT_FOCUS_ID )		
+
+		self.mEnableAysncTimer = True
+		self.mFirstTune = False
+
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'EPG' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -75,6 +81,7 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
+		self.mNavChannel = None
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -262,13 +269,23 @@ class EPGWindow( BaseWindow ) :
 				self.UpdateListUpdateOnly( )
 				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
-			"""
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-				self.DoCurrentEITReceived( aEvent )
-			"""
+				if self.mFirstTune == True :
+					self.mFirstTune = False
+					LOG_TRACE( '--------------- First Tune -----------------' )
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
+				#self.DoCurrentEITReceived( aEvent )
 
 
 	def Close( self ) :
+		self.mEnableAysncTimer = False
+		self.mFirstTune = False
 		self.mEventBus.Deregister( self )	
 
 		self.StopEPGUpdateTimer( )
@@ -343,6 +360,7 @@ class EPGWindow( BaseWindow ) :
 		gmtFrom = self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
+		LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 		LOG_ERR( 'START : localoffset=%d' %self.mLocalOffset )
 		LOG_ERR( 'START : %s' % TimeToString( gmtFrom+self.mLocalOffset, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 		LOG_ERR( 'START : %d : %d %d' % ( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
@@ -354,10 +372,12 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex )
 
 		if self.mEPGList == None or self.mEPGList[0].mError != 0 :
+			LOG_TRACE( 'NO EPG' )
 			self.mEPGList = None
 			return
 
 		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+			LOG_TRACE( 'NO EPG' )
 			return
 
 		LOG_ERR( 'self.mEPGList COUNT=%d' %len(self.mEPGList ) )
@@ -413,6 +433,9 @@ class EPGWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
+		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+			self.mNavChannel = self.mChannelList[ selectedPos ]
+
 
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
@@ -464,9 +487,12 @@ class EPGWindow( BaseWindow ) :
 				else :
 					self.mCtrlEPGDescription.setText( '' )
 
-				self.setProperty( 'HasHD', HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-				self.setProperty( 'HasDolby', HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( 'HasSubtitle', HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
+
 			else :
 				self.ResetEPGInfomation( )
 
@@ -479,10 +505,44 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlDateLabel.setLabel( '' )
 		self.mCtrlDurationLabel.setLabel( '' )
 		self.mCtrlEPGDescription.setText( '' )
-		
-		self.setProperty( 'HasSubtitle', 'False' )
-		self.setProperty( 'HasDolby', 'False' )
-		self.setProperty( 'HasHD', 'False' )
+
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+
+
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		#ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+
+		if aPropertyID == E_XML_PROPERTY_TELETEXT :
+			if pmtEvent and pmtEvent.mTTXCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
+					aValue = True
+
+		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
+			if pmtEvent and pmtEvent.mSubCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+					aValue = True
+
+
+		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
+			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+			if pmtEvent and pmtEvent.mAudioCount > 0 and \
+			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
+					aValue = True
+
+		self.setProperty( aPropertyID, '%s'% aValue )
+		return aValue
 
 
 	def UpdateListUpdateOnly( self ) :
@@ -504,7 +564,16 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlList.reset( )
 				return
 
-			try :		
+			try :
+				if aUpdateOnly == True :
+					if len( self.mEPGList ) != len( self.mListItems ) :
+						LOG_TRACE( 'UpdateOnly------------>Create' )
+						aUpdateOnly = False 
+						self.mLock.acquire( )	
+						self.mListItems = []
+						self.mLock.release( )
+						
+					
 				for i in range( len( self.mEPGList ) ) :
 					epgEvent = self.mEPGList[i]
 					#epgEvent.printdebug()
@@ -895,8 +964,10 @@ class EPGWindow( BaseWindow ) :
 		if aEPG :
 			dialog.SetEPG( aEPG )
 		"""
-
-		dialog.SetEPG( None )
+		if aEPG :
+			dialog.SetEPG( aEPG  )
+		else :
+			dialog.SetEPG( None  )
 			
 		channel = None
 		if self.mEPGMode == E_VIEW_CHANNEL  :
@@ -1127,7 +1198,7 @@ class EPGWindow( BaseWindow ) :
 						if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY	:
 							if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
 								return timer
-						elif self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+						elif self.HasOverlapped( startTime, endTime, timer.mStartTime + RECORD_ENDTIME_TRICK_MARGIN, timer.mStartTime + timer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 							return timer
 			else :
 				for i in range( len( self.mTimerList ) ) :
@@ -1178,7 +1249,7 @@ class EPGWindow( BaseWindow ) :
 
 					else :
 						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
-							if self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+							if self.HasOverlapped( startTime, endTime, timer.mStartTime + RECORD_ENDTIME_TRICK_MARGIN, timer.mStartTime + timer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 								LOG_TRACE( '------------------- found by manual timer-------------------------' )
 								return timer
 						
@@ -1189,10 +1260,10 @@ class EPGWindow( BaseWindow ) :
 
 
 	def HasOverlapped( self, aStartTime, aEndTime, aStartTime2, aEndTime2 ) :
-		if ( aStartTime >= aStartTime2 and aStartTime < aEndTime2 ) or \
-			( aEndTime >= aStartTime2 and aEndTime < aEndTime2 )  or \
-			( aStartTime >= aStartTime2 and aEndTime < aEndTime2 ) or \
-			( aStartTime2 >= aStartTime and aEndTime2 < aEndTime ) :
+		if ( aStartTime >= aStartTime2 and aStartTime <= aEndTime2 ) or \
+			( aEndTime >= aStartTime2 and aEndTime <= aEndTime2 )  or \
+			( aStartTime >= aStartTime2 and aEndTime <= aEndTime2 ) or \
+			( aStartTime2 >= aStartTime and aEndTime2 <= aEndTime ) :
 			return True
 
 		return False
@@ -1220,7 +1291,7 @@ class EPGWindow( BaseWindow ) :
 
 			weeklyStartTime = dateLeft*24*3600 + aTimer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
-			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime, weeklyStartTime + weeklyTimer.mDuration ) == True :
+			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime + RECORD_ENDTIME_TRICK_MARGIN, weeklyStartTime + weeklyTimer.mDuration - RECORD_ENDTIME_TRICK_MARGIN ) == True :
 				LOG_TRACE( '------------------- found by weekly timer -------------------------' )
 				return True
 
@@ -1273,7 +1344,8 @@ class EPGWindow( BaseWindow ) :
 					return
 			"""
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
-			self.RestartEPGUpdateTimer( 5 )
+			self.mFirstTune = True
+			#self.RestartEPGUpdateTimer( 5 )
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -1296,6 +1368,7 @@ class EPGWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
+				self.mFirstTune = True				
 				#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
@@ -1324,6 +1397,10 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
 		if self.mEPGUpdateTimer == None :
 			LOG_WARN( 'EPG update timer expired' )
+			return
+
+		if self.mEnableAysncTimer == False :
+			LOG_WARN( 'EnableAysncTimer is False' )		
 			return
 
 		self.Load( )
@@ -1414,6 +1491,7 @@ class EPGWindow( BaseWindow ) :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			ret = True
 

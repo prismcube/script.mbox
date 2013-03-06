@@ -50,37 +50,59 @@
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>				
-			
 
-			<control type="image" id="201">
-				<posx>520</posx>
-				<posy>90</posy>
-				<width>60</width>
-				<height>40</height>
-				<texture>IconSubtitle.png</texture>
-				<visible>substring(Window.Property(HasSubtitle),true)</visible>					
-				<description>Subtitle</description>
+			<control type="group">
+				<control type="grouplist">
+					<posx>450</posx>
+					<posy>90</posy>
+					<width>400</width>
+					<height>40</height>
+					<itemgap>10</itemgap>
+					<align>right</align>
+					<orientation>horizontal</orientation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<texture>IconTeletext.png</texture>
+						<visible>substring(Window.Property(HasTeletext),true)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<texture>IconSubtitle.png</texture>
+						<visible>substring(Window.Property(HasSubtitle),true)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>7</posy>
+						<width>102</width>
+						<height>40</height>
+						<texture>dolbydigital.png</texture>
+						<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(201)</visible>
+					</control>
+					<control type="image" id="201">
+						<posx>0</posx>
+						<posy>7</posy>
+						<width>102</width>
+						<height>40</height>
+						<texture>dolbydigitalplus.png</texture>
+						<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>90</width>
+						<height>40</height>
+						<texture>OverlayHD.png</texture>
+						<visible>substring(Window.Property(HasHD),true)</visible>
+					</control>
+				</control>
 			</control>
 
-			<control type="image" id="202">
-				<posx>575</posx>
-				<posy>90</posy>
-				<width>90</width>
-				<height>40</height>
-				<texture>dolbydigital.png</texture>
-				<visible>substring(Window.Property(HasDolby),true)</visible>					
-				<description>audio dolby</description>
-			</control>
-
-			<control type="image" id="203">
-				<posx>655</posx>
-				<posy>90</posy>
-				<width>90</width>
-				<height>40</height>
-				<texture>OverlayHD.png</texture>
-				<visible>substring(Window.Property(HasHD),true)</visible>					
-				<description>video HD</description>
-			</control>
 		</control>
 	</controls>
 </window>

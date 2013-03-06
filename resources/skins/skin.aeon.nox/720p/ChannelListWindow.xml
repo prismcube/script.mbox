@@ -142,6 +142,23 @@
 								<height>1</height>
 								<texture background="true">views/listpanel_line.png</texture>
 							</control>
+							<control type="image">
+								<posx>590</posx>
+								<posy>5</posy>
+								<width>30</width>
+								<height>30</height>
+								<visible>substring(ListItem.Property(iTuner1),true)</visible>
+								<texture>IconT1.png</texture>
+							</control>
+							<!-- is Tuner2 -->
+							<control type="image">
+								<posx>620</posx>
+								<posy>5</posy>
+								<width>30</width>
+								<height>30</height>
+								<visible>substring(ListItem.Property(iTuner2),true)</visible>
+								<texture>IconT2.png</texture>
+							</control>
 							<!-- is cas? -->
 							<control type="image">
 								<posx>650</posx>
@@ -199,7 +216,7 @@
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 							<control type="label">
-								<posx>600</posx>
+								<posx>580</posx>
 								<posy>0</posy>
 								<width>80</width>
 								<height>40</height>
@@ -235,22 +252,23 @@
 								<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 								<texture>listpanel_selectbar.png</texture>
 							</control>
-							<!--control type="image">
-								<posx>620</posx>
-								<posy>7</posy>
+							<control type="image">
+								<posx>590</posx>
+								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
-								<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
-								<texture>DI_Info.png</texture>
+								<visible>substring(ListItem.Property(iTuner1),true)</visible>
+								<texture>IconT1.png</texture>
 							</control>
+							<!-- is Tuner2 -->
 							<control type="image">
 								<posx>620</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
-								<visible>!Control.IsVisible(600)</visible>
-								<texture>DI_Ok.png</texture>
-							</control-->
+								<visible>substring(ListItem.Property(iTuner2),true)</visible>
+								<texture>IconT2.png</texture>
+							</control>
 							<!-- is cas? -->
 							<control type="image">
 								<posx>650</posx>
@@ -321,7 +339,7 @@
 								<visible>!substring(Window(13000).Property(isMove),true)</visible>
 							</control>
 							<control type="label">
-								<posx>600</posx>
+								<posx>580</posx>
 								<posy>0</posy>
 								<width>80</width>
 								<height>40</height>
@@ -461,7 +479,7 @@
 			</control>
 		</control>
 
-		<!-- Right smoll Box -->
+		<!-- Right small Box -->
 		<control type="group">
 			<include>Animation_CommonFade</include>
 			<posx>30</posx>
@@ -601,13 +619,27 @@
 						<control type="grouplist">
 							<posx>0</posx>
 							<posy>140</posy>
-							<width>190</width>
+							<width>250</width>
 							<height>30</height>
 							<itemgap>1</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
-							<control type="group" id="310">
+							<control type="group" id="313">
 								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasTeletext),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>30</height>
+									<texture>IconTeletext.png</texture>
+								</control>
+							</control>
+							<control type="group" id="310">
+								<posx>55</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
@@ -621,11 +653,11 @@
 								</control>
 							</control>
 							<control type="group" id="311">
-								<posx>55</posx>
+								<posx>135</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasDolby),true)</visible>
+								<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(314)</visible>
 								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
@@ -634,8 +666,22 @@
 									<texture>dolbydigital.png</texture>
 								</control>
 							</control>
-							<control type="group" id="312">
+							<control type="group" id="314">
 								<posx>135</posx>
+								<posy>0</posy>
+								<width>65</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>65</width>
+									<height>30</height>
+									<texture>dolbydigitalplus.png</texture>
+								</control>
+							</control>
+							<control type="group" id="312">
+								<posx>215</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>

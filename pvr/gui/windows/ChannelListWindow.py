@@ -751,6 +751,12 @@ class ChannelListWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.UpdateChannelList( )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -794,16 +800,6 @@ class ChannelListWindow( BaseWindow ) :
 			idx = self.mCtrlListCHList.getSelectedPosition( )
 			iChannel = self.mChannelList[idx]
 
-		"""
-		if self.mFlag_ModeChanged :
-			isBlank = False
-			if iChannel.mServiceType == FLAG_MODE_RADIO :
-				isBlank = True
-			else :
-				isBlank = False
-			self.mDataCache.Player_VideoBlank( isBlank )
-		"""
-
 		if self.mIsPVR :
 			self.mIsPVR = False
 			self.mDataCache.Player_Stop( )
@@ -825,6 +821,7 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 				LOG_TRACE( 'No exit by pressing the cancel button' )
+
 
 		#refresh info
 		if iChannel :
@@ -1450,6 +1447,15 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( False )
 
 			for iChannel in self.mChannelList :
+				"""
+				lblTPnum = 'T1'
+				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+				if mTPnum == E_CONFIGURED_TUNER_2 :
+					lblTPnum = 'T1'
+				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+					lblTPnum = 'T1, T2'
+				"""
+
 				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 				if iChannel.mLocked : 
@@ -1472,6 +1478,17 @@ class ChannelListWindow( BaseWindow ) :
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+
+
+				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+				if mTPnum == E_CONFIGURED_TUNER_1 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+
 
 				self.mListItems.append( listItem )
 
@@ -1527,8 +1544,10 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
@@ -1645,16 +1664,49 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		if aPropertyID == E_XML_PROPERTY_TELETEXT :
+			if pmtEvent and pmtEvent.mTTXCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
+					aValue = True
+
+		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
+			if pmtEvent and pmtEvent.mSubCount > 0 :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
+					aValue = True
+
+		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
+			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
+			if pmtEvent and pmtEvent.mAudioCount > 0 and \
+			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
+				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
+				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
+					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
+					aValue = True
+
+		self.setProperty( aPropertyID, '%s'% aValue )
+		return aValue
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
 
 		if aPropertyID == E_XML_PROPERTY_EDITINFO or aPropertyID == E_XML_PROPERTY_MOVE :
 			rootWinow = xbmcgui.Window( 10000 )
-			rootWinow.setProperty( aPropertyID, aValue )			
-			
+			rootWinow.setProperty( aPropertyID, aValue )
+
 		else :
+			if self.UpdatePropertyByCacheData( aPropertyID ) == True :
+				LOG_TRACE( '-------------- return by cached data' )
+				return True
+
 			self.setProperty( aPropertyID, aValue )
 
 
@@ -1725,8 +1777,10 @@ class ChannelListWindow( BaseWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
@@ -1808,6 +1862,16 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+
+			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+			if mTPnum == E_CONFIGURED_TUNER_1 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
+				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+
 			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
 			self.mListItems.append(listItem)

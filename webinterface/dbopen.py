@@ -14,7 +14,7 @@ class DbOpen( object ) :
 
 		self.conn = sqlite3.connect(self.path + '\\webinterface\\' + dbname)
 		'''
-		self.conn = sqlite3.connect('/tmp/' + dbname)		
+		self.conn = sqlite3.connect('/mtmp/' + dbname)		
 		# print (self.path + '\\webinterface\\' + dbname)
 
 	def getConnection(self) :

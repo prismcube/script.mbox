@@ -1,20 +1,25 @@
 from pvr.gui.WindowImport import *
-import sys, inspect, time
+import sys, inspect, time, threading
 import gc
 
+
 E_NULL_WINDOW_BASE_ID				=  WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_NOMAL_BLINKING_TIME		= 0.2
 
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
+		self.mRecordBlinkingTimer	= None	
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
 			self.mForceSetCurrent = True
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
+			self.mSubTitleIsShow = False
+			self.mIsShowDialog = False
 
 
 	def onInit( self ) :
@@ -23,11 +28,15 @@ class NullWindow( BaseWindow ) :
 		collected = gc.collect()
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-		if playingRecord :
-			self.SetFrontdisplayMessage( playingRecord.mRecordName )
-		else :
-			self.mDataCache.Frontdisplay_SetCurrentMessage( )
-		
+		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
+		try :
+			if playingRecord :
+				self.SetFrontdisplayMessage( playingRecord.mRecordName )
+			else :
+				self.mDataCache.Frontdisplay_SetCurrentMessage( )
+		except Exception, e :
+			LOG_TRACE('except[%s]'% e )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.CheckMediaCenter( )
@@ -52,6 +61,7 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
 		self.LoadNoSignalState( )
+		self.CheckSubTitle( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
@@ -108,6 +118,7 @@ class NullWindow( BaseWindow ) :
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
+				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 	 			dialog.doModal( )
@@ -117,6 +128,7 @@ class NullWindow( BaseWindow ) :
 	 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
 			 			dialog.doModal( )
+			 			self.CheckSubTitle( )
 			 			return
 					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 						self.Close( )
@@ -125,6 +137,7 @@ class NullWindow( BaseWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 			 			dialog.doModal( )
+			 			self.CheckSubTitle( )			 			
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
@@ -145,10 +158,8 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping playback' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
+				self.DialogPopupOK( actionId )
+
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
@@ -157,10 +168,11 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			self.Close( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 			else :
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )			
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
@@ -205,10 +217,11 @@ class NullWindow( BaseWindow ) :
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-
+				self.CloseSubTitle( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
+				self.CheckSubTitle( )				
 
 				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
@@ -221,9 +234,11 @@ class NullWindow( BaseWindow ) :
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 			else :
+				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
 				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
+				self.CheckSubTitle( )
 
 				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
@@ -234,7 +249,9 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
-				self.ShowRecordingStopDialog( )			
+				self.CloseSubTitle( )			
+				self.ShowRecordingStopDialog( )
+				self.CheckSubTitle( )
 
 			else :
 				self.mDataCache.Player_Stop( )
@@ -255,10 +272,7 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				if status.mMode == ElisEnum.E_MODE_PVR :
-					msg = MR_LANG( 'Try again after stopping playback' )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-					dialog.doModal( )
+					self.DialogPopupOK( actionId )
 					return
 
 				self.mDataCache.Player_Stop( )
@@ -277,30 +291,37 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
-					dialog.doModal( )
+					self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping playback' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
+				self.DialogPopupOK( actionId )
+
 			else :
-				self.ShowRecordingStartDialog( )
+				self.CloseSubTitle( )
+				if RECORD_WIDTHOUT_ASKING == True :
+					self.StartRecordingWithoutAsking( )				
+				else :
+					self.ShowRecordingStartDialog( )
+				self.CheckSubTitle( )
 		
-		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or \
+		     actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
-			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_PVR and \
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_PVR and \
 			   self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				return -1
+
+			if actionId == Action.ACTION_MOVE_RIGHT and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
 
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
@@ -308,6 +329,7 @@ class NullWindow( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_FF :
@@ -315,6 +337,7 @@ class NullWindow( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
@@ -326,14 +349,10 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
-				dialog.doModal( )
+				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
-			dialog.doModal( )
+			self.ShowSubtitle( )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )
@@ -420,6 +439,10 @@ class NullWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
+
+				self.StopBlickingIconTimer( )
+				self.setProperty( 'RecordBlinkingIcon', 'False' )
+
 				self.mDataCache.SetChannelReloadStatus( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
@@ -509,16 +532,139 @@ class NullWindow( BaseWindow ) :
 				#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 
 
+	def StartRecordingWithoutAsking( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+		isOK = True
+
+		if mTimer :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal( )
+
+			isOK = dialog.IsOK( )
+			if isOK != E_DIALOG_STATE_YES :
+				isOK = False
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+				RecordConflict( dialog.GetConflictTimer( ) )
+
+			return				
+
+		elif runningCount < 2 :
+			copyTimeshift = 0
+			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
+			localTime = self.mDataCache.Datetime_GetLocalTime( )				
+
+			#check ValidEPG
+			hasValidEPG = False
+			if otrInfo.mHasEPG :
+				if localTime >= otrInfo.mEventStartTime  and localTime < otrInfo.mEventEndTime :
+					hasValidEPG = True
+
+			if hasValidEPG == False :
+				otrInfo.mHasEPG = False
+				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+				otrInfo.mExpectedRecordDuration = prop.GetProp( )
+				otrInfo.mEventStartTime = localTime
+				otrInfo.mEventEndTime = localTime +	otrInfo.mExpectedRecordDuration
+				otrInfo.mEventName = self.mDataCache.Channel_GetCurrent( ).mName
+
+			
+			if otrInfo.mTimeshiftAvailable :
+				if otrInfo.mHasEPG == True :			
+					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+				
+					copyTimeshift  = localTime - otrInfo.mEventStartTime
+					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
+					if copyTimeshift > timeshiftRecordSec :
+						copyTimeshift = timeshiftRecordSec
+					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+
+			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
+
+			if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
+				copyTimeshift = 0
+
+			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+			expectedDuration = otrInfo.mEventEndTime - localTime
+
+			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
+
+			if expectedDuration < 0:
+				LOG_ERR( 'Error : Already Passed' )
+				expectedDuration = 0
+
+			ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, 0,  0, 0 )
+
+			#if ret[0].mParam == -1 or ret[0].mError == -1 :
+			LOG_ERR( 'StartDialog ret=%s ' %ret )
+			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
+				LOG_ERR( 'StartDialog ' )
+				RecordConflict( ret )
+
+		else:
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
+			dialog.doModal( )
+
+		if isOK :
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.StartBlickingIconTimer( )
+			
+			self.mDataCache.SetChannelReloadStatus( True )
+
+
+	def RestartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
+		self.StopBlickingIconTimer( )
+		self.StartBlickingIconTimer( aTimeout )
+
+
+	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
+		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
+		self.mRecordBlinkingTimer .start( )
+	
+
+	def StopBlickingIconTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
+			self.mRecordBlinkingTimer.cancel( )
+			del self.mRecordBlinkingTimer
+			
+		self.mRecordBlinkingTimer = None
+
+
+	def AsyncBlinkingIcon( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mRecordBlinkingTimer == None :
+			LOG_WARN( 'Blinking Icon update timer expired' )
+			return
+
+		if self.getProperty( 'RecordBlinkingIcon' ) == 'True' :
+			self.setProperty( 'RecordBlinkingIcon', 'False' )
+		else :
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+
+		self.RestartBlickingIconTimer( )
+
 
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+
 		isOK = False
-		if runningCount < 2 :
+		if runningCount < 2 or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
@@ -558,6 +704,12 @@ class NullWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
+		self.CloseSubTitle( )
+
+		self.StopBlickingIconTimer( )
+		self.setProperty( 'RecordBlinkingIcon', 'False' )		
+
+		
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
@@ -590,3 +742,150 @@ class NullWindow( BaseWindow ) :
 		channel = self.mDataCache.Channel_GetList( )
 		if not channel or len( channel ) < 1 :
 			self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+
+
+	def CloseSubTitle( self ) :
+		if self.mCommander.Subtitle_IsShowing( ) :
+			self.mSubTitleIsShow = True
+			self.mCommander.Subtitle_Hide( )
+		else :
+			self.mSubTitleIsShow = False
+
+
+	def CheckSubTitle( self ) :
+		if self.mSubTitleIsShow :
+			self.mCommander.Subtitle_Show( )
+
+
+	def ShowSubtitle( self ) :
+		subTitleCount = self.mCommander.Subtitle_GetCount( )
+		if subTitleCount > 0 :
+			isShowing = False
+			if self.mCommander.Subtitle_IsShowing( ) :
+				self.mCommander.Subtitle_Hide( )
+				isShowing = True
+
+			selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
+
+			#####
+			if selectedSubtitle :
+				selectedSubtitle.printdebug( )
+			#####
+		
+			context = []
+			structSubTitle = []
+			selectedIndex = -1
+
+			for i in range( subTitleCount ) :
+				structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
+				self.mCommander.Subtitle_Get( i ).printdebug( )
+
+				if selectedSubtitle and isShowing :
+					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
+						selectedIndex = i
+				
+				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+					subType = 'DVB'
+				else :
+					subType = 'TTX'
+				print 'structSubTitle[i].mLanguage = ' , structSubTitle[i]
+				print 'structSubTitle[i].mLanguage[0] = %d ' % len( structSubTitle[i].mLanguage )
+				if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
+					ten = ( structSubTitle[i].mSubId/16 )
+					one = (structSubTitle[i].mSubId % 16)
+
+					context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+				else :	
+					context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+
+			context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
+
+			if selectedIndex < 0 :
+				selectedIndex = subTitleCount
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context, selectedIndex )
+			dialog.doModal( )
+
+			selectAction = dialog.GetSelectedAction( )
+			if selectAction == -1 and isShowing :
+				self.mCommander.Subtitle_Show( )
+
+			elif selectAction >= 0 and subTitleCount > selectAction :
+				self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+				self.mCommander.Subtitle_Show( )
+
+			elif selectAction == subTitleCount :
+				self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
+				self.mCommander.Subtitle_Hide( )
+
+		else :
+			self.CloseSubTitle( )		
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+			dialog.doModal( )
+			self.CheckSubTitle( )
+
+
+	def DialogPopupOK( self, aAction ) :
+		if self.mIsShowDialog == False :
+			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
+			thread.start( )
+		else :
+			LOG_TRACE( 'Already opened, Dialog' )
+
+
+	def ShowDialog( self, aAction ) :
+		self.mIsShowDialog = True
+
+		head= MR_LANG( 'Attention' )
+		msg = ''
+		dialogId = DiaMgr.DIALOG_ID_POPUP_OK
+		extendData = None
+		if aAction == Action.ACTION_SHOW_INFO :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+			iPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+			if iPlayingRecord :
+				iCurrentEPG = self.mDataCache.RecordItem_GetEventInfo( iPlayingRecord.mRecordKey )
+				if iCurrentEPG == None or iCurrentEPG.mError != 0 :
+					iCurrentEPG = ElisIEPGEvent()
+					iCurrentEPG.mEventName = iPlayingRecord.mRecordName
+					iCurrentEPG.mEventDescription = ''
+					iCurrentEPG.mStartTime = iPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
+					iCurrentEPG.mDuration = iPlayingRecord.mDuration
+
+				dialogId = DiaMgr.DIALOG_ID_EXTEND_EPG
+				extendData = iCurrentEPG
+
+			else :
+				head = MR_LANG( 'Error' )
+				msg = MR_LANG( 'EPG None' )
+
+		elif aAction == Action.ACTION_MBOX_TEXT :
+			head = MR_LANG( 'No teletext' )
+			msg = MR_LANG( 'No teletext available' )
+
+		elif aAction == Action.ACTION_MBOX_XBMC :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == Action.ACTION_MBOX_RECORD :
+			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == Action.ACTION_MBOX_TVRADIO :
+			head = MR_LANG( 'Error' )
+			msg = MR_LANG( 'No channels available for the selected mode' )
+
+		self.CloseSubTitle( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( dialogId )
+		if dialogId == DiaMgr.DIALOG_ID_EXTEND_EPG and extendData :
+			dialog.SetEPG( extendData )
+		else :
+			dialog.SetDialogProperty( head, msg )
+		dialog.doModal( )
+		self.CheckSubTitle( )
+
+		self.EventReceivedDialog( dialog )
+
+		self.mIsShowDialog = False
+

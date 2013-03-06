@@ -149,12 +149,12 @@ def XBMC_GetVolume( ) :
 		retVolume = xbmc.executehttpapi( 'getvolume' )
 		volume = int( retVolume[4:] )
 	else :
-		LOG_TRACE( '' )	
-		if XBMC_GetMute() == True :
-			LOG_TRACE( '' )		
-			return 0
+		#LOG_TRACE( '' )
+		#if XBMC_GetMute() == True :
+		#	LOG_TRACE( '' )
+		#	return 0
 		LOG_TRACE( '' )			
-		print 'E_ADD_XBMC_JSONRPC_FUNCTION : getvolume '
+		print 'E_ADD_XBMC_JSONRPC_FUNCTION : getVolume'
 		json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["volume"]}, "id": 1}')
 		json_response = unicode(json_query, 'utf-8', errors='ignore')
 		jsonobject = simplejson.loads(json_response)
@@ -175,13 +175,14 @@ def XBMC_GetMute( ) :
 		if volume == 0 :
 			return True
 	else :
-		print 'E_ADD_XBMC_JSONRPC_FUNCTION : getvolume '
+		print 'E_ADD_XBMC_JSONRPC_FUNCTION : getMute'
 		json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["muted"]}, "id": 1}')
 		json_response = unicode(json_query, 'utf-8', errors='ignore')
 		jsonobject = simplejson.loads(json_response)
 
 		if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('muted'):
 			muted = jsonobject['result']['muted']
+			LOG_TRACE('---------------xbmc muted = %s' %muted)
 			return muted
 			
 	return False
@@ -202,6 +203,12 @@ def XBMC_SetVolume( aVolume, aIsMute=0 ) :
 		#	setvolume_query = '{"jsonrpc": "2.0", "method": "Application.SetMute", "params": {"mute": "toggle"}, "id": 1}'
 		#setvolume_query = '{"jsonrpc": 2.0", "method": "Application.SetVolume", "params": { "value": "13"}, "id": 1}'
 		xbmc.executeJSONRPC ( setvolume_query )
+
+
+def XBMC_SetVolumeByBuiltin( aVolume, aIsVisible ) :
+	LOG_TRACE( '' )
+	print 'XMBC_BUILTIN_FUNCTION: SetVolume %d' % aVolume
+	xbmc.executebuiltin( 'SetVolume( %s, %s )' % ( aVolume, aIsVisible ) )
 
 
 def XBMC_GetResolution( ) :

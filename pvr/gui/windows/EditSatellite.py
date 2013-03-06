@@ -122,6 +122,7 @@ class EditSatellite( SettingWindow ) :
 					ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 					if ret :
 						self.mDataCache.LoadAllSatellite( )
+						self.mSatelliteIndex = self.GetEditedPosition( longitude, band )
 						self.InitConfig( )
 						self.CloseBusyDialog( )
 			 		else :
@@ -131,7 +132,7 @@ class EditSatellite( SettingWindow ) :
 			 			dialog.doModal( )
 			 	else :
 			 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already exists' ) )
 		 			dialog.doModal( )
 				 
 		# Delete Satellite
@@ -218,3 +219,12 @@ class EditSatellite( SettingWindow ) :
 			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
 				return False
 		return True
+
+
+	def GetEditedPosition( self, aLongitude, aBand ) :
+		satellitelist = self.mDataCache.GetAllSatelliteList( )
+		for i in range( len( satellitelist ) ) :
+			if satellitelist[i].mLongitude == aLongitude and satellitelist[i].mBand == aBand :
+				return i
+
+		return 0

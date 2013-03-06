@@ -150,8 +150,12 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
+			pass
+			"""
+			#deprecate
 			self.Close( )
 			WinMgr.GetInstance( ).CloseWindow( )
+			"""
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if HasAvailableRecordingHDD( ) == False :
@@ -249,6 +253,12 @@ class InfoPlate( LivePlateWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
  				self.ShowRecordingInfo( )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -284,9 +294,11 @@ class InfoPlate( LivePlateWindow ) :
 					#component
 					setPropertyList = []
 					setPropertyList = GetPropertyByEPGComponent( aEpg )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
+					self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+					if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -339,24 +351,26 @@ class InfoPlate( LivePlateWindow ) :
 		self.mCtrlBtnPrevEpg.setVisible( False )
 		self.mCtrlBtnNextEpg.setVisible( False )
 
-		tvValue = 'True'
-		raValue = 'False'
+		tvValue = E_TAG_TRUE
+		raValue = E_TAG_FALSE
 		if self.mPlayingRecord :
 			if self.mPlayingRecord.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-				tvValue = 'False'
-				raValue = 'True'
+				tvValue = E_TAG_FALSE
+				raValue = E_TAG_TRUE
 		else :
-			tvValue = 'False'
-			raValue = 'False'
+			tvValue = E_TAG_FALSE
+			raValue = E_TAG_FALSE
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,      tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -389,10 +403,20 @@ class InfoPlate( LivePlateWindow ) :
 			self.mCtrlLblRec2.setLabel( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+		return ret
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
+
+		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
+			#LOG_TRACE( '-------------- return by cached data -------------------' )
+			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -407,7 +431,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
 				self.Close( )
@@ -420,6 +444,8 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				return
+
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )				
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -437,15 +463,6 @@ class InfoPlate( LivePlateWindow ) :
 			self.mEventBus.Deregister( self )
 			self.AudioVideoContext( )
 			self.mEventBus.Register( self )
-
-
-	def EventReceivedDialog( self, aDialog ) :
-		ret = aDialog.GetCloseStatus( )
-		if ret == Action.ACTION_PLAYER_PLAY :
-			xbmc.executebuiltin('xbmc.Action(play)')
-
-		elif ret == Action.ACTION_STOP :
-			xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def BookMarkContext( self ) :
@@ -544,24 +561,33 @@ class InfoPlate( LivePlateWindow ) :
  	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+			if isRunningTimerList :
+				runningRecordCount = len( isRunningTimerList )
+
+			#LOG_TRACE( "runningRecordCount=%d" %runningRecordCount )
 
 			strLabelRecord1 = ''
 			strLabelRecord2 = ''
 			setPropertyRecord1 = 'False'
 			setPropertyRecord2 = 'False'
-			if isRunRec == 1 :
+			if isRunRec == 1 and runningRecordCount == 1 :
 				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
-			elif isRunRec == 2 :
+			elif isRunRec == 2 and runningRecordCount == 2 :
 				setPropertyRecord1 = 'True'
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[1]
+				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )

@@ -3,6 +3,7 @@ from fileDownloader import DownloadFile
 from version import LooseVersion
 from copy import deepcopy
 import stat
+import shutil
 
 E_SYSTEM_UPDATE_BASE_ID = WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
@@ -12,8 +13,8 @@ E_TYPE_ADDONS = 2
 E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
-E_DOWNLOAD_PATH_FWURL     = '/tmp/fwUrl'
-E_DOWNLOAD_PATH_UNZIPFILES ='/tmp/unziplist'
+E_DOWNLOAD_PATH_FWURL     = '/mtmp/fwUrl'
+E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
@@ -67,6 +68,7 @@ E_STRING_CHECK_FAILED    = 13
 E_STRING_CHECK_HAVE_NONE = 14
 E_STRING_CHECK_DOWNLOADING    = 15
 
+UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
 class PVSClass( object ) :
 	def __init__( self ) :
@@ -208,7 +210,7 @@ class SystemUpdate( SettingWindow ) :
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				self.UpdateChannel( )
+				self.UpdateChannelsByInternet( )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -230,6 +232,14 @@ class SystemUpdate( SettingWindow ) :
 						LOG_TRACE( '------------cancel(download)' )
 					else :
 						self.mGetDownloadThread = self.GetDownloadThread( )
+
+		elif groupId == E_Input03 :
+			LOG_TRACE( 'Import Channels from USB' )
+			self.ImportChannelsFromUSB( )
+
+		elif groupId == E_Input04 :
+			LOG_TRACE( 'Export Channels to USB' )		
+			self.ExportChannelsToUSB( )
 
 
 	def onFocus( self, aControlId ) :
@@ -388,7 +398,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_CORRUPT :
 			line = MR_LANG( 'File is corrupted, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_USB_NOT :
-			line = MR_LANG( 'Please insert a USB flash drive and press OK' )
+			line = MR_LANG( 'Please insert a USB flash memory and press OK' )
 		elif aMsg == E_STRING_CHECK_VERIFY :
 			line = MR_LANG( 'File verification failed, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_FINISH :
@@ -398,7 +408,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_DISKFULL :
 			line = MR_LANG( 'Insufficient disk space' )
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
-			line = MR_LANG( 'Not enough space on USB flash drive' )
+			line = MR_LANG( 'Not enough space on your USB flash memory' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
 			line = MR_LANG( 'Cannot connect to server' )
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
@@ -779,10 +789,18 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels by Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+
+			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import channel list via USB' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export channel list via USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
+
+			self.SetEnableControl( E_Input03, True )
+			self.SetEnableControl( E_Input04, True )
+			self.SetVisibleControl( E_Input03, True )
+			self.SetVisibleControl( E_Input04, True )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
@@ -811,6 +829,11 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
 			self.AddInputControl( E_Input02, '', button2Label, button2Desc )
 			self.SetEnableControl( E_Input02, button2Enable )
+
+			self.SetEnableControl( E_Input03, False )
+			self.SetEnableControl( E_Input04, False )
+			self.SetVisibleControl( E_Input03, False )
+			self.SetVisibleControl( E_Input04, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1207,6 +1230,53 @@ class SystemUpdate( SettingWindow ) :
 			if aShowProgress :
 				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
 			unpackFile = '%s/%s'% ( usbPath, item[1] )
+			iFileMD5 = GetUnpackByMD5( unpackFile )
+			iRealMD5 = CheckMD5Sum( unpackFile )
+			LOG_TRACE( '--------------verify check file[%s] get[%s] md5[%s]'% ( unpackFile, iFileMD5, iRealMD5 ) )
+			if not iFileMD5 or not iRealMD5 or iFileMD5 != iRealMD5 :
+				LOG_TRACE( '--------------verify err file[%s] get[%s] md5[%s]'% ( unpackFile, iFileMD5, iRealMD5 ) )
+				isVerify = False
+				break
+
+			if aShowProgress and dialogProgress.iscanceled( ) :
+				LOG_TRACE( '--------------abort(verified)' )
+				isVerify = False
+				break
+
+			time.sleep( 0.2 )
+
+		if aShowProgress :
+			dialogProgress.close( )
+
+		self.CloseBusyDialog( )
+		time.sleep( 0.3 )
+
+		return isVerify
+
+
+	#--deprecated, old check
+	def VerifiedUnPack_Old( self, aZipFile, aShowProgress = True ) :
+		fileList = GetUnpackFiles( aZipFile )
+		if not fileList :
+			return False
+
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			return False
+
+		self.OpenBusyDialog( )
+		if aShowProgress :
+			dialogProgress = xbmcgui.DialogProgress( )
+			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
+
+		isVerify = True
+		totalFiles = len( fileList )
+		idx = 0
+		for item in fileList :
+			idx += 1
+			if aShowProgress :
+				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
+			unpackFile = '%s/%s'% ( usbPath, item[1] )
 			unpackSize = GetFileSize( unpackFile )
 			if item[0] != unpackSize :
 				LOG_TRACE( '--------------verify err pack[%s] unPack[%s] file[%s]'% ( item[0], unpackSize, unpackFile ) )
@@ -1398,7 +1468,7 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
 
-	def UpdateChannel( self ) :
+	def UpdateChannelsByInternet( self ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
 		if self.DownloadInfoFile( ) == False :
 			self.CloseProgress( )
@@ -1429,10 +1499,82 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
+	def ImportChannelsFromUSB( self ) :
+		LOG_TRACE( '' )
+		#check usb mount
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			LOG_TRACE( 'USB not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+			return
+
+		#check usb file
+		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
+		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+		if not os.path.exists( filePath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG('Error'), '%s %s' %( MR_LANG( 'File not found' ), filePath ) )
+			dialog.doModal( )
+			return
+
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+		shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )
+	
+		self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
+		#self.mCommander.System_SetDefaultChannelList( )
+		self.mDataCache.LoadAllSatellite( )
+		self.mTunerMgr.SyncChannelBySatellite( )
+		self.mDataCache.Channel_ReLoad( )
+		self.mDataCache.Player_AVBlank( False )
+
+		os.remove( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )		
+
+		self.CloseProgress( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
+		dialog.doModal( )
+		
+	
+	def ExportChannelsToUSB( self ) :
+		LOG_TRACE( '' )
+		#check usb mount
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			LOG_TRACE( 'Not Exist USB' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+			return
+
+		#check usb file
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+		filePath = os.path.join( usbPath, 'updatechannel' )
+		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+		if not os.path.exists( filePath ) :
+			os.mkdir( filePath, 0777 )
+
+		self.mCommander.System_ExportChannelList( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )
+
+		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
+		shutil.copyfile( UPDATE_TEMP_CHANNEL, filePath )
+		os.system( 'sync' )
+
+		os.remove( UPDATE_TEMP_CHANNEL )
+		os.system( 'sync' )		
+		
+		self.CloseProgress( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your channel list has been exported successfully') )
+		dialog.doModal( )
+
+
 	def ParseList( self ) :
 		try :
 			from elementtree import ElementTree
-			tree = ElementTree.parse( '/tmp/channel.xml' )
+			tree = ElementTree.parse( '/mtmp/channel.xml' )
 			root = tree.getroot( )
 
 			makelist = []
@@ -1463,8 +1605,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
-			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
-			self.mCommander.System_SetDefaultChannelList( )
+			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
+			#self.mCommander.System_SetDefaultChannelList( )
 			self.mDataCache.LoadAllSatellite( )
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
@@ -1481,7 +1623,7 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			import urllib2
 			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST + '?key=%s' % aKey , None, 20 )
-			output = open( '/tmp/defaultchannel.xml', 'wb' )
+			output = open( '/mtmp/defaultchannel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )
 			return True
@@ -1494,7 +1636,7 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			import urllib2
 			updatefile = urllib2.urlopen( E_DEFAULT_CHANNEL_LIST, None, 20 )
-			output = open( '/tmp/channel.xml', 'wb' )
+			output = open( '/mtmp/channel.xml', 'wb' )
 			output.write( updatefile.read( ) )
 			output.close( )
 			return True

@@ -12,40 +12,26 @@
 		</control>
 		<control type="group">
 			<include>DefaultWindowFade</include>
-			<!--
 			<control type="image">
 				<posx>0</posx>
-				<posy>0</posy>
+				<posy>100r</posy>
 				<width>1280</width>
-				<height>720</height>
-				<texture border="20">black-back.png</texture>
-				<visible>true</visible>
+				<height>100</height>
+				<texture>floor.png</texture>		
 			</control>
-			-->
 			<control type="image">
-				<posx>0</posx>
-				<posy>128r</posy>
-				<width>1280</width>
-				<height>128</height>
-				<texture>floor.png</texture>
-				<visible>true</visible>				
+				<posx>40</posx>
+				<posy>40</posy>
+				<width>1200</width>
+				<height>620</height>
+				<texture border="20">ContentPanel.png</texture>
 			</control>
-			<control type="group">
-				<control type="image">
-					<posx>40</posx>
-					<posy>40</posy>
-					<width>1200</width>
-					<height>620</height>
-					<texture border="20">ContentPanel.png</texture>
-				</control>
-				<control type="image">
-					<posx>40</posx>
-					<posy>645</posy>
-					<width>1200</width>
-					<height>600</height>
-					<aspectratio aligny="top">keep</aspectratio>
-					<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
-				</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>653</posy>
+				<width>1200</width>
+				<height>64</height>
+				<texture border="15">ContentPanelMirror.png</texture>
 			</control>
 		</control>
 
@@ -168,8 +154,9 @@
 					<posy>170</posy>
 					<width>240</width>
 					<height>550</height>
-					<onleft>9000</onleft>
-					<onright>9000</onright>
+					<onleft>101</onleft>
+					<onright condition="substring(Window.Property(EPGMode),channel)">3500</onright>
+					<onright condition="!substring(Window.Property(EPGMode),channel)">3510</onright>
 					<onup>9010</onup>
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
@@ -208,8 +195,10 @@
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label></label>
-					<onleft>9003</onleft>
-					<onright>9003</onright>
+					<onleft condition="substring(Window.Property(EPGMode),channel)">3500</onleft>
+					<onleft condition="!substring(Window.Property(EPGMode),channel)">3510</onleft>
+					<onright condition="substring(Window.Property(EPGMode),channel)">3500</onright>
+					<onright condition="!substring(Window.Property(EPGMode),channel)">3510</onright>
 					<onup>101</onup>
 					<ondown>101</ondown>
 				</control>
@@ -227,7 +216,8 @@
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
 					<label>SCRIPT9</label>
-					<onleft>9003</onleft>
+					<onleft condition="substring(Window.Property(EPGMode),channel)">3500</onleft>
+					<onleft condition="!substring(Window.Property(EPGMode),channel)">3510</onleft>
 					<onright>9010</onright>
 					<onup>100</onup>
 					<ondown>100</ondown>
@@ -324,13 +314,27 @@
 				<control type="grouplist">
 					<posx>0</posx>
 					<posy>240</posy>
-					<width>240</width>
+					<width>350</width>
 					<height>30</height>
 					<itemgap>1</itemgap>
 					<visible>true</visible>
 					<orientation>horizontal</orientation>
-					<control type="group" id="310">
+					<control type="group" id="313">
 						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasTeletext),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<texture>IconTeletext.png</texture>
+						</control>
+					</control>
+					<control type="group" id="310">
+						<posx>60</posx>
 						<posy>0</posy>
 						<width>60</width>
 						<height>30</height>
@@ -344,11 +348,11 @@
 						</control>
 					</control>
 					<control type="group" id="311">
-						<posx>60</posx>
+						<posx>120</posx>
 						<posy>0</posy>
 						<width>65</width>
 						<height>30</height>
-						<visible>substring(Window.Property(HasDolby),True)</visible>
+						<visible>substring(Window.Property(HasDolby),True) + !Control.IsVisible(314)</visible>
 						<control type="image">
 							<posx>20</posx>
 							<posy>5</posy>
@@ -357,8 +361,22 @@
 							<texture>dolbydigital.png</texture>
 						</control>
 					</control>
-					<control type="group" id="312">
+					<control type="group" id="314">
 						<posx>120</posx>
+						<posy>0</posy>
+						<width>65</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasDolbyPlus),True)</visible>
+						<control type="image">
+							<posx>20</posx>
+							<posy>5</posy>
+							<width>82</width>
+							<height>20</height>
+							<texture>dolbydigitalplus.png</texture>
+						</control>
+					</control>
+					<control type="group" id="312">
+						<posx>180</posx>
 						<posy>0</posy>
 						<width>65</width>
 						<height>30</height>

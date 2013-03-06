@@ -10,7 +10,7 @@ from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.ElisMgr
 import pvr.DataCacheMgr
-from pvr.XBMCInterface import XBMC_GetVolume
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_GetMute
 
 
 XBMC_WINDOW_DIALOG_KEYBOARD			= 10103
@@ -205,7 +205,9 @@ class DialogMgr( object ) :
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			volume =  XBMC_GetVolume( )
+			if XBMC_GetMute() == False :
+				volume =  XBMC_GetVolume( )
+
 		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :

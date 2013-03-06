@@ -50,10 +50,13 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
+E_NOMAL_BLINKING_TIME		= 0.2
+
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )
 
+		self.mRecordBlinkingTimer	= None	
 		self.mLocalTime = 0
 		self.mCurrentChannel = None
 		self.mLastChannel = None
@@ -131,6 +134,7 @@ class LivePlate( LivePlateWindow ) :
 		self.LoadInit( )
 
 		#run thread
+
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
@@ -141,6 +145,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mInitialized = True
 				thread = threading.Timer( 0.3, self.ShowPincodeDialog )
 				thread.start( )
+				self.mAutomaticHide = True
 			else :
 				self.mDataCache.SetAVBlankByChannel( )
 
@@ -301,6 +306,12 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
 
+		#elif actionId == Action.ACTION_COLOR_RED :
+		#	self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+
+		#elif actionId == Action.ACTION_COLOR_YELLOW :
+		#	self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -358,24 +369,34 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def LoadInit( self ):
-		self.ShowRecordingInfo( )
-		self.InitControlGUI( )
-		#self.GetEPGListByChannel( )
-		"""
+		#1. Show epg infomation
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
-				#iEPG = self.mDataCache.Epgevent_GetPresent( )
-				iEPG = self.mDataCache.GetEpgeventCurrent( )
-				if iEPG and iEPG.mError == 0 :
-					self.mCurrentEPG = iEPG
-					self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				#iEPG = self.mDataCache.GetEpgeventCurrent( )
+				self.mCurrentEPG = None
 
-				self.UpdateChannelAndEPG( self.mCurrentEPG )
+				if iEPG and iEPG.mError == 0 :
+					if self.mCurrentChannel.mSid == iEPG.mSid and self.mCurrentChannel.mTsid == iEPG.mTsid and self.mCurrentChannel.mOnid == iEPG.mOnid : 
+						self.mCurrentEPG = iEPG
+						self.UpdateEpgGUI( self.mCurrentEPG )
+						LOG_TRACE('-----------------init pmt')
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-		"""
+
+		#2. Show recording Info
+		self.ShowRecordingInfo( )		
+
+		#3. Show Front disply
+		if self.mCurrentEPG :
+			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 
 	def onEvent(self, aEvent):
@@ -408,6 +429,12 @@ class LivePlate( LivePlateWindow ) :
 			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 			#	LOG_TRACE('----------------------------receive epg')
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				iEPG = self.mDataCache.GetEpgeventCurrent( )
 				self.UpdateChannelAndEPG( iEPG )
@@ -419,7 +446,11 @@ class LivePlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
+				self.StopBlickingIconTimer( )
+				self.setProperty( 'RecordBlinkingIcon', 'False' )
+				 
  				self.ShowRecordingInfo( )
+				self.RestartAutomaticHide( ) 				
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.mJumpNumber = aEvent.mChannelNo
@@ -500,6 +531,7 @@ class LivePlate( LivePlateWindow ) :
 			self.InitControlGUI( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
+			self.UpdateChannelGUI( )
 			return
 
 		if self.mAutomaticHide == True :
@@ -672,34 +704,38 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def UpdateChannelAndEPG( self, aEpg = None ):
+		self.UpdateChannelGUI( )
+		self.UpdateEpgGUI( aEpg )
+
+
+	def UpdateChannelGUI( self ) :
 		ch = self.mCurrentChannel
 		if ch :
 			try :
 				#satellite
-				label = ''
-				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-					#self.UpdatePropertyGUI( E_XML_PROPERTY_FAV, 'True' )
-					label = self.mDataCache.Favoritegroup_GetCurrent( )
-
-				else :
-					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
-					if satellite :
-						label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-
+				label = self.mDataCache.GetModeInfoByZappingMode( ch )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
 				if ch.mIsCA :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
+
+
+				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
+				if mTPnum == 0 :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+				elif mTPnum == 1 :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
 	
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	def UpdateEpgGUI( self, aEpg ) :
 		if aEpg :
 			try :
 				#epg name
@@ -714,9 +750,11 @@ class LivePlate( LivePlateWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -775,24 +813,39 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,    '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
 
-		tvValue = 'True'
-		raValue = 'False'
+		tvValue = E_TAG_TRUE
+		raValue = E_TAG_FALSE
 		if self.mCurrentChannel :
 			if self.mCurrentChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-				tvValue = 'False'
-				raValue = 'True'
+				tvValue = E_TAG_FALSE
+				raValue = E_TAG_TRUE
 		else :
-			tvValue = 'False'
-			raValue = 'False'
+			tvValue = E_TAG_FALSE
+			raValue = E_TAG_FALSE
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,      tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
+
+		"""
+		#tpnum
+		lblTPnum = 'TP1'
+		mTPnum = self.mDataCache.GetTunerIndexByChannel( self.mCurrentChannel.mNumber )
+		if mTPnum == E_CONFIGURED_TUNER_2 :
+			lblTPnum = 'TP1'
+		elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+			lblTPnum = 'TP1, TP2'
+		self.UpdatePropertyGUI( 'iTPnum', lblTPnum )
+		"""
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -828,10 +881,20 @@ class LivePlate( LivePlateWindow ) :
 		#	self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
+	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+		return ret
+
+
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
-			return
+			return False
+
+		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
+			#LOG_TRACE( '-------------- return by cached data -------------------' )
+			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -846,7 +909,7 @@ class LivePlate( LivePlateWindow ) :
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
 				self.Close( )
@@ -860,9 +923,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitles' ), MR_LANG( 'Sorry, this option is not implemented yet' ) )
-			dialog.doModal( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
@@ -871,15 +932,145 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.ShowRecordingStartDialog( )
+			if RECORD_WIDTHOUT_ASKING == True :
+				self.StartRecordingWithoutAsking( )
+				return
+			else :
+				self.ShowRecordingStartDialog( )
+		
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
 			self.ShowRecordingStopDialog( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.SetAudioVideoContext( )
+			self.ShowAudioVideoContext( )
 
 		self.RestartAutomaticHide( )
+
+
+	def StartRecordingWithoutAsking( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+		isOK = True
+
+		if mTimer :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal( )
+
+			isOK = dialog.IsOK( )
+			if isOK != E_DIALOG_STATE_YES :
+				isOK = False
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+				RecordConflict( dialog.GetConflictTimer( ) )
+
+			return 
+
+		elif runningCount < 2 :
+			copyTimeshift = 0
+			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
+			localTime = self.mDataCache.Datetime_GetLocalTime( )				
+			
+			#check ValidEPG
+			hasValidEPG = False
+			if otrInfo.mHasEPG :
+				if localTime >= otrInfo.mEventStartTime  and localTime < otrInfo.mEventEndTime :
+					hasValidEPG = True
+
+			if hasValidEPG == False :
+				otrInfo.mHasEPG = False
+				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+				otrInfo.mExpectedRecordDuration = prop.GetProp( )
+				otrInfo.mEventStartTime = localTime
+				otrInfo.mEventEndTime = localTime +	otrInfo.mExpectedRecordDuration
+				otrInfo.mEventName = self.mDataCache.Channel_GetCurrent( ).mName
+
+			if otrInfo.mTimeshiftAvailable :
+				if otrInfo.mHasEPG == True :			
+					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+				
+					copyTimeshift  = localTime - otrInfo.mEventStartTime
+					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
+					if copyTimeshift > timeshiftRecordSec :
+						copyTimeshift = timeshiftRecordSec
+					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+
+			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
+
+			if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
+				copyTimeshift = 0
+
+			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+			expectedDuration = otrInfo.mEventEndTime - localTime
+
+			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
+
+			if expectedDuration < 0:
+				LOG_ERR( 'Error : Already Passed' )
+				expectedDuration = 0
+
+			ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, 0,  0, 0 )
+
+			#if ret[0].mParam == -1 or ret[0].mError == -1 :
+			LOG_ERR( 'StartDialog ret=%s ' %ret )
+			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
+				LOG_ERR( 'StartDialog ' )
+				RecordConflict( ret )
+
+		else:
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
+			dialog.doModal( )
+
+		if isOK :
+			LOG_TRACE( 'STOP automatic hide' )
+			self.StopAutomaticHide( )
+
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.StartBlickingIconTimer( )
+			
+			self.mDataCache.SetChannelReloadStatus( True )
+
+
+	def RestartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
+		self.StopBlickingIconTimer( )
+		self.StartBlickingIconTimer( aTimeout )
+
+
+	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
+		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
+		self.mRecordBlinkingTimer .start( )
+	
+
+	def StopBlickingIconTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
+			self.mRecordBlinkingTimer.cancel( )
+			del self.mRecordBlinkingTimer
+			
+		self.mRecordBlinkingTimer = None
+
+
+	def AsyncBlinkingIcon( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mRecordBlinkingTimer == None :
+			LOG_WARN( 'Blinking Icon update timer expired' )
+			return
+
+		if self.getProperty( 'RecordBlinkingIcon' ) == 'True' :
+			self.setProperty( 'RecordBlinkingIcon', 'False' )
+		else :
+			self.setProperty( 'RecordBlinkingIcon', 'True' )
+
+		self.RestartBlickingIconTimer( )
 
 
 	def ShowRecordingStartDialog( self ) :
@@ -889,8 +1080,10 @@ class LivePlate( LivePlateWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+
 		isOK = False
-		if runningCount < 2 :
+		if runningCount < 2 or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
@@ -927,7 +1120,7 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def SetAudioVideoContext( self ) :
+	def ShowAudioVideoContext( self ) :
 		context = []
 		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
 		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
@@ -940,12 +1133,16 @@ class LivePlate( LivePlateWindow ) :
 		if selectAction == -1 :
 			return
 
+		self.DoContextAction( selectAction )
+
+
+	def DoContextAction( self, aSelectAction ) :
 		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
 
- 		else :
+ 		elif selectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
@@ -969,26 +1166,35 @@ class LivePlate( LivePlateWindow ) :
 
 
  	def ShowRecordingInfo( self ) :
+ 		LOG_TRACE( '---------ShowRecInfo------' )
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+
+			if isRunningTimerList :
+				runningRecordCount = len( isRunningTimerList )
+
+			#LOG_TRACE( "runningRecordCount=%d" %runningRecordCount )
 
 			strLabelRecord1 = ''
 			strLabelRecord2 = ''
 			setPropertyRecord1 = 'False'
 			setPropertyRecord2 = 'False'
-			if isRunRec == 1 :
+			if isRunRec == 1 and runningRecordCount == 1 :
 				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
-			elif isRunRec == 2 :
+			elif isRunRec == 2 and runningRecordCount == 2 :
 				setPropertyRecord1 = 'True'
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[0]
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				timer = isRunningTimerList[1]
+				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 			btnValue = True
 			if isRunRec >= 2 :
@@ -1009,6 +1215,9 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+
+		self.StopBlickingIconTimer( )
+		self.setProperty( 'RecordBlinkingIcon', 'False' )		
 
 		self.StopAsyncTune( )
 		self.StopAutomaticHide( )
@@ -1142,9 +1351,11 @@ class LivePlate( LivePlateWindow ) :
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
 				self.ChannelTune( NEXT_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				self.ChannelTune( PREV_CHANNEL )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 			elif dialog.GetNextAction( ) == dialog.E_SHOW_EPG_WINDOW :
 				xbmc.executebuiltin( 'xbmc.Action(info)' )
@@ -1159,6 +1370,7 @@ class LivePlate( LivePlateWindow ) :
 					self.mDataCache.SetParentLock( False )
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
 
 				LOG_TRACE( 'Has no next action' )
 				if self.mAutomaticHide == True :
@@ -1166,6 +1378,7 @@ class LivePlate( LivePlateWindow ) :
 		else :
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )
+				self.mDataCache.LoadVolumeBySetGUI( )
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )

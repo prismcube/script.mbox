@@ -11,6 +11,14 @@
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
+		<control type="image" id="100">
+			<posx>1200</posx>
+			<posy>45</posy>
+			<width>60</width>
+			<height>25</height>
+			<texture>i_record.png</texture>
+			<visible>substring(Window.Property(RecordBlinkingIcon),true)</visible>
+		</control>
 		<control type="group">
 			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
 			<animation effect="fade" start="100" end="0" time="400">WindowClose</animation>
@@ -53,7 +61,7 @@
 
 <!-- Rec info -->
 			<control type="group">
-				<posx>300r</posx>
+				<posx>450r</posx>
 				<posy>540</posy>
 				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
 				<control type="group">
@@ -62,7 +70,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(10)</visible>
@@ -76,7 +84,7 @@
 						<visible>substring(Window.Property(ViewRecord1),true)</visible>
 					</control>
 					<control type="label" id="11">
-						<posx>121</posx>
+						<posx>116</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -89,7 +97,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>300</width>
+						<width>450</width>
 						<height>35</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(15)</visible>
@@ -103,7 +111,7 @@
 						<visible>substring(Window.Property(ViewRecord2),true)</visible>
 					</control>
 					<control type="label" id="16">
-						<posx>100</posx>
+						<posx>95</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
@@ -324,19 +332,126 @@
 						<texture>IconFavFocus.png</texture>
 						<visible>substring(Window.Property(iFav),true)</visible>
 					</control>
+					<control type="image">
+						<posx>110</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconT1.png</texture>
+						<visible>substring(Window.Property(iTuner1),true)</visible>
+					</control>
+					<control type="image">
+						<posx>145</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconT2.png</texture>
+						<visible>substring(Window.Property(iTuner2),true)</visible>
+					</control>
+					<!--control type="label">
+						<posx>250</posx>
+						<posy>1</posy>
+						<width>100</width>
+						<height>30</height>
+						<label>$INFO[Window.Property(iTPnum)]</label>
+					</control-->
 				</control>
 
+				<!-- color key -->
+				<control type="group">
+					<control type="grouplist">
+						<posx>380r</posx>
+						<posy>-35</posy>
+						<width>300</width>
+						<height>40</height>
+						<itemgap>5</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-red.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>AUD</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>VDO</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-yellow.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>settings-button-nofocus.png</texture>
+							</control>
+						</control>
+					</control>
+				</control>
+
+				<!-- component -->
 				<control type="group">
 					<control type="grouplist">
 						<posx>750</posx>
 						<posy>18</posy>
-						<width>340</width>
+						<width>400</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
-						<control type="group" id="605">
+						<control type="group" id="608">
 							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>40</height>
+							<visible>substring(Window.Property(HasTeletext),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<texture>IconTeletext.png</texture>
+							</control>
+						</control>
+						<control type="group" id="605">
+							<posx>80</posx>
 							<posy>0</posy>
 							<width>60</width>
 							<height>40</height>
@@ -350,29 +465,44 @@
 							</control>
 						</control>
 						<control type="group" id="606">
-							<posx>60</posx>
+							<posx>110</posx>
 							<posy>0</posy>
 							<width>90</width>
 							<height>40</height>
-							<visible>substring(Window.Property(HasDolby),true)</visible>
+							<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(609)</visible>
 							<control type="image">
-								<posx>30</posx>
-								<posy>6</posy>
-								<width>102</width>
-								<height>26</height>
+								<posx>25</posx>
+								<posy>4</posy>
+								<width>118</width>
+								<height>30</height>
 								<texture>dolbydigital.png</texture>
 							</control>
 						</control>
+						<control type="group" id="609">
+							<posx>110</posx>
+							<posy>0</posy>
+							<width>90</width>
+							<height>40</height>
+							<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+							<control type="image">
+								<posx>25</posx>
+								<posy>4</posy>
+								<width>118</width>
+								<height>30</height>
+								<texture>dolbydigitalplus.png</texture>
+							</control>
+						</control>
+
 						<control type="group" id="607">
-							<posx>140</posx>
+							<posx>180</posx>
 							<posy>0</posy>
 							<width>90</width>
 							<height>40</height>
 							<visible>substring(Window.Property(HasHD),true)</visible>
 							<control type="image">
-								<posx>62</posx>
+								<posx>77</posx>
 								<posy>0</posy>
-								<width>90</width>
+								<width>85</width>
 								<height>40</height>
 								<texture>OverlayHD.png</texture>
 							</control>
