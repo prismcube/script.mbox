@@ -142,6 +142,9 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mPlayingRecordInfo = None
 		self.mBookmarkButton = []
 		self.mJumpToOffset = []
+		self.mAccelatorSection = {}
+		self.mLimitInput = 20
+		self.mLimitShift = 60
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -162,6 +165,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.GetNextSpeed( E_ONINIT )
 		self.InitBookmarkThumnail( )
 		self.InitPreviousAction( )
+		self.InitAccelatorSection( )
 
 		self.mPrekey = None
 		if self.mInitialized == False :
@@ -854,6 +858,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 			self.GetNextSpeed( E_ONINIT )
 
+		#if self.mMode == ElisEnum.E_MODE_TIMESHIFT and self.mSpeed == 100 :
+		#	self.InitAccelatorSection( )
+
 
 	def GetNextSpeed( self, aFocusId ) :
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
@@ -1427,6 +1434,22 @@ class TimeShiftPlate( BaseWindow ) :
 		return jump
 
 
+	#deprecate
+	def InitAccelatorSection( self ) :
+		idx = 0
+		limitShift = 60
+
+		tempStartTime   = self.mTimeshift_staTime / 1000
+		tempCurrentTime = self.mTimeshift_curTime / 1000
+		tempEndTime     = self.mTimeshift_endTime / 1000
+		duration = tempEndTime - tempStartTime
+		section = duration / limitShift
+
+		self.mAccelatorSection = {}
+		for i in range( limitShift ) :
+			self.mAccelatorSection[i] = section * i
+
+
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
@@ -1539,21 +1562,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def StartAsyncMoveByTime( self ) :
 		self.mFlagUserMove = True
 
-		"""
 		self.mAccelator += self.mUserMoveTime
-		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
-		#accelatorMoving = self.mAccelator / 100
-
-		accelatorMoving = pow( 1.5, abs( self.mAccelator ) )
-		if self.mAccelator < 0 :
-			accelatorMoving = accelatorMoving * -1
-		"""
-
-		self.mAccelator += self.mUserMoveTime
-		#self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
-
-		limitInput = 10
-		limitShift = 20
 		sectionMoving = 0
 		current = 0
 		arrow = 1
@@ -1565,22 +1574,28 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAccelator < 0 :
 			arrow = -1
 
-		if abs( self.mAccelator ) > limitInput :
-			if self.mAccelator > ( limitShift + limitInput ) :
-				self.mAccelator = limitShift + limitInput
-			elif self.mAccelator < -( limitShift + limitInput ):
-				self.mAccelator = -( limitShift + limitInput )
+		if abs( self.mAccelator ) > self.mLimitInput :
+			if self.mAccelator > ( self.mLimitShift + self.mLimitInput ) :
+				self.mAccelator = self.mLimitShift + self.mLimitInput
+			elif self.mAccelator < -( self.mLimitShift + self.mLimitInput ):
+				self.mAccelator = -( self.mLimitShift + self.mLimitInput )
 
-			current = limitInput * E_DEFAULT_TRACK_MOVE
-			idxSection = abs( self.mAccelator ) - limitInput
+			current = self.mLimitInput * E_DEFAULT_TRACK_MOVE
+			idxSection = abs( self.mAccelator ) - self.mLimitInput
 			idxStart = ( self.mTimeshift_curTime / 1000 ) + current
 			restSize = ( self.mTimeshift_endTime / 1000 ) - idxStart
 
-			if self.mAccelator < -limitInput :
+			if self.mAccelator < -self.mLimitInput :
 				idxStart = ( self.mTimeshift_curTime / 1000 ) - current
 				restSize = idxStart - ( self.mTimeshift_staTime / 1000 )
 
-			section = restSize / limitShift
+			if restSize > 3600 :
+				self.mLimitShift = 100
+
+			if restSize / self.mLimitShift <= ( E_DEFAULT_TRACK_MOVE * 2 ) :
+				self.mLimitShift = E_DEFAULT_TRACK_MOVE * 2
+
+			section = restSize / self.mLimitShift
 			sectionMoving = section * idxSection
 
 		else :
