@@ -1539,47 +1539,59 @@ class TimeShiftPlate( BaseWindow ) :
 	def StartAsyncMoveByTime( self ) :
 		self.mFlagUserMove = True
 
+		"""
 		self.mAccelator += self.mUserMoveTime
 		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
 		#accelatorMoving = self.mAccelator / 100
 
 		accelatorMoving = pow( 1.5, abs( self.mAccelator ) )
-
 		if self.mAccelator < 0 :
 			accelatorMoving = accelatorMoving * -1
-
-		userMoving = self.mTotalUserMoveTime + accelatorMoving
-		userMovingMs = userMoving * 1000
-
 		"""
-		#ToDO
-		accelatorMoving = pow( 1.5, abs( self.mAccelator + self.mUserMoveTime ) )
-		self.mMovingPeek = accelatorMoving
-
-		currentDuration = self.mTimeshift_endTime - self.mTimeshift_curTime
-
-		if (accelatorMoving * 1000) > currentDuration / 2 :
-			self.mAccelator -= self.mUserMoveTime
-			accelatorMoving = self.mAccelatorMoving + abs( self.mMovingPeek - pow( 1.5, abs( self.mAccelator ) )  )
 
 		self.mAccelator += self.mUserMoveTime
-		self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
+		#self.mTotalUserMoveTime = self.mAccelator * E_DEFAULT_TRACK_MOVE
 
+		limitInput = 10
+		limitShift = 20
+		sectionMoving = 0
+		current = 0
+		arrow = 1
+
+		#restSize = 0
+		#section = 0
+		#idxSection = 0
 
 		if self.mAccelator < 0 :
-			accelatorMoving = accelatorMoving * -1
+			arrow = -1
 
-		userMoving = self.mTotalUserMoveTime + accelatorMoving
+		if abs( self.mAccelator ) > limitInput :
+			if self.mAccelator > ( limitShift + limitInput ) :
+				self.mAccelator = limitShift + limitInput
+			elif self.mAccelator < -( limitShift + limitInput ):
+				self.mAccelator = -( limitShift + limitInput )
+
+			current = limitInput * E_DEFAULT_TRACK_MOVE
+			idxSection = abs( self.mAccelator ) - limitInput
+			idxStart = ( self.mTimeshift_curTime / 1000 ) + current
+			restSize = ( self.mTimeshift_endTime / 1000 ) - idxStart
+
+			if self.mAccelator < -limitInput :
+				idxStart = ( self.mTimeshift_curTime / 1000 ) - current
+				restSize = idxStart - ( self.mTimeshift_staTime / 1000 )
+
+			section = restSize / limitShift
+			sectionMoving = section * idxSection
+
+		else :
+			current = self.mAccelator * E_DEFAULT_TRACK_MOVE * arrow
+
+		userMoving = ( current + sectionMoving ) * arrow
 		userMovingMs = userMoving * 1000
-	
-		if userMovingMs >= self.mTimeshift_endTime :
-			userMovingMs = self.mTimeshift_endTime - 1000
-		elif userMovingMs <= self.mTimeshift_staTime :
-			userMovingMs = self.mTimeshift_staTime + 1000
-		"""
 
 		self.UpdateProgress( userMovingMs )
-		#LOG_TRACE( '-----------accelator[%s] accelatorMoving[%s] moving[%s] movingMs[%s] totalmove[%s]'% ( self.mAccelator, accelatorMoving, userMoving, userMovingMs, self.mTotalUserMoveTime ) )
+		#LOG_TRACE( '-----------accelator[%s] sectionMoving[%s] moving[%s] movingMs[%s]'% ( self.mAccelator, sectionMoving, userMoving, userMovingMs) )
+		#LOG_TRACE( '-----------start[%s] end[%s] curr[%s], current[%s] restSize[%s] section[%s] idx[%s] sectionMoving[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime, self.mTimeshift_curTime, current, restSize, section, idxSection, sectionMoving ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
