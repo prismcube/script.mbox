@@ -985,7 +985,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
 		elif self.mMode == ElisEnum.E_MODE_PVR :
-			labelMode = E_TAG_COLOR_RED + 'PVR' + E_TAG_COLOR_END
+			labelMode = E_TAG_COLOR_RED + 'PLAYBACK' + E_TAG_COLOR_END
 			buttonHide= False
 		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
 			labelMode = 'EXTERNAL_PVR'
