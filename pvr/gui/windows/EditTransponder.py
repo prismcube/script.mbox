@@ -75,12 +75,12 @@ class EditTransponder( SettingWindow ) :
 			ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( self.mNetworkSearch )
 			ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 			self.ResetAllControl( )
-			self.SetVideoRestore( )
 			self.RestoreAvBlank( )
 			self.mEventBus.Deregister( self )
 			self.mIsStartedScanHelper = False
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
+			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :

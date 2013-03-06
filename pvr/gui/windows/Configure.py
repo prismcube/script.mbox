@@ -38,8 +38,6 @@ TIME_SEC_CHECK_NET_STATUS = 0.05
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-
-
 		self.mCtrlLeftGroup 		= None
 		self.mGroupItems 			= []
 		self.mLastFocused 			= E_CONFIGURE_SUBMENU_LIST_ID
@@ -86,12 +84,6 @@ class Configure( SettingWindow ) :
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 
-
-	def onInit( self ) :
-		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
-		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Configure' )
-		
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -103,6 +95,10 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'HDD Format' ),
 		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
+
+		self.mGroupItems = []
+		for i in range( len( leftGroupItems ) ) :
+			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'Change your PRISMCUBE RUBY language preferences' ),
@@ -116,18 +112,15 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 
-		self.mGroupItems 		= []
-		for i in range( len( leftGroupItems ) ) :
-			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
-	
-		self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( False )
 
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+	def onInit( self ) :
+		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
+		self.SetActivate( True )
+		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
+		self.SetFrontdisplayMessage( 'Configure' )
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
-
-		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
@@ -137,11 +130,9 @@ class Configure( SettingWindow ) :
 
 		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 
-		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
-		self.setFocusId( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mInitialized = True
 		
 
@@ -366,11 +357,9 @@ class Configure( SettingWindow ) :
 				globalEvent = pvr.GlobalEvent.GetInstance( )
 				globalEvent.SendLocalOffsetToXBMC( )
 				self.mInitialized = False
-				#self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
-				time.sleep( 1 )
 				self.CloseProgress( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
@@ -441,7 +430,7 @@ class Configure( SettingWindow ) :
 	def SetListControl( self ) :
 		self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( False )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -461,7 +450,7 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_LANGUAGE )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -480,7 +469,7 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_PARENTAL )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -498,7 +487,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -514,7 +503,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_HDMI_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -533,7 +522,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
-				self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 			else :
 				self.AddEnumControl( E_SpinEx02, 'TV Aspect', MR_LANG( ' - TV Aspect Ratio' ), MR_LANG( 'Set aspect ratio of your TV' ) )
 				if self.mAnalogAscpect == E_16_9 :
@@ -549,7 +538,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
-				self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
@@ -575,7 +564,7 @@ class Configure( SettingWindow ) :
 					self.InitControl( )
 					time.sleep( 0.2 )
 					self.DisableControl( E_WIFI )
-					self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+					self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 				else :
 					if self.mReLoadEthernetInformation == True :
@@ -589,17 +578,17 @@ class Configure( SettingWindow ) :
 					self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mEthernetNamesServer, MR_LANG( 'Enter the DNS server address' ) )
 					self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press OK button to save the IP address settings' ) )
 
-					visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+					visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input07 ]
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06 ]
+					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_Input06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
 					time.sleep( 0.2 )
 					self.DisableControl( E_ETHERNET )
-					self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+					self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 				self.SetEnableControl( E_Input07, False )
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
@@ -612,7 +601,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
-				self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_TIME_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -651,7 +640,7 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_TIME_SETTING )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )	
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )	
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -671,7 +660,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -685,7 +674,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_ETC :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -704,7 +693,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_CONFIGURE_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		else :
 			LOG_ERR( 'Cannot find selected ID' )
