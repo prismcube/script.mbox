@@ -1137,12 +1137,12 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def DoContextAction( self, aSelectAction ) :
-		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
+		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
-			dialog.SetValue( selectAction )
+			dialog.SetValue( aSelectAction )
  			dialog.doModal( )
 
- 		elif selectAction == CONTEXT_ACTION_AUDIO_SETTING :
+ 		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
@@ -1162,7 +1162,7 @@ class LivePlate( LivePlateWindow ) :
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			self.mDataCache.Audiotrack_select( selectIdx2 )
-			#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
 
 
  	def ShowRecordingInfo( self ) :
