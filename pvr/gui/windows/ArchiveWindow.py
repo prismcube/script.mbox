@@ -510,7 +510,7 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			recItem.setProperty( 'Playing', 'False' )
 
-		xbmc.executebuiltin( 'container.update' )
+		xbmc.executebuiltin( 'container.refresh' )
 		#self.SetFocusList( self.mViewMode )
 
 
@@ -854,7 +854,7 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Record_Rename( self.mRecordList[ selectedPos ].mRecordKey, self.mServiceType, newName )
 					self.mRecordListItems[ selectedPos ].setLabel2( newName )	
 					self.mRecordList[ selectedPos ].mRecordName = newName
-					xbmc.executebuiltin( 'container.update' )
+					xbmc.executebuiltin( 'container.refresh' )
 					self.UpdateArchiveInfomation( )
 					
 
@@ -916,7 +916,7 @@ class ArchiveWindow( BaseWindow ) :
 						
 
 			self.DoClearMark( )
-			xbmc.executebuiltin( 'container.update' )
+			xbmc.executebuiltin( 'container.refresh' )
 			#self.SetFocusList( self.mViewMode )
 
 
@@ -963,7 +963,7 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				LOG_WARN( 'Unknown view mode' )
 			
-		#xbmc.executebuiltin('container.update')
+		#xbmc.executebuiltin('container.refresh')
 
 
 	def CheckPincode( self ) :

@@ -601,10 +601,10 @@ class EPGWindow( BaseWindow ) :
 				if aUpdateOnly == False :
 					self.mCtrlList.addItems( self.mListItems )
 					#self.setFocusId( LIST_ID_COMMON_EPG )
-				else :
-					xbmc.executebuiltin( 'container.update' )
-					self.SetFocusList( self.mEPGMode )
-					#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CHANNEL)
+				#else :
+				xbmc.executebuiltin( 'container.refresh' )
+				#self.SetFocusList( self.mEPGMode )
+				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CHANNEL)
 				
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
@@ -684,10 +684,10 @@ class EPGWindow( BaseWindow ) :
 			if aUpdateOnly == False :
 				self.mCtrlBigList.addItems( self.mListItems )
 				#self.setFocusId( LIST_ID_BIG_EPG )
-			else :
-				xbmc.executebuiltin( 'container.update' )
-				self.SetFocusList( self.mEPGMode )
-				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)
+			#else :
+			xbmc.executebuiltin( 'container.refresh' )
+			#self.SetFocusList( self.mEPGMode )
+			#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)
 
 			self.mDebugEnd = time.time( )
 			print 'epg loading test =%s' %( self.mDebugEnd  - self.mDebugStart )
@@ -764,10 +764,10 @@ class EPGWindow( BaseWindow ) :
 			if aUpdateOnly == False :
 				self.mCtrlBigList.addItems( self.mListItems )
 				#self.setFocusId( LIST_ID_BIG_EPG )
-			else :
-				xbmc.executebuiltin( 'container.update' )
-				self.SetFocusList( self.mEPGMode )
-				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)
+
+			xbmc.executebuiltin( 'container.refresh' )
+			#self.SetFocusList( self.mEPGMode )
+			#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)
 
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
