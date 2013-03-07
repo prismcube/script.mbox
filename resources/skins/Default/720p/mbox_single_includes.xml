@@ -5620,7 +5620,7 @@
 			<usecontrolcoords>false</usecontrolcoords>
 			<visible>true</visible>
 			<onup></onup>
-			<ondown>1000702</ondown>
+			<ondown>1400702</ondown>
 			<onleft></onleft>
 			<onright></onright>
 			<defaultcontrol always="true">1003621</defaultcontrol>

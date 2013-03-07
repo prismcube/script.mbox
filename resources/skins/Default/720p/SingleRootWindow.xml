@@ -2884,8 +2884,11 @@ Search for window name
 					<width>750</width>
 					<height>450</height>
 					<itemgap>0</itemgap>
-					<onup>1007001</onup>
-					<ondown>1007003</ondown>
+					<onup>1709000</onup>
+					<ondown>1709000</ondown>
+					<onleft>1709001</onleft>
+					<onright>1709001</onright>
+					<pagecontrol>1709001</pagecontrol>
 					<itemlayout height="40" width="720">
 						<control type="image">
 							<posx>0</posx>
@@ -2927,6 +2930,21 @@ Search for window name
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 					</focusedlayout>
+				</control>
+				<control type="scrollbar" id="1709001">
+					<posx>735</posx>
+					<posy>65</posy>
+					<width>20</width>
+					<height>435</height>
+					<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+					<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+					<textureslidernib>ScrollBarNib.png</textureslidernib>
+					<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+					<onleft>1709000</onleft>
+					<onright>1709000</onright>
+					<showonepage>false</showonepage>
+					<orientation>vertical</orientation>
 				</control>
 			</control>
 		</control>
