@@ -84,6 +84,9 @@ class Configure( SettingWindow ) :
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 
+
+	def onInit( self ) :
+
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -111,9 +114,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Delete eveything off your hard drive' ),
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
-
-
-	def onInit( self ) :
+	
 		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )

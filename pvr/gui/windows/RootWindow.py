@@ -23,11 +23,17 @@ class RootWindow( xbmcgui.WindowXML ) :
 		print 'self.mInitialized=%s' %self.mInitialized
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-				self.CheckFirstRun( )
-				if E_SUPPROT_HBBTV == True :
-					self.mCommander.AppHBBTV_Ready( 0 )
-				self.mInitialized = True
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				if self.mInitialized == False :			
+					self.CheckFirstRun( )
+					if E_SUPPROT_HBBTV == True :
+						self.mCommander.AppHBBTV_Ready( 0 )
+					self.mInitialized = True
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				else :
+					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
+					lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
+					LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
 
 			else :
 				if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
