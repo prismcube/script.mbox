@@ -47,7 +47,7 @@ class ManualScan( SettingWindow ) :
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
-			self.SetPipLabel( )
+			#self.SetPipLabel( )
 			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )

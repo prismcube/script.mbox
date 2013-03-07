@@ -453,10 +453,11 @@ class BaseWindow( SingleWindow ) :
 			self.setProperty( 'NotAvail', 'False' )
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
-
+	"""
 	def SetPipLabel( self ) :
 		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
 		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
+	"""
 
 
 	def SetSingleWindowPosition( self, aWindowId ) :

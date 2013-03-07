@@ -33,10 +33,8 @@ class FirstInstallation( FTIWindow ) :
 
 		self.SetFirstInstallation( True )
 		self.SetPipScreen( )
-		#self.LoadNoSignalState( )
 		
 		self.SetListControl( self.GetFTIStep( ) )
-		self.SetPipLabel( )
 		
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )

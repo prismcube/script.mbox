@@ -50,8 +50,6 @@ class Installation( BaseWindow ) :
 		self.SetPipScreen( )
 		groupItems = []
 
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		for i in range( len( self.mLeftGroupItems ) ) :
 			groupItems.append( xbmcgui.ListItem( self.mLeftGroupItems[i], self.mDescriptionList[i] ) )
 

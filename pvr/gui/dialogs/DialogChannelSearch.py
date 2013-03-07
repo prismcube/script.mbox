@@ -236,7 +236,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			if self.mScanMode == E_SCAN_TRANSPONDER :
-				self.DefaultTuneDiseqc12( )
+				self.DefaultTuneInSearchedChannel( )
 			self.mCtrlProgress.setPercent( 100 )
 			timer = threading.Timer( 0.5, self.ShowResult )
 			timer.start( )

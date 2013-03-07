@@ -40,7 +40,7 @@ class EditSatellite( SettingWindow ) :
 			#self.LoadNoSignalState( )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
-			self.SetPipLabel( )
+			#self.SetPipLabel( )
 			self.mInitialized = True
 
 		

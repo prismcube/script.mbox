@@ -24,7 +24,7 @@ class TunerConfiguration( FTIWindow ) :
 		self.SetSettingWindowLabel( headerLabel )
 		#self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
-		self.SetPipLabel( )
+		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
 		self.getControl( E_FIRST_TIME_INSTALLATION_PREV ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ), self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ) )
 		self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_PREV ), self.getControl( E_FIRST_TIME_INSTALLATION_PREV ) )

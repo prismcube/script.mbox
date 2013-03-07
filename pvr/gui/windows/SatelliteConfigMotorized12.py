@@ -55,7 +55,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.setDefaultControl( )
-		self.SetPipLabel( )
+		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
 		self.mInitialized = True
 

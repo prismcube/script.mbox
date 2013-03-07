@@ -36,7 +36,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		self.SetSingleWindowPosition( E_CONFIG_ONECABLE_2_BASE_ID )
 		self.InitConfig( )
 		self.setDefaultControl( )
-		self.SetPipLabel( )
+		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
 		self.mInitialized = True
 
