@@ -5507,7 +5507,7 @@
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>false</usecontrolcoords>
 			<visible>true</visible>
-			<onup>500</onup>
+			<onup>202</onup>
 			<ondown>202</ondown>
 			<onleft></onleft>
 			<onright></onright>

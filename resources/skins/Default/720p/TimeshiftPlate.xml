@@ -43,7 +43,7 @@
 						<onleft>500</onleft>
 						<onright>500</onright>
 						<onup>500</onup>
-						<ondown>3750</ondown>
+						<ondown>202</ondown>
 						<scrolltime>300</scrolltime>
 						<focusposition>3</focusposition>
 						<orientation>horizontal</orientation>
@@ -394,6 +394,26 @@
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
+				<control type="group">
+					<posx>20</posx>
+					<posy>30</posy>
+					<visible>!ControlGroup(3750).HasFocus</visible>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>20</width>
+						<height>20</height>
+						<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
+						<texture>OSDLeft.png</texture>
+					</control>
+					<control type="label">
+						<posx>25</posx>
+						<posy>0</posy>
+						<font>font10</font>
+						<textcolor>grey</textcolor>
+						<label>More...</label>
+					</control>
+				</control>
 			</control>
 
 			<!-- color key -->
@@ -498,7 +518,7 @@
 					<width>55</width>
 					<height>55</height>
 					<texture>OSDRewindNF.png</texture>
-					<visible>Control.HasFocus(3704)</visible>
+					<visible>substring(Window.Property(iPlayerRewind),true)</visible>
 				</control>
 				<control type="image">
 					<posx>0</posx>
@@ -506,7 +526,7 @@
 					<width>55</width>
 					<height>55</height>
 					<texture>OSDPlayNF.png</texture>
-					<visible>Control.HasFocus(3705)</visible>
+					<visible>substring(Window.Property(iPlayerResume),true)</visible>
 				</control>
 				<control type="image">
 					<posx>0</posx>
@@ -514,7 +534,7 @@
 					<width>55</width>
 					<height>55</height>
 					<texture>OSDPauseNF.png</texture>
-					<visible>Control.HasFocus(3706)</visible>
+					<visible>substring(Window.Property(iPlayerPause),true)</visible>
 				</control>
 				<control type="image">
 					<posx>0</posx>
@@ -522,7 +542,7 @@
 					<width>55</width>
 					<height>55</height>
 					<texture>OSDStopNF.png</texture>
-					<visible>Control.HasFocus(3707)</visible>
+					<visible>substring(Window.Property(iPlayerStop),true)</visible>
 				</control>
 				<control type="image">
 					<posx>0</posx>
@@ -530,7 +550,7 @@
 					<width>55</width>
 					<height>55</height>
 					<texture>OSDForwardNF.png</texture>
-					<visible>Control.HasFocus(3708)</visible>
+					<visible>substring(Window.Property(iPlayerForward),true)</visible>
 				</control>
 
 			</control>
@@ -573,7 +593,7 @@
 					<texturenofocus flipy="true">TSProgressCurrentNF.png</texturenofocus>
 					<onleft>202</onleft>
 					<onright>202</onright>
-					<onup>3750</onup>
+					<onup>500</onup>
 					<ondown>3750</ondown>
 					<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 				</control>

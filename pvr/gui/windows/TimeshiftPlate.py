@@ -653,6 +653,9 @@ class TimeShiftPlate( BaseWindow ) :
 			#self.JumpToTrack( aFocusId )
 			self.RestartAsyncMove( aFocusId )
 
+		if ret :
+			self.ShowStatusGUI( aFocusId )
+
 		return ret
 
 
@@ -790,6 +793,31 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		self.setProperty( aPropertyID, aValue )
+
+
+	def ShowStatusGUI( self, aFocusId ) :
+		iRew = E_TAG_FALSE
+		iPly = E_TAG_FALSE
+		iPau = E_TAG_FALSE
+		iStp = E_TAG_FALSE
+		iFwd = E_TAG_FALSE
+
+		if aFocusId == E_CONTROL_ID_BUTTON_REWIND :
+			iRew = E_TAG_TRUE
+		elif aFocusId == E_CONTROL_ID_BUTTON_PLAY :
+			iPly = E_TAG_TRUE
+		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
+			iPau = E_TAG_TRUE
+		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
+			iStp = E_TAG_TRUE
+		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
+			iFwd = E_TAG_TRUE
+
+		self.UpdatePropertyGUI( 'iPlayerRewind',  iRew )
+		self.UpdatePropertyGUI( 'iPlayerResume',  iPly )
+		self.UpdatePropertyGUI( 'iPlayerPause',   iPau )
+		self.UpdatePropertyGUI( 'iPlayerStop',    iStp )
+		self.UpdatePropertyGUI( 'iPlayerForward', iFwd )
 
 
 	@SetLock
