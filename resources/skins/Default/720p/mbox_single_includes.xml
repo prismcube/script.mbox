@@ -64,7 +64,7 @@
 
 	<include name="DefaultCommonDate">
 		<control type="label">
-			<description>Date label</description>
+			<visible>!substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)</visible>
 			<posx>20r</posx>
 			<posy>35</posy>
 			<width>200</width>

@@ -362,6 +362,7 @@ class Configure( SettingWindow ) :
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
+				self.mDataCache.Channel_TuneDefault( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :

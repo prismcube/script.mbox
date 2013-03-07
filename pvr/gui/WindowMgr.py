@@ -61,6 +61,11 @@ WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
 WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
+WIN_ID_LIST_WINDOW_SETTING_WINDOW = [
+	WIN_ID_ANTENNA_SETUP, WIN_ID_CONFIG_SIMPLE, WIN_ID_CONFIG_MOTORIZED_12, WIN_ID_CONFIG_MOTORIZED_USALS,
+	WIN_ID_CONFIG_ONECABLE, WIN_ID_CONFIG_ONECABLE_2, WIN_ID_CONFIG_DISEQC_10, WIN_ID_CONFIG_DISEQC_11,
+	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION ]
+
 gWindowMgr = None
 
 import sys
@@ -159,8 +164,13 @@ class WindowMgr( object ) :
 				SetLock2( False )
 
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-					LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-					self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
+						self.mRootWindow.setProperty( 'SettingPip', 'False' )
+						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
+						time.sleep( 0.5 )
+						
+					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
@@ -193,9 +203,14 @@ class WindowMgr( object ) :
 					self.mLastId = parentId					
 					SetLock2( False )
 
-					if E_SUPPORT_SINGLE_WINDOW_MODE == True :	
-						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
+					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+						LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
+							self.mRootWindow.setProperty( 'SettingPip', 'False' )
+							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
+							time.sleep( 0.5 )
+
+						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									
 					else :
 						self.mWindows[currentId].close( )

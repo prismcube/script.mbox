@@ -2858,76 +2858,21 @@
 
 		<!-- *********** TunerConfiguration ********** -->
 		<control type="group" id="1700000">
-			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1700000)</visible>
 			<defaultcontrol always="true">1709000</defaultcontrol>
-
-			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
+				<include>DefaultSettingWindowEffect</include>
+				<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
+					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+					<effect type="fade" start="100" end="0" time="300" />
+				</animation>
+				<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
+					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+					<effect type="fade" start="0" end="100" time="300" />
+				</animation>
 				<posx>80</posx>
 				<posy>110</posy>
-				<!--
-				<control type="group">
-					<posx>-40</posx>
-					<posy>-50</posy>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1200</width>
-						<height>640</height>
-						<texture border="20">DialogBack.png</texture>
-					</control>
-					<control type="image">
-						<posx>29</posx>
-						<posy>16</posy>
-						<width>770</width>
-						<height>608</height>
-						<texture border="5">black-back2.png</texture>
-					</control>
-					<control type="image">
-						<posx>0</posx>
-						<posy>13</posy>
-						<width>801</width>
-						<height>100</height>
-						<aspectratio>stretch</aspectratio>
-						<texture>GlassTitleBar.png</texture>
-					</control>
-					<control type="image">
-						<description>LOGO</description>
-						<posx>887</posx>
-						<posy>15</posy>
-						<width>220</width>
-						<height>80</height>
-						<aspectratio>keep</aspectratio>
-						<texture>Confluence_Logo.png</texture>
-					</control>
-					<control type="label" id="1701002">
-						<description>header label</description>
-						<posx>50</posx>
-						<posy>20</posy>
-						<width>740</width>
-						<height>30</height>
-						<font>font14</font>
-						<align>left</align>
-						<aligny>center</aligny>
-						<textcolor>white</textcolor>
-						<shadowcolor>black</shadowcolor>
-					</control>
-						<control type="label" id="1701003">
-						<posx>60</posx>
-						<posy>62</posy>
-						<width>700</width>
-						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>blue</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<scroll>true</scroll>
-						<scrollspeed>100</scrollspeed>
-						<scrollsuffix>  |  </scrollsuffix>
-					</control>
-				</control>
-				-->
 				<control type="list" id="1709000">
 					<posx>0</posx>
 					<posy>58</posy>
@@ -2978,15 +2923,7 @@
 						</control>
 					</focusedlayout>
 				</control>
-				<!--
-				<control type="group">
-					<posy>10</posy>
-					<include>DefaultFirstTimeInstallationButton</include>
-					<include>DefaultFirstTimeInstallationStepImage</include>
-				</control>
-				-->
 			</control>
-			<!--<include>DefaultSettingWindowPigScreen</include>-->
 		</control>
 
 		<!-- *********** Archive ********** -->
