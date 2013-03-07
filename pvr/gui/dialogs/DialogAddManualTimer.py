@@ -575,7 +575,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					endTime = startTime + self.mTimer.mDuration
 					#Normalize EndTime
 					tmpEndTime = int( endTime/60 )
-					endTime = endTime * 60
+					endTime = tmpEndTime * 60
 
 					LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 					LOG_TRACE( 'endTime=%s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )						
