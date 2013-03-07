@@ -22,7 +22,7 @@ class TunerConfiguration( FTIWindow ) :
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )
 		self.SetSettingWindowLabel( headerLabel )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
 		self.SetPipLabel( )
 		self.SetFTIGuiType( )

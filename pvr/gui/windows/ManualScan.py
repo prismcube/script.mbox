@@ -24,7 +24,7 @@ class ManualScan( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
-		self.VisibleTuneStatus( False )
+		#self.VisibleTuneStatus( False )
 		self.mIsManualSetup = 0
 
 		self.mSatelliteIndex = 0
@@ -61,6 +61,7 @@ class ManualScan( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
 			else :
+				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -85,6 +86,7 @@ class ManualScan( SettingWindow ) :
 				if self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( False )
 
+			#self.VisibleTuneStatus( True )
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass

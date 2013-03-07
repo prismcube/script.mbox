@@ -124,10 +124,10 @@ class SystemUpdate( SettingWindow ) :
 
 	def onInit( self )  :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'System Update' )		
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		self.SetSingleWindowPosition( E_SYSTEM_UPDATE_BASE_ID )
+		self.SetFrontdisplayMessage( 'System Update' )
+
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
 		self.mCtrlLabelTitle          = self.getControl( E_CONTROL_ID_LABEL_TITLE )
@@ -146,7 +146,7 @@ class SystemUpdate( SettingWindow ) :
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 
 		self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
@@ -284,7 +284,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def Close( self ) :
-
 		if not self.mGetDownloadThread and \
 		   self.mEnableLocalThread and self.mCheckEthernetThread :
 			self.mEnableLocalThread = False

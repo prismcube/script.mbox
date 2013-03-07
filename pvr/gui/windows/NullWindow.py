@@ -60,7 +60,7 @@ class NullWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		self.CheckSubTitle( )
 
 		if E_SUPPROT_HBBTV == True :

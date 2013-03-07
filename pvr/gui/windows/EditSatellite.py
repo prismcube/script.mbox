@@ -15,13 +15,10 @@ class EditSatellite( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.SetSingleWindowPosition( E_EDIT_SATELLITE_BASE_ID )
 		self.SetFrontdisplayMessage( 'Edit Satellite' )
 		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
-
-		self.SetSingleWindowPosition( E_EDIT_SATELLITE_BASE_ID )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
@@ -40,7 +37,7 @@ class EditSatellite( SettingWindow ) :
 		else :
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
-			self.LoadNoSignalState( )
+			#self.LoadNoSignalState( )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
 			self.SetPipLabel( )

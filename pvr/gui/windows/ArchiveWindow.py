@@ -398,7 +398,7 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( 'UpdateList Start' )
 		if self.mViewMode == E_VIEW_LIST :
 			self.SetPipScreen( )
-			self.LoadNoSignalState( )
+			#self.LoadNoSignalState( )
 		else :
 			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 		#self.OpenBusyDialog( )

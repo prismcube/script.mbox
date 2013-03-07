@@ -86,7 +86,6 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
-
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),

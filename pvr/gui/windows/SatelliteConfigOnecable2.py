@@ -26,7 +26,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		self.mOneCablesatelliteCount = len( self.mTunerMgr.GetConfiguredSatelliteList( ) )
 
 		if self.mLoadConfig == True :

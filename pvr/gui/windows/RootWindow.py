@@ -1,8 +1,6 @@
 from pvr.gui.WindowImport import *
 
 
-
-#class RootWindow( BaseWindow ) :
 class RootWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
@@ -17,8 +15,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def onInit( self ) :
-		#self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
 		try :
@@ -28,6 +24,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
 					self.mInitialized = True
+					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				else :
 					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
@@ -126,3 +123,11 @@ class RootWindow( xbmcgui.WindowXML ) :
 		else :
 			os.system( 'touch /mtmp/isrunning' )
 
+
+	def LoadNoSignalState( self ) :
+		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+			self.setProperty( 'Signal', 'Scramble' )
+		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+			self.setProperty( 'Signal', 'False' )
+		else :
+			self.setProperty( 'Signal', 'True' )

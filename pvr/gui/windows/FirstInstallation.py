@@ -33,7 +33,7 @@ class FirstInstallation( FTIWindow ) :
 
 		self.SetFirstInstallation( True )
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		
 		self.SetListControl( self.GetFTIStep( ) )
 		self.SetPipLabel( )
