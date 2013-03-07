@@ -302,7 +302,7 @@ gTestWinid = [
 	#WinMgr.WIN_ID_INFO_PLATE,
 	#WinMgr.WIN_ID_FAVORITE_ADDONS,
 	#WinMgr.WIN_ID_SYSTEM_UPDATE,
-	WinMgr.WIN_ID_HELP
+	#WinMgr.WIN_ID_HELP
 	]
 
 

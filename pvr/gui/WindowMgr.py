@@ -51,7 +51,6 @@ WIN_ID_INFO_PLATE					= 31
 #WIN_ID_FAVORITE_ADDONS				= 32
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
-WIN_ID_HELP							= 34
 
 
 
@@ -290,7 +289,6 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			from pvr.gui.windows.Favorites import Favorites
-			from pvr.gui.windows.Help import Help
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.HiddenTest import HiddenTest
 
@@ -326,7 +324,6 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow  )
 				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow  )
 				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow  )
-				self.mWindows[WIN_ID_HELP] = Help( self.mRootWindow  )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow  )
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow  )
 
@@ -370,7 +367,6 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FAVORITE_ADDONS]=FavoriteAddons( 'FavoriteAddons.xml', self.mScriptDir )
 				"""
 				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
