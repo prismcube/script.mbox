@@ -5484,14 +5484,53 @@
 		</control>
 	</include>
 
-	<include name="DefaultFocusButton">
+	<include name="TimeshiftPlateFocusButton">
 		<control type="image">
-			<posx>100</posx>
-			<posy>605</posy>
-			<width>45</width>
-			<height>45</height>
+			<posx>-32</posx>
+			<posy>0</posy>
+			<width>120</width>
+			<height>60</height>
+			<texture>OSDSeekFrame.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
 			<texture>OSDRewindNF.png</texture>
-			<visible>Control.IsFocused(3704)</visible>
+			<visible>substring(Window.Property(iPlayerRewind),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDPlayNF.png</texture>
+			<visible>substring(Window.Property(iPlayerResume),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDPauseNF.png</texture>
+			<visible>substring(Window.Property(iPlayerPause),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDStopNF.png</texture>
+			<visible>substring(Window.Property(iPlayerStop),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDForwardNF.png</texture>
+			<visible>substring(Window.Property(iPlayerForward),true)</visible>
 		</control>
 	</include>
 
@@ -5511,6 +5550,7 @@
 			<ondown>202</ondown>
 			<onleft></onleft>
 			<onright></onright>
+			<enable>substring(Window.Property(iButtonShow),true)</enable>
 			<!--defaultcontrol always="true">3705</defaultcontrol-->
 			<control type="button" id="3711">
 				<width>45</width>
