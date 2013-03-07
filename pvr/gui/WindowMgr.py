@@ -51,7 +51,7 @@ WIN_ID_INFO_PLATE					= 31
 #WIN_ID_FAVORITE_ADDONS				= 32
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
-WIN_ID_HELP							= 34
+#WIN_ID_HELP							= 34
 
 
 
@@ -320,8 +320,8 @@ class WindowMgr( object ) :
 			self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
 			
 
-			from pvr.gui.windows.Help import Help
-			self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
+			#from pvr.gui.windows.Help import Help
+			#self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
