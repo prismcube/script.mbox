@@ -181,7 +181,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mAgeLimit = self.mDataCache.GetPropertyAge( )

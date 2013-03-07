@@ -102,7 +102,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
 		self.CheckMediaCenter( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )

@@ -45,16 +45,12 @@ class Installation( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Installation' )
-	
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
-
-		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
+		self.SetFrontdisplayMessage( 'Installation' )
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
 		groupItems = []
+
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		for i in range( len( self.mLeftGroupItems ) ) :
 			groupItems.append( xbmcgui.ListItem( self.mLeftGroupItems[i], self.mDescriptionList[i] ) )

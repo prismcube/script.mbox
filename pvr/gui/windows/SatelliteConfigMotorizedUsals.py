@@ -21,7 +21,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %s Config : Motorized, Usals' ) % ( self.tunerIndex + 1 ) )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		   
 		self.GetLongitude( )
 		self.GetLatitude( )

@@ -28,7 +28,7 @@ class AutomaticScan( SettingWindow ) :
 
 		hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-			self.LoadNoSignalState( )
+			#self.LoadNoSignalState( )
 			self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
