@@ -53,6 +53,8 @@ DIALOG_ID_BOOKMARK					= 22
 DIALOG_ID_CAS_EVENT					= 23
 DIALOG_ID_AUTO_POWER_DOWN			= 24
 
+DIALOG_ID_TEST_WORK			= 99
+
 gDialogMgr = None
 
 def GetInstance( ) :
@@ -182,6 +184,11 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_AUTO_POWER_DOWN :
 				from pvr.gui.dialogs.DialogAutoPowerDown import DialogAutoPowerDown
 				return DialogAutoPowerDown( 'DialogAutoPowerDown.xml', self.scriptDir )
+
+
+			elif aDialogId == DIALOG_ID_TEST_WORK :
+				from pvr.gui.dialogs.DialogTestWork import DialogTestWork
+				return DialogTestWork( 'TimeshiftPlate.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'Cannot find dialog' )

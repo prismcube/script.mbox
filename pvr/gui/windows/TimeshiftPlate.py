@@ -28,11 +28,6 @@ E_CONTROL_ID_BUTTON_JUMP_FF 		= 3710
 E_CONTROL_ID_BUTTON_BOOKMARK 		= 3711
 
 #value enum
-E_CONTROL_ENABLE  = 'enable'
-E_CONTROL_VISIBLE = 'visible'
-E_CONTROL_LABEL   = 'label'
-E_CONTROL_POSY    = 'posy'
-
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
 FLAG_CLOCKMODE_HMS     = 3
@@ -46,7 +41,11 @@ FLAG_PAUSE = 2
 
 E_ONINIT = None
 
-E_DEFAULT_POSY = 25
+#control position
+E_CURRENT_POSX  = 125
+E_CURRENT_POSY  = 625
+E_PROGRESS_POSX = 617
+E_PROGRESS_POSY = 150
 E_PROGRESS_WIDTH_MAX = 980
 
 E_INDEX_FIRST_RECORDING = 0
@@ -61,7 +60,7 @@ class TimeShiftPlate( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
 		#default
-		self.mProgressbarWidth = E_PROGRESS_WIDTH_MAX
+		#self.mProgressbarWidth = E_PROGRESS_WIDTH_MAX
 		self.mCurrentChannel=[]
 		self.mProgress_idx = 0.0
 		self.mEventID = 0
@@ -101,7 +100,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlProgress          = self.getControl( E_CONTROL_ID_PROGRESS )
 		self.mCtrlBtnCurrent        = self.getControl( E_CONTROL_ID_BUTTON_CURRENT )
 		self.mCtrlLblMode           = self.getControl( E_CONTROL_ID_LABEL_MODE )
-		self.mCtrlEventClock        = self.getControl( E_CONTROL_ID_EVENT_CLOCK )
+		#self.mCtrlEventClock        = self.getControl( E_CONTROL_ID_EVENT_CLOCK )
 		self.mCtrlLblTSStartTime    = self.getControl( E_CONTROL_ID_LABEL_TS_START_TIME )
 		self.mCtrlLblTSEndTime      = self.getControl( E_CONTROL_ID_LABEL_TS_END_TIME )
 
@@ -145,6 +144,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAccelatorSection = {}
 		self.mLimitInput = 20
 		self.mLimitShift = 60
+		self.mPosProgress = [] 
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -173,6 +173,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mInitialized = True
 
 		self.RestartAutomaticHide( )
+
+		LOG_TRACE('---------getWidth[%s] getPos[%s] endTime[%s]'% ( self.mCtrlProgress.getWidth( ), self.mCtrlProgress.getPosition( ), self.mTimeshift_endTime ) )
 
 
 	def onAction( self, aAction ) :
@@ -644,17 +646,28 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitLabelInfo( self ) :
+		mPosCurrent  = self.mCtrlBtnCurrent.getPosition( )
+		mPosProgress = self.mCtrlProgress.getPosition( )
+		mWidProgress = self.mCtrlProgress.getWidth( )
+
+		global E_CURRENT_POSY, E_CURRENT_POSX, E_PROGRESS_POSX, E_PROGRESS_POSY, E_PROGRESS_WIDTH_MAX
+		E_CURRENT_POSX = mPosCurrent[0]
+		E_CURRENT_POSY = mPosCurrent[1]
+		E_PROGRESS_POSX = mPosProgress[0]
+		E_PROGRESS_POSY = mPosProgress[1]
+		E_PROGRESS_WIDTH_MAX = mWidProgress
+
 		self.mEventCopy = []
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,          '' )
-		self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,         '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,         '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,         '' )
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,     False )
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
 		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
 		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
@@ -666,13 +679,13 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
 			visible = False
 
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_CONTROL_VISIBLE )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_CONTROL_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_TAG_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_TAG_VISIBLE )
 
 
 	def SetBlockingButtonEnable( self, aValue ) :
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_CONTROL_ENABLE )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_CONTROL_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_TAG_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_TAG_ENABLE )
 		strValue = '%s'% aValue
 		self.setProperty( 'IsXpeeding', strValue )
 
@@ -684,9 +697,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mCtrlBtnVolume.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
-			if aExtra == E_CONTROL_ENABLE :
+			if aExtra == E_TAG_ENABLE :
 				self.mCtrlBtnStartRec.setEnabled( aValue )
-			elif aExtra == E_CONTROL_VISIBLE :
+			elif aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnStartRec.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_PLAY :
@@ -699,15 +712,15 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mCtrlBtnStop.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_REWIND :
-			if aExtra == E_CONTROL_ENABLE :
+			if aExtra == E_TAG_ENABLE :
 				self.mCtrlBtnRewind.setEnabled( aValue )
-			elif aExtra == E_CONTROL_VISIBLE :
+			elif aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnRewind.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_FORWARD :
-			if aExtra == E_CONTROL_ENABLE :
+			if aExtra == E_TAG_ENABLE :
 				self.mCtrlBtnForward.setEnabled( aValue )
-			elif aExtra == E_CONTROL_VISIBLE :
+			elif aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnForward.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_IMAGE_REWIND :
@@ -716,18 +729,18 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_IMAGE_FORWARD :
 			self.mCtrlImgForward.setVisible( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_EVENT_CLOCK :
-			self.mCtrlEventClock.setLabel( aValue )
+		#elif aCtrlID == E_CONTROL_ID_EVENT_CLOCK :
+		#	self.mCtrlEventClock.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_PROGRESS :
 			self.mCtrlProgress.setPercent( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_CURRENT :
-			if aExtra == E_CONTROL_LABEL:
+			if aExtra == E_TAG_LABEL:
 				self.mCtrlBtnCurrent.setLabel( aValue )
-			elif aExtra == E_CONTROL_POSY:
-				self.mCtrlBtnCurrent.setPosition( aValue, E_DEFAULT_POSY )
-			elif aExtra == E_CONTROL_ENABLE:
+			elif aExtra == E_TAG_POSY:
+				self.mCtrlBtnCurrent.setPosition( aValue, E_CURRENT_POSY )
+			elif aExtra == E_TAG_ENABLE:
 				self.mCtrlBtnCurrent.setEnabled( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_TS_START_TIME :
@@ -749,17 +762,17 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mCtrlLblMode.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_BOOKMARK :
-			if aExtra == E_CONTROL_VISIBLE :
+			if aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnBookMark.setVisible( aValue )
 
 
 		"""
 		elif aCtrlID == E_CONTROL_ID_BUTTON_JUMP_RR :
-			if aExtra == E_CONTROL_ENABLE:
+			if aExtra == E_TAG_ENABLE:
 				self.mCtrlBtnJumpRR.setEnabled( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_JUMP_FF :
-			if aExtra == E_CONTROL_ENABLE:
+			if aExtra == E_TAG_ENABLE:
 				self.mCtrlBtnJumpFF.setEnabled( aValue )
 		"""
 
@@ -849,7 +862,7 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.mStartTimeShowed == False :
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
 			if lbl_timeP != '' :
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 
@@ -985,7 +998,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
 		elif self.mMode == ElisEnum.E_MODE_PVR :
-			labelMode = E_TAG_COLOR_RED + 'PLAYBACK' + E_TAG_COLOR_END
+			labelMode = E_TAG_COLOR_RED + 'PVR' + E_TAG_COLOR_END
 			buttonHide= False
 		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
 			labelMode = 'EXTERNAL_PVR'
@@ -994,8 +1007,8 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			labelMode = 'UNKNOWN'
 
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_BOOKMARK, not buttonHide, E_CONTROL_VISIBLE )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_CONTROL_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_BOOKMARK, not buttonHide, E_TAG_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_TAG_VISIBLE )
 		return labelMode
 
 
@@ -1009,8 +1022,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 				#update localTime
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-				lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
-				self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
+				#lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
+				#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
 				if self.mIsPlay != FLAG_STOP :
 					if not self.mFlagUserMove :
@@ -1046,8 +1059,8 @@ class TimeShiftPlate( BaseWindow ) :
 					self.mProgress_idx = 0
 
 				#progress drawing
-				posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_CONTROL_POSY )
+				posx = int( self.mProgress_idx * E_PROGRESS_WIDTH_MAX / 100 )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_TAG_POSY )
 				self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, self.mProgress_idx )
 				#LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
@@ -1202,15 +1215,11 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		#LOG_TRACE('---------getWidth[%s] getPos[%s] endTime[%s]'% ( self.mCtrlProgress.getWidth( ), self.mCtrlProgress.getPosition( ), self.mTimeshift_endTime ) )
-		pos = self.mCtrlProgress.getPosition( )
-		posy = 645 + pos[1]
-		defaultPos = 90 + pos[0]
-		defaultWidth = self.mCtrlProgress.getWidth( )
 		for i in range( len( self.mBookmarkList ) ) :
-			#posx = defaultPos + i * 100
+			#posx = E_PROGRESS_POSX + i * 100
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-			posx = int( defaultPos + defaultWidth * ratioX )
-			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', 'StepFO.png' )
+			posx = int( E_PROGRESS_POSX + E_PROGRESS_WIDTH_MAX * ratioX )
+			button = xbmcgui.ControlButton( posx, E_PROGRESS_POSY-3, 25, 25, '', '', 'StepFO.png' )
 			self.addControl( button )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
@@ -1255,7 +1264,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_TAG_ENABLE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, setPropertyRecord1 )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, setPropertyRecord2 )
 
@@ -1553,7 +1562,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncMove = userMovingMs
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
 		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove )
 		self.mAsyncShiftTimer.start( )
@@ -1632,7 +1641,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mAsyncMove = self.mTimeshift_staTime + 1000
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
 		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove )
 		self.mAsyncShiftTimer.start( )

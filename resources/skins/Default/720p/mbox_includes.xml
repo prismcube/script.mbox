@@ -5484,6 +5484,17 @@
 		</control>
 	</include>
 
+	<include name="DefaultFocusButton">
+		<control type="image">
+			<posx>100</posx>
+			<posy>605</posy>
+			<width>45</width>
+			<height>45</height>
+			<texture>OSDRewindNF.png</texture>
+			<visible>Control.IsFocused(3704)</visible>
+		</control>
+	</include>
+
 	<include name="DefaultTimeshiftPlateGroup">
 		<control type="grouplist" id="3750">
 			<posx>400</posx>
@@ -5500,7 +5511,7 @@
 			<ondown>202</ondown>
 			<onleft></onleft>
 			<onright></onright>
-			<defaultcontrol always="true">3705</defaultcontrol>
+			<!--defaultcontrol always="true">3705</defaultcontrol-->
 			<control type="button" id="3711">
 				<width>45</width>
 				<height>45</height>

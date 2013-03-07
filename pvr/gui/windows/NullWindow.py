@@ -349,6 +349,10 @@ class NullWindow( BaseWindow ) :
 				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
+			dialog.doModal( )
+			return
+
 			self.ShowSubtitle( )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
