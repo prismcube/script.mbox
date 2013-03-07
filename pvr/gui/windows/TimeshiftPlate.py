@@ -345,8 +345,10 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		#elif actionId == Action.ACTION_COLOR_RED :
-		#	self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				self.StopAutomaticHide( )
+				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
 
 
 	def onClick( self, aControlId ):
@@ -403,7 +405,8 @@ class TimeShiftPlate( BaseWindow ) :
 			#self.RestartAutomaticHide( )
 
 		elif aControlId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
-			self.DoContextAction( CONTEXT_ACTION_RESUME_FROM )
+			if self.mMode == ElisEnum.E_MODE_PVR : 
+				self.DoContextAction( CONTEXT_ACTION_RESUME_FROM )
 
 
 	def onFocus( self, aControlId ):
@@ -506,6 +509,14 @@ class TimeShiftPlate( BaseWindow ) :
 				defaultFocus = E_CONTROL_ID_BUTTON_PLAY
 
 			self.UpdateSetFocus( defaultFocus )
+
+
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		if self.mMode == ElisEnum.E_MODE_PVR : 
+			visible = E_TAG_TRUE
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   visible )
 
 		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
 
@@ -668,10 +679,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 		visible = True
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
