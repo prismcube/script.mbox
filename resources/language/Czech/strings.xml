@@ -1418,4 +1418,7 @@
 	<string id="4001">CZE_CAM initialized</string>
 	<string id="4002">CZE_CAM removed</string>
 	<string id="4003">CZE_Formatting HDD...</string>
+	<string id="4004">CZE_That recording conflicts with</string>
+	<string id="4005">CZE_Media partition size will be %s GB</string>
+	<string id="4006">CZE_Media partition will be %s GB</string>
 </strings>

@@ -1418,4 +1418,7 @@
 	<string id="4001">RUS_CAM initialized</string>
 	<string id="4002">RUS_CAM removed</string>
 	<string id="4003">RUS_Formatting HDD...</string>
+	<string id="4004">RUS_That recording conflicts with</string>
+	<string id="4005">RUS_Media partition size will be %s GB</string>
+	<string id="4006">RUS_Media partition will be %s GB</string>
 </strings>

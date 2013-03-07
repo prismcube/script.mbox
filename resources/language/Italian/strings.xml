@@ -1418,4 +1418,7 @@
 	<string id="4001">ITA_CAM initialized</string>
 	<string id="4002">ITA_CAM removed</string>
 	<string id="4003">ITA_Formatting HDD...</string>
+	<string id="4004">ITA_That recording conflicts with</string>
+	<string id="4005">ITA_Media partition size will be %s GB</string>
+	<string id="4006">ITA_Media partition will be %s GB</string>
 </strings>

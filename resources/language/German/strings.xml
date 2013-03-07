@@ -1418,4 +1418,7 @@
 	<string id="4001">GER_CAM initialized</string>
 	<string id="4002">GER_CAM removed</string>
 	<string id="4003">GER_Formatting HDD...</string>
+	<string id="4004">GER_That recording conflicts with</string>
+	<string id="4005">GER_Media partition size will be %s GB</string>
+	<string id="4006">GER_Media partition will be %s GB</string>
 </strings>

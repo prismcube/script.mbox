@@ -1418,4 +1418,7 @@
 	<string id="4001">FRE_CAM initialized</string>
 	<string id="4002">FRE_CAM removed</string>
 	<string id="4003">FRE_Formatting HDD...</string>
+	<string id="4004">FRE_That recording conflicts with</string>
+	<string id="4005">FRE_Media partition size will be %s GB</string>
+	<string id="4006">FRE_Media partition will be %s GB</string>
 </strings>

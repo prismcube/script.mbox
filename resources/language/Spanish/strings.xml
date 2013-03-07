@@ -1418,4 +1418,7 @@
 	<string id="4001">SPA_CAM initialized</string>
 	<string id="4002">SPA_CAM removed</string>
 	<string id="4003">SPA_Formatting HDD...</string>
+	<string id="4004">SPA_That recording conflicts with</string>
+	<string id="4005">SPA_Media partition size will be %s GB</string>
+	<string id="4006">SPA_Media partition will be %s GB</string>
 </strings>

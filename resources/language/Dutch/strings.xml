@@ -1418,4 +1418,7 @@
 	<string id="4001">DUT_CAM initialized</string>
 	<string id="4002">DUT_CAM removed</string>
 	<string id="4003">DUT_Formatting HDD...</string>
+	<string id="4004">DUT_That recording conflicts with</string>
+	<string id="4005">DUT_Media partition size will be %s GB</string>
+	<string id="4006">DUT_Media partition will be %s GB</string>
 </strings>

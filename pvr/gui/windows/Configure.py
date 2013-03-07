@@ -1121,7 +1121,7 @@ class Configure( SettingWindow ) :
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			mediasize = dialog.GetString( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Media partition size is %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Media partition will be %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.OpenBusyDialog( )
