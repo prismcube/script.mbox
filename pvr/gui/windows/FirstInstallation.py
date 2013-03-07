@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
+
 E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 
@@ -27,12 +28,10 @@ class FirstInstallation( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'First Installation' )
-		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
-		
+		self.SetFrontdisplayMessage( 'First Installation' )
+
 		self.SetFirstInstallation( True )
-		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 		

@@ -110,7 +110,7 @@ class MainMenu( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return	
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -169,7 +169,7 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :

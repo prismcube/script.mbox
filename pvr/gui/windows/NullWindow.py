@@ -146,7 +146,7 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )		
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )			
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )			
 		
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.Close( )

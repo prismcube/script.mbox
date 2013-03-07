@@ -74,7 +74,8 @@ class Installation( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass

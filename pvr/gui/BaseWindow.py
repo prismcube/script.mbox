@@ -482,8 +482,9 @@ class BaseWindow( SingleWindow ) :
 				settingControlGroup.setPosition( 80, 120 )
 			
 			elif aWindowId == WinMgr.WIN_ID_CONFIGURE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
+				self.setProperty( 'SettingPip', 'False' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -711,7 +712,7 @@ class BaseWindow( SingleWindow ) :
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 				self.setProperty( 'SettingPip', 'True' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]

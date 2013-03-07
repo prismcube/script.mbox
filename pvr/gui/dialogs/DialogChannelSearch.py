@@ -173,7 +173,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 			if self.mScanMode == E_SCAN_TRANSPONDER :
-				self.DefaultTuneDiseqc12( )
+				self.DefaultTuneInSearchedChannel( )
 				self.mCommander.ScanHelper_Start( )
 			else :
 				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
@@ -271,27 +271,27 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mIsFinished = True
 
 
-	def DefaultTuneDiseqc12( self ) :
-		#if self.IsDiseqc12( ) :
-		if len( self.mStoreTVChannel ) > 0 :
-			for channel in self.mStoreTVChannel :
-				if not channel.mIsCA :
-					self.ChannelTune( channel )
-					return
+	def DefaultTuneInSearchedChannel( self ) :
+		if self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+			if len( self.mStoreTVChannel ) > 0 :
+				for channel in self.mStoreTVChannel :
+					if not channel.mIsCA :
+						self.ChannelTune( channel )
+						return
 
-			self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
-			return
+				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
 
-		if len( self.mStoreRadioChannel ) > 0 :
-			for channel in self.mStoreRadioChannel :
-				if not channel.mIsCA :
-					self.ChannelTune( channel )
-					return
+		else :
+			if len( self.mStoreRadioChannel ) > 0 :
+				for channel in self.mStoreRadioChannel :
+					if not channel.mIsCA :
+						self.ChannelTune( channel )
+						return
 
-			self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
-			return
+				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
 
 
+	"""
 	def IsDiseqc12( self ) :
 		tunerNumber = self.mDataCache.GetTunerIndexBySatellite( self.mLongitude, self.mBand )
 		tunertype = None
@@ -306,6 +306,7 @@ class DialogChannelSearch( BaseDialog ) :
 			return True
 		else :
 			return False
+	"""
 
 
 	def ChannelTune( self, aChannel ) :

@@ -64,7 +64,9 @@ WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 WIN_ID_LIST_WINDOW_SETTING_WINDOW = [
 	WIN_ID_ANTENNA_SETUP, WIN_ID_CONFIG_SIMPLE, WIN_ID_CONFIG_MOTORIZED_12, WIN_ID_CONFIG_MOTORIZED_USALS,
 	WIN_ID_CONFIG_ONECABLE, WIN_ID_CONFIG_ONECABLE_2, WIN_ID_CONFIG_DISEQC_10, WIN_ID_CONFIG_DISEQC_11,
-	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION ]
+	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION,
+	WIN_ID_EDIT_SATELLITE, WIN_ID_EDIT_TRANSPONDER, WIN_ID_CONDITIONAL_ACCESS, WIN_ID_SYSTEM_UPDATE,
+	WIN_ID_FIRST_INSTALLATION, WIN_ID_INSTALLATION, WIN_ID_CONFIGURE ]
 
 gWindowMgr = None
 
@@ -168,7 +170,7 @@ class WindowMgr( object ) :
 					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 						self.mRootWindow.setProperty( 'SettingPip', 'False' )
 						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-						time.sleep( 0.5 )
+						time.sleep( 0.4 )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
@@ -208,7 +210,7 @@ class WindowMgr( object ) :
 						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 							self.mRootWindow.setProperty( 'SettingPip', 'False' )
 							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-							time.sleep( 0.5 )
+							time.sleep( 0.4 )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									

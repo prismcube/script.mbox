@@ -164,7 +164,9 @@ class ArchiveWindow( BaseWindow ) :
 				#self.setProperty( 'PvrPlay', 'False' )
 				self.Close( )
 				self.SetVideoRestore( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).CloseWindow( )
+				
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :

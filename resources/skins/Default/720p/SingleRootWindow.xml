@@ -23,7 +23,7 @@
 
 		<!-- Setting Window Backfround Include -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingBackground),True)</visible>
+			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000)</visible>
 			<include>DefaultSettingWindowEffect</include>
 			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
 				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
@@ -2712,10 +2712,11 @@
 
 		<!-- *********** Configure ********** -->	
 		<control type="group" id="1500000">
-			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1500000)</visible>
 			<defaultcontrol always="true">1509000</defaultcontrol>
 			<control type="group">
+				<include>DefaultSettingWindowEffect</include>
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<posx>90</posx>
 				<posy>50</posy>
 				<control type="image">
@@ -3552,18 +3553,13 @@
 
 		<!-- *********** Installation ********** -->
 		<control type="group" id="3500000">
-			<include>DefaultSettingWindowEffect</include>
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
 			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
 			<defaultcontrol always="true">3509000</defaultcontrol>
-			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
+				<include>DefaultSettingWindowEffect</include>
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<posx>90</posx>
 				<posy>50</posy>
-				<!--<include>DefaultSettingWindowEffect</include>-->
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -3733,6 +3729,7 @@
 			</control>
 			-->
 			<control type="group">
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<include>DefaultWindowFade</include>
 				<control type="label">
 					<posx>810</posx>
@@ -4583,7 +4580,7 @@
 		<!-- Setting Window Controls -->
 		<control type="group" id="11000001">
 			<posy>10</posy>
-			<visible>substring(Window.Property(SettingBackground),True) | substring(Window.Property(CurrentWindow),1500000)</visible>
+			<visible>substring(Window.Property(SettingBackground),True)</visible>
 			<include>DefaultSettingWindowEffect</include>	
 			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
 				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
