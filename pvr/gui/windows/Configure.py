@@ -376,7 +376,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting media partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 120 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formatting HDD...' ), 120 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
@@ -384,7 +384,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting recording partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 60 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formatting HDD...' ), 60 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input03 :
