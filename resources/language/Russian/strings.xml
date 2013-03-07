@@ -1419,4 +1419,6 @@
 	<string id="4002">RUS_CAM removed</string>
 	<string id="4003">RUS_Update Channels via Internet</string>
 	<string id="4004">RUS_Formatting HDD...</string>
+	<string id="4005">RUS_That recording confilcts with</string>
+	<string id="4006">RUS_That recording conflicts with</string>
 </strings>

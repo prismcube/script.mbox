@@ -1419,4 +1419,6 @@
 	<string id="4002">DUT_CAM removed</string>
 	<string id="4003">DUT_Update Channels via Internet</string>
 	<string id="4004">DUT_Formatting HDD...</string>
+	<string id="4005">DUT_That recording confilcts with</string>
+	<string id="4006">DUT_That recording conflicts with</string>
 </strings>

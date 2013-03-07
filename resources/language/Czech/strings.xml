@@ -1419,4 +1419,6 @@
 	<string id="4002">CZE_CAM removed</string>
 	<string id="4003">CZE_Update Channels via Internet</string>
 	<string id="4004">CZE_Formatting HDD...</string>
+	<string id="4005">CZE_That recording confilcts with</string>
+	<string id="4006">CZE_That recording conflicts with</string>
 </strings>

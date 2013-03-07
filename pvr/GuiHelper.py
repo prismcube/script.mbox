@@ -35,7 +35,7 @@ def RecordConflict( aInfo ) :
 			if conflictNum > 2 :
 				conflictNum = 2
 
-			label[0] = MR_LANG( 'The recording you just requested confilcts with' )
+			label[0] = MR_LANG( 'That recording conflicts with' )
 
 			for i in range( conflictNum ) :
 				timer = dataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
