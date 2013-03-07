@@ -393,7 +393,7 @@
 							<width>30</width>
 							<height>30</height>
 							<font>Font_Reg10</font>
-							<label>BOOK</label>
+							<label></label>
 						</control>
 					</control>
 					<control type="group">
@@ -432,6 +432,14 @@
 							<width>30</width>
 							<height>30</height>
 							<texture>settings-button-nofocus.png</texture>
+						</control>
+						<control type="label">
+							<posx>3</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<font>Font_Reg10</font>
+							<label>BOOK</label>
 						</control>
 					</control>
 				</control>
