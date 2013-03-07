@@ -1423,4 +1423,6 @@
 	<string id="4002">CAM removed</string>
 	<string id="4003">Update Channels via Internet</string>
 	<string id="4004">Formatting HDD...</string>
+	<string id="4005">That recording confilcts with</string>
+	<string id="4006">That recording conflicts with</string>
 </strings>

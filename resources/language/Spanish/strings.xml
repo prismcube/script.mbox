@@ -1419,4 +1419,6 @@
 	<string id="4002">SPA_CAM removed</string>
 	<string id="4003">SPA_Update Channels via Internet</string>
 	<string id="4004">SPA_Formatting HDD...</string>
+	<string id="4005">SPA_That recording confilcts with</string>
+	<string id="4006">SPA_That recording conflicts with</string>
 </strings>

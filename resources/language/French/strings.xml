@@ -1419,4 +1419,6 @@
 	<string id="4002">FRE_CAM removed</string>
 	<string id="4003">FRE_Update Channels via Internet</string>
 	<string id="4004">FRE_Formatting HDD...</string>
+	<string id="4005">FRE_That recording confilcts with</string>
+	<string id="4006">FRE_That recording conflicts with</string>
 </strings>

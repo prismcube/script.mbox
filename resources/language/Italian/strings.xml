@@ -1419,4 +1419,6 @@
 	<string id="4002">ITA_CAM removed</string>
 	<string id="4003">ITA_Update Channels via Internet</string>
 	<string id="4004">ITA_Formatting HDD...</string>
+	<string id="4005">ITA_That recording confilcts with</string>
+	<string id="4006">ITA_That recording conflicts with</string>
 </strings>
