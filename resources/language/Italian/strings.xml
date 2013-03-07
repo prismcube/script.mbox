@@ -414,6 +414,7 @@
 	<string id="2296">ITA_Network Type</string>
 	<string id="2297">ITA_Ethernet</string>
 	<string id="2298">ITA_Wireless</string>
+	<string id="2299">ITA_1080p-50</string>
 	<string id="3001">ITA_[I]No Signal[/I] </string>
 	<string id="3002">ITA_[I]Scrambled[/I] </string>
 	<string id="3003">ITA_No Channel</string>
@@ -1416,4 +1417,5 @@
 	<string id="4000">ITA_RSS Feed</string>
 	<string id="4001">ITA_CAM initialized</string>
 	<string id="4002">ITA_CAM removed</string>
+	<string id="4003">ITA_Formatting HDD...</string>
 </strings>

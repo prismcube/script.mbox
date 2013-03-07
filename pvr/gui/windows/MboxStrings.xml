@@ -416,6 +416,7 @@
 	<string id="2296">Network Type</string>
 	<string id="2297">Ethernet</string>
 	<string id="2298">Wireless</string>
+	<string id="2299">1080p-50</string>
 </property>
 <strings>
 	<string id="3001">[I]No Signal[/I] </string>
@@ -1420,4 +1421,5 @@
 	<string id="4000">RSS Feed</string>
 	<string id="4001">CAM initialized</string>
 	<string id="4002">CAM removed</string>
+	<string id="4003">Formatting HDD...</string>
 </strings>
