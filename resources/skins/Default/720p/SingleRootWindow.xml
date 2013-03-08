@@ -70,7 +70,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -79,7 +79,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -1014,7 +1014,7 @@
 						<posy>120</posy>
 						<width>120</width>
 						<height>40</height>
-						<label>[I]SCRIPT104 [/I]</label>
+						<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
@@ -1025,7 +1025,7 @@
 						<posy>120</posy>
 						<width>120</width>
 						<height>40</height>
-						<label>[I]SCRIPT105 [/I]</label>
+						<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
@@ -1220,7 +1220,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
@@ -1233,7 +1233,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])SCRIPT108</label>
+					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -2152,7 +2152,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
 			</control>
@@ -2161,7 +2161,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble)</visible>
 			</control>
@@ -2814,7 +2814,7 @@
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>SCRIPT55 - $INFO[Container(1509000).ListItem.Label]</label>
+					<label>$LOCALIZE[SCRIPT55] - $INFO[Container(1509000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
@@ -3205,7 +3205,7 @@
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT104 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3216,7 +3216,7 @@
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT105 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3278,7 +3278,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003400).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -3293,7 +3293,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003410).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -3308,7 +3308,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003420).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -3323,7 +3323,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003430).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),panart) </visible>
 				</control>
 			</control>
@@ -3739,7 +3739,7 @@
 					<posy>310</posy>
 					<width>200</width>
 					<height>40</height>
-					<label>[I]SCRIPT104 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 					<font>font13_title</font>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -3751,7 +3751,7 @@
 					<posy>310</posy>
 					<width>200</width>
 					<height>40</height>
-					<label>[I]SCRIPT105 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 					<font>font13_title</font>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -4006,7 +4006,7 @@
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT104 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -4017,7 +4017,7 @@
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT105 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -4165,7 +4165,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),channel) </visible>
 			</control>
 
@@ -4181,7 +4181,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
 			</control>
 		</control>
