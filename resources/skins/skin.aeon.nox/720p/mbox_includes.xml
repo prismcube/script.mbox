@@ -5420,7 +5420,7 @@
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>false</usecontrolcoords>
 			<visible>true</visible>
-			<onup>500</onup>
+			<onup>202</onup>
 			<ondown>202</ondown>
 			<onleft></onleft>
 			<onright></onright>
@@ -5491,6 +5491,7 @@
 			</control>
 		</control>
 	</include>
+
 	<include name="DefaultSelectList">
 		<control type="list" id="3850">
 			<posx>50</posx>

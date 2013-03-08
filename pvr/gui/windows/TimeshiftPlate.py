@@ -6,9 +6,6 @@ E_CONTROL_ID_IMAGE_RECORDING1 		= 10
 E_CONTROL_ID_LABEL_RECORDING1 		= 11
 E_CONTROL_ID_IMAGE_RECORDING2 		= 15
 E_CONTROL_ID_LABEL_RECORDING2 		= 16
-#E_CONTROL_ID_IMAGE_REWIND 			= 31
-#E_CONTROL_ID_IMAGE_FORWARD 			= 32
-#E_CONTROL_ID_LABEL_SPEED 			= 33
 E_CONTROL_ID_PROGRESS 				= 201
 E_CONTROL_ID_BUTTON_CURRENT 		= 202
 E_CONTROL_ID_LABEL_MODE 			= 203
@@ -63,8 +60,6 @@ class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
-		#default
-		#self.mProgressbarWidth = E_PROGRESS_WIDTH_MAX
 		self.mCurrentChannel=[]
 		self.mProgress_idx = 0.0
 		self.mEventID = 0
@@ -75,9 +70,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = True
-
 		self.mStartTimeShowed = False
-
 		self.mPrekey = None
 
 
@@ -98,9 +91,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlImgRec2           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
 		self.mCtrlLblRec2           = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
-		#self.mCtrlImgRewind         = self.getControl( E_CONTROL_ID_IMAGE_REWIND )
-		#self.mCtrlImgForward        = self.getControl( E_CONTROL_ID_IMAGE_FORWARD )
-		#self.mCtrlLblSpeed          = self.getControl( E_CONTROL_ID_LABEL_SPEED )
 		self.mCtrlProgress          = self.getControl( E_CONTROL_ID_PROGRESS )
 		self.mCtrlBtnCurrent        = self.getControl( E_CONTROL_ID_BUTTON_CURRENT )
 		self.mCtrlLblMode           = self.getControl( E_CONTROL_ID_LABEL_MODE )
@@ -110,7 +100,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mCtrlBtnVolume         = self.getControl( E_CONTROL_ID_BUTTON_VOLUME )
 		self.mCtrlBtnStartRec       = self.getControl( E_CONTROL_ID_BUTTON_START_RECORDING )
-		#self.mCtrlBtnStopRec        = self.getControl( 403 )
 		self.mCtrlBtnRewind         = self.getControl( E_CONTROL_ID_BUTTON_REWIND )
 		self.mCtrlBtnPlay           = self.getControl( E_CONTROL_ID_BUTTON_PLAY )
 		self.mCtrlBtnPause          = self.getControl( E_CONTROL_ID_BUTTON_PAUSE )
@@ -570,15 +559,8 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Resume( )
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
-			"""
-			if self.mSpeed != 100 :
-				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
-				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, '' )
-			"""
 
 			self.mIsPlay = FLAG_PAUSE
-
 			label = self.GetModeValue( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 			# toggle
@@ -713,9 +695,6 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,        '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,        '' )
-		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,     False )
-		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
@@ -770,12 +749,6 @@ class TimeShiftPlate( BaseWindow ) :
 			elif aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnForward.setVisible( aValue )
 
-		#elif aCtrlID == E_CONTROL_ID_IMAGE_REWIND :
-		#	self.mCtrlImgRewind.setVisible( aValue )
-
-		#elif aCtrlID == E_CONTROL_ID_IMAGE_FORWARD :
-		#	self.mCtrlImgForward.setVisible( aValue )
-
 		#elif aCtrlID == E_CONTROL_ID_EVENT_CLOCK :
 		#	self.mCtrlEventClock.setLabel( aValue )
 
@@ -795,9 +768,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_TS_END_TIME :
 			self.mCtrlLblTSEndTime.setLabel( aValue )
-
-		#elif aCtrlID == E_CONTROL_ID_LABEL_SPEED :
-		#	self.mCtrlLblSpeed.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
 			self.mCtrlLblRec1.setLabel( aValue )
@@ -865,24 +835,6 @@ class TimeShiftPlate( BaseWindow ) :
 			return ret
 
 		focus = E_CONTROL_ID_BUTTON_PLAY
-		"""
-		if self.getProperty( 'iPlayerRewind' ) == E_TAG_TRUE :
-			focus = E_CONTROL_ID_BUTTON_REWIND
-		elif self.getProperty( 'iPlayerResume' ) == E_TAG_TRUE :
-			focus = E_CONTROL_ID_BUTTON_PAUSE
-		elif self.getProperty( 'iPlayerStop' ) == E_TAG_TRUE :
-			focus = E_CONTROL_ID_BUTTON_STOP
-		elif self.getProperty( 'iPlayerForward' ) == E_TAG_TRUE :
-			focus = E_CONTROL_ID_BUTTON_FORWARD
-		else :
-			if self.mSpeed == 100 :
-				focus = E_CONTROL_ID_BUTTON_PAUSE
-			elif self.mSpeed < 0 :
-				focus = E_CONTROL_ID_BUTTON_REWIND
-			elif self.mSpeed > 100 :
-				focus = E_CONTROL_ID_BUTTON_FORWARD
-		"""
-
 		if self.mSpeed == 100 :
 			focus = E_CONTROL_ID_BUTTON_PAUSE
 		elif self.mSpeed < 0 :
@@ -1087,10 +1039,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
 		self.mCtrlImgXpeed.setPosition( int( posx/2 ), 2 )
 
-		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,  flagRR )
-		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
-		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,   lspeed )
-
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
@@ -1118,7 +1066,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
 		elif self.mMode == ElisEnum.E_MODE_PVR :
-			labelMode = E_TAG_COLOR_RED + 'PVR' + E_TAG_COLOR_END
+			labelMode = E_TAG_COLOR_RED + 'PLAYBACK' + E_TAG_COLOR_END
 			buttonHide= False
 		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
 			labelMode = 'EXTERNAL_PVR'
