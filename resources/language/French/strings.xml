@@ -414,6 +414,7 @@
 	<string id="2296">FRE_Network Type</string>
 	<string id="2297">FRE_Ethernet</string>
 	<string id="2298">FRE_Wireless</string>
+	<string id="2299">FRE_1080p-50</string>
 	<string id="3001">FRE_[I]No Signal[/I] </string>
 	<string id="3002">FRE_[I]Scrambled[/I] </string>
 	<string id="3003">FRE_No Channel</string>
@@ -1416,4 +1417,8 @@
 	<string id="4000">FRE_RSS Feed</string>
 	<string id="4001">FRE_CAM initialized</string>
 	<string id="4002">FRE_CAM removed</string>
+	<string id="4003">FRE_Formatting HDD...</string>
+	<string id="4004">FRE_That recording conflicts with</string>
+	<string id="4005">FRE_Media partition size will be %s GB</string>
+	<string id="4006">FRE_Media partition will be %s GB</string>
 </strings>

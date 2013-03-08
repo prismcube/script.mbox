@@ -414,6 +414,7 @@
 	<string id="2296">POL_Network Type</string>
 	<string id="2297">POL_Ethernet</string>
 	<string id="2298">POL_Wireless</string>
+	<string id="2299">POL_1080p-50</string>
 	<string id="3001">POL_[I]No Signal[/I] </string>
 	<string id="3002">POL_[I]Scrambled[/I] </string>
 	<string id="3003">POL_No Channel</string>
@@ -1416,4 +1417,8 @@
 	<string id="4000">POL_RSS Feed</string>
 	<string id="4001">POL_CAM initialized</string>
 	<string id="4002">POL_CAM removed</string>
+	<string id="4003">POL_Formatting HDD...</string>
+	<string id="4004">POL_That recording conflicts with</string>
+	<string id="4005">POL_Media partition size will be %s GB</string>
+	<string id="4006">POL_Media partition will be %s GB</string>
 </strings>

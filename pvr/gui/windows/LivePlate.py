@@ -959,6 +959,8 @@ class LivePlate( LivePlateWindow ) :
 			isOK = dialog.IsOK( )
 			if isOK != E_DIALOG_STATE_YES :
 				isOK = False
+			else :
+				self.ShowRecordingInfo( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
 				RecordConflict( dialog.GetConflictTimer( ) )

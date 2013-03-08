@@ -48,6 +48,10 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		self.close( )
 
 
+	def SetFrontdisplayMessage( self, aMessage ) :
+		self.mDataCache.Frontdisplay_SetMessage( aMessage )
+
+
 	def GetFocusId( self ):
 		self.mFocusId = self.getFocusId( )
 		return self.mFocusId

@@ -227,7 +227,8 @@ class MainMenu( BaseWindow ) :
 				XBMC_RunAddon( self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
 
 		elif aControlId == BUTTON_ID_HELP :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HELP )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HELP )
+			dialog.doModal( )
 
 		elif aControlId == 20 :
 			pass
