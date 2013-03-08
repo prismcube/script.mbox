@@ -126,7 +126,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -135,7 +135,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -4467,7 +4467,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -4479,7 +4479,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
