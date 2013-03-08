@@ -293,7 +293,7 @@ class BaseWindow( SingleWindow ) :
 	def SetVideoRestore( self ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
-
+	"""
 	def LoadNoSignalState( self ) :
 		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 			self.setProperty( 'Signal', 'Scramble' )
@@ -304,11 +304,13 @@ class BaseWindow( SingleWindow ) :
 		else :
 			self.setProperty( 'Signal', 'True' )
 			state = 'True'
+	"""
 
-
+	"""
 	def VisibleTuneStatus( self , aFlag ) :
 		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setVisible( aFlag )
 		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setVisible( aFlag )
+	"""
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
@@ -451,15 +453,23 @@ class BaseWindow( SingleWindow ) :
 			self.setProperty( 'NotAvail', 'False' )
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
-
+	"""
 	def SetPipLabel( self ) :
 		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
 		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
+	"""
 
 
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
+
+			overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )
+			nosignalLabel = self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL )
+			scrambleLabel = self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED )
+			settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+			
 			if aWindowId == WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
@@ -473,17 +483,23 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 			
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
+				
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+				
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 80, 120 )
 			
 			elif aWindowId == WinMgr.WIN_ID_CONFIGURE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
+				self.setProperty( 'SettingPip', 'False' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -492,7 +508,6 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 				settingControlGroup.setPosition( 380, 110 )
 
 			elif aWindowId == WinMgr.WIN_ID_ANTENNA_SETUP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -508,12 +523,17 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 			
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_CONFIG_DISEQC_10 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
@@ -592,12 +612,17 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_AUTOMATIC_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -639,12 +664,17 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_EDIT_TRANSPONDER * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -660,12 +690,17 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -681,12 +716,17 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -702,52 +742,84 @@ class BaseWindow( SingleWindow ) :
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 857, 170 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
+				radioImage.setPosition( 857, 170 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 930, 250 )
+				scrambleLabel.setPosition( 930, 250 )
+
 				settingControlGroup.setPosition( 80, 120 )
 
 			elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingBackground', 'False' )
+				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 				self.setProperty( 'SettingPip', 'True' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 				
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 				overlayImage.setPosition( 362, 112 )
 				overlayImage.setWidth( 798 )
 				overlayImage.setHeight( 446 )
 
+				radioImage.setPosition( 362, 112 )
+				radioImage.setWidth( 798 )
+				radioImage.setHeight( 446 )
+
+				nosignalLabel.setPosition( 645, 313 )
+				scrambleLabel.setPosition( 645, 313 )
+
 			elif aWindowId == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
 				overlayImage.setPosition( 835, 113 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
+				radioImage.setPosition( 835, 113 )
+				radioImage.setWidth( 352 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 908, 197 )
+				scrambleLabel.setPosition( 908, 197 )
+
 			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				if self.getProperty( 'ViewMode' ) == 'common' :
 					self.setProperty( 'SettingPip', 'True' )
-					overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
 					overlayImage.setPosition( 850, 118 )
 					overlayImage.setWidth( 352 )
 					overlayImage.setHeight( 198 )
+
+					radioImage.setPosition( 850, 118 )
+					radioImage.setWidth( 352 )
+					radioImage.setHeight( 198 )
+
+					nosignalLabel.setPosition( 925, 205 )
+					scrambleLabel.setPosition( 925, 205 )
 				else :
 					self.setProperty( 'SettingPip', 'False' )
 
 			elif aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
 				overlayImage.setPosition( 849, 118 )
 				overlayImage.setWidth( 350 )
 				overlayImage.setHeight( 198 )
+
+				radioImage.setPosition( 849, 118 )
+				radioImage.setWidth( 350 )
+				radioImage.setHeight( 198 )
+
+				nosignalLabel.setPosition( 922, 203 )
+				scrambleLabel.setPosition( 922, 203 )
 
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'DafultBackgroundImage', 'True' )
@@ -764,7 +836,10 @@ class BaseWindow( SingleWindow ) :
 				self.setProperty( 'DafultBackgroundImage', 'False' )
 				self.setProperty( 'SettingPip', 'False' )
 				for i in range( E_CTRL_BTN_INFO_MAX ) :
-					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )				
+					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
+
+			elif aWindowId == WinMgr.WIN_ID_FAVORITES * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+				self.setProperty( 'DafultBackgroundImage', 'True' )
 
 			else :
 				self.setProperty( 'SettingBackground', 'False' )

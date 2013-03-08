@@ -20,7 +20,6 @@ class AntennaSetup( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
 
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
@@ -33,8 +32,7 @@ class AntennaSetup( SettingWindow ) :
 
 		time.sleep( 0.2 )
 		self.DisableControl( )
-		self.setDefaultControl( )
-		self.SetPipLabel( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :

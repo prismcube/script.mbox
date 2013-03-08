@@ -48,15 +48,14 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		#self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
-		self.VisibleTuneStatus( False )
+		#self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_12_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-		self.setDefaultControl( )
-		self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 
@@ -83,6 +82,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
+					#self.VisibleTuneStatus( True )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
 				self.OpenBusyDialog( )
@@ -91,6 +91,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 				self.RestoreAvBlank( )
 				self.CloseBusyDialog( )
+				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :

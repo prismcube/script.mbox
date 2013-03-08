@@ -112,7 +112,6 @@ class DialogPopupOK( BaseDialog ) :
 
 	def AutoClose( self ) :
 		for i in range( self.mAutoCloseTime * 5 ) :
-			print 'dhkim test AutoClose'
 			if self.mClosed :
 				return
 			time.sleep( 0.2 )

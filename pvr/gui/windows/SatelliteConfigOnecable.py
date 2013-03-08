@@ -19,7 +19,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 
@@ -47,9 +47,8 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
 		time.sleep( 0.2 )
 		self.DisableControl( )
-		self.setDefaultControl( )
-		self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 

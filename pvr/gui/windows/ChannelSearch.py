@@ -12,22 +12,17 @@ class ChannelSearch( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
 		self.SetFrontdisplayMessage( 'Channel Search' )		
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
 
-		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
-
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Automatic scan' ), '', MR_LANG( 'Search TV and radio channels without entering any satellite information' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'Manual scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
 
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )
-		self.SetPipLabel( )
 
 		if self.mIsCloseing == False :
 			if self.CheckNoChannel( ) :
@@ -37,7 +32,7 @@ class ChannelSearch( SettingWindow ) :
 		else :
 			if self.mNoChannel == False :
 				if self.CheckNoChannel( ) :
-					self.mDataCache.Channel_TuneDefault( )
+					#self.mDataCache.Channel_TuneDefault( )
 					self.mDataCache.Player_AVBlank( False )
 					self.mNoChannel = False
 				else :

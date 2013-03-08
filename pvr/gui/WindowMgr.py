@@ -51,7 +51,6 @@ WIN_ID_INFO_PLATE					= 31
 #WIN_ID_FAVORITE_ADDONS				= 32
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
-WIN_ID_HELP							= 34
 
 
 
@@ -64,7 +63,9 @@ WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 WIN_ID_LIST_WINDOW_SETTING_WINDOW = [
 	WIN_ID_ANTENNA_SETUP, WIN_ID_CONFIG_SIMPLE, WIN_ID_CONFIG_MOTORIZED_12, WIN_ID_CONFIG_MOTORIZED_USALS,
 	WIN_ID_CONFIG_ONECABLE, WIN_ID_CONFIG_ONECABLE_2, WIN_ID_CONFIG_DISEQC_10, WIN_ID_CONFIG_DISEQC_11,
-	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION ]
+	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION,
+	WIN_ID_EDIT_SATELLITE, WIN_ID_EDIT_TRANSPONDER, WIN_ID_CONDITIONAL_ACCESS, WIN_ID_SYSTEM_UPDATE,
+	WIN_ID_FIRST_INSTALLATION, WIN_ID_INSTALLATION, WIN_ID_CONFIGURE ]
 
 gWindowMgr = None
 
@@ -168,7 +169,7 @@ class WindowMgr( object ) :
 					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 						self.mRootWindow.setProperty( 'SettingPip', 'False' )
 						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-						time.sleep( 0.5 )
+						time.sleep( 0.4 )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
@@ -208,7 +209,7 @@ class WindowMgr( object ) :
 						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 							self.mRootWindow.setProperty( 'SettingPip', 'False' )
 							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-							time.sleep( 0.5 )
+							time.sleep( 0.4 )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									
@@ -288,7 +289,6 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			from pvr.gui.windows.Favorites import Favorites
-			from pvr.gui.windows.Help import Help
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.HiddenTest import HiddenTest
 
@@ -324,7 +324,6 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow  )
 				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow  )
 				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow  )
-				self.mWindows[WIN_ID_HELP] = Help( self.mRootWindow  )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow  )
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow  )
 
@@ -368,7 +367,6 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FAVORITE_ADDONS]=FavoriteAddons( 'FavoriteAddons.xml', self.mScriptDir )
 				"""
 				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_HELP]=Help( 'Help.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 

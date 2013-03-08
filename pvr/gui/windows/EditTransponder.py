@@ -26,7 +26,7 @@ class EditTransponder( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )
-		self.VisibleTuneStatus( False )
+		#self.VisibleTuneStatus( False )
 
 		self.SetSingleWindowPosition( E_EDIT_TRANSPONDER_BASE_ID )
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
@@ -43,6 +43,7 @@ class EditTransponder( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
 			else :
+				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 		else :
 			self.mNetworkSearch = ElisPropertyEnum( 'Network Search', self.mCommander ).GetProp( )
@@ -54,10 +55,10 @@ class EditTransponder( SettingWindow ) :
 			self.mDataCache.Player_AVBlank( True )
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
-			self.LoadNoSignalState( )
+			#self.LoadNoSignalState( )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
-			self.SetPipLabel( )
+			#self.SetPipLabel( )
 			self.mInitialized = True
 		
 
@@ -81,6 +82,7 @@ class EditTransponder( SettingWindow ) :
 			self.CloseBusyDialog( )
 			self.SetVideoRestore( )
 			self.RestoreAvBlank( )
+			#self.VisibleTuneStatus( True )
 			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :

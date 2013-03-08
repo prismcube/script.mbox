@@ -102,10 +102,9 @@ class FTIWindow( SettingWindow ) :
 		if ( gAntennaCurrentStep + 1 ) == len( gAntennaStepList ) :
 			self.SetFTIStep( E_STEP_CHANNEL_SEARCH_CONFIG )
 			self.mTunerMgr.SaveConfiguration( )
-			self.mDataCache.Channel_ReTune( )
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
-			#self.mDataCache.Player_AVBlank( False )
+			self.mDataCache.Channel_ReTune( )
 			self.mTunerMgr.SetNeedLoad( True )
 			winId = WinMgr.WIN_ID_FIRST_INSTALLATION
 		else :
@@ -180,6 +179,10 @@ class FTIWindow( SettingWindow ) :
 			else :
 				if prop == E_DISEQC_1_0 :
 					configWindowId = WinMgr.WIN_ID_CONFIG_DISEQC_10
+					if tunerindex == E_TUNER_1 and configuredsatellitecnt[ E_TUNER_1 ] > 4 :
+						configuredsatellitecnt[ E_TUNER_1 ] = 4
+					elif tunerindex == E_TUNER_2 and configuredsatellitecnt[ E_TUNER_2 ] > 4 :
+						configuredsatellitecnt[ E_TUNER_2 ] = 4
 				elif prop == E_DISEQC_1_1 :
 					configWindowId = WinMgr.WIN_ID_CONFIG_DISEQC_11
 				elif prop == E_MOTORIZE_1_2 :
@@ -214,9 +217,7 @@ class FTIWindow( SettingWindow ) :
 	def CloseFTI( self ) :
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
 		self.mTunerMgr.CancelConfiguration( )
-		self.mDataCache.Channel_TuneDefault( )
-		#if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
-		#	self.mDataCache.Player_AVBlank( False )
+		self.mDataCache.Channel_ReTune( )
 		self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 		self.mTunerMgr.SetNeedLoad( True )
 		self.SetVideoRestore( )

@@ -22,13 +22,12 @@ class TunerConfiguration( FTIWindow ) :
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )
 		self.SetSettingWindowLabel( headerLabel )
-		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
-		self.SetPipLabel( )
 		self.SetFTIGuiType( )
-		self.getControl( E_FIRST_TIME_INSTALLATION_PREV ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ), self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ) )
-		self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_PREV ), self.getControl( E_FIRST_TIME_INSTALLATION_PREV ) )
-		self.setFocusId( E_MAIN_LIST_ID )
+		if self.GetFirstInstallation( ) :
+			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
+		else :
+			self.setFocusId( E_MAIN_LIST_ID )
 		self.mInitialized = True
 
 

@@ -26,7 +26,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 		self.mOneCablesatelliteCount = len( self.mTunerMgr.GetConfiguredSatelliteList( ) )
 
 		if self.mLoadConfig == True :
@@ -35,9 +35,8 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 		self.SetSingleWindowPosition( E_CONFIG_ONECABLE_2_BASE_ID )
 		self.InitConfig( )
-		self.setDefaultControl( )
-		self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 

@@ -124,9 +124,9 @@ class SystemUpdate( SettingWindow ) :
 
 	def onInit( self )  :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'System Update' )		
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.SetFrontdisplayMessage( 'System Update' )
 
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_SYSTEM_UPDATE_BASE_ID )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
@@ -146,7 +146,7 @@ class SystemUpdate( SettingWindow ) :
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
+		#self.LoadNoSignalState( )
 
 		self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
@@ -284,7 +284,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def Close( self ) :
-
 		if not self.mGetDownloadThread and \
 		   self.mEnableLocalThread and self.mCheckEthernetThread :
 			self.mEnableLocalThread = False
@@ -789,7 +788,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels by Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 
 			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import channel list via USB' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export channel list via USB' ) )

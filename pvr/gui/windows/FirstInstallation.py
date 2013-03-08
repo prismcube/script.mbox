@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 
+
 E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 
@@ -27,17 +28,13 @@ class FirstInstallation( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'First Installation' )
-		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
-		
+		self.SetFrontdisplayMessage( 'First Installation' )
+
 		self.SetFirstInstallation( True )
-		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
-		self.LoadNoSignalState( )
 		
 		self.SetListControl( self.GetFTIStep( ) )
-		self.SetPipLabel( )
 		
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -188,8 +185,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mDataCache.Channel_ReLoad( )
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
-		#if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
-		#	self.mDataCache.Player_AVBlank( False )
+			self.mDataCache.Channel_TuneDefault( )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
@@ -217,7 +213,7 @@ class FirstInstallation( FTIWindow ) :
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
@@ -236,7 +232,7 @@ class FirstInstallation( FTIWindow ) :
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_ANTENNA :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
@@ -257,7 +253,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 			
 			if self.mTunerMgr.GetNeedLoad( ) == True :
 				self.mTunerMgr.LoadOriginalTunerConfig( )
@@ -284,7 +280,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
@@ -327,7 +323,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME

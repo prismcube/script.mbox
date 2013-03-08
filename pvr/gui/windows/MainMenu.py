@@ -50,6 +50,9 @@ class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		#self.mCtrlFavAddonList = None
+		
+
+	def onInit( self ) :
 		self.mSubDescriptionInstall = [
 			MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
 			MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ),
@@ -71,8 +74,6 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
-
-	def onInit( self ) :
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
@@ -110,7 +111,7 @@ class MainMenu( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return	
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -169,7 +170,7 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :

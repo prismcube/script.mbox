@@ -49,7 +49,7 @@ E_IDS_SINGLE_WINDOW = [
 	#['InfoPlate.xml', 31],
 	['Favorites.xml', 32],
 	['SystemUpdate.xml', 33],
-	['Help.xml', 34],
+	#['Help.xml', 34],
 	['HiddenTest.xml', 99]
 	]
 
@@ -291,7 +291,7 @@ def test2( ) :
 	'ChannelSearch.xml', 'AutomaticScan.xml','ManualScan.xml','TimeshiftPlate.xml', 'skip.xml',
 	'EditSatellite.xml', 'EditTransponder.xml', 'ArchiveWindow.xml', 'SystemInfo.xml', 'Installation.xml',
 	'MediaCenter.xml', 'EPGWindow.xml', 'ConditionalAccess.xml', 'FirstInstallation.xml', 'TimerWindow.xml',
-	'skip.xml', 'Favorites.xml', 'SystemUpdate.xml', 'Help.xml' ]
+	'skip.xml', 'Favorites.xml', 'SystemUpdate.xml' ]
 
 	idDefault = 1000000
 	count = 0

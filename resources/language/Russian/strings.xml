@@ -414,6 +414,7 @@
 	<string id="2296">RUS_Network Type</string>
 	<string id="2297">RUS_Ethernet</string>
 	<string id="2298">RUS_Wireless</string>
+	<string id="2299">RUS_1080p-50</string>
 	<string id="3001">RUS_[I]No Signal[/I] </string>
 	<string id="3002">RUS_[I]Scrambled[/I] </string>
 	<string id="3003">RUS_No Channel</string>
@@ -1416,4 +1417,8 @@
 	<string id="4000">RUS_RSS Feed</string>
 	<string id="4001">RUS_CAM initialized</string>
 	<string id="4002">RUS_CAM removed</string>
+	<string id="4003">RUS_Update Channels via Internet</string>
+	<string id="4004">RUS_Formatting HDD...</string>
+	<string id="4005">RUS_That recording confilcts with</string>
+	<string id="4006">RUS_That recording conflicts with</string>
 </strings>
