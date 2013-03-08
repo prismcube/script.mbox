@@ -18,7 +18,7 @@
 			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
 				<effect type="fade" start="100" end="0" time="300"/>
 			</animation>
-			<include>DefaultDialogCloseEffect</include>			
+			<include>DefaultDialogCloseEffect</include>
 			<posx>0</posx>
 			<posy>0</posy>
 			<control type="group">

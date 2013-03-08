@@ -169,7 +169,7 @@ class WindowMgr( object ) :
 					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 						self.mRootWindow.setProperty( 'SettingPip', 'False' )
 						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-						time.sleep( 0.4 )
+						time.sleep( 0.3 )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )				
@@ -209,7 +209,7 @@ class WindowMgr( object ) :
 						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
 							self.mRootWindow.setProperty( 'SettingPip', 'False' )
 							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
-							time.sleep( 0.4 )
+							time.sleep( 0.3 )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									
