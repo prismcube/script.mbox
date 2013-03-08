@@ -2882,10 +2882,14 @@ Search for window name
 					<posx>0</posx>
 					<posy>58</posy>
 					<width>750</width>
-					<height>450</height>
+					<height>410</height>
 					<itemgap>0</itemgap>
+					<!--
 					<onup>1709000</onup>
 					<ondown>1709000</ondown>
+					-->
+					<onup>1007001</onup>
+					<ondown>1007003</ondown>
 					<onleft>1709001</onleft>
 					<onright>1709001</onright>
 					<pagecontrol>1709001</pagecontrol>
@@ -2935,7 +2939,7 @@ Search for window name
 					<posx>735</posx>
 					<posy>65</posy>
 					<width>20</width>
-					<height>435</height>
+					<height>395</height>
 					<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 					<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>

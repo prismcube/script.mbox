@@ -296,6 +296,9 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
+		if self.GetFirstInstallation( ) :
+			self.SetFTIPrevNextButton( )
+
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input03, E_Input04 ]
 			hideControlIds = [ E_SpinEx08, E_Input02, E_Input05, E_Input06, E_Input07 ]
@@ -308,15 +311,16 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 		self.SetVisibleControls( hideControlIds, False )
 
+		"""
 		if self.GetFirstInstallation( ) :
-			self.SetFTIPrevNextButton( )
 			self.SetVisibleControl( E_Input04, False )
 			self.SetEnableControl( E_Input04, False )
 			self.SetVisibleControl( E_SpinEx07, False )
 			self.SetEnableControl( E_SpinEx07, False )
+		"""
 
 		self.InitControl( )
-		self.disableControl( )
+		self.disableControl( )		
 
 
 	def disableControl( self ) :
@@ -324,7 +328,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 		else :
-			self.SetEnableControls( enableControlIds, True )	
+			self.SetEnableControls( enableControlIds, True )
 
 
 	def RestoreAvBlank( self ) :
