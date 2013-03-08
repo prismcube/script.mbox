@@ -32,7 +32,7 @@ class ChannelSearch( SettingWindow ) :
 		else :
 			if self.mNoChannel == False :
 				if self.CheckNoChannel( ) :
-					self.mDataCache.Channel_TuneDefault( )
+					#self.mDataCache.Channel_TuneDefault( )
 					self.mDataCache.Player_AVBlank( False )
 					self.mNoChannel = False
 				else :

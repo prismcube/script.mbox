@@ -186,8 +186,6 @@ class FirstInstallation( FTIWindow ) :
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
 			self.mDataCache.Channel_TuneDefault( )
-		#if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
-		#	self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
@@ -215,7 +213,7 @@ class FirstInstallation( FTIWindow ) :
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
@@ -234,7 +232,7 @@ class FirstInstallation( FTIWindow ) :
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_ANTENNA :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
@@ -255,7 +253,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 			
 			if self.mTunerMgr.GetNeedLoad( ) == True :
 				self.mTunerMgr.LoadOriginalTunerConfig( )
@@ -282,7 +280,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
@@ -325,7 +323,7 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.setDefaultControl( )
+			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME

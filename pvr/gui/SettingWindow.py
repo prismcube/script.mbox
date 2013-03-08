@@ -110,8 +110,8 @@ class SettingWindow( BaseWindow ) :
 
 
 	def AddPrevNextButton( self, aDescriptionNext, aDescriptionPrev ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, aDescriptionNext ) )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, aDescriptionPrev ) ) 		
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, aDescriptionNext ) )
 
 
 	def AddNextButton( self, aDescriptionNext ) :
@@ -141,14 +141,17 @@ class SettingWindow( BaseWindow ) :
 				ctrlItem.mDescription = aDescription
 
 
-	def setDefaultControl( self ) :
-		if self.mControlList[0].mEnable :
-			self.setFocusId( self.mControlList[0].mControlId + 1 )
+	def SetDefaultControl( self ) :
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
+			if self.mControlList[0].mEnable :
+				self.setFocusId( self.mControlList[0].mControlId + 1 )
+			else :
+				for i in range( self.GetControlListSize( ) ) :
+					if self.mControlList[i].mEnable :
+						self.setFocusId( self.mControlList[i].mControlId + 1 )
+						return
 		else :
-			for i in range( self.GetControlListSize( ) ) :
-				if self.mControlList[i].mEnable :
-					self.setFocusId( self.mControlList[i].mControlId + 1 )
-					return
+			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ) :

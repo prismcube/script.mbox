@@ -400,6 +400,8 @@
 				<texturefocus border="5">Arrow-left-focus.png</texturefocus>
 				<onleft>1007003</onleft>
 				<onright>1007003</onright>
+				<onup condition="substring(Window.Property(CurrentWindow),1700000)">1709000</onup>
+				<ondown condition="substring(Window.Property(CurrentWindow),1700000)">1709000</ondown>
 			</control>
 			<control type="label" id="1007005">
 				<posx>60</posx>
@@ -434,6 +436,8 @@
 				<texturefocus border="5">Arrow-right-focus.png</texturefocus>
 				<onleft>1007001</onleft>
 				<onright>1007001</onright>
+				<onup condition="substring(Window.Property(CurrentWindow),1700000)">1709000</onup>
+				<ondown condition="substring(Window.Property(CurrentWindow),1700000)">1709000</ondown>
 			</control>
 			<control type="label" id="1007008">
 				<posx>690</posx>

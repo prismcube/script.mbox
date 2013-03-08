@@ -173,7 +173,6 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 			if self.mScanMode == E_SCAN_TRANSPONDER :
-				#self.DefaultTuneInSearchedChannel( )
 				self.mCommander.ScanHelper_Start( )
 			else :
 				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
@@ -235,8 +234,8 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
-			if self.mScanMode == E_SCAN_TRANSPONDER :
-				self.DefaultTuneInSearchedChannel( )
+			#if self.mScanMode == E_SCAN_TRANSPONDER :
+			self.DefaultTuneInSearchedChannel( )
 			self.mCtrlProgress.setPercent( 100 )
 			timer = threading.Timer( 0.5, self.ShowResult )
 			timer.start( )

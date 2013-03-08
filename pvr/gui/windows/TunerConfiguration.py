@@ -24,9 +24,10 @@ class TunerConfiguration( FTIWindow ) :
 		self.SetSettingWindowLabel( headerLabel )
 		self.LoadConfigedSatellite( )
 		self.SetFTIGuiType( )
-		self.getControl( E_FIRST_TIME_INSTALLATION_PREV ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ), self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ) )
-		self.getControl( E_FIRST_TIME_INSTALLATION_NEXT ).setNavigation( self.mCtrlMainList, self.mCtrlMainList, self.getControl( E_FIRST_TIME_INSTALLATION_PREV ), self.getControl( E_FIRST_TIME_INSTALLATION_PREV ) )
-		self.setFocusId( E_MAIN_LIST_ID )
+		if self.GetFirstInstallation( ) :
+			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
+		else :
+			self.setFocusId( E_MAIN_LIST_ID )
 		self.mInitialized = True
 
 

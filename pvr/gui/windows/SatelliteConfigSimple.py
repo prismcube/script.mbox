@@ -50,9 +50,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.SetSingleWindowPosition( E_CONFIG_SIMPLE_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-		self.setDefaultControl( )
-		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 

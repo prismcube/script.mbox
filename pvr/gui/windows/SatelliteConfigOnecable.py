@@ -47,9 +47,8 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
 		time.sleep( 0.2 )
 		self.DisableControl( )
-		self.setDefaultControl( )
-		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 

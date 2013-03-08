@@ -2884,10 +2884,6 @@ Search for window name
 					<width>750</width>
 					<height>410</height>
 					<itemgap>0</itemgap>
-					<!--
-					<onup>1709000</onup>
-					<ondown>1709000</ondown>
-					-->
 					<onup>1007001</onup>
 					<ondown>1007003</ondown>
 					<onleft>1709001</onleft>

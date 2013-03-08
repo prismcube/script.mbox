@@ -27,9 +27,8 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		self.GetLatitude( )
 		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_USALS_BASE_ID )
 		self.InitConfig( )
-		self.setDefaultControl( )
-		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 

@@ -50,9 +50,8 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		self.SetSingleWindowPosition( E_CONFIG_DISEQC_11_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-		self.setDefaultControl( )
-		#self.SetPipLabel( )
 		self.SetFTIGuiType( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 
@@ -311,16 +310,15 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 		self.SetVisibleControls( hideControlIds, False )
 
-		"""
 		if self.GetFirstInstallation( ) :
+			self.SetFTIPrevNextButton( )
 			self.SetVisibleControl( E_Input04, False )
 			self.SetEnableControl( E_Input04, False )
 			self.SetVisibleControl( E_SpinEx07, False )
 			self.SetEnableControl( E_SpinEx07, False )
-		"""
 
 		self.InitControl( )
-		self.disableControl( )		
+		self.disableControl( )
 
 
 	def disableControl( self ) :

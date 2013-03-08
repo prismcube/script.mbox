@@ -32,7 +32,7 @@ class AntennaSetup( SettingWindow ) :
 
 		time.sleep( 0.2 )
 		self.DisableControl( )
-		self.setDefaultControl( )
+		self.SetDefaultControl( )
 		self.mInitialized = True
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :

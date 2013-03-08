@@ -111,17 +111,14 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-				print 'dhkim test E_CC_FAILED_SCRAMBLED_CHANNEL'
 				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				print 'dhkim test E_CC_FAILED_NO_SIGNAL'
 				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 			else :
-				print 'dhkim test True'
 				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 

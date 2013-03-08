@@ -190,7 +190,7 @@ class Configure( SettingWindow ) :
 			LOG_TRACE( "LAEL98 TEST" )
 			if focusId == E_CONFIGURE_SUBMENU_LIST_ID :
 				LOG_TRACE( "LAEL98 TEST" )			
-				self.setDefaultControl( )
+				self.SetDefaultControl( )
 			elif focusId != E_CONFIGURE_SUBMENU_LIST_ID and ( focusId % 10 ) == 1 :
 				LOG_TRACE( "LAEL98 TEST" )			
 				self.ControlRight( )
@@ -260,7 +260,7 @@ class Configure( SettingWindow ) :
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
 				self.SetListControl( )
-				self.setDefaultControl( )
+				self.SetDefaultControl( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
