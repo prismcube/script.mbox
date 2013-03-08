@@ -344,17 +344,20 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
+		ret = False
 		startTime = time.time()
 		loopTime = 0.0
 		sleepTime = 0.01
 		while loopTime < ( 1.5 + aUserTime ) :
 			self.setFocusId( aControlId )
 			if aControlId == self.getFocusId( ) :
+				ret = True
 				break
 			time.sleep( sleepTime )
 			loopTime += sleepTime
 
 		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
+		return ret
 
 
 	def SetMediaCenter( self ) :

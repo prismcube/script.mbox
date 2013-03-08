@@ -5486,11 +5486,12 @@
 
 	<include name="TimeshiftPlateFocusButton">
 		<control type="image">
-			<posx>-32</posx>
-			<posy>0</posy>
-			<width>120</width>
-			<height>60</height>
+			<posx>-37</posx>
+			<posy>-2</posy>
+			<width>130</width>
+			<height>65</height>
 			<texture>OSDSeekFrame.png</texture>
+			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
 		</control>
 		<control type="image">
 			<posx>0</posx>
@@ -5532,6 +5533,14 @@
 			<texture>OSDForwardNF.png</texture>
 			<visible>substring(Window.Property(iPlayerForward),true)</visible>
 		</control>
+		<control type="image" id="3760">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>$INFO[Window.Property(iFileXpeed)]</texture>
+			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+		</control>
 	</include>
 
 	<include name="DefaultTimeshiftPlateGroup">
@@ -5550,7 +5559,6 @@
 			<ondown>202</ondown>
 			<onleft></onleft>
 			<onright></onright>
-			<enable>substring(Window.Property(iButtonShow),true)</enable>
 			<!--defaultcontrol always="true">3705</defaultcontrol-->
 			<control type="button" id="3711">
 				<width>45</width>
@@ -5618,6 +5626,7 @@
 			</control>
 		</control>
 	</include>
+
 	<include name="DefaultSelectList">
 		<control type="list" id="3850">
 			<posx>20</posx>

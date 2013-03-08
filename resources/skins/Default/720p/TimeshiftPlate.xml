@@ -5,7 +5,9 @@
 	<onload>SetProperty(bookmarkIconFO,StepFO.png)</onload>
 	<onload>SetProperty(bookmarkIconNF,StepNF.png)</onload>
 	<onload>SetProperty(currentPosX,360)</onload>
-	<onload>SetProperty(currentPosY,570)</onload>
+	<onload>SetProperty(currentPosY,600)</onload>
+	<onload>SetProperty(progressPosX,400)</onload>
+	<onload>SetProperty(progressPosY,625)</onload>
 	<onload>SetProperty(slideGap,30)</onload>
 	<controls>
 		<control type="image">
@@ -168,39 +170,6 @@
 			<control type="group">
 				<posx>0</posx>
 				<posy>590</posy>
-				<!-- xpeed -->
-				<control type="group">
-					<posx>320</posx>
-					<posy>30</posy>
-					<control type="image" id="31">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>20</width>
-						<height>15</height>
-						<texture>TSIconRewind.png</texture>
-					</control>
-					<control type="image" id="32">
-						<posx>80</posx>
-						<posy>0</posy>
-						<width>20</width>
-						<height>15</height>
-						<texture>TSIconFastForward.png</texture>
-					</control>
-					<control type="label" id="33">
-						<posx>45</posx>
-						<posy>-7</posy>
-						<font>font24</font>
-						<textcolor>grey</textcolor>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
-					<control type="label" id="35">
-						<posx>220</posx>
-						<posy>0</posy>
-						<font>font24</font>
-						<textcolor>grey</textcolor>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
-				</control>
 				<control type="group">
 					<posx>20</posx>
 					<posy>30</posy>
@@ -322,6 +291,7 @@
 
 <!-- EPG section -->
 			<control type="group">
+				<!-- must defined onload by pos x,y value -->
 				<control type="progress" id="201">
 					<description>progress control</description>
 					<posx>400</posx>

@@ -6,9 +6,9 @@ E_CONTROL_ID_IMAGE_RECORDING1 		= 10
 E_CONTROL_ID_LABEL_RECORDING1 		= 11
 E_CONTROL_ID_IMAGE_RECORDING2 		= 15
 E_CONTROL_ID_LABEL_RECORDING2 		= 16
-E_CONTROL_ID_IMAGE_REWIND 			= 31
-E_CONTROL_ID_IMAGE_FORWARD 			= 32
-E_CONTROL_ID_LABEL_SPEED 			= 33
+#E_CONTROL_ID_IMAGE_REWIND 			= 31
+#E_CONTROL_ID_IMAGE_FORWARD 			= 32
+#E_CONTROL_ID_LABEL_SPEED 			= 33
 E_CONTROL_ID_PROGRESS 				= 201
 E_CONTROL_ID_BUTTON_CURRENT 		= 202
 E_CONTROL_ID_LABEL_MODE 			= 203
@@ -26,6 +26,7 @@ E_CONTROL_ID_BUTTON_FORWARD 		= 3708
 E_CONTROL_ID_BUTTON_JUMP_RR 		= 3709
 E_CONTROL_ID_BUTTON_JUMP_FF 		= 3710
 E_CONTROL_ID_BUTTON_BOOKMARK 		= 3711
+E_CONTROL_ID_IMAGE_XPEED 			= 3760
 
 #value enum
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -97,9 +98,9 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlImgRec2           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
 		self.mCtrlLblRec2           = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
-		self.mCtrlImgRewind	        = self.getControl( E_CONTROL_ID_IMAGE_REWIND )
-		self.mCtrlImgForward        = self.getControl( E_CONTROL_ID_IMAGE_FORWARD )
-		self.mCtrlLblSpeed          = self.getControl( E_CONTROL_ID_LABEL_SPEED )
+		#self.mCtrlImgRewind         = self.getControl( E_CONTROL_ID_IMAGE_REWIND )
+		#self.mCtrlImgForward        = self.getControl( E_CONTROL_ID_IMAGE_FORWARD )
+		#self.mCtrlLblSpeed          = self.getControl( E_CONTROL_ID_LABEL_SPEED )
 		self.mCtrlProgress          = self.getControl( E_CONTROL_ID_PROGRESS )
 		self.mCtrlBtnCurrent        = self.getControl( E_CONTROL_ID_BUTTON_CURRENT )
 		self.mCtrlLblMode           = self.getControl( E_CONTROL_ID_LABEL_MODE )
@@ -119,9 +120,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlBtnJumpFF         = self.getControl( E_CONTROL_ID_BUTTON_JUMP_FF )
 		self.mCtrlBtnBookMark       = self.getControl( E_CONTROL_ID_BUTTON_BOOKMARK )
 		self.mCtrlBookMarkList      = self.getControl( E_CONTROL_ID_LIST_SHOW_BOOKMARK )
-
-		#test
-		self.mCtrlLblTest          = self.getControl( 35 )
+		self.mCtrlImgXpeed          = self.getControl( E_CONTROL_ID_IMAGE_XPEED )
 
 		self.mFlag_OnEvent = True
 		self.mTimeshift_staTime = 0.0
@@ -168,7 +167,7 @@ class TimeShiftPlate( BaseWindow ) :
 		label = self.GetModeValue( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
-		self.GetNextSpeed( E_ONINIT )
+		#self.GetNextSpeed( E_ONINIT )
 		self.InitBookmarkThumnail( )
 		self.InitPreviousAction( )
 		self.InitAccelatorSection( )
@@ -203,10 +202,12 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				if self.mSpeed != 100 :
+					return
+
 				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
@@ -223,6 +224,9 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				if self.mSpeed != 100 :
+					return
+
 				self.mUserMoveTime = 1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
@@ -241,8 +245,7 @@ class TimeShiftPlate( BaseWindow ) :
 			   self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 				self.StopAutomaticHide( )
 
-			elif self.mFocusId == E_CONTROL_ID_GROUP_PVR_BUTTONS :
-				self.mSlideY = 0
+				self.mSlideY = E_SLIDE_GAP + 2
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 				self.UpdateBookmarkByPoint( )
 
@@ -251,11 +254,22 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.GetFocusId( )
-			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT or self.mFocusId == E_CONTROL_ID_GROUP_PVR_BUTTONS :
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.StopAutomaticHide( )
-				self.mSlideY = E_SLIDE_GAP
+
+				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
+					self.mSlideY = E_SLIDE_GAP + 2
+					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
+					self.UpdateBookmarkByPoint( )
+
+			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
+				self.StopAutomaticHide( )
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_TRUE )
-				self.UpdateBookmarkByPoint( )
+				time.sleep( 0.2 )
+				ret = self.ShowButtonFocus( )
+				if ret :
+					self.mSlideY = -( E_SLIDE_GAP + 1 )
+					self.UpdateBookmarkByPoint( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -517,12 +531,19 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		else :
-			defaultFocus = E_CONTROL_ID_BUTTON_CURRENT
-			if self.mSpeed != 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+			self.ShowButtonFocus( )
 
-			#self.UpdateSetFocus( defaultFocus )
+			status = E_CONTROL_ID_BUTTON_PAUSE
+			if self.mSpeed == 100 :
+				status = E_CONTROL_ID_BUTTON_PLAY
+			elif self.mSpeed < 0 :
+				status = E_CONTROL_ID_BUTTON_REWIND
+			elif self.mSpeed > 100 :
+				status = E_CONTROL_ID_BUTTON_FORWARD
 
+			self.GetNextSpeed( E_ONINIT )
+			self.ShowStatusByButton( status )
 
 		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
 		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
@@ -549,12 +570,12 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Resume( )
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
-			#if ret :
+			"""
 			if self.mSpeed != 100 :
-				#_self.mDataCache.Player_SetSpeed( 100 )
 				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
 				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, '' )
+			"""
 
 			self.mIsPlay = FLAG_PAUSE
 
@@ -668,31 +689,22 @@ class TimeShiftPlate( BaseWindow ) :
 			self.RestartAsyncMove( aFocusId )
 
 		if ret :
-			self.ShowStatusGUI( aFocusId )
+			self.ShowStatusByButton( aFocusId )
 
 		return ret
 
 
 	def InitLabelInfo( self ) :
-		mPosCurrent  = self.mCtrlBtnCurrent.getPosition( )
-		mPosProgress = self.mCtrlProgress.getPosition( )
-		mWidProgress = self.mCtrlProgress.getWidth( )
-
 		global E_CURRENT_POSX, E_CURRENT_POSY, E_PROGRESS_POSX, E_PROGRESS_POSY, E_PROGRESS_WIDTH_MAX, E_SLIDE_GAP
-		#E_CURRENT_POSX = mPosCurrent[0]
-		#E_CURRENT_POSY = mPosCurrent[1]
-		E_CURRENT_POSX = int( self.getProperty( 'currentPosX' ) )
-		E_CURRENT_POSY = int( self.getProperty( 'currentPosY' ) ) + 3
-
-		E_PROGRESS_POSX = mPosProgress[0]
-		E_PROGRESS_POSY = mPosProgress[1]
-		E_PROGRESS_WIDTH_MAX = mWidProgress
-		LOG_TRACE('---------getWidth[%s] pos[%s,%s] curr[%s,%s]'% ( E_PROGRESS_WIDTH_MAX, E_PROGRESS_POSX, E_PROGRESS_POSY, E_CURRENT_POSX, E_CURRENT_POSY ) )
-		#if self.mMode == ElisEnum.E_MODE_PVR :
-		#	E_CURRENT_POSX = 0
-
+		E_PROGRESS_WIDTH_MAX = self.mCtrlProgress.getWidth( )
+		E_SLIDE_GAP     = int( self.getProperty( 'slideGap' ) ) + 5
+		E_CURRENT_POSX  = int( self.getProperty( 'currentPosX' ) )
+		E_CURRENT_POSY  = int( self.getProperty( 'currentPosY' ) ) + 4
+		E_PROGRESS_POSX = int( self.getProperty( 'progressPosX' ) )
+		E_PROGRESS_POSY = int( self.getProperty( 'progressPosY' ) )
 		self.mImagePoint = self.getProperty( 'bookmarkIconFO' )
-		E_SLIDE_GAP = int( self.getProperty( 'slideGap' ) )
+		#LOG_TRACE('---------getWidth[%s] pos[%s,%s] curr[%s,%s]'% ( E_PROGRESS_WIDTH_MAX, E_PROGRESS_POSX, E_PROGRESS_POSY, E_CURRENT_POSX, E_CURRENT_POSY ) )
+
 		self.mSlideY = E_SLIDE_GAP
 
 		self.mEventCopy = []
@@ -701,9 +713,9 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,        '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,         '' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,     False )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,        '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,     False )
+		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
@@ -758,11 +770,11 @@ class TimeShiftPlate( BaseWindow ) :
 			elif aExtra == E_TAG_VISIBLE :
 				self.mCtrlBtnForward.setVisible( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_IMAGE_REWIND :
-			self.mCtrlImgRewind.setVisible( aValue )
+		#elif aCtrlID == E_CONTROL_ID_IMAGE_REWIND :
+		#	self.mCtrlImgRewind.setVisible( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_IMAGE_FORWARD :
-			self.mCtrlImgForward.setVisible( aValue )
+		#elif aCtrlID == E_CONTROL_ID_IMAGE_FORWARD :
+		#	self.mCtrlImgForward.setVisible( aValue )
 
 		#elif aCtrlID == E_CONTROL_ID_EVENT_CLOCK :
 		#	self.mCtrlEventClock.setLabel( aValue )
@@ -774,7 +786,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if aExtra == E_TAG_LABEL:
 				self.mCtrlBtnCurrent.setLabel( aValue )
 			elif aExtra == E_TAG_POSY:
-				self.mCtrlBtnCurrent.setPosition( aValue + E_CURRENT_POSX, E_CURRENT_POSY + self.mSlideY )
+				self.mCtrlBtnCurrent.setPosition( aValue + E_CURRENT_POSX, E_CURRENT_POSY )
 			elif aExtra == E_TAG_ENABLE:
 				self.mCtrlBtnCurrent.setEnabled( aValue )
 
@@ -784,8 +796,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_LABEL_TS_END_TIME :
 			self.mCtrlLblTSEndTime.setLabel( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_LABEL_SPEED :
-			self.mCtrlLblSpeed.setLabel( aValue )
+		#elif aCtrlID == E_CONTROL_ID_LABEL_SPEED :
+		#	self.mCtrlLblSpeed.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
 			self.mCtrlLblRec1.setLabel( aValue )
@@ -820,7 +832,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.setProperty( aPropertyID, aValue )
 
 
-	def ShowStatusGUI( self, aFocusId ) :
+	def ShowStatusByButton( self, aFocusId ) :
 		iRew = E_TAG_FALSE
 		iPly = E_TAG_FALSE
 		iPau = E_TAG_FALSE
@@ -828,7 +840,8 @@ class TimeShiftPlate( BaseWindow ) :
 		iFwd = E_TAG_FALSE
 
 		if aFocusId == E_CONTROL_ID_BUTTON_REWIND :
-			iRew = E_TAG_TRUE
+			pass
+			#iRew = E_TAG_TRUE
 		elif aFocusId == E_CONTROL_ID_BUTTON_PLAY :
 			iPly = E_TAG_TRUE
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
@@ -836,13 +849,50 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			iStp = E_TAG_TRUE
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
-			iFwd = E_TAG_TRUE
+			pass
+			#iFwd = E_TAG_TRUE
 
 		self.UpdatePropertyGUI( 'iPlayerRewind',  iRew )
 		self.UpdatePropertyGUI( 'iPlayerResume',  iPly )
 		self.UpdatePropertyGUI( 'iPlayerPause',   iPau )
 		self.UpdatePropertyGUI( 'iPlayerStop',    iStp )
 		self.UpdatePropertyGUI( 'iPlayerForward', iFwd )
+
+
+	def ShowButtonFocus( self ) :
+		ret = False
+		if self.getProperty( 'iButtonShow' ) != E_TAG_TRUE :
+			return ret
+
+		focus = E_CONTROL_ID_BUTTON_PLAY
+		"""
+		if self.getProperty( 'iPlayerRewind' ) == E_TAG_TRUE :
+			focus = E_CONTROL_ID_BUTTON_REWIND
+		elif self.getProperty( 'iPlayerResume' ) == E_TAG_TRUE :
+			focus = E_CONTROL_ID_BUTTON_PAUSE
+		elif self.getProperty( 'iPlayerStop' ) == E_TAG_TRUE :
+			focus = E_CONTROL_ID_BUTTON_STOP
+		elif self.getProperty( 'iPlayerForward' ) == E_TAG_TRUE :
+			focus = E_CONTROL_ID_BUTTON_FORWARD
+		else :
+			if self.mSpeed == 100 :
+				focus = E_CONTROL_ID_BUTTON_PAUSE
+			elif self.mSpeed < 0 :
+				focus = E_CONTROL_ID_BUTTON_REWIND
+			elif self.mSpeed > 100 :
+				focus = E_CONTROL_ID_BUTTON_FORWARD
+		"""
+
+		if self.mSpeed == 100 :
+			focus = E_CONTROL_ID_BUTTON_PAUSE
+		elif self.mSpeed < 0 :
+			focus = E_CONTROL_ID_BUTTON_REWIND
+		elif self.mSpeed > 100 :
+			focus = E_CONTROL_ID_BUTTON_FORWARD
+
+		ret = self.UpdateSetFocus( focus )
+		#LOG_TRACE('------set button focus[%s] ret[%s]'% ( focus, ret ) )
+		return ret
 
 
 	@SetLock
@@ -1018,13 +1068,15 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			ret = 100 #default
 
+		posx = 0
 		lspeed = ''
 		flagFF = False
 		flagRR = False
 		if ret == 100 or ret == 0 :
 			lspeed = ''
 		else :
-			lspeed = '%sx'% ( abs(ret) / 100)
+			posx = ret / 100
+			lspeed = '%sx'% abs( posx )
 			if ret > 100 :
 				flagFF = True
 				flagRR = False
@@ -1032,21 +1084,29 @@ class TimeShiftPlate( BaseWindow ) :
 				flagFF = False
 				flagRR = True
 
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,  flagRR )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,   lspeed )
+		self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
+		self.mCtrlImgXpeed.setPosition( int( posx/2 ), 2 )
+
+		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,  flagRR )
+		#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,   lspeed )
 
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.setProperty( 'IsXpeeding', 'True' )
-			#LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
+			#LOG_TRACE( '-------Play speed[%s]'% ret)
+			self.ShowStatusByButton( E_CONTROL_ID_BUTTON_PLAY )
+			self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_FALSE )
 
 		else :
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.setProperty( 'IsXpeeding', 'False' )
-			#LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
+			#self.ShowStatusByButton( None )
+			#LOG_TRACE( '-------Pause speed[%s]'% ret)
+			if ret != 0 :
+				self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_TRUE )
 
 		return ret
 
@@ -1286,16 +1346,12 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mBookmarkButton = []
 
 		revisionX = -10
-		revisionY = -4
-		posy = ( self.mSlideY + E_PROGRESS_POSY ) - revisionY
-		testpos = self.mCtrlProgress.getPosition( )
-
-		LOG_TRACE('-----getProgress[%s]----progress pos[%s,%s] posy[%s] slide[%s]'% ( testpos, E_PROGRESS_POSX, E_PROGRESS_POSY, posy, self.mSlideY ) )
+		posy = E_PROGRESS_POSY + self.mSlideY
+		#LOG_TRACE('---------progress pos[%s,%s] posy[%s] slide[%s]'% ( E_PROGRESS_POSX, E_PROGRESS_POSY, posy, self.mSlideY ) )
 		for i in range( len( self.mBookmarkList ) ) :
-			#posx = E_PROGRESS_POSX + i * 100
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
 			posx = int( E_PROGRESS_POSX + E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
-			button = xbmcgui.ControlButton( posx, posy+35, 25, 25, '', '', self.mImagePoint )
+			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', self.mImagePoint )
 			self.addControl( button )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
@@ -1309,7 +1365,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if isRunningTimerList :
 			runningRecordCount = len( isRunningTimerList )
-
 		#LOG_TRACE( "runningRecordCount=%d" %runningRecordCount )
 
 		strLabelRecord1 = ''
