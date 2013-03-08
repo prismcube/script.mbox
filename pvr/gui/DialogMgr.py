@@ -185,11 +185,6 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogAutoPowerDown import DialogAutoPowerDown
 				return DialogAutoPowerDown( 'DialogAutoPowerDown.xml', self.scriptDir )
 
-
-			elif aDialogId == DIALOG_ID_TEST_WORK :
-				from pvr.gui.dialogs.DialogTestWork import DialogTestWork
-				return DialogTestWork( 'TimeshiftPlate.xml', self.scriptDir )
-
 			else :
 				LOG_ERR( 'Cannot find dialog' )
 
