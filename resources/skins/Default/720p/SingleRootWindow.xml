@@ -3705,6 +3705,7 @@ Search for window name
 					<shadowcolor>black</shadowcolor>
 				</control>
 			</control>
+		</control>
 
 		<!-- *********** E_EPG ********** -->
 		<control type="group" id="3700000">
