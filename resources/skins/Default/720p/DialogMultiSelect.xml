@@ -63,7 +63,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)]/$INFO[Container(3850).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)]/$INFO[Container(3850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 			<control type="button" id="3802">
@@ -71,7 +71,7 @@
 				<posy>590</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>SCRIPT22</label>
+				<label>SCRIPT1022</label>
 				<font>font12_title</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
