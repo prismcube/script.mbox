@@ -5745,7 +5745,7 @@
 			<texture>OSDForwardNF.png</texture>
 			<visible>substring(Window.Property(iPlayerForward),true)</visible>
 		</control>
-		<control type="image" id="3760">
+		<control type="image" id="1003760">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>55</width>
@@ -5767,7 +5767,7 @@
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>false</usecontrolcoords>
 			<visible>true</visible>
-			<onup>1000500</onup>
+			<onup>1000202</onup>
 			<ondown>1000202</ondown>
 			<onleft></onleft>
 			<onright></onright>
