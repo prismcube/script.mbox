@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 import time, math
 
-E_TIMESHIFT_PLATE_BASE_ID					=  WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+E_TIMESHIFT_PLATE_BASE_ID = WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 
 #control ids
@@ -1316,7 +1316,11 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for i in range( len( self.mBookmarkButton ) ) :
 				try :
-					self.removeControl( self.mBookmarkButton[i] )
+					mWin = self
+					if E_SUPPORT_SINGLE_WINDOW_MODE :
+						mWin = self.mRootWindow
+					#self.removeControl( self.mBookmarkButton[i] )
+					mWin.removeControl( self.mBookmarkButton[i] )
 				except Exception, e :
 					LOG_TRACE( 'except[%s]'% e )
 			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
@@ -1330,7 +1334,12 @@ class TimeShiftPlate( BaseWindow ) :
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
 			posx = int( E_PROGRESS_POSX + E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
 			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', self.mImagePoint )
-			self.addControl( button )
+			#self.addControl( button )
+			mWin = self
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				mWin = self.mRootWindow
+
+			mWin.addControl( button )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
 
@@ -1589,7 +1598,11 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for i in range( len( self.mBookmarkButton ) ) :
 				try :
-					self.removeControl( self.mBookmarkButton[i] )
+					mWin = self
+					if E_SUPPORT_SINGLE_WINDOW_MODE :
+						mWin = self.mRootWindow
+					#self.removeControl( self.mBookmarkButton[i] )
+					mWin.removeControl( self.mBookmarkButton[i] )
 				except Exception, e :
 					LOG_TRACE( 'except[%s]'% e )
 			self.mBookmarkButton = []
