@@ -6039,4 +6039,13 @@
 			<orientation>vertical</orientation>
 		</control>
 	</include>
+
+	<include name="UseFakeButtonAnimation">
+		<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
+			<effect type="fade" start="0" end="100" time="300"/>
+		</animation>
+		<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
+			<effect type="fade" start="100" end="0" time="300"/>
+		</animation>
+	</include>
 </includes>
