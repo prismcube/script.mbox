@@ -124,6 +124,17 @@
 			<control type="group" id="600">
 				<posx>50</posx>
 				<posy>600</posy>
+				<control type="label">
+					<posx>-50</posx>
+					<posy>5</posy>
+					<width>300</width>
+					<height>50</height>
+					<align>center</align>
+					<font>font45caps_title</font>
+					<textcolor>red</textcolor>
+					<label>PLAYBACK</label>
+					<visible>substring(Window.Property(InfoPlateName),true)</visible>
+				</control>
 				<control type="label" id="601">
 					<posx>0</posx>
 					<posy>5</posy>
@@ -382,7 +393,7 @@
 								<width>30</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>AUD</label>
+								<label></label>
 							</control>
 						</control>
 						<control type="group">
@@ -400,7 +411,7 @@
 								<width>30</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>VDO</label>
+								<label></label>
 							</control>
 						</control>
 						<control type="group">
@@ -412,6 +423,14 @@
 								<height>30</height>
 								<texture>settings-button-nofocus-yellow.png</texture>
 							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>AUD</label>
+							</control>
 						</control>
 						<control type="group">
 							<width>30</width>
@@ -421,6 +440,14 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>settings-button-nofocus.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<font>font10</font>
+								<label>VDO</label>
 							</control>
 						</control>
 					</control>

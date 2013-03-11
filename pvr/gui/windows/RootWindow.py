@@ -17,6 +17,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onInit( self ) :
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
+
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 				if self.mInitialized == False :			
@@ -26,6 +27,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 					self.mInitialized = True
 					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 				else :
 					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 					lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
@@ -73,7 +75,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
-
 				if aAction.getId() == Action.ACTION_MBOX_RESERVED21 :
 					print 'action show gui : domodal new window'
 					if self.mInitialized == False :
@@ -82,7 +83,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 						print '>>>>>>now domodal'
 						WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
 						print '<<<<<<now domodal out'
-
+						xbmc.executebuiltin('xbmc.Action(dvbres21)')
 
 		"""
 		actionId = aAction.getId( )

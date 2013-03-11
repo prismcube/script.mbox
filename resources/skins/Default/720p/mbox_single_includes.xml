@@ -5696,6 +5696,65 @@
 		</control>
 	</include>
 
+	<include name="TimeshiftPlateFocusButton">
+		<control type="image">
+			<posx>-37</posx>
+			<posy>-2</posy>
+			<width>130</width>
+			<height>65</height>
+			<texture>OSDSeekFrame.png</texture>
+			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDRewindNF.png</texture>
+			<visible>substring(Window.Property(iPlayerRewind),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDPlayNF.png</texture>
+			<visible>substring(Window.Property(iPlayerResume),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDPauseNF.png</texture>
+			<visible>substring(Window.Property(iPlayerPause),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDStopNF.png</texture>
+			<visible>substring(Window.Property(iPlayerStop),true)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>OSDForwardNF.png</texture>
+			<visible>substring(Window.Property(iPlayerForward),true)</visible>
+		</control>
+		<control type="image" id="3760">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>55</width>
+			<height>55</height>
+			<texture>$INFO[Window.Property(iFileXpeed)]</texture>
+			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+		</control>
+	</include>
+
 	<include name="DefaultTimeshiftPlateGroup">
 		<control type="grouplist" id="1003750">
 			<posx>400</posx>

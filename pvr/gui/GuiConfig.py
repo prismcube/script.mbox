@@ -80,6 +80,8 @@ E_CONTROL_ID_BUTTON_STOP_RECORDING 		= E_BASE_WINDOW_ID + 3625
 E_CONTROL_ID_BUTTON_MUTE 				= E_BASE_WINDOW_ID + 3626
 E_CONTROL_ID_BUTTON_SETTING_FORMAT 		= E_BASE_WINDOW_ID + 3627
 
+E_CONTROL_ID_GROUP_PVR_BUTTONS 			= E_BASE_WINDOW_ID + 3750
+
 
 # Setting Menu Group Ids
 E_SUBMENU_LIST_ID						= E_BASE_WINDOW_ID + 9000
@@ -284,6 +286,7 @@ E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'
 E_TAG_SELECT  				= 'select'
 E_TAG_LABEL   				= 'label'
+E_TAG_POSY   				= 'posy'
 E_TAG_TRUE    				= 'True'
 E_TAG_FALSE   				= 'False'
 E_TAG_ADD_ITEM 				= 'addItem'

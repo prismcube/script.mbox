@@ -78,6 +78,11 @@ class Action(object) :
 	ACTION_MBOX_NUMLOCK			= 407
 	ACTION_MBOX_TEXT			= 408
 
+	ACTION_COLOR_RED			= 410
+	ACTION_COLOR_GREEN			= 411
+	ACTION_COLOR_YELLOW			= 412
+	ACTION_COLOR_BLUE			= 413
+
 	ACTION_RELOAD_SKIN			= 34	#q
 	ACTION_BUILT_IN_FUNCTION	= 122	#m
 	ACTION_SHOW_GUI				= 18	#tab --> xbmc
@@ -377,17 +382,20 @@ class BaseWindow( SingleWindow ) :
 
 
 	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
+		ret = False
 		startTime = time.time()
 		loopTime = 0.0
 		sleepTime = 0.01
 		while loopTime < ( 1.5 + aUserTime ) :
 			self.setFocusId( aControlId )
 			if aControlId == self.getFocusId( ) :
+				ret = True
 				break
 			time.sleep( sleepTime )
 			loopTime += sleepTime
 
 		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
+		return ret
 
 
 	def SetMediaCenter( self ) :

@@ -188,9 +188,15 @@ class InfoPlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
-		#test
-		elif actionId == 13: #'x'
-			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage( ) )
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			self.RestartAutomaticHide( )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.RestartAutomaticHide( )
 
 
 	def onClick( self, aControlId ) :
@@ -223,6 +229,12 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( self.mCurrentEPG )
+
+		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 
 	def onEvent( self, aEvent ) :
@@ -267,7 +279,7 @@ class InfoPlate( LivePlateWindow ) :
 		rec = self.mPlayingRecord
 		if rec :
 			try :
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '[COLOR red]PVR[/COLOR]' )
+				#self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '[COLOR red]PLAYBACK[/COLOR]' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, rec.mChannelName )
 
 				#satellite
@@ -508,14 +520,18 @@ class InfoPlate( LivePlateWindow ) :
 		if selectAction == -1 :
 			return
 
-		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
+		self.DoContextAction( selectAction )
+
+
+	def DoContextAction( self, aSelectAction ) :
+		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
-			dialog.SetValue( selectAction )
+			dialog.SetValue( aSelectAction )
  			dialog.doModal( )
 
  			self.EventReceivedDialog( dialog )
 
- 		else :
+ 		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
@@ -537,7 +553,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			self.mDataCache.Audiotrack_select( selectIdx2 )
-			#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
 
 
 	def ShowEPGDescription( self ) :

@@ -234,7 +234,6 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
-			#if self.mScanMode == E_SCAN_TRANSPONDER :
 			self.DefaultTuneInSearchedChannel( )
 			self.mCtrlProgress.setPercent( 100 )
 			timer = threading.Timer( 0.5, self.ShowResult )
@@ -278,8 +277,7 @@ class DialogChannelSearch( BaseDialog ) :
 						self.ChannelTune( channel )
 						return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )		
-
+				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
 		else :
 			if len( self.mStoreRadioChannel ) > 0 :
 				for channel in self.mStoreRadioChannel :
@@ -288,24 +286,6 @@ class DialogChannelSearch( BaseDialog ) :
 						return
 
 				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
-
-
-	"""
-	def IsDiseqc12( self ) :
-		tunerNumber = self.mDataCache.GetTunerIndexBySatellite( self.mLongitude, self.mBand )
-		tunertype = None
-		if tunerNumber == E_CONFIGURED_TUNER_1 :
-			tunertype = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-		elif tunerNumber == E_CONFIGURED_TUNER_2 :
-			tunertype = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
-		else :
-			tunertype = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-
-		if tunertype == E_MOTORIZE_1_2 :
-			return True
-		else :
-			return False
-	"""
 
 
 	def ChannelTune( self, aChannel ) :

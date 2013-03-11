@@ -306,11 +306,15 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
 
-		#elif actionId == Action.ACTION_COLOR_RED :
-		#	self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			self.RestartAutomaticHide( )
 
-		#elif actionId == Action.ACTION_COLOR_YELLOW :
-		#	self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.RestartAutomaticHide( )
 
 
 	def onClick( self, aControlId ) :
@@ -393,10 +397,11 @@ class LivePlate( LivePlateWindow ) :
 		if self.mCurrentEPG :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 
 	def onEvent(self, aEvent):
