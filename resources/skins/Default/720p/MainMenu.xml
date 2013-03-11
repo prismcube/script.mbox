@@ -66,35 +66,35 @@
 					</control>
 					<control type="button" id="90101">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT50</label>
+						<label>SCRIPT1050</label>
 					</control>
 					<control type="button" id="90102">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT51</label>
+						<label>SCRIPT1051</label>
 					</control>
 					<control type="button" id="90103">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT52</label>
+						<label>SCRIPT1052</label>
 					</control>
 					<control type="button" id="90104">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT53</label>
+						<label>SCRIPT1053</label>
 					</control>
 					<control type="button" id="90105">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT54</label>
+						<label>SCRIPT1054</label>
 					</control>
 					<control type="button" id="90106">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT55</label>
+						<label>SCRIPT1055</label>
 					</control>
 					<control type="button" id="90107">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT56</label>
+						<label>SCRIPT1056</label>
 					</control>
 					<control type="button" id="90108">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT103</label>
+						<label>SCRIPT1103</label>
 					</control>
 					<control type="image" id="90109">
 						<width>35</width>
@@ -126,48 +126,48 @@
 					</control>
 					<control type="button" id="90601">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT57</label>
+						<label>SCRIPT1057</label>
 						<!--onclick>ActivateWindow(Weather)</onclick-->
 					</control>
 					<control type="button" id="90602">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT58</label>
+						<label>SCRIPT1058</label>
 						<!--onclick>ActivateWindow(Pictures)</onclick-->
 					</control>
 					<control type="button" id="90603">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT59</label>
+						<label>SCRIPT1059</label>
 						<!--onclick>ActivateWindow(Music)</onclick-->
 					</control>
 					<control type="button" id="90604">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT60</label>
+						<label>SCRIPT1060</label>
 						<!--onclick>ActivateWindow(Videos)</onclick-->
 					</control>
 					<control type="button" id="90605">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT61</label>
+						<label>SCRIPT1061</label>
 						<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 					</control>
 					<control type="button" id="90606">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT62</label>
+						<label>SCRIPT1062</label>
 						<!--onclick>ActivateWindow(Settings)</onclick-->
 					</control>
 					<control type="button" id="90607">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT63</label>
+						<label>SCRIPT1063</label>
 						<!--onclick>ActivateWindow(FileManager)</onclick-->
 					</control>
 					<control type="button" id="90608">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT64</label>
+						<label>SCRIPT1064</label>
 						<!--onclick>ActivateWindow(Profiles)</onclick-->
 						<visible>False</visible>
 					</control>
 					<control type="button" id="90609">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>SCRIPT65</label>
+						<label>SCRIPT1065</label>
 						<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 					</control>
 					<control type="image" id="90610">
@@ -277,50 +277,50 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>SCRIPT73</label>
-						<label2>SCRIPT66</label2>
+						<label>SCRIPT1073</label>
+						<label2>SCRIPT1066</label2>
 						<onclick>SendClick(90100)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="2">
-						<label>SCRIPT43</label>
-						<label2>SCRIPT67</label2>
+						<label>SCRIPT1043</label>
+						<label2>SCRIPT1067</label2>
 						<onclick>SendClick(90200)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="3">
-						<label>SCRIPT44</label>
-						<label2>SCRIPT68</label2>
+						<label>SCRIPT1044</label>
+						<label2>SCRIPT1068</label2>
 						<onclick>SendClick(90300)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="4">
-						<label>SCRIPT74</label>
-						<label2>SCRIPT69</label2>
+						<label>SCRIPT1074</label>
+						<label2>SCRIPT1069</label2>
 						<onclick>SendClick(90400)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="5">
-						<label>SCRIPT75</label>
-						<label2>SCRIPT110</label2>
+						<label>SCRIPT1075</label>
+						<label2>SCRIPT1110</label2>
 						<onclick>SendClick(90500)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
-						<label>SCRIPT76</label>
-						<label2>SCRIPT70</label2>
+						<label>SCRIPT1076</label>
+						<label2>SCRIPT1070</label2>
 						<onclick>SendClick(90600)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">
-						<label>SCRIPT48</label>
-						<label2>SCRIPT71</label2>
+						<label>SCRIPT1048</label>
+						<label2>SCRIPT1071</label2>
 						<onclick>SendClick(90700)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="8">
-						<label>SCRIPT49</label>
-						<label2>SCRIPT72</label2>
+						<label>SCRIPT1049</label>
+						<label2>SCRIPT1072</label2>
 						<onclick>SendClick(90800)</onclick>
 						<visible>true</visible>
 					</item>

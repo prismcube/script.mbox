@@ -200,7 +200,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT32</label>
+						<label>SCRIPT1032</label>
 						<visible>Control.HasFocus(3621)</visible>
 					</control>
 					<control type="label">
@@ -212,7 +212,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT33</label>
+						<label>SCRIPT1033</label>
 						<visible>Control.HasFocus(3622)</visible>
 					</control>
 					<control type="label">
@@ -224,7 +224,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT34</label>
+						<label>SCRIPT1034</label>
 						<visible>Control.HasFocus(3623)</visible>
 					</control>
 					<control type="label">
@@ -236,7 +236,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT35</label>
+						<label>SCRIPT1035</label>
 						<visible>Control.HasFocus(3624)</visible>
 					</control>
 					<control type="label">
@@ -248,7 +248,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT36</label>
+						<label>SCRIPT1036</label>
 						<visible>Control.HasFocus(3625)</visible>
 					</control>
 					<control type="label">
@@ -260,7 +260,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT37</label>
+						<label>SCRIPT1037</label>
 						<visible>Control.HasFocus(3626)</visible>
 					</control>
 					<control type="label">
@@ -272,7 +272,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT38</label>
+						<label>SCRIPT1038</label>
 						<visible>Control.HasFocus(3627)</visible>
 					</control>
 					<control type="label">
@@ -284,7 +284,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT39</label>
+						<label>SCRIPT1039</label>
 						<visible>Control.HasFocus(3628)</visible>
 					</control>
 					<control type="label">
@@ -296,7 +296,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT40</label>
+						<label>SCRIPT1040</label>
 						<visible>Control.HasFocus(702)</visible>
 					</control>
 					<control type="label">
@@ -308,7 +308,7 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>SCRIPT41</label>
+						<label>SCRIPT1041</label>
 						<visible>Control.HasFocus(706)</visible>
 					</control>
 				</control>
@@ -622,7 +622,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]SCRIPT104 [/I]</label>
+			<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),False)</visible>
 		</control>
@@ -631,7 +631,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]SCRIPT105 [/I]</label>
+			<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),Scramble)</visible>
 		</control>
