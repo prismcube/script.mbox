@@ -25,7 +25,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]SCRIPT104 [/I]</label>
+			<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 		</control>
@@ -34,7 +34,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]SCRIPT105 [/I]</label>
+			<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 		</control>
