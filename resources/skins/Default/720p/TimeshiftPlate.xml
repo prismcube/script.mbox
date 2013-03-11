@@ -271,7 +271,8 @@
 							<width>30</width>
 							<height>30</height>
 							<font>font10</font>
-							<label>BOK</label>
+							<size>10</size>
+							<label>BM+</label>
 						</control>
 					</control>
 				</control>

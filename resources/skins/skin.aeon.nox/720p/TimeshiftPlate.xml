@@ -261,8 +261,8 @@
 							<posy>0</posy>
 							<width>30</width>
 							<height>30</height>
-							<font>Font_Reg10</font>
-							<label>BOOK</label>
+							<font>Font_Reg12</font>
+							<label>BM+</label>
 						</control>
 					</control>
 				</control>
