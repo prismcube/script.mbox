@@ -144,14 +144,20 @@ class SingleWindow( object ) :
 		return self.mRootWindow.getFocusId(  )	
 
 
-#class BaseWindow( xbmcgui.WindowXML, Property. ) :
-class BaseWindow( SingleWindow ) :
+class XMLWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			SingleWindow.__init__( self, *args, **kwargs )
-		else :
-			xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+		xbmcgui.WindowXML.__init__( self, *args, **kwargs )
 
+
+if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+	BaseObjectWindow = SingleWindow
+else :
+	BaseObjectWindow = XMLWindow
+
+
+class BaseWindow( BaseObjectWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseObjectWindow.__init__( self, *args, **kwargs )
 		self.BaseInit( )
 
 	def SetRootWindow( self, aRootWindow ) :

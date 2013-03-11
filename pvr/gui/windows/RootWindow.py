@@ -3,15 +3,12 @@ from pvr.gui.WindowImport import *
 
 class RootWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			xbmcgui.WindowXML.__init__( self, *args, **kwargs )
-			self.mInitialized = False
-			self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-			self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
-			self.mDataCache = pvr.DataCacheMgr.GetInstance( )
-			self.mPlatform = pvr.Platform.GetPlatform( )
-		else :
-			BaseWindow.__init__( self, *args, **kwargs )		
+		xbmcgui.WindowXML.__init__( self, *args, **kwargs )
+		self.mInitialized = False
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mPlatform = pvr.Platform.GetPlatform( )
 
 
 	def onInit( self ) :
@@ -114,10 +111,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
-			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).UpdateVolume( )
-			else :
-				self.UpdateVolume( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).UpdateVolume( )
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
