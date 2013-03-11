@@ -33,7 +33,6 @@
 					<texture>MediaInfoBackLower.png</texture>
 				</control>
 			</control>
-		</control>
 
 <!-- bookmark thumnail-->
 			<control type="group">
