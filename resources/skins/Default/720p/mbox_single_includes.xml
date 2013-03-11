@@ -4545,8 +4545,8 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
-						<posx>65</posx>
-						<posy>38</posy>
+						<posx>63</posx>
+						<posy>16</posy>
 						<width>84</width>
 						<height>84</height>
 						<texture>OSDPlayNF.png</texture>
@@ -4597,8 +4597,8 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
-						<posx>65</posx>
-						<posy>38</posy>
+						<posx>63</posx>
+						<posy>16</posy>
 						<width>84</width>
 						<height>84</height>
 						<texture>OSDPlayFO.png</texture>
