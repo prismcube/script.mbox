@@ -96,7 +96,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -105,7 +105,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -131,7 +131,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -140,7 +140,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -205,35 +205,35 @@ Search for window name
 						</control>
 						<control type="button" id="1290101">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT50</label>
+							<label>SCRIPT1050</label>
 						</control>
 						<control type="button" id="1290102">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT51</label>
+							<label>SCRIPT1051</label>
 						</control>
 						<control type="button" id="1290103">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT52</label>
+							<label>SCRIPT1052</label>
 						</control>
 						<control type="button" id="1290104">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT53</label>
+							<label>SCRIPT1053</label>
 						</control>
 						<control type="button" id="1290105">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT54</label>
+							<label>SCRIPT1054</label>
 						</control>
 						<control type="button" id="1290106">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT55</label>
+							<label>SCRIPT1055</label>
 						</control>
 						<control type="button" id="1290107">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT56</label>
+							<label>SCRIPT1056</label>
 						</control>
 						<control type="button" id="1290108">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT103</label>
+							<label>SCRIPT1103</label>
 						</control>
 						<control type="image" id="1290109">
 							<width>35</width>
@@ -265,48 +265,48 @@ Search for window name
 						</control>
 						<control type="button" id="1290601">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT57</label>
+							<label>SCRIPT1057</label>
 							<!--onclick>ActivateWindow(Weather)</onclick-->
 						</control>
 						<control type="button" id="1290602">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT58</label>
+							<label>SCRIPT1058</label>
 							<!--onclick>ActivateWindow(Pictures)</onclick-->
 						</control>
 						<control type="button" id="1290603">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT59</label>
+							<label>SCRIPT1059</label>
 							<!--onclick>ActivateWindow(Music)</onclick-->
 						</control>
 						<control type="button" id="1290604">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT60</label>
+							<label>SCRIPT1060</label>
 							<!--onclick>ActivateWindow(Videos)</onclick-->
 						</control>
 						<control type="button" id="1290605">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT61</label>
+							<label>SCRIPT1061</label>
 							<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 						</control>
 						<control type="button" id="1290606">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT62</label>
+							<label>SCRIPT1062</label>
 							<!--onclick>ActivateWindow(Settings)</onclick-->
 						</control>
 						<control type="button" id="1290607">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT63</label>
+							<label>SCRIPT1063</label>
 							<!--onclick>ActivateWindow(FileManager)</onclick-->
 						</control>
 						<control type="button" id="1290608">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT64</label>
+							<label>SCRIPT1064</label>
 							<!--onclick>ActivateWindow(Profiles)</onclick-->
 							<visible>False</visible>
 						</control>
 						<control type="button" id="1290609">
 							<include>ButtonHomeSubCommonValues</include>
-							<label>SCRIPT65</label>
+							<label>SCRIPT1065</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
 						<control type="image" id="1290610">
@@ -416,50 +416,50 @@ Search for window name
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT73</label>
-							<label2>SCRIPT66</label2>
+							<label>SCRIPT1073</label>
+							<label2>SCRIPT1066</label2>
 							<onclick>SendClick(1290100)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT43</label>
-							<label2>SCRIPT67</label2>
+							<label>SCRIPT1043</label>
+							<label2>SCRIPT1067</label2>
 							<onclick>SendClick(1290200)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT44</label>
-							<label2>SCRIPT68</label2>
+							<label>SCRIPT1044</label>
+							<label2>SCRIPT1068</label2>
 							<onclick>SendClick(1290300)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT74</label>
-							<label2>SCRIPT69</label2>
+							<label>SCRIPT1074</label>
+							<label2>SCRIPT1069</label2>
 							<onclick>SendClick(1290400)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>SCRIPT75</label>
-							<label2>SCRIPT110</label2>
+							<label>SCRIPT1075</label>
+							<label2>SCRIPT1110</label2>
 							<onclick>SendClick(1290500)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>SCRIPT76</label>
-							<label2>SCRIPT70</label2>
+							<label>SCRIPT1076</label>
+							<label2>SCRIPT1070</label2>
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="7">
-							<label>SCRIPT48</label>
-							<label2>SCRIPT71</label2>
+							<label>SCRIPT1048</label>
+							<label2>SCRIPT1071</label2>
 							<onclick>SendClick(1290700)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="8">
-							<label>SCRIPT49</label>
-							<label2>SCRIPT72</label2>
+							<label>SCRIPT1049</label>
+							<label2>SCRIPT1072</label2>
 							<onclick>SendClick(1290800)</onclick>
 							<visible>true</visible>
 						</item>
@@ -1027,7 +1027,7 @@ Search for window name
 						<posy>120</posy>
 						<width>120</width>
 						<height>40</height>
-						<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+						<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
@@ -1038,7 +1038,7 @@ Search for window name
 						<posy>120</posy>
 						<width>120</width>
 						<height>40</height>
-						<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+						<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 						<font>font12_title</font>
 						<align>center</align>
 						<textcolor>grey2</textcolor>
@@ -1116,7 +1116,7 @@ Search for window name
 							<posy>75</posy>
 							<font>font12_title</font>
 							<textcolor>grey</textcolor>
-							<label>SCRIPT14</label>
+							<label>SCRIPT1014</label>
 						</control>
 					</control>
 					<!-- component -->
@@ -1234,7 +1234,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
@@ -1247,7 +1247,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT108]</label>
+					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -1389,27 +1389,27 @@ Search for window name
 						</focusedlayout>
 						<content>
 							<item id="1">
-								<label>SCRIPT1</label>
+								<label>SCRIPT1001</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
-								<label>SCRIPT2</label>
+								<label>SCRIPT1002</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="3">
-								<label>SCRIPT3</label>
+								<label>SCRIPT1003</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>SCRIPT4</label>
+								<label>SCRIPT1004</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="5">
-								<label>SCRIPT5</label>
+								<label>SCRIPT1005</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
@@ -1519,7 +1519,7 @@ Search for window name
 									<include>DefaultButtonMediaSubCommonValues</include>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT6</label>
+									<label>SCRIPT1006</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300114</onup>
@@ -1533,7 +1533,7 @@ Search for window name
 									<include>DefaultButtonMediaSubCommonValues</include>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT7</label>
+									<label>SCRIPT1007</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300113</onup>
@@ -1769,7 +1769,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT32</label>
+							<label>SCRIPT1032</label>
 							<visible>Control.HasFocus(1003621)</visible>
 						</control>
 						<control type="label">
@@ -1781,7 +1781,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT33</label>
+							<label>SCRIPT1033</label>
 							<visible>Control.HasFocus(1003622)</visible>
 						</control>
 						<control type="label">
@@ -1793,7 +1793,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT34</label>
+							<label>SCRIPT1034</label>
 							<visible>Control.HasFocus(1003623)</visible>
 						</control>
 						<control type="label">
@@ -1805,7 +1805,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT35</label>
+							<label>SCRIPT1035</label>
 							<visible>Control.HasFocus(1003624)</visible>
 						</control>
 						<control type="label">
@@ -1817,7 +1817,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT36</label>
+							<label>SCRIPT1036</label>
 							<visible>Control.HasFocus(1003625)</visible>
 						</control>
 						<control type="label">
@@ -1829,7 +1829,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT37</label>
+							<label>SCRIPT1037</label>
 							<visible>Control.HasFocus(1003626)</visible>
 						</control>
 						<control type="label">
@@ -1841,7 +1841,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT38</label>
+							<label>SCRIPT1038</label>
 							<visible>Control.HasFocus(1003627)</visible>
 						</control>
 						<control type="label">
@@ -1853,7 +1853,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT39</label>
+							<label>SCRIPT1039</label>
 							<visible>Control.HasFocus(1003628)</visible>
 						</control>
 						<control type="label">
@@ -1865,7 +1865,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT40</label>
+							<label>SCRIPT1040</label>
 							<visible>Control.HasFocus(1400702)</visible>
 						</control>
 						<control type="label">
@@ -1877,7 +1877,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT41</label>
+							<label>SCRIPT1041</label>
 							<visible>Control.HasFocus(1400706)</visible>
 						</control>
 					</control>
@@ -2190,7 +2190,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
 			</control>
@@ -2199,7 +2199,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble)</visible>
 			</control>
@@ -2662,7 +2662,7 @@ Search for window name
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>$LOCALIZE[SCRIPT55] - $INFO[Container(1509000).ListItem.Label]</label>
+					<label>$LOCALIZE[SCRIPT1055] - $INFO[Container(1509000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
@@ -2909,7 +2909,7 @@ Search for window name
 							<description>Stack Toggle</description>
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT8</label>
+							<label>SCRIPT1008</label>
 						</control>
 					</control>
 				</control>
@@ -2982,7 +2982,7 @@ Search for window name
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>SCRIPT9</label>
+						<label>SCRIPT1009</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
@@ -3047,7 +3047,7 @@ Search for window name
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3058,7 +3058,7 @@ Search for window name
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3121,7 +3121,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -3136,7 +3136,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -3151,7 +3151,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -3166,7 +3166,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),panart) </visible>
 				</control>
 			</control>
@@ -3273,7 +3273,7 @@ Search for window name
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>SCRIPT87</label>
+					<label>SCRIPT1087</label>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
@@ -3495,7 +3495,7 @@ Search for window name
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>SCRIPT31</label>
+					<label>SCRIPT1031</label>
 					<align>left</align>
 					<textcolor>white</textcolor>
 					<shadowcolor>black</shadowcolor>
@@ -3690,12 +3690,12 @@ Search for window name
 							<description>Stack Toggle</description>
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT8</label>
+							<label>SCRIPT1008</label>
 						</control-->
 						<control type="button" id="3700202">
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT29</label>
+							<label>SCRIPT1029</label>
 						</control>
 					</control>
 				</control>
@@ -3741,7 +3741,7 @@ Search for window name
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>SCRIPT9</label>
+						<label>SCRIPT1009</label>
 						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
 						<onleft condition="!substring(Window.Property(EPGMode),channel)">1003510</onleft>
 						<onright>3709010</onright>
@@ -3771,7 +3771,7 @@ Search for window name
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3782,7 +3782,7 @@ Search for window name
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -3830,7 +3830,7 @@ Search for window name
 				 	<height>160</height>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
-					<label>SCRIPT30</label>
+					<label>SCRIPT1030</label>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				</control>
 
@@ -3931,7 +3931,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),channel) </visible>
 			</control>
 
@@ -3947,7 +3947,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT106] - $LOCALIZE[SCRIPT107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
 			</control>
 		</control>
@@ -4039,7 +4039,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>SCRIPT88</label>
+						<label>SCRIPT1088</label>
 						<onleft>1003510</onleft>
 						<onright>1003510</onright>
 						<onup>1003510</onup>
@@ -4260,7 +4260,7 @@ Search for window name
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<width>700</width>
-						<label>SCRIPT90</label>
+						<label>SCRIPT1090</label>
 					</control>
 				</control>
 			</control>
@@ -4311,7 +4311,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
-				<label>[I]$LOCALIZE[SCRIPT104] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -4323,7 +4323,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
-				<label>[I]$LOCALIZE[SCRIPT105] [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
