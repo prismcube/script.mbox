@@ -33,7 +33,7 @@
 			<scroll>false</scroll>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label>SCRIPT47</label>
+			<label>SCRIPT1047</label>
 		</control>
 		<control type="image">
 			<posx>0</posx>
@@ -151,50 +151,50 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>SCRIPT57</label>
-						<label2>SCRIPT78</label2>
+						<label>SCRIPT1057</label>
+						<label2>SCRIPT1078</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="2">
-						<label>SCRIPT58</label>
-						<label2>SCRIPT79</label2>
+						<label>SCRIPT1058</label>
+						<label2>SCRIPT1079</label2>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="3">
-						<label>SCRIPT59</label>
-						<label2>SCRIPT81</label2>
+						<label>SCRIPT1059</label>
+						<label2>SCRIPT1081</label2>
 						<onclick>ActivateWindow(Music)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="4">
-						<label>SCRIPT60</label>
-						<label2>SCRIPT80</label2>
+						<label>SCRIPT1060</label>
+						<label2>SCRIPT1080</label2>
 						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="5">
-						<label>SCRIPT61</label>
-						<label2>SCRIPT82</label2>
+						<label>SCRIPT1061</label>
+						<label2>SCRIPT1082</label2>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
-						<label>SCRIPT62</label>
-						<label2>SCRIPT83</label2>
+						<label>SCRIPT1062</label>
+						<label2>SCRIPT1083</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">
-						<label>SCRIPT63</label>
-						<label2>SCRIPT84</label2>
+						<label>SCRIPT1063</label>
+						<label2>SCRIPT1084</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="8">
-						<label>SCRIPT65</label>
-						<label2>SCRIPT85</label2>
+						<label>SCRIPT1065</label>
+						<label2>SCRIPT1085</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<visible>true</visible>
 					</item>

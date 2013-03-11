@@ -138,7 +138,7 @@
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>SCRIPT8</label>
+						<label>SCRIPT1008</label>
 					</control>
 				</control>
 			</control>
@@ -211,7 +211,7 @@
 					<radioposy>12</radioposy>
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>SCRIPT9</label>
+					<label>SCRIPT1009</label>
 					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
 					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
 					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
@@ -277,7 +277,7 @@
 				<posy>-82</posy>
 				<width>120</width>
 				<height>40</height>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
@@ -288,7 +288,7 @@
 				<posy>-82</posy>
 				<width>120</width>
 				<height>40</height>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
@@ -350,7 +350,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Container(3400).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(3400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),common) </visible>
 			</control>
 
@@ -365,7 +365,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Container(3410).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 			</control>
 
@@ -380,7 +380,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Container(3420).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 			</control>
 
@@ -395,7 +395,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Container(3430).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),panart) </visible>
 			</control>
 		</control>

@@ -100,7 +100,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font14</font>
-				<label>SCRIPT31</label>				
+				<label>SCRIPT1031</label>				
 				<align>left</align>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
@@ -180,7 +180,7 @@
 				<posy>310</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]SCRIPT104 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<font>font13_title</font>
 				<align>right</align>
 				<aligny>center</aligny>
@@ -192,7 +192,7 @@
 				<posy>310</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]SCRIPT105 [/I]</label>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<font>font13_title</font>
 				<align>right</align>
 				<aligny>center</aligny>

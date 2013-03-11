@@ -455,7 +455,7 @@
 					<posy>120</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT104 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -466,7 +466,7 @@
 					<posy>120</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]SCRIPT105 [/I]</label>
+					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -543,7 +543,7 @@
 						<posy>75</posy>
 						<font>font12_title</font>
 						<textcolor>grey</textcolor>
-						<label>SCRIPT14</label>
+						<label>SCRIPT1014</label>
 					</control>
 				</control>
 				<!-- component -->
@@ -661,7 +661,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
 				<visible>!substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 			<control type="label">
@@ -674,7 +674,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR])SCRIPT108</label>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR])SCRIPT1108</label>
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 		</control>
@@ -817,27 +817,27 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT1</label>
+							<label>SCRIPT1001</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT2</label>
+							<label>SCRIPT1002</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT3</label>
+							<label>SCRIPT1003</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT4</label>
+							<label>SCRIPT1004</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>SCRIPT5</label>
+							<label>SCRIPT1005</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -947,7 +947,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT6</label>
+								<label>SCRIPT1006</label>
 								<onleft>102</onleft>
 								<onright>49</onright>
 								<onup>114</onup>
@@ -961,7 +961,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT7</label>
+								<label>SCRIPT1007</label>
 								<onleft>102</onleft>
 								<onright>49</onright>
 								<onup>113</onup>

@@ -103,7 +103,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font14</font>
-				<label>SCRIPT55 - $INFO[Container(9000).ListItem.Label]</label>				
+				<label>$LOCALIZE[SCRIPT1055] - $INFO[Container(9000).ListItem.Label]</label>				
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
