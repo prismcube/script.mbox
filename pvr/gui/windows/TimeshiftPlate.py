@@ -495,7 +495,17 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitPreviousAction( self ) :
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_FALSE )
+		visible = E_TAG_FALSE
+		if self.mMode == ElisEnum.E_MODE_PVR : 
+			visible = E_TAG_TRUE
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
+
 		if self.mPrekey :
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
@@ -514,6 +524,12 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
+				self.mFlagUserMove = True
+				userMovingMs = self.JumpToTrack( E_CONTROL_ID_BUTTON_JUMP_RR )
+				self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
+				self.mDataCache.Player_JumpToIFrame( userMovingMs )
+				self.mFlagUserMove = False
 
 				limitLoop = 0
 				while self.mSpeed != 100 or self.mMode == ElisEnum.E_MODE_LIVE :
@@ -535,6 +551,7 @@ class TimeShiftPlate( BaseWindow ) :
 					if limitLoop > 20 :
 						break
 
+				"""
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 
 				self.mUserMoveTime = 1
@@ -544,6 +561,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
+				"""
 
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
@@ -564,13 +582,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GetNextSpeed( E_ONINIT )
 			self.ShowStatusByButton( status )
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_FALSE )
-		visible = E_TAG_FALSE
-		if self.mMode == ElisEnum.E_MODE_PVR : 
-			visible = E_TAG_TRUE
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 
 		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
 
