@@ -185,7 +185,7 @@
 					<align>center</align>
 					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
-					<label>[B]SCRIPT1026[/B]</label>
+					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
 				</control>
 			</control>
 		</control>
