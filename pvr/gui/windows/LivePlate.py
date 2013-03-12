@@ -398,8 +398,8 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 

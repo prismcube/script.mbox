@@ -1713,6 +1713,7 @@ Search for window name
 						<font>font50caps_title</font>
 						<label>$INFO[Control.GetLabel]</label>
 						<description>Ch Num</description>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400602">
 						<posx>250</posx>
