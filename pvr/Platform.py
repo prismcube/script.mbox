@@ -12,9 +12,14 @@ from subprocess import *
 
 gPlatform = None
 try :
-	getPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
-	gPlatformName = getPlatformName.stdout.read( ).strip( )
-	getPlatformName.stdout.close( )
+	if sys.version_info < (2, 7):		
+		getPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
+		gPlatformName = getPlatformName.stdout.read( ).strip( )
+		getPlatformName.stdout.close( )
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		(gPlatformName, err ) = p.communicate( )			
+	
 except Exception, e :
 	print 'except[%s]'% e
 	gPlatformName = sys.platform
