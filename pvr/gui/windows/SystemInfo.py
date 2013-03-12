@@ -332,23 +332,40 @@ class SystemInfo( SettingWindow ) :
 		percent = MR_LANG( 'Unknown' )
 		try :
 			cmd = "df -h | awk '/%s/ {print $2}'" % aName
-			p = Popen( cmd, shell=True, stdout=PIPE )
-			total_size = p.stdout.read( ).strip( )
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				total_size = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( total_size, err ) = p.communicate( )
+				total_size = total_size.strip( )
 			total_size = total_size.split( '\n' )
 			total_size = total_size[0]
-			p.stdout.close( )
+
 			cmd = "df -h | awk '/%s/ {print $3}'" % aName
-			p = Popen( cmd, shell=True, stdout=PIPE )
-			used_size = p.stdout.read( ).strip( )
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				used_size = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( used_size, err ) = p.communicate( )
+				used_size = used_size.strip( )
 			used_size = used_size.split( '\n' )
 			used_size = used_size[0]
-			p.stdout.close( )
+			
 			cmd = "df -h | awk '/%s/ {print $5}'" % aName
-			p = Popen( cmd, shell=True, stdout=PIPE )
-			percent = p.stdout.read( ).strip( )
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				percent = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( percent, err ) = p.communicate( )
+				percent = percent.strip( )
 			percent = percent.split( '\n' )
 			percent = percent[0]
-			p.stdout.close( )
 			percent = int( re.sub( '%', '', percent ) )
 
 			return total_size, used_size, percent
@@ -396,9 +413,14 @@ class SystemInfo( SettingWindow ) :
 			else :
 				device = '/dev/sda'
 				cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
-				p = Popen( cmd, shell=True, stdout=PIPE )
-				model = p.stdout.read( ).strip( )
-				p.stdout.close( )
+				if sys.version_info < ( 2, 7 ) :
+					p = Popen( cmd, shell=True, stdout=PIPE )
+					model = p.stdout.read( ).strip( )
+					p.stdout.close( )
+				else :
+					p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+					( model, err ) = p.communicate( )
+					model = model.strip( )
 
 			return model
 
@@ -412,9 +434,15 @@ class SystemInfo( SettingWindow ) :
 		unit = ''
 		device = '/dev/sda'
 		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		size = p.stdout.read( ).strip( )
-		p.stdout.close( )
+		if sys.version_info < ( 2, 7 ) :
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			size = p.stdout.read( ).strip( )
+			p.stdout.close( )
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			( size, err ) = p.communicate( )
+			size = size.strip( )
+
 		size = re.sub( ',', '', size )
 		return size
 
@@ -426,9 +454,15 @@ class SystemInfo( SettingWindow ) :
 
 		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
 			if self.CheckExistsDisk( ) :
-				p = Popen( cmd, shell=True, stdout=PIPE )
-				temperature = p.stdout.read( ).strip( )
-				p.stdout.close( )
+				if sys.version_info < ( 2, 7 ) :
+					p = Popen( cmd, shell=True, stdout=PIPE )
+					temperature = p.stdout.read( ).strip( )
+					p.stdout.close( )
+				else :
+					p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+					( temperature, err ) = p.communicate( )
+					temperature = temperature.strip( )
+
 				if IsNumber( temperature ) == False :
 					temperature = MR_LANG( 'Unknown' )
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
@@ -442,9 +476,15 @@ class SystemInfo( SettingWindow ) :
 			return False
 
 		cmd = 'df'
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		parsing = p.stdout.read( ).strip( )
-		p.stdout.close( )
+		if sys.version_info < ( 2, 7 ) :
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			parsing = p.stdout.read( ).strip( )
+			p.stdout.close( )
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			( parsing, err ) = p.communicate( )
+			parsing = parsing.strip( )
+
 		if parsing.count( '/dev/sda' ) >= 3 :
 			return True
 		else :
