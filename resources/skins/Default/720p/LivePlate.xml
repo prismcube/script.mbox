@@ -415,16 +415,16 @@
 							</control>
 						</control>
 						<control type="group">
-							<width>40</width>
+							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
 							<control type="image">
-								<width>40</width>
+								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-yellow.png</texture>
 							</control>
 							<control type="label">
-								<posx>0</posx>
+								<posx>3</posx>
 								<posy>0</posy>
 								<width>45</width>
 								<height>30</height>
@@ -433,18 +433,18 @@
 							</control>
 						</control>
 						<control type="group">
-							<width>40</width>
+							<width>45</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
 							<control type="image">
-								<width>40</width>
+								<width>45</width>
 								<height>30</height>
 								<texture>settings-button-nofocus.png</texture>
 							</control>
 							<control type="label">
-								<posx>0</posx>
+								<posx>3</posx>
 								<posy>0</posy>
-								<width>40</width>
+								<width>45</width>
 								<height>30</height>
 								<font>font10</font>
 								<label>VIDEO</label>
@@ -456,11 +456,11 @@
 				<!-- component -->
 				<control type="group">
 					<control type="grouplist">
-						<posx>750</posx>
+						<posx>705</posx>
 						<posy>18</posy>
-						<width>400</width>
+						<width>410</width>
 						<height>40</height>
-						<itemgap>1</itemgap>
+						<itemgap>25</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
 						<control type="group" id="608">
@@ -478,7 +478,7 @@
 							</control>
 						</control>
 						<control type="group" id="605">
-							<posx>80</posx>
+							<posx>0</posx>
 							<posy>0</posy>
 							<width>60</width>
 							<height>40</height>
@@ -492,13 +492,13 @@
 							</control>
 						</control>
 						<control type="group" id="606">
-							<posx>110</posx>
+							<posx>0</posx>
 							<posy>0</posy>
-							<width>90</width>
+							<width>60</width>
 							<height>40</height>
 							<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(609)</visible>
 							<control type="image">
-								<posx>25</posx>
+								<posx>5</posx>
 								<posy>4</posy>
 								<width>118</width>
 								<height>30</height>
@@ -506,13 +506,13 @@
 							</control>
 						</control>
 						<control type="group" id="609">
-							<posx>110</posx>
+							<posx>0</posx>
 							<posy>0</posy>
-							<width>90</width>
+							<width>60</width>
 							<height>40</height>
 							<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 							<control type="image">
-								<posx>25</posx>
+								<posx>5</posx>
 								<posy>4</posy>
 								<width>118</width>
 								<height>30</height>
@@ -521,13 +521,13 @@
 						</control>
 
 						<control type="group" id="607">
-							<posx>180</posx>
+							<posx>0</posx>
 							<posy>0</posy>
-							<width>90</width>
+							<width>60</width>
 							<height>40</height>
 							<visible>substring(Window.Property(HasHD),true)</visible>
 							<control type="image">
-								<posx>77</posx>
+								<posx>70</posx>
 								<posy>0</posy>
 								<width>85</width>
 								<height>40</height>

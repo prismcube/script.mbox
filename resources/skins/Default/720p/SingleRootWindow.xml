@@ -1984,39 +1984,39 @@ Search for window name
 								</control>
 							</control>
 							<control type="group">
-								<width>30</width>
+								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
 								<control type="image">
-									<width>30</width>
+									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-yellow.png</texture>
 								</control>
 								<control type="label">
-									<posx>0</posx>
+									<posx>3</posx>
 									<posy>0</posy>
-									<width>30</width>
+									<width>45</width>
 									<height>30</height>
 									<font>font10</font>
-									<label>AUD</label>
+									<label>AUDIO</label>
 								</control>
 							</control>
 							<control type="group">
-								<width>30</width>
+								<width>45</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
 								<control type="image">
-									<width>30</width>
+									<width>45</width>
 									<height>30</height>
 									<texture>settings-button-nofocus.png</texture>
 								</control>
 								<control type="label">
-									<posx>0</posx>
+									<posx>3</posx>
 									<posy>0</posy>
-									<width>30</width>
+									<width>45</width>
 									<height>30</height>
 									<font>font10</font>
-									<label>VDO</label>
+									<label>VIDEO</label>
 								</control>
 							</control>
 						</control>
@@ -2024,11 +2024,11 @@ Search for window name
 
 					<control type="group">
 						<control type="grouplist">
-							<posx>750</posx>
+							<posx>705</posx>
 							<posy>18</posy>
-							<width>400</width>
+							<width>410</width>
 							<height>40</height>
-							<itemgap>1</itemgap>
+							<itemgap>25</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1400608">
@@ -2046,7 +2046,7 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1400605">
-								<posx>80</posx>
+								<posx>0</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>40</height>
@@ -2060,13 +2060,13 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1400606">
-								<posx>110</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>90</width>
+								<width>60</width>
 								<height>40</height>
 								<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(609)</visible>
 								<control type="image">
-									<posx>25</posx>
+									<posx>5</posx>
 									<posy>4</posy>
 									<width>118</width>
 									<height>30</height>
@@ -2074,13 +2074,13 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1400609">
-								<posx>110</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>90</width>
+								<width>60</width>
 								<height>40</height>
 								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 								<control type="image">
-									<posx>25</posx>
+									<posx>5</posx>
 									<posy>4</posy>
 									<width>118</width>
 									<height>30</height>
@@ -2089,13 +2089,13 @@ Search for window name
 							</control>
 
 							<control type="group" id="1400607">
-								<posx>180</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>90</width>
+								<width>60</width>
 								<height>40</height>
 								<visible>substring(Window.Property(HasHD),true)</visible>
 								<control type="image">
-									<posx>77</posx>
+									<posx>70</posx>
 									<posy>0</posy>
 									<width>85</width>
 									<height>40</height>
@@ -2397,7 +2397,7 @@ Search for window name
 			<!-- color key -->
 				<control type="group">
 					<control type="grouplist">
-						<posx>1190</posx>
+						<posx>1090</posx>
 						<posy>565</posy>
 						<width>300</width>
 						<height>40</height>
@@ -2459,21 +2459,21 @@ Search for window name
 							</control>
 						</control>
 						<control type="group">
-							<width>30</width>
+							<width>90</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
 							<control type="image">
-								<width>30</width>
+								<width>90</width>
 								<height>30</height>
 								<texture>settings-button-nofocus.png</texture>
 							</control>
 							<control type="label">
-								<posx>3</posx>
+								<posx>6</posx>
 								<posy>0</posy>
-								<width>30</width>
+								<width>80</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>BOK</label>
+								<label>BOOKMARK</label>
 							</control>
 						</control>
 					</control>

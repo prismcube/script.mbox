@@ -195,7 +195,7 @@
 			<!-- color key -->
 			<control type="group">
 				<control type="grouplist">
-					<posx>1190</posx>
+					<posx>1090</posx>
 					<posy>565</posy>
 					<width>300</width>
 					<height>40</height>
@@ -257,22 +257,22 @@
 						</control>
 					</control>
 					<control type="group">
-						<width>30</width>
+						<width>90</width>
 						<height>30</height>
 						<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
 						<control type="image">
-							<width>30</width>
+							<width>90</width>
 							<height>30</height>
 							<texture>settings-button-nofocus.png</texture>
 						</control>
 						<control type="label">
-							<posx>3</posx>
+							<posx>6</posx>
 							<posy>0</posy>
-							<width>30</width>
+							<width>80</width>
 							<height>30</height>
 							<font>font10</font>
-							<size>10</size>
-							<label>BM+</label>
+							<!--size>10</size-->
+							<label>BOOKMARK</label>
 						</control>
 					</control>
 				</control>
