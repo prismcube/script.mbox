@@ -581,10 +581,10 @@ class DialogAddManualTimer( SettingDialog ) :
 					LOG_TRACE( 'endTime=%s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )						
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
 					LOG_TRACE( 'RET=%s' %ret )
-					if ret == False :
+					if ret[0].mParam == -1 or ret[0].mError == -1 :					
+						self.mConflictTimer = ret
 						self.mErrorMessage = MR_LANG( 'Unable to edit the timer' )
-						self.mConflictTimer = None
-					return ret
+						return False
 					"""
 					else: #E_DAILY or E_WEEKLY
 						count = len( self.mUsedWeeklyList )
@@ -612,7 +612,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 				else : 
 					if self.mRecordingMode == E_ONCE :
-						self.mDataCache.Timer_DeleteTimer( self.mTimer.mTimerId )
+						#self.mDataCache.Timer_DeleteTimer( self.mTimer.mTimerId )
 
 						startTime = self.mTimer.mStartTime
 						endTime = startTime + self.mTimer.mDuration
@@ -623,8 +623,8 @@ class DialogAddManualTimer( SettingDialog ) :
 						tmpEndTime = int( endTime/60 )
 						endTime = tmpEndTime * 60
 						self.mTimer.mDuration = endTime - startTime
-						
-						ret = self.mDataCache.Timer_AddManualTimer( self.mTimer.mChannelNo, self.mTimer.mServiceType, self.mTimer.mStartTime, self.mTimer.mDuration, self.mTimer.mName, True )
+						#aTimerId, aNewStartTime, aNewDuration
+						ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
 
 						if ret[0].mParam == -1 or ret[0].mError == -1 :
 							self.mConflictTimer = ret

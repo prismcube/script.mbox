@@ -20,9 +20,11 @@ class NullWindow( BaseWindow ) :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			self.mSubTitleIsShow = False
 			self.mIsShowDialog = False
+			self.mEnableBlickingTimer = False			
 
 
 	def onInit( self ) :
+		self.mEnableBlickingTimer = False				
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
 		collected = gc.collect()
@@ -539,15 +541,11 @@ class NullWindow( BaseWindow ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-		isOK = True
+		isOK = False
 
 		if mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
-
-			isOK = dialog.IsOK( )
-			if isOK != E_DIALOG_STATE_YES :
-				isOK = False
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
@@ -591,7 +589,7 @@ class NullWindow( BaseWindow ) :
 				copyTimeshift = 0
 
 			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
-			expectedDuration = otrInfo.mEventEndTime - localTime
+			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
 
 			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
@@ -606,6 +604,8 @@ class NullWindow( BaseWindow ) :
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
 				RecordConflict( ret )
+			else :
+				isOK = True
 
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
@@ -615,6 +615,7 @@ class NullWindow( BaseWindow ) :
 
 		if isOK :
 			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.mEnableBlickingTimer = True
 			self.StartBlickingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
@@ -643,7 +644,8 @@ class NullWindow( BaseWindow ) :
 
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mRecordBlinkingTimer == None :
+		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
+			self.setProperty( 'RecordBlinkingIcon', 'False' )		
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
@@ -702,6 +704,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		self.mEnableBlickingTimer = False	
 		self.mEventBus.Deregister( self )
 
 		self.CloseSubTitle( )
