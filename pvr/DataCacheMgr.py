@@ -1507,6 +1507,10 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Player_JumpTo( self, aMiliSec ) :
+		return self.mCommander.Player_JumpTo( aMiliSec )
+
+
 	def Player_JumpToIFrame( self, aMiliSec ) :
 		return self.mCommander.Player_JumpToIFrame( aMiliSec )
 
