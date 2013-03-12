@@ -129,6 +129,7 @@ class DataCacheMgr( object ) :
 		self.mIsRunningHiddentest 				= False
 		self.mStartMediaCenter					= False
 		self.mDefaultHideWatched				= False
+		self.mPlayingChannel					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -872,6 +873,10 @@ class DataCacheMgr( object ) :
 		return self.mOldChannel
 
 
+	def Channel_GetCurrentByPlaying( self ) :
+		return self.mPlayingChannel
+
+
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
 		#self.mPMTEvent = None #reset cached PMT Event
 		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
@@ -896,6 +901,7 @@ class DataCacheMgr( object ) :
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
+		self.mPlayingChannel = None
 
 		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
 		if aFrontMessage == True :		
@@ -1482,10 +1488,10 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		self.mPlayingChannel = self.Channel_GetCurrent( )
 		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
-
 		"""
 		channel = self.Channel_GetCurrent( )
 		if channel and channel.mError == 0 :

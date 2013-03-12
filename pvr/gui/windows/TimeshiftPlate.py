@@ -564,9 +564,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GetNextSpeed( E_ONINIT )
 			self.ShowStatusByButton( status )
 
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
 		visible = E_TAG_FALSE
 		if self.mMode == ElisEnum.E_MODE_PVR : 
 			visible = E_TAG_TRUE

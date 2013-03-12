@@ -239,28 +239,35 @@ class GlobalEvent( object ) :
 
 		if aCmd == E_PARENTLOCK_INIT :
 			#default blank
-			self.mDataCache.SetParentLock( True )
+			#self.mDataCache.SetParentLock( True )
 			self.mDataCache.Epgevent_GetPresent( )
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
-			LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG )  )
+			pChannel = self.mDataCache.Channel_GetCurrentByPlaying( )
+			if pChannel :
+				LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s] pch[%s %s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG, pChannel.mNumber, pChannel.mName )  )
+			else :
+				LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s] pch[None]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG )  )
 
-			if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
-				if not self.mDataCache.Get_Player_AVBlank( ) :
+			if not pChannel or not iChannel or \
+			   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
+				self.mDataCache.SetParentLock( True )
+				if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
+					if not self.mDataCache.Get_Player_AVBlank( ) :
 
-					if self.mDataCache.GetParentLockPass( ) :
-						self.mDataCache.SetParentLock( False )
-						self.mDataCache.SetParentLockPass( False )
-						LOG_TRACE( '--------parentLock check pass mediaCenter out' )
-						return
-					else :
-						self.mDataCache.Player_AVBlank( True )
+						if self.mDataCache.GetParentLockPass( ) :
+							self.mDataCache.SetParentLock( False )
+							self.mDataCache.SetParentLockPass( False )
+							LOG_TRACE( '--------parentLock check pass mediaCenter out' )
+							return
+						else :
+							self.mDataCache.Player_AVBlank( True )
 
-				if ( not self.mDataCache.GetPincodeDialog( ) ) :
-					self.mDataCache.SetPincodeDialog( True )
-					#self.ShowPincodeDialog( )
-					thread = threading.Timer( 0.1, self.ShowPincodeDialog )
-					thread.start( )
+					if ( not self.mDataCache.GetPincodeDialog( ) ) :
+						self.mDataCache.SetPincodeDialog( True )
+						#self.ShowPincodeDialog( )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread.start( )
 			else :
 				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
 					self.mDataCache.Player_AVBlank( False )

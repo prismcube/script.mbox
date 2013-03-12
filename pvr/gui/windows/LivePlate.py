@@ -400,8 +400,8 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_TRUE )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
@@ -912,6 +912,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				self.RestartAutomaticHide( )
 				return
 
 			if not self.mDataCache.Teletext_Show( ) :
@@ -928,6 +929,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				self.RestartAutomaticHide( )
 				return
 
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
@@ -941,11 +943,9 @@ class LivePlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			if RECORD_WIDTHOUT_ASKING == True :
 				self.StartRecordingWithoutAsking( )
-				return
 			else :
 				self.ShowRecordingStartDialog( )
 		
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
 			self.ShowRecordingStopDialog( )
 
@@ -1112,6 +1112,8 @@ class LivePlate( LivePlateWindow ) :
 
 		if isOK :
 			self.mDataCache.SetChannelReloadStatus( True )
+			if mTimer :
+				self.ShowRecordingInfo( )
 
 
 	def ShowRecordingStopDialog( self ) :

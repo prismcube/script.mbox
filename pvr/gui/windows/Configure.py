@@ -988,16 +988,21 @@ class Configure( SettingWindow ) :
 				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType ) # Todo After : using ServiceType to different way
+				self.CloseBusyDialog( )
 			else :
 				self.OpenBusyDialog( )
-				sumtime = self.mDate + '.' + self.mTime
-				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
-				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
-				globalEvent = pvr.GlobalEvent.GetInstance( )
-				globalEvent.SendLocalOffsetToXBMC( )
-
+				try :
+					sumtime = self.mDate + '.' + self.mTime
+					t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
+					ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
+					globalEvent = pvr.GlobalEvent.GetInstance( )
+					globalEvent.SendLocalOffsetToXBMC( )
+				except Exception, e :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'time value is not valid' ) )
+					dialog.doModal( )
+				self.CloseBusyDialog( )
 			
-			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No time info was given by that channel' ) )
