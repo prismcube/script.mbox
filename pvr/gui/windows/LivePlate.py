@@ -1027,7 +1027,13 @@ class LivePlate( LivePlateWindow ) :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
-				RecordConflict( ret )
+				#RecordConflict( ret )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+					RecordConflict( dialog.GetConflictTimer( ) )
+
 			else :
 				isOK = True
 
