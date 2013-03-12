@@ -358,6 +358,17 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'Numlock is not support until now' )
 			pass
 
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				self.mDataCache.Player_CreateBookmark( )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.DialogPopupOK( actionId )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.DialogPopupOK( actionId )
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -449,15 +460,6 @@ class NullWindow( BaseWindow ) :
 			#elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			#	xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
-			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
-				if E_SUPPROT_HBBTV :
-					LOG_TRACE('----------HBB Tv Ready')
-					self.mCommander.AppHBBTV_Ready( 0 )
-					self.mHBBTVReady = False
-
-				self.mDataCache.Teletext_NotifyHide( )
-				self.mDataCache.LoadVolumeToSetGUI( )
-				LOG_TRACE( '----------ElisEventTTXClosed' )
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
@@ -875,6 +877,19 @@ class NullWindow( BaseWindow ) :
 		elif aAction == Action.ACTION_MBOX_TVRADIO :
 			head = MR_LANG( 'Error' )
 			msg = MR_LANG( 'No channels available for the selected mode' )
+
+		elif aAction == Action.ACTION_COLOR_YELLOW :
+			self.CloseSubTitle( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			self.CheckSubTitle( )
+			self.mIsShowDialog = False
+			return
+		elif aAction == Action.ACTION_COLOR_BLUE :
+			self.CloseSubTitle( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.CheckSubTitle( )
+			self.mIsShowDialog = False
+			return
 
 		self.CloseSubTitle( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( dialogId )

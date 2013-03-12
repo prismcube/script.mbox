@@ -154,6 +154,17 @@ class GlobalEvent( object ) :
 				thread.start( )
 				return
 
+		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
+			if E_SUPPROT_HBBTV :
+				LOG_TRACE('----------HBB Tv Ready')
+				self.mCommander.AppHBBTV_Ready( 0 )
+				self.mHBBTVReady = False
+
+			self.mDataCache.Teletext_NotifyHide( )
+			self.mDataCache.LoadVolumeToSetGUI( )
+			#self.SetSingleWindowPosition( WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
+			LOG_TRACE( '----------ElisEventTTXClosed' )
+
 
 	def AsyncHddFull( self ) :
 		self.mIsHddFullDialogOpened = True

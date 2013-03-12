@@ -121,6 +121,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mAutomaticHideTimer = None
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
+		self.mIsShowDialog = False
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -192,6 +193,18 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_MUTE :
+				self.GlobalAction( Action.ACTION_MUTE  )
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :
+				self.EPGNavigation( PREV_EPG )
+
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG :
+				self.EPGNavigation( NEXT_EPG )
+
+			else :
+				self.DialogPopup( self.mFocusId )
+
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
@@ -301,7 +314,7 @@ class LivePlate( LivePlateWindow ) :
 					dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
@@ -320,51 +333,6 @@ class LivePlate( LivePlateWindow ) :
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
-		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.GlobalAction( Action.ACTION_MUTE  )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.EPGNavigation( PREV_EPG )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_NEXT_EPG :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.EPGNavigation( NEXT_EPG )
 
 
 	def onFocus(self, aControlId):
@@ -904,13 +872,24 @@ class LivePlate( LivePlateWindow ) :
 		self.setProperty( aPropertyID, aValue )
 
 
+	def DialogPopup( self, aAction ) :
+		if self.mIsShowDialog == False :
+			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
+			thread.start( )
+		else :
+			LOG_TRACE( 'Already opened, Dialog' )
+
+
 	def ShowDialog( self, aFocusId, aVisible = False ) :
+		self.mIsShowDialog = True
+
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
+				self.mIsShowDialog = False
 				return
 
 			if not self.mDataCache.Teletext_Show( ) :
@@ -918,6 +897,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
+				self.mIsShowDialog = False
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
@@ -928,6 +908,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
+				self.mIsShowDialog = False
 				return
 
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
@@ -951,6 +932,7 @@ class LivePlate( LivePlateWindow ) :
 			self.ShowAudioVideoContext( )
 
 		self.RestartAutomaticHide( )
+		self.mIsShowDialog = False
 
 
 	def StartRecordingWithoutAsking( self ) :

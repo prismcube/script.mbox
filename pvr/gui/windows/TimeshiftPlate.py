@@ -390,7 +390,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_COLOR_BLUE :
+		elif actionId == Action.ACTION_COLOR_GREEN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.StopAutomaticHide( )
 				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
@@ -565,12 +565,12 @@ class TimeShiftPlate( BaseWindow ) :
 			self.ShowStatusByButton( status )
 
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_FALSE )
 		visible = E_TAG_FALSE
 		if self.mMode == ElisEnum.E_MODE_PVR : 
 			visible = E_TAG_TRUE
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   visible )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 
 		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
 
