@@ -421,6 +421,8 @@ class BaseWindow( BaseObjectWindow ) :
 				self.mDataCache.SetParentLockPass( True )
 
 			self.UpdateVolume( )
+			if XBMC_GetMute( ) == True :
+				self.mCommander.Player_SetMute( True )
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 
