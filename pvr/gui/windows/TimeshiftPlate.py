@@ -528,9 +528,10 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				userMovingMs = self.JumpToTrack( E_CONTROL_ID_BUTTON_JUMP_RR )
 				self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
-				self.mDataCache.Player_JumpToIFrame( userMovingMs )
+				self.mDataCache.Player_JumpTo( userMovingMs )
 				self.mFlagUserMove = False
 
+				"""
 				limitLoop = 0
 				while self.mSpeed != 100 or self.mMode == ElisEnum.E_MODE_LIVE :
 					time.sleep( 0.5 )
@@ -551,7 +552,7 @@ class TimeShiftPlate( BaseWindow ) :
 					if limitLoop > 20 :
 						break
 
-				"""
+
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 
 				self.mUserMoveTime = 1
