@@ -498,9 +498,14 @@ def CheckHdd( ) :
 		return False
 	
 	cmd = 'df'
-	p = Popen( cmd, shell=True, stdout=PIPE )
-	parsing = p.stdout.read( ).strip( )
-	p.stdout.close( )
+	if sys.version_info < (2, 7):	
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		parsing = p.stdout.read( ).strip( )
+		p.stdout.close( )
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		(parsing, err ) = p.communicate( )
+	
 	if parsing.count( '/dev/sda' ) >= 3 :
 		return True
 
@@ -522,9 +527,14 @@ def CheckEthernet( aEthName ) :
 	status = 'down'
 	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
 	try :
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		status = p.stdout.read( ).strip( )
-		p.stdout.close( )
+		if sys.version_info < (2, 7):		
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			status = p.stdout.read( ).strip( )
+			p.stdout.close( )
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			(status, err ) = p.communicate( )			
+		
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
@@ -542,9 +552,15 @@ def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 		return isVerify
 
 	try :
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		readMd5 = p.stdout.read( ).strip( )
-		p.stdout.close( )
+		if sys.version_info < (2, 7):			
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			readMd5 = p.stdout.read( ).strip( )
+			p.stdout.close( )
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			(readMd5, err ) = p.communicate( )			
+
+		
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if aMd5 :
 			if readMd5 == aMd5 :
@@ -685,9 +701,14 @@ def GetCurrentVersion( ) :
 	retInfo = []
 	for ele in parse :
 		cmd = 'cat /etc/release.info | awk -F= \'/%s/ {print $2}\''% ele
-		p = Popen( cmd, shell=True, stdout=PIPE )
-		ret = p.stdout.read().strip()
-		p.stdout.close()
+		if sys.version_info < (2, 7):					
+			p = Popen( cmd, shell=True, stdout=PIPE )
+			ret = p.stdout.read().strip()
+			p.stdout.close()
+		else :
+			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+			(ret, err ) = p.communicate( )			
+		
 		retInfo.append( ret )
 		#print 'ret[%s]'% ret
 
