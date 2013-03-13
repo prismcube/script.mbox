@@ -1069,4 +1069,8 @@
 	<string id="3653">DUT_North</string>
 	<string id="3654">DUT_South</string>
 	<string id="3655">DUT_Go to the channel search setup page</string>
+	<string id="3656">DUT_time value is not valid</string>
+	<string id="3657">DUT_Make sure your antenna is properly set up</string>
+	<string id="3658">DUT_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">DUT_Invalid input</string>
 </strings>

@@ -1069,4 +1069,8 @@
 	<string id="3653">POL_North</string>
 	<string id="3654">POL_South</string>
 	<string id="3655">POL_Go to the channel search setup page</string>
+	<string id="3656">POL_time value is not valid</string>
+	<string id="3657">POL_Make sure your antenna is properly set up</string>
+	<string id="3658">POL_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">POL_Invalid input</string>
 </strings>

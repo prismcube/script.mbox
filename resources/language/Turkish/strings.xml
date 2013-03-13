@@ -1069,4 +1069,8 @@
 	<string id="3653">TUR_North</string>
 	<string id="3654">TUR_South</string>
 	<string id="3655">TUR_Go to the channel search setup page</string>
+	<string id="3656">TUR_time value is not valid</string>
+	<string id="3657">TUR_Make sure your antenna is properly set up</string>
+	<string id="3658">TUR_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">TUR_Invalid input</string>
 </strings>

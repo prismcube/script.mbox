@@ -1069,4 +1069,8 @@
 	<string id="3653">SPA_North</string>
 	<string id="3654">SPA_South</string>
 	<string id="3655">SPA_Go to the channel search setup page</string>
+	<string id="3656">SPA_time value is not valid</string>
+	<string id="3657">SPA_Make sure your antenna is properly set up</string>
+	<string id="3658">SPA_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">SPA_Invalid input</string>
 </strings>

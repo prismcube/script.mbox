@@ -1069,4 +1069,8 @@
 	<string id="3653">GER_North</string>
 	<string id="3654">GER_South</string>
 	<string id="3655">GER_Go to the channel search setup page</string>
+	<string id="3656">GER_time value is not valid</string>
+	<string id="3657">GER_Make sure your antenna is properly set up</string>
+	<string id="3658">GER_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">GER_Invalid input</string>
 </strings>

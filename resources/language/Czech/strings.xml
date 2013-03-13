@@ -1069,4 +1069,8 @@
 	<string id="3653">CZE_North</string>
 	<string id="3654">CZE_South</string>
 	<string id="3655">CZE_Go to the channel search setup page</string>
+	<string id="3656">CZE_time value is not valid</string>
+	<string id="3657">CZE_Make sure your antenna is properly set up</string>
+	<string id="3658">CZE_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">CZE_Invalid input</string>
 </strings>

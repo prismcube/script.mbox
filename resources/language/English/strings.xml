@@ -1069,4 +1069,8 @@
 	<string id="3653">North</string>
 	<string id="3654">South</string>
 	<string id="3655">Go to the channel search setup page</string>
+	<string id="3656">time value is not valid</string>
+	<string id="3657">Make sure your antenna is properly set up</string>
+	<string id="3658">To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">Invalid input</string>
 </strings>

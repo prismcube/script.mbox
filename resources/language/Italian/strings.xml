@@ -1069,4 +1069,8 @@
 	<string id="3653">ITA_North</string>
 	<string id="3654">ITA_South</string>
 	<string id="3655">ITA_Go to the channel search setup page</string>
+	<string id="3656">ITA_time value is not valid</string>
+	<string id="3657">ITA_Make sure your antenna is properly set up</string>
+	<string id="3658">ITA_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
+	<string id="3659">ITA_Invalid input</string>
 </strings>
