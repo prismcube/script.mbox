@@ -125,6 +125,7 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
+			return
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 
@@ -202,6 +203,9 @@ class InfoPlate( LivePlateWindow ) :
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
+
+		self.StopAutomaticHide( )
+		self.SetAutomaticHide( False )
 	
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE )

@@ -27,6 +27,8 @@ E_CONTROL_ID_GROUP_LOCKED_INFO			= E_CHANNEL_LIST_BASE_ID + 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= E_CHANNEL_LIST_BASE_ID + 401
 E_CONTROL_ID_GROUP_HELPBOX				= E_CHANNEL_LIST_BASE_ID + 600
 
+E_BUTTON_ID_FAKE_ALLCHANNELS			= E_CHANNEL_LIST_BASE_ID + 700
+
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
 FLAG_MODE_TV     = ElisEnum.E_SERVICE_TYPE_TV
@@ -243,6 +245,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.GoToPreviousWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
+			return
 			self.GetFocusId( )
 			#LOG_TRACE( 'item select, action ID[%s]'% actionId )
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
@@ -340,7 +343,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.DoModeChange( FLAG_MODE_TV )
 
 
-
 	def onClick(self, aControlId):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 		if self.IsActivate( ) == False  :
@@ -399,6 +401,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aControlId == E_CONTROL_ID_RADIOBUTTON_RADIO :
 			self.DoModeChange( FLAG_MODE_RADIO )
+
+		elif aControlId == E_BUTTON_ID_FAKE_ALLCHANNELS :
+			self.SubMenuAction( E_SLIDE_ACTION_SUB )
+			self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 
 	def onFocus(self, controlId):
