@@ -583,6 +583,7 @@ class InfoPlate( LivePlateWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+			runningRecordCount = 0
 
 			if isRunningTimerList :
 				runningRecordCount = len( isRunningTimerList )

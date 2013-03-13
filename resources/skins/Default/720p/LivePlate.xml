@@ -17,7 +17,7 @@
 			<width>60</width>
 			<height>25</height>
 			<texture>i_record.png</texture>
-			<visible>substring(Window.Property(RecordBlinkingIcon),true)</visible>
+			<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
 		</control>
 		<control type="group">
 			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>

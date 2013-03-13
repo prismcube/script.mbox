@@ -996,7 +996,7 @@ class Configure( SettingWindow ) :
 					globalEvent.SendLocalOffsetToXBMC( )
 				except Exception, e :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'time value is not valid' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid input' ) )
 					dialog.doModal( )
 				self.CloseBusyDialog( )
 			

@@ -1340,6 +1340,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def ShowRecordingInfo( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 		isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+		runningRecordCount = 0
 
 		if isRunningTimerList :
 			runningRecordCount = len( isRunningTimerList )
