@@ -148,15 +148,7 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )		
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )			
-		
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			self.Close( )
-			status = self.mDataCache.Player_GetStatus( )		
-			if status.mMode == ElisEnum.E_MODE_PVR :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
-			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -422,7 +414,12 @@ class NullWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		#print "onclick( ): control %s" % aControlId
+		self.Close( )
+		status = self.mDataCache.Player_GetStatus( )		
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+		else :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def onFocus(self, aControlId) :

@@ -78,9 +78,6 @@ class FirstInstallation( FTIWindow ) :
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
 

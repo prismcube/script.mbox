@@ -99,9 +99,6 @@ class MainMenu( BaseWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
 		elif actionId == Action.ACTION_PARENT_DIR :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 

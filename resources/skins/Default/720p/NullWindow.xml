@@ -11,7 +11,6 @@
 			<texture>i_record.png</texture>
 			<visible>substring(Window.Property(RecordBlinkingIcon),true)</visible>
 		</control>
-	
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>

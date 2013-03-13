@@ -98,32 +98,9 @@ class TimerWindow( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.GoParentTimer( )
-
-		elif  actionId == Action.ACTION_SELECT_ITEM :
-			if self.mSelectedWeeklyTimer == 0 :
-				self.GoChildTimer( )
-			else :
-				selectedPos = self.mCtrlBigList.getSelectedPosition( )
-				if self.mSelectedWeeklyTimer > 0 and selectedPos == 0 :
-					self.GoParentTimer( )
-				return
 	
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.GoParentTimer( )
-			
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if self.mFocusId == LIST_ID_BIG_TIMER :
-				pass
-
-		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
-			if self.mFocusId == LIST_ID_BIG_TIMER :
-				pass
 		
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
@@ -133,8 +110,17 @@ class TimerWindow( BaseWindow ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
 		if self.IsActivate( ) == False  :
 			return
+
+		if aControlId == LIST_ID_BIG_TIMER :
+			if self.mSelectedWeeklyTimer == 0 :
+				self.GoChildTimer( )
+			else :
+				selectedPos = self.mCtrlBigList.getSelectedPosition( )
+				if self.mSelectedWeeklyTimer > 0 and selectedPos == 0 :
+					self.GoParentTimer( )
+				return
 		
-		if aControlId == BUTTON_ID_GO_PARENT :
+		elif aControlId == BUTTON_ID_GO_PARENT :
 			self.GoParentTimer( )
 
 

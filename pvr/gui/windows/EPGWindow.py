@@ -135,13 +135,8 @@ class EPGWindow( BaseWindow ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )
-
-		elif  actionId == Action.ACTION_SELECT_ITEM :
-			#if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
-			self.Tune( )
 	
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -222,7 +217,10 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		if aControlId == BUTTON_ID_EPG_MODE :
+		if  aControlId == LIST_ID_COMMON_EPG or aControlId == LIST_ID_BIG_EPG :
+			self.Tune( )
+
+		elif aControlId == BUTTON_ID_EPG_MODE :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 	
@@ -245,9 +243,6 @@ class EPGWindow( BaseWindow ) :
 			self.StartEPGUpdateTimer( )
 		
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
-			pass
-
-		elif aControlId == LIST_ID_COMMON_EPG :
 			pass
 
 		elif aControlId == BUTTON_ID_SEARCH :
