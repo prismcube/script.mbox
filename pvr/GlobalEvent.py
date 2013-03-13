@@ -340,6 +340,9 @@ class GlobalEvent( object ) :
 				#SendCommand( 'VKEY_ARCHIVE' )
 				xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
 
+			elif dialog.GetNextAction( ) == dialog.E_TUNE_TVRADIO_TOGGLE :
+				xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
+
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
