@@ -170,7 +170,7 @@ class WindowMgr( object ) :
 						time.sleep( 0.3 )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-					self.mWindows[aWindowId].onInit( )				
+					self.mWindows[aWindowId].onInit( )
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
 					self.mWindows[currentId].close( )

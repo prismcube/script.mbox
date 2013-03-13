@@ -904,7 +904,7 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel = None
 
 		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
-		if aFrontMessage == True :		
+		if aFrontMessage == True :
 			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret

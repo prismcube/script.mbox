@@ -147,7 +147,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		focusId = self.GetFocusId( )
