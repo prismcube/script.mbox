@@ -674,7 +674,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR])SCRIPT1108</label>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 		</control>

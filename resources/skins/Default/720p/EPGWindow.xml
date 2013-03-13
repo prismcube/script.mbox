@@ -164,7 +164,7 @@
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>SCRIPT8</label>
+						<label>SCRIPT1108</label>
 					</control-->
 					<control type="button" id="202">
 						<textwidth>170</textwidth>

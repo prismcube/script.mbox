@@ -70,12 +70,14 @@ class LivePlate( LivePlateWindow ) :
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
 		self.mEnableLocalThread = False
+		self.mEnableBlickingTimer = False		
 
 		self.test_count = 0
 		self.test_load = []
 
 
 	def onInit( self ) :
+		self.mEnableBlickingTimer = False
 		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
@@ -209,7 +211,7 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
-			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.RestartAutomaticHide( )
@@ -265,7 +267,8 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+			self.StopAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif actionId == Action.ACTION_STOP :
 			status = None
@@ -273,7 +276,8 @@ class LivePlate( LivePlateWindow ) :
 			if status and status.mError == 0 and status.mMode :
 				ret = self.mDataCache.Player_Stop( )
 			else :
-				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
+				self.StopAutomaticHide( )
+				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
@@ -317,7 +321,7 @@ class LivePlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
@@ -942,16 +946,14 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-		isOK = True
+		isOK = False
 
 		if mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
 			isOK = dialog.IsOK( )
-			if isOK != E_DIALOG_STATE_YES :
-				isOK = False
-			else :
+			if isOK == E_DIALOG_STATE_YES :
 				self.ShowRecordingInfo( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
@@ -995,7 +997,7 @@ class LivePlate( LivePlateWindow ) :
 				copyTimeshift = 0
 
 			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
-			expectedDuration = otrInfo.mEventEndTime - localTime
+			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
 
 			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
@@ -1009,7 +1011,15 @@ class LivePlate( LivePlateWindow ) :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
-				RecordConflict( ret )
+				#RecordConflict( ret )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+					RecordConflict( dialog.GetConflictTimer( ) )
+
+			else :
+				isOK = True
 
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
@@ -1022,6 +1032,7 @@ class LivePlate( LivePlateWindow ) :
 			self.StopAutomaticHide( )
 
 			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.mEnableBlickingTimer = True			
 			self.StartBlickingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
@@ -1050,7 +1061,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mRecordBlinkingTimer == None :
+		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
+			self.setProperty( 'RecordBlinkingIcon', 'False' )
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
@@ -1203,6 +1215,7 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def Close( self ) :
+		self.mEnableBlickingTimer = False	
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
