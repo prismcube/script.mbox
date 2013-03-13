@@ -142,15 +142,18 @@ class DialogAddManualTimer( SettingDialog ) :
 		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
 			if self.DoAddTimer( ) == False :
 				self.mIsOk = E_DIALOG_STATE_ERROR
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
 			self.mIsOk = E_DIALOG_STATE_NO
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 
 	def GetErrorMessage( self ) :

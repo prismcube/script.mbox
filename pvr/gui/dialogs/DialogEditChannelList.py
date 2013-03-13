@@ -67,7 +67,8 @@ class DialogEditChannelList( SettingDialog ) :
 
 			self.mIsOk = True
 
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		self.ResetAllControl( )
+		self.CloseDialog( )
 
  				
 	def onFocus( self, aControlId ) :

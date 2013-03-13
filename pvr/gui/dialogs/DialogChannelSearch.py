@@ -92,7 +92,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 		if focusId == BUTTON_ID_CANCEL or focusId == BUTTON_ID_CLOSE :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ScanAbort( )
 
 
 
