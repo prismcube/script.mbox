@@ -218,9 +218,6 @@ class TimeShiftPlate( BaseWindow ) :
 			rKey = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
 			self.MoveToSeekFrame( rKey )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :

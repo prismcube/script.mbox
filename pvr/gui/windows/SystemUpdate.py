@@ -163,9 +163,6 @@ class SystemUpdate( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.Close( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepPage == E_UPDATE_STEP_HOME :

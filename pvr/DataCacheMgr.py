@@ -904,7 +904,7 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel = None
 
 		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
-		if aFrontMessage == True :		
+		if aFrontMessage == True :
 			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
@@ -2043,23 +2043,12 @@ class DataCacheMgr( object ) :
 		ret = SetDefaultSettingInXML( )
 		LOG_TRACE( '>>>>>>>> Default init : epg,archive ret[%s] <<<<<<<<'% ret )
 
-		#6. volume : 75db
-		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
-		if self.mCommander.Player_GetMute( ) :
-			self.mCommander.Player_SetMute( False )
-			if XBMC_GetMute( ) == True :
-				xbmc.executebuiltin( 'mute( )' )
-
-		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
-		#XBMC_SetVolume( DEFAULT_VOLUME )
-		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
-
-		#7. ageRating
+		#6. ageRating
 		LOG_TRACE( '>>>>>>>> Default init : AgeLimit <<<<<<<<' )
 		ElisPropertyEnum( 'Age Limit', self.mCommander ).SetPropString( 'No Limit' )
 		self.SetPropertyAge( 0 )
 
-		#8. channelList, LivePlate
+		#7. channelList, LivePlate
 		LOG_TRACE( '>>>>>>>> Default init : Channel <<<<<<<<' )
 		zappingmode = self.Zappingmode_GetCurrent( )
 		zappingmode.mMode = ElisEnum.E_MODE_ALL
@@ -2068,6 +2057,17 @@ class DataCacheMgr( object ) :
 		self.Zappingmode_SetCurrent( zappingmode )
 		#self.Channel_Save( )
 		self.Channel_ReLoad( )
+
+		#8. volume : 75db
+		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
+		if self.mCommander.Player_GetMute( ) :
+			self.mCommander.Player_SetMute( False )
+		if XBMC_GetMute( ) == True :
+			xbmc.executebuiltin( 'mute( )' )
+
+		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
+		#XBMC_SetVolume( DEFAULT_VOLUME )
+		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
 
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )

@@ -172,13 +172,19 @@ class DialogChannelSearch( BaseDialog ) :
 			if iZapping and iZapping.mError == 0 :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
+			iChannel = self.mDataCache.Channel_GetCurrent( True )
+			self.mDataCache.mCurrentChannel = iChannel
+
 			if self.mScanMode == E_SCAN_TRANSPONDER :
 				self.mCommander.ScanHelper_Start( )
+
 			else :
 				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
 					self.mDataCache.Channel_ReTune( )
 				else :
-					self.mDataCache.Channel_TuneDefault( )
+					self.mDataCache.Channel_TuneDefault( False, iChannel )
+
+
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.CloseDialog( )
 		else :
@@ -277,7 +283,9 @@ class DialogChannelSearch( BaseDialog ) :
 						self.ChannelTune( channel )
 						return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
+				self.ChannelTune( self.mStoreTVChannel[0] )
+
+				#self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
 		else :
 			if len( self.mStoreRadioChannel ) > 0 :
 				for channel in self.mStoreRadioChannel :
@@ -285,13 +293,15 @@ class DialogChannelSearch( BaseDialog ) :
 						self.ChannelTune( channel )
 						return
 
-				self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
+				self.ChannelTune( self.mStoreRadioChannel[0] )
+
+				#self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
 
 
 	def ChannelTune( self, aChannel ) :
 		if aChannel.mNumber == INVALID_CHANNEL :
 			channel = self.mCommander.Channel_GetByTwolDs( aChannel.mSid, aChannel.mOnid )
 			if channel :
-				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType, None, True )
 		else :
-			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType )
+			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType, None, True )

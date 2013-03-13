@@ -14,6 +14,7 @@ class DialogInputPincode( BaseDialog ) :
 	E_TUNE_PREV_CHANNEL		= 2
 	E_SHOW_EPG_WINDOW       = 3
 	E_SHOW_ARCHIVE_WINDOW   = 4
+	E_TUNE_TVRADIO_TOGGLE   = 5
 
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
@@ -107,6 +108,16 @@ class DialogInputPincode( BaseDialog ) :
 				self.mNextAction = self.E_SHOW_ARCHIVE_WINDOW
 				self.Close( )
 				self.CloseDialog( )
+
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				LOG_TRACE( 'Try again after stopping all your recordings first' )
+			else :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+					self.mNextAction = self.E_TUNE_TVRADIO_TOGGLE
+					self.Close( )
+					self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :

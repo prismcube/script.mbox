@@ -115,6 +115,9 @@
 "Configure the general settings for your digital satellite receiver",,,,,,,,,,116
 "Setup Smartcard or CI-Module configuration for watching pay channels",,,,,,,,,,117
 "Get the latest updates on your PRISMCUBE RUBY",,,,,,,,,,118
+"TV Channels",,,,,,,,,,117
+"Radio Channels",,,,,,,,,,118
+"Search Results",,,,,,,,,,119
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "1080p-50",,,,,,,,,,2003
@@ -1068,3 +1071,7 @@
 "North",,,,,,,,,,3653
 "South",,,,,,,,,,3654
 "Go to the channel search setup page",,,,,,,,,,3655
+"time value is not valid",,,,,,,,,,3656
+"Make sure your antenna is properly set up",,,,,,,,,,3657
+"To receive a strong satellite signal,\n add satellites and set LNB parameters correctly",,,,,,,,,,3658
+"Invalid input",,,,,,,,,,3659

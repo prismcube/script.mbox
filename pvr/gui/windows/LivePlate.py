@@ -213,7 +213,7 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
-			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.RestartAutomaticHide( )
@@ -269,7 +269,8 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+			self.StopAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif actionId == Action.ACTION_STOP :
 			status = None
@@ -277,7 +278,8 @@ class LivePlate( LivePlateWindow ) :
 			if status and status.mError == 0 and status.mMode :
 				ret = self.mDataCache.Player_Stop( )
 			else :
-				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
+				self.StopAutomaticHide( )
+				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
@@ -321,7 +323,7 @@ class LivePlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )

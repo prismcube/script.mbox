@@ -140,9 +140,6 @@ class SystemInfo( SettingWindow ) :
 			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SYSTEM_INFO_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
 				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )

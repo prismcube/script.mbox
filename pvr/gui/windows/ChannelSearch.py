@@ -73,9 +73,6 @@ class ChannelSearch( SettingWindow ) :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
 

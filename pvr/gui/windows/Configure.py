@@ -146,7 +146,7 @@ class Configure( SettingWindow ) :
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
-	def onAction( self, aAction ) :		
+	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return
 	
@@ -158,9 +158,6 @@ class Configure( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_CONFIGURE_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
@@ -999,7 +996,7 @@ class Configure( SettingWindow ) :
 					globalEvent.SendLocalOffsetToXBMC( )
 				except Exception, e :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'time value is not valid' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid input' ) )
 					dialog.doModal( )
 				self.CloseBusyDialog( )
 			
@@ -1010,6 +1007,13 @@ class Configure( SettingWindow ) :
 
 			if mute == False :
 				self.mCommander.Player_SetMute( False )
+
+			self.SyncVolume( )
+
+
+	def SyncVolume( self ) :
+		if XBMC_GetMute :
+			self.mCommander.Player_SetMute( True )
 
 
 	def LoadSavedTime( self ) :
