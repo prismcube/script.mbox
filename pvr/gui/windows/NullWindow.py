@@ -242,6 +242,11 @@ class NullWindow( BaseWindow ) :
 					if move :
 						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			if not E_SUPPORT_SINGLE_WINDOW_MODE :
+				self.GetFocusId( )
+				self.onClick( self.mFocusId )
+
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
