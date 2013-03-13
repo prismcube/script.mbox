@@ -137,15 +137,7 @@ class GlobalEvent( object ) :
 				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).GetLastWindowID( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
-				self.mDataCache.Player_Stop( )
-			self.mDataCache.Channel_GetInitialBlank( )
-			self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
-				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
-			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+			self.ChannelChangedByRecord( aEvent )
 
 		elif aEvent.getName( ) == ElisEventShutdown.getName( ) :
 			#LOG_TRACE('-----------shutdown[%s] blank[%s]'% ( aEvent.mType, self.mDataCache.Channel_GetInitialBlank( ) ) )
@@ -279,6 +271,12 @@ class GlobalEvent( object ) :
 						#self.ShowPincodeDialog( )
 						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
 						thread.start( )
+
+				else :
+					if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
+						self.mDataCache.Player_AVBlank( False )
+						self.mDataCache.LoadVolumeBySetGUI( )
+
 			else :
 				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
 					self.mDataCache.Player_AVBlank( False )
@@ -405,3 +403,30 @@ class GlobalEvent( object ) :
 		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) )
 		self.mDialogCasClose.SetAutoCloseTime( 5 )
 		self.mDialogCasClose.doModal( )
+
+
+	def ChannelChangedByRecord( self, aEvent ) :
+		if not aEvent :
+			LOG_TRACE('no event data')
+			return
+
+		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
+			self.mDataCache.Player_Stop( )
+
+		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if zappingMode and zappingMode.mServiceType != aEvent.mServiceType :
+			zappingMode.mServiceType = aEvent.mServiceType
+			self.mDataCache.Zappingmode_SetCurrent( zappingMode )
+			self.mDataCache.LoadZappingmode( )
+			self.mDataCache.LoadZappingList( )
+			self.mDataCache.LoadChannelList( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetRadioScreen( )
+
+		self.mDataCache.Player_AVBlank( True )
+		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
+			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+		#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
+		LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+
