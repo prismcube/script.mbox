@@ -894,16 +894,20 @@ class EPGWindow( BaseWindow ) :
 
 		if HasAvailableRecordingHDD( ) == False :
 			return
-			
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
-		dialog.SetEPG( aEPG )
-		dialog.doModal( )
+
+		try :		
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
+			dialog.SetEPG( aEPG )
+			dialog.doModal( )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 		try :
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				ret = self.mDataCache.Timer_AddEPGTimer( True, 0, aEPG )
 				LOG_ERR( 'Conflict ret=%s' %ret )
-				if ret[0].mParam == -1 or ret[0].mError == -1 :
+				if ret and (ret[0].mParam == -1 or ret[0].mError == -1) :
 					RecordConflict( ret )
 					return
 

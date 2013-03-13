@@ -1654,7 +1654,11 @@ class DataCacheMgr( object ) :
 
 	def Timer_EditRunningTimer( self, aTimerId, aNewEndTime) :
 		return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
-	
+
+
+	def Timer_EditManualTimer(self , aTimerId, aNewStartTime, aNewDuration ) :
+		return self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration )	
+
 
 	def Timer_GetById( self, aTimderId ) :
 		if SUPPORT_TIMER_DATABASE == True :
