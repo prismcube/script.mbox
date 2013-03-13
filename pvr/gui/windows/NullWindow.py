@@ -41,6 +41,8 @@ class NullWindow( BaseWindow ) :
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetBlinkingProperty( 'None' )		
+
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_LIVE :
@@ -303,6 +305,8 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.CloseSubTitle( )
 				if RECORD_WIDTHOUT_ASKING == True :
+					if self.GetBlinkingProperty( ) != 'None' :
+						return
 					self.StartRecordingWithoutAsking( )				
 				else :
 					self.ShowRecordingStartDialog( )
@@ -453,8 +457,9 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 
-				self.StopBlickingIconTimer( )
-				self.setProperty( 'RecordBlinkingIcon', 'False' )
+				if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) :
+					self.StopBlickingIconTimer( )
+					self.SetBlinkingProperty( 'None' )
 
 				self.mDataCache.SetChannelReloadStatus( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
@@ -624,7 +629,7 @@ class NullWindow( BaseWindow ) :
 			dialog.doModal( )
 
 		if isOK :
-			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.SetBlinkingProperty( 'True' )
 			self.mEnableBlickingTimer = True
 			self.StartBlickingIconTimer( )
 			
@@ -640,7 +645,7 @@ class NullWindow( BaseWindow ) :
 	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
-		self.mRecordBlinkingTimer .start( )
+		self.mRecordBlinkingTimer.start( )
 	
 
 	def StopBlickingIconTimer( self ) :
@@ -655,14 +660,14 @@ class NullWindow( BaseWindow ) :
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
 		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
-			self.setProperty( 'RecordBlinkingIcon', 'False' )		
+			self.SetBlinkingProperty( 'None' )		
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
-		if self.getProperty( 'RecordBlinkingIcon' ) == 'True' :
-			self.setProperty( 'RecordBlinkingIcon', 'False' )
+		if self.GetBlinkingProperty( ) == 'True' :
+			self.SetBlinkingProperty( 'False' )
 		else :
-			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.SetBlinkingProperty( 'True' )
 
 		self.RestartBlickingIconTimer( )
 
@@ -720,7 +725,7 @@ class NullWindow( BaseWindow ) :
 		self.CloseSubTitle( )
 
 		self.StopBlickingIconTimer( )
-		self.setProperty( 'RecordBlinkingIcon', 'False' )		
+		self.SetBlinkingProperty( 'None' )		
 
 		
 		if E_SUPPROT_HBBTV == True :
@@ -914,4 +919,15 @@ class NullWindow( BaseWindow ) :
 		self.EventReceivedDialog( dialog )
 
 		self.mIsShowDialog = False
+
+
+	def SetBlinkingProperty( self, aValue ) :
+		rootWinow = xbmcgui.Window( 10000 )
+		rootWinow.setProperty( 'RecordBlinkingIcon', aValue )
+
+
+	def GetBlinkingProperty( self ) :
+		rootWinow = xbmcgui.Window( 10000 )
+		return rootWinow.getProperty( 'RecordBlinkingIcon' )
+	
 

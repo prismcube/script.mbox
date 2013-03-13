@@ -84,6 +84,8 @@ class LivePlate( LivePlateWindow ) :
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
+		self.SetBlinkingProperty( 'None' )
+
 		self.SetSingleWindowPosition( E_LIVE_PLATE_BASE_ID )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
@@ -421,9 +423,11 @@ class LivePlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.StopBlickingIconTimer( )
-				self.setProperty( 'RecordBlinkingIcon', 'False' )
-				 
+
+				if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) :
+					self.StopBlickingIconTimer( )
+					self.SetBlinkingProperty( 'None' )
+
  				self.ShowRecordingInfo( )
 				self.RestartAutomaticHide( ) 				
 
@@ -923,6 +927,9 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			if RECORD_WIDTHOUT_ASKING == True :
+				if self.GetBlinkingProperty( ) != 'None' :
+					return
+			
 				self.StartRecordingWithoutAsking( )
 			else :
 				self.ShowRecordingStartDialog( )
@@ -1029,7 +1036,7 @@ class LivePlate( LivePlateWindow ) :
 			LOG_TRACE( 'STOP automatic hide' )
 			self.StopAutomaticHide( )
 
-			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.SetBlinkingProperty( 'True' )
 			self.mEnableBlickingTimer = True			
 			self.StartBlickingIconTimer( )
 			
@@ -1045,7 +1052,7 @@ class LivePlate( LivePlateWindow ) :
 	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
-		self.mRecordBlinkingTimer .start( )
+		self.mRecordBlinkingTimer.start( )
 	
 
 	def StopBlickingIconTimer( self ) :
@@ -1060,14 +1067,14 @@ class LivePlate( LivePlateWindow ) :
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
 		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
-			self.setProperty( 'RecordBlinkingIcon', 'False' )
+			self.SetBlinkingProperty( 'None' )		
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
-		if self.getProperty( 'RecordBlinkingIcon' ) == 'True' :
-			self.setProperty( 'RecordBlinkingIcon', 'False' )
+		if self.GetBlinkingProperty( ) == 'True' :
+			self.SetBlinkingProperty( 'False' )
 		else :
-			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.SetBlinkingProperty( 'True' )
 
 		self.RestartBlickingIconTimer( )
 
@@ -1169,6 +1176,7 @@ class LivePlate( LivePlateWindow ) :
  	def ShowRecordingInfo( self ) :
  		LOG_TRACE( '---------ShowRecInfo------' )
 		try:
+			runningRecordCount = 0
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			isRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
 
@@ -1219,7 +1227,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = False
 
 		self.StopBlickingIconTimer( )
-		self.setProperty( 'RecordBlinkingIcon', 'False' )		
+		self.SetBlinkingProperty( 'None' )
 
 		self.StopAsyncTune( )
 		self.StopAutomaticHide( )
@@ -1388,3 +1396,12 @@ class LivePlate( LivePlateWindow ) :
 		self.mDataCache.SetPincodeDialog( False )
 
 
+	def SetBlinkingProperty( self, aValue ) :
+		rootWinow = xbmcgui.Window( 10000 )
+		rootWinow.setProperty( 'RecordBlinkingIcon', aValue )
+
+
+	def GetBlinkingProperty( self ) :
+		rootWinow = xbmcgui.Window( 10000 )
+		return rootWinow.getProperty( 'RecordBlinkingIcon' )
+	
