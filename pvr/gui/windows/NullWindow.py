@@ -20,9 +20,11 @@ class NullWindow( BaseWindow ) :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			self.mSubTitleIsShow = False
 			self.mIsShowDialog = False
+			self.mEnableBlickingTimer = False			
 
 
 	def onInit( self ) :
+		self.mEnableBlickingTimer = False				
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
 		collected = gc.collect()
@@ -358,6 +360,17 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'Numlock is not support until now' )
 			pass
 
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				self.mDataCache.Player_CreateBookmark( )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.DialogPopupOK( actionId )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.DialogPopupOK( actionId )
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -449,15 +462,6 @@ class NullWindow( BaseWindow ) :
 			#elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			#	xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
-			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
-				if E_SUPPROT_HBBTV :
-					LOG_TRACE('----------HBB Tv Ready')
-					self.mCommander.AppHBBTV_Ready( 0 )
-					self.mHBBTVReady = False
-
-				self.mDataCache.Teletext_NotifyHide( )
-				self.mDataCache.LoadVolumeToSetGUI( )
-				LOG_TRACE( '----------ElisEventTTXClosed' )
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
@@ -539,20 +543,16 @@ class NullWindow( BaseWindow ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-		isOK = True
+		isOK = False
 
 		if mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
-			isOK = dialog.IsOK( )
-			if isOK != E_DIALOG_STATE_YES :
-				isOK = False
-
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
-			return				
+			return
 
 		elif runningCount < 2 :
 			copyTimeshift = 0
@@ -591,7 +591,7 @@ class NullWindow( BaseWindow ) :
 				copyTimeshift = 0
 
 			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
-			expectedDuration = otrInfo.mEventEndTime - localTime
+			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
 
 			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
@@ -605,7 +605,17 @@ class NullWindow( BaseWindow ) :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
-				RecordConflict( ret )
+				#RecordConflict( ret )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+					RecordConflict( dialog.GetConflictTimer( ) )
+
+			else :
+				isOK = True
+
+
 
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
@@ -615,6 +625,7 @@ class NullWindow( BaseWindow ) :
 
 		if isOK :
 			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.mEnableBlickingTimer = True
 			self.StartBlickingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
@@ -643,7 +654,8 @@ class NullWindow( BaseWindow ) :
 
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mRecordBlinkingTimer == None :
+		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
+			self.setProperty( 'RecordBlinkingIcon', 'False' )		
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
@@ -702,6 +714,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		self.mEnableBlickingTimer = False	
 		self.mEventBus.Deregister( self )
 
 		self.CloseSubTitle( )
@@ -875,6 +888,19 @@ class NullWindow( BaseWindow ) :
 		elif aAction == Action.ACTION_MBOX_TVRADIO :
 			head = MR_LANG( 'Error' )
 			msg = MR_LANG( 'No channels available for the selected mode' )
+
+		elif aAction == Action.ACTION_COLOR_YELLOW :
+			self.CloseSubTitle( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			self.CheckSubTitle( )
+			self.mIsShowDialog = False
+			return
+		elif aAction == Action.ACTION_COLOR_BLUE :
+			self.CloseSubTitle( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.CheckSubTitle( )
+			self.mIsShowDialog = False
+			return
 
 		self.CloseSubTitle( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( dialogId )

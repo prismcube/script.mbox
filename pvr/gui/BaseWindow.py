@@ -409,12 +409,15 @@ class BaseWindow( BaseObjectWindow ) :
 	def SetMediaCenter( self ) :
 		self.mDataCache.SetMediaCenter( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
+		#by doliyu for manual service start.
+		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
 
 
 	def CheckMediaCenter( self ) :
 		if self.mDataCache.GetMediaCenter( ) == True :
 			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 			self.mCommander.AppMediaPlayer_Control( 0 )
+			xbmc.executebuiltin("Custom.StartStopService(Stop)", False)
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :

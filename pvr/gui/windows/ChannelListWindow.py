@@ -893,6 +893,7 @@ class ChannelListWindow( BaseWindow ) :
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mUserSlidePos.mMain == idxMain and \
 				   self.mUserSlidePos.mSub == idxSub :
+				#if self.mUserMode.mMode == idxMain :
 					LOG_TRACE( 'already selected!!!' )
 					return
 
@@ -2001,6 +2002,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( 'Error except[%s]'% e )
 
 			self.CloseBusyDialog( )
+			self.UpdateControlGUI( E_SLIDE_CLOSE )
 			#LOG_TRACE ( '========= move End ===' )
 
 		elif aMode == FLAG_OPT_MOVE_EXIT :

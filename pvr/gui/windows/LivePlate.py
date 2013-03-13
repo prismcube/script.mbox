@@ -70,12 +70,14 @@ class LivePlate( LivePlateWindow ) :
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
 		self.mEnableLocalThread = False
+		self.mEnableBlickingTimer = False		
 
 		self.test_count = 0
 		self.test_load = []
 
 
 	def onInit( self ) :
+		self.mEnableBlickingTimer = False
 		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
@@ -121,6 +123,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mAutomaticHideTimer = None
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
+		self.mIsShowDialog = False
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -192,11 +195,23 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_MUTE :
+				self.GlobalAction( Action.ACTION_MUTE  )
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :
+				self.EPGNavigation( PREV_EPG )
+
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG :
+				self.EPGNavigation( NEXT_EPG )
+
+			else :
+				self.DialogPopup( self.mFocusId )
+
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
-			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.RestartAutomaticHide( )
@@ -252,7 +267,8 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+			self.StopAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif actionId == Action.ACTION_STOP :
 			status = None
@@ -260,7 +276,8 @@ class LivePlate( LivePlateWindow ) :
 			if status and status.mError == 0 and status.mMode :
 				ret = self.mDataCache.Player_Stop( )
 			else :
-				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
+				self.StopAutomaticHide( )
+				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
@@ -301,10 +318,10 @@ class LivePlate( LivePlateWindow ) :
 					dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.onClick( E_CONTROL_ID_BUTTON_SUBTITLE )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
@@ -320,51 +337,6 @@ class LivePlate( LivePlateWindow ) :
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
-		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.GlobalAction( Action.ACTION_MUTE  )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.EPGNavigation( PREV_EPG )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_NEXT_EPG :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.EPGNavigation( NEXT_EPG )
 
 
 	def onFocus(self, aControlId):
@@ -904,13 +876,24 @@ class LivePlate( LivePlateWindow ) :
 		self.setProperty( aPropertyID, aValue )
 
 
+	def DialogPopup( self, aAction ) :
+		if self.mIsShowDialog == False :
+			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
+			thread.start( )
+		else :
+			LOG_TRACE( 'Already opened, Dialog' )
+
+
 	def ShowDialog( self, aFocusId, aVisible = False ) :
+		self.mIsShowDialog = True
+
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
+				self.mIsShowDialog = False
 				return
 
 			if not self.mDataCache.Teletext_Show( ) :
@@ -918,6 +901,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
+				self.mIsShowDialog = False
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
@@ -928,6 +912,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
+				self.mIsShowDialog = False
 				return
 
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
@@ -951,6 +936,7 @@ class LivePlate( LivePlateWindow ) :
 			self.ShowAudioVideoContext( )
 
 		self.RestartAutomaticHide( )
+		self.mIsShowDialog = False
 
 
 	def StartRecordingWithoutAsking( self ) :
@@ -960,16 +946,14 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-		isOK = True
+		isOK = False
 
 		if mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
 			isOK = dialog.IsOK( )
-			if isOK != E_DIALOG_STATE_YES :
-				isOK = False
-			else :
+			if isOK == E_DIALOG_STATE_YES :
 				self.ShowRecordingInfo( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
@@ -1013,7 +997,7 @@ class LivePlate( LivePlateWindow ) :
 				copyTimeshift = 0
 
 			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
-			expectedDuration = otrInfo.mEventEndTime - localTime
+			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
 
 			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
@@ -1027,7 +1011,15 @@ class LivePlate( LivePlateWindow ) :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
-				RecordConflict( ret )
+				#RecordConflict( ret )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+					RecordConflict( dialog.GetConflictTimer( ) )
+
+			else :
+				isOK = True
 
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
@@ -1040,6 +1032,7 @@ class LivePlate( LivePlateWindow ) :
 			self.StopAutomaticHide( )
 
 			self.setProperty( 'RecordBlinkingIcon', 'True' )
+			self.mEnableBlickingTimer = True			
 			self.StartBlickingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
@@ -1068,7 +1061,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def AsyncBlinkingIcon( self ) :	
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mRecordBlinkingTimer == None :
+		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
+			self.setProperty( 'RecordBlinkingIcon', 'False' )
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
@@ -1221,6 +1215,7 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def Close( self ) :
+		self.mEnableBlickingTimer = False	
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False

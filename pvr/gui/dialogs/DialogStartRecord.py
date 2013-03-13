@@ -383,13 +383,12 @@ class DialogStartRecord( SettingDialog ) :
 					endTime = tmpEndTime * 60
 
 					LOG_TRACE( 'NEW END TIME : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
-					if self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime ) == True :
-						self.mIsOk = E_DIALOG_STATE_YES
+					ret =  self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
+					if ret[0].mParam == -1 or ret[0].mError == -1 :
+						self.mConflictTimer = ret
+						self.mIsOk = E_DIALOG_STATE_ERROR
 					else :
-						msg = MR_LANG( 'Unable to change the duration' )
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG('Error'), msg )
-						dialog.doModal( )
+						self.mIsOk = E_DIALOG_STATE_YES					
 
 			else :
 				copyTimeshift = 0

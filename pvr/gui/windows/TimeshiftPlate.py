@@ -390,7 +390,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_COLOR_BLUE :
+		elif actionId == Action.ACTION_COLOR_GREEN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.StopAutomaticHide( )
 				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
@@ -495,7 +495,17 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitPreviousAction( self ) :
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_FALSE )
+		visible = E_TAG_FALSE
+		if self.mMode == ElisEnum.E_MODE_PVR : 
+			visible = E_TAG_TRUE
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
+
 		if self.mPrekey :
+			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
@@ -514,36 +524,27 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+				self.InitTimeShift( )
 
-				limitLoop = 0
-				while self.mSpeed != 100 or self.mMode == ElisEnum.E_MODE_LIVE :
-					time.sleep( 0.5 )
-					limitLoop += 1
-					oldCurrent = self.mTimeshift_curTime
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
-
-					waitAction = 0
-					while oldCurrent == self.mTimeshift_curTime :
-						#wait to async play
-						time.sleep( 0.5 )
-						waitAction += 1
-						#LOG_TRACE( '----------play wait[%s] oldCurrent[%s] nowCurrent[%s]'% ( waitAction, oldCurrent, self.mTimeshift_curTime ) )
-						if waitAction > 20 :
-							break
-
-					#LOG_TRACE('-----------play again[%s]'% limitLoop )
-					if limitLoop > 20 :
-						break
-
-				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
-
-				self.mUserMoveTime = 1
-				if self.mPrekey == Action.ACTION_MOVE_LEFT :
-					self.mUserMoveTime = -1
-
-				self.mFlagUserMove = True
+				self.mUserMoveTime = -1
+				#self.mFlagUserMove = True
 				self.StopAutomaticHide( )
-				self.RestartAsyncMove( )
+				self.StartAsyncMoveByTime( True )
+
+				"""
+				self.mUserMoveTime = -1
+				self.mFlagUserMove = True
+				#userMovingMs = self.JumpToTrack( E_CONTROL_ID_BUTTON_JUMP_RR )
+				userMovingMs = self.mTimeshift_curTime - 10 * 1000
+				LOG_TRACE( 'start[%s] cur[%s] end[%s] move[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime, userMovingMs ) )
+
+				if userMovingMs < self.mTimeshift_staTime :
+					userMovingMs = self.mTimeshift_staTime + 1000
+
+				self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
+				self.mDataCache.Player_JumpTo( userMovingMs )
+				self.mFlagUserMove = False
+				"""
 
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
@@ -564,13 +565,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GetNextSpeed( E_ONINIT )
 			self.ShowStatusByButton( status )
 
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_FALSE )
-		visible = E_TAG_FALSE
-		if self.mMode == ElisEnum.E_MODE_PVR : 
-			visible = E_TAG_TRUE
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   visible )
 
 		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
 
@@ -1651,7 +1645,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.StartAsyncMoveByTime( )
 
 
-	def StartAsyncMoveByMark( self, aMoveTrack ) :
+	def StartAsyncMoveByMark( self, aMoveTrack, aStartOnLeft = False ) :
 		if aMoveTrack != E_CONTROL_ID_BUTTON_JUMP_FF and aMoveTrack != E_CONTROL_ID_BUTTON_JUMP_RR :
 			return
 
@@ -1687,11 +1681,11 @@ class TimeShiftPlate( BaseWindow ) :
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
-		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove )
+		self.mAsyncShiftTimer = threading.Timer( 1, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
 
-	def StartAsyncMoveByTime( self ) :
+	def StartAsyncMoveByTime( self, aStartOnLeft = False ) :
 		self.mFlagUserMove = True
 
 		self.mAccelator += self.mUserMoveTime
@@ -1766,7 +1760,8 @@ class TimeShiftPlate( BaseWindow ) :
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
-		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove )
+
+		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
 
@@ -1778,11 +1773,14 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer  = None
 
 
-	def AsyncUpdateCurrentMove( self ) :
+	def AsyncUpdateCurrentMove( self, aStartOnLeft = False ) :
 		self.SetActivate( False )
 		try :
 			if self.mFlagUserMove :
-				ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
+				if aStartOnLeft :
+					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
+				else :
+					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
 				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% ( frameJump, self.mAccelator, ( self.mUserMoveTime / 10000 ), ret ) )
 				self.InitTimeShift( )
 				self.mFlagUserMove = False

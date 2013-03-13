@@ -220,21 +220,21 @@
 						</control>
 					</control>
 					<control type="group">
-						<width>30</width>
+						<width>90</width>
 						<height>30</height>
 						<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
 						<control type="image">
-							<width>30</width>
+							<width>90</width>
 							<height>30</height>
 							<texture>settings-button-nofocus-green.png</texture>
 						</control>
 						<control type="label">
 							<posx>3</posx>
 							<posy>0</posy>
-							<width>30</width>
+							<width>80</width>
 							<height>30</height>
-							<font>Font_Reg10</font>
-							<label>LIST</label>
+							<font>Font_Reg12</font>
+							<label>BOOKMARK</label>
 						</control>
 					</control>
 					<control type="group">
@@ -262,7 +262,7 @@
 							<width>30</width>
 							<height>30</height>
 							<font>Font_Reg12</font>
-							<label>BM+</label>
+							<label></label>
 						</control>
 					</control>
 				</control>

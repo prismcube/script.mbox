@@ -498,13 +498,14 @@ def CheckHdd( ) :
 		return False
 	
 	cmd = 'df'
-	if sys.version_info < (2, 7):	
+	if sys.version_info < ( 2, 7 ) :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		parsing = p.stdout.read( ).strip( )
 		p.stdout.close( )
 	else :
 		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
-		(parsing, err ) = p.communicate( )
+		( parsing, err ) = p.communicate( )
+		parsing = parsing.strip( )
 	
 	if parsing.count( '/dev/sda' ) >= 3 :
 		return True
@@ -527,13 +528,14 @@ def CheckEthernet( aEthName ) :
 	status = 'down'
 	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
 	try :
-		if sys.version_info < (2, 7):		
+		if sys.version_info < ( 2, 7 ) :
 			p = Popen( cmd, shell=True, stdout=PIPE )
 			status = p.stdout.read( ).strip( )
 			p.stdout.close( )
 		else :
 			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
-			(status, err ) = p.communicate( )			
+			( status, err ) = p.communicate( )
+			status = status.strip( )
 		
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
@@ -552,13 +554,14 @@ def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 		return isVerify
 
 	try :
-		if sys.version_info < (2, 7):			
+		if sys.version_info < ( 2, 7 ) :			
 			p = Popen( cmd, shell=True, stdout=PIPE )
 			readMd5 = p.stdout.read( ).strip( )
 			p.stdout.close( )
 		else :
 			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
-			(readMd5, err ) = p.communicate( )			
+			( readMd5, err ) = p.communicate( )
+			readMd5 = readMd5.strip( )
 
 		
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
@@ -700,14 +703,15 @@ def GetCurrentVersion( ) :
 	parse = ['Version', 'Date']
 	retInfo = []
 	for ele in parse :
-		cmd = 'cat /etc/release.info | awk -F= \'/%s/ {print $2}\''% ele
-		if sys.version_info < (2, 7):					
+		cmd = 'cat /etc/release.info | awk -F= \'/%s/ {print $2}\'' % ele
+		if sys.version_info < ( 2, 7 ) :
 			p = Popen( cmd, shell=True, stdout=PIPE )
-			ret = p.stdout.read().strip()
-			p.stdout.close()
+			ret = p.stdout.read( ).strip( )
+			p.stdout.close( )
 		else :
 			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
-			(ret, err ) = p.communicate( )			
+			( ret, err ) = p.communicate( )
+			ret = ret.strip( )
 		
 		retInfo.append( ret )
 		#print 'ret[%s]'% ret

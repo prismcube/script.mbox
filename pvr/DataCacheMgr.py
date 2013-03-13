@@ -904,7 +904,7 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel = None
 
 		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
-		if aFrontMessage == True :		
+		if aFrontMessage == True :
 			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
@@ -1507,6 +1507,10 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Player_JumpTo( self, aMiliSec ) :
+		return self.mCommander.Player_JumpTo( aMiliSec )
+
+
 	def Player_JumpToIFrame( self, aMiliSec ) :
 		return self.mCommander.Player_JumpToIFrame( aMiliSec )
 
@@ -1650,7 +1654,11 @@ class DataCacheMgr( object ) :
 
 	def Timer_EditRunningTimer( self, aTimerId, aNewEndTime) :
 		return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
-	
+
+
+	def Timer_EditManualTimer(self , aTimerId, aNewStartTime, aNewDuration ) :
+		return self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration )	
+
 
 	def Timer_GetById( self, aTimderId ) :
 		if SUPPORT_TIMER_DATABASE == True :
