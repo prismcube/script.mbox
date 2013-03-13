@@ -180,7 +180,10 @@ class DialogInputPincode( BaseDialog ) :
 				if savedPincode == int( self.mInputNumber ) :
 					self.mIsOk = E_DIALOG_STATE_YES
 					self.Close( )
-					xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+					if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
+					self.Close( )
+					self.CloseDialog( )
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					
@@ -230,6 +233,9 @@ class DialogInputPincode( BaseDialog ) :
 			LOG_TRACE( '---------------------Checked self : parentLock False, Close dialog' )
 			self.mCheckStatus = False
 			self.mIsValidateThread = None
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
+			self.Close( )
+			self.CloseDialog( )
 
 

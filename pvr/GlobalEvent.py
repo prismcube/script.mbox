@@ -377,7 +377,7 @@ class GlobalEvent( object ) :
 	def ShowInitCamDialog( self ) :
 		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) )
-		self.mDialogShowInit.SetAutoCloseTime( 5 )
+		self.mDialogShowInit.SetAutoCloseTime( 3 )
 		self.mDialogShowInit.doModal( )
 
 
@@ -404,7 +404,7 @@ class GlobalEvent( object ) :
 	def ShowRemovedCamDialog( self ) :
 		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) )
-		self.mDialogCasClose.SetAutoCloseTime( 5 )
+		self.mDialogCasClose.SetAutoCloseTime( 3 )
 		self.mDialogCasClose.doModal( )
 
 

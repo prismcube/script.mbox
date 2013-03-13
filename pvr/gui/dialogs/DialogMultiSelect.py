@@ -60,13 +60,13 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
 			self.SetMarkupGUI( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 
 	def onFocus( self, aControlId ) :
