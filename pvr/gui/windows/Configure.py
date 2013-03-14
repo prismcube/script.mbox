@@ -337,6 +337,7 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mCommander.Player_SetMute( True )
 				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
@@ -357,6 +358,7 @@ class Configure( SettingWindow ) :
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
+				self.SetDefaultVolume( )
 				self.CloseProgress( )
 				self.mDataCache.Channel_TuneDefault( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
@@ -1014,6 +1016,16 @@ class Configure( SettingWindow ) :
 	def SyncVolume( self ) :
 		if XBMC_GetMute :
 			self.mCommander.Player_SetMute( True )
+
+
+	def SetDefaultVolume( self ) :
+		#volume : 75db
+		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
+		self.mCommander.Player_SetMute( False )
+		if XBMC_GetMute( ) :
+			xbmc.executebuiltin( 'Mute( )' )
+		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
+		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
 
 
 	def LoadSavedTime( self ) :
