@@ -1133,16 +1133,19 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeP = ''
 
 			#calculate current position
-			totTime = self.mTimeshift_endTime - self.mTimeshift_staTime
+			playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
 			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
+			#curTime = self.mTimeshift_curTime + aUserMoving
 			if aMoveBy == E_MOVE_BY_MARK :
 				curTime = self.mTimeshift_staTime + aUserMoving
+			if curTime < self.mTimeshift_staTime :
+				curTime = self.mTimeshift_staTime
 
-			if totTime > 0 and curTime >= 0 :
-				self.mProgress_idx = (curTime / float(totTime))  * 100.0
+			if playSize > 0 and curTime >= 0 :
+				self.mProgress_idx = (curTime / float(playSize))  * 100.0
 
-				#LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
-				#LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_curTime, self.mProgress_idx, self.mTimeshift_endTime ) )
+				#LOG_TRACE( 'curTime2[%s] curTime[%s] playSize[%s] idx[%s]'% ( curTime2,curTime,playSize,self.mProgress_idx ) )
+				#LOG_TRACE( 'staTime[%s] curTime[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
 					self.mProgress_idx = 100
