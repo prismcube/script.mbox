@@ -3,7 +3,9 @@ import sys, inspect, time, threading
 import gc
 
 
-E_NULL_WINDOW_BASE_ID				=  WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_NULL_WINDOW_BASE_ID				= WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_BUTTON_ID_FAKE					= E_NULL_WINDOW_BASE_ID + 9000
+
 E_NOMAL_BLINKING_TIME		= 0.2
 
 
@@ -26,8 +28,9 @@ class NullWindow( BaseWindow ) :
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False				
 		self.SetActivate( True )
+		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
-		collected = gc.collect()
+		collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
@@ -242,11 +245,6 @@ class NullWindow( BaseWindow ) :
 					if move :
 						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			if not E_SUPPORT_SINGLE_WINDOW_MODE :
-				self.GetFocusId( )
-				self.onClick( self.mFocusId )
-
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
@@ -419,7 +417,7 @@ class NullWindow( BaseWindow ) :
 		"""
 
 
-	def onClick(self, aControlId) :
+	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
 
@@ -431,7 +429,7 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
-	def onFocus(self, aControlId) :
+	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
 	
@@ -439,7 +437,7 @@ class NullWindow( BaseWindow ) :
 		#self.mLastFocusId = aControlId
 
 
-	def onEvent(self, aEvent):
+	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
