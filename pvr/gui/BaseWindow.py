@@ -337,8 +337,8 @@ class BaseWindow( BaseObjectWindow ) :
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
 					mute = False
-				if XBMC_GetMute( ) != mute :
-					mute = True
+				#if XBMC_GetMute( ) != mute :
+				#	mute = True
 				self.mCommander.Player_SetMute( mute )
 
 				#if XBMC_GetMute( ) != mute :

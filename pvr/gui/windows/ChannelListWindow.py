@@ -1772,7 +1772,6 @@ class ChannelListWindow( BaseWindow ) :
 		#update epgName uiID(304)
 		if self.mNavEpg :
 			try :
-
 				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				label = '%s - %s'% (startTime, endTime)
@@ -1781,13 +1780,11 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlProgress.setVisible( True )
 
 				#component
-				setPropertyList = []
-				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
 				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )

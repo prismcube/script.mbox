@@ -111,15 +111,18 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'False' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 			else :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeResult( ).getName( ) :

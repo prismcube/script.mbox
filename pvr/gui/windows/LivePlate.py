@@ -742,13 +742,11 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
 				#component
-				setPropertyList = []
-				setPropertyList = GetPropertyByEPGComponent( aEpg )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
 				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
