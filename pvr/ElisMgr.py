@@ -1,5 +1,7 @@
 import datetime
+import os
 import socket
+from SocketServer import *
 import time
 from pvr.Util import RunThread
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -12,7 +14,7 @@ from ElisEnum import ElisEnum
 import pvr.NetConfig as NetConfig
 import threading
 import select
-
+import pvr.Platform
 
 gElisMgr = None
 
@@ -59,11 +61,21 @@ class ElisMgr( object ) :
 	def __init__( self ) :
 		self.mShutdowning = False
 		self.mEventBus = ElisEventBus( )
-		LOG_TRACE( 'check test netconfig.receiverPort = %d' % NetConfig.receiverPort )		
-		self.mReceiver = ElisEventRecevier( ( '', NetConfig.receiverPort ), ElisEventHandler )
-		LOG_TRACE( 'check test netconfig.targetIp = %s netconfig.commanderPort = %d' % ( NetConfig.targetIp, NetConfig.commanderPort ) )
-		self.mCommander = ElisCommander( ( NetConfig.targetIp, NetConfig.commanderPort ) )
-		
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+			if os.path.exists( NetConfig.UDS_EVENT_ADDRESS ) :
+				os.unlink( NetConfig.UDS_EVENT_ADDRESS )
+			LOG_TRACE( 'check test server address = %s' %NetConfig.UDS_EVENT_ADDRESS )		
+			self.mReceiver = ThreadingUnixStreamServer( NetConfig.UDS_EVENT_ADDRESS, ElisEventHandler )
+			#self.mReceiver = ThreadingUnixStreamServer( NetConfig.UDS_COMMAND_ADDRESS, ElisEventHandler )
+			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )
+			self.mCommander = ElisCommander( NetConfig.UDS_COMMAND_ADDRESS, True )
+
+		else :
+			LOG_TRACE( 'check test netconfig.receiverPort = %d' % NetConfig.receiverPort )		
+			self.mReceiver = ThreadingTCPServer( ( '', NetConfig.receiverPort ), ElisEventHandler )
+			LOG_TRACE( 'check test netconfig.targetIp = %s netconfig.commanderPort = %d' % ( NetConfig.targetIp, NetConfig.commanderPort ) )
+			self.mCommander = ElisCommander( ( NetConfig.targetIp, NetConfig.commanderPort ) )
+
 
 	def GetCommander( self ) :
 		return self.mCommander
