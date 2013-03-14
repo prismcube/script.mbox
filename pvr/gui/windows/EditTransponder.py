@@ -15,8 +15,6 @@ class EditTransponder( SettingWindow ) :
 		self.mBand					= 0
 		self.mIsStartedScanHelper	= False
 		self.mAvBlankStatus			= False
-		self.mNetworkSearch			= 1
-		self.mSearchMode			= 0
 
 			
 	def onInit( self ) :
@@ -43,10 +41,6 @@ class EditTransponder( SettingWindow ) :
 			else :
 				WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			self.mNetworkSearch = ElisPropertyEnum( 'Network Search', self.mCommander ).GetProp( )
-			self.mSearchMode = ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).GetProp( )
-			ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( 1 )
-			ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 			self.mEventBus.Register( self )
 			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( True )
@@ -68,8 +62,6 @@ class EditTransponder( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
-			ElisPropertyEnum( 'Network Search', self.mCommander ).SetProp( self.mNetworkSearch )
-			ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( self.mSearchMode )
 			self.ResetAllControl( )
 			self.mEventBus.Deregister( self )
 			self.mIsStartedScanHelper = False
@@ -78,12 +70,6 @@ class EditTransponder( SettingWindow ) :
 			self.SetVideoRestore( )
 			self.RestoreAvBlank( )
 			WinMgr.GetInstance( ).CloseWindow( )
-
-		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
 			
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -262,6 +248,9 @@ class EditTransponder( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info available' ), MR_LANG( 'Add a new transponder first' ) )
 				dialog.doModal( )
 
+		elif groupId == E_SpinEx01 :
+			self.ControlSelect( )
+
 		elif groupId == E_Input08 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
@@ -322,6 +311,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( 'Add Transponder' ), '', MR_LANG( 'Add a new transponder to the list' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'Delete a transponder from the list' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
+		self.AddEnumControl( E_SpinEx01, MR_LANG( 'Network Search' ), None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 		
 		self.InitControl( )
