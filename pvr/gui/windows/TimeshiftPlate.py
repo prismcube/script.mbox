@@ -527,6 +527,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.StartAsyncMoveByTime( True )
+				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
+				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
 
 				"""
 				self.mUserMoveTime = -1
@@ -1751,9 +1753,9 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAsyncMove >= ( self.mTimeshift_endTime - 1000 ) :
 			lblCurrentTime  = tempEndTime - 1
 			self.mAsyncMove = self.mTimeshift_endTime - 1000
-		elif self.mAsyncMove <= ( self.mTimeshift_staTime + 1000 ) :
-			lblCurrentTime  = tempStartTime + 1
-			self.mAsyncMove = self.mTimeshift_staTime + 1000
+		elif self.mAsyncMove <= self.mTimeshift_staTime :
+			lblCurrentTime  = tempStartTime
+			self.mAsyncMove = self.mTimeshift_staTime
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )

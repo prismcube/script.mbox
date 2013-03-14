@@ -240,9 +240,9 @@ class DialogStopRecord( BaseDialog ) :
 			timer = self.mRunningTimerList[i]
 			#LOG_TRACE( '---------timer ch[%s] name[%s]'% ( timer.mChannelNo, timer.mName ) )
 			#channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
-			channel = self.mDataCache.Record_GetRunningRecordInfo( i )
-			if channel :
-				self.mCtrlChannelName[i].setLabel( 'P%04d %s' %( channel.mChannelNo, channel.mChannelName ) )			
+			recInfo = self.mDataCache.Record_GetRunningRecordInfo( i )
+			if recInfo :
+				self.mCtrlChannelName[i].setLabel( 'P%04d %s' %( recInfo.mChannelNo, recInfo.mChannelName ) )			
 			else :
 				self.mCtrlChannelName[i].setLabel( 'P%04d' %( timer.mChannelNo ) )
 			self.mCtrlRecordName[i].setLabel( '%s' %timer.mName )
