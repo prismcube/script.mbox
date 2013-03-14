@@ -86,7 +86,6 @@ class HiddenTest( BaseWindow ) :
 			self.CheckProperty( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif aContextAction == 8888 :
-			#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			if ConnectSocket( ) :
 				self.mDataCache.SetRunningHiddenTest( True )

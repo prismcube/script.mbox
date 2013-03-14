@@ -112,7 +112,8 @@ class DialogStartRecord( SettingDialog ) :
 	def onClick( self, aControlId ) :
 		focusId = self.GetFocusId( )
 		if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.Close( )
 
 
 	def onFocus( self, aControlId ) :
@@ -450,8 +451,6 @@ class DialogStartRecord( SettingDialog ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-
-
-
+		self.ResetAllControl( )
+		self.Close( )
 

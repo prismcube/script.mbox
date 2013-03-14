@@ -233,6 +233,6 @@ class DialogChannelJump( BaseDialog ) :
 	def AsyncTuneChannel( self ) :
 		if self.mFlagFind :
 			self.mIsOk = E_DIALOG_STATE_YES
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.CloseDialog( )
 
 

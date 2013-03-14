@@ -140,7 +140,7 @@ class DialogStopRecord( BaseDialog ) :
 		if aControlId == BUTTON_ID_RECORD_1 or aControlId == BUTTON_ID_RECORD_2 or aControlId == BUTTON_ID_CANCEL :
 			self.StopRecord( aControlId )
 		elif aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 
 	def onFocus( self, aControlId ) :
@@ -171,15 +171,15 @@ class DialogStopRecord( BaseDialog ) :
 			timer = self.mRunningTimerList[0]
 			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 			self.mIsOk = E_DIALOG_STATE_YES
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 		elif aControlId == BUTTON_ID_RECORD_2 :
 			timer = self.mRunningTimerList[1]
 			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
 			self.mIsOk = E_DIALOG_STATE_YES
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 		elif aControlId == BUTTON_ID_CANCEL :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 		else :
 			LOG_ERR( 'Cannot find control' )
 
@@ -266,7 +266,7 @@ class DialogStopRecord( BaseDialog ) :
 
 		if self.mRunningRecordCount <= 0 :
 			self.mLock.release( )			
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 			return
 
 		else :

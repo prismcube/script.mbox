@@ -68,7 +68,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 		else :
 			self.ControlSelect( )
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )

@@ -38,7 +38,7 @@ class DialogYesNoCancel( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_NO
 		elif aControlId == E_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		self.CloseDialog( )
 
 
 	def IsOK( self ) :

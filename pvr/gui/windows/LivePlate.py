@@ -195,6 +195,7 @@ class LivePlate( LivePlateWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
+			return
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 			self.GetFocusId( )
@@ -339,6 +340,18 @@ class LivePlate( LivePlateWindow ) :
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
+
+		self.StopAutomaticHide( )
+		self.SetAutomaticHide( False )
+		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
+			self.GlobalAction( Action.ACTION_MUTE  )
+		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
+			self.EPGNavigation( PREV_EPG )
+
+		elif aControlId == E_CONTROL_ID_BUTTON_NEXT_EPG :
+			self.EPGNavigation( NEXT_EPG )
+		else :
+			self.DialogPopup( aControlId )
 
 
 	def onFocus(self, aControlId):

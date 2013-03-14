@@ -80,18 +80,18 @@ class DialogBookmark( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
 			self.mMarkList = None
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
 			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
 				self.StartBookmarkPlayback( )
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				self.Close( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.StartBookmarkPlayback( )
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )	
+			self.Close( )
 
 
 	def onFocus( self, aControlId ) :

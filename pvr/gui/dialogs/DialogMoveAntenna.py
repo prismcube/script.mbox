@@ -106,7 +106,7 @@ class DialogMoveAntenna( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.CloseDialog( )
 		else :
 			selectedIndex = self.mCtrlList.getSelectedPosition( )
 			if selectedIndex == E_MOVE_WEST :
@@ -137,6 +137,6 @@ class DialogMoveAntenna( BaseDialog ) :
 				self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).GetCurrentConfigIndex( ) + 1 )			
 
 			else :
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				self.CloseDialog( )
 
 

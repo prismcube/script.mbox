@@ -114,6 +114,7 @@ class DialogInputPincode( BaseDialog ) :
 				LOG_TRACE( 'Try again after stopping all your recordings first' )
 			else :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW or \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction = self.E_TUNE_TVRADIO_TOGGLE
 					self.Close( )
@@ -172,14 +173,17 @@ class DialogInputPincode( BaseDialog ) :
 		length = len( self.mInputNumber )
 
 		try :
-			if length >= MAX_PINCODE_LENGTH :
+			if length == MAX_PINCODE_LENGTH :
 				#CheckPineCode
 				savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 				LOG_TRACE( 'pinValue = %d : %d' %( savedPincode, int( self.mInputNumber ) ) )
 				if savedPincode == int( self.mInputNumber ) :
 					self.mIsOk = E_DIALOG_STATE_YES
 					self.Close( )
-					xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+					if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
+					self.Close( )
+					self.CloseDialog( )
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					
@@ -229,6 +233,9 @@ class DialogInputPincode( BaseDialog ) :
 			LOG_TRACE( '---------------------Checked self : parentLock False, Close dialog' )
 			self.mCheckStatus = False
 			self.mIsValidateThread = None
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).StartAutomaticHide( )
+			self.Close( )
+			self.CloseDialog( )
 
 

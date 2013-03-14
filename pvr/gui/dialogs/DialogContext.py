@@ -83,7 +83,7 @@ class DialogContext( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId != DIALOG_BUTTON_CLOSE_ID :
 			self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		self.Close( )
 
 
 	def onFocus( self, aControlId ) :

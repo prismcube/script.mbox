@@ -74,11 +74,13 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
 			self.mIsOk = E_DIALOG_STATE_YES
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID or groupId == E_SETTING_DIALOG_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_NO
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 
 	def IsOK( self ) :

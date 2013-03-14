@@ -58,11 +58,11 @@ class DialogAddTimer( BaseDialog ) :
 
 		if focusId == E_BUTTON_ADD :
 			self.mIsOk = E_DIALOG_STATE_YES
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 		elif focusId == E_BUTTON_CANCEL or focusId == DIALOG_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			self.Close( )
 
 
 	def onFocus( self, aControlId ) :

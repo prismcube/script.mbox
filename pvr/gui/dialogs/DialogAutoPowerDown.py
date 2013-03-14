@@ -54,7 +54,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
 			if aEvent.getName( ) == ElisEventPowerSaveEnd.getName( ) :
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				self.Close( )
 
 
 	@RunThread

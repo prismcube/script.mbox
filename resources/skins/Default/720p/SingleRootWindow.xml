@@ -1390,7 +1390,7 @@ Search for window name
 						<content>
 							<item id="1">
 								<label>SCRIPT1001</label>
-								<onclick>right</onclick>
+								<onclick>SendClick(1300700)</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
@@ -1564,7 +1564,12 @@ Search for window name
 					</control>
 				</control>
 			</control>
-		</control>		
+			<control type="button" id="1300700">
+				<label>EPG</label>
+				<onclick>-</onclick>
+				<visible>false</visible>
+			</control>
+		</control>
 
 
 		<!-- *********** E_LIVEWindow ********** -->	
