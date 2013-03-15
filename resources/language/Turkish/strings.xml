@@ -1073,4 +1073,8 @@
 	<string id="3657">TUR_Make sure your antenna is properly set up</string>
 	<string id="3658">TUR_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
 	<string id="3659">TUR_Invalid input</string>
+	<string id="3660">TUR_Search Range</string>
+	<string id="3661">TUR_Select the transponder frequency range for channel search</string>
+	<string id="3662">TUR_All Transponders</string>
+	<string id="3663">TUR_Current Transponder Only</string>
 </strings>

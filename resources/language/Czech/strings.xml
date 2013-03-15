@@ -1073,4 +1073,8 @@
 	<string id="3657">CZE_Make sure your antenna is properly set up</string>
 	<string id="3658">CZE_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
 	<string id="3659">CZE_Invalid input</string>
+	<string id="3660">CZE_Search Range</string>
+	<string id="3661">CZE_Select the transponder frequency range for channel search</string>
+	<string id="3662">CZE_All Transponders</string>
+	<string id="3663">CZE_Current Transponder Only</string>
 </strings>

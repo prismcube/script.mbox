@@ -1077,4 +1077,8 @@
 	<string id="3657">Make sure your antenna is properly set up</string>
 	<string id="3658">To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
 	<string id="3659">Invalid input</string>
+	<string id="3660">Search Range</string>
+	<string id="3661">Select the transponder frequency range for channel search</string>
+	<string id="3662">All Transponders</string>
+	<string id="3663">Current Transponder Only</string>
 </strings>
