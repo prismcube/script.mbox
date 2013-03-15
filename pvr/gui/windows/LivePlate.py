@@ -373,6 +373,8 @@ class LivePlate( LivePlateWindow ) :
 						self.mCurrentEPG = iEPG
 						self.UpdateEpgGUI( self.mCurrentEPG )
 						LOG_TRACE('-----------------init pmt')
+				else :
+					self.UpdateComponentGUI( self.mCurrentEPG )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -727,6 +729,8 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def UpdateEpgGUI( self, aEpg ) :
+		self.UpdateComponentGUI( aEpg )
+
 		if aEpg :
 			try :
 				#epg name
@@ -738,15 +742,20 @@ class LivePlate( LivePlateWindow ) :
 				label = TimeToString( aEpg.mStartTime + aEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
-				#component
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
-
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
+
+		else :
+			LOG_TRACE( 'event null' )
+
+
+	def UpdateComponentGUI( self, aEpg ) :
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
 
 	@RunThread

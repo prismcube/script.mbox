@@ -308,13 +308,13 @@ class InfoPlate( LivePlateWindow ) :
 				label = TimeToString( rec.mStartTime + rec.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
-				if aEpg and aEpg.mError == 0 :
-					#component
-					self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
-					if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-						self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
+				#component
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -561,7 +561,7 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.mEventBus.Deregister( self )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
-		dialog.SetEPG( self.mCurrentEPG, self.mPMTInfo )
+		dialog.SetEPG( self.mCurrentEPG )
 		dialog.doModal( )
 		self.mEventBus.Register( self )
 

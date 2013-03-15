@@ -757,7 +757,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-				LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
@@ -1742,8 +1741,13 @@ class ChannelListWindow( BaseWindow ) :
 				#ToDO : pincode
 			"""
 
-
-		#update epgName uiID(304)
+		#component
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
 		if self.mNavEpg :
 			try :
 				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
@@ -1753,22 +1757,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
 				self.mCtrlProgress.setVisible( True )
 
-				#component
-				#pmt = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
-				#if pmt :
-				#	pmt = '[ch[%s] type[%s] ttx[%s] sub[%s] aud[%s]]'% ( pmt.mChannelNumber, pmt.mServiceType, pmt.mTTXCount, pmt.mSubCount, pmt.mAudioCount )
-				#LOG_TRACE( '----------ch[%s] pmt[%s]'% ( self.mNavChannel.mNumber, pmt ) )
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
-
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-
-		else:
+		else :
 			LOG_TRACE( 'event null' )
 
 

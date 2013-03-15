@@ -474,6 +474,13 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateSelcetedPosition( )
 		
 		epg = self.GetSelectedEPG( )
+		#component
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 		try :
 			if epg :
@@ -487,12 +494,6 @@ class EPGWindow( BaseWindow ) :
 					self.mCtrlEPGDescription.setText( epg.mEventName )
 				else :
 					self.mCtrlEPGDescription.setText( '' )
-
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 			else :
 				self.ResetEPGInfomation( )
