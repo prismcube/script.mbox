@@ -378,6 +378,13 @@ class TimeShiftPlate( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			if not self.mDataCache.Teletext_Show( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
+
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping playback' )

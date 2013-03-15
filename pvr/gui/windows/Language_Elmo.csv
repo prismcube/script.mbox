@@ -1075,3 +1075,7 @@
 "Make sure your antenna is properly set up",,,,,,,,,,3657
 "To receive a strong satellite signal,\n add satellites and set LNB parameters correctly",,,,,,,,,,3658
 "Invalid input",,,,,,,,,,3659
+"Search Range",,,,,,,,,,3660
+"Select the transponder frequency range for channel search",,,,,,,,,,3661
+"All Transponders",,,,,,,,,,3662
+"Current Transponder Only",,,,,,,,,,3663

@@ -1073,4 +1073,8 @@
 	<string id="3657">RUS_Make sure your antenna is properly set up</string>
 	<string id="3658">RUS_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
 	<string id="3659">RUS_Invalid input</string>
+	<string id="3660">RUS_Search Range</string>
+	<string id="3661">RUS_Select the transponder frequency range for channel search</string>
+	<string id="3662">RUS_All Transponders</string>
+	<string id="3663">RUS_Current Transponder Only</string>
 </strings>
