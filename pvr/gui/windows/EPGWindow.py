@@ -169,7 +169,13 @@ class EPGWindow( BaseWindow ) :
 			else :
 				self.DoContextAction( contextAction ) 
 				self.StartEPGUpdateTimer( )
-				self.mEventBus.Register( self )			
+				self.mEventBus.Register( self )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			if HasAvailableRecordingHDD( ) == False :
+				return
+
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			self.mEventBus.Deregister( self )
