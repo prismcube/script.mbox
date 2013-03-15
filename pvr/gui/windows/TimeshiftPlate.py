@@ -170,6 +170,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mImagePoint = ''
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
 
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
@@ -1627,8 +1628,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	
 	def StartAutomaticHide( self ) :
-		bannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
-		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer = threading.Timer( self.mBannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start( )
 
 

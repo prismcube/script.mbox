@@ -757,7 +757,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
+				LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
@@ -1550,7 +1550,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
-		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
@@ -1670,33 +1670,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-					aValue = True
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-					aValue = True
-
-		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
-			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioCount > 0 and \
-			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
-					aValue = True
-
-		self.setProperty( aPropertyID, '%s'% aValue )
-		return aValue
+		return ret
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
@@ -1709,10 +1687,6 @@ class ChannelListWindow( BaseWindow ) :
 			rootWinow.setProperty( aPropertyID, aValue )
 
 		else :
-			if self.UpdatePropertyByCacheData( aPropertyID ) == True :
-				LOG_TRACE( '-------------- return by cached data' )
-				return True
-
 			self.setProperty( aPropertyID, aValue )
 
 
@@ -1780,6 +1754,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlProgress.setVisible( True )
 
 				#component
+				#pmt = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
+				#if pmt :
+				#	pmt = '[ch[%s] type[%s] ttx[%s] sub[%s] aud[%s]]'% ( pmt.mChannelNumber, pmt.mServiceType, pmt.mTTXCount, pmt.mSubCount, pmt.mAudioCount )
+				#LOG_TRACE( '----------ch[%s] pmt[%s]'% ( self.mNavChannel.mNumber, pmt ) )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
 				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :

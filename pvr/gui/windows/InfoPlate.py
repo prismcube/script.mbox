@@ -87,6 +87,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None
 		self.mAutomaticHideTimer = None
+		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 
 		#get channel
 		self.LoadInit( )
@@ -271,6 +272,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
@@ -417,9 +419,8 @@ class InfoPlate( LivePlateWindow ) :
 			self.mCtrlLblRec2.setLabel( aValue )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		ret = UpdatePropertyByCacheData( self, self.mPMTInfo, aPropertyID )
 		return ret
 
 
@@ -427,10 +428,6 @@ class InfoPlate( LivePlateWindow ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
 			return False
-
-		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
-			#LOG_TRACE( '-------------- return by cached data -------------------' )
-			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -564,7 +561,7 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.mEventBus.Deregister( self )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
-		dialog.SetEPG( self.mCurrentEPG )
+		dialog.SetEPG( self.mCurrentEPG, self.mPMTInfo )
 		dialog.doModal( )
 		self.mEventBus.Register( self )
 

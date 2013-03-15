@@ -88,7 +88,7 @@ def HasEPGComponent( aEPG, aFlag ) :
 	return 'False'
 
 
-def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
+def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 	if not pmtEvent :
 		LOG_TRACE( '---------------pmtEvent None' )
 		return False
@@ -112,6 +112,7 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None
 			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
+	self.setProperty( aPropertyID, '%s'% ret )
 	return ret
 
 

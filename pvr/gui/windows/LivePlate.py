@@ -154,10 +154,8 @@ class LivePlate( LivePlateWindow ) :
 			else :
 				self.mDataCache.SetAVBlankByChannel( )
 
-		if self.mAutomaticHide :
-			self.StartAutomaticHide( )
-		else :
-			self.StopAutomaticHide( )
+
+		self.RestartAutomaticHide( )
 
 
 	def onAction( self, aAction ) :
@@ -244,9 +242,11 @@ class LivePlate( LivePlateWindow ) :
 
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTune( NEXT_CHANNEL )
+			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			self.ChannelTune( PREV_CHANNEL )
+			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( ) 
@@ -527,9 +527,6 @@ class LivePlate( LivePlateWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
 			self.UpdateChannelGUI( )
 			return
-
-		if self.mAutomaticHide == True :
-			self.RestartAutomaticHide( )
 
 
 	def EPGListMoveToIndex( self ) :
@@ -873,9 +870,9 @@ class LivePlate( LivePlateWindow ) :
 		#	self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mCurrentChannel )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 		return ret
 
 
@@ -883,10 +880,6 @@ class LivePlate( LivePlateWindow ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
 			return False
-
-		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
-			#LOG_TRACE( '-------------- return by cached data -------------------' )
-			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -933,7 +926,10 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
+			if self.mCurrentEPG and self.mCurrentChannel and \
+			   self.mCurrentChannel.mSid == self.mCurrentEPG.mSid and \
+			   self.mCurrentChannel.mTsid == self.mCurrentEPG.mTsid and \
+			   self.mCurrentChannel.mOnid == self.mCurrentEPG.mOnid :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 				dialog.SetEPG( self.mCurrentEPG )
 				dialog.doModal( )
@@ -942,7 +938,7 @@ class LivePlate( LivePlateWindow ) :
 			if RECORD_WIDTHOUT_ASKING == True :
 				if self.GetBlinkingProperty( ) != 'None' :
 					return
-			
+
 				self.StartRecordingWithoutAsking( )
 			else :
 				self.ShowRecordingStartDialog( )
@@ -1268,7 +1264,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide( )
-		self.StartAutomaticHide( )
+		if self.mAutomaticHide :
+			self.StartAutomaticHide( )
 
 	
 	def StartAutomaticHide( self ) :

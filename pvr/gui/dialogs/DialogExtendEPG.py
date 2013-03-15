@@ -10,6 +10,7 @@ class DialogExtendEPG( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mEPG = None
+		self.mPMT = None
 		self.mIsOk = None
 		
 
@@ -20,7 +21,10 @@ class DialogExtendEPG( BaseDialog ) :
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
 		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
 
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mEPG )
+		if self.mPMT :
+			pmtEvent = self.mPMT
+
 		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
 		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
@@ -84,8 +88,9 @@ class DialogExtendEPG( BaseDialog ) :
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 
-	def SetEPG( self, aEPG ) :
+	def SetEPG( self, aEPG, aPMT = None ) :
 		self.mEPG = aEPG
+		self.mPMT = aPMT
 
 
 	def GetCloseStatus( self ) :

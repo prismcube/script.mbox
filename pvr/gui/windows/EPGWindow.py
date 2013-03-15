@@ -508,36 +508,11 @@ class EPGWindow( BaseWindow ) :
 		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		#ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-					aValue = True
-
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-					aValue = True
-
-
-		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
-			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioCount > 0 and \
-			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
-					aValue = True
-
-		self.setProperty( aPropertyID, '%s'% aValue )
-		return aValue
+		return ret
 
 
 	def UpdateListUpdateOnly( self ) :
