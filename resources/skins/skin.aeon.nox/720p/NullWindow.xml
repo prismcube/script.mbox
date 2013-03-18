@@ -11,6 +11,23 @@
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			<visible>substring(Window.Property(TVRadio),true)</visible>
 		</control>
+		<control type="image" id="10">
+			<posx>1200</posx>
+			<posy>45</posy>
+			<width>60</width>
+			<height>25</height>
+			<texture>i_record.png</texture>
+			<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
+		</control>
+		<control type="label">
+			<posx>550</posx>
+			<posy>330</posy>
+			<width>500</width>
+			<font>Font_Reg38</font>
+			<label>[I][B]$LOCALIZE[SCRIPT1119] [/B][/I]</label>
+			<textcolor>grey2</textcolor>
+			<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
+		</control>
 		<control type="label">
 			<posx>550</posx>
 			<posy>330</posy>

@@ -33,6 +33,15 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
+			<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
+			<textcolor>grey2</textcolor>
+			<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
+		</control>
+		<control type="label">
+			<posx>550</posx>
+			<posy>330</posy>
+			<width>500</width>
+			<font>font35_title</font>
 			<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
