@@ -81,7 +81,6 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
-		self.mNavChannel = None
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -164,7 +163,7 @@ class EPGWindow( BaseWindow ) :
 
 			contextAction = self.ShowContextMenu( )
 
-			if contextAction == CONTEXT_SHOW_ALL_TIMERS :
+			if contextAction == CONTEXT_SHOW_ALL_TIMERS or contextAction == CONTEXT_SEARCH :
 				self.DoContextAction( contextAction ) 
 			else :
 				self.DoContextAction( contextAction ) 
@@ -216,6 +215,9 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
 			self.SelectNextChannel( )			
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.ShowSearchDialog( )
 
 
 	def onClick( self, aControlId ) :
@@ -434,9 +436,6 @@ class EPGWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
-		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-			self.mNavChannel = self.mChannelList[ selectedPos ]
-
 
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
@@ -474,6 +473,13 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateSelcetedPosition( )
 		
 		epg = self.GetSelectedEPG( )
+		#component
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 		try :
 			if epg :
@@ -487,12 +493,6 @@ class EPGWindow( BaseWindow ) :
 					self.mCtrlEPGDescription.setText( epg.mEventName )
 				else :
 					self.mCtrlEPGDescription.setText( '' )
-
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 			else :
 				self.ResetEPGInfomation( )
@@ -514,36 +514,22 @@ class EPGWindow( BaseWindow ) :
 		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		#ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
 
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-					aValue = True
+		channel = None
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			channel = self.mSelectChannel
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
 
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-					aValue = True
+		if channel :	
+			pmtEvent = self.mDataCache.GetCurrentPMTEvent( channel )
+			if pmtEvent :
+				return UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-
-		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
-			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioCount > 0 and \
-			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
-					aValue = True
-
-		self.setProperty( aPropertyID, '%s'% aValue )
-		return aValue
+		return False
 
 
 	def UpdateListUpdateOnly( self ) :
@@ -615,6 +601,19 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
+
+			if aUpdateOnly == False :
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mEPGList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
+			
 
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -698,6 +697,18 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
+
+			if aUpdateOnly == False :
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mEPGList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
 				
 			strNoEvent = MR_LANG( 'No event' )
 
@@ -1078,7 +1089,16 @@ class EPGWindow( BaseWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
 					dialog.doModal( )
 					return
-					
+
+				self.mEventBus.Deregister( self )	
+				self.StopEPGUpdateTimer( )
+
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
+
+
+				
+				"""
 				searchList = []
 				indexList = []
 				count = len( self.mListItems )
@@ -1111,6 +1131,7 @@ class EPGWindow( BaseWindow ) :
 							self.mCtrlList.selectItem( indexList[ select ] )
 						else:
 							self.mCtrlBigList.selectItem( indexList[ select ] )
+				"""
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

@@ -20,8 +20,13 @@ class DialogExtendEPG( BaseDialog ) :
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
 		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
 
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mEPG )
+		pmtinstance = self.mDataCache.GetCurrentPMTEventByPVR( )
+		if pmtinstance :
+			pmtEvent = pmtinstance
+
 		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
+		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_SUBTITLE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
 		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
 			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
