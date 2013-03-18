@@ -116,6 +116,7 @@
 	<string id="1116">DUT_Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">DUT_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">DUT_Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1119">DUT_Playback</string>
 	<string id="2001">DUT_Last ServiceType</string>
 	<string id="2002">DUT_CurrentVoutResolution</string>
 	<string id="2003">DUT_1080p-50</string>
@@ -1078,4 +1079,10 @@
 	<string id="3662">DUT_All Transponders</string>
 	<string id="3663">DUT_Current Transponder Only</string>
 	<string id="3664">DUT_Enter new duration</string>
+	<string id="3665">DUT_Same name already exists</string>
+	<string id="3666">DUT_Can not find any matches result</string>
+	<string id="3667">DUT_No result</string>
+	<string id="3668">DUT_Set video calibration</string>
+	<string id="3669">DUT_Video Calibration</string>
+	<string id="3670">DUT_Calibrate your display to get the best viewing experience</string>
 </strings>

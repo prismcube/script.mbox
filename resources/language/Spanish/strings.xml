@@ -116,6 +116,7 @@
 	<string id="1116">SPA_Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">SPA_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">SPA_Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1119">SPA_Playback</string>
 	<string id="2001">SPA_Last ServiceType</string>
 	<string id="2002">SPA_CurrentVoutResolution</string>
 	<string id="2003">SPA_1080p-50</string>
@@ -1078,4 +1079,10 @@
 	<string id="3662">SPA_All Transponders</string>
 	<string id="3663">SPA_Current Transponder Only</string>
 	<string id="3664">SPA_Enter new duration</string>
+	<string id="3665">SPA_Same name already exists</string>
+	<string id="3666">SPA_Can not find any matches result</string>
+	<string id="3667">SPA_No result</string>
+	<string id="3668">SPA_Set video calibration</string>
+	<string id="3669">SPA_Video Calibration</string>
+	<string id="3670">SPA_Calibrate your display to get the best viewing experience</string>
 </strings>

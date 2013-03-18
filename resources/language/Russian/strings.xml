@@ -116,6 +116,7 @@
 	<string id="1116">RUS_Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">RUS_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">RUS_Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1119">RUS_Playback</string>
 	<string id="2001">RUS_Last ServiceType</string>
 	<string id="2002">RUS_CurrentVoutResolution</string>
 	<string id="2003">RUS_1080p-50</string>
@@ -1078,4 +1079,10 @@
 	<string id="3662">RUS_All Transponders</string>
 	<string id="3663">RUS_Current Transponder Only</string>
 	<string id="3664">RUS_Enter new duration</string>
+	<string id="3665">RUS_Same name already exists</string>
+	<string id="3666">RUS_Can not find any matches result</string>
+	<string id="3667">RUS_No result</string>
+	<string id="3668">RUS_Set video calibration</string>
+	<string id="3669">RUS_Video Calibration</string>
+	<string id="3670">RUS_Calibrate your display to get the best viewing experience</string>
 </strings>
