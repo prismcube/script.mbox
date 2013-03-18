@@ -2058,6 +2058,10 @@ class DataCacheMgr( object ) :
 		#self.Channel_Save( )
 		self.Channel_ReLoad( )
 
+		#8. Settings Property
+		from pvr.GuiHelper import *
+		SetSetting( 'RSS_FEED', '1' )
+
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
