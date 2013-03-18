@@ -22,10 +22,11 @@ LABEL_ID_CURRNET_CHANNEL_NAME	= E_EPG_WINDOW_BASE_ID + 401
 E_EPG_WINDOW_DEFAULT_FOCUS_ID	=  E_EPG_WINDOW_BASE_ID + 9003
 
 
-E_VIEW_CHANNEL					= 0
-E_VIEW_CURRENT					= 1
-E_VIEW_FOLLOWING				= 2
-E_VIEW_END						= 3
+E_VIEW_GRID						= 0
+E_VIEW_CHANNEL					= 1
+E_VIEW_CURRENT					= 2
+E_VIEW_FOLLOWING				= 3
+E_VIEW_END						= 4
 
 E_NOMAL_UPDATE_TIME				= 30
 E_SHORT_UPDATE_TIME				= 1
@@ -302,7 +303,9 @@ class EPGWindow( BaseWindow ) :
 
 	def InitControl( self ) :
 
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		if self.mEPGMode == E_VIEW_GRID :
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'GRID' ) ) )		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'CHANNEL' ) ) )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'CURRENT' ) ) )		
@@ -313,15 +316,17 @@ class EPGWindow( BaseWindow ) :
 			
 
 	def UpdateViewMode( self ) :
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		if self.mEPGMode == E_VIEW_GRID :
+			self.setProperty( 'EPGMode', 'grid' )
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.setProperty( 'EPGMode', 'channel' )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.setProperty( 'EPGMode', 'current' )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
 			self.setProperty( 'EPGMode', 'following' )
 		else :
-			self.mEPGMode = E_VIEW_LIST 		
-			self.setProperty( 'EPGMode', 'channel' )
+			self.mEPGMode = E_VIEW_GRID 		
+			self.setProperty( 'EPGMode', 'grid' )
 			
 		LOG_TRACE( '---------------------self.mEPGMode=%d' %self.mEPGMode )
 
@@ -342,22 +347,28 @@ class EPGWindow( BaseWindow ) :
 		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 
 		self.mEPGList = None
-		
-		if self.mEPGMode == E_VIEW_CHANNEL :
+
+		if self.mEPGMode == E_VIEW_GRID :
+			self.LoadByGrid( )		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.LoadByChannel( )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.LoadByCurrent( )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
 			self.LoadByFollowing( )
 		else :
-			self.mEPGMode = E_VIEW_CHANNEL 		
-			self.LoadByChannel( )
+			self.mEPGMode = E_VIEW_GRID 		
+			self.LoadByGrid( )
 
 		self.mLock.release( )
 		LOG_TRACE( '----------------------------------->End' )			
 		self.mDebugEnd = time.time( )
 		print ' epg loading test time =%s' %( self.mDebugEnd  - self.mDebugStart )
 
+
+	def LoadByGrid( self ) :
+		pass
+		
 
 	def LoadByChannel( self ) :
 		gmtFrom = self.mGMTTime 
@@ -428,8 +439,11 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		selectedPos = 0
-		
-		if self.mEPGMode == E_VIEW_CHANNEL :
+
+		if self.mEPGMode == E_VIEW_GRID :
+			#toDO
+			pass
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition( )		
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -441,7 +455,11 @@ class EPGWindow( BaseWindow ) :
 		if self.mChannelList == None :
 			return
 
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		if self.mEPGMode == E_VIEW_GRID :
+			#toDO
+			pass
+
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.mCtrlList.selectItem( 0 )
 		else :
 			fucusIndex = 0
@@ -517,7 +535,12 @@ class EPGWindow( BaseWindow ) :
 	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
 
 		channel = None
-		if self.mEPGMode == E_VIEW_CHANNEL :
+
+		if self.mEPGMode == E_VIEW_GRID :
+			#toDO
+			pass
+		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			channel = self.mSelectChannel
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -546,7 +569,11 @@ class EPGWindow( BaseWindow ) :
 
 		self.LoadTimerList( )
 
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		if self.mEPGMode == E_VIEW_GRID :
+			#toDO
+			pass
+		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			if self.mEPGList == None :
 				self.mCtrlList.reset( )
 				return
@@ -840,7 +867,11 @@ class EPGWindow( BaseWindow ) :
 		else :
 			timer = None
 
-			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
+			if self.mEPGMode == E_VIEW_GRID :
+				#toDO
+				pass
+
+			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
@@ -946,7 +977,11 @@ class EPGWindow( BaseWindow ) :
 				self.ShowManualTimer( selectedEPG, timer )
 
 		else :
-			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
+			if self.mEPGMode == E_VIEW_GRID :
+				#toDO
+				pass
+		
+			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
@@ -986,7 +1021,12 @@ class EPGWindow( BaseWindow ) :
 			dialog.SetEPG( None  )
 			
 		channel = None
-		if self.mEPGMode == E_VIEW_CHANNEL  :
+
+		if self.mEPGMode == E_VIEW_GRID  :
+			#toDO
+			pass
+		
+		elif self.mEPGMode == E_VIEW_CHANNEL  :
 			#channel = self.mDataCache.Channel_GetCurrent( )
 			channel = self.mSelectChannel
 		else :
@@ -1026,7 +1066,12 @@ class EPGWindow( BaseWindow ) :
 			timer = self.GetTimerByEPG( epg )
 
 		else :
-			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
+
+			if self.mEPGMode == E_VIEW_GRID  :
+				#toDO
+				pass
+			
+			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
@@ -1177,7 +1222,12 @@ class EPGWindow( BaseWindow ) :
 		selectedPos = -1
 
 		self.mLock.acquire( )
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		
+		if self.mEPGMode == E_VIEW_GRID :		
+			#toDO
+			pass
+		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition( )
 			if self.mEPGList == None:
 				LOG_WARN( 'Has no EPG list' )
@@ -1340,7 +1390,11 @@ class EPGWindow( BaseWindow ) :
 			
 
 	def Tune( self ) :
-		if self.mEPGMode == E_VIEW_CHANNEL :
+		if self.mEPGMode == E_VIEW_GRID :
+			#toDO
+			pass
+		
+		elif self.mEPGMode == E_VIEW_CHANNEL :
 			#LOG_TRACE( '##################################### channel %d:%d' %(self.mSelectChannel.mNumber, self.mCurrentChannel.mNumber) )	
 			if self.mSelectChannel == None or self.mCurrentChannel == None :
 				LOG_ERR( 'Invalid channel' )
@@ -1481,7 +1535,11 @@ class EPGWindow( BaseWindow ) :
 				self.ShowEPGTimer( selectedEPG )
 
 		else :
-			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
+			if self.mEPGMode == E_VIEW_GRID :
+				#toDO
+				pass
+		
+			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
@@ -1651,7 +1709,10 @@ class EPGWindow( BaseWindow ) :
 
 
 	def SetFocusList( self, aMode ) :
-		if aMode == E_VIEW_CHANNEL :
+		if aMode == E_VIEW_GRID :	
+			#toDO
+			pass
+		elif aMode == E_VIEW_CHANNEL :
 			self.setFocusId( LIST_ID_COMMON_EPG )
 		elif aMode == E_VIEW_CURRENT or aMode == E_VIEW_FOLLOWING :
 			self.setFocusId( LIST_ID_BIG_EPG )
