@@ -81,7 +81,6 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
-		self.mNavChannel = None
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -437,9 +436,6 @@ class EPGWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
-		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-			self.mNavChannel = self.mChannelList[ selectedPos ]
-
 
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
@@ -519,10 +515,21 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
-		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		return ret
+		channel = None
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			channel = self.mSelectChannel
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
+
+		if channel :	
+			pmtEvent = self.mDataCache.GetCurrentPMTEvent( channel )
+			if pmtEvent :
+				return UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
+
+		return False
 
 
 	def UpdateListUpdateOnly( self ) :
