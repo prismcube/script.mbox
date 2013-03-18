@@ -169,7 +169,13 @@ class EPGWindow( BaseWindow ) :
 			else :
 				self.DoContextAction( contextAction ) 
 				self.StartEPGUpdateTimer( )
-				self.mEventBus.Register( self )			
+				self.mEventBus.Register( self )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			if HasAvailableRecordingHDD( ) == False :
+				return
+
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			self.mEventBus.Deregister( self )
@@ -471,6 +477,13 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateSelcetedPosition( )
 		
 		epg = self.GetSelectedEPG( )
+		#component
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 		try :
 			if epg :
@@ -484,12 +497,6 @@ class EPGWindow( BaseWindow ) :
 					self.mCtrlEPGDescription.setText( epg.mEventName )
 				else :
 					self.mCtrlEPGDescription.setText( '' )
-
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 			else :
 				self.ResetEPGInfomation( )
@@ -511,36 +518,11 @@ class EPGWindow( BaseWindow ) :
 		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		#ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-					aValue = True
-
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-					aValue = True
-
-
-		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
-			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioCount > 0 and \
-			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
-					aValue = True
-
-		self.setProperty( aPropertyID, '%s'% aValue )
-		return aValue
+		return ret
 
 
 	def UpdateListUpdateOnly( self ) :

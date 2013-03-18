@@ -27,7 +27,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.tunerIndex					= E_TUNER_1
 		self.mAvBlankStatus				= False
 		self.mSearchMode				= 0
-		self.mChannelSearchMethod		= 0
+		self.mSearchRange				= 0
 
 
 	def onInit( self ) :
@@ -197,7 +197,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx08 )
 
 		elif groupId == E_SpinEx04 :
-			self.mChannelSearchMethod = self.GetSelectedIndex( E_SpinEx04 )
+			self.mSearchRange = self.GetSelectedIndex( E_SpinEx04 )
 			return
 
 		# Transponer
@@ -262,7 +262,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 
-				if self.mChannelSearchMethod :
+				if self.mSearchRange :
 					configuredSatelliteList = []
 					config = ElisISatelliteInfo( )
 					config.mLongitude	= self.mCurrentSatellite.mSatelliteLongitude
@@ -363,7 +363,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position' ), '', MR_LANG( 'Save satellite positions' ) )
 		"""
-		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Channel Search Method' ), USER_ENUM_LIST_CHANNEL_SEARCH_MODE, self.mChannelSearchMethod, MR_LANG( 'Select channel search method' ) )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

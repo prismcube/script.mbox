@@ -83,7 +83,9 @@ class GlobalEvent( object ) :
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
 
 		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-			LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
+			LOG_TRACE( '----------received ElisPMTReceivedEvent' )
+			#LOG_TRACE( '----------ch[%s] type[%s] ttx[%s] sub[%s] aud[%s,%s]'% ( aEvent.mChannelNumber, aEvent.mServiceType, aEvent.mTTXCount, aEvent.mSubCount, aEvent.mAudioCount, aEvent.mAudioStream[aEvent.mAudioSelectedIndex] ) )
+
 			if aEvent :
 				#aEvent.printdebug( )
 				self.mDataCache.SetCurrentPMTEvent( aEvent )

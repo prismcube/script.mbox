@@ -1,4 +1,4 @@
-import thread, sys, copy
+import thread, sys, copy, xbmcgui
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -117,7 +117,8 @@ class DataCacheMgr( object ) :
 		self.mTimerDB 							= None
 		self.mRecordDB 							= None
 
-		self.mPMTEvent							= None
+		self.mPMTinstance						= None
+		self.mPMTListHash						= {}
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -878,11 +879,6 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
-		#self.mPMTEvent = None #reset cached PMT Event
-		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
-		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
-			self.mPMTEvent = None
-
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -911,11 +907,6 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
-		#self.mPMTEvent = None #reset cached PMT Event
-		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
-		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
-			self.mPMTEvent = None
-
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -1488,10 +1479,14 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
+
 		self.mPlayingChannel = self.Channel_GetCurrent( )
 		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
+		self.mPMTinstance = None
 		"""
 		channel = self.Channel_GetCurrent( )
 		if channel and channel.mError == 0 :
@@ -1530,6 +1525,9 @@ class DataCacheMgr( object ) :
 		if recInfo and recInfo.mError == 0 :
 			self.Frontdisplay_SetMessage( recInfo.mChannelName )
 		"""
+
+		if aServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_TRUE )
 
 		return ret
 
@@ -1916,12 +1914,31 @@ class DataCacheMgr( object ) :
 
 
 	def SetCurrentPMTEvent( self, aPMTEvent ) :
-		self.mPMTEvent = aPMTEvent
+		if aPMTEvent and aPMTEvent.mPMTSource == ElisEnum.E_MODE_PVR :
+			self.mPMTinstance = aPMTEvent
+			return
+
+		channel = self.Channel_GetCurrent( )
+		if channel and channel.mError == 0 :
+			hashkey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+			self.mPMTListHash[hashkey] = aPMTEvent
 
 
-	def GetCurrentPMTEvent( self ) :
-		return self.mPMTEvent
+	def GetCurrentPMTEventByPVR( self ) :
+		return self.mPMTinstance
 
+
+	def GetCurrentPMTEvent( self, aFindChannel = None ) :
+		pmt = None
+		channel = self.Channel_GetCurrent( )
+		if aFindChannel :
+			channel = aFindChannel
+
+		if channel and channel.mError == 0 :
+			hashkey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+			pmt = self.mPMTListHash.get( hashkey, None )
+
+		return pmt
 
 	def SetLockedState( self, aIsLock ) :
 		self.mLockStatus = aIsLock
@@ -1970,7 +1987,7 @@ class DataCacheMgr( object ) :
 
 
 	def GetPropertyPlaybackBannerTime( self ) :
-		self.mPropertyPlaybackBannerTime = aTime
+		return self.mPropertyPlaybackBannerTime
 
 
 	def SetParentLockPass( self, aPass = False ) :
@@ -2023,6 +2040,7 @@ class DataCacheMgr( object ) :
 
 	def SetDefaultByFactoryReset( self ) :
 		LOG_TRACE('-------factory reset')
+		self.mPMTListHash = {}
 		#1. pincode : m/w (super pin)
 		#2. video : 1080i, normal, RGB
 		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
@@ -2057,6 +2075,10 @@ class DataCacheMgr( object ) :
 		self.Zappingmode_SetCurrent( zappingmode )
 		#self.Channel_Save( )
 		self.Channel_ReLoad( )
+
+		#8. Settings Property
+		from pvr.GuiHelper import *
+		SetSetting( 'RSS_FEED', '1' )
 
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )

@@ -1073,4 +1073,8 @@
 	<string id="3657">POL_Make sure your antenna is properly set up</string>
 	<string id="3658">POL_To receive a strong satellite signal,\n add satellites and set LNB parameters correctly</string>
 	<string id="3659">POL_Invalid input</string>
+	<string id="3660">POL_Search Range</string>
+	<string id="3661">POL_Select the transponder frequency range for channel search</string>
+	<string id="3662">POL_All Transponders</string>
+	<string id="3663">POL_Current Transponder Only</string>
 </strings>

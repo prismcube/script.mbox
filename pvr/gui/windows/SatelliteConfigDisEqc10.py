@@ -26,7 +26,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 		self.mSelectedTransponderIndex	= 0
 		self.mAvBlankStatus				= False
 		self.mSearchMode				= 0
-		self.mChannelSearchMethod		= 0
+		self.mSearchRange				= 0
 
 
 	def onInit( self ) :
@@ -192,7 +192,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			return
 
 		elif groupId == E_SpinEx07 :
-			self.mChannelSearchMethod = self.GetSelectedIndex( E_SpinEx07 )
+			self.mSearchRange = self.GetSelectedIndex( E_SpinEx07 )
 			return
 
 		# Transponer
@@ -213,7 +213,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 
-				if self.mChannelSearchMethod :
+				if self.mSearchRange :
 					configuredSatelliteList = []
 					config = ElisISatelliteInfo( )
 					config.mLongitude	= self.mCurrentSatellite.mSatelliteLongitude
@@ -303,7 +303,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
 		self.AddEnumControl( E_SpinEx06, MR_LANG( 'Network Search' ), None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
-		self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Channel Search Method' ), USER_ENUM_LIST_CHANNEL_SEARCH_MODE, self.mChannelSearchMethod, MR_LANG( 'Select channel search method' ) )
+		self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

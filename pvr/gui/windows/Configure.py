@@ -677,6 +677,8 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_ETC :
+			self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
+
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode if you press \'Standby\' button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for switching into standby mode when not being used' ) )
