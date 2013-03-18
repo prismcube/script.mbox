@@ -55,6 +55,9 @@ def RecordConflict( aInfo ) :
 
 
 def HasEPGComponent( aEPG, aFlag ) :
+	if not aEPG or aEPG.mError != 0 :
+		return 'False'
+
 	if aFlag == ElisEnum.E_HasHDVideo :
 		return ( 'True', 'False' ) [ aEPG.mHasHDVideo == 0 ]
 
@@ -88,7 +91,7 @@ def HasEPGComponent( aEPG, aFlag ) :
 	return 'False'
 
 
-def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
+def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 	if not pmtEvent :
 		LOG_TRACE( '---------------pmtEvent None' )
 		return False
@@ -97,21 +100,19 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None
 	if aPropertyID == 'HasTeletext' :
 		if pmtEvent.mTTXCount > 0 :
 			#LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
 	elif aPropertyID == 'HasSubtitle' :
 		if pmtEvent.mSubCount > 0 :
 			#LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
 	elif aPropertyID == 'HasDolbyPlus' :
 		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
 		if pmtEvent.mAudioCount > 0 and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
+	self.setProperty( aPropertyID, '%s'% ret )
 	return ret
 
 
