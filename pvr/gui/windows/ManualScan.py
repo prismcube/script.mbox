@@ -77,6 +77,7 @@ class ManualScan( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
+			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
 			if self.mAvBlankStatus :
