@@ -58,7 +58,7 @@ class TimerWindow( BaseWindow ) :
 
 		self.SetPipScreen( )
 
-		self.ResetEPGInfomation( )		
+		#toDO self.ResetEPGInfomation( )		
 		
 		self.UpdateTimerMode( )
 
