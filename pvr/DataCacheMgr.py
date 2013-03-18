@@ -2062,3 +2062,12 @@ class DataCacheMgr( object ) :
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
+	def SyncMute( self ) :
+		xbmcMute = XBMC_GetMute( )
+		playerMute = self.mCommander.Player_GetMute( )
+
+		if xbmcMute != playerMute :
+			playerMute = True
+		if not xbmcMute :
+			playerMute = False
+		self.mCommander.Player_SetMute( playerMute )

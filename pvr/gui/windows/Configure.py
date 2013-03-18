@@ -1010,12 +1010,7 @@ class Configure( SettingWindow ) :
 			if mute == False :
 				self.mCommander.Player_SetMute( False )
 
-			self.SyncVolume( )
-
-
-	def SyncVolume( self ) :
-		if XBMC_GetMute :
-			self.mCommander.Player_SetMute( True )
+			self.mDataCache.SyncMute( )
 
 
 	def SetDefaultVolume( self ) :
