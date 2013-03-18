@@ -1077,4 +1077,5 @@
 	<string id="3661">ITA_Select the transponder frequency range for channel search</string>
 	<string id="3662">ITA_All Transponders</string>
 	<string id="3663">ITA_Current Transponder Only</string>
+	<string id="3664">ITA_Enter new duration</string>
 </strings>

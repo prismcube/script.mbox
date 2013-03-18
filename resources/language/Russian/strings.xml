@@ -1077,4 +1077,5 @@
 	<string id="3661">RUS_Select the transponder frequency range for channel search</string>
 	<string id="3662">RUS_All Transponders</string>
 	<string id="3663">RUS_Current Transponder Only</string>
+	<string id="3664">RUS_Enter new duration</string>
 </strings>

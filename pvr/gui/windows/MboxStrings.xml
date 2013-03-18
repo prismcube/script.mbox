@@ -1081,4 +1081,5 @@
 	<string id="3661">Select the transponder frequency range for channel search</string>
 	<string id="3662">All Transponders</string>
 	<string id="3663">Current Transponder Only</string>
+	<string id="3664">Enter new duration</string>
 </strings>

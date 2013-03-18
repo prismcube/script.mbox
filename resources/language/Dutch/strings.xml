@@ -1077,4 +1077,5 @@
 	<string id="3661">DUT_Select the transponder frequency range for channel search</string>
 	<string id="3662">DUT_All Transponders</string>
 	<string id="3663">DUT_Current Transponder Only</string>
+	<string id="3664">DUT_Enter new duration</string>
 </strings>
