@@ -164,7 +164,7 @@ class EPGWindow( BaseWindow ) :
 
 			contextAction = self.ShowContextMenu( )
 
-			if contextAction == CONTEXT_SHOW_ALL_TIMERS :
+			if contextAction == CONTEXT_SHOW_ALL_TIMERS or contextAction == CONTEXT_SEARCH :
 				self.DoContextAction( contextAction ) 
 			else :
 				self.DoContextAction( contextAction ) 
