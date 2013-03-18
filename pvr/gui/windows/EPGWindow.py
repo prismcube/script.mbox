@@ -211,6 +211,9 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_FF : #no service
 			self.SelectNextChannel( )			
 
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.ShowSearchDialog( )
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
@@ -610,6 +613,19 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.reset( )
 				return
 
+			if aUpdateOnly == False :
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mEPGList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
+			
+
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
 			strNoEvent = MR_LANG( 'No event' )
@@ -692,6 +708,18 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
+
+			if aUpdateOnly == False :
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mEPGList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
 				
 			strNoEvent = MR_LANG( 'No event' )
 
@@ -1072,7 +1100,16 @@ class EPGWindow( BaseWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
 					dialog.doModal( )
 					return
-					
+
+				self.mEventBus.Deregister( self )	
+				self.StopEPGUpdateTimer( )
+
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
+
+
+				
+				"""
 				searchList = []
 				indexList = []
 				count = len( self.mListItems )
@@ -1105,6 +1142,7 @@ class EPGWindow( BaseWindow ) :
 							self.mCtrlList.selectItem( indexList[ select ] )
 						else:
 							self.mCtrlBigList.selectItem( indexList[ select ] )
+				"""
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

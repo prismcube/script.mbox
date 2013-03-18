@@ -53,7 +53,7 @@
 
 		<control type="group" id="9003">
 			<include>DefaultWindowFade</include>		
-			<include>DefaultBigTimerView</include> <!-- Default Big View id = 3510 -->			
+			<include>DefaultBigTimerView</include> <!-- Default Big View id = 3610 -->			
 		</control>
 
 		<!-- PIP -->
@@ -160,10 +160,10 @@
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label>SCRIPT1088</label>
-					<onleft>3510</onleft>
-					<onright>3510</onright>
-					<onup>3510</onup>
-					<ondown>3510</ondown>
+					<onleft>3610</onleft>
+					<onright>3610</onright>
+					<onup>3610</onup>
+					<ondown>3610</ondown>
 				</control>
 			</control>
 		</control>

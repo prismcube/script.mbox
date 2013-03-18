@@ -51,6 +51,7 @@ WIN_ID_INFO_PLATE					= 31
 #WIN_ID_FAVORITE_ADDONS				= 32
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
+WIN_ID_EPG_SEARCH					= 34
 
 WIN_ID_HIDDEN_TEST					= 99
 
@@ -288,7 +289,9 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			from pvr.gui.windows.Favorites import Favorites
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
+			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
 			from pvr.HiddenTest import HiddenTest
+
 
 			if E_SUPPORT_SINGLE_WINDOW_MODE :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
@@ -323,7 +326,10 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow  )
 				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow  )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow  )
+				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow  )								
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow  )
+
+				
 
 			else :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
@@ -366,6 +372,8 @@ class WindowMgr( object ) :
 				"""
 				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
+				#self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGSearchWindow.xml', self.mScriptDir  )
+				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
 				"""
