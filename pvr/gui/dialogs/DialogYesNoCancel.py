@@ -20,6 +20,7 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
+		self.IsStandByClose( )
 
 
 	def onAction( self, aAction ) :
@@ -49,7 +50,18 @@ class DialogYesNoCancel( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aTitle='', aLabel='' ) :
+	def SetDialogProperty( self, aTitle = '', aLabel = '', aDefaultClose = False ) :
 		self.mTitle = aTitle
 		self.mLabel = aLabel
+		self.mDefaultIsOk = aDefaultClose
+
+
+	def IsStandByClose( self ) :
+		if self.mDataCache.GetStanbyClosing( ) :
+			time.sleep( 0.5 )
+			if self.mDefaultIsOk :
+				self.mIsOk = E_DIALOG_STATE_YES
+			else :
+				self.mIsOk = E_DIALOG_STATE_NO
+			self.CloseDialog( )
 

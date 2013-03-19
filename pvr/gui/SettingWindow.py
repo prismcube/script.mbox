@@ -14,21 +14,24 @@ class ControlItem :
 	E_SETTING_PREV_NEXT_BUTTON				= 4
 
 
-	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :
-		self.mEnable	= True
-		self.mControlType = aControlType	
-		self.mControlId  = aControlId
-		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
-		self.mListItems = aListItems
-		self.mSelecteItem = aSelecteItem
-		self.mDescription = aDescription
+	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription = None, aInputNumberType = None, aMax = 0 ) :
+		self.mEnable			= True
+		self.mControlType		= aControlType	
+		self.mControlId 		= aControlId
+		self.mProperty			= aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
+		self.mListItems			= aListItems
+		self.mSelecteItem		= aSelecteItem
+		self.mDescription		= aDescription
+		self.mInputNumberType	= aInputNumberType
+		self.mMax				= aMax
 	
 
 class SettingWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mControlList = []
-		self.mTunerMgr = pvr.TunerConfigMgr.GetInstance( )
+		self.mControlList	= []
+		self.mTunerMgr		= pvr.TunerConfigMgr.GetInstance( )
+		self.mResetInput	= True
 
 
 	def InitControl( self ) :
@@ -81,7 +84,7 @@ class SettingWindow( BaseWindow ) :
 		return len( self.mControlList )
 
 
-	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ) :
+	def AddEnumControl( self, aControlId, aPropName, aTitleLabel = None, aDescription = None ) :
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
 		for i in range( property.GetIndexCount( ) ) :
@@ -102,11 +105,11 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
-	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ) :
+	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription = None, aInputNumberType = None, aMax = 0 ) :
 		listItems = []
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription, aInputNumberType, aMax ) )
 
 
 	def AddPrevNextButton( self, aDescriptionNext, aDescriptionPrev ) :
@@ -353,6 +356,9 @@ class SettingWindow( BaseWindow ) :
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
 
+		if self.GetIsInputNumberType( groupId ) :
+			self.mResetInput = True
+
 		if prevId > 0 and groupId != prevId :
 			self.setFocusId( prevId )
 			return True
@@ -364,6 +370,9 @@ class SettingWindow( BaseWindow ) :
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
+
+		if self.GetIsInputNumberType( groupId ) :
+			self.mResetInput = True
 
 		if nextId > 0 and groupId != nextId :
 			self.setFocusId( nextId )
@@ -420,3 +429,71 @@ class SettingWindow( BaseWindow ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
+
+
+	def GetIsInputNumberType( self , aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mInputNumberType == None :
+					return False
+				else :
+					return True
+
+	
+	def GetInputNumberType( self , aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				return ctrlItem.mInputNumberType
+	
+	"""
+	def GetControlMinValue( self, aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				return ctrlItem.mMin
+	"""
+
+
+	def GetControlMaxValue( self, aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				return ctrlItem.mMax
+
+
+	def GetControlMaxRange( self, aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				string = '%d' % ctrlItem.mMax
+				print 'dhkim test GetControlMaxRange = %s' % len( string )
+				return len( string )
+
+
+	def InputNumberControl( self, aAction, aGroupId, aValue, aTail = '' ) :
+		if self.GetInputNumberType( aGroupId ) == TYPE_NUMBER_NORMAL :
+			if self.mResetInput == True or len( aValue ) == self.GetControlMaxRange( aGroupId ) :
+				aValue = ''
+				self.mResetInput = False
+
+			from pvr.gui.BaseWindow import Action
+			if aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 :
+				label = '%d' % int( aValue + '%d' % ( int( aAction ) - Action.REMOTE_0 ) )
+				
+			elif aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 :
+				label = '%d' % int( aValue + '%d' % ( aAction - Action.ACTION_JUMP_SMS2 + 2 ) )
+
+			if int( label ) > self.GetControlMaxValue( aGroupId ) :
+				label = '%d' % self.GetControlMaxValue( aGroupId )
+				
+			self.SetControlLabel2String( aGroupId, label + aTail )
+
+			return label
+		
