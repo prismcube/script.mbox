@@ -602,18 +602,17 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.reset( )
 				return
 
-			if aUpdateOnly == False :
+			if aUpdateOnly == False or self.mListItems == None:
 				self.mLock.acquire( )	
 				self.mListItems = []
 				self.mLock.release( )
 			else :
-				if len( self.mEPGList ) != len( self.mListItems ) :
+				if len( self.mChannelList ) != len( self.mListItems ) :
 					LOG_TRACE( 'UpdateOnly------------>Create' )
 					aUpdateOnly = False 
 					self.mLock.acquire( )	
 					self.mListItems = []
 					self.mLock.release( )
-			
 
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -698,12 +697,12 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.reset( )
 				return
 
-			if aUpdateOnly == False :
+			if aUpdateOnly == False or self.mListItems == None:
 				self.mLock.acquire( )	
 				self.mListItems = []
 				self.mLock.release( )
 			else :
-				if len( self.mEPGList ) != len( self.mListItems ) :
+				if len( self.mChannelList ) != len( self.mListItems ) :
 					LOG_TRACE( 'UpdateOnly------------>Create' )
 					aUpdateOnly = False 
 					self.mLock.acquire( )	

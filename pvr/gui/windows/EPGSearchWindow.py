@@ -207,7 +207,11 @@ class EPGSearchWindow( BaseWindow ) :
 	@SetLock
 	def UpdateList( self, aUpdateOnly=False ) :
 
-		if aUpdateOnly == False :
+		if self.mEPGList == None :
+			self.mCtrlBigList.reset( )
+			return
+
+		if aUpdateOnly == False or self.mListItems == None:
 			self.mLock.acquire( )	
 			self.mListItems = []
 			self.mLock.release( )
@@ -219,9 +223,6 @@ class EPGSearchWindow( BaseWindow ) :
 				self.mListItems = []
 				self.mLock.release( )
 			
-		if self.mEPGList == None :
-			self.mCtrlBigList.reset( )
-			return
 	
 		self.LoadTimerList( )
 
