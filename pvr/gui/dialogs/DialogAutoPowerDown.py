@@ -33,14 +33,8 @@ class DialogAutoPowerDown( BaseDialog ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			pass
 
 
 	def onClick( self, aControlId ) :

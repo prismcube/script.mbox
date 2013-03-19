@@ -12,7 +12,7 @@ class ManualScan( SettingWindow ) :
 		self.mTransponderList			= []
 
 		self.mFormattedList	= []
-		self.mIsManualSetup				= 0
+		#self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
 		self.mHasTansponder				= False
 		self.mAvBlankStatus				= False
@@ -25,7 +25,7 @@ class ManualScan( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
 		#self.VisibleTuneStatus( False )
-		self.mIsManualSetup = 0
+		#self.mIsManualSetup = 0
 
 		self.mSatelliteIndex = 0
 		self.mTransponderIndex = 0
@@ -35,7 +35,7 @@ class ManualScan( SettingWindow ) :
 
 		self.SetSingleWindowPosition( E_MANUAL_SCAN_BASE_ID )
 
-		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( True )
@@ -102,6 +102,15 @@ class ManualScan( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
+		elif ( actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 ) or ( actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 ) :
+			groupid = self.GetGroupId( focusId )
+			#ret = self.InputNumberControl( actionId, groupid, self.GetControlLabel2String( groupid ) )
+
+			if groupid == E_Input02 :
+				ret = self.InputNumberControl( actionId, groupid, '%d' % self.mConfigTransponder.mFrequency, ' MHz' )
+				self.mConfigTransponder.mFrequency = int( ret )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -125,36 +134,36 @@ class ManualScan( SettingWindow ) :
 
 		# Transponder
 		elif groupId == E_Input02 :
-			if self.mIsManualSetup == 0 :
-				formattedTransponderList = []
-				for i in range( len( self.mTransponderList ) ) :			
-					formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
-				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, StringToListIndex( formattedTransponderList, self.GetControlLabel2String( E_Input02 ) ) )
+			#if self.mIsManualSetup == 0 :
+			formattedTransponderList = []
+			for i in range( len( self.mTransponderList ) ) :			
+				formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
+			dialog = xbmcgui.Dialog( )
+			select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, StringToListIndex( formattedTransponderList, self.GetControlLabel2String( E_Input02 ) ) )
 
-				if select >=0 :
-					self.mTransponderIndex = select
-					self.SetConfigTransponder( )
-					self.InitConfig( )
-				else :
-					return
-
+			if select >=0 :
+				self.mTransponderIndex = select
+				self.SetConfigTransponder( )
+				self.InitConfig( )
 			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter TP frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
-				dialog.doModal( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					tempval = dialog.GetString( )
-					if int( tempval ) > 13000 :
-						self.mConfigTransponder.mFrequency = 13000
-					elif int( tempval ) < 3000 :
-						self.mConfigTransponder.mFrequency = 3000
-					else :
-						self.mConfigTransponder.mFrequency = int( tempval )
+				return
 
-					self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
-				else :
-					return
+			#else :
+			#	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			#	dialog.SetDialogProperty( MR_LANG( 'Enter TP frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
+			#	dialog.doModal( )
+			#	if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			#		tempval = dialog.GetString( )
+			#		if int( tempval ) > 13000 :
+			#			self.mConfigTransponder.mFrequency = 13000
+			#		elif int( tempval ) < 3000 :
+			#			self.mConfigTransponder.mFrequency = 3000
+			#		else :
+			#			self.mConfigTransponder.mFrequency = int( tempval )
+
+			#		self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
+			#	else :
+			#		return
 
 		# Symbol Rate
 		elif groupId == E_Input03 :
@@ -191,10 +200,12 @@ class ManualScan( SettingWindow ) :
 
 
 		# Manual Setup
-		elif groupId == E_SpinEx01 :
-			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
-			self.InitConfig( )
-			return
+		
+		#elif groupId == E_SpinEx01 :
+		#	self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
+		#	self.InitConfig( )
+		#	return
+		
 
 		# DVB Type
 		elif groupId == E_SpinEx02 :
@@ -254,12 +265,9 @@ class ManualScan( SettingWindow ) :
 		self.ResetAllControl( )	
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
+		#self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
 
-		if self.mIsManualSetup == 0 :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Select the transponder frequency for the selected satellite' ) )
-		else :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter the transponder frequency for the selected satellite' ) )
+		self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Select or enter the transponder frequency for the selected satellite' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
 
 		# DVB Type
 		self.AddEnumControl( E_SpinEx02, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
@@ -339,21 +347,21 @@ class ManualScan( SettingWindow ) :
 
 
 	def DisableControl( self ) :	
-		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
-		if self.mIsManualSetup == 0 :
-			self.SetEnableControls( disablecontrols, False )
-		else :
-			self.SetEnableControls( disablecontrols, True )
+		#disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
+		#if self.mIsManualSetup == 0 :
+		#	self.SetEnableControls( disablecontrols, False )
+		#else :
+		#	self.SetEnableControls( disablecontrols, True )
 
-			if self.mConfigTransponder.mFECMode == 0 :
-				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
-				self.getControl( E_SpinEx03 + 3 ).selectItem( 0 )
-				self.SetEnableControl( E_SpinEx03, False )
-			else :
-				self.SetProp( E_SpinEx03, 0 )
-				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
-				self.SetEnableControl( E_SpinEx03, True )
+		if self.mConfigTransponder.mFECMode == 0 :
+			self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
+			self.getControl( E_SpinEx03 + 3 ).selectItem( 0 )
+			self.SetEnableControl( E_SpinEx03, False )
+		else :
+			self.SetProp( E_SpinEx03, 0 )
+			self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
+			self.SetEnableControl( E_SpinEx03, True )
 
 		if self.mHasTansponder == False :
-			disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+			disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetEnableControls( disablecontrols, False )

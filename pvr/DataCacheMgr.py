@@ -132,6 +132,8 @@ class DataCacheMgr( object ) :
 		self.mDefaultHideWatched				= False
 		self.mPlayingChannel					= False
 
+		self.mStandByClose						= False
+
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
 
@@ -2036,6 +2038,14 @@ class DataCacheMgr( object ) :
 
 	def GetDefaultHideWatched( self ) :
 		return self.mDefaultHideWatched
+
+
+	def SetStanbyClosing( self, aFlag ) :
+		self.mStandByClose = aFlag
+
+
+	def GetStanbyClosing( self ) :
+		return self.mStandByClose
 
 
 	def SetDefaultByFactoryReset( self ) :

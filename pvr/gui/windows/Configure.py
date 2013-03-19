@@ -582,7 +582,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_Input06 ]
+					hideControlIds = [ E_Input06, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
