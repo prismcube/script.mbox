@@ -127,6 +127,17 @@ class GlobalEvent( object ) :
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
+			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
+				if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
+					self.mDataCache.Subtitle_Show( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = True
+			else :
+				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_Show( ) :
+					self.mDataCache.Subtitle_Hide( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = False
+
+
 		elif aEvent.getName( ) == ElisEventChannelChangeResult( ).getName( ) :
 			self.CheckParentLock( E_PARENTLOCK_INIT )
 
