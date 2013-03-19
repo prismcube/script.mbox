@@ -4,6 +4,9 @@ from pvr.gui.WindowImport import *
 TEXTBOX_ID_TITLE					= 100
 TEXTBOX_ID_DESCRIPTION				= 101
 LABEL_ID_DATE						= 102
+GROUP_ID_BASE						= 300
+BUTTON_ID_PREV						= 301
+BUTTON_ID_NEXT						= 302
 
 
 class DialogExtendEPG( BaseDialog ) :
@@ -11,36 +14,35 @@ class DialogExtendEPG( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mEPG = None
 		self.mIsOk = None
-		
+		self.mEPGList = None
+		self.mEPGListIdx = 0
+
 
 	def onInit( self ) :
 		LOG_TRACE( '' )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
-		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
+		try :
+			descriptGroup = self.getControl( GROUP_ID_BASE )
+			basePos = descriptGroup.getPosition( )
+			lastWin = WinMgr.GetInstance( ).GetLastWindowID( )
+			if lastWin == WinMgr.WIN_ID_NULLWINDOW or lastWin == WinMgr.WIN_ID_EPG_WINDOW :
+				descriptGroup.setPosition( basePos[0], basePos[1] + 55 )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mEPG )
-		pmtinstance = self.mDataCache.GetCurrentPMTEventByPVR( )
-		if pmtinstance :
-			pmtEvent = pmtinstance
+		button1 = E_TAG_FALSE
+		button2 = E_TAG_FALSE
+		if self.mEPGList and len( self.mEPGList ) > 0 :
+			button2 = E_TAG_TRUE
+			if self.mEPGListIdx > 0 :
+				button1 = E_TAG_TRUE
+			self.EPGListMoveToIndex( )
 
-		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
-		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_SUBTITLE )
-		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
-		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
-			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
-		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( self.mEPG, ElisEnum.E_HasHDVideo ) )
+		self.setProperty( 'EPGPrev', button1 )
+		self.setProperty( 'EPGNext', button2 )
 
-		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
-		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
-		self.mCtrlDate = self.getControl( LABEL_ID_DATE )
-
-		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
-		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-		self.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
-
+		self.ShowExtendedInfo( )
 		self.mEventBus.Register( self )
 
 
@@ -64,6 +66,17 @@ class DialogExtendEPG( BaseDialog ) :
 
 		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
 			self.Close( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			self.GetFocusId( )
+			if self.mFocusId == BUTTON_ID_PREV or self.mFocusId == BUTTON_ID_NEXT :
+				self.EPGNavigation( self.mFocusId )
+
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.EPGNavigation( BUTTON_ID_PREV )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.EPGNavigation( BUTTON_ID_NEXT )
 
 
 	def onClick( self, aControlId ) :
@@ -93,8 +106,89 @@ class DialogExtendEPG( BaseDialog ) :
 		self.mEPG = aEPG
 
 
+	def SetEPGList( self, aEPGList = None, aIdx = 0 ) :
+		self.mEPGList = aEPGList
+		self.mEPGListIdx = aIdx
+
+
+	def EPGListMoveToIndex( self ) :
+		try :
+			iEPG = self.mEPGList[self.mEPGListIdx]
+			if iEPG :
+				self.ResetLabel( )
+				SetLock2(True)
+				self.mEPG = iEPG
+				SetLock2(False)
+
+				self.setProperty( 'EPGIndex', '%s/%s'% ( self.mEPGListIdx + 1, len( self.mEPGList ) ) )
+				self.ShowExtendedInfo( )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	def EPGNavigation( self, aDir ):
+		if self.mEPGList :
+			lastIdx = len( self.mEPGList ) - 1
+			if aDir == BUTTON_ID_NEXT :
+				if self.mEPGListIdx + 1 > lastIdx :
+					self.mEPGListIdx = lastIdx
+				else :
+					self.mEPGListIdx += 1
+
+			elif aDir == BUTTON_ID_PREV:
+				if self.mEPGListIdx - 1 < 0 :
+					self.mEPGListIdx = 0
+				else :
+					self.mEPGListIdx -= 1
+
+			button1 = E_TAG_FALSE
+			if self.mEPGListIdx > 0 :
+				button1 = E_TAG_TRUE
+
+			self.setProperty( 'EPGPrev', button1 )
+			self.EPGListMoveToIndex( )
+
+
 	def GetCloseStatus( self ) :
 		return self.mIsOk
+
+
+	def ShowExtendedInfo( self ) :
+		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
+		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
+
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mEPG )
+		pmtinstance = self.mDataCache.GetCurrentPMTEventByPVR( )
+		if pmtinstance :
+			pmtEvent = pmtinstance
+
+		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
+		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_SUBTITLE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
+		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
+			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
+		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( self.mEPG, ElisEnum.E_HasHDVideo ) )
+
+		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
+		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
+		self.mCtrlDate = self.getControl( LABEL_ID_DATE )
+
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+		self.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
+
+
+	def ResetLabel( self ) :
+		self.setProperty( 'EPGTime', '' )
+		self.setProperty( 'EPGIndex', '' )
+		self.setProperty( 'EPGTitle', '' )
+		self.setProperty( 'EPGDescription', '' )
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBYPLUS, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBY, E_TAG_FALSE )
 
 
 	def Close( self ) :

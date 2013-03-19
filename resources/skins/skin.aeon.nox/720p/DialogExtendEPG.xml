@@ -1,8 +1,9 @@
 <window>
 	<allowoverlay>yes</allowoverlay>
+	<defaultcontrol always="true">302</defaultcontrol>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<control type="group">
+		<control type="group" id="300">
 			<include>DefaultDialogCloseEffect</include>
 			<posx>90</posx>
 			<posy>30</posy>
@@ -15,6 +16,68 @@
 				<texture border="20">osd/osd_settings_back.png</texture>
 			</control>
 
+			<control type="group">
+				<control type="button" id="301">
+					<description>Prev button</description>
+					<posx>80</posx>
+					<posy>465</posy>
+					<width>30</width>
+					<height>30</height>
+					<texturenofocus>views/multiplex_arrowfocus2.png</texturenofocus>
+					<texturefocus>views/multiplex_arrow2.png</texturefocus>
+					<onleft></onleft>
+					<onright>302</onright>
+					<visible>substring(Window.Property(EPGPrev),true)</visible>
+				</control>
+				<control type="button" id="302">
+					<description>Next button</description>
+					<posx>970</posx>
+					<posy>465</posy>
+					<width>30</width>
+					<height>30</height>
+					<texturenofocus>views/multiplex_arrowfocus.png</texturenofocus>
+					<texturefocus>views/multiplex_arrow.png</texturefocus>
+					<onleft>301</onleft>
+					<onright></onright>
+					<visible>substring(Window.Property(EPGNext),true)</visible>
+				</control>
+				<control type="label">
+					<posx>120</posx>
+					<posy>458</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font12</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1091</label>
+					<visible>Control.IsVisible(301)</visible>
+				</control>
+				<control type="label">
+					<posx>960</posx>
+					<posy>458</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font12</font>
+					<textcolor>grey2</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1092</label>
+					<visible>Control.IsVisible(302)</visible>
+				</control>
+				<control type="label">
+					<posx>520</posx>
+					<posy>458</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<aligny>center</aligny>
+					<label>$INFO[Window.Property(EPGIndex)]</label>
+					<visible>Control.IsVisible(301) | Control.HasFocus(302)</visible>
+				</control>
+			</control>
+
 			<control type="label" id="100">
 				  <description>EPG Title</description>
 				  <posx>80</posx>
@@ -23,7 +86,7 @@
 				  <height>100</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font35_title</font>
+				  <font>Font_OSDTitle2</font>
 				  <textcolor>FFFFFFFF</textcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
 			</control>
@@ -33,7 +96,7 @@
 				  <posx>80</posx>
 				  <posy>135</posy>
 				  <width>950</width>
-				  <height>360</height>
+				  <height>330</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
 				  <font>font13</font>
