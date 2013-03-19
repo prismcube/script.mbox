@@ -118,6 +118,7 @@
 "TV Channels",,,,,,,,,,117
 "Radio Channels",,,,,,,,,,118
 "Search Results",,,,,,,,,,119
+"Playback",,,,,,,,,,120
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "1080p-50",,,,,,,,,,2003
@@ -1079,3 +1080,10 @@
 "Select the transponder frequency range for channel search",,,,,,,,,,3661
 "All Transponders",,,,,,,,,,3662
 "Current Transponder Only",,,,,,,,,,3663
+"Enter new duration",,,,,,,,,,3664
+"Same name already exists",,,,,,,,,,3665
+"Can not find any matches result",,,,,,,,,,3666
+"No result",,,,,,,,,,3667
+"Set video calibration",,,,,,,,,,3668
+"Video Calibration",,,,,,,,,,3669
+"Calibrate your display to get the best viewing experience",,,,,,,,,,3670

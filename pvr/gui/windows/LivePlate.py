@@ -913,6 +913,10 @@ class LivePlate( LivePlateWindow ) :
 				self.mIsShowDialog = False
 				return
 
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				self.mIsShowDialog = False
+				return
+
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
@@ -932,7 +936,8 @@ class LivePlate( LivePlateWindow ) :
 				self.mIsShowDialog = False
 				return
 
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentChannel and \
@@ -1163,6 +1168,10 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def DoContextAction( self, aSelectAction ) :
+		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+			return
+
 		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( aSelectAction )

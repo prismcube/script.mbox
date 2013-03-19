@@ -116,6 +116,7 @@
 	<string id="1116">FRE_Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">FRE_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">FRE_Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1119">FRE_Playback</string>
 	<string id="2001">FRE_Last ServiceType</string>
 	<string id="2002">FRE_CurrentVoutResolution</string>
 	<string id="2003">FRE_1080p-50</string>
@@ -1077,4 +1078,11 @@
 	<string id="3661">FRE_Select the transponder frequency range for channel search</string>
 	<string id="3662">FRE_All Transponders</string>
 	<string id="3663">FRE_Current Transponder Only</string>
+	<string id="3664">FRE_Enter new duration</string>
+	<string id="3665">FRE_Same name already exists</string>
+	<string id="3666">FRE_Can not find any matches result</string>
+	<string id="3667">FRE_No result</string>
+	<string id="3668">FRE_Set video calibration</string>
+	<string id="3669">FRE_Video Calibration</string>
+	<string id="3670">FRE_Calibrate your display to get the best viewing experience</string>
 </strings>

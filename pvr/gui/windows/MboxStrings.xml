@@ -1082,4 +1082,11 @@
 	<string id="3661">Select the transponder frequency range for channel search</string>
 	<string id="3662">All Transponders</string>
 	<string id="3663">Current Transponder Only</string>
+	<string id="3664">Enter new duration</string>
+	<string id="3665">Same name already exists</string>
+	<string id="3666">Can not find any matches result</string>
+	<string id="3667">No result</string>
+	<string id="3668">Set video calibration</string>
+	<string id="3669">Video Calibration</string>
+	<string id="3670">Calibrate your display to get the best viewing experience</string>
 </strings>
