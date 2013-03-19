@@ -356,7 +356,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Antenna' ), '', MR_LANG( 'You can control the movements of the motorized antenna here' ) )
-		self.AddEnumControl( E_SpinEx05, MR_LANG( 'Network Search' ), None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		self.AddEnumControl( E_SpinEx05, MR_LANG( 'Network Search' ), None, networkSearchDescription )
 
 		"""
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Rotation Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles' ) )
