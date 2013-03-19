@@ -349,6 +349,10 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+				return
+
 			if not self.mDataCache.Teletext_Show( ) :
 				self.DialogPopupOK( actionId )
 
@@ -776,6 +780,10 @@ class NullWindow( BaseWindow ) :
 
 
 	def ShowSubtitle( self ) :
+		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+			return
+
 		subTitleCount = self.mCommander.Subtitle_GetCount( )
 		if subTitleCount > 0 :
 			isShowing = False
@@ -900,6 +908,7 @@ class NullWindow( BaseWindow ) :
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
+
 		elif aAction == Action.ACTION_COLOR_BLUE :
 			self.CloseSubTitle( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )

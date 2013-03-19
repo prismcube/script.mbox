@@ -105,6 +105,15 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
 				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
@@ -3565,15 +3574,8 @@ Search for window name
 			</control>
 		</control>
 
-		<!-- *********** E_EPG ********** -->
-		<control type="group" id="3700000">
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
-			<include>DefaultSettingWindowEffect</include>
-			<visible>substring(Window.Property(CurrentWindow),3700000)</visible>
-			<defaultcontrol always="true">3709003</defaultcontrol>
+		<control type="group" id="3709999">
+			<visible>Control.IsVisible(3700000) | Control.IsVisible(4400000)</visible>		
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
@@ -3762,6 +3764,7 @@ Search for window name
 						<onright>3709010</onright>
 						<onup>3700100</onup>
 						<ondown>3700100</ondown>
+						<visible>!substring(Window.Property(EPGMode),search)</visible>						
 					</control>
 
 				</control>
@@ -3963,8 +3966,30 @@ Search for window name
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			</control>
+		</control>
+		
+		<!-- *********** E_EPG ********** -->
+		<control type="group" id="3700000">
+			<!--
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
+			<include>DefaultSettingWindowEffect</include>
+			<visible>substring(Window.Property(CurrentWindow),3700000)</visible>
+			<defaultcontrol always="true">3709003</defaultcontrol>
+		</control>
+
+		<!-- *********** E_EPG_SEARCH ********** -->		
+		<control type="group" id="4400000">
+			<!--
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
+			<include>DefaultSettingWindowEffect</include>
+			<visible>substring(Window.Property(CurrentWindow),4400000)</visible>
+			<defaultcontrol always="true">3709003</defaultcontrol>
 		</control>
 
 		<!-- *********** E_TimerWindow ********** -->

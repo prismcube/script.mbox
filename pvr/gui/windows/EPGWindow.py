@@ -81,7 +81,6 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
-		self.mNavChannel = None
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -164,7 +163,7 @@ class EPGWindow( BaseWindow ) :
 
 			contextAction = self.ShowContextMenu( )
 
-			if contextAction == CONTEXT_SHOW_ALL_TIMERS :
+			if contextAction == CONTEXT_SHOW_ALL_TIMERS or contextAction == CONTEXT_SEARCH :
 				self.DoContextAction( contextAction ) 
 			else :
 				self.DoContextAction( contextAction ) 
@@ -216,6 +215,9 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
 			self.SelectNextChannel( )			
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.ShowSearchDialog( )
 
 
 	def onClick( self, aControlId ) :
@@ -434,9 +436,6 @@ class EPGWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
-		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-			self.mNavChannel = self.mChannelList[ selectedPos ]
-
 
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
@@ -516,10 +515,21 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
-		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		return ret
+		channel = None
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			channel = self.mSelectChannel
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
+
+		if channel :	
+			pmtEvent = self.mDataCache.GetCurrentPMTEvent( channel )
+			if pmtEvent :
+				return UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
+
+		return False
 
 
 	def UpdateListUpdateOnly( self ) :
@@ -591,6 +601,18 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
+
+			if aUpdateOnly == False or self.mListItems == None:
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mChannelList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
 
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -674,6 +696,18 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset( )
 				return
+
+			if aUpdateOnly == False or self.mListItems == None:
+				self.mLock.acquire( )	
+				self.mListItems = []
+				self.mLock.release( )
+			else :
+				if len( self.mChannelList ) != len( self.mListItems ) :
+					LOG_TRACE( 'UpdateOnly------------>Create' )
+					aUpdateOnly = False 
+					self.mLock.acquire( )	
+					self.mListItems = []
+					self.mLock.release( )
 				
 			strNoEvent = MR_LANG( 'No event' )
 
@@ -1054,7 +1088,16 @@ class EPGWindow( BaseWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
 					dialog.doModal( )
 					return
-					
+
+				self.mEventBus.Deregister( self )	
+				self.StopEPGUpdateTimer( )
+
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
+
+
+				
+				"""
 				searchList = []
 				indexList = []
 				count = len( self.mListItems )
@@ -1087,6 +1130,7 @@ class EPGWindow( BaseWindow ) :
 							self.mCtrlList.selectItem( indexList[ select ] )
 						else:
 							self.mCtrlBigList.selectItem( indexList[ select ] )
+				"""
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

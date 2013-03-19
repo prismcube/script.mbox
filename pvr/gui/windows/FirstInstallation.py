@@ -225,7 +225,7 @@ class FirstInstallation( FTIWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
 			#self.AddUserEnumControl( E_SpinEx04, 'Zoom', ['1','2','3','4'], 0, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Set video calibration' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]

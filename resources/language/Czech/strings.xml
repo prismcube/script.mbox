@@ -116,6 +116,7 @@
 	<string id="1116">CZE_Configure the general settings for your digital satellite receiver</string>
 	<string id="1117">CZE_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">CZE_Get the latest updates on your PRISMCUBE RUBY</string>
+	<string id="1119">CZE_Playback</string>
 	<string id="2001">CZE_Last ServiceType</string>
 	<string id="2002">CZE_CurrentVoutResolution</string>
 	<string id="2003">CZE_1080p-50</string>
@@ -1077,4 +1078,11 @@
 	<string id="3661">CZE_Select the transponder frequency range for channel search</string>
 	<string id="3662">CZE_All Transponders</string>
 	<string id="3663">CZE_Current Transponder Only</string>
+	<string id="3664">CZE_Enter new duration</string>
+	<string id="3665">CZE_Same name already exists</string>
+	<string id="3666">CZE_Can not find any matches result</string>
+	<string id="3667">CZE_No result</string>
+	<string id="3668">CZE_Set video calibration</string>
+	<string id="3669">CZE_Video Calibration</string>
+	<string id="3670">CZE_Calibrate your display to get the best viewing experience</string>
 </strings>

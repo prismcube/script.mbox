@@ -1,4 +1,4 @@
-import thread, sys, copy
+import thread, sys, copy, xbmcgui
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -1481,6 +1481,9 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
+
 		self.mPlayingChannel = self.Channel_GetCurrent( )
 		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
@@ -1524,6 +1527,9 @@ class DataCacheMgr( object ) :
 		if recInfo and recInfo.mError == 0 :
 			self.Frontdisplay_SetMessage( recInfo.mChannelName )
 		"""
+
+		if aServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_TRUE )
 
 		return ret
 
@@ -2088,3 +2094,12 @@ class DataCacheMgr( object ) :
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
+	def SyncMute( self ) :
+		xbmcMute = XBMC_GetMute( )
+		playerMute = self.mCommander.Player_GetMute( )
+
+		if xbmcMute != playerMute :
+			playerMute = True
+		if not xbmcMute :
+			playerMute = False
+		self.mCommander.Player_SetMute( playerMute )

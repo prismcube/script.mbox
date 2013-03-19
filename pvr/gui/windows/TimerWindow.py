@@ -57,6 +57,8 @@ class TimerWindow( BaseWindow ) :
 		self.mCtrlSubtitleImage.setImage( '' )
 
 		self.SetPipScreen( )
+
+		#toDO self.ResetEPGInfomation( )		
 		
 		self.UpdateTimerMode( )
 
