@@ -150,7 +150,7 @@ class GlobalEvent( object ) :
 				thread = threading.Timer( 0.3, self.AsyncStandbyPowerON )
 				thread.start( )
 
-			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY :
+			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
 				self.mDataCache.SetStanbyClosing( True )
 				thread = threading.Timer( 0.3, self.StanByClose )
 				thread.start( )
