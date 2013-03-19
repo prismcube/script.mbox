@@ -14,7 +14,7 @@ class DialogExtendEPG( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mEPG = None
 		self.mIsOk = None
-		self.mEPGList = None
+		self.mEPGList = []
 		self.mEPGListIdx = 0
 
 
@@ -31,16 +31,24 @@ class DialogExtendEPG( BaseDialog ) :
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
+
 		button1 = E_TAG_FALSE
 		button2 = E_TAG_FALSE
 		if self.mEPGList and len( self.mEPGList ) > 0 :
 			button2 = E_TAG_TRUE
 			if self.mEPGListIdx > 0 :
 				button1 = E_TAG_TRUE
+			self.EPGListMoveToCurrent( )
 			self.EPGListMoveToIndex( )
+
+		else :
+			LOG_TRACE('--------------------epgList none')
+			self.GetEPGListByChannel( )
 
 		self.setProperty( 'EPGPrev', button1 )
 		self.setProperty( 'EPGNext', button2 )
+		if button2 == E_TAG_TRUE :
+			self.UpdateSetFocus( BUTTON_ID_NEXT )
 
 		self.ShowExtendedInfo( )
 		self.mEventBus.Register( self )
@@ -106,9 +114,53 @@ class DialogExtendEPG( BaseDialog ) :
 		self.mEPG = aEPG
 
 
-	def SetEPGList( self, aEPGList = None, aIdx = 0 ) :
+	def SetEPGList( self, aEPGList = [], aIdx = 0 ) :
 		self.mEPGList = aEPGList
 		self.mEPGListIdx = aIdx
+
+
+	@RunThread
+	def GetEPGListByChannel( self ) :
+		channel = self.mDataCache.Channel_GetCurrent( )
+		if channel :
+			self.mEPGList = []
+			self.mEPGListIdx = -1
+
+			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+			gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
+			gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+			maxCount = 100
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+			#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
+
+			button1 = E_TAG_FALSE
+			button2 = E_TAG_FALSE
+			if self.mEPGList or len( self.mEPGList ) > 0 :
+				button2 = E_TAG_TRUE
+				self.mEPGListIdx = 0
+				self.EPGListMoveToCurrent( )
+				LOG_TRACE( 'EPGList load[%s] idx[%s]'% ( len( self.mEPGList ), self.mEPGListIdx ) )
+
+			else :
+				LOG_TRACE( 'EPGList is None' )
+
+			self.EPGListMoveToIndex( )
+			self.setProperty( 'EPGPrev', button1 )
+			self.setProperty( 'EPGNext', button2 )
+			if button2 == E_TAG_TRUE :
+				self.UpdateSetFocus( BUTTON_ID_NEXT )
+
+
+	def EPGListMoveToCurrent( self ) :
+		if self.mEPG and self.mEPG.mError == 0 :
+			#LOG_TRACE('new EPG received, not exist in EPGList')
+			idx = 0
+			for idx in range( len( self.mEPGList ) ) :
+				if self.mEPG.mStartTime < self.mEPGList[idx].mStartTime :
+					break
+
+			self.mEPGListIdx = idx
+			self.mEPGList = self.mEPGList[:idx]+[self.mEPG]+self.mEPGList[idx:]
 
 
 	def EPGListMoveToIndex( self ) :
@@ -155,6 +207,10 @@ class DialogExtendEPG( BaseDialog ) :
 
 
 	def ShowExtendedInfo( self ) :
+		if not self.mEPG or self.mEPG.mError != 0 :
+			LOG_TRACE('--------------------epg None' )
+			return
+
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
 		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
 

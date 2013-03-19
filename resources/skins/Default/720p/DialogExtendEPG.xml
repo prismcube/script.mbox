@@ -1,6 +1,6 @@
 <window>
-	<allowoverlay>yes</allowoverlay>
 	<defaultcontrol always="true">302</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="300">
@@ -72,7 +72,7 @@
 					<textcolor>white</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
-					<visible>Control.IsVisible(301) | Control.HasFocus(302)</visible>
+					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
 				</control>
 			</control>
 
