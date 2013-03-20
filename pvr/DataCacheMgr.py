@@ -1745,6 +1745,34 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Teletext_IsShowing( )
 
 
+	def Subtitle_IsShowing( self ) :
+		return self.mCommander.Subtitle_IsShowing( )
+
+
+	def Subtitle_Show( self ) :
+		return self.mCommander.Subtitle_Show( )
+
+
+	def Subtitle_Hide( self ) :
+		return self.mCommander.Subtitle_Hide( )
+
+
+	def Subtitle_GetSelected( self ) :
+		return self.mCommander.Subtitle_GetSelected( )
+
+
+	def Subtitle_Get( self, aIndex ) :
+		return self.mCommander.Subtitle_Get( aIndex )
+
+
+	def Subtitle_GetCount( self ) :
+		return self.mCommander.Subtitle_GetCount( )
+
+
+	def Subtitle_Select( self, aPid, aPageId, aSubId ) :
+		return self.mCommander.Subtitle_Select( aPid, aPageId, aSubId )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 

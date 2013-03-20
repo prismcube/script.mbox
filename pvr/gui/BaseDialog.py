@@ -133,6 +133,23 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
+		ret = False
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < ( 1.5 + aUserTime ) :
+			self.setFocusId( aControlId )
+			if aControlId == self.GetFocusId( ) :
+				ret = True
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
+		return ret
+
+
 class ControlItem:
 	# Setting Window
 	E_UNDEFINE								= 0

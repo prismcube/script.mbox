@@ -374,6 +374,12 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
+		#test
+		elif actionId == Action.ACTION_COLOR_RED :
+			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
+			if selectedSubtitle :
+				selectedSubtitle.printdebug( )
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -731,7 +737,6 @@ class NullWindow( BaseWindow ) :
 		self.StopBlickingIconTimer( )
 		self.SetBlinkingProperty( 'None' )		
 
-		
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
@@ -767,16 +772,16 @@ class NullWindow( BaseWindow ) :
 
 
 	def CloseSubTitle( self ) :
-		if self.mCommander.Subtitle_IsShowing( ) :
+		if self.mDataCache.Subtitle_IsShowing( ) :
 			self.mSubTitleIsShow = True
-			self.mCommander.Subtitle_Hide( )
+			self.mDataCache.Subtitle_Hide( )
 		else :
 			self.mSubTitleIsShow = False
 
 
 	def CheckSubTitle( self ) :
 		if self.mSubTitleIsShow :
-			self.mCommander.Subtitle_Show( )
+			self.mDataCache.Subtitle_Show( )
 
 
 	def ShowSubtitle( self ) :
@@ -784,14 +789,14 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
 			return
 
-		subTitleCount = self.mCommander.Subtitle_GetCount( )
+		subTitleCount = self.mDataCache.Subtitle_GetCount( )
 		if subTitleCount > 0 :
 			isShowing = False
-			if self.mCommander.Subtitle_IsShowing( ) :
-				self.mCommander.Subtitle_Hide( )
+			if self.mDataCache.Subtitle_IsShowing( ) :
+				self.mDataCache.Subtitle_Hide( )
 				isShowing = True
 
-			selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
+			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
 
 			#####
 			if selectedSubtitle :
@@ -803,13 +808,14 @@ class NullWindow( BaseWindow ) :
 			selectedIndex = -1
 
 			for i in range( subTitleCount ) :
-				structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
-				self.mCommander.Subtitle_Get( i ).printdebug( )
+				structSubTitle.append( self.mDataCache.Subtitle_Get( i ) )
+				self.mDataCache.Subtitle_Get( i ).printdebug( )
 
 				if selectedSubtitle and isShowing :
 					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
 						selectedIndex = i
-				
+						LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
+
 				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
 					subType = 'DVB'
 				else :
@@ -817,8 +823,8 @@ class NullWindow( BaseWindow ) :
 				print 'structSubTitle[i].mLanguage = ' , structSubTitle[i]
 				print 'structSubTitle[i].mLanguage[0] = %d ' % len( structSubTitle[i].mLanguage )
 				if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
-					ten = ( structSubTitle[i].mSubId/16 )
-					one = (structSubTitle[i].mSubId % 16)
+					ten = ( structSubTitle[i].mSubId / 16 )
+					one = ( structSubTitle[i].mSubId % 16 )
 
 					context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
 				else :	
@@ -835,15 +841,15 @@ class NullWindow( BaseWindow ) :
 
 			selectAction = dialog.GetSelectedAction( )
 			if selectAction == -1 and isShowing :
-				self.mCommander.Subtitle_Show( )
+				self.mDataCache.Subtitle_Show( )
 
 			elif selectAction >= 0 and subTitleCount > selectAction :
-				self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
-				self.mCommander.Subtitle_Show( )
+				self.mDataCache.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+				self.mDataCache.Subtitle_Show( )
 
 			elif selectAction == subTitleCount :
-				self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
-				self.mCommander.Subtitle_Hide( )
+				self.mDataCache.Subtitle_Select( 0x1fff, 0, 0 )
+				self.mDataCache.Subtitle_Hide( )
 
 		else :
 			self.CloseSubTitle( )		

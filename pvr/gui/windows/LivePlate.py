@@ -946,6 +946,7 @@ class LivePlate( LivePlateWindow ) :
 			   self.mCurrentChannel.mOnid == self.mCurrentEPG.mOnid :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 				dialog.SetEPG( self.mCurrentEPG )
+				dialog.SetEPGList( self.mEPGList, self.mEPGListIdx )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
