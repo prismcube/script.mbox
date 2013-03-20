@@ -8,6 +8,7 @@ GROUP_ID_BASE						= 300
 BUTTON_ID_PREV						= 301
 BUTTON_ID_NEXT						= 302
 
+EPGLIST_EXCEPTWINDOW = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_INFO_PLATE ]
 
 class DialogExtendEPG( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -21,13 +22,15 @@ class DialogExtendEPG( BaseDialog ) :
 	def onInit( self ) :
 		LOG_TRACE( '' )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+		isShowList = True
 
 		try :
 			descriptGroup = self.getControl( GROUP_ID_BASE )
 			basePos = descriptGroup.getPosition( )
 			lastWin = WinMgr.GetInstance( ).GetLastWindowID( )
-			if lastWin == WinMgr.WIN_ID_NULLWINDOW or lastWin == WinMgr.WIN_ID_EPG_WINDOW :
+			if lastWin in EPGLIST_EXCEPTWINDOW :
 				descriptGroup.setPosition( basePos[0], basePos[1] + 55 )
+				isShowList = False
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
@@ -42,8 +45,8 @@ class DialogExtendEPG( BaseDialog ) :
 			self.EPGListMoveToIndex( )
 
 		else :
-			LOG_TRACE('--------------------epgList none')
-			self.GetEPGListByChannel( )
+			if isShowList :
+				self.GetEPGListByChannel( )
 
 		self.setProperty( 'EPGPrev', button1 )
 		self.setProperty( 'EPGNext', button2 )
@@ -139,7 +142,7 @@ class DialogExtendEPG( BaseDialog ) :
 				button2 = E_TAG_TRUE
 				self.mEPGListIdx = 0
 				self.EPGListMoveToCurrent( )
-				LOG_TRACE( 'EPGList load[%s] idx[%s]'% ( len( self.mEPGList ), self.mEPGListIdx ) )
+				#LOG_TRACE( 'EPGList load[%s] idx[%s]'% ( len( self.mEPGList ), self.mEPGListIdx ) )
 
 			else :
 				LOG_TRACE( 'EPGList is None' )
@@ -208,7 +211,7 @@ class DialogExtendEPG( BaseDialog ) :
 
 	def ShowExtendedInfo( self ) :
 		if not self.mEPG or self.mEPG.mError != 0 :
-			LOG_TRACE('--------------------epg None' )
+			#LOG_TRACE('epg None' )
 			return
 
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
