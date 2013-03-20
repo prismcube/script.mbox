@@ -270,7 +270,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
-			LOG_TRACE('--------------focus[%s]'% self.mFocusId )
+			#LOG_TRACE('--------------focus[%s]'% self.mFocusId )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 
@@ -2129,7 +2129,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def DoContextActionByGroup( self, aContextAction, aGroupName = '' ) :
-		ret = ''
+		ret = False
 		refreshForce = False
 
 		if aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
@@ -2285,18 +2285,6 @@ class ChannelListWindow( BaseWindow ) :
 						self.mMarkList = []
 					return
 
-
-				"""
-				elif answer == E_DIALOG_STATE_NO :
-					#no delete timer and channel
-					for iTimer in mTimerList :
-						tmpList = deepcopy( numList )
-						for idx in range( len( tmpList ) ) :
-							if tmpList[idx].mParam == iTimer.mChannelNo :
-								numList.pop( idx )
-				"""
-
-
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), 1, numList )
 
@@ -2324,6 +2312,12 @@ class ChannelListWindow( BaseWindow ) :
 			self.mLastPos = lastPos
 			self.SetMoveMode(FLAG_OPT_MOVE, None )
 			return
+
+		elif aContextAction == CONTEXT_ACTION_CHANGE_NAME :
+			if aGroupName :
+				name = re.split( ':', aGroupName)
+				#ret = self.mDataCache.Channel_ChangeName( name[0], name[1], self.mUserMode.mServiceType, name[2] )
+				LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2403,6 +2397,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
@@ -2423,6 +2418,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 			else :
 				context = []
 
@@ -2503,7 +2499,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		# Ren Fav, Del Fav ==> popup input group Name
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
-		   selectedAction == CONTEXT_ACTION_RENAME_FAV :
+		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+		   selectedAction == CONTEXT_ACTION_CHANGE_NAME :
 			label = ''
 			default = ''
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
@@ -2517,13 +2514,21 @@ class ChannelListWindow( BaseWindow ) :
 				result = '%d'%grpIdx + ':' + groupName + ':'
 				label = MR_LANG( 'Enter new name for this favorite group' )
 
+			elif selectedAction == CONTEXT_ACTION_CHANGE_NAME :
+				idx = self.mCtrlListCHList.getSelectedPosition( )
+				groupName = self.mChannelList[idx].mName
+				default = groupName
+				result = '%d'%self.mChannelList[idx].mNumber + ':' + default + ':'
+				label = MR_LANG( 'Enter new name for this favorite group' )
+
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
 
 			name = ''
 			name = kb.getText( )
 			if name :
-				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name :
+				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
+				   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
 					LOG_TRACE( 'can not fav.rename : same name' )
 					return
 
