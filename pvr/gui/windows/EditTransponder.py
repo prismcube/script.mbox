@@ -135,7 +135,7 @@ class EditTransponder( SettingWindow ) :
 		# Add Transponder
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
-			dialog.SetDefaultValue( 0, 0, 0, 0, self.mBand )
+			dialog.SetDefaultValue( 3000, 0, 0, 1000, self.mBand )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

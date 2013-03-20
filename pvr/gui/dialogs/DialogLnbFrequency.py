@@ -22,15 +22,15 @@ class DialogLnbFrequency( SettingDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+
+		self.GlobalSettingAction( self, actionId )
+		
 		if self.GlobalAction( actionId ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.CloseDialog( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -107,12 +107,24 @@ class DialogLnbFrequency( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_DialogInput01, MR_LANG( 'Low Frequency' ), '%d' % int( self.mLowFreq ) )
-		self.AddInputControl( E_DialogInput02, MR_LANG( 'High Frequency' ), '%d' % int( self.mHighFreq ) )
-		self.AddInputControl( E_DialogInput03, MR_LANG( 'Switch Frequency' ), '%d' % int( self.mThreshFreq ) )
+		self.AddInputControl( E_DialogInput01, MR_LANG( 'Low Frequency' ), '%d' % int( self.mLowFreq ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 99999 )
+		self.AddInputControl( E_DialogInput02, MR_LANG( 'High Frequency' ), '%d' % int( self.mHighFreq ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 99999 )
+		self.AddInputControl( E_DialogInput03, MR_LANG( 'Switch Frequency' ), '%d' % int( self.mThreshFreq ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 99999 )
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 
 		self.InitControl( )
 		self.UpdateLocation( )
 
+
+	def CallballInputNumber( self, aGroupId, aString ) :
+		if aGroupId == E_DialogInput01 :
+			self.mLowFreq = int( aString )
+
+		elif aGroupId == E_DialogInput02 :
+			self.mHighFreq = int( aString )
+
+		elif aGroupId == E_DialogInput03 :
+			self.mThreshFreq = int( aString )
+
+		self.SetControlLabel2String( aGroupId, aString )
