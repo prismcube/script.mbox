@@ -3,6 +3,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.TunerConfigMgr
 import pvr.Platform
 from pvr.gui.BaseWindow import BaseWindow
+from pvr.gui.BaseWindow import Action
 
 
 class ControlItem :
@@ -351,13 +352,15 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 
-	def ControlUp( self ) :
+	def ControlUp( self, aWin = None ) :
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
 
 		if self.GetIsInputNumberType( groupId ) :
 			self.mResetInput = True
+			if aWin :
+				aWin.FocusChangedAction( groupId )
 
 		if prevId > 0 and groupId != prevId :
 			self.setFocusId( prevId )
@@ -366,13 +369,15 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 
-	def ControlDown( self ) :
+	def ControlDown( self, aWin = None ) :
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
 
 		if self.GetIsInputNumberType( groupId ) :
 			self.mResetInput = True
+			if aWin :
+				aWin.FocusChangedAction( groupId )
 
 		if nextId > 0 and groupId != nextId :
 			self.setFocusId( nextId )
@@ -448,15 +453,6 @@ class SettingWindow( BaseWindow ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				return ctrlItem.mInputNumberType
-	
-	"""
-	def GetControlMinValue( self, aControlId ) :
-		count = len( self.mControlList )
-		for i in range( count ) :
-			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, aControlId ) :
-				return ctrlItem.mMin
-	"""
 
 
 	def GetControlMaxValue( self, aControlId ) :
@@ -473,27 +469,32 @@ class SettingWindow( BaseWindow ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				string = '%d' % ctrlItem.mMax
-				print 'dhkim test GetControlMaxRange = %s' % len( string )
 				return len( string )
 
 
-	def InputNumberControl( self, aAction, aGroupId, aValue, aTail = '' ) :
-		if self.GetInputNumberType( aGroupId ) == TYPE_NUMBER_NORMAL :
-			if self.mResetInput == True or len( aValue ) == self.GetControlMaxRange( aGroupId ) :
-				aValue = ''
-				self.mResetInput = False
+	def GlobalSettingAction( self, aWin, aAction ) :
+		groupid = self.GetGroupId( self.getFocusId( ) )
+		if self.GetInputNumberType( groupid ) == TYPE_NUMBER_NORMAL :
+			if ( aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 ) or ( aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 ) :
+				value = self.GetControlLabel2String( groupid )
+				value = self.ParseNumber( value )
+				if self.mResetInput == True or len( value ) == self.GetControlMaxRange( groupid ) :
+					value = ''
+					self.mResetInput = False
 
-			from pvr.gui.BaseWindow import Action
-			if aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 :
-				label = '%d' % int( aValue + '%d' % ( int( aAction ) - Action.REMOTE_0 ) )
-				
-			elif aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 :
-				label = '%d' % int( aValue + '%d' % ( aAction - Action.ACTION_JUMP_SMS2 + 2 ) )
+				if aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 :
+					label = '%d' % int( value + '%d' % ( int( aAction ) - Action.REMOTE_0 ) )
+	
+				elif aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 :
+					label = '%d' % int( value + '%d' % ( aAction - Action.ACTION_JUMP_SMS2 + 2 ) )
 
-			if int( label ) > self.GetControlMaxValue( aGroupId ) :
-				label = '%d' % self.GetControlMaxValue( aGroupId )
-				
-			self.SetControlLabel2String( aGroupId, label + aTail )
+				if int( label ) > self.GetControlMaxValue( groupid ) :
+					label = '%d' % self.GetControlMaxValue( groupid )
 
-			return label
-		
+				if value != label :
+					aWin.CallballInputNumber( groupid, label )
+
+
+	def ParseNumber( self, aString ) :
+		string = aString.split( )
+		return string[0]

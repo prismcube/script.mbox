@@ -29,15 +29,15 @@ class DialogSetTransponder( SettingDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+
+		self.GlobalSettingAction( self, actionId )
+		
 		if self.GlobalAction( actionId ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.CloseDialog( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -46,10 +46,10 @@ class DialogSetTransponder( SettingDialog ) :
 			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.ControlUp( )
+			self.ControlUp( self )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.ControlDown( )
+			self.ControlDown( self )
 
 
 	def onClick( self, aControlId ) :
@@ -156,7 +156,7 @@ class DialogSetTransponder( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_DialogInput01, MR_LANG( 'Frequency' ), '%d MHz' % self.mFrequency )
+		self.AddInputControl( E_DialogInput01, MR_LANG( 'Frequency' ), '%d MHz' % self.mFrequency, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
 
 		self.AddEnumControl( E_DialogSpinEx01, 'DVB Type' )
 		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
@@ -170,7 +170,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.AddEnumControl( E_DialogSpinEx03, 'Polarisation', 'Polarization' )
 		self.SetProp( E_DialogSpinEx03, self.mPolarization )
 
-		self.AddInputControl( E_DialogInput02, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mSimbolicRate )
+		self.AddInputControl( E_DialogInput02, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mSimbolicRate, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 60000 )
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 
@@ -187,3 +187,23 @@ class DialogSetTransponder( SettingDialog ) :
 		else :
 			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
 			self.SetEnableControl( E_DialogSpinEx02, True )
+
+
+	def CallballInputNumber( self, aGroupId, aString ) :
+		if aGroupId == E_DialogInput01 :
+			self.mFrequency = int( aString )
+			self.SetControlLabel2String( aGroupId, aString + ' MHz' )
+
+		elif aGroupId == E_DialogInput02 :
+			self.mSimbolicRate = int( aString )
+			self.SetControlLabel2String( aGroupId, aString + ' KS/s' )
+
+
+	def FocusChangedAction( self, aGroupId ) :
+		if aGroupId == E_DialogInput01 and self.mFrequency < 3000 :
+			self.mFrequency = 3000
+			self.SetControlLabel2String( E_DialogInput01, '%s MHz' % self.mFrequency )
+
+		elif aGroupId == E_DialogInput02 and self.mSimbolicRate < 1000 :
+			self.mSimbolicRate = 1000
+			self.SetControlLabel2String( E_DialogInput02, '%s KS/s' % self.mSimbolicRate )
