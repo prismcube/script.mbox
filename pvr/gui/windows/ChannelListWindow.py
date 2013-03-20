@@ -2128,6 +2128,59 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
 
 
+	def DoContextActionByGroup( self, aContextAction, aGroupName = '' ) :
+		ret = ''
+		refreshForce = False
+
+		if aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
+			if aGroupName :
+				idx = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+				#LOG_TRACE('---------------create fav[%s] ret[%s]'% ( aGroupName, idx ) )
+				if idx != -1 :
+					ret = True
+
+		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
+			if aGroupName :
+				name = re.split( ':', aGroupName)
+				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mUserMode.mServiceType, name[2] )
+
+		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
+			if aGroupName :
+				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
+				#LOG_TRACE( 'favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mFavoriteGroupList))
+				refreshForce = True
+
+		elif aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+			if aGroupName :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove\n%s?' ) % aGroupName )
+				dialog.doModal( )
+
+				answer = dialog.IsOK( )
+
+				#answer is yes
+				if answer != E_DIALOG_STATE_YES :
+					return
+
+				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
+
+
+		if ret :
+			self.LoadFavoriteGroupList( )
+			#LOG_TRACE('-----------------favlist[%s]'% self.mFavoriteGroupList )
+			if aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+				self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
+				self.mUserSlidePos.mSub = 0
+				self.mMarkList = []
+				self.mListItems = None
+				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+
+		if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE or refreshForce :
+			self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
+			#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
+
+
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
@@ -2196,6 +2249,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
 			if aGroupName : 
 				ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
+				LOG_TRACE('---------num ret[%s] len[%s] list[%s] markList[%s]'% ( ret, len(numList), ClassToList('convert',numList), self.mMarkList ) )
 			else :
 				ret = 'group None'
 
@@ -2270,35 +2324,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.mLastPos = lastPos
 			self.SetMoveMode(FLAG_OPT_MOVE, None )
 			return
-
-		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
-			if aGroupName :
-				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-				if ret :
-					self.LoadFavoriteGroupList( )
-				#self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
-				return
-
-		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
-			if aGroupName :
-				name = re.split( ':', aGroupName)
-				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mUserMode.mServiceType, name[2] )
-				if ret :
-					self.LoadFavoriteGroupList( )
-
-				#self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
-				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
-				return
-
-		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
-			if aGroupName :
-				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
-				if ret :
-					self.LoadFavoriteGroupList( )
-					LOG_TRACE( 'favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mFavoriteGroupList))
-
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
-				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2403,7 +2428,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add to this favorite group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			if not self.mChannelList :
-				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE ) )	
+				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE_FAV_CURRENT ) )	
 			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
@@ -2513,21 +2538,17 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.AddFavoriteChannels( channelList, groupName )
+
+		elif selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
+			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			self.DoContextActionByGroup( selectedAction, groupName )
+
 		else :
 			self.DoContextAction( aMode, selectedAction, groupName )
 
 		self.mIsSave |= FLAG_MASK_ADD
-
-		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
-			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
-			selectedAction == CONTEXT_ACTION_DELETE_FAV :
-
-			self.LoadFavoriteGroupList( )
-			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
-			if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE :
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-			#else :
-			#	self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 
 	def ShowContextMenu( self ) :
