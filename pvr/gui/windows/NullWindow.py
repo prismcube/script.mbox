@@ -20,7 +20,7 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = True
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
-			self.mSubTitleIsShow = False
+			#self.mSubTitleIsShow = False
 			self.mIsShowDialog = False
 			self.mEnableBlickingTimer = False			
 
@@ -773,14 +773,21 @@ class NullWindow( BaseWindow ) :
 
 	def CloseSubTitle( self ) :
 		if self.mDataCache.Subtitle_IsShowing( ) :
-			self.mSubTitleIsShow = True
+			#self.mSubTitleIsShow = True
 			self.mDataCache.Subtitle_Hide( )
-		else :
-			self.mSubTitleIsShow = False
+		#else :
+		#	self.mSubTitleIsShow = False
 
 
 	def CheckSubTitle( self ) :
-		if self.mSubTitleIsShow :
+		#if self.mSubTitleIsShow :
+		#	self.mDataCache.Subtitle_Show( )
+
+		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+			return
+
+		selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
+		if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
 			self.mDataCache.Subtitle_Show( )
 
 
