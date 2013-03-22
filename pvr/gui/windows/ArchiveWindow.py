@@ -1144,7 +1144,8 @@ class ArchiveWindow( BaseWindow ) :
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
 		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
-		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
+		#self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_AH_MM_SS ) ) )
+		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( self.mPlayingRecord.mDuration, TimeFormatEnum.E_AH_MM_SS ) ) )
 
 
 	def GetPlayingRecord( self ) :

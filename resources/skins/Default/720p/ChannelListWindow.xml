@@ -152,7 +152,7 @@
 					</control>
 					<!-- is lock? -->
 					<control type="image">
-						<posx>0</posx>
+						<posx>-5</posx>
 						<posy>7</posy>
 						<width>40</width>
 						<height>30</height>
@@ -278,7 +278,7 @@
 					</control>
 					<!-- is lock? -->
 					<control type="image">
-						<posx>0</posx>
+						<posx>-5</posx>
 						<posy>7</posy>
 						<width>40</width>
 						<height>30</height>

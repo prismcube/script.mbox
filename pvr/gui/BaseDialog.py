@@ -133,6 +133,23 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
+		ret = False
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < ( 1.5 + aUserTime ) :
+			self.setFocusId( aControlId )
+			if aControlId == self.GetFocusId( ) :
+				ret = True
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
+		return ret
+
+
 class ControlItem:
 	# Setting Window
 	E_UNDEFINE								= 0
@@ -146,29 +163,33 @@ class ControlItem:
 	E_CUSTOM_CONTROL						= 99
 	
 
-	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ):	
-		self.mControlType = aControlType	
-		self.mControlId  = aControlId
-		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
-		self.mListItems = aListItems
+	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription = None, aInputNumberType = None, aMax = 0 ) :
+		self.mControlType		= aControlType	
+		self.mControlId			= aControlId
+		self.mProperty			= aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
+		self.mListItems			= aListItems
+		self.mInputNumberType	= aInputNumberType
+		self.mMax				= aMax
 		
 		if self.mControlType == self.E_LABEL_CONTROL :
-			self.mEnable	= False
+			self.mEnable		= False
 		else :
-			self.mEnable	= True
+			self.mEnable		= True
 			
-		self.mDescription = aDescription
-		self.mSelecteItem = aSelecteItem
-		self.mVisible = True		
+		self.mDescription		= aDescription
+		self.mSelecteItem		= aSelecteItem
+		
+		self.mVisible			= True
 	
 
 class SettingDialog( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mControlList = []
-		self.mFocusId = -1
-		self.mIsAutomaicHeight = False
-		self.mIsOkCancelType = False
+		self.mControlList		= []
+		self.mFocusId			= -1
+		self.mIsAutomaicHeight	= False
+		self.mIsOkCancelType	= False
+		self.mResetInput		= True
 
 
 	def InitControl( self ) :
@@ -266,11 +287,11 @@ class SettingDialog( BaseDialog ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_LIST_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
-	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ) :
+	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription = None, aInputNumberType = None, aMax = 0 ) :
 		listItems = []
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription, aInputNumberType, aMax ) )
 
 
 	def AddOkCanelButton( self ) :
@@ -542,10 +563,15 @@ class SettingDialog( BaseDialog ) :
 			self.setFocusId( groupId )		
 
 
-	def ControlUp( self ) :	
+	def ControlUp( self, aWin = None ) :	
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
+
+		if self.GetIsInputNumberType( groupId ) :
+			self.mResetInput = True
+			if aWin :
+				aWin.FocusChangedAction( groupId )
 
 		if prevId > 0 and groupId != prevId :
 			self.setFocusId( prevId )
@@ -554,10 +580,15 @@ class SettingDialog( BaseDialog ) :
 		return False
 
 
-	def ControlDown( self ) :
+	def ControlDown( self, aWin = None ) :
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
+
+		if self.GetIsInputNumberType( groupId ) :
+			self.mResetInput = True
+			if aWin :
+				aWin.FocusChangedAction( groupId )
 
 		if nextId > 0 and groupId != nextId :
 			self.setFocusId( nextId )
@@ -629,4 +660,72 @@ class SettingDialog( BaseDialog ) :
 					return ctrlItem.mListItems
 				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
 					return ctrlItem.mListItems
+
+
+	def GetIsInputNumberType( self , aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mInputNumberType == None :
+					return False
+				else :
+					return True
+
+	
+	def GetInputNumberType( self , aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				return ctrlItem.mInputNumberType
+
+
+	def GetControlMaxValue( self, aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				return ctrlItem.mMax
+
+
+	def GetControlMaxRange( self, aControlId ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				string = '%d' % ctrlItem.mMax
+				return len( string )
+
+
+	def GlobalSettingAction( self, aWin, aAction ) :
+		groupid = self.GetGroupId( self.getFocusId( ) )
+		if self.GetInputNumberType( groupid ) == TYPE_NUMBER_NORMAL :
+			if ( aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 ) or ( aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 ) :
+				value = self.GetControlLabel2String( groupid )
+				value = self.ParseNumber( value )
+				if self.mResetInput == True or len( value ) == self.GetControlMaxRange( groupid ) :
+					value = ''
+					self.mResetInput = False
+
+				if aAction >= Action.REMOTE_0 and aAction <= Action.REMOTE_9 :
+					label = '%d' % int( value + '%d' % ( int( aAction ) - Action.REMOTE_0 ) )
+					
+				elif aAction >= Action.ACTION_JUMP_SMS2 and aAction <= Action.ACTION_JUMP_SMS9 :
+					label = '%d' % int( value + '%d' % ( aAction - Action.ACTION_JUMP_SMS2 + 2 ) )
+
+				if int( label ) > self.GetControlMaxValue( groupid ) :
+					label = '%d' % self.GetControlMaxValue( groupid )
+
+
+				print 'dhkim test value = %s' % value
+				print 'dhkim test label = %s' % label
+				if value != label :
+					aWin.CallballInputNumber( groupid, label )
+
+
+	def ParseNumber( self, aString ) :
+		string = aString.split( )
+		print 'dhkim test ParseNumber string = %s' % string
+		return string[0]
 
