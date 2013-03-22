@@ -905,6 +905,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
 				self.mTimeshift_staTime = 0.0
 				self.mTimeshift_endTime = self.mPlayingRecordInfo.mDuration * 1000
+				tempEndTime = self.mPlayingRecordInfo.mDuration
 				#LOG_TRACE( 'resetting pvr start[%s] end[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime ) )
 
 
