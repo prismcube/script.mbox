@@ -1300,6 +1300,10 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Channel_ChangeChannelName( self, aChannelNumber, aServiceType, aNewName ) :
+		return self.mCommander.Channel_ChangeChannelName( aChannelNumber, aServiceType, aNewName )
+
+
 	def Satellite_GetListByChannel( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )

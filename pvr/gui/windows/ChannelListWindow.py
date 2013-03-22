@@ -2315,9 +2315,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_NAME :
 			if aGroupName :
-				name = re.split( ':', aGroupName)
-				#ret = self.mDataCache.Channel_ChangeName( name[0], name[1], self.mUserMode.mServiceType, name[2] )
-				LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
+				name = re.split( ':', aGroupName )
+				ret = self.mDataCache.Channel_ChangeChannelName( int( name[0] ), self.mUserMode.mServiceType, name[2] )
+				#LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2397,7 +2397,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
@@ -2418,7 +2418,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 			else :
 				context = []
 
