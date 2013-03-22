@@ -2397,7 +2397,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
@@ -2418,7 +2418,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				#context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 			else :
 				context = []
 
