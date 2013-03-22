@@ -1010,8 +1010,12 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 			if mute == False :
-				self.mCommander.Player_SetMute( False )
+				thread = threading.Timer( 0.3, self.SyncVolume )
+				thread.start( )
 
+
+	def SyncVolume ( self ) :
+			self.mCommander.Player_SetMute( False )
 			self.mDataCache.SyncMute( )
 
 
