@@ -2321,8 +2321,8 @@ Search for window name
 									<bordertexture border="5">button-focus.png</bordertexture>
 									<bordersize>4</bordersize>
 									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
-									<animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation>
-									<!--animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,100" time="200">unfocus</animation-->
+									<!--animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation-->
+									<animation effect="zoom" start="100" end="130" center="auto" time="300" tween="quadratic" easing="in">focus</animation>
 								</control>
 								<control type="label">
 									<posx>65</posx>

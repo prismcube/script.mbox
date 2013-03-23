@@ -1,7 +1,7 @@
-<window type="windows" id="3019">
+<window>
 	<defaultcontrol always="true">202</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<onload>SetProperty(bookmarkIconFO,StepFO.png)</onload>
 	<onload>SetProperty(bookmarkIconNF,StepNF.png)</onload>
 	<onload>SetProperty(currentPosX,360)</onload>
@@ -30,7 +30,7 @@
 					<posy>540</posy>
 					<width>1320</width>
 					<height>256</height>
-					<texture>osd/osd_back.png</texture>
+					<texture>MediaInfoBackLower.png</texture>
 				</control>
 			</control>
 
@@ -60,7 +60,7 @@
 								<width>130</width>
 								<height>85</height>
 								<aspectratio>stretch</aspectratio>
-								<bordertexture border="5">thumbs/bordershadow.png</bordertexture>
+								<bordertexture border="5">button-nofocus.png</bordertexture>
 								<bordersize>4</bordersize>
 								<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
 							</control>
@@ -71,7 +71,7 @@
 								<height>22</height>
 								<align>center</align>
 								<aligny>center</aligny>
-								<font>Font_Reg18</font>
+								<font>font12</font>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</itemlayout>
@@ -82,11 +82,11 @@
 								<width>130</width>
 								<height>85</height>
 								<aspectratio>stretch</aspectratio>
-								<bordertexture border="5">thumbs/bordershadow2.png</bordertexture>
-								<bordersize>8</bordersize>
+								<bordertexture border="5">button-focus.png</bordertexture>
+								<bordersize>4</bordersize>
 								<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
-								<!--animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation-->
-								<animation effect="zoom" start="100" end="130" center="auto" time="300" tween="quadratic" easing="in">focus</animation>
+								<animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation>
+								<!--animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,100" time="200">unfocus</animation-->
 							</control>
 							<control type="label">
 								<posx>65</posx>
@@ -95,7 +95,7 @@
 								<height>22</height>
 								<align>center</align>
 								<aligny>center</aligny>
-								<font>Font_Reg22</font>
+								<font>font13</font>
 								<textcolor>blue</textcolor>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
@@ -103,6 +103,7 @@
 					</control>
 				</control>
 			</control>
+
 
 <!-- Rec info -->
 			<control type="group">
@@ -117,7 +118,7 @@
 						<posy>0</posy>
 						<width>450</width>
 						<height>35</height>
-						<texture border="50,0,32,0">home/timepanel_mid.png</texture>
+						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(10)</visible>
 					</control>
 					<control type="image" id="10">
@@ -129,9 +130,9 @@
 						<visible>substring(Window.Property(ViewRecord1),true)</visible>
 					</control>
 					<control type="label" id="11">
-						<posx>121</posx>
+						<posx>116</posx>
 						<posy>7</posy>
-						<font>Font_Reg20</font>
+						<font>font12caps</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -144,7 +145,7 @@
 						<posy>0</posy>
 						<width>450</width>
 						<height>35</height>
-						<texture border="50,0,32,0">home/timepanel_mid.png</texture>
+						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(15)</visible>
 					</control>
 					<control type="image" id="15">
@@ -156,9 +157,9 @@
 						<visible>substring(Window.Property(ViewRecord2),true)</visible>
 					</control>
 					<control type="label" id="16">
-						<posx>100</posx>
+						<posx>95</posx>
 						<posy>7</posy>
-						<font>Font_Reg20</font>
+						<font>font12caps</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -184,7 +185,7 @@
 					<control type="label">
 						<posx>25</posx>
 						<posy>0</posy>
-						<font>Font_Reg15</font>
+						<font>font10</font>
 						<textcolor>grey</textcolor>
 						<label>More...</label>
 					</control>
@@ -194,7 +195,7 @@
 			<!-- color key -->
 			<control type="group">
 				<control type="grouplist">
-					<posx>1190</posx>
+					<posx>1090</posx>
 					<posy>565</posy>
 					<width>300</width>
 					<height>40</height>
@@ -211,11 +212,11 @@
 							<texture>settings-button-nofocus-red.png</texture>
 						</control>
 						<control type="label">
-							<posx>3</posx>
+							<posx>2</posx>
 							<posy>0</posy>
 							<width>30</width>
 							<height>30</height>
-							<font>Font_Reg10</font>
+							<font>font10</font>
 							<label></label>
 						</control>
 					</control>
@@ -233,7 +234,7 @@
 							<posy>0</posy>
 							<width>80</width>
 							<height>30</height>
-							<font>Font_Reg12</font>
+							<font>font10</font>
 							<label>BOOKMARK</label>
 						</control>
 					</control>
@@ -246,22 +247,31 @@
 							<height>30</height>
 							<texture>settings-button-nofocus-yellow.png</texture>
 						</control>
-					</control>
-					<control type="group">
-						<width>30</width>
-						<height>30</height>
-						<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-						<control type="image">
-							<width>30</width>
-							<height>30</height>
-							<texture>settings-button-nofocus.png</texture>
-						</control>
 						<control type="label">
 							<posx>3</posx>
 							<posy>0</posy>
 							<width>30</width>
 							<height>30</height>
-							<font>Font_Reg12</font>
+							<font>font10</font>
+							<label></label>
+						</control>
+					</control>
+					<control type="group">
+						<width>90</width>
+						<height>30</height>
+						<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+						<control type="image">
+							<width>90</width>
+							<height>30</height>
+							<texture>settings-button-nofocus.png</texture>
+						</control>
+						<control type="label">
+							<posx>6</posx>
+							<posy>0</posy>
+							<width>80</width>
+							<height>30</height>
+							<font>font10</font>
+							<!--size>10</size-->
 							<label></label>
 						</control>
 					</control>
@@ -284,21 +294,24 @@
 			<control type="group">
 				<!-- must defined onload by pos x,y value -->
 				<control type="progress" id="201">
+					<description>progress control</description>
 					<posx>400</posx>
 					<posy>595</posy>
 					<width>780</width>
 					<height>16</height>
-					<texturebg>osd/seek/progress_back_long.png</texturebg>
-					<lefttexture>osd/seek/progress_left.png</lefttexture>
-					<midtexture>osd/seek/progress_mid.png</midtexture>
-					<righttexture>osd/seek/progress_right.png</righttexture>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
 				</control>
 				<control type="button" id="202">
+					<description>play time</description>
 					<posx>360</posx>
 					<posy>570</posy>
-					<width>100</width>
-					<height>35</height>
-					<font>Font_Info</font>
+					<width>85</width>
+					<height>30</height>
+					<font>font10</font>
 					<textcolor>grey</textcolor>
 					<align>center</align>
 					<texturefocus>TSProgressCurrentFO.png</texturefocus>
@@ -313,7 +326,7 @@
 					<description>mode</description>
 					<posx>20</posx>
 					<posy>580</posy>
-					<font>Font_Bold30_Caps</font>
+					<font>font30_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -325,18 +338,18 @@
 				<posy>590</posy>
 				<control type="label" id="221">
 					<description>start</description>
-					<posx>20</posx>
-					<posy>3</posy>
+					<posx>25</posx>
+					<posy>0</posy>
 					<textcolor>grey</textcolor>
-					<font>Font_Reg18</font>
+					<font>font12</font>
 					<label>00:00:00</label>
 				</control>
 				<control type="label" id="222">
 					<description>end</description>
 					<posx>890</posx>
-					<posy>3</posy>
+					<posy>0</posy>
 					<textcolor>grey</textcolor>
-					<font>Font_Reg18</font>
+					<font>font12</font>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 			</control>

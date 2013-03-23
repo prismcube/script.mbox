@@ -374,12 +374,6 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
-		#test
-		elif actionId == Action.ACTION_COLOR_RED :
-			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
-			if selectedSubtitle :
-				selectedSubtitle.printdebug( )
-
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )

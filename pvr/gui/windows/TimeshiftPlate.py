@@ -117,7 +117,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mFlag_OnEvent = True
 		self.mTimeshift_staTime = 0.0
 		self.mTimeshift_curTime = 0.0
-		self.mTimeshift_endTime = 0.0
+		self.mTimeshift_endTime = 1.0
 		self.mIsTimeshiftPending = False
 		self.mSpeed = 100	#normal
 		self.mLocalTime = 0
@@ -693,15 +693,18 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mSlideY = E_SLIDE_GAP
 
+		self.InitTimeShift( )
+		self.UpdateProgress( )
 		self.mEventCopy = []
 		self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,          '' )
-		#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,        '' )
+		"""
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
+		"""
 
 		visible = True
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -888,14 +891,17 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mTimeshift_staTime = status.mStartTimeInMs #/ 1000.0
 			if status.mPlayTimeInMs :
 				self.mTimeshift_curTime = status.mPlayTimeInMs  #/ 1000.0
-			if status.mEndTimeInMs :
-				self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
+			#if status.mEndTimeInMs :
+			#	self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
 			tempStartTime   = self.mTimeshift_staTime / 1000
 			tempCurrentTime = self.mTimeshift_curTime / 1000
 			tempEndTime     = self.mTimeshift_endTime / 1000
 
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				if status.mEndTimeInMs :
+					self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
+
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
 				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
 				tempStartTime = localTime - duration
@@ -1438,9 +1444,9 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		self.mPlayingRecordInfo = playingRecord
-		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
+		self.mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 		#LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )
-		if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
+		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or self.mBookmarkList[0].mError != 0 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			return 
 
@@ -1456,34 +1462,14 @@ class TimeShiftPlate( BaseWindow ) :
 		if thumbnaillist and len( thumbnaillist ) > 0 :
 			for mfile in thumbnaillist :
 				try :
-					thumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
+					#thumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
+					self.mThumbnailList.append( mfile )
+
 				except Exception, e :
 					LOG_ERR( 'Error exception[%s]'% e )
 					continue
 
 		#LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
-		thumbCount = len( mBookmarkList )
-		oldidx = -1
-		for num in range( 10 ) :
-			if thumbCount <= num :
-				LOG_TRACE( 'break loop : thumbnail[%s] idx[%s]'% ( thumbCount, num ) )
-				break
-
-			if thumbCount > 10 :
-				idx = thumbCount * num / 10
-			else :
-				idx = num
-
-			if idx == oldidx :
-				continue
-
-			oldidx = idx
-			mfile = thumbnailHash.get( mBookmarkList[idx].mTimeMs, None )
-			if mfile :
-				self.mThumbnailList.append( mfile )
-				self.mBookmarkList.append( mBookmarkList[idx] )
-			#LOG_TRACE(' idx[%s] num[%s] max[%s] file[%s]'% (idx, num, thumbCount, mfile ) )
-
 		#LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
 		self.ShowBookmark( )
 
