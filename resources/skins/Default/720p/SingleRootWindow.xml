@@ -2310,6 +2310,16 @@ Search for window name
 									<font>font12</font>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
+								<control type="label">
+									<posx>5</posx>
+									<posy>20</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<aligny>center</aligny>
+									<font>font10</font>
+									<label>$INFO[ListItem.Label2]</label>
+								</control>
 							</itemlayout>
 							<focusedlayout height="81" width="130">
 								<control type="image">
@@ -2334,6 +2344,16 @@ Search for window name
 									<font>font13</font>
 									<textcolor>blue</textcolor>
 									<label>$INFO[ListItem.Label]</label>
+								</control>
+								<control type="label">
+									<posx>-15</posx>
+									<posy>10</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<aligny>center</aligny>
+									<font>font13</font>
+									<label>$INFO[ListItem.Label2]</label>
 								</control>
 							</focusedlayout>
 						</control>

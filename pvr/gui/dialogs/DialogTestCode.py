@@ -4,7 +4,7 @@ import time, math
 
 E_CONTROL_ID_LIST_SHOW_BOOKMARK		= 500
 
-class DialogTestWork( BaseDialog ) :
+class DialogTestCode( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mMode = ElisEnum.E_MODE_LIVE
@@ -127,9 +127,11 @@ class DialogTestWork( BaseDialog ) :
 			return
 
 		listItems = []
+		idx = 0
 		for i in range( len( self.mBookmarkList ) ) :
+			idx += 1
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
-			listItem = xbmcgui.ListItem( '%s'% lblOffset )
+			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idx )
 			listItem.setProperty( 'BookMarkThumb', self.mThumbnailList[i] )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 

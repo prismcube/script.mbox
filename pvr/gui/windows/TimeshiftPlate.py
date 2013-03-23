@@ -65,6 +65,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mCurrentChannel=[]
 		self.mProgress_idx = 0.0
+		self.mTimeshift_staTime = 0.0
+		self.mTimeshift_curTime = 0.0
+		self.mTimeshift_endTime = 1.0
 		self.mEventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = FLAG_PLAY
@@ -115,9 +118,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlImgXpeed          = self.getControl( E_CONTROL_ID_IMAGE_XPEED )
 
 		self.mFlag_OnEvent = True
-		self.mTimeshift_staTime = 0.0
-		self.mTimeshift_curTime = 0.0
-		self.mTimeshift_endTime = 1.0
 		self.mIsTimeshiftPending = False
 		self.mSpeed = 100	#normal
 		self.mLocalTime = 0
@@ -161,7 +161,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
 		#self.GetNextSpeed( E_ONINIT )
-		self.InitBookmarkThumnail( )
+		#self.InitBookmarkThumnail( )
 		self.InitPreviousAction( )
 		self.InitAccelatorSection( )
 
@@ -694,17 +694,17 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mSlideY = E_SLIDE_GAP
 
 		self.InitTimeShift( )
-		self.UpdateProgress( )
+		self.InitBookmarkThumnail( )
 		self.mEventCopy = []
 		self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,          '' )
-		"""
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
-		"""
+
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
+		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, E_CURRENT_POSY, E_TAG_POSY )
+		self.UpdateProgress( )
 
 		visible = True
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -1276,10 +1276,12 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_TRACE( 'bookmark None, show False' )
 			return
 
+		idx = 0
 		listItems = []
 		for i in range( len( self.mBookmarkList ) ) :
+			idx += 1
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
-			listItem = xbmcgui.ListItem( '%s'% lblOffset )
+			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idx )
 			listItem.setProperty( 'BookMarkThumb', self.mThumbnailList[i] )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 
