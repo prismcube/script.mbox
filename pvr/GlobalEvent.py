@@ -177,6 +177,8 @@ class GlobalEvent( object ) :
 
 			self.mDataCache.Teletext_NotifyHide( )
 			self.mDataCache.LoadVolumeToSetGUI( )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckSubTitle( )
 			#self.SetSingleWindowPosition( WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
