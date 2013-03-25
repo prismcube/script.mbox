@@ -1017,8 +1017,8 @@ class Configure( SettingWindow ) :
 
 
 	def SyncVolume ( self ) :
-			self.mCommander.Player_SetMute( False )
-			self.mDataCache.SyncMute( )
+		self.mCommander.Player_SetMute( False )
+		self.mDataCache.SyncMute( )
 
 
 	def SetDefaultVolume( self ) :
