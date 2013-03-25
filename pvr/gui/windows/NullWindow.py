@@ -812,7 +812,7 @@ class NullWindow( BaseWindow ) :
 				structSubTitle.append( self.mDataCache.Subtitle_Get( i ) )
 				self.mDataCache.Subtitle_Get( i ).printdebug( )
 
-				if selectedSubtitle and isShowing :
+				if selectedSubtitle :
 					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
 						selectedIndex = i
 						LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
