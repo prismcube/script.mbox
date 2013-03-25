@@ -215,8 +215,12 @@ class GlobalEvent( object ) :
 			self.mCommander.Teletext_Hide( )
 			dialog.doModal( )
 			self.mCommander.Teletext_Show( )
-		#elif self.mCommander.Subtitle_IsShowing( ) :
-		#TODO
+
+		elif self.mDataCache.Subtitle_IsShowing( ) :
+			self.mDataCache.Subtitle_Hide( )
+			dialog.doModal( )
+			self.mDataCache.Subtitle_Show( )
+
 		else :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 0 )
