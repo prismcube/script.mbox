@@ -360,7 +360,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		context = []
 		if aGroupId == E_Input01 :
 			context.append( ContextItem( MR_LANG( 'Edit Satellite Name' ), CONTEXT_EDIT_SATELLITE_NAME ) )
-			context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
+			#context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
 		elif aGroupId == E_Input03 :
 			context.append( ContextItem( MR_LANG( 'Add Transponder' ), CONTEXT_ADD_TRANSPONDER ) )
 			if self.mTransponderList :
