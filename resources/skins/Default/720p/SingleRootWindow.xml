@@ -1150,7 +1150,7 @@ Search for window name
 							<posy>100</posy>
 							<width>350</width>
 							<height>30</height>
-							<itemgap>1</itemgap>
+							<itemgap>18</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1300313">
@@ -1182,13 +1182,13 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1300311">
-								<posx>60</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>65</width>
-								<height>30</height>
+								<width>82</width>
+								<height>20</height>
 								<visible>substring(Window.Property(HasDolby),true)</visible>
 								<control type="image">
-									<posx>20</posx>
+									<posx>0</posx>
 									<posy>5</posy>
 									<width>82</width>
 									<height>20</height>
@@ -1196,13 +1196,13 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1300314">
-								<posx>120</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>65</width>
-								<height>30</height>
+								<width>82</width>
+								<height>20</height>
 								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 								<control type="image">
-									<posx>20</posx>
+									<posx>0</posx>
 									<posy>5</posy>
 									<width>82</width>
 									<height>20</height>
@@ -1210,13 +1210,13 @@ Search for window name
 								</control>
 							</control>
 							<control type="group" id="1300312">
-								<posx>120</posx>
+								<posx>0</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
 								<visible>substring(Window.Property(HasHD),true)</visible>
 								<control type="image">
-									<posx>52</posx>
+									<posx>0</posx>
 									<posy>0</posy>
 									<width>65</width>
 									<height>30</height>
@@ -1225,7 +1225,6 @@ Search for window name
 							</control>
 						</control>
 					</control>
-
 				</control>
 			</control>
 
@@ -1779,7 +1778,7 @@ Search for window name
 					<control type="group">
 						<posx>-50</posx>
 						<posy>-37</posy>
-						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus) | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
+						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).(HasFocus) | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
 						<description>info explane</description>
 						<control type="image">
 							<posx>0</posx>
@@ -3907,7 +3906,7 @@ Search for window name
 						<posy>240</posy>
 						<width>350</width>
 						<height>30</height>
-						<itemgap>1</itemgap>
+						<itemgap>18</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
 						<control type="group" id="3700313">
@@ -3925,7 +3924,7 @@ Search for window name
 							</control>
 						</control>
 						<control type="group" id="3700310">
-							<posx>60</posx>
+							<posx>0</posx>
 							<posy>0</posy>
 							<width>60</width>
 							<height>30</height>
@@ -3939,13 +3938,13 @@ Search for window name
 							</control>
 						</control>
 						<control type="group" id="3700311">
-							<posx>120</posx>
+							<posx>0</posx>
 							<posy>0</posy>
-							<width>65</width>
-							<height>30</height>
+							<width>82</width>
+							<height>20</height>
 							<visible>substring(Window.Property(HasDolby),True)</visible>
 							<control type="image">
-								<posx>20</posx>
+								<posx>0</posx>
 								<posy>5</posy>
 								<width>82</width>
 								<height>20</height>
@@ -3953,13 +3952,13 @@ Search for window name
 							</control>
 						</control>
 						<control type="group" id="3700314">
-							<posx>120</posx>
+							<posx>0</posx>
 							<posy>0</posy>
-							<width>65</width>
-							<height>30</height>
+							<width>82</width>
+							<height>20</height>
 							<visible>substring(Window.Property(HasDolbyPlus),True)</visible>
 							<control type="image">
-								<posx>20</posx>
+								<posx>0</posx>
 								<posy>5</posy>
 								<width>82</width>
 								<height>20</height>
@@ -3967,13 +3966,13 @@ Search for window name
 							</control>
 						</control>
 						<control type="group" id="3700312">
-							<posx>180</posx>
+							<posx>0</posx>
 							<posy>0</posy>
 							<width>65</width>
 							<height>30</height>
 							<visible>substring(Window.Property(HasHD),True)</visible>
 							<control type="image">
-								<posx>52</posx>
+								<posx>0</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
