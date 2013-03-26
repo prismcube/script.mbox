@@ -54,9 +54,10 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mCtrlDurationLabel.setLabel( '' )
 
 
+		self.UpdateViewMode( )
+		self.SetSingleWindowPosition( E_EPG_SEARC_BASE_ID )
 		self.SetPipScreen( )
 
-		self.UpdateViewMode( )
 		self.mCtrlEPGMode.setLabel( '%s' %MR_LANG( 'Go Parent' ) )				
 		
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
