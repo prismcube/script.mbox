@@ -855,6 +855,9 @@ class EPGWindow( BaseWindow ) :
 							if offsetX + drawWidth > self.mGridCanvasWidth :
 								drawWidth = self.mGridCanvasWidth - offsetX
 
+							if drawWidth <= 0 :
+								LOG_ERR( 'Invalid width %d : i=%d j=%d' %(drawWidth,i,j) )
+
 							ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
 							if drawWidth < 10 :
 								ctrlButton.setLabel( '.' )
@@ -887,6 +890,9 @@ class EPGWindow( BaseWindow ) :
 							#LOG_ERR( 'controlID : %d' %( gridMeta.mId ) )							
 							
 							col +=  1
+
+							if offsetX + 5 >= self.mGridCanvasWidth:
+								break
 
 					"""						
 					if i >= E_GRID_MAX_ROW_COUNT -1 : 
