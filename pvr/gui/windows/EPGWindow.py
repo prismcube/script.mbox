@@ -275,10 +275,6 @@ class EPGWindow( BaseWindow ) :
 				self.StartEPGUpdateTimer( )
 				self.mEventBus.Register( self )
 
-		elif actionId == Action.REMOTE_0 : #TEST Code ToDO : Remove 
-			WinMgr.GetInstance( ).CopyIncludeFile( )
-			xbmc.executebuiltin('XBMC.ReloadSkin()')
-			
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -344,12 +340,14 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		if  aControlId == LIST_ID_COMMON_EPG or aControlId == LIST_ID_BIG_EPG :
+		if aControlId  == BUTTON_ID_FAKE_BUTTON :
+			self.GridSetFocus( )
+				
+		elif  aControlId == LIST_ID_COMMON_EPG or aControlId == LIST_ID_BIG_EPG :
 			self.Tune( )
-
-		elif aControlId  == BUTTON_ID_FAKE_BUTTON :
-			if self.mEPGMode == E_VIEW_GRID :			
-				self.GridSetFocus( )
+			
+		elif aControlId >= BUTTON_ID_BASE_GRID and aControlId < BUTTON_ID_BASE_GRID + E_GRID_MAX_BUTTON_COUNT :
+			self.Tune( )
 		
 		elif aControlId == BUTTON_ID_EPG_MODE :
 			self.mEventBus.Deregister( self )
@@ -854,6 +852,12 @@ class EPGWindow( BaseWindow ) :
 							drawWidth = int( duraton* self.mGridCanvasWidth / drawableTime ) 
 							#LOG_ERR( 'End : %d' %(drawWidth ) )
 
+							if offsetX + drawWidth > self.mGridCanvasWidth :
+								drawWidth = self.mGridCanvasWidth - offsetX
+
+							if drawWidth <= 0 :
+								LOG_ERR( 'Invalid width %d : i=%d j=%d' %(drawWidth,i,j) )
+
 							ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
 							if drawWidth < 10 :
 								ctrlButton.setLabel( '.' )
@@ -876,9 +880,6 @@ class EPGWindow( BaseWindow ) :
 								ctrlButton.controlRight( self.mCtrlGridEPGButtonList[enableCount + col + 1] )
 							"""
 
-							if offsetX + drawWidth > self.mGridCanvasWidth :
-								drawWidth = self.mGridCanvasWidth - offsetX
-
 							#LOG_TRACE( 'GRID drawWidth = %d' %drawWidth )
 
 							ctrlButton.setWidth( drawWidth  )
@@ -889,6 +890,9 @@ class EPGWindow( BaseWindow ) :
 							#LOG_ERR( 'controlID : %d' %( gridMeta.mId ) )							
 							
 							col +=  1
+
+							if offsetX + 5 >= self.mGridCanvasWidth:
+								break
 
 					"""						
 					if i >= E_GRID_MAX_ROW_COUNT -1 : 
@@ -1749,8 +1753,18 @@ class EPGWindow( BaseWindow ) :
 
 	def Tune( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
-			#toDO
-			pass
+			channel = self.GetChannelByFocus( )
+			currentChannel = self.mDataCache.Channel_GetCurrent( ) 
+			if channel and currentChannel :
+				if currentChannel.mNumber != channel.mNumber :
+					self.StopEPGUpdateTimer( )				
+					if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+						self.mDataCache.Player_Stop( )
+					self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+					self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+					self.UpdateCurrentChannel( )
+					self.mFirstTune = True
+					self.RestartEPGUpdateTimer( )
 		
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			#LOG_TRACE( '##################################### channel %d:%d' %(self.mSelectChannel.mNumber, self.mCurrentChannel.mNumber) )	
@@ -1758,17 +1772,8 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( 'Invalid channel' )
 				return
 
+			self.StopEPGUpdateTimer( )
 			if self.mSelectChannel.mNumber != self.mCurrentChannel.mNumber :
-				"""
-				if self.mSelectChannel.mLocked == True :
-					if self.ShowPincodeDialog( ) == False :
-						return
-
-				else :
-					if self.mDataCache.Get_Player_AVBlank( ) :
-						self.mDataCache.Player_AVBlank( False )
-				"""
-
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrent( self.mSelectChannel.mNumber, self.mSelectChannel.mServiceType )
@@ -1776,14 +1781,9 @@ class EPGWindow( BaseWindow ) :
 				self.UpdateCurrentChannel( )				
 
 			channel = self.mDataCache.Channel_GetCurrent( )
-			"""
-			if channel.mLocked == True :
-				if self.ShowPincodeDialog( ) == False :
-					return
-			"""
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
 			self.mFirstTune = True
-			#self.RestartEPGUpdateTimer( 5 )
+			self.RestartEPGUpdateTimer( )
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -1807,7 +1807,7 @@ class EPGWindow( BaseWindow ) :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
 				self.mFirstTune = True				
-				#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				self.StartEPGUpdateTimer( )
 
 
 	def RestartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
