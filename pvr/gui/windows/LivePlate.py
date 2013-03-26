@@ -936,7 +936,20 @@ class LivePlate( LivePlateWindow ) :
 				self.mIsShowDialog = False
 				return
 
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+				self.mIsShowDialog = False
+				return
+
+			if ShowSubtitle( ) :
+				self.mIsShowDialog = False
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentChannel and \

@@ -357,7 +357,12 @@ class NullWindow( BaseWindow ) :
 				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.ShowSubtitle( )
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+				return
+
+			if not ShowSubtitle( ) :
+				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )
@@ -785,6 +790,7 @@ class NullWindow( BaseWindow ) :
 			self.mDataCache.Subtitle_Show( )
 
 
+	"""
 	def ShowSubtitle( self ) :
 		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
 			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
@@ -870,6 +876,7 @@ class NullWindow( BaseWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
 			dialog.doModal( )
 			self.CheckSubTitle( )
+	"""
 
 
 	def DialogPopupOK( self, aAction ) :
@@ -910,6 +917,10 @@ class NullWindow( BaseWindow ) :
 		elif aAction == Action.ACTION_MBOX_TEXT :
 			head = MR_LANG( 'No teletext' )
 			msg = MR_LANG( 'No teletext available' )
+
+		elif aAction == Action.ACTION_MBOX_SUBTITLE :
+			head = MR_LANG( 'No subtitle' )
+			msg = MR_LANG( 'No subtitle available' )
 
 		elif aAction == Action.ACTION_MBOX_XBMC :
 			msg = MR_LANG( 'Try again after stopping playback' )

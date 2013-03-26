@@ -840,3 +840,91 @@ class GuiSkinPosition( object ) :
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
 
+
+def ShowSubtitle( ) :
+	import pvr.DataCacheMgr
+	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.gui.GuiConfig import ContextItem
+	from ElisEnum import ElisEnum
+	dataCache = pvr.DataCacheMgr.GetInstance( )
+
+	ret = False
+	subTitleCount = dataCache.Subtitle_GetCount( )
+	if subTitleCount > 0 :
+		isShowing = False
+		if dataCache.Subtitle_IsShowing( ) :
+			dataCache.Subtitle_Hide( )
+			isShowing = True
+
+		selectedSubtitle = dataCache.Subtitle_GetSelected( )
+
+		#####
+		if selectedSubtitle :
+			selectedSubtitle.printdebug( )
+		#####
+	
+		context = []
+		structSubTitle = []
+		selectedIndex = -1
+		isExistDVB = False
+
+		for i in range( subTitleCount ) :
+			structSubTitle.append( dataCache.Subtitle_Get( i ) )
+			if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+				isExistDVB = True
+
+
+		for i in range( subTitleCount ) :
+			#iSubtitle = dataCache.Subtitle_Get( i )
+			if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
+				structSubTitle.pop( i )
+				continue
+
+			structSubTitle[i].printdebug( )
+
+			if selectedSubtitle :
+				if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
+					selectedIndex = i
+					LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
+
+			if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+				subType = 'DVB'
+			else :
+				subType = 'TTX'
+			LOG_TRACE( 'structSubTitle[i].mLanguage = %s'% structSubTitle[i] )
+			LOG_TRACE( 'structSubTitle[i].mLanguage[0] = %d '% len( structSubTitle[i].mLanguage ) )
+			if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
+				ten = ( structSubTitle[i].mSubId / 16 )
+				one = ( structSubTitle[i].mSubId % 16 )
+
+				context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+			else :	
+				context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+
+		subTitleCount = len( structSubTitle )
+		context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
+
+		if selectedIndex < 0 :
+			selectedIndex = subTitleCount
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context, selectedIndex )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction == -1 and isShowing :
+			dataCache.Subtitle_Show( )
+
+		elif selectAction >= 0 and subTitleCount > selectAction :
+			dataCache.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+			dataCache.Subtitle_Show( )
+
+		elif selectAction == subTitleCount :
+			dataCache.Subtitle_Select( 0x1fff, 0, 0 )
+			dataCache.Subtitle_Hide( )
+
+		ret = True
+
+	return ret
+
+

@@ -1491,9 +1491,7 @@ class ChannelListWindow( BaseWindow ) :
 				elif mTPnum == E_CONFIGURED_TUNER_2 :
 					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
-					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
-
+					listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 				self.mListItems.append( listItem )
 
@@ -1842,8 +1840,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif mTPnum == E_CONFIGURED_TUNER_2 :
 				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
 			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
-				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+				listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
