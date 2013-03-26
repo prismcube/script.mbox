@@ -449,7 +449,7 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
-			if playOffset :
+			if playOffset > 0 :
 				thumbIcon = 'DefaultAudioFO.png'
 
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
@@ -482,7 +482,7 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
-			if playOffset :
+			if playOffset > 0 :
 				thumbIcon = 'DefaultAudioFO.png'
 
 		listindex = 0
@@ -1145,7 +1145,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
 		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
 		#self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_AH_MM_SS ) ) )
-		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( self.mPlayingRecord.mDuration, TimeFormatEnum.E_AH_MM_SS ) ) )
+		if self.mPlayingRecord :
+			self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( self.mPlayingRecord.mDuration, TimeFormatEnum.E_AH_MM_SS ) ) )
 
 
 	def GetPlayingRecord( self ) :
