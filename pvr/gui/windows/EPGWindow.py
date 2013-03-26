@@ -2029,7 +2029,7 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateAllEPGList( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
-			normalize = int( self.mDataCache.Datetime_GetLocalTime( ) / E_GRID_HALF_HOUR )
+			normalize = int( self.mDataCache.Datetime_GetGMTTime( ) / E_GRID_HALF_HOUR )
 			self.mShowingGMTTime = normalize * E_GRID_HALF_HOUR
 			self.SetTimeline( )
 		self.mLock.acquire( )
