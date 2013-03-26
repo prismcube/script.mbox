@@ -150,9 +150,9 @@ class DialogStartRecord( SettingDialog ) :
 			self.SetHeaderLabel( MR_LANG( 'Edit Recording' ) )
 		else :
 			self.mOTRInfo = self.mDataCache.Timer_GetOTRInfo( )
-			self.mOTRInfo.printdebug( )
+			#self.mOTRInfo.printdebug( )
 			self.CheckValidEPG( )
-			self.mOTRInfo.printdebug( )
+			#self.mOTRInfo.printdebug( )
 			self.mStartTime = self.mLocalTime
 			self.mEndTime = self.mOTRInfo.mEventEndTime
 

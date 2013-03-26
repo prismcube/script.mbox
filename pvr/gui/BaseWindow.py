@@ -143,6 +143,12 @@ class SingleWindow( object ) :
 	def getFocusId( self  ) :
 		return self.mRootWindow.getFocusId(  )	
 
+	def addControl( self, aControl ) :
+		return self.mRootWindow.addControl( aControl )
+
+	def removeControl( self, aControl ) :
+		return self.mRootWindow.removeControl( aControl )	
+
 
 class XMLWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
@@ -828,10 +834,30 @@ class BaseWindow( BaseObjectWindow ) :
 				else :
 					self.setProperty( 'SettingPip', 'False' )
 
-			elif aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+			elif ( aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) or \
+				( aWindowId == WinMgr.WIN_ID_EPG_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) :
+				if self.getProperty( 'EPGMode' ) == 'grid' :
+					self.setProperty( 'SettingPip', 'False' )
+					self.setProperty( 'DafultBackgroundImage', 'False' )
+				else :
+					self.setProperty( 'SettingPip', 'True' )
+					self.setProperty( 'DafultBackgroundImage', 'True' )
+													
+					overlayImage.setPosition( 849, 118 )
+					overlayImage.setWidth( 350 )
+					overlayImage.setHeight( 198 )
+
+					radioImage.setPosition( 849, 118 )
+					radioImage.setWidth( 350 )
+					radioImage.setHeight( 198 )
+
+					nosignalLabel.setPosition( 922, 203 )
+					scrambleLabel.setPosition( 922, 203 )
+
+			elif aWindowId == WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-
+												
 				overlayImage.setPosition( 849, 118 )
 				overlayImage.setWidth( 350 )
 				overlayImage.setHeight( 198 )
@@ -842,7 +868,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 922, 203 )
 				scrambleLabel.setPosition( 922, 203 )
-
+			
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 

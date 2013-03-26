@@ -56,11 +56,10 @@ class TimerWindow( BaseWindow ) :
 		self.mCtrlDolbyImage.setImage( '' )
 		self.mCtrlSubtitleImage.setImage( '' )
 
-		self.SetPipScreen( )
-
 		#toDO self.ResetEPGInfomation( )		
-		
 		self.UpdateTimerMode( )
+		self.SetSingleWindowPosition( E_TIMER_WINDOW_BASE_ID )
+		self.SetPipScreen( )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
@@ -363,7 +362,7 @@ class TimerWindow( BaseWindow ) :
 
 				if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
 					LOG_TRACE( '' )
-					timer.printdebug( )
+					#timer.printdebug( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					LOG_TRACE( '' )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
