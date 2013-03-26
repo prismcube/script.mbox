@@ -807,12 +807,23 @@ class NullWindow( BaseWindow ) :
 			context = []
 			structSubTitle = []
 			selectedIndex = -1
+			isExistDVB = False
 
 			for i in range( subTitleCount ) :
 				structSubTitle.append( self.mDataCache.Subtitle_Get( i ) )
-				self.mDataCache.Subtitle_Get( i ).printdebug( )
+				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+					isExistDVB = True
 
-				if selectedSubtitle and isShowing :
+
+			for i in range( subTitleCount ) :
+				#iSubtitle = self.mDataCache.Subtitle_Get( i )
+				if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
+					structSubTitle.pop( i )
+					continue
+
+				structSubTitle[i].printdebug( )
+
+				if selectedSubtitle :
 					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
 						selectedIndex = i
 						LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
@@ -831,6 +842,7 @@ class NullWindow( BaseWindow ) :
 				else :	
 					context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
 
+			subTitleCount = len( structSubTitle )
 			context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
 
 			if selectedIndex < 0 :

@@ -648,6 +648,70 @@
 		<pulseonselect>false</pulseonselect>
 	</include>
 
+	<include name="DefaultButtonGridChannelValues">
+		<height>45</height>
+		<width>250</width>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>250</textwidth>
+		<align>left</align>
+		<aligny>center</aligny>
+		<font>font12_title</font>
+		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturenofocus border="5">button-nofocus.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
+
+	<include name="DefaultButtonRunningRecValues">
+		<height>45</height>
+		<width>250</width>
+		<textoffsetx>5</textoffsetx>
+		<align>center</align>
+		<aligny>center</aligny>
+		<font>font12</font>
+		<texturefocus border="5">StackFO.png</texturefocus>
+		<texturenofocus border="5">StackNF.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+		<colordiffuse>FFFF0000</colordiffuse>
+	</include>
+
+	<include name="DefaultButtonScheduledValues">
+		<height>45</height>
+		<width>250</width>
+		<textoffsetx>5</textoffsetx>
+		<align>center</align>
+		<aligny>center</aligny>
+		<font>font12</font>
+		<texturefocus border="5">StackFO.png</texturefocus>
+		<texturenofocus border="5">StackNF.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+		<colordiffuse>FF00FF00</colordiffuse>
+	</include>
+
+	<include name="DefaultButtonGridEPGValues">
+		<height>45</height>
+		<width>250</width>
+		<textoffsetx>5</textoffsetx>
+		<align>center</align>
+		<aligny>center</aligny>
+		<font>font12</font>
+		<texturefocus border="5">StackFO.png</texturefocus>
+		<texturenofocus border="5">StackNF.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+		<colordiffuse>88FFFFFF</colordiffuse>
+	</include>
+
+	<include name="DefaultButtonTimelineValues">
+		<height>35</height>
+		<width>110</width>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>110</textwidth>
+		<aligny>center</aligny>
+		<font>font12</font>
+		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturenofocus border="5">button-nofocus.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
+
 	<include name="SpinEx01">
 		<control type="group" id="1001100">
 			<width>750</width>
@@ -5325,12 +5389,12 @@
 				<onright>3700100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(1003510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search]</visible>
+				<visible>Control.IsVisible(1003510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)]</visible>
 			</control>
 			<control type="group">
 				<posx>850</posx>
 				<posy>100</posy>
-				<visible>Control.IsVisible(1003510)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search]</visible>
+				<visible>Control.IsVisible(1003510)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)]</visible>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>

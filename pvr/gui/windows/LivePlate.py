@@ -936,8 +936,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mIsShowDialog = False
 				return
 
-			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentChannel and \

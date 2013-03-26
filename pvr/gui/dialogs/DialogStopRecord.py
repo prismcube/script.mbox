@@ -205,7 +205,7 @@ class DialogStopRecord( BaseDialog ) :
 		for i in range( self.mRunningRecordCount ) :
 			timer = self.mRunningTimerList[i]
 
-			timer.printdebug( )
+			#timer.printdebug( )
 			LOG_TRACE( 'START REC: %s' %TimeToString( timer.mRecordStartedTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 			LOG_TRACE( 'START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 			LOG_TRACE( 'CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
