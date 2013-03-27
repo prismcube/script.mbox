@@ -211,7 +211,6 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )
 		self.GetFocusId()
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -503,7 +502,7 @@ class EPGWindow( BaseWindow ) :
 
 		start = time.time( )
 		gmtFrom = self.mShowingGMTTime + self.mShowingOffset
-		gmtUntil = gmtFrom + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime - 1
+		gmtUntil = gmtFrom + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime
 
 		LOG_ERR( 'From : %s' % TimeToString( gmtFrom+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )		
 		LOG_ERR( 'Until : %s' % TimeToString( gmtUntil+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )				
@@ -537,9 +536,25 @@ class EPGWindow( BaseWindow ) :
 					epgEvent.mEventName = strNoEvent
 					epgList.append( epgEvent )
 
+				epgCount = len( epgList )
+				if epgCount > 0 :
+					lastEPG = epgList[epgCount-1]
+					if ( lastEPG.mStartTime + lastEPG.mDuration ) < gmtUntil:
+						epgEvent = ElisIEPGEvent( )
+						epgEvent.mSid = channel.mSid
+						epgEvent.mTsid = channel.mTsid
+						epgEvent.mOnid = channel.mOnid
+						epgEvent.mStartTime = lastEPG.mStartTime + lastEPG.mDuration
+						epgEvent.mDuration = gmtUntil - epgEvent.mStartTime
+						#LOG_ERR( 'Start : %s' % (TimeToString( epgEvent.mStartTime + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
+						#LOG_ERR( 'End :  %s' % (TimeToString( epgEvent.mStartTime+epgEvent.mDuration+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
+						
+						epgEvent.mEventName = strNoEvent
+						epgList.append( epgEvent )
+						epgCount += 1
+				
 				self.mGridEPGList[i]=epgList
 
-				epgCount = len( epgList )
 				epgTotalCount += epgCount
 				
 			else :
@@ -823,78 +838,83 @@ class EPGWindow( BaseWindow ) :
 					col = 0
 					for j in range( epgCount ) :
 						#LOG_TRACE( 'GRID enableCount=%d offsetX=%d, offsetY=%d epgList[j].mEventName=%s' %( enableCount, offsetX, offsetY, epgList[j].mEventName ) )
+						"""						
 						if epgList[j].mEventId == 0 : #dummy epg
 							ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
 							ctrlButton.setLabel( epgList[j].mEventName )
 							ctrlButton.setVisible( True )
 							ctrlButton.setPosition( offsetX, offsetY )
 							ctrlButton.setWidth( self.mGridCanvasWidth )
-							"""
-							ctrlButton.controlLeft( self.mCtrlGridNavigationButtons[0] )
-							ctrlButton.controlRight( self.mCtrlGridNavigationButtons[1] )
-							"""
+							#ctrlButton.controlLeft( self.mCtrlGridNavigationButtons[0] )
+							#ctrlButton.controlRight( self.mCtrlGridNavigationButtons[1] )
 							gridMeta = GridMeta( ctrlButton.getId(), row, col, epgList[j], self.mVisibleTopIndex + i )
 							self.mEPGHashTable[ '%d:%d' %( row, col ) ] = gridMeta
 							col +=  1
 							break
 						else :
-							if epgList[j].mStartTime + epgList[j].mDuration < self.mShowingGMTTime + self.mShowingOffset:
-								LOG_ERR( 'Invalid EPG : i=%d j=%d' %(i,j) )
+						"""
+						
+						if epgList[j].mStartTime + epgList[j].mDuration < self.mShowingGMTTime + self.mShowingOffset:
+							LOG_ERR( 'Invalid EPG : i=%d j=%d' %(i,j) )
 
-							if epgList[j].mStartTime >= ( self.mShowingGMTTime + self.mShowingOffset + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime ) :
-								LOG_ERR( 'Invalid EPG : i=%d j=%d statTime=%s' %(i,j, TimeToString( epgList[j].mStartTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
-							
+						if epgList[j].mStartTime >= ( self.mShowingGMTTime + self.mShowingOffset + E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime ) :
+							LOG_ERR( 'Invalid EPG : i=%d j=%d statTime=%s' %(i,j, TimeToString( epgList[j].mStartTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
+						
 
-							#LOG_ERR( 'Start : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) ) )
-							#LOG_ERR( 'End : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+epgList[j].mDuration+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) ) )
-							duraton = epgList[j].mDuration
-							if epgList[j].mStartTime < self.mShowingGMTTime + self.mShowingOffset:
-								duraton = epgList[j].mStartTime + epgList[j].mDuration - self.mShowingGMTTime - self.mShowingOffset
+						#LOG_ERR( 'Start : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
+						#LOG_ERR( 'End : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+epgList[j].mDuration+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
+						duraton = epgList[j].mDuration
+						if epgList[j].mStartTime < self.mShowingGMTTime + self.mShowingOffset:
+							duraton = epgList[j].mStartTime + epgList[j].mDuration - self.mShowingGMTTime - self.mShowingOffset
 
-							drawWidth = int( duraton* self.mGridCanvasWidth / drawableTime ) 
-							#LOG_ERR( 'End : %d' %(drawWidth ) )
+						drawWidth = int( duraton* self.mGridCanvasWidth / drawableTime ) 
+						#LOG_ERR( 'End : %d' %(drawWidth ) )
 
-							if offsetX + drawWidth > self.mGridCanvasWidth :
-								drawWidth = self.mGridCanvasWidth - offsetX
+						if offsetX + drawWidth > self.mGridCanvasWidth :
+							drawWidth = self.mGridCanvasWidth - offsetX
 
-							if drawWidth <= 0 :
-								LOG_ERR( 'Invalid width %d : i=%d j=%d' %(drawWidth,i,j) )
+						if drawWidth <= 0 :
+							LOG_ERR( 'Invalid width %d : i=%d j=%d' %(drawWidth,i,j) )
 
-							ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
-							if drawWidth < 10 :
-								ctrlButton.setLabel( '.' )
-							else :
-								ctrlButton.setLabel( epgList[j].mEventName )
-							ctrlButton.setPosition( offsetX, offsetY )
-							ctrlButton.setVisible( True )							
+						ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
+						if drawWidth < 10 :
+							ctrlButton.setLabel( '.' )
+						else :
+							ctrlButton.setLabel( epgList[j].mEventName )
+						ctrlButton.setPosition( offsetX, offsetY )
+						ctrlButton.setVisible( True )							
 
-							"""
-							#Navigation control Left
-							if col == 0 :
-								ctrlButton.controlLeft( self.mCtrlGridNavigationButtons[0] )
-							else :
-								ctrlButton.controlLeft( self.mCtrlGridEPGButtonList[enableCount + col - 1] )
+						"""
+						#Navigation control Left
+						if col == 0 :
+							ctrlButton.controlLeft( self.mCtrlGridNavigationButtons[0] )
+						else :
+							ctrlButton.controlLeft( self.mCtrlGridEPGButtonList[enableCount + col - 1] )
 
-							#Navigation control Right
-							if j == epgCount - 1 :
-								ctrlButton.controlRight( self.mCtrlGridNavigationButtons[1] )
-							else :
-								ctrlButton.controlRight( self.mCtrlGridEPGButtonList[enableCount + col + 1] )
-							"""
+						#Navigation control Right
+						if j == epgCount - 1 :
+							ctrlButton.controlRight( self.mCtrlGridNavigationButtons[1] )
+						else :
+							ctrlButton.controlRight( self.mCtrlGridEPGButtonList[enableCount + col + 1] )
+						"""
 
-							#LOG_TRACE( 'GRID drawWidth = %d' %drawWidth )
+						#LOG_TRACE( 'GRID drawWidth = %d' %drawWidth )
 
-							ctrlButton.setWidth( drawWidth  )
-							offsetX += drawWidth
-							
-							gridMeta = GridMeta( ctrlButton.getId(), row, col, epgList[j], self.mVisibleTopIndex + i )
-							self.mEPGHashTable[ '%d:%d' %( row, col ) ] = gridMeta
-							#LOG_ERR( 'controlID : %d' %( gridMeta.mId ) )							
-							
-							col +=  1
+						ctrlButton.setWidth( drawWidth  )
+						offsetX += drawWidth
+						
+						gridMeta = GridMeta( ctrlButton.getId(), row, col, epgList[j], self.mVisibleTopIndex + i )
+						self.mEPGHashTable[ '%d:%d' %( row, col ) ] = gridMeta
+						#LOG_ERR( 'controlID : %d' %( gridMeta.mId ) )							
+						
+						col +=  1
 
-							if offsetX + 5 >= self.mGridCanvasWidth:
-								break
+						if epgList[j].mEventId == 0 : #dummy epg
+							break
+
+						if offsetX + 5 >= self.mGridCanvasWidth:
+							break
+
 
 					"""						
 					if i >= E_GRID_MAX_ROW_COUNT -1 : 
