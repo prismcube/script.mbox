@@ -187,12 +187,13 @@ class EPGWindow( BaseWindow ) :
 
 		LOG_TRACE( 'CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ) )
 
-		if self.mEPGMode == E_VIEW_GRID :
-			if self.mInitialized == False :
-				self.InitTimelineButtons( )
-				self.InitChannelButtons( )
-				self.InitGridEPGButtons( )
 
+		if self.mInitialized == False :
+			self.InitTimelineButtons( )
+			self.InitChannelButtons( )
+			self.InitGridEPGButtons( )
+
+		if self.mEPGMode == E_VIEW_GRID :
 			self.SetVideoRestore( )
 
 		self.UpdateCurrentChannel( )
@@ -209,7 +210,8 @@ class EPGWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
+		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )
 		self.GetFocusId()
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
