@@ -2109,7 +2109,7 @@ class EPGWindow( BaseWindow ) :
 
 	def SetTimeline( self ) :
 		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
-		self.getControl( BUTTON_ID_SHOWING_DATE ).setLabel( TimeToString( showingTime + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_AW_DD_MM_YYYY ) )		
+		self.getControl( BUTTON_ID_SHOWING_DATE ).setLabel( TimeToString( showingTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )		
 
 		for i in range( len( self.mCtrlTimelineButtons ) ):
 			self.mCtrlTimelineButtons[i].setLabel( TimeToString( showingTime, TimeFormatEnum.E_HH_MM ) )
