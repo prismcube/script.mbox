@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
-
+from pvr.XBMCInterface import XBMC_SetSkinZoom
 
 E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -89,6 +89,9 @@ class FirstInstallation( FTIWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
+
+		elif actionId == Action.REMOTE_0 :
+			XBMC_SetSkinZoom( -10 )
 
 
 	def onClick( self, aControlId ) :
