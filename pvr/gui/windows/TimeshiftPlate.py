@@ -609,7 +609,9 @@ class TimeShiftPlate( BaseWindow ) :
 					self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
+			visible = E_TAG_TRUE
 			if self.mMode == ElisEnum.E_MODE_LIVE :
+				visible = E_TAG_FALSE
 				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
@@ -617,15 +619,18 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 				
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				visible = E_TAG_FALSE
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
+				visible = E_TAG_FALSE
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+			self.UpdatePropertyGUI( 'iButtonShow', visible )
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
