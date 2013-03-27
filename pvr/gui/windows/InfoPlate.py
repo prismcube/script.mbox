@@ -190,6 +190,9 @@ class InfoPlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			self.ShowDialog( E_CONTROL_ID_BUTTON_SUBTITLE )
+
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
 			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
@@ -456,7 +459,14 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )				
+			if ShowSubtitle( ) :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			if not self.mPlatform.IsPrismCube( ) :

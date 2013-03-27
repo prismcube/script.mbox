@@ -354,9 +354,18 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				return
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )
+			if ShowSubtitle( ) :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
+			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mMode == ElisEnum.E_MODE_PVR :
@@ -894,18 +903,18 @@ class TimeShiftPlate( BaseWindow ) :
 			#if status.mEndTimeInMs :
 			#	self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
-			tempStartTime   = self.mTimeshift_staTime / 1000
-			tempCurrentTime = self.mTimeshift_curTime / 1000
-			tempEndTime     = self.mTimeshift_endTime / 1000
+			tempStartTime   = self.mTimeshift_staTime / 1000.0
+			tempCurrentTime = self.mTimeshift_curTime / 1000.0
+			tempEndTime     = self.mTimeshift_endTime / 1000.0
 
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				if status.mEndTimeInMs :
 					self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
-				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
+				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000.0
 				tempStartTime = localTime - duration
-				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
+				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000.0 )
 				tempEndTime =  localTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -934,7 +943,8 @@ class TimeShiftPlate( BaseWindow ) :
 			if lbl_timeS != '' :
 				if self.mStartTimeShowed == False :
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
-			if lbl_timeP != '' :
+					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+			if lbl_timeP != '' and status.mSpeed != 0 :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )

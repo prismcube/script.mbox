@@ -8,7 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
