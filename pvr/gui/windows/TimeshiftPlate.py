@@ -360,11 +360,12 @@ class TimeShiftPlate( BaseWindow ) :
 				return
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			if ShowSubtitle( ) :
+			ret = ShowSubtitle( )
+			if ret > -1 :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
-			else :
+			elif ret == -2 :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_SHOW_INFO :

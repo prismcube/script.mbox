@@ -459,11 +459,12 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			if ShowSubtitle( ) :
+			ret = ShowSubtitle( )
+			if ret > -1 :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
-			else :
+			elif ret == -2 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
 				dialog.doModal( )
