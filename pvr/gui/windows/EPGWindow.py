@@ -49,15 +49,15 @@ CONTEXT_SELECT_CHANNEL			= 8
 MININUM_KEYWORD_SIZE			= 3
 
 E_USE_FIXED_INTERVAL			= False
-E_SEVEN_DAYS_EPG_TIME 			= 24*3600*7
+E_SEVEN_DAYS_EPG_TIME 			= 24 * 3600 * 7
 
-E_GRID_HALF_HOUR				= 30*60
+E_GRID_HALF_HOUR				= 30 * 60
 E_GRID_MAX_TIMELINE_COUNT		= 8
 E_GRID_MAX_ROW_COUNT			= 10
 E_GRID_MAX_COL_COUNT			= 20
 E_GRID_MAX_BUTTON_COUNT			= 100
 E_GRID_SCHEDULED_BUTTON_COUNT	= 20
-E_GRID_DEFAULT_DELTA_TIME		= 60*30
+E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 50
 
 E_DIR_CURRENT					= 0
@@ -81,7 +81,7 @@ BUTTON_ID_BASE_SCHEDULED		= E_EPG_WINDOW_BASE_ID + 3701
 
 
 class GridMeta( object ) :
-	def __init__( self, aControlId=0, aRow = 0, aCol=0, aEPG=None, aChannelIndex=0 ) :
+	def __init__( self, aControlId = 0, aRow = 0, aCol = 0, aEPG = None, aChannelIndex = 0 ) :
 		self.mId = aControlId
 		self.mRow = aRow
 		self.mCol = aCol
@@ -89,7 +89,6 @@ class GridMeta( object ) :
 		self.mChannelIndex = aChannelIndex
 
 	
-
 class EPGWindow( BaseWindow ) :
 
 	def __init__( self, *args, **kwargs ) :
