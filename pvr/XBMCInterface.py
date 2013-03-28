@@ -305,7 +305,12 @@ def XBMC_GetSkinZoom( ) :
 
 	LOG_TRACE( 'zoom=%d' %skinzoom )
 	return skinzoom
-	
+
+
+def XBMC_SetSkinZoom( aZoom ) :	
+	LOG_TRACE( '' )
+	xbmc.executebuiltin( 'lookandfeel.skinzoom( %d )' % aZoom )
+
 
 def XBMC_GetCurrentLanguage( ) :
 	LOG_TRACE( '' )

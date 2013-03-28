@@ -236,13 +236,6 @@ class MainMenu( BaseWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HELP )
 			dialog.doModal( )
 
-		elif aControlId == 20 :
-			pass
-			"""
-			import pvr.Launcher
-			pvr.Launcher.GetInstance( ).PowerOff()
-			"""
-
 
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :

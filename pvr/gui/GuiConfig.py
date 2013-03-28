@@ -34,7 +34,7 @@ E_MODE_DOMODAL			= 1
 E_WINDOW_ATIVATE_MODE	= E_MODE_DOMODAL
 
 # SUPPORT SINGLE WINDOW
-E_SUPPORT_SINGLE_WINDOW_MODE = False
+E_SUPPORT_SINGLE_WINDOW_MODE = True
 
 E_BASE_WINDOW_ID		= 0
 E_BASE_WINDOW_UNIT		= 0
@@ -206,6 +206,8 @@ E_EPG_DB_CF_GET_BY_FOLLOWING	= 2
 FLAG_ZAPPING_LOAD   			= 0
 FLAG_ZAPPING_CHANGE 			= 1
 
+# SETTING WINDOW INPUT TYPE
+TYPE_NUMBER_NORMAL				= 0
 
 # CAM SLOT NUM ( now only accept 1 slot )
 CAS_SLOT_NUM_1					= 0
@@ -217,6 +219,7 @@ USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
 USER_ENUM_LIST_DHCP_STATIC			= [ MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) ]
 USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_VIDEO_OUTPUT			= [ MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) ]
+USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Current Transponder Only' ), MR_LANG( 'All Transponders' ) ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -226,6 +229,7 @@ E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8
 E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set Current Position as East Limit' ), MR_LANG( 'Set Current Position as West Limit' ) ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
+E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6', '-4', '-2', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
 
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
@@ -316,6 +320,7 @@ E_XML_PROPERTY_FAV        = 'iFav'
 E_XML_PROPERTY_RECORDING  = 'iRec'
 E_XML_PROPERTY_TUNER1     = 'iTuner1'
 E_XML_PROPERTY_TUNER2     = 'iTuner2'
+E_XML_PROPERTY_TUNER1_2   = 'iTuner1_2'
 E_XML_PROPERTY_EDITINFO   = 'isEdit'
 E_XML_PROPERTY_MOVE       = 'isMove'
 E_XML_PROPERTY_TV         = 'ServiceTypeTV'
@@ -342,6 +347,8 @@ CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
 CONTEXT_ACTION_ADD_TO_CHANNEL	= 13
 CONTEXT_ACTION_SAVE_EXIT		= 14
+CONTEXT_ACTION_DELETE_FAV_CURRENT = 15
+CONTEXT_ACTION_CHANGE_NAME		= 16
 CONTEXT_ACTION_MENU_EDIT_MODE	= 20
 CONTEXT_ACTION_MENU_DELETEALL	= 22
 CONTEXT_ACTION_ADD_AUTO_CHAPTER = 30
@@ -360,26 +367,34 @@ E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 ############################ Global Function For GUI ############################
 
 
-def getSingleFrequenceIndex( selectedItem ) :
+def getSingleFrequenceIndex( aSelectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
-		if( selectedItem == int( E_LIST_SINGLE_FREQUENCY[ i ] ) ) :
+		if( aSelectedItem == int( E_LIST_SINGLE_FREQUENCY[ i ] ) ) :
 			return i
 			
 	return -1
 
 
-def getCommittedSwitchindex( selectedItem ) :
-	if selectedItem == 5 or selectedItem == 6 :
+def getCommittedSwitchindex( aSelectedItem ) :
+	if aSelectedItem == 5 or aSelectedItem == 6 :
 		return 0
-	return selectedItem
+	return aSelectedItem
 
 
-def getOneCableTunerFrequencyIndex( selectedItem ) :
+def getOneCableTunerFrequencyIndex( aSelectedItem ) :
 	for i in range( len ( E_LIST_ONE_CABLE_TUNER_FREQUENCY ) ) :
-		if( selectedItem == E_LIST_ONE_CABLE_TUNER_FREQUENCY[ i ] ) :
+		if( aSelectedItem == E_LIST_ONE_CABLE_TUNER_FREQUENCY[ i ] ) :
 			return i
 			
 	return -1
+
+
+def getZoomRateIndex( aValue ) :
+	for i in range( len ( E_LIST_SKIN_ZOOM_RATE )	) :
+		if( aValue == int( E_LIST_SKIN_ZOOM_RATE[ i ] ) ) :
+			return i
+			
+	return 0
 
 
 def MakeHexToIpAddr( aIpAddr ) :

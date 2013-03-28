@@ -3,7 +3,9 @@ import sys, inspect, time, threading
 import gc
 
 
-E_NULL_WINDOW_BASE_ID				=  WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_NULL_WINDOW_BASE_ID				= WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_BUTTON_ID_FAKE					= E_NULL_WINDOW_BASE_ID + 9000
+
 E_NOMAL_BLINKING_TIME		= 0.2
 
 
@@ -18,7 +20,7 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = True
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
-			self.mSubTitleIsShow = False
+			#self.mSubTitleIsShow = False
 			self.mIsShowDialog = False
 			self.mEnableBlickingTimer = False			
 
@@ -26,8 +28,9 @@ class NullWindow( BaseWindow ) :
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False				
 		self.SetActivate( True )
+		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
-		collected = gc.collect()
+		collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
@@ -242,11 +245,6 @@ class NullWindow( BaseWindow ) :
 					if move :
 						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			if not E_SUPPORT_SINGLE_WINDOW_MODE :
-				self.GetFocusId( )
-				self.onClick( self.mFocusId )
-
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
@@ -351,11 +349,20 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+				return
+
 			if not self.mDataCache.Teletext_Show( ) :
 				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.ShowSubtitle( )
+			if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+				return
+
+			if ShowSubtitle( ) == -2 :
+				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
 			LOG_TRACE( 'Numlock is not support until now' )
@@ -419,7 +426,7 @@ class NullWindow( BaseWindow ) :
 		"""
 
 
-	def onClick(self, aControlId) :
+	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
 
@@ -431,7 +438,7 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
-	def onFocus(self, aControlId) :
+	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
 	
@@ -439,7 +446,7 @@ class NullWindow( BaseWindow ) :
 		#self.mLastFocusId = aControlId
 
 
-	def onEvent(self, aEvent):
+	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
@@ -729,7 +736,6 @@ class NullWindow( BaseWindow ) :
 		self.StopBlickingIconTimer( )
 		self.SetBlinkingProperty( 'None' )		
 
-		
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
@@ -765,86 +771,23 @@ class NullWindow( BaseWindow ) :
 
 
 	def CloseSubTitle( self ) :
-		if self.mCommander.Subtitle_IsShowing( ) :
-			self.mSubTitleIsShow = True
-			self.mCommander.Subtitle_Hide( )
-		else :
-			self.mSubTitleIsShow = False
+		if self.mDataCache.Subtitle_IsShowing( ) :
+			#self.mSubTitleIsShow = True
+			self.mDataCache.Subtitle_Hide( )
+		#else :
+		#	self.mSubTitleIsShow = False
 
 
 	def CheckSubTitle( self ) :
-		if self.mSubTitleIsShow :
-			self.mCommander.Subtitle_Show( )
+		#if self.mSubTitleIsShow :
+		#	self.mDataCache.Subtitle_Show( )
 
+		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+			return
 
-	def ShowSubtitle( self ) :
-		subTitleCount = self.mCommander.Subtitle_GetCount( )
-		if subTitleCount > 0 :
-			isShowing = False
-			if self.mCommander.Subtitle_IsShowing( ) :
-				self.mCommander.Subtitle_Hide( )
-				isShowing = True
-
-			selectedSubtitle = self.mCommander.Subtitle_GetSelected( )
-
-			#####
-			if selectedSubtitle :
-				selectedSubtitle.printdebug( )
-			#####
-		
-			context = []
-			structSubTitle = []
-			selectedIndex = -1
-
-			for i in range( subTitleCount ) :
-				structSubTitle.append( self.mCommander.Subtitle_Get( i ) )
-				self.mCommander.Subtitle_Get( i ).printdebug( )
-
-				if selectedSubtitle and isShowing :
-					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
-						selectedIndex = i
-				
-				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
-					subType = 'DVB'
-				else :
-					subType = 'TTX'
-				print 'structSubTitle[i].mLanguage = ' , structSubTitle[i]
-				print 'structSubTitle[i].mLanguage[0] = %d ' % len( structSubTitle[i].mLanguage )
-				if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
-					ten = ( structSubTitle[i].mSubId/16 )
-					one = (structSubTitle[i].mSubId % 16)
-
-					context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
-				else :	
-					context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
-
-			context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
-
-			if selectedIndex < 0 :
-				selectedIndex = subTitleCount
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context, selectedIndex )
-			dialog.doModal( )
-
-			selectAction = dialog.GetSelectedAction( )
-			if selectAction == -1 and isShowing :
-				self.mCommander.Subtitle_Show( )
-
-			elif selectAction >= 0 and subTitleCount > selectAction :
-				self.mCommander.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
-				self.mCommander.Subtitle_Show( )
-
-			elif selectAction == subTitleCount :
-				self.mCommander.Subtitle_Select( 0x1fff, 0, 0 )
-				self.mCommander.Subtitle_Hide( )
-
-		else :
-			self.CloseSubTitle( )		
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
-			dialog.doModal( )
-			self.CheckSubTitle( )
+		selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
+		if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
+			self.mDataCache.Subtitle_Show( )
 
 
 	def DialogPopupOK( self, aAction ) :
@@ -886,6 +829,10 @@ class NullWindow( BaseWindow ) :
 			head = MR_LANG( 'No teletext' )
 			msg = MR_LANG( 'No teletext available' )
 
+		elif aAction == Action.ACTION_MBOX_SUBTITLE :
+			head = MR_LANG( 'No subtitle' )
+			msg = MR_LANG( 'No subtitle available' )
+
 		elif aAction == Action.ACTION_MBOX_XBMC :
 			msg = MR_LANG( 'Try again after stopping playback' )
 
@@ -902,6 +849,7 @@ class NullWindow( BaseWindow ) :
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
+
 		elif aAction == Action.ACTION_COLOR_BLUE :
 			self.CloseSubTitle( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )

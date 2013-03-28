@@ -74,6 +74,16 @@
 								<font>Font_Reg18</font>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
+							<control type="label">
+								<posx>5</posx>
+								<posy>20</posy>
+								<width>100</width>
+								<height>10</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>Font_Reg18</font>
+								<label>$INFO[ListItem.Label2]</label>
+							</control>
 						</itemlayout>
 						<focusedlayout height="81" width="130">
 							<control type="image">
@@ -85,8 +95,8 @@
 								<bordertexture border="5">thumbs/bordershadow2.png</bordertexture>
 								<bordersize>8</bordersize>
 								<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
-								<animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation>
-								<!--animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,100" time="200">unfocus</animation-->
+								<!--animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation-->
+								<animation effect="zoom" start="100" end="130" center="auto" time="300" tween="quadratic" easing="in">focus</animation>
 							</control>
 							<control type="label">
 								<posx>65</posx>
@@ -98,6 +108,16 @@
 								<font>Font_Reg22</font>
 								<textcolor>blue</textcolor>
 								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="label">
+								<posx>-10</posx>
+								<posy>10</posy>
+								<width>100</width>
+								<height>10</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>Font_Reg22</font>
+								<label>$INFO[ListItem.Label2]</label>
 							</control>
 						</focusedlayout>
 					</control>

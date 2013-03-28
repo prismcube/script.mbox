@@ -433,12 +433,16 @@ class TunerConfigMgr( object ) :
 							break
 					if findSatellite == False :
 						self.mDataCache.Channel_DeleteBySatellite( channelSatellite.mLongitude, channelSatellite.mBand )
-			else :
-				ret = self.mDataCache.Channel_DeleteAll( )
-				if ret :
+
+				if self.mDataCache.Channel_GetList( ) :
+					return
+				else :
 					self.mDataCache.Player_AVBlank( True )
-					self.mDataCache.Channel_InvalidateCurrent( )
-					#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					return
+
+		self.mDataCache.Channel_DeleteAll( )
+		self.mDataCache.Player_AVBlank( True )
+		self.mDataCache.Channel_InvalidateCurrent( )
 
 
 	def CompareCurrentConfiguredState( self ) :

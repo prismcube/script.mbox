@@ -204,7 +204,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 					for i in range( self.mTimer.mWeeklyTimerCount ) :
 						weeklyTimer = self.mTimer.mWeeklyTimer[i]
-						weeklyTimer.printdebug( )
+						#weeklyTimer.printdebug( )
 						usedTimer = self.mUsedWeeklyList[weeklyTimer.mDate]
 						usedTimer.mUsed =True
 						usedTimer.mStartTime = weeklyTimer.mStartTime
@@ -469,7 +469,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			try :
 				usedWeekly = self.mUsedWeeklyList[ self.mSelectedWeekOfDay ]
 				usedWeekly = self.mUsedWeeklyList[ self.mSelectedWeekOfDay ]
-				self.mUsedWeeklyList[ self.mSelectedWeekOfDay ].printdebug( )
+				#self.mUsedWeeklyList[ self.mSelectedWeekOfDay ].printdebug( )
 				strStartTime = TimeToString( self.mUsedWeeklyList[ self.mSelectedWeekOfDay ].mStartTime, TimeFormatEnum.E_HH_MM )
 				strEndTime = TimeToString( self.mUsedWeeklyList[ self.mSelectedWeekOfDay ].mStartTime + self.mUsedWeeklyList[ self.mSelectedWeekOfDay ].mDuration, TimeFormatEnum.E_HH_MM )
 			except Exception, ex :

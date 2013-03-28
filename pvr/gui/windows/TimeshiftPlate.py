@@ -5,33 +5,6 @@ E_TIMESHIFT_PLATE_BASE_ID = WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT +
 
 
 #control ids
-"""
-E_CONTROL_ID_IMAGE_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 10
-E_CONTROL_ID_LABEL_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 11
-E_CONTROL_ID_IMAGE_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 15
-E_CONTROL_ID_LABEL_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 16
-E_CONTROL_ID_IMAGE_REWIND 			= E_TIMESHIFT_PLATE_BASE_ID + 31
-E_CONTROL_ID_IMAGE_FORWARD 			= E_TIMESHIFT_PLATE_BASE_ID + 32
-E_CONTROL_ID_LABEL_SPEED 			= E_TIMESHIFT_PLATE_BASE_ID + 33
-E_CONTROL_ID_PROGRESS 				= E_TIMESHIFT_PLATE_BASE_ID + 201
-E_CONTROL_ID_BUTTON_CURRENT 		= E_TIMESHIFT_PLATE_BASE_ID + 202
-E_CONTROL_ID_LABEL_MODE 			= E_TIMESHIFT_PLATE_BASE_ID + 203
-E_CONTROL_ID_EVENT_CLOCK 			= E_TIMESHIFT_PLATE_BASE_ID + 211
-E_CONTROL_ID_LABEL_TS_START_TIME 	= E_TIMESHIFT_PLATE_BASE_ID + 221
-E_CONTROL_ID_LABEL_TS_END_TIME 		= E_TIMESHIFT_PLATE_BASE_ID + 222
-E_CONTROL_ID_LIST_SHOW_BOOKMARK		= E_TIMESHIFT_PLATE_BASE_ID + 500
-E_CONTROL_ID_BUTTON_VOLUME 			= E_BASE_WINDOW_ID + 3701
-E_CONTROL_ID_BUTTON_START_RECORDING = E_BASE_WINDOW_ID + 3702
-E_CONTROL_ID_BUTTON_REWIND 			= E_BASE_WINDOW_ID + 3704
-E_CONTROL_ID_BUTTON_PLAY 			= E_BASE_WINDOW_ID + 3705
-E_CONTROL_ID_BUTTON_PAUSE 			= E_BASE_WINDOW_ID + 3706
-E_CONTROL_ID_BUTTON_STOP 			= E_BASE_WINDOW_ID + 3707
-E_CONTROL_ID_BUTTON_FORWARD 		= E_BASE_WINDOW_ID + 3708
-E_CONTROL_ID_BUTTON_JUMP_RR 		= E_BASE_WINDOW_ID + 3709
-E_CONTROL_ID_BUTTON_JUMP_FF 		= E_BASE_WINDOW_ID + 3710
-E_CONTROL_ID_BUTTON_BOOKMARK 		= E_BASE_WINDOW_ID + 3711
-"""
-
 E_CONTROL_ID_IMAGE_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 10
 E_CONTROL_ID_LABEL_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 11
 E_CONTROL_ID_IMAGE_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 15
@@ -92,6 +65,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mCurrentChannel=[]
 		self.mProgress_idx = 0.0
+		self.mTimeshift_staTime = 0.0
+		self.mTimeshift_curTime = 0.0
+		self.mTimeshift_endTime = 1.0
 		self.mEventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = FLAG_PLAY
@@ -142,9 +118,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlImgXpeed          = self.getControl( E_CONTROL_ID_IMAGE_XPEED )
 
 		self.mFlag_OnEvent = True
-		self.mTimeshift_staTime = 0.0
-		self.mTimeshift_curTime = 0.0
-		self.mTimeshift_endTime = 0.0
 		self.mIsTimeshiftPending = False
 		self.mSpeed = 100	#normal
 		self.mLocalTime = 0
@@ -170,6 +143,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mImagePoint = ''
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
 
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
@@ -187,7 +161,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
 		#self.GetNextSpeed( E_ONINIT )
-		self.InitBookmarkThumnail( )
+		#self.InitBookmarkThumnail( )
 		self.InitPreviousAction( )
 		self.InitAccelatorSection( )
 
@@ -377,6 +351,23 @@ class TimeShiftPlate( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			if not self.mDataCache.Teletext_Show( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				return
+
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			ret = ShowSubtitle( )
+			if ret > -1 :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
+			elif ret == -2 :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).DialogPopupOK( actionId )
+
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping playback' )
@@ -527,6 +518,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.StartAsyncMoveByTime( True )
+				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
+				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
 
 				"""
 				self.mUserMoveTime = -1
@@ -617,7 +610,9 @@ class TimeShiftPlate( BaseWindow ) :
 					self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
+			visible = E_TAG_TRUE
 			if self.mMode == ElisEnum.E_MODE_LIVE :
+				visible = E_TAG_FALSE
 				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
@@ -625,15 +620,18 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 				
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				visible = E_TAG_FALSE
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
+				visible = E_TAG_FALSE
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+			self.UpdatePropertyGUI( 'iButtonShow', visible )
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
@@ -710,15 +708,18 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mSlideY = E_SLIDE_GAP
 
+		self.InitTimeShift( )
+		self.InitBookmarkThumnail( )
 		self.mEventCopy = []
 		self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,          '' )
-		#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,        '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   '', E_TAG_LABEL )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,   E_CURRENT_POSY, E_TAG_POSY )
+
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
+		#self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
+		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, E_CURRENT_POSY, E_TAG_POSY )
+		self.UpdateProgress( )
 
 		visible = True
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -905,23 +906,27 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mTimeshift_staTime = status.mStartTimeInMs #/ 1000.0
 			if status.mPlayTimeInMs :
 				self.mTimeshift_curTime = status.mPlayTimeInMs  #/ 1000.0
-			if status.mEndTimeInMs :
-				self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
+			#if status.mEndTimeInMs :
+			#	self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
-			tempStartTime   = self.mTimeshift_staTime / 1000
-			tempCurrentTime = self.mTimeshift_curTime / 1000
-			tempEndTime     = self.mTimeshift_endTime / 1000
+			tempStartTime   = self.mTimeshift_staTime / 1000.0
+			tempCurrentTime = self.mTimeshift_curTime / 1000.0
+			tempEndTime     = self.mTimeshift_endTime / 1000.0
 
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				if status.mEndTimeInMs :
+					self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
+
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
-				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
+				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000.0
 				tempStartTime = localTime - duration
-				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
+				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000.0 )
 				tempEndTime =  localTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
 				self.mTimeshift_staTime = 0.0
 				self.mTimeshift_endTime = self.mPlayingRecordInfo.mDuration * 1000
+				tempEndTime = self.mPlayingRecordInfo.mDuration
 				#LOG_TRACE( 'resetting pvr start[%s] end[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime ) )
 
 
@@ -944,7 +949,8 @@ class TimeShiftPlate( BaseWindow ) :
 			if lbl_timeS != '' :
 				if self.mStartTimeShowed == False :
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
-			if lbl_timeP != '' :
+					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+			if lbl_timeP != '' and status.mSpeed != 0 :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
@@ -1131,16 +1137,19 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeP = ''
 
 			#calculate current position
-			totTime = self.mTimeshift_endTime - self.mTimeshift_staTime
+			playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
 			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
+			#curTime = self.mTimeshift_curTime + aUserMoving
 			if aMoveBy == E_MOVE_BY_MARK :
 				curTime = self.mTimeshift_staTime + aUserMoving
+			if curTime < self.mTimeshift_staTime :
+				curTime = self.mTimeshift_staTime
 
-			if totTime > 0 and curTime >= 0 :
-				self.mProgress_idx = (curTime / float(totTime))  * 100.0
+			if playSize > 0 and curTime >= 0 :
+				self.mProgress_idx = (curTime / float(playSize))  * 100.0
 
-				#LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
-				#LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_curTime, self.mProgress_idx, self.mTimeshift_endTime ) )
+				#LOG_TRACE( 'curTime2[%s] curTime[%s] playSize[%s] idx[%s]'% ( curTime2,curTime,playSize,self.mProgress_idx ) )
+				#LOG_TRACE( 'staTime[%s] curTime[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
 					self.mProgress_idx = 100
@@ -1283,10 +1292,12 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_TRACE( 'bookmark None, show False' )
 			return
 
+		idx = 0
 		listItems = []
 		for i in range( len( self.mBookmarkList ) ) :
+			idx += 1
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
-			listItem = xbmcgui.ListItem( '%s'% lblOffset )
+			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idx )
 			listItem.setProperty( 'BookMarkThumb', self.mThumbnailList[i] )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 
@@ -1451,9 +1462,9 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		self.mPlayingRecordInfo = playingRecord
-		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
+		self.mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
 		#LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )
-		if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
+		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or self.mBookmarkList[0].mError != 0 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			return 
 
@@ -1469,34 +1480,14 @@ class TimeShiftPlate( BaseWindow ) :
 		if thumbnaillist and len( thumbnaillist ) > 0 :
 			for mfile in thumbnaillist :
 				try :
-					thumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
+					#thumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
+					self.mThumbnailList.append( mfile )
+
 				except Exception, e :
 					LOG_ERR( 'Error exception[%s]'% e )
 					continue
 
 		#LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
-		thumbCount = len( mBookmarkList )
-		oldidx = -1
-		for num in range( 10 ) :
-			if thumbCount <= num :
-				LOG_TRACE( 'break loop : thumbnail[%s] idx[%s]'% ( thumbCount, num ) )
-				break
-
-			if thumbCount > 10 :
-				idx = thumbCount * num / 10
-			else :
-				idx = num
-
-			if idx == oldidx :
-				continue
-
-			oldidx = idx
-			mfile = thumbnailHash.get( mBookmarkList[idx].mTimeMs, None )
-			if mfile :
-				self.mThumbnailList.append( mfile )
-				self.mBookmarkList.append( mBookmarkList[idx] )
-			#LOG_TRACE(' idx[%s] num[%s] max[%s] file[%s]'% (idx, num, thumbCount, mfile ) )
-
 		#LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
 		self.ShowBookmark( )
 
@@ -1622,8 +1613,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	
 	def StartAutomaticHide( self ) :
-		bannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
-		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer = threading.Timer( self.mBannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start( )
 
 
@@ -1751,9 +1741,9 @@ class TimeShiftPlate( BaseWindow ) :
 		if self.mAsyncMove >= ( self.mTimeshift_endTime - 1000 ) :
 			lblCurrentTime  = tempEndTime - 1
 			self.mAsyncMove = self.mTimeshift_endTime - 1000
-		elif self.mAsyncMove <= ( self.mTimeshift_staTime + 1000 ) :
-			lblCurrentTime  = tempStartTime + 1
-			self.mAsyncMove = self.mTimeshift_staTime + 1000
+		elif self.mAsyncMove <= self.mTimeshift_staTime :
+			lblCurrentTime  = tempStartTime
+			self.mAsyncMove = self.mTimeshift_staTime
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )

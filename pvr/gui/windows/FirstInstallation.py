@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
-
+from pvr.XBMCInterface import XBMC_SetSkinZoom
 
 E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -19,6 +19,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mTime				= 0
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
+		self.mZoomRate			= 0
 
 		self.mStepImage			= []
 
@@ -58,7 +59,7 @@ class FirstInstallation( FTIWindow ) :
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -68,7 +69,7 @@ class FirstInstallation( FTIWindow ) :
 			if self.GetFTIStep( ) == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Exit Installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Exit Installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ), True )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -86,7 +87,7 @@ class FirstInstallation( FTIWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
@@ -134,8 +135,19 @@ class FirstInstallation( FTIWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_ANTENNA )
-			else :
+			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
 				self.ControlSelect( )
+
+			elif groupId == E_SpinEx04 :
+				self.mZoomRate = self.GetSelectedIndex( E_SpinEx04 )
+				XBMC_SetSkinZoom( int( E_LIST_SKIN_ZOOM_RATE[ self.mZoomRate ] ) )
+				WinMgr.GetInstance( ).LoadSkinPosition( )
+				self.SetPipScreen( )
+
+			elif groupId == E_Input01 :
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+				WinMgr.GetInstance( ).LoadSkinPosition( )
+				self.SetPipScreen( )
 
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
@@ -213,28 +225,32 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
+			self.mZoomRate = getZoomRateIndex( XBMC_GetSkinZoom( ) )
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Skin Zoom' ), E_LIST_SKIN_ZOOM_RATE, self.mZoomRate, MR_LANG( 'Select the skin zoom rate' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
-			
+
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_ANTENNA :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
+			connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
-			self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
+			self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), connectTypeDescription )
 			self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
 			self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a control method for tuner 1' ) )
 			self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', MR_LANG( 'Tuner 2 Control' ), MR_LANG( 'Select a control method for tuner 2' ) )
@@ -263,7 +279,8 @@ class FirstInstallation( FTIWindow ) :
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
-			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+			networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+			self.AddEnumControl( E_SpinEx02, 'Network Search', None, networkSearchDescription )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 

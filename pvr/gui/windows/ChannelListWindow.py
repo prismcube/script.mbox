@@ -270,7 +270,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
-			LOG_TRACE('--------------focus[%s]'% self.mFocusId )
+			#LOG_TRACE('--------------focus[%s]'% self.mFocusId )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 
@@ -757,7 +757,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-				LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )			
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
@@ -1492,9 +1491,7 @@ class ChannelListWindow( BaseWindow ) :
 				elif mTPnum == E_CONFIGURED_TUNER_2 :
 					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
-					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
-
+					listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 				self.mListItems.append( listItem )
 
@@ -1550,7 +1547,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
-		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
@@ -1670,33 +1667,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = False ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		if aPropertyID == E_XML_PROPERTY_TELETEXT :
-			if pmtEvent and pmtEvent.mTTXCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-					aValue = True
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mNavChannel )
+		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID )
 
-		elif aPropertyID == E_XML_PROPERTY_SUBTITLE :
-			if pmtEvent and pmtEvent.mSubCount > 0 :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-					aValue = True
-
-		elif aPropertyID == E_XML_PROPERTY_DOLBYPLUS :
-			#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
-			if pmtEvent and pmtEvent.mAudioCount > 0 and \
-			   pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-				if self.mNavChannel and self.mNavChannel.mNumber == pmtEvent.mChannelNumber and \
-				   self.mNavChannel.mServiceType == pmtEvent.mServiceType :
-					LOG_TRACE( '-------------- DolbyPlus updated by PMT cache' )
-					aValue = True
-
-		self.setProperty( aPropertyID, '%s'% aValue )
-		return aValue
+		return ret
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
@@ -1709,10 +1684,6 @@ class ChannelListWindow( BaseWindow ) :
 			rootWinow.setProperty( aPropertyID, aValue )
 
 		else :
-			if self.UpdatePropertyByCacheData( aPropertyID ) == True :
-				LOG_TRACE( '-------------- return by cached data' )
-				return True
-
 			self.setProperty( aPropertyID, aValue )
 
 
@@ -1769,32 +1740,28 @@ class ChannelListWindow( BaseWindow ) :
 			"""
 
 
-		#update epgName uiID(304)
-		if self.mNavEpg :
-			try :
+		#component
+		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+		isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		if not isSubtitle :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
+		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
 
-				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				label = '%s - %s'% (startTime, endTime)
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
-				self.mCtrlProgress.setVisible( True )
+		try :
+			if self.mNavEpg :
+					startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+					endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+					label = '%s - %s'% (startTime, endTime)
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
+					self.mCtrlProgress.setVisible( True )
+			else :
+				LOG_TRACE( 'event null' )
 
-				#component
-				setPropertyList = []
-				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,setPropertyList[1] )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
-
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
-
-
-		else:
-			LOG_TRACE( 'event null' )
+		except Exception, e:
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 	@RunThread
@@ -1875,8 +1842,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif mTPnum == E_CONFIGURED_TUNER_2 :
 				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
 			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
-				listItem.setProperty( E_XML_PROPERTY_TUNER2,  E_TAG_TRUE )
+				listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
 
 			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
@@ -2161,6 +2127,59 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
 
 
+	def DoContextActionByGroup( self, aContextAction, aGroupName = '' ) :
+		ret = False
+		refreshForce = False
+
+		if aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
+			if aGroupName :
+				idx = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+				#LOG_TRACE('---------------create fav[%s] ret[%s]'% ( aGroupName, idx ) )
+				if idx != -1 :
+					ret = True
+
+		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
+			if aGroupName :
+				name = re.split( ':', aGroupName)
+				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mUserMode.mServiceType, name[2] )
+
+		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
+			if aGroupName :
+				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
+				#LOG_TRACE( 'favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mFavoriteGroupList))
+				refreshForce = True
+
+		elif aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+			if aGroupName :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove\n%s?' ) % aGroupName )
+				dialog.doModal( )
+
+				answer = dialog.IsOK( )
+
+				#answer is yes
+				if answer != E_DIALOG_STATE_YES :
+					return
+
+				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
+
+
+		if ret :
+			self.LoadFavoriteGroupList( )
+			#LOG_TRACE('-----------------favlist[%s]'% self.mFavoriteGroupList )
+			if aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+				self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
+				self.mUserSlidePos.mSub = 0
+				self.mMarkList = []
+				self.mListItems = None
+				self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+
+		if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE or refreshForce :
+			self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
+			#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
+
+
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
@@ -2229,6 +2248,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
 			if aGroupName : 
 				ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
+				LOG_TRACE('---------num ret[%s] len[%s] list[%s] markList[%s]'% ( ret, len(numList), ClassToList('convert',numList), self.mMarkList ) )
 			else :
 				ret = 'group None'
 
@@ -2264,18 +2284,6 @@ class ChannelListWindow( BaseWindow ) :
 						self.mMarkList = []
 					return
 
-
-				"""
-				elif answer == E_DIALOG_STATE_NO :
-					#no delete timer and channel
-					for iTimer in mTimerList :
-						tmpList = deepcopy( numList )
-						for idx in range( len( tmpList ) ) :
-							if tmpList[idx].mParam == iTimer.mChannelNo :
-								numList.pop( idx )
-				"""
-
-
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), 1, numList )
 
@@ -2304,34 +2312,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.SetMoveMode(FLAG_OPT_MOVE, None )
 			return
 
-		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
+		elif aContextAction == CONTEXT_ACTION_CHANGE_NAME :
 			if aGroupName :
-				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mUserMode.mServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-				if ret :
-					self.LoadFavoriteGroupList( )
-				#self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
-				return
-
-		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
-			if aGroupName :
-				name = re.split( ':', aGroupName)
-				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mUserMode.mServiceType, name[2] )
-				if ret :
-					self.LoadFavoriteGroupList( )
-
-				#self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
-				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
-				return
-
-		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
-			if aGroupName :
-				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
-				if ret :
-					self.LoadFavoriteGroupList( )
-					LOG_TRACE( 'favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mFavoriteGroupList))
-
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
-				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
+				name = re.split( ':', aGroupName )
+				ret = self.mDataCache.Channel_ChangeChannelName( int( name[0] ), self.mUserMode.mServiceType, name[2] )
+				#LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2411,6 +2396,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
@@ -2431,12 +2417,13 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
 			else :
 				context = []
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add to this favorite group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			if not self.mChannelList :
-				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE ) )	
+				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE_FAV_CURRENT ) )	
 			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
@@ -2511,7 +2498,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		# Ren Fav, Del Fav ==> popup input group Name
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
-		   selectedAction == CONTEXT_ACTION_RENAME_FAV :
+		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+		   selectedAction == CONTEXT_ACTION_CHANGE_NAME :
 			label = ''
 			default = ''
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
@@ -2525,13 +2513,21 @@ class ChannelListWindow( BaseWindow ) :
 				result = '%d'%grpIdx + ':' + groupName + ':'
 				label = MR_LANG( 'Enter new name for this favorite group' )
 
+			elif selectedAction == CONTEXT_ACTION_CHANGE_NAME :
+				idx = self.mCtrlListCHList.getSelectedPosition( )
+				groupName = self.mChannelList[idx].mName
+				default = groupName
+				result = '%d'%self.mChannelList[idx].mNumber + ':' + default + ':'
+				label = MR_LANG( 'Enter new name for this favorite group' )
+
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
 
 			name = ''
 			name = kb.getText( )
 			if name :
-				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name :
+				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
+				   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
 					LOG_TRACE( 'can not fav.rename : same name' )
 					return
 
@@ -2546,21 +2542,17 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.AddFavoriteChannels( channelList, groupName )
+
+		elif selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
+			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			self.DoContextActionByGroup( selectedAction, groupName )
+
 		else :
 			self.DoContextAction( aMode, selectedAction, groupName )
 
 		self.mIsSave |= FLAG_MASK_ADD
-
-		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
-			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
-			selectedAction == CONTEXT_ACTION_DELETE_FAV :
-
-			self.LoadFavoriteGroupList( )
-			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
-			if self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE :
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-			#else :
-			#	self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 
 	def ShowContextMenu( self ) :

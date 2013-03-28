@@ -45,13 +45,16 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			return
 	
 		actionId = aAction.getId( )
+
+		self.GlobalSettingAction( self, actionId )
+		
 		if self.GlobalAction( actionId ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ), True )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -69,10 +72,10 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.ControlUp( )
+			self.ControlUp( self )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.ControlDown( )
+			self.ControlDown( self )
 
 
 	def onClick( self, aControlId ) :
@@ -182,7 +185,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter a PIN code for tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter a PIN code for tuner %d' ) % ( self.mTunerIndex + 1 ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select a frequency for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 
@@ -195,11 +198,11 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter a PIN code for tuner 1' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter a PIN code for tuner 1' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 1' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select a frequency for tuner 1' ) )
 
-			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter a PIN code for tuner 2' ) )			
+			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter a PIN code for tuner 2' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )			
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 2' ) )			
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select a frequency for tuner 2' ) )
 
@@ -314,4 +317,22 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 				tuner2ConfigList[i].mOneCablePin = int( self.GetControlLabel2String( E_Input02 ) )
 				tuner2ConfigList[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx04 )
 				tuner2ConfigList[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] )
+
+
+	def CallballInputNumber( self, aGroupId, aString ) :
+		if aGroupId == E_Input01 :
+			self.mTempTunerPin[0] = int( aString )
+			self.SetControlLabel2String( aGroupId, '%s' % self.mTempTunerPin[0] )
+
+		elif aGroupId == E_Input02 :
+			self.mTempTunerPin[1] = int( aString )
+			self.SetControlLabel2String( aGroupId, '%s' % self.mTempTunerPin[1] )
+
+
+	def FocusChangedAction( self, aGroupId ) :
+		if aGroupId == E_Input01 :
+			self.SetControlLabel2String( aGroupId, '%03d' % self.mTempTunerPin[0] )
+
+		elif aGroupId == E_Input02 :
+			self.SetControlLabel2String( aGroupId, '%03d' % self.mTempTunerPin[1] )
 

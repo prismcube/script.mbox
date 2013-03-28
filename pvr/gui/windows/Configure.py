@@ -84,6 +84,8 @@ class Configure( SettingWindow ) :
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 
+		self.mUseUsbBackup			= False
+
 
 	def onInit( self ) :
 		leftGroupItems			= [
@@ -337,6 +339,7 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mCommander.Player_SetMute( True )
 				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
@@ -357,6 +360,7 @@ class Configure( SettingWindow ) :
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
+				self.SetDefaultVolume( )
 				self.CloseProgress( )
 				self.mDataCache.Channel_TuneDefault( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
@@ -580,7 +584,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_Input06 ]
+					hideControlIds = [ E_Input06, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
@@ -675,6 +679,8 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_ETC :
+			self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
+
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode if you press \'Standby\' button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for switching into standby mode when not being used' ) )
@@ -1006,14 +1012,23 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 			if mute == False :
-				self.mCommander.Player_SetMute( False )
+				thread = threading.Timer( 0.3, self.SyncVolume )
+				thread.start( )
 
-			self.SyncVolume( )
+
+	def SyncVolume ( self ) :
+		self.mCommander.Player_SetMute( False )
+		self.mDataCache.SyncMute( )
 
 
-	def SyncVolume( self ) :
-		if XBMC_GetMute :
-			self.mCommander.Player_SetMute( True )
+	def SetDefaultVolume( self ) :
+		#volume : 75db
+		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
+		self.mCommander.Player_SetMute( False )
+		if XBMC_GetMute( ) :
+			xbmc.executebuiltin( 'Mute( )' )
+		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
+		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
 
 
 	def LoadSavedTime( self ) :
@@ -1073,6 +1088,7 @@ class Configure( SettingWindow ) :
 
 
 	def DedicatedFormat( self ) :
+		self.mUseUsbBackup = False
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,\n insert a USB flash memory' ) )
 		dialog.doModal( )
@@ -1111,13 +1127,17 @@ class Configure( SettingWindow ) :
 
 	def CopyBackupData( self, aUsbpath ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backing up your user data...' ), 30 )
-		ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' )
-		ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', aUsbpath + '/addons' )
+		if CheckDirectory( aUsbpath + '/RubyBackup/' ) :
+			RemoveDirectory( aUsbpath + '/RubyBackup/' )
+
+		ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/RubyBackup/userdata' )
+		ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', aUsbpath + '/RubyBackup/addons' )
 		if ret_udata and ret_addons :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Start formatting HDD?' ), MR_LANG( 'Press OK button to format your HDD now' ) )
 			dialog.doModal( )
+			self.mUseUsbBackup = True
 			self.MakeDedicate( )
 		else :
 			self.CloseProgress( )
@@ -1141,7 +1161,30 @@ class Configure( SettingWindow ) :
 			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
 			ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 			self.mDataCache.Player_AVBlank( True )
+			if self.mUseUsbBackup :
+				self.MakeBackupScript( )
 			self.mCommander.Make_Dedicated_HDD( )
+
+
+	def MakeBackupScript( self ) :
+		try :
+			scriptFile = '%s.sh' % E_DEFAULT_BACKUP_PATH
+			fd = open( scriptFile, 'w' )
+			if fd :
+				fd.writelines( '#!/bin/sh\n' )
+				fd.writelines( 'modprobe usb_storage\n' )
+				fd.writelines( 'sleep 3\n' )
+				fd.writelines( 'mount /dev/sdb1 /media/usb/sdb1\n' )
+				usbpath = self.mDataCache.USB_GetMountPath( )
+				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/userdata\n' )
+				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/addons\n' )
+				fd.writelines( 'cp -rf %s/RubyBackup/userdata/* /mnt/hdd0/program/.xbmc/userdata/\n' % usbpath )
+				fd.writelines( 'cp -rf %s/RubyBackup/addons/* /mnt/hdd0/program/.xbmc/addons/\n' % usbpath )
+				fd.close( )
+				os.chmod( scriptFile, 0755 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
 
 	def ETCSetting( self, aGroupId ) :

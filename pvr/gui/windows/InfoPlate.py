@@ -15,8 +15,8 @@ E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO	= 604 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_GROUP_COMPONENT_DATA		= 605 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_GROUP_COMPONENT_DOLBY 		= 606 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_GROUP_COMPONENT_HD			= 607 + E_INFO_PLATE_BASE_ID
-E_CONTROL_ID_IMAGE_LOCKED 				= 651 + E_INFO_PLATE_BASE_ID
-E_CONTROL_ID_IMAGE_ICAS 				= 652 + E_INFO_PLATE_BASE_ID
+#E_CONTROL_ID_IMAGE_LOCKED 				= 651 + E_INFO_PLATE_BASE_ID
+#E_CONTROL_ID_IMAGE_ICAS 				= 652 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_LABEL_LONGITUDE_INFO		= 701 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_LABEL_EPG_NAME				= 703 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704 + E_INFO_PLATE_BASE_ID
@@ -87,6 +87,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None
 		self.mAutomaticHideTimer = None
+		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 
 		#get channel
 		self.LoadInit( )
@@ -189,6 +190,9 @@ class InfoPlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			self.ShowDialog( E_CONTROL_ID_BUTTON_SUBTITLE )
+
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
 			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
@@ -271,6 +275,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
@@ -306,15 +311,14 @@ class InfoPlate( LivePlateWindow ) :
 				label = TimeToString( rec.mStartTime + rec.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
-				if aEpg and aEpg.mError == 0 :
-					#component
-					setPropertyList = []
-					setPropertyList = GetPropertyByEPGComponent( aEpg )
-					self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
-					if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-						self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
-					self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
+				#component
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				if not isSubtitle :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
+				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -419,9 +423,8 @@ class InfoPlate( LivePlateWindow ) :
 			self.mCtrlLblRec2.setLabel( aValue )
 
 
-	def UpdatePropertyByCacheData( self, aPropertyID = None, aValue = None ) :
-		pmtEvent = self.mDataCache.GetCurrentPMTEvent( )
-		ret = UpdatePropertyByCacheData( self, pmtEvent, aPropertyID, aValue )
+	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
+		ret = UpdatePropertyByCacheData( self, self.mPMTInfo, aPropertyID )
 		return ret
 
 
@@ -429,10 +432,6 @@ class InfoPlate( LivePlateWindow ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
 		if aPropertyID == None :
 			return False
-
-		if self.UpdatePropertyByCacheData( aPropertyID, aValue ) == True :
-			#LOG_TRACE( '-------------- return by cached data -------------------' )
-			return True
 
 		self.setProperty( aPropertyID, aValue )
 
@@ -461,7 +460,15 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowSubtitle( )				
+			ret = ShowSubtitle( )
+			if ret > -1 :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				return
+			elif ret == -2 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			if not self.mPlatform.IsPrismCube( ) :

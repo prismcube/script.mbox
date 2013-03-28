@@ -143,6 +143,12 @@ class SingleWindow( object ) :
 	def getFocusId( self  ) :
 		return self.mRootWindow.getFocusId(  )	
 
+	def addControl( self, aControl ) :
+		return self.mRootWindow.addControl( aControl )
+
+	def removeControl( self, aControl ) :
+		return self.mRootWindow.removeControl( aControl )	
+
 
 class XMLWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
@@ -337,8 +343,8 @@ class BaseWindow( BaseObjectWindow ) :
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
 					mute = False
-				if XBMC_GetMute( ) != mute :
-					mute = True
+				#if XBMC_GetMute( ) != mute :
+				#	mute = True
 				self.mCommander.Player_SetMute( mute )
 
 				#if XBMC_GetMute( ) != mute :
@@ -426,8 +432,8 @@ class BaseWindow( BaseObjectWindow ) :
 				self.mDataCache.SetParentLockPass( True )
 
 			self.UpdateVolume( )
-			if XBMC_GetMute( ) == True :
-				self.mCommander.Player_SetMute( True )
+			thread = threading.Timer( 1.0, self.mDataCache.SyncMute )
+			thread.start( )
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
@@ -703,12 +709,12 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 				self.setProperty( 'SettingPip', 'True' )
-				visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
+				visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
 					self.getControl( visibleControlIds[i] ).setEnabled( True )
 
-				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08 ]
+				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
@@ -828,10 +834,30 @@ class BaseWindow( BaseObjectWindow ) :
 				else :
 					self.setProperty( 'SettingPip', 'False' )
 
-			elif aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
+			elif ( aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) or \
+				( aWindowId == WinMgr.WIN_ID_EPG_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) :
+				if self.getProperty( 'EPGMode' ) == 'grid' :
+					self.setProperty( 'SettingPip', 'False' )
+					self.setProperty( 'DafultBackgroundImage', 'False' )
+				else :
+					self.setProperty( 'SettingPip', 'True' )
+					self.setProperty( 'DafultBackgroundImage', 'True' )
+													
+					overlayImage.setPosition( 849, 118 )
+					overlayImage.setWidth( 350 )
+					overlayImage.setHeight( 198 )
+
+					radioImage.setPosition( 849, 118 )
+					radioImage.setWidth( 350 )
+					radioImage.setHeight( 198 )
+
+					nosignalLabel.setPosition( 922, 203 )
+					scrambleLabel.setPosition( 922, 203 )
+
+			elif aWindowId == WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-
+												
 				overlayImage.setPosition( 849, 118 )
 				overlayImage.setWidth( 350 )
 				overlayImage.setHeight( 198 )
@@ -842,7 +868,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 922, 203 )
 				scrambleLabel.setPosition( 922, 203 )
-
+			
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 

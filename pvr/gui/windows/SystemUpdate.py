@@ -326,11 +326,17 @@ class SystemUpdate( SettingWindow ) :
 
 		answer = dialog.IsOK( )
 		if answer == E_DIALOG_STATE_YES :
- 			if self.mWinId != xbmcgui.getCurrentWindowId( ) :
+			curWinID = xbmcgui.getCurrentWindowId( )
+			updateWinID = self.mWinId
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				curWinID = WinMgr.GetInstance( ).GetLastWindowID( )
+				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
+
+ 			if curWinID != updateWinID :
  				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
  				self.LoadInit( )
 
-			elif self.mWinId == xbmcgui.getCurrentWindowId( ) and self.mStepPage == E_UPDATE_STEP_HOME :
+			elif curWinID == updateWinID and self.mStepPage == E_UPDATE_STEP_HOME :
 				self.LoadInit( )
 
 

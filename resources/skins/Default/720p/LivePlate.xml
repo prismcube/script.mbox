@@ -316,56 +316,62 @@
 <!-- button control -->
 				<include>DefaultInfoPlateGroup</include>
 
-				<control type="group" id="650">
+				<control type="group">
 					<posx>720</posx>
 					<posy>-35</posy>
-					<control type="image" id="651">
+					<control type="grouplist">
 						<posx>0</posx>
-						<posy>-5</posy>
-						<width>50</width>
-						<height>40</height>
-						<texture>OverlayLocked.png</texture>
-						<visible>substring(Window.Property(iLock),true)</visible>
-					</control>
-					<control type="image" id="652">
-						<posx>40</posx>
-						<posy>1</posy>
-						<width>30</width>
+						<posy>0</posy>
+						<width>300</width>
 						<height>30</height>
-						<texture>IconCas.png</texture>
-						<visible>substring(Window.Property(iCas),true)</visible>
+						<itemgap>5</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<width>30</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iLock),true)</visible>
+							<control type="image">
+								<posx>5</posx>
+								<posy>0</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconLock.png</texture>
+							</control>
+						</control>
+						<control type="image">
+							<posx>40</posx>
+							<posy>1</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconCas.png</texture>
+							<visible>substring(Window.Property(iCas),true)</visible>
+						</control>
+						<control type="image">
+							<posx>75</posx>
+							<posy>1</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconFavFocus.png</texture>
+							<visible>substring(Window.Property(iFav),true)</visible>
+						</control>
+						<control type="image">
+							<posx>110</posx>
+							<posy>1</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconT1.png</texture>
+							<visible>substring(Window.Property(iTuner1),true)</visible>
+						</control>
+						<control type="image">
+							<posx>145</posx>
+							<posy>1</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconT2.png</texture>
+							<visible>substring(Window.Property(iTuner2),true)</visible>
+						</control>
 					</control>
-					<control type="image">
-						<posx>75</posx>
-						<posy>1</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconFavFocus.png</texture>
-						<visible>substring(Window.Property(iFav),true)</visible>
-					</control>
-					<control type="image">
-						<posx>110</posx>
-						<posy>1</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconT1.png</texture>
-						<visible>substring(Window.Property(iTuner1),true)</visible>
-					</control>
-					<control type="image">
-						<posx>145</posx>
-						<posy>1</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconT2.png</texture>
-						<visible>substring(Window.Property(iTuner2),true)</visible>
-					</control>
-					<!--control type="label">
-						<posx>250</posx>
-						<posy>1</posy>
-						<width>100</width>
-						<height>30</height>
-						<label>$INFO[Window.Property(iTPnum)]</label>
-					</control-->
 				</control>
 
 				<!-- color key -->

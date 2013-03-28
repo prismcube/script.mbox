@@ -1,4 +1,4 @@
-import thread, sys, copy
+import thread, sys, copy, xbmcgui
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -8,7 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
@@ -117,7 +117,8 @@ class DataCacheMgr( object ) :
 		self.mTimerDB 							= None
 		self.mRecordDB 							= None
 
-		self.mPMTEvent							= None
+		self.mPMTinstance						= None
+		self.mPMTListHash						= {}
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -130,6 +131,8 @@ class DataCacheMgr( object ) :
 		self.mStartMediaCenter					= False
 		self.mDefaultHideWatched				= False
 		self.mPlayingChannel					= False
+
+		self.mStandByClose						= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -878,11 +881,6 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
-		#self.mPMTEvent = None #reset cached PMT Event
-		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
-		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
-			self.mPMTEvent = None
-
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -911,11 +909,6 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
-		#self.mPMTEvent = None #reset cached PMT Event
-		if self.mPMTEvent and self.mPMTEvent.mChannelNumber != aChannelNumber or \
-		   self.mPMTEvent and self.mPMTEvent.mServiceType != aServiceType :
-			self.mPMTEvent = None
-
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
@@ -1307,6 +1300,10 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Channel_ChangeChannelName( self, aChannelNumber, aServiceType, aNewName ) :
+		return self.mCommander.Channel_ChangeChannelName( aChannelNumber, aServiceType, aNewName )
+
+
 	def Satellite_GetListByChannel( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
@@ -1488,10 +1485,14 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
+
 		self.mPlayingChannel = self.Channel_GetCurrent( )
 		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
+		self.mPMTinstance = None
 		"""
 		channel = self.Channel_GetCurrent( )
 		if channel and channel.mError == 0 :
@@ -1530,6 +1531,9 @@ class DataCacheMgr( object ) :
 		if recInfo and recInfo.mError == 0 :
 			self.Frontdisplay_SetMessage( recInfo.mChannelName )
 		"""
+
+		if aServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_TRUE )
 
 		return ret
 
@@ -1745,6 +1749,34 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Teletext_IsShowing( )
 
 
+	def Subtitle_IsShowing( self ) :
+		return self.mCommander.Subtitle_IsShowing( )
+
+
+	def Subtitle_Show( self ) :
+		return self.mCommander.Subtitle_Show( )
+
+
+	def Subtitle_Hide( self ) :
+		return self.mCommander.Subtitle_Hide( )
+
+
+	def Subtitle_GetSelected( self ) :
+		return self.mCommander.Subtitle_GetSelected( )
+
+
+	def Subtitle_Get( self, aIndex ) :
+		return self.mCommander.Subtitle_Get( aIndex )
+
+
+	def Subtitle_GetCount( self ) :
+		return self.mCommander.Subtitle_GetCount( )
+
+
+	def Subtitle_Select( self, aPid, aPageId, aSubId ) :
+		return self.mCommander.Subtitle_Select( aPid, aPageId, aSubId )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
@@ -1916,12 +1948,31 @@ class DataCacheMgr( object ) :
 
 
 	def SetCurrentPMTEvent( self, aPMTEvent ) :
-		self.mPMTEvent = aPMTEvent
+		if aPMTEvent and aPMTEvent.mPMTSource == ElisEnum.E_MODE_PVR :
+			self.mPMTinstance = aPMTEvent
+			return
+
+		channel = self.Channel_GetCurrent( )
+		if channel and channel.mError == 0 :
+			hashkey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+			self.mPMTListHash[hashkey] = aPMTEvent
 
 
-	def GetCurrentPMTEvent( self ) :
-		return self.mPMTEvent
+	def GetCurrentPMTEventByPVR( self ) :
+		return self.mPMTinstance
 
+
+	def GetCurrentPMTEvent( self, aFindChannel = None ) :
+		pmt = None
+		channel = self.Channel_GetCurrent( )
+		if aFindChannel :
+			channel = aFindChannel
+
+		if channel and channel.mError == 0 :
+			hashkey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+			pmt = self.mPMTListHash.get( hashkey, None )
+
+		return pmt
 
 	def SetLockedState( self, aIsLock ) :
 		self.mLockStatus = aIsLock
@@ -1970,7 +2021,7 @@ class DataCacheMgr( object ) :
 
 
 	def GetPropertyPlaybackBannerTime( self ) :
-		self.mPropertyPlaybackBannerTime = aTime
+		return self.mPropertyPlaybackBannerTime
 
 
 	def SetParentLockPass( self, aPass = False ) :
@@ -2021,8 +2072,17 @@ class DataCacheMgr( object ) :
 		return self.mDefaultHideWatched
 
 
+	def SetStanbyClosing( self, aFlag ) :
+		self.mStandByClose = aFlag
+
+
+	def GetStanbyClosing( self ) :
+		return self.mStandByClose
+
+
 	def SetDefaultByFactoryReset( self ) :
 		LOG_TRACE('-------factory reset')
+		self.mPMTListHash = {}
 		#1. pincode : m/w (super pin)
 		#2. video : 1080i, normal, RGB
 		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
@@ -2058,18 +2118,20 @@ class DataCacheMgr( object ) :
 		#self.Channel_Save( )
 		self.Channel_ReLoad( )
 
-		#8. volume : 75db
-		LOG_TRACE( '>>>>>>>> Default init : Volume <<<<<<<<' )
-		if self.mCommander.Player_GetMute( ) :
-			self.mCommander.Player_SetMute( False )
-		if XBMC_GetMute( ) == True :
-			xbmc.executebuiltin( 'mute( )' )
-
-		self.mCommander.Player_SetVolume( DEFAULT_VOLUME )
-		#XBMC_SetVolume( DEFAULT_VOLUME )
-		XBMC_SetVolumeByBuiltin( DEFAULT_VOLUME, False )
+		#8. Settings Property
+		from pvr.GuiHelper import *
+		SetSetting( 'RSS_FEED', '1' )
 
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
+	def SyncMute( self ) :
+		xbmcMute = XBMC_GetMute( )
+		playerMute = self.mCommander.Player_GetMute( )
+
+		if xbmcMute != playerMute :
+			playerMute = True
+		if not xbmcMute :
+			playerMute = False
+		self.mCommander.Player_SetMute( playerMute )

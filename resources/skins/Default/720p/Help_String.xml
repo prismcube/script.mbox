@@ -246,7 +246,7 @@
 		</content>
 	</page>
 	
-	<page number="13" title="Antenna and Satellite Setup - Motorized Usals" location="(MAIN MENU > INSTALLATION > ANTENNA SETUP)">
+	<page number="13" title="Antenna and Satellite Setup - Motorized USALS" location="(MAIN MENU > INSTALLATION > ANTENNA SETUP)">
 		<content name="help/usals.png">
 			<type>image</type>
 			<posx>40</posx>

@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 import pvr.ScanHelper as ScanHelper
+from ElisClass import ElisISatelliteInfo
+
 
 E_CONFIG_MOTORIZED_12_BASE_ID = WinMgr.WIN_ID_CONFIG_MOTORIZED_12 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -25,6 +27,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.tunerIndex					= E_TUNER_1
 		self.mAvBlankStatus				= False
 		self.mSearchMode				= 0
+		self.mSearchRange				= 0
 
 
 	def onInit( self ) :
@@ -70,7 +73,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.GetFirstInstallation( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Exit installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ), True )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -193,6 +196,10 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		elif groupId == E_SpinEx08 :
 			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx08 )
 
+		elif groupId == E_SpinEx04 :
+			self.mSearchRange = self.GetSelectedIndex( E_SpinEx04 )
+			return
+
 		# Transponer
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
@@ -216,6 +223,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		# Network ON/Off
 		elif groupId == E_SpinEx05 :
 			self.ControlSelect( )
+			return
 			
 		#
 		# Action
@@ -251,14 +259,24 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 	 		if self.mTransponderList :
 	 			self.OpenBusyDialog( )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-				
-				transponderList = []
-				transponderList.append( self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-				dialog.SetTransponder( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, transponderList )
-				dialog.doModal( )
+
+				if self.mSearchRange :
+					configuredSatelliteList = []
+					config = ElisISatelliteInfo( )
+					config.mLongitude	= self.mCurrentSatellite.mSatelliteLongitude
+					config.mBand		= self.mCurrentSatellite.mBandType
+					config.mName		= self.mDataCache.GetSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+					configuredSatelliteList.append( config )
+					dialog.SetConfiguredSatellite( configuredSatelliteList )
+					dialog.doModal( )
+					self.mCommander.ScanHelper_Start( )
+				else :
+					transponderList = []
+					transponderList.append( self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+					dialog.SetTransponder( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, transponderList )
+					dialog.doModal( )
 				self.setProperty( 'ViewProgress', 'True' )
 	 		else :
 	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -338,24 +356,25 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Antenna' ), '', MR_LANG( 'You can control the movements of the motorized antenna here' ) )
-		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		self.AddEnumControl( E_SpinEx05, MR_LANG( 'Network Search' ), None, networkSearchDescription )
 
 		"""
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Rotation Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles' ) )
 		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press OK button to apply the rotation limits for the motor' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position' ), '', MR_LANG( 'Save satellite positions' ) )
 		"""
-
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input07 ]			
-			hideControlIds = [  E_SpinEx04, E_Input02, E_Input05, E_Input06 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input07 ]			
+			hideControlIds = [ E_Input02, E_Input05, E_Input06 ]
 		else :
 			#visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]			
-			hideControlIds = [ E_SpinEx04, E_SpinEx02, E_Input05, E_Input06 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]			
+			hideControlIds = [ E_SpinEx02, E_Input05, E_Input06 ]
 			
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )
@@ -368,6 +387,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 			self.SetEnableControl( E_Input07, False )
 			self.SetVisibleControl( E_SpinEx05, False )
 			self.SetEnableControl( E_SpinEx05, False )
+			self.SetVisibleControl( E_SpinEx04, False )
+			self.SetEnableControl( E_SpinEx04, False )
 
 		self.InitControl( )
 		self.DisableControl( )
@@ -394,7 +415,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		context = []
 		if aGroupId == E_Input01 :
 			context.append( ContextItem( MR_LANG( 'Edit Satellite Name' ), CONTEXT_EDIT_SATELLITE_NAME ) )
-			context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
+			#context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
 		elif aGroupId == E_Input03 :
 			context.append( ContextItem( MR_LANG( 'Add Transponder' ), CONTEXT_ADD_TRANSPONDER ) )
 			if self.mTransponderList :

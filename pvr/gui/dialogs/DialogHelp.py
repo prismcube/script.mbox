@@ -25,17 +25,19 @@ E_CONTROL_ID_GROUP_PAGE		=	9000
 class DialogHelp( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
-		self.mStepNum				= 	FIRST_PAGE
-		self.mPrevStepNum			= 	FIRST_PAGE
-		self.mRoot 					=	None
-		self.mListContent 			=	[]
+		self.mFirstPage				=	FIRST_PAGE
+		self.mLastPage				=	LAST_PAGE
+		self.mStepNum				= 	self.mFirstPage
+		self.mPrevStepNum			= 	self.mFirstPage
+		self.mRoot 				=	None
+		self.mListContent			=	[]
 
 		#if not self.mPlatform.IsPrismCube( ) :
 		#	global HELP_STRING
 		#	HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
-		#self.mHelpString				=  	HELP_STRING
-		self.mHelpString				=  	None
+		#self.mHelpString			=  	HELP_STRING
+		self.mHelpString			=  	None
 
 
 	def onInit( self ) :
@@ -67,7 +69,7 @@ class DialogHelp( SettingDialog ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_NEXT :
-			if self.mStepNum == LAST_PAGE :
+			if self.mStepNum == self.mLastPage :
 				self.Close( )
 			else :
 				self.OpenAnimation( )
@@ -76,7 +78,7 @@ class DialogHelp( SettingDialog ) :
 
 		if aControlId == E_CONTROL_ID_BUTTON_PREV :
 			self.OpenAnimation( )
-			if self.mPrevStepNum == 1 :
+			if self.mPrevStepNum == self.mFirstPage :
 				self.setFocusId ( E_CONTROL_ID_BUTTON_NEXT )
 			else :
 				self.setFocusId( aControlId )
@@ -131,7 +133,7 @@ class DialogHelp( SettingDialog ) :
 			if int( content.mPageNum ) == aStep :
 				self.getControl( E_SETTING_HEADER_TITLE ).setLabel( content.mTitle )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( content.mLocation )
-				self.getControl( E_CONTROL_ID_LABEL_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, LAST_PAGE ) )
+				self.getControl( E_CONTROL_ID_LABEL_PAGENUM ).setLabel( '%s / %s' % ( content.mPageNum, self.mLastPage ) )
 
 				if content.mType == "image" :
 					self.getControl( E_CONTROL_ID_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
@@ -156,11 +158,11 @@ class DialogHelp( SettingDialog ) :
 
 
 	def SetPrevNextButtonLabel( self ) :
-		if self.mStepNum == FIRST_PAGE :
+		if self.mStepNum == self.mFirstPage :
 			self.SetVisibleControl( E_CONTROL_ID_BUTTON_PREV, False )
 			self.getControl( E_CONTROL_ID_LABEL_NEXT ).setLabel( MR_LANG( 'Next' ) )
 
-		elif self.mStepNum == LAST_PAGE :
+		elif self.mStepNum == self.mLastPage :
 			self.getControl( E_CONTROL_ID_LABEL_PREV ).setLabel( MR_LANG( 'Previous' ) )
 			self.getControl( E_CONTROL_ID_LABEL_NEXT ).setLabel( MR_LANG( 'Finish' ) )
 
@@ -171,7 +173,7 @@ class DialogHelp( SettingDialog ) :
 
 
 	def AddPrevNextButton( self ) :
-		if self.mStepNum == FIRST_PAGE :
+		if self.mStepNum == self.mFirstPage :
 			self.getControl( E_CONTROL_ID_BUTTON_PREV ).setVisible( False )
 			self.getControl( E_CONTROL_ID_BUTTON_NEXT ).setVisible( True )
 

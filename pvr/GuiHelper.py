@@ -54,92 +54,10 @@ def RecordConflict( aInfo ) :
 	dialog.doModal( )
 
 
-def GetImageByEPGComponent( aEPG, aFlag ) :
-	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
-		#return 'OverlayHD.png' #ToDO -> support multi skin
-		return ElisEnum.E_HasHDVideo
-
-	elif aFlag == ElisEnum.E_Has16_9Video and aEPG.mHas16_9Video :
-		pass
-
-	elif aFlag == ElisEnum.E_HasStereoAudio and aEPG.mHasStereoAudio :
-		pass
-
-	elif aFlag == ElisEnum.E_HasMultichannelAudio and aEPG.mHasMultichannelAudio :
-		pass
-
-	elif aFlag == ElisEnum.E_HasDolbyDigital and aEPG.mHasDolbyDigital :
-		#return 'dolbydigital.png' #ToDO -> support multi skin
-		return ElisEnum.E_HasDolbyDigital
-	
-	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
-		#return 'IconSubtitle.png' #ToDO -> support multi skin
-		return ElisEnum.E_HasSubtitles
-	
-	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio :
-		pass
-	
-	elif aFlag == ElisEnum.E_HasHardOfHearingSub and aEPG.mHasHardOfHearingSub :
-		pass
-	
-	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio and aEPG.mHasVisuallyImpairedAudio :
-		pass
-	
-	else :
-		pass
-
-	return 0
-
-
-def GetPropertyByEPGComponent( aEPG ) :
-	setPropertyData  = 'False'
-	setPropertyDolby = 'False'
-	setPropertyHD    = 'False'
-	bitCount = 0
-	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasSubtitles )
-	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasDolbyDigital )
-	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasHDVideo )
-	#LOG_TRACE('component bitCount[%s]'% bitCount)
-
-	if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
-		setPropertyData  = 'False'
-		setPropertyDolby = 'True'
-		setPropertyHD    = 'True'
-
-	elif bitCount == ElisEnum.E_HasHDVideo :
-		setPropertyData  = 'False'
-		setPropertyDolby = 'False'
-		setPropertyHD    = 'True'
-
-	elif bitCount == ElisEnum.E_HasDolbyDigital :
-		setPropertyData  = 'False'
-		setPropertyDolby = 'True'
-		setPropertyHD    = 'False'
-
-	elif bitCount == ElisEnum.E_HasSubtitles :
-		setPropertyData  = 'True'
-		setPropertyDolby = 'False'
-		setPropertyHD    = 'False'
-
-	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
-		setPropertyData  = 'True'
-		setPropertyDolby = 'True'
-		setPropertyHD    = 'True'
-
-	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital :
-		setPropertyData  = 'True'
-		setPropertyDolby = 'True'
-		setPropertyHD    = 'False'
-
-	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasHDVideo :
-		setPropertyData  = 'True'
-		setPropertyDolby = 'False'
-		setPropertyHD    = 'True'
-
-	return [ setPropertyData, setPropertyDolby, setPropertyHD ]
-
-
 def HasEPGComponent( aEPG, aFlag ) :
+	if not aEPG or aEPG.mError != 0 :
+		return 'False'
+
 	if aFlag == ElisEnum.E_HasHDVideo :
 		return ( 'True', 'False' ) [ aEPG.mHasHDVideo == 0 ]
 
@@ -173,7 +91,7 @@ def HasEPGComponent( aEPG, aFlag ) :
 	return 'False'
 
 
-def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None ) :
+def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 	if not pmtEvent :
 		LOG_TRACE( '---------------pmtEvent None' )
 		return False
@@ -182,21 +100,19 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None, aValue = None
 	if aPropertyID == 'HasTeletext' :
 		if pmtEvent.mTTXCount > 0 :
 			#LOG_TRACE( '-------------- Teletext updated by PMT cache' )
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
 	elif aPropertyID == 'HasSubtitle' :
 		if pmtEvent.mSubCount > 0 :
 			#LOG_TRACE( '-------------- Subtitle updated by PMT cache' )
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
 	elif aPropertyID == 'HasDolbyPlus' :
 		#LOG_TRACE( 'pmt selected[%s] AudioStreamType[%s]'% ( pmtEvent.mAudioSelectedIndex, pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] ) )
 		if pmtEvent.mAudioCount > 0 and pmtEvent.mAudioStream[pmtEvent.mAudioSelectedIndex] == ElisEnum.E_AUD_STREAM_DDPLUS :
-			self.setProperty( aPropertyID, 'True' )
 			ret = True
 
+	self.setProperty( aPropertyID, '%s'% ret )
 	return ret
 
 
@@ -923,4 +839,92 @@ class GuiSkinPosition( object ) :
 		self.mRight	 = aRight
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
+
+
+def ShowSubtitle( ) :
+	import pvr.DataCacheMgr
+	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.gui.GuiConfig import ContextItem
+	from ElisEnum import ElisEnum
+	dataCache = pvr.DataCacheMgr.GetInstance( )
+
+	ret = -2
+	subTitleCount = dataCache.Subtitle_GetCount( )
+	if subTitleCount > 0 :
+		isShowing = False
+		if dataCache.Subtitle_IsShowing( ) :
+			dataCache.Subtitle_Hide( )
+			isShowing = True
+
+		selectedSubtitle = dataCache.Subtitle_GetSelected( )
+
+		#####
+		if selectedSubtitle :
+			selectedSubtitle.printdebug( )
+		#####
+	
+		context = []
+		structSubTitle = []
+		selectedIndex = -1
+		isExistDVB = False
+
+		for i in range( subTitleCount ) :
+			structSubTitle.append( dataCache.Subtitle_Get( i ) )
+			if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+				isExistDVB = True
+
+
+		for i in range( subTitleCount ) :
+			#iSubtitle = dataCache.Subtitle_Get( i )
+			if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
+				structSubTitle.pop( i )
+				continue
+
+			structSubTitle[i].printdebug( )
+
+			if selectedSubtitle :
+				if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
+					selectedIndex = i
+					LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
+
+			if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
+				subType = 'DVB'
+			else :
+				subType = 'TTX'
+			LOG_TRACE( 'structSubTitle[i].mLanguage = %s'% structSubTitle[i] )
+			LOG_TRACE( 'structSubTitle[i].mLanguage[0] = %d '% len( structSubTitle[i].mLanguage ) )
+			if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
+				ten = ( structSubTitle[i].mSubId / 16 )
+				one = ( structSubTitle[i].mSubId % 16 )
+
+				context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
+			else :	
+				context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
+
+		subTitleCount = len( structSubTitle )
+		context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
+
+		if selectedIndex < 0 :
+			selectedIndex = subTitleCount
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context, selectedIndex )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction == -1 and isShowing :
+			dataCache.Subtitle_Show( )
+
+		elif selectAction >= 0 and subTitleCount > selectAction :
+			dataCache.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
+			dataCache.Subtitle_Show( )
+
+		elif selectAction == subTitleCount :
+			dataCache.Subtitle_Select( 0x1fff, 0, 0 )
+			dataCache.Subtitle_Hide( )
+
+		ret = selectAction
+
+	return ret
+
 

@@ -62,7 +62,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 		self.mAbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		self.mAbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ) )
+		self.mAbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ), True )
 
 
 	def onAction( self, aAction ) :
@@ -163,7 +163,10 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanAbort( self ) :
 		if self.mIsFinished :
-			xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+			try :
+				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+			except Exception, ex :
+				LOG_TRACE( 'except open busydialog' )
 			self.mEventBus.Deregister( self )
 			self.mDataCache.Channel_Save( )
 			self.mDataCache.LoadZappingList( )
@@ -184,13 +187,14 @@ class DialogChannelSearch( BaseDialog ) :
 				else :
 					self.mDataCache.Channel_TuneDefault( False, iChannel )
 
-
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.CloseDialog( )
 		else :
 			self.mAbortDialog.doModal( )
 			if self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
+				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 				self.mCommander.Channelscan_Abort( )
+				#xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 				self.mIsFinished = True
 				self.ScanAbort( )
 			elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_NO :

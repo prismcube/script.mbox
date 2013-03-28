@@ -83,7 +83,9 @@ class GlobalEvent( object ) :
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
 
 		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
-			LOG_TRACE( '--------- received ElisPMTReceivedEvent-----------' )
+			LOG_TRACE( '----------received ElisPMTReceivedEvent' )
+			#LOG_TRACE( '----------ch[%s] type[%s] ttx[%s] sub[%s] aud[%s,%s]'% ( aEvent.mChannelNumber, aEvent.mServiceType, aEvent.mTTXCount, aEvent.mSubCount, aEvent.mAudioCount, aEvent.mAudioStream[aEvent.mAudioSelectedIndex] ) )
+
 			if aEvent :
 				#aEvent.printdebug( )
 				self.mDataCache.SetCurrentPMTEvent( aEvent )
@@ -111,16 +113,33 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'False' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 			else :
-				WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+
+			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+				return
+
+			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
+				if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
+					self.mDataCache.Subtitle_Show( )
+					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = True
+			else :
+				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_Show( ) :
+					self.mDataCache.Subtitle_Hide( )
+					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = False
+
 
 		elif aEvent.getName( ) == ElisEventChannelChangeResult( ).getName( ) :
 			self.CheckParentLock( E_PARENTLOCK_INIT )
@@ -144,7 +163,11 @@ class GlobalEvent( object ) :
 			if aEvent.mType == ElisEnum.E_STANDBY_POWER_ON :
 				thread = threading.Timer( 0.3, self.AsyncStandbyPowerON )
 				thread.start( )
-				return
+
+			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
+				self.mDataCache.SetStanbyClosing( True )
+				thread = threading.Timer( 0.3, self.StanByClose )
+				thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
@@ -154,6 +177,8 @@ class GlobalEvent( object ) :
 
 			self.mDataCache.Teletext_NotifyHide( )
 			self.mDataCache.LoadVolumeToSetGUI( )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckSubTitle( )
 			#self.SetSingleWindowPosition( WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
@@ -174,12 +199,12 @@ class GlobalEvent( object ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
 
-		while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-			time.sleep( 1 )
+		#while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
+		#	xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		#	time.sleep( 1 )
 
-		time.sleep( 1 )
-		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+		#time.sleep( 1 )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT )
 		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
@@ -192,8 +217,12 @@ class GlobalEvent( object ) :
 			self.mCommander.Teletext_Hide( )
 			dialog.doModal( )
 			self.mCommander.Teletext_Show( )
-		#elif self.mCommander.Subtitle_IsShowing( ) :
-		#TODO
+
+		elif self.mDataCache.Subtitle_IsShowing( ) :
+			self.mDataCache.Subtitle_Hide( )
+			dialog.doModal( )
+			self.mDataCache.Subtitle_Show( )
+
 		else :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 0 )
@@ -433,3 +462,17 @@ class GlobalEvent( object ) :
 		#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 		LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
+
+	def StanByClose( self ) :
+		if xbmc.Player( ).isPlaying( ) :
+			xbmc.Player( ).stop( )
+	
+		while WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+			time.sleep( 1.5 )
+
+		time.sleep( 3 )
+		if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+
+		self.mDataCache.SetStanbyClosing( False )

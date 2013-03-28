@@ -10,9 +10,9 @@ class ManualScan( SettingWindow ) :
 		self.mSatelliteIndex			= 0
 		self.mTransponderIndex			= 0
 		self.mTransponderList			= []
+		self.mIsManualSetup 			= 0
 
-		self.mFormattedList	= []
-		self.mIsManualSetup				= 0
+		self.mFormattedList				= []
 		self.mConfigTransponder			= None
 		self.mHasTansponder				= False
 		self.mAvBlankStatus				= False
@@ -24,9 +24,8 @@ class ManualScan( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
-		#self.VisibleTuneStatus( False )
-		self.mIsManualSetup = 0
 
+		self.mIsManualSetup = 0
 		self.mSatelliteIndex = 0
 		self.mTransponderIndex = 0
 		self.mConfiguredSatelliteList = []
@@ -47,7 +46,6 @@ class ManualScan( SettingWindow ) :
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
-			#self.SetPipLabel( )
 			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )
@@ -61,7 +59,6 @@ class ManualScan( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
 			else :
-				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -71,12 +68,16 @@ class ManualScan( SettingWindow ) :
 	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+
+		self.GlobalSettingAction( self, actionId )
+		
 		if self.GlobalAction( actionId ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
+			self.mEventBus.Deregister( self )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
 			if self.mAvBlankStatus :
@@ -86,21 +87,20 @@ class ManualScan( SettingWindow ) :
 				if self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( False )
 
-			#self.VisibleTuneStatus( True )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )				
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.ControlUp( )
+			self.ControlUp( self )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.ControlDown( )
-
+			self.ControlDown( self )
+		
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -188,7 +188,6 @@ class ManualScan( SettingWindow ) :
 			dialog.doModal( )
 			self.setProperty( 'ViewProgress', 'True' )
 
-
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
 			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
@@ -250,15 +249,17 @@ class ManualScan( SettingWindow ) :
 
 
 	def InitConfig( self ) :
-		self.ResetAllControl( )	
+		self.ResetAllControl( )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
 
 		if self.mIsManualSetup == 0 :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Select the transponder frequency for the selected satellite' ) )
+			description = MR_LANG( 'Select the transponder frequency for the selected satellite' )
 		else :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter the transponder frequency for the selected satellite' ) )
+			description = MR_LANG( 'Enter the transponder frequency for the selected satellite' )
+			
+		self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, description, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
 
 		# DVB Type
 		self.AddEnumControl( E_SpinEx02, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
@@ -277,9 +278,9 @@ class ManualScan( SettingWindow ) :
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate
-		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transmitted per second in the data stream' ) )
-		
-		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transmitted per second in the data stream' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 60000 )
+		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, networkSearchDescription )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
@@ -356,3 +357,33 @@ class ManualScan( SettingWindow ) :
 		if self.mHasTansponder == False :
 			disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetEnableControls( disablecontrols, False )
+
+
+	def CallballInputNumber( self, aGroupId, aString ) :
+		if aGroupId == E_Input02 :
+			if self.mIsManualSetup == 0 :
+				self.mIsManualSetup = 1
+				self.InitConfig( )
+			self.mConfigTransponder.mFrequency = int( aString )
+			self.SetControlLabel2String( aGroupId, aString + ' MHz' )
+			if self.mConfigTransponder.mFrequency >= 3000 :
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+
+		elif aGroupId == E_Input03 :
+			self.mConfigTransponder.mSymbolRate = int( aString )
+			self.SetControlLabel2String( aGroupId, aString + ' KS/s' )
+			if self.mConfigTransponder.mSymbolRate >= 1000 :
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+
+
+	def FocusChangedAction( self, aGroupId ) :
+		if aGroupId == E_Input02 and self.mConfigTransponder.mFrequency < 3000 :
+			self.mConfigTransponder.mFrequency = 3000
+			self.SetControlLabel2String( E_Input02, '%s MHz' % self.mConfigTransponder.mFrequency )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			
+		elif aGroupId == E_Input03 and self.mConfigTransponder.mSymbolRate < 1000 :
+			self.mConfigTransponder.mSymbolRate = 1000
+			self.SetControlLabel2String( E_Input03, '%s KS/s' % self.mConfigTransponder.mSymbolRate )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+
