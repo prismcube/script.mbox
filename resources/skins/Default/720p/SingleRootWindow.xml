@@ -375,14 +375,14 @@ Search for window name
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeperator.png</texture>
+							<texture>HomeSeparator.png</texture>
 						</control>
 						<control type="image">
 							<posx>299</posx>
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeperator.png</texture>
+							<texture>HomeSeparator.png</texture>
 						</control>
 						<control type="label">
 							<posx>150</posx>
@@ -402,14 +402,14 @@ Search for window name
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeperator.png</texture>
+							<texture>HomeSeparator.png</texture>
 						</control>
 						<control type="image">
 							<posx>299</posx>
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeperator.png</texture>
+							<texture>HomeSeparator.png</texture>
 						</control>
 						<control type="label">
 							<posx>150</posx>
@@ -3845,7 +3845,7 @@ Search for window name
 						<posy>0</posy>
 						<width>1</width>
 						<height>500</height>
-						<texture>HomeSeperatorRed.png</texture>
+						<texture>HomeSeparatorRed1.png</texture>
 					</control>
 					
 
