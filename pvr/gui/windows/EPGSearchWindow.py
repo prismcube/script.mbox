@@ -201,6 +201,15 @@ class EPGSearchWindow( BaseWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'No result' ), MR_LANG( 'Can not find any matches result') )
 			dialog.doModal( )
 			return
+		"""
+		else :
+			for i in range( len( self.mEPGList ) ) :
+				epgEvent = self.mEPGList[i]
+				LOG_ERR( 'id=%d name=%s' %(epgEvent.mEventId, epgEvent.mEventName ) )
+				LOG_ERR( 'Start : %s' % (TimeToString( epgEvent.mStartTime + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) ) )
+				LOG_ERR( 'End :  %s' % (TimeToString( epgEvent.mStartTime+epgEvent.mDuration+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) ) )
+		"""		
+		
 
 		LOG_TRACE( 'self.mEPGList COUNT=%d' %len( self.mEPGList ) )
 		

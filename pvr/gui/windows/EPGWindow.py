@@ -1914,7 +1914,7 @@ class EPGWindow( BaseWindow ) :
 
 		else :
 			if self.mEPGMode == E_VIEW_GRID :
-				timer = GetTimerByFocus( )
+				timer = self.GetTimerByFocus( )
 		
 			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
