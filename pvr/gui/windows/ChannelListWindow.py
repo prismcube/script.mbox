@@ -1739,27 +1739,29 @@ class ChannelListWindow( BaseWindow ) :
 				#ToDO : pincode
 			"""
 
+
 		#component
 		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
+		isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+		if not isSubtitle :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles ) )
 		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
-		if self.mNavEpg :
-			try :
-				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				label = '%s - %s'% (startTime, endTime)
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
-				self.mCtrlProgress.setVisible( True )
 
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
+		try :
+			if self.mNavEpg :
+					startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+					endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+					label = '%s - %s'% (startTime, endTime)
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
+					self.mCtrlProgress.setVisible( True )
+			else :
+				LOG_TRACE( 'event null' )
 
-		else :
-			LOG_TRACE( 'event null' )
+		except Exception, e:
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 	@RunThread

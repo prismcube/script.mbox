@@ -223,8 +223,9 @@ class DialogExtendEPG( BaseDialog ) :
 			pmtEvent = pmtinstance
 
 		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
-		UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_SUBTITLE )
-		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
+		isSubtitle = UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_SUBTITLE )
+		if not isSubtitle :
+			self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( self.mEPG, ElisEnum.E_HasSubtitles ) )
 		if not UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_DOLBYPLUS ) :
 			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
 		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( self.mEPG, ElisEnum.E_HasHDVideo ) )

@@ -697,14 +697,6 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateSelcetedPosition( )
 		
 		epg = self.GetSelectedEPG( )
-		#component
-		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-		self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
-		self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-
 		try :
 			if epg :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
@@ -720,6 +712,15 @@ class EPGWindow( BaseWindow ) :
 
 			else :
 				self.ResetEPGInfomation( )
+
+			#component
+			self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+			isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+			if not isSubtitle :
+				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+			if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+				self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+			self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
