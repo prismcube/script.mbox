@@ -361,7 +361,7 @@ class NullWindow( BaseWindow ) :
 				LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
 				return
 
-			if not ShowSubtitle( ) :
+			if ShowSubtitle( ) == -2 :
 				self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MBOX_NUMLOCK :
@@ -788,95 +788,6 @@ class NullWindow( BaseWindow ) :
 		selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
 		if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
 			self.mDataCache.Subtitle_Show( )
-
-
-	"""
-	def ShowSubtitle( self ) :
-		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
-			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
-			return
-
-		subTitleCount = self.mDataCache.Subtitle_GetCount( )
-		if subTitleCount > 0 :
-			isShowing = False
-			if self.mDataCache.Subtitle_IsShowing( ) :
-				self.mDataCache.Subtitle_Hide( )
-				isShowing = True
-
-			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
-
-			#####
-			if selectedSubtitle :
-				selectedSubtitle.printdebug( )
-			#####
-		
-			context = []
-			structSubTitle = []
-			selectedIndex = -1
-			isExistDVB = False
-
-			for i in range( subTitleCount ) :
-				structSubTitle.append( self.mDataCache.Subtitle_Get( i ) )
-				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
-					isExistDVB = True
-
-
-			for i in range( subTitleCount ) :
-				#iSubtitle = self.mDataCache.Subtitle_Get( i )
-				if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
-					structSubTitle.pop( i )
-					continue
-
-				structSubTitle[i].printdebug( )
-
-				if selectedSubtitle :
-					if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
-						selectedIndex = i
-						LOG_TRACE( '-----------------selected subtitle idx[%s]'% i )
-
-				if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
-					subType = 'DVB'
-				else :
-					subType = 'TTX'
-				print 'structSubTitle[i].mLanguage = ' , structSubTitle[i]
-				print 'structSubTitle[i].mLanguage[0] = %d ' % len( structSubTitle[i].mLanguage )
-				if structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB and structSubTitle[i].mLanguage == '' :
-					ten = ( structSubTitle[i].mSubId / 16 )
-					one = ( structSubTitle[i].mSubId % 16 )
-
-					context.append( ContextItem( subType + ' Subtitle ' +  '( Page: ' + str(structSubTitle[i].mPageId) + str(ten) + str(one) + ')', i ) )
-				else :	
-					context.append( ContextItem( subType + ' Subtitle ' + structSubTitle[i].mLanguage, i ) )
-
-			subTitleCount = len( structSubTitle )
-			context.append( ContextItem( MR_LANG( 'Disable subtitle' ), subTitleCount ) )
-
-			if selectedIndex < 0 :
-				selectedIndex = subTitleCount
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context, selectedIndex )
-			dialog.doModal( )
-
-			selectAction = dialog.GetSelectedAction( )
-			if selectAction == -1 and isShowing :
-				self.mDataCache.Subtitle_Show( )
-
-			elif selectAction >= 0 and subTitleCount > selectAction :
-				self.mDataCache.Subtitle_Select( structSubTitle[ selectAction ].mPid, structSubTitle[ selectAction ].mPageId, structSubTitle[ selectAction ].mSubId )
-				self.mDataCache.Subtitle_Show( )
-
-			elif selectAction == subTitleCount :
-				self.mDataCache.Subtitle_Select( 0x1fff, 0, 0 )
-				self.mDataCache.Subtitle_Hide( )
-
-		else :
-			self.CloseSubTitle( )		
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
-			dialog.doModal( )
-			self.CheckSubTitle( )
-	"""
 
 
 	def DialogPopupOK( self, aAction ) :

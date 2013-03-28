@@ -848,7 +848,7 @@ def ShowSubtitle( ) :
 	from ElisEnum import ElisEnum
 	dataCache = pvr.DataCacheMgr.GetInstance( )
 
-	ret = False
+	ret = -2
 	subTitleCount = dataCache.Subtitle_GetCount( )
 	if subTitleCount > 0 :
 		isShowing = False
@@ -923,7 +923,7 @@ def ShowSubtitle( ) :
 			dataCache.Subtitle_Select( 0x1fff, 0, 0 )
 			dataCache.Subtitle_Hide( )
 
-		ret = True
+		ret = selectAction
 
 	return ret
 

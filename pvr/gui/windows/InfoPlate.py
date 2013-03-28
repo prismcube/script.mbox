@@ -313,8 +313,9 @@ class InfoPlate( LivePlateWindow ) :
 
 				#component
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
+				isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				if not isSubtitle :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( aEpg, ElisEnum.E_HasSubtitles ) )
 				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
@@ -459,11 +460,12 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			if ShowSubtitle( ) :
+			ret = ShowSubtitle( )
+			if ret > -1 :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
-			else :
+			elif ret == -2 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
 				dialog.doModal( )
