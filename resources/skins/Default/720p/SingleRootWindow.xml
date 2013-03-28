@@ -145,7 +145,7 @@ Search for window name
 		<!-- *********** E_MainMenu ********** -->
 		<control type="group" id="1200000">
 			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="300">Hidden</animation>
+			<!--<animation effect="fade" start="100" end="0" time="100">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
 			<control type="label">
@@ -635,8 +635,8 @@ Search for window name
 
 		<!-- *********** E_ChannelList ********** -->	
 		<control type="group" id="1300000">
-			<include>DefaultSettingWindowEffect</include>
 			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
+			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
 			<control type="group">
@@ -1614,7 +1614,7 @@ Search for window name
 		<!-- *********** E_LIVEWindow ********** -->	
 		<control type="group" id="1400000">
 			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			<!--<animation effect="fade" start="100" end="0" time="200">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),4100000)</visible>
 			<defaultcontrol always="true">1003621</defaultcontrol>
 			<control type="image">
@@ -2882,7 +2882,7 @@ Search for window name
 
 		<!-- *********** E_Archive ********** -->
 		<control type="group" id="3300000">
-			<include>DefaultSettingWindowEffect</include>
+			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 			<defaultcontrol always="true">3309003</defaultcontrol>
 			<control type="image">
@@ -3638,8 +3638,11 @@ Search for window name
 			</control>
 		</control>
 
+
+		<!-- *********** E_EPG *********** or *********** E_EPG_SEARCH *********** -->
 		<control type="group" id="3709999">
-			<visible>Control.IsVisible(3700000) | Control.IsVisible(4400000)</visible>		
+			<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
+			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
@@ -4583,35 +4586,10 @@ Search for window name
 			</control>
 		</control>
 		
-		<!-- *********** E_EPG ********** -->
-		<control type="group" id="3700000">
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
-			<include>DefaultSettingWindowEffect</include>
-			<visible>substring(Window.Property(CurrentWindow),3700000)</visible>
-			<defaultcontrol always="true">3709003</defaultcontrol>
-		</control>
-
-		<!-- *********** E_EPG_SEARCH ********** -->		
-		<control type="group" id="4400000">
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
-			<include>DefaultSettingWindowEffect</include>
-			<visible>substring(Window.Property(CurrentWindow),4400000)</visible>
-			<defaultcontrol always="true">3709003</defaultcontrol>
-		</control>
 
 		<!-- *********** E_TimerWindow ********** -->
 		<control type="group" id="4000000">
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
-			<include>DefaultSettingWindowEffect</include>
+			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
 			<defaultcontrol always="true">4009003</defaultcontrol>
 			<control type="group">
