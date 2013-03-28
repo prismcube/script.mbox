@@ -136,6 +136,12 @@ class EPGSearchWindow( BaseWindow ) :
 				LOG_TRACE( 'Record status chanaged' )
 				self.UpdateList( True )
 
+			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
+				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
 
 	def SetText( self, aText=None ) :
 		self.mText = aText
@@ -301,7 +307,6 @@ class EPGSearchWindow( BaseWindow ) :
 		self.UpdateSelcetedPosition( )
 		
 		epg = self.GetSelectedEPG( )
-
 		try :
 			if epg :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
@@ -315,14 +320,17 @@ class EPGSearchWindow( BaseWindow ) :
 				else :
 					self.mCtrlEPGDescription.setText( '' )
 
-				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
-				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
-				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
-					self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-
 			else :
 				self.ResetEPGInfomation( )
+
+			#component
+			self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
+			isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
+			if not isSubtitle :
+				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+			if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
+				self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+			self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
