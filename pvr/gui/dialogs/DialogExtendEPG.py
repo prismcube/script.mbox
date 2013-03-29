@@ -1,9 +1,9 @@
 from pvr.gui.WindowImport import *
 
 
-TEXTBOX_ID_TITLE					= 100
-TEXTBOX_ID_DESCRIPTION				= 101
-LABEL_ID_DATE						= 102
+#TEXTBOX_ID_TITLE					= 100
+#TEXTBOX_ID_DESCRIPTION				= 101
+#LABEL_ID_DATE						= 102
 GROUP_ID_BASE						= 300
 BUTTON_ID_PREV						= 301
 BUTTON_ID_NEXT						= 302
@@ -214,8 +214,11 @@ class DialogExtendEPG( BaseDialog ) :
 			#LOG_TRACE('epg None' )
 			return
 
+		desc = MR_LANG( 'No description' )
+		if self.mEPG.mEventDescription and self.mEPG.mEventDescription != '(null)' :
+			desc = self.mEPG.mEventDescription
 		self.setProperty( 'EPGTitle', self.mEPG.mEventName )
-		self.setProperty( 'EPGDescription', self.mEPG.mEventDescription )
+		self.setProperty( 'EPGDescription', desc )
 
 		pmtEvent = self.mDataCache.GetCurrentPMTEvent( self.mEPG )
 		pmtinstance = self.mDataCache.GetCurrentPMTEventByPVR( )
@@ -230,17 +233,20 @@ class DialogExtendEPG( BaseDialog ) :
 			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
 		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( self.mEPG, ElisEnum.E_HasHDVideo ) )
 
-		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
-		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
-		self.mCtrlDate = self.getControl( LABEL_ID_DATE )
+		#self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
+		#self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
+		#self.mCtrlDate = self.getControl( LABEL_ID_DATE )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+		eDate = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY )
 		self.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
+		self.setProperty( 'EPGDate', '%s'% (eDate) )
 
 
 	def ResetLabel( self ) :
+		self.setProperty( 'EPGDate', '' )
 		self.setProperty( 'EPGTime', '' )
 		self.setProperty( 'EPGIndex', '' )
 		self.setProperty( 'EPGTitle', '' )

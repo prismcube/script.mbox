@@ -54,6 +54,57 @@ def RecordConflict( aInfo ) :
 	dialog.doModal( )
 
 
+def HasCasInfoByChannel( self, aChannel ) :
+	if not aChannel or aChannel.mError != 0 :
+		#LOG_TRACE('----casCheck--------ch None')
+		return
+
+	casList = ['HasCasMediaguard','HasCasViaccess','HasCasNagra','HasCasIrdeto','HasCasConax','HasCasCryptoworks','HasCasNds','HasCasBetadigital','HasCasOthers']
+	property = ''
+	hasCas = 'True'
+	if aChannel.mIsCA >> 0 == ElisEnum.E_MEDIAGUARD >> 0 :
+		property = 'HasCasMediaguard'
+
+	elif aChannel.mIsCA >> 1 == ElisEnum.E_VIACCESS >> 1 :
+		property = 'HasCasViaccess'
+
+	elif aChannel.mIsCA >> 2 == ElisEnum.E_NAGRA >> 2 :
+		property = 'HasCasNagra'
+
+	elif aChannel.mIsCA >> 3 == ElisEnum.E_IRDETO >> 3 :
+		property = 'HasCasIrdeto'
+
+	elif aChannel.mIsCA >> 4 == ElisEnum.E_CONAX >> 4 :
+		property = 'HasCasConax'
+	
+	elif aChannel.mIsCA >> 5 == ElisEnum.E_CRYPTOWORKS >> 5 :
+		property = 'HasCasCryptoworks'
+	
+	elif aChannel.mIsCA >> 6 == ElisEnum.E_NDS >> 6 :
+		property = 'HasCasNds'
+	
+	elif aChannel.mIsCA >> 7 == ElisEnum.E_BETADIGITAL >> 7 :
+		property = 'HasCasBetadigital'
+	
+	elif aChannel.mIsCA >> 15 == ElisEnum.E_OTHERS >> 15 :
+		property = 'HasCasOthers'
+
+	else :
+		hasCas = 'False'
+		property = 'HasCas'
+
+	#LOG_TRACE('----------hasCas[%s] CasInfo[%s]'% ( hasCas, property ) )
+
+	self.setProperty( 'HasCas', hasCas )
+	for item in casList :
+		visible = 'False'
+		if item == property :
+			visible = 'True'
+			#LOG_TRACE('--------------cason[%s]'% item )
+		self.setProperty( item, visible )
+	#return casList
+
+
 def HasEPGComponent( aEPG, aFlag ) :
 	if not aEPG or aEPG.mError != 0 :
 		return 'False'
