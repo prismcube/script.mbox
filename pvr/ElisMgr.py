@@ -61,7 +61,7 @@ class ElisMgr( object ) :
 	def __init__( self ) :
 		self.mShutdowning = False
 		self.mEventBus = ElisEventBus( )
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) and NetConfig.USE_UDS == True :
 			if os.path.exists( NetConfig.UDS_EVENT_ADDRESS ) :
 				os.unlink( NetConfig.UDS_EVENT_ADDRESS )
 			LOG_TRACE( 'check test server address = %s' %NetConfig.UDS_EVENT_ADDRESS )		
@@ -69,12 +69,16 @@ class ElisMgr( object ) :
 			#self.mReceiver = ThreadingUnixStreamServer( NetConfig.UDS_COMMAND_ADDRESS, ElisEventHandler )
 			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )
 			self.mCommander = ElisCommander( NetConfig.UDS_COMMAND_ADDRESS, True )
+			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )			
+			self.mCommander.SetElisReady( NetConfig.UDS_COMMAND_ADDRESS )
+			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )						
 
 		else :
 			LOG_TRACE( 'check test netconfig.receiverPort = %d' % NetConfig.receiverPort )		
 			self.mReceiver = ThreadingTCPServer( ( '', NetConfig.receiverPort ), ElisEventHandler )
 			LOG_TRACE( 'check test netconfig.targetIp = %s netconfig.commanderPort = %d' % ( NetConfig.targetIp, NetConfig.commanderPort ) )
 			self.mCommander = ElisCommander( ( NetConfig.targetIp, NetConfig.commanderPort ) )
+			self.mCommander.SetElisReady( NetConfig.myIp )						
 
 
 	def GetCommander( self ) :
