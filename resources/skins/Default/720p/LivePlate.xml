@@ -371,55 +371,55 @@
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/Media_Guard.gif</texture>
+								<texture>IconMediaguard.png</texture>
 								<visible>substring(Window.Property(HasCasMediaguard),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/ViaccessOrca.png</texture>
+								<texture>IconViaccessOrca.png</texture>
 								<visible>substring(Window.Property(HasCasViaccess),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/NagraKudelski.gif</texture>
+								<texture>IconNagra.png</texture>
 								<visible>substring(Window.Property(HasCasNagra),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/irdeto.jpg</texture>
+								<texture>IconIrdeto.png</texture>
 								<visible>substring(Window.Property(HasCasIrdeto),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/Conax.jpg</texture>
+								<texture>IconConax.png</texture>
 								<visible>substring(Window.Property(HasCasConax),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/cryptoworks.gif</texture>
+								<texture>IconCryptoworks.png</texture>
 								<visible>substring(Window.Property(HasCasCryptoworks),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/NDS.jpg</texture>
+								<texture>IconNDS.png</texture>
 								<visible>substring(Window.Property(HasCasNds),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/betadigital.jpg</texture>
+								<texture>IconBetadigital.png</texture>
 								<visible>substring(Window.Property(HasCasBetadigital),true)</visible>
 							</control>
 							<control type="image">
 								<width>30</width>
 								<height>30</height>
-								<texture>caslogo/others.png</texture>
+								<texture>IconOthers.png</texture>
 								<visible>substring(Window.Property(HasCasOthers),true)</visible>
 							</control>
 						</control>

@@ -241,13 +241,15 @@ class DialogExtendEPG( BaseDialog ) :
 		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 		eDate = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY )
-		self.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
-		self.setProperty( 'EPGDate', '%s'% (eDate) )
+		self.setProperty( 'EPGTime', '%s - %s'% ( sTime, eTime ) )
+		self.setProperty( 'EPGDate', '%s'% ( eDate ) )
+		self.setProperty( 'EPGDuration', '%sm'% ( self.mEPG.mDuration / 60 ) )
 
 
 	def ResetLabel( self ) :
-		self.setProperty( 'EPGDate', '' )
 		self.setProperty( 'EPGTime', '' )
+		self.setProperty( 'EPGDate', '' )
+		self.setProperty( 'EPGDuration', '' )
 		self.setProperty( 'EPGIndex', '' )
 		self.setProperty( 'EPGTitle', '' )
 		self.setProperty( 'EPGDescription', '' )
