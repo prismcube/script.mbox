@@ -103,18 +103,31 @@
 				  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				  <label>$INFO[Window.Property(EPGDescription)]</label>
 			</control>
-
 			<control type="label" id="102">
-				<posx>880</posx>
+				<posx>830</posx>
 				<posy>102</posy>
 				<description>start time</description>
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
-			</control>				
+			</control>
+			<control type="label">
+				<posx>830</posx>
+				<posy>82</posy>
+				<description>epg date</description>
+				<font>font13</font>
+				<label>$INFO[Window.Property(EPGDate)]</label>
+			</control>
+			<control type="label">
+				<posx>970</posx>
+				<posy>102</posy>
+				<description>epg duration</description>
+				<font>font13</font>
+				<label>$INFO[Window.Property(EPGDuration)]</label>
+			</control>
 
 			<control type="group">
 				<control type="grouplist">
-					<posx>400</posx>
+					<posx>350</posx>
 					<posy>90</posy>
 					<width>450</width>
 					<height>40</height>

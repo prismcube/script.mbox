@@ -66,7 +66,6 @@ class Launcher( object ):
 		pvr.ElisMgr.GetInstance( ).Run( )
 		print 'test lael98'
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.mCommander.SetElisReady( NetConfig.myIp )
 
 
 	def InitCacheMgr( self ) :

@@ -712,6 +712,7 @@ class LivePlate( LivePlateWindow ) :
 				if ch.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
+				#HasCasInfoByChannel( self, ch )
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
 

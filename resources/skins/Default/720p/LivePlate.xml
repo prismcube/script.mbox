@@ -149,7 +149,8 @@
 					<posx>250</posx>
 					<posy>17</posy>
 					<align>left</align>
-					<width>500</width>
+					<width>450</width>
+					<scroll>true</scroll>
 					<font>font35_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -344,32 +345,91 @@
 							<posy>1</posy>
 							<width>30</width>
 							<height>30</height>
-							<texture>IconCas.png</texture>
-							<visible>substring(Window.Property(iCas),true)</visible>
+							<texture>IconT1.png</texture>
+							<visible>substring(Window.Property(iTuner1),true)</visible>
 						</control>
 						<control type="image">
 							<posx>75</posx>
 							<posy>1</posy>
 							<width>30</width>
 							<height>30</height>
-							<texture>IconFavFocus.png</texture>
-							<visible>substring(Window.Property(iFav),true)</visible>
+							<texture>IconT2.png</texture>
+							<visible>substring(Window.Property(iTuner2),true)</visible>
 						</control>
 						<control type="image">
 							<posx>110</posx>
 							<posy>1</posy>
 							<width>30</width>
 							<height>30</height>
-							<texture>IconT1.png</texture>
-							<visible>substring(Window.Property(iTuner1),true)</visible>
+							<texture>IconCas.png</texture>
+							<visible>substring(Window.Property(iCas),true)</visible>
+						</control>
+						<control type="group">
+							<posx>145</posx>
+							<posy>1</posy>
+							<visible>substring(Window.Property(HasCas),true)</visible>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconMediaguard.png</texture>
+								<visible>substring(Window.Property(HasCasMediaguard),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconViaccessOrca.png</texture>
+								<visible>substring(Window.Property(HasCasViaccess),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconNagra.png</texture>
+								<visible>substring(Window.Property(HasCasNagra),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconIrdeto.png</texture>
+								<visible>substring(Window.Property(HasCasIrdeto),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconConax.png</texture>
+								<visible>substring(Window.Property(HasCasConax),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconCryptoworks.png</texture>
+								<visible>substring(Window.Property(HasCasCryptoworks),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconNDS.png</texture>
+								<visible>substring(Window.Property(HasCasNds),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconBetadigital.png</texture>
+								<visible>substring(Window.Property(HasCasBetadigital),true)</visible>
+							</control>
+							<control type="image">
+								<width>30</width>
+								<height>30</height>
+								<texture>IconOthers.png</texture>
+								<visible>substring(Window.Property(HasCasOthers),true)</visible>
+							</control>
 						</control>
 						<control type="image">
 							<posx>145</posx>
 							<posy>1</posy>
 							<width>30</width>
 							<height>30</height>
-							<texture>IconT2.png</texture>
-							<visible>substring(Window.Property(iTuner2),true)</visible>
+							<texture>IconFavFocus.png</texture>
+							<visible>substring(Window.Property(iFav),true)</visible>
 						</control>
 					</control>
 				</control>
