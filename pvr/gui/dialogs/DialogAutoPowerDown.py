@@ -10,10 +10,10 @@ TIME_OUT		= 60
 class DialogAutoPowerDown( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mTitle		= ''
-		self.mCtrlLabel = None
-		self.mThread	= None
-		self.mEnableLocalThread = True
+		self.mTitle					= ''
+		self.mCtrlLabel 			= None
+		self.mThread				= None
+		self.mEnableLocalThread 	= False
 
 
 	def onInit( self ) :
@@ -29,12 +29,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 
 
 	def onAction( self, aAction ) :
-		actionId = aAction.getId( )
-		if self.GlobalAction( actionId ) :
-			return
-
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
+		pass
 
 
 	def onClick( self, aControlId ) :
@@ -48,7 +43,8 @@ class DialogAutoPowerDown( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
 			if aEvent.getName( ) == ElisEventPowerSaveEnd.getName( ) :
-				self.Close( )
+				thread = threading.Timer( 0.5, self.Close )
+				thread.start( )
 
 
 	@RunThread
@@ -60,11 +56,13 @@ class DialogAutoPowerDown( BaseDialog ) :
 			self.mCtrlLabel.setLabel( MR_LANG( 'Start automatic power down after %s sec' ) % ( TIME_OUT - i ) )
 
 		self.mCommander.System_Shutdown( )
+		thread = threading.Timer( 0.5, self.Close )
+		thread.start( )
 				
 
 	def Close( self ) :
 		if self.mThread and self.mEnableLocalThread == True :
-			self.mEnableLocalThread = False				
+			self.mEnableLocalThread = False
 			self.mThread.join( )
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )

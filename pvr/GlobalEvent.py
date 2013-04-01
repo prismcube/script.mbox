@@ -161,12 +161,12 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventShutdown.getName( ) :
 			#LOG_TRACE('-----------shutdown[%s] blank[%s]'% ( aEvent.mType, self.mDataCache.Channel_GetInitialBlank( ) ) )
 			if aEvent.mType == ElisEnum.E_STANDBY_POWER_ON :
-				thread = threading.Timer( 0.3, self.AsyncStandbyPowerON )
+				thread = threading.Timer( 1, self.AsyncStandbyPowerON )
 				thread.start( )
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
 				self.mDataCache.SetStanbyClosing( True )
-				thread = threading.Timer( 0.3, self.StanByClose )
+				thread = threading.Timer( 1, self.StanByClose )
 				thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
@@ -199,11 +199,6 @@ class GlobalEvent( object ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
 
-		#while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
-		#	xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-		#	time.sleep( 1 )
-
-		#time.sleep( 1 )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT )
 		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
@@ -467,7 +462,7 @@ class GlobalEvent( object ) :
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
 	
-		while WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+		while WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 :
 			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 			time.sleep( 1.5 )
 
@@ -476,3 +471,4 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 
 		self.mDataCache.SetStanbyClosing( False )
+

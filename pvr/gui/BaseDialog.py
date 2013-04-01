@@ -717,15 +717,11 @@ class SettingDialog( BaseDialog ) :
 				if int( label ) > self.GetControlMaxValue( groupid ) :
 					label = '%d' % self.GetControlMaxValue( groupid )
 
-
-				print 'dhkim test value = %s' % value
-				print 'dhkim test label = %s' % label
 				if value != label :
 					aWin.CallballInputNumber( groupid, label )
 
 
 	def ParseNumber( self, aString ) :
 		string = aString.split( )
-		print 'dhkim test ParseNumber string = %s' % string
 		return string[0]
 
