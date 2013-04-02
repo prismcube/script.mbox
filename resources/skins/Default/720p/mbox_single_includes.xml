@@ -623,17 +623,17 @@
 	</include>
 
 	<include name="DefaultButtonHomeSubCommonValues">
-		<height>40</height>
-		<width>195</width>
-		<textoffsetx>20</textoffsetx>
-		<textwidth>170</textwidth>
+		<height>35</height>
+		<width>180</width>
+		<textwidth>160</textwidth>
+		<align>center</align>
 		<aligny>center</aligny>
-		<font>font12_title</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
-		<texturenofocus border="5">button-nofocus.png</texturenofocus>
-		<pulseonselect>false</pulseonselect>
+		<font>font12</font>
 		<textcolor>grey2</textcolor>
 		<focusedcolor>white</focusedcolor>
+		<texturefocus border="5">HomeSubFO.png</texturefocus>
+		<texturenofocus border="5">HomeSubNF.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
 	</include>
 
 	<include name="DefaultButtonCommonValues">

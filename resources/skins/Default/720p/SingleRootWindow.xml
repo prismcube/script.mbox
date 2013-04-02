@@ -226,35 +226,35 @@ Search for window name
 							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
 						</control>
 						<control type="button" id="1290101">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1050</label>
 						</control>
 						<control type="button" id="1290102">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1051</label>
 						</control>
 						<control type="button" id="1290103">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1052</label>
 						</control>
 						<control type="button" id="1290104">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1053</label>
 						</control>
 						<control type="button" id="1290105">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1054</label>
 						</control>
 						<control type="button" id="1290106">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1055</label>
 						</control>
 						<control type="button" id="1290107">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1056</label>
 						</control>
 						<control type="button" id="1290108">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1103</label>
 						</control>
 						<control type="image" id="1290109">
@@ -286,48 +286,48 @@ Search for window name
 							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
 						</control>
 						<control type="button" id="1290601">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1057</label>
 							<!--onclick>ActivateWindow(Weather)</onclick-->
 						</control>
 						<control type="button" id="1290602">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1058</label>
 							<!--onclick>ActivateWindow(Pictures)</onclick-->
 						</control>
 						<control type="button" id="1290603">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1059</label>
 							<!--onclick>ActivateWindow(Music)</onclick-->
 						</control>
 						<control type="button" id="1290604">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1060</label>
 							<!--onclick>ActivateWindow(Videos)</onclick-->
 						</control>
 						<control type="button" id="1290605">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1061</label>
 							<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 						</control>
 						<control type="button" id="1290606">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1062</label>
 							<!--onclick>ActivateWindow(Settings)</onclick-->
 						</control>
 						<control type="button" id="1290607">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1063</label>
 							<!--onclick>ActivateWindow(FileManager)</onclick-->
 						</control>
 						<control type="button" id="1290608">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1064</label>
 							<!--onclick>ActivateWindow(Profiles)</onclick-->
 							<visible>False</visible>
 						</control>
 						<control type="button" id="1290609">
-							<include>ButtonHomeSubCommonValues</include>
+							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1065</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
