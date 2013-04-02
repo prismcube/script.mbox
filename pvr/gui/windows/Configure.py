@@ -215,13 +215,16 @@ class Configure( SettingWindow ) :
 						dialog.doModal( )
 						return
 
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'It may take several minutes to complete' ), MR_LANG( 'please wait after pressing OK button' ) )
 					dialog.doModal( )
-					self.mInitialized = False
-					self.OpenBusyDialog( )
-					self.StopCheckNetworkTimer( )
-					XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
+
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mInitialized = False
+						self.StopCheckNetworkTimer( )
+						time.sleep( 0.5 )
+						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
+
 			else :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
