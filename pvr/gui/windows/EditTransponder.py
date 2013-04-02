@@ -309,7 +309,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'Delete a transponder from the list' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
-		self.AddEnumControl( E_SpinEx01, MR_LANG( 'Network Search' ), None, networkSearchDescription )
+		self.AddEnumControl( E_SpinEx01, 'Network Search', None, networkSearchDescription )
 		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 		
 		self.InitControl( )
