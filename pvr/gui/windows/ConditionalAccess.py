@@ -35,8 +35,8 @@ class ConditionalAccess( SettingWindow ) :
 		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
 		
 		self.InitControl( )
-		self.SetFocusControl( E_Input01 )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 		
 	def onAction( self, aAction ) :
@@ -76,12 +76,8 @@ class ConditionalAccess( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def onEvent( self, aEvent ) :

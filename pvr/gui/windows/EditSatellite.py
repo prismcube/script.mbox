@@ -158,11 +158,8 @@ class EditSatellite( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def InitConfig( self ) :
@@ -180,6 +177,8 @@ class EditSatellite( SettingWindow ) :
 		self.InitControl( )
 		self.SetEnableControl( E_Input02, False )
 		self.DisableControl( )
+		self.mInitialized = True
+		self.SetDefaultControl( )
 
 
 	def	GetSatelliteInfo( self, aIndex ) :

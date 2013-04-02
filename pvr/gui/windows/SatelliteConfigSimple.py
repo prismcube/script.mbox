@@ -54,8 +54,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.SetFTIGuiType( )
-		self.SetDefaultControl( )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -261,11 +261,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def onEvent( self, aEvent ) :

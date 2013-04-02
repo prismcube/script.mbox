@@ -36,8 +36,8 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		self.SetSingleWindowPosition( E_CONFIG_ONECABLE_2_BASE_ID )
 		self.InitConfig( )
 		self.SetFTIGuiType( )
-		self.SetDefaultControl( )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -143,11 +143,8 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def Close( self ) :

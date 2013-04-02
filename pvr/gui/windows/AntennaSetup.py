@@ -31,10 +31,10 @@ class AntennaSetup( SettingWindow ) :
 
 		self.InitControl( )
 
-		time.sleep( 0.2 )
+		#time.sleep( 0.2 )
 		self.DisableControl( )
-		self.SetDefaultControl( )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -122,11 +122,8 @@ class AntennaSetup( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def OpenConfigureWindow( self, aGroupId ) :

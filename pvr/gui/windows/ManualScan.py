@@ -43,10 +43,10 @@ class ManualScan( SettingWindow ) :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 			self.InitConfig( )
-			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_Start( self )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			self.mInitialized = True
+			self.SetDefaultControl( )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite available' ) )
@@ -224,11 +224,8 @@ class ManualScan( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def onEvent( self, aEvent ) :

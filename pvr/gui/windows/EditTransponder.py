@@ -47,8 +47,8 @@ class EditTransponder( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
 			self.InitConfig( )
-			self.SetFocusControl( E_Input01 )
 			self.mInitialized = True
+			self.SetDefaultControl( )
 		
 
 	def onAction( self, aAction ) :
@@ -281,11 +281,8 @@ class EditTransponder( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 	
 
 	def InitConfig( self ) :

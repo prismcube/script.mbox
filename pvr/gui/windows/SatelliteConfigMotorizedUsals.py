@@ -28,8 +28,8 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_USALS_BASE_ID )
 		self.InitConfig( )
 		self.SetFTIGuiType( )
-		self.SetDefaultControl( )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -133,11 +133,8 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 			
 
 	def InitConfig( self ) :

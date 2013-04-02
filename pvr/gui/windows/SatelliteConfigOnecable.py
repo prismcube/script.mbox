@@ -48,8 +48,8 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		time.sleep( 0.2 )
 		self.DisableControl( )
 		self.SetFTIGuiType( )
-		self.SetDefaultControl( )
 		self.mInitialized = True
+		self.SetDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -179,11 +179,8 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def DisableControl( self ) : 

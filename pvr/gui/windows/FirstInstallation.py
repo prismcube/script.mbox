@@ -178,9 +178,7 @@ class FirstInstallation( FTIWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		else :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
 
 

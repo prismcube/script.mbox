@@ -22,7 +22,8 @@ class ChannelSearch( SettingWindow ) :
 		self.AddInputControl( E_Input02, MR_LANG( 'Manual scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
 
 		self.InitControl( )
-		self.SetFocusControl( E_Input01 )
+		self.mInitialized = True
+		self.SetDefaultControl( )
 
 		if self.mIsCloseing == False :
 			if self.CheckNoChannel( ) :
@@ -37,8 +38,6 @@ class ChannelSearch( SettingWindow ) :
 					self.mNoChannel = False
 				else :
 					self.mDataCache.Player_AVBlank( True )
-		
-		self.mInitialized = True
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -106,12 +105,8 @@ class ChannelSearch( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def CheckNoChannel( self ) :

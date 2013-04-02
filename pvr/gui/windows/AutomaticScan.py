@@ -31,6 +31,7 @@ class AutomaticScan( SettingWindow ) :
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
 			self.mInitialized = True
+			self.SetDefaultControl( )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite available' ) )
@@ -110,11 +111,8 @@ class AutomaticScan( SettingWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		if self.mInitialized == False :
-			return
-		if self.mLastFocused != aControlId :
+		if self.mInitialized :
 			self.ShowDescription( aControlId )
-			self.mLastFocused = aControlId
 
 
 	def InitConfig( self ) :
