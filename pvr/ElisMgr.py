@@ -70,7 +70,7 @@ class ElisMgr( object ) :
 			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )
 			self.mCommander = ElisCommander( NetConfig.UDS_COMMAND_ADDRESS, True )
 			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )			
-			self.mCommander.SetElisReady( NetConfig.UDS_COMMAND_ADDRESS )
+			self.mCommander.SetElisReady( NetConfig.UDS_EVENT_ADDRESS )
 			LOG_TRACE( 'check test command address =%s' %NetConfig.UDS_COMMAND_ADDRESS )						
 
 		else :
