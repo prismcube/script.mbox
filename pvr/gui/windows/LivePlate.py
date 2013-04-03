@@ -968,8 +968,21 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
+			status = self.mDataCache.GetLockedState( )
+			if status != ElisEnum.E_CC_SUCCESS :
+				statusSignal = MR_LANG( 'No Signal' )
+				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+					statusSignal = MR_LANG( 'Scrambled' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
+				dialog.doModal( )
+				self.mIsShowDialog = False
+				self.RestartAutomaticHide( )
+				return
+
 			if RECORD_WIDTHOUT_ASKING == True :
 				if self.GetBlinkingProperty( ) != 'None' :
+					self.mIsShowDialog = False
 					self.RestartAutomaticHide( )
 					return
 

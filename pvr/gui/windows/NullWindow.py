@@ -298,6 +298,10 @@ class NullWindow( BaseWindow ) :
 				self.DialogPopupOK( actionId )
 
 			else :
+				if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
+					self.DialogPopupOK( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+					return
+
 				self.CloseSubTitle( )
 				if RECORD_WIDTHOUT_ASKING == True :
 					if self.GetBlinkingProperty( ) != 'None' :
@@ -838,6 +842,13 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_MBOX_RECORD :
 			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+			status = self.mDataCache.GetLockedState( )
+			if status != ElisEnum.E_CC_SUCCESS :
+				msg = MR_LANG( 'No Signal' )
+				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+					msg = MR_LANG( 'Scrambled' )
 
 		elif aAction == Action.ACTION_MBOX_TVRADIO :
 			head = MR_LANG( 'Error' )
