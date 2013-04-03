@@ -136,6 +136,16 @@ class FirstInstallation( FTIWindow ) :
 				self.SetListControl( E_STEP_ANTENNA )
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
 				self.ControlSelect( )
+				if groupId == E_SpinEx03 :
+					hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+					if hdmiFormat == 'Automatic' :
+						return
+					iconIndex = ElisEnum.E_ICON_1080i
+					if hdmiFormat == '720p' :
+						iconIndex = ElisEnum.E_ICON_720p
+					elif hdmiFormat == '576p' :
+						iconIndex = -1
+					self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 			elif groupId == E_SpinEx04 :
 				self.mZoomRate = self.GetSelectedIndex( E_SpinEx04 )

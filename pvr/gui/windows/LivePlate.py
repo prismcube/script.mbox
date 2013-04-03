@@ -1188,8 +1188,14 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def DoContextAction( self, aSelectAction ) :
-		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
-			LOG_TRACE( '---------Status Signal[%s]'% self.mDataCache.GetLockedState( ) )
+		status = self.mDataCache.GetLockedState( )
+		if status != ElisEnum.E_CC_SUCCESS :
+			statusSignal = MR_LANG( 'No Signal' )
+			if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+				statusSignal = MR_LANG( 'Scrambled' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
+			dialog.doModal( )
 			return
 
 		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :

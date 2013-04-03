@@ -326,8 +326,10 @@ def XBMC_GetCurrentLanguage( ) :
 		return capitalizedString
 		
 
-
 def XBMC_SetCurrentLanguage( aLanguage ) :
+	from ElisProperty import ResetHash
+	ResetHash( )
+
 	LOG_TRACE( 'aLanguage=%s' %aLanguage )
 	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		LOG_TRACE( '' )
