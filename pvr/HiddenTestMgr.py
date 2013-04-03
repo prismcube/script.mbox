@@ -1,4 +1,4 @@
-import xbmc, xbmcgui, time, socket, struct, random
+import xbmc, xbmcgui, time, socket, struct, random, sys, inspect
 import pvr.DataCacheMgr
 from pvr.Util import TimeToString, TimeFormatEnum, RunThread
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -353,6 +353,8 @@ class AllNavigation( object ) :
 				testTime += testSleep
 				testCount += 1
 				self.PrintLog( testCount, testTime )
+				xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+				time.sleep(1)
 
 				if WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -396,6 +398,8 @@ class AllNavigation( object ) :
 		currT = time.strftime('%H:%M', time.gmtime(time.time()) )
 		currS = time.strftime('%H:%M', time.gmtime(self.mStartTime) )
 		LOG_TRACE( '--------- Loop Count[%s] TestTime[%s] curr[%s] start[%s] testwin[%s]'% ( testCount, testTime, currT, currS, WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).GetName( ) ) )
+		currentStack = inspect.stack( )
+		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s] StackCount[%s] StackType[%s]'% (sys.getrecursionlimit( ), len(currentStack), currentStack.count, type(currentStack) ) )
 
 
 	def CheckWindow( self, aSleep ) :
