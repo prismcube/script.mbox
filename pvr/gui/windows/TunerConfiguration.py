@@ -95,7 +95,9 @@ class TunerConfiguration( FTIWindow ) :
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
-						if self.mTunerMgr.CheckSameSatellite( ret ) :
+						satellite = self.mDataCache.GetSatelliteByIndex( ret )
+						
+						if self.mTunerMgr.CheckSameSatellite( satellite.mLongitude, satellite.mBand ) :
 							self.mTunerMgr.AddConfiguredSatellite( ret )
 							self.AfterAction( )
 							if self.GetFirstInstallation( ) :

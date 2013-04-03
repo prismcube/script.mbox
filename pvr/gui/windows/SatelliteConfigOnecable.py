@@ -152,7 +152,9 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		ret = dialog.select(  MR_LANG( 'Select Satellite' ), satelliteList )
 		if ret >= 0 :
 			self.OpenBusyDialog( )
-			if self.mTunerMgr.CheckSameSatellite( ret ) :
+
+			satellite = self.mDataCache.GetSatelliteByIndex( ret )
+			if self.mTunerMgr.CheckSameSatellite( satellite.mLongitude, satellite.mBand ) :
 				self.mTunerMgr.AddConfiguredSatellite( ret )
 				self.ResetAllControl( )
 				if self.GetFirstInstallation( ) :

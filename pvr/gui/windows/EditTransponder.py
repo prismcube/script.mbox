@@ -15,6 +15,7 @@ class EditTransponder( SettingWindow ) :
 		self.mBand					= 0
 		self.mIsStartedScanHelper	= False
 		self.mAvBlankStatus			= False
+		self.mSearchRange			= 0
 
 			
 	def onInit( self ) :
@@ -251,21 +252,37 @@ class EditTransponder( SettingWindow ) :
 		elif groupId == E_SpinEx01 :
 			self.ControlSelect( )
 
+		elif groupId == E_SpinEx02 :
+			self.mSearchRange = self.GetSelectedIndex( E_SpinEx02 )
+			return
+
 		elif groupId == E_Input08 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
 					self.OpenBusyDialog( )
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-					
-					transponderList = []
-					transponderList.append( self.mTransponderList[self.mTransponderIndex] )
-
-					self.CloseBusyDialog( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-					dialog.SetTransponder( self.mLongitude, self.mBand, transponderList )
-					dialog.doModal( )
+					self.CloseBusyDialog( )
+
+					if self.mSearchRange :
+						configuredSatelliteList = []
+						config = ElisISatelliteInfo( )
+						config.mLongitude	= self.mLongitude
+						config.mBand		= self.mBand
+						config.mName		= self.mDataCache.GetSatelliteName( self.mLongitude, self.mBand )
+						configuredSatelliteList.append( config )
+						dialog.SetConfiguredSatellite( configuredSatelliteList )
+						dialog.doModal( )
+						self.mCommander.ScanHelper_Start( )
+					else :
+						transponderList = []
+						transponderList.append( self.mTransponderList[self.mTransponderIndex] )
+						dialog.SetTransponder( self.mLongitude, self.mBand, transponderList )
+						dialog.doModal( )
+
 					self.setProperty( 'ViewProgress', 'True' )
 					self.InitConfig( )
+
 				else :
 					satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -287,6 +304,8 @@ class EditTransponder( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+		
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
@@ -310,6 +329,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddEnumControl( E_SpinEx01, 'Network Search', None, networkSearchDescription )
+		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )
 		self.AddInputControl( E_Input08, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 		
 		self.InitControl( )
@@ -321,6 +341,8 @@ class EditTransponder( SettingWindow ) :
 			self.SetEnableControls( visiblecontrolIds, True )
 		else :
 			self.SetEnableControls( visiblecontrolIds, False )
+
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
 			if self.mIsStartedScanHelper == False :

@@ -21,6 +21,8 @@ class AntennaSetup( SettingWindow ) :
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )
 
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+
 		connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), connectTypeDescription )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
@@ -35,6 +37,8 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetDefaultControl( )
+
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -82,8 +86,9 @@ class AntennaSetup( SettingWindow ) :
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				self.OpenBusyDialog( )
-				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
-					self.CancelConfiguration( )
+				#if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
+				self.CancelConfiguration( )
+				self.mTunerMgr.SyncChannelBySatellite( )
 			else :
 				return
 

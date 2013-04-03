@@ -54,14 +54,6 @@ Search for window name
 		<control type="group">
 			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000)</visible>
 			<include>DefaultSettingWindowEffect</include>
-			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
-				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-				<effect type="fade" start="100" end="0" time="300" />
-			</animation>
-			<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
-				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-				<effect type="fade" start="0" end="100" time="300" />
-			</animation>
 			<posx>80</posx>
 			<posy>110</posy>
 			<include>DefaultSettingMainWindow</include>
@@ -144,7 +136,7 @@ Search for window name
 
 		<!-- *********** E_MainMenu ********** -->
 		<control type="group" id="1200000">
-			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 			<!--<animation effect="fade" start="100" end="0" time="100">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
@@ -2859,14 +2851,6 @@ Search for window name
 			<control type="group">
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<include>DefaultSettingWindowEffect</include>
-				<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>
-				<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
 				<posx>80</posx>
 				<posy>110</posy>
 				<control type="list" id="1709000">
@@ -3323,17 +3307,12 @@ Search for window name
 		<!-- *********** E_SystemInfo ********** -->
 		<control type="group" id="3400000">
 			<include>DefaultSettingWindowEffect</include>
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
 			<visible>substring(Window.Property(CurrentWindow),3400000)</visible>
 			<defaultcontrol always="true">3409000</defaultcontrol>
 			<!--<include>DefaultSettingHeaderWindow</include>-->
 			<control type="group">
 				<posx>90</posx>
 				<posy>50</posy>
-				<!--<include>DefaultSettingWindowEffect</include>-->
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -4813,14 +4792,6 @@ Search for window name
 			<control type="group">
 				<posx>80</posx>
 				<posy>110</posy>
-				<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>
-				<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
 				<control type="group" id="4309000">
 					<posy>10</posy>
 				</control>
@@ -4969,10 +4940,12 @@ Search for window name
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>
+				<!--
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">Visible</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">Hidden</animation>
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
+				-->
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image" id="8899">
@@ -4981,10 +4954,12 @@ Search for window name
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>
+				<!--
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">Visible</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">Hidden</animation>
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
+				-->
 				<texture>video_pig_overlay.png</texture>
 			</control>
 		</control>
@@ -5026,15 +5001,7 @@ Search for window name
 		<control type="group" id="11000001">
 			<posy>10</posy>
 			<visible>substring(Window.Property(SettingBackground),True)</visible>
-			<include>DefaultSettingWindowEffect</include>	
-			<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
-				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-				<effect type="fade" start="100" end="0" time="300" />
-			</animation>
-			<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
-				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-				<effect type="fade" start="0" end="100" time="300" />
-			</animation>					
+			<include>DefaultSettingWindowEffect</include>
 			<include>SpinEx01</include>
 			<include>SpinEx02</include>
 			<include>SpinEx03</include>

@@ -455,7 +455,6 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_LANGUAGE )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -474,7 +473,6 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_PARENTAL )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -492,7 +490,6 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -508,7 +505,6 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_HDMI_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -527,7 +523,6 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
-				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 			else :
 				self.AddEnumControl( E_SpinEx02, 'TV Aspect', MR_LANG( ' - TV Aspect Ratio' ), MR_LANG( 'Set aspect ratio of your TV' ) )
 				if self.mAnalogAscpect == E_16_9 :
@@ -543,7 +538,6 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
-				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
@@ -569,7 +563,6 @@ class Configure( SettingWindow ) :
 					self.InitControl( )
 					time.sleep( 0.2 )
 					self.DisableControl( E_WIFI )
-					self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 				else :
 					if self.mReLoadEthernetInformation == True :
@@ -593,7 +586,6 @@ class Configure( SettingWindow ) :
 					self.InitControl( )
 					time.sleep( 0.2 )
 					self.DisableControl( E_ETHERNET )
-					self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 				self.SetEnableControl( E_Input07, False )
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
@@ -606,7 +598,6 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
-				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_TIME_SETTING :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -645,7 +636,6 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( E_TIME_SETTING )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )	
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -665,7 +655,6 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -679,7 +668,6 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		elif selectedId == E_ETC :
 			self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
@@ -700,10 +688,11 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		else :
 			LOG_ERR( 'Cannot find selected ID' )
+
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def DisableControl( self, aSelectedItem ) :
