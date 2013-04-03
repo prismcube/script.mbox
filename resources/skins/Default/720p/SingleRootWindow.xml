@@ -27,8 +27,6 @@ Search for window name
 	<onload>SetProperty(currentPosY,600)</onload>
 	<!--onload>SetProperty(currentPosX,390)</onload>
 	<onload>SetProperty(currentPosY,585)</onload-->
-
-
 	<onload>SetProperty(progressPosX,400)</onload>
 	<onload>SetProperty(progressPosY,625)</onload>
 	<onload>SetProperty(slideGap,30)</onload>
@@ -5052,6 +5050,53 @@ Search for window name
 			<include>Input07</include>
 			<include>Input08</include>
 		</control>
+
+		<!-- re-draw unvisible channel label on PIP -->
+		<control type="group">
+			<include>DefaultWindowFade</include>
+			<control type="group">
+				<description>ChannelList Channel Name</description>
+				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
+				<control type="label">
+					<posx>840</posx>
+					<posy>289</posy>
+					<width>350</width>
+					<height>10</height>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>$INFO[Control.GetLabel(1300303)]</label>
+					<visible>substring(Window.Property(Signal),True)</visible>
+				</control>
+			</control>
+			<control type="group">
+				<description>Archive Name or Live Channel Name</description>
+				<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
+				<control type="label">
+					<posx>850</posx>
+					<posy>295</posy>
+					<width>352</width>
+					<height>18</height>
+					<align>left</align>
+					<font>font12_title</font>
+					<label>$INFO[Control.GetLabel(3300401)]</label>
+					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
+				</control>
+			</control>
+			<control type="group">
+				<description>EPGWindow Channel Name</description>
+				<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
+				<control type="label">
+					<posx>850</posx>
+					<posy>295</posy>
+					<width>352</width>
+					<height>18</height>
+					<font>font12_title</font>
+					<label>$INFO[Control.GetLabel(3700401)]</label>
+					<visible>substring(Window.Property(Signal),True) + !substring(Window.Property(EPGMode),grid)</visible>
+				</control>
+			</control>
+		</control>
+
 	</controls>
 </window>
 
