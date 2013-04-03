@@ -410,11 +410,11 @@ class TunerConfigMgr( object ) :
 		return self.mOnecableSatelliteCount
 
 
-	def CheckSameSatellite( self, aIndex ) :
+	def CheckSameSatellite( self, aLongitude, aBand ) :
 		ConfiguredSatelliteList = self.GetConfiguredSatelliteList( )
 		if len( ConfiguredSatelliteList ) > 0 :
 			for satellite in ConfiguredSatelliteList :
-				if satellite.mSatelliteLongitude == self.mAllSatelliteList[aIndex].mLongitude and satellite.mBandType == self.mAllSatelliteList[aIndex].mBand :
+				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
 					return False
 		return True
 

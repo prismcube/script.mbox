@@ -22,6 +22,8 @@ class Installation( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mCtrlLeftGroup = None
 
+
+	def onInit( self ) :
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),
 		MR_LANG( 'Antenna Setup' ),
@@ -42,8 +44,6 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
 		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
 
-
-	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( 'Installation' )

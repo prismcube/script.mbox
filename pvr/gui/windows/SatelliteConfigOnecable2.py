@@ -179,6 +179,8 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+		
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
@@ -212,6 +214,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 		self.InitControl( )
 		self.DisableControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def DisableControl( self ) :

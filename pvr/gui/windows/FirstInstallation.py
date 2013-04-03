@@ -209,6 +209,8 @@ class FirstInstallation( FTIWindow ) :
 
 	def SetListControl( self, aStep ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+		
 		self.SetFTIStep( aStep )
 		self.DrawFTIStep( aStep )
 		self.SetPrevNextButtonLabel( aStep )
@@ -376,6 +378,8 @@ class FirstInstallation( FTIWindow ) :
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
+
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def GotoAntennaNextStep( self ) :

@@ -165,7 +165,7 @@ class WindowMgr( object ) :
 
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
+					if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW and E_USE_SETTING_WINDOW_ANIMATION :
 						self.mRootWindow.setProperty( 'SettingPip', 'False' )
 						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
 						time.sleep( 0.3 )
@@ -205,7 +205,7 @@ class WindowMgr( object ) :
 
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 						LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW :
+						if currentId in WIN_ID_LIST_WINDOW_SETTING_WINDOW and E_USE_SETTING_WINDOW_ANIMATION :
 							self.mRootWindow.setProperty( 'SettingPip', 'False' )
 							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
 							time.sleep( 0.3 )

@@ -139,6 +139,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set the longitude direction for your area' ) )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
@@ -158,6 +159,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 			self.SetEnableControl( E_Input04, True )
 
 		self.InitControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def GetLongitude( self ) :

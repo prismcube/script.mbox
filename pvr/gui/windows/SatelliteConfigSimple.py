@@ -119,22 +119,28 @@ class SatelliteConfigSimple( FTIWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, StringToListIndex( satelliteList, self.GetControlLabel2String( E_Input01 ) ) )
+			currentIndex = StringToListIndex( satelliteList, self.GetControlLabel2String( E_Input01 ) )
+ 			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, currentIndex )
 
-			if ret >= 0 :
+			if ret >= 0 and currentIndex != ret :
 				satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
-				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
-				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
-				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
-				self.mCurrentSatellite.mLowLNB 				= 9750						# Low
-				self.mCurrentSatellite.mHighLNB 			= 10600						# High
-				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
-				self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
+				if self.mTunerMgr.CheckSameSatellite( satellite.mLongitude, satellite.mBand ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
+		 			dialog.doModal( )
+		 		else :
+					self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
+					self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
+					self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
+					self.mCurrentSatellite.mLowLNB 				= 9750						# Low
+					self.mCurrentSatellite.mHighLNB 			= 10600						# High
+					self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
+					self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
 
-				self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-				self.mSelectedTransponderIndex = 0
-				self.InitConfig( )
+					self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+					self.mSelectedTransponderIndex = 0
+					self.InitConfig( )
 			else :
 				return
 
@@ -214,8 +220,9 @@ class SatelliteConfigSimple( FTIWindow ) :
 	 		if self.mTransponderList :
 	 			self.OpenBusyDialog( )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-				self.CloseBusyDialog( )
+				self.mTunerMgr.SaveConfiguration( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				self.CloseBusyDialog( )
 
 				if self.mSearchRange :
 					configuredSatelliteList = []
@@ -285,6 +292,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Select the desired satellite whose signal is to be received by the tuner' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
@@ -345,6 +353,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		self.InitControl( )
 		self.DisableControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 		
 
 	def DisableControl( self ) :

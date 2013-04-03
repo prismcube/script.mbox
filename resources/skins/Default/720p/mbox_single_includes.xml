@@ -13,10 +13,12 @@
 			<height>720</height>
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
+			<!--
 			<animation effect="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" condition="!Control.HasFocus(1000999)">Conditional</animation>
 			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(1000999)">Conditional</animation>
 			<animation effect="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" condition="Control.HasFocus(1000999)">Conditional</animation>
 			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(1000999)">Conditional</animation>
+			-->
 		</control>
 	</include>
 
@@ -315,6 +317,7 @@
 	</include>
 
 	<include name="DefaultSettingWindowEffect">
+		<!--
 		<animation type="Visible" reversible="false">
 			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 			<effect type="fade" start="0" end="100" time="300" />
@@ -323,6 +326,15 @@
 			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
 			<effect type="fade" start="100" end="0" time="300" />
 		</animation>
+		<animation condition="Control.HasFocus(1000999)" type="Conditional" reversible="false">
+			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+			<effect type="fade" start="100" end="0" time="300" />
+		</animation>
+		<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
+			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+			<effect type="fade" start="0" end="100" time="300" />
+		</animation>
+		-->
 	</include>
 
 	<include name="DefaultDialogCommonSetting">

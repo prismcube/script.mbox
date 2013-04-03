@@ -247,6 +247,7 @@ class ManualScan( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
@@ -283,6 +284,7 @@ class ManualScan( SettingWindow ) :
 
 		self.InitControl( )
 		self.DisableControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def LoadFormattedSatelliteNameList( self ) :

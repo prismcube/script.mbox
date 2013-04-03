@@ -111,7 +111,7 @@ class EditSatellite( SettingWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
-				if self.CheckSameSatellite( longitude, band ) == True :
+				if self.CheckSameAllSatellite( longitude, band ) == True :
 					self.OpenBusyDialog( )
 					ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 					if ret :
@@ -206,7 +206,7 @@ class EditSatellite( SettingWindow ) :
 		return formattedName
 
 
-	def CheckSameSatellite( self, aLongitude, aBand ) :
+	def CheckSameAllSatellite( self, aLongitude, aBand ) :
 		AllSatelliteList = self.mDataCache.GetAllSatelliteList( )
 		for satellite in AllSatelliteList :
 			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
