@@ -326,62 +326,63 @@ class AllNavigation( object ) :
 				if self.CheckWindow( testSleep ) :
 					continue
 
-				if xbmcgui.getCurrentWindowId( ) == ( 13000 + WinMgr.WIN_ID_NULLWINDOW ) :
+				code = None
+				if winid == WinMgr.WIN_ID_MAINMENU :
+					code = KeyCode[ 'VKEY_MENU' ]
+				elif winid == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+					code = KeyCode[ 'VKEY_OK' ]
+				elif winid == WinMgr.WIN_ID_LIVE_PLATE :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
+					code = KeyCode[ 'VKEY_INFO' ]
+				elif winid == WinMgr.WIN_ID_ARCHIVE_WINDOW :
+					code = KeyCode[ 'VKEY_ARCHIVE' ]
+				elif winid == WinMgr.WIN_ID_MEDIACENTER :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
+					code = KeyCode[ 'VKEY_MEDIA' ]
+				elif winid == WinMgr.WIN_ID_EPG_WINDOW :
+					code = KeyCode[ 'VKEY_EPG' ]
 
-					code = None
-					if winid == WinMgr.WIN_ID_MAINMENU :
-						code = KeyCode[ 'VKEY_MENU' ]
-					elif winid == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-						code = KeyCode[ 'VKEY_OK' ]
-					elif winid == WinMgr.WIN_ID_LIVE_PLATE :
-						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
-						code = KeyCode[ 'VKEY_INFO' ]
-					elif winid == WinMgr.WIN_ID_ARCHIVE_WINDOW :
-						code = KeyCode[ 'VKEY_ARCHIVE' ]
-					elif winid == WinMgr.WIN_ID_MEDIACENTER :
-						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
-						code = KeyCode[ 'VKEY_MEDIA' ]
-					elif winid == WinMgr.WIN_ID_EPG_WINDOW :
-						code = KeyCode[ 'VKEY_EPG' ]
+				LOG_TRACE('------sock[%s] key[%s]'% ( sock, code ) )
+				WinMgr.GetInstance( ).ShowWindow( winid )
+				#if code :
+				#	msg = struct.pack( '3i', *[ 1, code, 0 ] )
+				#	sock.send( msg )
 
-					if code :
-						msg = struct.pack( '3i', *[ 1, code, 0 ] )
-						sock.send( msg )
+				time.sleep( testSleep )
 
-					else :
-						pass
-						#WinMgr.GetInstance( ).ShowWindow( winid, WinMgr.WIN_ID_NULLWINDOW )
-						#time.sleep( testSleep )
+				testTime += testSleep
+				testCount += 1
+				self.PrintLog( testCount, testTime )
 
-						#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-
+				if WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+					#msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_BACK' ], 0 ] )
+					#sock.send( msg )
 					time.sleep( testSleep )
 
-					testTime += testSleep
-					testCount += 1
-					self.PrintLog( testCount, testTime )
 
-				if xbmcgui.getCurrentWindowId( ) > ( 13000 + WinMgr.WIN_ID_NULLWINDOW ) :
-					msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_BACK' ], 0 ] )
-					sock.send( msg )
-					time.sleep( testSleep )
+			if not self.mDataCache.GetRunningHiddenTest( ) :
+				break
 
 			msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_PLAY' ], 0 ] )
-			sock.send( msg )
+			xbmc.executebuiltin( 'xbmc.Action(play)' )
+			#sock.send( msg )
 			time.sleep( 2 )
 			testTime += 2
 			testCount += 1
 			self.PrintLog( testCount, testTime )
 
 			msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_INFO' ], 0 ] )
-			sock.send( msg )
+			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+			#sock.send( msg )
 			time.sleep( testSleep )
 			testTime += testSleep
 			testCount += 1
 			self.PrintLog( testCount, testTime )
 
 			msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_STOP' ], 0 ] )
-			sock.send( msg )
+			xbmc.executebuiltin( 'xbmc.Action(stop)' )
+			#sock.send( msg )
 			time.sleep( testSleep )
 			testTime += testSleep
 			testCount += 1
@@ -400,10 +401,9 @@ class AllNavigation( object ) :
 	def CheckWindow( self, aSleep ) :
 		ret = False
 		#LOG_TRACE('-----------activate win[%s]'% xbmcgui.getCurrentWindowId( ) )
-		if xbmcgui.getCurrentWindowId( ) <= 13000 :
+		if WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
 			LOG_TRACE('---Reset NullWindow (lastid[%s])'% WinMgr.GetInstance( ).GetLastWindowID( ) )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU, WinMgr.WIN_ID_NULLWINDOW )
-			#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 			time.sleep( aSleep )
 			ret = True
 

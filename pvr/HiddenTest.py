@@ -58,7 +58,8 @@ class HiddenTest( BaseWindow ) :
 		
 		context = []
 		context.append( ContextItem( 'PROPRTY CHECK', 9999 ) )
-		context.append( ContextItem( 'ALL Navigation', 8888 ) )
+		if E_SUPPORT_SINGLE_WINDOW_MODE :
+			context.append( ContextItem( 'ALL Navigation', 8888 ) )
 		menuCount = 0
 
 		for scenario in self.mRoot.findall( 'scenario' ) :
