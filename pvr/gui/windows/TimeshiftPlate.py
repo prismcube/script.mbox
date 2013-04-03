@@ -1298,7 +1298,12 @@ class TimeShiftPlate( BaseWindow ) :
 			idx += 1
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
 			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idx )
-			listItem.setProperty( 'BookMarkThumb', self.mThumbnailList[i] )
+
+			thumbIcon = 'RecIconSample.png'
+			if self.mThumbnailList and len( self.mThumbnailList ) >= i :
+				thumbIcon = self.mThumbnailList[i]
+
+			listItem.setProperty( 'BookMarkThumb', thumbIcon )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 
 			listItems.append( listItem )
@@ -1306,13 +1311,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
-
 		#2.show mark on progress
 		self.UpdateBookmarkByPoint( )
 
 
 	def UpdateBookmarkByPoint( self ) :
-		if len( self.mThumbnailList ) < 1 :
+		if not self.mBookmarkList or len( self.mBookmarkList ) < 1 :
 			return
 
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
