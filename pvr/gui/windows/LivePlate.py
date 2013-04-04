@@ -1311,9 +1311,11 @@ class LivePlate( LivePlateWindow ) :
 		self.StopBlickingIconTimer( )
 		self.SetBlinkingProperty( 'None' )
 
-		self.StopAsyncTune( )
+		#self.StopAsyncTune( )
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+			self.mAsyncTuneTimer.join( )
+
 		self.StopAutomaticHide( )
-		#WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def SetPincodeRequest( self, aConfirm ) :
