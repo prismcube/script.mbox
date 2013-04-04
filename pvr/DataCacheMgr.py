@@ -87,6 +87,7 @@ class DataCacheMgr( object ) :
 		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
 		self.mOldChannel						= None
+		self.mOldChannelList					= []
 		self.mLocalOffset						= 0
 		self.mLocalTime							= 0
 		self.mAllSatelliteList					= None
@@ -876,6 +877,14 @@ class DataCacheMgr( object ) :
 		return self.mOldChannel
 
 
+	def Channel_ResetOldChannelList( self ) :
+		self.mOldChannelList = []
+
+
+	def Channel_GetOldChannelList( self ) :
+		return self.mOldChannelList
+
+
 	def Channel_GetCurrentByPlaying( self ) :
 		return self.mPlayingChannel
 
@@ -883,7 +892,23 @@ class DataCacheMgr( object ) :
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
 		ret = False
 		self.mCurrentEvent = None
+
 		self.mOldChannel = self.Channel_GetCurrent( )
+		if self.mOldChannel and self.mOldChannel.mError == 0 :
+			addListy = True
+			for ch in self.mOldChannelList :
+				if ch.mSid == self.mOldChannel.mSid and \
+				   ch.mTsid == self.mOldChannel.mTsid and \
+				   ch.mOnid == self.mOldChannel.mOnid :
+					addListy = False
+
+			if addListy :
+				if self.mOldChannelList and len( self.mOldChannelList ) > 10 :
+					self.mOldChannelList.pop( 0 )
+
+				if aServiceType == self.mOldChannel.mServiceType :
+					self.mOldChannelList.append( self.mOldChannel )
+
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			if aTemporaryHash :
 				iChannel = aTemporaryHash.get( aChannelNumber, None ) 
@@ -925,6 +950,14 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )		
 			self.Frontdisplay_SetMessage( channel.mName )
 		return ret
+
+
+	def Channel_SetCurrentByOld( self, aOldChannel ) :
+		if aOldChannel and aOldChannel.mError == 0 :
+			jumpChannel = self.Channel_GetCurr( aOldChannel.mNumber )
+			if jumpChannel and jumpChannel.mError == 0 :
+				self.SetAVBlankByChannel( jumpChannel )
+				self.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 
 	def Channel_GetPrev( self, aChannel ) :
@@ -1918,6 +1951,7 @@ class DataCacheMgr( object ) :
 				lastChannelProperty = 'Last Radio Number'
 
 			iChannel = None
+			self.mOldChannelList = []
 			#1.default channel, First Channel
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				iChannel = self.mChannelList[0]
@@ -2087,6 +2121,7 @@ class DataCacheMgr( object ) :
 	def SetDefaultByFactoryReset( self ) :
 		LOG_TRACE('-------factory reset')
 		self.mPMTListHash = {}
+		self.mOldChannelList = []
 		#1. pincode : m/w (super pin)
 		#2. video : 1080i, normal, RGB
 		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
@@ -2143,9 +2178,16 @@ class DataCacheMgr( object ) :
 
 	def AsyncShowStatus( self, aStatus ) :
 		rootWinow = xbmcgui.Window( 10000 )
-		rootWinow.setProperty( 'PlayStatus', 'True' )
 		rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
-		time.sleep( 5 )
+
+		loopCount = 0
+		while loopCount <= 5 :
+			rootWinow.setProperty( 'PlayStatus', 'True' )
+			time.sleep( 0.2 )
+			rootWinow.setProperty( 'PlayStatus', 'False' )
+			time.sleep( 0.2 )
+			loopCount += 0.4
+
 		rootWinow.setProperty( 'PlayStatus', 'False' )
 		rootWinow.setProperty( 'PlayStatusLabel', '' )
 

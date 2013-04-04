@@ -171,8 +171,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mInitialized = True
 
 		self.RestartAutomaticHide( )
-		thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [label] )
-		thread.start( )
+		#thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [label] )
+		#thread.start( )
 
 
 	def onAction( self, aAction ) :

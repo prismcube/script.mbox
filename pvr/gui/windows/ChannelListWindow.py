@@ -635,9 +635,9 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
 				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
+					self.mDataCache.Channel_ResetOldChannelList( )
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( True )
-					#self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
 				self.Close( )
 
