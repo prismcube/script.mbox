@@ -195,6 +195,9 @@ class GlobalEvent( object ) :
 
 	def AsyncStandbyPowerON( self ) :
 		#default mute off
+		if not self.mDataCache.Channel_GetInitialBlank( ) :
+			self.mDataCache.Player_AVBlank( False )
+
 		mute = self.mCommander.Player_GetMute( )
 		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
