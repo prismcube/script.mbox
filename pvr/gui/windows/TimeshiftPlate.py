@@ -171,6 +171,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mInitialized = True
 
 		self.RestartAutomaticHide( )
+		thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [label] )
+		thread.start( )
 
 
 	def onAction( self, aAction ) :
@@ -1087,20 +1089,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def GetModeValue( self ) :
-		labelMode = ''
-		buttonHide= True
+		buttonHide = True
 
+		labelMode = GetStatusModeLabel( self.mMode )
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
+			labelMode = '[COLOR green]TIMESHIFT[/COLOR]'
 		elif self.mMode == ElisEnum.E_MODE_PVR :
-			labelMode = E_TAG_COLOR_RED + 'PLAYBACK' + E_TAG_COLOR_END
-			buttonHide= False
-		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
-			labelMode = 'EXTERNAL_PVR'
-		elif self.mMode == ElisEnum.E_MODE_MULTIMEDIA :
-			labelMode = 'MULTIMEDIA'
-		else :
-			labelMode = 'UNKNOWN'
+			buttonHide = False
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_BOOKMARK, not buttonHide, E_TAG_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_TAG_VISIBLE )

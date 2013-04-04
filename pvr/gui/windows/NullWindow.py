@@ -33,7 +33,7 @@ class NullWindow( BaseWindow ) :
 		collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
+		#LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
 		try :
 			if playingRecord :
 				self.SetFrontdisplayMessage( playingRecord.mRecordName )
@@ -44,7 +44,7 @@ class NullWindow( BaseWindow ) :
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.SetBlinkingProperty( 'None' )		
+		self.SetBlinkingProperty( 'None' )
 
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
@@ -63,6 +63,9 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = True
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+				labelMode = GetStatusModeLabel( status.mMode )
+				thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [labelMode] )
+				thread.start( )
 				return
 
 		self.mEventBus.Register( self )

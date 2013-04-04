@@ -1493,6 +1493,10 @@ class DataCacheMgr( object ) :
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
 		self.mPMTinstance = None
+
+		thread = threading.Timer( 0.1, self.AsyncShowStatus, ['LIVE'] )
+		thread.start( )
+
 		"""
 		channel = self.Channel_GetCurrent( )
 		if channel and channel.mError == 0 :
@@ -2135,3 +2139,13 @@ class DataCacheMgr( object ) :
 		if not xbmcMute :
 			playerMute = False
 		self.mCommander.Player_SetMute( playerMute )
+
+
+	def AsyncShowStatus( self, aStatus ) :
+		rootWinow = xbmcgui.Window( 10000 )
+		rootWinow.setProperty( 'PlayStatus', 'True' )
+		rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
+		time.sleep( 5 )
+		rootWinow.setProperty( 'PlayStatus', 'False' )
+		rootWinow.setProperty( 'PlayStatusLabel', '' )
+

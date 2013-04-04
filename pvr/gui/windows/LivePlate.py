@@ -72,9 +72,6 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = False
 		self.mEnableBlickingTimer = False		
 
-		self.test_count = 0
-		self.test_load = []
-
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
@@ -126,6 +123,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
 		self.mIsShowDialog = False
+		self.mEnableCasInfo = False
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -712,10 +710,19 @@ class LivePlate( LivePlateWindow ) :
 				if ch.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
-				#HasCasInfoByChannel( self, ch )
+				self.mEnableCasInfo = False
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
+					casInfo = HasCasInfoByChannel( ch )
+					if casInfo and len( casInfo ) > 1 :
+						self.mEnableCasInfo = True
+						self.ShowCasInfoThread( casInfo )
 
+					elif casInfo and len( casInfo ) == 1 :
+						self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
+
+					else :
+						self.UpdatePropertyGUI( 'iCasInfo', '' )
 
 				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
 				if mTPnum == 0 :
@@ -757,6 +764,23 @@ class LivePlate( LivePlateWindow ) :
 		if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
+
+
+	@RunThread
+	def ShowCasInfoThread( self, aCasInfo ) :
+		while self.mEnableCasInfo :
+			for item in aCasInfo :
+				self.UpdatePropertyGUI( 'iCasInfo', item )
+
+				loopCount = 0
+				while loopCount < 3 :
+					if not self.mEnableCasInfo :
+						break
+					loopCount += 0.5
+					time.sleep( 0.5 )
+
+			time.sleep( 0.5 )
+		self.UpdatePropertyGUI( 'iCasInfo', '' )
 
 
 	@RunThread
@@ -834,17 +858,8 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
-
-		"""
-		#tpnum
-		lblTPnum = 'TP1'
-		mTPnum = self.mDataCache.GetTunerIndexByChannel( self.mCurrentChannel.mNumber )
-		if mTPnum == E_CONFIGURED_TUNER_2 :
-			lblTPnum = 'TP1'
-		elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-			lblTPnum = 'TP1, TP2'
-		self.UpdatePropertyGUI( 'iTPnum', lblTPnum )
-		"""
+		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.mEnableCasInfo = False
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -1291,6 +1306,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+		self.mEnableCasInfo = False
 
 		self.StopBlickingIconTimer( )
 		self.SetBlinkingProperty( 'None' )

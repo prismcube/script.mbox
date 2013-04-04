@@ -362,61 +362,17 @@
 						</control>
 						<control type="group">
 							<posx>200</posx>
-							<posy>1</posy>
-							<visible>substring(Window.Property(HasCas),true)</visible>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconMediaguard.png</texture>
-								<visible>substring(Window.Property(HasCasMediaguard),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconViaccessOrca.png</texture>
-								<visible>substring(Window.Property(HasCasViaccess),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconNagra.png</texture>
-								<visible>substring(Window.Property(HasCasNagra),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconIrdeto.png</texture>
-								<visible>substring(Window.Property(HasCasIrdeto),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconConax.png</texture>
-								<visible>substring(Window.Property(HasCasConax),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconCryptoworks.png</texture>
-								<visible>substring(Window.Property(HasCasCryptoworks),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconNDS.png</texture>
-								<visible>substring(Window.Property(HasCasNds),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>IconBetadigital.png</texture>
-								<visible>substring(Window.Property(HasCasBetadigital),true)</visible>
-							</control>
-							<control type="image">
-								<width>30</width>
-								<height>30</height>
-								<texture>caslogo/others.png</texture>
-								<visible>substring(Window.Property(HasCasOthers),true)</visible>
+							<posy>10</posy>
+							<control type="label">
+								<posx>0</posx>
+								<posy>8</posy>
+								<width>100</width>
+								<height>10</height>
+								<align>left</align>
+								<font>Font_Reg12</font>
+								<textcolor>grey</textcolor>
+								<label>$INFO[Window.Property(iCasInfo)]</label>
+								<visible>substring(Window.Property(iCas),true)</visible>
 							</control>
 						</control>
 						<control type="image">
@@ -723,5 +679,6 @@
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),Scramble)</visible>
 		</control>
+		<include>DefaultCommonLiveStatus</include>
 	</controls>
 </window>
