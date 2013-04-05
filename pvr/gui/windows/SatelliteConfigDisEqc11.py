@@ -204,7 +204,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			return
 
 		elif groupId == E_SpinEx08 :
-			self.mChannelSearchMethod = self.GetSelectedIndex( E_SpinEx08 )
+			self.mSearchRange = self.GetSelectedIndex( E_SpinEx08 )
 			return
 
  		# Transponer
