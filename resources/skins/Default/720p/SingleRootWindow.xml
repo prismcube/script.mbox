@@ -718,7 +718,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>620</posx>
+							<posx>590</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -853,7 +853,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>620</posx>
+							<posx>590</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
