@@ -288,8 +288,17 @@ def makeLanguage(inFile):
 				# string list
 				ret = re.findall('"([^"]*)"', csvline)
 				if len(ret) < len(wFileList):			# if id, 'english',,,,,,,, then
-					ret = re.sub('"', '', csvline)			# copyed english
-					ret = re.split(',', ret)
+					#print 'len[%s] str[%s]'% ( len(ret), ret )
+					ret = re.sub('"', '', csvline)
+					ret = re.split(';', ret)
+					#rets = []
+					#for sentence in ret :
+					#	sentence = re.sub('"', '', sentence)
+					#	rets.append( sentence )			# copyed english
+					#print len(ret), ret
+					#print len( rets ), rets
+
+
 					if len(ret) == len(wFileList)+1:
 						for i in range(len(ret)-1):
 							if ret[i+1] == '':
@@ -298,13 +307,17 @@ def makeLanguage(inFile):
 								if j >= len(wFileList) - 1 :
 									j = len(wFileList) - 1
 								ret[i+1] = '%s_'% wFileList[j][:3] + ret[0]
-								#print '----------[%s]'% ret[i+1]
+								#print '----------[%s]'% rets[i+1]
 								
 
 				# str id
-				ret2= re.sub('\n', '', csvline)
-				ret2= ret2.split('",')
-				strid = re.sub(',', '', ret2[len(ret2)-1])
+				#ret2= re.sub('\n', '', csvline)
+				#ret2= ret2.split('",')
+				#strid = re.sub(',', '', ret2[len(ret2)-1])
+
+				ret2 = re.split( ';', csvline )
+				strid = ret2[ len(ret2)-1 ]
+				#print 'strid[%s] len[%s] str[%s]'% ( strid, len(ret2), ret2 )
 
 				# string.xml id == csv id
 				#if inID[0] == strid :
@@ -341,7 +354,7 @@ def makeLanguage(inFile):
 			#write string.xml
 			for i in range(len(wFileList)):
 				try:
-					strid = re.sub(',', '', csvret2[len(csvret2)-1])
+					strid = re.sub(';', '', csvret2[len(csvret2)-1])
 					#strid = sidx
 	
 					string = '\t' + (tag1 % strid) + csvret[i] + tag2 + '\r\n'
@@ -352,7 +365,6 @@ def makeLanguage(inFile):
 					#print 'error i[%s] e[%s]'% (i, e)
 					pass
 
-			
 			#write MboxStringsID.py in English Name
 			try:
 				strid = re.sub(',', '', csvret2[len(csvret2)-1])
@@ -774,7 +786,7 @@ def Make_NewCSV( ) :
 	fd = open( openFile, 'w' )
 	title = ''
 	for item in langPack :
-		title += '\"%s\",'% item
+		title += '\"%s\";'% item
 
 	fd.writelines( title[:len(title)] + '\"STRING_INDEX\"\r\n' )
 
@@ -782,7 +794,7 @@ def Make_NewCSV( ) :
 		csvStr = ''
 		for j in range(10) :
 			try :
-				comma= ','
+				comma= ';'
 				lang = '%s'% langStrings[j][i][1]
 				if langStrings[j][i][1] != '' :
 					lang = '\"%s\"'% langStrings[j][i][1]
@@ -794,7 +806,7 @@ def Make_NewCSV( ) :
 			except Exception, e :
 				print 'except[%s] langNo[%s] id[%s]'% (e, j, i)
 
-		csvStr = '%s,%s\r\n'% ( csvStr, langStrings[0][i][0] )
+		csvStr = '%s;%s\r\n'% ( csvStr, langStrings[0][i][0] )
 		fd.writelines( EucToUtf(csvStr) )
 
 	fd.close( )
@@ -837,7 +849,7 @@ def updateCSV( ) :
 	csvOld.pop( 0 )
 
 	for csvline in csvOld :
-		ret = re.split(',', csvline)
+		ret = re.split(';', csvline)
 		csvStr = re.findall('"([^"]*)"', csvline)
 
 		strid = int( ret[len(ret) - 1] )
@@ -859,7 +871,7 @@ def updateCSV( ) :
 			if csvHash.get( stringEng[1], -1 ) == -1 :
 				newString.append( stringEng )
 
-				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
+				temp = '\"%s\";;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
 				csvString[tags].append( temp )
 				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
 
@@ -921,6 +933,8 @@ def AutoMakeLanguage() :
 	stringFile = mboxDir + '/pvr/gui/windows/%s'% E_FILE_MBOX_STRING
 	propertyFile = elisDir + '/lib/elisinterface/%s'% E_FILE_PROPERTY
 	global gTagString, gTagProperty, gTagXmlString, gStringHash
+	#makeLanguage(mboxDir + '/pvr/gui/windows/test.xml')
+	#return
 
 	#if os.path.exists(stringFile) :
 	#	os.remove(stringFile)
@@ -1075,6 +1089,13 @@ def test5():
 	eater.exchange()
 
 
+def test6():
+	var = '"11,1","2,22",,,"333","4,44"'
+	ret = re.findall('"([^"]*)"', var)
+	ret2= re.split('",', var )
+	print ret2, len(ret2)
+	
+
 if __name__ == "__main__":
 
 	nameSelf = os.path.basename(sys.argv[0])
@@ -1087,4 +1108,5 @@ if __name__ == "__main__":
 			print 'create new csv : test.csv'
 	else :
 		AutoMakeLanguage( )
+
 
