@@ -4454,7 +4454,7 @@ Search for window name
 					<posx>0</posx>
 					<posy>60</posy>
 					<width>352</width>
-				 	<height>160</height>
+				 	<height>164</height>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<label>SCRIPT1030</label>
