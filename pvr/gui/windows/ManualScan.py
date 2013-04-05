@@ -29,9 +29,7 @@ class ManualScan( SettingWindow ) :
 		self.mSatelliteIndex = 0
 		self.mTransponderIndex = 0
 		self.mConfiguredSatelliteList = []
-
 		self.LoadFormattedSatelliteNameList( )
-
 		self.SetSingleWindowPosition( E_MANUAL_SCAN_BASE_ID )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -297,16 +295,20 @@ class ManualScan( SettingWindow ) :
 			self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList1 )
 
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
-			if configuredSatelliteList2 and configuredSatelliteList2[0].mError == 0 :
-				for config in configuredSatelliteList2 :
-					find = False
-					for compare in configuredSatelliteList1 :
-						if ( config.mSatelliteLongitude == compare.mSatelliteLongitude ) and ( config.mBandType == compare.mBandType ) :
-							find = True
-							break
+			if configuredSatelliteList1 :
+				if configuredSatelliteList2 and configuredSatelliteList2[0].mError == 0 :
+					for config in configuredSatelliteList2 :
+						find = False
+						for compare in configuredSatelliteList1 :
+							if ( config.mSatelliteLongitude == compare.mSatelliteLongitude ) and ( config.mBandType == compare.mBandType ) :
+								find = True
+								break
 
-					if find == False :
-						self.mConfiguredSatelliteList.append( config )
+						if find == False :
+							self.mConfiguredSatelliteList.append( config )
+			else :
+				if configuredSatelliteList2 :
+					self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList2 )
 
 		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.mFormattedList = []
