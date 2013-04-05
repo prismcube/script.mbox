@@ -54,55 +54,42 @@ def RecordConflict( aInfo ) :
 	dialog.doModal( )
 
 
-def HasCasInfoByChannel( self, aChannel ) :
+def HasCasInfoByChannel( aChannel ) :
 	if not aChannel or aChannel.mError != 0 :
 		#LOG_TRACE('----casCheck--------ch None')
 		return
 
-	casList = ['HasCasMediaguard','HasCasViaccess','HasCasNagra','HasCasIrdeto','HasCasConax','HasCasCryptoworks','HasCasNds','HasCasBetadigital','HasCasOthers']
-	property = ''
-	hasCas = 'True'
-	if aChannel.mIsCA >> 0 == ElisEnum.E_MEDIAGUARD >> 0 :
-		property = 'HasCasMediaguard'
+	casInfo = []
 
-	elif aChannel.mIsCA >> 1 == ElisEnum.E_VIACCESS >> 1 :
-		property = 'HasCasViaccess'
+	if aChannel.mIsCA & ElisEnum.E_MEDIAGUARD :
+		casInfo.append( 'MediaGuard' )
 
-	elif aChannel.mIsCA >> 2 == ElisEnum.E_NAGRA >> 2 :
-		property = 'HasCasNagra'
+	if aChannel.mIsCA & ElisEnum.E_VIACCESS :
+		casInfo.append( 'Viaccess' )
 
-	elif aChannel.mIsCA >> 3 == ElisEnum.E_IRDETO >> 3 :
-		property = 'HasCasIrdeto'
+	if aChannel.mIsCA & ElisEnum.E_NAGRA :
+		casInfo.append( 'Nagra' )
 
-	elif aChannel.mIsCA >> 4 == ElisEnum.E_CONAX >> 4 :
-		property = 'HasCasConax'
-	
-	elif aChannel.mIsCA >> 5 == ElisEnum.E_CRYPTOWORKS >> 5 :
-		property = 'HasCasCryptoworks'
-	
-	elif aChannel.mIsCA >> 6 == ElisEnum.E_NDS >> 6 :
-		property = 'HasCasNds'
-	
-	elif aChannel.mIsCA >> 7 == ElisEnum.E_BETADIGITAL >> 7 :
-		property = 'HasCasBetadigital'
-	
-	elif aChannel.mIsCA >> 15 == ElisEnum.E_OTHERS >> 15 :
-		property = 'HasCasOthers'
+	if aChannel.mIsCA & ElisEnum.E_IRDETO :
+		casInfo.append( 'Irdeto' )
 
-	else :
-		hasCas = 'False'
-		property = 'HasCas'
+	if aChannel.mIsCA & ElisEnum.E_CONAX :
+		casInfo.append( 'Conax' )
 
-	#LOG_TRACE('----------hasCas[%s] CasInfo[%s]'% ( hasCas, property ) )
+	if aChannel.mIsCA & ElisEnum.E_CRYPTOWORKS :
+		casInfo.append( 'Cryptoworks' )
 
-	self.setProperty( 'HasCas', hasCas )
-	for item in casList :
-		visible = 'False'
-		if item == property :
-			visible = 'True'
-			#LOG_TRACE('--------------cason[%s]'% item )
-		self.setProperty( item, visible )
-	#return casList
+	if aChannel.mIsCA & ElisEnum.E_NDS :
+		casInfo.append( 'NDS' )
+
+	if aChannel.mIsCA & ElisEnum.E_BETADIGITAL :
+		casInfo.append( 'Betadigital' )
+
+	if aChannel.mIsCA & ElisEnum.E_OTHERS :
+		casInfo.append( 'Others' )
+
+	LOG_TRACE('----------mask[%s] CasInfo[%s]'% ( aChannel.mIsCA, casInfo ) )
+	return casInfo
 
 
 def HasEPGComponent( aEPG, aFlag ) :
@@ -978,4 +965,22 @@ def ShowSubtitle( ) :
 
 	return ret
 
+
+def GetStatusModeLabel( aMode ) :
+	labelMode = ''
+
+	if aMode == ElisEnum.E_MODE_LIVE :
+		labelMode = '[COLOR white]LIVE[/COLOR]'
+	elif aMode == ElisEnum.E_MODE_TIMESHIFT :
+		labelMode = '[COLOR green]TIMESHIFT[/COLOR]'
+	elif aMode == ElisEnum.E_MODE_PVR :
+		labelMode = '[COLOR red]PLAYBACK[/COLOR]'
+	elif aMode == ElisEnum.E_MODE_EXTERNAL_PVR :
+		labelMode = 'EXTERNAL_PVR'
+	elif aMode == ElisEnum.E_MODE_MULTIMEDIA :
+		labelMode = 'MULTIMEDIA'
+	else :
+		labelMode = 'UNKNOWN'
+
+	return labelMode
 

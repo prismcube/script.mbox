@@ -1635,7 +1635,7 @@ Search for window name
 				</control>
 
 		<!-- common date time -->
-				<control type="group">
+				<!--control type="group">
 					<posx>190r</posx>
 					<posy>563</posy>
 					<control type="image">
@@ -1659,7 +1659,7 @@ Search for window name
 						<shadowcolor>black</shadowcolor>
 						<label>$INFO[System.Time]</label>
 					</control>
-				</control>
+				</control-->
 
 
 		<!-- Rec info -->
@@ -1787,7 +1787,7 @@ Search for window name
 					<control type="group">
 						<posx>-50</posx>
 						<posy>-37</posy>
-						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).(HasFocus) | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
+						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
 						<description>info explane</description>
 						<control type="image">
 							<posx>0</posx>
@@ -1922,7 +1922,7 @@ Search for window name
 					<include>DefaultInfoPlateGroup</include>
 
 					<control type="group">
-						<posx>720</posx>
+						<posx>710</posx>
 						<posy>-35</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -1970,61 +1970,17 @@ Search for window name
 							</control>
 							<control type="group">
 								<posx>145</posx>
-								<posy>1</posy>
-								<visible>substring(Window.Property(HasCas),true)</visible>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconMediaguard.png</texture>
-									<visible>substring(Window.Property(HasCasMediaguard),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconViaccessOrca.png</texture>
-									<visible>substring(Window.Property(HasCasViaccess),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconNagra.png</texture>
-									<visible>substring(Window.Property(HasCasNagra),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconIrdeto.png</texture>
-									<visible>substring(Window.Property(HasCasIrdeto),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconConax.png</texture>
-									<visible>substring(Window.Property(HasCasConax),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconCryptoworks.png</texture>
-									<visible>substring(Window.Property(HasCasCryptoworks),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconNDS.png</texture>
-									<visible>substring(Window.Property(HasCasNds),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconBetadigital.png</texture>
-									<visible>substring(Window.Property(HasCasBetadigital),true)</visible>
-								</control>
-								<control type="image">
-									<width>30</width>
-									<height>30</height>
-									<texture>IconOthers.png</texture>
-									<visible>substring(Window.Property(HasCasOthers),true)</visible>
+								<posy>10</posy>
+								<control type="label">
+									<posx>0</posx>
+									<posy>8</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<font>font10</font>
+									<textcolor>grey</textcolor>
+									<label>$INFO[Window.Property(iCasInfo)]</label>
+									<visible>substring(Window.Property(iCas),true)</visible>
 								</control>
 							</control>
 							<control type="image">
@@ -2041,7 +1997,7 @@ Search for window name
 					<!-- color key -->
 					<control type="group">
 						<control type="grouplist">
-							<posx>380r</posx>
+							<posx>250r</posx>
 							<posy>-35</posy>
 							<width>300</width>
 							<height>40</height>
@@ -4929,6 +4885,7 @@ Search for window name
 		<!-- Time & Date -->
 		<include>DefaultCommonTime</include>
 		<include>DefaultCommonDate</include>
+		<include>DefaultCommonLiveStatus</include>
 
 		<!-- PIP Image & Radio Image -->
 		<control type="group">

@@ -138,7 +138,7 @@ class DialogExtendEPG( BaseDialog ) :
 
 			button1 = E_TAG_FALSE
 			button2 = E_TAG_FALSE
-			if self.mEPGList or len( self.mEPGList ) > 0 :
+			if self.mEPGList and len( self.mEPGList ) > 0 :
 				button2 = E_TAG_TRUE
 				self.mEPGListIdx = 0
 				self.EPGListMoveToCurrent( )

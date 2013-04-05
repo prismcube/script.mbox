@@ -46,6 +46,24 @@
 		</control>
 	</include>
 
+	<include name="DefaultCommonLiveStatus">
+		<control type="label">
+			<description>Status label</description>
+			<visible>substring(Window(10000).Property(PlayStatus),true)</visible>
+			<posx>10</posx>
+			<posy>5</posy>
+			<width>200</width>
+			<height>30</height>
+			<align>left</align>
+			<aligny>center</aligny>
+			<font>font28_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$INFO[Window(10000).Property(PlayStatusLabel)]</label>
+			<include>DefaultWindowOpenCloseAnimation</include>
+		</control>
+	</include>
+
 	<include name="DefaultCommonTime">
 		<control type="label">
 			<description>time label</description>

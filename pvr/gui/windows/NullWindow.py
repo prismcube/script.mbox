@@ -3,17 +3,18 @@ import sys, inspect, time, threading
 import gc
 
 
-E_NULL_WINDOW_BASE_ID				= WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
-E_BUTTON_ID_FAKE					= E_NULL_WINDOW_BASE_ID + 9000
+E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_BUTTON_ID_FAKE      = E_NULL_WINDOW_BASE_ID + 9000
 
-E_NOMAL_BLINKING_TIME		= 0.2
+E_NOMAL_BLINKING_TIME = 0.2
 
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mAsyncTuneTimer = None
 		self.mAsyncShowTimer = None
-		self.mRecordBlinkingTimer	= None	
+		self.mRecordBlinkingTimer = None	
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
@@ -26,6 +27,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.mLoopCount = 0
 		self.mEnableBlickingTimer = False				
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
@@ -33,7 +35,7 @@ class NullWindow( BaseWindow ) :
 		collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-		LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
+		#LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
 		try :
 			if playingRecord :
 				self.SetFrontdisplayMessage( playingRecord.mRecordName )
@@ -44,7 +46,7 @@ class NullWindow( BaseWindow ) :
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.SetBlinkingProperty( 'None' )		
+		self.SetBlinkingProperty( 'None' )
 
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
@@ -63,6 +65,9 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = True
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+				labelMode = GetStatusModeLabel( status.mMode )
+				thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [labelMode] )
+				thread.start( )
 				return
 
 		self.mEventBus.Register( self )
@@ -150,10 +155,18 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
-			status = self.mDataCache.Player_GetStatus( )		
-			if status.mMode == ElisEnum.E_MODE_PVR :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				self.RestartAsyncTune( )
+
+			elif status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+
+			else :
+				labelMode = GetStatusModeLabel( status.mMode )
+				thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [labelMode] )
+				thread.start( )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -868,6 +881,7 @@ class NullWindow( BaseWindow ) :
 			self.mIsShowDialog = False
 			return
 
+
 		self.CloseSubTitle( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( dialogId )
 		if dialogId == DiaMgr.DIALOG_ID_EXTEND_EPG and extendData :
@@ -890,5 +904,46 @@ class NullWindow( BaseWindow ) :
 	def GetBlinkingProperty( self ) :
 		rootWinow = xbmcgui.Window( 10000 )
 		return rootWinow.getProperty( 'RecordBlinkingIcon' )
+
+
+	def RestartAsyncTune( self ) :
+		self.mLoopCount += 1
+		self.StopAsyncTune( )
+		self.StartAsyncTune( )
+
+
+	def StartAsyncTune( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer.start( )
+
+
+	def StopAsyncTune( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+			self.mAsyncTuneTimer.cancel( )
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
+
+	def AsyncTuneChannel( self ) :
+		oldChannel = self.mDataCache.Channel_GetOldChannel( )
+
+		if self.mLoopCount > 10 :
+			channelList = self.mDataCache.Channel_GetOldChannelList( )
+			listNumber = []
+			for ch in channelList :
+				listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
+
+			self.CloseSubTitle( )
+			isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
+			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
+			self.CheckSubTitle( )
+
+			if isSelect != -1 :
+				oldChannel = channelList[isSelect]
+
+
+		self.mDataCache.Channel_SetCurrentByOld( oldChannel )
+		self.mLoopCount = 0
 	
 
