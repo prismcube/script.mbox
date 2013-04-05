@@ -125,17 +125,40 @@ class DialogMoveAntenna( BaseDialog ) :
 				self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 			elif selectedIndex == E_LIMIT_RESET :
-				self.mCommander.Motorized_ResetLimit( self.mTunerIndex )			
+				ret = self.mCommander.Motorized_ResetLimit( self.mTunerIndex )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				if ret :
+					dialog.SetDialogProperty(  MR_LANG( 'Reset complete' ),  MR_LANG( 'Reset limit complete' ) )
+				else :
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Reset limit failed to complete' ) )
+		 		dialog.doModal( )
 			
 			elif selectedIndex == E_WEST_LIMIT :
-				self.mCommander.Motorized_SetWestLimit( self.mTunerIndex )
+				ret = self.mCommander.Motorized_SetWestLimit( self.mTunerIndex )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				if ret :
+					dialog.SetDialogProperty(  MR_LANG( 'Set complete' ),  MR_LANG( 'Set limit complete' ) )
+				else :
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Set limit failed to complete' ) )
+		 		dialog.doModal( )
 
 			elif selectedIndex == E_EAST_LIMIT :
-				self.mCommander.Motorized_SetEastLimit( self.mTunerIndex )			
+				ret = self.mCommander.Motorized_SetEastLimit( self.mTunerIndex )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				if ret :
+					dialog.SetDialogProperty(  MR_LANG( 'Set complete' ),  MR_LANG( 'Set limit complete' ) )
+				else :
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Set limit failed to complete' ) )
+		 		dialog.doModal( )
 
 			elif selectedIndex == E_SAVE_POSITION :	
-				self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).GetCurrentConfigIndex( ) + 1 )			
-
+				ret = self.mCommander.Motorized_SavePosition( self.mTunerIndex, ConfigMgr.GetInstance( ).GetCurrentConfigIndex( ) + 1 )			
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				if ret :
+					dialog.SetDialogProperty(  MR_LANG( 'Save complete' ),  MR_LANG( 'Save position complete' ) )
+				else :
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Save position failed to complete' ) )
+		 		dialog.doModal( )
 			else :
 				self.CloseDialog( )
 
