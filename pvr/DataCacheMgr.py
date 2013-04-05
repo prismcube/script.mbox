@@ -199,7 +199,7 @@ class DataCacheMgr( object ) :
 
 	def Load( self ) :
 
-		self.LoadVolumeToSetGUI( )
+		self.LoadVolumeAndSyncMute( False ) #False : LoadVolume Only
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
@@ -259,14 +259,21 @@ class DataCacheMgr( object ) :
 					LOG_ERR( 'Wifi device not configured' )
 
 
-	def LoadVolumeToSetGUI( self ) :
+	def LoadVolumeAndSyncMute( self, isSyncMuteOn ) :
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
 
 		if lastMute :
-			self.mCommander.Player_SetMute( False )
-			LOG_TRACE( 'mute off' )
+			if isSyncMuteOn :
+				if XBMC_GetMute( ) :
+					LOG_TRACE( 'mute on' )
+				else :
+					xbmc.executebuiltin( 'Mute( )' )
+					LOG_TRACE( 'mute on' )
+			else :
+				self.mCommander.Player_SetMute( False )
+				LOG_TRACE( 'mute off' )
 
 		revisionVolume = abs( lastVolume - XBMC_GetVolume( ) )
 		if revisionVolume >= VOLUME_STEP :
