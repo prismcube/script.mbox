@@ -1604,7 +1604,11 @@ class DataCacheMgr( object ) :
 
 	def RecordItem_GetCurrentPosByIndex( self, aRecordIndex ) :
 		return self.mCommander.RecordItem_GetCurrentPosByIndex( aRecordIndex )
-		
+
+
+	def RecordItem_HasRecordablePartition( self ) :
+		return self.mCommander.RecordItem_HasRecordablePartition( )
+
 
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
