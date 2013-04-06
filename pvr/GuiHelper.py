@@ -455,9 +455,23 @@ def CheckHdd( ) :
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 		return False
 
-	hddExist = pvr.ElisMgr.GetInstance( ).GetCommander( ).RecordItem_HasRecordablePartition( )
-	LOG_TRACE('----------------hddExist[%s]'% hddExist )
-	return hddExist
+	#hddExist = pvr.ElisMgr.GetInstance( ).GetCommander( ).RecordItem_HasRecordablePartition( )
+	#return hddExist
+
+	cmd = 'df'
+	if sys.version_info < ( 2, 7 ) :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		parsing = p.stdout.read( ).strip( )
+		p.stdout.close( )
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		( parsing, err ) = p.communicate( )
+		parsing = parsing.strip( )
+
+	if parsing.count( '/dev/sda' ) >= 3 :
+		return True
+
+	return False
 
 
 def	HasAvailableRecordingHDD( ) :
