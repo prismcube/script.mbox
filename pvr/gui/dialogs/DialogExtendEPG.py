@@ -168,6 +168,9 @@ class DialogExtendEPG( BaseDialog ) :
 
 	def EPGListMoveToIndex( self ) :
 		try :
+			if not self.mEPGList or len( self.mEPGList ) < 1 :
+				return
+
 			iEPG = self.mEPGList[self.mEPGListIdx]
 			if iEPG :
 				self.ResetLabel( )

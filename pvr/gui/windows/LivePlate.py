@@ -1255,7 +1255,7 @@ class LivePlate( LivePlateWindow ) :
 
 
  	def ShowRecordingInfo( self ) :
- 		LOG_TRACE( '---------ShowRecInfo------' )
+ 		#LOG_TRACE( '---------ShowRecInfo------' )
 		try:
 			runningRecordCount = 0
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
