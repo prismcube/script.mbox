@@ -1,4 +1,4 @@
-import xbmcaddon, sys, os, shutil, time, re, stat
+import xbmc, xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -7,6 +7,7 @@ import urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
+gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish' ]
 
 
 def GetSetting( aID ) :
@@ -355,6 +356,9 @@ gStrLanguage = GetInstance( )
 
 
 def MR_LANG( aString ) :
+	if xbmc.getLanguage() not in gSupportLanguage :
+		return aString
+
 	return gStrLanguage.StringTranslate( aString )
 	#return aString
 
