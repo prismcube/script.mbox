@@ -4664,10 +4664,10 @@ Search for window name
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label>SCRIPT1088</label>
-						<onleft>1003510</onleft>
-						<onright>1003510</onright>
-						<onup>1003510</onup>
-						<ondown>1003510</ondown>
+						<onleft>1003610</onleft>
+						<onright>1003610</onright>
+						<onup>1003610</onup>
+						<ondown>1003610</ondown>
 					</control>
 				</control>
 			</control>
