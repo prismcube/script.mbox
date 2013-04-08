@@ -209,7 +209,6 @@ class LivePlate( LivePlateWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
 			self.DialogPopup( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -339,13 +338,14 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		self.StopAutomaticHide( )
-		self.SetAutomaticHide( False )
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE  )
 		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_NEXT_EPG :
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( NEXT_EPG )
 		else :
 			self.DialogPopup( aControlId )
@@ -920,6 +920,7 @@ class LivePlate( LivePlateWindow ) :
 	def ShowDialog( self, aFocusId, aVisible = False ) :
 		self.mIsShowDialog = True
 		self.StopAutomaticHide( )
+		self.SetAutomaticHide( True )
 
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :

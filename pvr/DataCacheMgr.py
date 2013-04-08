@@ -1,4 +1,4 @@
-import thread, sys, copy, xbmcgui
+import thread, sys, copy, xbmcgui, os
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -1954,6 +1954,20 @@ class DataCacheMgr( object ) :
 			usbPath = retList[0].mParam
 
 		return usbPath
+
+
+	def HDD_GetMountPath( self, aFind = '' ) :
+		hddPath = ''
+		retList = self.mCommander.HDD_GetMountPath( )
+		if retList and len( retList ) > 0 and retList[0].mError == 0 :
+			hddPath = retList[0].mParam
+			if aFind :
+				for idx in range( len( retList ) ) :
+					if os.path.basename( retList[idx].mParam ) == aFind :
+						hddPath = retList[idx].mParam
+						break
+
+		return hddPath
 
 
 	def System_Reboot( self ) :
