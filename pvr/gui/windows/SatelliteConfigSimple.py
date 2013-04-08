@@ -137,7 +137,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 					self.mCurrentSatellite.mLowLNB 				= 9750						# Low
 					self.mCurrentSatellite.mHighLNB 			= 10600						# High
 					self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
-					self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
+					self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL
+					self.mCurrentSatellite.mUSALSLongitude		= 0
 
 					self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 					self.mSelectedTransponderIndex = 0
