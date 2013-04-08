@@ -357,7 +357,7 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def LoadInit( self ):
-		#1. Show epg infomation
+		#1. Show epg information
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
@@ -454,7 +454,7 @@ class LivePlate( LivePlateWindow ) :
 			#	LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
 			#			aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
 				#ToDo
-				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
+				#xbmcgui.Dialog( ).ok( MR_LANG('Information'), MR_LANG('No Signal') )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )

@@ -14,7 +14,7 @@
 "Order : Ascending";;;;;;;;;"Направление: Увеличение";1013
 "Locked";;"Verrouillé";;;;;;;"Заблокирован";1014
 "Select Channel List";;;;;;;;;"Выбор Списка Каналов";1015
-"No EPG Infomation";;;;;;;;;"Нет Данных ТВ Гида";1016
+"No EPG Information";;;;;;;;;"Нет Данных ТВ Гида";1016
 "Search Results";;;;;;;;;"Рузультаты Поиска";1017
 "TV Channels";;"Chaînes TV";;;;;;;"ТВ Каналы";1018
 "Radio Channels";;"Chaînes Radio";;;;;;;"Радио Каналы";1019
@@ -86,7 +86,6 @@
 "Display detailed information about your system status";;;;;;;;;"Вывод детальной информации о состоянии системы";1085
 "Manage all your multimedia content";;;;;;;;;"Управление мультимедийным контентом";1086
 "Check your PRISMCUBE RUBY info at a glance";;;;;;;;;"Check your PRISMCUBE RUBY info at a glance";1087
-"Go Parent";;;;;;;;;"Go Parent";1088
 "Select Action";;;;;;;;;"Выбор Действия";1089
 "To see all the other menus, press i button";;;;;;;;;"Для других разделов меню нажать i";1090
 "Previous";;"Précédent";;;;;;;"Пред";1091
@@ -675,7 +674,7 @@
 "The PIN code must be 4-digit long";;;;;;;;;"Пароль должен содержать 4 цифры";3259
 "Sorry, that PIN code does not match";;;;;;;;;"Извините, пароль не совпадает";3260
 "EPG None";;;;;;;;;"Нет ТВ Гида";3261
-"Select listy of previous channels";;;;;;;;;;3262
+"Recent channels";;;;;;;;;;3262
 "DiSEqC 1.0 Switch";;"Commutateur DiSEqC 1.0";;;;;;;"DiSEqC 1.0 Переключатель";3263
 "Select the DiSEqC switch which your satellite is connected to";;;;;;;;;"Задайте соответствиующие настройки DISEqC переключателя для спутника";3264
 "Tuner %d Config : %s";;;;;;;;;"Тюнер %d Конфигурация : %s";3265
@@ -704,7 +703,7 @@
 "Add manual timer";;;;;;;;;"Добавить таймер вручную";3288
 "Delete all timers";;;;;;;;;"Удалить все таймеры";3289
 "Show all timers";;;;;;;;;"Показать все таймеры";3290
-"Extend infomation";;;;;;;;;"Дополнительная информация";3291
+"Extend information";;;;;;;;;"Дополнительная информация";3291
 "Are you sure you want to remove this timer?";;;;;;;;;"Уверены что хотите удалить таймер?";3292
 "Are you sure you want to remove all your timers?";;;;;;;;;"Уверены что хотите удалить все таймеры?";3293
 "Enter search keywords here";;;;;;;;;"Введите слово для поиска";3294
@@ -755,7 +754,7 @@
 "Change additional settings for PRISMCUBE RUBY";;;;;;;;;"Задать дополнительные настройки приставки OPENBOX";3339
 "Select Menu Language";;;;;;;;;"Выбор Языка Меню";3340
 "Change Language";;;;;;;;;"Изменить Язык";3341
-"It may take several minutes to complete";;;;;;;;;"Это может занять несколько минут";3342
+"Do you want to continue?";;;;;;;;;;3342
 "please wait after pressing OK button";;;;;;;;;"пожалуйста подождите после нажатия кнопки ОК";3343
 "Not support Win32";;;;;;;;;"Нет поддержки Win32";3344
 "Sorry, that's an incorrect PIN code";;;;;;;;;"Извините, введен неверный пароль";3345

@@ -15,7 +15,7 @@
 	<string id="1013">Order : Ascending</string>
 	<string id="1014">Locked</string>
 	<string id="1015">Select Channel List</string>
-	<string id="1016">No EPG Infomation</string>
+	<string id="1016">No EPG Information</string>
 	<string id="1017">Search Results</string>
 	<string id="1018">TV Channels</string>
 	<string id="1019">Radio Channels</string>
@@ -87,7 +87,6 @@
 	<string id="1085">Display detailed information about your system status</string>
 	<string id="1086">Manage all your multimedia content</string>
 	<string id="1087">Check your PRISMCUBE RUBY info at a glance</string>
-	<string id="1088">Go Parent</string>
 	<string id="1089">Select Action</string>
 	<string id="1090">To see all the other menus, press i button</string>
 	<string id="1091">Previous</string>
@@ -676,7 +675,7 @@
 	<string id="3259">The PIN code must be 4-digit long</string>
 	<string id="3260">Sorry, that PIN code does not match</string>
 	<string id="3261">EPG None</string>
-	<string id="3262">Select listy of previous channels</string>
+	<string id="3262">Recent channels</string>
 	<string id="3263">DiSEqC 1.0 Switch</string>
 	<string id="3264">Select the DiSEqC switch which your satellite is connected to</string>
 	<string id="3265">Tuner %d Config : %s</string>
@@ -705,7 +704,7 @@
 	<string id="3288">Add manual timer</string>
 	<string id="3289">Delete all timers</string>
 	<string id="3290">Show all timers</string>
-	<string id="3291">Extend infomation</string>
+	<string id="3291">Extend information</string>
 	<string id="3292">Are you sure you want to remove this timer?</string>
 	<string id="3293">Are you sure you want to remove all your timers?</string>
 	<string id="3294">Enter search keywords here</string>
@@ -756,7 +755,7 @@
 	<string id="3339">Change additional settings for PRISMCUBE RUBY</string>
 	<string id="3340">Select Menu Language</string>
 	<string id="3341">Change Language</string>
-	<string id="3342">It may take several minutes to complete</string>
+	<string id="3342">Do you want to continue?</string>
 	<string id="3343">please wait after pressing OK button</string>
 	<string id="3344">Not support Win32</string>
 	<string id="3345">Sorry, that's an incorrect PIN code</string>

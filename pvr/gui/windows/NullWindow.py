@@ -427,7 +427,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
-				xbmcgui.Dialog( ).ok('Infomation', msg )
+				xbmcgui.Dialog( ).ok('Information', msg )
 				
 		
 		elif actionId == Action.REMOTE_4:  #TEST : stop Record
@@ -935,7 +935,7 @@ class NullWindow( BaseWindow ) :
 				listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
 
 			self.CloseSubTitle( )
-			isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
+			isSelect = xbmcgui.Dialog().select( MR_LANG( 'Recent channels' ), listNumber )
 			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
 			self.CheckSubTitle( )
 

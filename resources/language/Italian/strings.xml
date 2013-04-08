@@ -15,7 +15,7 @@
 	<string id="1013">ITA_Order : Ascending</string>
 	<string id="1014">ITA_Locked</string>
 	<string id="1015">ITA_Select Channel List</string>
-	<string id="1016">ITA_No EPG Infomation</string>
+	<string id="1016">ITA_No EPG Information</string>
 	<string id="1017">ITA_Search Results</string>
 	<string id="1018">ITA_TV Channels</string>
 	<string id="1019">ITA_Radio Channels</string>
@@ -87,7 +87,6 @@
 	<string id="1085">ITA_Display detailed information about your system status</string>
 	<string id="1086">ITA_Manage all your multimedia content</string>
 	<string id="1087">ITA_Check your PRISMCUBE RUBY info at a glance</string>
-	<string id="1088">ITA_Go Parent</string>
 	<string id="1089">ITA_Select Action</string>
 	<string id="1090">ITA_To see all the other menus, press i button</string>
 	<string id="1091">ITA_Previous</string>
@@ -676,7 +675,7 @@
 	<string id="3259">ITA_The PIN code must be 4-digit long</string>
 	<string id="3260">ITA_Sorry, that PIN code does not match</string>
 	<string id="3261">ITA_EPG None</string>
-	<string id="3262">ITA_Select listy of previous channels</string>
+	<string id="3262">ITA_Recent channels</string>
 	<string id="3263">ITA_DiSEqC 1.0 Switch</string>
 	<string id="3264">ITA_Select the DiSEqC switch which your satellite is connected to</string>
 	<string id="3265">ITA_Tuner %d Config : %s</string>
@@ -705,7 +704,7 @@
 	<string id="3288">ITA_Add manual timer</string>
 	<string id="3289">ITA_Delete all timers</string>
 	<string id="3290">ITA_Show all timers</string>
-	<string id="3291">ITA_Extend infomation</string>
+	<string id="3291">ITA_Extend information</string>
 	<string id="3292">ITA_Are you sure you want to remove this timer?</string>
 	<string id="3293">ITA_Are you sure you want to remove all your timers?</string>
 	<string id="3294">ITA_Enter search keywords here</string>
@@ -756,7 +755,7 @@
 	<string id="3339">ITA_Change additional settings for PRISMCUBE RUBY</string>
 	<string id="3340">ITA_Select Menu Language</string>
 	<string id="3341">ITA_Change Language</string>
-	<string id="3342">ITA_It may take several minutes to complete</string>
+	<string id="3342">ITA_Do you want to continue?</string>
 	<string id="3343">ITA_please wait after pressing OK button</string>
 	<string id="3344">ITA_Not support Win32</string>
 	<string id="3345">ITA_Sorry, that's an incorrect PIN code</string>

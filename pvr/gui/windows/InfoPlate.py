@@ -264,7 +264,7 @@ class InfoPlate( LivePlateWindow ) :
 				LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
 						aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
 				#ToDo
-				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
+				#xbmcgui.Dialog( ).ok( MR_LANG('Information'), MR_LANG('No Signal') )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass

@@ -1247,8 +1247,8 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )
 
-			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )					
-			context.append( ContextItem( MR_LANG( 'Extend infomation' ), CONTEXT_EXTEND_INFOMATION ) )		
+			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
+			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
 
 		else :
 			timer = None
