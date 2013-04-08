@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
-import gc
+import xbmc, xbmcgui, gc
 
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID

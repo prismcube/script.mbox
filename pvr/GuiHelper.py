@@ -1,4 +1,4 @@
-import xbmcaddon, sys, os, shutil, time, re, stat
+import xbmc, xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -7,6 +7,7 @@ import urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
+gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish' ]
 
 
 def GetSetting( aID ) :
@@ -355,6 +356,9 @@ gStrLanguage = GetInstance( )
 
 
 def MR_LANG( aString ) :
+	if xbmc.getLanguage() not in gSupportLanguage :
+		return aString
+
 	return gStrLanguage.StringTranslate( aString )
 	#return aString
 
@@ -450,7 +454,10 @@ def CheckDirectory( aPath ) :
 def CheckHdd( ) :
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 		return False
-	
+
+	#hddExist = pvr.ElisMgr.GetInstance( ).GetCommander( ).RecordItem_HasRecordablePartition( )
+	#return hddExist
+
 	cmd = 'df'
 	if sys.version_info < ( 2, 7 ) :
 		p = Popen( cmd, shell=True, stdout=PIPE )
@@ -460,7 +467,7 @@ def CheckHdd( ) :
 		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
 		( parsing, err ) = p.communicate( )
 		parsing = parsing.strip( )
-	
+
 	if parsing.count( '/dev/sda' ) >= 3 :
 		return True
 
@@ -469,7 +476,7 @@ def CheckHdd( ) :
 
 def	HasAvailableRecordingHDD( ) :
 	import pvr.gui.DialogMgr as DiaMgr
-	if CheckHdd( ) == False :
+	if CheckHdd( ) == 0 :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
 		dialog.doModal( )

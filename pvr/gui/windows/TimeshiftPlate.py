@@ -308,6 +308,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_INFO_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INFO_PLATE )
 			else :
 				self.Close( )
