@@ -18,13 +18,15 @@ class DialogSetTransponder( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.SetHeaderLabel( MR_LANG( 'Set Transponder' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

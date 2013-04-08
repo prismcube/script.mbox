@@ -30,6 +30,8 @@ class DialogBookmark( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.mMarkList = []
 		self.mThumbnailHash = {}
 		self.mMarkMode = False
@@ -40,6 +42,8 @@ class DialogBookmark( BaseDialog ) :
 		self.InitList( )
 		self.mEventBus.Register( self )
 		self.setFocusId( E_CONTROL_ID_LIST )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

@@ -3,7 +3,7 @@
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<control type="group">
+		<control type="group" id="8000">
 			<posx>40</posx>
 			<posy>60</posy>
 			<include>DefaultDialogCloseEffect</include>

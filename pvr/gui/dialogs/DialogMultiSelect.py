@@ -29,6 +29,8 @@ class DialogMultiSelect( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.mMarkList = []
 		self.mLastSelected = -1
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
@@ -37,6 +39,8 @@ class DialogMultiSelect( BaseDialog ) :
 		self.InitList( )
 		self.mEventBus.Register( self )
 		self.SetFocusList( E_CONTROL_ID_LIST )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

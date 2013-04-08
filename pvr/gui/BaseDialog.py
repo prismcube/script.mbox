@@ -43,8 +43,8 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	
 
 	def CloseDialog( self ) :
-		self.clearProperty( 'AnimationWaitingDialogOnClose' )
-		time.sleep( 0.3 )
+		#self.clearProperty( 'AnimationWaitingDialogOnClose' )
+		#time.sleep( 0.3 )
 		self.close( )
 
 

@@ -26,6 +26,8 @@ class DialogCasEvent( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.mCtrlTitleLabel = self.getControl( LABEL_ID_TITLE )
 		self.mCtrlSubTitleLabel = self.getControl( LABEL_ID_SUB_TITLE )
 		self.mCtrlBottomLabel = self.getControl( LABEL_ID_BOTTOM )
@@ -34,6 +36,8 @@ class DialogCasEvent( BaseDialog ) :
 		self.mCtrlList.reset( )
 		self.DrawItem( )
 		self.mSelectedIndex = -1
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

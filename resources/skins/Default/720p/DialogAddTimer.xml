@@ -4,7 +4,8 @@
 	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">200</defaultcontrol>	
 	<controls>
-		<control type="group">
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>335</posx>
 			<posy>100</posy>
             <include>DefaultDialogCloseEffect</include>

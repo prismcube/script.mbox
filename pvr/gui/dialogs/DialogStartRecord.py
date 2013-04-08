@@ -40,8 +40,9 @@ class DialogStartRecord( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
+
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.SetHeaderLabel( MR_LANG( 'Start Recording' ) )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -56,8 +57,9 @@ class DialogStartRecord( SettingDialog ) :
 		self.mDurationChanged = False
 		self.mConflictTimer = None		
 
-		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :
