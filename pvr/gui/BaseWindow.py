@@ -437,6 +437,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
+			InitTranslateByEnumList( )
 
 		self.SetRadioScreen( )
 
