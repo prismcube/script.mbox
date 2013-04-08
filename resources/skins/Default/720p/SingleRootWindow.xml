@@ -4663,7 +4663,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>SCRIPT1088</label>
+						<label>SCRIPT1021</label>
 						<onleft>1003610</onleft>
 						<onright>1003610</onright>
 						<onup>1003610</onup>
