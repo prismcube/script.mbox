@@ -24,7 +24,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.mCurrentSatellite			= None
 		self.mTransponderList			= None
 		self.mSelectedTransponderIndex	= 0
-		self.mSelectedIndexLnbType		= 0
 		self.mAvBlankStatus				= False
 		self.mSearchMode				= 0
 		self.mSearchRange				= 0
@@ -45,12 +44,9 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-		#self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
-		#self.VisibleTuneStatus( False )
 
-		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.SetSingleWindowPosition( E_CONFIG_SIMPLE_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -81,7 +77,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
-					#self.VisibleTuneStatus( True )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
 				self.OpenBusyDialog( )
@@ -90,7 +85,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 				self.RestoreAvBlank( )
 				self.CloseBusyDialog( )
-				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
@@ -124,21 +118,21 @@ class SatelliteConfigSimple( FTIWindow ) :
  			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, currentIndex )
 
 			if ret >= 0 and currentIndex != ret :
-				satellite = self.mDataCache.GetSatelliteByIndex( ret )
+				satellite = self.mTunerMgr.GetMakedConfiguredSatellite( ret )
 
-				if self.mTunerMgr.CheckSameSatellite( satellite.mLongitude, satellite.mBand ) == False :
+				if self.mTunerMgr.CheckSameSatellite( satellite.mSatelliteLongitude, satellite.mBandType ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
 		 			dialog.doModal( )
 		 		else :
-					self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
-					self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
-					self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
-					self.mCurrentSatellite.mLowLNB 				= 9750						# Low
-					self.mCurrentSatellite.mHighLNB 			= 10600						# High
-					self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
-					self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL
-					self.mCurrentSatellite.mUSALSLongitude		= 0
+		 			self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mSatelliteLongitude
+					self.mCurrentSatellite.mBandType 			= satellite.mBandType
+					self.mCurrentSatellite.mIsConfigUsed 		= satellite.mIsConfigUsed
+					self.mCurrentSatellite.mLowLNB 				= satellite.mLowLNB
+					self.mCurrentSatellite.mHighLNB 			= satellite.mHighLNB
+					self.mCurrentSatellite.mLNBThreshold		= satellite.mLNBThreshold
+					self.mCurrentSatellite.mLnbType				= satellite.mLnbType
+					self.mCurrentSatellite.mUSALSLongitude		= satellite.mUSALSLongitude
 
 					self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 					self.mSelectedTransponderIndex = 0
@@ -148,10 +142,9 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
-			self.mSelectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
-			self.mCurrentSatellite.mLnbType = self.mSelectedIndexLnbType
+			self.mCurrentSatellite.mLnbType = self.GetSelectedIndex( E_SpinEx01 )
 
-			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 				self.mCurrentSatellite.mLowLNB = 5150
 
 			else :
@@ -308,9 +301,9 @@ class SatelliteConfigSimple( FTIWindow ) :
 			satelliteName = satelliteName + ' ( %s )' % formattedName
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satelliteName, MR_LANG( 'Select the desired satellite whose signal is to be received by the tuner' ) )
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mCurrentSatellite.mLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
 
-		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+		if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ), MR_LANG( 'Select the LNB frequency to the LNB you are using' ) )
 		else :
 			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
@@ -334,7 +327,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS :
-			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04 ]
 				hideControlIds = [ E_Input02, E_Input05, E_Input06, E_Input07 ]
 			else :
@@ -342,7 +335,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 				hideControlIds = [ E_SpinEx02, E_Input05, E_Input06, E_Input07 ]
 
 		else :
-			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04 ]
 				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input02, E_Input05, E_Input06, E_Input07 ]
 			else :
@@ -370,7 +363,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 	def DisableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
+		if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 		else :
 			self.SetEnableControls( enableControlIds, True )

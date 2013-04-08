@@ -22,7 +22,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		FTIWindow.__init__( self, *args, **kwargs )
 		self.mCurrentSatellite 			= None
 		self.mTransponderList 			= None
-		self.mSelectedIndexLnbType 		= None
 		self.mSelectedTransponderIndex	= 0
 		self.tunerIndex					= E_TUNER_1
 		self.mAvBlankStatus				= False
@@ -48,12 +47,9 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-		#self.mSelectedTransponderIndex = 0
-
+		
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
-		#self.VisibleTuneStatus( False )
-
-		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
+		
 		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_12_BASE_ID )
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -85,7 +81,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
 					self.CloseBusyDialog( )
-					#self.VisibleTuneStatus( True )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
 				self.OpenBusyDialog( )
@@ -94,7 +89,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 				self.RestoreAvBlank( )
 				self.CloseBusyDialog( )
-				#self.VisibleTuneStatus( True )
 				WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
@@ -128,20 +122,21 @@ class SatelliteConfigMotorized12( FTIWindow ) :
  			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, currentIndex )
 
 			if ret >= 0 and currentIndex != ret :
-				satellite = self.mDataCache.GetSatelliteByIndex( ret )
+				satellite = self.mTunerMgr.GetMakedConfiguredSatellite( ret )
 
-				if self.mTunerMgr.CheckSameSatellite( satellite.mLongitude, satellite.mBand ) == False :
+				if self.mTunerMgr.CheckSameSatellite( satellite.mSatelliteLongitude, satellite.mBandType ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
 		 			dialog.doModal( )
 		 		else :
-					self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
-					self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
-					self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
-					self.mCurrentSatellite.mLowLNB 				= 9750						# Low
-					self.mCurrentSatellite.mHighLNB 			= 10600						# High
-					self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
-					self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
+		 			self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mSatelliteLongitude
+					self.mCurrentSatellite.mBandType 			= satellite.mBandType
+					self.mCurrentSatellite.mIsConfigUsed 		= satellite.mIsConfigUsed
+					self.mCurrentSatellite.mLowLNB 				= satellite.mLowLNB
+					self.mCurrentSatellite.mHighLNB 			= satellite.mHighLNB
+					self.mCurrentSatellite.mLNBThreshold		= satellite.mLNBThreshold
+					self.mCurrentSatellite.mLnbType				= satellite.mLnbType
+					self.mCurrentSatellite.mUSALSLongitude		= satellite.mUSALSLongitude
 
 					self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 					self.mSelectedTransponderIndex = 0
@@ -151,10 +146,9 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
-			self.mSelectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
-			self.mCurrentSatellite.mLnbType = self.mSelectedIndexLnbType
+			self.mCurrentSatellite.mLnbType = self.GetSelectedIndex( E_SpinEx01 )
 			
-			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 				self.mCurrentSatellite.mLowLNB = 5150
 
 			else :
@@ -222,44 +216,12 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
 			dialog.doModal( )
-			#self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-			#print 'self.tunerIndex=%d , self.mTunerMgr.GetCurrentConfigIndex( ) + 1= %d' %(self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1)
 			return
 			
 		# Network ON/Off
 		elif groupId == E_SpinEx05 :
 			self.ControlSelect( )
 			return
-			
-		#
-		# Action
-		#elif groupId == E_SpinEx04 :
-		#	return
-		#
-		# Antenna Action
-		#elif groupId == E_Input05 :
-		#	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		#	dialog.SetDialogProperty( MR_LANG( 'Rotation limits' ), MR_LANG( 'Do you want to apply the rotation limits above?' ) )
-		#	dialog.doModal( )
-		#
-		#	if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-		#		selected = self.GetSelectedIndex( E_SpinEx04 )
-		#		if selected == 0 :
-		#			self.mCommander.Motorized_ResetLimit( self.tunerIndex )
-		#		elif selected == 1 :
-		#			self.mCommander.Motorized_SetEastLimit( self.tunerIndex )
-		#		elif selected == 2 :			
-		#			self.mCommander.Motorized_SetWestLimit( self.tunerIndex )
-		#	return
-		#
-		# Store Position
-		#elif groupId == E_Input06 :
-		#	self.OpenBusyDialog( )
-		#	self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-		#	time.sleep( 0.5 )
-		#	self.CloseBusyDialog( )
-		#	return
-
 
 		elif groupId == E_Input07 :
 	 		if self.mTransponderList :
@@ -340,9 +302,9 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Select the desired satellite whose signal is to be received by the tuner' ) )
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mCurrentSatellite.mLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
 
-		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+		if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ), MR_LANG( 'Select the LNB frequency to the LNB you are using' ) )
 		else :
 			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
@@ -371,7 +333,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )
 		self.AddInputControl( E_Input07, MR_LANG( 'Start Channel Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
-		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+		if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_SINGLE :
 			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input03, E_Input04, E_Input07 ]			
 			hideControlIds = [ E_Input02, E_Input05, E_Input06 ]
@@ -401,7 +363,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 	def DisableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if self.mCurrentSatellite.mLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 		else :
 			self.SetEnableControls( enableControlIds, True )
@@ -420,7 +382,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		context = []
 		if aGroupId == E_Input01 :
 			context.append( ContextItem( MR_LANG( 'Edit Satellite Name' ), CONTEXT_EDIT_SATELLITE_NAME ) )
-			#context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
 		elif aGroupId == E_Input03 :
 			context.append( ContextItem( MR_LANG( 'Add Transponder' ), CONTEXT_ADD_TRANSPONDER ) )
 			if self.mTransponderList :
@@ -448,32 +409,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 				self.mCommander.Satellite_ChangeName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, kb.getText( ) )
 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
-
-		elif aContextAction == CONTEXT_EDIT_LONGITUDE :
-			context = []
-			context.append( ContextItem( MR_LANG( 'Longitude Direction : East' ), CONTEXT_LONGITUDE_EAST ) )
-			context.append( ContextItem( MR_LANG( 'Longitude Direction : West' ), CONTEXT_LONGITUDE_WEST ) )
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
-			dialog.doModal( )
-
-			contextAction = dialog.GetSelectedAction( )
-			if contextAction != -1 :
-				direction = contextAction
-			
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
-				dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mCurrentSatellite.mSatelliteLongitude )
-				dialog.doModal( )
-
-				if dialog.IsOK() == E_DIALOG_STATE_YES :
-					#self.mCurrentSatellite.mSatelliteLongitude = dialog.GetNumber( )
-					tmpval = dialog.GetNumber( )
-					if direction == CONTEXT_LONGITUDE_WEST :
-						#self.mCurrentSatellite.mSatelliteLongitude += 1800
-						tmpval += 1800
-					#self.InitConfig( )
-					print 'dhkim test edited longitude = %s' % tmpval
 
 		elif aContextAction == CONTEXT_ADD_TRANSPONDER :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )

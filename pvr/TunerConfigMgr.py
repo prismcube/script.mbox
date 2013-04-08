@@ -116,23 +116,30 @@ class TunerConfigMgr( object ) :
 
 
 	def AddConfiguredSatellite( self, aIndex ) :
-		config = self.GetDefaultConfig( )
-		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
-		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
-
+		config = self.GetMakedConfiguredSatellite( aIndex )
 		tmpTunerConfiguredList = self.GetConfiguredSatelliteList( )
 		tmpTunerConfiguredList.append( config )
 
 
-	def GetDefaultConfig( self ) :
+	def GetMakedConfiguredSatellite( self, aIndex ) :
 		config = ElisISatelliteConfig( )
 		config.reset( )
-		config.mSatelliteLongitude = self.mAllSatelliteList[0].mLongitude
-		config.mBandType = self.mAllSatelliteList[0].mBand
+		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
+		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
 		config.mIsConfigUsed = 1
-		config.mLowLNB = 9750
-		config.mHighLNB = 10600
-		config.mLNBThreshold = 11700
+		config.mUSALSLongitude = 0
+
+		if config.mBandType == ElisEnum.E_BAND_C :
+			config.mLnbType = ElisEnum.E_LNB_SINGLE
+			config.mLowLNB = 5150
+			config.mHighLNB = 0
+			config.mLNBThreshold = 0
+		else :
+			config.mLnbType = ElisEnum.E_LNB_UNIVERSAL
+			config.mLowLNB = 9750
+			config.mHighLNB = 10600
+			config.mLNBThreshold = 11700
+
 		return config
 
 
