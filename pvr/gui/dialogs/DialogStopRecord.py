@@ -85,6 +85,8 @@ class DialogStopRecord( BaseDialog ) :
 		self.mEventBus.Register( self )
 		self.setProperty( 'DialogDrawFinished', 'True' )
 
+		self.setFocusId( BUTTON_ID_RECORD_1 )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
