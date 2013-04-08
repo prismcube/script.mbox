@@ -626,7 +626,7 @@ Search for window name
 		<!-- *********** E_ChannelList ********** -->	
 		<control type="group" id="1300000">
 			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
+			<!--<animation effect="fade" start="0" end="100" time="300">Visible</animation>-->
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
 			<control type="group">
@@ -2880,7 +2880,7 @@ Search for window name
 
 		<!-- *********** E_Archive ********** -->
 		<control type="group" id="3300000">
-			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
+			<!--<animation effect="fade" start="0" end="100" time="300">Visible</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 			<defaultcontrol always="true">3309003</defaultcontrol>
 			<control type="image">
@@ -3635,7 +3635,7 @@ Search for window name
 		<!-- *********** E_EPG *********** or *********** E_EPG_SEARCH *********** -->
 		<control type="group" id="3709999">
 			<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
-			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
+			<!--<animation effect="fade" start="0" end="100" time="300">Visible</animation>-->
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
