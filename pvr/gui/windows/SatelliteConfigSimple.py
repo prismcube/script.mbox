@@ -532,7 +532,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 		elif aContextAction == CONTEXT_DELETE_TRANSPONDER :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete transponder' ), MR_LANG( 'Are you sure you want to remove\nthis transponder?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

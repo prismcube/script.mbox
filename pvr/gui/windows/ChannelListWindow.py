@@ -491,9 +491,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		#ask save question
 		head = MR_LANG( 'Delete all channels' )
-		line1 = MR_LANG( 'Are you sure you want to remove\nall your TV and radio channels?' )
+		line1 = MR_LANG( 'Are you sure you want to remove%s all your TV and radio channels?' )% NEW_LINE
 		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			line1 = MR_LANG( 'Are you sure you want to remove\nall channels from this favorite group?' )
+			line1 = MR_LANG( 'Are you sure you want to remove%s all channels from this favorite group?' )% NEW_LINE
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -2155,7 +2155,7 @@ class ChannelListWindow( BaseWindow ) :
 			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			if aGroupName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove\n%s?' ) % aGroupName )
+				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % NEW_LINE, aGroupName )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2270,7 +2270,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			LOG_TRACE('isRec[%s] isTimer[%s]'% (isIncludeRec, isIncludeTimer) )
 			if isIncludeRec or isIncludeTimer :
-				msg = MR_LANG( 'Are you sure you want to delete the channels\nincluding currently recording or reserved?' )
+				msg = MR_LANG( 'Are you sure you want to delete the channels%s including currently recording or reserved?' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Delete channels' ), msg )
 				dialog.doModal( )
@@ -2488,7 +2488,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove\n%s?' ) % groupName )
+				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % NEW_LINE,  groupName )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2687,7 +2687,7 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed'% NEW_LINE )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )	

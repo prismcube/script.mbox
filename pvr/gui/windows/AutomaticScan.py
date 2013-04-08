@@ -39,7 +39,7 @@ class AutomaticScan( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make sure your antenna is properly set up' ) )
 			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Go to the antenna setup page now?' ), MR_LANG( 'To receive a strong satellite signal,\n add satellites and set LNB parameters correctly' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the antenna setup page now?' ), MR_LANG( 'To receive a strong satellite signal,%s add satellites and set LNB parameters correctly' )% NEW_LINE )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )

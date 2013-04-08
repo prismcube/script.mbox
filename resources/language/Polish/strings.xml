@@ -1089,4 +1089,22 @@
 	<string id="3673">POL_North</string>
 	<string id="3674">POL_South</string>
 	<string id="3675">POL_Go to the channel search setup page</string>
+	<string id="3676">POL_Are you sure you want to remove%s all your bookmarks?</string>
+	<string id="3677">POL_TV channels : %d %sRadio channels : %d</string>
+	<string id="3678">POL_You have reached the maximum number of%s recordings allowed</string>
+	<string id="3679">POL_Make media length longer than 30 secs%s to create a chapter</string>
+	<string id="3680">POL_Edit Satellite Longitude</string>
+	<string id="3681">POL_Restore longitude</string>
+	<string id="3682">POL_Are you sure you want to remove%s this transponder?</string>
+	<string id="3683">POL_When you perform a factory reset,%s all your settings revert to factory defaults</string>
+	<string id="3684">POL_Are you sure you want to remove%s all your TV and radio channels?</string>
+	<string id="3685">POL_Are you sure you want to remove%s all channels from this favorite group?</string>
+	<string id="3686">POL_Are you sure you want to remove%s%s?</string>
+	<string id="3687">POL_Are you sure you want to delete the channels%s including currently recording or reserved?</string>
+	<string id="3688">POL_Are you sure you want to delete%s all your recorded files?</string>
+	<string id="3689">POL_To backup your user data and XBMC add-ons,%s insert a USB flash memory</string>
+	<string id="3690">POL_To receive a strong satellite signal,%s add satellites and set LNB parameters correctly</string>
+	<string id="3691">POL_Same satellite already exists</string>
+	<string id="3692">POL_Are you sure you want to remove%s this satellite?</string>
+	<string id="3693">POL_Try again after stopping playback, recordings%s and timeshift</string>
 </strings>

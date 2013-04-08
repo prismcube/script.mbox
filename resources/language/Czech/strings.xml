@@ -1089,4 +1089,22 @@
 	<string id="3673">CZE_North</string>
 	<string id="3674">CZE_South</string>
 	<string id="3675">CZE_Go to the channel search setup page</string>
+	<string id="3676">CZE_Are you sure you want to remove%s all your bookmarks?</string>
+	<string id="3677">CZE_TV channels : %d %sRadio channels : %d</string>
+	<string id="3678">CZE_You have reached the maximum number of%s recordings allowed</string>
+	<string id="3679">CZE_Make media length longer than 30 secs%s to create a chapter</string>
+	<string id="3680">CZE_Edit Satellite Longitude</string>
+	<string id="3681">CZE_Restore longitude</string>
+	<string id="3682">CZE_Are you sure you want to remove%s this transponder?</string>
+	<string id="3683">CZE_When you perform a factory reset,%s all your settings revert to factory defaults</string>
+	<string id="3684">CZE_Are you sure you want to remove%s all your TV and radio channels?</string>
+	<string id="3685">CZE_Are you sure you want to remove%s all channels from this favorite group?</string>
+	<string id="3686">CZE_Are you sure you want to remove%s%s?</string>
+	<string id="3687">CZE_Are you sure you want to delete the channels%s including currently recording or reserved?</string>
+	<string id="3688">CZE_Are you sure you want to delete%s all your recorded files?</string>
+	<string id="3689">CZE_To backup your user data and XBMC add-ons,%s insert a USB flash memory</string>
+	<string id="3690">CZE_To receive a strong satellite signal,%s add satellites and set LNB parameters correctly</string>
+	<string id="3691">CZE_Same satellite already exists</string>
+	<string id="3692">CZE_Are you sure you want to remove%s this satellite?</string>
+	<string id="3693">CZE_Try again after stopping playback, recordings%s and timeshift</string>
 </strings>

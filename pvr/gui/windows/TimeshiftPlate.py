@@ -430,7 +430,7 @@ class TimeShiftPlate( BaseWindow ) :
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE )
 				dialog.doModal( )
 
 			if isOK :
@@ -1246,7 +1246,7 @@ class TimeShiftPlate( BaseWindow ) :
 		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
 		if ( mediaTime / 1000 ) < 30 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs\nto create a chapter' ) )###daniel
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs%s to create a chapter' )% NEW_LINE )
  			dialog.doModal( )
 			return
 

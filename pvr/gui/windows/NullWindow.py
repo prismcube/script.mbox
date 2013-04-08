@@ -629,7 +629,7 @@ class NullWindow( BaseWindow ) :
 
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
@@ -699,7 +699,7 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )

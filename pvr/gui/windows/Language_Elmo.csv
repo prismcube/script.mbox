@@ -1088,3 +1088,21 @@
 "North";;;;;;;;;"Север";3673
 "South";;;;;;;;;"Юг";3674
 "Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";3675
+"Are you sure you want to remove%s all your bookmarks?";;;;;;;;;;3676
+"TV channels : %d %sRadio channels : %d";;;;;;;;;;3677
+"You have reached the maximum number of%s recordings allowed";;;;;;;;;;3678
+"Make media length longer than 30 secs%s to create a chapter";;;;;;;;;;3679
+"Edit Satellite Longitude";;;;;;;;;;3680
+"Restore longitude";;;;;;;;;;3681
+"Are you sure you want to remove%s this transponder?";;;;;;;;;;3682
+"When you perform a factory reset,%s all your settings revert to factory defaults";;;;;;;;;;3683
+"Are you sure you want to remove%s all your TV and radio channels?";;;;;;;;;;3684
+"Are you sure you want to remove%s all channels from this favorite group?";;;;;;;;;;3685
+"Are you sure you want to remove%s%s?";;;;;;;;;;3686
+"Are you sure you want to delete the channels%s including currently recording or reserved?";;;;;;;;;;3687
+"Are you sure you want to delete%s all your recorded files?";;;;;;;;;;3688
+"To backup your user data and XBMC add-ons,%s insert a USB flash memory";;;;;;;;;;3689
+"To receive a strong satellite signal,%s add satellites and set LNB parameters correctly";;;;;;;;;;3690
+"Same satellite already exists";;;;;;;;;;3691
+"Are you sure you want to remove%s this satellite?";;;;;;;;;;3692
+"Try again after stopping playback, recordings%s and timeshift";;;;;;;;;;3693

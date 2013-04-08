@@ -266,7 +266,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def ShowResult( self ) :
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
-		searchResult = MR_LANG( 'TV channels : %d \nRadio channels : %d' ) % ( tvCount, radioCount )
+		searchResult = MR_LANG( 'TV channels : %d %sRadio channels : %d' ) % ( tvCount, NEW_LINE, radioCount )
 
 		try :
 			self.mAbortDialog.close( )

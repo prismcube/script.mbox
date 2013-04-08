@@ -1093,4 +1093,22 @@
 	<string id="3673">North</string>
 	<string id="3674">South</string>
 	<string id="3675">Go to the channel search setup page</string>
+	<string id="3676">Are you sure you want to remove%s all your bookmarks?</string>
+	<string id="3677">TV channels : %d %sRadio channels : %d</string>
+	<string id="3678">You have reached the maximum number of%s recordings allowed</string>
+	<string id="3679">Make media length longer than 30 secs%s to create a chapter</string>
+	<string id="3680">Edit Satellite Longitude</string>
+	<string id="3681">Restore longitude</string>
+	<string id="3682">Are you sure you want to remove%s this transponder?</string>
+	<string id="3683">When you perform a factory reset,%s all your settings revert to factory defaults</string>
+	<string id="3684">Are you sure you want to remove%s all your TV and radio channels?</string>
+	<string id="3685">Are you sure you want to remove%s all channels from this favorite group?</string>
+	<string id="3686">Are you sure you want to remove%s%s?</string>
+	<string id="3687">Are you sure you want to delete the channels%s including currently recording or reserved?</string>
+	<string id="3688">Are you sure you want to delete%s all your recorded files?</string>
+	<string id="3689">To backup your user data and XBMC add-ons,%s insert a USB flash memory</string>
+	<string id="3690">To receive a strong satellite signal,%s add satellites and set LNB parameters correctly</string>
+	<string id="3691">Same satellite already exists</string>
+	<string id="3692">Are you sure you want to remove%s this satellite?</string>
+	<string id="3693">Try again after stopping playback, recordings%s and timeshift</string>
 </strings>

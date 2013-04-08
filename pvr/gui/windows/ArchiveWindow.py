@@ -802,7 +802,7 @@ class ArchiveWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all your files' ), MR_LANG( 'Are you sure you want to delete\nall your recorded files?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all your files' ), MR_LANG( 'Are you sure you want to delete%s all your recorded files?' )% NEW_LINE )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
