@@ -231,11 +231,11 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				if self.mIsShowDialog == False :
-					thread = threading.Timer( 0.1, self.SetAsyncChannelJumpByInput, [aKey] )
+					thread = threading.Timer( 0.1, self.AsyncTuneChannelByInput, [aKey] )
 					thread.start( )
 
 			else :
-				thread = threading.Timer( 0.1, self.SetAsyncTimeshiftJumpByInput, [aKey] )
+				thread = threading.Timer( 0.1, self.AsyncTimeshiftJumpByInput, [aKey] )
 				thread.start( )
 
 		elif actionId == Action.ACTION_STOP :
@@ -893,7 +893,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannelByPrevious )
 		self.mAsyncTuneTimer.start( )
 
 
@@ -905,7 +905,7 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer  = None
 
 
-	def AsyncTuneChannel( self ) :
+	def AsyncTuneChannelByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 
 		if self.mLoopCount > 10 :
@@ -921,9 +921,9 @@ class NullWindow( BaseWindow ) :
 			dialog.SetPreviousBlocking( True )
 			dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
 			dialog.doModal( )
+			self.mIsShowDialog = False
 			isSelect = dialog.GetSelectedList( )
 
-			self.mIsShowDialog = False
 			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
 			self.CheckSubTitle( )
 
@@ -935,12 +935,12 @@ class NullWindow( BaseWindow ) :
 			self.mDataCache.Channel_SetCurrentByOld( oldChannel )
 
 		else :
-			self.SetAsyncChannelJumpByInput( oldChannel.mNumber )
+			self.AsyncTuneChannelByInput( oldChannel.mNumber )
 
 		self.mLoopCount = 0
 
 
-	def SetAsyncChannelJumpByInput( self, aNumber ) :
+	def AsyncTuneChannelByInput( self, aNumber ) :
 		self.CloseSubTitle( )
 		self.mIsShowDialog = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
@@ -960,7 +960,7 @@ class NullWindow( BaseWindow ) :
 					self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 
-	def SetAsyncTimeshiftJumpByInput( self, aKey ) :
+	def AsyncTimeshiftJumpByInput( self, aKey ) :
 		self.CloseSubTitle( )			
 		self.mIsShowDialog = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )

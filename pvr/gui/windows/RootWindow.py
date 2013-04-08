@@ -63,11 +63,11 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def onAction( self, aAction ) :
-		LOG_TRACE( '=========== ROOT ============= action=%d' %aAction.getId( ) )
-		LOG_TRACE( '=========== ROOT ============= getfocus=%d' %self.getFocusId( ) )		
+		#LOG_TRACE( '=========== ROOT ============= action=%d' %aAction.getId( ) )
+		#LOG_TRACE( '=========== ROOT ============= getfocus=%d' %self.getFocusId( ) )
 
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
+			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
