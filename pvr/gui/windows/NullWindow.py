@@ -921,9 +921,9 @@ class NullWindow( BaseWindow ) :
 			dialog.SetPreviousBlocking( True )
 			dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
 			dialog.doModal( )
-			self.mIsShowDialog = False
 			isSelect = dialog.GetSelectedList( )
 
+			self.mIsShowDialog = False
 			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
 			self.CheckSubTitle( )
 
