@@ -28,7 +28,7 @@ class NullWindow( BaseWindow ) :
 
 	def onInit( self ) :
 		self.mLoopCount = 0
-		self.mEnableBlickingTimer = False				
+		self.mEnableBlickingTimer = False
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
@@ -157,8 +157,10 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mLoopCount <= 10 :
-					self.RestartAsyncTune( )
+				pass
+				#ToDO : tunning
+				#if self.mLoopCount <= 5 :
+				#	self.RestartAsyncTune( )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
@@ -908,7 +910,7 @@ class NullWindow( BaseWindow ) :
 	def AsyncTuneChannelByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 
-		if self.mLoopCount > 10 :
+		if self.mLoopCount > 5 :
 			channelList = self.mDataCache.Channel_GetOldChannelList( )
 			if not channelList or len( channelList ) < 1 :
 				self.mLoopCount = 0
