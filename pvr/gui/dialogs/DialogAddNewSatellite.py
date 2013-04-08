@@ -17,12 +17,14 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 
 	def onInit( self ) :
+		self.setProperty( 'DialogDrawFinished', 'False' )
 		self.mLongitude = 0
 		self.SetHeaderLabel( MR_LANG( 'Add satellite' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 		
 	def onAction( self, aAction ) :

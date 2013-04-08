@@ -12,12 +12,16 @@ class DialogLnbFrequency( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+
+		self.setProperty( 'DialogDrawFinished', 'False' )
 		
 		self.SetHeaderLabel( MR_LANG( 'LNB Frequency' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

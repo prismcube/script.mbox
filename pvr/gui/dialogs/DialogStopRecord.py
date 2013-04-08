@@ -38,6 +38,8 @@ class DialogStopRecord( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.mCtrlRecordGroup = {}
 		self.mCtrlChannelName = {}
 		self.mCtrlRecordName = {}
@@ -67,7 +69,7 @@ class DialogStopRecord( BaseDialog ) :
 
 
 			if self.mBackgroundHeight <  0 :
-				self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
+				self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight( )
 
 			self.SetHeaderLabel( MR_LANG( 'Stop Recording' ) )
 
@@ -81,6 +83,7 @@ class DialogStopRecord( BaseDialog ) :
 		self.mEnableThread = True
 		self.mRecordingProgressThread = self.RecordingProgressThread( )
 		self.mEventBus.Register( self )
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

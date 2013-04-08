@@ -32,6 +32,8 @@ class DialogMoveAntenna( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
 		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Store Position' ) ]
@@ -66,6 +68,8 @@ class DialogMoveAntenna( BaseDialog ) :
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
 
 		self.setFocusId( DIALOG_LIST_ID )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

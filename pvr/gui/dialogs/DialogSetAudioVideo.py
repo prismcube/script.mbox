@@ -21,11 +21,15 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		self.InitProperty( )
 		self.SetHeaderLabel( self.mDialogTitle )
 		self.DrawItem( )
 		self.mIsOk = False
 		self.mEventBus.Register( self )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

@@ -28,6 +28,8 @@ class DialogContext( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mEventBus.Register( self )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
 
@@ -59,6 +61,8 @@ class DialogContext( BaseDialog ) :
 
 		self.mSelectedIndex = -1
 		self.setFocusId( DIALOG_LIST_ID )
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 
 
 	def onAction( self, aAction ) :

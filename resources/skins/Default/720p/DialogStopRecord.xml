@@ -4,6 +4,7 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>335</posx>
 			<posy>90</posy>
             <!--include>DefaultDialogCloseEffect</include-->
@@ -21,7 +22,8 @@
 			</control>
 		</control>
 
-		<control type="grouplist" id="9000">		
+		<control type="grouplist" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<onleft>9000</onleft>
 			<itemgap>0</itemgap>
 			<posx>365</posx>
@@ -189,7 +191,6 @@
 				</control>
 			</control>
 		</control>
-		
 	</controls>
 </window>
 
