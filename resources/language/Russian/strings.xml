@@ -87,7 +87,6 @@
 	<string id="1085">Вывод детальной информации о состоянии системы</string>
 	<string id="1086">Управление мультимедийным контентом</string>
 	<string id="1087">Check your PRISMCUBE RUBY info at a glance</string>
-	<string id="1088">Go Parent</string>
 	<string id="1089">Выбор Действия</string>
 	<string id="1090">Для других разделов меню нажать i</string>
 	<string id="1091">Пред</string>
@@ -676,7 +675,7 @@
 	<string id="3259">Пароль должен содержать 4 цифры</string>
 	<string id="3260">Извините, пароль не совпадает</string>
 	<string id="3261">Нет ТВ Гида</string>
-	<string id="3262">RUS_Select listy of previous channels</string>
+	<string id="3262">RUS_Recent channels</string>
 	<string id="3263">DiSEqC 1.0 Переключатель</string>
 	<string id="3264">Задайте соответствиующие настройки DISEqC переключателя для спутника</string>
 	<string id="3265">Тюнер %d Конфигурация : %s</string>
@@ -756,7 +755,7 @@
 	<string id="3339">Задать дополнительные настройки приставки OPENBOX</string>
 	<string id="3340">Выбор Языка Меню</string>
 	<string id="3341">Изменить Язык</string>
-	<string id="3342">Это может занять несколько минут</string>
+	<string id="3342">RUS_Do you want to continue?</string>
 	<string id="3343">пожалуйста подождите после нажатия кнопки ОК</string>
 	<string id="3344">Нет поддержки Win32</string>
 	<string id="3345">Извините, введен неверный пароль</string>

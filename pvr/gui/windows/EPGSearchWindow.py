@@ -58,7 +58,7 @@ class EPGSearchWindow( BaseWindow ) :
 		self.SetSingleWindowPosition( E_EPG_SEARC_BASE_ID )
 		self.SetPipScreen( )
 
-		self.mCtrlEPGMode.setLabel( '%s' %MR_LANG( 'Go Parent' ) )				
+		self.mCtrlEPGMode.setLabel( '%s' %MR_LANG( 'Go Back' ) )
 		
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
@@ -399,7 +399,7 @@ class EPGSearchWindow( BaseWindow ) :
 		context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 
 		if selectedEPG  :		
-			context.append( ContextItem( MR_LANG( 'Extend infomation' ), CONTEXT_EXTEND_INFOMATION ) )		
+			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )

@@ -15,7 +15,7 @@
 	<string id="1013">FRE_Order : Ascending</string>
 	<string id="1014">Verrouillé</string>
 	<string id="1015">FRE_Select Channel List</string>
-	<string id="1016">FRE_No EPG Infomation</string>
+	<string id="1016">FRE_No EPG Information</string>
 	<string id="1017">FRE_Search Results</string>
 	<string id="1018">Chaînes TV</string>
 	<string id="1019">Chaînes Radio</string>
@@ -87,7 +87,6 @@
 	<string id="1085">FRE_Display detailed information about your system status</string>
 	<string id="1086">FRE_Manage all your multimedia content</string>
 	<string id="1087">FRE_Check your PRISMCUBE RUBY info at a glance</string>
-	<string id="1088">FRE_Go Parent</string>
 	<string id="1089">FRE_Select Action</string>
 	<string id="1090">FRE_To see all the other menus, press i button</string>
 	<string id="1091">Précédent</string>
@@ -676,7 +675,7 @@
 	<string id="3259">FRE_The PIN code must be 4-digit long</string>
 	<string id="3260">FRE_Sorry, that PIN code does not match</string>
 	<string id="3261">FRE_EPG None</string>
-	<string id="3262">FRE_Select listy of previous channels</string>
+	<string id="3262">FRE_Recent channels</string>
 	<string id="3263">Commutateur DiSEqC 1.0</string>
 	<string id="3264">FRE_Select the DiSEqC switch which your satellite is connected to</string>
 	<string id="3265">FRE_Tuner %d Config : %s</string>
@@ -705,7 +704,7 @@
 	<string id="3288">FRE_Add manual timer</string>
 	<string id="3289">FRE_Delete all timers</string>
 	<string id="3290">FRE_Show all timers</string>
-	<string id="3291">FRE_Extend infomation</string>
+	<string id="3291">FRE_Extend information</string>
 	<string id="3292">FRE_Are you sure you want to remove this timer?</string>
 	<string id="3293">FRE_Are you sure you want to remove all your timers?</string>
 	<string id="3294">FRE_Enter search keywords here</string>
@@ -756,7 +755,7 @@
 	<string id="3339">FRE_Change additional settings for PRISMCUBE RUBY</string>
 	<string id="3340">FRE_Select Menu Language</string>
 	<string id="3341">FRE_Change Language</string>
-	<string id="3342">FRE_It may take several minutes to complete</string>
+	<string id="3342">FRE_Do you want to continue?</string>
 	<string id="3343">FRE_please wait after pressing OK button</string>
 	<string id="3344">FRE_Not support Win32</string>
 	<string id="3345">FRE_Sorry, that's an incorrect PIN code</string>

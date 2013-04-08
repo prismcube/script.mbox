@@ -432,7 +432,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
-				xbmcgui.Dialog( ).ok('Infomation', msg )
+				xbmcgui.Dialog( ).ok('Information', msg )
 				
 		
 		elif actionId == Action.REMOTE_4:  #TEST : stop Record
@@ -944,7 +944,7 @@ class NullWindow( BaseWindow ) :
 			#isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 			dialog.SetPreviousBlocking( True )
-			dialog.SetDefaultProperty( MR_LANG( 'Select listy of previous channels' ), channelList, True, False  )
+			dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
 			dialog.doModal( )
 			isSelect = dialog.GetSelectedList( )
 
