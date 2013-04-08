@@ -302,7 +302,6 @@ class InfoPlate( LivePlateWindow ) :
 				self.mEnableCasInfo = False
 				if rec.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
-					"""
 					casInfo = HasCasInfoByChannel( rec )
 					if casInfo and len( casInfo ) > 1 :
 						self.mEnableCasInfo = True
@@ -313,7 +312,6 @@ class InfoPlate( LivePlateWindow ) :
 
 					else :
 						self.UpdatePropertyGUI( 'iCasInfo', '' )
-					"""
 
 
 				#record name
