@@ -1,4 +1,4 @@
-import os, sys, time
+import os, sys, time, threading
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -331,6 +331,8 @@ def XBMC_SetCurrentLanguage( aLanguage ) :
 	ResetHash( )
 
 	LOG_TRACE( 'aLanguage=%s' %aLanguage )
+	oldLanguage = xbmc.getLanguage()
+	newLanguage = aLanguage
 	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 		LOG_TRACE( '' )
 		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
@@ -338,6 +340,25 @@ def XBMC_SetCurrentLanguage( aLanguage ) :
 		LOG_TRACE( '' )	
 		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )		
 		#xbmc.setLanguage( aLanguage )
+
+	checkLanguage = threading.Timer( 0.5, XBMC_CheckChangeLanguage, [newLanguage] )
+	checkLanguage.start( )
+
+
+def XBMC_CheckChangeLanguage( aNewLanguage ) :
+	from pvr.gui.GuiConfig import *
+	maxTime = 15
+	loopTime = 0
+	inteval = 1
+
+	while loopTime < maxTime :
+		time.sleep( inteval )
+		loopTime += inteval
+		#LOG_TRACE('----------checking language....[%s]'% loopTime )
+		if XBMC_GetCurrentLanguage( ) == aNewLanguage :
+			break
+
+	InitTranslateByEnumList( )
 
 
 def XBMC_SetLocalOffset( aLocalOffset ) :

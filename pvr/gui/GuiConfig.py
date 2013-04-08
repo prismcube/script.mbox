@@ -236,6 +236,32 @@ E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
 
+
+def InitTranslateByEnumList( ) :
+	global USER_ENUM_LIST_ON_OFF, USER_ENUM_LIST_YES_NO, USER_ENUM_LIST_DHCP_STATIC, USER_ENUM_LIST_NETWORK_TYPE, USER_ENUM_LIST_VIDEO_OUTPUT
+	global USER_ENUM_LIST_SEARCH_RANGE, E_LIST_LNB_TYPE, E_LIST_MOTORIZE_ACTION, E_LIST_MY_LONGITUDE, E_LIST_MY_LATITUDE
+
+	InitializedByVariableList( USER_ENUM_LIST_ON_OFF, MR_LANG( 'Off' ), MR_LANG( 'On' ) )
+	InitializedByVariableList( USER_ENUM_LIST_YES_NO, MR_LANG( 'No' ), MR_LANG( 'Yes' ) )
+	InitializedByVariableList( USER_ENUM_LIST_DHCP_STATIC, MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) )
+	InitializedByVariableList( USER_ENUM_LIST_NETWORK_TYPE, MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) )
+	InitializedByVariableList( USER_ENUM_LIST_VIDEO_OUTPUT, MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) )
+	InitializedByVariableList( USER_ENUM_LIST_SEARCH_RANGE, MR_LANG( 'Current Transponder Only' ), MR_LANG( 'All Transponders' ) )
+	InitializedByVariableList( E_LIST_LNB_TYPE, MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) )
+	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set Current Position as East Limit' ), MR_LANG( 'Set Current Position as West Limit' ) )
+	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
+	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
+	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )
+
+
+def InitializedByVariableList( aList, *Value ) :
+	if not Value or len( Value ) < 1 :
+		return
+
+	for idx in range( len( Value ) ) :
+		aList[idx] = Value[idx]
+
+
 ############################ Dialog ############################
 
 G_DIALOG_HEADER_LABEL_ID			= E_BASE_WINDOW_ID + 3005

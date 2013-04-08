@@ -17,7 +17,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-				if self.mInitialized == False :			
+				if self.mInitialized == False :
 					self.CheckFirstRun( )
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
