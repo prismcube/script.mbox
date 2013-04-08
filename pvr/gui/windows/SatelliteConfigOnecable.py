@@ -16,6 +16,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
@@ -50,6 +51,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.SetFTIGuiType( )
 		self.mInitialized = True
 		self.SetDefaultControl( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 
 	def onAction( self, aAction ) :

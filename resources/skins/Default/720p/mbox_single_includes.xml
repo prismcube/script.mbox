@@ -607,12 +607,12 @@
 	</include>
 
 	<include name="DefaultDialogOpenEffect">
-		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-		<animation effect="fade" time="300">WindowOpen</animation>
+		<!--<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
+		<animation effect="fade" time="300">WindowOpen</animation>-->
 	</include>
 
 	<include name="DefaultDialogCloseEffect">
-		<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
+		<!--<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>-->
 	</include>
 
 	<!--
@@ -6116,7 +6116,7 @@
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="1003851">
-			<posx>580</posx>
+			<posx>590</posx>
 			<posy>80</posy>
 			<width>25</width>
 			<height>521</height>

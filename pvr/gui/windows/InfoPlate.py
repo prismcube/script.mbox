@@ -86,7 +86,8 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None
-		self.mAutomaticHideTimer = None
+		self.mEnableCasInfo = False
+		self.mIsShowDialog = False
 		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 
 		#get channel
@@ -102,8 +103,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
 
-		if self.mAutomaticHide == True :
-			self.StartAutomaticHide( )
+		self.RestartAutomaticHide( )
 
 
 	def onAction( self, aAction ) :
@@ -112,14 +112,19 @@ class InfoPlate( LivePlateWindow ) :
 	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
+			self.RestartAutomaticHide( )
 			return
 
 		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.StopAutomaticHide( )
 			self.MoveToSeekFrame( int( actionId ) - Action.REMOTE_0 )
+			self.RestartAutomaticHide( )
 
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			rKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
+			self.StopAutomaticHide( )
 			self.MoveToSeekFrame( rKey )
+			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
@@ -132,14 +137,13 @@ class InfoPlate( LivePlateWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
+			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_STOP :
 			ret = self.mDataCache.Player_Stop( )
@@ -188,10 +192,10 @@ class InfoPlate( LivePlateWindow ) :
 			#ToDo warning msg
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_TELETEXT )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
-			self.ShowDialog( E_CONTROL_ID_BUTTON_SUBTITLE )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
@@ -208,14 +212,11 @@ class InfoPlate( LivePlateWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		self.StopAutomaticHide( )
-		self.SetAutomaticHide( False )
-	
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE )
 
 		elif aControlId >= E_CONTROL_ID_BUTTON_DESCRIPTION_INFO and aControlId <= E_CONTROL_ID_BUTTON_BOOKMARK :
-			self.ShowDialog( aControlId )
+			self.DialogPopup( aControlId )
 
 
 	def onFocus( self, aControlId ) :
@@ -298,8 +299,21 @@ class InfoPlate( LivePlateWindow ) :
 				if rec.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
 
-				#if rec.mIsCA :
-				#	self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
+				self.mEnableCasInfo = False
+				if rec.mIsCA :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
+					"""
+					casInfo = HasCasInfoByChannel( rec )
+					if casInfo and len( casInfo ) > 1 :
+						self.mEnableCasInfo = True
+						self.ShowCasInfoThread( casInfo )
+
+					elif casInfo and len( casInfo ) == 1 :
+						self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
+
+					else :
+						self.UpdatePropertyGUI( 'iCasInfo', '' )
+					"""
 
 
 				#record name
@@ -322,6 +336,23 @@ class InfoPlate( LivePlateWindow ) :
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	@RunThread
+	def ShowCasInfoThread( self, aCasInfo ) :
+		while self.mEnableCasInfo :
+			for item in aCasInfo :
+				self.UpdatePropertyGUI( 'iCasInfo', item )
+
+				loopCount = 0
+				while loopCount < 3 :
+					if not self.mEnableCasInfo :
+						break
+					loopCount += 0.5
+					time.sleep( 0.5 )
+
+			time.sleep( 0.5 )
+		self.UpdatePropertyGUI( 'iCasInfo', '' )
 
 
 	@RunThread
@@ -391,6 +422,8 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.mEnableCasInfo = False
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -436,12 +469,25 @@ class InfoPlate( LivePlateWindow ) :
 		self.setProperty( aPropertyID, aValue )
 
 
+	def DialogPopup( self, aFocusId ) :
+		if self.mIsShowDialog == False :
+			thread = threading.Timer( 0.1, self.ShowDialog, [aFocusId] )
+			thread.start( )
+		else :
+			LOG_TRACE( 'Already opened, Dialog' )
+
+
 	def ShowDialog( self, aFocusId ) :
+		self.mIsShowDialog = True
+		self.StopAutomaticHide( )
+
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				self.mIsShowDialog = False
+				self.RestartAutomaticHide( )
 				return
 
 			if not self.mDataCache.Teletext_Show( ) :
@@ -449,6 +495,7 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
+				self.mIsShowDialog = False
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
 				return
@@ -458,10 +505,13 @@ class InfoPlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				self.mIsShowDialog = False
+				self.RestartAutomaticHide( )
 				return
 
 			ret = ShowSubtitle( )
 			if ret > -1 :
+				self.mIsShowDialog = False
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				return
@@ -475,6 +525,8 @@ class InfoPlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				self.mIsShowDialog = False
+				self.RestartAutomaticHide( )
 				return
 
 			self.BookMarkContext( )
@@ -486,6 +538,9 @@ class InfoPlate( LivePlateWindow ) :
 			self.mEventBus.Deregister( self )
 			self.AudioVideoContext( )
 			self.mEventBus.Register( self )
+
+		self.RestartAutomaticHide( )
+		self.mIsShowDialog = False
 
 
 	def BookMarkContext( self ) :
@@ -629,6 +684,7 @@ class InfoPlate( LivePlateWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+		self.mEnableCasInfo = False
 
 		self.StopAutomaticHide( )
 		#WinMgr.GetInstance( ).CloseWindow( )
@@ -645,7 +701,8 @@ class InfoPlate( LivePlateWindow ) :
 	def AsyncAutomaticHide( self ) :
 		#LOG_TRACE('DO WinId=%s'% xbmcgui.getCurrentWindowId( ) )
 		#LOG_TRACE('DO DlgWinId=%s'% xbmcgui.getCurrentWindowDialogId( ) )
-		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		if self.mAutomaticHide == True :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 		#self.Close( )
 
 

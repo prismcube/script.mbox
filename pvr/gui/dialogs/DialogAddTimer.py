@@ -23,12 +23,16 @@ class DialogAddTimer( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		#self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
 		self.getControl( DIALOG_HEADER_LABEL ).setLabel( MR_LANG( 'Add Timer' ) )
 
 		self.Reload( )
 		self.mEventBus.Register( self )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 		
 
 	def onAction( self, aAction ) :

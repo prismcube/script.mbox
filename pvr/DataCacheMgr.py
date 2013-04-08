@@ -8,7 +8,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 
 from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG, AsyncShowStatus
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	#from pvr.IpParser import *
@@ -86,7 +86,7 @@ class DataCacheMgr( object ) :
 		self.mChannelList						= None
 		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
-		self.mOldChannel						= None
+		self.mOldChannel						= self.Channel_GetCurrent( True )
 		self.mOldChannelList					= []
 		self.mLocalOffset						= 0
 		self.mLocalTime							= 0
@@ -880,16 +880,63 @@ class DataCacheMgr( object ) :
 		return self.mCurrentChannel
 
 
+	def Channel_SetOldChannel( self, aChannelNumber, aServiceType ) :
+		newChannel = None
+		cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
+		if cacheChannel :
+			newChannel = cacheChannel.mChannel
+
+		if not newChannel or newChannel.mError != 0 :
+			#LOG_TRACE('newChannel None[%s]'% newChannel )
+			return
+
+		currentChannel = self.Channel_GetCurrent( )
+		if currentChannel and currentChannel.mError == 0 :
+			#LOG_TRACE('newChannel[%s %s]'% ( newChannel.mNumber, newChannel.mName ) )
+			if currentChannel.mServiceType != aServiceType or \
+			   currentChannel.mSid != newChannel.mSid or \
+			   currentChannel.mTsid != newChannel.mTsid or \
+			   currentChannel.mOnid != newChannel.mOnid :
+				self.mOldChannel = currentChannel
+				#LOG_TRACE('init oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+
+		else :
+			self.mOldChannel = newChannel
+			#LOG_TRACE('init oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+
+
+	def Channel_SetOldChannelList( self, aServiceType ) :
+		if not self.mOldChannel or self.mOldChannel.mError != 0 :
+			return
+
+		for ch in self.mOldChannelList :
+			if ch.mSid == self.mOldChannel.mSid and \
+			   ch.mTsid == self.mOldChannel.mTsid and \
+			   ch.mOnid == self.mOldChannel.mOnid :
+				self.mOldChannelList.remove( ch )
+				break
+
+		#LOG_TRACE('add oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
+		if aServiceType != self.mOldChannel.mServiceType :
+			return
+
+		self.mOldChannelList.insert( 0, self.mOldChannel )
+		if len( self.mOldChannelList ) > 10 :
+			self.mOldChannelList = self.mOldChannelList[:9]
+			#from pvr.GuiHelper import ClassToList
+			#LOG_TRACE('-------delete 10 over oldList[%s][%s]'% ( len(self.mOldChannelList), ClassToList('convert', self.mOldChannelList ) ) )
+
+
 	def Channel_GetOldChannel( self ) :
 		return self.mOldChannel
 
 
-	def Channel_ResetOldChannelList( self ) :
-		self.mOldChannelList = []
-
-
 	def Channel_GetOldChannelList( self ) :
 		return self.mOldChannelList
+
+
+	def Channel_ResetOldChannelList( self ) :
+		self.mOldChannelList = []
 
 
 	def Channel_GetCurrentByPlaying( self ) :
@@ -900,21 +947,8 @@ class DataCacheMgr( object ) :
 		ret = False
 		self.mCurrentEvent = None
 
-		self.mOldChannel = self.Channel_GetCurrent( )
-		if self.mOldChannel and self.mOldChannel.mError == 0 :
-			addListy = True
-			for ch in self.mOldChannelList :
-				if ch.mSid == self.mOldChannel.mSid and \
-				   ch.mTsid == self.mOldChannel.mTsid and \
-				   ch.mOnid == self.mOldChannel.mOnid :
-					addListy = False
-
-			if addListy :
-				if self.mOldChannelList and len( self.mOldChannelList ) > 10 :
-					self.mOldChannelList.pop( 0 )
-
-				if aServiceType == self.mOldChannel.mServiceType :
-					self.mOldChannelList.append( self.mOldChannel )
+		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
+		self.Channel_SetOldChannelList( aServiceType )
 
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			if aTemporaryHash :
@@ -943,7 +977,10 @@ class DataCacheMgr( object ) :
 	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
 		ret = False
 		self.mCurrentEvent = None
-		self.mOldChannel = self.Channel_GetCurrent( )
+
+		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
+		self.Channel_SetOldChannelList( aServiceType )
+
 		if self.mCommander.Channel_SetCurrentAsync( aChannelNumber, aServiceType, 0 ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
 			if cacheChannel :		
@@ -1534,7 +1571,7 @@ class DataCacheMgr( object ) :
 		self.Frontdisplay_PlayPause( False )
 		self.mPMTinstance = None
 
-		thread = threading.Timer( 0.1, self.AsyncShowStatus, ['LIVE'] )
+		thread = threading.Timer( 0.1, AsyncShowStatus, ['LIVE'] )
 		thread.start( )
 
 		"""
@@ -2186,19 +2223,4 @@ class DataCacheMgr( object ) :
 			playerMute = False
 		self.mCommander.Player_SetMute( playerMute )
 
-
-	def AsyncShowStatus( self, aStatus ) :
-		rootWinow = xbmcgui.Window( 10000 )
-		rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
-
-		loopCount = 0
-		while loopCount <= 5 :
-			rootWinow.setProperty( 'PlayStatus', 'True' )
-			time.sleep( 0.2 )
-			rootWinow.setProperty( 'PlayStatus', 'False' )
-			time.sleep( 0.2 )
-			loopCount += 0.4
-
-		rootWinow.setProperty( 'PlayStatus', 'False' )
-		rootWinow.setProperty( 'PlayStatusLabel', '' )
 

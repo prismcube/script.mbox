@@ -294,7 +294,18 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Select the desired satellite whose signal is to be received by the tuner' ) )
+		satelliteName = self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+
+		if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS and self.mCurrentSatellite.mUSALSLongitude != 0 :
+			dir = 'E'
+			tmpLongitude  = self.mCurrentSatellite.mUSALSLongitude
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = self.mCurrentSatellite.mUSALSLongitude - 1800
+			formattedName = '%s %d.%d' % ( dir, int( tmpLongitude / 10 ), tmpLongitude % 10 )
+			satelliteName = satelliteName + ' ( %s )' % formattedName
+
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satelliteName, MR_LANG( 'Select the desired satellite whose signal is to be received by the tuner' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select the LNB type used in your digital satellite system' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
@@ -309,7 +320,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ), MR_LANG( 'Select the committed switch number' ) )
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11, MR_LANG( 'Select the uncommitted switch number' ) )
 			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'DiSEqC Repeat' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'When set to \'On\', DiSEqC repeats its command' ) )
-
 
 		if self.mTransponderList :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )	
@@ -377,7 +387,8 @@ class SatelliteConfigSimple( FTIWindow ) :
 		context = []
 		if aGroupId == E_Input01 :
 			context.append( ContextItem( MR_LANG( 'Edit Satellite Name' ), CONTEXT_EDIT_SATELLITE_NAME ) )
-			#context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
+			if self.mCurrentSatellite.mMotorizedType == ElisEnum.E_MOTORIZED_USALS :
+				context.append( ContextItem( MR_LANG( 'Edit Satellite Longitude' ), CONTEXT_EDIT_LONGITUDE ) )
 		elif aGroupId == E_Input03 :
 			context.append( ContextItem( MR_LANG( 'Add Transponder' ), CONTEXT_ADD_TRANSPONDER ) )
 			if self.mTransponderList :
@@ -420,17 +431,18 @@ class SatelliteConfigSimple( FTIWindow ) :
 				direction = contextAction
 			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
-				dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mCurrentSatellite.mSatelliteLongitude )
+				tmplongitude = self.mCurrentSatellite.mUSALSLongitude
+				if tmplongitude > 1800 :
+					tmplongitude = tmplongitude - 1800
+				dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), tmplongitude )
 				dialog.doModal( )
 
 				if dialog.IsOK() == E_DIALOG_STATE_YES :
-					#self.mCurrentSatellite.mSatelliteLongitude = dialog.GetNumber( )
-					tmpval = dialog.GetNumber( )
+					self.mCurrentSatellite.mUSALSLongitude = dialog.GetNumber( )
 					if direction == CONTEXT_LONGITUDE_WEST :
-						#self.mCurrentSatellite.mSatelliteLongitude += 1800
-						tmpval += 1800
-					#self.InitConfig( )
-					print 'dhkim test edited longitude = %s' % tmpval
+						self.mCurrentSatellite.mUSALSLongitude += 1800
+					self.InitConfig( )
+					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 		elif aContextAction == CONTEXT_ADD_TRANSPONDER :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )

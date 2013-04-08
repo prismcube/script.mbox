@@ -49,6 +49,8 @@ class DialogAddManualTimer( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
+		self.setProperty( 'DialogDrawFinished', 'False' )
+
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
 		else :
@@ -67,6 +69,8 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+
+		self.setProperty( 'DialogDrawFinished', 'True' )
 		
 
 	def onAction( self, aAction ) :
