@@ -279,8 +279,8 @@ class GlobalEvent( object ) :
 			else :
 				LOG_TRACE('---------------------parentLock ch[%s %s] mLocked[%s] parentLock[%s] epg[%s] pch[None]'% ( iChannel.mNumber, iChannel.mName, iChannel.mLocked, self.mDataCache.GetParentLock( ), iEPG )  )
 
-			if not pChannel or not iChannel or \
-			   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
+			#if not pChannel or not iChannel or \
+			#   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
 				self.mDataCache.SetParentLock( True )
 				if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
@@ -301,13 +301,15 @@ class GlobalEvent( object ) :
 
 				else :
 					if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
+						LOG_TRACE('----------------11')
 						self.mDataCache.Player_AVBlank( False )
 						self.mDataCache.LoadVolumeBySetGUI( )
 
-			else :
-				if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
-					self.mDataCache.Player_AVBlank( False )
-					self.mDataCache.LoadVolumeBySetGUI( )
+			#else :
+			#	if self.mDataCache.Get_Player_AVBlank( ) or aForce == True:
+			#		LOG_TRACE('----------------22')
+			#		self.mDataCache.Player_AVBlank( False )
+			#		self.mDataCache.LoadVolumeBySetGUI( )
 
 		elif aCmd == E_PARENTLOCK_EIT :
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
