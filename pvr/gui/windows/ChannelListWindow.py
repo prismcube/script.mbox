@@ -2457,6 +2457,7 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			channelList = self.AddFavoriteChannels( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetPreviousBlocking( False )
 			dialog.SetDefaultProperty( MR_LANG( 'Select channels you want to add to this group' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
