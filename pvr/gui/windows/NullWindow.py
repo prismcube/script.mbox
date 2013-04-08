@@ -910,6 +910,10 @@ class NullWindow( BaseWindow ) :
 
 		if self.mLoopCount > 10 :
 			channelList = self.mDataCache.Channel_GetOldChannelList( )
+			if not channelList or len( channelList ) < 1 :
+				self.mLoopCount = 0
+				return
+
 			listNumber = []
 			#for ch in channelList :
 			#	listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
