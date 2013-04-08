@@ -1082,7 +1082,7 @@ class Configure( SettingWindow ) :
 	def DedicatedFormat( self ) :
 		self.mUseUsbBackup = False
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,\n insert a USB flash memory' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'To backup your user data and XBMC add-ons,%s insert a USB flash memory' )% NEW_LINE )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :

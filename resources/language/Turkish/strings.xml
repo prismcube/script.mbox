@@ -1089,4 +1089,22 @@
 	<string id="3673">TUR_North</string>
 	<string id="3674">TUR_South</string>
 	<string id="3675">TUR_Go to the channel search setup page</string>
+	<string id="3676">TUR_Are you sure you want to remove%s all your bookmarks?</string>
+	<string id="3677">TUR_TV channels : %d %sRadio channels : %d</string>
+	<string id="3678">TUR_You have reached the maximum number of%s recordings allowed</string>
+	<string id="3679">TUR_Make media length longer than 30 secs%s to create a chapter</string>
+	<string id="3680">TUR_Edit Satellite Longitude</string>
+	<string id="3681">TUR_Restore longitude</string>
+	<string id="3682">TUR_Are you sure you want to remove%s this transponder?</string>
+	<string id="3683">TUR_When you perform a factory reset,%s all your settings revert to factory defaults</string>
+	<string id="3684">TUR_Are you sure you want to remove%s all your TV and radio channels?</string>
+	<string id="3685">TUR_Are you sure you want to remove%s all channels from this favorite group?</string>
+	<string id="3686">TUR_Are you sure you want to remove%s%s?</string>
+	<string id="3687">TUR_Are you sure you want to delete the channels%s including currently recording or reserved?</string>
+	<string id="3688">TUR_Are you sure you want to delete%s all your recorded files?</string>
+	<string id="3689">TUR_To backup your user data and XBMC add-ons,%s insert a USB flash memory</string>
+	<string id="3690">TUR_To receive a strong satellite signal,%s add satellites and set LNB parameters correctly</string>
+	<string id="3691">TUR_Same satellite already exists</string>
+	<string id="3692">TUR_Are you sure you want to remove%s this satellite?</string>
+	<string id="3693">TUR_Try again after stopping playback, recordings%s and timeshift</string>
 </strings>

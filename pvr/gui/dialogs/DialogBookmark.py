@@ -265,7 +265,7 @@ class DialogBookmark( BaseDialog ) :
 
 	def ShowDeleteAllConfirm( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all bookmarks' ), MR_LANG( 'Are you sure you want to remove\nall your bookmarks?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all bookmarks' ), MR_LANG( 'Are you sure you want to remove%s all your bookmarks?' )% NEW_LINE )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) != E_DIALOG_STATE_YES :
