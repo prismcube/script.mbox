@@ -15,6 +15,7 @@ CONTEXT_DELETE_TRANSPONDER	= 4
 
 CONTEXT_LONGITUDE_EAST		= 0
 CONTEXT_LONGITUDE_WEST		= 1
+CONTEXT_LONGITUDE_RESET		= 2
 
 
 class SatelliteConfigSimple( FTIWindow ) :
@@ -301,7 +302,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 			tmpLongitude  = self.mCurrentSatellite.mUSALSLongitude
 			if tmpLongitude > 1800 :
 				dir = 'W'
-				tmpLongitude = self.mCurrentSatellite.mUSALSLongitude - 1800
+				tmpLongitude = 3600 - self.mCurrentSatellite.mUSALSLongitude
 			formattedName = '%s %d.%d' % ( dir, int( tmpLongitude / 10 ), tmpLongitude % 10 )
 			satelliteName = satelliteName + ' ( %s )' % formattedName
 
@@ -421,28 +422,34 @@ class SatelliteConfigSimple( FTIWindow ) :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Longitude Direction : East' ), CONTEXT_LONGITUDE_EAST ) )
 			context.append( ContextItem( MR_LANG( 'Longitude Direction : West' ), CONTEXT_LONGITUDE_WEST ) )
+			context.append( ContextItem( MR_LANG( 'Restore longitude' ), CONTEXT_LONGITUDE_RESET ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
 			dialog.doModal( )
 
 			contextAction = dialog.GetSelectedAction( )
-			if contextAction != -1 :
-				direction = contextAction
+			if contextAction == CONTEXT_LONGITUDE_EAST or contextAction == CONTEXT_LONGITUDE_WEST :				
+				tmplongitude = self.mCurrentSatellite.mUSALSLongitude
+				if self.mCurrentSatellite.mUSALSLongitude > 1800 :
+					tmplongitude = 3600 - tmplongitude
 			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
-				tmplongitude = self.mCurrentSatellite.mUSALSLongitude
-				if tmplongitude > 1800 :
-					tmplongitude = tmplongitude - 1800
 				dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), tmplongitude )
 				dialog.doModal( )
 
 				if dialog.IsOK() == E_DIALOG_STATE_YES :
 					self.mCurrentSatellite.mUSALSLongitude = dialog.GetNumber( )
-					if direction == CONTEXT_LONGITUDE_WEST :
-						self.mCurrentSatellite.mUSALSLongitude += 1800
+					if self.mCurrentSatellite.mUSALSLongitude != 0 :
+						if contextAction == CONTEXT_LONGITUDE_WEST :
+							self.mCurrentSatellite.mUSALSLongitude = 3600 - self.mCurrentSatellite.mUSALSLongitude
 					self.InitConfig( )
 					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+
+			elif contextAction == CONTEXT_LONGITUDE_RESET :
+				self.mCurrentSatellite.mUSALSLongitude = 0
+				self.InitConfig( )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 		elif aContextAction == CONTEXT_ADD_TRANSPONDER :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
