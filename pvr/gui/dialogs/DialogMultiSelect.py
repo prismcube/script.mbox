@@ -4,6 +4,9 @@ import time
 E_MODE_DEFAULT_LIST = 0
 E_MODE_CHANNEL_LIST = 1
 
+E_SELECT_ONLY  = 0
+E_SELECT_MULTI = 1
+
 E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3850
 
 DIALOG_BUTTON_CLOSE_ID = 3800
@@ -20,12 +23,14 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mDefaultList = []
 		self.mTitle = ''
 		self.mMode = E_MODE_DEFAULT_LIST
-		
+		self.mIsMulti = E_SELECT_MULTI
+		self.mPreviousBlocking = False
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.mMarkList = []
+		self.mLastSelected = -1
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
 
@@ -41,6 +46,10 @@ class DialogMultiSelect( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.mLastSelected = -1
+			if self.mPreviousBlocking and actionId == Action.ACTION_PARENT_DIR :
+				return
+
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -57,13 +66,18 @@ class DialogMultiSelect( BaseDialog ) :
 		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
 			self.Close( )
 
+		self.mPreviousBlocking = False
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
+			self.mLastSelected = -1
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
 			self.SetMarkupGUI( )
+			if self.mIsMulti == E_SELECT_ONLY :
+				self.Close( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.Close( )
@@ -134,6 +148,7 @@ class DialogMultiSelect( BaseDialog ) :
 			return
 
 		aPos = self.mCtrlList.getSelectedPosition( )
+		self.mLastSelected = aPos
 
 		#aready mark is mark delete
 		for i in self.mMarkList :
@@ -161,13 +176,21 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlPos.setLabel( '%s'% ( aPos + 1 ) )
 
 
-	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST ) :
+	def SetPreviousBlocking( self, aPreviousBlocking = False ) :
+		self.mPreviousBlocking = aPreviousBlocking
+
+
+	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST, aIsMulti = E_SELECT_MULTI ) :
 		self.mTitle = aTitle
 		self.mDefaultList = aList
 		self.mMode = aMode
+		self.mIsMulti = aIsMulti
 
 
 	def GetSelectedList( self ) :
+		if self.mIsMulti == E_SELECT_ONLY :
+			return self.mLastSelected
+
 		return self.mMarkList
 
 

@@ -65,9 +65,9 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = True
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-				labelMode = GetStatusModeLabel( status.mMode )
-				thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [labelMode] )
-				thread.start( )
+				#labelMode = GetStatusModeLabel( status.mMode )
+				#thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+				#thread.start( )
 				return
 
 		self.mEventBus.Register( self )
@@ -157,7 +157,8 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				self.RestartAsyncTune( )
+				if self.mLoopCount <= 10 :
+					self.RestartAsyncTune( )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
@@ -165,7 +166,7 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				labelMode = GetStatusModeLabel( status.mMode )
-				thread = threading.Timer( 0.1, self.mDataCache.AsyncShowStatus, [labelMode] )
+				thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
 				thread.start( )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
@@ -395,6 +396,10 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
+
+		elif actionId == Action.ACTION_COLOR_RED :
+			self.mLoopCount = 11
+			self.AsyncTuneChannel( )
 
 		else :
 			self.NotAvailAction( )
@@ -931,17 +936,27 @@ class NullWindow( BaseWindow ) :
 		if self.mLoopCount > 10 :
 			channelList = self.mDataCache.Channel_GetOldChannelList( )
 			listNumber = []
-			for ch in channelList :
-				listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
+			#for ch in channelList :
+			#	listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
 
 			self.CloseSubTitle( )
-			isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
+			self.mIsShowDialog = True
+			#isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetPreviousBlocking( True )
+			dialog.SetDefaultProperty( MR_LANG( 'Select listy of previous channels' ), channelList, True, False  )
+			dialog.doModal( )
+			isSelect = dialog.GetSelectedList( )
+
+			self.mIsShowDialog = False
 			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
 			self.CheckSubTitle( )
 
-			if isSelect != -1 :
-				oldChannel = channelList[isSelect]
+			if isSelect < 0 :
+				self.mLoopCount = 0
+				return
 
+			oldChannel = channelList[isSelect]
 
 		self.mDataCache.Channel_SetCurrentByOld( oldChannel )
 		self.mLoopCount = 0

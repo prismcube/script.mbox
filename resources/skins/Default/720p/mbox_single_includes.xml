@@ -6116,7 +6116,7 @@
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="1003851">
-			<posx>580</posx>
+			<posx>590</posx>
 			<posy>80</posy>
 			<width>25</width>
 			<height>521</height>
