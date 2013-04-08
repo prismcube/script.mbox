@@ -230,34 +230,13 @@ class NullWindow( BaseWindow ) :
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				self.CloseSubTitle( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-				dialog.SetDialogProperty( str( aKey ) )
-				dialog.doModal( )
-				self.CheckSubTitle( )				
-
-				isOK = dialog.IsOK( )
-				if isOK == E_DIALOG_STATE_YES :
-					inputNumber = dialog.GetChannelLast( )
-					iCurrentCh = self.mDataCache.Channel_GetCurrent( )
-					if iCurrentCh.mNumber != int(inputNumber) :
-						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-						if jumpChannel != None and jumpChannel.mError == 0 :
-							self.mDataCache.SetAVBlankByChannel( jumpChannel )
-							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
+				if self.mIsShowDialog == False :
+					thread = threading.Timer( 0.1, self.SetAsyncChannelJumpByInput, [aKey] )
+					thread.start( )
 
 			else :
-				self.CloseSubTitle( )			
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-				dialog.SetDialogProperty( str( aKey ) )
-				dialog.doModal( )
-				self.CheckSubTitle( )
-
-				isOK = dialog.IsOK( )
-				if isOK == E_DIALOG_STATE_YES :
-					move = dialog.GetMoveToJump( )
-					if move :
-						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
+				thread = threading.Timer( 0.1, self.SetAsyncTimeshiftJumpByInput, [aKey] )
+				thread.start( )
 
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
@@ -396,10 +375,6 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
-
-		elif actionId == Action.ACTION_COLOR_RED :
-			self.mLoopCount = 11
-			self.AsyncTuneChannel( )
 
 		else :
 			self.NotAvailAction( )
@@ -957,8 +932,46 @@ class NullWindow( BaseWindow ) :
 				return
 
 			oldChannel = channelList[isSelect]
+			self.mDataCache.Channel_SetCurrentByOld( oldChannel )
 
-		self.mDataCache.Channel_SetCurrentByOld( oldChannel )
+		else :
+			self.SetAsyncChannelJumpByInput( oldChannel.mNumber )
+
 		self.mLoopCount = 0
-	
+
+
+	def SetAsyncChannelJumpByInput( self, aNumber ) :
+		self.CloseSubTitle( )
+		self.mIsShowDialog = True
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		dialog.SetDialogProperty( str( aNumber ) )
+		dialog.doModal( )
+		self.mIsShowDialog = False
+		self.CheckSubTitle( )				
+
+		isOK = dialog.IsOK( )
+		if isOK == E_DIALOG_STATE_YES :
+			inputNumber = dialog.GetChannelLast( )
+			iCurrentCh = self.mDataCache.Channel_GetCurrent( )
+			if iCurrentCh.mNumber != int(inputNumber) :
+				jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+				if jumpChannel != None and jumpChannel.mError == 0 :
+					self.mDataCache.SetAVBlankByChannel( jumpChannel )
+					self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
+
+
+	def SetAsyncTimeshiftJumpByInput( self, aKey ) :
+		self.CloseSubTitle( )			
+		self.mIsShowDialog = True
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
+		dialog.SetDialogProperty( str( aKey ) )
+		dialog.doModal( )
+		self.mIsShowDialog = False
+		self.CheckSubTitle( )
+
+		isOK = dialog.IsOK( )
+		if isOK == E_DIALOG_STATE_YES :
+			move = dialog.GetMoveToJump( )
+			if move :
+				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
