@@ -117,7 +117,7 @@
 				</control>
 				<control type="button" id="7001">
 					<description>Next button</description>
-					<posx>670</posx>
+					<posx>700</posx>
 					<posy>470</posy>
 					<width>60</width>
 					<height>50</height>
@@ -127,24 +127,24 @@
 					<onright>7000</onright>
 				</control>
 				<control type="label" id="7006">
-					<posx>620</posx>
+					<posx>696</posx>
 					<posy>478</posy>
 					<width>200</width>
 					<height>40</height>
 					<font>font12_title</font>
 					<textcolor>grey2</textcolor>
-					<align>left</align>
+					<align>right</align>
 					<aligny>center</aligny>
 					<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
 				</control>
 				<control type="label">
-					<posx>620</posx>
+					<posx>696</posx>
 					<posy>478</posy>
 					<width>200</width>
 					<height>40</height>
 					<font>font13_title</font>
 					<textcolor>white</textcolor>
-					<align>left</align>
+					<align>right</align>
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel(7006)]</label>
 					<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
