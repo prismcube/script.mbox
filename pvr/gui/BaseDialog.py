@@ -4,7 +4,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2
-import pvr.Platform 
+import pvr.Platform
 from pvr.XBMCInterface import XBMC_GetVolume
 
 import sys
