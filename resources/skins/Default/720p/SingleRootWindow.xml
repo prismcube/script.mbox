@@ -88,7 +88,7 @@ Search for window name
 			</control>
 			<control type="image">
 				<posx>1200</posx>
-				<posy>45</posy>
+				<posy>50</posy>
 				<width>60</width>
 				<height>25</height>
 				<texture>i_record.png</texture>
@@ -1618,7 +1618,7 @@ Search for window name
 			</control>
 			<control type="image" id="1400100">
 				<posx>1200</posx>
-				<posy>45</posy>
+				<posy>50</posy>
 				<width>60</width>
 				<height>25</height>
 				<texture>i_record.png</texture>
@@ -4450,7 +4450,7 @@ Search for window name
 				</control>
 
 				<control type="textbox" id="3700303">
-					<description>EPG infomation</description>
+					<description>EPG information</description>
 					<posx>0</posx>
 					<posy>60</posy>
 					<width>352</width>
@@ -4663,7 +4663,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>SCRIPT1088</label>
+						<label>SCRIPT1021</label>
 						<onleft>1003610</onleft>
 						<onright>1003610</onright>
 						<onup>1003610</onup>

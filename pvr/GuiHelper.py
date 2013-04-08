@@ -1,4 +1,4 @@
-import xbmc, xbmcaddon, sys, os, shutil, time, re, stat
+import xbmc, xbmcgui, xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -990,4 +990,27 @@ def GetStatusModeLabel( aMode ) :
 		labelMode = 'UNKNOWN'
 
 	return labelMode
+
+
+def AsyncShowStatus( aStatus ) :
+	import pvr.gui.WindowMgr as WinMgr
+	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW,WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU ]
+
+	rootWinow = xbmcgui.Window( 10000 )
+	rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
+
+	loopCount = 0
+	while loopCount <= 5 :
+		if WinMgr.GetInstance( ).GetLastWindowID( ) not in showStatusWindow :
+			break
+
+		rootWinow.setProperty( 'PlayStatus', 'True' )
+		time.sleep( 0.2 )
+		rootWinow.setProperty( 'PlayStatus', 'False' )
+		time.sleep( 0.2 )
+		loopCount += 0.4
+
+	rootWinow.setProperty( 'PlayStatus', 'False' )
+	rootWinow.setProperty( 'PlayStatusLabel', '' )
+
 

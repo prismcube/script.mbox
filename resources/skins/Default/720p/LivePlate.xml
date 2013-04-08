@@ -13,7 +13,7 @@
 		</control>
 		<control type="image" id="100">
 			<posx>1200</posx>
-			<posy>45</posy>
+			<posy>50</posy>
 			<width>60</width>
 			<height>25</height>
 			<texture>i_record.png</texture>

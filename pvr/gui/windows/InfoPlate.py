@@ -265,7 +265,7 @@ class InfoPlate( LivePlateWindow ) :
 				LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
 						aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
 				#ToDo
-				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
+				#xbmcgui.Dialog( ).ok( MR_LANG('Information'), MR_LANG('No Signal') )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
@@ -302,7 +302,6 @@ class InfoPlate( LivePlateWindow ) :
 				self.mEnableCasInfo = False
 				if rec.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
-					"""
 					casInfo = HasCasInfoByChannel( rec )
 					if casInfo and len( casInfo ) > 1 :
 						self.mEnableCasInfo = True
@@ -313,7 +312,6 @@ class InfoPlate( LivePlateWindow ) :
 
 					else :
 						self.UpdatePropertyGUI( 'iCasInfo', '' )
-					"""
 
 
 				#record name
