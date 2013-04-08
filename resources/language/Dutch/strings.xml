@@ -15,7 +15,7 @@
 	<string id="1013">DUT_Order : Ascending</string>
 	<string id="1014">DUT_Locked</string>
 	<string id="1015">DUT_Select Channel List</string>
-	<string id="1016">DUT_No EPG Infomation</string>
+	<string id="1016">DUT_No EPG Information</string>
 	<string id="1017">DUT_Search Results</string>
 	<string id="1018">DUT_TV Channels</string>
 	<string id="1019">DUT_Radio Channels</string>
@@ -87,7 +87,6 @@
 	<string id="1085">DUT_Display detailed information about your system status</string>
 	<string id="1086">DUT_Manage all your multimedia content</string>
 	<string id="1087">DUT_Check your PRISMCUBE RUBY info at a glance</string>
-	<string id="1088">DUT_Go Parent</string>
 	<string id="1089">DUT_Select Action</string>
 	<string id="1090">DUT_To see all the other menus, press i button</string>
 	<string id="1091">DUT_Previous</string>
@@ -676,7 +675,7 @@
 	<string id="3259">DUT_The PIN code must be 4-digit long</string>
 	<string id="3260">DUT_Sorry, that PIN code does not match</string>
 	<string id="3261">DUT_EPG None</string>
-	<string id="3262">DUT_Select listy of previous channels</string>
+	<string id="3262">DUT_Recent channels</string>
 	<string id="3263">DUT_DiSEqC 1.0 Switch</string>
 	<string id="3264">DUT_Select the DiSEqC switch which your satellite is connected to</string>
 	<string id="3265">DUT_Tuner %d Config : %s</string>
@@ -705,7 +704,7 @@
 	<string id="3288">DUT_Add manual timer</string>
 	<string id="3289">DUT_Delete all timers</string>
 	<string id="3290">DUT_Show all timers</string>
-	<string id="3291">DUT_Extend infomation</string>
+	<string id="3291">DUT_Extend information</string>
 	<string id="3292">DUT_Are you sure you want to remove this timer?</string>
 	<string id="3293">DUT_Are you sure you want to remove all your timers?</string>
 	<string id="3294">DUT_Enter search keywords here</string>
@@ -756,7 +755,7 @@
 	<string id="3339">DUT_Change additional settings for PRISMCUBE RUBY</string>
 	<string id="3340">DUT_Select Menu Language</string>
 	<string id="3341">DUT_Change Language</string>
-	<string id="3342">DUT_It may take several minutes to complete</string>
+	<string id="3342">DUT_Do you want to continue?</string>
 	<string id="3343">DUT_please wait after pressing OK button</string>
 	<string id="3344">DUT_Not support Win32</string>
 	<string id="3345">DUT_Sorry, that's an incorrect PIN code</string>
