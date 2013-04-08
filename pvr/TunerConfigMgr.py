@@ -208,10 +208,6 @@ class TunerConfigMgr( object ) :
 
 		if len( tuner1ConfiguredList ) > 0 :
 			self.SatelliteSetFlag( tuner1ConfiguredList, E_TUNER_1, self.GetTunerTypeByTunerIndex( E_TUNER_1 ) )
-			"""
-			for st in tuner1ConfiguredList :
-				st.printdebug( )
-			"""
 
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			tuner2ConfiguredList = deepcopy( tuner1ConfiguredList )
@@ -221,11 +217,15 @@ class TunerConfigMgr( object ) :
 		else :
 			if len( tuner2ConfiguredList ) > 0 :
 				self.SatelliteSetFlag( tuner2ConfiguredList, E_TUNER_2, self.GetTunerTypeByTunerIndex( E_TUNER_2 ) )
-				"""
-				for st in tuner2ConfiguredList :
-					st.printdebug( )
-				"""
-				
+
+		"""
+		for st in tuner1ConfiguredList :
+			st.printdebug( )
+
+		for st in tuner2ConfiguredList :
+			st.printdebug( )
+		"""
+
 		if len( tuner1ConfiguredList ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( tuner1ConfiguredList )
 		if len( tuner2ConfiguredList ) > 0 :
