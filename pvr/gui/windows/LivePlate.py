@@ -51,6 +51,7 @@ INIT_CHANNEL	= 3
 
 
 E_NOMAL_BLINKING_TIME		= 0.2
+E_MAX_BLINKING_COUNT	=  10
 
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -71,7 +72,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mAutomaticHide = False
 		self.mEnableLocalThread = False
 		self.mEnableBlickingTimer = False		
-
+		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
+		
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
@@ -82,7 +84,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetBlinkingProperty( 'None' )
-
+		self.mRecordBlinkingCount = 0
+		
 		self.SetSingleWindowPosition( E_LIVE_PLATE_BASE_ID )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
@@ -439,7 +442,8 @@ class LivePlate( LivePlateWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) :
-					self.StopBlickingIconTimer( )
+					self.mRecordBlinkingCount = 0
+					self.StopBlinkingIconTimer( )
 					self.SetBlinkingProperty( 'None' )
 
  				self.ShowRecordingInfo( )
@@ -1109,25 +1113,26 @@ class LivePlate( LivePlateWindow ) :
 			self.StopAutomaticHide( )
 
 			self.SetBlinkingProperty( 'True' )
+			self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
 			self.mEnableBlickingTimer = True			
-			self.StartBlickingIconTimer( )
+			self.StartBlinkingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def RestartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+	def RestartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopBlickingIconTimer( )
-		self.StartBlickingIconTimer( aTimeout )
+		self.StopBlinkingIconTimer( )
+		self.StartBlinkingIconTimer( aTimeout )
 
 
-	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+	def StartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
 		self.mRecordBlinkingTimer.start( )
 	
 
-	def StopBlickingIconTimer( self ) :
+	def StopBlinkingIconTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
 		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
 			self.mRecordBlinkingTimer.cancel( )
@@ -1142,13 +1147,21 @@ class LivePlate( LivePlateWindow ) :
 			self.SetBlinkingProperty( 'None' )		
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
+			
+		if self.mRecordBlinkingCount  <=  0 :
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ blinking count  is zero' )
+			self.SetBlinkingProperty( 'None' )			
+			return
+
 
 		if self.GetBlinkingProperty( ) == 'True' :
 			self.SetBlinkingProperty( 'False' )
 		else :
 			self.SetBlinkingProperty( 'True' )
 
-		self.RestartBlickingIconTimer( )
+		self.mRecordBlinkingCount = self.mRecordBlinkingCount  -1
+		
+		self.RestartBlinkingIconTimer( )
 
 
 	def ShowRecordingStartDialog( self ) :
@@ -1309,7 +1322,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = False
 		self.mEnableCasInfo = False
 
-		self.StopBlickingIconTimer( )
+		self.StopBlinkingIconTimer( )
 		self.SetBlinkingProperty( 'None' )
 
 		#self.StopAsyncTune( )
