@@ -13,13 +13,13 @@
 				<description>background top image</description>
 				<posx>0</posx>
 				<posy>-30</posy>
-				<width>350</width>
+				<width>370</width>
 				<height>30</height>
 				<texture border="20,19,20,0">DialogContextTop.png</texture>
 			</control>
 			<control type="button" id="103">
 				<description>Close Window button</description>
-				<posx>270</posx>
+				<posx>290</posx>
 				<posy>-24</posy>
 				<width>64</width>
 				<height>32</height>
@@ -36,20 +36,20 @@
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>350</width>
+				<width>370</width>
 				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
 			</control>
 			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
-				<width>350</width>
+				<width>370</width>
 				<height>25</height>
 				<texture border="20,0,19,20">DialogContextBottom.png</texture>
 			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
 				<posy>5</posy>
-				<width>310</width>
+				<width>330</width>
 				<height>480</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
@@ -59,7 +59,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>1</posy>
-						<width>310</width>
+						<width>330</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-nofocus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
@@ -74,9 +74,9 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>160</posx>
 						<posy>0</posy>
-						<width>310</width>
+						<width>330</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
@@ -89,7 +89,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>1</posy>
-						<width>310</width>
+						<width>330</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-focus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
@@ -104,9 +104,9 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>160</posx>
 						<posy>0</posy>
-						<width>310</width>
+						<width>330</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
