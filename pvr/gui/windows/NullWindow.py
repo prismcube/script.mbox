@@ -7,6 +7,8 @@ E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_W
 E_BUTTON_ID_FAKE      = E_NULL_WINDOW_BASE_ID + 9000
 
 E_NOMAL_BLINKING_TIME = 0.2
+E_MAX_BLINKING_COUNT  =  10
+
 E_NO_TUNE  = False
 E_SET_TUNE = True
 
@@ -19,6 +21,8 @@ class NullWindow( BaseWindow ) :
 		self.mRecordBlinkingTimer = None	
 		self.mOnTimeDelay = 0
 		self.mPreviousBlockTime = 1.5
+		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
+		
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
@@ -52,6 +56,7 @@ class NullWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetBlinkingProperty( 'None' )
+		self.mRecordBlinkingCount	 = 0 
 
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
@@ -473,7 +478,8 @@ class NullWindow( BaseWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) :
-					self.StopBlickingIconTimer( )
+					self.mRecordBlinkingCount = 0
+					self.StopBlinkingIconTimer( )
 					self.SetBlinkingProperty( 'None' )
 
 				self.mDataCache.SetChannelReloadStatus( True )
@@ -646,24 +652,25 @@ class NullWindow( BaseWindow ) :
 		if isOK :
 			self.SetBlinkingProperty( 'True' )
 			self.mEnableBlickingTimer = True
-			self.StartBlickingIconTimer( )
+			self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT			
+			self.StartBlinkingIconTimer( )
 			
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def RestartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+	def RestartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopBlickingIconTimer( )
-		self.StartBlickingIconTimer( aTimeout )
+		self.StopBlinkingIconTimer( )
+		self.StartBlinkingIconTimer( aTimeout )
 
 
-	def StartBlickingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
+	def StartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
 		self.mRecordBlinkingTimer.start( )
 	
 
-	def StopBlickingIconTimer( self ) :
+	def StopBlinkingIconTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
 		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
 			self.mRecordBlinkingTimer.cancel( )
@@ -679,12 +686,19 @@ class NullWindow( BaseWindow ) :
 			LOG_WARN( 'Blinking Icon update timer expired' )
 			return
 
+		if self.mRecordBlinkingCount  <=  0 :
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ blinking count  is zero' )
+			self.SetBlinkingProperty( 'None' )			
+			return
+
 		if self.GetBlinkingProperty( ) == 'True' :
 			self.SetBlinkingProperty( 'False' )
 		else :
 			self.SetBlinkingProperty( 'True' )
 
-		self.RestartBlickingIconTimer( )
+		self.mRecordBlinkingCount = self.mRecordBlinkingCount  -1
+
+		self.RestartBlinkingIconTimer( )
 
 
 	def ShowRecordingStartDialog( self ) :
@@ -740,7 +754,7 @@ class NullWindow( BaseWindow ) :
 		self.StopAsyncTuneByHistory( )
 		self.CloseSubTitle( )
 
-		self.StopBlickingIconTimer( )
+		self.StopBlinkingIconTimer( )
 		self.SetBlinkingProperty( 'None' )		
 
 		if E_SUPPROT_HBBTV == True :

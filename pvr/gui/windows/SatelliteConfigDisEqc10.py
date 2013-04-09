@@ -199,7 +199,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList, False, StringToListIndex( self.mTransponderList, self.GetControlLabel2String( E_Input03 ) ) )
+	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList, False, self.mSelectedTransponderIndex )
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
@@ -297,7 +297,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'DiSEqC 1.0 Switch' ), E_LIST_DISEQC_MODE, self.mCurrentSatellite.mDisEqcMode, MR_LANG( 'Select the DiSEqC switch which your satellite is connected to' ) )
 		self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'DiSEqC Repeat' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'When set to \'On\', DiSEqC repeats its command' ) )
 		if self.mTransponderList :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mDataCache.GetSimpleTPInformation( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 		else :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct' ) )
 
