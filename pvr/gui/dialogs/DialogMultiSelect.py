@@ -14,6 +14,7 @@ DIALOG_HEADER_LABEL_ID = 3801
 DIALOG_BUTTON_OK_ID = 3802
 DIALOG_LABEL_POS_ID = 3803
 
+
 class DialogMultiSelect( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
@@ -25,6 +26,7 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mMode = E_MODE_DEFAULT_LIST
 		self.mIsMulti = E_SELECT_MULTI
 		self.mPreviousBlocking = False
+		self.mAsyncTimer = None
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -41,6 +43,7 @@ class DialogMultiSelect( BaseDialog ) :
 		self.SetFocusList( E_CONTROL_ID_LIST )
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
+		self.RestartAsyncBlockTimer( )
 
 
 	def onAction( self, aAction ) :
@@ -204,5 +207,28 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
+		self.StopAsyncBlockTimer( )
 		self.CloseDialog( )
-		
+
+
+	def RestartAsyncBlockTimer( self ) :
+		self.StopAsyncBlockTimer( )
+		self.StartAsyncBlockTimer( )
+
+
+	def StartAsyncBlockTimer( self ) :
+		self.mAsyncTimer = threading.Timer( 2, self.InitPreviousBlocking )
+		self.mAsyncTimer.start( )
+
+
+	def StopAsyncBlockTimer( self ) :
+		if self.mAsyncTimer	and self.mAsyncTimer.isAlive( ) :
+			self.mAsyncTimer.cancel( )
+			del self.mAsyncTimer
+
+		self.mAsyncTimer  = None
+
+
+	def InitPreviousBlocking( self ) :
+		self.mPreviousBlocking = False
+
