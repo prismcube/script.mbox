@@ -217,7 +217,7 @@ class ArchiveWindow( BaseWindow ) :
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback and timeshift' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback%s and timeshift' )% NEW_LINE )
 				dialog.doModal( )
 
 
