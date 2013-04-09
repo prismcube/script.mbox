@@ -1076,8 +1076,10 @@ class ChannelListWindow( BaseWindow ) :
 			idx1 = self.mUserSlidePos.mMain
 			idx2 = self.mUserSlidePos.mSub
 
-		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, idx1 )
-		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, idx2 )
+		#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, idx1 )
+		#self.UpdateControlListSelectItem( self.mCtrlListSubmenu, idx2 )
+		self.mCtrlListMainmenu.selectItem( idx1 )
+		self.mCtrlListSubmenu.selectItem( idx2 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, idx1 )
 		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_SUBMENU )
 
