@@ -7,7 +7,10 @@ E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_W
 E_BUTTON_ID_FAKE      = E_NULL_WINDOW_BASE_ID + 9000
 
 E_NOMAL_BLINKING_TIME = 0.2
-E_MAX_BLINKING_COUNT	=  10
+E_MAX_BLINKING_COUNT  =  10
+
+E_NO_TUNE  = False
+E_SET_TUNE = True
 
 
 class NullWindow( BaseWindow ) :
@@ -16,6 +19,8 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 		self.mAsyncShowTimer = None
 		self.mRecordBlinkingTimer = None	
+		self.mOnTimeDelay = 0
+		self.mPreviousBlockTime = 1.5
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
 		
 		if E_SUPPROT_HBBTV == True :
@@ -31,6 +36,7 @@ class NullWindow( BaseWindow ) :
 
 	def onInit( self ) :
 		self.mLoopCount = 0
+		self.mPreviousBlockTime = 1.5
 		self.mEnableBlickingTimer = False
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
@@ -104,6 +110,7 @@ class NullWindow( BaseWindow ) :
 					self.mForceSetCurrent = True
 
 		self.DoRelayAction( )
+		self.mOnTimeDelay = time.time( )
 
 		"""
 		currentStack = inspect.stack( )
@@ -161,10 +168,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				pass
-				#ToDO : tunning
-				#if self.mLoopCount <= 5 :
-				#	self.RestartAsyncTune( )
+				if ( time.time( ) - self.mOnTimeDelay ) < 1.5 :
+					LOG_TRACE( '------blocking Time back key' )
+					return
+
+				self.RestartAsyncTimerByBackKey( )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )			
@@ -237,7 +245,7 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				if self.mIsShowDialog == False :
-					thread = threading.Timer( 0.1, self.AsyncTuneChannelByInput, [aKey] )
+					thread = threading.Timer( 0.1, self.AsyncTuneChannelByInput, ( aKey, E_NO_TUNE ) )
 					thread.start( )
 
 			else :
@@ -742,7 +750,8 @@ class NullWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEnableBlickingTimer = False	
 		self.mEventBus.Deregister( self )
-
+		self.StopAsyncTimerByBackKey( )
+		self.StopAsyncTuneByHistory( )
 		self.CloseSubTitle( )
 
 		self.StopBlinkingIconTimer( )
@@ -761,10 +770,6 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = False 
 				LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			
-
-	def GetKeyDisabled( self ) :
-		return False
-	
 
 	def ForceSetCurrent( self ) :
 		pass
@@ -901,18 +906,16 @@ class NullWindow( BaseWindow ) :
 		return rootWinow.getProperty( 'RecordBlinkingIcon' )
 
 
-	def RestartAsyncTune( self ) :
+	def RestartAsyncTimerByBackKey( self ) :
 		self.mLoopCount += 1
-		self.StopAsyncTune( )
-		self.StartAsyncTune( )
+		if self.mLoopCount > 2 :
+			self.RestartAsyncTuneByHistory( )
+		else :
+			self.StopAsyncTimerByBackKey( )
+			self.StartAsyncTimerByBackKey( )
 
 
-	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannelByPrevious )
-		self.mAsyncTuneTimer.start( )
-
-
-	def StopAsyncTune( self ) :
+	def StopAsyncTimerByBackKey( self ) :
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.cancel( )
 			del self.mAsyncTuneTimer
@@ -920,63 +923,100 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer  = None
 
 
-	def AsyncTuneChannelByPrevious( self ) :
+	def StartAsyncTimerByBackKey( self ) :
+		if self.mIsShowDialog :
+			self.mLoopCount = 0
+			#LOG_TRACE(' ---------- already back key showing -----Unvisible previous-------------' )
+			return
+
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneByPrevious )
+		self.mAsyncTuneTimer.start( )
+
+	def AsyncTuneByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
+		self.AsyncTuneChannelByInput( oldChannel.mNumber, E_SET_TUNE )
 
-		if self.mLoopCount > 5 :
-			channelList = self.mDataCache.Channel_GetOldChannelList( )
-			if not channelList or len( channelList ) < 1 :
-				self.mLoopCount = 0
-				return
 
-			listNumber = []
-			#for ch in channelList :
-			#	listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
+	def RestartAsyncTuneByHistory( self ) :
+		self.StopAsyncTuneByHistory( )
+		self.StartAsyncTuneByHistory( )
 
-			self.CloseSubTitle( )
-			self.mIsShowDialog = True
-			#isSelect = xbmcgui.Dialog().select( MR_LANG( 'Select listy of previous channels' ), listNumber )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetPreviousBlocking( True )
-			dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
-			dialog.doModal( )
-			isSelect = dialog.GetSelectedList( )
 
-			self.mIsShowDialog = False
-			#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
-			self.CheckSubTitle( )
+	def StartAsyncTuneByHistory( self ) :
+		if self.mIsShowDialog :
+			self.mLoopCount = 0
+			#LOG_TRACE(' ---------- already back key showing --Unvisible History----------------' )
+			return
 
-			if isSelect < 0 :
-				self.mLoopCount = 0
-				return
+		self.mAsyncTuneTimer = threading.Timer( 0.05, self.AsyncTuneChannelByHistory )
+		self.mAsyncTuneTimer.start( )
 
-			oldChannel = channelList[isSelect]
-			self.mDataCache.Channel_SetCurrentByOld( oldChannel )
 
-		else :
-			self.AsyncTuneChannelByInput( oldChannel.mNumber )
+	def StopAsyncTuneByHistory( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+			self.mAsyncTuneTimer.cancel( )
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
+
+	def AsyncTuneChannelByHistory( self ) :
+		#LOG_TRACE('--------------Loop Count backKey[%s]'% self.mLoopCount )
+		channelList = self.mDataCache.Channel_GetOldChannelList( )
+		if not channelList or len( channelList ) < 1 :
+			self.mLoopCount = 0
+			return
+
+		listNumber = []
+
+		self.mIsShowDialog = True
+		self.CloseSubTitle( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+		dialog.SetPreviousBlocking( True )
+		dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
+		dialog.doModal( )
+		isSelect = dialog.GetSelectedList( )
+		self.CheckSubTitle( )
 
 		self.mLoopCount = 0
+		self.mIsShowDialog = False
+		self.mPreviousBlockTime = 0.5
+		self.mOnTimeDelay = time.time( )
+		#for ch in channelList :
+		#	listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
+		#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
+
+		if isSelect < 0 :
+			return
+
+		oldChannel = channelList[isSelect]
+		self.mDataCache.Channel_SetCurrentByOld( oldChannel )
 
 
-	def AsyncTuneChannelByInput( self, aNumber ) :
+	def AsyncTuneChannelByInput( self, aNumber, aIsTune ) :
 		self.CloseSubTitle( )
 		self.mIsShowDialog = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		dialog.SetByTune( aIsTune )
 		dialog.SetDialogProperty( str( aNumber ) )
 		dialog.doModal( )
 		self.mIsShowDialog = False
-		self.CheckSubTitle( )				
+		self.CheckSubTitle( )
 
-		isOK = dialog.IsOK( )
-		if isOK == E_DIALOG_STATE_YES :
-			inputNumber = dialog.GetChannelLast( )
-			iCurrentCh = self.mDataCache.Channel_GetCurrent( )
-			if iCurrentCh.mNumber != int(inputNumber) :
-				jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-				if jumpChannel != None and jumpChannel.mError == 0 :
-					self.mDataCache.SetAVBlankByChannel( jumpChannel )
-					self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
+		if not aIsTune :
+			isOK = dialog.IsOK( )
+			if isOK == E_DIALOG_STATE_YES :
+				inputNumber = dialog.GetChannelLast( )
+				iCurrentCh = self.mDataCache.Channel_GetCurrent( )
+				if iCurrentCh.mNumber != int(inputNumber) :
+					jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+					if jumpChannel != None and jumpChannel.mError == 0 :
+						self.mDataCache.SetAVBlankByChannel( jumpChannel )
+						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
+
+		self.mLoopCount = 0
+		self.mPreviousBlockTime = 0.5
+		self.mOnTimeDelay = time.time( )
 
 
 	def AsyncTimeshiftJumpByInput( self, aKey ) :

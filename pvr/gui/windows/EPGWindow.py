@@ -180,7 +180,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_WARN( 'No Channel List' )
 		else:
 			LOG_TRACE( 'ChannelList=%d' %len( self.mChannelList ) )
-		
+
 		self.mSelectChannel = self.mCurrentChannel
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 
@@ -226,8 +226,15 @@ class EPGWindow( BaseWindow ) :
 				
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if self.mEPGMode == E_VIEW_GRID	:
-				LOG_TRACE('TEST focusId=%d' %self.getFocusId() )			
-				focusId = self.getFocusId( )
+
+				focusId = self.getFocusId( )	
+				LOG_TRACE('TEST focusId=%d' %focusId )				
+
+				if focusId == BUTTON_ID_FAKE_BUTTON :
+					if self.mChannelList == None or len( self.mChannelList ) == 0 :
+						self.setFocusId( GROUP_ID_LEFT_SLIDE )
+					return
+
 				if focusId >= BUTTON_ID_BASE_GRID and focusId < BUTTON_ID_BASE_GRID + E_GRID_MAX_BUTTON_COUNT :
 					self.GridControlLeft( )
 
@@ -341,6 +348,10 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		if aControlId  == BUTTON_ID_FAKE_BUTTON :
+			if self.mChannelList == None or len( self.mChannelList ) == 0 :
+				self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
+				return
+		
 			self.GridSetFocus( )
 				
 		elif  aControlId == LIST_ID_COMMON_EPG or aControlId == LIST_ID_BIG_EPG :
@@ -509,8 +520,12 @@ class EPGWindow( BaseWindow ) :
 		strNoEvent = MR_LANG( 'No event' )
 		epgTotalCount = 0
 		epgCount = 0
+		channelCount = 0
 
-		channelCount = len( self.mChannelList )
+		if self.mChannelList  :
+			channelCount = len( self.mChannelList )
+		else :
+			LOG_WARN( 'no channel')
 
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			#DrawChannel
@@ -775,8 +790,17 @@ class EPGWindow( BaseWindow ) :
 
 		self.LoadTimerList( )
 
+		if  self.mChannelList  == None :
+			 self.mChannelList = []
+
+		if self.mListItems == None :
+			self.mListItems = []
+
 		if self.mEPGMode == E_VIEW_GRID :
 			self.UpdateGirdView( aUpdateOnly )
+			if self.mChannelList == None or len( self.mChannelList ) == 0 :
+				if self.getFocusId( )  !=  BUTTON_ID_EPG_MODE :
+					self.setFocusId( BUTTON_ID_FAKE_BUTTON )
 		
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.UpdateChannelView( aUpdateOnly )
@@ -946,7 +970,12 @@ class EPGWindow( BaseWindow ) :
 				break
 
 		for i in range(E_GRID_MAX_BUTTON_COUNT - enableCount ) :
-			self.mCtrlGridEPGButtonList[enableCount + i].setVisible( False )		
+			self.mCtrlGridEPGButtonList[enableCount + i].setVisible( False )	
+
+		if row <  E_GRID_MAX_ROW_COUNT :
+			for i in range(E_GRID_MAX_ROW_COUNT - row ) :
+				LOG_TRACE('i=%d row=%d' %(i, row) )
+				self.mCtrlChannelButtons[row +i].setLabel( '')
 
 		self.GridUpdateTimer( )
 		
@@ -2263,6 +2292,11 @@ class EPGWindow( BaseWindow ) :
 
 
 	def GridCheckChannelIndex( self, aMode = E_DIR_CURRENT ) :
+		if self.mChannelList == None :
+			self.mVisibleTopIndex = 0
+			self.mVisibleFocusRow =  0
+			return
+
 		channelCount = len( self.mChannelList )
 		topIndex = self.mVisibleTopIndex
 		focusIndex = self.mVisibleTopIndex + self.mVisibleFocusRow
@@ -2356,6 +2390,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def GridSetFocus( self ) :
+
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
 
 		if gridMeta :

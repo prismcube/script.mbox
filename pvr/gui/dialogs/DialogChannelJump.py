@@ -25,6 +25,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mMaxChannelNum		= E_INPUT_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
 		self.mIsChannelListWindow = False
+		self.mSetByTune         = False
 
 
 	def onInit( self ) :
@@ -36,11 +37,14 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlProgress		= self.getControl( E_PROGRESS_ID )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		self.mFindChannel = None
+		self.mAsynViewTime = 1.2
 
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
 		self.SearchChannel( )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+		self.mOnInitTime = time.time( )
 
 
 	def onAction( self, aAction ) :
@@ -49,6 +53,10 @@ class DialogChannelJump( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			if actionId == Action.ACTION_PARENT_DIR and ( time.time( ) - self.mOnInitTime ) < 5 :
+				#LOG_TRACE( '--------blocking time[%s]'% ( time.time( ) - self.mOnInitTime ) )
+				return
+
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -89,6 +97,10 @@ class DialogChannelJump( BaseDialog ) :
 
 	def onFocus( self, aControlId ) :
 		pass
+
+
+	def SetByTune( self, aIsDelay = False ) :
+		self.mSetByTune = aIsDelay
 
 
 	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX ) :
@@ -141,12 +153,21 @@ class DialogChannelJump( BaseDialog ) :
 		#retList = []
 		#retList.append( fChannel )
 		#LOG_TRACE( '======= Search Channel[%s]'% ClassToList('convert', retList) )
+		self.mFindChannel = fChannel
 
 		self.SetLabelChannelName( fChannel.mName )
 		self.GetEPGInfo( fChannel )
 
 		self.mFlagFind = True
+
+		if self.mSetByTune :
+			self.mAsynViewTime = 1
+
 		self.RestartAsyncTune( )
+
+		if self.mSetByTune :
+			self.SyncTune( )
+
 
 
 	def GetEPGInfo( self, aChannel ) :
@@ -204,6 +225,13 @@ class DialogChannelJump( BaseDialog ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	def SyncTune( self ) :
+		self.mDataCache.SetAVBlankByChannel( self.mFindChannel )
+		self.mDataCache.Channel_SetCurrent( self.mFindChannel.mNumber, self.mFindChannel.mServiceType, None, True )
+		#self.StopAsyncTune( )
+		#self.CloseDialog( )
+
+
 	def GetChannelLast( self ) :
 		return self.mChannelNumber
 
@@ -218,7 +246,7 @@ class DialogChannelJump( BaseDialog ) :
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 1.2, self.AsyncTuneChannel )
+		self.mAsyncTuneTimer = threading.Timer( self.mAsynViewTime, self.AsyncTuneChannel )
 		self.mAsyncTuneTimer.start( )
 
 
