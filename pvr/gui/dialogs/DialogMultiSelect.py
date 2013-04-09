@@ -134,6 +134,10 @@ class DialogMultiSelect( BaseDialog ) :
 	def ChannelItems( self ) :
 
 		for iChannel in self.mDefaultList :
+			#ToDO : isAvailable check
+			if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :
+				continue
+
 			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 			if iChannel.mLocked : 

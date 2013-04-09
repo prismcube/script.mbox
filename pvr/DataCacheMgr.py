@@ -1899,7 +1899,7 @@ class DataCacheMgr( object ) :
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_720p, False )
 
 		mIsHD = False
-		if aResolution == ElisEnum.E_ICON_1080i or aResolution == ElisEnum.E_ICON_720p :
+		if aResolution >= ElisEnum.E_ICON_1080i and aResolution <= ElisEnum.E_ICON_720p :
 			mIsHD = True
 			self.Frontdisplay_SetIcon( aResolution, True )
 
@@ -1915,6 +1915,10 @@ class DataCacheMgr( object ) :
 				iconIndex = -1
 			elif hdmiFormat == '720p' :
 				iconIndex = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '1080p-25' :
+				iconIndex = ElisEnum.E_ICON_1080p
+			elif hdmiFormat == '1080p-50' :
+				iconIndex = ElisEnum.E_ICON_1080p
 
 			self.Frontdisplay_Resolution( iconIndex )
 		else :

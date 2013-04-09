@@ -45,9 +45,8 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def CloseDialog( self ) :
 		#self.clearProperty( 'AnimationWaitingDialogOnClose' )
 		self.close( )
-		import pvr.gui.WindowMgr as WinMgr
-		if WinMgr.GetInstance( ).GetLastWindowID( ) in [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_INFO_PLATE ] :
-			time.sleep( 0.2 )
+		time.sleep( 0.2 )
+
 
 	def SetFrontdisplayMessage( self, aMessage ) :
 		self.mDataCache.Frontdisplay_SetMessage( aMessage )
