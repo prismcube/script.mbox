@@ -24,12 +24,6 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
-E_VIDEO_HDMI			= 0
-E_VIDEO_ANALOG			= 1
-
-E_16_9					= 0
-E_4_3					= 1
-
 #LIST_ID_MENU			= 9000
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
@@ -85,6 +79,7 @@ class Configure( SettingWindow ) :
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 
 		self.mUseUsbBackup			= False
+		self.mAsyncVideoSetThread	= None
 
 
 	def onInit( self ) :
@@ -139,6 +134,9 @@ class Configure( SettingWindow ) :
 		
 
 	def Close( self ) :
+		if self.mAsyncVideoSetThread :
+			self.mAsyncVideoSetThread.canecl( )
+			self.mAsyncVideoSetThread = None
 		self.OpenBusyDialog( )
 		self.StopCheckNetworkTimer( )
 		self.mInitialized = False
@@ -233,24 +231,21 @@ class Configure( SettingWindow ) :
 			if groupId == E_SpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
 				self.SetListControl( )
+				return
 
-			if self.mVideoOutput == E_VIDEO_HDMI :
+			elif self.mVideoOutput == E_VIDEO_ANALOG and groupId == E_SpinEx02 :
 				self.ControlSelect( )
-				if groupId == E_SpinEx02 :					
-					hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-					if hdmiFormat == 'Automatic' :
-						return
-					iconIndex = ElisEnum.E_ICON_1080i
-					if hdmiFormat == '720p' :
-						iconIndex = ElisEnum.E_ICON_720p
-					elif hdmiFormat == '576p' :
-						iconIndex = -1
-					self.mDataCache.Frontdisplay_Resolution( iconIndex )
+				time.sleep( 0.02 )
+				self.mAnalogAscpect = self.GetSelectedIndex( E_SpinEx02 )
+				self.SetListControl( ) 
+
 			else :
-				self.ControlSelect( )
-				if groupId == E_SpinEx02 :
-					self.mAnalogAscpect = self.GetSelectedIndex( E_SpinEx02 )
-					self.SetListControl( ) 
+				if self.mAsyncVideoSetThread :
+					self.mAsyncVideoSetThread.cancel( )
+					self.mAsyncVideoSetThread = None
+
+				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread.start( )
 
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -430,6 +425,19 @@ class Configure( SettingWindow ) :
 					self.mReLoadEthernetInformation = True
 					self.mVisibleParental = False
 				self.SetListControl( )
+
+
+	def AsyncVideoSetting( self ) :
+		self.ControlSelect( )
+		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+		if hdmiFormat == 'Automatic' :
+			return
+		iconIndex = ElisEnum.E_ICON_1080i
+		if hdmiFormat == '720p' :
+			iconIndex = ElisEnum.E_ICON_720p
+		elif hdmiFormat == '576p' :
+			iconIndex = -1
+		self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 
 	def SetListControl( self ) :
