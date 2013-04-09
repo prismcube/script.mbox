@@ -516,8 +516,8 @@ class DataCacheMgr( object ) :
 	 				polarization = MR_LANG( 'Horizontal' )
 	 			else :
 	 				polarization = MR_LANG( 'Vertical' )
-	 				
-				transponderList.append( '%d %d MHz %d KS/s %s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate, polarization ) )
+
+				transponderList.append( '%dMHz   %dKS/s   %s' % ( tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate, polarization ) )
 
 		return transponderList
 
@@ -540,6 +540,18 @@ class DataCacheMgr( object ) :
 				if transponder :
 					return transponder[ aIndex ]
 		return None
+
+
+	def GetSimpleTPInformation( self, aLongitude, aBand, aIndex ) :
+		transponder = self.GetTransponderListByIndex( aLongitude, aBand, aIndex )
+		if transponder :
+			pol = 'H'
+			if transponder.mPolarization :
+				pol = 'V'
+
+			return '%s / %s / %s' % ( transponder.mFrequency, transponder.mSymbolRate, pol )
+
+		return 'None'
 
 
 	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :

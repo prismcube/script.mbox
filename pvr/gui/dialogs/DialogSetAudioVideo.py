@@ -10,12 +10,16 @@ class DialogSetAudioVideo( SettingDialog ) :
 		LOG_TRACE( 'args[0]=[%s]' % args[0] )
 		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
-		self.mIsOk = False
-		self.mSelectIdx = 0
-		self.mSelectName = ''
-		self.mDialogTitle = ''
-		self.mAudioTrack = []
-		self.mMode = CONTEXT_ACTION_VIDEO_SETTING
+		self.mIsOk					= False
+		self.mSelectIdx				= 0
+		self.mSelectName			= ''
+		self.mDialogTitle			= ''
+		self.mAudioTrack			= []
+		self.mMode					= CONTEXT_ACTION_VIDEO_SETTING
+
+		self.mVideoOutput			= E_VIDEO_HDMI
+		self.mAnalogAscpect			= E_16_9
+		self.mAsyncVideoSetThread 	= None
 
 
 	def onInit( self ) :
@@ -73,17 +77,31 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
 			self.Close( )
+
+		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
+			groupId = self.GetGroupId( aControlId )
+			if groupId == E_DialogSpinEx01 :
+				self.mVideoOutput = self.GetSelectedIndex( E_DialogSpinEx01 )
+				time.sleep( 0.02 )
+				self.DrawItem( )
+				return
+
+			elif self.mVideoOutput == E_VIDEO_ANALOG and groupId == E_DialogSpinEx02 :
+				self.ControlSelect( )
+				self.mAnalogAscpect = self.GetSelectedIndex( E_DialogSpinEx02 )
+				time.sleep( 0.02 )
+				self.DrawItem( )
+
+			else :
+				if self.mAsyncVideoSetThread :
+					self.mAsyncVideoSetThread.cancel( )
+					self.mAsyncVideoSetThread = None
+
+				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread.start( )
+
 		else :
 			self.ControlSelect( )
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				return
-			iconIndex = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '720p' :
-				iconIndex = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				iconIndex = -1
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 
 	def onEvent( self, aEvent ) :
@@ -99,17 +117,32 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def DrawItem( self ) :
-		self.getControl( MAIN_GROUP_ID ).setVisible( False )
 		self.ResetAllControl( )
 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
-			self.AddEnumControl( E_DialogSpinEx01, 'HDMI Format' )
-			self.AddEnumControl( E_DialogSpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ) )
-			self.AddEnumControl( E_DialogSpinEx03, 'HDMI Color Space' )
+			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
+			if self.mVideoOutput == E_VIDEO_HDMI :
+				self.AddEnumControl( E_DialogSpinEx02, 'HDMI Format', MR_LANG( ' - HDMI Format' ) )
+				self.AddEnumControl( E_DialogSpinEx03, 'Show 4:3', MR_LANG( ' - TV Screen Format' ) )
+				self.AddEnumControl( E_DialogSpinEx04, 'HDMI Color Space', MR_LANG( ' - HDMI Color Space' ) )
 			
-			visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+				visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+			else :
+				self.AddEnumControl( E_DialogSpinEx02, 'TV Aspect', MR_LANG( ' - TV Aspect Ratio' ) )
+				if self.mAnalogAscpect == E_16_9 :
+					self.AddEnumControl( E_DialogSpinEx03, 'Picture 16:9', MR_LANG( ' - Picture Format' ) )
+				else :
+					self.AddEnumControl( E_DialogSpinEx03, 'Picture 4:3', MR_LANG( ' - Picture Format' ) )
+
+				visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+				hideControlIds = [ E_DialogSpinEx04 ]
+				self.SetVisibleControls( hideControlIds, False )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Audio HDMI' ), self.mAudioTrack, 0 )
@@ -118,13 +151,25 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03 ]
+			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 		self.SetAutoHeight( True )
 		self.InitControl( )
 		self.UpdateLocation( )
-		self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
+
+	def AsyncVideoSetting( self ) :
+		self.ControlSelect( )
+		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+		if hdmiFormat == 'Automatic' :
+			return
+		iconIndex = ElisEnum.E_ICON_1080i
+		if hdmiFormat == '720p' :
+			iconIndex = ElisEnum.E_ICON_720p
+		elif hdmiFormat == '576p' :
+			iconIndex = -1
+		self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 
 	def GetCloseStatus( self ) :
@@ -173,6 +218,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def Close( self ) :
+		if self.mAsyncVideoSetThread :
+			self.mAsyncVideoSetThread.cancel( )
 		self.mEventBus.Deregister( self )
 		self.ResetAllControl( )
 		self.CloseDialog( )
