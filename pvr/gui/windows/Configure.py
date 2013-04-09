@@ -135,7 +135,7 @@ class Configure( SettingWindow ) :
 
 	def Close( self ) :
 		if self.mAsyncVideoSetThread :
-			self.mAsyncVideoSetThread.canecl( )
+			self.mAsyncVideoSetThread.cancel( )
 			self.mAsyncVideoSetThread = None
 		self.OpenBusyDialog( )
 		self.StopCheckNetworkTimer( )
