@@ -792,8 +792,6 @@ class Configure( SettingWindow ) :
 
 
 	def ConnectEthernet( self ) :
-		return
-		"""
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
 		NetMgr.GetInstance( ).WriteEthernetConfig( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 		NetMgr.GetInstance( ).DisConnectWifi( )
@@ -811,7 +809,6 @@ class Configure( SettingWindow ) :
 			self.mReLoadEthernetInformation = True
 			self.SetListControl( )
 			self.CloseProgress( )
-		"""
 
 
 	def EthernetSetting( self, aControlId ) :

@@ -52,19 +52,6 @@ class IpParser( object ) :
 				break
 
 
-	#def SetCurrentNetworkType( aType ) :
-		#self.mNetworkType = aType
-		"""
-		from ElisProperty import ElisPropertyEnum
-		import pvr.ElisMgr
-		command = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		if self.mNetworkType == NETWORK_WIRELESS :
-			ElisPropertyEnum( 'Network Type' , command ).SetProp( 1 )
-		else :
-			ElisPropertyEnum( 'Network Type' , command ).SetProp( 0 )
-		"""
-
-
 	def GetCurrentServiceType( self ) :
 		try :
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
@@ -173,21 +160,27 @@ class IpParser( object ) :
 		addressMask = 'None'
 		addressGateway = 'None'
 		addressNameServer = 'None'
-		print 'dhkim test GetNetworkAddress #3'
+		print 'dhkim test GetNetworkAddress #2'
 		try :
 			inputFile = None
-			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % dev + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % aDeviceName + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
-			
+			print 'dhkim test GetNetworkAddress #3'
+			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % dev + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % dev + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
+
+			print 'dhkim test GetNetworkAddress #4'
 			for command in osCommand :
 				time.sleep( 0.01 )
+				print 'dhkim test GetNetworkAddress #5'
 				os.system( command )
-			
+
+
+			print 'dhkim test GetNetworkAddress #6'
 			time.sleep( 0.02 )
 			inputFile = open( FILE_TEMP, 'r' )
 			addressIp = inputFile.readline( )
 			addressMask = inputFile.readline( )
 			addressGateway = inputFile.readline( )
 			addressNameServer = self.GetNameServer( )
+			print 'dhkim test GetNetworkAddress #7'
 
 			if self.CheckIsIptype( addressIp ) == False :
 				addressIp = 'None'
@@ -213,6 +206,7 @@ class IpParser( object ) :
 
 
 	def GetNameServer( self ) :
+		print 'dhkim test GetNameServer #1'
 		addressNameServer = 'None'
 		try :
 			inputFile = open( FILE_NAME_RESOLV_CONF, 'r' )
@@ -224,6 +218,7 @@ class IpParser( object ) :
 					addressNameServer = words[1]
 					break
 			inputFile.close( )
+			print 'dhkim test GetNameServer = %s' % addressNameServer
 			return addressNameServer
 
 		except Exception, e :
@@ -234,36 +229,40 @@ class IpParser( object ) :
 			return addressNameServer
 
 
-	def SetIpAddressProperty( self, aAddressIp, aAddressMask, aAddressGateway, aAddressNameServer ) :
+	def SetNetworkProperty( self, aAddress, aNetmask, aGateway, aNameserver ) :
 		from ElisProperty import ElisPropertyInt
 		import pvr.ElisMgr
 		command = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		if self.CheckIsIptype( aAddressIp ) == True :
-			ElisPropertyInt( 'IpAddress' , command ).SetProp( MakeStringToHex( aAddressIp ) )
+
+		if self.CheckIsIptype( aAddress ) == True :
+			ElisPropertyInt( 'IpAddress' , command ).SetProp( MakeStringToHex( aAddress ) )
 			make = ElisPropertyInt( 'IpAddress' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
 			LOG_TRACE( 'make_1 = %d' % make_1 )
 			LOG_TRACE( 'make_2 = %d' % make_2 )
 			LOG_TRACE( 'make_3 = %d' % make_3 )
 			LOG_TRACE( 'make_4 = %d' % make_4 )
-		if self.CheckIsIptype( aAddressMask ) == True :
-			ElisPropertyInt( 'SubNet' , command ).SetProp( MakeStringToHex( aAddressMask ) )
+
+		if self.CheckIsIptype( aNetmask ) == True :
+			ElisPropertyInt( 'SubNet' , command ).SetProp( MakeStringToHex( aNetmask ) )
 			make = ElisPropertyInt( 'SubNet' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
 			LOG_TRACE( 'make_1 = %d' % make_1 )
 			LOG_TRACE( 'make_2 = %d' % make_2 )
 			LOG_TRACE( 'make_3 = %d' % make_3 )
 			LOG_TRACE( 'make_4 = %d' % make_4 )
-		if self.CheckIsIptype( aAddressGateway ) == True :
-			ElisPropertyInt( 'Gateway' , command ).SetProp( MakeStringToHex( aAddressGateway ) )
+
+		if self.CheckIsIptype( aGateway ) == True :
+			ElisPropertyInt( 'Gateway' , command ).SetProp( MakeStringToHex( aGateway ) )
 			make = ElisPropertyInt( 'Gateway' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
 			LOG_TRACE( 'make_1 = %d' % make_1 )
 			LOG_TRACE( 'make_2 = %d' % make_2 )
 			LOG_TRACE( 'make_3 = %d' % make_3 )
 			LOG_TRACE( 'make_4 = %d' % make_4 )
-		if self.CheckIsIptype( aAddressNameServer ) == True :
-			ElisPropertyInt( 'DNS' , command ).SetProp( MakeStringToHex( aAddressNameServer ) )
+
+		if self.CheckIsIptype( aNameserver ) == True :
+			ElisPropertyInt( 'DNS' , command ).SetProp( MakeStringToHex( aNameserver ) )
 			make = ElisPropertyInt( 'DNS' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
 			LOG_TRACE( 'make_1 = %d' % make_1 )
@@ -272,34 +271,6 @@ class IpParser( object ) :
 			LOG_TRACE( 'make_4 = %d' % make_4 )
 
 
-	"""
-	def LoadEthernetType( self ) :
-		status = False
-		try :
-			if self.mEthernetDevName != None :
-				inputFile = open( FILE_NAME_INTERFACES, 'r' )
-				inputline = inputFile.readlines( )
-				for line in inputline :
-					if line.startswith( 'iface ' + self.mEthernetDevName + ' inet' ) :
-						words = string.split( line )
-						if words[3] == 'static' :
-							self.mEthType = NET_STATIC
-						else :
-							self.mEthType = NET_DHCP
-						status = True
-			else :
-				LOG_ERR( 'LoadEthernetType Load Fail!!!' )
-
-			inputFile.close( )
-			return status
-
-		except Exception, e :
-			if inputFile.closed == False :
-				inputFile.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
-			status = False
-			return status
-	"""
 	def GetEthernetMethod( self ) :
 		try :
 			nettype = NET_DHCP
@@ -337,8 +308,8 @@ class IpParser( object ) :
 	def GetEthernetAddress( self ) :
 		return self.mEthernetAddressIp, self.mEthernetAddressMask, self.mEthernetAddressGateway, self.mEthernetAddressNameServer
 
-
-	def SetEthernet( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
+	
+	def WriteEthernetConfig( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		status = False
 		try :
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
@@ -365,13 +336,7 @@ class IpParser( object ) :
 
 			self.SetEthernetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
-			#wifi = WirelessParser( )
 			self.IfUpDown( self.mEthernetDevName )
-			#os.system( '/app/ifdown_wifi.sh' )
-			#os.system( '/app/ifdown_ethernet.sh' )
-			
-			#time.sleep( 1 )
-			#os.system( '/app/ifup_ethernet.sh' )
 			status = True
 			inputFile.close( )
 			outputFile.close( )
@@ -385,6 +350,23 @@ class IpParser( object ) :
 			if outputFile.closed == False :
 				outputFile.close( )
 			return status
+
+
+	"""
+	def DisConnectWifi( self ) :
+		print 'dhkim test DisConnectWifi'
+		return
+
+
+	def DeleteConfigFile( self ) :
+		print 'dhkim test DeleteConfigFile'
+		return
+
+
+	def ConnectEthernet( self, aEmpty, aEmpty, aEmpty, aEmpty ) :
+		print 'dhkim test ConnectEthernet'
+		return
+	"""
 
 
 	def SetEthernetNameServer( self, aType, aNameAddress ) :
@@ -809,4 +791,16 @@ class IpParser( object ) :
 
 	def CheckInternetState( self ) :
 		return xbmc.getInfoLabel( 'System.internetstate' )
+
+
+	def DisConnectWifi( self ) :
+		return
+
+
+	def DeleteConfigFile( self ) :
+		return
+
+
+	def ConnectEthernet( self, aEmpty, aEmpty, aEmpty, aEmpty ) :
+		return
 
