@@ -275,6 +275,10 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
+			if self.GetBlinkingProperty( ) != 'None' :
+				LOG_TRACE( '----------------try recording' )
+				return
+
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				if status.mMode == ElisEnum.E_MODE_PVR :
