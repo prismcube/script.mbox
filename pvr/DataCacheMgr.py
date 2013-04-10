@@ -226,10 +226,15 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		#self.InitNetwork( )
+		if not E_USE_OLD_NETWORK :
+			self.InitNetwork( )
 
-	"""
+	
 	def InitNetwork( self ) :
+		import pvr.NetworkMgr as NetMgr
+		NetMgr.GetInstance( ).LoadEthernetService( )
+		NetMgr.GetInstance( ).LoadSetWifiTechnology( )
+		"""
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			import pvr.NetworkMgr as NetMgr
 			ethernet = None
@@ -257,7 +262,7 @@ class DataCacheMgr( object ) :
 						LOG_ERR( 'Wifi service not configured' )
 				else :
 					LOG_ERR( 'Wifi device not configured' )
-	"""
+		"""
 
 
 	def LoadVolumeAndSyncMute( self, isSyncMuteOn ) :

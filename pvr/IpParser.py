@@ -278,11 +278,11 @@ class IpParser( object ) :
 
 
 	def SetServiceConnect( self, aService, aFlag ) :
-		return None
+		return True
 
 
 	def SetAutoConnect( self, aService, aFlag ) :
-		return None
+		return True
 
 
 	def DisConnectEthernet( self ) :

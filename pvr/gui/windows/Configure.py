@@ -741,6 +741,8 @@ class Configure( SettingWindow ) :
 		elif aSelectedItem == E_WIFI :
 			visibleControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetEnableControls( visibleControlIds, False )
+			if not E_USE_OLD_NETWORK :
+				self.SetEnableControl( E_Input06, False )
 				
 		elif aSelectedItem == E_PARENTAL :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input02 ]
@@ -854,6 +856,7 @@ class Configure( SettingWindow ) :
 				return
 
 			apList = NetMgr.GetInstance( ).GetSearchedWifiApList( )
+			print 'dhkim test apList = %s' % apList
 			
 			if len( apList ) == 0 :
 				self.CloseProgress( )
@@ -934,16 +937,15 @@ class Configure( SettingWindow ) :
 			#else :
 
 			if E_USE_OLD_NETWORK == False :
+				print 'dhkim test ConnectCurrentWifi #1'
 				ret1 = NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
+				print 'dhkim test ConnectCurrentWifi #2'
 				ret2 = NetMgr.GetInstance( ).WriteWifiConfig( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
 				ret3 = NetMgr.GetInstance( ).LoadWifiService( )
-			else :
-				print 'dhkim test ConnectCurrentWifi #1'
-				ret1 = NetMgr.GetInstance( ).WriteWifiInterfaces( self.mUseStatic, self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
-				print 'dhkim test ConnectCurrentWifi #2'
-				print 'dhkim test self.mHiddenSsid = %s' % self.mHiddenSsid
-				ret2 = NetMgr.GetInstance( ).WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 				print 'dhkim test ConnectCurrentWifi #3'
+			else :				
+				ret1 = NetMgr.GetInstance( ).WriteWifiInterfaces( self.mUseStatic, self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
+				ret2 = NetMgr.GetInstance( ).WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 				ret3 = NetMgr.GetInstance( ).ConnectWifi( )
 			
 			if ret1 == False or ret2 == False or ret3 == False :
@@ -954,9 +956,17 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 			else :
 				# use Connman
+				print 'dhkim test ConnectCurrentWifi #4'
 				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
-				NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
-				NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+				print 'dhkim test ConnectCurrentWifi #5'
+				ret1 = NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
+				print 'dhkim test ConnectCurrentWifi #6'
+				ret2 = NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+				print 'dhkim test ConnectCurrentWifi #7'
+				if ret1 == False or ret2 == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
+					dialog.doModal( )
 				time.sleep( 1 )
 				NetMgr.GetInstance( ).DisConnectEthernet( )
 				# use Connman

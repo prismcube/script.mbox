@@ -399,7 +399,7 @@ class NetworkMgr( object ) :
 			for ap in aplist :
 				if str( ap[0] ) == aSSID :
 					LOG_TRACE( 'Find matched SSID = %s' % ap[0] )
-					return ap[1]
+					return ap[3]
 
 		LOG_ERR( 'GetConfiguredWifiServicePath is None' )
 		return None
@@ -546,46 +546,8 @@ class NetworkMgr( object ) :
 		return NOT_USE_HIDDEN_SSID
 
 
-	"""
-	def GetServiceAddress( self, aService ) :
-		address		= 'None'
-		netmask		= 'None'
-		gateway		= 'None'
-		nameserver	= 'None'
-
-		if gUseNetwork == False :
-			return 'None', 'None', 'None', 'None'
-
-		if aService :
-			try :
-				self.WaitConfigurationService( aService )
-
-				property = aService.GetProperties( )
-				for key in property.keys( ) :
-					if key == 'Nameservers' :
-						if len( property[key] ) != 0 :
-							nameserver = property[key][0]
-						else :
-							LOG_ERR( 'Name server empty!!' )
-					elif key == 'IPv4' :
-						for val in property[key].keys( ) :
-							if val == 'Address' :
-								address = property[key][val]
-							elif val == 'Netmask' :
-								netmask = property[key][val]
-							elif val == 'Gateway' :
-								gateway = property[key][val]
-
-				return self.CheckChangeIpType( address, netmask, gateway, nameserver )
-
-			except dbus.DBusException, error :                                  
-				LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
-				return 'None', 'None', 'None', 'None'
-
-		else :
-			return 'None', 'None', 'None', 'None'
-	"""
 	def GetNetworkAddress( self, aType ) :
+		print 'dhkim test GetNetworkAddress #1'
 		address		= 'None'
 		netmask		= 'None'
 		gateway		= 'None'
@@ -603,7 +565,7 @@ class NetworkMgr( object ) :
 			try :
 				self.WaitConfigurationService( service )
 
-				property = aService.GetProperties( )
+				property = service.GetProperties( )
 				for key in property.keys( ) :
 					if key == 'Nameservers' :
 						if len( property[key] ) != 0 :
