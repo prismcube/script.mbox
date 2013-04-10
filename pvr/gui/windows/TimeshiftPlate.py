@@ -239,7 +239,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				self.mSlideY = E_SLIDE_GAP + 2
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
-				self.UpdateBookmarkByPoint( )
+				#self.UpdateBookmarkByPoint( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -252,7 +252,7 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
 					self.mSlideY = E_SLIDE_GAP + 2
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
-					self.UpdateBookmarkByPoint( )
+					#self.UpdateBookmarkByPoint( )
 
 			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 				self.StopAutomaticHide( )
@@ -261,7 +261,7 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.ShowButtonFocus( )
 				if ret :
 					self.mSlideY = -( E_SLIDE_GAP + 1 )
-					self.UpdateBookmarkByPoint( )
+					#self.UpdateBookmarkByPoint( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -1308,7 +1308,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
 		#2.show mark on progress
-		self.UpdateBookmarkByPoint( )
+		#self.UpdateBookmarkByPoint( )
 
 
 	def UpdateBookmarkByPoint( self ) :
