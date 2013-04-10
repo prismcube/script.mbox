@@ -159,13 +159,13 @@ class FavoriteAddons( BaseWindow ) :
 
 	def UpdateViewMode( self ) :
 		if self.mViewMode == E_VIEW_MODE_LIST :
-			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
+			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'View' ), MR_LANG( 'List' ) ) )
 			self.setProperty( 'Addons_ViewMode', 'list' )
 		elif self.mViewMode == E_VIEW_MODE_THUMBNAIL :
-			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'THUMBNAIL' ) ) )
+			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'View' ), MR_LANG( 'Thumbnail' ) ) )
 			self.setProperty( 'Addons_ViewMode', 'thumbnail' )
 		else :
-			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
+			self.mCtrlViewMode.setLabel( '%s : %s' %( MR_LANG( 'View' ), MR_LANG( 'List' ) ) )
 			self.setProperty( 'Addons_ViewMode', 'list' )
 			LOG_WARN( 'Unknown view mode' )
 

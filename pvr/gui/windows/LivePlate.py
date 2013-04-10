@@ -50,7 +50,7 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
-E_NOMAL_BLINKING_TIME		= 0.2
+E_NOMAL_BLINKING_TIME	= 0.2
 E_MAX_BLINKING_COUNT	=  10
 
 class LivePlate( LivePlateWindow ) :
@@ -249,6 +249,10 @@ class LivePlate( LivePlateWindow ) :
 			self.RestartAutomaticHide( )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
+			if self.GetBlinkingProperty( ) != 'None' :
+				LOG_TRACE( '------------22----try recording' )
+				return
+
 			status = self.mDataCache.Player_GetStatus( ) 
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
