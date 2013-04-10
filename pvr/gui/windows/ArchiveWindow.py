@@ -217,7 +217,7 @@ class ArchiveWindow( BaseWindow ) :
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback and timeshift' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback%s and timeshift' )% NEW_LINE )
 				dialog.doModal( )
 
 
@@ -1058,17 +1058,17 @@ class ArchiveWindow( BaseWindow ) :
 			selectedPos += 1
 
 		if self.mViewMode == E_VIEW_LIST :
-			self.UpdateControlListSelectItem( self.mCtrlCommonList, selectedPos )
-			#self.mCtrlCommonList.selectItem( selectedPos )
+			#self.UpdateControlListSelectItem( self.mCtrlCommonList, selectedPos )
+			self.mCtrlCommonList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :
-			self.UpdateControlListSelectItem( self.mCtrlThumbnailList, selectedPos )
-			#self.mCtrlThumbnailList.selectItem( selectedPos )
+			#self.UpdateControlListSelectItem( self.mCtrlThumbnailList, selectedPos )
+			self.mCtrlThumbnailList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :
-			self.UpdateControlListSelectItem( self.mCtrlPosterwrapList, selectedPos )
-			#self.mCtrlPosterwrapList.selectItem( selectedPos )
+			#self.UpdateControlListSelectItem( self.mCtrlPosterwrapList, selectedPos )
+			self.mCtrlPosterwrapList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_FANART :
-			self.UpdateControlListSelectItem( self.mCtrlFanartList, selectedPos )
-			#self.mCtrlFanartList.selectItem( selectedPos )
+			#self.UpdateControlListSelectItem( self.mCtrlFanartList, selectedPos )
+			self.mCtrlFanartList.selectItem( selectedPos )
 		else :
 			LOG_WARN( 'Unknown View Mode' )
 

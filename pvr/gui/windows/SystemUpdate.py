@@ -399,7 +399,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_USB_NOT :
 			line = MR_LANG( 'Please insert a USB flash memory and press OK' )
 		elif aMsg == E_STRING_CHECK_VERIFY :
-			line = MR_LANG( 'File verification failed, try downloading it again' )
+			line = MR_LANG( 'File verification failed%s Try downloading it again' )% NEW_LINE
 		elif aMsg == E_STRING_CHECK_FINISH :
 			line = MR_LANG( 'Ready to update' )
 		elif aMsg == E_STRING_CHECK_UNLINK_NETWORK :
@@ -415,7 +415,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_NOT_OLDVERSION :
 			line = MR_LANG( 'Cannot find previous versions' )
 		elif aMsg == E_STRING_CHECK_FAILED :
-			line = MR_LANG( 'Cannot get the latest firmware, please try again' )
+			line = MR_LANG( 'Cannot get the latest firmware%s Please try again' )% NEW_LINE
 		elif aMsg == E_STRING_CHECK_HAVE_NONE :
 			line = MR_LANG( 'No released firmware available' )
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
@@ -944,10 +944,10 @@ class SystemUpdate( SettingWindow ) :
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
-			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB DURING THE UPGRADING' )
-			line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
+			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB%s DURING THE UPGRADING' )% NEW_LINE
+			#line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s\n%s'% ( line1, line2 ) )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
 			dialog.doModal( )
 			ret = dialog.IsOK( )
 			if ret == E_DIALOG_STATE_YES :

@@ -232,14 +232,14 @@ USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
 USER_ENUM_LIST_DHCP_STATIC			= [ MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) ]
 USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_VIDEO_OUTPUT			= [ MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) ]
-USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Current Transponder Only' ), MR_LANG( 'All Transponders' ) ]
+USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Single Transponder' ), MR_LANG( 'All Transponders' ) ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
 E_LIST_DISEQC_MODE					= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
 E_LIST_COMMITTED_SWITCH				= [ 'Disable', '1', '2', '3', '4' ]
 E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
-E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set Current Position as East Limit' ), MR_LANG( 'Set Current Position as West Limit' ) ]
+E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6', '-4', '-2', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
@@ -257,9 +257,9 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( USER_ENUM_LIST_DHCP_STATIC, MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) )
 	InitializedByVariableList( USER_ENUM_LIST_NETWORK_TYPE, MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) )
 	InitializedByVariableList( USER_ENUM_LIST_VIDEO_OUTPUT, MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) )
-	InitializedByVariableList( USER_ENUM_LIST_SEARCH_RANGE, MR_LANG( 'Current Transponder Only' ), MR_LANG( 'All Transponders' ) )
+	InitializedByVariableList( USER_ENUM_LIST_SEARCH_RANGE, MR_LANG( 'Single Transponder' ), MR_LANG( 'All Transponders' ) )
 	InitializedByVariableList( E_LIST_LNB_TYPE, MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) )
-	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set Current Position as East Limit' ), MR_LANG( 'Set Current Position as West Limit' ) )
+	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) )
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
 	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )
