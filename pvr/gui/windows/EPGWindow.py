@@ -449,13 +449,13 @@ class EPGWindow( BaseWindow ) :
 	def InitControl( self ) :
 
 		if self.mEPGMode == E_VIEW_GRID :
-			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'GRID' ) ) )		
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Grid' ) ) )
 		elif self.mEPGMode == E_VIEW_CHANNEL :
-			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'CHANNEL' ) ) )
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Channel' ) ) )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
-			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'CURRENT' ) ) )		
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Current' ) ) )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
-			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ),  MR_LANG( 'FOLLOWING' ) ) )		
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ),  MR_LANG( 'Following' ) ) )
 		else :
 			LOG_WARN( 'Unknown epg mode' )
 			

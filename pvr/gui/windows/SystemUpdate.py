@@ -1450,8 +1450,8 @@ class SystemUpdate( SettingWindow ) :
 			iPVS.mDate = ret[1]
 			iPVS.mError = 0
 
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'CURRENT VER.' ), iPVS.mVersion )
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'DATE' ), iPVS.mDate )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'Current Ver.' ), iPVS.mVersion )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'Date' ), iPVS.mDate )
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
 			self.mCurrData = iPVS

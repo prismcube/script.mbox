@@ -319,24 +319,24 @@ class ArchiveWindow( BaseWindow ) :
 	def InitControl( self ) :
 
 		if self.mViewMode == E_VIEW_LIST :
-			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'List' ) ) )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
-			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'THUMBNAIL' ) ) )		
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Thumbnail' ) ) )	
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
-			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'POSTER_WRAP' ) ) )		
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Poster_wrap' ) ) )
 		elif self.mViewMode == E_VIEW_FANART :
-			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'FANART' ) ) )		
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Fanart' ) ) )
 		else :
 			LOG_WARN( 'Unknown view mode' )
 
 		if self.mSortMode == E_SORT_DATE :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'DATE' ) ) )
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'Sort' ), MR_LANG( 'Date' ) ) )
 		elif self.mSortMode == E_SORT_CHANNEL :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'CHANNEL' ) ) )		
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'Sort' ), MR_LANG( 'Channel' ) ) )
 		elif self.mSortMode == E_SORT_TITLE :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'TITLE' ) ) )		
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'Sort' ), MR_LANG( 'Title' ) ) )
 		elif self.mSortMode == E_SORT_DURATION :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'DURATION') ) )
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'Sort' ), MR_LANG( 'Duration') ) )
 		else :
 			LOG_WARN( 'Unknown sort mode' )
 

@@ -919,7 +919,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mUserMode.mSortingMode = nextSort
 				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
 
-				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
+				label = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
@@ -1385,7 +1385,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
-		lblButtonSort = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
+		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
