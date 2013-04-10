@@ -2383,6 +2383,42 @@ Search for window name
 					</control>
 				</control>
 
+				<!-- bookmark point-->
+				<control type="group">
+					<posx>400</posx>
+					<posy>595</posy>
+					<animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(2900600)">Conditional</animation>
+					<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(2900600)">Conditional</animation>
+					<control type="group" id="2900601">
+						<visible>substring(Window.Property(BookMarkPointShow),true)</visible>
+						<control type="list" id="2900600">
+							<width>780</width>
+							<height>16</height>
+							<focusposition>3</focusposition>
+							<orientation>horizontal</orientation>
+							<preloaditems>1</preloaditems>
+							<itemlayout height="16" width="800">
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>25</width>
+									<height>25</height>
+									<!--aspectratio>stretch</aspectratio-->
+									<texture>StepFO.png</texture>
+								</control>
+							</itemlayout>
+							<focusedlayout height="16" width="800">
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>25</width>
+									<height>25</height>
+									<texture>StepFO.png</texture>
+								</control>
+							</focusedlayout>
+						</control>
+					</control>
+				</control>
 
 				<!-- Rec info -->
 				<control type="group">

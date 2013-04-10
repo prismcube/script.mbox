@@ -59,6 +59,7 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
+
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -239,7 +240,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				self.mSlideY = E_SLIDE_GAP + 2
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
-				self.UpdateBookmarkByPoint( )
+				#self.UpdateBookmarkByPoint( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -252,7 +253,7 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
 					self.mSlideY = E_SLIDE_GAP + 2
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
-					self.UpdateBookmarkByPoint( )
+					#self.UpdateBookmarkByPoint( )
 
 			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 				self.StopAutomaticHide( )
@@ -261,7 +262,7 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.ShowButtonFocus( )
 				if ret :
 					self.mSlideY = -( E_SLIDE_GAP + 1 )
-					self.UpdateBookmarkByPoint( )
+					#self.UpdateBookmarkByPoint( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -1195,6 +1196,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def DoContextAction( self, aSelectAction ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
+			if self.mBookmarkList and len( self.mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+				dialog.doModal( )
+				return
+
 			ret = self.mDataCache.Player_CreateBookmark( )
 			if ret :
 				time.sleep(1)
@@ -1308,10 +1315,13 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
 		#2.show mark on progress
-		self.UpdateBookmarkByPoint( )
+		#self.UpdateBookmarkByPoint( )
 
 
 	def UpdateBookmarkByPoint( self ) :
+
+
+	def UpdateBookmarkByPoint_addClass( self ) :
 		if not self.mBookmarkList or len( self.mBookmarkList ) < 1 :
 			return
 
