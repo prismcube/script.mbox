@@ -109,7 +109,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  StringToListIndex( self.mFormattedList, self.GetControlLabel2String( E_Input01 ) ) )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select
@@ -124,10 +124,14 @@ class ManualScan( SettingWindow ) :
 		elif groupId == E_Input02 :
 			if self.mIsManualSetup == 0 :
 				formattedTransponderList = []
-				for i in range( len( self.mTransponderList ) ) :			
-					formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
+				for i in range( len( self.mTransponderList ) ) :
+					if self.mTransponderList[i].mPolarization == ElisEnum.E_LNB_HORIZONTAL :
+		 				polarization = MR_LANG( 'Horizontal' )
+		 			else :
+		 				polarization = MR_LANG( 'Vertical' )
+					formattedTransponderList.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, StringToListIndex( formattedTransponderList, self.GetControlLabel2String( E_Input02 ) ) )
+				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, self.mTransponderIndex )
 
 				if select >=0 :
 					self.mTransponderIndex = select
