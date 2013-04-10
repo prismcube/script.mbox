@@ -536,7 +536,7 @@
 "Delete OK";;;;;;;;;"Удалить ОК";3121
 "Are you sure you want to stop the channel scan?";;;;;;;;;"Остановить сканирование каналов?";3122
 "Exit channel search";;;;;;;;;"Выйти из поиска каналов";3123
-"TV channels : %d %sRadio channels : %d";;;;;;;;;"ТВ каналы : %d \nРадио каналы : %d";3124
+"TV channels : %d %sRadio channels : %d";;;;;;;;;"ТВ каналы : %d %sРадио каналы : %d";3124
 "Channel Search Result";;;;;;;;;"Рузультат Поиска Каналов";3125
 "East Limit";;;;;;;;;"Восточный Лимит";3126
 "One step to East";;;;;;;;;"Один Шаг на Восток";3127
