@@ -67,6 +67,7 @@ E_STRING_CHECK_NOT_OLDVERSION = 12
 E_STRING_CHECK_FAILED    = 13
 E_STRING_CHECK_HAVE_NONE = 14
 E_STRING_CHECK_DOWNLOADING    = 15
+E_STRING_CHECK_HDD = 16
 
 UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
@@ -419,6 +420,8 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'No released firmware available' )
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
 			line = MR_LANG( 'Downloading...' )
+		elif aMsg == E_STRING_CHECK_HDD :
+			line = MR_LANG( 'Check your HDD device' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -1039,6 +1042,16 @@ class SystemUpdate( SettingWindow ) :
 		sizeCheck = True
 
 		if CheckHdd( ) :
+			hddPath = self.mDataCache.HDD_GetMountPath( )
+			if hddPath :
+				global E_DEFAULT_PATH_HDD
+				E_DEFAULT_PATH_HDD = hddPath
+
+			else :
+				LOG_TRACE( 'Not Exist HDD' )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
+				return False
+
 			LOG_TRACE( 'Check HDD True' )
 			if GetDeviceSize( E_DEFAULT_PATH_HDD ) < self.mPVSData.mSize :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_DISKFULL )

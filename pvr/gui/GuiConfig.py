@@ -401,6 +401,7 @@ CONTEXT_ACTION_VIDEO_SETTING 	= 41
 CONTEXT_ACTION_AUDIO_SETTING 	= 42
 
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
+E_DEFAULT_BOOKMARK_LIMIT = 100
 
 
 ############################ Global Function For GUI ############################
