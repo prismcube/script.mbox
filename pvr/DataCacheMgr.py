@@ -226,9 +226,9 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		self.InitNetwork( )
+		#self.InitNetwork( )
 
-
+	"""
 	def InitNetwork( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			import pvr.NetworkMgr as NetMgr
@@ -257,6 +257,7 @@ class DataCacheMgr( object ) :
 						LOG_ERR( 'Wifi service not configured' )
 				else :
 					LOG_ERR( 'Wifi device not configured' )
+	"""
 
 
 	def LoadVolumeAndSyncMute( self, isSyncMuteOn ) :

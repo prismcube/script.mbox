@@ -425,10 +425,10 @@ class NetworkMgr( object ) :
 					Security = None
 					if 'Security' in properties.keys( ) :
 						Security = '['
-						for i in properties[ 'Security' ]:
+						for i in properties[ 'Security' ] :
 							Security += ' ' + str( i )
 						Security += ' ]'
-					servicelist.append( [ name, path, str( int ( properties[ 'Strength' ] ) ), Security ] )
+					servicelist.append( [ name, str( int ( properties[ 'Strength' ] ) ), Security, path ] )
 
 			LOG_TRACE( 'GetSearchedWifiApList = %s' % servicelist )
 			return servicelist
@@ -525,6 +525,25 @@ class NetworkMgr( object ) :
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+
+
+	def ApInfoToEncrypt( self, aType ) :
+		print 'dhkim test Todo'
+		print 'dhkim test type = %s' % aType
+		if aType == 'No' :
+			return ENCRYPT_OPEN
+		elif aType == 'WPA' :
+			return ENCRYPT_TYPE_WPA
+		elif aType == 'WEP' :
+			return ENCRYPT_TYPE_WEP
+		else :
+			LOG_ERR( 'ApInfoToEncrypt Fail!!' )
+			return ENCRYPT_TYPE_WPA
+
+
+	def GetWifiUseHiddenSsid( self ) :
+		print 'dhkim test todo'
+		return NOT_USE_HIDDEN_SSID
 
 
 	"""

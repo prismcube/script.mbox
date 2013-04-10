@@ -28,18 +28,6 @@ def GetInstance( ) :
 class IpParser( object ) :
 	def __init__( self ) :
 		self.mEthernetDevName			= 'eth0'
-		#self.mNetworkType				= NETWORK_ETHERNET
-	
-		self.mEthType					= None
-		self.mEthernetAddressIp			= '255.255.255.255'
-		self.mEthernetAddressMask		= '255.255.255.255'
-		self.mEthernetAddressGateway	= '255.255.255.255'
-		self.mEthernetAddressNameServer	= '255.255.255.255'
-
-		self.mWifiCurrentSsid			= None
-		self.mWifiPassWord				= None
-		self.mWifikey_mgmt				= None
-		self.mWifiEncryptType			= ENCRYPT_TYPE_WPA
 
 
 	def IfUpDown( self, aDev ) :
@@ -85,26 +73,6 @@ class IpParser( object ) :
 		return [ dev for dev in os.listdir( '/sys/class/net' ) ]
 
 
-	def GetDefaultGateway( self ) :
-		addr = None
-		try :
-			inputFile = None
-			os.system( SYSTEM_COMMAND_GET_GATEWAY + ' > ' + FILE_TEMP )
-			inputFile = open( FILE_TEMP, 'r' )
-			addr = inputFile.readline( ).strip( )
-			if CheckIsIptype( addr ) == False :
-				addr = None
-			inputFile.close( )
-			return addr
-
-		except Exception, e :
-			if inputFile and inputFile.closed == False :
-				inputFile.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
-			addr = None
-			return addr
-
-
 	def CheckIsIptype( self, aAddress ) :
 		try :
 			if aAddress == None or len( aAddress ) < 1 :
@@ -130,57 +98,29 @@ class IpParser( object ) :
 			return False
 
 
-	def LoadNetworkType( self ) :
-		try :
-			inputFile = open( FILE_NAME_INTERFACES, 'r' )
-			inputline = inputFile.readlines( )
-			inputFile.close( )
-			for line in inputline :
-				if line.startswith( 'auto ra0' ) or line.startswith( 'auto wlan0' ) :
-					#self.SetCurrentNetworkType( NETWORK_WIRELESS )
-					break
-				elif line.startswith( 'auto eth0' ) :
-					#self.SetCurrentNetworkType( NETWORK_ETHERNET )
-					break
-		except Exception, e :
-				if inputFile.closed == False :
-					inputFile.close( )
-				LOG_ERR( 'Error exception[%s]' % e )
-				#self.SetCurrentNetworkType( NETWORK_ETHERNET )
-
-
 	def GetNetworkAddress( self, aType ) :
-		print 'dhkim test GetNetworkAddress #1'
 		if aType == NETWORK_ETHERNET :
 			dev = self.mEthernetDevName
 		else :
 			dev = self.GetWifidevice( )
-		print 'dhkim test dev = %s' % dev
 		addressIp = 'None'
 		addressMask = 'None'
 		addressGateway = 'None'
 		addressNameServer = 'None'
-		print 'dhkim test GetNetworkAddress #2'
 		try :
 			inputFile = None
-			print 'dhkim test GetNetworkAddress #3'
 			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % dev + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % dev + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
 
-			print 'dhkim test GetNetworkAddress #4'
 			for command in osCommand :
 				time.sleep( 0.01 )
-				print 'dhkim test GetNetworkAddress #5'
 				os.system( command )
 
-
-			print 'dhkim test GetNetworkAddress #6'
 			time.sleep( 0.02 )
 			inputFile = open( FILE_TEMP, 'r' )
 			addressIp = inputFile.readline( )
 			addressMask = inputFile.readline( )
 			addressGateway = inputFile.readline( )
 			addressNameServer = self.GetNameServer( )
-			print 'dhkim test GetNetworkAddress #7'
 
 			if self.CheckIsIptype( addressIp ) == False :
 				addressIp = 'None'
@@ -195,7 +135,6 @@ class IpParser( object ) :
 				addressNameServer = 'None'
 
 			inputFile.close( )
-			print 'dhkim test GetNetworkAddress #2'
 			return addressIp, addressMask, addressGateway, addressNameServer
 
 		except Exception, e :
@@ -206,7 +145,6 @@ class IpParser( object ) :
 
 
 	def GetNameServer( self ) :
-		print 'dhkim test GetNameServer #1'
 		addressNameServer = 'None'
 		try :
 			inputFile = open( FILE_NAME_RESOLV_CONF, 'r' )
@@ -218,7 +156,6 @@ class IpParser( object ) :
 					addressNameServer = words[1]
 					break
 			inputFile.close( )
-			print 'dhkim test GetNameServer = %s' % addressNameServer
 			return addressNameServer
 
 		except Exception, e :
@@ -238,37 +175,21 @@ class IpParser( object ) :
 			ElisPropertyInt( 'IpAddress' , command ).SetProp( MakeStringToHex( aAddress ) )
 			make = ElisPropertyInt( 'IpAddress' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
-			LOG_TRACE( 'make_1 = %d' % make_1 )
-			LOG_TRACE( 'make_2 = %d' % make_2 )
-			LOG_TRACE( 'make_3 = %d' % make_3 )
-			LOG_TRACE( 'make_4 = %d' % make_4 )
 
 		if self.CheckIsIptype( aNetmask ) == True :
 			ElisPropertyInt( 'SubNet' , command ).SetProp( MakeStringToHex( aNetmask ) )
 			make = ElisPropertyInt( 'SubNet' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
-			LOG_TRACE( 'make_1 = %d' % make_1 )
-			LOG_TRACE( 'make_2 = %d' % make_2 )
-			LOG_TRACE( 'make_3 = %d' % make_3 )
-			LOG_TRACE( 'make_4 = %d' % make_4 )
 
 		if self.CheckIsIptype( aGateway ) == True :
 			ElisPropertyInt( 'Gateway' , command ).SetProp( MakeStringToHex( aGateway ) )
 			make = ElisPropertyInt( 'Gateway' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
-			LOG_TRACE( 'make_1 = %d' % make_1 )
-			LOG_TRACE( 'make_2 = %d' % make_2 )
-			LOG_TRACE( 'make_3 = %d' % make_3 )
-			LOG_TRACE( 'make_4 = %d' % make_4 )
 
 		if self.CheckIsIptype( aNameserver ) == True :
 			ElisPropertyInt( 'DNS' , command ).SetProp( MakeStringToHex( aNameserver ) )
 			make = ElisPropertyInt( 'DNS' , command ).GetProp( )
 			make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
-			LOG_TRACE( 'make_1 = %d' % make_1 )
-			LOG_TRACE( 'make_2 = %d' % make_2 )
-			LOG_TRACE( 'make_3 = %d' % make_3 )
-			LOG_TRACE( 'make_4 = %d' % make_4 )
 
 
 	def GetEthernetMethod( self ) :
@@ -296,20 +217,8 @@ class IpParser( object ) :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return NET_DHCP
 
-
-	def LoadEthernetAddress( self ) :
-		self.mEthernetAddressIp, self.mEthernetAddressMask, self.mEthernetAddressGateway, self.mEthernetAddressNameServer = self.GetNetworkAddress( self.mEthernetDevName )
-
-
-	def GetEthernetType( self ) :
-		return self.mEthType
-
-
-	def GetEthernetAddress( self ) :
-		return self.mEthernetAddressIp, self.mEthernetAddressMask, self.mEthernetAddressGateway, self.mEthernetAddressNameServer
-
 	
-	def WriteEthernetConfig( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
+	def ConnectEthernet( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		status = False
 		try :
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
@@ -323,9 +232,9 @@ class IpParser( object ) :
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'dhcp\n' )
 					else :
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'static\n' )
-						outputFile.writelines( 'address %s\n' % aIpAddress )
-						outputFile.writelines( 'netmask %s\n' % aMaskAddress )
-						outputFile.writelines( 'gateway %s\n' % aGatewayAddress )
+						outputFile.writelines( 'address %s\n' % aIpAddress.strip( ) )
+						outputFile.writelines( 'netmask %s\n' % aMaskAddress.strip( ) )
+						outputFile.writelines( 'gateway %s\n' % aGatewayAddress.strip( ) )
 				elif line.startswith( 'address' ) or line.startswith( 'netmask' ) or line.startswith( 'gateway' ) :
 					continue
 				else :
@@ -334,7 +243,7 @@ class IpParser( object ) :
 			inputFile.close( )
 			outputFile.close( )
 
-			self.SetEthernetNameServer( aType, aNameAddress )
+			self.SetEthernetNameServer( aType, aNameAddress.strip( ) )
 			os.system( COMMAND_COPY_INTERFACES )
 			self.IfUpDown( self.mEthernetDevName )
 			status = True
@@ -352,21 +261,39 @@ class IpParser( object ) :
 			return status
 
 
-	"""
 	def DisConnectWifi( self ) :
-		print 'dhkim test DisConnectWifi'
 		return
 
 
 	def DeleteConfigFile( self ) :
-		print 'dhkim test DeleteConfigFile'
 		return
 
 
-	def ConnectEthernet( self, aEmpty, aEmpty, aEmpty, aEmpty ) :
-		print 'dhkim test ConnectEthernet'
+	def WriteEthernetConfig( self, aMethod, aAddress=None, aNetmask=None, aGateway=None, aNameServer=None ) :
 		return
-	"""
+
+
+	def GetCurrentWifiService( self ) :
+		return None
+
+
+	def SetServiceConnect( self, aService, aFlag ) :
+		return None
+
+
+	def SetAutoConnect( self, aService, aFlag ) :
+		return None
+
+
+	def DisConnectEthernet( self ) :
+		return
+
+
+	def LoadSetWifiTechnology( self ) :
+		if self.GetWifidevice( ) :
+			return True
+		else :
+			return False
 
 
 	def SetEthernetNameServer( self, aType, aNameAddress ) :
@@ -386,52 +313,6 @@ class IpParser( object ) :
 			return False
 
 
-	def ResetWifiInfo( self ) :
-		self.mWifiCurrentSsid	= None
-		self.mWifiPassWord		= None
-		self.mWifikey_mgmt		= None
-		self.mWifiEncryptType	= ENCRYPT_TYPE_WPA
-
-
-	def LoadWpaSupplicant( self ) :
-		self.ResetWifiInfo( )
-		if os.path.exists( FILE_WPA_SUPPLICANT ) == False :
-			return False
-		try :
-			openFile = open( FILE_WPA_SUPPLICANT, 'r' )
-			inputline = openFile.readlines( )
-			for line in inputline :
-				line = line.lstrip( )
-				if line.startswith( 'ssid=' ) and len( line ) > 6 :
-					self.mWifiCurrentSsid = line[ 6 : -2 ]
-				elif line.startswith( 'wep_key0="' ) and len( line ) > 11 :
-					self.mWifiPassWord = line[ 10 : -2 ]
-				elif line.startswith( 'wep_key0=' ) and len( line ) > 9 :
-					self.mWifiPassWord = line[ 9 : -1 ]
-				elif line.startswith( 'psk="' ) and len( line ) > 6 :
-					self.mWifiPassWord = line[ 5 : -2 ]
-				elif line.startswith( '#psk="' ) and len( line ) > 6 :
-					self.mWifiPassWord = line[ 6 : -2 ]
-				elif not self.mWifiPassWord and line.startswith( 'psk=' ) and len( line ) > 4 :
-					self.mWifiPassWord = line[ 4 : -1 ]
-				elif line.startswith( 'key_mgmt=' ) and len( line ) > 9 :
-					self.mWifikey_mgmt = line[ 9 : -1 ]
-			openFile.close( )
-			return True
-
-		except Exception, e :
-			if openFile.closed == False :
-				openFile.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
-			return False
-
-
-	"""
-	def GetCurrentSsid( self ) :
-		if self.mWifiCurrentSsid == None :
-			return 'None'
-		return self.mWifiCurrentSsid
-	"""
 	def GetConfiguredSSID( self ) :
 		try :
 			if os.path.exists( FILE_WPA_SUPPLICANT ) :
@@ -458,12 +339,6 @@ class IpParser( object ) :
 			return None
 
 
-	"""
-	def GetPassword( self ) :
-		if self.mWifiPassWord == None :
-			return ''
-		return self.mWifiPassWord
-	"""
 	def GetConfiguredPassword( self ) :
 		try :
 			if os.path.exists( FILE_WPA_SUPPLICANT ) :
@@ -501,24 +376,10 @@ class IpParser( object ) :
 				openFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
-		
-	"""
-	def GetWifiEncryptType( self ) :
-		if self.mWifikey_mgmt == 'NONE' :
-			if self.mWifiPassWord == None :
-				self.mWifiEncryptType = ENCRYPT_OPEN
-			else :
-				self.mWifiEncryptType = ENCRYPT_TYPE_WEP
-		elif self.mWifikey_mgmt == "WPA-PSK" :
-			self.mWifiEncryptType = ENCRYPT_TYPE_WPA
-		else :
-			LOG_ERR( 'GetEncryptType failed!!' )
 
-		return self.mWifiEncryptType
 
-	"""
 	def GetWifiEncryptType( self ) :
-		enc = self.GetConfiguredPassword( )
+		enc = self.GetEncryptType( )
 		if enc == None :
 			if self.GetConfiguredPassword( ) == None :
 				return ENCRYPT_OPEN
@@ -531,7 +392,7 @@ class IpParser( object ) :
 			return ENCRYPT_TYPE_WPA
 	
 	
-	def GetConfiguredPassword( self ) :
+	def GetEncryptType( self ) :
 		try :
 			if os.path.exists( FILE_WPA_SUPPLICANT ) :
 				openFile = open( FILE_WPA_SUPPLICANT, 'r' )
@@ -566,22 +427,20 @@ class IpParser( object ) :
 		return None	
 
 
-	def ScanWifiAP( self, aDev ) :
+	def GetSearchedWifiApList( self ) :
+		dev = self.GetWifidevice( )
 		from pythonwifi.iwlibs import Wireless
 		import pythonwifi.flags
-		status = None
 		try :
-			scanResult = None
-			if self.GetCurrentNetworkType( ) != NETWORK_WIRELESS :
-				#os.system( 'ifup %s' % aDev )
-				#os.system( '/app/ifup_wifi.sh' )
-				self.IfUpDown( aDev + '_up' )
+			scanResult = []
+			if self.GetCurrentServiceType( ) != NETWORK_WIRELESS :
+				self.IfUpDown( dev + '_up' )
 
-			os.system( 'iwlist %s scan > %s' % ( aDev, FILE_TEMP ) )
+			os.system( 'iwlist %s scan > %s' % ( dev, FILE_TEMP ) )
 			from IwlistParser import Get_ApList
 			scanResult = Get_ApList( )
 			
-			if scanResult != None :
+			if len( scanResult ) > 0 :
 				apList = []
 				for ap in scanResult :
 					apInfoList = []
@@ -591,24 +450,19 @@ class IpParser( object ) :
 						apInfoList.append( ap[2] )
 						apList.append( apInfoList )
 				if apList :
-					status = apList 
+					scanResult = apList 
 				else :
-					status = None
+					scanResult = []
 
-			if self.GetCurrentNetworkType( ) != NETWORK_WIRELESS :
-				#os.system( 'ifdown %s' % aDev )
-				#os.system( '/app/ifdown_wifi.sh' )
-				self.IfUpDown( aDev + '_down' )
-			return status
+			if self.GetCurrentServiceType( ) != NETWORK_WIRELESS :
+				self.IfUpDown( dev + '_down' )
+			return scanResult
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
-			if self.GetCurrentNetworkType( ) != NETWORK_WIRELESS :
-				#os.system( 'ifdown %s' % aDev )
-				#os.system( '/app/ifdown_wifi.sh' )
-				self.IfUpDown( aDev + '_down' )
-			status = None
-			return status
+			if self.GetCurrentServiceType( ) != NETWORK_WIRELESS :
+				self.IfUpDown( dev + '_down' )
+			return []
 
 
 	def ApInfoToEncrypt( self, aType ) :
@@ -686,18 +540,11 @@ class IpParser( object ) :
 				outputFile.close( )
 
 
-	def ConnectWifi( self, aDev ) :
+	def ConnectWifi( self ) :
+		dev = self.GetWifidevice( )
 		try :
 			os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
-			#os.system( 'ifdown %s' % aDev )
-			#os.system( '/app/ifdown_wifi.sh' )
-			#time.sleep( 1 )
-			#os.system( 'ifdown %s' % self.mEthernetDevName )
-			#os.system( '/app/ifdown_ethernet.sh' )
-			#time.sleep( 1 )
-			#os.system( 'ifup %s' % aDev )
-			#os.system( '/app/ifup_wifi.sh' )
-			self.IfUpDown( aDev )
+			self.IfUpDown( dev )
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return False
@@ -732,6 +579,30 @@ class IpParser( object ) :
 			LOG_ERR( 'Can not found wifi device' )
 
 
+	def GetWifiUseHiddenSsid( self ) :
+		try :
+			if os.path.exists( FILE_WPA_SUPPLICANT ) :
+				openFile = open( FILE_WPA_SUPPLICANT, 'r' )
+				inputline = openFile.readlines( )
+				for line in inputline :
+					if line.startswith( '\tscan_ssid=1' ) :
+						openFile.close( )
+						return USE_HIDDEN_SSID
+
+				openFile.close( )
+				return NOT_USE_HIDDEN_SSID
+
+			else :
+				LOG_ERR( '%s path is not exist' % FILE_WPA_SUPPLICANT )
+				return NOT_USE_HIDDEN_SSID
+
+		except Exception, e :
+			if openFile.closed == False :
+				openFile.close( )
+			LOG_ERR( 'Error exception[%s]' % e )
+			return NOT_USE_HIDDEN_SSID
+
+
 	def SetEthernetNameServer( self, aType, aNameAddress ) :
 		try :
 			if aType :
@@ -749,20 +620,21 @@ class IpParser( object ) :
 			return False
 
 
-	def WriteWifiInterfaces( self, aDev, aIsStatic, aIpAddress = None, aMaskAddress = None, aGatewayAddress = None, aNameAddress = None ) :
+	def WriteWifiInterfaces( self, aIsStatic, aIpAddress = None, aMaskAddress = None, aGatewayAddress = None, aNameAddress = None ) :
 		try :
+			dev = self.GetWifidevice( )
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
 			outputFile = open( FILE_NAME_TEMP_INTERFACES, 'w+' )
 			inputline = inputFile.readlines( )
 			for line in inputline :
-				if line.startswith( 'iface ' + aDev + ' inet' ) :
+				if line.startswith( 'iface ' + dev + ' inet' ) :
 					if aIsStatic :
-						outputFile.writelines( 'iface ' + aDev + ' inet' + ' ' + 'static\n' )
+						outputFile.writelines( 'iface ' + dev + ' inet' + ' ' + 'static\n' )
 						outputFile.writelines( '\taddress %s\n' % aIpAddress.strip( ) )
 						outputFile.writelines( '\tnetmask %s\n' % aMaskAddress.strip( ) )
 						outputFile.writelines( '\tgateway %s\n' % aGatewayAddress.strip( ) )
 					else :
-						outputFile.writelines( 'iface ' + aDev + ' inet' + ' ' + 'dhcp\n' )
+						outputFile.writelines( 'iface ' + dev + ' inet' + ' ' + 'dhcp\n' )
 
 				elif line.startswith( '\taddress' ) or line.startswith( '\tnetmask' ) or line.startswith( '\tgateway' ) :
 					continue
@@ -791,16 +663,4 @@ class IpParser( object ) :
 
 	def CheckInternetState( self ) :
 		return xbmc.getInfoLabel( 'System.internetstate' )
-
-
-	def DisConnectWifi( self ) :
-		return
-
-
-	def DeleteConfigFile( self ) :
-		return
-
-
-	def ConnectEthernet( self, aEmpty, aEmpty, aEmpty, aEmpty ) :
-		return
 

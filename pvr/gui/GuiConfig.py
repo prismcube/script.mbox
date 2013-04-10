@@ -236,6 +236,7 @@ USER_ENUM_LIST_DHCP_STATIC			= [ MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) ]
 USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_VIDEO_OUTPUT			= [ MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) ]
 USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Current Transponder Only' ), MR_LANG( 'All Transponders' ) ]
+USER_ENUM_LIST_ENCRYPT_TYPE			= [ MR_LANG( 'None' ), MR_LANG( 'WEP' ), MR_LANG( 'WPA' ) ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
