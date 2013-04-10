@@ -537,7 +537,7 @@
 	<string id="3121">Удалить ОК</string>
 	<string id="3122">Остановить сканирование каналов?</string>
 	<string id="3123">Выйти из поиска каналов</string>
-	<string id="3124">ТВ каналы : %d \nРадио каналы : %d</string>
+	<string id="3124">ТВ каналы : %d %sРадио каналы : %d</string>
 	<string id="3125">Рузультат Поиска Каналов</string>
 	<string id="3126">Восточный Лимит</string>
 	<string id="3127">Один Шаг на Восток</string>
