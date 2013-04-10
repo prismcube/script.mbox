@@ -1,6 +1,13 @@
 from pvr.gui.WindowImport import *
-import pvr.NetworkMgr as NetMgr
 import pvr.Platform
+if E_USE_OLD_NETWORK :
+	print 'dhkim test import start IpParser'
+	import pvr.IpParser as NetMgr
+	print 'dhkim test import end IpParser'
+else :
+	print 'dhkim test import start NetworkMgr'
+	import pvr.NetworkMgr as NetMgr
+	print 'dhkim test import end NetworkMgr'
 
 E_CONFIGURE_BASE_ID				=  WinMgr.WIN_ID_CONFIGURE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 E_CONFIGURE_SETUPMENU_GROUP_ID	=  E_CONFIGURE_BASE_ID + 9010
@@ -24,7 +31,6 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
-#LIST_ID_MENU			= 9000
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
 
@@ -58,7 +64,7 @@ class Configure( SettingWindow ) :
 		self.mSavedLocalOffset		= 0
 		self.mSavedSummerTime		= 0
 
-		self.mIpParser				= None
+		#self.mIpParser				= None
 		self.mProgress				= None
 
 		self.mWireless				= None
@@ -67,6 +73,11 @@ class Configure( SettingWindow ) :
 		self.mCurrentSsid			= 'None'
 		self.mEncryptType			= ENCRYPT_TYPE_WEP
 		self.mPassWord 				= None
+		self.mWifiAddress			= 'None'
+		self.mWifiSubnet			= 'None'
+		self.mWifiGateway			= 'None'
+		self.mWifiDns				= 'None'
+		self.mUseStatic				= False
 
 		self.mCheckNetworkTimer		= None
 		self.mStateNetLink			= 'Busy'
@@ -83,6 +94,7 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		print 'dhkim configure window start'
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -122,15 +134,21 @@ class Configure( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 
+		print 'dhkim test oninit #1'
 		self.mVisibleParental = False
 		self.mReLoadEthernetInformation = True
 
+		print 'dhkim test oninit #2'
 		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 
+		print 'dhkim test oninit #3'
+
 		self.SetListControl( )
+		print 'dhkim test oninit #4'
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
+		print 'dhkim configure window end'
 		
 
 	def Close( self ) :
@@ -548,30 +566,32 @@ class Configure( SettingWindow ) :
 				self.InitControl( )
 
 		elif selectedId == E_NETWORK_SETTING :
+			print 'dhkim test SetListControl #1'
 			if self.mPlatform.IsPrismCube( ) :
+				print 'dhkim test SetListControl #2'
 				self.OpenBusyDialog( )
-				#self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
-					self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
-					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
-					self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
-					self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
-					self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press OK button to connect to the AP you have chosen' ) )
+					self.AddInputControl( E_Input01, MR_LANG( 'Select AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
+					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
+					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
+					self.AddInputControl( E_Input04, MR_LANG( 'Gateway' ), self.mWifiGateway )
+					self.AddInputControl( E_Input05, MR_LANG( 'DNS' ), self.mWifiDns )
+					self.AddInputControl( E_Input06, MR_LANG( 'Manual Setup' ), '', MR_LANG( 'Press OK button to setup manual wifi settings( ip or hidden ssid )' ) )
 
-					visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]
+					visibleControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input07, E_Input06 ]
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_Input05, E_Input06 ]
+					hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
 					time.sleep( 0.2 )
 					self.DisableControl( E_WIFI )
-
+					print 'dhkim test SetListControl #3'
 				else :
 					if self.mReLoadEthernetInformation == True :
 						self.LoadEthernetInformation( )				
@@ -768,10 +788,12 @@ class Configure( SettingWindow ) :
 
 	def LoadEthernetInformation( self ) :
 		self.mEthernetConnectMethod = NetMgr.GetInstance( ).GetEthernetMethod( )
-		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetServiceAddress( NetMgr.GetInstance( ).GetCurrentEthernetService( ) )
+		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetNetworkAddress( NETWORK_ETHERNET )
 
 
 	def ConnectEthernet( self ) :
+		return
+		"""
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 20 )
 		NetMgr.GetInstance( ).WriteEthernetConfig( self.mEthernetConnectMethod, self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer )
 		NetMgr.GetInstance( ).DisConnectWifi( )
@@ -789,6 +811,7 @@ class Configure( SettingWindow ) :
 			self.mReLoadEthernetInformation = True
 			self.SetListControl( )
 			self.CloseProgress( )
+		"""
 
 
 	def EthernetSetting( self, aControlId ) :
@@ -827,6 +850,8 @@ class Configure( SettingWindow ) :
 
 
 	def WifiSetting( self, aControlId ) :
+		return
+		"""
 		if aControlId == E_SpinEx01 :
 			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
 			self.DisableControl( E_WIFI )
@@ -909,15 +934,31 @@ class Configure( SettingWindow ) :
 			NetMgr.GetInstance( ).SetNetworkProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.SetListControl( )
 			self.CloseProgress( )
+		"""
 
 
 	def LoadWifiInformation( self ) :
+		print 'dhkim test LoadWifiInformation #1'
 		self.mCurrentSsid = NetMgr.GetInstance( ).GetConfiguredSSID( )
+		print 'dhkim test self.mCurrentSsid = %s' % self.mCurrentSsid
 		if self.mCurrentSsid == None :
 			self.mCurrentSsid = 'None'
+		print 'dhkim test LoadWifiInformation #2'
 		self.mPassWord = NetMgr.GetInstance( ).GetConfiguredPassword( )
+		print 'dhkim test self.mPassWord = %s' % self.mPassWord
 		if self.mPassWord == None :
 			self.mPassWord = ''
+		self.mEncryptType = NetMgr.GetInstance( ).GetWifiEncryptType( )
+		print 'dhkim test self.mEncryptType = %s' % self.mEncryptType
+		self.mUseStatic	  = NetMgr.GetInstance( ).GetWifiUseStatic( )
+		print 'dhkim test self.mUseStatic = %s' % self.mUseStatic
+		self.LoadWifiAddress( )
+		print 'dhkim test LoadWifiInformation #7'
+
+
+	def LoadWifiAddress( self ) :
+		self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns = NetMgr.GetInstance( ).GetNetworkAddress( NETWORK_WIRELESS )
+		print 'dhkim test LoadWifiAddress #2'
 
 
 	def ShowIpInputDialog( self, aIpAddr ) :
@@ -1059,7 +1100,6 @@ class Configure( SettingWindow ) :
 
 	def CheckNetworkStatus( self ) :
 		self.mStateNetLink = NetMgr.GetInstance( ).CheckInternetState( )
-		#self.mStateNetLink = xbmc.getInfoLabel( 'System.internetstate' )
 		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
 		self.SetControlLabel2String( E_Input07, self.mStateNetLink )
 

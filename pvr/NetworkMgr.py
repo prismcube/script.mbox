@@ -72,6 +72,8 @@ class NetworkMgr( object ) :
 				return NETWORK_ETHERNET
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			self.mBusyConfigFile = False
 			LOG_ERR( 'Error exception[%s]' % e )
 			return NETWORK_ETHERNET
@@ -287,13 +289,19 @@ class NetworkMgr( object ) :
 				for line in inputline :
 					if line.startswith( 'ssid' ) :
 						words = string.split( line )
+						inputFile.close( )
 						return words[2]
+
+				inputFile.close( )
 				return None
+
 			else :
 				LOG_ERR( '%s path is not exist' % NETWORK_CONFIG_PATH )
 				return None
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
 
@@ -309,7 +317,9 @@ class NetworkMgr( object ) :
 				for line in inputline :
 					if line.startswith( 'passphrase' ) :
 						words = string.split( line )
+						inputFile.close( )
 						return words[2]
+
 				inputFile.close( )
 				return None
 			else :
@@ -317,6 +327,8 @@ class NetworkMgr( object ) :
 				return None
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
 
@@ -341,6 +353,16 @@ class NetworkMgr( object ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return False
+
+
+	def GetWifiEncryptType( self ) :
+		print 'dhkim test todo!'
+		return ENCRYPT_TYPE_WPA
+
+
+	def GetWifiUseStatic( self ) :
+		print 'dhkim test todo!'
+		return NET_DHCP
 
 
 	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
@@ -505,6 +527,7 @@ class NetworkMgr( object ) :
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 
 
+	"""
 	def GetServiceAddress( self, aService ) :
 		address		= 'None'
 		netmask		= 'None'
@@ -517,6 +540,49 @@ class NetworkMgr( object ) :
 		if aService :
 			try :
 				self.WaitConfigurationService( aService )
+
+				property = aService.GetProperties( )
+				for key in property.keys( ) :
+					if key == 'Nameservers' :
+						if len( property[key] ) != 0 :
+							nameserver = property[key][0]
+						else :
+							LOG_ERR( 'Name server empty!!' )
+					elif key == 'IPv4' :
+						for val in property[key].keys( ) :
+							if val == 'Address' :
+								address = property[key][val]
+							elif val == 'Netmask' :
+								netmask = property[key][val]
+							elif val == 'Gateway' :
+								gateway = property[key][val]
+
+				return self.CheckChangeIpType( address, netmask, gateway, nameserver )
+
+			except dbus.DBusException, error :                                  
+				LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+				return 'None', 'None', 'None', 'None'
+
+		else :
+			return 'None', 'None', 'None', 'None'
+	"""
+	def GetNetworkAddress( self, aType ) :
+		address		= 'None'
+		netmask		= 'None'
+		gateway		= 'None'
+		nameserver	= 'None'
+
+		if gUseNetwork == False :
+			return 'None', 'None', 'None', 'None'
+
+		if aType == NETWORK_ETHERNET :
+			service = self.GetCurrentEthernetService( )
+		else :
+			service = self.GetCurrentWifiService( )
+
+		if service :
+			try :
+				self.WaitConfigurationService( service )
 
 				property = aService.GetProperties( )
 				for key in property.keys( ) :
@@ -602,6 +668,8 @@ class NetworkMgr( object ) :
 				return nettype
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			self.mBusyConfigFile = False
 			LOG_ERR( 'Error exception[%s]' % e )
 			return NET_DHCP
