@@ -685,11 +685,12 @@
 		<height>25</height>
 		<texture>StepFO.png</texture>
 	</include>
+
 	<include name="TimeshiftBookmarkCurrent">
-		<posx>5</posx>
+		<posx>0</posx>
 		<posy>0</posy>
-		<width>5</width>
-		<height>10</height>
+		<width>4</width>
+		<height>8</height>
 		<texture>HomeSeparatorRed1.png</texture>
 	</include>
 

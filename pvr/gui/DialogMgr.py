@@ -197,9 +197,9 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogManualWifi import DialogManualWifi
 				return DialogManualWifi( 'DialogManualWifi.xml', self.scriptDir )
 
-			elif aDialogId == DIALOG_ID_TEST_WORK :
-				from pvr.gui.dialogs.DialogTestCode import DialogTestCode
-				return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
+			#elif aDialogId == DIALOG_ID_TEST_WORK :
+			#	from pvr.gui.dialogs.DialogTestCode import DialogTestCode
+			#	return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'Cannot find dialog' )
