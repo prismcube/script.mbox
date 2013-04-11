@@ -1268,12 +1268,18 @@ class TimeShiftPlate( BaseWindow ) :
 
 		section = mediaTime / 10
 		partition = 0
+		isFull = False
 		for i in range( 1, 10 ) :
 			partition += section
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
 			ret = self.mDataCache.Player_JumpToIFrame( partition )
 			if ret :
+				mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecordInfo.mRecordKey )
+				if mBookmarkList and len( mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+					isFull = True
+					break
+
 				self.mDataCache.Player_CreateBookmark( )
 
 			time.sleep(0.5)
@@ -1285,6 +1291,11 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mDataCache.Player_JumpToIFrame( restoreCurrent )
 		LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
 		self.CloseBusyDialog( )
+
+		if isFull :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attension' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+			dialog.doModal( )
 
 		self.RestartAutomaticHide( )
 
@@ -1334,7 +1345,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mBookmarkButton[i].setPosition( posx, 0 )
 			self.mBookmarkButton[i].setVisible( True )
 			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
-			LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
+			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
 
 
 	def ShowRecordingInfo( self ) :

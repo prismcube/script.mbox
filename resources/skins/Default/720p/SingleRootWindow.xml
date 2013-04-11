@@ -2357,7 +2357,7 @@ Search for window name
 									<align>center</align>
 									<aligny>center</aligny>
 									<font>font13</font>
-									<textcolor>selected</textcolor>
+									<textcolor>white</textcolor>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
