@@ -257,7 +257,9 @@ class SettingWindow( BaseWindow ) :
 			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
+					controllabel = self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( )
+					if controllabel :
+						controllabel.setLabel2( aLabel )
 					
 		return
 

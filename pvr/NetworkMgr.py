@@ -72,6 +72,8 @@ class NetworkMgr( object ) :
 				return NETWORK_ETHERNET
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			self.mBusyConfigFile = False
 			LOG_ERR( 'Error exception[%s]' % e )
 			return NETWORK_ETHERNET
@@ -287,13 +289,19 @@ class NetworkMgr( object ) :
 				for line in inputline :
 					if line.startswith( 'ssid' ) :
 						words = string.split( line )
+						inputFile.close( )
 						return words[2]
+
+				inputFile.close( )
 				return None
+
 			else :
 				LOG_ERR( '%s path is not exist' % NETWORK_CONFIG_PATH )
 				return None
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
 
@@ -309,7 +317,9 @@ class NetworkMgr( object ) :
 				for line in inputline :
 					if line.startswith( 'passphrase' ) :
 						words = string.split( line )
+						inputFile.close( )
 						return words[2]
+
 				inputFile.close( )
 				return None
 			else :
@@ -317,6 +327,8 @@ class NetworkMgr( object ) :
 				return None
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return None
 
@@ -341,6 +353,14 @@ class NetworkMgr( object ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return False
+
+
+	def GetWifiEncryptType( self ) :
+		return ENCRYPT_TYPE_WPA
+
+
+	def GetWifiUseStatic( self ) :
+		return NET_DHCP
 
 
 	def WriteWifiConfigFile( self, aSSID, aPassword, aIsHidden ) :
@@ -377,7 +397,7 @@ class NetworkMgr( object ) :
 			for ap in aplist :
 				if str( ap[0] ) == aSSID :
 					LOG_TRACE( 'Find matched SSID = %s' % ap[0] )
-					return ap[1]
+					return ap[3]
 
 		LOG_ERR( 'GetConfiguredWifiServicePath is None' )
 		return None
@@ -403,10 +423,10 @@ class NetworkMgr( object ) :
 					Security = None
 					if 'Security' in properties.keys( ) :
 						Security = '['
-						for i in properties[ 'Security' ]:
+						for i in properties[ 'Security' ] :
 							Security += ' ' + str( i )
 						Security += ' ]'
-					servicelist.append( [ name, path, str( int ( properties[ 'Strength' ] ) ), Security ] )
+					servicelist.append( [ name, str( int ( properties[ 'Strength' ] ) ), Security, path ] )
 
 			LOG_TRACE( 'GetSearchedWifiApList = %s' % servicelist )
 			return servicelist
@@ -505,7 +525,23 @@ class NetworkMgr( object ) :
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
 
 
-	def GetServiceAddress( self, aService ) :
+	def ApInfoToEncrypt( self, aType ) :
+		if aType == 'No' :
+			return ENCRYPT_OPEN
+		elif aType == 'WPA' :
+			return ENCRYPT_TYPE_WPA
+		elif aType == 'WEP' :
+			return ENCRYPT_TYPE_WEP
+		else :
+			LOG_ERR( 'ApInfoToEncrypt Fail!!' )
+			return ENCRYPT_TYPE_WPA
+
+
+	def GetWifiUseHiddenSsid( self ) :
+		return NOT_USE_HIDDEN_SSID
+
+
+	def GetNetworkAddress( self, aType ) :
 		address		= 'None'
 		netmask		= 'None'
 		gateway		= 'None'
@@ -514,11 +550,16 @@ class NetworkMgr( object ) :
 		if gUseNetwork == False :
 			return 'None', 'None', 'None', 'None'
 
-		if aService :
-			try :
-				self.WaitConfigurationService( aService )
+		if aType == NETWORK_ETHERNET :
+			service = self.GetCurrentEthernetService( )
+		else :
+			service = self.GetCurrentWifiService( )
 
-				property = aService.GetProperties( )
+		if service :
+			try :
+				self.WaitConfigurationService( service )
+
+				property = service.GetProperties( )
 				for key in property.keys( ) :
 					if key == 'Nameservers' :
 						if len( property[key] ) != 0 :
@@ -602,6 +643,8 @@ class NetworkMgr( object ) :
 				return nettype
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			self.mBusyConfigFile = False
 			LOG_ERR( 'Error exception[%s]' % e )
 			return NET_DHCP
