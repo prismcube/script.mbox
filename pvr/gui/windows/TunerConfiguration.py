@@ -125,7 +125,7 @@ class TunerConfiguration( FTIWindow ) :
  
 		 			if ret >= 0 :
 		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Are you sure you want to remove%s%s?' ) % NEW_LINE, satelliteList[ ret ] )						
+						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, satelliteList[ ret ] ) )
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
