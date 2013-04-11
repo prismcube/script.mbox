@@ -356,12 +356,10 @@ class NetworkMgr( object ) :
 
 
 	def GetWifiEncryptType( self ) :
-		print 'dhkim test todo!'
 		return ENCRYPT_TYPE_WPA
 
 
 	def GetWifiUseStatic( self ) :
-		print 'dhkim test todo!'
 		return NET_DHCP
 
 
@@ -528,8 +526,6 @@ class NetworkMgr( object ) :
 
 
 	def ApInfoToEncrypt( self, aType ) :
-		print 'dhkim test Todo'
-		print 'dhkim test type = %s' % aType
 		if aType == 'No' :
 			return ENCRYPT_OPEN
 		elif aType == 'WPA' :
@@ -542,12 +538,10 @@ class NetworkMgr( object ) :
 
 
 	def GetWifiUseHiddenSsid( self ) :
-		print 'dhkim test todo'
 		return NOT_USE_HIDDEN_SSID
 
 
 	def GetNetworkAddress( self, aType ) :
-		print 'dhkim test GetNetworkAddress #1'
 		address		= 'None'
 		netmask		= 'None'
 		gateway		= 'None'
