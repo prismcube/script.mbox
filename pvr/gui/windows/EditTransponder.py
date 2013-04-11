@@ -164,7 +164,7 @@ class EditTransponder( SettingWindow ) :
 					self.CloseBusyDialog( )
 					return
 				
-				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadAllTransponder( )
 				self.mTransponderIndex = self.GetEditedPosition( frequency )
 				self.InitConfig( )
 				self.CloseBusyDialog( )
@@ -211,7 +211,7 @@ class EditTransponder( SettingWindow ) :
 						self.CloseBusyDialog( )
 						return
 					
-					self.mDataCache.LoadConfiguredTransponder( )
+					self.mDataCache.LoadAllTransponder( )
 					self.mTransponderIndex = self.GetEditedPosition( frequency )
 					self.InitConfig( )
 					self.CloseBusyDialog( )
@@ -242,7 +242,7 @@ class EditTransponder( SettingWindow ) :
 						self.CloseBusyDialog( )
 						return
 					self.mTransponderIndex = 0
-					self.mDataCache.LoadConfiguredTransponder( )
+					self.mDataCache.LoadAllTransponder( )
 					self.InitConfig( )
 					self.CloseBusyDialog( )
 				else :
