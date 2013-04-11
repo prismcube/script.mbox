@@ -934,7 +934,8 @@ class Configure( SettingWindow ) :
 				# use Connman
 				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
 				ret1 = NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
-				ret2 = NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+				ret2 = NetMgr.GetInstance( ).VerifiedState( wifi )
+				ret3 = NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
 				time.sleep( 1 )
 				NetMgr.GetInstance( ).DisConnectEthernet( )
 				# use Connman
@@ -944,7 +945,7 @@ class Configure( SettingWindow ) :
 				NetMgr.GetInstance( ).SetNetworkProperty( self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
 				self.SetListControl( )
 				self.CloseProgress( )
-				if ret1 == False or ret2 == False :
+				if ret1 == False or ret2 == False or ret3 == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
 					dialog.doModal( )
