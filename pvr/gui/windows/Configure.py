@@ -565,7 +565,7 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
-					self.AddInputControl( E_Input01, MR_LANG( 'Select And Connecnt AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
+					self.AddInputControl( E_Input01, MR_LANG( 'Select And Connect AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
 					self.AddInputControl( E_Input04, MR_LANG( 'Gateway' ), self.mWifiGateway )
