@@ -104,6 +104,36 @@
 				</control>
 			</control>
 
+<!-- bookmark point -->
+	<control type="group">
+		<posx>395</posx>
+		<posy>590</posy>
+		<!--
+		<animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(2900600)">Conditional</animation>
+		<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(2900600)">Conditional</animation>
+		-->
+		<control type="grouplist" id="2900600">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>780</width>
+			<height>36</height>
+			<itemgap>0</itemgap>
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>false</usecontrolcoords>
+			<!--visible>substring(Window.Property(BookMarkPointShow),true)</visible-->
+			<control type="group">
+				<posx>0</posx>
+				<posy>0</posy>
+				<control type="image" id="2900601">
+					<include>TimeshiftBookmarkPoint</include>
+				</control>
+				<control type="image" id="2900601">
+					<include>TimeshiftBookmarkPoint</include>
+				</control>
+			</control>
+
+		</control>
+	</control>
 
 <!-- Rec info -->
 			<control type="group">
@@ -340,6 +370,8 @@
 					<description>start</description>
 					<posx>25</posx>
 					<posy>0</posy>
+					<width>100</width>
+					<height>15</height>
 					<textcolor>grey</textcolor>
 					<font>font12</font>
 					<label>00:00:00</label>
@@ -348,6 +380,8 @@
 					<description>end</description>
 					<posx>890</posx>
 					<posy>0</posy>
+					<width>100</width>
+					<height>15</height>
 					<textcolor>grey</textcolor>
 					<font>font12</font>
 					<label>$INFO[Control.GetLabel]</label>

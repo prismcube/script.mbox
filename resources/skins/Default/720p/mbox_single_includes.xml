@@ -678,6 +678,21 @@
 		<pulseonselect>false</pulseonselect>
 	</include>
 
+	<include name="TimeshiftBookmarkPoint">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>25</width>
+		<height>25</height>
+		<texture>StepFO.png</texture>
+	</include>
+	<include name="TimeshiftBookmarkCurrent">
+		<posx>5</posx>
+		<posy>0</posy>
+		<width>5</width>
+		<height>10</height>
+		<texture>HomeSeparatorRed1.png</texture>
+	</include>
+
 	<include name="DefaultButtonGridChannelValues">
 		<height>45</height>
 		<width>250</width>

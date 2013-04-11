@@ -192,6 +192,10 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogHelp import DialogHelp
 				return DialogHelp( 'DialogHelp.xml', self.scriptDir )
 
+			elif aDialogId == DIALOG_ID_TEST_WORK :
+				from pvr.gui.dialogs.DialogTestCode import DialogTestCode
+				return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
+
 			else :
 				LOG_ERR( 'Cannot find dialog' )
 

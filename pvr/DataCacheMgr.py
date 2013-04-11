@@ -120,6 +120,7 @@ class DataCacheMgr( object ) :
 
 		self.mPMTinstance						= None
 		self.mPMTListHash						= {}
+		self.mBookmarkButton                    = []
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -1617,6 +1618,7 @@ class DataCacheMgr( object ) :
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+		self.InitBookmarkButton( )
 		self.SetAVBlankByArchive( True )
 		self.Frontdisplay_PlayPause( )
 		"""
@@ -2252,5 +2254,18 @@ class DataCacheMgr( object ) :
 		if not xbmcMute :
 			playerMute = False
 		self.mCommander.Player_SetMute( playerMute )
+
+
+	def InitBookmarkButton( self ) :
+		for button in self.mBookmarkButton :
+			button.setVisible( False )
+
+
+	def SetBookmarkButton( self, aButtonList ) :
+		self.mBookmarkButton = aButtonList
+
+
+	def GetBookmarkButton( self ) :
+		return self.mBookmarkButton
 
 
