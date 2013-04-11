@@ -408,7 +408,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 					self.CloseBusyDialog( )
 					return
 				
-				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadAllTransponder( )
 				self.mSelectedTransponderIndex = self.GetEditedPosition( frequency )
 				self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 				self.InitConfig( )
@@ -453,7 +453,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 					self.CloseBusyDialog( )
 					return
 				
-				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadAllTransponder( )
 				self.mSelectedTransponderIndex = self.GetEditedPosition( frequency )
 				self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 				self.InitConfig( )
@@ -476,7 +476,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 					dialog.doModal( )
 					self.CloseBusyDialog( )
 					return
-				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadAllTransponder( )
 				self.mSelectedTransponderIndex = 0
 				self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 				self.InitConfig( )

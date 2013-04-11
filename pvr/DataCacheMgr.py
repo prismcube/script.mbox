@@ -211,7 +211,7 @@ class DataCacheMgr( object ) :
 		#SatelliteList
 		self.LoadAllSatellite( )
 		self.LoadConfiguredSatellite( )
-		self.LoadConfiguredTransponder( )
+		self.LoadAllTransponder( )
 
 		# Channel
 		#self.LoadChannelList( )
@@ -369,21 +369,21 @@ class DataCacheMgr( object ) :
 			LOG_WARN('Has no Configured Satellite Tuner 2')
 
 
-	def LoadConfiguredTransponder( self ) :
+	def LoadAllTransponder( self ) :
 		self.mTransponderLists = []
 		self.mTransponderListHash = {}
 
-	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-			for satellite in self.mConfiguredSatelliteList :
-				if SUPPORT_CHANNEL_DATABASE	== True :
-					transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				else :
-					transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				self.mTransponderLists.append( transponderList )
-				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
-				self.mTransponderListHash[hashKey] = transponderList
-		else :
-			LOG_WARN('Has no Configured Satellite')
+	 	#if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+		for satellite in self.mAllSatelliteList :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+			else :
+				transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+			self.mTransponderLists.append( transponderList )
+			hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
+			self.mTransponderListHash[hashKey] = transponderList
+		#else :
+			#LOG_WARN('Has no Configured Satellite')
 
 
 	def LoadGetListEpgByChannel( self ) :

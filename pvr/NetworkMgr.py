@@ -485,7 +485,7 @@ class NetworkMgr( object ) :
 		try :
 			if aService :
 				if aFlag :
-					aService.Connect( timeout=60000 )
+					aService.Connect( timeout=40000 )
 					time.sleep( 1 )
 					self.WaitConfigurationService( aService )
 				else :
@@ -523,6 +523,22 @@ class NetworkMgr( object ) :
 
 		except dbus.DBusException, error :                                  
 			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+
+
+	def VerifiedState( self, aService ) :
+		try :
+			prop = aService.GetProperties( )
+			for i in range( 5 ) :
+				time.sleep( 1 )
+				if prop['State'] == 'online' :
+					return True
+
+			aService.Disconnect( )
+			return False
+			
+		except dbus.DBusException, error :                                  
+			LOG_ERR( '%s : %s' % ( error._dbus_error_name, error.message ) )
+			return False
 
 
 	def ApInfoToEncrypt( self, aType ) :

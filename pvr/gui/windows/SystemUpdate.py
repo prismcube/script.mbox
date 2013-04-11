@@ -1533,8 +1533,8 @@ class SystemUpdate( SettingWindow ) :
 		os.system( 'sync' )
 	
 		self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
-		#self.mCommander.System_SetDefaultChannelList( )
 		self.mDataCache.LoadAllSatellite( )
+		self.mDataCache.LoadAllTransponder( )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
 		self.mDataCache.Player_AVBlank( False )
@@ -1617,8 +1617,8 @@ class SystemUpdate( SettingWindow ) :
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
-			#self.mCommander.System_SetDefaultChannelList( )
 			self.mDataCache.LoadAllSatellite( )
+			self.mDataCache.LoadAllTransponder( )
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
 			self.mDataCache.Player_AVBlank( False )
