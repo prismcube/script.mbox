@@ -138,7 +138,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mThumbnailList = []
 		self.mBookmarkList = []
 		self.mPlayingRecordInfo = None
-		self.mBookmarkButton = []
+		self.mBookmarkButton = self.mDataCache.GetBookmarkButton( )
 		self.mJumpToOffset = []
 		self.mAccelatorSection = {}
 		self.mLimitInput = E_ACCELATOR_START_INPUT
@@ -705,7 +705,7 @@ class TimeShiftPlate( BaseWindow ) :
 		visiblePoint = E_TAG_FALSE
 		if self.mMode == ElisEnum.E_MODE_PVR :
 			visiblePoint = E_TAG_TRUE
-			self.mBookmarkButton = self.mDataCache.GetBookmarkButton( )
+			#self.mBookmarkButton = self.mDataCache.GetBookmarkButton( )
 
 		self.setProperty( 'BookMarkPointShow', visiblePoint )
 
@@ -1129,7 +1129,9 @@ class TimeShiftPlate( BaseWindow ) :
 			#time.sleep( self.mRepeatTimeout )
 			time.sleep( loopDelay )
 			count = count + loopDelay
-			
+
+		self.mThreadProgress = None
+
 
 	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ) :
 		try :
@@ -1310,16 +1312,20 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_TRACE( 'bookmark None, show False' )
 			return
 
-		idx = 0
+		idxNumber = 0
 		listItems = []
 		for i in range( len( self.mBookmarkList ) ) :
-			idx += 1
+			idxNumber += 1
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
-			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idx )
+			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idxNumber )
 
-			thumbIcon = 'RecIconSample.png'
-			if self.mThumbnailList and len( self.mThumbnailList ) >= i :
-				thumbIcon = self.mThumbnailList[i]
+			thumbIcon = E_DEFAULT_THUMBNAIL_ICON
+			try :
+				if self.mThumbnailList and len( self.mThumbnailList ) >= i :
+					thumbIcon = self.mThumbnailList[i]
+
+			except Exception, e :
+				LOG_ERR( 'except[%s], find not bookmark Thumbnail'% e )
 
 			listItem.setProperty( 'BookMarkThumb', thumbIcon )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
@@ -1342,9 +1348,10 @@ class TimeShiftPlate( BaseWindow ) :
 			#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
 			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
+			LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
+			controlId = self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i] )
 			self.mBookmarkButton[i].setPosition( posx, 0 )
 			self.mBookmarkButton[i].setVisible( True )
-			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
 
 
@@ -1581,9 +1588,12 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlBookMarkList.reset( )
 
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-			for i in range( len( self.mBookmarkList ) ) :
-				self.mBookmarkButton[i].setVisible( False )
+			for bookmark in self.mBookmarkList :
+				controlId = self.mDataCache.GetBookmarkHash( bookmark )
+				if controlId != -1 :
+					self.mBookmarkButton[controlId].setVisible( False )
 
+			self.mDataCache.InitBookmarkHash( )
 			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
 
 

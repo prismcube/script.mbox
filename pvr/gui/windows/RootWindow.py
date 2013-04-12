@@ -105,6 +105,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 	def CheckFirstRun( self ) :
 		if CheckDirectory( '/mtmp/isrunning' ) :
+			self.LoadTimeShiftControl( )
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
@@ -115,7 +116,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
-			self.LoadTimeShiftControl( )
 		else :
 			os.system( 'touch /mtmp/isrunning' )
 

@@ -121,6 +121,7 @@ class DataCacheMgr( object ) :
 		self.mPMTinstance						= None
 		self.mPMTListHash						= {}
 		self.mBookmarkButton                    = []
+		self.mBookmarkHash						= {}
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -2273,5 +2274,15 @@ class DataCacheMgr( object ) :
 
 	def GetBookmarkButton( self ) :
 		return self.mBookmarkButton
+
+
+	def InitBookmarkHash( self ) :
+		self.mBookmarkHash = {}
+
+	def GetBookmarkHash( self, aBookmark ) :
+		return self.mBookmarkHash.get( aBookmark, -1 )
+
+	def SetBookmarkHash( self, aControlId, aBookmark ) :
+		self.mBookmarkHash[aControlId] = aBookmark
 
 

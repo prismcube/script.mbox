@@ -473,7 +473,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateListItem( self, aRecordInfo, aRecItem=None ) :
-		thumbIcon = 'RecIconSample.png'
+		thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
@@ -499,7 +499,7 @@ class ArchiveWindow( BaseWindow ) :
 			if thumbIcon :
 				recItem.setProperty( 'RecIcon', thumbIcon )
 			else :
-				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )			
+				recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )			
 
 			"""
 			thumbnaillist = []
@@ -507,7 +507,7 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 				recItem.setProperty( 'RecIcon', thumbIcon )
 			"""
 
@@ -524,7 +524,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_TRACE( 'RecordList item is empty' )
 			return
 
-		thumbIcon = 'RecIconSample.png'
+		thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
@@ -550,7 +550,7 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		if aIsStartEvent :
@@ -957,10 +957,10 @@ class ArchiveWindow( BaseWindow ) :
 						if len( thumbnaillist ) > 0 :
 							recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 						else :
-							recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+							recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 
 					else :
-						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+						recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 						
 
 			self.DoClearMark( )
