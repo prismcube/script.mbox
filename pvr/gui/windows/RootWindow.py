@@ -105,6 +105,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 	def CheckFirstRun( self ) :
 		if CheckDirectory( '/mtmp/isrunning' ) :
+			self.LoadTimeShiftControl( )
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
@@ -117,6 +118,16 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.mDataCache.SetMediaCenter( False )
 		else :
 			os.system( 'touch /mtmp/isrunning' )
+
+
+	def LoadTimeShiftControl( self ) :
+		mBookmarkButton = []
+		buttonId = WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID + 600
+		for i in range( 100 ) :
+			mBookmarkButton.append( self.getControl( buttonId + i ) )
+			mBookmarkButton[i].setVisible( False )
+
+		self.mDataCache.SetBookmarkButton( mBookmarkButton )
 
 
 	def LoadNoSignalState( self ) :

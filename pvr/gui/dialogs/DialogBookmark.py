@@ -135,7 +135,7 @@ class DialogBookmark( BaseDialog ) :
 		thumbnaillist = []
 		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% self.mRecordInfo.mRecordKey, 'record_bookmark_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
 
-		LOG_TRACE('hash[%s] list[%s]'% (self.mThumbnailHash, thumbnaillist) )
+		#LOG_TRACE('hash[%s] list[%s]'% (self.mThumbnailHash, thumbnaillist) )
 		if thumbnaillist == None or len( thumbnaillist ) < 1 :
 			return 
 
@@ -168,8 +168,11 @@ class DialogBookmark( BaseDialog ) :
 		for idx in range( len( self.mBookmarkList ) ) :
 			
 			listItem = xbmcgui.ListItem( '%s'% TimeToString( self.mBookmarkList[idx].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS ) )
+			thumbIcon = self.mThumbnailHash.get( self.mBookmarkList[idx].mTimeMs, None )
+			if thumbIcon == None :
+				thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 
-			listItem.setProperty( 'RecIcon',     '%s'% self.mThumbnailHash.get( self.mBookmarkList[idx].mTimeMs, None ) )
+			listItem.setProperty( 'RecIcon',     '%s'% thumbIcon )
 			listItem.setProperty( 'RecTotal',    '%s'% TimeToString( duration, TimeFormatEnum.E_AH_MM_SS ) )
 			listItem.setProperty( 'RecDate',     TimeToString( self.mRecordInfo.mStartTime ) )
 
@@ -254,11 +257,19 @@ class DialogBookmark( BaseDialog ) :
 		if not self.mMarkList :
 			self.mMarkList.append( selectedPos )
 
+		bookmarkButton = self.mDataCache.GetBookmarkButton( )
+		isRefresh = False
 		for idx in self.mMarkList :
 			self.mIsDelete = True
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
 			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
+
+			if ret :
+				controlId = self.mDataCache.GetBookmarkHash( self.mBookmarkList[idx] )
+				if controlId != -1 :
+					bookmarkButton[controlId].setVisible( False )
+					LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( bookmarkButton[controlId].getId(), bookmarkButton[idx].getPosition( ), idx, playOffset ) )
 
 		self.InitList( )
 

@@ -136,6 +136,11 @@ class EditSatellite( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				if self.CheckConfiguredSatellite( self.mLongitude, self.mBand ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to remove the satellite from the list' ), MR_LANG( 'Delete configured satellite first' ) )
+		 			dialog.doModal( )
+					return
 				self.OpenBusyDialog( )
 				ret = self.mCommander.Satellite_Delete( self.mLongitude, self.mBand )
 				if ret :
@@ -144,7 +149,7 @@ class EditSatellite( SettingWindow ) :
 					self.mDataCache.Channel_DeleteBySatellite( self.mLongitude, self.mBand )
 					self.mDataCache.Channel_ReLoad( )
 					self.mDataCache.LoadConfiguredSatellite( )
-					self.mDataCache.LoadConfiguredTransponder( )
+					self.mDataCache.LoadAllTransponder( )
 					self.InitConfig( )
 					self.CloseBusyDialog( )
 		 		else :
@@ -209,6 +214,14 @@ class EditSatellite( SettingWindow ) :
 	def CheckSameAllSatellite( self, aLongitude, aBand ) :
 		AllSatelliteList = self.mDataCache.GetAllSatelliteList( )
 		for satellite in AllSatelliteList :
+			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
+				return False
+		return True
+
+
+	def CheckConfiguredSatellite( self, aLongitude, aBand ) :
+		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+		for satellite in configuredSatelliteList :
 			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
 				return False
 		return True

@@ -90,6 +90,7 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.OpenBusyDialog( )
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -138,6 +139,7 @@ class Configure( SettingWindow ) :
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
+		self.CloseBusyDialog( )
 		
 
 	def Close( self ) :
@@ -172,7 +174,7 @@ class Configure( SettingWindow ) :
 				self.mReLoadEthernetInformation = True
 				self.mVisibleParental = False
 				self.SetListControl( )
-			elif focusId != E_CONFIGURE_SUBMENU_LIST_ID :
+			if focusId != E_CONFIGURE_SUBMENU_LIST_ID :
 				self.ControlUp( )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
@@ -181,7 +183,7 @@ class Configure( SettingWindow ) :
 				self.mReLoadEthernetInformation = True
 				self.mVisibleParental = False
 				self.SetListControl( )
-			elif focusId != E_CONFIGURE_SUBMENU_LIST_ID :
+			if focusId != E_CONFIGURE_SUBMENU_LIST_ID :
 				self.ControlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -191,12 +193,9 @@ class Configure( SettingWindow ) :
 				self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			LOG_TRACE( "LAEL98 TEST" )
 			if focusId == E_CONFIGURE_SUBMENU_LIST_ID :
-				LOG_TRACE( "LAEL98 TEST" )			
 				self.SetDefaultControl( )
 			elif focusId != E_CONFIGURE_SUBMENU_LIST_ID and ( focusId % 10 ) == 1 :
-				LOG_TRACE( "LAEL98 TEST" )			
 				self.ControlRight( )
 
 
@@ -350,7 +349,7 @@ class Configure( SettingWindow ) :
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
 				self.mDataCache.LoadConfiguredSatellite( )
-				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadAllTransponder( )
 				self.mDataCache.LoadChannelList( )
 				iZapping = self.mDataCache.Zappingmode_GetCurrent( )
 				if iZapping and iZapping.mError == 0 :
@@ -416,22 +415,18 @@ class Configure( SettingWindow ) :
 	
 		if self.mInitialized == False :
 			return
-		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
+		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		if aControlId == E_CONFIGURE_SUBMENU_LIST_ID :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
+			if self.mPrevListItemID != selectedId :
+				self.mPrevListItemID = selectedId
+				self.mReLoadEthernetInformation = True
+				self.mVisibleParental = False
+				self.SetListControl( )
+
 		else :
 			self.ShowDescription( aControlId, E_CONFIGURE_SETTING_DESCRIPTION )
-
-		if ( self.mLastFocused != aControlId ) or ( selectedId != self.mPrevListItemID ) :
-			if aControlId == E_CONFIGURE_SUBMENU_LIST_ID :
-				if self.mLastFocused != aControlId :
-					self.mLastFocused = aControlId
-				if selectedId != self.mPrevListItemID :
-					self.mPrevListItemID =selectedId
-					self.mReLoadEthernetInformation = True
-					self.mVisibleParental = False
-				self.SetListControl( )
 
 
 	def AsyncVideoSetting( self ) :
@@ -934,7 +929,8 @@ class Configure( SettingWindow ) :
 				# use Connman
 				wifi = NetMgr.GetInstance( ).GetCurrentWifiService( )
 				ret1 = NetMgr.GetInstance( ).SetServiceConnect( wifi, True )
-				ret2 = NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
+				ret2 = NetMgr.GetInstance( ).VerifiedState( wifi )
+				ret3 = NetMgr.GetInstance( ).SetAutoConnect( wifi, False )
 				time.sleep( 1 )
 				NetMgr.GetInstance( ).DisConnectEthernet( )
 				# use Connman
@@ -944,7 +940,7 @@ class Configure( SettingWindow ) :
 				NetMgr.GetInstance( ).SetNetworkProperty( self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
 				self.SetListControl( )
 				self.CloseProgress( )
-				if ret1 == False or ret2 == False :
+				if ret1 == False or ret2 == False or ret3 == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi setup failed to complete' ) )
 					dialog.doModal( )

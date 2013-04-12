@@ -406,6 +406,7 @@ CONTEXT_ACTION_AUDIO_SETTING 	= 42
 
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
+E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
 
 
 ############################ Global Function For GUI ############################

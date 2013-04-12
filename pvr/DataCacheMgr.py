@@ -120,6 +120,8 @@ class DataCacheMgr( object ) :
 
 		self.mPMTinstance						= None
 		self.mPMTListHash						= {}
+		self.mBookmarkButton                    = []
+		self.mBookmarkHash						= {}
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
@@ -210,7 +212,7 @@ class DataCacheMgr( object ) :
 		#SatelliteList
 		self.LoadAllSatellite( )
 		self.LoadConfiguredSatellite( )
-		self.LoadConfiguredTransponder( )
+		self.LoadAllTransponder( )
 
 		# Channel
 		#self.LoadChannelList( )
@@ -368,21 +370,21 @@ class DataCacheMgr( object ) :
 			LOG_WARN('Has no Configured Satellite Tuner 2')
 
 
-	def LoadConfiguredTransponder( self ) :
+	def LoadAllTransponder( self ) :
 		self.mTransponderLists = []
 		self.mTransponderListHash = {}
 
-	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-			for satellite in self.mConfiguredSatelliteList :
-				if SUPPORT_CHANNEL_DATABASE	== True :
-					transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				else :
-					transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				self.mTransponderLists.append( transponderList )
-				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
-				self.mTransponderListHash[hashKey] = transponderList
-		else :
-			LOG_WARN('Has no Configured Satellite')
+	 	#if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+		for satellite in self.mAllSatelliteList :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+			else :
+				transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+			self.mTransponderLists.append( transponderList )
+			hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
+			self.mTransponderListHash[hashKey] = transponderList
+		#else :
+			#LOG_WARN('Has no Configured Satellite')
 
 
 	def LoadGetListEpgByChannel( self ) :
@@ -1623,6 +1625,7 @@ class DataCacheMgr( object ) :
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+		#self.InitBookmarkButton( )
 		self.SetAVBlankByArchive( True )
 		self.Frontdisplay_PlayPause( )
 		"""
@@ -2258,5 +2261,28 @@ class DataCacheMgr( object ) :
 		if not xbmcMute :
 			playerMute = False
 		self.mCommander.Player_SetMute( playerMute )
+
+
+	def InitBookmarkButton( self ) :
+		for button in self.mBookmarkButton :
+			button.setVisible( False )
+
+
+	def SetBookmarkButton( self, aButtonList ) :
+		self.mBookmarkButton = aButtonList
+
+
+	def GetBookmarkButton( self ) :
+		return self.mBookmarkButton
+
+
+	def InitBookmarkHash( self ) :
+		self.mBookmarkHash = {}
+
+	def GetBookmarkHash( self, aBookmark ) :
+		return self.mBookmarkHash.get( aBookmark, -1 )
+
+	def SetBookmarkHash( self, aControlId, aBookmark ) :
+		self.mBookmarkHash[aControlId] = aBookmark
 
 

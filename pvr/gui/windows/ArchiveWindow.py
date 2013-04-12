@@ -57,6 +57,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.mPlayProgressThread	= None
 		self.mEnableThread			= False
 		self.mViewMode				= E_VIEW_LIST
+		self.mThumbnailHash		= {}
+		self.mUpdateInfomationTimer = None		
 
 	
 	def onInit( self ) :
@@ -64,6 +66,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+
+		self.mUpdateInfomationTimer = None
 
 		status = self.mDataCache.Player_GetStatus( )
 		
@@ -76,10 +80,11 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdateList( )
-			self.SelectLastRecordKey( )
+			self.Load( )
+			self.UpdateList(  )
 			self.UpdatePlayStatus( )
 			self.SetFocusList( self.mViewMode )
+			self.SelectLastRecordKey( )			
 			return
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -138,11 +143,14 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateViewMode( )
 		
 		self.InitControl( )
+
 		self.UpdateList( )
+		
+		self.SetFocusList( self.mViewMode )
+		
 		self.SelectLastRecordKey( )	
 		self.UpdatePlayStatus( )
-
-		self.SetFocusList( self.mViewMode )
+		
 		self.mInitialized = True
 
 
@@ -235,7 +243,7 @@ class ArchiveWindow( BaseWindow ) :
 			SetSetting( 'VIEW_MODE', '%d' % self.mViewMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
-			self.UpdateList( )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )
 			#self.SetFocusList( self.mViewMode )
 		
@@ -249,7 +257,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
-			self.UpdateList( )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )			
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
@@ -262,7 +270,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mAscending[self.mSortMode] = True
 
 			self.UpdateAscending( )
-			self.UpdateList( )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )						
 
 		elif aControlId == RADIOBUTTON_ID_EXTRA :
@@ -305,7 +313,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
-					self.UpdateList( )
+					self.UpdateList(   )
 					#self.SetFocusList( self.mViewMode )
 					return
 
@@ -378,6 +386,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def Load( self ) :
 		self.mMarkMode = False
+		self.mThumbnailHash =  {}		
 
 		LOG_TRACE( '----------------------------------->' )
 		try :
@@ -389,6 +398,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordCount = 0
 			else :
 				self.mRecordCount = len( self.mRecordList  )
+
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" % ex )
@@ -423,15 +433,43 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mAscending[self.mSortMode] == False :
 				self.mRecordList.reverse( )
 
+			if self.mRecordListItems == None :
+				self.mRecordListItems = []
+
+			if self.mRecordList  == None :
+				self.mRecordList =[]
+
+			#LOG_TRACE('')
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
 			self.mCtrlPosterwrapList.reset( )
 			self.mCtrlFanartList.reset( )
 
-			self.mRecordListItems = []
-			for i in range( len( self.mRecordList ) ) :
-				self.UpdateListItem( self.mRecordList[i] )
+			#LOG_TRACE('')
+			updateOnly = False
+			if len( self.mRecordListItems ) == len( self.mRecordList ) :
+				updateOnly = True
+			else :
+				self.mRecordListItems = []
 
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg')  )
+			
+			for i in range(  len( thumbnaillist )  ) :
+				recKey = thumbnaillist[i].split('_')
+				#print 'recKey=%s' %recKey[2]
+				if recKey and recKey[2] :
+					self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
+
+			#LOG_TRACE('')
+			for i in range( len( self.mRecordList ) ) :
+				if updateOnly == True :
+					#LOG_TRACE('')				
+					self.UpdateListItem( self.mRecordList[i], self.mRecordListItems[i] )				
+				else :
+					#LOG_TRACE('')				
+					self.UpdateListItem( self.mRecordList[i] )
+
+			#LOG_TRACE('')
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				self.UpdatePlayStopThumbnail( self.mPlayingRecord.mRecordKey, True )
@@ -444,8 +482,8 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( 'UpdateList END' )
 
 
-	def UpdateListItem( self, aRecordInfo ) :
-		thumbIcon = 'RecIconSample.png'
+	def UpdateListItem( self, aRecordInfo, aRecItem=None ) :
+		thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
@@ -453,23 +491,41 @@ class ArchiveWindow( BaseWindow ) :
 				thumbIcon = 'DefaultAudioFO.png'
 
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
-		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
+
+		if aRecItem :
+			recItem = aRecItem
+		else :
+			recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
+
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
 		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
 		if aRecordInfo.mLocked :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
+			recItem.setProperty( 'RecIcon', thumbIcon )
+
+			thumbIcon =  self.mThumbnailHash.get('%d' %aRecordInfo.mRecordKey, None ) 
+
+			if thumbIcon :
+				recItem.setProperty( 'RecIcon', thumbIcon )
+			else :
+				recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )			
+
+			"""
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 				recItem.setProperty( 'RecIcon', thumbIcon )
+			"""
 
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
-		self.mRecordListItems.append( recItem )
+
+		if aRecItem == None :		
+			self.mRecordListItems.append( recItem )
 
 
 	@SetLock
@@ -478,7 +534,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_TRACE( 'RecordList item is empty' )
 			return
 
-		thumbIcon = 'RecIconSample.png'
+		thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
@@ -504,7 +560,7 @@ class ArchiveWindow( BaseWindow ) :
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
-				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+				#recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 				recItem.setProperty( 'RecIcon', thumbIcon )
 
 		if aIsStartEvent :
@@ -646,7 +702,7 @@ class ArchiveWindow( BaseWindow ) :
 		markedList = []
 
 		if self.mRecordListItems == None :
-			self.UpdateList( )
+			#self.UpdateList( )
 			return markedList
 
 		count = len( self.mRecordListItems )
@@ -911,10 +967,10 @@ class ArchiveWindow( BaseWindow ) :
 						if len( thumbnaillist ) > 0 :
 							recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 						else :
-							recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+							recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 
 					else :
-						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+						recItem.setProperty( 'RecIcon', E_DEFAULT_THUMBNAIL_ICON )
 						
 
 			self.DoClearMark( )
@@ -1001,6 +1057,9 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )
 
+		if self.mUpdateInfomationTimer and self.mUpdateInfomationTimer.isAlive() :
+			self.mUpdateInfomationTimer.cancel( )		
+
 
 	def UpdateSelectedPosition( self ) :
 		selectedPos = self.GetSelectedPosition( )
@@ -1072,6 +1131,13 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN( 'Unknown View Mode' )
 
+		if self.mUpdateInfomationTimer and self.mUpdateInfomationTimer.isAlive() :
+			self.mUpdateInfomationTimer.cancel( )		
+		
+		self.mUpdateInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateInfomation )
+		self.mUpdateInfomationTimer.start( )
+
+	def AsyncUpdateInfomation( self ) :
 		self.UpdateSelectedPosition( )
 		self.UpdateArchiveInfomation( )
 

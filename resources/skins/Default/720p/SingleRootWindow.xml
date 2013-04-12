@@ -21,17 +21,9 @@ Search for window name
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<include file="mbox_single_includes.xml">"mbox_single_includes.xml"</include>
 	<onload>SetProperty(ItemHeight,40)</onload>
-	<onload>SetProperty(bookmarkIconFO,StepFO.png)</onload>
-	<onload>SetProperty(bookmarkIconNF,StepNF.png)</onload>
-	<onload>SetProperty(currentPosX,360)</onload>
-	<onload>SetProperty(currentPosY,600)</onload>
-	<!--onload>SetProperty(currentPosX,390)</onload>
-	<onload>SetProperty(currentPosY,585)</onload-->
-	<onload>SetProperty(progressPosX,400)</onload>
-	<onload>SetProperty(progressPosY,625)</onload>
-	<onload>SetProperty(slideGap,30)</onload>
+	<onload>SetProperty(currentPosX,397)</onload>
+	<onload>SetProperty(currentPosY,590)</onload>
 	<controls>
-
 
 		<!-- Default BackgroundImage -->
 		<control type="image">
@@ -1603,7 +1595,7 @@ Search for window name
 
 		<!-- *********** E_LIVEWindow ********** -->	
 		<control type="group" id="1400000">
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
 			<!--<animation effect="fade" start="100" end="0" time="200">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),4100000)</visible>
 			<defaultcontrol always="true">1003621</defaultcontrol>
@@ -2365,7 +2357,7 @@ Search for window name
 									<align>center</align>
 									<aligny>center</aligny>
 									<font>font13</font>
-									<textcolor>blue</textcolor>
+									<textcolor>white</textcolor>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
@@ -2382,7 +2374,6 @@ Search for window name
 						</control>
 					</control>
 				</control>
-
 
 				<!-- Rec info -->
 				<control type="group">
@@ -2556,7 +2547,6 @@ Search for window name
 					</control>
 				</control>
 
-
 				<!-- play section -->
 				<control type="group">
 					<posx>230</posx>
@@ -2583,44 +2573,36 @@ Search for window name
 						<righttexture>-</righttexture>
 						<overlaytexture>-</overlaytexture>
 					</control>
-					<!--control type="label">
-						<posx>1190</posx>
-						<posy>605</posy>
-						<font>font12</font>
-						<textcolor>blue</textcolor>
-						<label>$INFO[Control.GetLabel(2900202)]</label>
-					</control-->
-
 					<control type="button" id="2900202">
 						<description>play time</description>
-						<posx>360</posx>
-						<posy>570</posy>
-						<width>85</width>
-						<height>30</height>
-						<!--posx>380</posx>
-						<posy>550</posy>
-						<width>15</width>
-						<height>30</height-->
-
-						<font>font10</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey2</disabledcolor>
-						<focusedcolor>blue</focusedcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<textoffsety>50</textoffsety>
-						<texturefocus>TSProgressCurrentFO.png</texturefocus>
-						<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
+						<posx>400</posx>
+						<posy>590</posy>
+						<width>5</width>
+						<height>20</height>
+						<texturefocus>osd_slider_nibNF.png</texturefocus>
+						<texturenofocus>osd_slider_nibNF.png</texturenofocus>
 						<onleft>2900202</onleft>
 						<onright>2900202</onright>
 						<onup>2900500</onup>
 						<ondown>1003750</ondown>
 						<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 					</control>
+					<control type="label" id="2900204">
+						<description>start</description>
+						<posx>410</posx>
+						<posy>600</posy>
+						<width>100</width>
+						<height>15</height>
+						<textcolor>white</textcolor>
+						<font>font12</font>
+					</control>
+
 					<control type="label" id="2900203">
 						<description>mode</description>
 						<posx>20</posx>
 						<posy>580</posy>
+						<width>200</width>
+						<height>20</height>
 						<font>font30_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
@@ -2634,6 +2616,8 @@ Search for window name
 						<description>start</description>
 						<posx>25</posx>
 						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
 						<textcolor>grey</textcolor>
 						<font>font12</font>
 						<label>00:00:00</label>
@@ -2642,9 +2626,341 @@ Search for window name
 						<description>end</description>
 						<posx>890</posx>
 						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
 						<textcolor>grey</textcolor>
 						<font>font12</font>
 						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+
+				<!-- bookmark point-->
+				<control type="group">
+					<posx>395</posx>
+					<posy>590</posy>
+					<!--animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(2900700)">Conditional</animation>
+					<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(2900700)">Conditional</animation-->
+					<visible>substring(Window.Property(BookMarkPointShow),true)</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>780</width>
+						<height>36</height>
+						<control type="image" id="2900600">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900601">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900602">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900603">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900604">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900605">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900606">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900607">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900608">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900609">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900610">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900611">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900612">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900613">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900614">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900615">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900616">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900617">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900618">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900619">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900620">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900621">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900622">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900623">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900624">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900625">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900626">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900627">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900628">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900629">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900630">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900631">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900632">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900633">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900634">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900635">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900636">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900637">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900638">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900639">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900640">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900641">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900642">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900643">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900644">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900645">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900646">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900647">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900648">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900649">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900650">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900651">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900652">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900653">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900654">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900655">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900656">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900657">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900658">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900659">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900660">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900661">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900662">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900663">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900664">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900665">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900666">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900667">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900668">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900669">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900670">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900671">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900672">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900673">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900674">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900675">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900676">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900677">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900678">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900679">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900680">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900681">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900682">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900683">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900684">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900685">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900686">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900687">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900688">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900689">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900690">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900691">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900692">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900693">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900694">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900695">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900696">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900697">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900698">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900699">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900701">
+							<include>TimeshiftBookmarkCurrent</include>
+							<visible>Control.HasFocus(2900500)</visible>
+						</control>
+
 					</control>
 				</control>
 			</control>
@@ -3207,7 +3523,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -3222,7 +3538,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -3237,7 +3553,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -3252,7 +3568,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),panart) </visible>
 				</control>
 			</control>
