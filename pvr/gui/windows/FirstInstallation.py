@@ -24,6 +24,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mAsyncVideoSetThread		= None
 
 		self.mStepImage					= []
+		self.mReloadSkinPosition		= False
 
 
 	def onInit( self ) :
@@ -32,6 +33,9 @@ class FirstInstallation( FTIWindow ) :
 		self.SetFrontdisplayMessage( 'First Installation' )
 
 		self.SetFirstInstallation( True )
+		if self.mReloadSkinPosition :
+			WinMgr.GetInstance( ).LoadSkinPosition( )
+			self.mReloadSkinPosition = False
 		self.SetPipScreen( )
 		
 		self.SetListControl( self.GetFTIStep( ) )
@@ -152,9 +156,8 @@ class FirstInstallation( FTIWindow ) :
 				self.SetPipScreen( )
 
 			elif groupId == E_Input01 :
+				self.mReloadSkinPosition = True
 				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
-				WinMgr.GetInstance( ).LoadSkinPosition( )
-				self.SetPipScreen( )
 
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
