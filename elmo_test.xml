@@ -54,4 +54,17 @@
 			<sleep>7</sleep>
 		</loop>
 	</scenario>
+	<scenario>
+		<name>OTR TEST</name>
+		<sleep>1</sleep>
+		<loop repeat="200">
+			<sendkey>VKEY_REC</sendkey>
+			<sleep>10</sleep>
+			<sendkey>VKEY_STOP</sendkey>
+			<sleep>2</sleep>
+			<sendkey>VKEY_OK</sendkey>
+			<sleep>2</sleep>
+		</loop>
+	</scenario>
+	
 </scenarios>
