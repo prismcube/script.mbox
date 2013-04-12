@@ -142,7 +142,7 @@ class InitNetwork( ) :
 					self.SetAutoConnect( self.mWifi, False )
 					time.sleep( 1 )
 				else :
-					print 'can not found current set wifi config info'
+					print 'cannot find current set wifi config info'
 			else :
 				print 'Wifi device not configured'
 

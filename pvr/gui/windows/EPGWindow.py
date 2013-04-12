@@ -572,7 +572,7 @@ class EPGWindow( BaseWindow ) :
 				epgTotalCount += epgCount
 				
 			else :
-				LOG_ERR( 'Can not find channel' )
+				LOG_ERR( 'Cannot find channel' )
 				break
 
 		end = time.time( )
@@ -962,11 +962,11 @@ class EPGWindow( BaseWindow ) :
 					row += 1
 
 				else :
-					LOG_ERR( 'Can not find epgList' )
+					LOG_ERR( 'Cannot find epgList' )
 					continue
 					
 			else :
-				LOG_ERR( 'Can not find channel' )
+				LOG_ERR( 'Cannot find channel' )
 				break
 
 		for i in range(E_GRID_MAX_BUTTON_COUNT - enableCount ) :
@@ -2397,7 +2397,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
 			self.setFocusId( gridMeta.mId )
 		else :
-			LOG_ERR( 'can not find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
+			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
 			self.mVisibleFocusRow = 0
 			self.mVisibleFocusCol = 0
 			self.setFocusId( BUTTON_ID_BASE_GRID )
