@@ -57,6 +57,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mPlayProgressThread	= None
 		self.mEnableThread			= False
 		self.mViewMode				= E_VIEW_LIST
+		self.mThumbnailHash		= {}
 
 	
 	def onInit( self ) :
@@ -138,7 +139,9 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateViewMode( )
 		
 		self.InitControl( )
+
 		self.UpdateList( )
+		
 		self.SelectLastRecordKey( )	
 		self.UpdatePlayStatus( )
 
@@ -378,6 +381,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def Load( self ) :
 		self.mMarkMode = False
+		self.mThumbnailHash =  {}		
 
 		LOG_TRACE( '----------------------------------->' )
 		try :
@@ -389,6 +393,14 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordCount = 0
 			else :
 				self.mRecordCount = len( self.mRecordList  )
+
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg')  )
+			
+			for i in range(  len( thumbnaillist )  ) :
+				recKey = thumbnaillist[i].split('_')
+				#print 'recKey=%s' %recKey[2]
+				if recKey and recKey[2] :
+					self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" % ex )
@@ -423,14 +435,34 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mAscending[self.mSortMode] == False :
 				self.mRecordList.reverse( )
 
-			self.mCtrlCommonList.reset( )
-			self.mCtrlThumbnailList.reset( )
-			self.mCtrlPosterwrapList.reset( )
-			self.mCtrlFanartList.reset( )
 
-			self.mRecordListItems = []
+			if self.mRecordListItems == None :
+				self.mRecordListItems = []
+
+			if self.mRecordList  == None :
+				self.mRecordList =[]
+
+
+			if len( self.mRecordList ) :
+				self.mCtrlCommonList.reset( )
+				self.mCtrlThumbnailList.reset( )
+				self.mCtrlPosterwrapList.reset( )
+				self.mCtrlFanartList.reset( )
+
+				
+
+			updateOnly = False
+			
+			if len(self.mRecordListItems) == len( self.mRecordList ) :
+				updateOnly = True
+			else :
+				self.mRecordListItems = []
+				
 			for i in range( len( self.mRecordList ) ) :
-				self.UpdateListItem( self.mRecordList[i] )
+				if updateOnly == True :
+					self.UpdateListItem( self.mRecordList[i], self.mRecordListItems[i] )				
+				else :
+					self.UpdateListItem( self.mRecordList[i] )
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
@@ -444,7 +476,7 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( 'UpdateList END' )
 
 
-	def UpdateListItem( self, aRecordInfo ) :
+	def UpdateListItem( self, aRecordInfo, aRecItem=None ) :
 		thumbIcon = 'RecIconSample.png'
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			thumbIcon = 'DefaultAudioNF.png'
@@ -453,12 +485,27 @@ class ArchiveWindow( BaseWindow ) :
 				thumbIcon = 'DefaultAudioFO.png'
 
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
-		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
+
+		if aRecItem :
+			recItem = aRecItem
+		else :
+			recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
+
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
 		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
 		if aRecordInfo.mLocked :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
+			recItem.setProperty( 'RecIcon', thumbIcon )
+
+			thumbIcon =  self.mThumbnailHash.get('%d' %aRecordInfo.mRecordKey, None ) 
+
+			if thumbIcon :
+				recItem.setProperty( 'RecIcon', thumbIcon )
+			else :
+				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )			
+
+			"""
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
 			if len( thumbnaillist ) > 0 :
@@ -466,6 +513,7 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				#recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 				recItem.setProperty( 'RecIcon', thumbIcon )
+			"""
 
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
