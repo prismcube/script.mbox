@@ -80,10 +80,11 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdateList( True )
-			self.SelectLastRecordKey( )
+			self.Load( )
+			self.UpdateList(  )
 			self.UpdatePlayStatus( )
 			self.SetFocusList( self.mViewMode )
+			self.SelectLastRecordKey( )			
 			return
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -242,7 +243,7 @@ class ArchiveWindow( BaseWindow ) :
 			SetSetting( 'VIEW_MODE', '%d' % self.mViewMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
-			self.UpdateList( True )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )
 			#self.SetFocusList( self.mViewMode )
 		
@@ -256,7 +257,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
-			self.UpdateList( True )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )			
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
@@ -269,7 +270,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mAscending[self.mSortMode] = True
 
 			self.UpdateAscending( )
-			self.UpdateList( True )
+			self.UpdateList(  )
 			self.SelectLastRecordKey( )						
 
 		elif aControlId == RADIOBUTTON_ID_EXTRA :
@@ -312,7 +313,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
-					self.UpdateList(  True )
+					self.UpdateList(   )
 					#self.SetFocusList( self.mViewMode )
 					return
 
@@ -398,19 +399,12 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				self.mRecordCount = len( self.mRecordList  )
 
-			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg')  )
-			
-			for i in range(  len( thumbnaillist )  ) :
-				recKey = thumbnaillist[i].split('_')
-				#print 'recKey=%s' %recKey[2]
-				if recKey and recKey[2] :
-					self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" % ex )
 
 
-	def UpdateList( self, aUpdateOnly=False ) :
+	def UpdateList( self ) :
 		LOG_TRACE( 'UpdateList Start' )
 		if self.mViewMode == E_VIEW_LIST :
 			self.SetPipScreen( )
@@ -445,21 +439,37 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mRecordList  == None :
 				self.mRecordList =[]
 
+			#LOG_TRACE('')
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
 			self.mCtrlPosterwrapList.reset( )
 			self.mCtrlFanartList.reset( )
 
-			if len( self.mRecordListItems ) != len( self.mRecordList ) :
-				aUpdateOnly = False
+			#LOG_TRACE('')
+			updateOnly = False
+			if len( self.mRecordListItems ) == len( self.mRecordList ) :
+				updateOnly = True
+			else :
 				self.mRecordListItems = []
 
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg')  )
+			
+			for i in range(  len( thumbnaillist )  ) :
+				recKey = thumbnaillist[i].split('_')
+				#print 'recKey=%s' %recKey[2]
+				if recKey and recKey[2] :
+					self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
+
+			#LOG_TRACE('')
 			for i in range( len( self.mRecordList ) ) :
-				if aUpdateOnly == True :
+				if updateOnly == True :
+					#LOG_TRACE('')				
 					self.UpdateListItem( self.mRecordList[i], self.mRecordListItems[i] )				
 				else :
+					#LOG_TRACE('')				
 					self.UpdateListItem( self.mRecordList[i] )
 
+			#LOG_TRACE('')
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				self.UpdatePlayStopThumbnail( self.mPlayingRecord.mRecordKey, True )
