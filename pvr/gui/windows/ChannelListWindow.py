@@ -2533,7 +2533,7 @@ class ChannelListWindow( BaseWindow ) :
 			if name :
 				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
 				   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-					LOG_TRACE( 'can not fav.rename : same name' )
+					LOG_TRACE( 'cannot fav.rename : same name' )
 					return
 
 				groupName = result + name

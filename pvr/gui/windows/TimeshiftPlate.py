@@ -1230,7 +1230,7 @@ class TimeShiftPlate( BaseWindow ) :
 			return 
 
 		if self.mSpeed != 100 :
-			LOG_TRACE( 'Can not jump to iFrame(bookmark), status is Pause,Forward,Rewind in now' )
+			LOG_TRACE( 'Cannot jump to iFrame(bookmark), status is Pause,Forward,Rewind in now' )
 			return
 
 		idx = self.mCtrlBookMarkList.getSelectedPosition( )

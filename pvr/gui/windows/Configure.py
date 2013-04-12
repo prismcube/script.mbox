@@ -565,12 +565,12 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
-					self.AddInputControl( E_Input01, MR_LANG( 'Select And Connect AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
+					self.AddInputControl( E_Input01, MR_LANG( 'Search Wifi' ), self.mCurrentSsid, MR_LANG( 'Search for available wireless connections' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
 					self.AddInputControl( E_Input04, MR_LANG( 'Gateway' ), self.mWifiGateway )
 					self.AddInputControl( E_Input05, MR_LANG( 'DNS' ), self.mWifiDns )
-					self.AddInputControl( E_Input06, MR_LANG( 'Manual Setup' ), '', MR_LANG( 'Press OK button to setup manual wifi settings( ip or hidden ssid )' ) )
+					self.AddInputControl( E_Input06, MR_LANG( 'Manual Wifi Setup' ), '', MR_LANG( 'Press OK button to setup wireless network manually' ) )
 
 					visibleControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input07, E_Input06 ]
 					self.SetVisibleControls( visibleControlIds, True )
@@ -851,7 +851,7 @@ class Configure( SettingWindow ) :
 				self.CloseProgress( )
 				time.sleep( 0.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi Service not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Wifi service not found' ) )
 				dialog.doModal( )
 				return
 			self.CloseProgress( )
@@ -861,7 +861,7 @@ class Configure( SettingWindow ) :
 			for ap in apList :
 				apNameList.append( ap[0] + MR_LANG( '    - Strength : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
 			dialog = xbmcgui.Dialog( )
-			ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
+			ret = dialog.select( MR_LANG( 'Select Wifi' ), apNameList )
 			if ret >= 0 :
 				if self.mCurrentSsid != apList[ret][0] :
 					self.mUseStatic = NET_DHCP

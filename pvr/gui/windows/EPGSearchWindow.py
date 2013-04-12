@@ -204,7 +204,7 @@ class EPGSearchWindow( BaseWindow ) :
 		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
 			self.mEPGList = None
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No result' ), MR_LANG( 'Can not find any matches result') )
+			dialog.SetDialogProperty( MR_LANG( 'No results found' ), MR_LANG( 'Cannot find any results for that search') )
 			dialog.doModal( )
 			return
 		"""

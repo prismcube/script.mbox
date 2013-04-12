@@ -240,7 +240,7 @@ class FirstInstallation( FTIWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Skin Zoom' ), E_LIST_SKIN_ZOOM_RATE, self.mZoomRate, MR_LANG( 'Select the skin zoom rate' ) )
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Video Zoom' ), E_LIST_SKIN_ZOOM_RATE, self.mZoomRate, MR_LANG( 'Zoom in/out your TV screen' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 

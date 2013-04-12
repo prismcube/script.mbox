@@ -394,7 +394,7 @@ def RemoveDirectory( aPath ) :
 			os.unlink( aPath )
 			ret = True
 		else :
-			LOG_TRACE( 'Can not remove, non type file[%s]'% aPath )
+			LOG_TRACE( 'Cannot remove, non type file[%s]'% aPath )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s]'% e )
@@ -630,7 +630,7 @@ def GetUnpackByMD5( aFile ) :
 			value = pars[0].strip()
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] Can not open[%s]'% ( e, openFile ) )
+		LOG_ERR( 'except[%s] Cannot open[%s]'% ( e, openFile ) )
 
 	return value
 

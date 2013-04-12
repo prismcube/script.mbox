@@ -23,7 +23,7 @@ class DialogManualWifi( SettingDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
-		self.SetHeaderLabel( MR_LANG( 'Wifi manual setup' ) )
+		self.SetHeaderLabel( MR_LANG( 'Manual Wifi Setup' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Connect' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
@@ -132,14 +132,14 @@ class DialogManualWifi( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Static Ip' ), USER_ENUM_LIST_ON_OFF, self.mUseStatic, MR_LANG( 'Select use static ip address or not' ) )
+		self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'IP Settings' ), USER_ENUM_LIST_ON_OFF, self.mUseStatic, MR_LANG( 'Assign a static IP address for wireless network' ) )
 		self.AddInputControl( E_DialogInput01, MR_LANG( ' - IP Address' ), self.mIpAddr, MR_LANG( 'Enter your IP address' ) )
 		self.AddInputControl( E_DialogInput02, MR_LANG( ' - Subnet Mask' ), self.mSubNet, MR_LANG( 'Enter your subnet mask' ) )
 		self.AddInputControl( E_DialogInput03, MR_LANG( ' - Gateway' ), self.mGateway, MR_LANG( 'Enter your gateway' ) )
 		self.AddInputControl( E_DialogInput04, MR_LANG( ' - DNS' ), self.mDns, MR_LANG( 'Enter the DNS server address' ) )
-		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHidden, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
-		self.AddInputControl( E_DialogInput05, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSSID, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
-		self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( ' - Select EncryptType ' ), USER_ENUM_LIST_ENCRYPT_TYPE, self.mEncryptType, MR_LANG( 'Select password encryptType' ) )
+		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHidden, MR_LANG( 'Connect to a hidden wireless network' ) )
+		self.AddInputControl( E_DialogInput05, MR_LANG( ' - SSID' ), self.mHiddenSSID, MR_LANG( 'Enter network name for the wireless network you wish to connect to' ) )
+		self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( ' - Security' ), USER_ENUM_LIST_ENCRYPT_TYPE, self.mEncryptType, MR_LANG( 'Select security type for the hidden wireless network' ) )
 		
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
