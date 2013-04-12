@@ -58,6 +58,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mEnableThread			= False
 		self.mViewMode				= E_VIEW_LIST
 		self.mThumbnailHash		= {}
+		self.mUpdateInfomationTimer = None		
 
 	
 	def onInit( self ) :
@@ -65,6 +66,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Archive' )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
+
+		self.mUpdateInfomationTimer = None
 
 		status = self.mDataCache.Player_GetStatus( )
 		
@@ -77,7 +80,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdateList( )
+			self.UpdateList( True )
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
 			self.SetFocusList( self.mViewMode )
@@ -142,10 +145,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.UpdateList( )
 		
+		self.SetFocusList( self.mViewMode )
+		
 		self.SelectLastRecordKey( )	
 		self.UpdatePlayStatus( )
-
-		self.SetFocusList( self.mViewMode )
+		
 		self.mInitialized = True
 
 
@@ -238,7 +242,7 @@ class ArchiveWindow( BaseWindow ) :
 			SetSetting( 'VIEW_MODE', '%d' % self.mViewMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
-			self.UpdateList( )
+			self.UpdateList( True )
 			self.SelectLastRecordKey( )
 			#self.SetFocusList( self.mViewMode )
 		
@@ -252,7 +256,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
-			self.UpdateList( )
+			self.UpdateList( True )
 			self.SelectLastRecordKey( )			
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
@@ -265,7 +269,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mAscending[self.mSortMode] = True
 
 			self.UpdateAscending( )
-			self.UpdateList( )
+			self.UpdateList( True )
 			self.SelectLastRecordKey( )						
 
 		elif aControlId == RADIOBUTTON_ID_EXTRA :
@@ -308,7 +312,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
-					self.UpdateList( )
+					self.UpdateList(  True )
 					#self.SetFocusList( self.mViewMode )
 					return
 
@@ -406,7 +410,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" % ex )
 
 
-	def UpdateList( self ) :
+	def UpdateList( self, aUpdateOnly=False ) :
 		LOG_TRACE( 'UpdateList Start' )
 		if self.mViewMode == E_VIEW_LIST :
 			self.SetPipScreen( )
@@ -435,31 +439,23 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mAscending[self.mSortMode] == False :
 				self.mRecordList.reverse( )
 
-
 			if self.mRecordListItems == None :
 				self.mRecordListItems = []
 
 			if self.mRecordList  == None :
 				self.mRecordList =[]
 
+			self.mCtrlCommonList.reset( )
+			self.mCtrlThumbnailList.reset( )
+			self.mCtrlPosterwrapList.reset( )
+			self.mCtrlFanartList.reset( )
 
-			if len( self.mRecordList ) :
-				self.mCtrlCommonList.reset( )
-				self.mCtrlThumbnailList.reset( )
-				self.mCtrlPosterwrapList.reset( )
-				self.mCtrlFanartList.reset( )
-
-				
-
-			updateOnly = False
-			
-			if len(self.mRecordListItems) == len( self.mRecordList ) :
-				updateOnly = True
-			else :
+			if len( self.mRecordListItems ) != len( self.mRecordList ) :
+				aUpdateOnly = False
 				self.mRecordListItems = []
-				
+
 			for i in range( len( self.mRecordList ) ) :
-				if updateOnly == True :
+				if aUpdateOnly == True :
 					self.UpdateListItem( self.mRecordList[i], self.mRecordListItems[i] )				
 				else :
 					self.UpdateListItem( self.mRecordList[i] )
@@ -517,7 +513,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
-		self.mRecordListItems.append( recItem )
+
+		if aRecItem == None :		
+			self.mRecordListItems.append( recItem )
 
 
 	@SetLock
@@ -694,7 +692,7 @@ class ArchiveWindow( BaseWindow ) :
 		markedList = []
 
 		if self.mRecordListItems == None :
-			self.UpdateList( )
+			#self.UpdateList( )
 			return markedList
 
 		count = len( self.mRecordListItems )
@@ -1049,6 +1047,9 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )
 
+		if self.mUpdateInfomationTimer and self.mUpdateInfomationTimer.isAlive() :
+			self.mUpdateInfomationTimer.cancel( )		
+
 
 	def UpdateSelectedPosition( self ) :
 		selectedPos = self.GetSelectedPosition( )
@@ -1120,6 +1121,13 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN( 'Unknown View Mode' )
 
+		if self.mUpdateInfomationTimer and self.mUpdateInfomationTimer.isAlive() :
+			self.mUpdateInfomationTimer.cancel( )		
+		
+		self.mUpdateInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateInfomation )
+		self.mUpdateInfomationTimer.start( )
+
+	def AsyncUpdateInfomation( self ) :
 		self.UpdateSelectedPosition( )
 		self.UpdateArchiveInfomation( )
 
