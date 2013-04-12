@@ -2283,6 +2283,6 @@ class DataCacheMgr( object ) :
 		return self.mBookmarkHash.get( aBookmark, -1 )
 
 	def SetBookmarkHash( self, aControlId, aBookmark ) :
-		self.mBookmarkHash[aControlId] = aBookmark
+		self.mBookmarkHash[aBookmark] = aControlId
 
 
