@@ -384,9 +384,7 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode == ElisEnum.E_MODE_PVR :
-				self.mDataCache.Player_CreateBookmark( )
+			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.DialogPopupOK( actionId )
@@ -884,6 +882,26 @@ class NullWindow( BaseWindow ) :
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
+
+		elif aAction == Action.ACTION_COLOR_GREEN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_PVR :
+				self.mIsShowDialog = False
+				return
+			
+			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+			if playingRecord == None or playingRecord.mError != 0 :
+				self.mIsShowDialog = False
+				return
+
+			bookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
+			if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+				head = MR_LANG( 'Error' )
+				msg = MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE
+			else :
+				self.mDataCache.Player_CreateBookmark( )
+				self.mIsShowDialog = False
+				return
 
 
 		self.CloseSubTitle( )

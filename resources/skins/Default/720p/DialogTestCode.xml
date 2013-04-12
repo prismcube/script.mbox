@@ -104,6 +104,41 @@
 				</control>
 			</control>
 
+<!-- bookmark point -->
+	<control type="group">
+		<posx>395</posx>
+		<posy>590</posy>
+		<!--
+		<animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(2900600)">Conditional</animation>
+		<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(2900600)">Conditional</animation>
+		-->
+		<control type="group">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>780</width>
+			<height>36</height>
+			<itemgap>0</itemgap>
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>false</usecontrolcoords>
+			<!--visible>substring(Window.Property(BookMarkPointShow),true)</visible-->
+			<control type="group">
+				<posx>0</posx>
+				<posy>0</posy>
+				<control type="image" id="2900601">
+					<include>TimeshiftBookmarkPoint</include>
+				</control>
+				<control type="image">
+					<include>TimeshiftBookmarkCurrent</include>
+					<visible>Control.HasFocus(500)</visible>
+				</control>
+				<control type="image" id="2900602">
+					<include>TimeshiftBookmarkPoint</include>
+				</control>
+
+			</control>
+
+		</control>
+	</control>
 
 <!-- Rec info -->
 			<control type="group">
@@ -304,18 +339,38 @@
 					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 					<righttexture>-</righttexture>
 					<overlaytexture>-</overlaytexture>
+					<texturesliderbar>seekslider2.png</texturesliderbar>
+					<textureslidernib>osd_slider_nibNF.png</textureslidernib>
+					<textureslidernibfocus>osd_slider_nib.png</textureslidernibfocus>
+					<animation effect="fade" time="200">VisibleChange</animation>
+
 				</control>
+		<control type="slider">
+			<description>Seek Slider</description>
+			<posx>430</posx>
+			<posy>82r</posy>
+			<width>720</width>
+			<height>16</height>
+			<texturesliderbar>seekslider2.png</texturesliderbar>
+			<textureslidernib>osd_slider_nibNF.png</textureslidernib>
+			<textureslidernibfocus>osd_slider_nib.png</textureslidernibfocus>
+			<animation effect="fade" time="200">VisibleChange</animation>
+		</control>
+
 				<control type="button" id="202">
 					<description>play time</description>
-					<posx>360</posx>
-					<posy>570</posy>
-					<width>85</width>
-					<height>30</height>
+					<posx>410</posx>
+					<posy>595</posy>
+					<width>5</width>
+					<height>15</height>
 					<font>font10</font>
 					<textcolor>grey</textcolor>
 					<align>center</align>
-					<texturefocus>TSProgressCurrentFO.png</texturefocus>
-					<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
+					<!--texturefocus>TSProgressCurrentFO.png</texturefocus>
+					<texturenofocus>TSProgressCurrentNF.png</texturenofocus-->
+
+					<texturefocus>osd_slider_nibNF.png</texturefocus>
+					<texturenofocus>osd_slider_nib.png</texturenofocus>
 					<onleft>202</onleft>
 					<onright>202</onright>
 					<onup>500</onup>
@@ -326,10 +381,12 @@
 					<description>mode</description>
 					<posx>20</posx>
 					<posy>580</posy>
+					<width>200</width>
+					<height>20</height>
 					<font>font30_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<shadowcolor>black</shadowcolor>
-					<label>$INFO[Control.GetLabel]</label>
+					<label>TIMESHIFT$INFO[Control.GetLabel]</label>
 				</control>
 			</control>
 
@@ -340,6 +397,8 @@
 					<description>start</description>
 					<posx>25</posx>
 					<posy>0</posy>
+					<width>100</width>
+					<height>15</height>
 					<textcolor>grey</textcolor>
 					<font>font12</font>
 					<label>00:00:00</label>
@@ -348,6 +407,8 @@
 					<description>end</description>
 					<posx>890</posx>
 					<posy>0</posy>
+					<width>100</width>
+					<height>15</height>
 					<textcolor>grey</textcolor>
 					<font>font12</font>
 					<label>$INFO[Control.GetLabel]</label>

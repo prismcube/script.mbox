@@ -197,13 +197,13 @@ class TunerConfigMgr( object ) :
 	def SaveConfiguration( self ) :
 		self.SatelliteConfigSaveList( )
 		self.mDataCache.LoadConfiguredSatellite( )
-		self.mDataCache.LoadConfiguredTransponder( )
+		#self.mDataCache.LoadAllTransponder( )
 
 
 	def CancelConfiguration( self ) :
 		self.Restore( )
 		self.mDataCache.LoadConfiguredSatellite( )
-		self.mDataCache.LoadConfiguredTransponder( )
+		#self.mDataCache.LoadAllTransponder( )
 
 
 	def SatelliteConfigSaveList( self ) :

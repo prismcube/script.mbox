@@ -117,7 +117,7 @@ class SystemInfo( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		
-		self.StartCheckHddTempTimer( )
+		#self.StartCheckHddTempTimer( )
 		self.SetListControl( )
 		self.mPrevListItemID = -1
 		self.mInitialized = True
@@ -201,6 +201,7 @@ class SystemInfo( SettingWindow ) :
 
 		if selectedId == E_VERSION :
 			self.OpenBusyDialog( )
+			self.StopCheckHddTempTimer( )
 
 			versionHardware		= MR_LANG( 'Unknown' )
 			versionBootloader		= MR_LANG( 'Unknown' )
@@ -227,26 +228,22 @@ class SystemInfo( SettingWindow ) :
 
 		elif selectedId == E_HDD :
 			self.OpenBusyDialog( )
-
 			visibleControlIds	= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
 			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			for i in range( len( hideControlIds ) ) :
 				self.SetVisibleControl( hideControlIds[i], False )
 			for i in range( len( visibleControlIds ) ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
-
 			if self.CheckExistsDisk( ) :
+				self.StartCheckHddTempTimer( )
 				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
-
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
-
 				total_size, used_size, percent = self.GetPartitionSize( 'sda3' )
 				self.mCtrlProgressProgram.setPercent( percent )
 				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
-				
 				total_size, used_size, percent = self.GetRecordFreeSize( )
 				self.mCtrlProgressRecord.setPercent( percent )
 				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
@@ -471,7 +468,6 @@ class SystemInfo( SettingWindow ) :
 	def CheckExistsDisk( self ) :
 		if not self.mPlatform.IsPrismCube( ) :
 			return False
-
 		cmd = 'df'
 		if sys.version_info < ( 2, 7 ) :
 			p = Popen( cmd, shell=True, stdout=PIPE )
@@ -481,7 +477,7 @@ class SystemInfo( SettingWindow ) :
 			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
 			( parsing, err ) = p.communicate( )
 			parsing = parsing.strip( )
-
+			
 		if parsing.count( '/dev/sda' ) >= 3 :
 			return True
 		else :
@@ -496,8 +492,9 @@ class SystemInfo( SettingWindow ) :
 
 	def StopCheckHddTempTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
-		self.mEnableLocalThread = False				
-		self.mCheckHddTempTimer.join( )
+		self.mEnableLocalThread = False
+		if self.mEnableLocalThread :
+			self.mCheckHddTempTimer.join( )
 
 
 	@RunThread

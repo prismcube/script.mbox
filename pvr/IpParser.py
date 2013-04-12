@@ -289,6 +289,10 @@ class IpParser( object ) :
 		return
 
 
+	def VerifiedState( self, aService ) :
+		return True
+
+
 	def LoadSetWifiTechnology( self ) :
 		if self.GetWifidevice( ) :
 			return True
