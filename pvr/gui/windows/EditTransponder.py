@@ -345,6 +345,7 @@ class EditTransponder( SettingWindow ) :
 			self.SetEnableControls( visiblecontrolIds, True )
 		else :
 			self.SetEnableControls( visiblecontrolIds, False )
+			self.SetDefaultControl( )
 
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 

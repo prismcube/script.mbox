@@ -1667,8 +1667,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
-		elif aCtrlID == E_SETTING_MINI_TITLE :
-			self.mCtrlLabelMiniTitle.setLabel( aValue )
+		#elif aCtrlID == E_SETTING_MINI_TITLE :
+			#self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
 	def UpdatePropertyByCacheData( self, aPropertyID = None ) :
