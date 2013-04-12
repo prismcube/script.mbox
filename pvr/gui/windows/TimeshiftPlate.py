@@ -1204,7 +1204,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
 			if self.mBookmarkList and len( self.mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
 				dialog.doModal( )
 				return
 
@@ -1296,7 +1296,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if isFull :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attension' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
 			dialog.doModal( )
 
 		self.RestartAutomaticHide( )

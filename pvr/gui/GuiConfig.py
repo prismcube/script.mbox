@@ -240,9 +240,9 @@ USER_ENUM_LIST_ENCRYPT_TYPE			= [ MR_LANG( 'None' ), MR_LANG( 'WEP' ), MR_LANG( 
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
-E_LIST_DISEQC_MODE					= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
-E_LIST_COMMITTED_SWITCH				= [ 'Disable', '1', '2', '3', '4' ]
-E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
+E_LIST_DISEQC_MODE					= [ MR_LANG( 'Disable' ), '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
+E_LIST_COMMITTED_SWITCH				= [ MR_LANG( 'Disable' ), '1', '2', '3', '4' ]
+E_LIST_UNCOMMITTED_SWITCH			= [ MR_LANG( 'Disable' ), '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
 E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
@@ -263,6 +263,9 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( USER_ENUM_LIST_VIDEO_OUTPUT, MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) )
 	InitializedByVariableList( USER_ENUM_LIST_SEARCH_RANGE, MR_LANG( 'Single Transponder' ), MR_LANG( 'All Transponders' ) )
 	InitializedByVariableList( E_LIST_LNB_TYPE, MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) )
+	InitializedByVariableList( E_LIST_DISEQC_MODE, MR_LANG( 'Disable' ), '1 of 4', '2 of 4', '3 of 4', '4 of 4', MR_LANG( 'Mini A' ), MR_LANG( 'Mini B' ) )
+	InitializedByVariableList( E_LIST_COMMITTED_SWITCH, MR_LANG( 'Disable' ), '1', '2', '3', '4' )
+	InitializedByVariableList( E_LIST_UNCOMMITTED_SWITCH, MR_LANG( 'Disable' ), '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' )
 	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) )
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
