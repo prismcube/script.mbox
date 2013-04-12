@@ -11,6 +11,7 @@ E_CONTROL_ID_IMAGE_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 15
 E_CONTROL_ID_LABEL_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 16
 E_CONTROL_ID_PROGRESS 				= E_TIMESHIFT_PLATE_BASE_ID + 201
 E_CONTROL_ID_BUTTON_CURRENT 		= E_TIMESHIFT_PLATE_BASE_ID + 202
+E_CONTROL_ID_LABEL_CURRENT 		 	= E_TIMESHIFT_PLATE_BASE_ID + 204
 E_CONTROL_ID_LABEL_MODE 			= E_TIMESHIFT_PLATE_BASE_ID + 203
 E_CONTROL_ID_EVENT_CLOCK 			= E_TIMESHIFT_PLATE_BASE_ID + 211
 E_CONTROL_ID_LABEL_TS_START_TIME 	= E_TIMESHIFT_PLATE_BASE_ID + 221
@@ -27,6 +28,9 @@ E_CONTROL_ID_BUTTON_JUMP_RR 		= E_BASE_WINDOW_ID + 3709
 E_CONTROL_ID_BUTTON_JUMP_FF 		= E_BASE_WINDOW_ID + 3710
 E_CONTROL_ID_BUTTON_BOOKMARK 		= E_BASE_WINDOW_ID + 3711
 E_CONTROL_ID_IMAGE_XPEED 			= E_BASE_WINDOW_ID + 3760
+
+E_CONTROL_ID_IMAGE_BOOKMARK_POINT   = E_TIMESHIFT_PLATE_BASE_ID + 600
+E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT = E_TIMESHIFT_PLATE_BASE_ID + 701
 
 #value enum
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -45,10 +49,7 @@ E_ONINIT = None
 #control position
 E_CURRENT_POSX  = 0
 E_CURRENT_POSY  = 0
-E_PROGRESS_POSX = 0
-E_PROGRESS_POSY = 0
 E_PROGRESS_WIDTH_MAX = 0
-E_SLIDE_GAP = 0
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
@@ -59,12 +60,14 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
+
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
 		self.mCurrentChannel=[]
 		self.mProgress_idx = 0.0
+		self.mInitCurTime = 0.0
 		self.mTimeshift_staTime = 0.0
 		self.mTimeshift_curTime = 0.0
 		self.mTimeshift_endTime = 1.0
@@ -99,6 +102,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlLblRec2           = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
 		self.mCtrlProgress          = self.getControl( E_CONTROL_ID_PROGRESS )
 		self.mCtrlBtnCurrent        = self.getControl( E_CONTROL_ID_BUTTON_CURRENT )
+		self.mCtrlLblCurrent        = self.getControl( E_CONTROL_ID_LABEL_CURRENT )
 		self.mCtrlLblMode           = self.getControl( E_CONTROL_ID_LABEL_MODE )
 		#self.mCtrlEventClock        = self.getControl( E_CONTROL_ID_EVENT_CLOCK )
 		self.mCtrlLblTSStartTime    = self.getControl( E_CONTROL_ID_LABEL_TS_START_TIME )
@@ -116,6 +120,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlBtnBookMark       = self.getControl( E_CONTROL_ID_BUTTON_BOOKMARK )
 		self.mCtrlBookMarkList      = self.getControl( E_CONTROL_ID_LIST_SHOW_BOOKMARK )
 		self.mCtrlImgXpeed          = self.getControl( E_CONTROL_ID_IMAGE_XPEED )
+		self.mCtrlImgCurrent        = self.getControl( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
 
 		self.mFlag_OnEvent = True
 		self.mIsTimeshiftPending = False
@@ -139,8 +144,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mLimitInput = E_ACCELATOR_START_INPUT
 		self.mLimitShift = E_ACCELATOR_SHIFT_SECTION
 		self.mPosProgress = [] 
-		self.mSlideY = 0
-		self.mImagePoint = ''
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -208,6 +211,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 				self.StopAutomaticHide( )
+				idx = self.mCtrlBookMarkList.getSelectedPosition( )
+				pos = self.mBookmarkButton[idx].getPosition( )
+				self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -227,6 +233,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 				self.StopAutomaticHide( )
+				idx = self.mCtrlBookMarkList.getSelectedPosition( )
+				pos = self.mBookmarkButton[idx].getPosition( )
+				self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -237,9 +246,12 @@ class TimeShiftPlate( BaseWindow ) :
 			   self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 				self.StopAutomaticHide( )
 
-				self.mSlideY = E_SLIDE_GAP + 2
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 				#self.UpdateBookmarkByPoint( )
+				if self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
+					idx = self.mCtrlBookMarkList.getSelectedPosition( )
+					pos = self.mBookmarkButton[idx].getPosition( )
+					self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -250,7 +262,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
-					self.mSlideY = E_SLIDE_GAP + 2
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 					#self.UpdateBookmarkByPoint( )
 
@@ -258,10 +269,10 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_TRUE )
 				time.sleep( 0.2 )
-				ret = self.ShowButtonFocus( )
-				if ret :
-					self.mSlideY = -( E_SLIDE_GAP + 1 )
-					#self.UpdateBookmarkByPoint( )
+				if self.mSpeed == 100 :
+					self.UpdateSetFocus( E_CONTROL_ID_BUTTON_JUMP_RR )
+				else :
+					ret = self.ShowButtonFocus( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -524,21 +535,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
 
-				"""
-				self.mUserMoveTime = -1
-				self.mFlagUserMove = True
-				#userMovingMs = self.JumpToTrack( E_CONTROL_ID_BUTTON_JUMP_RR )
-				userMovingMs = self.mTimeshift_curTime - 10 * 1000
-				LOG_TRACE( 'start[%s] cur[%s] end[%s] move[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime, userMovingMs ) )
-
-				if userMovingMs < self.mTimeshift_staTime :
-					userMovingMs = self.mTimeshift_staTime + 1000
-
-				self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
-				self.mDataCache.Player_JumpTo( userMovingMs )
-				self.mFlagUserMove = False
-				"""
-
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
 
@@ -699,19 +695,20 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitLabelInfo( self ) :
-		global E_CURRENT_POSX, E_CURRENT_POSY, E_PROGRESS_POSX, E_PROGRESS_POSY, E_PROGRESS_WIDTH_MAX, E_SLIDE_GAP
+		global E_CURRENT_POSX, E_CURRENT_POSY, E_PROGRESS_WIDTH_MAX
 		E_PROGRESS_WIDTH_MAX = self.mCtrlProgress.getWidth( )
-		E_SLIDE_GAP     = int( self.getProperty( 'slideGap' ) ) + 5
 		E_CURRENT_POSX  = int( self.getProperty( 'currentPosX' ) )
 		E_CURRENT_POSY  = int( self.getProperty( 'currentPosY' ) ) + 4
-		E_PROGRESS_POSX = int( self.getProperty( 'progressPosX' ) )
-		E_PROGRESS_POSY = int( self.getProperty( 'progressPosY' ) )
-		self.mImagePoint = self.getProperty( 'bookmarkIconFO' )
-		#LOG_TRACE('---------getWidth[%s] pos[%s,%s] curr[%s,%s]'% ( E_PROGRESS_WIDTH_MAX, E_PROGRESS_POSX, E_PROGRESS_POSY, E_CURRENT_POSX, E_CURRENT_POSY ) )
-
-		self.mSlideY = E_SLIDE_GAP
+		#LOG_TRACE('---------getWidth[%s] pos[%s,%s] curr[%s,%s]'% ( E_PROGRESS_WIDTH_MAX, E_CURRENT_POSX, E_CURRENT_POSY ) )
 
 		self.InitTimeShift( )
+		visiblePoint = E_TAG_FALSE
+		if self.mMode == ElisEnum.E_MODE_PVR :
+			visiblePoint = E_TAG_TRUE
+			self.mBookmarkButton = self.mDataCache.GetBookmarkButton( )
+
+		self.setProperty( 'BookMarkPointShow', visiblePoint )
+
 		self.InitBookmarkThumnail( )
 		self.mEventCopy = []
 		self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
@@ -782,9 +779,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_CURRENT :
 			if aExtra == E_TAG_LABEL:
-				self.mCtrlBtnCurrent.setLabel( aValue )
+				#self.mCtrlBtnCurrent.setLabel( aValue )
+				self.mCtrlLblCurrent.setLabel( aValue )
 			elif aExtra == E_TAG_POSY:
 				self.mCtrlBtnCurrent.setPosition( aValue + E_CURRENT_POSX, E_CURRENT_POSY )
+				self.mCtrlLblCurrent.setPosition( aValue + E_CURRENT_POSX + 5, E_CURRENT_POSY + 10 )
 			elif aExtra == E_TAG_ENABLE:
 				self.mCtrlBtnCurrent.setEnabled( aValue )
 
@@ -920,10 +919,14 @@ class TimeShiftPlate( BaseWindow ) :
 				if status.mEndTimeInMs :
 					self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
+				if status.mPlayTimeInMs < 1 :
+					self.mTimeshift_curTime = self.mInitCurTime
+
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
-				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000.0
+				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
+				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
-				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000.0 )
+				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime =  localTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -951,6 +954,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			if lbl_timeS != '' :
 				if self.mStartTimeShowed == False :
+					self.mInitCurTime = tempEndTime / 1000000
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
 					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeP != '' and status.mSpeed != 0 :
@@ -1127,15 +1131,16 @@ class TimeShiftPlate( BaseWindow ) :
 			count = count + loopDelay
 			
 
-	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ):
+	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ) :
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
 
 			#calculate current position
-			playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
-			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
-			#curTime = self.mTimeshift_curTime + aUserMoving
+			#playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
+			#curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
+			playSize = self.mTimeshift_endTime
+			curTime = self.mTimeshift_curTime + aUserMoving
 			if aMoveBy == E_MOVE_BY_MARK :
 				curTime = self.mTimeshift_staTime + aUserMoving
 			if curTime < self.mTimeshift_staTime :
@@ -1144,7 +1149,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if playSize > 0 and curTime >= 0 :
 				self.mProgress_idx = (curTime / float(playSize))  * 100.0
 
-				#LOG_TRACE( 'curTime2[%s] curTime[%s] playSize[%s] idx[%s]'% ( curTime2,curTime,playSize,self.mProgress_idx ) )
+				#LOG_TRACE( 'curTime[%s] playSize[%s] idx[%s]'% ( curTime,playSize,self.mProgress_idx ) )
 				#LOG_TRACE( 'staTime[%s] curTime[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
@@ -1195,6 +1200,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def DoContextAction( self, aSelectAction ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
+			if self.mBookmarkList and len( self.mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+				dialog.doModal( )
+				return
+
 			ret = self.mDataCache.Player_CreateBookmark( )
 			if ret :
 				time.sleep(1)
@@ -1257,12 +1268,18 @@ class TimeShiftPlate( BaseWindow ) :
 
 		section = mediaTime / 10
 		partition = 0
+		isFull = False
 		for i in range( 1, 10 ) :
 			partition += section
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
 			ret = self.mDataCache.Player_JumpToIFrame( partition )
 			if ret :
+				mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecordInfo.mRecordKey )
+				if mBookmarkList and len( mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+					isFull = True
+					break
+
 				self.mDataCache.Player_CreateBookmark( )
 
 			time.sleep(0.5)
@@ -1275,6 +1292,11 @@ class TimeShiftPlate( BaseWindow ) :
 		LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
 		self.CloseBusyDialog( )
 
+		if isFull :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attension' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+			dialog.doModal( )
+
 		self.RestartAutomaticHide( )
 
 
@@ -1282,7 +1304,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.StopAutomaticHide( )
 
 		#1.show thumbnail on plate
-		self.Flush( )
+		self.mCtrlBookMarkList.reset( )
 		if len( self.mBookmarkList ) < 1 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			LOG_TRACE( 'bookmark None, show False' )
@@ -1308,44 +1330,22 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
 		#2.show mark on progress
-		#self.UpdateBookmarkByPoint( )
+		self.UpdateBookmarkByPoint( )
 
 
 	def UpdateBookmarkByPoint( self ) :
 		if not self.mBookmarkList or len( self.mBookmarkList ) < 1 :
 			return
 
-		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-			for i in range( len( self.mBookmarkButton ) ) :
-				try :
-					mWin = self
-					if E_SUPPORT_SINGLE_WINDOW_MODE :
-						mWin = self.mRootWindow
-					#self.removeControl( self.mBookmarkButton[i] )
-					mWin.removeControl( self.mBookmarkButton[i] )
-				except Exception, e :
-					LOG_TRACE( 'except[%s]'% e )
-			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
-
-		self.mBookmarkButton = []
-
 		revisionX = -10
-		posy = E_PROGRESS_POSY + self.mSlideY
-		#LOG_TRACE('---------progress pos[%s,%s] posy[%s] slide[%s]'% ( E_PROGRESS_POSX, E_PROGRESS_POSY, posy, self.mSlideY ) )
 		for i in range( len( self.mBookmarkList ) ) :
-			ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-			posx = int( E_PROGRESS_POSX + E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
-			button = xbmcgui.ControlButton( posx, posy, 25, 25, '', '', self.mImagePoint )
-			#self.addControl( button )
-			mWin = self
-			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				mWin = self.mRootWindow
-
-			mWin.addControl( button )
-			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
+			#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
+			ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
+			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
+			self.mBookmarkButton[i].setPosition( posx, 0 )
+			self.mBookmarkButton[i].setVisible( True )
+			#LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
-
-			self.mBookmarkButton.append( button )
 
 
 	def ShowRecordingInfo( self ) :
@@ -1449,8 +1449,8 @@ class TimeShiftPlate( BaseWindow ) :
 	def LoadToBookmark( self ) :
 		self.mThumbnailList = []
 		self.mBookmarkList = []
-		self.Flush( )
 
+		self.mCtrlBookMarkList.reset( )
 		if self.mMode != ElisEnum.E_MODE_PVR :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 			return
@@ -1466,6 +1466,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )
 		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or self.mBookmarkList[0].mError != 0 :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
+			self.mBookmarkList = []
 			return 
 
 		#for item in mBookmarkList :
@@ -1578,17 +1579,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def Flush( self ) :
 		self.mCtrlBookMarkList.reset( )
+
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-			for i in range( len( self.mBookmarkButton ) ) :
-				try :
-					mWin = self
-					if E_SUPPORT_SINGLE_WINDOW_MODE :
-						mWin = self.mRootWindow
-					#self.removeControl( self.mBookmarkButton[i] )
-					mWin.removeControl( self.mBookmarkButton[i] )
-				except Exception, e :
-					LOG_TRACE( 'except[%s]'% e )
-			self.mBookmarkButton = []
+			for i in range( len( self.mBookmarkList ) ) :
+				self.mBookmarkButton[i].setVisible( False )
+
 			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
 
 

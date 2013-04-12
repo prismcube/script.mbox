@@ -254,11 +254,15 @@ class DialogBookmark( BaseDialog ) :
 		if not self.mMarkList :
 			self.mMarkList.append( selectedPos )
 
+		bookmarkButton = self.mDataCache.GetBookmarkButton( )
 		for idx in self.mMarkList :
 			self.mIsDelete = True
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
 			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
+
+			if ret :
+				bookmarkButton[idx].setVisible( False )
 
 		self.InitList( )
 

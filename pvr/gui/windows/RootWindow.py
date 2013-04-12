@@ -115,8 +115,19 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
+			self.LoadTimeShiftControl( )
 		else :
 			os.system( 'touch /mtmp/isrunning' )
+
+
+	def LoadTimeShiftControl( self ) :
+		mBookmarkButton = []
+		buttonId = WinMgr.WIN_ID_TIMESHIFT_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID + 600
+		for i in range( 100 ) :
+			mBookmarkButton.append( self.getControl( buttonId + i ) )
+			mBookmarkButton[i].setVisible( False )
+
+		self.mDataCache.SetBookmarkButton( mBookmarkButton )
 
 
 	def LoadNoSignalState( self ) :
