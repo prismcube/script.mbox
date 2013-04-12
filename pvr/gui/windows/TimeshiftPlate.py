@@ -174,6 +174,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mInitialized = True
 
 		self.RestartAutomaticHide( )
+		self.mOnBlockTimer_GreenKey = time.time( )
 		#thread = threading.Timer( 0.1, AsyncShowStatus, [label] )
 		#thread.start( )
 
@@ -393,6 +394,11 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
+			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				return
+
+			self.mOnBlockTimer_GreenKey = time.time( )
+
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.StopAutomaticHide( )
 				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
@@ -717,7 +723,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
 		#self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
+		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
 		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, E_CURRENT_POSY, E_TAG_POSY )
 		self.UpdateProgress( )
 
@@ -729,6 +735,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_TAG_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_TAG_VISIBLE )
+		self.UpdatePropertyGUI( 'IsShift', 'False' )
 
 
 	def SetBlockingButtonEnable( self, aValue ) :
@@ -926,8 +933,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
-				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
-				tempEndTime =  localTime
+				tempCurrentTime = tempStartTime + tempCurrentTime
+				tempEndTime = localTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
 				self.mTimeshift_staTime = 0.0
@@ -1204,7 +1211,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
 			if self.mBookmarkList and len( self.mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
 				dialog.doModal( )
 				return
 
@@ -1296,7 +1303,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if isFull :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attension' ), MR_LANG( 'You have reached the maximum number of%s bookmark allowed' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE )
 			dialog.doModal( )
 
 		self.RestartAutomaticHide( )
@@ -1331,6 +1338,7 @@ class TimeShiftPlate( BaseWindow ) :
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 
 			listItems.append( listItem )
+
 		self.mCtrlBookMarkList.addItems( listItems )
 
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
@@ -1349,7 +1357,8 @@ class TimeShiftPlate( BaseWindow ) :
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
 			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
 			LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
-			controlId = self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i] )
+			self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i].mOffset )
+			LOG_TRACE('-------add---------find controlId[%s]'% i )
 			self.mBookmarkButton[i].setPosition( posx, 0 )
 			self.mBookmarkButton[i].setVisible( True )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
@@ -1589,12 +1598,15 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for bookmark in self.mBookmarkList :
-				controlId = self.mDataCache.GetBookmarkHash( bookmark )
+				controlId = self.mDataCache.GetBookmarkHash( bookmark.mOffset )
+				#LOG_TRACE('--close--------------find controlId[%s]'% controlId )
 				if controlId != -1 :
 					self.mBookmarkButton[controlId].setVisible( False )
+					#LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( self.mBookmarkButton[controlId].getId(), self.mBookmarkButton[controlId].getPosition( ), controlId, bookmark.mOffset ) )
 
 			self.mDataCache.InitBookmarkHash( )
-			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
+			self.mDataCache.SetBookmarkButton( self.mBookmarkButton )
+			LOG_TRACE('erased Init. bookmark' )
 
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -1631,6 +1643,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def RestartAsyncMove( self, aMoveTrack = None ) :
+		self.UpdatePropertyGUI( 'IsShift', 'True' )
 		self.StopAsyncMove( )
 		if aMoveTrack :
 			self.StartAsyncMoveByMark( aMoveTrack )
@@ -1787,6 +1800,7 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_ERR( 'Error exception[%s]'% e )
 
 		self.SetActivate( True )
+		self.UpdatePropertyGUI( 'IsShift', 'False' )
 
 
 	def MoveToSeekFrame( self, aKey ) :

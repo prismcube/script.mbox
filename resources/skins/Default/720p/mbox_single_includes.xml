@@ -694,6 +694,16 @@
 		<texture>HomeSeparatorRed1.png</texture>
 	</include>
 
+	<include name="TimeshiftSliderBG">
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>100</width>
+			<height>5</height>
+			<texture>osd_slider_bg.png</texture>
+		</control>
+	</include>
+
 	<include name="DefaultButtonGridChannelValues">
 		<height>45</height>
 		<width>250</width>

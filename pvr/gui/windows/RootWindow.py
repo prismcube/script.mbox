@@ -19,6 +19,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 				if self.mInitialized == False :
 					self.CheckFirstRun( )
+					self.LoadTimeShiftControl( )
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
 					self.mInitialized = True
@@ -105,7 +106,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 	def CheckFirstRun( self ) :
 		if CheckDirectory( '/mtmp/isrunning' ) :
-			self.LoadTimeShiftControl( )
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
