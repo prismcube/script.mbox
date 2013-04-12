@@ -266,7 +266,8 @@ class DialogBookmark( BaseDialog ) :
 			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
 
 			if ret :
-				controlId = self.mDataCache.GetBookmarkHash( self.mBookmarkList[idx] )
+				controlId = self.mDataCache.GetBookmarkHash( playOffset )
+				LOG_TRACE('--------delete--------find controlId[%s]'% controlId )
 				if controlId != -1 :
 					bookmarkButton[controlId].setVisible( False )
 					LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( bookmarkButton[controlId].getId(), bookmarkButton[idx].getPosition( ), idx, playOffset ) )

@@ -1331,6 +1331,7 @@ class TimeShiftPlate( BaseWindow ) :
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
 
 			listItems.append( listItem )
+
 		self.mCtrlBookMarkList.addItems( listItems )
 
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
@@ -1349,7 +1350,8 @@ class TimeShiftPlate( BaseWindow ) :
 			ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
 			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
 			LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
-			controlId = self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i] )
+			self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i].mOffset )
+			LOG_TRACE('-------add---------find controlId[%s]'% i )
 			self.mBookmarkButton[i].setPosition( posx, 0 )
 			self.mBookmarkButton[i].setVisible( True )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
@@ -1589,12 +1591,15 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for bookmark in self.mBookmarkList :
-				controlId = self.mDataCache.GetBookmarkHash( bookmark )
+				controlId = self.mDataCache.GetBookmarkHash( bookmark.mOffset )
+				#LOG_TRACE('--close--------------find controlId[%s]'% controlId )
 				if controlId != -1 :
 					self.mBookmarkButton[controlId].setVisible( False )
+					#LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( self.mBookmarkButton[controlId].getId(), self.mBookmarkButton[controlId].getPosition( ), controlId, bookmark.mOffset ) )
 
 			self.mDataCache.InitBookmarkHash( )
-			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
+			self.mDataCache.SetBookmarkButton( self.mBookmarkButton )
+			LOG_TRACE('erased Init. bookmark' )
 
 
 	def SetAutomaticHide( self, aHide=True ) :
