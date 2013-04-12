@@ -2573,6 +2573,26 @@ Search for window name
 						<righttexture>-</righttexture>
 						<overlaytexture>-</overlaytexture>
 					</control>
+					<control type="grouplist" id="1003620">
+						<posx>400</posx>
+						<posy>603</posy>
+						<width>777</width>
+						<height>40</height>
+						<itemgap>0</itemgap>
+						<pagecontrol></pagecontrol>
+						<orientation>horizontal</orientation>
+						<usecontrolcoords>false</usecontrolcoords>
+						<animation effect="fade" time="300">VisibleChange</animation>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+					</control>
 					<control type="button" id="2900202">
 						<description>play time</description>
 						<posx>400</posx>

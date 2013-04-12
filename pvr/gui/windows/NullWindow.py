@@ -111,6 +111,7 @@ class NullWindow( BaseWindow ) :
 
 		self.DoRelayAction( )
 		self.mOnTimeDelay = time.time( )
+		self.mOnBlockTimer_GreenKey = time.time( )
 
 		"""
 		currentStack = inspect.stack( )
@@ -884,6 +885,11 @@ class NullWindow( BaseWindow ) :
 			return
 
 		elif aAction == Action.ACTION_COLOR_GREEN :
+			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				return
+
+			self.mOnBlockTimer_GreenKey = time.time( )
+
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_PVR :
 				self.mIsShowDialog = False

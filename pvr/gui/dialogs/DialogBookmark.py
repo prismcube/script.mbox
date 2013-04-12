@@ -263,14 +263,14 @@ class DialogBookmark( BaseDialog ) :
 			self.mIsDelete = True
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
-			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
+			#LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
 
 			if ret :
 				controlId = self.mDataCache.GetBookmarkHash( playOffset )
-				LOG_TRACE('--------delete--------find controlId[%s]'% controlId )
+				#LOG_TRACE('--------delete--------find controlId[%s]'% controlId )
 				if controlId != -1 :
 					bookmarkButton[controlId].setVisible( False )
-					LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( bookmarkButton[controlId].getId(), bookmarkButton[idx].getPosition( ), idx, playOffset ) )
+					#LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( bookmarkButton[controlId].getId(), bookmarkButton[idx].getPosition( ), idx, playOffset ) )
 
 		self.InitList( )
 

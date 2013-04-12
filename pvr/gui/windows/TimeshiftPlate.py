@@ -174,6 +174,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mInitialized = True
 
 		self.RestartAutomaticHide( )
+		self.mOnBlockTimer_GreenKey = time.time( )
 		#thread = threading.Timer( 0.1, AsyncShowStatus, [label] )
 		#thread.start( )
 
@@ -393,6 +394,11 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
+			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				return
+
+			self.mOnBlockTimer_GreenKey = time.time( )
+
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.StopAutomaticHide( )
 				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
@@ -717,7 +723,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
 		#self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
+		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, '', E_TAG_LABEL )
 		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, E_CURRENT_POSY, E_TAG_POSY )
 		self.UpdateProgress( )
 
@@ -729,6 +735,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_TAG_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_TAG_VISIBLE )
+		self.UpdatePropertyGUI( 'IsShift', 'False' )
 
 
 	def SetBlockingButtonEnable( self, aValue ) :
@@ -926,8 +933,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
-				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
-				tempEndTime =  localTime
+				tempCurrentTime = tempStartTime + tempCurrentTime
+				tempEndTime = localTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
 				self.mTimeshift_staTime = 0.0
@@ -1636,6 +1643,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def RestartAsyncMove( self, aMoveTrack = None ) :
+		self.UpdatePropertyGUI( 'IsShift', 'True' )
 		self.StopAsyncMove( )
 		if aMoveTrack :
 			self.StartAsyncMoveByMark( aMoveTrack )
@@ -1792,6 +1800,7 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_ERR( 'Error exception[%s]'% e )
 
 		self.SetActivate( True )
+		self.UpdatePropertyGUI( 'IsShift', 'False' )
 
 
 	def MoveToSeekFrame( self, aKey ) :
