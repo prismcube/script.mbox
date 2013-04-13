@@ -2561,6 +2561,20 @@ Search for window name
 
 			<!-- EPG section -->
 				<control type="group">
+					<control type="progress" id="2900200">
+						<description>progress review</description>
+						<posx>400</posx>
+						<posy>595</posy>
+						<width>780</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">OSDProgressMid_RED.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
+						<animation effect="fade" time="300">VisibleChange</animation>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+					</control>
 					<control type="progress" id="2900201">
 						<description>progress control</description>
 						<posx>400</posx>

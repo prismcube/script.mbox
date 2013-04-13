@@ -3,6 +3,7 @@ import time, math
 
 
 E_CONTROL_ID_LIST_SHOW_BOOKMARK		= 500
+E_CONTROL_ID_LIST_SHOW_PROGRESS2	= 200
 
 class DialogTestCode( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -14,6 +15,7 @@ class DialogTestCode( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.mCtrlBookMarkList      = self.getControl( E_CONTROL_ID_LIST_SHOW_BOOKMARK )
+		self.mCtrlProgress2      = self.getControl( E_CONTROL_ID_LIST_SHOW_PROGRESS2 )
 
 		self.mThumbnailList = []
 		self.mBookmarkList = []
@@ -24,6 +26,7 @@ class DialogTestCode( BaseDialog ) :
 		self.mMode = status.mMode
 
 		self.LoadToBookmark( )
+		self.mMoveP = 0
 
 
 	def onAction( self, aAction ) :
@@ -38,6 +41,12 @@ class DialogTestCode( BaseDialog ) :
 
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			self.CloseDialog( )
+
+		elif aAction == Action.ACTION_MOVE_LEFT :
+			self.MoveTest( -10 )
+
+		elif aAction == Action.ACTION_MOVE_RIGHT :
+			self.MoveTest( 10 )
 
 
 	def onClick( self, aControlId ):
@@ -68,6 +77,15 @@ class DialogTestCode( BaseDialog ) :
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
+
+	def MoveTest( self, aDirection ) :
+		self.mMoveP += aDirection
+		if self.mMoveP < 0 : 
+			self.mMoveP = 0
+		elif self.mMoveP > 100 :
+			self.mMoveP = 100
+
+		self.mCtrlProgress2.setPercent( self.mMoveP )
 
 
 	def LoadToBookmark( self ) :
