@@ -69,7 +69,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
-		self.mAutomaticHide = False
+		self.mAutomaticHide = True
 		self.mEnableLocalThread = False
 		self.mEnableBlickingTimer = False		
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT

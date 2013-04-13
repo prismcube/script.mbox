@@ -214,7 +214,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				idx = self.mCtrlBookMarkList.getSelectedPosition( )
 				pos = self.mBookmarkButton[idx].getPosition( )
-				self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
+				self.mCtrlImgCurrent.setPosition( pos[0], 0 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -236,7 +236,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				idx = self.mCtrlBookMarkList.getSelectedPosition( )
 				pos = self.mBookmarkButton[idx].getPosition( )
-				self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
+				self.mCtrlImgCurrent.setPosition( pos[0], 0 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -252,7 +252,7 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 					idx = self.mCtrlBookMarkList.getSelectedPosition( )
 					pos = self.mBookmarkButton[idx].getPosition( )
-					self.mCtrlImgCurrent.setPosition( ( pos[0] + 11 ), 9 )
+					self.mCtrlImgCurrent.setPosition( pos[0], 0 )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -1340,7 +1340,6 @@ class TimeShiftPlate( BaseWindow ) :
 			listItems.append( listItem )
 
 		self.mCtrlBookMarkList.addItems( listItems )
-
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
 		#2.show mark on progress
@@ -1353,12 +1352,17 @@ class TimeShiftPlate( BaseWindow ) :
 
 		revisionX = -10
 		for i in range( len( self.mBookmarkList ) ) :
-			#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-			ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
+			ratioX = 0
+			if self.mPlayingRecordInfo.mDuration > 0 :
+				#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
+				ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
+
+			if ratioX < 0.02 :
+				revisionX = -5
 			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
-			LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( i, posx, self.mBookmarkList[i].mTimeMs ) )
+			#LOG_TRACE('--------button id[%s] posx[%s] ratioX[%s] timeMs[%s] duration[%s]'% ( i, posx, ratioX, self.mBookmarkList[i].mTimeMs, self.mPlayingRecordInfo.mDuration ) )
 			self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i].mOffset )
-			LOG_TRACE('-------add---------find controlId[%s]'% i )
+			#LOG_TRACE('-------add---------find controlId[%s]'% i )
 			self.mBookmarkButton[i].setPosition( posx, 0 )
 			self.mBookmarkButton[i].setVisible( True )
 			#LOG_TRACE('pos[%s] ratio[%s]%%'% ( posx, ratioX * 100.0 ) )
