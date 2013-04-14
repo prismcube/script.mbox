@@ -339,12 +339,24 @@
 					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 					<righttexture>-</righttexture>
 					<overlaytexture>-</overlaytexture>
-					<texturesliderbar>seekslider2.png</texturesliderbar>
-					<textureslidernib>osd_slider_nibNF.png</textureslidernib>
-					<textureslidernibfocus>osd_slider_nib.png</textureslidernibfocus>
-					<animation effect="fade" time="200">VisibleChange</animation>
+				</control>
+				<!-- must defined onload by pos x,y value -->
+				<control type="progress" id="200">
+					<description>progress control</description>
+					<posx>400</posx>
+					<posy>595</posy>
+					<width>780</width>
+					<height>16</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">OSDProgressBack.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
+					<animation effect="fade" time="300">VisibleChange</animation>
 
 				</control>
+
+
 		<control type="slider">
 			<description>Seek Slider</description>
 			<posx>430</posx>
