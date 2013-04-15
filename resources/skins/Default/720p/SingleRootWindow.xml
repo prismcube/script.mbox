@@ -5263,7 +5263,7 @@ Search for window name
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
