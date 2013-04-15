@@ -97,11 +97,12 @@ class TimerWindow( BaseWindow ) :
 
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.GoParentTimer( )
-	
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.GoParentTimer( )
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
+			focusId = self.getFocusId( )		
+			if focusId  == BUTTON_ID_GO_PARENT	: 
+				self.setFocusId( LIST_ID_BIG_TIMER )			
+			else:
+				self.GoParentTimer( )
 		
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )

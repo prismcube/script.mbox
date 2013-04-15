@@ -167,13 +167,17 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mMarkMode :
 				self.DoClearMark( )
 			else :
-				#self.mDataCache.Player_Stop( )
-				#self.mPlayingRecord	= None
-				#self.setProperty( 'PvrPlay', 'False' )
-				self.Close( )
-				self.SetVideoRestore( )
-				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-				WinMgr.GetInstance( ).CloseWindow( )
+
+				if focusId == BUTTON_ID_VIEW_MODE or focusId == BUTTON_ID_SORT_MODE or focusId == TOGGLEBUTTON_ID_ASC or focusId == RADIOBUTTON_ID_EXTRA or focusId == RADIOBUTTON_ID_WATCHED :
+					self.SetFocusList( self.mViewMode )				
+				else :
+					#self.mDataCache.Player_Stop( )
+					#self.mPlayingRecord	= None
+					#self.setProperty( 'PvrPlay', 'False' )
+					self.Close( )
+					self.SetVideoRestore( )
+					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+					WinMgr.GetInstance( ).CloseWindow( )
 				
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
