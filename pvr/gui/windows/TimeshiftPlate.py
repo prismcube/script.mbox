@@ -9,7 +9,7 @@ E_CONTROL_ID_IMAGE_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 10
 E_CONTROL_ID_LABEL_RECORDING1 		= E_TIMESHIFT_PLATE_BASE_ID + 11
 E_CONTROL_ID_IMAGE_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 15
 E_CONTROL_ID_LABEL_RECORDING2 		= E_TIMESHIFT_PLATE_BASE_ID + 16
-E_CONTROL_ID_PROGRESS_REVIEW		= E_TIMESHIFT_PLATE_BASE_ID + 200
+#E_CONTROL_ID_PROGRESS_REVIEW		= E_TIMESHIFT_PLATE_BASE_ID + 200
 E_CONTROL_ID_PROGRESS 				= E_TIMESHIFT_PLATE_BASE_ID + 201
 E_CONTROL_ID_BUTTON_CURRENT 		= E_TIMESHIFT_PLATE_BASE_ID + 202
 E_CONTROL_ID_LABEL_CURRENT 		 	= E_TIMESHIFT_PLATE_BASE_ID + 204
@@ -99,7 +99,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlImgRec2           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
 		self.mCtrlLblRec2           = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
-		self.mCtrlProgressReview    = self.getControl( E_CONTROL_ID_PROGRESS_REVIEW )
+		#self.mCtrlProgressReview    = self.getControl( E_CONTROL_ID_PROGRESS_REVIEW )
 		self.mCtrlProgress          = self.getControl( E_CONTROL_ID_PROGRESS )
 		self.mCtrlBtnCurrent        = self.getControl( E_CONTROL_ID_BUTTON_CURRENT )
 		self.mCtrlLblCurrent        = self.getControl( E_CONTROL_ID_LABEL_CURRENT )
@@ -146,6 +146,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mPosProgress = [] 
 		self.mIsShowDialog = False
 		self.mStartTimeShowed = False
+		self.mIsPlay = FLAG_PLAY
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -179,7 +180,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = time.time( )
 		#thread = threading.Timer( 0.1, AsyncShowStatus, [label] )
 		#thread.start( )
-		self.mAutomaticHide = False
 
 
 	def onAction( self, aAction ) :
@@ -356,18 +356,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 			xbmc.executebuiltin('xbmc.Action(DVBRecord)')
 
-			"""
-			if HasAvailableRecordingHDD( ) == False :
-				return
-				
-			if self.mMode == ElisEnum.E_MODE_PVR :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback' ) )
-				dialog.doModal( )
-			else :
-				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
-			"""
-
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -440,33 +428,6 @@ class TimeShiftPlate( BaseWindow ) :
 			#self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
 			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 			xbmc.executebuiltin('xbmc.Action(DVBRecord)')
-
-			"""
-			if HasAvailableRecordingHDD( ) == False :
-				return
-				
-			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-
-			isOK = False
-			if  runningCount < 1 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
-
-				isOK = dialog.IsOK( )
-				if isOK == E_DIALOG_STATE_YES :
-					isOK = True
-
-				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-					RecordConflict( dialog.GetConflictTimer( ) )
-					
-			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE )
-				dialog.doModal( )
-
-			if isOK :
-				self.mDataCache.SetChannelReloadStatus( True )
-			"""
 
 		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.StopAutomaticHide( )
@@ -633,7 +594,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			visible = E_TAG_TRUE
-			LOG_TRACE('---------------------------status[%s]'% self.mMode )
+			#LOG_TRACE('---------------------------status[%s]'% self.mMode )
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				visible = E_TAG_FALSE
 				self.mIsPlay = FLAG_STOP
@@ -804,8 +765,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_PROGRESS :
 			self.mCtrlProgress.setPercent( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_PROGRESS_REVIEW :
-			self.mCtrlProgressReview.setPercent( aValue )
+		#elif aCtrlID == E_CONTROL_ID_PROGRESS_REVIEW :
+		#	self.mCtrlProgressReview.setPercent( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_CURRENT :
 			if aExtra == E_TAG_LABEL:
@@ -961,10 +922,16 @@ class TimeShiftPlate( BaseWindow ) :
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
 
-			elif status.mMode == ElisEnum.E_MODE_PVR and self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
-				self.mTimeshift_staTime = 0.0
-				self.mTimeshift_endTime = self.mPlayingRecordInfo.mDuration * 1000
-				tempEndTime = self.mPlayingRecordInfo.mDuration
+			elif status.mMode == ElisEnum.E_MODE_PVR :
+				if self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
+					self.mTimeshift_endTime = self.mPlayingRecordInfo.mDuration * 1000
+					tempEndTime = self.mPlayingRecordInfo.mDuration
+
+				else :
+					self.mTimeshift_staTime = 0.0
+					self.mTimeshift_endTime = status.mEndTimeInMs
+					tempEndTime = status.mEndTimeInMs / 1000
+
 				#LOG_TRACE( 'resetting pvr start[%s] end[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime ) )
 
 
@@ -997,7 +964,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if tempStartTime > 0 :
 				self.mStartTimeShowed = True
 
-			LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
+			#LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
 
 			self.GetNextSpeed( E_ONINIT )
 
@@ -1164,7 +1131,7 @@ class TimeShiftPlate( BaseWindow ) :
 			time.sleep( loopDelay )
 			count = count + loopDelay
 
-		self.mThreadProgress = None
+		#self.mThreadProgress = None
 
 
 	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ) :
@@ -1233,7 +1200,7 @@ class TimeShiftPlate( BaseWindow ) :
 				#progress drawing
 				posx = int( self.mProgressReview * E_PROGRESS_WIDTH_MAX / 100 )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_TAG_POSY )
-				self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_REVIEW, self.mProgressReview )
+				#self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_REVIEW, self.mProgressReview )
 				#LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
 		except Exception, e :
@@ -1250,6 +1217,8 @@ class TimeShiftPlate( BaseWindow ) :
 				return
 
 			self.BookMarkContext( )
+
+		self.RestartAutomaticHide( )
 
 
 	def BookMarkContext( self ) :
@@ -1332,10 +1301,9 @@ class TimeShiftPlate( BaseWindow ) :
 		if not self.mPlayingRecordInfo :
 			return 
 
-		mediaTime = self.mPlayingRecordInfo.mDuration
+		mediaTime = self.mPlayingRecordInfo.mDuration * 1000
 
-		#if ( mediaTime / 1000 ) < 30 :
-		if mediaTime < 30 :
+		if ( mediaTime / 1000 ) < 30 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs%s to create a chapter' )% NEW_LINE )
  			dialog.doModal( )
