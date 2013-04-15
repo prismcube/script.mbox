@@ -5,6 +5,7 @@ E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211
 E_EPG_NAME_ID		= 212
 E_PROGRESS_ID		= 213
+E_DEFAULT_CLOSE_TIME = 1.2
 
 
 class DialogChannelJump( BaseDialog ) :
@@ -38,14 +39,14 @@ class DialogChannelJump( BaseDialog ) :
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mFindChannel = None
-		self.mAsynViewTime = 1.2
+		self.mAsynViewTime = E_DEFAULT_CLOSE_TIME
 		self.mPreviousCount = 0
 
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
 		self.SearchChannel( )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
-		self.mOnInitTime = time.time( )
+		#self.mOnInitTime = time.time( )
 
 
 	def onAction( self, aAction ) :
@@ -68,6 +69,10 @@ class DialogChannelJump( BaseDialog ) :
 			pass
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			if self.mBackKeyCheck :
+				LOG_TRACE( 'Back key mode, no receive input' )
+				return
+
 			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
 			self.mChannelNumber += inputString
 			self.mChannelNumber = '%d' % int( self.mChannelNumber )
@@ -82,6 +87,10 @@ class DialogChannelJump( BaseDialog ) :
 
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			inputNum = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
+			if self.mBackKeyCheck :
+				LOG_TRACE( 'Back key mode, no receive input' )
+				return
+
 			if inputNum >= 2 and inputNum <= 9 :
 				inputString = '%d' % inputNum
 				self.mChannelNumber += inputString
@@ -149,6 +158,10 @@ class DialogChannelJump( BaseDialog ) :
 
 		if fChannel == None or fChannel.mError != 0 :
 			LOG_TRACE( 'No search Channel[%s]'% self.mChannelNumber )
+			self.mFlagFind = True
+			self.mFindChannel = self.mDataCache.Channel_GetCurrent( )
+			self.mAsynViewTime = 5
+			self.RestartAsyncTune( )
 			return
 
 		#retList = []
@@ -160,6 +173,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.GetEPGInfo( fChannel )
 
 		self.mFlagFind = True
+		self.mAsynViewTime = E_DEFAULT_CLOSE_TIME
 		self.RestartAsyncTune( )
 
 

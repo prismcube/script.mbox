@@ -216,7 +216,11 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
-			self.Close( )
+			focusId = self.getFocusId( )
+			if focusId == BUTTON_ID_EPG_MODE or focusId == RADIIOBUTTON_ID_EXTRA or focusId == BUTTON_ID_SEARCH:
+				self.SetFocusList( self.mEPGMode )				
+			else :
+				self.Close( )
 	
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if self.mEPGMode == E_VIEW_GRID	:

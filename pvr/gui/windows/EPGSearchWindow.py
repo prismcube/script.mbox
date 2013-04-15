@@ -98,12 +98,13 @@ class EPGSearchWindow( BaseWindow ) :
 
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.Close( )
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
+			focusId = self.getFocusId( )		
+			if focusId  == BUTTON_ID_EPG_MODE	: 
+				self.setFocusId( LIST_ID_BIG_EPG )			
+			else:
+				self.Close( )
 	
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
-		
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
 
