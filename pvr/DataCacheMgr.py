@@ -239,6 +239,7 @@ class DataCacheMgr( object ) :
 	def InitNetwork( self ) :
 		NetMgr.GetInstance( ).LoadEthernetService( )
 		NetMgr.GetInstance( ).LoadSetWifiTechnology( )
+		NetMgr.GetInstance( ).LoadWifiService( )
 		"""
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			import pvr.NetworkMgr as NetMgr
