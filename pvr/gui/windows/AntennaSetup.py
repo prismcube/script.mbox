@@ -179,6 +179,7 @@ class AntennaSetup( SettingWindow ) :
 	def CloseWindow( self ) :
 		self.mTunerMgr.SetNeedLoad( True )
 		self.ResetAllControl( )
+		time.sleep( 2 )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )

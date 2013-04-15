@@ -300,6 +300,14 @@ class IpParser( object ) :
 			return False
 
 
+	def LoadEthernetService( self ) :
+		return
+
+
+	def ResetNetwork( self ) :
+		return
+
+
 	def SetEthernetNameServer( self, aType, aNameAddress ) :
 		try :
 			if aType == NET_DHCP :

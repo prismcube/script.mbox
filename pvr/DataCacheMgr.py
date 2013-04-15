@@ -1,4 +1,3 @@
-import thread, sys, copy, xbmcgui, os
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -6,6 +5,12 @@ import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
+from pvr.gui.GuiConfig import *
+
+if E_USE_OLD_NETWORK :
+	import pvr.IpParser as NetMgr
+else :
+	import pvr.NetworkMgr as NetMgr
 
 from pvr.gui.GuiConfig import *
 from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG, AsyncShowStatus
@@ -228,12 +233,10 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		if not E_USE_OLD_NETWORK :
-			self.InitNetwork( )
+		self.InitNetwork( )
 
 	
 	def InitNetwork( self ) :
-		import pvr.NetworkMgr as NetMgr
 		NetMgr.GetInstance( ).LoadEthernetService( )
 		NetMgr.GetInstance( ).LoadSetWifiTechnology( )
 		"""
@@ -2219,7 +2222,6 @@ class DataCacheMgr( object ) :
 
 		#3. network : dhcp
 		LOG_TRACE( '>>>>>>>> Default init : Network <<<<<<<<' )
-		import pvr.NetworkMgr as NetMgr
 		NetMgr.GetInstance( ).ResetNetwork( )
 		
 		#4. time setting : m/w (Time and Date, Local time offset, Summer Time)
