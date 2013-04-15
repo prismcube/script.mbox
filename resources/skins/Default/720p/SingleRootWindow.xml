@@ -988,7 +988,7 @@ Search for window name
 					<width>50</width>
 					<height>30</height>
 					<texture>tv.png</texture>
-					<visible>!Control.IsVisible(1308800)</visible>
+					<visible>!substring(Window.Property(TVRadio),true)</visible>
 				</control>
 				<control type="image">
 					<posx>100</posx>
@@ -996,7 +996,7 @@ Search for window name
 					<width>50</width>
 					<height>30</height>
 					<texture>icon_radio2.png</texture>
-					<visible>Control.IsVisible(1308800)</visible>
+					<visible>substring(Window.Property(TVRadio),true)</visible>
 				</control>
 
 			</control>
