@@ -2269,6 +2269,14 @@ Search for window name
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
+			<control type="image" id="2900100">
+				<posx>1200</posx>
+				<posy>50</posy>
+				<width>60</width>
+				<height>25</height>
+				<texture>i_record.png</texture>
+				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
+			</control>
 			<control type="group">
 				<animation effect="fade" start="0" end="100" time="400">Visible</animation>
 				<animation effect="fade" start="100" end="0" time="400">Hidden</animation>

@@ -451,7 +451,7 @@ class LivePlate( LivePlateWindow ) :
 					self.SetBlinkingProperty( 'None' )
 
  				self.ShowRecordingInfo( )
-				self.RestartAutomaticHide( ) 				
+				self.RestartAutomaticHide( )
 
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.mJumpNumber = aEvent.mChannelNo
