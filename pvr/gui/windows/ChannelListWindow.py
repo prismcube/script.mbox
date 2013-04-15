@@ -63,7 +63,7 @@ E_SLIDE_MENU_MODE       = 4
 E_CONTROL_FOCUSED       = E_CHANNEL_LIST_BASE_ID + 9991
 E_SLIDE_CLOSE           = E_CHANNEL_LIST_BASE_ID + 9999
 
-E_CHANNEL_LIST_DEFAULT_FOCUS_ID			=  E_CONTROL_ID_GROUP_CHANNEL_LIST
+E_CHANNEL_LIST_DEFAULT_FOCUS_ID	=  E_CONTROL_ID_GROUP_CHANNEL_LIST
 
 class SlidePosition( object ) :
 	def __init__( self ) :
@@ -239,6 +239,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			#LOG_TRACE( 'goto previous menu' )
+			self.GetFocusId( )
+			if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST and self.mFocusId != E_CONTROL_ID_SCROLLBAR_CHANNEL :
+				self.UpdateControlGUI( E_SLIDE_CLOSE )
+				return
+
 			if self.mMoveFlag :
 				self.SetMoveMode( FLAG_OPT_MOVE_OK, actionId )
 			else :
