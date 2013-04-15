@@ -105,8 +105,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.SetBlinkingProperty( 'None' )
 		self.mRecordBlinkingCount = 0
 
-		self.mStartTimeShowed = False
-
 		self.mCtrlImgRec1           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlImgRec2           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
@@ -157,6 +155,8 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mLimitShift = E_ACCELATOR_SHIFT_SECTION
 		self.mPosProgress = [] 
 		self.mIsShowDialog = False
+		self.mStartTimeShowed = False
+		self.mCurrentTimeShowed = True
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -363,7 +363,10 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
+			#self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
+			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+			xbmc.executebuiltin('xbmc.Action(DVBRecord)')
+
 			"""
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -445,7 +448,10 @@ class TimeShiftPlate( BaseWindow ) :
 			self.StopAutomaticHide( )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
+			#self.DialogPopup( E_CONTROL_ID_BUTTON_START_RECORDING )
+			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+			xbmc.executebuiltin('xbmc.Action(DVBRecord)')
+
 			"""
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -642,7 +648,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			visible = E_TAG_TRUE
-			#LOG_TRACE('---------------------------status[%s]'% self.mMode )
+			LOG_TRACE('---------------------------status[%s]'% self.mMode )
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				visible = E_TAG_FALSE
 				self.mIsPlay = FLAG_STOP
@@ -650,15 +656,17 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
-				
+
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				visible = E_TAG_FALSE
+				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				visible = E_TAG_FALSE
+				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -912,9 +920,9 @@ class TimeShiftPlate( BaseWindow ) :
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
-		#retList = []
-		#retList.append( status )
-		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+		retList = []
+		retList.append( status )
+		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status and status.mError == 0 :
 			flag_Rewind  = False
@@ -964,6 +972,7 @@ class TimeShiftPlate( BaseWindow ) :
 				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
+				#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
 
@@ -992,7 +1001,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			if lbl_timeS != '' :
 				if self.mStartTimeShowed == False :
-					self.mInitCurTime = self.mTimeshift_endTime#tempEndTime / 1000000
+					self.mInitCurTime = tempEndTime / 1000000
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
 					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeP != '' and status.mSpeed != 0 :
@@ -1003,7 +1012,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if tempStartTime > 0 :
 				self.mStartTimeShowed = True
 
-			#LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
+			LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
 
 			self.GetNextSpeed( E_ONINIT )
 
