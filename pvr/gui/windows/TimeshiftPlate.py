@@ -920,9 +920,9 @@ class TimeShiftPlate( BaseWindow ) :
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
-		retList = []
-		retList.append( status )
-		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+		#retList = []
+		#retList.append( status )
+		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status and status.mError == 0 :
 			flag_Rewind  = False
