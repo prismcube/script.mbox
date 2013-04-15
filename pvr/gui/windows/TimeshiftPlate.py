@@ -61,9 +61,6 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
-E_NOMAL_BLINKING_TIME	= 0.2
-E_MAX_BLINKING_COUNT	=  10
-
 
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -81,14 +78,10 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mFlag_OnEvent = True
 
 		self.mAsyncShiftTimer = None
-		self.mRecordBlinkingTimer = None
 		self.mAutomaticHideTimer = None
 		self.mAutomaticHide = True
 		self.mStartTimeShowed = False
 		self.mPrekey = None
-
-		self.mEnableBlickingTimer = False
-		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
 
 
 	def onInit( self ) :
@@ -101,9 +94,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
-
-		self.SetBlinkingProperty( 'None' )
-		self.mRecordBlinkingCount = 0
 
 		self.mCtrlImgRec1           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
@@ -156,7 +146,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mPosProgress = [] 
 		self.mIsShowDialog = False
 		self.mStartTimeShowed = False
-		self.mCurrentTimeShowed = True
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -518,10 +507,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) :
-					self.mRecordBlinkingCount = 0
-					self.StopBlinkingIconTimer( )
-					self.SetBlinkingProperty( 'None' )
 
 				self.ShowRecordingInfo( )
 				self.RestartAutomaticHide( )
@@ -1342,8 +1327,15 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def AutoChapterAddBookmark( self ) :
 		# limit playtime under 30sec
-		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
-		if ( mediaTime / 1000 ) < 30 :
+		#mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
+		LOG_TRACE( '----------------duration[%s]'% self.mPlayingRecordInfo.mDuration )
+		if not self.mPlayingRecordInfo :
+			return 
+
+		mediaTime = self.mPlayingRecordInfo.mDuration
+
+		#if ( mediaTime / 1000 ) < 30 :
+		if mediaTime < 30 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs%s to create a chapter' )% NEW_LINE )
  			dialog.doModal( )
@@ -1355,6 +1347,7 @@ class TimeShiftPlate( BaseWindow ) :
 		restoreCurrent = self.mTimeshift_playTime
 
 		section = mediaTime / 10
+		LOG_TRACE( 'mediaTime[%s] section[%s]'% ( mediaTime, section ) )
 		partition = 0
 		isFull = False
 		for i in range( 1, 10 ) :
@@ -1671,9 +1664,6 @@ class TimeShiftPlate( BaseWindow ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
 
-		self.StopBlinkingIconTimer( )
-		self.SetBlinkingProperty( 'None' )
-
 		self.Flush( )
 		self.StopAsyncMove( )
 		self.StopAutomaticHide( )
@@ -1912,260 +1902,5 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 		self.RestartAutomaticHide( )
-
-
-	def DialogPopup( self, aAction ) :
-		if self.mIsShowDialog == False :
-			thread = threading.Timer( 0.1, self.ShowDialog, [aAction] )
-			thread.start( )
-		else :
-			LOG_TRACE( 'Already opened, Dialog' )
-
-
-	def ShowDialog( self, aAction ) :
-		self.mIsShowDialog = True
-		self.StopAutomaticHide( )
-		self.SetAutomaticHide( True )
-
-		if aAction == E_CONTROL_ID_BUTTON_START_RECORDING :
-			if self.mMode == ElisEnum.E_MODE_PVR :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback' ) )
-				dialog.doModal( )
-				self.mIsShowDialog = False
-				self.RestartAutomaticHide( )
-				return
-
-			status = self.mDataCache.GetLockedState( )
-			if status != ElisEnum.E_CC_SUCCESS :
-				statusSignal = MR_LANG( 'No Signal' )
-				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-					statusSignal = MR_LANG( 'Scrambled' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
-				dialog.doModal( )
-				self.mIsShowDialog = False
-				self.RestartAutomaticHide( )
-				return
-
-			if RECORD_WIDTHOUT_ASKING == True :
-				if self.GetBlinkingProperty( ) != 'None' :
-					self.mIsShowDialog = False
-					self.RestartAutomaticHide( )
-					return
-
-				self.StartRecordingWithoutAsking( )
-			else :
-				self.ShowRecordingStartDialog( )
-
-
-		elif aAction == E_CONTROL_ID_BUTTON_STOP_RECORDING :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).ShowRecordingStopDialog( )
-
-		self.RestartAutomaticHide( )
-		self.mIsShowDialog = False
-
-
-	def StartRecordingWithoutAsking( self ) :
-		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
-			return
-
-		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-		isOK = False
-
-		if mTimer :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-			dialog.doModal( )
-
-			isOK = dialog.IsOK( )
-			if isOK == E_DIALOG_STATE_YES :
-				self.ShowRecordingInfo( )
-
-			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				RecordConflict( dialog.GetConflictTimer( ) )
-
-			return
-
-		elif runningCount < 2 :
-			copyTimeshift = 0
-			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
-			localTime = self.mDataCache.Datetime_GetLocalTime( )
-
-			#check ValidEPG
-			hasValidEPG = False
-			if otrInfo.mHasEPG :
-				if localTime >= otrInfo.mEventStartTime  and localTime < otrInfo.mEventEndTime :
-					hasValidEPG = True
-
-			if hasValidEPG == False :
-				otrInfo.mHasEPG = False
-				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
-				otrInfo.mExpectedRecordDuration = prop.GetProp( )
-				otrInfo.mEventStartTime = localTime
-				otrInfo.mEventEndTime = localTime +	otrInfo.mExpectedRecordDuration
-				otrInfo.mEventName = self.mDataCache.Channel_GetCurrent( ).mName
-
-			if otrInfo.mTimeshiftAvailable :
-				if otrInfo.mHasEPG == True :
-					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
-					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
-
-					copyTimeshift  = localTime - otrInfo.mEventStartTime
-					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
-					if copyTimeshift > timeshiftRecordSec :
-						copyTimeshift = timeshiftRecordSec
-					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
-
-			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
-
-			if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
-				copyTimeshift = 0
-
-			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
-			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
-
-			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
-
-			if expectedDuration < 0:
-				LOG_ERR( 'Error : Already Passed' )
-				expectedDuration = 0
-
-			ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, 0,  0, 0 )
-
-			#if ret[0].mParam == -1 or ret[0].mError == -1 :
-			LOG_ERR( 'StartDialog ret=%s ' %ret )
-			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :
-				LOG_ERR( 'StartDialog ' )
-				#RecordConflict( ret )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
-
-				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-					RecordConflict( dialog.GetConflictTimer( ) )
-
-			else :
-				isOK = True
-
-		else:
-			msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed'% NEW_LINE )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
-			dialog.doModal( )
-
-		if isOK :
-			LOG_TRACE( 'STOP automatic hide' )
-			self.StopAutomaticHide( )
-
-			self.SetBlinkingProperty( 'True' )
-			self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
-			self.mEnableBlickingTimer = True
-			self.StartBlinkingIconTimer( )
-
-			self.mDataCache.SetChannelReloadStatus( True )
-
-
-	def RestartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopBlinkingIconTimer( )
-		self.StartBlinkingIconTimer( aTimeout )
-
-
-	def StartBlinkingIconTimer( self, aTimeout=E_NOMAL_BLINKING_TIME ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )
-		self.mRecordBlinkingTimer  = threading.Timer( aTimeout, self.AsyncBlinkingIcon )
-		self.mRecordBlinkingTimer.start( )
-
-
-	def StopBlinkingIconTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
-		if self.mRecordBlinkingTimer and self.mRecordBlinkingTimer.isAlive( ) :
-			self.mRecordBlinkingTimer.cancel( )
-			del self.mRecordBlinkingTimer
-
-		self.mRecordBlinkingTimer = None
-
-
-	def AsyncBlinkingIcon( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )
-		if self.mRecordBlinkingTimer == None or self.mEnableBlickingTimer == False:
-			self.SetBlinkingProperty( 'None' )
-			LOG_WARN( 'Blinking Icon update timer expired' )
-			return
-
-		if self.mRecordBlinkingCount  <=  0 :
-			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ blinking count  is zero' )
-			self.SetBlinkingProperty( 'None' )
-			return
-
-
-		if self.GetBlinkingProperty( ) == 'True' :
-			self.SetBlinkingProperty( 'False' )
-		else :
-			self.SetBlinkingProperty( 'True' )
-
-		self.mRecordBlinkingCount = self.mRecordBlinkingCount -1
-
-		self.RestartBlinkingIconTimer( )
-
-
-	def ShowRecordingStartDialog( self ) :
-		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-
-		if HasAvailableRecordingHDD( ) == False :
-			return
-
-		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
-
-		isOK = False
-		if runningCount < 2 or mTimer :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-			dialog.doModal( )
-
-			isOK = dialog.IsOK( )
-			if isOK == E_DIALOG_STATE_YES :
-				isOK = True
-
-			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				RecordConflict( dialog.GetConflictTimer( ) )
-
-		else :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE )
-			dialog.doModal( )
-
-		if isOK :
-			self.mDataCache.SetChannelReloadStatus( True )
-			if mTimer :
-				self.ShowRecordingInfo( )
-
-
-	def ShowRecordingStopDialog( self ) :
-		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-		#LOG_TRACE( 'runningCount[%s]' %runningCount )
-
-		isOK = False
-		if runningCount > 0 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-			dialog.doModal( )
-
-			isOK = dialog.IsOK( )
-			if isOK == E_DIALOG_STATE_YES :
-				isOK = True
-
-		if isOK :
-			self.mDataCache.SetChannelReloadStatus( True )
-
-
-	def SetBlinkingProperty( self, aValue ) :
-		rootWinow = xbmcgui.Window( 10000 )
-		rootWinow.setProperty( 'RecordBlinkingIcon', aValue )
-
-
-	def GetBlinkingProperty( self ) :
-		rootWinow = xbmcgui.Window( 10000 )
-		return rootWinow.getProperty( 'RecordBlinkingIcon' )
 
 
