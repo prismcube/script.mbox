@@ -1134,13 +1134,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if self.mIsPlay != FLAG_STOP :
 					if not self.mFlagUserMove :
-						self.mProgressReview = self.mProgress_idx
-
-					self.InitTimeShift( )
-					self.UpdateProgress( )
+						#self.mProgressReview = self.mProgress_idx
+						self.InitTimeShift( )
+						self.UpdateProgress( )
 				count = 0
 
-			#time.sleep( self.mRepeatTimeout )
 			time.sleep( loopDelay )
 			count = count + loopDelay
 
@@ -1174,9 +1172,9 @@ class TimeShiftPlate( BaseWindow ) :
 					self.mProgress_idx = 0
 
 				#progress drawing
-				if not self.mFlagUserMove :
-					posx = int( self.mProgress_idx * E_PROGRESS_WIDTH_MAX / 100 )
-					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_TAG_POSY )
+				#if not self.mFlagUserMove :
+				posx = int( self.mProgress_idx * E_PROGRESS_WIDTH_MAX / 100 )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_TAG_POSY )
 				self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, self.mProgress_idx )
 				#LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
@@ -1712,8 +1710,8 @@ class TimeShiftPlate( BaseWindow ) :
 			moveTrack = -1
 		self.mAccelator += moveTrack
 
-		#self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
-		self.UpdateProgressReview( userMovingMs, E_MOVE_BY_MARK )
+		self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
+		#self.UpdateProgressReview( userMovingMs, E_MOVE_BY_MARK )
 		#LOG_TRACE( '-----------key[%s] moving[%s] accelator[%s]'% ( aMoveTrack, userMovingMs, self.mAccelator ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
@@ -1785,8 +1783,8 @@ class TimeShiftPlate( BaseWindow ) :
 		userMoving = ( current + sectionMoving ) * arrow
 		userMovingMs = userMoving * 1000
 
-		#self.UpdateProgress( userMovingMs )
-		self.UpdateProgressReview( userMovingMs )
+		self.UpdateProgress( userMovingMs )
+		#self.UpdateProgressReview( userMovingMs )
 		#LOG_TRACE( '-----------accelator[%s] sectionMoving[%s] moving[%s] movingMs[%s]'% ( self.mAccelator, sectionMoving, userMoving, userMovingMs) )
 		#LOG_TRACE( '-----------start[%s] end[%s] curr[%s], current[%s] restSize[%s] section[%s] idx[%s] sectionMoving[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_endTime, self.mTimeshift_curTime, current, restSize, section, idxSection, sectionMoving ) )
 
