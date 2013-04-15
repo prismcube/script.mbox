@@ -2569,7 +2569,7 @@ Search for window name
 
 			<!-- EPG section -->
 				<control type="group">
-					<control type="progress" id="2900200">
+					<!--control type="progress" id="2900200">
 						<description>progress review</description>
 						<posx>400</posx>
 						<posy>595</posy>
@@ -2582,8 +2582,8 @@ Search for window name
 						<overlaytexture>-</overlaytexture>
 						<animation effect="fade" time="300">VisibleChange</animation>
 						<visible>false</visible>
-						<!--visible>substring(Window.Property(IsShift),true)</visible-->
-					</control>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+					</control-->
 					<control type="progress" id="2900201">
 						<description>progress control</description>
 						<posx>400</posx>
