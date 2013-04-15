@@ -288,6 +288,8 @@ class DialogBookmark( BaseDialog ) :
 			self.mMarkList.append( idx )
 
 		self.DoDeleteConfirm( )
+		self.mDataCache.InitBookmarkHash( )
+		self.mDataCache.InitBookmarkButton( )
 
 
 	def DoStartMark( self ) :

@@ -1297,7 +1297,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def AutoChapterAddBookmark( self ) :
 		# limit playtime under 30sec
 		#mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
-		LOG_TRACE( '----------------duration[%s]'% self.mPlayingRecordInfo.mDuration )
+		#LOG_TRACE( '----------------duration[%s]'% self.mPlayingRecordInfo.mDuration )
 		if not self.mPlayingRecordInfo :
 			return 
 
@@ -1315,9 +1315,10 @@ class TimeShiftPlate( BaseWindow ) :
 		restoreCurrent = self.mTimeshift_playTime
 
 		section = mediaTime / 10
-		LOG_TRACE( 'mediaTime[%s] section[%s]'% ( mediaTime, section ) )
+		#LOG_TRACE( 'mediaTime[%s] section[%s]'% ( mediaTime, section ) )
 		partition = 0
 		isFull = False
+		#self.mFlagUserMove = True
 		for i in range( 1, 10 ) :
 			partition += section
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
@@ -1329,17 +1330,20 @@ class TimeShiftPlate( BaseWindow ) :
 					isFull = True
 					break
 
-				self.mDataCache.Player_CreateBookmark( )
+				ret = self.mDataCache.Player_CreateBookmark( )
+				#LOG_TRACE('-----------add bookmark[%s]'% ret )
 
-			time.sleep(0.5)
+			time.sleep( 1 )
 
 			#window close then stop this function
 			if not self.mEnableLocalThread :
 				break
 
 		self.mDataCache.Player_JumpToIFrame( restoreCurrent )
-		LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
+		#LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
 		self.CloseBusyDialog( )
+
+		#self.mFlagUserMove = False
 
 		if isFull :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
