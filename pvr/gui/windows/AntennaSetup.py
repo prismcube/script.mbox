@@ -118,14 +118,10 @@ class AntennaSetup( SettingWindow ) :
 		if groupId == E_Input01 or groupId == E_Input02 :
 			self.OpenConfigureWindow( groupId )
 
-		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
+		else :
 			self.ControlSelect( )
 			self.DisableControl( groupId )
 
-		elif groupId == E_SpinEx04 :
-			self.ControlSelect( )
-
-		
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
@@ -201,6 +197,10 @@ class AntennaSetup( SettingWindow ) :
 			else :
 				self.SetEnableControl( E_SpinEx02, True )
 
+			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE or ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
+				self.SetEnableControl( E_SpinEx01, False )
+				#self.DisableControl( )
+
 		if aControlID == None or aControlID == E_SpinEx02 or aControlID == E_SpinEx01 :
 			selectedIndex = self.mTunerMgr.GetCurrentTunerConfigType( )
 			if selectedIndex == E_SAMEWITH_TUNER :
@@ -223,4 +223,25 @@ class AntennaSetup( SettingWindow ) :
 				self.SetProp( E_SpinEx04, prop )
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
+				
+			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :#and self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+				control = self.getControl( E_SpinEx01 + 3 )
+				control.selectItem( E_TUNER_LOOPTHROUGH )
+				self.SetProp( E_SpinEx01, E_TUNER_LOOPTHROUGH )
+				self.SetEnableControl( E_SpinEx01, False )
+				self.DisableControl( )
+			else :
+				self.SetEnableControl( E_SpinEx01, True )
+
+		elif aControlID == E_SpinEx04 :
+			if ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :#and self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+				control = self.getControl( E_SpinEx01 + 3 )
+				control.selectItem( E_TUNER_LOOPTHROUGH )
+				self.SetProp( E_SpinEx01, E_TUNER_LOOPTHROUGH )
+				self.SetEnableControl( E_SpinEx01, False )
+				self.DisableControl( )
+				self.SetFocusControl( E_SpinEx03 )
+			else :
+				self.SetEnableControl( E_SpinEx01, True )
+			
 
