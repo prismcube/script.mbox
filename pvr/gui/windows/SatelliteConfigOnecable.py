@@ -71,6 +71,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 					self.OpenBusyDialog( )
 					self.CloseAction( )
 					self.CloseFTI( )
+					time.sleep( 3 )
 					self.ResetAllControl( )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )

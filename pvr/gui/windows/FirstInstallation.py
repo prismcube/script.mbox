@@ -207,6 +207,7 @@ class FirstInstallation( FTIWindow ) :
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
 			self.mDataCache.Channel_TuneDefault( )
+			time.sleep( 3 )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )

@@ -80,6 +80,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 					self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_ON					
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
+					time.sleep( 3 )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :

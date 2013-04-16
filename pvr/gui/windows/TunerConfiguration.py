@@ -68,6 +68,7 @@ class TunerConfiguration( FTIWindow ) :
 				self.OpenBusyDialog( )
 				self.CloseFTI( )
 				self.mCtrlMainList.reset( )
+				time.sleep( 3 )
 				self.CloseBusyDialog( )
 				WinMgr.GetInstance( ).CloseWindow( )
 

@@ -75,6 +75,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 					ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 					self.RestoreAvBlank( )
 					self.CloseFTI( )
+					time.sleep( 3 )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :

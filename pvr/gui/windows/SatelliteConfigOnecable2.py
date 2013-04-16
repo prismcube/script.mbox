@@ -57,6 +57,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
 					self.CloseFTI( )
+					time.sleep( 3 )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :

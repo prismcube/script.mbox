@@ -50,6 +50,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 					self.SetLongitude( )
 					self.SetLatitude( )
 					self.CloseFTI( )
+					time.sleep( 3 )
 					self.CloseBusyDialog( )
 					WinMgr.GetInstance( ).CloseWindow( )
 			else :
