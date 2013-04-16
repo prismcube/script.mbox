@@ -1372,7 +1372,7 @@ class TimeShiftPlate( BaseWindow ) :
 			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idxNumber )
 
 			thumbIcon = self.mThumbnailHash.get( self.mBookmarkList[i].mTimeMs, -1 )
-			if thumbIcon != -1 :
+			if thumbIcon == -1 :
 				thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 
 			listItem.setProperty( 'BookMarkThumb', thumbIcon )
