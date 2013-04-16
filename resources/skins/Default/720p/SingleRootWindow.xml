@@ -2241,7 +2241,7 @@ Search for window name
 				<font>font35_title</font>
 				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(Signal),False)</visible>
+				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
 				<posx>550</posx>
@@ -2250,7 +2250,7 @@ Search for window name
 				<font>font35_title</font>
 				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(Signal),Scramble)</visible>
+				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 		</control>
 
@@ -2569,7 +2569,7 @@ Search for window name
 
 			<!-- EPG section -->
 				<control type="group">
-					<control type="progress" id="2900200">
+					<!--control type="progress" id="2900200">
 						<description>progress review</description>
 						<posx>400</posx>
 						<posy>595</posy>
@@ -2582,8 +2582,8 @@ Search for window name
 						<overlaytexture>-</overlaytexture>
 						<animation effect="fade" time="300">VisibleChange</animation>
 						<visible>false</visible>
-						<!--visible>substring(Window.Property(IsShift),true)</visible-->
-					</control>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+					</control-->
 					<control type="progress" id="2900201">
 						<description>progress control</description>
 						<posx>400</posx>
@@ -5263,7 +5263,7 @@ Search for window name
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>

@@ -354,9 +354,12 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 
-	def ControlUp( self, aWin = None ) :
+	def ControlUp( self, aWin = None, aControlId = None ) :
 		self.GetFocusId( )
-		groupId = self.GetGroupId( self.mFocusId )
+		if aControlId :
+			groupId = aControlId
+		else :
+			groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
 
 		if self.GetIsInputNumberType( groupId ) :
@@ -365,15 +368,25 @@ class SettingWindow( BaseWindow ) :
 				aWin.FocusChangedAction( groupId )
 
 		if prevId > 0 and groupId != prevId :
-			self.setFocusId( prevId )
+			if groupId == E_FIRST_TIME_INSTALLATION_NEXT and prevId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.ControlUp( None, E_FIRST_TIME_INSTALLATION_PREV )
+				return
+
+			if prevId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
+			else :
+				self.setFocusId( prevId )
 			return True
 
 		return False
 
 
-	def ControlDown( self, aWin = None ) :
+	def ControlDown( self, aWin = None, aControlId = None ) :
 		self.GetFocusId( )
-		groupId = self.GetGroupId( self.mFocusId )
+		if aControlId :
+			groupId = aControlId
+		else :
+			groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
 
 		if self.GetIsInputNumberType( groupId ) :
@@ -382,7 +395,14 @@ class SettingWindow( BaseWindow ) :
 				aWin.FocusChangedAction( groupId )
 
 		if nextId > 0 and groupId != nextId :
-			self.setFocusId( nextId )
+			if groupId == E_FIRST_TIME_INSTALLATION_PREV and nextId == E_FIRST_TIME_INSTALLATION_NEXT :
+				self.ControlDown( None, E_FIRST_TIME_INSTALLATION_NEXT )
+				return
+
+			if nextId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
+			else :
+				self.setFocusId( nextId )
 			return True
 
 		return False

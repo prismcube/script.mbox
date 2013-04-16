@@ -68,7 +68,7 @@ class Configure( SettingWindow ) :
 		self.mUseHiddenId			= NOT_USE_HIDDEN_SSID
 		self.mCurrentSsid			= 'None'
 		self.mEncryptType			= ENCRYPT_TYPE_WEP
-		self.mPassWord 				= None
+		self.mPassWord 				= ''
 		self.mWifiAddress			= 'None'
 		self.mWifiSubnet			= 'None'
 		self.mWifiGateway			= 'None'
@@ -955,12 +955,14 @@ class Configure( SettingWindow ) :
 
 
 	def LoadWifiInformation( self ) :
+		tmpSSID = self.mCurrentSsid
 		self.mCurrentSsid = NetMgr.GetInstance( ).GetConfiguredSSID( )
 		if self.mCurrentSsid == None :
-			self.mCurrentSsid = 'None'
+			self.mCurrentSsid = tmpSSID
+		tmpPasswd = self.mPassWord
 		self.mPassWord = NetMgr.GetInstance( ).GetConfiguredPassword( )
 		if self.mPassWord == None :
-			self.mPassWord = ''
+			self.mPassWord = tmpPasswd
 		self.mEncryptType = NetMgr.GetInstance( ).GetWifiEncryptType( )
 		self.mUseStatic	  = NetMgr.GetInstance( ).GetWifiUseStatic( )
 		self.mUseHiddenId = NetMgr.GetInstance( ).GetWifiUseHiddenSsid( )

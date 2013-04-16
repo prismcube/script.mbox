@@ -36,6 +36,8 @@ class FirstInstallation( FTIWindow ) :
 		if self.mReloadSkinPosition :
 			WinMgr.GetInstance( ).LoadSkinPosition( )
 			self.mReloadSkinPosition = False
+			self.SetListControl( E_STEP_ANTENNA )
+			
 		self.SetPipScreen( )
 		
 		self.SetListControl( self.GetFTIStep( ) )
@@ -139,7 +141,9 @@ class FirstInstallation( FTIWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
-				self.SetListControl( E_STEP_ANTENNA )
+				#self.SetListControl( E_STEP_ANTENNA )
+				self.mReloadSkinPosition = True
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
 				if self.mAsyncVideoSetThread :
@@ -155,9 +159,9 @@ class FirstInstallation( FTIWindow ) :
 				WinMgr.GetInstance( ).LoadSkinPosition( )
 				self.SetPipScreen( )
 
-			elif groupId == E_Input01 :
-				self.mReloadSkinPosition = True
-				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+			#elif groupId == E_Input01 :
+			#	self.mReloadSkinPosition = True
+			#	xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
@@ -244,14 +248,14 @@ class FirstInstallation( FTIWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Video Zoom' ), E_LIST_SKIN_ZOOM_RATE, self.mZoomRate, MR_LANG( 'Zoom in/out your TV screen' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
+			#self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04,  ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
