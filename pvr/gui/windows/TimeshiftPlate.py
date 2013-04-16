@@ -135,6 +135,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+		self.mThumbnailHash = {}
 		self.mThumbnailList = []
 		self.mBookmarkList = []
 		self.mPlayingRecordInfo = None
@@ -1370,13 +1371,9 @@ class TimeShiftPlate( BaseWindow ) :
 			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
 			listItem = xbmcgui.ListItem( '%s'% lblOffset, '%s'% idxNumber )
 
-			thumbIcon = E_DEFAULT_THUMBNAIL_ICON
-			try :
-				if self.mThumbnailList and len( self.mThumbnailList ) >= i :
-					thumbIcon = self.mThumbnailList[i]
-
-			except Exception, e :
-				LOG_ERR( 'except[%s], find not bookmark Thumbnail'% e )
+			thumbIcon = self.mThumbnailHash.get( self.mBookmarkList[i].mTimeMs, -1 )
+			if thumbIcon != -1 :
+				thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 
 			listItem.setProperty( 'BookMarkThumb', thumbIcon )
 			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
@@ -1536,23 +1533,23 @@ class TimeShiftPlate( BaseWindow ) :
 		#for item in mBookmarkList :
 		#	LOG_TRACE('timeMs[%s]'% item.mTimeMs )
 
-		self.mThumbnailList = []
 		thumbnaillist = []
 		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% playingRecord.mRecordKey, 'record_bookmark_%d_*.jpg' % playingRecord.mRecordKey ) )
 
 		#LOG_TRACE('len[%s] list[%s]'% ( len(thumbnaillist), thumbnaillist ) )
-		thumbnailHash = {}
+		self.mThumbnailList = []
+		self.mThumbnailHash = {}
 		if thumbnaillist and len( thumbnaillist ) > 0 :
 			for mfile in thumbnaillist :
 				try :
-					#thumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
+					self.mThumbnailHash[int( os.path.basename( mfile ).split('_')[3] )] = mfile
 					self.mThumbnailList.append( mfile )
 
 				except Exception, e :
 					LOG_ERR( 'Error exception[%s]'% e )
 					continue
 
-		#LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
+		#LOG_TRACE('len[%s] hash[%s]'% ( len(self.mThumbnailHash), self.mThumbnailHash ) )
 		#LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
 		self.ShowBookmark( )
 
