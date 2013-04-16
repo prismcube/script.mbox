@@ -1234,6 +1234,8 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def DoContextAction( self, aSelectAction ) :
+
+		"""
 		status = self.mDataCache.GetLockedState( )
 		if status != ElisEnum.E_CC_SUCCESS :
 			statusSignal = MR_LANG( 'No Signal' )
@@ -1243,7 +1245,8 @@ class LivePlate( LivePlateWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
 			dialog.doModal( )
 			return
-
+		"""
+		
 		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( aSelectAction )
