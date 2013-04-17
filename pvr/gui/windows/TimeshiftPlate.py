@@ -1266,8 +1266,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 			ret = self.mDataCache.Player_CreateBookmark( )
 			if ret :
-				time.sleep(1)
 				self.InitBookmarkThumnail( )
+
+				if self.mSpeed != 100 :
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
 			self.RestartAutomaticHide( )
 
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
@@ -1358,6 +1361,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 		for i in range( 1, count ) :
 			partition += section * 1000
+
+			#no create end from 10sec
+			if ( partition / 1000 ) >= mediaTime - 10 :
+				#LOG_TRACE( '-------------no create bookmark barrier( not available end point )!! idx[%s] offsetMs[%s] mediaSize[%s]'% ( i, partition, mediaTime ) )
+				break
+
+
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
 			ret = self.mDataCache.Player_JumpToIFrame( partition )
