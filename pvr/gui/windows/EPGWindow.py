@@ -979,7 +979,7 @@ class EPGWindow( BaseWindow ) :
 		if row <  E_GRID_MAX_ROW_COUNT :
 			for i in range(E_GRID_MAX_ROW_COUNT - row ) :
 				LOG_TRACE('i=%d row=%d' %(i, row) )
-				self.mCtrlChannelButtons[row +i].setLabel( '')
+				self.mCtrlChannelButtons[row +i].setLabel( ' ')
 
 		self.GridUpdateTimer( )
 		
