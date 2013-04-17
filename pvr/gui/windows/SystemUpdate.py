@@ -984,10 +984,18 @@ class SystemUpdate( SettingWindow ) :
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
 			return
 
-		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
-		if not self.VerifiedUnPack( tempFile, False ) :
-			if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
-				return
+		#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+		#if not self.VerifiedUnPack( tempFile, False ) :
+
+		#remove old_Version
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if usbPath :
+			request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
+			if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+				RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+
+		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
+			return
 
 		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
 			return
@@ -1065,7 +1073,6 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( 'Not Exist USB' )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 			return False
-
 
 		global E_DEFAULT_PATH_DOWNLOAD
 		E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
@@ -1221,7 +1228,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :
 		fileList = GetUnpackFiles( aZipFile )
-		if not fileList :
+		if not fileList or len( fileList ) < 1 :
 			return False
 
 		usbPath = self.mDataCache.USB_GetMountPath( )
