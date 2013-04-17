@@ -1234,10 +1234,9 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def DoContextAction( self, aSelectAction ) :
-
 		"""
 		status = self.mDataCache.GetLockedState( )
-		if status != ElisEnum.E_CC_SUCCESS :
+		if status != ElisEnum.E_CC_SUCCESS and self.getProperty( 'PvrPlay' ) != E_TAG_TRUE :
 			statusSignal = MR_LANG( 'No Signal' )
 			if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				statusSignal = MR_LANG( 'Scrambled' )
@@ -1246,13 +1245,14 @@ class LivePlate( LivePlateWindow ) :
 			dialog.doModal( )
 			return
 		"""
-		
+
+
 		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( aSelectAction )
  			dialog.doModal( )
 
- 		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
+		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
@@ -1271,6 +1271,10 @@ class LivePlate( LivePlateWindow ) :
 			dialog.doModal( )
 
 			selectIdx2 = dialog.GetSelectedAction( )
+			if selectIdx2 < 0 :
+				#ToDO : mute release
+				return
+
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
 
