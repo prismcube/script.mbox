@@ -245,15 +245,15 @@ class NullWindow( BaseWindow ) :
 			if aKey == 0 :
 				return -1
 
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mIsShowDialog == False :
+			if self.mIsShowDialog == False :
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_LIVE :
 					thread = threading.Timer( 0.1, self.AsyncTuneChannelByInput, ( aKey, False ) )
 					thread.start( )
 
-			else :
-				thread = threading.Timer( 0.1, self.AsyncTimeshiftJumpByInput, aKey )
-				thread.start( )
+				else :
+					thread = threading.Timer( 0.1, self.AsyncTimeshiftJumpByInput, [ aKey ] )
+					thread.start( )
 
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
