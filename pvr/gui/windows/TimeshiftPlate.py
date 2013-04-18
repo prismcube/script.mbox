@@ -56,6 +56,8 @@ E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 
 E_DEFAULT_TRACK_MOVE = 10	#mili sec
+E_DEFAULT_COUNT_AUTO_CHAPTER = 10
+E_DEFAULT_LIMIT_SECOND = 10
 E_MOVE_BY_TIME = 0
 E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
@@ -401,6 +403,16 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
 
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			self.RestartAutomaticHide( )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.StopAutomaticHide( )
+			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.RestartAutomaticHide( )
+
 
 	def onClick( self, aControlId ):
 		if self.IsActivate( ) == False  :
@@ -522,6 +534,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 				self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
+
+			elif self.mPrekey == E_DEFAULT_ACTION_CLICK_EVENT + CONTEXT_ACTION_SHOW_BOOKMARK :
+				self.onClick( E_CONTROL_ID_BUTTON_BOOKMARK )
 
 
 		else :
@@ -1251,8 +1266,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 			ret = self.mDataCache.Player_CreateBookmark( )
 			if ret :
-				time.sleep(1)
 				self.InitBookmarkThumnail( )
+
+				if self.mSpeed != 100 :
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
 			self.RestartAutomaticHide( )
 
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
@@ -1272,11 +1290,20 @@ class TimeShiftPlate( BaseWindow ) :
 			#LOG_TRACE('------------dialog list[%s]'% tempList )
 
 		elif aSelectAction == CONTEXT_ACTION_ADD_AUTO_CHAPTER :
+			if self.mSpeed != 100 :
+				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
 			self.AutoChapterAddBookmark( )
 			self.InitBookmarkThumnail( )
 
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.StartBookmarkPlayback( )
+
+		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+
+		elif aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
 
 
 	def StartBookmarkPlayback( self ) :
@@ -1284,8 +1311,8 @@ class TimeShiftPlate( BaseWindow ) :
 			return 
 
 		if self.mSpeed != 100 :
-			LOG_TRACE( 'Cannot jump to iFrame(bookmark), status is Pause,Forward,Rewind in now' )
-			return
+			self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+			#LOG_TRACE( 'Play resume, status is Pause,Forward,Rewind in now' )
 
 		idx = self.mCtrlBookMarkList.getSelectedPosition( )
 		playOffset = self.mBookmarkList[idx].mTimeMs
@@ -1302,11 +1329,22 @@ class TimeShiftPlate( BaseWindow ) :
 		if not self.mPlayingRecordInfo :
 			return 
 
-		mediaTime = self.mPlayingRecordInfo.mDuration * 1000
+		mediaTime = self.mPlayingRecordInfo.mDuration
 
-		if ( mediaTime / 1000 ) < 30 :
+		isLimit = False
+		count = E_DEFAULT_COUNT_AUTO_CHAPTER + 1
+		if mediaTime < E_DEFAULT_LIMIT_SECOND :
+			isLimit = True
+
+		elif mediaTime < E_DEFAULT_LIMIT_SECOND * 11 :
+			count = divmod( mediaTime, E_DEFAULT_LIMIT_SECOND )[0]
+
+		if count < 2 :
+			count = 2
+
+		if isLimit :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs%s to create a chapter' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than %s secs%s to create a chapter' )% ( 10, NEW_LINE ) )
  			dialog.doModal( )
 			return
 
@@ -1315,13 +1353,21 @@ class TimeShiftPlate( BaseWindow ) :
 		self.OpenBusyDialog( )
 		restoreCurrent = self.mTimeshift_playTime
 
-		section = mediaTime / 10
-		#LOG_TRACE( 'mediaTime[%s] section[%s]'% ( mediaTime, section ) )
+		section = mediaTime / count
+		#LOG_TRACE( 'mediaTime[%s] section[%s] count[%s]'% ( mediaTime, section, splits ) )
 		partition = 0
 		isFull = False
 		#self.mFlagUserMove = True
-		for i in range( 1, 10 ) :
-			partition += section
+
+		for i in range( 1, count ) :
+			partition += section * 1000
+
+			#no create end from 10sec
+			if ( partition / 1000 ) >= mediaTime - 10 :
+				#LOG_TRACE( '-------------no create bookmark barrier( not available end point )!! idx[%s] offsetMs[%s] mediaSize[%s]'% ( i, partition, mediaTime ) )
+				break
+
+
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
 			ret = self.mDataCache.Player_JumpToIFrame( partition )
@@ -1332,7 +1378,7 @@ class TimeShiftPlate( BaseWindow ) :
 					break
 
 				ret = self.mDataCache.Player_CreateBookmark( )
-				#LOG_TRACE('-----------add bookmark[%s]'% ret )
+				#LOG_TRACE('-----------add bookmark[%s] markTime[%s]'% ( ret, partition ) )
 
 			time.sleep( 1 )
 
@@ -1344,6 +1390,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
 		self.CloseBusyDialog( )
 
+		self.mDataCache.Player_SetSpeed( 100 )
 		#self.mFlagUserMove = False
 
 		if isFull :
@@ -1376,7 +1423,8 @@ class TimeShiftPlate( BaseWindow ) :
 				thumbIcon = E_DEFAULT_THUMBNAIL_ICON
 
 			listItem.setProperty( 'BookMarkThumb', thumbIcon )
-			#LOG_TRACE('show listIdx[%s] file[%s]'% ( i, self.mThumbnailList[i] ) )
+			#LOG_TRACE('thumbnail listIdx[%s] file[%s]'% ( i, thumbIcon ) )
+			#LOG_TRACE('bookmark timeMs[%s] offset[%s] duration[%s]'% ( self.mBookmarkList[i].mTimeMs, self.mBookmarkList[i].mOffset, self.mPlayingRecordInfo.mDuration ) )
 
 			listItems.append( listItem )
 
@@ -1871,5 +1919,13 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 		self.RestartAutomaticHide( )
+
+
+	def GetStatusSpeed( self ) :
+		return self.mSpeed
+
+
+	def GetStatusMode( self ) :
+		return self.mMode
 
 

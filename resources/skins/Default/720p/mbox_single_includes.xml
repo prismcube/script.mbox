@@ -711,7 +711,7 @@
 		<textwidth>250</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
-		<font>font12_title</font>
+		<font>font13_title</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -724,7 +724,7 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white.png</texturefocus>
+		<texturefocus border="5">StackFO_white1.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 		<colordiffuse>FFFF0000</colordiffuse>
@@ -737,7 +737,7 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white.png</texturefocus>
+		<texturefocus border="5">StackFO_white1.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 		<colordiffuse>FF00FF00</colordiffuse>
@@ -750,7 +750,7 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white.png</texturefocus>
+		<texturefocus border="5">StackFO_white1.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 		<colordiffuse>55FFFFFF</colordiffuse>

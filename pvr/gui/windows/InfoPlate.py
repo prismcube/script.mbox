@@ -62,7 +62,7 @@ class InfoPlate( LivePlateWindow ) :
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
-		LOG_TRACE( 'winID[%d]'% self.mWinId)
+		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
 
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
 		self.mCtrlLblRec2              = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
@@ -89,6 +89,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mEnableCasInfo = False
 		self.mIsShowDialog = False
 		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
+		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 
 		#get channel
 		self.LoadInit( )
@@ -519,15 +520,11 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			if not self.mPlatform.IsPrismCube( ) :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
-				dialog.doModal( )
-				self.mIsShowDialog = False
-				self.RestartAutomaticHide( )
-				return
-
-			self.BookMarkContext( )
+			self.mIsShowDialog = False
+			self.Close( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = E_DEFAULT_ACTION_CLICK_EVENT + CONTEXT_ACTION_SHOW_BOOKMARK
+			WinMgr.GetInstance( ).CloseWindow( )
+			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			self.ShowEPGDescription( )
@@ -539,34 +536,6 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.RestartAutomaticHide( )
 		self.mIsShowDialog = False
-
-
-	def BookMarkContext( self ) :
-		context = []
-		context.append( ContextItem( 'Add bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( 'Show all bookmarks',  CONTEXT_ACTION_SHOW_LIST ) )
-
-		self.mEventBus.Deregister( self )
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-		dialog.SetProperty( context )
-		dialog.doModal( )
-		self.mEventBus.Register( self )
-
-		self.EventReceivedDialog( dialog )
-
-		selectAction = dialog.GetSelectedAction( )
-		if selectAction == -1 :
-			return
-
-		if selectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
-			self.mDataCache.Player_CreateBookmark( )
-
-		elif selectAction == CONTEXT_ACTION_SHOW_LIST :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
-			dialog.SetDefaultProperty( self.mPlayingRecord )
-			dialog.doModal( )
-			#tempList = dialog.GetSelectedList( )
-			#LOG_TRACE('------------dialog list[%s]'% tempList )
 
 
 	def AudioVideoContext( self ) :
@@ -595,7 +564,7 @@ class InfoPlate( LivePlateWindow ) :
 
  			self.EventReceivedDialog( dialog )
 
- 		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
+		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
 
@@ -616,6 +585,10 @@ class InfoPlate( LivePlateWindow ) :
 			self.EventReceivedDialog( dialog )
 
 			selectIdx2 = dialog.GetSelectedAction( )
+			if selectIdx2 < 0 :
+				#ToDO : mute release
+				return
+
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
 
@@ -711,9 +684,7 @@ class InfoPlate( LivePlateWindow ) :
 	
 	def StartAutomaticHide( self ) :
 		#LOG_TRACE('-----hide START')		
-		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
-		bannerTimeout = prop.GetProp( )
-		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer = threading.Timer( self.mBannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start( )
 
 

@@ -15,6 +15,9 @@ CONTEXT_DELETE_ALL	= 2
 CONTEXT_START_MARK	= 3
 CONTEXT_CLEAR_MARK	= 4
 
+E_CONTROL_ID_BUTTON_PLAY = E_BASE_WINDOW_ID + 3705
+
+
 class DialogBookmark( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
@@ -38,6 +41,7 @@ class DialogBookmark( BaseDialog ) :
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
 		self.mCtrlPos  = self.getControl( DIALOG_LABEL_POS_ID )
 		self.mIsDelete = False
+		self.mPlateWin = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		self.InitList( )
 		self.mEventBus.Register( self )
@@ -246,7 +250,9 @@ class DialogBookmark( BaseDialog ) :
 		playOffset = self.mBookmarkList[selectedPos].mTimeMs
 		LOG_TRACE('bookmark idx[%s] key[%s] pos[%s]'% ( selectedPos, self.mRecordInfo.mRecordKey, TimeToString( playOffset / 1000, TimeFormatEnum.E_AH_MM_SS ) ) )
 
-		#self.mDataCache.Player_StartInternalRecordPlayback( self.mRecordInfo.mRecordKey, self.mRecordInfo.mServiceType, playOffset, 100 )
+		if self.mPlateWin.GetStatusSpeed( ) != 100 :
+			self.mPlateWin.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
 		self.mDataCache.Player_JumpToIFrame( playOffset )
 
 
