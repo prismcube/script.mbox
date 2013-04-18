@@ -84,6 +84,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAutomaticHide = True
 		self.mStartTimeShowed = False
 		self.mPrekey = None
+		self.mOnBlockTimer_GreenKey = 0
 
 
 	def onInit( self ) :
@@ -395,6 +396,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				LOG_TRACE( 'blocking time Green key' )
 				return
 
 			self.mOnBlockTimer_GreenKey = time.time( )

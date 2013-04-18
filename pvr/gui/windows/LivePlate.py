@@ -73,7 +73,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = False
 		self.mEnableBlickingTimer = False		
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
-		
+		self.mIsShowDialog = False
+
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False

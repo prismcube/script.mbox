@@ -22,6 +22,8 @@ class NullWindow( BaseWindow ) :
 		self.mOnTimeDelay = 0
 		self.mPreviousBlockTime = 1.0
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
+		self.mOnBlockTimer_GreenKey = 0
+		self.mIsShowDialog = False
 		
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
@@ -30,7 +32,6 @@ class NullWindow( BaseWindow ) :
 			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			#self.mSubTitleIsShow = False
-			self.mIsShowDialog = False
 			self.mEnableBlickingTimer = False			
 
 
@@ -57,6 +58,7 @@ class NullWindow( BaseWindow ) :
 
 		self.SetBlinkingProperty( 'None' )
 		self.mRecordBlinkingCount	 = 0 
+		self.mIsShowDialog = False
 
 		self.CheckMediaCenter( )
 		status = self.mDataCache.Player_GetStatus( )
@@ -385,6 +387,11 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
+			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				LOG_TRACE( 'blocking time Green key' )
+				return
+
+			self.mOnBlockTimer_GreenKey = time.time( )
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
@@ -885,11 +892,6 @@ class NullWindow( BaseWindow ) :
 			return
 
 		elif aAction == Action.ACTION_COLOR_GREEN :
-			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
-				return
-
-			self.mOnBlockTimer_GreenKey = time.time( )
-
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_PVR :
 				self.mIsShowDialog = False
@@ -905,6 +907,11 @@ class NullWindow( BaseWindow ) :
 				head = MR_LANG( 'Error' )
 				msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
 			else :
+
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mSpeed != 100 :
+					self.mDataCache.Player_Resume( )
+
 				self.mDataCache.Player_CreateBookmark( )
 				self.mIsShowDialog = False
 				return

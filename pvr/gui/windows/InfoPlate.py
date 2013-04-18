@@ -54,6 +54,8 @@ class InfoPlate( LivePlateWindow ) :
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = False
 		self.mEnableLocalThread = False
+		self.mOnBlockTimer_GreenKey = 0
+		self.mIsShowDialog = False
 
 
 	def onInit( self ) :
@@ -88,6 +90,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mCurrentEPG = None
 		self.mEnableCasInfo = False
 		self.mIsShowDialog = False
+		self.mSpeed = 0
 		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 
@@ -105,6 +108,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.EPGProgressThread( )
 
 		self.RestartAutomaticHide( )
+		self.mOnBlockTimer_GreenKey = time.time( )
 
 
 	def onAction( self, aAction ) :
@@ -207,6 +211,13 @@ class InfoPlate( LivePlateWindow ) :
 			self.StopAutomaticHide( )
 			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
 			self.RestartAutomaticHide( )
+
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				return
+
+			self.mOnBlockTimer_GreenKey = time.time( )
+			self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
 
 
 	def onClick( self, aControlId ) :
@@ -370,6 +381,7 @@ class InfoPlate( LivePlateWindow ) :
 			#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 			if status and status.mError == 0 :
+				self.mSpeed = status.mSpeed
 				totTime = ( status.mEndTimeInMs - status.mStartTimeInMs ) / 1000
 				curTime = ( status.mPlayTimeInMs - status.mStartTimeInMs ) / 1000
 
@@ -591,6 +603,25 @@ class InfoPlate( LivePlateWindow ) :
 
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
+
+		elif aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
+			if not self.mPlayingRecord :
+				return
+
+			bookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecord.mRecordKey )
+			if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+				head = MR_LANG( 'Error' )
+				msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( head, msg )
+				dialog.doModal( )
+				return
+
+			else :
+				if self.mSpeed != 100 :
+					self.mDataCache.Player_Resume( )
+
+				self.mDataCache.Player_CreateBookmark( )
 
 
 	def ShowEPGDescription( self ) :
