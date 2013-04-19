@@ -1273,8 +1273,11 @@ class LivePlate( LivePlateWindow ) :
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			if selectIdx2 < 0 :
-				#ToDO : mute release
 				return
+
+			if self.mCommander.Player_GetMute( ) :
+				self.mCommander.Player_SetMute( False )
+				xbmc.executebuiltin( 'Mute( )' )
 
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
