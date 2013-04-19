@@ -1260,7 +1260,19 @@ class LivePlate( LivePlateWindow ) :
 			context = []
 			iSelectAction = 0
 			for idx in range(getCount) :
-				idxTrack = self.mDataCache.Audiotrack_Get( idx )
+				idxTrack = None
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+					if mPlayingRecord :
+						idxTrack = self.mDataCache.Audiotrack_GetForRecord( mPlayingRecord.mRecordKey, idx )
+
+				else :
+					idxTrack = self.mDataCache.Audiotrack_Get( idx )
+
+				if idxTrack == None :
+					return
+
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
 				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 
