@@ -186,7 +186,7 @@ class ManualScan( SettingWindow ) :
 
 			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
+			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList, self.mIsManualSetup )
 			dialog.doModal( )
 			self.setProperty( 'ViewProgress', 'True' )
 
@@ -325,9 +325,14 @@ class ManualScan( SettingWindow ) :
 		self.mTransponderList = []
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( satellite.mSatelliteLongitude, satellite.mBandType )
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+			self.mTransponderList.sort( self.ByFrequency )
 			self.mHasTansponder = True
 		else :
 			self.mHasTansponder = False
+
+
+	def ByFrequency( self, aArg1, aArg2 ) :
+		return cmp( aArg1.mFrequency, aArg2.mFrequency )
 
 
 	def SetConfigTransponder( self ) :

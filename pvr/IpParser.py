@@ -1,4 +1,6 @@
 from pvr.gui.GuiConfig import *
+from subprocess import *
+from pvr.Util import RunThread
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
@@ -27,10 +29,14 @@ def GetInstance( ) :
 
 class IpParser( object ) :
 	def __init__( self ) :
-		self.mEthernetDevName			= 'eth0'
+		self.mEthernetDevName	= 'eth0'
+		self.mIsConfigureWindow	= False
+		#self.CheckNetworkThread( )
 
 
 	def IfUpDown( self, aDev ) :
+		if self.GetCurrentServiceType( ) == NETWORK_WIRELESS :
+			os.system( 'wpa_cli terminate' )
 		os.system( 'touch /mtmp/iftest_%s' % aDev )
 		time.sleep( 1 )
 		for i in range( 20 ) :
@@ -305,6 +311,10 @@ class IpParser( object ) :
 
 
 	def ResetNetwork( self ) :
+		return
+
+
+	def LoadWifiService( self ) :
 		return
 
 
@@ -676,3 +686,132 @@ class IpParser( object ) :
 	def CheckInternetState( self ) :
 		return xbmc.getInfoLabel( 'System.internetstate' )
 
+
+	####### Network Check and Auto Connect Thread Area ######
+
+
+	def SetIsConfigureWindow( self, aFlag ) :
+		self.mIsConfigureWindow = aFlag
+
+
+	def GetIsConfigureWindow( self ) :
+		return self.mIsConfigureWindow
+
+
+	@RunThread
+	def CheckNetworkThread( self ) :
+		print 'dhkim test start thread'
+		print 'dhkim test start thread'
+		print 'dhkim test start thread'		
+		time.sleep( 20 )
+		sleeptime = 3
+		while True :
+			print 'dhkim test in thread'
+			if self.GetIsConfigureWindow( ) == False :
+				networkType = self.GetCurrentServiceType( )
+				print 'dhkim test networkType = %s' % networkType
+				devicestate = self.CheckDeviceState( networkType )
+				print 'dhkim test devicestate = %s' % devicestate
+				if devicestate :
+					print 'dhkim test CheckDefaultGatewayConnection........' 
+					if self.CheckDefaultGatewayConnection( ) :
+						print 'dhkim test check connect ok...so pass reconnect process...'
+						pass
+					else :
+						print 'dhkim test reconnect start'
+						self.ReConnectNetwork( networkType )
+						print 'dhkim test reconnect end'
+
+			print 'dhkim test sleep 3 sec.....'
+			time.sleep( sleeptime )
+
+
+	def CheckDeviceState( self, aType ) :
+		if aType == NETWORK_WIRELESS :
+			devicestate = self.CheckWifidevice( )
+		else :
+			devicestate = self.CheckEthernetdevice( )
+
+		return devicestate
+		
+
+	def CheckWifidevice( self ) :
+		for dev in self.GetInstalledAdapters( ) :
+			if dev.startswith( 'eth' ) or dev == 'lo':
+				continue
+			if self.GetAdapterState( dev ) == True :
+				return True
+		return False
+
+
+	def CheckEthernetdevice( self ) :
+		cmd = 'cat /sys/class/net/eth0/operstate'
+
+		try :
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				state = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( state, err ) = p.communicate( )
+				state = state.strip( )
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
+
+		if state == 'up' :
+			return True
+		else :
+			return False
+
+
+	def CheckDefaultGatewayConnection( self ) :
+		defultGatewayAddress = None
+		cmd  = "route -n | awk '/^0.0.0.0/ {print $2}'"
+
+		try :
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				defultGatewayAddress = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( defultGatewayAddress, err ) = p.communicate( )
+				defultGatewayAddress = defultGatewayAddress.strip( )
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return True
+
+		cmd = 'ping -c 3 %s' % defultGatewayAddress
+		os.system( '%s > %s' % ( cmd, FILE_TEMP ) )
+
+		try :
+			inputFile = open( FILE_TEMP, 'r' )
+			inputline = inputFile.readlines( )
+			result = False
+
+			for line in inputline :
+				if line.startswith( '3 packets' ) :
+					words = line.split( ',' )
+					result = words[1].strip( )
+					break
+			inputFile.close( )
+
+			if result == '3 packets received' :
+				return True
+			else :
+				return False
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			if inputFile.closed == False :
+				inputFile.close( )
+			return False
+
+
+	def ReConnectNetwork( self, aType ) :
+		if aType == NETWORK_WIRELESS :
+			self.ConnectWifi( )
+		else :
+			self.IfUpDown( self.mEthernetDevName )

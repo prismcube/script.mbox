@@ -11,7 +11,6 @@ E_ANTENNA_SETUP_DEFAULT_FOCUS_ID	=  E_ANTENNA_SETUP_SUBMENU_LIST_ID
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCloseDealy = False
 
 
 	def onInit( self ) :
@@ -82,15 +81,14 @@ class AntennaSetup( SettingWindow ) :
 				self.OpenBusyDialog( )
 				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 					self.SaveConfiguration( )
-					self.mCloseDealy = True
 				self.mTunerMgr.SyncChannelBySatellite( )
+				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_ReLoad( )
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				self.OpenBusyDialog( )
 				#if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 				self.CancelConfiguration( )
-				self.mCloseDealy = True
 				self.mTunerMgr.SyncChannelBySatellite( )
 			else :
 				return
@@ -142,6 +140,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 			self.OpenBusyDialog( )
 			self.SaveConfiguration( )
+			self.mDataCache.Channel_ReTune( )
 			self.CloseBusyDialog( )
 
 		if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
@@ -167,7 +166,7 @@ class AntennaSetup( SettingWindow ) :
 
 	def SaveConfiguration( self ) :
 		self.mTunerMgr.SaveConfiguration( )
-		self.mDataCache.Channel_ReTune( )
+		#self.mDataCache.Channel_ReTune( )
 
 
 	def CancelConfiguration( self ) :
@@ -178,11 +177,9 @@ class AntennaSetup( SettingWindow ) :
 	def CloseWindow( self ) :
 		self.mTunerMgr.SetNeedLoad( True )
 		self.ResetAllControl( )
-		if self.mCloseDealy :
-			time.sleep( 3 )
+		time.sleep( 3 )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
-		self.mCloseDealy = False
 		WinMgr.GetInstance( ).CloseWindow( )
 
 

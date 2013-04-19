@@ -36,6 +36,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mAbortDialog				= None
 		self.mStoreTVChannel			= []
 		self.mStoreRadioChannel			= []
+		self.mManualTpSearch			= False
 
 
 	def onInit( self ) :
@@ -142,11 +143,12 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
 
-	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
+	def SetTransponder( self, aLongitude, aBand, aTransponderList, aManualTp=False ) :
 		self.mScanMode = E_SCAN_TRANSPONDER	
 		self.mLongitude = aLongitude
 		self.mBand = aBand
 		self.mTransponderList = aTransponderList
+		self.mManualTpSearch = aManualTp
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
 
@@ -187,6 +189,7 @@ class DialogChannelSearch( BaseDialog ) :
 				else :
 					self.mDataCache.Channel_TuneDefault( False, iChannel )
 
+			self.NewTransponderAdd( )
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.CloseDialog( )
 		else :
@@ -309,3 +312,13 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType, None, True )
 		else :
 			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType, None, True )
+
+
+	def NewTransponderAdd( self ) :
+		if self.mManualTpSearch :
+			if len( self.mStoreTVChannel ) > 0 or len( self.mStoreRadioChannel ) > 0 :
+				print 'dhkim test load all transponder!!!!!'
+				print 'dhkim test load all transponder!!!!!'
+				print 'dhkim test load all transponder!!!!!'
+				print 'dhkim test load all transponder!!!!!'
+				self.mDataCache.LoadAllTransponder( )

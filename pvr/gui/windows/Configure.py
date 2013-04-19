@@ -134,6 +134,7 @@ class Configure( SettingWindow ) :
 		self.mReLoadEthernetInformation = True
 
 		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
 		self.SetListControl( )
 		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -150,6 +151,7 @@ class Configure( SettingWindow ) :
 		self.StopCheckNetworkTimer( )
 		self.mInitialized = False
 		self.ResetAllControl( )
+		NetMgr.GetInstance( ).SetIsConfigureWindow( False )
 		self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
 		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
@@ -367,6 +369,7 @@ class Configure( SettingWindow ) :
 				self.SetDefaultVolume( )
 				self.CloseProgress( )
 				self.mDataCache.Channel_TuneDefault( False )
+				NetMgr.GetInstance( ).SetIsConfigureWindow( False )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
