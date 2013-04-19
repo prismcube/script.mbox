@@ -583,12 +583,15 @@ class InfoPlate( LivePlateWindow ) :
 			context = []
 			iSelectAction = 0
 			for idx in range(getCount) :
+				"""
 				idxTrack = None
 				if self.mPlayingRecord :
 					idxTrack = self.mDataCache.Audiotrack_GetForRecord( self.mPlayingRecord.mRecordKey, idx )
 
 				if idxTrack == None :
 					return
+				"""
+				idxTrack = self.mDataCache.Audiotrack_Get( idx )
 
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
 				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
