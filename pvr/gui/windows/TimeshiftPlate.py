@@ -1921,6 +1921,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 			move = dialog.GetMoveToJump( )
 			if move :
+				if self.mSpeed != 100 :
+					self.mDataCache.Player_Resume( )
+
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 		self.RestartAutomaticHide( )

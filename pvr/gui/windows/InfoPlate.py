@@ -753,6 +753,9 @@ class InfoPlate( LivePlateWindow ) :
 
 			move = dialog.GetMoveToJump( )
 			if move :
+				if self.mSpeed != 100 :
+					self.mDataCache.Player_Resume( )
+
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 

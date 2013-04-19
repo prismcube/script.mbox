@@ -252,6 +252,9 @@ class NullWindow( BaseWindow ) :
 					thread.start( )
 
 				else :
+					if status.mSpeed != 100 :
+						self.mDataCache.Player_Resume( )
+
 					thread = threading.Timer( 0.1, self.AsyncTimeshiftJumpByInput, [ aKey ] )
 					thread.start( )
 
