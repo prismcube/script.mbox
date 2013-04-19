@@ -5948,14 +5948,14 @@
 				<height>50</height>
 				<texturefocus>OSDPrevTrackFO.png</texturefocus>
 				<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
-				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+				<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 			</control>
 			<control type="button" id="1003710">
 				<width>50</width>
 				<height>50</height>
 				<texturefocus>OSDNextTrackFO.png</texturefocus>
 				<texturenofocus>OSDNextTrackNF.png</texturenofocus>
-				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+				<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 			</control>
 		</control>
 	</include>
