@@ -1514,6 +1514,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Audiotrack_Get( aIndex )
 
 
+	def Audiotrack_GetForRecord( self, aKey, aIndex ) :
+		return self.mCommander.Audiotrack_GetForRecord( aKey, aIndex )
+
+
 	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
 		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
 

@@ -73,7 +73,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mEnableLocalThread = False
 		self.mEnableBlickingTimer = False		
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
-		
+		self.mIsShowDialog = False
+
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
@@ -1259,6 +1260,21 @@ class LivePlate( LivePlateWindow ) :
 			context = []
 			iSelectAction = 0
 			for idx in range(getCount) :
+				"""
+				idxTrack = None
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+					if mPlayingRecord :
+						idxTrack = self.mDataCache.Audiotrack_GetForRecord( mPlayingRecord.mRecordKey, idx )
+
+				else :
+					idxTrack = self.mDataCache.Audiotrack_Get( idx )
+
+				if idxTrack == None :
+					return
+				"""
+
 				idxTrack = self.mDataCache.Audiotrack_Get( idx )
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
 				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
@@ -1272,8 +1288,11 @@ class LivePlate( LivePlateWindow ) :
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			if selectIdx2 < 0 :
-				#ToDO : mute release
 				return
+
+			if self.mCommander.Player_GetMute( ) :
+				self.mCommander.Player_SetMute( False )
+				xbmc.executebuiltin( 'Mute( )' )
 
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )

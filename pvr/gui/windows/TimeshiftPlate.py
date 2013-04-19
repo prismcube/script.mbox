@@ -84,6 +84,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAutomaticHide = True
 		self.mStartTimeShowed = False
 		self.mPrekey = None
+		self.mOnBlockTimer_GreenKey = 0
 
 
 	def onInit( self ) :
@@ -207,8 +208,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				if self.mSpeed != 100 :
-					return
+				#if self.mSpeed != 100 :
+				#	return
 
 				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
@@ -229,8 +230,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				if self.mSpeed != 100 :
-					return
+				#if self.mSpeed != 100 :
+				#	return
 
 				self.mUserMoveTime = 1
 				self.mFlagUserMove = True
@@ -343,13 +344,13 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_STOP )
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
-			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				return
 
 			self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
-			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				return
 
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
@@ -395,6 +396,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				LOG_TRACE( 'blocking time Green key' )
 				return
 
 			self.mOnBlockTimer_GreenKey = time.time( )
@@ -582,8 +584,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.setProperty( 'IsXpeeding', 'True' )
 
 			#blocking release
-			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				self.SetBlockingButtonEnable( True )
+			#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+			#	self.SetBlockingButtonEnable( True )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -605,8 +607,8 @@ class TimeShiftPlate( BaseWindow ) :
 				self.setProperty( 'IsXpeeding', 'True' )
 
 				#blocking
-				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					self.SetBlockingButtonEnable( False )
+				#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				#	self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			visible = E_TAG_TRUE
@@ -637,7 +639,7 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
-			if self.mSpeed == 0 or self.mSpeed <= -6400 :
+			if self.mSpeed <= -6400 :
 				return 
 
 			nextSpeed = 100
@@ -658,7 +660,7 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
-			if self.mSpeed == 0 or self.mSpeed >= 6400 :
+			if self.mSpeed >= 6400 :
 				return 
 
 			nextSpeed = 100
@@ -678,15 +680,15 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_RR :
-			if self.mSpeed == 0 :
-				return
+			#if self.mSpeed == 0 :
+			#	return
 
 			#self.JumpToTrack( aFocusId )
 			self.RestartAsyncMove( aFocusId )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_FF :
-			if self.mSpeed == 0 :
-				return
+			#if self.mSpeed == 0 :
+			#	return
 
 			#self.JumpToTrack( aFocusId )
 			self.RestartAsyncMove( aFocusId )
@@ -1264,12 +1266,12 @@ class TimeShiftPlate( BaseWindow ) :
 				dialog.doModal( )
 				return
 
+			if self.mSpeed != 100 :
+				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+
 			ret = self.mDataCache.Player_CreateBookmark( )
 			if ret :
 				self.InitBookmarkThumnail( )
-
-				if self.mSpeed != 100 :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
 
 			self.RestartAutomaticHide( )
 
@@ -1371,6 +1373,7 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
 			ret = self.mDataCache.Player_JumpToIFrame( partition )
+			LOG_TRACE('-------------Player_JumpToIFrame ret[%s]'% ret )
 			if ret :
 				mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecordInfo.mRecordKey )
 				if mBookmarkList and len( mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
@@ -1881,6 +1884,8 @@ class TimeShiftPlate( BaseWindow ) :
 				if aStartOnLeft :
 					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
 				else :
+					if self.mSpeed != 100 :
+						self.mDataCache.Player_Resume( )
 					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
 				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% ( frameJump, self.mAccelator, ( self.mUserMoveTime / 10000 ), ret ) )
 				self.InitTimeShift( )
@@ -1916,6 +1921,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 			move = dialog.GetMoveToJump( )
 			if move :
+				if self.mSpeed != 100 :
+					self.mDataCache.Player_Resume( )
+
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 		self.RestartAutomaticHide( )
