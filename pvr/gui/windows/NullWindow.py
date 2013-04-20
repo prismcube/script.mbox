@@ -319,6 +319,9 @@ class NullWindow( BaseWindow ) :
 					self.DialogPopupOK( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 					return
 
+				if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					self.mDataCache.Player_Stop( )
+
 				self.CloseSubTitle( )
 				if RECORD_WIDTHOUT_ASKING == True :
 					if self.GetBlinkingProperty( ) != 'None' :

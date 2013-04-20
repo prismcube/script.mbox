@@ -1005,6 +1005,10 @@ class LivePlate( LivePlateWindow ) :
 				self.RestartAutomaticHide( )
 				return
 
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.mDataCache.Player_Stop( )
+
 			if RECORD_WIDTHOUT_ASKING == True :
 				if self.GetBlinkingProperty( ) != 'None' :
 					self.mIsShowDialog = False
