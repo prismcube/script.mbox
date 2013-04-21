@@ -1,5 +1,10 @@
 from pvr.gui.WindowImport import *
-from elementtree import ElementTree
+
+try :
+	import xml.etree.cElementTree as ElementTree
+except Exception, e :
+	from elementtree import ElementTree
+
 
 E_SETTING_HEADER_TITLE			=	1002
 E_SETTING_DESCRIPTION			=	1003

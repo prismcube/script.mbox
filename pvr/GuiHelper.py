@@ -2,7 +2,12 @@ import xbmc, xbmcgui, xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from elementtree import ElementTree
+
+try :
+	import xml.etree.cElementTree as ElementTree
+except Exception, e :
+	from elementtree import ElementTree
+
 import urllib
 from subprocess import *
 

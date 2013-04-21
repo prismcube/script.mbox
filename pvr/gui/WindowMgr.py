@@ -9,13 +9,17 @@ import weakref
 from pvr.gui.GuiConfig import *
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
-from elementtree import ElementTree
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.DataCacheMgr
 from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom
 from pvr.Util import SetLock, SetLock2
 import pvr.gui.DialogMgr as DiaMgr
+
+try :
+	import xml.etree.cElementTree as ElementTree
+except Exception, e :
+	from elementtree import ElementTree
 
 WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
