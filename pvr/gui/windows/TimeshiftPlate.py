@@ -1442,15 +1442,17 @@ class TimeShiftPlate( BaseWindow ) :
 		if not self.mBookmarkList or len( self.mBookmarkList ) < 1 :
 			return
 
+		if not self.mPlayingRecordInfo or ( self.mPlayingRecordInfo and self.mPlayingRecordInfo.mDuration < 1 ) :
+			LOG_TRACE( 'Error, corrupt record file' )
+			return
+
 		revisionX = -10
 		for i in range( len( self.mBookmarkList ) ) :
-			ratioX = 0
-			if self.mPlayingRecordInfo.mDuration > 0 :
-				#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
-				ratioX = float( self.mBookmarkList[i].mTimeMs ) / ( self.mPlayingRecordInfo.mDuration * 1000 )
+			#ratioX = float( self.mBookmarkList[i].mTimeMs ) / self.mTimeshift_endTime
+			ratioX = float( self.mBookmarkList[i].mTimeMs / 1000 ) / self.mPlayingRecordInfo.mDuration
 
-			if ratioX < 0.02 :
-				revisionX = -5
+			#if ratioX < 0.02 :
+			#	revisionX = -5
 			posx = int( E_PROGRESS_WIDTH_MAX * ratioX ) + revisionX
 			#LOG_TRACE('--------button id[%s] posx[%s] ratioX[%s] timeMs[%s] duration[%s]'% ( i, posx, ratioX, self.mBookmarkList[i].mTimeMs, self.mPlayingRecordInfo.mDuration ) )
 			self.mDataCache.SetBookmarkHash( i, self.mBookmarkList[i].mOffset )
