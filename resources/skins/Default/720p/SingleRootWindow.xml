@@ -4199,7 +4199,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>2</width>
-						<height>500</height>
+						<height>498</height>
 						<texture>HomeSeparatorRed.png</texture>
 					</control>
 					
@@ -4217,6 +4217,19 @@ Search for window name
 						<visible>true</visible>
 					</control>
 
+					<control type="label" id="3703502">
+						<description>EPG</description>
+						<posx>0</posx>
+						<posy>500</posy>
+						<width>800</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>blue</textcolor>
+						<align>center</align>						
+						<aligny>center</aligny>
+						<label></label>
+					</control>
+					
 					<!-- Running Timer -->
 					<control type="button" id="3703601">
 						<include>DefaultButtonRunningRecValues</include>
