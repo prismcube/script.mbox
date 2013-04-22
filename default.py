@@ -1,4 +1,8 @@
-from elementtree import ElementTree
+try :
+	import xml.etree.cElementTree as ElementTree
+except Exception, e :
+	from elementtree import ElementTree
+
 import os, sys, xbmcaddon, shutil
 
 

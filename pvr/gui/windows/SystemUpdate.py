@@ -1591,7 +1591,11 @@ class SystemUpdate( SettingWindow ) :
 
 	def ParseList( self ) :
 		try :
-			from elementtree import ElementTree
+			try :
+				import xml.etree.cElementTree as ElementTree
+			except Exception, e :
+				from elementtree import ElementTree
+
 			tree = ElementTree.parse( '/mtmp/channel.xml' )
 			root = tree.getroot( )
 

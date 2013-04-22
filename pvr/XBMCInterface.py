@@ -14,6 +14,11 @@ if sys.version_info < (2, 7):
 else:
     import json as simplejson
 
+try :
+	import xml.etree.cElementTree as ElementTree
+except Exception, e :
+	from elementtree import ElementTree
+
 
 def XBMC_GetCurrentSkinName( ) :
 
