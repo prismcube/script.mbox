@@ -5827,6 +5827,24 @@
 			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
 		</control>
 		<control type="image">
+			<posx>-27</posx>
+			<posy>15</posy>
+			<width>13</width>
+			<height>45</height>
+			<texture>OSDSeekRewind.png</texture>
+			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
+		</control>
+		<control type="image">
+			<posx>67</posx>
+			<posy>15</posy>
+			<width>13</width>
+			<height>45</height>
+			<texture>OSDSeekForward.png</texture>
+			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Forward)</visible>
+		</control>
+		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>55</width>

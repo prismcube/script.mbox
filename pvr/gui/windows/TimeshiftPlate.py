@@ -1073,24 +1073,20 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			ret = 100 #default
 
-		posx = 0
+		pos = 0
 		lspeed = ''
-		flagFF = False
-		flagRR = False
 		if ret == 100 or ret == 0 :
 			lspeed = ''
 		else :
-			posx = ret / 100
-			lspeed = '%sx'% abs( posx )
-			if ret > 100 :
-				flagFF = True
-				flagRR = False
-			else :
-				flagFF = False
-				flagRR = True
+			pos = ret / 100
+			lspeed = '%sx'% abs( pos )
 
+		posx = int( pos / 2 )
+		if posx < -30 : posx = -30
+		elif posx > 30: posx = 30
+
+		self.mCtrlImgXpeed.setPosition( posx, 3 )
 		self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
-		self.mCtrlImgXpeed.setPosition( int( posx/2 ), 2 )
 
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
@@ -1099,6 +1095,7 @@ class TimeShiftPlate( BaseWindow ) :
 			#LOG_TRACE( '-------Play speed[%s]'% ret)
 			self.ShowStatusByButton( E_CONTROL_ID_BUTTON_PLAY )
 			self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'iXpeedArrow', E_TAG_FALSE )
 
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
@@ -1108,6 +1105,11 @@ class TimeShiftPlate( BaseWindow ) :
 			#LOG_TRACE( '-------Pause speed[%s]'% ret)
 			if ret != 0 :
 				self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_TRUE )
+				if ret < 0 :
+					self.UpdatePropertyGUI( 'iXpeedArrow', 'Rewind' )
+				else :
+					self.UpdatePropertyGUI( 'iXpeedArrow', 'Forward' )
+
 
 		return ret
 
