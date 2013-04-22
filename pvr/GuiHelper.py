@@ -908,11 +908,9 @@ def ShowSubtitle( ) :
 
 		selectedSubtitle = dataCache.Subtitle_GetSelected( )
 
-		#####
-		if selectedSubtitle :
-			selectedSubtitle.printdebug( )
-		#####
-	
+		#if selectedSubtitle :
+		#	selectedSubtitle.printdebug( )
+
 		context = []
 		structSubTitle = []
 		selectedIndex = -1
@@ -925,12 +923,11 @@ def ShowSubtitle( ) :
 
 
 		for i in range( subTitleCount ) :
-			#iSubtitle = dataCache.Subtitle_Get( i )
 			if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
 				structSubTitle.pop( i )
 				continue
 
-			structSubTitle[i].printdebug( )
+			#structSubTitle[i].printdebug( )
 
 			if selectedSubtitle :
 				if selectedSubtitle.mPid == structSubTitle[i].mPid and selectedSubtitle.mPageId == structSubTitle[i].mPageId and selectedSubtitle.mSubId == structSubTitle[i].mSubId :
