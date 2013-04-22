@@ -5892,6 +5892,16 @@
 			<texture>$INFO[Window.Property(iFileXpeed)]</texture>
 			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
 		</control>
+		<control type="label">
+			<posx>10</posx>
+			<posy>10</posy>
+			<width>55</width>
+			<height>10</height>
+			<font>font10</font>
+			<align>center</align>
+			<label>$INFO[Window.Property(iTinyXpeed)]</label>
+			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+		</control>
 	</include>
 
 	<include name="DefaultTimeshiftPlateGroup">

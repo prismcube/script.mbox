@@ -33,6 +33,9 @@ E_CONTROL_ID_IMAGE_XPEED 			= E_BASE_WINDOW_ID + 3760
 E_CONTROL_ID_IMAGE_BOOKMARK_POINT   = E_TIMESHIFT_PLATE_BASE_ID + 600
 E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT = E_TIMESHIFT_PLATE_BASE_ID + 701
 
+E_EXTENDED_TINY_REWIND  = E_CONTROL_ID_BUTTON_REWIND  + 1000
+E_EXTENDED_TINY_FORWARD = E_CONTROL_ID_BUTTON_FORWARD + 1000
+
 #value enum
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
@@ -170,7 +173,7 @@ class TimeShiftPlate( BaseWindow ) :
 		label = self.GetModeValue( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
-		#self.GetNextSpeed( E_ONINIT )
+		self.GetNextSpeed( E_ONINIT )
 		#self.InitBookmarkThumnail( )
 		self.InitPreviousAction( )
 		self.InitAccelatorSection( )
@@ -655,6 +658,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
+			LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
@@ -675,6 +679,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
+			LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
@@ -984,7 +989,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			#LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
 
-			self.GetNextSpeed( E_ONINIT )
+			#self.GetNextSpeed( E_ONINIT )
 
 		#if self.mMode == ElisEnum.E_MODE_TIMESHIFT and self.mSpeed == 100 :
 		#	self.InitAccelatorSection( )
@@ -993,6 +998,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def GetNextSpeed( self, aFocusId ) :
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
+		tinyXpeed = False
 		if aFocusId == E_CONTROL_ID_BUTTON_REWIND :
 			#if self.mSpeed == -12800 :
 			#	ret = -12800
@@ -1011,12 +1017,16 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = -400
 			elif self.mSpeed == 100 or self.mSpeed == 0 :
 				ret = -200
+			elif self.mSpeed == 25 :
+				ret = -200
+			elif self.mSpeed == 50 :
+				ret = 25.0
+				tinyXpeed = True
 			elif self.mSpeed == 120 :
-				ret = 100
-			elif self.mSpeed == 160 :
-				ret = 120
+				ret = 50.0
+				tinyXpeed = True
 			elif self.mSpeed == 200 :
-				ret = 100 #160
+				ret = 100
 			elif self.mSpeed == 400 :
 				ret = 200
 			elif self.mSpeed == 800 :
@@ -1045,11 +1055,19 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = -200
 			elif self.mSpeed == -200 :
 				ret = 100
-			elif self.mSpeed == 100 or self.mSpeed == 0 :
-				ret = 200 #120
+			elif self.mSpeed == 0 :
+				self.mDataCache.Player_Resume( )
+				ret = 25.0
+				tinyXpeed = True
+			elif self.mSpeed == 25 :
+				ret = 50.0
+				tinyXpeed = True
+			elif self.mSpeed == 50 :
+				ret = 120.0
+				tinyXpeed = True
 			elif self.mSpeed == 120 :
-				ret = 160
-			elif self.mSpeed == 160 :
+				ret = 200
+			elif self.mSpeed == 100 :
 				ret = 200
 			elif self.mSpeed == 200 :
 				ret = 400
@@ -1084,9 +1102,16 @@ class TimeShiftPlate( BaseWindow ) :
 		posx = int( pos / 2 )
 		if posx < -30 : posx = -30
 		elif posx > 30: posx = 30
-
 		self.mCtrlImgXpeed.setPosition( posx, 3 )
-		self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
+
+		if tinyXpeed :
+			self.UpdatePropertyGUI( 'iTinyXpeed', '%sX'% abs( pos ) )
+			self.UpdatePropertyGUI( 'iFileXpeed', 'OSDSlowx.png' )
+
+		else :
+			self.UpdatePropertyGUI( 'iTinyXpeed', '' )
+			self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
+			LOG_TRACE('------------------TinyXpeed None' )
 
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
@@ -1111,7 +1136,7 @@ class TimeShiftPlate( BaseWindow ) :
 					self.UpdatePropertyGUI( 'iXpeedArrow', 'Forward' )
 
 
-		return ret
+		return int( ret )
 
 
 	def GetModeValue( self ) :
