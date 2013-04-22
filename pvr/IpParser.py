@@ -31,7 +31,8 @@ class IpParser( object ) :
 	def __init__( self ) :
 		self.mEthernetDevName	= 'eth0'
 		self.mIsConfigureWindow	= False
-		#self.CheckNetworkThread( )
+		if E_USE_AUTO_CONNECT :
+			self.CheckNetworkThread( )
 
 
 	def IfUpDown( self, aDev ) :
@@ -457,6 +458,7 @@ class IpParser( object ) :
 			scanResult = []
 			if self.GetCurrentServiceType( ) != NETWORK_WIRELESS :
 				self.IfUpDown( dev + '_up' )
+				time.sleep( 3 )
 
 			os.system( 'iwlist %s scan > %s' % ( dev, FILE_TEMP ) )
 			from IwlistParser import Get_ApList
@@ -705,6 +707,7 @@ class IpParser( object ) :
 		print 'dhkim test start thread'		
 		time.sleep( 20 )
 		sleeptime = 3
+		testcount = 0
 		while True :
 			print 'dhkim test in thread'
 			if self.GetIsConfigureWindow( ) == False :
@@ -720,10 +723,12 @@ class IpParser( object ) :
 					else :
 						print 'dhkim test reconnect start'
 						self.ReConnectNetwork( networkType )
+						testcount += 1
 						print 'dhkim test reconnect end'
 
 			print 'dhkim test sleep 3 sec.....'
 			time.sleep( sleeptime )
+			print 'dhkim test result reconnect count = #######%s' % testcount
 
 
 	def CheckDeviceState( self, aType ) :
@@ -760,10 +765,10 @@ class IpParser( object ) :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return False
 
-		if state == 'up' :
-			return True
-		else :
+		if state == 'down' :
 			return False
+		else :
+			return True
 
 
 	def CheckDefaultGatewayConnection( self ) :
