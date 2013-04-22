@@ -31,6 +31,10 @@ class DialogExtendEPG( BaseDialog ) :
 			if lastWin in EPGLIST_EXCEPTWINDOW :
 				descriptGroup.setPosition( basePos[0], basePos[1] + 55 )
 				isShowList = False
+
+			elif lastWin == WinMgr.WIN_ID_INFO_PLATE :
+				isShowList = False
+
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
