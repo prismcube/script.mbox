@@ -585,6 +585,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.setProperty( 'IsXpeeding', 'True' )
+			self.UpdatePropertyGUI( 'iTinyXpeed', '' )
 
 			#blocking release
 			#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -608,6 +609,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 				self.setProperty( 'IsXpeeding', 'True' )
+				self.UpdatePropertyGUI( 'iTinyXpeed', '' )
 
 				#blocking
 				#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -962,7 +964,14 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mSpeed  = status.mSpeed
 
 			if self.mSpeed != 0 :
-				self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
+				self.mRepeatTimeout = 1
+				if self.mSpeed == 100 :
+					self.mRepeatTimeout = 1
+				elif self.mSpeed > 0 and self.mSpeed <= 120 :
+					self.mRepeatTimeout = 0.5
+				else :
+					self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
+
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
