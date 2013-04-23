@@ -1109,4 +1109,8 @@
 	<string id="3691">TUR_ - Tuner 2 PIN Code</string>
 	<string id="3692">TUR_Handle your addons</string>
 	<string id="3693">TUR_Edit favorites TV/radio channel list</string>
+	<string id="3694">TUR_No Favorite Group</string>
+	<string id="3695">TUR_Favorite Group</string>
+	<string id="3696">TUR_No Channel List</string>
+	<string id="3697">TUR_Fail to Change Favorite</string>
 </strings>

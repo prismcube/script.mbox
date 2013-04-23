@@ -1109,4 +1109,8 @@
 	<string id="3691"> - Tuner 2 PIN Code</string>
 	<string id="3692">Handle your addons</string>
 	<string id="3693">Edit favorites TV/radio channel list</string>
+	<string id="3694">No Favorite Group</string>
+	<string id="3695">Favorite Group</string>
+	<string id="3696">No Channel List</string>
+	<string id="3697">Fail to Change Favorite</string>
 </strings>
