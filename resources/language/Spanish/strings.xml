@@ -42,12 +42,12 @@
 	<string id="1040">SPA_EPG Present</string>
 	<string id="1041">SPA_EPG Next</string>
 	<string id="1042">SPA_Installation</string>
-	<string id="1043">SPA_Archive</string>
-	<string id="1044">SPA_EPG</string>
+	<string id="1043">SPA_RECORDINGS</string>
+	<string id="1044">SPA_GUIDE</string>
 	<string id="1045">SPA_Channel List</string>
 	<string id="1046">SPA_Fav. Add-ons</string>
 	<string id="1047">SPA_Media Center</string>
-	<string id="1048">SPA_STB Info</string>
+	<string id="1048">SPA_INFO</string>
 	<string id="1049">SPA_Help</string>
 	<string id="1050">Primera instalacion</string>
 	<string id="1051">SPA_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">SPA_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">SPA_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">SPA_Playback</string>
+	<string id="1120">SPA_List</string>
+	<string id="1121">SPA_Addon Manager</string>
 	<string id="2001">SPA_Last ServiceType</string>
 	<string id="2002">SPA_CurrentVoutResolution</string>
 	<string id="2003">SPA_1080p-50</string>
@@ -1098,4 +1100,13 @@
 	<string id="3682">SPA_North</string>
 	<string id="3683">SPA_South</string>
 	<string id="3684">SPA_Go to the channel search setup page</string>
+	<string id="3685">SPA_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">SPA_ - Tuner %d Frequency</string>
+	<string id="3687">SPA_ - Tuner %d PIN Code</string>
+	<string id="3688">SPA_ - Tuner 1 Frequency</string>
+	<string id="3689">SPA_ - Tuner 1 PIN Code</string>
+	<string id="3690">SPA_ - Tuner 2 Frequency</string>
+	<string id="3691">SPA_ - Tuner 2 PIN Code</string>
+	<string id="3692">SPA_Handle your addons</string>
+	<string id="3693">SPA_Edit favorites TV/radio channel list</string>
 </strings>

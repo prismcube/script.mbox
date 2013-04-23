@@ -42,12 +42,12 @@
 	<string id="1040">DUT_EPG Present</string>
 	<string id="1041">DUT_EPG Next</string>
 	<string id="1042">DUT_Installation</string>
-	<string id="1043">DUT_Archive</string>
-	<string id="1044">DUT_EPG</string>
+	<string id="1043">DUT_RECORDINGS</string>
+	<string id="1044">DUT_GUIDE</string>
 	<string id="1045">DUT_Channel List</string>
 	<string id="1046">DUT_Fav. Add-ons</string>
 	<string id="1047">DUT_Media Center</string>
-	<string id="1048">DUT_STB Info</string>
+	<string id="1048">DUT_INFO</string>
 	<string id="1049">DUT_Help</string>
 	<string id="1050">Eerste installatie</string>
 	<string id="1051">DUT_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">DUT_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">DUT_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">DUT_Playback</string>
+	<string id="1120">DUT_List</string>
+	<string id="1121">DUT_Addon Manager</string>
 	<string id="2001">DUT_Last ServiceType</string>
 	<string id="2002">DUT_CurrentVoutResolution</string>
 	<string id="2003">DUT_1080p-50</string>
@@ -1098,4 +1100,13 @@
 	<string id="3682">DUT_North</string>
 	<string id="3683">DUT_South</string>
 	<string id="3684">DUT_Go to the channel search setup page</string>
+	<string id="3685">DUT_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">DUT_ - Tuner %d Frequency</string>
+	<string id="3687">DUT_ - Tuner %d PIN Code</string>
+	<string id="3688">DUT_ - Tuner 1 Frequency</string>
+	<string id="3689">DUT_ - Tuner 1 PIN Code</string>
+	<string id="3690">DUT_ - Tuner 2 Frequency</string>
+	<string id="3691">DUT_ - Tuner 2 PIN Code</string>
+	<string id="3692">DUT_Handle your addons</string>
+	<string id="3693">DUT_Edit favorites TV/radio channel list</string>
 </strings>

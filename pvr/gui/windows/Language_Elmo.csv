@@ -41,12 +41,12 @@
 "EPG Present";;;;;;;;;"Текущее Событие";1040
 "EPG Next";;;;;;;;;"Следующее Событие";1041
 "Installation";;"Installation";;;;;;;"Установка";1042
-"Archive";;;;;;;;;"Архив";1043
-"EPG";;"EPG";;;;;;;"ТВ Гид";1044
+"RECORDINGS";;;;;;;;;;1043
+"GUIDE";;;;;;;;;;1044
 "Channel List";;"Liste des chaînes ";;;;;;;"Список Каналов";1045
 "Fav. Add-ons";;;;;;;;;"Любимые Программы";1046
 "Media Center";;;;;;;;;"Медиацентр";1047
-"STB Info";;;;;;;;;"О Приемнике";1048
+"INFO";;;;;;;;;;1048
 "Help";;;;;;;;;"Помощь";1049
 "First Installation";"Erst-Installation";;"Prima installazione";"Primera instalacion";"Prvni instalace";"Eerste installatie";"Pierwsza instalacja";"?lk kurulum";"Первичная Установка";1050
 "Antenna Setup";;;;;;;;;"Установки Антенны";1051
@@ -115,6 +115,8 @@
 "Setup Smartcard or CI-Module configuration for watching pay channels";;;;;;;;;"Настройка Смарткарты или САМ модкля для просмотра платных каналов";1117
 "Get the latest updates on your PRISMCUBE RUBY";;;;;;;;;"Получить последнее обновление приставки";1118
 "Playback";;;;;;;;;"Воспроизведение";1119
+"List";;"Liste";;;;;;;"Список";1120
+"Addon Manager";;;;;;;;;;1121
 "Last ServiceType";;;;;;;;;"Тип Последнего Сервиса";2001
 "CurrentVoutResolution";;;;;;;;;"Текущее Разрешение";2002
 "1080p-50";;;;;;;;;"1080p-50";2003
@@ -1097,3 +1099,12 @@
 "North";;;;;;;;;"Север";3682
 "South";;;;;;;;;"Юг";3683
 "Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";3684
+"Make media length longer than %s secs%s to create a chapter";;;;;;;;;;3685
+" - Tuner %d Frequency";;;;;;;;;;3686
+" - Tuner %d PIN Code";;;;;;;;;;3687
+" - Tuner 1 Frequency";;;;;;;;;;3688
+" - Tuner 1 PIN Code";;;;;;;;;;3689
+" - Tuner 2 Frequency";;;;;;;;;;3690
+" - Tuner 2 PIN Code";;;;;;;;;;3691
+"Handle your addons";;;;;;;;;;3692
+"Edit favorites TV/radio channel list";;;;;;;;;;3693
