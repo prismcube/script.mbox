@@ -4643,7 +4643,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<info>ListItem.Label</info>
+						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
@@ -4655,7 +4655,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<info>ListItem.Label2</info>
+						<info>ListItem.Label</info>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -4695,7 +4695,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<info>ListItem.Label</info>
+						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
@@ -4707,7 +4707,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<info>ListItem.Label2</info>
+						<info>ListItem.Label</info>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -4810,8 +4810,8 @@
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="8">ThumbBorder.png</bordertexture>
-						<bordersize>8</bordersize>
+						<bordertexture border="10">ThumbBorder1.png</bordertexture>
+						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
@@ -4840,7 +4840,7 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003421">
-				<posx>200</posx>
+				<posx>180</posx>
 				<posy>390</posy>
 				<width>880</width>
 				<height>25</height>
@@ -4859,24 +4859,24 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<control type="label">
-				<posx>0</posx>
+				<posx>-15</posx>
 				<posy>500</posy>
 				<width>1280</width>
 				<height>35</height>
-				<font>font13</font>
+				<font>font30_title</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)]($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
+				<info>Container(1003420).ListItem(0).Label2</info>
 			</control>
 			<control type="label">
-				<posx>30</posx>
-				<posy>530</posy>
+				<posx>15</posx>
+				<posy>540</posy>
 				<width>1220</width>
-				<height>35</height>
-				<font>font30_title</font>
+				<height>20</height>
+				<font>font13</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
@@ -4885,17 +4885,17 @@
 				<info>Container(1003420).ListItem(0).Label</info>
 			</control>
 			<control type="label">
-				<posx>0</posx>
-				<posy>580</posy>
+				<posx>-15</posx>
+				<posy>562</posy>
 				<width>1280</width>
-				<height>35</height>
-				<font>font30</font>
+				<height>20</height>
+				<font>font13</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<info>Container(1003420).ListItem(0).Label2</info>
+				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)] ($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
 			</control>
 		</control>
 	</include>
@@ -4964,7 +4964,7 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordertexture border="6">button-nofocus1.png</bordertexture>
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
@@ -4994,22 +4994,9 @@
 				</focusedlayout>
 			</control>
 			<control type="label">
-				<posx>40</posx>
+				<posx>-70</posx>
 				<posy>195</posy>
-				<width>1200</width>
-				<height>25</height>
-				<font>font12</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<scroll>true</scroll>
-				<align>center</align>
-				<aligny>center</aligny>
-				<label>$INFO[Container(1003430).ListItem(0).Label]($INFO[Container(1003430).ListItem(0).Property(RecDate)]  $INFO[Container(1003430).ListItem(0).Property(RecDuration)])</label>
-			</control>
-			<control type="label">
-				<posx>40</posx>
-				<posy>220</posy>
-				<width>1200</width>
+				<width>1100</width>
 				<height>30</height>
 				<font>font30</font>
 				<textcolor>white</textcolor>
@@ -5019,8 +5006,21 @@
 				<aligny>center</aligny>
 				<info>Container(1003430).ListItem(0).Label2</info>
 			</control>
+			<control type="label">
+				<posx>-70</posx>
+				<posy>225</posy>
+				<width>1100</width>
+				<height>25</height>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>$INFO[Container(1003430).ListItem(0).Label] ($INFO[Container(1003430).ListItem(0).Property(RecDate)]  $INFO[Container(1003430).ListItem(0).Property(RecDuration)])</label>
+			</control>
 			<control type="scrollbar" id="1003431">
-				<posx>310</posx>
+				<posx>150</posx>
 				<posy>250</posy>
 				<width>660</width>
 				<height>25</height>
