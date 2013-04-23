@@ -724,7 +724,7 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white1.png</texturefocus>
+		<texturefocus border="5">StackFO_white2.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 		<colordiffuse>FFFF0000</colordiffuse>
@@ -737,7 +737,7 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white1.png</texturefocus>
+		<texturefocus border="5">StackFO_white2.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 		<colordiffuse>FF00FF00</colordiffuse>
@@ -750,10 +750,10 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white1.png</texturefocus>
+		<texturefocus border="5">StackFO_white2.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
-		<colordiffuse>55FFFFFF</colordiffuse>
+		<colordiffuse>75FFFFFF</colordiffuse>
 	</include>
 
 	<include name="DefaultButtonTimelineValues">
@@ -5825,6 +5825,24 @@
 			<height>65</height>
 			<texture>OSDSeekFrame.png</texture>
 			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+		</control>
+		<control type="image">
+			<posx>-27</posx>
+			<posy>15</posy>
+			<width>13</width>
+			<height>45</height>
+			<texture>OSDSeekRewind.png</texture>
+			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
+		</control>
+		<control type="image">
+			<posx>67</posx>
+			<posy>15</posy>
+			<width>13</width>
+			<height>45</height>
+			<texture>OSDSeekForward.png</texture>
+			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Forward)</visible>
 		</control>
 		<control type="image">
 			<posx>0</posx>
