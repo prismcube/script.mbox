@@ -1109,4 +1109,8 @@
 	<string id="3691">ITA_ - Tuner 2 PIN Code</string>
 	<string id="3692">ITA_Handle your addons</string>
 	<string id="3693">ITA_Edit favorites TV/radio channel list</string>
+	<string id="3694">ITA_No Favorite Group</string>
+	<string id="3695">ITA_Favorite Group</string>
+	<string id="3696">ITA_No Channel List</string>
+	<string id="3697">ITA_Fail to Change Favorite</string>
 </strings>

@@ -1109,4 +1109,8 @@
 	<string id="3691">RUS_ - Tuner 2 PIN Code</string>
 	<string id="3692">RUS_Handle your addons</string>
 	<string id="3693">RUS_Edit favorites TV/radio channel list</string>
+	<string id="3694">RUS_No Favorite Group</string>
+	<string id="3695">RUS_Favorite Group</string>
+	<string id="3696">RUS_No Channel List</string>
+	<string id="3697">RUS_Fail to Change Favorite</string>
 </strings>
