@@ -1115,7 +1115,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if tinyXpeed :
 			self.UpdatePropertyGUI( 'iTinyXpeed', '%sX'% abs( pos ) )
-			self.UpdatePropertyGUI( 'iFileXpeed', 'OSDSlowx.png' )
 
 		else :
 			self.UpdatePropertyGUI( 'iTinyXpeed', '' )
