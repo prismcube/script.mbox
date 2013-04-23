@@ -201,8 +201,11 @@ class ArchiveWindow( BaseWindow ) :
 					self.UpdateArchiveInfomation( )
 
 		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
-			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
+			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
+				if focusId  == LIST_ID_COMMON_RECORD :
+					self.UpdateArchiveInfomation( )
+				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
