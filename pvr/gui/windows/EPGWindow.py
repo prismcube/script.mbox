@@ -2405,7 +2405,7 @@ class EPGWindow( BaseWindow ) :
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 				start  = gridMeta.mEPG.mStartTime + localOffset
-				self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+				self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
 			else :
 				self.mCtrlGridEPGInfo.setLabel(' ' )			
 		else :
