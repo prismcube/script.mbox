@@ -42,12 +42,12 @@
 	<string id="1040">EPG Present</string>
 	<string id="1041">EPG Next</string>
 	<string id="1042">Installation</string>
-	<string id="1043">Archive</string>
-	<string id="1044">EPG</string>
+	<string id="1043">RECORDINGS</string>
+	<string id="1044">GUIDE</string>
 	<string id="1045">Channel List</string>
 	<string id="1046">Fav. Add-ons</string>
 	<string id="1047">Media Center</string>
-	<string id="1048">STB Info</string>
+	<string id="1048">INFO</string>
 	<string id="1049">Help</string>
 	<string id="1050">First Installation</string>
 	<string id="1051">Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">Playback</string>
+	<string id="1120">List</string>
+	<string id="1121">Addon Manager</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
@@ -1102,4 +1104,13 @@
 	<string id="3682">North</string>
 	<string id="3683">South</string>
 	<string id="3684">Go to the channel search setup page</string>
+	<string id="3685">Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686"> - Tuner %d Frequency</string>
+	<string id="3687"> - Tuner %d PIN Code</string>
+	<string id="3688"> - Tuner 1 Frequency</string>
+	<string id="3689"> - Tuner 1 PIN Code</string>
+	<string id="3690"> - Tuner 2 Frequency</string>
+	<string id="3691"> - Tuner 2 PIN Code</string>
+	<string id="3692">Handle your addons</string>
+	<string id="3693">Edit favorites TV/radio channel list</string>
 </strings>

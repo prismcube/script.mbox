@@ -24,7 +24,8 @@ BUTTON_ID_MEDIA_PROGRAMS        = E_MAIN_MENU_BASE_ID + 90605
 BUTTON_ID_MEDIA_SETTINGS        = E_MAIN_MENU_BASE_ID + 90606
 BUTTON_ID_MEDIA_FILE_MGR        = E_MAIN_MENU_BASE_ID + 90607
 BUTTON_ID_MEDIA_PROFILES        = E_MAIN_MENU_BASE_ID + 90608
-BUTTON_ID_MEDIA_SYS_INFO        = E_MAIN_MENU_BASE_ID + 90609
+BUTTON_ID_MEDIA_ADDON_MGR       = E_MAIN_MENU_BASE_ID + 90609
+BUTTON_ID_MEDIA_SYS_INFO        = E_MAIN_MENU_BASE_ID + 90610
 
 BUTTON_ID_FIRSTINSTALLATION		= E_MAIN_MENU_BASE_ID + 90101
 BUTTON_ID_ANTENNA_SETUP			= E_MAIN_MENU_BASE_ID + 90102
@@ -34,6 +35,9 @@ BUTTON_ID_EDIT_TRANSPONDER		= E_MAIN_MENU_BASE_ID + 90105
 BUTTON_ID_CONFIGURE				= E_MAIN_MENU_BASE_ID + 90106
 BUTTON_ID_CAS					= E_MAIN_MENU_BASE_ID + 90107
 BUTTON_ID_UPDATE				= E_MAIN_MENU_BASE_ID + 90108
+
+BUTTON_ID_CHANNEL_LIST_FAVORITE = E_MAIN_MENU_BASE_ID + 90412
+BUTTON_ID_CHANNEL_LIST_LIST		= E_MAIN_MENU_BASE_ID + 90413
 
 
 E_MAIN_MENU_DEFAULT_FOCUS_ID	=  E_MAIN_MENU_BASE_ID + 9000
@@ -72,6 +76,7 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Configure the general settings of XBMC' ),
 			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
 			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
+			MR_LANG( 'Handle your addons' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
@@ -181,10 +186,16 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
-		elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
+			LOG_TRACE( 'BUTTON_ID_CHANNEL_LIST_FAVORITE' )
+
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
+		#elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
+		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 			self.SetMediaCenter( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			status = self.mDataCache.Player_GetStatus( )
@@ -219,6 +230,8 @@ class MainMenu( BaseWindow ) :
 				xbmc.executebuiltin( 'ActivateWindow(FileManager)' )
 			elif aControlId == BUTTON_ID_MEDIA_PROFILES :
 				xbmc.executebuiltin( 'ActivateWindow(Profiles)' )
+			elif aControlId == BUTTON_ID_MEDIA_ADDON_MGR :
+				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
 
@@ -249,6 +262,12 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorite in a convenient way' ) )
+
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit TV/radio channel list and sort them in the numerical or alphabetic order' ) )
+
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit favorites TV/radio channel list' ) )
 
 
 	def GetFavAddons( self ) :

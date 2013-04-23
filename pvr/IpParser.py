@@ -236,8 +236,10 @@ class IpParser( object ) :
 					outputFile.writelines( 'auto ' + self.mEthernetDevName + '\n' )
 				elif line.startswith( 'iface ' + self.mEthernetDevName + ' inet' ) :
 					if aType == NET_DHCP :
+						print 'dhkim test NET_DHCP'
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'dhcp\n' )
 					else :
+						print 'dhkim test static'
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'static\n' )
 						outputFile.writelines( 'address %s\n' % aIpAddress.strip( ) )
 						outputFile.writelines( 'netmask %s\n' % aMaskAddress.strip( ) )
@@ -250,7 +252,7 @@ class IpParser( object ) :
 			inputFile.close( )
 			outputFile.close( )
 
-			self.SetEthernetNameServer( aType, aNameAddress.strip( ) )
+			self.SetEthernetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
 			self.IfUpDown( self.mEthernetDevName )
 			status = True
@@ -312,7 +314,10 @@ class IpParser( object ) :
 
 
 	def ResetNetwork( self ) :
-		return
+		print 'dhkim test ResetNetwork'
+		if self.GetCurrentServiceType( ) == NETWORK_WIRELESS or self.GetEthernetMethod( ) == NET_STATIC :
+			print 'dhkim test ResetNetwork#######'
+			self.ConnectEthernet( NET_DHCP )
 
 
 	def LoadWifiService( self ) :
@@ -324,8 +329,8 @@ class IpParser( object ) :
 			if aType == NET_DHCP :
 				os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
 			else :
-				os.system( 'echo nameserver %s' % aNameAddress + '> ' + FILE_NAME_RESOLV_CONF )
-				os.system( 'echo echo nameserver %s \> %s > %s' % ( aNameAddress, FILE_NAME_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_CONF ) )
+				os.system( 'echo nameserver %s' % aNameAddress.strip( ) + '> ' + FILE_NAME_RESOLV_CONF )
+				os.system( 'echo echo nameserver %s \> %s > %s' % ( aNameAddress.strip( ), FILE_NAME_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_CONF ) )
 				os.system( 'chmod 755 %s' % FILE_NAME_AUTO_RESOLV_CONF )
 				if os.path.isfile( FILE_NAME_AUTO_RESOLV_LINK ) == False :
 					os.system( 'ln -s %s %s' % ( FILE_NAME_AUTO_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_LINK ) )
@@ -627,23 +632,6 @@ class IpParser( object ) :
 			return NOT_USE_HIDDEN_SSID
 
 
-	def SetEthernetNameServer( self, aType, aNameAddress ) :
-		try :
-			if aType :
-				os.system( 'echo nameserver %s' % aNameAddress + '> ' + FILE_NAME_RESOLV_CONF )
-				os.system( 'echo echo nameserver %s \> %s > %s' % ( aNameAddress, FILE_NAME_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_CONF ) )
-				os.system( 'chmod 755 %s' % FILE_NAME_AUTO_RESOLV_CONF )
-				if os.path.isfile( FILE_NAME_AUTO_RESOLV_LINK ) == False :
-					os.system( 'ln -s %s %s' % ( FILE_NAME_AUTO_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_LINK ) )
-			else :
-				os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
-			return True
-			
-		except Exception, e :
-			LOG_ERR( 'Error exception[%s]' % e )
-			return False
-
-
 	def WriteWifiInterfaces( self, aIsStatic, aIpAddress = None, aMaskAddress = None, aGatewayAddress = None, aNameAddress = None ) :
 		try :
 			dev = self.GetWifidevice( )
@@ -708,6 +696,7 @@ class IpParser( object ) :
 		time.sleep( 20 )
 		sleeptime = 3
 		testcount = 0
+		checkcount = 0
 		while True :
 			print 'dhkim test in thread'
 			if self.GetIsConfigureWindow( ) == False :
@@ -728,6 +717,8 @@ class IpParser( object ) :
 
 			print 'dhkim test sleep 3 sec.....'
 			time.sleep( sleeptime )
+			checkcount += 1
+			print 'dhkim test result checkcount count = #######%s' % checkcount
 			print 'dhkim test result reconnect count = #######%s' % testcount
 
 

@@ -10,7 +10,7 @@ class FirstInstallation( FTIWindow ) :
 		FTIWindow.__init__( self, *args, **kwargs )
 		self.mPrevStepNum				= E_STEP_SELECT_LANGUAGE
 		self.mAudioLanguageList			= []
-		self.mIsChannelSearch			= False
+		self.mIsChannelSearch			= True
 		self.mConfiguredSatelliteList 	= []
 		self.mFormattedList				= []
 		self.mSatelliteIndex			= 0
