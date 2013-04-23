@@ -42,12 +42,12 @@
 	<string id="1040">ITA_EPG Present</string>
 	<string id="1041">ITA_EPG Next</string>
 	<string id="1042">ITA_Installation</string>
-	<string id="1043">ITA_Archive</string>
-	<string id="1044">ITA_EPG</string>
+	<string id="1043">ITA_RECORDINGS</string>
+	<string id="1044">ITA_GUIDE</string>
 	<string id="1045">ITA_Channel List</string>
 	<string id="1046">ITA_Fav. Add-ons</string>
 	<string id="1047">ITA_Media Center</string>
-	<string id="1048">ITA_STB Info</string>
+	<string id="1048">ITA_INFO</string>
 	<string id="1049">ITA_Help</string>
 	<string id="1050">Prima installazione</string>
 	<string id="1051">ITA_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">ITA_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">ITA_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">ITA_Playback</string>
+	<string id="1120">ITA_List</string>
+	<string id="1121">ITA_Addon Manager</string>
 	<string id="2001">ITA_Last ServiceType</string>
 	<string id="2002">ITA_CurrentVoutResolution</string>
 	<string id="2003">ITA_1080p-50</string>
@@ -1098,4 +1100,13 @@
 	<string id="3682">ITA_North</string>
 	<string id="3683">ITA_South</string>
 	<string id="3684">ITA_Go to the channel search setup page</string>
+	<string id="3685">ITA_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">ITA_ - Tuner %d Frequency</string>
+	<string id="3687">ITA_ - Tuner %d PIN Code</string>
+	<string id="3688">ITA_ - Tuner 1 Frequency</string>
+	<string id="3689">ITA_ - Tuner 1 PIN Code</string>
+	<string id="3690">ITA_ - Tuner 2 Frequency</string>
+	<string id="3691">ITA_ - Tuner 2 PIN Code</string>
+	<string id="3692">ITA_Handle your addons</string>
+	<string id="3693">ITA_Edit favorites TV/radio channel list</string>
 </strings>

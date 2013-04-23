@@ -42,12 +42,12 @@
 	<string id="1040">TUR_EPG Present</string>
 	<string id="1041">TUR_EPG Next</string>
 	<string id="1042">TUR_Installation</string>
-	<string id="1043">TUR_Archive</string>
-	<string id="1044">TUR_EPG</string>
+	<string id="1043">TUR_RECORDINGS</string>
+	<string id="1044">TUR_GUIDE</string>
 	<string id="1045">TUR_Channel List</string>
 	<string id="1046">TUR_Fav. Add-ons</string>
 	<string id="1047">TUR_Media Center</string>
-	<string id="1048">TUR_STB Info</string>
+	<string id="1048">TUR_INFO</string>
 	<string id="1049">TUR_Help</string>
 	<string id="1050">?lk kurulum</string>
 	<string id="1051">TUR_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">TUR_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">TUR_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">TUR_Playback</string>
+	<string id="1120">TUR_List</string>
+	<string id="1121">TUR_Addon Manager</string>
 	<string id="2001">TUR_Last ServiceType</string>
 	<string id="2002">TUR_CurrentVoutResolution</string>
 	<string id="2003">TUR_1080p-50</string>
@@ -1098,4 +1100,13 @@
 	<string id="3682">TUR_North</string>
 	<string id="3683">TUR_South</string>
 	<string id="3684">TUR_Go to the channel search setup page</string>
+	<string id="3685">TUR_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">TUR_ - Tuner %d Frequency</string>
+	<string id="3687">TUR_ - Tuner %d PIN Code</string>
+	<string id="3688">TUR_ - Tuner 1 Frequency</string>
+	<string id="3689">TUR_ - Tuner 1 PIN Code</string>
+	<string id="3690">TUR_ - Tuner 2 Frequency</string>
+	<string id="3691">TUR_ - Tuner 2 PIN Code</string>
+	<string id="3692">TUR_Handle your addons</string>
+	<string id="3693">TUR_Edit favorites TV/radio channel list</string>
 </strings>

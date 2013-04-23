@@ -42,12 +42,12 @@
 	<string id="1040">POL_EPG Present</string>
 	<string id="1041">POL_EPG Next</string>
 	<string id="1042">POL_Installation</string>
-	<string id="1043">POL_Archive</string>
-	<string id="1044">POL_EPG</string>
+	<string id="1043">POL_RECORDINGS</string>
+	<string id="1044">POL_GUIDE</string>
 	<string id="1045">POL_Channel List</string>
 	<string id="1046">POL_Fav. Add-ons</string>
 	<string id="1047">POL_Media Center</string>
-	<string id="1048">POL_STB Info</string>
+	<string id="1048">POL_INFO</string>
 	<string id="1049">POL_Help</string>
 	<string id="1050">Pierwsza instalacja</string>
 	<string id="1051">POL_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">POL_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">POL_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">POL_Playback</string>
+	<string id="1120">POL_List</string>
+	<string id="1121">POL_Addon Manager</string>
 	<string id="2001">POL_Last ServiceType</string>
 	<string id="2002">POL_CurrentVoutResolution</string>
 	<string id="2003">POL_1080p-50</string>
@@ -1098,4 +1100,13 @@
 	<string id="3682">POL_North</string>
 	<string id="3683">POL_South</string>
 	<string id="3684">POL_Go to the channel search setup page</string>
+	<string id="3685">POL_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">POL_ - Tuner %d Frequency</string>
+	<string id="3687">POL_ - Tuner %d PIN Code</string>
+	<string id="3688">POL_ - Tuner 1 Frequency</string>
+	<string id="3689">POL_ - Tuner 1 PIN Code</string>
+	<string id="3690">POL_ - Tuner 2 Frequency</string>
+	<string id="3691">POL_ - Tuner 2 PIN Code</string>
+	<string id="3692">POL_Handle your addons</string>
+	<string id="3693">POL_Edit favorites TV/radio channel list</string>
 </strings>
