@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import xbmcgui
 
 E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -187,7 +188,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
-			LOG_TRACE( 'BUTTON_ID_CHANNEL_LIST_FAVORITE' )
+			self.ShowFavoriteGroup( )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -295,4 +296,50 @@ class MainMenu( BaseWindow ) :
 			self.setProperty( 'RssShow', 'True' )
 		else :
 			self.setProperty( 'RssShow', 'False' )
-						
+
+
+	def ShowFavoriteGroup( self ) :
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+
+		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
+		if not favoriteGroup or len( favoriteGroup ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No Favorite Group' ) )
+			dialog.doModal( )
+			return
+
+		favoriteList = []
+		for item in favoriteGroup :
+			favoriteList.append( item.mGroupName )
+
+		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite Group' ), favoriteList )
+		if isSelect < 0 :
+			return
+
+		favName = favoriteGroup[isSelect].mGroupName
+		iChannelList = self.mDataCache.Channel_GetListByFavorite( zappingmode.mServiceType, ElisEnum.E_MODE_FAVORITE, zappingmode.mSortingMode, favName )
+		if not iChannelList or len( iChannelList ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( favName, MR_LANG( 'No Channel List' ) )
+			dialog.doModal( )
+			return
+
+		#set change
+		zappingmode.mMode = ElisEnum.E_MODE_FAVORITE
+		zappingmode.mFavoriteGroup = favoriteGroup[isSelect]
+		self.mDataCache.Channel_Save( )
+		ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
+		if ret :
+			#### data cache re-load ####
+			self.mDataCache.LoadZappingmode( )
+			self.mDataCache.LoadZappingList( )
+			self.mDataCache.LoadChannelList( )
+			self.mDataCache.SetChannelReloadStatus( True )
+			self.mDataCache.Channel_ResetOldChannelList( )
+
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', MR_LANG( 'Fail to Change Favorite' ) )
+			dialog.doModal( )
+
+
