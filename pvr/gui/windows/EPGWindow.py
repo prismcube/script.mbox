@@ -72,6 +72,7 @@ BUTTON_ID_BASE_CHANNEL			= E_EPG_WINDOW_BASE_ID + 2001
 BUTTON_ID_BASE_GRID				= E_EPG_WINDOW_BASE_ID + 3001
 BUTTON_ID_SHOWING_DATE			= E_EPG_WINDOW_BASE_ID + 1010
 IMAGE_ID_TIME_SEPERATOR			= E_EPG_WINDOW_BASE_ID + 3500
+LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3502
 BUTTON_ID_FAKE_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
@@ -145,6 +146,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
+		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -2400,11 +2402,18 @@ class EPGWindow( BaseWindow ) :
 		if gridMeta :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
 			self.setFocusId( gridMeta.mId )
+			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
+				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
+				start  = gridMeta.mEPG.mStartTime + localOffset
+				self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+			else :
+				self.mCtrlGridEPGInfo.setLabel(' ' )			
 		else :
 			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
 			self.mVisibleFocusRow = 0
 			self.mVisibleFocusCol = 0
 			self.setFocusId( BUTTON_ID_BASE_GRID )
+			self.mCtrlGridEPGInfo.setLabel(' ' )
 
 
 	def GridUpdateTimer( self ) :
