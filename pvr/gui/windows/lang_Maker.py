@@ -45,7 +45,7 @@ def csvToXML():
 	openFile = os.getcwd() + '/%s'% E_FILE_CSV
 	wFile1 = '%s'% E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -210,7 +210,7 @@ def makeLanguage(inFile):
 	#openFile = os.getcwd() + '/test.csv'
 	wFile1 = E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -329,9 +329,9 @@ def makeLanguage(inFile):
 					break
 
 			if searchOn == False:
-				csvret = ['','','','','','','','','','','']	
-				csvret2= ['','','','','','','','','','',''] # language pack is 0~9, 10'th <-- id
-				csvret2[10]= inID[0]
+				csvret = ['','','','','','','','','','','','','']	
+				csvret2= ['','','','','','','','','','','','',''] # language pack is 0~11, 12'th <-- id
+				csvret2[12]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
 					#csvret[i+1] = 'NONE_' + inStr[0]
@@ -738,7 +738,7 @@ def copyLanguage(srcDir, langDir) :
 
 # resource/../strings.xml to CSV
 def Make_NewCSV( ) :
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN"]
 
 	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
 	langDir = mboxDir + '/resources/language'
@@ -749,6 +749,14 @@ def Make_NewCSV( ) :
 
 	for strfile in langPack :
 		openFile = '%s/%s/strings.xml'% ( langDir, strfile.capitalize() )
+		if not os.path.exists( openFile ) :
+			dirname = os.path.dirname( openFile )
+			if not os.path.exists( dirname ) :
+				os.makedirs( dirname, 0775 )
+			open( openFile, 'w' ).close()
+
+		print 'reading [%s]'% openFile
+
 		fp = open(openFile, 'r')
 		strFileFD.append( fp )
 
@@ -792,19 +800,24 @@ def Make_NewCSV( ) :
 
 	for i in range( len(langStrings[0]) ) :
 		csvStr = ''
-		for j in range(10) :
+		for j in range(len(langPack)) :
 			try :
 				comma= ';'
 				lang = '%s'% langStrings[j][i][1]
 				if langStrings[j][i][1] != '' :
 					lang = '\"%s\"'% langStrings[j][i][1]
 
-				if j == 9 :
+				if j == ( len(langPack)-1 ) :
 					comma = ''
 
 				csvStr += lang + comma
 			except Exception, e :
 				print 'except[%s] langNo[%s] id[%s]'% (e, j, i)
+				comma = ';'
+				if j == ( len(langPack)-1 ) :
+					comma = ''
+				csvStr += comma
+
 
 		csvStr = '%s;%s\r\n'% ( csvStr, langStrings[0][i][0] )
 		fd.writelines( EucToUtf(csvStr) )
@@ -871,7 +884,7 @@ def updateCSV( ) :
 			if csvHash.get( stringEng[1], -1 ) == -1 :
 				newString.append( stringEng )
 
-				temp = '\"%s\";;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
+				temp = '\"%s\";;;;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
 				csvString[tags].append( temp )
 				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
 
@@ -975,9 +988,9 @@ def AutoMakeLanguage() :
 ########## test
 def test():
 	pattern = '"([^"]*)"'
-	wFileList = re.findall(pattern, '"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"')
+	wFileList = re.findall(pattern, '"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN"')
 	#line = '"4 Sec","4 Sek.","4 s","4 sec.","4 seg.","4 s","4 sec.","4 sek.","4 sn.","4 секунды",667'
-	line = '"Sports",,,,,,,"bb",,,827'
+	line = '"Sports",,,,,,,"bb",,,,,827'
 	ret = re.findall(pattern, line)
 	if len(ret) < len(wFileList):
 		ret = re.sub('"', '', line)
