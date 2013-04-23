@@ -4002,6 +4002,7 @@ Search for window name
 					<posy>100r</posy>
 					<width>1280</width>
 					<height>100</height>
+					<visible>!substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>		
 				</control>
 				<control type="image">
@@ -4009,19 +4010,43 @@ Search for window name
 					<posy>40</posy>
 					<width>1200</width>
 					<height>620</height>
-					<texture border="15">ContentPanel_Dark.png</texture>
-					<!--visible>!substring(Window.Property(EPGMode),grid)</visible-->
+					<texture border="15">ContentPanel.png</texture>
+					<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				</control>
-				
-				<!--control type="image">
+				<!-- Grid background -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>100r</posy>
+					<width>48</width>
+					<height>100</height>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<texture>floor.png</texture>
+				</control>
+				<control type="image">
+					<posx>46r</posx>
+					<posy>100r</posy>
+					<width>46</width>
+					<height>100</height>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<texture>floor.png</texture>
+				</control>
+				<control type="image">
+					<posx>45</posx>
+					<posy>68r</posy>
+					<width>1190</width>
+					<height>68</height>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<texture>floor.png</texture>
+				</control>
+				<control type="image">
 					<posx>40</posx>
 					<posy>40</posy>
 					<width>1200</width>
 					<height>620</height>
-					<texture border="20">DialogBack.png</texture>
-					<colordiffuse>EFFFFFFF</colordiffuse>
-					<visible>substring(Window.Property(EPGMode),grid)</visible>										
-				</control-->
+					<colordiffuse>F0FFFFFF</colordiffuse>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<texture border="15">ContentPanel_New.png</texture>
+				</control>
 				
 				<control type="image">
 					<posx>40</posx>
@@ -4193,16 +4218,6 @@ Search for window name
 					<height>550</height>
 					<align>left</align>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
-
-					<!-- time sepeartor -->
-					<control type="image" id="3703500">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>2</width>
-						<height>498</height>
-						<texture>HomeSeparatorRed.png</texture>
-					</control>
-					
 
 					<control type="button" id="3703501">
 						<description>Fake button for foucs</description>
@@ -4612,9 +4627,16 @@ Search for window name
 					<control type="button" id="3703100">
 						<include>DefaultButtonGridEPGValues</include>
 					</control>
-					
+
+					<!-- time sepeartor -->
+					<control type="image" id="3703500">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1</width>
+						<height>498</height>
+						<texture>HomeSeparatorRed.png</texture>
+					</control>
 				</control>
-				
 			</control>
 			
 			<control type="group">
