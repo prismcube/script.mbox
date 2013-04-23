@@ -42,12 +42,12 @@
 	<string id="1040">CZE_EPG Present</string>
 	<string id="1041">CZE_EPG Next</string>
 	<string id="1042">CZE_Installation</string>
-	<string id="1043">CZE_Archive</string>
-	<string id="1044">CZE_EPG</string>
+	<string id="1043">CZE_RECORDINGS</string>
+	<string id="1044">CZE_GUIDE</string>
 	<string id="1045">CZE_Channel List</string>
 	<string id="1046">CZE_Fav. Add-ons</string>
 	<string id="1047">CZE_Media Center</string>
-	<string id="1048">CZE_STB Info</string>
+	<string id="1048">CZE_INFO</string>
 	<string id="1049">CZE_Help</string>
 	<string id="1050">Prvni instalace</string>
 	<string id="1051">CZE_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">CZE_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">CZE_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">CZE_Playback</string>
+	<string id="1120">CZE_List</string>
+	<string id="1121">CZE_Addon Manager</string>
 	<string id="2001">CZE_Last ServiceType</string>
 	<string id="2002">CZE_CurrentVoutResolution</string>
 	<string id="2003">CZE_1080p-50</string>
@@ -1098,4 +1100,17 @@
 	<string id="3682">CZE_North</string>
 	<string id="3683">CZE_South</string>
 	<string id="3684">CZE_Go to the channel search setup page</string>
+	<string id="3685">CZE_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">CZE_ - Tuner %d Frequency</string>
+	<string id="3687">CZE_ - Tuner %d PIN Code</string>
+	<string id="3688">CZE_ - Tuner 1 Frequency</string>
+	<string id="3689">CZE_ - Tuner 1 PIN Code</string>
+	<string id="3690">CZE_ - Tuner 2 Frequency</string>
+	<string id="3691">CZE_ - Tuner 2 PIN Code</string>
+	<string id="3692">CZE_Handle your addons</string>
+	<string id="3693">CZE_Edit favorites TV/radio channel list</string>
+	<string id="3694">CZE_No Favorite Group</string>
+	<string id="3695">CZE_Favorite Group</string>
+	<string id="3696">CZE_No Channel List</string>
+	<string id="3697">CZE_Fail to Change Favorite</string>
 </strings>

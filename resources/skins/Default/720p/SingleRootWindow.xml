@@ -346,13 +346,13 @@ Search for window name
 							<height>35</height>
 							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
 						</control>
-						<control type="button" id="1290412">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1075</label>
-						</control>
 						<control type="button" id="1290413">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1120</label>
+						</control>
+						<control type="button" id="1290412">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>SCRIPT1075</label>
 						</control>
 						<control type="image" id="1290414">
 							<width>35</width>

@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import xbmcgui
 
 E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -187,7 +188,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
-			LOG_TRACE( 'BUTTON_ID_CHANNEL_LIST_FAVORITE' )
+			self.ShowFavoriteGroup( )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -263,10 +264,10 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorite in a convenient way' ) )
 
-		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit TV/radio channel list and sort them in the numerical or alphabetic order' ) )
 
-		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit favorites TV/radio channel list' ) )
 
 
@@ -295,4 +296,95 @@ class MainMenu( BaseWindow ) :
 			self.setProperty( 'RssShow', 'True' )
 		else :
 			self.setProperty( 'RssShow', 'False' )
-						
+
+
+	def ShowFavoriteGroup( self ) :
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+
+		#check AllChannels
+		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
+		if not allChannels or len( allChannels ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No Channels' ) )
+			dialog.doModal( )
+			return
+
+		#check fav groups
+		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
+		if not favoriteGroup or len( favoriteGroup ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No Favorite Group' ) )
+			dialog.doModal( )
+			return
+
+		favoriteList = ['All Channels']
+		for item in favoriteGroup :
+			favoriteList.append( item.mGroupName )
+
+		currentIdx = 0
+		if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE :
+			favName = zappingmode.mFavoriteGroup.mGroupName
+			for idx in range( 1, len( favoriteList ) ) :
+				if favName == favoriteList[idx] :
+					currentIdx = idx
+					break
+
+		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite Group' ), favoriteList, False, currentIdx )
+		LOG_TRACE('---------------select[%s]'% isSelect )
+		if isSelect < 0 or isSelect == currentIdx :
+			LOG_TRACE( 'back or cancel or same' )
+			return
+
+
+		isSame = False
+		if isSelect == 0 :
+			#if zappingmode.mMode == ElisEnum.E_MODE_ALL :
+			#	isSame = True
+
+			zappingmode.mMode = ElisEnum.E_MODE_ALL
+
+		else :
+			isSelect -= 1
+			favName = favoriteGroup[isSelect].mGroupName
+			iChannelList = self.mDataCache.Channel_GetListByFavorite( zappingmode.mServiceType, ElisEnum.E_MODE_FAVORITE, zappingmode.mSortingMode, favName )
+			if not iChannelList or len( iChannelList ) < 1 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( favName, MR_LANG( 'No Channels' ) )
+				dialog.doModal( )
+				return
+
+			#if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE and zappingmode.mFavoriteGroup == favName :
+			#	isSame = True
+
+			zappingmode.mMode = ElisEnum.E_MODE_FAVORITE
+			zappingmode.mFavoriteGroup = favoriteGroup[isSelect]
+
+
+		if isSame :
+			LOG_TRACE( 'Already changed' )
+			return
+
+
+		#set change
+		self.mDataCache.Channel_Save( )
+		ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
+		if ret :
+			#data cache re-load
+			self.mDataCache.LoadZappingmode( )
+			self.mDataCache.LoadZappingList( )
+			self.mDataCache.LoadChannelList( )
+			self.mDataCache.SetChannelReloadStatus( True )
+			self.mDataCache.Channel_ResetOldChannelList( )
+
+			# channel tune, default 1'st
+			iChannelList = self.mDataCache.Channel_GetList( )
+			if iChannelList and len( iChannelList ) > 0 :
+				self.mDataCache.Channel_SetCurrent( iChannelList[0].mNumber, iChannelList[0].mServiceType, None, True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', MR_LANG( 'Fail to Change Favorite' ) )
+			dialog.doModal( )
+
+

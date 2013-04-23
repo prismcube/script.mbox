@@ -42,12 +42,12 @@
 	<string id="1040">Текущее Событие</string>
 	<string id="1041">Следующее Событие</string>
 	<string id="1042">Установка</string>
-	<string id="1043">Архив</string>
-	<string id="1044">ТВ Гид</string>
+	<string id="1043">RUS_RECORDINGS</string>
+	<string id="1044">RUS_GUIDE</string>
 	<string id="1045">Список Каналов</string>
 	<string id="1046">Любимые Программы</string>
 	<string id="1047">Медиацентр</string>
-	<string id="1048">О Приемнике</string>
+	<string id="1048">RUS_INFO</string>
 	<string id="1049">Помощь</string>
 	<string id="1050">Первичная Установка</string>
 	<string id="1051">Установки Антенны</string>
@@ -116,6 +116,8 @@
 	<string id="1117">Настройка Смарткарты или САМ модкля для просмотра платных каналов</string>
 	<string id="1118">Получить последнее обновление приставки</string>
 	<string id="1119">Воспроизведение</string>
+	<string id="1120">Список</string>
+	<string id="1121">RUS_Addon Manager</string>
 	<string id="2001">Тип Последнего Сервиса</string>
 	<string id="2002">Текущее Разрешение</string>
 	<string id="2003">1080p-50</string>
@@ -1098,4 +1100,17 @@
 	<string id="3682">Север</string>
 	<string id="3683">Юг</string>
 	<string id="3684">Перейти к поиску каналов</string>
+	<string id="3685">RUS_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">RUS_ - Tuner %d Frequency</string>
+	<string id="3687">RUS_ - Tuner %d PIN Code</string>
+	<string id="3688">RUS_ - Tuner 1 Frequency</string>
+	<string id="3689">RUS_ - Tuner 1 PIN Code</string>
+	<string id="3690">RUS_ - Tuner 2 Frequency</string>
+	<string id="3691">RUS_ - Tuner 2 PIN Code</string>
+	<string id="3692">RUS_Handle your addons</string>
+	<string id="3693">RUS_Edit favorites TV/radio channel list</string>
+	<string id="3694">RUS_No Favorite Group</string>
+	<string id="3695">RUS_Favorite Group</string>
+	<string id="3696">RUS_No Channel List</string>
+	<string id="3697">RUS_Fail to Change Favorite</string>
 </strings>

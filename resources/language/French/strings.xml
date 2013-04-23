@@ -42,12 +42,12 @@
 	<string id="1040">FRE_EPG Present</string>
 	<string id="1041">FRE_EPG Next</string>
 	<string id="1042">Installation</string>
-	<string id="1043">FRE_Archive</string>
-	<string id="1044">EPG</string>
+	<string id="1043">FRE_RECORDINGS</string>
+	<string id="1044">FRE_GUIDE</string>
 	<string id="1045">Liste des chaînes </string>
 	<string id="1046">FRE_Fav. Add-ons</string>
 	<string id="1047">FRE_Media Center</string>
-	<string id="1048">FRE_STB Info</string>
+	<string id="1048">FRE_INFO</string>
 	<string id="1049">FRE_Help</string>
 	<string id="1050">FRE_First Installation</string>
 	<string id="1051">FRE_Antenna Setup</string>
@@ -116,6 +116,8 @@
 	<string id="1117">FRE_Setup Smartcard or CI-Module configuration for watching pay channels</string>
 	<string id="1118">FRE_Get the latest updates on your PRISMCUBE RUBY</string>
 	<string id="1119">FRE_Playback</string>
+	<string id="1120">Liste</string>
+	<string id="1121">FRE_Addon Manager</string>
 	<string id="2001">FRE_Last ServiceType</string>
 	<string id="2002">FRE_CurrentVoutResolution</string>
 	<string id="2003">FRE_1080p-50</string>
@@ -1098,4 +1100,17 @@
 	<string id="3682">FRE_North</string>
 	<string id="3683">FRE_South</string>
 	<string id="3684">FRE_Go to the channel search setup page</string>
+	<string id="3685">FRE_Make media length longer than %s secs%s to create a chapter</string>
+	<string id="3686">FRE_ - Tuner %d Frequency</string>
+	<string id="3687">FRE_ - Tuner %d PIN Code</string>
+	<string id="3688">FRE_ - Tuner 1 Frequency</string>
+	<string id="3689">FRE_ - Tuner 1 PIN Code</string>
+	<string id="3690">FRE_ - Tuner 2 Frequency</string>
+	<string id="3691">FRE_ - Tuner 2 PIN Code</string>
+	<string id="3692">FRE_Handle your addons</string>
+	<string id="3693">FRE_Edit favorites TV/radio channel list</string>
+	<string id="3694">FRE_No Favorite Group</string>
+	<string id="3695">FRE_Favorite Group</string>
+	<string id="3696">FRE_No Channel List</string>
+	<string id="3697">FRE_Fail to Change Favorite</string>
 </strings>
