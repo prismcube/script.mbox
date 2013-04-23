@@ -52,11 +52,11 @@
 				</control>
 			</control>
 
-			<!-- Record Name -->
+			<!-- Channel Name -->
 			<control type="label" id="101">
 				<description>Record Name</description>
 				<posx>20</posx>
-				<posy>170</posy>
+				<posy>180</posy>
 				<width>570</width>
 				<height>20</height>
 				<font>font13</font>
@@ -67,32 +67,15 @@
 				<label></label>
 			</control>
 
-
-			<!-- Start Time -->
+			<!-- Record Name -->
 			<control type="label" id="102">
 				<description>EPG Start Time</description>
-				<posx>100</posx>
+				<posx>40</posx>
 				<posy>220</posy>
-				<width>200</width>
+				<width>530</width>
 				<height>20</height>
 				<font>font13</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label></label>
-			</control>
-
-
-			<!-- EndTime -->
-			<control type="label" id="103">
-				<description>EPG End Time</description>
-				<posx>350</posx>
-				<posy>220</posy>
-				<width>200</width>
-				<height>20</height>
-				<font>font13</font>
-				<align>left</align>
+				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>

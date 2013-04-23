@@ -6,9 +6,8 @@ DIALOG_BUTTON_CLOSE	= 6995
 
 
 # Control IDs
-E_LABEL_RECORD_NAME			= 101
-E_LABEL_EPG_START_TIME		= 102
-E_LABEL_EPG_END_TIME		= 103
+E_LABEL_RECORD_NAME			= 102
+E_LABEL_CHANNEL_NAME		= 101
 E_BUTTON_ADD				= 200
 E_BUTTON_CANCEL				= 202
 
@@ -24,6 +23,10 @@ class DialogAddTimer( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
+
+
+		currentMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mChannelList = self.mDataCache.Channel_GetAllChannels( currentMode.mServiceType )
 
 		#self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
 		self.getControl( DIALOG_HEADER_LABEL ).setLabel( MR_LANG( 'Add Timer' ) )
@@ -111,10 +114,22 @@ class DialogAddTimer( BaseDialog ) :
 				LOG_TRACE( 'START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 				LOG_TRACE( 'CUR : %s' %TimeToString( localTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 				LOG_TRACE( 'END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '%s' %self.mEPG.mEventName )
 
-				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( MR_LANG( 'Start Time' ) + ': %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( MR_LANG( 'End Time' ) + ': %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
+				channel = None
+				if self.mChannelList  and len( self.mChannelList ) > 0 :
+					for channel in self.mChannelList :
+						if channel.mSid == self.mEPG.mSid and  channel.mTsid == self.mEPG.mTsid and channel.mOnid == self.mEPG.mOnid :
+							break;
+
+				if channel :
+					self.getControl( E_LABEL_CHANNEL_NAME ).setLabel( '%04d %s' %( channel.mNumber, channel.mName ) )
+				else :
+					self.getControl( E_LABEL_CHANNEL_NAME ).setLabel(  MR_LANG('Unknown')  )
+
+				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '(%s~%s) %s' %( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ), self.mEPG.mEventName ) )
+
+				#self.getControl( E_LABEL_EPG_START_TIME ).setLabel( MR_LANG( 'Start Time' ) + ': %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+				#self.getControl( E_LABEL_EPG_END_TIME ).setLabel( MR_LANG( 'End Time' ) + ': %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
 			
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
