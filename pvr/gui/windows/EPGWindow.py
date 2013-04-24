@@ -1127,7 +1127,7 @@ class EPGWindow( BaseWindow ) :
 					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
 					#LOG_TRACE( 'logo=%s' %logo )
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
 				
 				#ListItem.PercentPlayed
 				if aUpdateOnly == False :
@@ -1226,7 +1226,7 @@ class EPGWindow( BaseWindow ) :
 					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
 					#LOG_TRACE( 'logo=%s' %logo )
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
 
 				#ListItem.PercentPlayed
 				if aUpdateOnly == False :					
