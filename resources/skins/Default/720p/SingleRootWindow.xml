@@ -2671,7 +2671,6 @@ Search for window name
 						<onright>2900202</onright>
 						<onup>2900500</onup>
 						<ondown>1003750</ondown>
-						<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 					</control>
 					<control type="label" id="2900204">
 						<description>start</description>

@@ -33,6 +33,9 @@ E_CONTROL_ID_IMAGE_XPEED 			= E_BASE_WINDOW_ID + 3760
 E_CONTROL_ID_IMAGE_BOOKMARK_POINT   = E_TIMESHIFT_PLATE_BASE_ID + 600
 E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT = E_TIMESHIFT_PLATE_BASE_ID + 701
 
+E_EXTENDED_TINY_REWIND  = E_CONTROL_ID_BUTTON_REWIND  + 1000
+E_EXTENDED_TINY_FORWARD = E_CONTROL_ID_BUTTON_FORWARD + 1000
+
 #value enum
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
@@ -288,8 +291,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				#LOG_TRACE('Archive playing now')
-				return -1
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_RR )
+				return
 
 			prevChannel = None
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
@@ -307,8 +310,8 @@ class TimeShiftPlate( BaseWindow ) :
 			
 		elif actionId == Action.ACTION_PAGE_UP :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				#LOG_TRACE('Archive playing now')
-				return -1
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_FF )
+				return
 
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
@@ -334,7 +337,6 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_PLAYER_PLAY :
-			self.setProperty( 'IsXpeeding', 'False' )
 			if self.mSpeed == 100 :
 				self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 			else :
@@ -491,6 +493,11 @@ class TimeShiftPlate( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				xbmc.executebuiltin('xbmc.Action(previousmenu)')
 
+			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
+				pass
+				#self.ShowBookmark( )
+				#update thumbnail
+
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -505,7 +512,8 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 
 		if self.mPrekey :
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+			self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+			#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
@@ -513,15 +521,19 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
+			elif self.mPrekey == Action.ACTION_PAGE_UP :
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_FF )
+
+			elif self.mPrekey == Action.ACTION_PAGE_DOWN :
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_RR )
+
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				self.setProperty( 'IsXpeeding', 'False' )
 				if self.mSpeed == 100 :
 					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 				else :
 					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
 			elif self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
-				self.setProperty( 'IsXpeeding', 'False' )
 				self.StopAutomaticHide( )
 
 				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
@@ -542,7 +554,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		else :
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+			self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+			#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
 			self.ShowButtonFocus( )
 
 			status = E_CONTROL_ID_BUTTON_PAUSE
@@ -581,7 +594,6 @@ class TimeShiftPlate( BaseWindow ) :
 			# toggle
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-			self.setProperty( 'IsXpeeding', 'True' )
 
 			#blocking release
 			#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -604,7 +616,6 @@ class TimeShiftPlate( BaseWindow ) :
 				# toggle
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-				self.setProperty( 'IsXpeeding', 'True' )
 
 				#blocking
 				#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -655,6 +666,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
+			LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
@@ -675,6 +687,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
+			LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
@@ -741,7 +754,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_TAG_ENABLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_TAG_ENABLE )
 		strValue = '%s'% aValue
-		self.setProperty( 'IsXpeeding', strValue )
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -957,7 +969,14 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mSpeed  = status.mSpeed
 
 			if self.mSpeed != 0 :
-				self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
+				self.mRepeatTimeout = 1
+				if self.mSpeed == 100 :
+					self.mRepeatTimeout = 1
+				elif self.mSpeed > 0 and self.mSpeed <= 120 :
+					self.mRepeatTimeout = 0.5
+				else :
+					self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
+
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
@@ -983,7 +1002,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mStartTimeShowed = True
 
 			#LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
-
 			self.GetNextSpeed( E_ONINIT )
 
 		#if self.mMode == ElisEnum.E_MODE_TIMESHIFT and self.mSpeed == 100 :
@@ -1011,12 +1029,14 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = -400
 			elif self.mSpeed == 100 or self.mSpeed == 0 :
 				ret = -200
+			elif self.mSpeed == 25 :
+				ret = -200
+			elif self.mSpeed == 50 :
+				ret = 25
 			elif self.mSpeed == 120 :
-				ret = 100
-			elif self.mSpeed == 160 :
-				ret = 120
+				ret = 50
 			elif self.mSpeed == 200 :
-				ret = 100 #160
+				ret = 100
 			elif self.mSpeed == 400 :
 				ret = 200
 			elif self.mSpeed == 800 :
@@ -1045,11 +1065,16 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = -200
 			elif self.mSpeed == -200 :
 				ret = 100
-			elif self.mSpeed == 100 or self.mSpeed == 0 :
-				ret = 200 #120
+			elif self.mSpeed == 0 :
+				self.mDataCache.Player_Resume( )
+				ret = 25
+			elif self.mSpeed == 25 :
+				ret = 50
+			elif self.mSpeed == 50 :
+				ret = 120
 			elif self.mSpeed == 120 :
-				ret = 160
-			elif self.mSpeed == 160 :
+				ret = 200
+			elif self.mSpeed == 100 :
 				ret = 200
 			elif self.mSpeed == 200 :
 				ret = 400
@@ -1079,19 +1104,17 @@ class TimeShiftPlate( BaseWindow ) :
 			lspeed = ''
 		else :
 			pos = ret / 100
+			if ret % 100 != 0 :
+				pos = ret / 100.0
 			lspeed = '%sx'% abs( pos )
 
 		posx = int( pos / 2 )
 		if posx < -30 : posx = -30
 		elif posx > 30: posx = 30
 
-		self.mCtrlImgXpeed.setPosition( posx, 3 )
-		self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
-
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-			self.setProperty( 'IsXpeeding', 'True' )
 			#LOG_TRACE( '-------Play speed[%s]'% ret)
 			self.ShowStatusByButton( E_CONTROL_ID_BUTTON_PLAY )
 			self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_FALSE )
@@ -1100,10 +1123,12 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-			self.setProperty( 'IsXpeeding', 'False' )
 			#self.ShowStatusByButton( None )
 			#LOG_TRACE( '-------Pause speed[%s]'% ret)
 			if ret != 0 :
+				self.mCtrlImgXpeed.setPosition( posx, 3 )
+				self.UpdatePropertyGUI( 'iFileXpeed', 'OSD%s.png'% lspeed )
+
 				self.UpdatePropertyGUI( 'iPlayerXpeed', E_TAG_TRUE )
 				if ret < 0 :
 					self.UpdatePropertyGUI( 'iXpeedArrow', 'Rewind' )
@@ -1111,7 +1136,7 @@ class TimeShiftPlate( BaseWindow ) :
 					self.UpdatePropertyGUI( 'iXpeedArrow', 'Forward' )
 
 
-		return ret
+		return int( ret )
 
 
 	def GetModeValue( self ) :

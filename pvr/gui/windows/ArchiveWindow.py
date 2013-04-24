@@ -201,8 +201,11 @@ class ArchiveWindow( BaseWindow ) :
 					self.UpdateArchiveInfomation( )
 
 		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
-			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
+			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
+				if focusId  == LIST_ID_COMMON_RECORD :
+					self.UpdateArchiveInfomation( )
+				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
@@ -746,7 +749,7 @@ class ArchiveWindow( BaseWindow ) :
 				LOG_TRACE('Offset Test =%s' %playOffset )
 				if playOffset < 0 :
 					playOffset = 0
-				context.append( ContextItem( MR_LANG( 'Resume from %s' %(TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
+				context.append( ContextItem( '%s %s' %(MR_LANG( 'Resume from'), TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ), CONTEXT_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )				

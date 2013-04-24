@@ -4773,7 +4773,7 @@
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>4</bordersize>
+						<bordersize>3</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!-- Mark -->
@@ -4810,8 +4810,8 @@
 						<width>208</width>
 						<height>117</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="10">ThumbBorder1.png</bordertexture>
-						<bordersize>4</bordersize>
+						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>3</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
@@ -4964,7 +4964,7 @@
 						<width>144</width>
 						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="6">button-nofocus1.png</bordertexture>
+						<bordertexture border="5">folder-focus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
@@ -4995,7 +4995,7 @@
 			</control>
 			<control type="label">
 				<posx>-70</posx>
-				<posy>195</posy>
+				<posy>193</posy>
 				<width>1100</width>
 				<height>30</height>
 				<font>font30</font>
@@ -5008,7 +5008,7 @@
 			</control>
 			<control type="label">
 				<posx>-70</posx>
-				<posy>225</posy>
+				<posy>223</posy>
 				<width>1100</width>
 				<height>25</height>
 				<font>font12</font>
@@ -5966,14 +5966,12 @@
 				<height>50</height>
 				<texturefocus>OSDPrevTrackFO.png</texturefocus>
 				<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
-				<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 			</control>
 			<control type="button" id="1003710">
 				<width>50</width>
 				<height>50</height>
 				<texturefocus>OSDNextTrackFO.png</texturefocus>
 				<texturenofocus>OSDNextTrackNF.png</texturenofocus>
-				<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
 			</control>
 		</control>
 	</include>

@@ -1358,7 +1358,16 @@ class EPGWindow( BaseWindow ) :
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
-		try :		
+		try :	
+			if aEPG :
+				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
+				expire  = aEPG.mStartTime + aEPG.mDuration + localOffset
+				if expire <=  self.mDataCache.Datetime_GetLocalTime( ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG('Information'), MR_LANG("That programme has already finished"))
+					dialog.doModal( )
+					return
+				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
 			dialog.SetEPG( aEPG )
 			dialog.doModal( )
