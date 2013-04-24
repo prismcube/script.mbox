@@ -78,7 +78,7 @@ class DialogBookmark( BaseDialog ) :
 			self.Close( )
 
 		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
-			self.StartBookmarkPlayback( )
+			self.DoResumeFromBookmark( )
 			self.Close( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
@@ -94,11 +94,11 @@ class DialogBookmark( BaseDialog ) :
 			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
-				self.StartBookmarkPlayback( )
+				self.DoResumeFromBookmark( )
 				self.Close( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
-			self.StartBookmarkPlayback( )
+			self.DoResumeFromBookmark( )
 			self.Close( )
 
 
@@ -224,7 +224,7 @@ class DialogBookmark( BaseDialog ) :
 		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
 		if aContextAction == CONTEXT_ACTION_RESUME_FROM :
-			self.StartBookmarkPlayback( )
+			self.DoResumeFromBookmark( )
 
 		elif aContextAction == CONTEXT_ACTION_DELETE :
 			self.DoDeleteConfirm()
@@ -241,7 +241,7 @@ class DialogBookmark( BaseDialog ) :
 			LOG_ERR( 'Unknown Context Action' )
 
 
-	def StartBookmarkPlayback( self ) :
+	def DoResumeFromBookmark( self ) :
 		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or \
 		   self.mCtrlList == None or self.mListItems == None or len( self.mListItems ) < 1 :
 			return

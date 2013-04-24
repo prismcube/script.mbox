@@ -2217,6 +2217,7 @@ class DataCacheMgr( object ) :
 		LOG_TRACE('-------factory reset')
 		self.mPMTListHash = {}
 		self.mOldChannelList = []
+		self.InitBookmarkButton( )
 		#1. pincode : m/w (super pin)
 		#2. video : 1080i, normal, RGB
 		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
