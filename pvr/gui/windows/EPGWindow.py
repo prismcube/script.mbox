@@ -58,7 +58,7 @@ E_GRID_MAX_COL_COUNT			= 20
 E_GRID_MAX_BUTTON_COUNT			= 100
 E_GRID_SCHEDULED_BUTTON_COUNT	= 20
 E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
-E_GRID_DEFAULT_HEIGHT			= 50
+E_GRID_DEFAULT_HEIGHT			= 45
 
 E_DIR_CURRENT					= 0
 E_DIR_LINE_UP					= 1
@@ -69,6 +69,7 @@ E_DIR_PAGE_DOWN					= 4
 
 BUTTON_ID_BASE_TIME_LINE		= E_EPG_WINDOW_BASE_ID + 1001
 BUTTON_ID_BASE_CHANNEL			= E_EPG_WINDOW_BASE_ID + 2001
+BUTTON_ID_BASE_LOGS				= E_EPG_WINDOW_BASE_ID + 2101
 BUTTON_ID_BASE_GRID				= E_EPG_WINDOW_BASE_ID + 3001
 BUTTON_ID_SHOWING_DATE			= E_EPG_WINDOW_BASE_ID + 1010
 IMAGE_ID_TIME_SEPERATOR			= E_EPG_WINDOW_BASE_ID + 3500
@@ -109,6 +110,7 @@ class EPGWindow( BaseWindow ) :
 		#GRID MODE
 		self.mCtrlTimelineButtons = []
 		self.mCtrlChannelButtons = []
+		self.mCtrlChannelLogos = []		
 		self.mCtrlGridEPGButtonList = []
 		self.mCtrlRecButtonList = []
 		self.mCtrlScheduledButtonList = []		
@@ -124,7 +126,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridCanvasWidth = 880
 		self.mGridItemHeight = E_GRID_DEFAULT_HEIGHT
 		self.mGridLastFoucusId = 0
-
+		self.mGridItemGap = 5
 
 	def onInit( self ) :
 	
@@ -147,6 +149,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
+		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
@@ -192,6 +195,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mInitialized == False :
 			self.InitTimelineButtons( )
 			self.InitChannelButtons( )
+			self.InitChannelLogos( )
 			self.InitGridEPGButtons( )
 
 		if self.mEPGMode == E_VIEW_GRID :
@@ -855,6 +859,13 @@ class EPGWindow( BaseWindow ) :
 				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 				try :
 					self.mCtrlChannelButtons[i].setLabel( tempChannelName )
+
+					if E_USE_CHANNEL_LOGO == True :
+						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+						#LOG_TRACE( 'logo=%s' %logo )
+						#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+						self.mCtrlChannelLogos[i].setImage( self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					
 				except Exception, ex :
 					LOG_ERR( 'GRID error self.mVisibleTopIndex=%d i=%d channelCount=%d' %( self.mVisibleTopIndex, i,channelCount ) )				
 
@@ -963,7 +974,7 @@ class EPGWindow( BaseWindow ) :
 
 					enableCount += col
 
-					offsetY += self.mGridItemHeight
+					offsetY += self.mGridItemHeight + self.mGridItemGap
 
 					row += 1
 
@@ -982,6 +993,7 @@ class EPGWindow( BaseWindow ) :
 			for i in range(E_GRID_MAX_ROW_COUNT - row ) :
 				LOG_TRACE('i=%d row=%d' %(i, row) )
 				self.mCtrlChannelButtons[row +i].setLabel( ' ')
+				self.mCtrlChannelLogos[i].setImage( '' )				
 
 		self.GridUpdateTimer( )
 		
@@ -2166,6 +2178,10 @@ class EPGWindow( BaseWindow ) :
 	def InitChannelButtons( self ) :	
 		for i in range( E_GRID_MAX_ROW_COUNT ):
 			self.mCtrlChannelButtons.append( self.getControl(BUTTON_ID_BASE_CHANNEL + i) )
+
+	def InitChannelLogos( self ) :				
+		for i in range( E_GRID_MAX_ROW_COUNT ):
+			self.mCtrlChannelLogos.append( self.getControl(BUTTON_ID_BASE_LOGS + i) )
 
 
 	def InitGridEPGButtons( self ) :

@@ -20,6 +20,7 @@ Search for window name
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<include file="mbox_single_includes.xml">"mbox_single_includes.xml"</include>
+	<onload>SetProperty(GridItemGap,5)</onload>	
 	<onload>SetProperty(ItemHeight,40)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
@@ -4145,9 +4146,9 @@ Search for window name
 			<control type="group">
 				<!-- Timeline -->
 				<control type="grouplist" id="3701000">
-					<posx>75</posx>
+					<posx>65</posx>
 					<posy>65</posy>
-					<width>1150</width>
+					<width>1170</width>
 					<height>35</height>
 					<align>left</align>
 					<itemgap>0</itemgap>
@@ -4156,7 +4157,7 @@ Search for window name
 
 					<control type="button" id="3701010">
 						<height>35</height>
-						<width>250</width>
+						<width>270</width>
 						<textoffsetx>10</textoffsetx>
 						<textwidth>250</textwidth>
 						<align>left</align>
@@ -4202,9 +4203,9 @@ Search for window name
 
 				<!-- Grid Channel -->
 				<control type="grouplist" id="3702000">
-					<posx>75</posx>
+					<posx>65</posx>
 					<posy>110</posy>
-					<width>250</width>
+					<width>270</width>
 					<height>550</height>
 					<align>left</align>
 					<itemgap>5</itemgap>
@@ -4253,9 +4254,53 @@ Search for window name
 					</control>
 				</control>
 
+				<control type="grouplist" id="3702100">
+					<posx>65</posx>
+					<posy>110</posy>
+					<width>270</width>
+					<height>550</height>
+					<align>left</align>
+					<itemgap>5</itemgap>
+					<orientation>vertical</orientation>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+
+					<control type="image" id="3702101">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702102">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702103">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702104">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702105">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702106">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702107">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702108">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702109">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>
+					<control type="image" id="3702110">
+						<include>DefaultButtonGridChannelLogo</include>
+					</control>				
+				</control>
+
+				
 				<!-- Grid EPG -->
 				<control type="group" id="3703000">
-					<posx>325</posx>
+					<posx>335</posx>
 					<posy>110</posy>
 					<width>800</width>
 					<height>550</height>

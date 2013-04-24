@@ -706,15 +706,22 @@
 
 	<include name="DefaultButtonGridChannelValues">
 		<height>45</height>
-		<width>250</width>
-		<textoffsetx>10</textoffsetx>
-		<textwidth>250</textwidth>
+		<width>270</width>
+		<textoffsetx>85</textoffsetx>
+		<textwidth>185</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
-		<font>font13_title</font>
+		<font>font12_title</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
+	</include>
+
+	<include name="DefaultButtonGridChannelLogo">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>80</width>
+		<height>45</height>
 	</include>
 
 	<include name="DefaultButtonRunningRecValues">
