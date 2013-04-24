@@ -168,6 +168,11 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 			"""
 
+		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			self.Close( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+			WinMgr.GetInstance( ).CloseWindow( )
+
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -176,19 +181,11 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif actionId == Action.ACTION_MBOX_REWIND :
+		elif actionId == Action.ACTION_MBOX_REWIND or actionId == Action.ACTION_MBOX_FF :
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
 			self.Close( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
-			WinMgr.GetInstance( ).CloseWindow( )
-
-		elif actionId == Action.ACTION_MBOX_FF :
-			if HasAvailableRecordingHDD( ) == False :
-				return
-				
-			self.Close( )			
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).CloseWindow( )
 

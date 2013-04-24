@@ -291,8 +291,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				#LOG_TRACE('Archive playing now')
-				return -1
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_RR )
+				return
 
 			prevChannel = None
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
@@ -310,8 +310,8 @@ class TimeShiftPlate( BaseWindow ) :
 			
 		elif actionId == Action.ACTION_PAGE_UP :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				#LOG_TRACE('Archive playing now')
-				return -1
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_FF )
+				return
 
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
@@ -512,13 +512,20 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 
 		if self.mPrekey :
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
+			self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+			#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
 
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+
+			elif self.mPrekey == Action.ACTION_PAGE_UP :
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_FF )
+
+			elif self.mPrekey == Action.ACTION_PAGE_DOWN :
+				self.onClick( E_CONTROL_ID_BUTTON_JUMP_RR )
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
 				if self.mSpeed == 100 :
@@ -547,7 +554,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		else :
-			self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
+			self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+			#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT )
 			self.ShowButtonFocus( )
 
 			status = E_CONTROL_ID_BUTTON_PAUSE
