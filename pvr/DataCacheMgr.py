@@ -2295,3 +2295,9 @@ class DataCacheMgr( object ) :
 	def SetBookmarkHash( self, aControlId, aBookmark ) :
 		self.mBookmarkHash[aBookmark] = aControlId
 
+
+	def DeleteBookmarkHash( self, aBookmark ) :
+		if self.GetBookmarkHash( aBookmark ) != -1 :
+			del self.mBookmarkHash[aBookmark]
+
+
