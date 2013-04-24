@@ -204,7 +204,7 @@ class DialogBookmark( BaseDialog ) :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_ACTION_CLEAR_MARK ) )	
 			else :
-				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_ACTION_RESUME_FROM ) )
+				context.append( ContextItem( '%s %s' %(MR_LANG( 'Resume from'), TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ), CONTEXT_ACTION_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_ACTION_START_MARK ) )

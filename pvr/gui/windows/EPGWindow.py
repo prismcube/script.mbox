@@ -1364,7 +1364,7 @@ class EPGWindow( BaseWindow ) :
 				expire  = aEPG.mStartTime + aEPG.mDuration + localOffset
 				if expire <=  self.mDataCache.Datetime_GetLocalTime( ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG('Information'), MR_LANG("That program has already finished"))
+					dialog.SetDialogProperty( MR_LANG('Information'), MR_LANG("That programme has already finished"))
 					dialog.doModal( )
 					return
 				

@@ -77,7 +77,7 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Configure the general settings of XBMC' ),
 			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
 			MR_LANG( 'Handle your multimedia files in an easy and efficient way' ),
-			MR_LANG( 'Handle your addons' ),
+			MR_LANG( 'Manage your XBMC add-ons' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
@@ -268,7 +268,7 @@ class MainMenu( BaseWindow ) :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit TV/radio channel list and sort them in the numerical or alphabetic order' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
-			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit favorites TV/radio channel list' ) )
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
 
 
 	def GetFavAddons( self ) :
@@ -305,7 +305,7 @@ class MainMenu( BaseWindow ) :
 		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
 		if not allChannels or len( allChannels ) < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No Channels' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
 			dialog.doModal( )
 			return
 
@@ -313,7 +313,7 @@ class MainMenu( BaseWindow ) :
 		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
 		if not favoriteGroup or len( favoriteGroup ) < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No Favorite Group' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No favorite group available' ) )
 			dialog.doModal( )
 			return
 
@@ -329,10 +329,10 @@ class MainMenu( BaseWindow ) :
 					currentIdx = idx
 					break
 
-		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite Group' ), favoriteList, False, currentIdx )
+		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite group' ), favoriteList, False, currentIdx )
 		LOG_TRACE('---------------select[%s]'% isSelect )
 		if isSelect < 0 or isSelect == currentIdx :
-			LOG_TRACE( 'back or cancel or same' )
+			LOG_TRACE( 'back, cancel or same' )
 			return
 
 
@@ -349,7 +349,7 @@ class MainMenu( BaseWindow ) :
 			iChannelList = self.mDataCache.Channel_GetListByFavorite( zappingmode.mServiceType, ElisEnum.E_MODE_FAVORITE, zappingmode.mSortingMode, favName )
 			if not iChannelList or len( iChannelList ) < 1 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( favName, MR_LANG( 'No Channels' ) )
+				dialog.SetDialogProperty( favName, MR_LANG( 'No channels available' ) )
 				dialog.doModal( )
 				return
 
@@ -384,7 +384,7 @@ class MainMenu( BaseWindow ) :
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Error', MR_LANG( 'Fail to Change Favorite' ) )
+			dialog.SetDialogProperty( 'Error', MR_LANG( 'Failed to change favorite group' ) )
 			dialog.doModal( )
 
 
