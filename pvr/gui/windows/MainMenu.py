@@ -232,6 +232,7 @@ class MainMenu( BaseWindow ) :
 			elif aControlId == BUTTON_ID_MEDIA_PROFILES :
 				xbmc.executebuiltin( 'ActivateWindow(Profiles)' )
 			elif aControlId == BUTTON_ID_MEDIA_ADDON_MGR :
+				xbmc.executebuiltin( 'ActivateWindow(AddonBrowser)' )
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
