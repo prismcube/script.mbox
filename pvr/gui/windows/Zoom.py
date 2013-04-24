@@ -52,26 +52,26 @@ class Zoom( FTIWindow ) :
 			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if self.mZoom == 20 :
+			if self.mZoom >= 20 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum rate' ) )
 	 			dialog.doModal( )
 			else :
-				self.mZoom += 1
+				self.mZoom += 2
 
-			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
 			XBMC_SetSkinZoom( self.mZoom )
+			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			if self.mZoom == -20 :
+			if self.mZoom <= -20 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the minimum rate' ) )
 	 			dialog.doModal( )
 			else :
-				self.mZoom -= 1
+				self.mZoom -= 2
 
-			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
 			XBMC_SetSkinZoom( self.mZoom )
+			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
 
 
 	def onClick( self, aControlId ) :

@@ -5350,6 +5350,13 @@ Search for window name
 				<height>128</height>
 				<texture>CalibrateBottomRight.png</texture>
 			</control>
+			<control type="image">
+				<posx>510</posx>
+				<posy>230</posy>
+				<width>260</width>
+				<height>260</height>
+				<texture>CalibratePixelRatio.png</texture>
+			</control>
 			<control type="label" id="4500100">
 				<posx>0</posx>
 				<posy>110</posy>

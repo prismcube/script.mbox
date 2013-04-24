@@ -172,6 +172,9 @@ class FirstInstallation( FTIWindow ) :
 				self.ControlSelect( )
 			elif groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.GotoAntennaNextStep( )
+			elif groupId == E_FIRST_TIME_INSTALLATION_PREV :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ZOOM )
+				return
 
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.ChannelSearchConfig( groupId )
