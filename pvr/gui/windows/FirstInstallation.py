@@ -24,7 +24,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mAsyncVideoSetThread		= None
 
 		self.mStepImage					= []
-		self.mReloadSkinPosition		= False
+		#self.mReloadSkinPosition		= False
 
 
 	def onInit( self ) :
@@ -33,10 +33,10 @@ class FirstInstallation( FTIWindow ) :
 		self.SetFrontdisplayMessage( 'First Installation' )
 
 		self.SetFirstInstallation( True )
-		if self.mReloadSkinPosition :
-			WinMgr.GetInstance( ).LoadSkinPosition( )
-			self.mReloadSkinPosition = False
-			self.SetListControl( E_STEP_ANTENNA )
+		#if self.mReloadSkinPosition :
+		#	WinMgr.GetInstance( ).LoadSkinPosition( )
+		#	self.mReloadSkinPosition = False
+		#	self.SetListControl( E_STEP_ANTENNA )
 			
 		self.SetPipScreen( )
 		
