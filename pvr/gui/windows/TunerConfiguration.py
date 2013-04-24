@@ -32,7 +32,7 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		actionId = aAction.getId( )
