@@ -238,13 +238,18 @@ class DialogAddManualTimer( SettingDialog ) :
 				startTime = self.mDataCache.Datetime_GetLocalTime( )
 				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
 				duration = prop.GetProp( )
+				self.mRecordName = self.mChannel.mName				
 
-				if self.mEPG :
-					startTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
-					duration = self.mEPG.mDuration
-					self.mRecordName = self.mEPG.mEventName					
-				else :
-					self.mRecordName = self.mChannel.mName
+				if self.mEPG and  self.mEPG.mStartTime + self.mEPG.mDuration + self.mDataCache.Datetime_GetLocalOffset( ) > self.mDataCache.Datetime_GetLocalTime( ) :
+					if self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( ) < self.mDataCache.Datetime_GetLocalTime( ) :
+						startTime = self.mDataCache.Datetime_GetLocalTime( )
+						duration =  self.mEPG.mStartTime + self.mEPG.mDuration +  self.mDataCache.Datetime_GetLocalOffset( )  - self.mDataCache.Datetime_GetLocalTime( )
+						if duration <=  0 :
+							duration = prop.GetProp( )
+						
+					else :
+						startTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
+						duration = self.mEPG.mDuration
 
 				days = int( startTime/ONE_DAY_SECONDS )
 				self.mWeeklyStart = days*ONE_DAY_SECONDS
