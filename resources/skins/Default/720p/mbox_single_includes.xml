@@ -5288,16 +5288,16 @@
 					<!-- Channel LOGO-->
 					<control type="image">
 						<posx>40</posx>
-						<posy>5</posy>
-						<width>50</width>
-						<height>30</height>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
 						<!--colordiffuse>00FFFFFF</colordiffuse-->
 						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 					</control>
 					<control type="label">
-						<posx>90</posx>
+						<posx>130</posx>
 						<posy>5</posy>
-						<width>490</width>
+						<width>450</width>
 						<height>37</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -5332,11 +5332,11 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
 					</control>
-					<!-- Record Name -->
+					<!-- EPG Info -->
 					<control type="label">
-						<posx>40</posx>
+						<posx>130</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>450</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>grey2</textcolor>
@@ -5403,16 +5403,16 @@
 					<!-- Channel LOGO-->					
 					<control type="image">
 						<posx>40</posx>
-						<posy>5</posy>
-						<width>50</width>
-						<height>37</height>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
 						<!--colordiffuse>00FFFFFF</colordiffuse-->
 						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 					</control>
 					<control type="label">
-						<posx>90</posx>
+						<posx>130</posx>
 						<posy>5</posy>
-						<width>490</width>
+						<width>450</width>
 						<height>30</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -5447,11 +5447,11 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
 					</control>
-					<!-- Record Name -->
+					<!-- EPG Info -->
 					<control type="label">
-						<posx>40</posx>
+						<posx>130</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>450</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>
