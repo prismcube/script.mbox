@@ -42,12 +42,12 @@
 	<string id="1040">KOR_EPG Present</string>
 	<string id="1041">KOR_EPG Next</string>
 	<string id="1042">KOR_Installation</string>
-	<string id="1043">KOR_RECORDINGS</string>
-	<string id="1044">KOR_TV GUIDE</string>
+	<string id="1043">KOR_Archive</string>
+	<string id="1044">KOR_EPG</string>
 	<string id="1045">KOR_Channel List</string>
 	<string id="1046">KOR_Fav. Add-ons</string>
 	<string id="1047">KOR_Media Center</string>
-	<string id="1048">KOR_INFO</string>
+	<string id="1048">KOR_Info</string>
 	<string id="1049">KOR_Help</string>
 	<string id="1050">KOR_First Installation</string>
 	<string id="1051">KOR_Antenna Setup</string>

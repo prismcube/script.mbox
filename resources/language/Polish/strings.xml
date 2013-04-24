@@ -42,12 +42,12 @@
 	<string id="1040">POL_EPG Present</string>
 	<string id="1041">POL_EPG Next</string>
 	<string id="1042">POL_Installation</string>
-	<string id="1043">POL_RECORDINGS</string>
-	<string id="1044">POL_TV GUIDE</string>
+	<string id="1043">POL_Archive</string>
+	<string id="1044">POL_EPG</string>
 	<string id="1045">POL_Channel List</string>
 	<string id="1046">POL_Fav. Add-ons</string>
 	<string id="1047">POL_Media Center</string>
-	<string id="1048">POL_INFO</string>
+	<string id="1048">POL_Info</string>
 	<string id="1049">POL_Help</string>
 	<string id="1050">Pierwsza instalacja</string>
 	<string id="1051">POL_Antenna Setup</string>

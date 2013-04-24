@@ -42,12 +42,12 @@
 	<string id="1040">TUR_EPG Present</string>
 	<string id="1041">TUR_EPG Next</string>
 	<string id="1042">TUR_Installation</string>
-	<string id="1043">TUR_RECORDINGS</string>
-	<string id="1044">TUR_TV GUIDE</string>
+	<string id="1043">TUR_Archive</string>
+	<string id="1044">TUR_EPG</string>
 	<string id="1045">TUR_Channel List</string>
 	<string id="1046">TUR_Fav. Add-ons</string>
 	<string id="1047">TUR_Media Center</string>
-	<string id="1048">TUR_INFO</string>
+	<string id="1048">TUR_Info</string>
 	<string id="1049">TUR_Help</string>
 	<string id="1050">?lk kurulum</string>
 	<string id="1051">TUR_Antenna Setup</string>

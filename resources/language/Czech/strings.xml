@@ -42,12 +42,12 @@
 	<string id="1040">CZE_EPG Present</string>
 	<string id="1041">CZE_EPG Next</string>
 	<string id="1042">CZE_Installation</string>
-	<string id="1043">CZE_RECORDINGS</string>
-	<string id="1044">CZE_TV GUIDE</string>
+	<string id="1043">CZE_Archive</string>
+	<string id="1044">CZE_EPG</string>
 	<string id="1045">CZE_Channel List</string>
 	<string id="1046">CZE_Fav. Add-ons</string>
 	<string id="1047">CZE_Media Center</string>
-	<string id="1048">CZE_INFO</string>
+	<string id="1048">CZE_Info</string>
 	<string id="1049">CZE_Help</string>
 	<string id="1050">Prvni instalace</string>
 	<string id="1051">CZE_Antenna Setup</string>

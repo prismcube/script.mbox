@@ -42,12 +42,12 @@
 	<string id="1040">ITA_EPG Present</string>
 	<string id="1041">ITA_EPG Next</string>
 	<string id="1042">ITA_Installation</string>
-	<string id="1043">ITA_RECORDINGS</string>
-	<string id="1044">ITA_TV GUIDE</string>
+	<string id="1043">ITA_Archive</string>
+	<string id="1044">ITA_EPG</string>
 	<string id="1045">ITA_Channel List</string>
 	<string id="1046">ITA_Fav. Add-ons</string>
 	<string id="1047">ITA_Media Center</string>
-	<string id="1048">ITA_INFO</string>
+	<string id="1048">ITA_Info</string>
 	<string id="1049">ITA_Help</string>
 	<string id="1050">Prima installazione</string>
 	<string id="1051">ITA_Antenna Setup</string>

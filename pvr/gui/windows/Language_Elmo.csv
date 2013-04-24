@@ -41,12 +41,12 @@
 "EPG Present";;;;;;;;;"Текущее Событие";;;1040
 "EPG Next";;;;;;;;;"Следующее Событие";;;1041
 "Installation";;"Installation";;;;;;;"Установка";;;1042
-"RECORDINGS";;;;;;;;;"Архив";;;1043
-"TV GUIDE";;;;;;;;;"ТВ Гид";;;1044
+"Archive";;;;;;;;;"Архив";;;1043
+"EPG";;;;;;;;;"ТВ Гид";;;1044
 "Channel List";;"Liste des chaînes ";;;;;;;"Список Каналов";;;1045
 "Fav. Add-ons";;;;;;;;;"Любимые Программы";;;1046
 "Media Center";;;;;;;;;"Медиацентр";;;1047
-"INFO";;;;;;;;;"О Системе";;;1048
+"Info";;;;;;;;;"О Приемнике";;;1048
 "Help";;;;;;;;;"Помощь";;;1049
 "First Installation";"Erst-Installation";;"Prima installazione";"Primera instalacion";"Prvni instalace";"Eerste installatie";"Pierwsza instalacja";"?lk kurulum";"Первичная Установка";;;1050
 "Antenna Setup";;;;;;;;;"Установки Антенны";;;1051

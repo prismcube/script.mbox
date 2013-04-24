@@ -42,12 +42,12 @@
 	<string id="1040">ARA_EPG Present</string>
 	<string id="1041">ARA_EPG Next</string>
 	<string id="1042">ARA_Installation</string>
-	<string id="1043">ARA_RECORDINGS</string>
-	<string id="1044">ARA_TV GUIDE</string>
+	<string id="1043">ARA_Archive</string>
+	<string id="1044">ARA_EPG</string>
 	<string id="1045">ARA_Channel List</string>
 	<string id="1046">ARA_Fav. Add-ons</string>
 	<string id="1047">ARA_Media Center</string>
-	<string id="1048">ARA_INFO</string>
+	<string id="1048">ARA_Info</string>
 	<string id="1049">ARA_Help</string>
 	<string id="1050">ARA_First Installation</string>
 	<string id="1051">ARA_Antenna Setup</string>

@@ -42,12 +42,12 @@
 	<string id="1040">DUT_EPG Present</string>
 	<string id="1041">DUT_EPG Next</string>
 	<string id="1042">DUT_Installation</string>
-	<string id="1043">DUT_RECORDINGS</string>
-	<string id="1044">DUT_TV GUIDE</string>
+	<string id="1043">DUT_Archive</string>
+	<string id="1044">DUT_EPG</string>
 	<string id="1045">DUT_Channel List</string>
 	<string id="1046">DUT_Fav. Add-ons</string>
 	<string id="1047">DUT_Media Center</string>
-	<string id="1048">DUT_INFO</string>
+	<string id="1048">DUT_Info</string>
 	<string id="1049">DUT_Help</string>
 	<string id="1050">Eerste installatie</string>
 	<string id="1051">DUT_Antenna Setup</string>

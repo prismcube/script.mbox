@@ -42,12 +42,12 @@
 	<string id="1040">EPG Present</string>
 	<string id="1041">EPG Next</string>
 	<string id="1042">Installation</string>
-	<string id="1043">RECORDINGS</string>
-	<string id="1044">TV GUIDE</string>
+	<string id="1043">Archive</string>
+	<string id="1044">EPG</string>
 	<string id="1045">Channel List</string>
 	<string id="1046">Fav. Add-ons</string>
 	<string id="1047">Media Center</string>
-	<string id="1048">INFO</string>
+	<string id="1048">Info</string>
 	<string id="1049">Help</string>
 	<string id="1050">First Installation</string>
 	<string id="1051">Antenna Setup</string>

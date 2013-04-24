@@ -42,12 +42,12 @@
 	<string id="1040">GER_EPG Present</string>
 	<string id="1041">GER_EPG Next</string>
 	<string id="1042">GER_Installation</string>
-	<string id="1043">GER_RECORDINGS</string>
-	<string id="1044">GER_TV GUIDE</string>
+	<string id="1043">GER_Archive</string>
+	<string id="1044">GER_EPG</string>
 	<string id="1045">GER_Channel List</string>
 	<string id="1046">GER_Fav. Add-ons</string>
 	<string id="1047">GER_Media Center</string>
-	<string id="1048">GER_INFO</string>
+	<string id="1048">GER_Info</string>
 	<string id="1049">GER_Help</string>
 	<string id="1050">Erst-Installation</string>
 	<string id="1051">GER_Antenna Setup</string>

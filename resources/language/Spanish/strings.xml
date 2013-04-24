@@ -42,12 +42,12 @@
 	<string id="1040">SPA_EPG Present</string>
 	<string id="1041">SPA_EPG Next</string>
 	<string id="1042">SPA_Installation</string>
-	<string id="1043">SPA_RECORDINGS</string>
-	<string id="1044">SPA_TV GUIDE</string>
+	<string id="1043">SPA_Archive</string>
+	<string id="1044">SPA_EPG</string>
 	<string id="1045">SPA_Channel List</string>
 	<string id="1046">SPA_Fav. Add-ons</string>
 	<string id="1047">SPA_Media Center</string>
-	<string id="1048">SPA_INFO</string>
+	<string id="1048">SPA_Info</string>
 	<string id="1049">SPA_Help</string>
 	<string id="1050">Primera instalacion</string>
 	<string id="1051">SPA_Antenna Setup</string>

@@ -42,12 +42,12 @@
 	<string id="1040">FRE_EPG Present</string>
 	<string id="1041">FRE_EPG Next</string>
 	<string id="1042">Installation</string>
-	<string id="1043">FRE_RECORDINGS</string>
-	<string id="1044">FRE_TV GUIDE</string>
+	<string id="1043">FRE_Archive</string>
+	<string id="1044">FRE_EPG</string>
 	<string id="1045">Liste des chaînes </string>
 	<string id="1046">FRE_Fav. Add-ons</string>
 	<string id="1047">FRE_Media Center</string>
-	<string id="1048">FRE_INFO</string>
+	<string id="1048">FRE_Info</string>
 	<string id="1049">FRE_Help</string>
 	<string id="1050">FRE_First Installation</string>
 	<string id="1051">FRE_Antenna Setup</string>
