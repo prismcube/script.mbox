@@ -5285,7 +5285,28 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel LOGO-->
+					<control type="image">
+						<posx>40</posx>
+						<posy>5</posy>
+						<width>50</width>
+						<height>30</height>
+						<!--colordiffuse>00FFFFFF</colordiffuse-->
+						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+					</control>
+					<control type="label">
+						<posx>90</posx>
+						<posy>5</posy>
+						<width>490</width>
+						<height>37</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Channel Name
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
@@ -5297,7 +5318,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-					</control>
+					</control-->
 					<!-- start time-->
 					<control type="label">
 						<posx>720</posx>
@@ -5379,7 +5400,28 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel LOGO-->					
+					<control type="image">
+						<posx>40</posx>
+						<posy>5</posy>
+						<width>50</width>
+						<height>37</height>
+						<!--colordiffuse>00FFFFFF</colordiffuse-->
+						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+					</control>
+					<control type="label">
+						<posx>90</posx>
+						<posy>5</posy>
+						<width>490</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Channel Name
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
@@ -5391,7 +5433,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-					</control>
+					</control-->
 					<!-- start time  -->
 					<control type="label">
 						<posx>720</posx>

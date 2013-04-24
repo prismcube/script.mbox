@@ -1,5 +1,6 @@
 from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
+import pvr.ChannelLogoMgr
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
@@ -182,6 +183,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
 		self.mIsActivate = False

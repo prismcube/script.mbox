@@ -1122,6 +1122,13 @@ class EPGWindow( BaseWindow ) :
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
 
+				#add channel logo
+				if E_USE_CHANNEL_LOGO == True :
+					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					#LOG_TRACE( 'logo=%s' %logo )
+					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo ) )
+				
 				#ListItem.PercentPlayed
 				if aUpdateOnly == False :
 					self.mListItems.append( listItem )
