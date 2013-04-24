@@ -19,7 +19,7 @@ class Zoom( FTIWindow ) :
 		self.SetSingleWindowPosition( E_ZOOM_BASE_ID )
 		self.mZoom = int ( XBMC_GetSkinZoom( ) )
 		self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
-		self.getControl( E_LABEL_ID_2 ).setLabel( MR_LANG( 'Remote control left button : Previous step, Right button : Next step' ) )
+		self.getControl( E_LABEL_ID_2 ).setLabel( MR_LANG( 'Remote control Left button : Previous step, Right button : Next step' ) )
 		self.mDataCache.Player_VideoBlank( True )
 		self.mInitialized = True
 

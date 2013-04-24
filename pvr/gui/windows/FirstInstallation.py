@@ -19,7 +19,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mTime						= 0
 		self.mSetupChannel				= None
 		self.mHasChannel				= False
-		self.mZoomRate					= 0
+		#self.mZoomRate					= 0
 
 		self.mAsyncVideoSetThread		= None
 
@@ -246,7 +246,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
-			self.mZoomRate = getZoomRateIndex( XBMC_GetSkinZoom( ) )
+			#self.mZoomRate = getZoomRateIndex( XBMC_GetSkinZoom( ) )
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )

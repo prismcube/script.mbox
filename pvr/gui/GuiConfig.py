@@ -247,7 +247,7 @@ E_LIST_UNCOMMITTED_SWITCH			= [ MR_LANG( 'Disable' ), '1', '2', '3', '4', '5', '
 E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
-E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-19', '-18', '-17','-16', '-15', '-14', '-13', '-12', '-11', '-10', '-9', '-8', '-7', '-6', '-5', '-4', '-3', '-2', '-1', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
+E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6', '-4', '-2', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
 
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
