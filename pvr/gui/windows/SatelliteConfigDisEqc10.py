@@ -41,6 +41,7 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 		self.mSearchMode = ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).GetProp( )
 		ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 
+		self.mSelectedTransponderIndex	= 0
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 

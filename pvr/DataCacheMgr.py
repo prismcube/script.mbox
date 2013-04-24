@@ -538,7 +538,8 @@ class DataCacheMgr( object ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )
-		if transponder :
+
+		if transponder and len( transponder ) > aIndex :
 			return transponder[ aIndex ]
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
