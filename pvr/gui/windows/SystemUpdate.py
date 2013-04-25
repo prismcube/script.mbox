@@ -68,6 +68,7 @@ E_STRING_CHECK_FAILED    = 13
 E_STRING_CHECK_HAVE_NONE = 14
 E_STRING_CHECK_DOWNLOADING    = 15
 E_STRING_CHECK_HDD = 16
+E_STRING_CHECK_HDD_SPACE = 17
 
 UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
@@ -406,6 +407,8 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Network is disconnected' )
 		elif aMsg == E_STRING_CHECK_DISKFULL :
 			line = MR_LANG( 'Insufficient disk space' )
+		elif aMsg == E_STRING_CHECK_HDD_SPACE :
+			line = MR_LANG( 'Not enough space on your HDD' )
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
 			line = MR_LANG( 'Not enough space on your USB flash memory' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
@@ -681,15 +684,18 @@ class SystemUpdate( SettingWindow ) :
 
 			try :
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
-				usbPath = self.mDataCache.USB_GetMountPath( )
-				if usbPath :
-					#RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
+				unpackPath = E_DEFAULT_PATH_DOWNLOAD
+				if E_UPDATE_FIRMWARE_USE_USB :
+					unpackPath = self.mDataCache.USB_GetMountPath( )
+
+				if unpackPath :
+					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
 					if self.mPVSList and len( self.mPVSList ) > 0 :
 						for iPVS in self.mPVSList :
-							#RemoveDirectory( '%s/%s'% ( usbPath, iPVS.mUnzipDir ) )
+							#RemoveDirectory( '%s/%s'% ( unpackPath, iPVS.mUnzipDir ) )
 							request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, iPVS.mKey )
 							if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-								RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+								RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
 			except Exception, e :
 				LOG_ERR( 'except[%s]'% e )
@@ -749,7 +755,10 @@ class SystemUpdate( SettingWindow ) :
 
 			ret = self.InitPVSData( )
 			self.mStepPage = E_UPDATE_STEP_READY
-			usbPath = self.mDataCache.USB_GetMountPath( )
+
+			unpackPath = E_DEFAULT_PATH_DOWNLOAD
+			if E_UPDATE_FIRMWARE_USE_USB :
+				unpackPath = self.mDataCache.USB_GetMountPath( )
 
 			if not ret :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
@@ -758,12 +767,12 @@ class SystemUpdate( SettingWindow ) :
 				if ret == 2 :
 					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
-				elif usbPath :
-					#RemoveDirectory( '%s/%s'% ( usbPath, E_DEFAULT_DIR_UNZIP ) )
-					#RemoveDirectory( '%s/%s'% ( usbPath, self.mPVSData.mUnzipDir ) )
+				elif unpackPath :
+					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
+					#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
 					request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 					if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-						RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+						RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
 					self.SetFocusControl( E_Input02 )
 
@@ -903,12 +912,15 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			usbPath = self.mDataCache.USB_GetMountPath( )
-			if usbPath :
+			unpackPath = E_DEFAULT_PATH_DOWNLOAD
+			if E_UPDATE_FIRMWARE_USE_USB :
+				unpackPath = self.mDataCache.USB_GetMountPath( )
+
+			if unpackPath :
 				time.sleep( 0.3 )
 				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
-				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize, E_DOWNLOAD_PATH_UNZIPFILES )
+				stepResult = UnpackToUSB( tempFile, unpackPath, self.mPVSData.mUnpackSize, E_DOWNLOAD_PATH_UNZIPFILES )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
@@ -921,10 +933,16 @@ class SystemUpdate( SettingWindow ) :
 				stepResult = False
 
 			if stepResult != True :
+				msgErr1 = E_STRING_CHECK_HDD_SPACE
+				msgErr2 = E_STRING_CHECK_HDD
+				if E_UPDATE_FIRMWARE_USE_USB :
+					msgErr1 = E_STRING_CHECK_USB_SPACE
+					msgErr2 = E_STRING_CHECK_USB
+
 				if stepResult == -1 :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
+					self.DialogPopup( E_STRING_ERROR, msgErr1 )
 				else :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB )
+					self.DialogPopup( E_STRING_ERROR, msgErr2 )
 
 				stepResult = False
 
@@ -981,18 +999,22 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
-		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
-			return
+		if E_UPDATE_FIRMWARE_USE_USB :
+			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
+				return
 
 		#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 		#if not self.VerifiedUnPack( tempFile, False ) :
 
 		#remove old_Version
-		usbPath = self.mDataCache.USB_GetMountPath( )
-		if usbPath :
+		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+		if E_UPDATE_FIRMWARE_USE_USB :
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+
+		if unpackPath :
 			request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 			if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-				RemoveUnzipFiles( usbPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+				RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
 		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
 			return
@@ -1026,8 +1048,11 @@ class SystemUpdate( SettingWindow ) :
 			#if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
-			button2Label = MR_LANG( 'Copy to USB')
-			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
+			button2Label = MR_LANG( 'Copy to HDD' )
+			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
+			if E_UPDATE_FIRMWARE_USE_USB :
+				button2Label = MR_LANG( 'Copy to USB' )
+				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 
 			if self.mWinId == xbmcgui.getCurrentWindowId( ) and \
 			   self.mStepPage > E_UPDATE_STEP_READY and self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
@@ -1047,7 +1072,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def CheckInitDevice( self ) :
-		sizeCheck = True
+		sizeCheck = False
 
 		if CheckHdd( ) :
 			hddPath = self.mDataCache.HDD_GetMountPath( )
@@ -1066,23 +1091,25 @@ class SystemUpdate( SettingWindow ) :
 				sizeCheck = False
 
 			return sizeCheck
-
 		LOG_TRACE( 'Not Exist HDD' )
-		usbPath = self.mDataCache.USB_GetMountPath( )
-		if not usbPath :
-			LOG_TRACE( 'Not Exist USB' )
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
-			return False
 
-		global E_DEFAULT_PATH_DOWNLOAD
-		E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
+		if E_UPDATE_FIRMWARE_USE_USB :
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if not usbPath :
+				LOG_TRACE( 'Not Exist USB' )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+				return False
 
-		usbSize = GetDeviceSize( usbPath )
-		if usbSize <= ( self.mPVSData.mSize + self.mPVSData.mUnpackSize ) :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
-			sizeCheck = False
+			global E_DEFAULT_PATH_DOWNLOAD
+			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
 
-		LOG_TRACE( 'usbSize[%s] downSize[%s] unzip[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, self.mPVSData.mUnpackSize, usbPath ) )
+			usbSize = GetDeviceSize( usbPath )
+			if usbSize <= ( self.mPVSData.mSize + self.mPVSData.mUnpackSize ) :
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
+				sizeCheck = False
+
+			LOG_TRACE( 'usbSize[%s] downSize[%s] unzip[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, self.mPVSData.mUnpackSize, usbPath ) )
+
 		return sizeCheck
 
 
@@ -1231,8 +1258,11 @@ class SystemUpdate( SettingWindow ) :
 		if not fileList or len( fileList ) < 1 :
 			return False
 
-		usbPath = self.mDataCache.USB_GetMountPath( )
-		if not usbPath :
+		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+		if E_UPDATE_FIRMWARE_USE_USB :
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+
+		if not unpackPath :
 			return False
 
 		self.OpenBusyDialog( )
@@ -1247,7 +1277,7 @@ class SystemUpdate( SettingWindow ) :
 			idx += 1
 			if aShowProgress :
 				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
-			unpackFile = '%s/%s'% ( usbPath, item[1] )
+			unpackFile = '%s/%s'% ( unpackPath, item[1] )
 			iFileMD5 = GetUnpackByMD5( unpackFile )
 			iRealMD5 = CheckMD5Sum( unpackFile )
 			LOG_TRACE( '--------------verify check file[%s] get[%s] md5[%s]'% ( unpackFile, iFileMD5, iRealMD5 ) )
@@ -1278,8 +1308,11 @@ class SystemUpdate( SettingWindow ) :
 		if not fileList :
 			return False
 
-		usbPath = self.mDataCache.USB_GetMountPath( )
-		if not usbPath :
+		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+		if E_UPDATE_FIRMWARE_USE_USB :
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+
+		if not unpackPath :
 			return False
 
 		self.OpenBusyDialog( )
@@ -1294,7 +1327,7 @@ class SystemUpdate( SettingWindow ) :
 			idx += 1
 			if aShowProgress :
 				dialogProgress.update( int( 1.0 * idx / totalFiles * 100 ) )
-			unpackFile = '%s/%s'% ( usbPath, item[1] )
+			unpackFile = '%s/%s'% ( unpackPath, item[1] )
 			unpackSize = GetFileSize( unpackFile )
 			if item[0] != unpackSize :
 				LOG_TRACE( '--------------verify err pack[%s] unPack[%s] file[%s]'% ( item[0], unpackSize, unpackFile ) )
