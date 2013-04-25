@@ -572,6 +572,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#initialize get epg event
 			self.mFlag_ModeChanged = False
+			self.mDataCache.Channel_ResetOldChannelList( )
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2159,6 +2160,9 @@ class ChannelListWindow( BaseWindow ) :
 				refreshForce = True
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			if not self.mFavoriteGroupList or len( self.mFavoriteGroupList ) < 1 :
+				return
+
 			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			if aGroupName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )

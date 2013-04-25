@@ -991,6 +991,8 @@ class NullWindow( BaseWindow ) :
 
 	def AsyncTuneByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
+		if not oldChannel or oldChannel.mError != 0 :
+			oldChannel = self.mDataCache.Channel_GetCurrent( )
 		self.AsyncTuneChannelByInput( oldChannel.mNumber, True )
 
 
@@ -1020,11 +1022,10 @@ class NullWindow( BaseWindow ) :
 	def AsyncTuneChannelByHistory( self ) :
 		#LOG_TRACE('--------------Loop Count backKey[%s]'% self.mLoopCount )
 		channelList = self.mDataCache.Channel_GetOldChannelList( )
-		if not channelList or len( channelList ) < 1 :
-			self.mLoopCount = 0
-			return
-
-		listNumber = []
+		#if not channelList or len( channelList ) < 1 :
+		#	channelList = []
+		#	self.mLoopCount = 0
+		#	return
 
 		self.mIsShowDialog = True
 		self.CloseSubTitle( )
@@ -1039,6 +1040,7 @@ class NullWindow( BaseWindow ) :
 		self.mIsShowDialog = False
 		#self.mPreviousBlockTime = 0.2
 		#self.mOnTimeDelay = time.time( )
+		#listNumber = []
 		#for ch in channelList :
 		#	listNumber.append( '%04d %s'% ( ch.mNumber, ch.mName ) )
 		#LOG_TRACE( '-------previous idx[%s] list[%s]'% ( isSelect, listNumber ) )
