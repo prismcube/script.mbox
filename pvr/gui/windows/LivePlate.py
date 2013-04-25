@@ -1264,7 +1264,6 @@ class LivePlate( LivePlateWindow ) :
 			context = []
 			iSelectAction = 0
 			for idx in range(getCount) :
-				"""
 				idxTrack = None
 				status = self.mDataCache.Player_GetStatus( )
 				if status.mMode == ElisEnum.E_MODE_PVR :
@@ -1276,10 +1275,12 @@ class LivePlate( LivePlateWindow ) :
 					idxTrack = self.mDataCache.Audiotrack_Get( idx )
 
 				if idxTrack == None :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
 					return
-				"""
 
-				idxTrack = self.mDataCache.Audiotrack_Get( idx )
+				#idxTrack = self.mDataCache.Audiotrack_Get( idx )
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
 				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 
