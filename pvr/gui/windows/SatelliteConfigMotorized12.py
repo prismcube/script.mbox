@@ -47,6 +47,8 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+
+		self.mSelectedTransponderIndex = 0
 		
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :

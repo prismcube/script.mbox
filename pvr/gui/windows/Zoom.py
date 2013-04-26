@@ -5,7 +5,6 @@ from pvr.XBMCInterface import XBMC_SetSkinZoom
 
 E_ZOOM_BASE_ID				= WinMgr.WIN_ID_ZOOM * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 E_LABEL_ID_1				= 100 + E_ZOOM_BASE_ID
-E_LABEL_ID_2				= 101 + E_ZOOM_BASE_ID
 
 
 class Zoom( FTIWindow ) :
@@ -18,8 +17,7 @@ class Zoom( FTIWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_ZOOM_BASE_ID )
 		self.mZoom = int ( XBMC_GetSkinZoom( ) )
-		self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
-		self.getControl( E_LABEL_ID_2 ).setLabel( MR_LANG( 'Remote control Left button : Previous step, Right button : Next step' ) )
+		self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step' ) % ( self.mZoom, NEW_LINE ) )
 		self.mDataCache.Player_VideoBlank( True )
 		self.mInitialized = True
 
@@ -39,6 +37,7 @@ class Zoom( FTIWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
+				self.SetFirstInstallation( False )
 				self.SetParentID( WinMgr.WIN_ID_MAINMENU )
 				self.SetVideoRestore( )
 				self.Close( )
@@ -60,7 +59,7 @@ class Zoom( FTIWindow ) :
 				self.mZoom += 2
 
 			XBMC_SetSkinZoom( self.mZoom )
-			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
+			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step' ) % ( self.mZoom, NEW_LINE ) )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if self.mZoom <= -20 :
@@ -71,7 +70,7 @@ class Zoom( FTIWindow ) :
 				self.mZoom -= 2
 
 			XBMC_SetSkinZoom( self.mZoom )
-			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s )' ) % self.mZoom )
+			self.getControl( E_LABEL_ID_1 ).setLabel( MR_LANG( 'Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step' ) % ( self.mZoom, NEW_LINE ) )
 
 
 	def onClick( self, aControlId ) :
