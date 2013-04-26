@@ -47,9 +47,9 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
-			self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
-			self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 
 		self.SetSingleWindowPosition( E_CONFIG_DISEQC_10_BASE_ID )
 		self.InitConfig( )

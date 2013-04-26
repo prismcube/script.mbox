@@ -469,20 +469,18 @@ class EPGWindow( BaseWindow ) :
 	def UpdateViewMode( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
 			self.setProperty( 'EPGMode', 'grid' )
-			self.SetHeaderTitle( MR_LANG( '' ) )
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.setProperty( 'EPGMode', 'channel' )
-			self.SetHeaderTitle( MR_LANG( 'EPG - Channel' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'EPG' ), MR_LANG( 'Channel' ) ) )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.setProperty( 'EPGMode', 'current' )
-			self.SetHeaderTitle( MR_LANG( 'EPG - Current' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'EPG' ), MR_LANG( 'Current' ) ) )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
 			self.setProperty( 'EPGMode', 'following' )
-			self.SetHeaderTitle( MR_LANG( 'EPG - Following' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'EPG' ), MR_LANG( 'Following' ) ) )
 		else :
 			self.mEPGMode = E_VIEW_GRID 		
 			self.setProperty( 'EPGMode', 'grid' )
-			self.SetHeaderTitle( MR_LANG( '' ) )
 
 		LOG_TRACE( '---------------------self.mEPGMode=%d' %self.mEPGMode )
 
@@ -1369,7 +1367,7 @@ class EPGWindow( BaseWindow ) :
 				expire  = aEPG.mStartTime + aEPG.mDuration + localOffset
 				if expire <=  self.mDataCache.Datetime_GetLocalTime( ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG('Information'), MR_LANG("That programme has already finished"))
+					dialog.SetDialogProperty( MR_LANG('Error'), MR_LANG("That programme has already finished"))
 					dialog.doModal( )
 					return
 				
