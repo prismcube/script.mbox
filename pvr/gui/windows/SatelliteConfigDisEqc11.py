@@ -44,11 +44,13 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 
+		self.mSelectedTransponderIndex = 0
+
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
-			self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
-			self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 
 		self.SetSingleWindowPosition( E_CONFIG_DISEQC_11_BASE_ID )
 		self.InitConfig( )

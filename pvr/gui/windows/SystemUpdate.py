@@ -151,7 +151,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mShowProgressThread = None
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
-		self.SetHeaderTitle( MR_LANG( 'Installation - Update' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Update' ) ) )
 
 		self.SetPipScreen( )
 		#self.LoadNoSignalState( )

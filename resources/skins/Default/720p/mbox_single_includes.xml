@@ -706,15 +706,22 @@
 
 	<include name="DefaultButtonGridChannelValues">
 		<height>45</height>
-		<width>250</width>
-		<textoffsetx>10</textoffsetx>
-		<textwidth>250</textwidth>
+		<width>270</width>
+		<textoffsetx>85</textoffsetx>
+		<textwidth>185</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
-		<font>font13_title</font>
+		<font>font12_title</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
+	</include>
+
+	<include name="DefaultButtonGridChannelLogo">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>80</width>
+		<height>45</height>
 	</include>
 
 	<include name="DefaultButtonRunningRecValues">
@@ -5285,7 +5292,28 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel LOGO-->
+					<control type="image">
+						<posx>40</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
+						<!--colordiffuse>00FFFFFF</colordiffuse-->
+						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+					</control>
+					<control type="label">
+						<posx>130</posx>
+						<posy>5</posy>
+						<width>450</width>
+						<height>37</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Channel Name
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
@@ -5297,7 +5325,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-					</control>
+					</control-->
 					<!-- start time-->
 					<control type="label">
 						<posx>720</posx>
@@ -5311,11 +5339,11 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
 					</control>
-					<!-- Record Name -->
+					<!-- EPG Info -->
 					<control type="label">
-						<posx>40</posx>
+						<posx>130</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>450</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>grey2</textcolor>
@@ -5379,7 +5407,28 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel LOGO-->					
+					<control type="image">
+						<posx>40</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
+						<!--colordiffuse>00FFFFFF</colordiffuse-->
+						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+					</control>
+					<control type="label">
+						<posx>130</posx>
+						<posy>5</posy>
+						<width>450</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Channel Name
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
@@ -5391,7 +5440,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-					</control>
+					</control-->
 					<!-- start time  -->
 					<control type="label">
 						<posx>720</posx>
@@ -5405,11 +5454,11 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
 					</control>
-					<!-- Record Name -->
+					<!-- EPG Info -->
 					<control type="label">
-						<posx>40</posx>
+						<posx>130</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>450</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>
@@ -6216,7 +6265,7 @@
 		</control>
 		<control type="label" id="1009550">
 			<include>DefaultWindowOpenCloseAnimation</include>
-			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000)| substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),1300000) | substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000)</visible>
+			<visible>substring(Window.Property(CurrentWindow),3400000) | substring(Window.Property(CurrentWindow),3500000) | substring(Window.Property(CurrentWindow),3900000) | substring(Window.Property(CurrentWindow),1700000) | substring(Window.Property(CurrentWindow),2400000) | substring(Window.Property(CurrentWindow),1600000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),3100000) | substring(Window.Property(CurrentWindow),3200000)| substring(Window.Property(CurrentWindow),1500000)| substring(Window.Property(CurrentWindow),3800000) | substring(Window.Property(CurrentWindow),4300000) | substring(Window.Property(CurrentWindow),1500000) | substring(Window.Property(CurrentWindow),2600000) | substring(Window.Property(CurrentWindow),2700000) | substring(Window.Property(CurrentWindow),2800000) | substring(Window.Property(CurrentWindow),1900000)| substring(Window.Property(CurrentWindow),2000000)| substring(Window.Property(CurrentWindow),2200000) | substring(Window.Property(CurrentWindow),1300000) | [substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(EPGMode),grid)] | substring(Window.Property(CurrentWindow),4400000)| substring(Window.Property(CurrentWindow),4000000) | substring(Window.Property(CurrentWindow),2500000) | substring(Window.Property(CurrentWindow),1800000) | substring(Window.Property(CurrentWindow),2300000)</visible>
 			<posx>65</posx>
 			<posy>5</posy>
 			<width min="0" max="800">auto</width>

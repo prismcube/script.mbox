@@ -31,7 +31,7 @@ class FirstInstallation( FTIWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( 'First Installation' )
-		self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 
 		self.SetFirstInstallation( True )
 		#if self.mReloadSkinPosition :

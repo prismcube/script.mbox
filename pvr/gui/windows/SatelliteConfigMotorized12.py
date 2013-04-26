@@ -47,12 +47,14 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+
+		self.mSelectedTransponderIndex = 0
 		
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
-			self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
-			self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 		
 		self.SetSingleWindowPosition( E_CONFIG_MOTORIZED_12_BASE_ID )
 		self.InitConfig( )
