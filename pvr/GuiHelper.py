@@ -846,6 +846,149 @@ def SetDefaultSettingInXML( ) :
 	return ret
 
 
+def ReadToCmdBlock( ) :
+	cmdBlock = ''
+	try :
+		rf = open( '/proc/cmdline', 'r' )
+		cmdBlock = rf.readline( ).strip( )
+		rf.close( )
+	except Exception, e :
+		LOG_ERR( 'except[%s] file not found[/proc/cmdline]'% e )
+		cmdBlock = ''
+
+	LOG_TRACE( '/proc/cmdline[%s]'% cmdBlock )
+	return cmdBlock
+
+
+def GetBlockByUpdateSection( aSize, aChecksum = True ) :
+	if aChecksum and aSize < 1 :
+		return -1
+
+	cmdBlock = ReadToCmdBlock( )
+	if not cmdBlock or len( cmdBlock ) < 1 :
+		return -2
+
+	pattern = '\d+[A-Za-z]@\d+[A-Za-z]\(update\)'
+	pattern2= '\d+[A-Za-z]@\d+[A-Za-z]'
+	sections = 'mtdparts=(.*),\-\(extra\)'
+
+	ret = re.findall( sections, cmdBlock )[0]
+	LOG_TRACE( 'section[%s]'% ret )
+
+	parseWords = re.split(',', ret )
+	LOG_TRACE( 'list[%s]'% parseWords )
+
+	if not parseWords or len( parseWords ) < 1 :
+		LOG_TRACE( 'err!!' )
+
+	mtdNumber = 0
+	sizeBlock = 0
+	offset = 0
+	isError = True
+	for mtdName in parseWords :
+		ret = re.findall( pattern, mtdName )
+		if ret and len( ret ) > 0 :
+			LOG_TRACE( 'len[%s] find[%s]'% ( len(ret), ret[0] ) )
+			ret = re.findall( pattern2, ret[0] )
+			defines = re.split( '@', ret[0] )
+			sizeBlock = defines[0]
+			offset = defines[1]
+			isError = False
+			break
+		mtdNumber += 1
+
+	if isError :
+		return -2
+
+	unit = sizeBlock[len(sizeBlock)-1]
+	sizeT = int( sizeBlock[:len(sizeBlock)-1] )
+	sizeByte = 0
+	if unit.lower() == 'k' :
+		sizeByte = sizeT * 1024
+	elif unit.lower() == 'm' :
+		sizeByte = sizeT * 1024 * 1024
+
+	LOG_TRACE( '------updateSection : sizeT[%s], unit[%s], sizeByte[%s]'% ( sizeT,unit,sizeByte ) )
+
+	if aChecksum and sizeByte < aSize :
+		return -3
+
+	return mtdNumber
+
+
+def InitFlash( ) :
+	mtdNumber = GetBlockByUpdateSection( 0, False )
+	if mtdNumber < 0 :
+		return mtdNumber
+
+	try :
+		cmd1 = 'flash_erase /dev/mtd%s 0 0'% mtdNumber
+		returnCode = os.system( cmd1 )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+		LOG_TRACE( '---------erase cmd1[%s] returnCode[%s]'% ( cmd1, returnCode ) )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
+
+
+def SetWriteToFlash( aFile ) :
+	if not CheckDirectory( aFile ) :
+		return -1
+
+	imgSize = os.stat( aFile )[stat.ST_SIZE]
+	mtdNumber = GetBlockByUpdateSection( imgSize )
+	if mtdNumber < 0 :
+		return mtdNumber
+
+	isWrite = -4
+	try :
+		cmd1 = 'flash_erase /dev/mtd%s 0 0'% mtdNumber
+		cmd2 = 'nandwrite -a -p -b 4 /dev/mtd%s %s'% ( mtdNumber, aFile )
+
+		returnCode = os.system( cmd1 )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+		LOG_TRACE( '---------erase cmd1[%s] returnCode[%s]'% ( cmd1, returnCode ) )
+
+		returnCode = os.system( cmd2 )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+		LOG_TRACE( '---------write cmd2[%s] returnCode[%s]'% ( cmd2, returnCode ) )
+
+		#ToDo : why return forced -1 ????
+		#if returnCode == 0 :
+		#	isWrite = True
+		isWrite = True
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
+		isWrite = -4
+
+	return isWrite
+
+
+def GetImgPath( aUnzipList, aFindFile ) :
+	if not CheckDirectory( aUnzipList ) :
+		return False
+
+	fd = open( aUnzipList, 'r' )
+	fileList = fd.readlines( )
+	fd.close( )
+
+	if not fileList or len( fileList ) < 1 :
+		LOG_TRACE( 'no files' )
+		return False
+
+	imgFile = ''
+	for iFile in fileList :
+		if os.path.basename( iFile.strip( ) ) == aFindFile :
+			imgFile = iFile.strip()
+			break
+
+	return imgFile
+
+
 class GuiSkinPosition( object ) :
 	def __init__( self ) :
 		self.mLeft	 = 0

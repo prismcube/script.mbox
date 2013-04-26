@@ -2012,6 +2012,7 @@ class DataCacheMgr( object ) :
 		if retList and len( retList ) > 0 and retList[0].mError == 0 :
 			hddPath = retList[0].mParam
 			if aFind :
+				hddPath = ''
 				for idx in range( len( retList ) ) :
 					if os.path.basename( retList[idx].mParam ) == aFind :
 						hddPath = retList[idx].mParam
