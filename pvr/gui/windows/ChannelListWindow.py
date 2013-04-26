@@ -623,7 +623,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.SetHeaderTitle( MR_LANG( 'Channel List - Edit Channels' ) )
+				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )

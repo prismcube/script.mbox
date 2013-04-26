@@ -123,7 +123,7 @@ class Configure( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( 'Configuration' )
-		self.SetHeaderTitle( MR_LANG( 'Installation - Configuration' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )

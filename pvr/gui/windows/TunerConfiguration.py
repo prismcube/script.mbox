@@ -23,9 +23,9 @@ class TunerConfiguration( FTIWindow ) :
 		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )
 		self.SetSettingWindowLabel( headerLabel )
 		if self.getProperty( 'IsFTI' ) == 'True' :
-			self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
-			self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 		self.LoadConfigedSatellite( )
 		self.SetFTIGuiType( )
 		if self.GetFirstInstallation( ) :

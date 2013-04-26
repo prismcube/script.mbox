@@ -19,7 +19,7 @@ class AntennaSetup( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'Antenna Setup' )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
-		self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 		self.SetPipScreen( )
 
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )

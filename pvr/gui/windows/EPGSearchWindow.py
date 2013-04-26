@@ -36,7 +36,7 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
-		self.SetHeaderTitle( MR_LANG( 'EPG - Search' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'EPG' ), MR_LANG( 'Search' ) ) )
 		self.mListItems = []
 		self.mTimerList = []
 		self.mEPGList = []		
