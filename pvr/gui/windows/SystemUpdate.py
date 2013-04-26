@@ -1111,7 +1111,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def CheckInitDevice( self ) :
-		sizeCheck = False
+		sizeCheck = True
 
 		if CheckHdd( ) :
 			hddPath = self.mDataCache.HDD_GetMountPath( )
@@ -1124,7 +1124,7 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
 				return False
 
-			LOG_TRACE( 'Check HDD True' )
+			LOG_TRACE( 'Check HDD True[%s]'% hddPath )
 			if GetDeviceSize( E_DEFAULT_PATH_HDD ) < self.mPVSData.mSize :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_DISKFULL )
 				sizeCheck = False
