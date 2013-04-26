@@ -59,6 +59,7 @@ E_GRID_MAX_BUTTON_COUNT			= 100
 E_GRID_SCHEDULED_BUTTON_COUNT	= 20
 E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 45
+E_GRID_DEFAULT_GAP				= 5
 
 E_DIR_CURRENT					= 0
 E_DIR_LINE_UP					= 1
@@ -125,6 +126,7 @@ class EPGWindow( BaseWindow ) :
 		self.mVisibleFocusCol = 0		
 		self.mGridCanvasWidth = 880
 		self.mGridItemHeight = E_GRID_DEFAULT_HEIGHT
+		self.mGridItemGap = E_GRID_DEFAULT_GAP
 		self.mGridLastFoucusId = 0
 		self.mGridItemGap = 5
 
@@ -2485,7 +2487,7 @@ class EPGWindow( BaseWindow ) :
 						end = self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 						
 					offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset )*self.mGridCanvasWidth/drawableTime )
-					offsetY = gridMeta.mRow * self.mGridItemHeight
+					offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
 
 
 					LOG_TRACE( '2start=%s' %TimeToString( start + localOffset, TimeFormatEnum.E_HH_MM )	)
