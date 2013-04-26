@@ -5434,20 +5434,11 @@ Search for window name
 				<texture>CalibratePixelRatio.png</texture>
 			</control>
 			<control type="label" id="4500100">
-				<posx>200</posx>
+				<posx>0</posx>
 				<posy>100</posy>
 				<font>font13_title</font>
 				<textcolor>white</textcolor>
-				<align>left</align>
-				<width>1280</width>
-				<height>40</height>
-			</control>
-			<control type="label" id="4500101">
-				<posx>200</posx>
-				<posy>140</posy>
-				<font>font13_title</font>
-				<textcolor>white</textcolor>
-				<align>left</align>
+				<align>center</align>
 				<width>1280</width>
 				<height>40</height>
 			</control>
