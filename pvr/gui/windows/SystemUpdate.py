@@ -10,6 +10,7 @@ E_SYSTEM_UPDATE_BASE_ID = WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_B
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
+E_DEFAULT_NAND_IMAGE      = 'update.img'
 E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
@@ -66,9 +67,12 @@ E_STRING_CHECK_CHANNEL_FAIL   = 11
 E_STRING_CHECK_NOT_OLDVERSION = 12
 E_STRING_CHECK_FAILED    = 13
 E_STRING_CHECK_HAVE_NONE = 14
-E_STRING_CHECK_DOWNLOADING    = 15
-E_STRING_CHECK_HDD = 16
-E_STRING_CHECK_HDD_SPACE = 17
+E_STRING_CHECK_DOWNLOADING = 15
+E_STRING_CHECK_HDD         = 16
+E_STRING_CHECK_HDD_SPACE   = 17
+E_STRING_CHECK_BLOCK_FLASH = 18
+E_STRING_CHECK_BLOCK_SIZE  = 19
+E_STRING_CHECK_NAND_WRITE  = 20
 
 UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
@@ -425,6 +429,12 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Downloading...' )
 		elif aMsg == E_STRING_CHECK_HDD :
 			line = MR_LANG( 'Check your HDD device' )
+		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
+			line = MR_LANG( 'Check your Flash device' )
+		elif aMsg == E_STRING_CHECK_BLOCK_SIZE :
+			line = MR_LANG( 'Not enough space on Flash' )
+		elif aMsg == E_STRING_CHECK_NAND_WRITE :
+			line = MR_LANG( 'Fail to Flash write, Try again' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -510,8 +520,12 @@ class SystemUpdate( SettingWindow ) :
 				self.mIsDownload = True
 				buttonFocus  = E_Input02
 				button2Enable = True
-				button2Label  = MR_LANG( 'Copy to USB' )
-				button2Desc   = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
+
+				button2Label = MR_LANG( 'Copy to HDD' )
+				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
+				if E_UPDATE_FIRMWARE_USE_USB :
+					button2Label  = MR_LANG( 'Copy to USB' )
+					button2Desc   = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 
 			else :
 				buttonFocus  = E_Input02
@@ -913,12 +927,14 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			unpackPath = E_DEFAULT_PATH_DOWNLOAD
+			stepMsg = MR_LANG( 'Copying files to HDD drive...' )
 			if E_UPDATE_FIRMWARE_USE_USB :
 				unpackPath = self.mDataCache.USB_GetMountPath( )
+				stepMsg = MR_LANG( 'Copying files to USB drive...' )
 
 			if unpackPath :
 				time.sleep( 0.3 )
-				threadDialog = self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
+				threadDialog = self.ShowProgressDialog( 60, stepMsg, None, strStepNo )
 				self.OpenBusyDialog( )
 				stepResult = UnpackToUSB( tempFile, unpackPath, self.mPVSData.mUnpackSize, E_DOWNLOAD_PATH_UNZIPFILES )
 				self.CloseBusyDialog( )
@@ -962,7 +978,9 @@ class SystemUpdate( SettingWindow ) :
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
-			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB%s DURING THE UPGRADING' )% NEW_LINE
+			line1 = MR_LANG( 'DO NOT POWER OFF%s DURING THE UPGRADING' )% NEW_LINE
+			if E_UPDATE_FIRMWARE_USE_USB :
+				line1 = MR_LANG( 'DO NOT REMOVE YOUR USB%s DURING THE UPGRADING' )% NEW_LINE
 			#line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
@@ -970,7 +988,8 @@ class SystemUpdate( SettingWindow ) :
 			ret = dialog.IsOK( )
 			if ret == E_DIALOG_STATE_YES :
 				self.CheckItems( )
-				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+				if E_UPDATE_FIRMWARE_USE_USB :
+					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 				self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
@@ -1022,6 +1041,26 @@ class SystemUpdate( SettingWindow ) :
 		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
 			return
 
+		#flash write from HDD
+		if not E_UPDATE_FIRMWARE_USE_USB :
+			writeFile = GetImgPath( E_DOWNLOAD_PATH_UNZIPFILES, E_DEFAULT_NAND_IMAGE )
+			if not writeFile :
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+				return 
+
+			imgFile = '%s/%s'% ( unpackPath, writeFile )
+			ret = SetWriteToFlash( imgFile )
+			if ret != True :
+				if ret == -1 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+				elif ret == -2 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_FLASH )
+				elif ret == -3 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_SIZE )
+				elif ret == -4 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_NAND_WRITE )
+
+				return
 
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
 		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
