@@ -19,6 +19,7 @@ class EditSatellite( SettingWindow ) :
 		self.SetFrontdisplayMessage( 'Edit Satellite' )
 		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Edit Satellite' ) ) )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :

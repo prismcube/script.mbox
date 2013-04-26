@@ -360,15 +360,20 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
 			self.setProperty( 'ViewMode', 'common' )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.setProperty( 'ViewMode', 'thumbnail' )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Thumbnail' ) ), 0 )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
 			self.setProperty( 'ViewMode', 'posterwrap' )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ) ), 0 )
 		elif self.mViewMode == E_VIEW_FANART :			
 			self.setProperty( 'ViewMode', 'panart' )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ) ), 0 )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
 			self.setProperty( 'ViewMode', 'common' )
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
 
 		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 		
@@ -749,7 +754,7 @@ class ArchiveWindow( BaseWindow ) :
 				LOG_TRACE('Offset Test =%s' %playOffset )
 				if playOffset < 0 :
 					playOffset = 0
-				context.append( ContextItem( MR_LANG( 'Resume from %s' %(TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
+				context.append( ContextItem( '%s %s' %(MR_LANG( 'Resume from'), TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ), CONTEXT_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )				

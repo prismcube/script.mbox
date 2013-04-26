@@ -93,6 +93,9 @@ class DataCacheMgr( object ) :
 		self.mCurrentChannel					= None
 		self.mOldChannel						= self.Channel_GetCurrent( True )
 		self.mOldChannelList					= []
+		self.mBackupOldChannel					= None
+		self.mBackupOldChannelList				= []
+
 		self.mLocalOffset						= 0
 		self.mLocalTime							= 0
 		self.mAllSatelliteList					= None
@@ -538,7 +541,8 @@ class DataCacheMgr( object ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )
-		if transponder :
+
+		if transponder and len( transponder ) > aIndex :
 			return transponder[ aIndex ]
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
@@ -960,7 +964,18 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_ResetOldChannelList( self ) :
+		self.mOldChannel = None
 		self.mOldChannelList = []
+
+
+	def Channel_BackupOldChannelList( self ) :
+		self.mBackupOldChannel = self.mOldChannel
+		self.mBackupOldChannelList = copy.deepcopy( self.mOldChannelList )
+
+
+	def Channel_RestoreOldChannelList( self ) :
+		self.mOldChannel = self.mBackupOldChannel
+		self.mOldChannelList = copy.deepcopy( self.mBackupOldChannel )
 
 
 	def Channel_GetCurrentByPlaying( self ) :
@@ -1334,10 +1349,12 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_Backup( self ) :
+		self.Channel_BackupOldChannelList( )
 		return self.mCommander.Channel_Backup( )
 
 
 	def Channel_Restore( self, aRestore ) :
+		self.Channel_RestoreOldChannelList( )
 		return self.mCommander.Channel_Restore( aRestore )
 
 
@@ -2046,7 +2063,6 @@ class DataCacheMgr( object ) :
 				lastChannelProperty = 'Last Radio Number'
 
 			iChannel = None
-			self.mOldChannelList = []
 			#1.default channel, First Channel
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				iChannel = self.mChannelList[0]
@@ -2062,6 +2078,8 @@ class DataCacheMgr( object ) :
 			if iChannel :
 				self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 				#LOG_TRACE( 'tune Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+
+			self.Channel_ResetOldChannelList( )
 
 
 		except Exception, e :
@@ -2216,7 +2234,8 @@ class DataCacheMgr( object ) :
 	def SetDefaultByFactoryReset( self ) :
 		LOG_TRACE('-------factory reset')
 		self.mPMTListHash = {}
-		self.mOldChannelList = []
+		self.Channel_ResetOldChannelList( )
+		self.InitBookmarkButton( )
 		#1. pincode : m/w (super pin)
 		#2. video : 1080i, normal, RGB
 		LOG_TRACE( '>>>>>>>> Default init : Video <<<<<<<<' )
@@ -2293,4 +2312,10 @@ class DataCacheMgr( object ) :
 
 	def SetBookmarkHash( self, aControlId, aBookmark ) :
 		self.mBookmarkHash[aBookmark] = aControlId
+
+
+	def DeleteBookmarkHash( self, aBookmark ) :
+		if self.GetBookmarkHash( aBookmark ) != -1 :
+			del self.mBookmarkHash[aBookmark]
+
 

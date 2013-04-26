@@ -56,6 +56,7 @@ WIN_ID_INFO_PLATE					= 31
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
+WIN_ID_ZOOM							= 35
 
 WIN_ID_HIDDEN_TEST					= 99
 
@@ -294,46 +295,46 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.Favorites import Favorites
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
+			from pvr.gui.windows.Zoom import Zoom
 			from pvr.HiddenTest import HiddenTest
 
 
 			if E_SUPPORT_SINGLE_WINDOW_MODE :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
 				LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
-				self.mWindows[WIN_ID_MAINMENU] = MainMenu( self.mRootWindow  )
-				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW] = ChannelListWindow( self.mRootWindow  )
-				self.mWindows[WIN_ID_LIVE_PLATE] = LivePlate( self.mRootWindow  )
-				self.mWindows[WIN_ID_TIMESHIFT_PLATE] = TimeShiftPlate( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIGURE] = Configure( self.mRootWindow  )
-				self.mWindows[WIN_ID_INSTALLATION] = Installation( self.mRootWindow  )
-				self.mWindows[WIN_ID_ANTENNA_SETUP] = AntennaSetup( self.mRootWindow  )
-				self.mWindows[WIN_ID_TUNER_CONFIGURATION] = TunerConfiguration( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_SIMPLE] = SatelliteConfigSimple( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS] = SatelliteConfigMotorizedUsals( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12] = SatelliteConfigMotorized12( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE] = SatelliteConfigOnecable( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE_2] = SatelliteConfigOnecable2( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_10] = SatelliteConfigDisEqC10( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_11] = SatelliteConfigDisEqC11( self.mRootWindow  )
-				self.mWindows[WIN_ID_CHANNEL_SEARCH] = ChannelSearch( self.mRootWindow  )
-				self.mWindows[WIN_ID_AUTOMATIC_SCAN] = AutomaticScan( self.mRootWindow  )
-				self.mWindows[WIN_ID_MANUAL_SCAN] = ManualScan( self.mRootWindow  )
-				self.mWindows[WIN_ID_EDIT_SATELLITE] = EditSatellite( self.mRootWindow  )
-				self.mWindows[WIN_ID_EDIT_TRANSPONDER] = EditTransponder( self.mRootWindow  )
-				self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow  )
-				self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow  )
-				self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow  )
-				self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow  )
-				self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow  )
-				self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow  )
-				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow  )
-				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow  )
-				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow  )
-				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow  )
-				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow  )								
-				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow  )
-
-				
+				self.mWindows[WIN_ID_MAINMENU] = MainMenu( self.mRootWindow )
+				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW] = ChannelListWindow( self.mRootWindow )
+				self.mWindows[WIN_ID_LIVE_PLATE] = LivePlate( self.mRootWindow )
+				self.mWindows[WIN_ID_TIMESHIFT_PLATE] = TimeShiftPlate( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIGURE] = Configure( self.mRootWindow )
+				self.mWindows[WIN_ID_INSTALLATION] = Installation( self.mRootWindow )
+				self.mWindows[WIN_ID_ANTENNA_SETUP] = AntennaSetup( self.mRootWindow )
+				self.mWindows[WIN_ID_TUNER_CONFIGURATION] = TunerConfiguration( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_SIMPLE] = SatelliteConfigSimple( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS] = SatelliteConfigMotorizedUsals( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12] = SatelliteConfigMotorized12( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_ONECABLE] = SatelliteConfigOnecable( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_ONECABLE_2] = SatelliteConfigOnecable2( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_DISEQC_10] = SatelliteConfigDisEqC10( self.mRootWindow )
+				self.mWindows[WIN_ID_CONFIG_DISEQC_11] = SatelliteConfigDisEqC11( self.mRootWindow )
+				self.mWindows[WIN_ID_CHANNEL_SEARCH] = ChannelSearch( self.mRootWindow )
+				self.mWindows[WIN_ID_AUTOMATIC_SCAN] = AutomaticScan( self.mRootWindow )
+				self.mWindows[WIN_ID_MANUAL_SCAN] = ManualScan( self.mRootWindow )
+				self.mWindows[WIN_ID_EDIT_SATELLITE] = EditSatellite( self.mRootWindow )
+				self.mWindows[WIN_ID_EDIT_TRANSPONDER] = EditTransponder( self.mRootWindow )
+				self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow )
+				self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow )
+				self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow )
+				self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow )
+				self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow )
+				self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow )
+				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow )
+				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow )
+				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
+				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
+				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
+				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow  )
+				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
 
 			else :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
@@ -378,6 +379,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 				#self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGSearchWindow.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )
+				self.mWindows[WIN_ID_ZOOM] = Zoom( 'Zoom.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
 				"""

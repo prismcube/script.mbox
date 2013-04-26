@@ -221,17 +221,20 @@ class TunerConfigMgr( object ) :
 			if tuner2ConfiguredList :
 				for i in range( len( tuner2ConfiguredList ) ) :
 					tuner2ConfiguredList[i].mTunerIndex = E_TUNER_2
+					#if self.GetTunerTypeByTunerIndex( E_TUNER_1 ) == E_ONE_CABLE :
+					#	tuner2ConfiguredList[i].mOneCablePin		= ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
+					#	tuner2ConfiguredList[i].mOneCableUBSlot		= ElisPropertyInt( 'Tuner2 SCR' , self.mCommander ).GetProp( )
+					#	tuner2ConfiguredList[i].mOneCableUBFreq		= ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
+				
 		else :
 			if len( tuner2ConfiguredList ) > 0 :
 				self.SatelliteSetFlag( tuner2ConfiguredList, E_TUNER_2, self.GetTunerTypeByTunerIndex( E_TUNER_2 ) )
 
-		"""
 		for st in tuner1ConfiguredList :
 			st.printdebug( )
 
 		for st in tuner2ConfiguredList :
 			st.printdebug( )
-		"""
 
 		if len( tuner1ConfiguredList ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( tuner1ConfiguredList )

@@ -18,6 +18,7 @@ class ConditionalAccess( SettingWindow ) :
 		self.mEventBus.Register( self )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Conditional Access' ) )
+		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Conditional Access' ) ) )
 		self.SetPipScreen( )
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )

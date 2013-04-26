@@ -202,6 +202,7 @@ class GlobalEvent( object ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) and mute :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
 
+		self.mDataCache.InitBookmarkButton( )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT )
 		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )

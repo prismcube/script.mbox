@@ -107,20 +107,20 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def InitList( self ) :
-		if self.mDefaultList == None or len( self.mDefaultList ) < 1 :
-			return
-
 		self.mCtrlList.reset( )
 		self.mListItems = []
+
+		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
+
+		if not self.mDefaultList or len( self.mDefaultList ) < 1 :
+			return
 
 		if self.mMode == E_MODE_CHANNEL_LIST :
 			self.ChannelItems( )
 		else :
 			self.ListItems( )
 
-		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
-
 		idx = self.mCtrlList.getSelectedPosition( )
 		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
 
@@ -132,7 +132,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def ChannelItems( self ) :
-
 		for iChannel in self.mDefaultList :
 			#ToDO : isAvailable check
 			if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :

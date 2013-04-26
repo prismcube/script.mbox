@@ -111,6 +111,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Channel List' )
+		self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -572,6 +573,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#initialize get epg event
 			self.mFlag_ModeChanged = False
+			self.mDataCache.Channel_ResetOldChannelList( )
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -621,6 +623,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
+				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )
@@ -695,6 +698,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#clear label
 					self.ResetLabel( )
+					self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 					self.UpdateChannelAndEPG( )
 
 
@@ -2159,6 +2163,9 @@ class ChannelListWindow( BaseWindow ) :
 				refreshForce = True
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV_CURRENT :
+			if not self.mFavoriteGroupList or len( self.mFavoriteGroupList ) < 1 :
+				return
+
 			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			if aGroupName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )

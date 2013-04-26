@@ -41,10 +41,15 @@ class SatelliteConfigDisEqC10( FTIWindow ) :
 		self.mSearchMode = ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).GetProp( )
 		ElisPropertyEnum( 'Channel Search Mode', self.mCommander ).SetProp( 0 )
 
+		self.mSelectedTransponderIndex	= 0
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
+		if self.getProperty( 'IsFTI' ) == 'True' :
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
+		else :
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 
 		self.SetSingleWindowPosition( E_CONFIG_DISEQC_10_BASE_ID )
 		self.InitConfig( )

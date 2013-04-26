@@ -46,6 +46,10 @@ class SatelliteConfigSimple( FTIWindow ) :
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
+		if self.getProperty( 'IsFTI' ) == 'True' :
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
+		else :
+			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )
 
 		self.SetSingleWindowPosition( E_CONFIG_SIMPLE_BASE_ID )
 		self.InitConfig( )
