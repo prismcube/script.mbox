@@ -867,8 +867,8 @@ class EPGWindow( BaseWindow ) :
 
 					if E_USE_CHANNEL_LOGO == True :
 						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-						LOG_TRACE( 'lael98 logo=%s' %logo )
-						LOG_TRACE( 'lael98 logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+						#LOG_TRACE( 'lael98 logo=%s' %logo )
+						#LOG_TRACE( 'lael98 logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
 						self.mCtrlChannelLogos[i].setImage( self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
 						self.mCtrlChannelLogos[i].setVisible( True )						
 					
@@ -997,7 +997,7 @@ class EPGWindow( BaseWindow ) :
 
 		if row <  E_GRID_MAX_ROW_COUNT :
 			for i in range(E_GRID_MAX_ROW_COUNT - row ) :
-				LOG_TRACE('i=%d row=%d' %(i, row) )
+				#LOG_TRACE('i=%d row=%d' %(i, row) )
 				self.mCtrlChannelButtons[row +i].setLabel( ' ')
 				self.mCtrlChannelLogos[row +i].setVisible( False )
 
