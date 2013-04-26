@@ -44,8 +44,9 @@ E_UPDATE_STEP_CHECKFILE   = 4
 E_UPDATE_STEP_CHECKUSB    = 5
 E_UPDATE_STEP_UNPACKING   = 6
 E_UPDATE_STEP_VERIFY      = 7
-E_UPDATE_STEP_FINISH      = 8
-E_UPDATE_STEP_UPDATE_NOW  = 9
+E_UPDATE_STEP_NAND_WRITE  = 8
+E_UPDATE_STEP_FINISH      = 9
+E_UPDATE_STEP_UPDATE_NOW  = 10
 E_UPDATE_STEP_ERROR_NETWORK = 10
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
@@ -968,6 +969,39 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
 				stepResult = False
 
+		elif aStep == E_UPDATE_STEP_NAND_WRITE :
+			writeFile = GetImgPath( E_DOWNLOAD_PATH_UNZIPFILES, E_DEFAULT_NAND_IMAGE )
+			if not writeFile :
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+				return False
+
+			imgFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, writeFile )
+			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal Storage...' ), None, strStepNo )
+
+			self.OpenBusyDialog( )
+			ret = SetWriteToFlash( imgFile )
+			self.CloseBusyDialog( )
+
+			if self.mShowProgressThread :
+				self.mShowProgressThread.SetResult( True )
+				self.mShowProgressThread = None
+			if threadDialog :
+				threadDialog.join( )
+			time.sleep( 1 )
+
+			if ret != True :
+				if ret == -1 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+				elif ret == -2 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_FLASH )
+				elif ret == -3 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_SIZE )
+				elif ret == -4 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_NAND_WRITE )
+
+				stepResult = False
+
+
 		elif aStep == E_UPDATE_STEP_FINISH :
 			time.sleep( 0.3 )
 			#self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_FINISH )
@@ -990,7 +1024,8 @@ class SystemUpdate( SettingWindow ) :
 				self.CheckItems( )
 				if E_UPDATE_FIRMWARE_USE_USB :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
-				RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
+					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
+
 				self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
 
@@ -1004,7 +1039,7 @@ class SystemUpdate( SettingWindow ) :
 
 		return stepResult
 
-		
+
 	def UpdateHandler( self ) :
 		#LOG_TRACE('----------------pvs[%s]'% self.mPVSData )
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
@@ -1043,23 +1078,7 @@ class SystemUpdate( SettingWindow ) :
 
 		#flash write from HDD
 		if not E_UPDATE_FIRMWARE_USE_USB :
-			writeFile = GetImgPath( E_DOWNLOAD_PATH_UNZIPFILES, E_DEFAULT_NAND_IMAGE )
-			if not writeFile :
-				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
-				return 
-
-			imgFile = '%s/%s'% ( unpackPath, writeFile )
-			ret = SetWriteToFlash( imgFile )
-			if ret != True :
-				if ret == -1 :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
-				elif ret == -2 :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_FLASH )
-				elif ret == -3 :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_BLOCK_SIZE )
-				elif ret == -4 :
-					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_NAND_WRITE )
-
+			if not self.UpdateStepPage( E_UPDATE_STEP_NAND_WRITE ) :
 				return
 
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
@@ -1304,7 +1323,7 @@ class SystemUpdate( SettingWindow ) :
 		if not unpackPath :
 			return False
 
-		self.OpenBusyDialog( )
+		#self.OpenBusyDialog( )
 		if aShowProgress :
 			dialogProgress = xbmcgui.DialogProgress( )
 			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
@@ -1335,7 +1354,7 @@ class SystemUpdate( SettingWindow ) :
 		if aShowProgress :
 			dialogProgress.close( )
 
-		self.CloseBusyDialog( )
+		#self.CloseBusyDialog( )
 		time.sleep( 0.3 )
 
 		return isVerify
