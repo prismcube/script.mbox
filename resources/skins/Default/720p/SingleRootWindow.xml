@@ -35,10 +35,11 @@ Search for window name
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 		</control>
 
+		<!-- Window Header Title  -->
+		<include>DefaultHeaderTitle</include>
 
 		<!-- Fake button for animation -->
 		<include>DefaultFakeButton</include>
-
 
 		<!-- E_SettingWindowBackground -->
 		<control type="group">
@@ -1007,7 +1008,7 @@ Search for window name
 				<posy>-20</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300021">
-					<posx>150</posx>
+					<posx>106</posx>
 					<posy>102</posy>
 					<width>400</width>
 					<height>28</height>
@@ -1025,7 +1026,7 @@ Search for window name
 					<textcolor>blue</textcolor>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
-				<control type="image">
+				<!--control type="image">
 					<posx>100</posx>
 					<posy>100</posy>
 					<width>50</width>
@@ -1040,7 +1041,7 @@ Search for window name
 					<height>30</height>
 					<texture>icon_radio2.png</texture>
 					<visible>substring(Window.Property(TVRadio),true)</visible>
-				</control>
+				</control-->
 
 			</control>
 
@@ -3157,7 +3158,8 @@ Search for window name
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>$LOCALIZE[SCRIPT1055] - $INFO[Container(1509000).ListItem.Label]</label>
+					<!--label>$LOCALIZE[SCRIPT1055] - $INFO[Container(1509000).ListItem.Label]</label-->
+					<label>$INFO[Container(1509000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
@@ -3319,6 +3321,35 @@ Search for window name
 						<texture border="15">ContentPanelMirror.png</texture>
 					</control>
 				</control>
+			</control>
+
+			<!-- Header Title -->
+			<control type="image">
+				<include>DefaultWindowOpenCloseAnimation</include>
+				<description>Section header image</description>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+				<posx>20</posx>
+				<posy>3</posy>
+				<width>35</width>
+				<height>35</height>
+				<aspectratio>keep</aspectratio>
+				<texture>icon_video.png</texture>
+			</control>
+
+			<control type="label" id="1009551">
+				<include>DefaultWindowOpenCloseAnimation</include>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+				<posx>65</posx>
+				<posy>5</posy>
+				<width min="0" max="800">auto</width>
+				<height>30</height>
+				<font>font14</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[Control.GetLabel]</label>
 			</control>
 
 			<control type="group" id="3309003">

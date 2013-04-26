@@ -469,16 +469,21 @@ class EPGWindow( BaseWindow ) :
 	def UpdateViewMode( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
 			self.setProperty( 'EPGMode', 'grid' )
+			self.SetHeaderTitle( MR_LANG( '' ) )
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.setProperty( 'EPGMode', 'channel' )
+			self.SetHeaderTitle( MR_LANG( 'EPG - Channel' ) )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.setProperty( 'EPGMode', 'current' )
+			self.SetHeaderTitle( MR_LANG( 'EPG - Current' ) )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
 			self.setProperty( 'EPGMode', 'following' )
+			self.SetHeaderTitle( MR_LANG( 'EPG - Following' ) )
 		else :
 			self.mEPGMode = E_VIEW_GRID 		
 			self.setProperty( 'EPGMode', 'grid' )
-			
+			self.SetHeaderTitle( MR_LANG( '' ) )
+
 		LOG_TRACE( '---------------------self.mEPGMode=%d' %self.mEPGMode )
 
 

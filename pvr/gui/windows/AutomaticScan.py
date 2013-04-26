@@ -18,6 +18,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( 'Automatic Scan' )
+		self.SetHeaderTitle( MR_LANG( 'Installation - Channel Search' ) )
 		
 		self.mSatelliteIndex = 0
 		self.mFormattedList = None

@@ -360,15 +360,20 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
 			self.setProperty( 'ViewMode', 'common' )
+			self.SetHeaderTitle( MR_LANG( 'Archive - List' ), 0 )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.setProperty( 'ViewMode', 'thumbnail' )
+			self.SetHeaderTitle( MR_LANG( 'Archive - Thumbnail' ), 0 )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
 			self.setProperty( 'ViewMode', 'posterwrap' )
+			self.SetHeaderTitle( MR_LANG( 'Archive - Poster_wrap' ), 0 )
 		elif self.mViewMode == E_VIEW_FANART :			
 			self.setProperty( 'ViewMode', 'panart' )
+			self.SetHeaderTitle( MR_LANG( 'Archive - Fanart' ), 0 )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
 			self.setProperty( 'ViewMode', 'common' )
+			self.SetHeaderTitle( MR_LANG( 'Archive - List' ), 0 )
 
 		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 		

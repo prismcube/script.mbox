@@ -206,6 +206,13 @@ class BaseWindow( BaseObjectWindow ) :
 		SetLock2( False )
 
 
+	def SetHeaderTitle( self, aLabel, isDefaultControlId = 1 ) :
+		if isDefaultControlId == 0 :
+			self.getControl( E_ARCHIVE_HEADER_TITLE ).setLabel( aLabel )
+		else :
+			self.getControl( E_DEFAULT_HEADER_TITLE ).setLabel( aLabel )
+
+
 	def SetRelayAction( self, aAction ) :
 		return
 		LOG_TRACE( 'RelayAction TEST = %d' %aAction.getId() )
