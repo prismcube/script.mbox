@@ -1972,6 +1972,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.UpdateCurrentChannel( )
 		self.UpdateAllEPGList( )
+		self.GridSetFocus( )		
 
 		return True
 
