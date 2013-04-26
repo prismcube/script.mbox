@@ -860,8 +860,8 @@ def ReadToCmdBlock( ) :
 	return cmdBlock
 
 
-def GetBlockByUpdateSection( aSize ) :
-	if aSize < 1 :
+def GetBlockByUpdateSection( aSize, aChecksum = True ) :
+	if aChecksum and aSize < 1 :
 		return -1
 
 	cmdBlock = ReadToCmdBlock( )
@@ -910,10 +910,26 @@ def GetBlockByUpdateSection( aSize ) :
 
 	LOG_TRACE( '------updateSection : sizeT[%s], unit[%s], sizeByte[%s]'% ( sizeT,unit,sizeByte ) )
 
-	if sizeByte < aSize :
+	if aChecksum and sizeByte < aSize :
 		return -3
 
 	return mtdNumber
+
+
+def InitFlash( ) :
+	mtdNumber = GetBlockByUpdateSection( 0, False )
+	if mtdNumber < 0 :
+		return mtdNumber
+
+	try :
+		cmd1 = 'flash_erase /dev/mtd%s 0 0'% mtdNumber
+		returnCode = os.system( cmd1 )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+		LOG_TRACE( '---------erase cmd1[%s] returnCode[%s]'% ( cmd1, returnCode ) )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd1[%s] cmd2[%s]'% ( e, cmd1, cmd2 ) )
 
 
 def SetWriteToFlash( aFile ) :

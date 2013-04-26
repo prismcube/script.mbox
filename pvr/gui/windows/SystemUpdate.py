@@ -477,7 +477,7 @@ class SystemUpdate( SettingWindow ) :
 			"""
 
 
-	def InitPVSData( self ) :
+	def InitPVSData( self, aForce = False ) :
 		isInit = True
 		showProgress = E_TAG_FALSE
 		buttonFocus  = E_Input01
@@ -507,7 +507,7 @@ class SystemUpdate( SettingWindow ) :
 			self.mIsDownload = False
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 
-			if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
+			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
 				isInit = 2
 				buttonFocus  = E_Input01
 				button2Enable = False
@@ -702,6 +702,8 @@ class SystemUpdate( SettingWindow ) :
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
 				if E_UPDATE_FIRMWARE_USE_USB :
 					unpackPath = self.mDataCache.USB_GetMountPath( )
+				else :
+					InitFlash( )
 
 				if unpackPath :
 					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
@@ -768,7 +770,7 @@ class SystemUpdate( SettingWindow ) :
 			#if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
-			ret = self.InitPVSData( )
+			ret = self.InitPVSData( True )
 			self.mStepPage = E_UPDATE_STEP_READY
 
 			unpackPath = E_DEFAULT_PATH_DOWNLOAD
@@ -777,19 +779,22 @@ class SystemUpdate( SettingWindow ) :
 
 			if not ret :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
+				return
 
-			else :
-				if ret == 2 :
-					self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
+			#if ret == 2 :
+			#	self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
+			#	return
 
-				elif unpackPath :
-					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
-					#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
-					request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
-					if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-						RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+			if unpackPath :
+				#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
+				#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
+				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
+				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
+					if not E_UPDATE_FIRMWARE_USE_USB :
+						InitFlash( )
 
-					self.SetFocusControl( E_Input02 )
+				self.SetFocusControl( E_Input02 )
 
 		else :
 			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )
