@@ -256,6 +256,28 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def LoadInit( self ) :
+		global E_UPDATE_FIRMWARE_USE_USB, E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_HDD
+		E_UPDATE_FIRMWARE_USE_USB = False
+
+		hddPath = self.mDataCache.HDD_GetMountPath( 'program' )
+		if hddPath :
+			LOG_TRACE( 'Check HDD True[%s]'% hddPath )
+			E_DEFAULT_PATH_HDD = hddPath
+			E_DEFAULT_PATH_DOWNLOAD = '%s/download'% E_DEFAULT_PATH_HDD
+
+		else :
+			E_UPDATE_FIRMWARE_USE_USB = True
+
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if not usbPath :
+				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_USB_NOT )
+				self.OpenAnimation( )
+				self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+				self.UpdateStepPage( E_UPDATE_STEP_HOME )
+				return
+
+			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
+
 		if self.mPVSData and self.mPVSData.mError == 0 :
 			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
@@ -1138,43 +1160,40 @@ class SystemUpdate( SettingWindow ) :
 	def CheckInitDevice( self ) :
 		sizeCheck = True
 
-		if CheckHdd( ) :
-			hddPath = self.mDataCache.HDD_GetMountPath( )
-			if hddPath :
-				global E_DEFAULT_PATH_HDD
-				E_DEFAULT_PATH_HDD = hddPath
+		global E_UPDATE_FIRMWARE_USE_USB, E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_HDD
+		E_UPDATE_FIRMWARE_USE_USB = False
 
-			else :
-				LOG_TRACE( 'Not Exist HDD' )
-				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
-				return False
-
+		hddPath = self.mDataCache.HDD_GetMountPath( 'program' )
+		if hddPath :
 			LOG_TRACE( 'Check HDD True[%s]'% hddPath )
+			E_DEFAULT_PATH_HDD = hddPath
+			E_DEFAULT_PATH_DOWNLOAD = '%s/download'% E_DEFAULT_PATH_HDD
+
 			if GetDeviceSize( E_DEFAULT_PATH_HDD ) < self.mPVSData.mSize :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_DISKFULL )
 				sizeCheck = False
 
 			return sizeCheck
-		LOG_TRACE( 'Not Exist HDD' )
 
-		if E_UPDATE_FIRMWARE_USE_USB :
+		else :
+			LOG_TRACE( 'Not Exist HDD' )
+			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
+			E_UPDATE_FIRMWARE_USE_USB = True
+
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if not usbPath :
 				LOG_TRACE( 'Not Exist USB' )
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 				return False
 
-			global E_DEFAULT_PATH_DOWNLOAD
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
-
 			usbSize = GetDeviceSize( usbPath )
 			if usbSize <= ( self.mPVSData.mSize + self.mPVSData.mUnpackSize ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
 				sizeCheck = False
 
 			LOG_TRACE( 'usbSize[%s] downSize[%s] unzip[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, self.mPVSData.mUnpackSize, usbPath ) )
-
-		return sizeCheck
+			return sizeCheck
 
 
 	#make tempDir, write local file
