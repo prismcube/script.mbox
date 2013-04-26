@@ -33,6 +33,7 @@ class TimerWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
+		self.SetHeaderTitle( MR_LANG( 'EPG - Timer List' ) )
 		self.mSelectedWeeklyTimer = 0
 
 		self.mListItems = []

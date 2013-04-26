@@ -94,6 +94,7 @@ class SystemInfo( SettingWindow ) :
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
+		self.SetHeaderTitle( MR_LANG( 'System Information' ) )
 
 		self.mCtrlLeftGroup = self.getControl( E_SYSTEM_INFO_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )

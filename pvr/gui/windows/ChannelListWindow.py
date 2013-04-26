@@ -111,6 +111,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Channel List' )
+		self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
@@ -622,6 +623,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
+				self.SetHeaderTitle( MR_LANG( 'Channel List - Edit Channels' ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )
@@ -696,6 +698,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#clear label
 					self.ResetLabel( )
+					self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 					self.UpdateChannelAndEPG( )
 
 

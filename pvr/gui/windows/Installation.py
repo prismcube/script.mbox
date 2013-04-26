@@ -47,6 +47,7 @@ class Installation( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( 'Installation' )
+		self.SetHeaderTitle( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		groupItems = []
 

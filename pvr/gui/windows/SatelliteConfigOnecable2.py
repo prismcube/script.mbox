@@ -25,6 +25,10 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
+		if self.getProperty( 'IsFTI' ) == 'True' :
+			self.SetHeaderTitle( MR_LANG( 'Installation - First Installation' ) )
+		else :
+			self.SetHeaderTitle( MR_LANG( 'Installation - Antenna Setup' ) )
 
 		if self.mLoadConfig == True :
 			self.LoadConfig( )

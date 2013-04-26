@@ -15,6 +15,7 @@ class ChannelSearch( SettingWindow ) :
 		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
 		self.SetFrontdisplayMessage( 'Channel Search' )		
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
+		self.SetHeaderTitle( MR_LANG( 'Installation - Channel Search' ) )
 
 		self.SetPipScreen( )
 
