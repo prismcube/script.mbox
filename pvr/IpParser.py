@@ -258,6 +258,7 @@ class IpParser( object ) :
 			status = True
 			inputFile.close( )
 			outputFile.close( )
+			os.system( 'sync' )
 			return status
 
 		except Exception, e :
@@ -537,6 +538,7 @@ class IpParser( object ) :
 			openFile.write( words )
 			openFile.close( )
 			self.WriteInterfaces( )
+			os.system( 'sync' )
 			return True
 
 		except Exception, e :
@@ -560,6 +562,7 @@ class IpParser( object ) :
 			inputFile.close( )
 			outputFile.close( )
 			os.system( COMMAND_COPY_INTERFACES )
+			os.system( 'sync' )
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
@@ -661,6 +664,7 @@ class IpParser( object ) :
 			status = True
 			inputFile.close( )
 			outputFile.close( )
+			os.system( 'sync' )
 			return status
 
 		except Exception, e :
