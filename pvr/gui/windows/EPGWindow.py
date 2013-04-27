@@ -2458,7 +2458,10 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
 			self.mVisibleFocusRow = 0
 			self.mVisibleFocusCol = 0
-			self.setFocusId( BUTTON_ID_BASE_GRID )
+			if self.mChannelList == None or len( self.mChannelList ) == 0 :
+				self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
+			else :			
+				self.setFocusId( BUTTON_ID_BASE_GRID )
 			self.mCtrlGridEPGInfo.setLabel(' ' )
 
 
