@@ -3249,7 +3249,8 @@ Search for window name
 							<width>750</width>
 							<height>40</height>
 							<texture border="0,2,0,2">MenuItemFO.png</texture>
-							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>
+							<visible>Control.HasFocus(1709000)</visible>
+							<!--<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>-->
 						</control>
 						<control type="label">
 							<posx>10</posx>
