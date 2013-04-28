@@ -454,7 +454,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_HDD :
 			line = MR_LANG( 'Check your HDD' )
 		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
-			line = MR_LANG( 'Check your Flash device' )
+			line = MR_LANG( 'Check your flash memory' )
 		elif aMsg == E_STRING_CHECK_BLOCK_SIZE :
 			line = MR_LANG( 'Not enough space on flash memory' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
@@ -1004,7 +1004,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			imgFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, writeFile )
-			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal Storage...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal storage...' ), None, strStepNo )
 
 			self.OpenBusyDialog( )
 			ret = SetWriteToFlash( imgFile )
