@@ -3249,7 +3249,8 @@ Search for window name
 							<width>750</width>
 							<height>40</height>
 							<texture border="0,2,0,2">MenuItemFO.png</texture>
-							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>
+							<visible>Control.HasFocus(1709000)</visible>
+							<!--<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>-->
 						</control>
 						<control type="label">
 							<posx>10</posx>
@@ -4350,7 +4351,14 @@ Search for window name
 						<visible>true</visible>
 					</control>
 
-					<control type="label" id="3703502">
+					<control type="image" id="3703502">
+						<posx>-30</posx>
+						<posy>505</posy>
+						<width>30</width>
+						<height>30</height>
+					</control>
+
+					<control type="label" id="3703503">
 						<description>EPG</description>
 						<posx>0</posx>
 						<posy>500</posy>
@@ -4358,7 +4366,7 @@ Search for window name
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>blue</textcolor>
-						<align>center</align>						
+						<align>left</align>						
 						<aligny>center</aligny>
 						<label></label>
 					</control>
@@ -4753,6 +4761,7 @@ Search for window name
 						<width>1</width>
 						<height>498</height>
 						<texture>HomeSeparatorRed.png</texture>
+						<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
 					</control>
 				</control>
 			</control>

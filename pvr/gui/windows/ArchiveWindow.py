@@ -506,6 +506,8 @@ class ArchiveWindow( BaseWindow ) :
 
 		if aRecItem :
 			recItem = aRecItem
+			recItem.setLabel(channelName )
+			recItem.setLabel2( aRecordInfo.mRecordName )
 		else :
 			recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
 
