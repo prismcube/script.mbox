@@ -70,3 +70,13 @@ class ChannelLogoMgr( object ) :
 		return logo
 
 
+	def GetDefaultLogo( self, aServiceType=ElisEnum.E_SERVICE_TYPE_TV  ) :
+		if E_USE_CHANNEL_LOGO == False :
+			return None
+	
+		if aServiceType == ElisEnum.E_SERVICE_TYPE_TV:
+			return self.mDefaultLogo
+		else :
+			return self.mDefaultLogoRadio						
+
+

@@ -84,7 +84,7 @@ class TimeFormatEnum( object ) :
 	E_WEEK_OF_DAY			= 6
 	E_AW_DD_MON				= 7
 	E_AH_MM_SS				= 8
-
+	E_AW_DD_MM_YYYY_HH_MM	= 9
 
 def TimeToString( aTime, aFlag = 0 ) :
 	strTime = ''
@@ -94,8 +94,6 @@ def TimeToString( aTime, aFlag = 0 ) :
 		strTime = time.strftime('%H:%M', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
 		strTime = time.strftime('%d.%m.%Y %H:%M', time.gmtime( aTime ) )
-	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
-		strTime = time.strftime('%a, %d.%m.%Y %H:%M', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
 		strTime = time.strftime('%d.%m.%Y', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_AW_HH_MM :
@@ -108,6 +106,8 @@ def TimeToString( aTime, aFlag = 0 ) :
 		strTime = time.strftime('%a. %d %b', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_AH_MM_SS :
 		strTime = '%02d:%s'% ( (aTime / 3600), time.strftime('%M:%S', time.gmtime( aTime ) ) )
+	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM :
+		strTime = time.strftime('%a, %d.%m.%Y %H:%M', time.gmtime( aTime ) )
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		#print 'strTime=%s' %strTime

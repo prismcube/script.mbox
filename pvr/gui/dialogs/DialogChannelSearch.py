@@ -267,6 +267,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ShowResult( self ) :
+		self.mIsFinished = True
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
 		searchResult = MR_LANG( 'TV channels : %d %sRadio channels : %d' ) % ( tvCount, NEW_LINE, radioCount )
@@ -279,7 +280,7 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
 		dialog.doModal( )
-		self.mIsFinished = True
+		
 
 
 	def DefaultTuneInSearchedChannel( self ) :
