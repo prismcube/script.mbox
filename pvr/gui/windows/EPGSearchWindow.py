@@ -288,6 +288,14 @@ class EPGSearchWindow( BaseWindow ) :
 				else :
 					listItem.setProperty( 'TimerType', 'None' )
 
+
+				if E_USE_CHANNEL_LOGO == True :
+					if channel :
+						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+						listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mCurrentMode.mServiceType ) )
+					else :
+						listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetDefaultLogo(  self.mCurrentMode.mServiceType )  )					
+
 				#ListItem.PercentPlayed
 				if aUpdateOnly == False :
 					self.mListItems.append( listItem )
