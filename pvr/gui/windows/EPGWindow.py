@@ -74,8 +74,9 @@ BUTTON_ID_BASE_LOGS				= E_EPG_WINDOW_BASE_ID + 2101
 BUTTON_ID_BASE_GRID				= E_EPG_WINDOW_BASE_ID + 3001
 BUTTON_ID_SHOWING_DATE			= E_EPG_WINDOW_BASE_ID + 1010
 IMAGE_ID_TIME_SEPERATOR			= E_EPG_WINDOW_BASE_ID + 3500
-LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3502
 BUTTON_ID_FAKE_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
+IMAGE_ID_GRID_CAS				= E_EPG_WINDOW_BASE_ID + 3502
+LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3503
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
 BUTTON_ID_BASE_RUNNNING_REC		= E_EPG_WINDOW_BASE_ID + 3601
@@ -150,6 +151,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
+		self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 
@@ -924,7 +926,7 @@ class EPGWindow( BaseWindow ) :
 							LOG_ERR( 'Invalid width %d : i=%d j=%d' %(drawWidth,i,j) )
 
 						ctrlButton = self.mCtrlGridEPGButtonList[enableCount + col]
-						if drawWidth < 10 :
+						if drawWidth < 20 :
 							ctrlButton.setLabel( '.' )
 						else :
 							ctrlButton.setLabel( epgList[j].mEventName )
@@ -2457,6 +2459,11 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
+		channel = None
+		if self.mVisibleTopIndex + self.mVisibleFocusRow >= 0 and self.mVisibleTopIndex + self.mVisibleFocusRow < len( self.mChannelList ) :
+			channel = self.mChannelList[self.mVisibleTopIndex + self.mVisibleFocusRow]
+		else :
+			self.mCtrlGridEPGInfo.setLabel(' ')
 
 		if gridMeta :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
@@ -2464,9 +2471,9 @@ class EPGWindow( BaseWindow ) :
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 				start  = gridMeta.mEPG.mStartTime + localOffset
-				self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+				self.mCtrlGridEPGInfo.setLabel('%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
 			else :
-				self.mCtrlGridEPGInfo.setLabel(' ' )			
+				self.mCtrlGridEPGInfo.setLabel(' %04d %s' %( channel.mNumber, channel.mName) )			
 		else :
 			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
 			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, 0 ), None )
@@ -2476,9 +2483,9 @@ class EPGWindow( BaseWindow ) :
 				if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 					localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 					start  = gridMeta.mEPG.mStartTime + localOffset
-					self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+					self.mCtrlGridEPGInfo.setLabel('%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
 				else :
-					self.mCtrlGridEPGInfo.setLabel(' ' )
+					self.mCtrlGridEPGInfo.setLabel(' %04d %s' %( channel.mNumber, channel.mName) )			
 				self.mVisibleFocusCol = 0					
 
 			else :
@@ -2486,6 +2493,12 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusCol = 0
 				self.setFocusId( BUTTON_ID_BASE_GRID )
 				self.mCtrlGridEPGInfo.setLabel(' ' )
+
+		#cas image
+		if channel.mIsCA :
+			self.mCtrlGridCas.setImage('IconCas.png')
+		else :
+			self.mCtrlGridCas.setImage('')
 
 
 	def GridUpdateTimer( self ) :

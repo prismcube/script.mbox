@@ -4351,7 +4351,14 @@ Search for window name
 						<visible>true</visible>
 					</control>
 
-					<control type="label" id="3703502">
+					<control type="image" id="3703502">
+						<posx>-30</posx>
+						<posy>505</posy>
+						<width>30</width>
+						<height>30</height>
+					</control>
+
+					<control type="label" id="3703503">
 						<description>EPG</description>
 						<posx>0</posx>
 						<posy>500</posy>
@@ -4359,7 +4366,7 @@ Search for window name
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>blue</textcolor>
-						<align>center</align>						
+						<align>left</align>						
 						<aligny>center</aligny>
 						<label></label>
 					</control>
