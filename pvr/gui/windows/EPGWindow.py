@@ -2454,9 +2454,11 @@ class EPGWindow( BaseWindow ) :
 
 	def GridSetFocus( self ) :
 
-		if self.mChannelList == None or len( self.mChannelList ) == 0 :
+		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
 			return
+
+		totalCount = len( self.mChannelList )
 
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
 		channel = None
@@ -2499,6 +2501,23 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlGridCas.setImage('IconCas.png')
 		else :
 			self.mCtrlGridCas.setImage('')
+
+		#index
+		selectPosition = self.mVisibleTopIndex + self.mVisibleFocusRow + 1
+		self.setProperty( 'GridSelectedPosition', '%d' %selectPosition )
+		self.setProperty( 'GridNumItems', '%d' %(totalCount) )
+
+		totalPage = int( totalCount/E_GRID_MAX_ROW_COUNT )
+		if ( totalCount%E_GRID_MAX_ROW_COUNT )  != 0 :
+			totalPage = totalPage +1
+		self.setProperty( 'GridNumPages', '%d' %totalPage )
+		
+		currentPage = int(self.mVisibleTopIndex/E_GRID_MAX_ROW_COUNT) + 1
+		if self.mVisibleTopIndex == totalCount - E_GRID_MAX_ROW_COUNT :
+			if selectPosition > currentPage*E_GRID_MAX_ROW_COUNT :
+				currentPage = currentPage + 1
+		self.setProperty( 'GridCurrentPage', '%d' %currentPage )
+		
 
 
 	def GridUpdateTimer( self ) :
