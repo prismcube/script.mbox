@@ -387,7 +387,7 @@ E_XML_PROPERTY_HOTKEY_RED    = 'iHotkeyRed'
 E_XML_PROPERTY_HOTKEY_GREEN  = 'iHotkeyGreen'
 E_XML_PROPERTY_HOTKEY_YELLOW = 'iHotkeyYellow'
 E_XML_PROPERTY_HOTKEY_BLUE   = 'iHotkeyBlue'
-
+E_XML_PROPERTY_FOOTOR_INFO	= 'iFootorInfo'
 
 # Context Action
 CONTEXT_ACTION_LOCK				= 1 
