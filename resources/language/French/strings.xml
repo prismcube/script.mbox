@@ -99,7 +99,7 @@
 	<string id="1098">FRE_Jump Rewind</string>
 	<string id="1099">FRE_Jump Forward</string>
 	<string id="1100">sauter</string>
-	<string id="1101">FRE_Press the i button on the remote to open edit menu</string>
+	<string id="1101">FRE_Press the i button on the remote to open edit menus</string>
 	<string id="1103">Mise à jour</string>
 	<string id="1104">Pas de signal</string>
 	<string id="1105">FRE_Scrambled</string>
@@ -1113,4 +1113,5 @@
 	<string id="3695">FRE_North</string>
 	<string id="3696">FRE_South</string>
 	<string id="3697">FRE_Go to the channel search setup page</string>
+	<string id="3698">FRE_Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step</string>
 </strings>

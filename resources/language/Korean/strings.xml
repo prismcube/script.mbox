@@ -99,7 +99,7 @@
 	<string id="1098">KOR_Jump Rewind</string>
 	<string id="1099">KOR_Jump Forward</string>
 	<string id="1100">KOR_Jump</string>
-	<string id="1101">KOR_Press the i button on the remote to open edit menu</string>
+	<string id="1101">KOR_Press the i button on the remote to open edit menus</string>
 	<string id="1103">KOR_Update</string>
 	<string id="1104">KOR_No Signal</string>
 	<string id="1105">KOR_Scrambled</string>
@@ -1113,4 +1113,5 @@
 	<string id="3695">KOR_North</string>
 	<string id="3696">KOR_South</string>
 	<string id="3697">KOR_Go to the channel search setup page</string>
+	<string id="3698">KOR_Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step</string>
 </strings>

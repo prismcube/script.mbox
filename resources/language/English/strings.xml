@@ -99,7 +99,7 @@
 	<string id="1098">Jump Rewind</string>
 	<string id="1099">Jump Forward</string>
 	<string id="1100">Jump</string>
-	<string id="1101">Press the i button on the remote to open edit menu</string>
+	<string id="1101">Press the i button on the remote to open edit menus</string>
 	<string id="1103">Update</string>
 	<string id="1104">No Signal</string>
 	<string id="1105">Scrambled</string>
@@ -1113,4 +1113,5 @@
 	<string id="3695">North</string>
 	<string id="3696">South</string>
 	<string id="3697">Go to the channel search setup page</string>
+	<string id="3698">Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step</string>
 </strings>

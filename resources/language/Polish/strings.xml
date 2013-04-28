@@ -99,7 +99,7 @@
 	<string id="1098">POL_Jump Rewind</string>
 	<string id="1099">POL_Jump Forward</string>
 	<string id="1100">POL_Jump</string>
-	<string id="1101">POL_Press the i button on the remote to open edit menu</string>
+	<string id="1101">POL_Press the i button on the remote to open edit menus</string>
 	<string id="1103">POL_Update</string>
 	<string id="1104">POL_No Signal</string>
 	<string id="1105">POL_Scrambled</string>
@@ -1113,4 +1113,5 @@
 	<string id="3695">POL_North</string>
 	<string id="3696">POL_South</string>
 	<string id="3697">POL_Go to the channel search setup page</string>
+	<string id="3698">POL_Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step</string>
 </strings>
