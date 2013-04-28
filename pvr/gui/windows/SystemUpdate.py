@@ -452,13 +452,13 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
 			line = MR_LANG( 'Downloading...' )
 		elif aMsg == E_STRING_CHECK_HDD :
-			line = MR_LANG( 'Check your HDD device' )
+			line = MR_LANG( 'Check your HDD' )
 		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
-			line = MR_LANG( 'Check your Flash device' )
+			line = MR_LANG( 'Check your flash memory' )
 		elif aMsg == E_STRING_CHECK_BLOCK_SIZE :
-			line = MR_LANG( 'Not enough space on Flash' )
+			line = MR_LANG( 'Not enough space on flash memory' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
-			line = MR_LANG( 'Fail to Flash write, Try again' )
+			line = MR_LANG( 'Failed to write on flash memory' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -956,7 +956,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			unpackPath = E_DEFAULT_PATH_DOWNLOAD
-			stepMsg = MR_LANG( 'Copying files to HDD drive...' )
+			stepMsg = MR_LANG( 'Copying files to HDD...' )
 			if E_UPDATE_FIRMWARE_USE_USB :
 				unpackPath = self.mDataCache.USB_GetMountPath( )
 				stepMsg = MR_LANG( 'Copying files to USB drive...' )
@@ -1004,7 +1004,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			imgFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, writeFile )
-			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal Storage...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal storage...' ), None, strStepNo )
 
 			self.OpenBusyDialog( )
 			ret = SetWriteToFlash( imgFile )
