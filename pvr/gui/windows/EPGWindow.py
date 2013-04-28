@@ -1942,7 +1942,10 @@ class EPGWindow( BaseWindow ) :
 		self.Load( )
 
 		self.UpdateListUpdateOnly( )
-		self.UpdateEPGInfomation( )
+		if self.mEPGMode == E_VIEW_GRID :	
+			self.GridSetFocus( )
+		else :
+			self.UpdateEPGInfomation( )
 
 		self.RestartEPGUpdateTimer( )
 
@@ -2225,14 +2228,20 @@ class EPGWindow( BaseWindow ) :
 				currentTime = self.mDataCache.Datetime_GetLocalTime( )
 				drawX = int( ( currentTime - showingTime )*self.mGridCanvasWidth /( self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) ) 
 
-			if drawX > 0 :
-				self.mCtrlGridTimeSeperator.setVisible( True )						
+			LOG_TRACE('drawX=%d' %drawX )
+			LOG_TRACE('EPGMode=%s' %self.getProperty( 'EPGMode' ) )
+						
+			if drawX >= 0 :
+				#self.mCtrlGridTimeSeperator.setVisible( True )
+				self.setProperty( 'EPGTimeSeperator', 'True' )
 				self.mCtrlGridTimeSeperator.setPosition( drawX, 0 )
 			else :
-				self.mCtrlGridTimeSeperator.setVisible( False )			
+				self.setProperty( 'EPGTimeSeperator', 'False' )
+				#self.mCtrlGridTimeSeperator.setVisible( False )			
 
 		else :
-			self.mCtrlGridTimeSeperator.setVisible( False )
+			self.setProperty( 'EPGTimeSeperator', 'False' )		
+			#self.mCtrlGridTimeSeperator.setVisible( False )
 
 
 	def GridControlLeft( self ) :
@@ -2443,6 +2452,10 @@ class EPGWindow( BaseWindow ) :
 
 	def GridSetFocus( self ) :
 
+		if self.mChannelList == None or len( self.mChannelList ) == 0 :
+			self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
+			return
+
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
 
 		if gridMeta :
@@ -2456,13 +2469,23 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlGridEPGInfo.setLabel(' ' )			
 		else :
 			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
-			self.mVisibleFocusRow = 0
-			self.mVisibleFocusCol = 0
-			if self.mChannelList == None or len( self.mChannelList ) == 0 :
-				self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
-			else :			
+			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleFocusRow, 0 ), None )
+			if gridMeta :
+				LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
+				self.setFocusId( gridMeta.mId )
+				if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
+					localOffset = self.mDataCache.Datetime_GetLocalOffset( )
+					start  = gridMeta.mEPG.mStartTime + localOffset
+					self.mCtrlGridEPGInfo.setLabel('(%s~%s) %s' %( TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+				else :
+					self.mCtrlGridEPGInfo.setLabel(' ' )
+				self.mVisibleFocusCol = 0					
+
+			else :
+				self.mVisibleFocusRow = 0
+				self.mVisibleFocusCol = 0
 				self.setFocusId( BUTTON_ID_BASE_GRID )
-			self.mCtrlGridEPGInfo.setLabel(' ' )
+				self.mCtrlGridEPGInfo.setLabel(' ' )
 
 
 	def GridUpdateTimer( self ) :
