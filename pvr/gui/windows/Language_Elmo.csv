@@ -98,7 +98,7 @@
 "Jump Rewind";;;;;;;;;"Прыг Назад";;;1098
 "Jump Forward";;;;;;;;;"Прыг Вперед";;;1099
 "Jump";;"sauter";;;;;;;"Прыжок";;;1100
-"Press the i button on the remote to open edit menu";;;;;;;;;;;;1101
+"Press the i button on the remote to open edit menus";;;;;;;;;;;;1101
 "Update";;"Mise à jour";;;;;;;"Обновление";;;1103
 "No Signal";;"Pas de signal";;;;;;;"Нет Сигнала";;;1104
 "Scrambled";;;;;;;;;"Закодировано";;;1105
@@ -1112,3 +1112,14 @@
 "North";;;;;;;;;"Север";;;3695
 "South";;;;;;;;;"Юг";;;3696
 "Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3697
+"Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step";;;;;;;;;;;;3698
+"Not enough space on your HDD";;;;;;;;;;;;3699
+"Check your HDD";;;;;;;;;;;;3700
+"Check your flash memory";;;;;;;;;;;;3701
+"Not enough space on flash memory";;;;;;;;;;;;3702
+"Failed to write on flash memory";;;;;;;;;;;;3703
+"Copy to HDD";;;;;;;;;;;;3704
+"Download complete. Press OK to copy firmware files to HDD";;;;;;;;;;;;3705
+"Copying files to HDD...";;;;;;;;;;;;3706
+"Copying files to internal storage...";;;;;;;;;;;;3707
+"DO NOT POWER OFF%s DURING THE UPGRADING";;;;;;;;;;;;3708
