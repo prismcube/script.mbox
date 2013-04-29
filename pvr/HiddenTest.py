@@ -282,6 +282,8 @@ class HiddenTest( BaseWindow ) :
 				return None, None
 
 		elif ( aMode == E_TBR_FM and aStep == 1 ) or ( aMode == E_TBR_FM and aStep == 3 ) or ( aMode == E_TBR_FM and aStep == 5 ) or ( aMode == E_TBR_FM and aStep == 7 ) or ( aMode == E_TBR_FM and aStep == 9 ) or ( aMode == E_TBR_FM and aStep == 11 ) or ( aMode == E_TBR_FM and aStep == 13 ) :
+			LowHigh = 0
+			Threshold = 0
 			for i in  range( channelCount ) :
 				if channelList[i].mIsCA :
 					continue
@@ -291,13 +293,44 @@ class HiddenTest( BaseWindow ) :
 						continue
 					else :
 						if channel1.mCarrier.mDVBS.mPolarization == channel2.mCarrier.mDVBS.mPolarization :
-							matched = True
-							break
+							if LowHigh :
+								if channel2.mCarrier.mDVBS.mFrequency > Threshold :
+									matched = True
+									break
+								else :
+									continue
+							else :
+								if channel2.mCarrier.mDVBS.mFrequency < Threshold :
+									matched = True
+									break
+								else :
+									continue
 						else :
 							continue
+
+					if channel1.mCarrier.mDVBS.mSatelliteLongitude != channel2.mCarrier.mDVBS.mSatelliteLongitude or channel1.mCarrier.mDVBS.mSatelliteBand != channel2.mCarrier.mDVBS.mSatelliteBand :
+						channel1 = None
+						
 				else :
 					channel1 = channelList[i]
+					
+					st = None
+					configuredSatellite = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+					for satellite in configuredSatellite :
+						if satellite.mSatelliteLongitude == channel1.mCarrier.mDVBS.mSatelliteLongitude  and satellite.mBandType == channel1.mCarrier.mDVBS.mSatelliteBand :
+							st = satellite
+					if st == None :
+						configuredSatellite = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+						for satellite in configuredSatellite :
+							if satellite.mSatelliteLongitude == channel1.mCarrier.mDVBS.mSatelliteLongitude  and satellite.mBandType == channel1.mCarrier.mDVBS.mSatelliteBand :
+								st = satellite
 
+					Threshold = st.mLNBThreshold
+					if st.mLNBThreshold < channel1.mCarrier.mDVBS.mFrequency :
+						LowHigh = 1
+					else :
+						LowHigh = 0
+						
 			if matched :
 				return channel1, channel2
 			else :
