@@ -5537,7 +5537,7 @@ Search for window name
 						<font>font10</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
-						<width>650</width>
+						<width>640</width>
 						<label>SCRIPT1101</label>
 					</control>
 				</control>
@@ -5702,10 +5702,9 @@ Search for window name
 			<control type="label">
 				<posx>35</posx>
 				<posy>5</posy>
-				<width>300</width>
 				<height>20</height>
 				<font>font10</font>
-				<width>650</width>
+				<width>640</width>
 				<align>left</align>
 				<label>SCRIPT1101</label>
 			</control>
