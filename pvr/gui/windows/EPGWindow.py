@@ -1384,7 +1384,7 @@ class EPGWindow( BaseWindow ) :
 			
 		elif aContextAction == CONTEXT_SELECT_CHANNEL :
 			self.ShowSelectChannel( )
-
+			
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
@@ -2619,4 +2619,4 @@ class EPGWindow( BaseWindow ) :
 					return self.mChannelList[gridMeta.mChannelIndex]
 
 		return None
-
+		
