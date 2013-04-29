@@ -34,11 +34,13 @@ class ChannelSearch( SettingWindow ) :
 		else :
 			if self.mNoChannel == False :
 				if self.CheckNoChannel( ) :
+					pass
 					#self.mDataCache.Channel_TuneDefault( )
-					self.mDataCache.Player_AVBlank( False )
-					self.mNoChannel = False
+					#self.mDataCache.Player_AVBlank( False )
+					#self.mNoChannel = False
 				else :
-					self.mDataCache.Player_AVBlank( True )
+					pass
+					#self.mDataCache.Player_AVBlank( True )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
