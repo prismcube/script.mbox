@@ -154,6 +154,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mIsShowDialog = False
 		self.mStartTimeShowed = False
 		self.mIsPlay = FLAG_PLAY
+		self.mOldPlayTime = 0
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -950,9 +951,13 @@ class TimeShiftPlate( BaseWindow ) :
 				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
-				#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
+				if self.mOldPlayTime > 0 :
+					if status.mSpeed > 0 and self.mOldPlayTime > tempCurrentTime :
+						tempCurrentTime = self.mOldPlayTime
+					elif status.mSpeed < 0 and self.mOldPlayTime < tempCurrentTime :
+						tempCurrentTime = self.mOldPlayTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				if self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -997,6 +1002,7 @@ class TimeShiftPlate( BaseWindow ) :
 					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeP != '' and status.mSpeed != 0 :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+				self.mOldPlayTime = tempCurrentTime
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 
