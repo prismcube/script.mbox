@@ -155,6 +155,9 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 
+		self.mPreRecTime	= ElisPropertyEnum( 'Pre-Rec Time', self.mCommander ).GetProp( )
+		self.mPostRecTime = ElisPropertyEnum( 'Post-Rec Time', self.mCommander ).GetProp( )		
+
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
 		self.mCtrlList = self.getControl( LIST_ID_COMMON_EPG )
@@ -2526,7 +2529,129 @@ class EPGWindow( BaseWindow ) :
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT		
 		recCount = 0
 		timerCount = 0
-		
+
+		#not runningTimer
+		if self.mTimerList and len( self.mTimerList ) > 0  :
+			try :	
+				for i in range( len( self.mTimerList ) ) :
+					timer =  self.mTimerList[i]
+					start = timer.mStartTime - localOffset
+					end = start + timer.mDuration
+					
+					for j in range( E_GRID_MAX_ROW_COUNT ) :
+						gridMeta = self.mEPGHashTable.get( '%d:%d' %( j,0 ), None )
+						if gridMeta == None :
+							break
+
+						if j >=  len(  self.mChannelList ) :
+							break
+
+						channel = self.mChannelList[gridMeta.mChannelIndex]
+						if channel and channel.mSid == timer.mSid and channel.mTsid == timer.mTsid and channel.mOnid == timer.mOnid :
+							#find
+							isRunning = self.IsRunningTimer( timer )
+							if isRunning :
+								break
+
+							if start < self.mShowingGMTTime + self.mShowingOffset :
+								start  = self.mShowingGMTTime + self.mShowingOffset
+
+							if end > self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT :
+								end = self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
+								
+							offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset )*self.mGridCanvasWidth/drawableTime )
+							offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
+
+
+							LOG_TRACE( 'start=%s' %TimeToString( start + localOffset, TimeFormatEnum.E_HH_MM )	)
+							LOG_TRACE( 'end=%s' %TimeToString( end + localOffset, TimeFormatEnum.E_HH_MM )	)					
+							
+							drawWidth = int( ( end-start ) * self.mGridCanvasWidth/drawableTime ) 
+
+							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d' %( offsetX, offsetY, drawWidth ) )
+
+							if drawWidth <= 0 :
+								LOG_ERR( 'drawWidth is too small' )
+								break
+
+							ctrlButton = None
+							if recCount < len( self.mCtrlScheduledButtonList ) :
+								ctrlButton = self.mCtrlScheduledButtonList[timerCount]
+								timerCount += 1
+
+							if ctrlButton :
+								ctrlButton.setPosition( offsetX, offsetY )
+								ctrlButton.setWidth( drawWidth  )					
+								ctrlButton.setVisible( True )
+
+			except Exception, ex :
+				LOG_ERR( "Exception %s" %ex )
+
+
+		#running Timer
+		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+			
+		if runningTimers and len( runningTimers ) > 0  :
+			try :	
+				for i in range( len( runningTimers ) ) :
+					timer =  runningTimers[i]
+					start = timer.mStartTime - localOffset
+					end = start + timer.mDuration
+
+					if timer.mFromEPG :
+						start = start  -self.mPreRecTime
+						end = end + self.mPostRecTime
+
+					for j in range( E_GRID_MAX_ROW_COUNT ) :
+						gridMeta = self.mEPGHashTable.get( '%d:%d' %( j,0 ), None )
+						if gridMeta == None :
+							break
+
+						if j >=  len(  self.mChannelList ) :
+							break
+
+						channel = self.mChannelList[gridMeta.mChannelIndex]
+						if channel and channel.mSid == timer.mSid and channel.mTsid == timer.mTsid and channel.mOnid == timer.mOnid :
+							#find
+							if start < self.mShowingGMTTime + self.mShowingOffset :
+								start  = self.mShowingGMTTime + self.mShowingOffset
+
+							if end > self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT :
+								end = self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
+								
+							offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset )*self.mGridCanvasWidth/drawableTime )
+							offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
+
+
+							LOG_TRACE( 'start=%s' %TimeToString( start + localOffset, TimeFormatEnum.E_HH_MM )	)
+							LOG_TRACE( 'end=%s' %TimeToString( end + localOffset, TimeFormatEnum.E_HH_MM )	)					
+							
+							drawWidth = int( ( end-start ) * self.mGridCanvasWidth/drawableTime ) 
+
+							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d' %( offsetX, offsetY, drawWidth ) )
+
+							if drawWidth <= 0 :
+								LOG_ERR( 'drawWidth is too small' )
+								break
+
+							ctrlButton = None
+							if recCount < len( self.mCtrlRecButtonList ) :
+								ctrlButton = self.mCtrlRecButtonList[recCount]
+								recCount += 1
+
+							if ctrlButton :
+								ctrlButton.setPosition( offsetX, offsetY )
+								ctrlButton.setWidth( drawWidth  )					
+								ctrlButton.setVisible( True )
+
+							
+			except Exception, ex :
+				LOG_ERR( "Exception %s" %ex )
+
+
+
+
+		"""
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			for j in range( E_GRID_MAX_COL_COUNT ) :
 				gridMeta = self.mEPGHashTable.get( '%d:%d' %( i, j ), None )
@@ -2576,7 +2701,7 @@ class EPGWindow( BaseWindow ) :
 						ctrlButton.setPosition( offsetX, offsetY )
 						ctrlButton.setWidth( drawWidth  )					
 						ctrlButton.setVisible( True )
-
+		"""
 
 		for i in range( len( self.mCtrlRecButtonList ) - recCount ) :
 			self.mCtrlRecButtonList[recCount + i].setVisible( False )
