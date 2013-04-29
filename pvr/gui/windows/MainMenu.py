@@ -92,13 +92,9 @@ class MainMenu( BaseWindow ) :
 		self.CheckMediaCenter( )
 
 		if self.mDataCache.GetSearchNewChannel( ) :
-			print 'dhkim test #1'
 			globalEvent = pvr.GlobalEvent.GetInstance( )
-			print 'dhkim test #2'
-			globalEvent.CheckParentLock( 1 )
-			print 'dhkim test #3'
+			globalEvent.CheckParentLock( 0 )
 			self.mDataCache.SetSearchNewChannel(  False )
-			print 'dhkim test #4'
 
 
 	def onAction( self, aAction ) :
