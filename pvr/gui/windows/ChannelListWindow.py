@@ -1129,6 +1129,7 @@ class ChannelListWindow( BaseWindow ) :
 			changed = True
 
 		if self.mFlag_DeleteAll :
+			saveNoAsk = False
 			changed = True
 
 		if self.mIsSave :
