@@ -236,10 +236,8 @@ class IpParser( object ) :
 					outputFile.writelines( 'auto ' + self.mEthernetDevName + '\n' )
 				elif line.startswith( 'iface ' + self.mEthernetDevName + ' inet' ) :
 					if aType == NET_DHCP :
-						print 'dhkim test NET_DHCP'
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'dhcp\n' )
 					else :
-						print 'dhkim test static'
 						outputFile.writelines( 'iface ' + self.mEthernetDevName + ' inet' + ' ' + 'static\n' )
 						outputFile.writelines( 'address %s\n' % aIpAddress.strip( ) )
 						outputFile.writelines( 'netmask %s\n' % aMaskAddress.strip( ) )
@@ -315,9 +313,7 @@ class IpParser( object ) :
 
 
 	def ResetNetwork( self ) :
-		print 'dhkim test ResetNetwork'
 		if self.GetCurrentServiceType( ) == NETWORK_WIRELESS or self.GetEthernetMethod( ) == NET_STATIC :
-			print 'dhkim test ResetNetwork#######'
 			self.ConnectEthernet( NET_DHCP )
 
 

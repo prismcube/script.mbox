@@ -457,8 +457,9 @@ class GlobalEvent( object ) :
 
 		self.mDataCache.Player_AVBlank( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
-		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+		if WinMgr.GetInstance( ).GetLastWindowID( ) in PARENTLOCK_CHECKWINDOW :
 			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 		#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 		LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )

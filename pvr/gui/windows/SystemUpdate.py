@@ -1586,7 +1586,7 @@ class SystemUpdate( SettingWindow ) :
 			iPVS.mDate = ret[1]
 			iPVS.mError = 0
 
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'Current Ver.' ), iPVS.mVersion )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'Current Version' ), iPVS.mVersion )
 			lbldesc += '%s : %s\n'% ( MR_LANG( 'Date' ), iPVS.mDate )
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
@@ -1594,10 +1594,10 @@ class SystemUpdate( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
-			lbldesc = MR_LANG( 'Unknown version' )
+			lbldesc = MR_LANG( 'Unknown' )
 
 		if self.mCurrData and not self.mCurrData.mVersion :
-			lbldesc = MR_LANG( 'Unknown version' )
+			lbldesc = MR_LANG( 'Unknown' )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 

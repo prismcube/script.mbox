@@ -1129,6 +1129,7 @@ class ChannelListWindow( BaseWindow ) :
 			changed = True
 
 		if self.mFlag_DeleteAll :
+			saveNoAsk = False
 			changed = True
 
 		if self.mIsSave :
@@ -1212,7 +1213,6 @@ class ChannelListWindow( BaseWindow ) :
 									isBlank = True
 									lastServiceType = 'Last Radio Number'
 
-								#self.mDataCache.Player_VideoBlank( isBlank )
 								lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
 								ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mUserMode.mServiceType )
 
@@ -1220,7 +1220,6 @@ class ChannelListWindow( BaseWindow ) :
 								if not ret :
 									if self.mChannelList and len( self.mChannelList ) > 0 :
 										self.mDataCache.Channel_SetCurrent( 1, self.mUserMode.mServiceType )
-
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache

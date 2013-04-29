@@ -314,12 +314,10 @@ class DialogChannelSearch( BaseDialog ) :
 		else :
 			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType, None, True )
 
+		self.mDataCache.SetSearchNewChannel( True )
+
 
 	def NewTransponderAdd( self ) :
 		if self.mManualTpSearch :
 			if len( self.mStoreTVChannel ) > 0 or len( self.mStoreRadioChannel ) > 0 :
-				print 'dhkim test load all transponder!!!!!'
-				print 'dhkim test load all transponder!!!!!'
-				print 'dhkim test load all transponder!!!!!'
-				print 'dhkim test load all transponder!!!!!'
 				self.mDataCache.LoadAllTransponder( )
