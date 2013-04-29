@@ -471,9 +471,6 @@ class TimeShiftPlate( BaseWindow ) :
 					return -1
 
 				if aEvent.mType == ElisEnum.E_EOF_START :
-					self.mCtrlImgRewind.setVisible( False )
-					self.mCtrlImgForward.setVisible( False )
-					self.mCtrlLblSpeed.setLabel( '' )
 					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
 					LOG_TRACE( 'EventRecv EOF_START' )
 
@@ -1032,7 +1029,10 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = -800
 			elif self.mSpeed == -200 :
 				ret = -400
-			elif self.mSpeed == 100 or self.mSpeed == 0 :
+			elif self.mSpeed == 100 :
+				ret = -200
+			elif self.mSpeed == 0 :
+				self.mDataCache.Player_Resume( )
 				ret = -200
 			elif self.mSpeed == 25 :
 				ret = -200
