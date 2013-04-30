@@ -513,7 +513,10 @@ class ArchiveWindow( BaseWindow ) :
 			recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
 
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
-		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
+		recDuration =  int( aRecordInfo.mDuration / 60 )
+		if ( aRecordInfo.mDuration % 60 ) != 0 :
+			recDuration += 1
+		recItem.setProperty( 'RecDuration', '%dm' %recDuration )
 		if aRecordInfo.mLocked :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
@@ -1098,7 +1101,10 @@ class ArchiveWindow( BaseWindow ) :
 			if recInfo :
 				self.setProperty( 'ChannelName', recInfo.mChannelName )
 				self.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
-				self.setProperty( 'RecDuration',  '%dMin' %( recInfo.mDuration/60 ) )
+				recDuration =  int( recInfo.mDuration / 60 )
+				if ( recInfo.mDuration % 60 ) != 0 :
+					recDuration += 1
+				self.setProperty( 'RecDuration',  '%dMin' %recDuration )
 				self.setProperty( 'RecName', recInfo.mRecordName )
 			else :
 				self.ResetArchiveInfomation( )
