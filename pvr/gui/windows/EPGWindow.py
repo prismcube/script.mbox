@@ -821,6 +821,7 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None or len( self.mChannelList ) == 0 :
 				if self.getFocusId( )  !=  BUTTON_ID_EPG_MODE :
 					self.setFocusId( BUTTON_ID_FAKE_BUTTON )
+				self.GridSetFocus( )
 		
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.UpdateChannelView( aUpdateOnly )
@@ -2459,6 +2460,11 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
+			self.mCtrlGridEPGInfo.setLabel(' ')
+			self.setProperty( 'GridSelectedPosition', '0' )
+			self.setProperty( 'GridNumItems', '0' )
+			self.setProperty( 'GridNumPages', '0')
+			self.setProperty( 'GridCurrentPage', '0' )			
 			return
 
 		totalCount = len( self.mChannelList )
