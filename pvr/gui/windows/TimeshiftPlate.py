@@ -904,9 +904,9 @@ class TimeShiftPlate( BaseWindow ) :
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
-		retList = []
-		retList.append( status )
-		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+		#retList = []
+		#retList.append( status )
+		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status and status.mError == 0 :
 			flag_Rewind  = False
@@ -1473,7 +1473,12 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Flush( )
 				self.InitBookmarkThumnail( )
 				if self.mBookmarkList and len( self.mBookmarkList ) > 0 :
+					nextPos = selectedPos - 1
+					if nextPos > -1 and nextPos <= len( self.mBookmarkList ) - 1 :
+						self.mCtrlBookMarkList.selectItem( nextPos )
+						#self.UpdateControlListSelectItem( self.mCtrlBookMarkList, nextPos )
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
+
 				else :
 					self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 					self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
