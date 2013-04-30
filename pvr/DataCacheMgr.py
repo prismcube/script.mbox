@@ -298,6 +298,10 @@ class DataCacheMgr( object ) :
 
 
 	def LoadVolumeBySetGUI( self ) :
+		if self.Get_Player_AVBlank( ) :
+			LOG_TRACE( '-------------pass by volumeSync, status [avBlank]' )
+			return
+
 		mute = XBMC_GetMute( )
 		volume = XBMC_GetVolume( )
 		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
@@ -1585,6 +1589,7 @@ class DataCacheMgr( object ) :
 		else :
 			if self.Get_Player_AVBlank( ) :
 				self.Player_AVBlank( False )
+				self.LoadVolumeBySetGUI( )
 
 
 	def Player_SetMute( self, aMute ) :
