@@ -2551,7 +2551,9 @@ class EPGWindow( BaseWindow ) :
 							#find
 							isRunning = self.IsRunningTimer( timer )
 							if isRunning :
-								break
+								if timer.mFromEPG :
+									start = start  -self.mPreRecTime
+									end = end + self.mPostRecTime
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start  = self.mShowingGMTTime + self.mShowingOffset
@@ -2575,7 +2577,11 @@ class EPGWindow( BaseWindow ) :
 								break
 
 							ctrlButton = None
-							if recCount < len( self.mCtrlScheduledButtonList ) :
+							if isRunning and recCount < len( self.mCtrlRecButtonList ) :
+								ctrlButton = self.mCtrlRecButtonList[recCount]
+								recCount += 1
+							
+							elif recCount < len( self.mCtrlScheduledButtonList ) :
 								ctrlButton = self.mCtrlScheduledButtonList[timerCount]
 								timerCount += 1
 
@@ -2588,6 +2594,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( "Exception %s" %ex )
 
 
+		"""
 		#running Timer
 		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
 			
@@ -2647,6 +2654,7 @@ class EPGWindow( BaseWindow ) :
 							
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
+			"""
 
 
 
