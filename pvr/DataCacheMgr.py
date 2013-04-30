@@ -298,6 +298,10 @@ class DataCacheMgr( object ) :
 
 
 	def LoadVolumeBySetGUI( self ) :
+		if self.Get_Player_AVBlank( ) :
+			LOG_TRACE( '-------------pass by volumeSync, status [avBlank]' )
+			return
+
 		mute = XBMC_GetMute( )
 		volume = XBMC_GetVolume( )
 		LOG_TRACE( 'GUI mute[%s] volume[%s]'% ( mute, volume ) )
@@ -1585,6 +1589,7 @@ class DataCacheMgr( object ) :
 		else :
 			if self.Get_Player_AVBlank( ) :
 				self.Player_AVBlank( False )
+				self.LoadVolumeBySetGUI( )
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1761,20 +1766,40 @@ class DataCacheMgr( object ) :
 
 
 	def Timer_GetTimerList( self ) :
+		timerList = []	
 		if SUPPORT_TIMER_DATABASE == True :
 			timerDB = ElisTimerDB( )
 			timerList = timerDB.Timer_GetTimerList( )
 			timerDB.Close( )
-			return timerList
-
 		else :
-			timerList = []
 			timerCount = self.Timer_GetTimerCount( )
 			for i in range( timerCount ) :
 				timer = self.Timer_GetByIndex( i )
 				timerList.append( timer )
 
-			return timerList
+		if timerList == None :
+			timerList = []
+
+		runningTimers = self.Timer_GetRunningTimers()
+
+		try :
+			if runningTimers and len(runningTimers) > 0 :
+				for i in range( len(runningTimers) ) :
+					hasMatch = False
+					timerCount = len( timerList )
+					for j in range( timerCount ) :
+						if runningTimers[ i ].mTimerId == timerList[ j ].mTimerId :
+							hasMatch = True
+							break
+
+					if hasMatch == False :
+						timerList.append( runningTimers[i] )				
+
+		except Exception, e :
+			timerList = []
+			LOG_ERR( 'Exception [%s]'% e )
+
+		return timerList
 
 
 	def Timer_GetTimerCount( self ) :

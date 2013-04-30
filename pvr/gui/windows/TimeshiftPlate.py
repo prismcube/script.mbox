@@ -66,6 +66,8 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
+E_TINY_XSPEED = [ 25, 50, 125 ]
+
 
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -537,6 +539,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.InitTimeShift( )
 
 				self.mUserMoveTime = -1
+				if self.mPrekey == Action.ACTION_MOVE_RIGHT :
+					self.mUserMoveTime = 1
+
 				#self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.StartAsyncMoveByTime( True )
@@ -954,10 +959,10 @@ class TimeShiftPlate( BaseWindow ) :
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
 				if self.mOldPlayTime > 0 :
-					if status.mSpeed > 0 and self.mOldPlayTime > tempCurrentTime :
+					if ( status.mSpeed in E_TINY_XSPEED ) and self.mOldPlayTime > tempCurrentTime :
 						tempCurrentTime = self.mOldPlayTime
-					elif status.mSpeed < 0 and self.mOldPlayTime < tempCurrentTime :
-						tempCurrentTime = self.mOldPlayTime
+					#elif status.mSpeed < 0 and self.mOldPlayTime < tempCurrentTime :
+					#	tempCurrentTime = self.mOldPlayTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				if self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -1468,7 +1473,12 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Flush( )
 				self.InitBookmarkThumnail( )
 				if self.mBookmarkList and len( self.mBookmarkList ) > 0 :
+					nextPos = selectedPos - 1
+					if nextPos > -1 and nextPos <= len( self.mBookmarkList ) - 1 :
+						self.mCtrlBookMarkList.selectItem( nextPos )
+						#self.UpdateControlListSelectItem( self.mCtrlBookMarkList, nextPos )
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
+
 				else :
 					self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
 					self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )

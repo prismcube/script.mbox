@@ -222,6 +222,10 @@ class DialogMgr( object ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '-------------pass by volumeSync, status [avBlank]' )
+			return
+
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
 			if XBMC_GetMute() == False :

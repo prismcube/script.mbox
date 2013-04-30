@@ -821,6 +821,7 @@ class EPGWindow( BaseWindow ) :
 			if self.mChannelList == None or len( self.mChannelList ) == 0 :
 				if self.getFocusId( )  !=  BUTTON_ID_EPG_MODE :
 					self.setFocusId( BUTTON_ID_FAKE_BUTTON )
+				self.GridSetFocus( )
 		
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			self.UpdateChannelView( aUpdateOnly )
@@ -2459,6 +2460,11 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.setFocusId( BUTTON_ID_FAKE_BUTTON  )
+			self.mCtrlGridEPGInfo.setLabel(' ')
+			self.setProperty( 'GridSelectedPosition', '0' )
+			self.setProperty( 'GridNumItems', '0' )
+			self.setProperty( 'GridNumPages', '0')
+			self.setProperty( 'GridCurrentPage', '0' )			
 			return
 
 		totalCount = len( self.mChannelList )
@@ -2551,7 +2557,9 @@ class EPGWindow( BaseWindow ) :
 							#find
 							isRunning = self.IsRunningTimer( timer )
 							if isRunning :
-								break
+								if timer.mFromEPG :
+									start = start  -self.mPreRecTime
+									end = end + self.mPostRecTime
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start  = self.mShowingGMTTime + self.mShowingOffset
@@ -2575,7 +2583,11 @@ class EPGWindow( BaseWindow ) :
 								break
 
 							ctrlButton = None
-							if recCount < len( self.mCtrlScheduledButtonList ) :
+							if isRunning and recCount < len( self.mCtrlRecButtonList ) :
+								ctrlButton = self.mCtrlRecButtonList[recCount]
+								recCount += 1
+							
+							elif recCount < len( self.mCtrlScheduledButtonList ) :
 								ctrlButton = self.mCtrlScheduledButtonList[timerCount]
 								timerCount += 1
 
@@ -2588,6 +2600,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( "Exception %s" %ex )
 
 
+		"""
 		#running Timer
 		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
 			
@@ -2647,6 +2660,7 @@ class EPGWindow( BaseWindow ) :
 							
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
+			"""
 
 
 
