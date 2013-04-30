@@ -91,11 +91,14 @@ class MainMenu( BaseWindow ) :
 			self.mDataCache.SetAVBlankByArchive( False )
 		self.CheckMediaCenter( )
 
-		#self.GetFavAddons( )
+		if self.mDataCache.GetSearchNewChannel( ) :
+			globalEvent = pvr.GlobalEvent.GetInstance( )
+			globalEvent.CheckParentLock( 0 )
+			self.mDataCache.SetSearchNewChannel(  False )
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 
 		actionId = aAction.getId( )

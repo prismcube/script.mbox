@@ -60,6 +60,14 @@ class ArchiveWindow( BaseWindow ) :
 		self.mThumbnailHash		= {}
 		self.mUpdateInfomationTimer = None		
 
+		self.mAscending = []
+		self.mAscending = [ False, False, False, False, False ]
+
+		self.mAscending[E_SORT_DATE] = False
+		self.mAscending[E_SORT_CHANNEL] = True
+		self.mAscending[E_SORT_TITLE] = True
+		self.mAscending[E_SORT_DURATION] = False
+
 	
 	def onInit( self ) :
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
@@ -111,13 +119,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.SetDefaultHideWatched( False )
 				self.mCtrlHideWatched.setSelected( False )
 
-			self.mAscending = []
-			self.mAscending = [ False, False, False, False, False ]
-
-			self.mAscending[E_SORT_DATE] = False
-			self.mAscending[E_SORT_CHANNEL] = True
-			self.mAscending[E_SORT_TITLE] = True
-			self.mAscending[E_SORT_DURATION] = False
 
 			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
 			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )

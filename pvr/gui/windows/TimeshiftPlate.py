@@ -66,6 +66,8 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
+E_TINY_XSPEED = [ 25, 50, 125 ]
+
 
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -154,6 +156,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mIsShowDialog = False
 		self.mStartTimeShowed = False
 		self.mIsPlay = FLAG_PLAY
+		self.mOldPlayTime = 0
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -536,6 +539,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.InitTimeShift( )
 
 				self.mUserMoveTime = -1
+				if self.mPrekey == Action.ACTION_MOVE_RIGHT :
+					self.mUserMoveTime = 1
+
 				#self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 				self.StartAsyncMoveByTime( True )
@@ -898,9 +904,9 @@ class TimeShiftPlate( BaseWindow ) :
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
-		#retList = []
-		#retList.append( status )
-		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+		retList = []
+		retList.append( status )
+		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status and status.mError == 0 :
 			flag_Rewind  = False
@@ -950,9 +956,13 @@ class TimeShiftPlate( BaseWindow ) :
 				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				duration = self.mTimeshift_endTime / 1000.0
 				tempStartTime = localTime - duration
-				#tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
+				if self.mOldPlayTime > 0 :
+					if ( status.mSpeed in E_TINY_XSPEED ) and self.mOldPlayTime > tempCurrentTime :
+						tempCurrentTime = self.mOldPlayTime
+					#elif status.mSpeed < 0 and self.mOldPlayTime < tempCurrentTime :
+					#	tempCurrentTime = self.mOldPlayTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				if self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -997,6 +1007,7 @@ class TimeShiftPlate( BaseWindow ) :
 					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 			if lbl_timeP != '' and status.mSpeed != 0 :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+				self.mOldPlayTime = tempCurrentTime
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 

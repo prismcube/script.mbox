@@ -144,6 +144,7 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel					= False
 
 		self.mStandByClose						= False
+		self.mSearchNewChannel				= False				 
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -2318,5 +2319,13 @@ class DataCacheMgr( object ) :
 	def DeleteBookmarkHash( self, aBookmark ) :
 		if self.GetBookmarkHash( aBookmark ) != -1 :
 			del self.mBookmarkHash[aBookmark]
+
+
+	def SetSearchNewChannel( self, aFlag ) :
+		self.mSearchNewChannel = aFlag
+
+
+	def GetSearchNewChannel( self ) :
+		return self.mSearchNewChannel
 
 

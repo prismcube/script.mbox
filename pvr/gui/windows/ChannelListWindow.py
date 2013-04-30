@@ -171,6 +171,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_EditChanged = False
 		self.mFlag_ModeChanged = False
 		self.mFlag_DeleteAll = False
+		self.mFlag_DeleteAll_Fav = False
 		self.mRefreshCurrentChannel = False
 
 		#edit mode
@@ -522,7 +523,7 @@ class ChannelListWindow( BaseWindow ) :
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
 						self.mDataCache.Channel_Backup( )
-						self.mIsSave = FLAG_MASK_ADD
+						self.mFlag_DeleteAll_Fav = True
 						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, self.mUserMode.mServiceType, numList )
 
 			else :
@@ -592,6 +593,12 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GoToEditWindow( self ) :
+		if self.mFlag_DeleteAll :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the edit mode' ) )
+			dialog.doModal( )
+			return
+
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
 
@@ -642,8 +649,10 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
-				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
+				if self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 					self.mDataCache.Channel_ResetOldChannelList( )
+
+				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( True )
 
@@ -993,7 +1002,7 @@ class ChannelListWindow( BaseWindow ) :
 			#self.mDataCache.Channel_Backup( )
 
 
-	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
+	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ) :
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
 				self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort )
@@ -1128,7 +1137,7 @@ class ChannelListWindow( BaseWindow ) :
 			saveNoAsk = True
 			changed = True
 
-		if self.mFlag_DeleteAll :
+		if self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 			saveNoAsk = False
 			changed = True
 
@@ -1163,6 +1172,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.mLoadMode.mMode = self.mUserMode.mMode
 					self.mLoadMode.mSortingMode = self.mUserMode.mSortingMode
 					self.mLoadMode.mServiceType = self.mUserMode.mServiceType
+					if self.mFlag_DeleteAll_Fav :
+						self.mLoadMode.mMode = ElisEnum.E_MODE_ALL
+						self.GetChannelList( self.mLoadMode.mServiceType, self.mLoadMode.mMode, self.mLoadMode.mSortingMode, 0, 0, 0, '' )
 
 					if self.mUserSlidePos.mMain == 1 :
 						groupInfo = self.mListSatellite[self.mUserSlidePos.mSub]
@@ -1213,7 +1225,6 @@ class ChannelListWindow( BaseWindow ) :
 									isBlank = True
 									lastServiceType = 'Last Radio Number'
 
-								#self.mDataCache.Player_VideoBlank( isBlank )
 								lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
 								ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mUserMode.mServiceType )
 
@@ -1222,16 +1233,14 @@ class ChannelListWindow( BaseWindow ) :
 									if self.mChannelList and len( self.mChannelList ) > 0 :
 										self.mDataCache.Channel_SetCurrent( 1, self.mUserMode.mServiceType )
 
-
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
 					self.mListItems = None
-					if self.mFlag_DeleteAll or self.mIsSave : 
+					if self.mFlag_DeleteAll or self.mIsSave or self.mFlag_DeleteAll_Fav : 
 						#restore backup zapping
 						isRestore = self.mDataCache.Channel_Restore( True )
 						self.mDataCache.Channel_Save( )
 						LOG_TRACE( 'Restore[%s]'% isRestore )
-
 
 					#self.mDataCache.Channel_SetCurrent( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
 					#### data cache re-load ####
@@ -2177,7 +2186,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#answer is yes
 				if answer != E_DIALOG_STATE_YES :
-					return
+					return answer
 
 				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mUserMode.mServiceType )
 
@@ -2357,7 +2366,7 @@ class ChannelListWindow( BaseWindow ) :
 				aTitle = MR_LANG( 'Attention' )
 				lblLine = MR_LANG( 'Try again after stopping all your recordings first' )
 
-			elif self.mFlag_DeleteAll or not self.mChannelList or len( self.mChannelList ) < 1:
+			elif self.mFlag_DeleteAll or not self.mChannelList or len( self.mChannelList ) < 1 :
 				isNotAvail = 1
 				aTitle = MR_LANG( 'Error' )
 				lblLine = MR_LANG( 'Your channel list is empty' )
