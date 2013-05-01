@@ -20,6 +20,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				if self.mInitialized == False :
 					self.CheckFirstRun( )
 					self.LoadTimeShiftControl( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).LoadEPGControls( )					
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
 					self.mInitialized = True
