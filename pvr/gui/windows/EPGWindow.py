@@ -199,12 +199,6 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ) )
 
 
-		if self.mInitialized == False :
-			self.InitTimelineButtons( )
-			self.InitChannelButtons( )
-			self.InitChannelLogos( )
-			self.InitGridEPGButtons( )
-
 		if self.mEPGMode == E_VIEW_GRID :
 			self.SetVideoRestore( )
 
@@ -218,6 +212,14 @@ class EPGWindow( BaseWindow ) :
 		self.SetFocusList( self.mEPGMode )
 		self.mInitialized = True
 
+
+	def LoadEPGControls( self ) :
+		self.InitTimelineButtons( )
+		self.InitChannelButtons( )
+		self.InitChannelLogos( )
+		self.InitGridEPGButtons( )
+
+	
 
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
@@ -884,6 +886,7 @@ class EPGWindow( BaseWindow ) :
 
 				epgList = self.mGridEPGList[i]
 				offsetX = 0
+				offsetX2 = 0
 				if epgList :
 					#LOG_TRACE( 'GRID i=%d len(epgList)=%d' %( i, len( epgList ) ) )
 					epgCount = len( epgList )
@@ -914,11 +917,21 @@ class EPGWindow( BaseWindow ) :
 							LOG_ERR( 'Invalid EPG : i=%d j=%d statTime=%s' %(i,j, TimeToString( epgList[j].mStartTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
 						
 
+						offsetX = self.mGridCanvasWidth*(  epgList[j].mStartTime - self.mShowingOffset -self.mShowingGMTTime )/(E_GRID_MAX_TIMELINE_COUNT * self.mDeltaTime )
+
+						if offsetX < 0 :
+							offsetX = 0
+
+						if offsetX < offsetX2 :
+							offsetX = offsetX2
+
+
 						#LOG_ERR( 'Start : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
 						#LOG_ERR( 'End : (%d,%d) %s' % (i,j,TimeToString( epgList[j].mStartTime+epgList[j].mDuration+self.mDataCache.Datetime_GetLocalOffset( ), TimeFormatEnum.E_HH_MM_SS ) ) )
 						duraton = epgList[j].mDuration
 						if epgList[j].mStartTime < self.mShowingGMTTime + self.mShowingOffset:
 							duraton = epgList[j].mStartTime + epgList[j].mDuration - self.mShowingGMTTime - self.mShowingOffset
+
 
 						drawWidth = int( duraton* self.mGridCanvasWidth / drawableTime ) 
 						#LOG_ERR( 'End : %d' %(drawWidth ) )
@@ -954,7 +967,7 @@ class EPGWindow( BaseWindow ) :
 						#LOG_TRACE( 'GRID drawWidth = %d' %drawWidth )
 
 						ctrlButton.setWidth( drawWidth  )
-						offsetX += drawWidth
+						offsetX2 = offsetX + drawWidth
 						
 						gridMeta = GridMeta( ctrlButton.getId(), row, col, epgList[j], self.mVisibleTopIndex + i )
 						self.mEPGHashTable[ '%d:%d' %( row, col ) ] = gridMeta
