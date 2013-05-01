@@ -63,7 +63,7 @@ class HiddenTest( BaseWindow ) :
 		context = []
 		context.append( ContextItem( 'TBR BASIC TEST', 9995 ) )
 		context.append( ContextItem( 'TBR FM TEST', 9996 ) )
-		context.append( ContextItem( 'PROPRTY CHECK', 9999 ) )
+		context.append( ContextItem( 'PROPERTY CHECK', 9999 ) )
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			context.append( ContextItem( 'ALL Navigation', 8888 ) )
 		menuCount = 0
