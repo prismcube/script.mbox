@@ -107,6 +107,7 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGCount = 0
 		self.mListItems = []
 		self.mTimerList = []
+		self.mUpdateEPGInfomationTimer = None
 		
 
 		#GRID MODE
@@ -2160,7 +2161,17 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateList( )
 		self.UpdateSelectedChannel( )
 		self.FocusCurrentChannel( )
-		time.sleep( 0.2 )
+		#time.sleep( 0.2 )
+		self.UpdateEPGInfomation( )
+
+		if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
+			self.mUpdateEPGInfomationTimer.cancel( )
+		
+		self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
+		self.mUpdateEPGInfomationTimer.start( )
+
+
+	def AsyncUpdateEPGInfomation( self ) :
 		self.UpdateEPGInfomation( )
 
 
