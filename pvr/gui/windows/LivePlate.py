@@ -1286,7 +1286,10 @@ class LivePlate( LivePlateWindow ) :
 
 				#idxTrack = self.mDataCache.Audiotrack_Get( idx )
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
+				if idxTrack.mName == '' :
+					label = '%s' % idxTrack.mLang
+				else :
+					label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 
 				context.append( ContextItem( label, iSelectAction ) )
 				iSelectAction += 1
