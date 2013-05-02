@@ -1064,11 +1064,16 @@ def ShowSubtitle( ) :
 			if structSubTitle[i].mSubtitleType == ElisEnum.E_SUB_DVB :
 				isExistDVB = True
 
-
 		for i in range( subTitleCount ) :
-			if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
-				structSubTitle.pop( i )
-				continue
+			i_index = subTitleCount - i - 1
+			if isExistDVB and structSubTitle[i_index].mSubtitleType != ElisEnum.E_SUB_DVB :
+				structSubTitle.remove( structSubTitle[i_index] )		
+
+		subTitleCount = len( structSubTitle )
+		for i in range( subTitleCount ) :
+			#if isExistDVB and structSubTitle[i].mSubtitleType != ElisEnum.E_SUB_DVB :
+			#	structSubTitle.pop( i )
+			#	continue
 
 			#structSubTitle[i].printdebug( )
 

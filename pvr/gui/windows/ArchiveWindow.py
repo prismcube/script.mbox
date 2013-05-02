@@ -1100,7 +1100,7 @@ class ArchiveWindow( BaseWindow ) :
 			
 			if recInfo :
 				self.setProperty( 'ChannelName', recInfo.mChannelName )
-				self.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
+				self.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ) )
 				recDuration =  int( recInfo.mDuration / 60 )
 				if ( recInfo.mDuration % 60 ) != 0 :
 					recDuration += 1
