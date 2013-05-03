@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- maxsize mega byte -->
 <textures maxsize="30">
-	<!-- common -->
+	<!-- background -->
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
+	<texture>resources/channellogo/DefaultLogo.jpg</texture>
 	<!-- main menu -->
 	<texture>Prismcube_Logo.png</texture>
-	<texture>header.png</texture>
 	<texture>floor.png</texture>
-	<texture>HomeSubEnd.png</texture>
 	<texture>HomeBack.png</texture>
 	<texture>HomeOverlay1.png</texture>
 	<texture>HomeSeparator.png</texture>
 	<texture>SideFade.png</texture>
 	<texture>icon-rss.png</texture>
 	<texture>icon_favourites.png</texture>
-	<texture>floor_buttonFO.png</texture>
-	<texture>floor_button.png</texture>
-	<texture>button-focus.png</texture>
-	<texture>button-nofocus.png</texture>
-	<texture>HomeSubFO.png</texture>
-	<texture>HomeSubNF.png</texture>
+	<texture>HomeSubEnd.png</texture>
 	<!-- installation -->
-	<texture>MenuItemNF.png</texture>
-	<texture>MenuItemFO.png</texture>
+	<texture>icon_system.png</texture>
 	<texture>DialogBack.png</texture>
 	<texture>Confluence_Logo.png</texture>
 	<texture>black-back2.png</texture>
@@ -32,139 +25,160 @@
 	<texture>video_pig_overlay.png</texture>
 	<texture>StepNF.png</texture>
 	<texture>StepFO.png</texture>
+	<texture>Arrow-left-focus.png</texture>
+	<texture>Arrow-left.png</texture>
+	<texture>Arrow-right-focus.png</texture>
+	<texture>Arrow-right.png</texture>
+	<!--texture>CalibrateBottomRight.png</texture>
+	<texture>CalibratePixelRatio.png</texture>
+	<texture>CalibrateTopLeft.png</texture-->
+	<texture>OverlayDialogBackground.png</texture>
+	<texture>busy.png</texture>
+	<texture>DialogCloseButton-focus.png</texture>
+	<texture>DialogCloseButton.png</texture>
+	<texture>dialogheader.png</texture>
+	<texture>button-focus2.png</texture>
+	<texture>OSDIconInfoNF.png</texture>
 	<!-- archive -->
-	<texture>RecIconSample.png</texture>	
-	<texture>black-back.png</texture>
-	<texture>ContentPanel.png</texture>
-	<texture>diffuse_mirror3.png</texture>	
-	<texture>MediaBladeSub_Part1.png</texture>
+	<texture>icon_video.png</texture>
+	<texture>black-back_noAlpha.png</texture>
 	<texture>MediaBladeSub_Part2.png</texture>
 	<texture>MediaSubSet.png</texture>
-	<texture>HomeHasSub.png</texture>
-	<texture>black-back_noAlpha.png</texture>
-	<texture>ScrollBarH.png</texture>
-	<texture>ScrollBarH_bar.png</texture>
-	<texture>ScrollBarH_bar_focus.png</texture>
-	<texture>scroll-up-focus.png</texture>
-	<texture>scroll-up.png</texture>
-	<texture>scroll-down-focus.png</texture>
-	<texture>scroll-down.png</texture>
+	<texture>HomeBlade.png</texture>
+	<texture>ContentPanel.png</texture>
+	<texture>ContentPanelMirror.png</texture>
+	<texture>ThumbShadow.png</texture>
+	<texture>MediaItemDetailBG.png</texture>
+	<texture>RecIconSample.png</texture>
+	<texture>folder-focus.png</texture>
 	<!-- epg -->
+	<texture>icon_tv3.png</texture>
+	<texture>icon_radio3.png</texture>
+	<texture>ContentPanel_New.png</texture>
+	<texture>HomeSeparatorRed.png</texture>
 	<texture>TSIconRewind.png</texture>
 	<texture>TSIconFastForward.png</texture>
 	<texture>IconTeletext.png</texture>
 	<texture>IconSubtitle.png</texture>
 	<texture>dolbydigital.png</texture>
+	<texture>dolbydigitalplus.png</texture>
 	<texture>OverlayHD.png</texture>
-	<texture>HomeBlade.png</texture>
-	<texture>ThumbShadow.png</texture>
+	<texture>IconTimer.png</texture>
+	<texture>StackFO_white2.png</texture>
+	<texture>StackNF.png</texture>
 	<!-- channel list-->
 	<texture>OverlayLocked.png</texture>
-	<texture>tv.png</texture>
-	<texture>ScrollBarNib.png</texture>
-	<texture>ScrollBarV.png</texture>
-	<texture>ScrollBarV_bar.png</texture>
-	<texture>ScrollBarV_bar_focus.png</texture>
-	<texture>radiobutton-focus.png</texture>
-	<texture>radiobutton-nofocus.png</texture>
-	<!-- fav -->
-	<texture>MediaItemDetailBG.png</texture>
-	<texture>folder-focus.png</texture>
-	<texture>HomeBladeSub.png</texture>
-	<!-- media center -->
-	<texture>icon_video.png</texture>
-	<texture>icon_weather.png</texture>
-	<texture>icon_back.png</texture>
-	<texture>icon_home.png</texture>
-	<texture>icon_addons.png</texture>
-	<texture>icon_music.png</texture>
-	<texture>icon_pictures.png</texture>
-	<texture>icon_system.png</texture>
-	<texture>underlay5.png</texture>
-	<texture>underlay.png</texture> 
-	<texture>settings-button-back.png</texture>
-	<texture>settings-button-focus.png</texture>
-	<texture>settings-button-nofocus.png</texture>
-	<texture>DialogCloseButton-focus.png</texture>
-	<texture>DialogCloseButton.png</texture>
-	<texture>HasSub.png</texture>
-	<texture>OSDChannelUPFO.png</texture>		
-	<texture>OSDChannelUPNF.png</texture>
-	<texture>OSDChannelDownFO.png</texture>	
-	<texture>OSDChannelDownNF.png</texture>
-	<texture>OSDRecordOffFO.png</texture>	
-	<texture>OSDRecordOffNF.png</texture>
-	<texture>OSDRandomOnFO.png</texture>
-	<texture>OSDRandomOnNF.png</texture>
-	<texture>OSDRandomOffFO.png</texture>
-	<texture>OSDRandomOffNF.png</texture>
-	<texture>GoFullscreen.png</texture>
+	<texture>IconT1w.png</texture>
+	<texture>IconT2w.png</texture>
+	<texture>IconT12w.png</texture>
+	<texture>IconPlateRec.png</texture>
 	<!-- live plate -->
-	<texture>MediaInfoBackLower.png</texture>
-	<texture>scroll-left-focus.png</texture>
-	<texture>scroll-left.png</texture>
-	<texture>scroll-right-focus.png</texture>
-	<texture>scroll-right.png</texture>
-	<texture>OSDIconWarning.png</texture>
+	<!--texture>MediaInfoBackLower.png</texture-->
+	<texture>tv.png</texture>
+	<texture>icon_radio2.png</texture>
 	<texture>OSDIconInfo.png</texture>
-	<texture>OSDTeletextFO.png</texture>
+	<texture>OSDIconWarning.png</texture>
 	<texture>OSDTeletextNF.png</texture>
+	<texture>OSDTeletextFO.png</texture>
 	<texture>OSDSubtitlesFO.png</texture>
 	<texture>OSDSubtitlesNF.png</texture>
-	<texture>OSDBookmarksFO.png</texture>
-	<texture>OSDBookmarksNF.png</texture>
+	<texture>OSDPresetSettingsFO.png</texture>
+	<texture>OSDPresetSettingsNF.png</texture>
+	<texture>IconT1.png</texture>
+	<texture>IconT2.png</texture>
+	<texture>IconCas.png</texture>
+	<texture>i_record.png</texture>
+	<texture>header.png</texture>
+	<!--texture>settings-button-nofocus-yellow.png</texture>
+	<texture>settings-button-nofocus-green.png</texture>
+	<texture>settings-button-nofocus-red.png</texture>
+	<texture>settings-button-nofocus.png</texture-->
+	<!-- timeshift plate -->
+	<texture>osd_slider_nibNF.png</texture>
+	<texture>OSDLeft.png</texture>
+	<texture>OSDVolumeMuteFO.png</texture>
+	<texture>OSDVolumeMuteNF.png</texture>
+	<texture>OSDPrevTrackFO.png</texture>
+	<texture>OSDPrevTrackNF.png</texture>
+	<texture>OSDForwardFO.png</texture>
+	<texture>OSDForwardNF.png</texture>
 	<texture>OSDRecord2.png</texture>
 	<texture>OSDRecordNF.png</texture>
 	<texture>OSDStopFO.png</texture>
 	<texture>OSDStopNF.png</texture>
-	<texture>OSDVolumeMuteFO.png</texture>
-	<texture>OSDVolumeMuteNF.png</texture>
-	<texture>OSDPresetSettingsFO.png</texture>
-	<texture>OSDPresetSettingsNF.png</texture>
-	<texture>icon_radio2.png</texture>
-	<texture>IconCas.png</texture>
-	<texture>IconFavFocus.png</texture>
-	<texture>i_record.png</texture>
-	<!-- timeshift plate -->
 	<texture>OSDPlayFO.png</texture>
 	<texture>OSDPlayNF.png</texture>
 	<texture>OSDRewindFO.png</texture>
 	<texture>OSDRewindNF.png</texture>
 	<texture>OSDPauseFO.png</texture>
 	<texture>OSDPauseNF.png</texture>
-	<texture>OSDForwardFO.png</texture>
-	<texture>OSDForwardNF.png</texture>	
-	<texture>OSDPrevTrackFO.png</texture>
-	<texture>OSDPrevTrackNF.png</texture>
 	<texture>OSDNextTrackFO.png</texture>
 	<texture>OSDNextTrackNF.png</texture>
-	<texture>TSProgressCurrentFO.png</texture>
-	<texture>TSProgressCurrentNF.png</texture>
+	<texture>OSDBookmarksFO.png</texture>
+	<texture>OSDBookmarksNF.png</texture>
+	<!--texture>DialogContextTop.png</texture>
+	<texture>DialogContextMiddle.png</texture>
+	<texture>DialogContextBottom.png</texture-->
 	<!-- volume bar -->
 	<texture>InfoMessagePanel.png</texture>
 	<texture>VolumeIcon.png</texture>
 	<texture>icon-mute.png</texture>
-	<!-- tuner configuration -->
-	<texture>Arrow-left-focus.png</texture>
-	<texture>Arrow-left.png</texture>
-	<texture>Arrow-right-focus.png</texture>
-	<texture>Arrow-right.png</texture>
-	<!-- others -->
-	<texture>OverlayDialogBackground.png</texture>
-	<texture>ContentPanelMirror.png</texture>
-	<texture>MediaBladeSub.png</texture>
-	<texture>button-focus2.png</texture>
-	<texture>dialogheader.png</texture>
-	<texture>busy.png</texture>
-	<texture>underlay-diffuse.png</texture>
-	<texture>settings-button-diffuse.png</texture>
-	<texture>DialogContextTop.png</texture>
-	<texture>DialogContextMiddle.png</texture>
-	<texture>DialogContextBottom.png</texture>
-	<texture>separator.png</texture>
-	<!-- configuration -->
-	<texture>scroll-down-focus-2.png</texture>
-	<texture>scroll-down-2.png</texture>
-	<texture>scroll-up-focus-2.png</texture>
+	<!-- media center -->
+	<texture>arrow-big-left.png</texture>
+	<texture>arrow-big-right.png</texture>
+	<texture>HomeSubFO.png</texture>
+	<texture>HomeSubNF.png</texture>
+	<texture>icon_search.png</texture>
+	<texture>OSDChannelUPFO.png</texture>
+	<texture>OSDChannelUPNF.png</texture>
+	<texture>OSDChannelDownFO.png</texture>
+	<texture>OSDChannelDownNF.png</texture>
+	<texture>OSDRecordOffFO.png</texture>
+	<texture>OSDRecordOffNF.png</texture>
+	<texture>OSDRandomOffFO.png</texture>
+	<texture>OSDRandomOffNF.png</texture>
+	<texture>OSDRandomOnFO.png</texture>
+	<texture>OSDRandomOnNF.png</texture>
+	<texture>GoFullscreen.png</texture>
+	<texture>floor_buttonFO.png</texture>
+	<texture>floor_button.png</texture>
+	<texture>xbmc-logo.png</texture>
+	<texture>ScrollBarV.png</texture>
+	<texture>ScrollBarV_bar.png</texture>
+	<texture>ScrollBarV_bar_focus.png</texture>
+	<texture>ScrollBarNib.png</texture>
+	<texture>ScrollBarH.png</texture>
+	<texture>ScrollBarH_bar.png</texture>
+	<texture>ScrollBarH_bar_focus.png</texture>
+	<texture>HasSub.png</texture>
+	<texture>radiobutton-focus.png</texture>
+	<texture>radiobutton-nofocus.png</texture>
+	<texture>icon_weather.png</texture>
+	<texture>icon_back.png</texture>
+	<texture>icon_home.png</texture>
+	<texture>icon_addons.png</texture>
+	<texture>icon_music.png</texture>
+	<texture>icon_pictures.png</texture>
+	<texture>black-back.png</texture>
+	<texture>button-focus.png</texture>
+	<texture>button-nofocus.png</texture>
+	<texture>scroll-left-focus.png</texture>
+	<texture>scroll-left.png</texture>
+	<texture>scroll-right-focus.png</texture>
+	<texture>scroll-right.png</texture>
 	<texture>scroll-up-2.png</texture>
+	<texture>scroll-up-focus-2.png</texture>
+	<texture>scroll-down-2.png</texture>
+	<texture>scroll-down-focus-2.png</texture>
+	<texture>scroll-up.png</texture>
+	<texture>scroll-up-focus.png</texture>
+	<texture>scroll-down.png</texture>
+	<texture>scroll-down-focus.png</texture>
+	<texture>HomeHasSub.png</texture>
+	<texture>MenuItemFO.png</texture>
+	<texture>MenuItemNF.png</texture>
+	<texture>diffuse_mirror3.png</texture>
+	<texture>MediaBladeSub.png</texture>
+	<texture>separator.png</texture>
+	<texture>HomeNowPlayingBack.png</texture>
 </textures>

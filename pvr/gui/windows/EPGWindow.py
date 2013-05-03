@@ -185,6 +185,7 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		#self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+		self.UpdateFootor( )
 
 		#GRID MODE		
 		self.GridCheckChannelIndex( E_DIR_CURRENT  )
@@ -2794,4 +2795,11 @@ class EPGWindow( BaseWindow ) :
 					return self.mChannelList[gridMeta.mChannelIndex]
 
 		return None
+
+
+	def UpdateFootor( self ) :
+		if self.mChannelList == None :
+			self.setProperty( 'EPGFootor', 'false' )
+		else:
+			self.setProperty( 'EPGFootor', 'true' )
 		

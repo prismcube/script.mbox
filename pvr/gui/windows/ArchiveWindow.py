@@ -411,7 +411,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordCount = 0
 			else :
 				self.mRecordCount = len( self.mRecordList  )
-
+			self.UpdateFootor( )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" % ex )
@@ -1255,4 +1255,11 @@ class ArchiveWindow( BaseWindow ) :
 			self.setFocusId( LIST_ID_FANART_RECORD )
 		else :
 			LOG_ERR( 'SetFocusList fail' )
+
+
+	def UpdateFootor( self ) :
+		if self.mRecordList == None :
+			self.setProperty( 'ArchiveFootor', 'false' )
+		else :
+			self.setProperty( 'ArchiveFootor', 'true' )
 

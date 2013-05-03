@@ -1288,6 +1288,8 @@ class LivePlate( LivePlateWindow ) :
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
 				if idxTrack.mName == '' :
 					label = '%s' % idxTrack.mLang
+				elif idxTrack.mLang == '' :
+					label = '%s' % idxTrack.mName
 				else :
 					label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 
