@@ -73,7 +73,8 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.3, self.ShowParentalDialog, [ aEvent ] )
 			thread.start( )
 
-		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :                                     
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+			LOG_TRACE( '----------received ElisEventCurrentEITReceived' )
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if not channel or channel.mError != 0 :
 				return -1
@@ -319,9 +320,24 @@ class GlobalEvent( object ) :
 			else :
 				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
 
+			if iEPG and iEPG.mError == 0 :
+				LOG_TRACE( '----------iEPG[%s %s %s %s] time[%s %s]'% ( iEPG.mEventId,iEPG.mEventName,iEPG.mIsSeries,iEPG.mAgeRating, iEPG.mStartTime, iEPG.mDuration ) )
+
+				isCheck = self.mDataCache.GetParentLock( )
+				if not isCheck :
+					localtime = self.mDataCache.Datetime_GetLocalTime( )
+					startTime = iEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
+					endTime   = startTime + iEPG.mDuration
+					LOG_TRACE('localTime[%s] duration[%s] startTime[%s] endTime[%s]'% ( TimeToString( localtime, TimeFormatEnum.E_HH_MM ), TimeToString( iEPG.mDuration, TimeFormatEnum.E_HH_MM ), TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ), ) )
+
+					if localtime > endTime :
+						self.mDataCache.SetParentLock( True )
+						LOG_TRACE( '--------new program check parentlock' )
+
 			if not iEPG or self.mEventId != aEvent.mEventId :
 				self.mEventId = aEvent.mEventId
 				self.mDataCache.Epgevent_GetPresent( )
+
 				#is Age? agerating check
 				if self.mDataCache.GetParentLock( ) :
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
