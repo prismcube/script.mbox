@@ -271,7 +271,6 @@ class GlobalEvent( object ) :
 
 		if aCmd == E_PARENTLOCK_INIT :
 			#default blank
-			#self.mDataCache.SetParentLock( True )
 			self.mDataCache.Epgevent_GetPresent( )
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -284,6 +283,7 @@ class GlobalEvent( object ) :
 			#if not pChannel or not iChannel or \
 			#   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
 				self.mDataCache.SetParentLock( True )
+				self.mDataCache.SetParentLockByEPG( )
 				if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 
