@@ -297,8 +297,7 @@ class GlobalEvent( object ) :
 
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
 						self.mDataCache.SetPincodeDialog( True )
-						#self.ShowPincodeDialog( )
-						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog, [aCmd] )
 						thread.start( )
 
 				else :
@@ -320,31 +319,17 @@ class GlobalEvent( object ) :
 			else :
 				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
 
-			if iEPG and iEPG.mError == 0 :
-				LOG_TRACE( '----------iEPG[%s %s %s %s] time[%s %s]'% ( iEPG.mEventId,iEPG.mEventName,iEPG.mIsSeries,iEPG.mAgeRating, iEPG.mStartTime, iEPG.mDuration ) )
-
-				isCheck = self.mDataCache.GetParentLock( )
-				if not isCheck :
-					localtime = self.mDataCache.Datetime_GetLocalTime( )
-					startTime = iEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
-					endTime   = startTime + iEPG.mDuration
-					LOG_TRACE('localTime[%s] duration[%s] startTime[%s] endTime[%s]'% ( TimeToString( localtime, TimeFormatEnum.E_HH_MM ), TimeToString( iEPG.mDuration, TimeFormatEnum.E_HH_MM ), TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ), ) )
-
-					if localtime > endTime :
-						self.mDataCache.SetParentLock( True )
-						LOG_TRACE( '--------new program check parentlock' )
-
+			self.mDataCache.CheckExpireByParentLock( )
 			if not iEPG or self.mEventId != aEvent.mEventId :
 				self.mEventId = aEvent.mEventId
 				self.mDataCache.Epgevent_GetPresent( )
 
 				#is Age? agerating check
 				if self.mDataCache.GetParentLock( ) :
-					if ( not self.mDataCache.GetPincodeDialog( ) ) :
+					if not self.mDataCache.GetPincodeDialog( ) :
 						LOG_TRACE('---------------------parentLock')
 						self.mDataCache.SetPincodeDialog( True )
-						#self.ShowPincodeDialog( )
-						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog, [aCmd] )
 						thread.start( )
 
 				else :
@@ -355,7 +340,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.LoadVolumeBySetGUI( )
 
 
-	def ShowPincodeDialog( self ) :
+	def ShowPincodeDialog( self, aCmd ) :
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
@@ -390,6 +375,9 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if aCmd == E_PARENTLOCK_EIT :
+				self.mDataCache.SetParentLockByEPG( )
+
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )

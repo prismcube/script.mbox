@@ -6,6 +6,7 @@ import pvr.Platform
 import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
 from pvr.gui.GuiConfig import *
+from pvr.Util import TimeToString, TimeFormatEnum
 
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
@@ -133,6 +134,7 @@ class DataCacheMgr( object ) :
 
 		self.mParentLock						= True
 		self.mParentLockPass					= False
+		self.mParentLockEPG						= None
 		self.mIsPincodeDialog					= False
 		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
@@ -2232,6 +2234,24 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'isLimit[%s]'% isLimit )
 
 		return isLimit
+
+
+	def SetParentLockByEPG( self ) :
+		self.mParentLockEPG = self.mEPGData
+
+
+	def CheckExpireByParentLock( self ) :
+		if self.mParentLockEPG and self.mParentLockEPG.mError == 0 :
+			LOG_TRACE( '----------mParentLockEPG eventId[%s] name[%s] isSeries[%s] age[%s] time[%s %s]'% ( self.mParentLockEPG.mEventId, self.mParentLockEPG.mEventName, self.mParentLockEPG.mIsSeries, self.mParentLockEPG.mAgeRating, self.mParentLockEPG.mStartTime, self.mParentLockEPG.mDuration ) )
+			startTime = self.mParentLockEPG.mStartTime + self.Datetime_GetLocalOffset( )
+			endTime   = startTime + self.mParentLockEPG.mDuration
+			LOG_TRACE( 'localTime[%s] duration[%s] startTime[%s] endTime[%s]'% ( TimeToString( self.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM ), TimeToString( self.mParentLockEPG.mDuration, TimeFormatEnum.E_HH_MM ), TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ) ) )
+			if ( not self.GetParentLock( ) ) and self.Datetime_GetLocalTime( ) > endTime :
+				self.SetParentLock( True )
+				LOG_TRACE( '--------parentLock expired, check again by new epg age rating' )
+
+		else :
+			self.mParentLockEPG = self.GetEpgeventCurrent( )
 
 
 	def SetPincodeDialog( self, aOnShow = False ) :
