@@ -1035,11 +1035,12 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mEPGList == None :
 			self.mCtrlList.reset( )
+			self.mListItems = []
 			return
 
 		try :
 			aUpdateOnly = True
-
+	
 			if self.mListItems == None  :
 				aUpdateOnly = False
 				self.mLock.acquire( )
@@ -1053,7 +1054,7 @@ class EPGWindow( BaseWindow ) :
 					self.mLock.acquire( )	
 					self.mListItems = []
 					self.mLock.release( )
-				
+
 			for i in range( len( self.mEPGList ) ) :
 				epgEvent = self.mEPGList[i]
 				#epgEvent.printdebug()
@@ -1090,11 +1091,11 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex )
 
 
-
 	def UpdateCurrentView( self, aUpdateOnly ) :
 		self.mDebugStart = time.time( )		
 		if self.mChannelList == None :
 			self.mCtrlBigList.reset( )
+			self.mListItems = []			
 			return
 
 		aUpdateOnly = True
@@ -1200,6 +1201,7 @@ class EPGWindow( BaseWindow ) :
 	def  UpdateFollowingView( self, aUpdateOnly ) :
 		if self.mChannelList == None :
 			self.mCtrlBigList.reset( )
+			self.mListItems = []			
 			return
 
 		aUpdateOnly = True
