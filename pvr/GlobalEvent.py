@@ -73,7 +73,8 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.3, self.ShowParentalDialog, [ aEvent ] )
 			thread.start( )
 
-		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :                                     
+		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+			LOG_TRACE( '----------received ElisEventCurrentEITReceived' )
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if not channel or channel.mError != 0 :
 				return -1
@@ -270,7 +271,6 @@ class GlobalEvent( object ) :
 
 		if aCmd == E_PARENTLOCK_INIT :
 			#default blank
-			#self.mDataCache.SetParentLock( True )
 			self.mDataCache.Epgevent_GetPresent( )
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -283,6 +283,7 @@ class GlobalEvent( object ) :
 			#if not pChannel or not iChannel or \
 			#   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
 				self.mDataCache.SetParentLock( True )
+				self.mDataCache.SetParentLockByEPG( )
 				if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 
@@ -296,8 +297,7 @@ class GlobalEvent( object ) :
 
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
 						self.mDataCache.SetPincodeDialog( True )
-						#self.ShowPincodeDialog( )
-						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog, [aCmd] )
 						thread.start( )
 
 				else :
@@ -319,16 +319,17 @@ class GlobalEvent( object ) :
 			else :
 				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
 
+			self.mDataCache.CheckExpireByParentLock( )
 			if not iEPG or self.mEventId != aEvent.mEventId :
 				self.mEventId = aEvent.mEventId
 				self.mDataCache.Epgevent_GetPresent( )
+
 				#is Age? agerating check
 				if self.mDataCache.GetParentLock( ) :
-					if ( not self.mDataCache.GetPincodeDialog( ) ) :
+					if not self.mDataCache.GetPincodeDialog( ) :
 						LOG_TRACE('---------------------parentLock')
 						self.mDataCache.SetPincodeDialog( True )
-						#self.ShowPincodeDialog( )
-						thread = threading.Timer( 0.1, self.ShowPincodeDialog )
+						thread = threading.Timer( 0.1, self.ShowPincodeDialog, [aCmd] )
 						thread.start( )
 
 				else :
@@ -339,7 +340,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.LoadVolumeBySetGUI( )
 
 
-	def ShowPincodeDialog( self ) :
+	def ShowPincodeDialog( self, aCmd ) :
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
@@ -374,6 +375,9 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if aCmd == E_PARENTLOCK_EIT :
+				self.mDataCache.SetParentLockByEPG( )
+
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( False )

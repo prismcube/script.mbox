@@ -150,7 +150,11 @@ class LivePlate( LivePlateWindow ) :
 			self.mPincodeConfirmed = False
 			if self.mInitialized == False :
 				self.mInitialized = True
-				thread = threading.Timer( 0.3, self.ShowPincodeDialog )
+				isForce = False
+				if self.mDataCache.Get_Player_AVBlank( ) :
+					#set by m/w avBlank on boot(power) on
+					isForce = True
+				thread = threading.Timer( 0.3, self.ShowPincodeDialog, [isForce] )
 				thread.start( )
 				self.mAutomaticHide = True
 			else :
@@ -1282,7 +1286,12 @@ class LivePlate( LivePlateWindow ) :
 
 				#idxTrack = self.mDataCache.Audiotrack_Get( idx )
 				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
+				if idxTrack.mName == '' :
+					label = '%s' % idxTrack.mLang
+				elif idxTrack.mLang == '' :
+					label = '%s' % idxTrack.mName
+				else :
+					label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 
 				context.append( ContextItem( label, iSelectAction ) )
 				iSelectAction += 1
@@ -1474,7 +1483,7 @@ class LivePlate( LivePlateWindow ) :
 		self.RestartAutomaticHide( )
 
 
-	def ShowPincodeDialog( self ) :
+	def ShowPincodeDialog( self, aForce = False ) :
 		if self.mDataCache.GetPincodeDialog( ) :
 			LOG_TRACE( 'Aleady pincode dialog' )
 			return
@@ -1482,7 +1491,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mDataCache.SetPincodeDialog( True )
 		self.mEventBus.Deregister( self )
 
-		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
+		if ( self.mCurrentChannel and self.mCurrentChannel.mLocked ) or aForce :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
