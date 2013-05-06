@@ -1328,8 +1328,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 	@RunThread
 	def WaitToBuffering( self ) :
+		repeatPending = 0
 		while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
+				repeatPending += 1
+				if repeatPending > 5 :
+					break
+
 				waitTime = 0
 				self.OpenBusyDialog( )
 				while waitTime < 5 :
@@ -1360,6 +1365,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 			time.sleep( 1 )
 			#LOG_TRACE('------')
+
+		if repeatPending > 5 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not play on timeshift, try again after while' ) )
+			dialog.doModal( )
+			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 
 
 	def ShowDialog( self, aFocusId ) :
