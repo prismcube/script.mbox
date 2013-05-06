@@ -151,15 +151,16 @@ class LivePlate( LivePlateWindow ) :
 			if self.mInitialized == False :
 				self.mInitialized = True
 				isForce = False
-				if self.mDataCache.Get_Player_AVBlank( ) :
-					#set by m/w avBlank on boot(power) on
-					isForce = True
-				thread = threading.Timer( 0.3, self.ShowPincodeDialog, [isForce] )
-				thread.start( )
-				self.mAutomaticHide = True
+				channelList = self.mDataCache.Channel_GetList( )
+				if channelList and len( channelList ) > 0 :
+					if self.mDataCache.Get_Player_AVBlank( ) :
+						#set by m/w avBlank on boot(power) on
+						isForce = True
+					thread = threading.Timer( 0.3, self.ShowPincodeDialog, [isForce] )
+					thread.start( )
+					self.mAutomaticHide = True
 			else :
 				self.mDataCache.SetAVBlankByChannel( )
-
 
 		self.RestartAutomaticHide( )
 
