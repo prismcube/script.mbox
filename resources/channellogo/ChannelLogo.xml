@@ -18,7 +18,7 @@
 	<logo id= "192_28486">sr_sudwest_fernsehen.png</logo>
 	<logo id= "192_10303">swr_fernsehen_bw.png</logo>
 	<logo id= "192_28206">rbb_de.png</logo>
-	<logo id= "192_4914">servus_tv_de.png</logo>
+	<logo id= "192_4914">servus_tv_at.png</logo>
 	<logo id= "192_21100">anixe_hd.png</logo>
 	<logo id= "192_17507">sat1.png</logo>
 	<logo id= "192_63">dmax_de.png</logo>
@@ -84,18 +84,18 @@
 	<logo id= "192_2042">hustler_tv_europe.png</logo>
 	<logo id= "192_2045">dorcel_tv.png</logo>
 	<logo id= "192_20002">pro_sieben_at.png</logo>
-	<logo id= "192_20005">sat1_austria.png</logo>
+	<logo id= "192_20005">sat1_ch.png</logo>
 	<logo id= "192_20004">kabel_eins_austria.png</logo>
 	<logo id= "192_28800">rtl_at.png</logo>
 	<logo id= "192_28810">rtl2_at.png</logo>
-	<logo id= "192_28815">super_rtl_at.png</logo>
-	<logo id= "192_28805">vox_at.png</logo>
-	<logo id= "192_60">viva_at.png</logo>
+	<logo id= "192_28815">super_rtl.png</logo>
+	<logo id= "192_28805">vox_de.png</logo>
+	<logo id= "192_60">viva_de.png</logo>
 	<logo id= "192_61">kabel_eins.png</logo>
 	<logo id= "192_20001">pro_sieben_ch.png</logo>
 	<logo id= "192_20006">sat1_ch.png</logo>
 	<logo id= "192_20003">kabel_eins_ch.png</logo>
-	<logo id= "192_12041">super_rtl_ch.png</logo>
+	<logo id= "192_12041">super_rtl.png</logo>
 	<logo id= "192_10067">bloomberg_tv_eu.png</logo>
 	<logo id= "192_31220">euronews.png</logo>
 	<logo id= "192_7290">sky_uk_news_international.png</logo>
@@ -159,7 +159,7 @@
 	<logo id= "192_28014">zdf_neo.png</logo>
 	<logo id= "192_28016">zdf_kultur.png</logo>
 	<logo id= "192_28107">br_bayerisches_fernsehen_sud.png</logo>
-	<logo id= "192_28110">br_bayerisches_fernsehen_nord.png</logo>
+	<logo id= "192_28110">br_bayerisches_fernsehen_sud.png</logo>
 	<logo id= "192_28113">swr_fernsehen_bw.png</logo>
 	<logo id= "192_28111">wdr_fernsehen.png</logo>
 	<logo id= "192_28226">ndr_fernsehen_nds.png</logo>
@@ -169,10 +169,10 @@
 	<logo id= "192_28225">ndr_fernsehen_hh.png</logo>
 	<logo id= "192_28224">ndr_fernsehen_mv.png</logo>
 	<logo id= "192_28306">wdr_studio_bielefeld.png</logo>
-	<logo id= "192_28307">wdr_studio_dortmund.png</logo>
-	<logo id= "192_28309">wdr_studio_essen.png</logo>
-	<logo id= "192_28310">wdr_studio_munster.png</logo>
-	<logo id= "192_28311">wdr_studio_siegen.png</logo>
+	<logo id= "192_28307">wdr_studio_bielefeld.png</logo>
+	<logo id= "192_28309">wdr_studio_bielefeld.png</logo>
+	<logo id= "192_28310">wdr_studio_bielefeld.png</logo>
+	<logo id= "192_28311">wdr_studio_bielefeld.png</logo>
 	<logo id= "192_5411">dr_dish_tv.png</logo>
 	<logo id= "192_13003">orf2_wien.png</logo>
 	<!-- ASTRA RADIO CHANNELS -->
@@ -270,10 +270,10 @@
 	<logo id= "192_28461">sr1_europawelle.png</logo>
 	<logo id= "192_28462">sr2_kultur.png</logo>
 	<logo id= "192_28463">sr3_saarlandwelle.png</logo>
-	<logo id= "192_28465">swr_1_bw.png</logo>
+	<logo id= "192_28465">swr_1_rp.png</logo>
 	<logo id= "192_28466">swr_1_rp.png</logo>
 	<logo id= "192_28468">swr_3.png</logo>
-	<logo id= "192_28469">swr_4_bw_stuttgart.png</logo>
+	<logo id= "192_28469">swr_4_rp_mainz.png</logo>
 	<logo id= "192_28470">swr_4_rp_mainz.png</logo>
 	<logo id= "192_28471">swr_dasding.png</logo>
 	<logo id= "192_28472">swr_info.png</logo>
@@ -366,7 +366,7 @@
 	<logo id= "130_3301">rai_sport_2.png</logo>
 	<logo id= "130_3302">camera_dei_deputati_it.png</logo>
 	<logo id= "130_3308">rai_nettuno_sat_uno.png</logo>
-	<logo id= "130_4910">tele_radio_padre_pio_tv.png</logo>
+	<logo id= "130_4910">tele_radio_padre_pio.png</logo>
 	<logo id= "130_4922">tv_cancao_nova_internacional.png</logo>
 	<logo id= "130_4927">telemarket_it.png</logo>
 	<logo id= "130_2170">tva_vicenza.png</logo>
@@ -416,7 +416,7 @@
 	<logo id= "130_10707">tvr_international.png</logo>
 	<logo id= "130_13710">tve_internacional_eu.png</logo>
 	<logo id= "130_7202">tunisie_tv1.png</logo>
-	<logo id= "130_3004">abu_dhabi_tv_eu.png</logo>
+	<logo id= "130_3004">abu_dhabi_tv.png</logo>
 	<logo id= "130_3017">al_sunnah_al_nabawiyah_tv.png</logo>
 	<logo id= "130_42">al_quran_al_kareem_tv.png</logo>
 	<logo id= "130_8301">hrt1.png</logo>
@@ -473,8 +473,8 @@
 	<logo id= "130_17360">vrt_radio1.png</logo>
 	<logo id= "130_129">medi1_radio.png</logo>
 	<logo id= "130_177">snrt_radio_regionale_de_tanger.png</logo>
-	<logo id= "130_60">snrt_radio_regionale_de_houceima.png</logo>
-	<logo id= "130_70">snrt_radio_regionale_de_tetouan.png</logo>
+	<logo id= "130_60">snrt_radio_regionale_de_tanger.png</logo>
+	<logo id= "130_70">snrt_radio_regionale_de_tanger.png</logo>
 	<logo id= "130_4840">tok_fm.png</logo>
 	<logo id= "130_4845">radio_jasna_gora.png</logo>
 	<logo id= "130_8515">rai_radio_fd4.png</logo>
@@ -511,12 +511,12 @@
 	<logo id= "130_3653">m2o.png</logo>
 	<logo id= "130_3654">radio_iglesias.png</logo>
 	<logo id= "130_3656">radio_popolare_it.png</logo>	
-	<logo id= "130_3550">deutsche_welle_radio5.png</logo>
-	<logo id= "130_3580">deutsche_welle_radio8.png</logo>
-	<logo id= "130_3590">deutsche_welle_radio9.png</logo>
-	<logo id= "130_3610">deutsche_welle_radio_fm1.png</logo>
-	<logo id= "130_3640">deutsche_welle_radio_fm4.png</logo>
-	<logo id= "130_3658">deutsche_welle_radio_fm7.png</logo>
+	<logo id= "130_3550">deutsche_welle_tv_europe.png</logo>
+	<logo id= "130_3580">deutsche_welle_tv_europe.png</logo>
+	<logo id= "130_3590">deutsche_welle_tv_europe.png</logo>
+	<logo id= "130_3610">deutsche_welle_tv_europe.png</logo>
+	<logo id= "130_3640">deutsche_welle_tv_europe.png</logo>
+	<logo id= "130_3658">deutsche_welle_tv_europe.png</logo>
 	<logo id= "130_10751">radio_romania_international_2.png</logo>
 	<logo id= "130_10752">radio_romania_international_1.png</logo>
 	<logo id= "130_10756">rtl_1025_radio_guardia_costiera.png</logo>
@@ -572,7 +572,7 @@
 	<logo id= "130_201">radio_svoboda.png</logo>
 	<logo id= "130_202">radio_svoboda_ua.png</logo>
 	<logo id= "130_205">radio_svoboda.png</logo>
-	<logo id= "130_208">voa_radio_deewa.png</logo>
+	<logo id= "130_208">voa_radio_us.png</logo>
 	<logo id= "130_213">azadliq_radiosu.png</logo>
 	<logo id= "130_221">radio_europa_libera.png</logo>
 	<logo id= "130_226">radio_iraq_hurr.png</logo>
@@ -582,7 +582,7 @@
 	<logo id= "130_186">france_maghreb2.png</logo>	
 	<logo id= "130_187">radio_orient_fr.png</logo>
 	<logo id= "130_4503">saudi_radio_two.png</logo>
-	<logo id= "130_4504">saudi_radio_european.png</logo>
+	<logo id= "130_4504">saudi_radio_two.png</logo>
 	<logo id= "130_10503">planeta_fm_pl.png</logo>
 	<logo id= "130_10519">radio_zlote_przeboje.png</logo>
 	<logo id= "130_10526">rmf_classic.png</logo>
@@ -977,7 +977,7 @@
 	<logo id= "360_31006">kanal5_petersburg.png</logo>
 	<logo id= "360_31008">mir_ru.png</logo>
 	<logo id= "360_31009">perviy_meteo.png</logo> 
-	<logo id= "360_31011">tv_centr_moskva.png</logo>
+	<logo id= "360_31011">tv_centr.png</logo>
 	<logo id= "360_31014">rbk_tv_ru.png</logo>
 	<logo id= "360_31015">tv_sale.png</logo>
 	<logo id= "360_31102">radio_zenit.png</logo>
@@ -1026,7 +1026,7 @@
 	<logo id= "360_10303">mtv_ru.png</logo>
 	<logo id= "360_10304">rossiya_1.png</logo>
 	<logo id= "360_10305">rossiya_kultura.png</logo>
-	<logo id= "360_10306">sts_moskva.png</logo>
+	<logo id= "360_10306">sts_ru.png</logo>
 	<logo id= "360_10307">rossiya_24.png</logo>
 	<logo id= "360_10308">tv3_ru.png</logo>
 	<logo id= "360_10309">zvezda_telekanal.png</logo>
@@ -1065,7 +1065,7 @@
 	<logo id= "360_20623">jim_jam_ru.png</logo> 	
 	<!-- ABS TV & RADIO CHANNELS -->
 	<logo id= "750_9">nat_geo_wild_asia.png</logo>
-	<logo id= "750_11">travel_channel_asia.png</logo>
+	<logo id= "750_11">travel_channel_europe.png</logo>
 	<logo id= "750_12">outdoor_channel_international.png</logo>
 	<logo id= "750_14">crime_investigation_network_asia.png</logo>
 	<logo id= "750_15">itv_granada_mea.png</logo>
@@ -1119,7 +1119,7 @@
 	<logo id= "750_1870">radio_mir_by.png</logo>
 	<!-- ABS PACKAGES -->
 	<logo id= "750_1950">viasat_tv1000_action_east.png</logo>
-	<logo id= "750_1960">viasat_tv1000_action_east_plus21.png</logo>
+	<logo id= "750_1960">viasat_tv1000_action_east.png</logo>
 	<logo id= "750_270">nickelodeon_cis.png</logo>
 	<logo id= "750_700">fashion_tv_ru.png</logo>
 	<logo id= "750_900">tv21_lv.png</logo>
@@ -1206,7 +1206,7 @@
 	<logo id= "3560_1305">karusel_tv.png</logo>
 	<logo id= "3560_1306">yes_base.png</logo>
 	<logo id= "3560_1307">jim_jam_eu.png</logo>
-	<logo id= "3560_1308">bbc_world_news_me.png</logo>
+	<logo id= "3560_1308">bbc_world_news_eu.png</logo>
 	<logo id= "3560_1309">euro_star.png</logo>
 	<logo id= "3560_1310">viva_il.png</logo>
 	<logo id= "3560_1311">snrt_1_tvm_me.png</logo>
@@ -1332,7 +1332,7 @@
 	<logo id= "3560_301">metv.png</logo>
 	<logo id= "3560_304">zee_tv_uk.png</logo>
 	<logo id= "3560_103">sky_uk_news_international.png</logo>	
-	<logo id= "3560_105">discovery_middle_east.png</logo>
+	<logo id= "3560_105">discovery_ru.png</logo>
 	<logo id= "3560_106">vh1_eu.png</logo>
 	<logo id= "3560_107">fashion_tv_eu.png</logo>	
 	<logo id= "3560_108">mikan.png</logo>
@@ -1371,20 +1371,20 @@
 	<logo id= "3560_4416">vh1_eu.png</logo>
 	<logo id= "3560_4419">duna_tv.png</logo>
 	<logo id= "3560_39">hustler_tv_europe.png</logo>	
-	<logo id= "3560_40">disney_channel_hu_cz.png</logo>
+	<logo id= "3560_40">disney_channel_il.png</logo>
 	<logo id= "3560_42">magyar_tv1.png</logo>
 	<logo id= "3560_43">blue_hustler.png</logo>
-	<logo id= "3560_45">animal_planet_europe.png</logo>
+	<logo id= "3560_45">animal_planet_ru.png</logo>
 	<logo id= "3560_46">discovery_world.png</logo>
 	<logo id= "3560_47">nat_geo_wild_hu.png</logo>
 	<logo id= "3560_48">spektrum.png</logo>	
-	<logo id= "3560_49">viasat_explorer_east.png</logo>
+	<logo id= "3560_49">viasat_explorer_ru.png</logo>
 	<logo id= "3560_50">travel_channel_europe.png</logo>
 	<logo id= "3560_51">jim_jam_eu.png</logo>
 	<logo id= "3560_52">investigation_discovery_europe.png</logo>
 	<logo id= "3560_53">viasat_tv6_hu.png</logo>
 	<logo id= "3560_54">viasat_tv3_hu.png</logo>
-	<logo id= "3560_55">discovery_hu.png</logo>
+	<logo id= "3560_55">discovery_ru.png</logo>
 	<logo id= "3560_56">discovery_science.png</logo>
 	<logo id= "3560_58">bbc_entertainment_europe.png</logo>
 	<logo id= "3560_60">hbo_comedy_ceu.png</logo>
@@ -1420,7 +1420,7 @@
 	<logo id= "3560_1627">film_mania_hu.png</logo>
 	<logo id= "3560_4603">history_europe.png</logo>
 	<logo id= "3560_4606">sport2_hu.png</logo>
-	<logo id= "3560_4628">universal_channel_hu.png</logo>
+	<logo id= "3560_4628">universal_channel_ru.png</logo>
 	<logo id= "3560_1501">film_cafe_hu.png</logo>
 	<logo id= "3560_1502">mezzo.png</logo>
 	<logo id= "3560_1503">magyar_tv2.png</logo>
@@ -1444,7 +1444,7 @@
 	<logo id= "3560_4410">prima_family.png</logo>
 	<logo id= "3560_4412">sport1_cz.png</logo>
 	<logo id= "3560_4413">filmbox_plus_cz.png</logo>
-	<logo id= "3560_4414">spektrum_international.png</logo>
+	<logo id= "3560_4414">spektrum.png</logo>
 	<logo id= "3560_4415">mtv_cz.png</logo> 
 	<logo id= "3560_4417">minimax_cz.png</logo>
 	<logo id= "3560_4418">dajto_tv_sk.png</logo>
@@ -1477,11 +1477,11 @@
 	<logo id= "3560_2008">ntv_plus_nash_futbol.png</logo>
 	<logo id= "3560_2010">nat_geo_ua.png</logo>
 	<logo id= "3560_2011">nat_geo_wild_emea.png</logo>	
-	<logo id= "3560_2012">discovery_ua.png</logo>
+	<logo id= "3560_2012">discovery_ru.png</logo>
 	<logo id= "3560_2013">discovery_science.png</logo>
 	<logo id= "3560_2014">discovery_world.png</logo>
 	<logo id= "3560_2015">discovery_world.png</logo>	
-	<logo id= "3560_2016">tlc_pan_regional.png</logo>
+	<logo id= "3560_2016">tlc_ru.png</logo>
 	<logo id= "3560_2017">animal_planet_ru.png</logo>	
 	<logo id= "3560_1103">okhota_i_rybalka.png</logo>
 	<logo id= "3560_1011">illusion_plus.png</logo>

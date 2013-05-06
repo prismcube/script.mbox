@@ -2787,7 +2787,7 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateFootor( self ) :
 		if self.mChannelList == None :
-			self.setProperty( 'EPGFootor', 'false' )
+			self.setProperty( 'EPGFootor', 'False' )
 		else:
-			self.setProperty( 'EPGFootor', 'true' )
+			self.setProperty( 'EPGFootor', 'True' )
 		

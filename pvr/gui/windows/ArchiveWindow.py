@@ -1259,7 +1259,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def UpdateFootor( self ) :
 		if self.mRecordList == None :
-			self.setProperty( 'ArchiveFootor', 'false' )
+			self.setProperty( 'ArchiveFootor', 'False' )
 		else :
-			self.setProperty( 'ArchiveFootor', 'true' )
+			self.setProperty( 'ArchiveFootor', 'True' )
 
