@@ -1363,7 +1363,7 @@ Search for window name
 	                    <width>500</width>
 	                    <height>720</height>
 	                    <texture>black-back_noAlpha.png</texture>
-	                    <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus">Conditional</animation>
+	                    <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | Control.HasFocus(1300103)">Conditional</animation>
 						<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103)">Conditional</animation>
 	                </control>
 	                <control type="image">
@@ -1376,16 +1376,6 @@ Search for window name
 						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103)">Conditional</animation>
 	                </control>
 				</control>
-
-	            <control type="image">
-	                <posx>-250</posx>
-	                <posy>0</posy>
-	                <width>250</width>
-	                <height>720</height>
-	                <colordiffuse>DAFFFFFF</colordiffuse>
-	                <texture>MediaBladeSub_Part1.png</texture>
-	            </control>
-
 				<control type="button" id="1300101">
 					<description>Fake button for mouse control</description>
 					<posx>-250</posx>
@@ -1597,7 +1587,7 @@ Search for window name
 							<onup>1309002</onup>
 							<ondown>1309002</ondown>
 							<focusposition>113</focusposition>
-							<visible>Container(1300102).HasFocus(5)</visible>
+							<visible>Container(1300102).HasFocus(5) + !Control.HasFocus(1300103)</visible>
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 							<control type="group">
