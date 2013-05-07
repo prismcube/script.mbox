@@ -1395,7 +1395,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def ShowDialogByPlayFault( self ) :
 		self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Ready to buffering, try again after while' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Timeshift not ready%s Please try again' )% NEW_LINE )
 		dialog.SetStayCount( 1 )
 		dialog.doModal( )
 

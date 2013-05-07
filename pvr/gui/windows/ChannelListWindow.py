@@ -595,7 +595,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GoToEditWindow( self ) :
 		if self.mFlag_DeleteAll :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the edit mode' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Your channel list is empty' ) )
 			dialog.doModal( )
 			return
 
