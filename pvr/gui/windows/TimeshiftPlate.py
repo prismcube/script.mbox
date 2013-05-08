@@ -485,8 +485,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
-					xbmc.executebuiltin('xbmc.Action(stop)')
-					#self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+					#xbmc.executebuiltin('xbmc.Action(stop)')  <-- if show busyDialog then can not onAction
+					thread = threading.Timer( 0.1, self.TimeshiftAction, [E_CONTROL_ID_BUTTON_STOP] )
+					thread.start( )
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
