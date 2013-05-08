@@ -275,8 +275,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
-					self.RestartAutomaticHide( )
 					#self.UpdateBookmarkByPoint( )
+
+				if self.mFocusId != E_CONTROL_ID_LIST_SHOW_BOOKMARK :
+					self.RestartAutomaticHide( )
 
 			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 				self.StopAutomaticHide( )
