@@ -72,8 +72,8 @@ class NullWindow( BaseWindow ) :
 
 				if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
 				   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
-					LOG_TRACE('---------------------------------------parentLock recheck repeat')
 					pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+					#LOG_TRACE('---------------------------------------parentLock recheck repeat')
 		else :
 			self.setProperty( 'PvrPlay', 'True' )
 

@@ -761,6 +761,9 @@ class EPGWindow( BaseWindow ) :
 				self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
 			self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
 
+			#age info
+			UpdatePropertyByAgeRating( self, epg )
+
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
@@ -771,6 +774,8 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlDurationLabel.setLabel( '' )
 		self.mCtrlEPGDescription.setText( '' )
 
+		self.setProperty( 'EPGAgeRating', '' )
+		self.setProperty( 'HasAgeRating', 'None' )
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )

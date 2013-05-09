@@ -94,8 +94,8 @@ class MainMenu( BaseWindow ) :
 		iChannel = self.mDataCache.Channel_GetCurrent( )
 		if self.mDataCache.GetSearchNewChannel( ) :
 			self.mDataCache.SetSearchNewChannel( False )
-			LOG_TRACE('---------------------------------------parentLock newCheck')
 			pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+			#LOG_TRACE('---------------------------------------parentLock newCheck')
 
 
 	def onAction( self, aAction ) :

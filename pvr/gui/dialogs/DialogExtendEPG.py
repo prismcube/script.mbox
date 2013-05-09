@@ -240,6 +240,9 @@ class DialogExtendEPG( BaseDialog ) :
 			self.setProperty( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mEPG, ElisEnum.E_HasDolbyDigital ) )
 		self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( self.mEPG, ElisEnum.E_HasHDVideo ) )
 
+		#age info
+		UpdatePropertyByAgeRating( self, self.mEPG )
+
 		#self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
 		#self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
 		#self.mCtrlDate = self.getControl( LABEL_ID_DATE )
@@ -260,6 +263,8 @@ class DialogExtendEPG( BaseDialog ) :
 		self.setProperty( 'EPGIndex', '' )
 		self.setProperty( 'EPGTitle', '' )
 		self.setProperty( 'EPGDescription', '' )
+		self.setProperty( 'EPGAgeRating', '' )
+		self.setProperty( 'HasAgeRating', 'None' )
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_DOLBYPLUS, E_TAG_FALSE )

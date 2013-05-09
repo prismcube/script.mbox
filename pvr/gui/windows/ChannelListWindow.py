@@ -1570,6 +1570,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
+		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
+		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
@@ -1772,14 +1774,18 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital ) )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo ) )
 
+		#age info
+		UpdatePropertyByAgeRating( self, self.mNavEpg )
+
 		try :
 			if self.mNavEpg :
-					startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-					endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-					label = '%s - %s'% (startTime, endTime)
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
-					self.mCtrlProgress.setVisible( True )
+				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				label = '%s - %s'% ( startTime, endTime )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
+				self.mCtrlProgress.setVisible( True )
+
 			else :
 				LOG_TRACE( 'event null' )
 

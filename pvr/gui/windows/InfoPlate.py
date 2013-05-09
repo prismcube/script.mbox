@@ -322,7 +322,6 @@ class InfoPlate( LivePlateWindow ) :
 					else :
 						self.UpdatePropertyGUI( 'iCasInfo', '' )
 
-
 				#record name
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy( rec.mRecordName ) )
 
@@ -340,6 +339,9 @@ class InfoPlate( LivePlateWindow ) :
 				if not self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS ) :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
+
+				#age info
+				UpdatePropertyByAgeRating( self, aEpg )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -431,6 +433,8 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
+		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
 		self.mEnableCasInfo = False
 
 

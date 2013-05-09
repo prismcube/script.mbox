@@ -160,6 +160,23 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 	return ret
 
 
+def UpdatePropertyByAgeRating( self, aEPG ) :
+	#age info
+	hasAgeRating = 'None'
+	if aEPG and aEPG.mAgeRating > 0 :
+		alignx = ''
+		if aEPG.mAgeRating <= 7 :
+			alignx = ' '
+			hasAgeRating = "Green"
+		elif aEPG.mAgeRating > 7 and aEPG.mAgeRating < 18 :
+			hasAgeRating = "Yellow"
+		else :
+			hasAgeRating = "Red"
+
+		self.setProperty( 'EPGAgeRating', '%s%s'% ( alignx, aEPG.mAgeRating ) )
+	self.setProperty( 'HasAgeRating', hasAgeRating )
+
+
 def GetSelectedLongitudeString( aLongitude, aName ) :
 	ret = ''
 

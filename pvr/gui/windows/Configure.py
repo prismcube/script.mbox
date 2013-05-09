@@ -305,7 +305,7 @@ class Configure( SettingWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if channelList and len( channelList ) > 0 and ( iChannel and ( not iChannel.mLocked ) ) :
 				self.mDataCache.SetSearchNewChannel( True )
-				LOG_TRACE('-------------------re setting ageLimit check')
+				#LOG_TRACE('-------------------re setting ageLimit check')
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
