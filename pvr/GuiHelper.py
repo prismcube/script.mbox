@@ -227,16 +227,19 @@ def EnumToString( aType, aValue ) :
 	return ret.upper( )
 
 
-def AgeLimit( aPropertyAge, aEPGAge ) :
+def AgeLimit( aPropertyAge, aEPGAge, aAgeGurantee ) :
 	isLimit = False
 	if aPropertyAge == 0 :
 		#no limit
 		isLimit = False
 
 	else:
+		#limitted
 		if aPropertyAge <= aEPGAge :
-			#limitted
 			isLimit = True
+			if aAgeGurantee >= aEPGAge :
+				isLimit = False
+
 		else:
 			isLimit = False
 
