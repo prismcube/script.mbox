@@ -105,8 +105,11 @@ class TimerWindow( BaseWindow ) :
 			else:
 				self.GoParentTimer( )
 		
-		elif actionId == Action.ACTION_CONTEXT_MENU:
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
+
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+			self.UpdateSelectedPosition( )
 
 
 	def onClick( self, aControlId ) :
@@ -158,7 +161,6 @@ class TimerWindow( BaseWindow ) :
 
 
 	def Load( self ) :
-
 		LOG_TRACE( '----------------------------------->' )
 		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 
@@ -181,6 +183,7 @@ class TimerWindow( BaseWindow ) :
 		self.mListItems = []
 		if self.mTimerList== None or len( self.mTimerList ) <= 0 :
 			self.mCtrlBigList.addItems( self.mListItems )
+			self.UpdateSelectedPosition( )
 			return
 			
 		try :
@@ -296,6 +299,8 @@ class TimerWindow( BaseWindow ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
+		self.UpdateSelectedPosition( )
+
 
 	@RunThread
 	def CurrentTimeThread( self ) :
@@ -341,7 +346,6 @@ class TimerWindow( BaseWindow ) :
 
 
 	def ShowEditTimer( self ) :
-
 		try :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
@@ -541,5 +545,16 @@ class TimerWindow( BaseWindow ) :
 		if self.mChannelListHash == None or len( self.mChannelListHash ) <= 0 :
 			return None
 		return self.mChannelListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+
+
+	def UpdateSelectedPosition( self ) :
+		selectedPos = self.mCtrlBigList.getSelectedPosition( )
+		if self.mTimerList == None or len(self.mTimerList) <= 0 :
+			self.setProperty( 'SelectedPosition', '0' )
+			return
+		if selectedPos < 0 :
+			self.setProperty( 'SelectedPosition', '0' )
+		else :
+			self.setProperty( 'SelectedPosition', '%d' % ( selectedPos + 1 ) )
 
 
