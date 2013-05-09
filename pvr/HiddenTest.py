@@ -340,10 +340,24 @@ class HiddenTest( BaseWindow ) :
 	def AddScenarioTimer( self, aMode, aChannel1, aChannel2, aStep=0 ) :
 		if aMode == E_TBR_BASIC :
 			self.mStartTime = self.mDataCache.Datetime_GetLocalTime( ) + 5 * 60
-			for i in range( 10 ) :
+			count = 20
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( MR_LANG( 'Repeat Count' ), str( count ), 3 )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				count = int( dialog.GetString( ) )
+
+			recTime = 5
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( MR_LANG( 'Record Time min' ), str( recTime ), 3 )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				recTime = int( dialog.GetString( ) )
+
+			for i in range( count ) :
 				ret = True
-				ret1 = self.mDataCache.Timer_AddManualTimer( aChannel1.mNumber, aChannel1.mServiceType, self.mStartTime, 5 * 60, aChannel1.mName, True )
-				ret2 = self.mDataCache.Timer_AddManualTimer( aChannel2.mNumber, aChannel2.mServiceType, self.mStartTime, 5 * 60, aChannel2.mName, True )
+				ret1 = self.mDataCache.Timer_AddManualTimer( aChannel1.mNumber, aChannel1.mServiceType, self.mStartTime, recTime * 60, aChannel1.mName, True )
+				ret2 = self.mDataCache.Timer_AddManualTimer( aChannel2.mNumber, aChannel2.mServiceType, self.mStartTime, recTime * 60, aChannel2.mName, True )
 				if ret1[0].mParam == -1 or ret1[0].mError == -1 :
 					print ' test timer 1 add fail'
 					ret = False
@@ -351,7 +365,7 @@ class HiddenTest( BaseWindow ) :
 					print ' test timer 2 add fail'
 					ret = False
 				if ret :
-					self.mStartTime = self.mStartTime + 10 * 60
+					self.mStartTime = self.mStartTime + ( recTime * 60 ) + 360
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'Error', 'Add timer fail...' )
