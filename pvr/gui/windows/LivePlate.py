@@ -150,17 +150,19 @@ class LivePlate( LivePlateWindow ) :
 			self.mPincodeConfirmed = False
 			if self.mInitialized == False :
 				self.mInitialized = True
+			#else :
+			#	self.mDataCache.SetAVBlankByChannel( )
+
+			#set by m/w avBlank on boot(power) on
+			if self.mDataCache.Get_Player_AVBlank( ) :
 				isForce = False
 				channelList = self.mDataCache.Channel_GetList( )
 				if channelList and len( channelList ) > 0 :
-					if self.mDataCache.Get_Player_AVBlank( ) :
-						#set by m/w avBlank on boot(power) on
-						isForce = True
+				#	isForce = True
 					thread = threading.Timer( 0.3, self.ShowPincodeDialog, [isForce] )
 					thread.start( )
-					self.mAutomaticHide = True
-			else :
-				self.mDataCache.SetAVBlankByChannel( )
+
+				self.mAutomaticHide = True
 
 		self.RestartAutomaticHide( )
 
@@ -297,6 +299,9 @@ class LivePlate( LivePlateWindow ) :
 
 			if HasAvailableRecordingHDD( ) == False :
 				return
+
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				return -1
 
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
@@ -1492,7 +1497,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mDataCache.SetPincodeDialog( True )
 		self.mEventBus.Deregister( self )
 
-		if ( self.mCurrentChannel and self.mCurrentChannel.mLocked ) or aForce :
+		self.mDataCache.Epgevent_GetPresent( )
+		if ( self.mCurrentChannel and self.mCurrentChannel.mLocked ) or self.mDataCache.GetParentLock( ) or aForce :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
@@ -1522,6 +1528,12 @@ class LivePlate( LivePlateWindow ) :
 			else :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.mDataCache.SetParentLock( False )
+
+					if ( self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) ) :
+						iEPG = self.mDataCache.GetEpgeventCurrent( )
+						if iEPG and iEPG.mError == 0 and self.mDataCache.GetAgeGurantee( ) < iEPG.mAgeRating :
+							self.mDataCache.SetAgeGurantee( iEPG.mAgeRating )
+
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
 						self.mDataCache.LoadVolumeBySetGUI( )

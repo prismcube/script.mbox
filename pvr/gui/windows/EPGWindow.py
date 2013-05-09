@@ -144,7 +144,7 @@ class EPGWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mSelectedIndex = 0
-		self.mListItems = []
+		#self.mListItems = []
 		self.Flush( )
 
 		#GRID MODE
@@ -461,8 +461,8 @@ class EPGWindow( BaseWindow ) :
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
 		
-		self.mCtrlList.reset( )
-		self.mCtrlBigList.reset( )
+		#self.mCtrlList.reset( )
+		#self.mCtrlBigList.reset( )
 		
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
@@ -807,10 +807,10 @@ class EPGWindow( BaseWindow ) :
 	def UpdateList( self, aUpdateOnly=False ) :
 		LOG_TRACE( '------------------------> Start Update----------' )
 		#self.mLock.acquire( )	
-		if aUpdateOnly == False :
-			self.mLock.acquire( )	
-			self.mListItems = []
-			self.mLock.release( )
+		#if aUpdateOnly == False :
+		#	self.mLock.acquire( )	
+		#	self.mListItems = []
+		#	self.mLock.release( )
 
 		self.LoadTimerList( )
 
@@ -1035,18 +1035,26 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mEPGList == None :
 			self.mCtrlList.reset( )
+			self.mListItems = []
 			return
 
 		try :
-			if aUpdateOnly == True :
+			aUpdateOnly = True
+	
+			if self.mListItems == None  :
+				aUpdateOnly = False
+				self.mLock.acquire( )
+				self.mListItems = []
+				self.mLock.release( )			
+
+			else :
 				if len( self.mEPGList ) != len( self.mListItems ) :
 					LOG_TRACE( 'UpdateOnly------------>Create' )
 					aUpdateOnly = False 
 					self.mLock.acquire( )	
 					self.mListItems = []
 					self.mLock.release( )
-					
-				
+
 			for i in range( len( self.mEPGList ) ) :
 				epgEvent = self.mEPGList[i]
 				#epgEvent.printdebug()
@@ -1083,28 +1091,38 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex )
 
 
-
 	def UpdateCurrentView( self, aUpdateOnly ) :
 		self.mDebugStart = time.time( )		
 		if self.mChannelList == None :
 			self.mCtrlBigList.reset( )
+			self.mListItems = []			
 			return
 
-		if aUpdateOnly == False or self.mListItems == None:
-			self.mLock.acquire( )	
+		aUpdateOnly = True
+		if self.mListItems == None  :
+			aUpdateOnly = False
+			self.mLock.acquire( )
 			self.mListItems = []
-			self.mLock.release( )
+			self.mLock.release( )			
 		else :
 			if len( self.mChannelList ) != len( self.mListItems ) :
 				LOG_TRACE( 'UpdateOnly------------>Create' )
 				aUpdateOnly = False 
-				self.mLock.acquire( )	
+				self.mLock.acquire( )
 				self.mListItems = []
 				self.mLock.release( )
 
+		print 'LAEL98 UPDATE CONTAINER aUpdateOnly=%d' %aUpdateOnly
+				
 		currentTime = self.mDataCache.Datetime_GetLocalTime( )
 
 		strNoEvent = MR_LANG( 'No event' )
+
+		if aUpdateOnly == False :
+			for i in range( len( self.mChannelList ) ) :
+				listItem = xbmcgui.ListItem( '', '' )
+				self.mListItems.append( listItem )				
+			self.mCtrlBigList.addItems( self.mListItems )				
 		
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
@@ -1116,12 +1134,9 @@ class EPGWindow( BaseWindow ) :
 
 				if epgEvent :
 					hasEpg = True
-					if aUpdateOnly == False :
-						listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
-					else :
-						listItem = self.mListItems[i]
-						listItem.setLabel( tempChannelName )
-						listItem.setLabel2( epgEvent.mEventName )
+					listItem = self.mListItems[i]
+					listItem.setLabel( tempChannelName )
+					listItem.setLabel2( epgEvent.mEventName )
 
 					epgStart = epgEvent.mStartTime + self.mLocalOffset
 					tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
@@ -1140,12 +1155,9 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'TimerType', 'None' )
 
 				else :
-					if aUpdateOnly == False :					
-						listItem = xbmcgui.ListItem( tempChannelName, strNoEvent  )
-					else:
-						listItem = self.mListItems[i]
-						listItem.setLabel( tempChannelName )
-						listItem.setLabel2( strNoEvent )
+					listItem = self.mListItems[i]
+					listItem.setLabel( tempChannelName )
+					listItem.setLabel2( strNoEvent )
 
 					listItem.setProperty( 'StartTime', '' )
 					listItem.setProperty( 'Duration', '' )						
@@ -1168,15 +1180,14 @@ class EPGWindow( BaseWindow ) :
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
 					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
 				
-				#ListItem.PercentPlayed
-				if aUpdateOnly == False :
-					self.mListItems.append( listItem )
 
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
 
-		if aUpdateOnly == False :
-			self.mCtrlBigList.addItems( self.mListItems )
+			if aUpdateOnly == True and  i==8 :
+				xbmc.executebuiltin( 'container.refresh' )
+				print 'LAEL98 UPDATE CONTAINER'
+
 			#self.setFocusId( LIST_ID_BIG_EPG )
 		#else :
 		xbmc.executebuiltin( 'container.refresh' )
@@ -1190,20 +1201,23 @@ class EPGWindow( BaseWindow ) :
 	def  UpdateFollowingView( self, aUpdateOnly ) :
 		if self.mChannelList == None :
 			self.mCtrlBigList.reset( )
+			self.mListItems = []			
 			return
 
-		if aUpdateOnly == False or self.mListItems == None:
-			self.mLock.acquire( )	
+		aUpdateOnly = True
+		if self.mListItems == None  :
+			aUpdateOnly = False
+			self.mLock.acquire( )
 			self.mListItems = []
-			self.mLock.release( )
+			self.mLock.release( )			
 		else :
 			if len( self.mChannelList ) != len( self.mListItems ) :
 				LOG_TRACE( 'UpdateOnly------------>Create' )
 				aUpdateOnly = False 
-				self.mLock.acquire( )	
+				self.mLock.acquire( )
 				self.mListItems = []
-				self.mLock.release( )
-			
+				self.mLock.release( )				
+
 		strNoEvent = MR_LANG( 'No event' )
 
 		for i in range( len( self.mChannelList ) ) :

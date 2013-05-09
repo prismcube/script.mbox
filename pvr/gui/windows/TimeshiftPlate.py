@@ -66,6 +66,8 @@ E_MOVE_BY_MARK = 1
 E_ACCELATOR_START_INPUT = 20
 E_ACCELATOR_SHIFT_SECTION = 60
 
+E_PENDING_REPEAT_LIMIT = 10
+
 E_TINY_XSPEED = [ 25, 50, 125 ]
 
 
@@ -260,6 +262,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#self.UpdateBookmarkByPoint( )
 				if self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
+				else :
+					self.RestartAutomaticHide( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -272,6 +276,9 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 					#self.UpdateBookmarkByPoint( )
+
+				if self.mFocusId != E_CONTROL_ID_LIST_SHOW_BOOKMARK :
+					self.RestartAutomaticHide( )
 
 			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 				self.StopAutomaticHide( )
@@ -426,7 +433,11 @@ class TimeShiftPlate( BaseWindow ) :
 	
 		if aControlId >= E_CONTROL_ID_BUTTON_REWIND and aControlId <= E_CONTROL_ID_BUTTON_JUMP_FF :
 			self.StopAutomaticHide( )
-			self.TimeshiftAction( aControlId )
+			ret = self.TimeshiftAction( aControlId )
+			if ret == -1 :
+				LOG_TRACE( '----------- timeshift fault' )
+				self.ShowDialogByPlayFault( )
+				return
 
 			if aControlId == E_CONTROL_ID_BUTTON_PLAY or aControlId == E_CONTROL_ID_BUTTON_PAUSE :
 				aControlId = E_CONTROL_ID_BUTTON_PLAY
@@ -479,8 +490,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
-					xbmc.executebuiltin('xbmc.Action(stop)')
-					#self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+					#xbmc.executebuiltin('xbmc.Action(stop)')  <-- if show busyDialog then can not onAction
+					thread = threading.Timer( 0.1, self.TimeshiftAction, [E_CONTROL_ID_BUTTON_STOP] )
+					thread.start( )
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
@@ -527,15 +539,26 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_JUMP_RR )
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				ret = True
 				if self.mSpeed == 100 :
-					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+					ret = self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 				else :
-					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+					ret = self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+
+				if ret == -1 :
+					LOG_TRACE( '----------- timeshift fault' )
+					self.ShowDialogByPlayFault( )
+					return
 
 			elif self.mPrekey == Action.ACTION_MOVE_LEFT or self.mPrekey == Action.ACTION_MOVE_RIGHT :
 				self.StopAutomaticHide( )
 
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+				ret = self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+				if ret == -1 :
+					LOG_TRACE( '----------- timeshift fault' )
+					self.ShowDialogByPlayFault( )
+					return
+
 				self.InitTimeShift( )
 
 				self.mUserMoveTime = -1
@@ -582,6 +605,8 @@ class TimeShiftPlate( BaseWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_PLAY :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+				if not ret :
+					ret = -1
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Resume( )
@@ -591,20 +616,23 @@ class TimeShiftPlate( BaseWindow ) :
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
 
-			self.mIsPlay = FLAG_PAUSE
-			label = self.GetModeValue( )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
-			# toggle
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+			if ret == True :
+				self.mIsPlay = FLAG_PAUSE
+				label = self.GetModeValue( )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
+				# toggle
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 
-			#blocking release
-			#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-			#	self.SetBlockingButtonEnable( True )
+				#blocking release
+				#if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				#	self.SetBlockingButtonEnable( True )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+				if not ret :
+					ret = -1
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Pause( )
@@ -613,7 +641,7 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Pause( )
 
 			LOG_TRACE( 'play_pause( ) ret[%s]'% ret )
-			if ret :
+			if ret == True :
 				self.mIsPlay = FLAG_PLAY
 
 				# toggle
@@ -1332,7 +1360,7 @@ class TimeShiftPlate( BaseWindow ) :
 		while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
 				repeatPending += 1
-				if repeatPending > 5 :
+				if repeatPending > E_PENDING_REPEAT_LIMIT :
 					break
 
 				waitTime = 0
@@ -1366,11 +1394,16 @@ class TimeShiftPlate( BaseWindow ) :
 			time.sleep( 1 )
 			#LOG_TRACE('------')
 
-		if repeatPending > 5 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not play on timeshift, try again after while' ) )
-			dialog.doModal( )
-			self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+		if repeatPending > E_PENDING_REPEAT_LIMIT :
+			self.ShowDialogByPlayFault( )
+
+
+	def ShowDialogByPlayFault( self ) :
+		self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Timeshift not ready%s Please try again' )% NEW_LINE )
+		dialog.SetStayCount( 1 )
+		dialog.doModal( )
 
 
 	def ShowDialog( self, aFocusId ) :

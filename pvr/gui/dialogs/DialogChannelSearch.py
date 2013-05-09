@@ -314,6 +314,7 @@ class DialogChannelSearch( BaseDialog ) :
 		else :
 			self.mDataCache.Channel_SetCurrent( aChannel.mNumber, aChannel.mServiceType, None, True )
 
+		self.mDataCache.SetParentLock( True )
 		self.mDataCache.SetSearchNewChannel( True )
 
 

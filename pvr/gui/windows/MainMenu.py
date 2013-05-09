@@ -91,10 +91,11 @@ class MainMenu( BaseWindow ) :
 			self.mDataCache.SetAVBlankByArchive( False )
 		self.CheckMediaCenter( )
 
+		iChannel = self.mDataCache.Channel_GetCurrent( )
 		if self.mDataCache.GetSearchNewChannel( ) :
-			globalEvent = pvr.GlobalEvent.GetInstance( )
-			globalEvent.CheckParentLock( 0 )
-			self.mDataCache.SetSearchNewChannel(  False )
+			self.mDataCache.SetSearchNewChannel( False )
+			LOG_TRACE('---------------------------------------parentLock newCheck')
+			pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
 
 
 	def onAction( self, aAction ) :
