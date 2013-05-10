@@ -162,18 +162,20 @@ def UpdatePropertyByCacheData( self, pmtEvent, aPropertyID = None ) :
 
 def UpdatePropertyByAgeRating( self, aEPG ) :
 	#age info
-	hasAgeRating = 'None'
+	hasAgeRating = 'False'
 	if aEPG and aEPG.mAgeRating > 0 :
 		alignx = ''
+		ctag = 'grey'
+		hasAgeRating = 'True'
 		if aEPG.mAgeRating <= 7 :
 			alignx = ' '
-			hasAgeRating = "Green"
+			ctag = 'green'
 		elif aEPG.mAgeRating > 7 and aEPG.mAgeRating < 18 :
-			hasAgeRating = "Yellow"
+			ctag = 'yellow'
 		else :
-			hasAgeRating = "Red"
+			ctag = 'red'
 
-		self.setProperty( 'EPGAgeRating', '%s%s'% ( alignx, aEPG.mAgeRating ) )
+		self.setProperty( 'EPGAgeRating', '[COLOR %s]%s%s[/COLOR]'% ( ctag, alignx, aEPG.mAgeRating ) )
 	self.setProperty( 'HasAgeRating', hasAgeRating )
 
 

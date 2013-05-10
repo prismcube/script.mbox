@@ -49,6 +49,7 @@ NEXT_CHANNEL	= 1
 PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
+E_USE_CHANNEL_LOGO = True
 
 E_NOMAL_BLINKING_TIME	= 0.2
 E_MAX_BLINKING_COUNT	=  10
@@ -141,7 +142,6 @@ class LivePlate( LivePlateWindow ) :
 		self.LoadInit( )
 
 		#run thread
-
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
@@ -719,6 +719,15 @@ class LivePlate( LivePlateWindow ) :
 		ch = self.mCurrentChannel
 		if ch :
 			try :
+				if E_USE_CHANNEL_LOGO :
+					logo = '%s_%s' %(ch.mCarrier.mDVBS.mSatelliteLongitude, ch.mSid )
+					LOG_TRACE( 'logo=%s' %logo )
+					LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+					chImage = self.mChannelLogo.GetLogo( logo, ch.mServiceType )
+					if chImage == self.mChannelLogo.mDefaultLogo or chImage == self.mChannelLogo.mDefaultLogoRadio :
+						chImage = ''
+					self.UpdatePropertyGUI( 'iChannelLogo', '%s'% chImage )
+
 				#satellite
 				label = self.mDataCache.GetModeInfoByZappingMode( ch )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
@@ -880,6 +889,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
 		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
+		self.UpdatePropertyGUI( 'iChannelLogo', '' )
 		self.mEnableCasInfo = False
 
 

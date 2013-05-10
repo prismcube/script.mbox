@@ -134,6 +134,26 @@
 					<itemgap>25</itemgap>
 					<align>right</align>
 					<orientation>horizontal</orientation>
+					<control type="group">
+						<width>60</width>
+						<height>40</height>
+						<visible>substring(Window.Property(HasAgeRating),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>40</height>
+							<texture>ageIcon.png</texture>
+						</control>
+						<control type="label">
+							<posx>18</posx>
+							<posy>6</posy>
+							<width>50</width>
+							<height>10</height>
+							<font>font15</font>
+							<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+						</control>
+					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -174,61 +194,6 @@
 						<texture>OverlayHD.png</texture>
 						<visible>substring(Window.Property(HasHD),true)</visible>
 					</control>
-					<control type="group">
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Green)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageGreen.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-					<control type="group">
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Yellow)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageYellow.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-					<control type="group">
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Red)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageRed.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-
 				</control>
 			</control>
 

@@ -400,7 +400,7 @@ class ArchiveWindow( BaseWindow ) :
 	def Load( self ) :
 		self.mMarkMode = False
 		self.mThumbnailHash =  {}		
-
+		self.ResetArchiveInfomation( )
 		LOG_TRACE( '----------------------------------->' )
 		try :
 			isHideWatched = False
@@ -1097,7 +1097,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_TRACE( 'Archive Info --> RecDuration=%d' %( recInfo.mDuration/60 ) )
 			LOG_TRACE( 'Archive Info --> RecName=%s' %recInfo.mRecordName )
 			"""
-			
+
 			if recInfo :
 				self.setProperty( 'ChannelName', recInfo.mChannelName )
 				self.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ) )
@@ -1110,6 +1110,12 @@ class ArchiveWindow( BaseWindow ) :
 				#age info
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				UpdatePropertyByAgeRating( self, iEPG )
+
+				#component
+				#UpdatePropertyByCacheData( self, pmtEvent, E_XML_PROPERTY_TELETEXT )
+				self.setProperty( E_XML_PROPERTY_SUBTITLE, HasEPGComponent( iEPG, ElisEnum.E_HasSubtitles ) )
+				self.setProperty( E_XML_PROPERTY_DOLBY,    HasEPGComponent( iEPG, ElisEnum.E_HasDolbyDigital ) )
+				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( iEPG, ElisEnum.E_HasHDVideo ) )
 
 			else :
 				self.ResetArchiveInfomation( )
@@ -1124,6 +1130,11 @@ class ArchiveWindow( BaseWindow ) :
 		self.setProperty( 'RecName', '' )				
 		self.setProperty( 'EPGAgeRating', '' )
 		self.setProperty( 'HasAgeRating', 'None' )
+		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBYPLUS, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_DOLBY, E_TAG_FALSE )
+		self.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
 	def RestoreLastRecordKey( self ) :
