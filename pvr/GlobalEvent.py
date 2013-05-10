@@ -475,14 +475,25 @@ class GlobalEvent( object ) :
 	def StanByClose( self ) :
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
-	
-		while WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 :
-			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
-			time.sleep( 1.5 )
 
-		time.sleep( 3 )
-		if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
-			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+		curreuntWindowId = self.GetCurrentWindowIdForStanByClose( )
+		previousWindowId = 1234
+
+		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 :
+			if curreuntWindowId != previousWindowId :
+				xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+				if xbmcgui.getCurrentWindowDialogId( ) == 9999 :
+					previousWindowId = curreuntWindowId
+
+			curreuntWindowId = self.GetCurrentWindowIdForStanByClose( )
+			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
+
+
+	def GetCurrentWindowIdForStanByClose( self ) :
+		if self.mDataCache.GetMediaCenter( ) :
+			return xbmcgui.getCurrentWindowId( )
+		else :
+			return WinMgr.GetInstance( ).GetLastWindowID( )
 
