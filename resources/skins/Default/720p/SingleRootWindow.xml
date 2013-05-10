@@ -1812,7 +1812,7 @@ Search for window name
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="image">
-						<posx>0</posx>
+						<posx>-20</posx>
 						<posy>20</posy>
 						<width>60</width>
 						<height>40</height>
@@ -1820,7 +1820,7 @@ Search for window name
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400601">
-						<posx>20</posx>
+						<posx>0</posx>
 						<posy>5</posy>
 						<width>200</width>
 						<height>50</height>
@@ -2276,7 +2276,7 @@ Search for window name
 					<posx>50</posx>
 					<posy>660</posy>
 					<control type="label" id="1400701">
-						<posx>-30</posx>
+						<posx>-50</posx>
 						<posy>10</posy>
 						<width>300</width>
 						<font>font13caps</font>
