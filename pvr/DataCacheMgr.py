@@ -188,6 +188,7 @@ class DataCacheMgr( object ) :
 		self.mPropertyChannelBannerTime = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
 		self.mPropertyPlaybackBannerTime = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
 
+		self.mAgeGurantee = self.mPropertyAge
 		self.mRecordingCount = 0
 
 		pvr.BackupSettings.BackupSettings( )
@@ -2216,6 +2217,20 @@ class DataCacheMgr( object ) :
 		self.mParentLock = aLock
 
 
+	def SetAgeGurantee( self, aGurantee = -1 ) :
+		self.mAgeGurantee = aGurantee
+		if aGurantee == -1 :
+			self.mAgeGurantee = self.mPropertyAge
+
+
+	def GetAgeGurantee( self ) :
+		return self.mAgeGurantee
+
+
+	def GetStatusByParentLock( self ) :
+		return self.mParentLock
+
+
 	def GetParentLock( self, aCheckEPG = None ) :
 		isLimit = False
 
@@ -2230,7 +2245,7 @@ class DataCacheMgr( object ) :
 		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
 		if iMode == ElisEnum.E_MODE_LIVE and \
 		   iLock and ( iEPG and iEPG.mError == 0 ) :
-			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating )
+			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating, self.mAgeGurantee )
 			LOG_TRACE( 'isLimit[%s]'% isLimit )
 
 		return isLimit

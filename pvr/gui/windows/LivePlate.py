@@ -150,17 +150,17 @@ class LivePlate( LivePlateWindow ) :
 			self.mPincodeConfirmed = False
 			if self.mInitialized == False :
 				self.mInitialized = True
+
+			#set by m/w avBlank on boot(power) on
+			if self.mDataCache.Get_Player_AVBlank( ) :
 				isForce = False
 				channelList = self.mDataCache.Channel_GetList( )
 				if channelList and len( channelList ) > 0 :
-					if self.mDataCache.Get_Player_AVBlank( ) :
-						#set by m/w avBlank on boot(power) on
-						isForce = True
+				#	isForce = True
 					thread = threading.Timer( 0.3, self.ShowPincodeDialog, [isForce] )
 					thread.start( )
-					self.mAutomaticHide = True
-			else :
-				self.mDataCache.SetAVBlankByChannel( )
+
+				self.mAutomaticHide = True
 
 		self.RestartAutomaticHide( )
 
@@ -297,6 +297,9 @@ class LivePlate( LivePlateWindow ) :
 
 			if HasAvailableRecordingHDD( ) == False :
 				return
+
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				return -1
 
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
@@ -744,7 +747,6 @@ class LivePlate( LivePlateWindow ) :
 				elif mTPnum == 1 :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
-	
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
@@ -762,6 +764,9 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
 				label = TimeToString( aEpg.mStartTime + aEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
+
+				#age info
+				UpdatePropertyByAgeRating( self, aEpg )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -873,6 +878,8 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
+		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
 		self.mEnableCasInfo = False
 
 
@@ -1492,7 +1499,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mDataCache.SetPincodeDialog( True )
 		self.mEventBus.Deregister( self )
 
-		if ( self.mCurrentChannel and self.mCurrentChannel.mLocked ) or aForce :
+		self.mDataCache.Epgevent_GetPresent( )
+		if ( self.mCurrentChannel and self.mCurrentChannel.mLocked ) or self.mDataCache.GetParentLock( ) or aForce :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
@@ -1522,6 +1530,12 @@ class LivePlate( LivePlateWindow ) :
 			else :
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.mDataCache.SetParentLock( False )
+
+					if ( self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) ) :
+						iEPG = self.mDataCache.GetEpgeventCurrent( )
+						if iEPG and iEPG.mError == 0 and self.mDataCache.GetAgeGurantee( ) < iEPG.mAgeRating :
+							self.mDataCache.SetAgeGurantee( iEPG.mAgeRating )
+
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
 						self.mDataCache.LoadVolumeBySetGUI( )

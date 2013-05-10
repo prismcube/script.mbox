@@ -64,6 +64,16 @@ class NullWindow( BaseWindow ) :
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_LIVE :
 			self.setProperty( 'PvrPlay', 'False' )
+
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				iChannel = self.mDataCache.Channel_GetCurrent( )
+				channelList = self.mDataCache.Channel_GetList( )
+				iEPG = self.mDataCache.Epgevent_GetPresent( )
+
+				if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
+				   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+					pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+					#LOG_TRACE('---------------------------------------parentLock recheck repeat')
 		else :
 			self.setProperty( 'PvrPlay', 'True' )
 
@@ -350,6 +360,10 @@ class NullWindow( BaseWindow ) :
 				return -1
 
 			if actionId == Action.ACTION_MOVE_RIGHT and status.mMode == ElisEnum.E_MODE_LIVE :
+				return -1
+
+			if ( actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE ) and \
+			   self.mDataCache.Get_Player_AVBlank( ) and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
 
 			self.Close( )

@@ -1106,6 +1106,11 @@ class ArchiveWindow( BaseWindow ) :
 					recDuration += 1
 				self.setProperty( 'RecDuration',  '%dMin' %recDuration )
 				self.setProperty( 'RecName', recInfo.mRecordName )
+
+				#age info
+				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
+				UpdatePropertyByAgeRating( self, iEPG )
+
 			else :
 				self.ResetArchiveInfomation( )
 		else :
@@ -1117,6 +1122,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.setProperty( 'RecDate', '' )
 		self.setProperty( 'RecDuration',  '' )
 		self.setProperty( 'RecName', '' )				
+		self.setProperty( 'EPGAgeRating', '' )
+		self.setProperty( 'HasAgeRating', 'None' )
 
 
 	def RestoreLastRecordKey( self ) :

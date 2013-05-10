@@ -262,6 +262,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#self.UpdateBookmarkByPoint( )
 				if self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
+				else :
+					self.RestartAutomaticHide( )
 
 			else :
 				self.RestartAutomaticHide( )
@@ -274,6 +276,9 @@ class TimeShiftPlate( BaseWindow ) :
 				if self.getProperty( 'iButtonShow' ) == E_TAG_TRUE :
 					self.UpdatePropertyGUI( 'iButtonShow', E_TAG_FALSE )
 					#self.UpdateBookmarkByPoint( )
+
+				if self.mFocusId != E_CONTROL_ID_LIST_SHOW_BOOKMARK :
+					self.RestartAutomaticHide( )
 
 			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 				self.StopAutomaticHide( )

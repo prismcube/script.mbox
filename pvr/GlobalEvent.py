@@ -9,8 +9,8 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
 	WinMgr.WIN_ID_LIVE_PLATE,
-	WinMgr.WIN_ID_CONFIGURE,
-	WinMgr.WIN_ID_ARCHIVE_WINDOW,
+	#WinMgr.WIN_ID_CONFIGURE,
+	#WinMgr.WIN_ID_ARCHIVE_WINDOW,
 	#WinMgr.WIN_ID_SYSTEM_INFO,
 	#WinMgr.WIN_ID_MEDIACENTER,
 	WinMgr.WIN_ID_EPG_WINDOW,
@@ -23,9 +23,6 @@ PARENTLOCK_CHECKWINDOW = [
 
 
 gGlobalEvent = None
-
-E_PARENTLOCK_INIT = 0
-E_PARENTLOCK_EIT  = 1
 
 def GetInstance( ) :
 	global gGlobalEvent
@@ -284,6 +281,7 @@ class GlobalEvent( object ) :
 			#   pChannel.mSid != iChannel.mSid or pChannel.mTsid != iChannel.mTsid or pChannel.mOnid != iChannel.mOnid :
 				self.mDataCache.SetParentLock( True )
 				self.mDataCache.SetParentLockByEPG( )
+				self.mDataCache.SetAgeGurantee( )
 				if iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( ) :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
 
@@ -296,6 +294,8 @@ class GlobalEvent( object ) :
 							self.mDataCache.Player_AVBlank( True )
 
 					if ( not self.mDataCache.GetPincodeDialog( ) ) :
+						if ( iChannel and ( not iChannel.mLocked ) ) :
+							aCmd = E_PARENTLOCK_EIT
 						self.mDataCache.SetPincodeDialog( True )
 						thread = threading.Timer( 0.1, self.ShowPincodeDialog, [aCmd] )
 						thread.start( )
@@ -315,7 +315,7 @@ class GlobalEvent( object ) :
 		elif aCmd == E_PARENTLOCK_EIT :
 			iEPG = self.mDataCache.GetEpgeventCurrent( )
 			if iEPG and iEPG.mError == 0 :
-				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s] age[%s] limit[%s]'% ( aEvent.mEventId, self.mEventId, iEPG.mEventName, iEPG.mAgeRating, self.mDataCache.GetPropertyAge( ) ) )
+				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s] age[%s] limit[%s] gurantee[%s]'% ( aEvent.mEventId, self.mEventId, iEPG.mEventName, iEPG.mAgeRating, self.mDataCache.GetPropertyAge( ), self.mDataCache.GetAgeGurantee( ) ) )
 			else :
 				LOG_TRACE('EIT-id[%s] oldId[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, iEPG ) )
 
@@ -377,6 +377,9 @@ class GlobalEvent( object ) :
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if aCmd == E_PARENTLOCK_EIT :
 				self.mDataCache.SetParentLockByEPG( )
+				iEPG = self.mDataCache.GetEpgeventCurrent( )
+				if iEPG and iEPG.mError == 0 and self.mDataCache.GetAgeGurantee( ) < iEPG.mAgeRating :
+					self.mDataCache.SetAgeGurantee( iEPG.mAgeRating )
 
 			self.mDataCache.SetParentLock( False )
 			if self.mDataCache.Get_Player_AVBlank( ) :
