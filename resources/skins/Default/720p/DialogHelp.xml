@@ -5,164 +5,116 @@
 	<onload>SetProperty(HelpString,Help_String.xml)</onload>
 	<controls>
 		<control type="image">
+			<description>Normal Default Background Image</description>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture border="20">black-back_noAlpha.png</texture>
+			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 		</control>
-		<control type="group" id="9000">
-			<include>UseFakeButtonAnimation</include>
-			<include>DefaultDialogCloseEffect</include>
+		<control type="image">
+			<description>Background for the Header</description>
 			<posx>0</posx>
 			<posy>0</posy>
+			<width>1280</width>
+			<height>55</height>
+			<texture border="0,0,20,0">HeaderBack.png</texture>
+		</control>
+		<control type="image">
+			<description>Background for the Foooter</description>
+			<posx>0</posx>
+			<posy>535</posy>
+			<width>1280</width>
+			<height>185</height>
+			<texture border="0,0,20,0">FooterBack.png</texture>
+		</control>
+
+		<control type="group" id="9000">
+			<include>DefaultDialogCloseEffect</include>
 			<control type="group">
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1280</width>
-					<height>720</height>
-					<texture border="20">DialogBack.png</texture>
-				</control>
 				<control type="label" id="1002">
-					<description>header label</description>
-					<posx>40</posx>
-					<posy>40</posy>
-					<width>900</width>
+					<description>Label for Page Title</description>
+					<posx>230</posx>
+					<posy>5</posy>
+					<width>820</width>
 					<height>30</height>
 					<font>font14</font>
-					<align>left</align>
+					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>blue</textcolor>
 				</control>
 				<control type="label" id="1003">
-					<posx>40</posx>
-					<posy>70</posy>
-					<width>900</width>
+					<description>Label for Source</description>
+					<posx>20</posx>
+					<posy>5</posy>
+					<width>500</width>
 					<height>30</height>
-					<font>font16_title</font>
-					<textcolor>blue</textcolor>
+					<font>font10</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="1004">
+					<description>Label TYPE: CurrentPage/NumPages</description>
+					<posx>1260</posx>
+					<posy>5</posy>
+					<width>100</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
 					<aligny>center</aligny>
 				</control>
 			</control>
 
-			<!-- Contents -->
 			<control type="group" id="8500">
 				<control type="image" id="100">
+					<description>Content Images</description>
 					<texture border="20">$INFO[Window.Property(imagepath)]</texture>
 					<visible>Control.IsVisible(8500)</visible>
 				</control>
 				<control type="textbox" id="200">
-					<font>font12</font>
-					<textcolor>white</textcolor>
-					<label>$INFO[Window.Property(label)]</label>
-					<visible>Control.IsVisible(8500)</visible>
-					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
-				</control>
-				<control type="textbox" id="201">
+					<description>Left Textbox</description>
 					<font>font12</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Window.Property(label1)]</label>
 					<visible>Control.IsVisible(8500)</visible>
+					<align>left</align>
+					<aligny>top</aligny>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				</control>
-				<control type="textbox" id="202">
+				<control type="textbox" id="201">
+					<description>Right Textbox</description>
 					<font>font12</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Window.Property(label2)]</label>
 					<visible>Control.IsVisible(8500)</visible>
-					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>						
+					<align>left</align>
+					<aligny>top</aligny>
+					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				</control>
 			</control>
 			
-			<!-- Next and Previous Buttons -->
 			<control type="group">
-				<posx>250</posx>
-				<posy>160</posy>
 				<control type="button" id="7000">
-					<description>Prev button</description>
-					<posx>5</posx>
-					<posy>470</posy>
+					<description>Prev Button</description>
+					<posx>60</posx>
+					<posy>290</posy>
 					<width>60</width>
 					<height>50</height>
 					<texturenofocus border="5">Arrow-left.png</texturenofocus>
 					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
-					<onleft>7001</onleft>
-					<onright>7001</onright>
-				</control>
-				<control type="label" id="7005">
-					<posx>60</posx>
-					<posy>478</posy>
-					<width>200</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<visible>Control.IsVisible(7000) + !Control.HasFocus(7000)</visible>
-				</control>
-				<control type="label">
-					<posx>60</posx>
-					<posy>478</posy>
-					<width>200</width>
-					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[Control.GetLabel(7005)]</label>
-					<visible>Control.IsVisible(7000) + Control.HasFocus(7000)</visible>
 				</control>
 				<control type="button" id="7001">
-					<description>Next button</description>
-					<posx>700</posx>
-					<posy>470</posy>
+					<description>Next Button</description>
+					<posx>1140</posx>
+					<posy>290</posy>
 					<width>60</width>
 					<height>50</height>
 					<texturenofocus border="5">Arrow-right.png</texturenofocus>
 					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
-					<onleft>7000</onleft>
-					<onright>7000</onright>
 				</control>
-				<control type="label" id="7006">
-					<posx>696</posx>
-					<posy>478</posy>
-					<width>200</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
-				</control>
-				<control type="label">
-					<posx>696</posx>
-					<posy>478</posy>
-					<width>200</width>
-					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[Control.GetLabel(7006)]</label>
-					<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
-				</control>
-			</control>
-
-			<!-- Page Number -->
-			<control type="label" id="1004">
-				<posx>598</posx>
-				<posy>645</posy>
-				<width>100</width>
-				<height>30</height>
-				<font>font12_title</font>
-				<textcolor>blue</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
 			</control>
 		</control>
-		<include>DefaultFakeButton</include>
 	</controls>
 </window>

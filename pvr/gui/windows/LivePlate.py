@@ -150,8 +150,6 @@ class LivePlate( LivePlateWindow ) :
 			self.mPincodeConfirmed = False
 			if self.mInitialized == False :
 				self.mInitialized = True
-			#else :
-			#	self.mDataCache.SetAVBlankByChannel( )
 
 			#set by m/w avBlank on boot(power) on
 			if self.mDataCache.Get_Player_AVBlank( ) :
@@ -749,7 +747,6 @@ class LivePlate( LivePlateWindow ) :
 				elif mTPnum == 1 :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
-	
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
@@ -767,6 +764,9 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
 				label = TimeToString( aEpg.mStartTime + aEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
+
+				#age info
+				UpdatePropertyByAgeRating( self, aEpg )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -878,6 +878,8 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
+		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
 		self.mEnableCasInfo = False
 
 

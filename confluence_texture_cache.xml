@@ -4,7 +4,6 @@
 	<!-- background -->
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
-	<texture>resources/channellogo/DefaultLogo.jpg</texture>
 	<!-- main menu -->
 	<texture>Prismcube_Logo.png</texture>
 	<texture>floor.png</texture>
