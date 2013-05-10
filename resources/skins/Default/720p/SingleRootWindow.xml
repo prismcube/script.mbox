@@ -716,7 +716,7 @@ Search for window name
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 
-			<!-- Footor -->
+			<!-- Footer -->
 			<control type="group">
 				<posx>60</posx>
 				<posy>669</posy>
@@ -3368,7 +3368,7 @@ Search for window name
 				<label>$INFO[Control.GetLabel]</label>
 			</control>
 
-			<!-- Footor -->
+			<!-- Footer -->
 			<control type="group">
 				<posx>60</posx>
 				<posy>669</posy>
@@ -4170,7 +4170,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Footor -->
+			<!-- Footer -->
 			<control type="group">
 				<posx>60</posx>
 				<posy>669</posy>
@@ -5216,7 +5216,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Footor -->
+			<!-- Footer -->
 			<control type="group">
 				<posx>60</posx>
 				<posy>669</posy>
@@ -5506,6 +5506,7 @@ Search for window name
 			</control>
 		</control>
 
+		<!-- Video Calibration -->
 		<control type="group" id="4500000">
 			<visible>substring(Window.Property(CurrentWindow),4500000)</visible>
 			<control type="image">
@@ -5546,12 +5547,12 @@ Search for window name
 				<texture>CalibratePixelRatio.png</texture>
 			</control>
 			<control type="label" id="4500100">
-				<posx>0</posx>
+				<posx>445</posx>
 				<posy>100</posy>
 				<font>font13_title</font>
 				<textcolor>white</textcolor>
-				<align>center</align>
-				<width>1280</width>
+				<align>left</align>
+				<width>600</width>
 				<height>40</height>
 			</control>
 		</control>
@@ -5649,7 +5650,7 @@ Search for window name
 			<include>Input08</include>
 		</control>
 
-		<!-- Footor -->
+		<!-- Footer -->
 		<control type="group">
 			<posx>430r</posx>
 			<posy>645</posy>

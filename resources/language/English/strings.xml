@@ -752,7 +752,7 @@
 	<string id="3334">View CAM information</string>
 	<string id="3335">Rotate Antenna</string>
 	<string id="3336">You can control the movements of the motorized antenna here</string>
-	<string id="3337">Remote control up button : Zoom in, Remote control down button : Zoom out ( Current rate : %s ) %sRemote control Left button : Previous step, Right button : Next step</string>
+	<string id="3337">Up & Down = Zoom in/out ( Current rate : %s ) %sLeft & Right = Previous/Next step</string>
 	<string id="3338">You have reached the maximum rate</string>
 	<string id="3339">You have reached the minimum rate</string>
 	<string id="3340">Try again after stopping playback%s and timeshift</string>

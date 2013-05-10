@@ -1120,3 +1120,5 @@
 "North";;;;;;;;;"Север";;;3703
 "South";;;;;;;;;"Юг";;;3704
 "Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3705
+"Up + Down = Zoom in/out ( Current rate : %s ) %sLeft + Right = Previous/Next step";;;;;;;;;;;;3706
+"Up & Down = Zoom in/out ( Current rate : %s ) %sLeft & Right = Previous/Next step";;;;;;;;;;;;3707
