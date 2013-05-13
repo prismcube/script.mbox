@@ -319,7 +319,9 @@ class DataCacheMgr( object ) :
 
 	def LoadAllSatellite( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.mAllSatelliteList = self.mChannelDB.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
+			channelDB = ElisChannelDB( )
+			self.mAllSatelliteList = channelDB.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
+			channelDB.Close( )
 		else:
 			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 
@@ -392,7 +394,9 @@ class DataCacheMgr( object ) :
 	 	#if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 		for satellite in self.mAllSatelliteList :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				channelDB = ElisChannelDB( )
+				transponderList = channelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				channelDB.Close( )
 			else :
 				transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 			self.mTransponderLists.append( transponderList )

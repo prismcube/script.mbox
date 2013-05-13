@@ -41,6 +41,7 @@ class GlobalEvent( object ) :
 		self.mIsDialogOpend	= False
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
+		self.mIsChannelUpdateEvent = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.SendLocalOffsetToXBMC( )
 
@@ -179,6 +180,15 @@ class GlobalEvent( object ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).CheckSubTitle( )
 			#self.SetSingleWindowPosition( WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 			LOG_TRACE( '----------ElisEventTTXClosed' )
+
+		elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update channel list by PVR manager' ) )
+			dialog.doModal( )
+			self.mDataCache.SetStanbyClosing( True )
+			self.mIsChannelUpdateEvent = True
+			thread = threading.Timer( 1, self.StanByClose )
+			thread.start( )
 
 
 	def AsyncHddFull( self ) :
@@ -489,6 +499,20 @@ class GlobalEvent( object ) :
 			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
+
+		if self.mIsChannelUpdateEvent :
+			xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+			self.mDataCache.LoadAllSatellite( )
+			self.mDataCache.LoadAllTransponder( )
+			import pvr.TunerConfigMgr
+			pvr.TunerConfigMgr.GetInstance( ).SyncChannelBySatellite( )
+			self.mDataCache.Channel_ReLoad( )
+			self.mDataCache.Player_AVBlank( False )
+			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+			self.mIsChannelUpdateEvent = False
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update channel list ok' ) )
+			dialog.doModal( )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
