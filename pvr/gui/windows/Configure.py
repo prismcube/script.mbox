@@ -445,10 +445,10 @@ class Configure( SettingWindow ) :
 		if hdmiFormat == 'Automatic' :
 			return
 		iconIndex = ElisEnum.E_ICON_1080i
-		if hdmiFormat == '1080p-50' :
+		if hdmiFormat == '1080p' :
 			iconIndex = ElisEnum.E_ICON_1080p
-		elif hdmiFormat == '1080p-25' :
-			iconIndex = ElisEnum.E_ICON_1080p
+		#elif hdmiFormat == '1080p-25' :
+		#	iconIndex = ElisEnum.E_ICON_1080p
 		elif hdmiFormat == '720p' :
 			iconIndex = ElisEnum.E_ICON_720p
 		elif hdmiFormat == '576p' :
