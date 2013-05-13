@@ -1123,4 +1123,6 @@
 	<string id="3705">ITA_South</string>
 	<string id="3706">ITA_Finish</string>
 	<string id="3707">ITA_Go to the channel search setup page</string>
+	<string id="3708">ITA_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">ITA_Update channels</string>
 </strings>

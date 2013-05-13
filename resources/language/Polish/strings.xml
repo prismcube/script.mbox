@@ -1123,4 +1123,6 @@
 	<string id="3705">POL_South</string>
 	<string id="3706">POL_Finish</string>
 	<string id="3707">POL_Go to the channel search setup page</string>
+	<string id="3708">POL_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">POL_Update channels</string>
 </strings>

@@ -1123,4 +1123,6 @@
 	<string id="3705">FRE_South</string>
 	<string id="3706">Terminer</string>
 	<string id="3707">FRE_Go to the channel search setup page</string>
+	<string id="3708">FRE_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">FRE_Update channels</string>
 </strings>

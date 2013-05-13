@@ -183,7 +183,7 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update channel list by PVR manager' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Update channels' ), MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE )
 			dialog.doModal( )
 			self.mDataCache.SetStanbyClosing( True )
 			self.mIsChannelUpdateEvent = True
@@ -511,7 +511,7 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update channel list ok' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Update complete' ), MR_LANG( 'Your channel list has been updated successfully' ) )
 			dialog.doModal( )
 
 
