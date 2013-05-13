@@ -1123,4 +1123,6 @@
 	<string id="3705">Юг</string>
 	<string id="3706">Окончание</string>
 	<string id="3707">Перейти к поиску каналов</string>
+	<string id="3708">RUS_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">RUS_Update channels</string>
 </strings>

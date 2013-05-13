@@ -1123,4 +1123,6 @@
 	<string id="3705">TUR_South</string>
 	<string id="3706">TUR_Finish</string>
 	<string id="3707">TUR_Go to the channel search setup page</string>
+	<string id="3708">TUR_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">TUR_Update channels</string>
 </strings>

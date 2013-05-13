@@ -1123,4 +1123,6 @@
 	<string id="3705">KOR_South</string>
 	<string id="3706">KOR_Finish</string>
 	<string id="3707">KOR_Go to the channel search setup page</string>
+	<string id="3708">KOR_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">KOR_Update channels</string>
 </strings>
