@@ -1217,11 +1217,33 @@ Search for window name
 						<control type="grouplist">
 							<posx>0</posx>
 							<posy>100</posy>
-							<width>350</width>
+							<width>360</width>
 							<height>30</height>
-							<itemgap>18</itemgap>
+							<itemgap>8</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
+							<control type="group">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasAgeRating),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>30</height>
+									<texture>ageIcon.png</texture>
+								</control>
+								<control type="label">
+									<posx>20</posx>
+									<posy>3</posy>
+									<width>50</width>
+									<height>10</height>
+									<font>font12</font>
+									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+								</control>
+							</control>
 							<control type="group" id="1300313">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -1294,69 +1316,6 @@ Search for window name
 							</control>
 						</control>
 					</control>
-
-					<!-- ageRating info -->
-					<control type="group">
-						<posx>0</posx>
-						<posy>250</posy>
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Green)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageGreen.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>0</posx>
-						<posy>250</posy>
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Yellow)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageYellow.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-					<control type="group">
-						<posx>0</posx>
-						<posy>250</posy>
-						<width>50</width>
-						<height>40</height>
-						<visible>substring(Window.Property(HasAgeRating),Red)</visible>
-						<control type="image">
-							<width>50</width>
-							<height>40</height>
-							<texture>ageRed.png</texture>
-						</control>
-						<control type="label">
-							<posx>13</posx>
-							<posy>5</posy>
-							<width>50</width>
-							<height>10</height>
-							<font>font15</font>
-							<label>$INFO[Window.Property(EPGAgeRating)]</label>
-						</control>
-					</control>
-
 				</control>
 			</control>
 
@@ -1852,6 +1811,14 @@ Search for window name
 						<label>PLAYBACK</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>20</posy>
+						<width>60</width>
+						<height>40</height>
+						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+					</control>
 					<control type="label" id="1400601">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -2075,73 +2042,6 @@ Search for window name
 								<visible>substring(Window.Property(iTuner2),true)</visible>
 							</control>
 
-								<control type="group">
-									<posx>75</posx>
-									<posy>0</posy>
-									<width>25</width>
-									<height>25</height>
-									<visible>substring(Window.Property(HasAgeRating),Green)</visible>
-									<control type="image">
-										<posx>0</posx>
-										<posy>3</posy>
-										<width>25</width>
-										<height>25</height>
-										<texture>ageGreen.png</texture>
-									</control>
-									<control type="label">
-										<posx>5</posx>
-										<posy>5</posy>
-										<width>25</width>
-										<height>10</height>
-										<font>font10</font>
-										<label>$INFO[Window.Property(EPGAgeRating)]</label>
-									</control>
-								</control>
-								<control type="group">
-									<posx>75</posx>
-									<posy>0</posy>
-									<width>25</width>
-									<height>25</height>
-									<visible>substring(Window.Property(HasAgeRating),Yellow)</visible>
-									<control type="image">
-										<posx>0</posx>
-										<posy>3</posy>
-										<width>25</width>
-										<height>25</height>
-										<texture>ageYellow.png</texture>
-									</control>
-									<control type="label">
-										<posx>5</posx>
-										<posy>5</posy>
-										<width>25</width>
-										<height>10</height>
-										<font>font10</font>
-										<label>$INFO[Window.Property(EPGAgeRating)]</label>
-									</control>
-								</control>
-								<control type="group">
-									<posx>75</posx>
-									<posy>0</posy>
-									<width>25</width>
-									<height>25</height>
-									<visible>substring(Window.Property(HasAgeRating),Red)</visible>
-									<control type="image">
-										<posx>0</posx>
-										<posy>3</posy>
-										<width>25</width>
-										<height>25</height>
-										<texture>ageRed.png</texture>
-									</control>
-									<control type="label">
-										<posx>5</posx>
-										<posy>5</posy>
-										<width>25</width>
-										<height>10</height>
-										<font>font10</font>
-										<label>$INFO[Window.Property(EPGAgeRating)]</label>
-									</control>
-								</control>
-
 							<!--control type="image">
 								<posx>110</posx>
 								<posy>1</posy>
@@ -2151,7 +2051,7 @@ Search for window name
 								<visible>substring(Window.Property(iFav),true)</visible>
 							</control-->
 							<control type="image">
-								<posx>110</posx>
+								<posx>75</posx>
 								<posy>1</posy>
 								<width>30</width>
 								<height>30</height>
@@ -2159,7 +2059,7 @@ Search for window name
 								<visible>substring(Window.Property(iCas),true)</visible>
 							</control>
 							<control type="group">
-								<posx>145</posx>
+								<posx>110</posx>
 								<posy>10</posy>
 								<control type="label">
 									<posx>0</posx>
@@ -2180,12 +2080,13 @@ Search for window name
 					<!-- color key -->
 					<control type="group">
 						<control type="grouplist">
-							<posx>250r</posx>
+							<posx>430r</posx>
 							<posy>-35</posy>
 							<width>300</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
 							<visible>true</visible>
+							<align>right</align>
 							<orientation>horizontal</orientation>
 							<control type="group">
 								<width>30</width>
@@ -2263,14 +2164,38 @@ Search for window name
 					</control>
 
 					<control type="group">
+						<posx>705</posx>
+						<posy>18</posy>
 						<control type="grouplist">
-							<posx>705</posx>
-							<posy>18</posy>
-							<width>410</width>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>510</width>
 							<height>40</height>
-							<itemgap>25</itemgap>
+							<itemgap>15</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
+							<control type="group">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<visible>substring(Window.Property(HasAgeRating),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<texture>ageIcon.png</texture>
+								</control>
+								<control type="label">
+									<posx>18</posx>
+									<posy>6</posy>
+									<width>50</width>
+									<height>10</height>
+									<font>font15</font>
+									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+								</control>
+							</control>
 							<control type="group" id="1400608">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -2302,9 +2227,9 @@ Search for window name
 							<control type="group" id="1400606">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(609)</visible>
+								<width>118</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasDolby),true)</visible>
 								<control type="image">
 									<posx>5</posx>
 									<posy>4</posy>
@@ -2316,8 +2241,8 @@ Search for window name
 							<control type="group" id="1400609">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
+								<width>118</width>
+								<height>30</height>
 								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 								<control type="image">
 									<posx>5</posx>
@@ -2327,15 +2252,14 @@ Search for window name
 									<texture>dolbydigitalplus.png</texture>
 								</control>
 							</control>
-
 							<control type="group" id="1400607">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>60</width>
+								<width>85</width>
 								<height>40</height>
 								<visible>substring(Window.Property(HasHD),true)</visible>
 								<control type="image">
-									<posx>70</posx>
+									<posx>0</posx>
 									<posy>0</posy>
 									<width>85</width>
 									<height>40</height>
@@ -2344,6 +2268,7 @@ Search for window name
 							</control>
 						</control>
 					</control>
+
 				</control>
 
 		<!-- epg section -->
@@ -2369,9 +2294,10 @@ Search for window name
 						<texturefocus>scroll-left-focus.png</texturefocus>
 						<texturenofocus>scroll-left.png</texturenofocus>
 						<onleft></onleft>
-						<onright>SetFocus(1400706)</onright>
-						<onup>SetFocus(1003621)</onup>
+						<onright>1400706</onright>
+						<onup>1003621</onup>
 						<ondown></ondown>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400703">
 						<posx>290</posx>
@@ -2418,10 +2344,11 @@ Search for window name
 						<font></font>
 						<texturefocus>scroll-right-focus.png</texturefocus>
 						<texturenofocus>scroll-right.png</texturenofocus>
-						<onleft>SetFocus(1400702)</onleft>
+						<onleft>1400702</onleft>
 						<onright></onright>
-						<onup>SetFocus(1003621)</onup>
+						<onup>1003621</onup>
 						<ondown></ondown>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 				</control>
 			</control>
@@ -3796,67 +3723,114 @@ Search for window name
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(RecName)]</label>
 				</control>
-				<!-- ageRating info -->
+
+				<!-- component -->
 				<control type="group">
 					<posx>0</posx>
-					<posy>150</posy>
-					<width>50</width>
-					<height>40</height>
-					<visible>substring(Window.Property(HasAgeRating),Green)</visible>
-					<control type="image">
-						<width>50</width>
-						<height>40</height>
-						<texture>ageGreen.png</texture>
-					</control>
-					<control type="label">
-						<posx>13</posx>
-						<posy>5</posy>
-						<width>50</width>
-						<height>10</height>
-						<font>font15</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
+					<posy>240</posy>
+					<control type="grouplist">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>360</width>
+						<height>30</height>
+						<itemgap>8</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasAgeRating),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<texture>ageIcon.png</texture>
+							</control>
+							<control type="label">
+								<posx>20</posx>
+								<posy>3</posy>
+								<width>50</width>
+								<height>10</height>
+								<font>font12</font>
+								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasTeletext),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<texture>IconTeletext.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasSubtitle),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<texture>IconSubtitle.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>82</width>
+							<height>20</height>
+							<visible>substring(Window.Property(HasDolby),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>82</width>
+								<height>20</height>
+								<texture>dolbydigital.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>82</width>
+							<height>20</height>
+							<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>82</width>
+								<height>20</height>
+								<texture>dolbydigitalplus.png</texture>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasHD),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>65</width>
+								<height>30</height>
+								<texture>OverlayHD.png</texture>
+							</control>
+						</control>
 					</control>
 				</control>
-				<control type="group">
-					<posx>0</posx>
-					<posy>150</posy>
-					<width>50</width>
-					<height>40</height>
-					<visible>substring(Window.Property(HasAgeRating),Yellow)</visible>
-					<control type="image">
-						<width>50</width>
-						<height>40</height>
-						<texture>ageYellow.png</texture>
-					</control>
-					<control type="label">
-						<posx>13</posx>
-						<posy>5</posy>
-						<width>50</width>
-						<height>10</height>
-						<font>font15</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
-					</control>
-				</control>
-				<control type="group">
-					<posx>0</posx>
-					<posy>150</posy>
-					<width>50</width>
-					<height>40</height>
-					<visible>substring(Window.Property(HasAgeRating),Red)</visible>
-					<control type="image">
-						<width>50</width>
-						<height>40</height>
-						<texture>ageRed.png</texture>
-					</control>
-					<control type="label">
-						<posx>13</posx>
-						<posy>5</posy>
-						<width>50</width>
-						<height>10</height>
-						<font>font15</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
-					</control>
-				</control>
+
 			</control>
 
 			<!-- Item Position and Page Number for common list-->
@@ -5241,13 +5215,35 @@ Search for window name
 				<control type="group">
 					<include>DefaultWindowFade</include>
 					<control type="grouplist">
-						<posx>0</posx>
+						<posx>-5</posx>
 						<posy>240</posy>
-						<width>350</width>
+						<width>360</width>
 						<height>30</height>
-						<itemgap>18</itemgap>
+						<itemgap>8</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasAgeRating),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>30</height>
+								<texture>ageIcon.png</texture>
+							</control>
+							<control type="label">
+								<posx>20</posx>
+								<posy>3</posy>
+								<width>50</width>
+								<height>10</height>
+								<font>font12</font>
+								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+							</control>
+						</control>
 						<control type="group" id="3700313">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -5318,69 +5314,6 @@ Search for window name
 								<texture>OverlayHD.png</texture>
 							</control>
 						</control>
-
-				<!-- ageRating info -->
-				<control type="group">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>40</width>
-					<height>30</height>
-					<visible>substring(Window.Property(HasAgeRating),Green)</visible>
-					<control type="image">
-						<width>40</width>
-						<height>30</height>
-						<texture>ageGreen.png</texture>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>3</posy>
-						<width>40</width>
-						<height>10</height>
-						<font>font12</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
-					</control>
-				</control>
-				<control type="group">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>40</width>
-					<height>30</height>
-					<visible>substring(Window.Property(HasAgeRating),Yellow)</visible>
-					<control type="image">
-						<width>40</width>
-						<height>30</height>
-						<texture>ageYellow.png</texture>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>3</posy>
-						<width>40</width>
-						<height>10</height>
-						<font>font12</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
-					</control>
-				</control>
-				<control type="group">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>40</width>
-					<height>30</height>
-					<visible>substring(Window.Property(HasAgeRating),Red)</visible>
-					<control type="image">
-						<width>40</width>
-						<height>30</height>
-						<texture>ageRed.png</texture>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>3</posy>
-						<width>40</width>
-						<height>10</height>
-						<font>font12</font>
-						<label>$INFO[Window.Property(EPGAgeRating)]</label>
-					</control>
-				</control>
-
 					</control>
 				</control>
 			</control>

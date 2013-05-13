@@ -460,10 +460,8 @@ class EPGWindow( BaseWindow ) :
 
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
-		
 		#self.mCtrlList.reset( )
 		#self.mCtrlBigList.reset( )
-		
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 

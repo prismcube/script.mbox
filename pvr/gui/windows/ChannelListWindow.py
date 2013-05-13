@@ -1764,7 +1764,6 @@ class ChannelListWindow( BaseWindow ) :
 				#ToDO : pincode
 			"""
 
-
 		#component
 		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 		isSubtitle = self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )

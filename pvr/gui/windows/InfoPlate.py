@@ -409,8 +409,8 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,  '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,    '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
-		self.mCtrlBtnPrevEpg.setVisible( False )
-		self.mCtrlBtnNextEpg.setVisible( False )
+		#self.mCtrlBtnPrevEpg.setVisible( False )
+		#self.mCtrlBtnNextEpg.setVisible( False )
 
 		tvValue = E_TAG_TRUE
 		raValue = E_TAG_FALSE
