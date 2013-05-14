@@ -1,9 +1,9 @@
 <window>
-	<!--defaultcontrol always="true">3850</defaultcontrol-->
+	<!--defaultcontrol always="true">1003850</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<control type="group" id="8000">
+		<control type="group" id="3900">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>350</posx>
 			<posy>50</posy>
@@ -23,7 +23,7 @@
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
-			<control type="button" id="3800">
+			<control type="button" id="3901">
 				<description>Close Window button</description>
 				<posx>520</posx>
 				<posy>9</posy>
@@ -32,12 +32,12 @@
 				<font>-</font>
 				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
-				<onleft>3850</onleft>
-				<onright>3851</onright>
-				<onup>3802</onup>
-				<ondown>3850</ondown>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>3904</onup>
+				<ondown>1003950</ondown>
 			</control>
-			<control type="label" id="3801">
+			<control type="label" id="3902">
 				<description>header label</description>
 				<posx>20</posx>
 				<posy>18</posy>
@@ -49,7 +49,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-			<control type="label" id="3803">
+			<control type="label" id="3903">
 				<textcolor>grey2</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
@@ -64,10 +64,10 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)]/$INFO[Container(3850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
-				<visible>Control.IsVisible(3850)</visible>
+				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003950).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(1003950)</visible>
 			</control>
-			<control type="button" id="3802">
+			<control type="button" id="3904">
 				<posx>20</posx>
 				<posy>590</posy>
 				<width>200</width>
@@ -79,10 +79,10 @@
 				<align>center</align>
 				<texturenofocus>MenuItemNF.png</texturenofocus>
 				<texturefocus>button-focus.png</texturefocus>
-				<onleft>3850</onleft>
-				<onright>3851</onright>
-				<onup>3850</onup>
-				<ondown>3800</ondown>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>1003950</onup>
+				<ondown>3901</ondown>
 			</control>
 			<include>DefaultSelectList</include>
 		</control>

@@ -1123,4 +1123,6 @@
 	<string id="3705">South</string>
 	<string id="3706">Finish</string>
 	<string id="3707">Go to the channel search setup page</string>
+	<string id="3708">New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3709">Update channels</string>
 </strings>

@@ -1,5 +1,5 @@
 <window>
-	<defaultcontrol always="true">3850</defaultcontrol>
+	<defaultcontrol always="true">1003950</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
@@ -21,7 +21,7 @@
 				<height>40</height>
 				<texture>osd/osd_settings_buttonnf.png</texture>
 			</control>
-			<control type="button" id="3800">
+			<control type="button" id="3901">
 				<description>Cancel Window button</description>
 				<posx>709</posx>
 				<posy>50</posy>
@@ -34,12 +34,12 @@
 				<shadowcolor>black</shadowcolor>
 				<label>SCRIPT21</label>
 				<font>Font_Bold18</font>
-				<onleft>3851</onleft>
-				<onright>3802</onright>
-				<onup>3802</onup>
-				<ondown>3850</ondown>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>3904</onup>
+				<ondown>1003950</ondown>
 			</control>
-			<control type="label" id="3801">
+			<control type="label" id="3902">
 				<description>header label</description>
 				<posx>80</posx>
 				<posy>50</posy>
@@ -50,7 +50,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
-			<control type="label" id="3803">
+			<control type="label" id="3903">
 				<textcolor>grey2</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
@@ -65,10 +65,10 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey2</textcolor>
-				<label>$INFO[Control.GetLabel(3803)] SCRIPT106 - SCRIPT107 ($INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages])</label>
-				<visible>Control.IsVisible(3850)</visible>
+				<label>$INFO[Control.GetLabel(3903)] SCRIPT106 - SCRIPT107 ($INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages])</label>
+				<visible>Control.IsVisible(1003950)</visible>
 			</control>
-			<control type="button" id="3802">
+			<control type="button" id="3904">
 				<description>Close Window button</description>
 				<posx>0</posx>
 				<posy>451</posy>
@@ -82,10 +82,10 @@
 				<texturefocus></texturefocus>
 				<focusedcolor>white</focusedcolor>
 				<shadowcolor>black</shadowcolor>
-				<onleft>3851</onleft>
-				<onright>3800</onright>
-				<onup>3850</onup>
-				<ondown>3800</ondown>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>1003950</onup>
+				<ondown>3901</ondown>
 			</control>
 			<include>DefaultSelectList</include>
 		</control>

@@ -129,6 +129,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mShowOpenWindow = None
 		self.mIsShowDialog = False
 		self.mEnableCasInfo = False
+		self.mCasInfoThread = None
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -736,19 +737,28 @@ class LivePlate( LivePlateWindow ) :
 				if ch.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
-				self.mEnableCasInfo = False
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
 					casInfo = HasCasInfoByChannel( ch )
 					if casInfo and len( casInfo ) > 1 :
-						self.mEnableCasInfo = True
-						self.ShowCasInfoThread( casInfo )
+						if not self.mEnableCasInfo :
+							if self.mCasInfoThread :
+								self.mCasInfoThread.join( )
 
-					elif casInfo and len( casInfo ) == 1 :
-						self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
+							self.mEnableCasInfo = True
+							self.mCasInfoThread = self.ShowCasInfoThread( casInfo )
 
 					else :
-						self.UpdatePropertyGUI( 'iCasInfo', '' )
+						if self.mCasInfoThread :
+							self.mEnableCasInfo = False
+							self.mCasInfoThread.join( )
+						self.mEnableCasInfo = False
+
+						if casInfo and len( casInfo ) == 1 :
+							self.UpdatePropertyGUI( 'iCasInfo', casInfo[0] )
+
+						else :
+							self.UpdatePropertyGUI( 'iCasInfo', '' )
 
 				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
 				if mTPnum == 0 :
@@ -801,14 +811,15 @@ class LivePlate( LivePlateWindow ) :
 				self.UpdatePropertyGUI( 'iCasInfo', item )
 
 				loopCount = 0
-				while loopCount < 3 :
+				while loopCount < 1.1 :
 					if not self.mEnableCasInfo :
 						break
-					loopCount += 0.5
-					time.sleep( 0.5 )
+					loopCount += 0.1
+					time.sleep( 0.1 )
 
-			time.sleep( 0.5 )
+			time.sleep( 0.1 )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
+		self.mCasInfoThread = None
 
 
 	@RunThread
@@ -890,6 +901,9 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
 		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
 		self.UpdatePropertyGUI( 'iChannelLogo', '' )
+		if self.mCasInfoThread :
+			self.mEnableCasInfo = False
+			self.mCasInfoThread.join( )
 		self.mEnableCasInfo = False
 
 
@@ -1382,6 +1396,10 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+
+		if self.mCasInfoThread :
+			self.mEnableCasInfo = False
+			self.mCasInfoThread.join( )
 		self.mEnableCasInfo = False
 
 		self.StopBlinkingIconTimer( )

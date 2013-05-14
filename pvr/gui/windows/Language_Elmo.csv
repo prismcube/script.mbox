@@ -1122,3 +1122,5 @@
 "South";;;;;;;;;"Юг";;;3705
 "Finish";;"Terminer";;;;;;;"Окончание";;;3706
 "Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3707
+"New channels have been loaded from PVR manager%s Press OK to continue updating your channel list";;;;;;;;;;;;3708
+"Update channels";;;;;;;;;;;;3709
