@@ -279,8 +279,8 @@ class GlobalEvent( object ) :
 		channelList = self.mDataCache.Channel_GetList( )
 		if not aForce :
 			if not channelList or len( channelList ) < 1 :
-			LOG_TRACE( '--------parentLock check pass ChannelList None' )
-			return
+				LOG_TRACE( '--------parentLock check pass ChannelList None' )
+				return
 
 
 		if aCmd == E_PARENTLOCK_INIT :
