@@ -89,8 +89,10 @@ class AntennaSetup( SettingWindow ) :
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				self.OpenBusyDialog( )
 				#if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
-				self.CancelConfiguration( )
+				self.mTunerMgr.CancelConfiguration( )
 				self.mTunerMgr.SyncChannelBySatellite( )
+				self.mDataCache.Channel_ReTune( )
+
 			else :
 				return
 
@@ -169,11 +171,6 @@ class AntennaSetup( SettingWindow ) :
 	def SaveConfiguration( self ) :
 		self.mTunerMgr.SaveConfiguration( )
 		#self.mDataCache.Channel_ReTune( )
-
-
-	def CancelConfiguration( self ) :
-		self.mTunerMgr.CancelConfiguration( )
-		self.mDataCache.Channel_ReTune( )
 
 
 	def CloseWindow( self ) :

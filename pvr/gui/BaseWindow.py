@@ -435,7 +435,8 @@ class BaseWindow( BaseObjectWindow ) :
 			xbmc.executebuiltin("Custom.StartStopService(Stop)", False)
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
+			channelList = self.mDataCache.Channel_GetList( )
+			if iChannel and channelList and len( channelList ) > 0 :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 				self.mDataCache.SetParentLockPass( True )

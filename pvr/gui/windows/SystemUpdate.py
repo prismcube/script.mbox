@@ -277,6 +277,7 @@ class SystemUpdate( SettingWindow ) :
 				return
 
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
+			#LOG_TRACE('-------------------------usbpath[%s] define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
 		if self.mPVSData and self.mPVSData.mError == 0 :
 			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
@@ -529,6 +530,7 @@ class SystemUpdate( SettingWindow ) :
 		else :
 			self.mIsDownload = False
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+			#LOG_TRACE( '----------------downpath[%s]'% tempFile )
 
 			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
 				isInit = 2
@@ -602,6 +604,7 @@ class SystemUpdate( SettingWindow ) :
 		self.OpenBusyDialog( )
 		try :
 			CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+			CreateDirectory( '%s'% os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 			isDownload = GetURLpage( E_DEFAULT_URL_PVS, E_DOWNLOAD_INFO_PVS )
 			#LOG_TRACE( '[pvs]%s'% isDownload )
 
