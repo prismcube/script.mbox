@@ -1468,7 +1468,7 @@ class DataCacheMgr( object ) :
 		self.mCacheReload = aReload
 
 
-	def Channel_ReLoad( self ) :
+	def Channel_ReLoad( self, aDefaultTune = True ) :
 		mCurrentChannel = self.Channel_GetCurrent( )
 
 		self.LoadZappingmode( )
@@ -1477,8 +1477,9 @@ class DataCacheMgr( object ) :
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
 
-		#self.Channel_TuneDefault( mCurrentChannel )
-		self.Channel_TuneDefault( False, mCurrentChannel )
+		if aDefaultTune :
+			#self.Channel_TuneDefault( mCurrentChannel )
+			self.Channel_TuneDefault( False, mCurrentChannel )
 
 
 	def Channel_TuneDefault( self, aDefault = True, aCurrentChannel = None ) :
@@ -1515,12 +1516,14 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_ReTune( self ) :
-		channel = self.Channel_GetCurrent( )
-		if channel == None or channel.mError != 0 :
-			LOG_ERR( 'Load Channel_GetCurrent None' )
-		else :
+		iChannel = self.Channel_GetCurrent( )
+		channelList = self.Channel_GetList( )
+		if iChannel and channelList and len( channelList ) > 0 :
 			self.Channel_InvalidateCurrent( )
-			self.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+			self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+
+		else :
+			LOG_ERR( 'Load Channel_GetCurrent None' )
 
 
 	def Channel_InvalidateCurrent( self ) :

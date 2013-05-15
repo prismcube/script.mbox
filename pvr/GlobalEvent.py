@@ -271,10 +271,17 @@ class GlobalEvent( object ) :
 		XBMC_SetLocalOffset( localOffset )
 
 
-	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None, aForce=False ) :
+	def CheckParentLock( self, aCmd = E_PARENTLOCK_EIT, aEvent = None, aForce = False ) :
 		if WinMgr.GetInstance( ).GetLastWindowID( ) not in PARENTLOCK_CHECKWINDOW :
 			LOG_TRACE( '--------parentLock check pass winid[%s]'% WinMgr.GetInstance( ).GetLastWindowID( ) )
 			return
+
+		channelList = self.mDataCache.Channel_GetList( )
+		if not aForce :
+			if not channelList or len( channelList ) < 1 :
+			LOG_TRACE( '--------parentLock check pass ChannelList None' )
+			return
+
 
 		if aCmd == E_PARENTLOCK_INIT :
 			#default blank

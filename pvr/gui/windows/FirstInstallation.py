@@ -508,8 +508,11 @@ class FirstInstallation( FTIWindow ) :
 					channelList = self.mDataCache.Channel_GetList( )
 					if channelList and channelList[0].mError == 0 :
 						ret = self.mDataCache.Channel_DeleteAll( )
+						self.mDataCache.Channel_Save( )
+						self.mDataCache.Channel_ReLoad( False )
 						if ret :
-							self.mDataCache.Player_AVBlank( True )
+							if not self.mDataCache.Get_Player_AVBlank( ) :
+								self.mDataCache.Player_AVBlank( True )
 							self.mDataCache.Channel_InvalidateCurrent( )
 							#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 
