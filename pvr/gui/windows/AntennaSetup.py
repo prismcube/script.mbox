@@ -110,7 +110,7 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
@@ -121,8 +121,9 @@ class AntennaSetup( SettingWindow ) :
 			self.ControlSelect( )
 			self.DisableControl( groupId )
 
+
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		if self.mInitialized :
