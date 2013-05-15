@@ -276,8 +276,8 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '--------parentLock check pass winid[%s]'% WinMgr.GetInstance( ).GetLastWindowID( ) )
 			return
 
-		channelList = self.mDataCache.Channel_GetList( )
 		if not aForce :
+			channelList = self.mDataCache.Channel_GetList( )
 			if not channelList or len( channelList ) < 1 :
 				LOG_TRACE( '--------parentLock check pass ChannelList None' )
 				return
