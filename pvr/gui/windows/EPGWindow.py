@@ -1354,6 +1354,8 @@ class EPGWindow( BaseWindow ) :
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
+			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
+
 
 		else :
 			timer = None
@@ -1378,6 +1380,7 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )				
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
+			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -1420,7 +1423,25 @@ class EPGWindow( BaseWindow ) :
 			
 		elif aContextAction == CONTEXT_SELECT_CHANNEL :
 			self.ShowSelectChannel( )
+
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
+
+
+	def ShowHotkeys( self ) :
+		if self.mEPGMode == E_VIEW_GRID :
+			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDPlayNF.png', '', 'Zoom'), ('OSDRewindNF.png', '', 'Return to the current EPG'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+
+		elif  self.mEPGMode == E_VIEW_CHANNEL :
+			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDRewindNF.png', 'OSDForwardNF.png', 'Change channels'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+
+		else :
+			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
 			
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )

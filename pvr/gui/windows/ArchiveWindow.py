@@ -752,7 +752,8 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
-				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]
@@ -771,6 +772,7 @@ class ArchiveWindow( BaseWindow ) :
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			else :
 				return
@@ -815,6 +817,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_CLEAR_MARK :
 			self.DoClearMark( )
+
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
 		else :
 			LOG_ERR( 'Unknown Context Action' )
 
@@ -1008,6 +1013,14 @@ class ArchiveWindow( BaseWindow ) :
  
 		for listItem in self.mRecordListItems :
 			listItem.setProperty( 'Marked', 'False' )
+
+
+	def ShowHotkeys( self ) :
+		context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDPlayNF.png', 'OSDOK.png', 'Playback'), ('OSDPauseNF.png', '', 'Pause'), ('OSDStopNF.png', '', 'Stop'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
 
 
 	def DoMarkToggle( self ) :
