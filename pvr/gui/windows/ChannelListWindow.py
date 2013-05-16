@@ -2490,11 +2490,17 @@ class ChannelListWindow( BaseWindow ) :
 			dialog.SetDefaultProperty( MR_LANG( 'Select channels you want to add to this group' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+
+			actionId = dialog.GetCloseStatus( )
+			if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+				LOG_TRACE( 'Cancelled back or previous, actionid[%s]'% actionId )
+				return
+
 			self.mMarkList = dialog.GetSelectedList( )
 			#LOG_TRACE('-------add group[%s]-----dialog list[%s]'% ( groupName, self.mMarkList ) )
 
 			if self.mMarkList == None or len( self.mMarkList ) < 1 :
-				LOG_TRACE( 'Cancelled by context dialog' )
+				LOG_TRACE( 'Cancelled by context dialog, No select' )
 				return
 
 

@@ -472,10 +472,10 @@ class FirstInstallation( FTIWindow ) :
 		if hdmiFormat == 'Automatic' :
 			return
 		iconIndex = ElisEnum.E_ICON_1080i
-		if hdmiFormat == '1080p-50' :
+		if hdmiFormat == '1080p' :
 			iconIndex = ElisEnum.E_ICON_1080p
-		elif hdmiFormat == '1080p-25' :
-			iconIndex = ElisEnum.E_ICON_1080p
+		#elif hdmiFormat == '1080p-25' :
+		#	iconIndex = ElisEnum.E_ICON_1080p
 		elif hdmiFormat == '720p' :
 			iconIndex = ElisEnum.E_ICON_720p
 		elif hdmiFormat == '576p' :
@@ -508,8 +508,11 @@ class FirstInstallation( FTIWindow ) :
 					channelList = self.mDataCache.Channel_GetList( )
 					if channelList and channelList[0].mError == 0 :
 						ret = self.mDataCache.Channel_DeleteAll( )
+						self.mDataCache.Channel_Save( )
+						self.mDataCache.Channel_ReLoad( False )
 						if ret :
-							self.mDataCache.Player_AVBlank( True )
+							if not self.mDataCache.Get_Player_AVBlank( ) :
+								self.mDataCache.Player_AVBlank( True )
 							self.mDataCache.Channel_InvalidateCurrent( )
 							#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 

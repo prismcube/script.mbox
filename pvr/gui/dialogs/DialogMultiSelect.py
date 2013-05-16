@@ -7,12 +7,12 @@ E_MODE_CHANNEL_LIST = 1
 E_SELECT_ONLY  = 0
 E_SELECT_MULTI = 1
 
-E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3850
+E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3950
 
-DIALOG_BUTTON_CLOSE_ID = 3800
-DIALOG_HEADER_LABEL_ID = 3801
-DIALOG_BUTTON_OK_ID = 3802
-DIALOG_LABEL_POS_ID = 3803
+DIALOG_BUTTON_CLOSE_ID = 3901
+DIALOG_HEADER_LABEL_ID = 3902
+DIALOG_LABEL_POS_ID = 3903
+DIALOG_BUTTON_OK_ID = 3904
 
 
 class DialogMultiSelect( BaseDialog ) :
@@ -68,9 +68,13 @@ class DialogMultiSelect( BaseDialog ) :
 			self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
 
 		elif actionId == Action.ACTION_STOP :
+			self.mLastSelected = -1
+			self.mMarkList = []
 			self.Close( )
 
 		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.mLastSelected = -1
+			self.mMarkList = []
 			self.Close( )
 
 		self.mPreviousBlocking = False
@@ -79,6 +83,7 @@ class DialogMultiSelect( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
 			self.mLastSelected = -1
+			self.mMarkList = []
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
@@ -87,6 +92,8 @@ class DialogMultiSelect( BaseDialog ) :
 				self.Close( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
+			if not self.mMarkList or len( self.mMarkList ) < 1 :
+				self.SetMarkupGUI( )
 			self.Close( )
 
 

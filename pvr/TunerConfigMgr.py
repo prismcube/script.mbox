@@ -453,8 +453,11 @@ class TunerConfigMgr( object ) :
 					return
 
 		self.mDataCache.Channel_DeleteAll( )
-		self.mDataCache.Player_AVBlank( True )
-		self.mDataCache.Channel_InvalidateCurrent( )
+		self.mDataCache.Channel_Save( )
+		self.mDataCache.Channel_ReLoad( False )
+		#self.mDataCache.Channel_InvalidateCurrent( )
+		if not self.mDataCache.Get_Player_AVBlank( ) :
+			self.mDataCache.Player_AVBlank( True )
 
 
 	def CompareCurrentConfiguredState( self ) :

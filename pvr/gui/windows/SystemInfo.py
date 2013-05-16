@@ -118,7 +118,6 @@ class SystemInfo( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		
-		#self.StartCheckHddTempTimer( )
 		self.SetListControl( )
 		self.mPrevListItemID = -1
 		self.mInitialized = True
@@ -235,7 +234,8 @@ class SystemInfo( SettingWindow ) :
 				self.SetVisibleControl( hideControlIds[i], False )
 			for i in range( len( visibleControlIds ) ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
-			if self.CheckExistsDisk( ) :
+
+			if CheckHdd( ) :
 				self.StartCheckHddTempTimer( )
 				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
@@ -250,6 +250,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 			else :
 				self.mCtrlHDDName.setLabel( MR_LANG( 'Name and Total Size : Unknown' ) )
+				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown degree celsius' ) )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : Unknown' ) )
 				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : Unknown' ) )
 				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : Unknown' ) )
@@ -448,7 +449,7 @@ class SystemInfo( SettingWindow ) :
 		cmd = 'hddtemp %s -n -q' % device
 
 		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
-			if self.CheckExistsDisk( ) :
+			if CheckHdd( ) :
 				if sys.version_info < ( 2, 7 ) :
 					p = Popen( cmd, shell=True, stdout=PIPE )
 					temperature = p.stdout.read( ).strip( )
@@ -463,26 +464,8 @@ class SystemInfo( SettingWindow ) :
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
 			else :
 				temperature = MR_LANG( 'Unknown' )
+
 			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s degree celsius' ) % temperature )
-
-
-	def CheckExistsDisk( self ) :
-		if not self.mPlatform.IsPrismCube( ) :
-			return False
-		cmd = 'df'
-		if sys.version_info < ( 2, 7 ) :
-			p = Popen( cmd, shell=True, stdout=PIPE )
-			parsing = p.stdout.read( ).strip( )
-			p.stdout.close( )
-		else :
-			p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
-			( parsing, err ) = p.communicate( )
-			parsing = parsing.strip( )
-			
-		if parsing.count( '/dev/sda' ) >= 3 :
-			return True
-		else :
-			return False
 
 
 	def StartCheckHddTempTimer( self ) :
