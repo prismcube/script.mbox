@@ -4514,6 +4514,57 @@ Search for window name
 					</control>
 				</control>
 
+				<control type="grouplist">
+					<posx>65</posx>
+					<posy>110</posy>
+					<width>270</width>
+					<height>550</height>
+					<align>left</align>
+					<itemgap>5</itemgap>
+					<orientation>vertical</orientation>
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="image">
+						<include>DefaultButtonGridChannelLogo</include>
+						<texture>Logo_Background.png</texture>
+					</control>
+				</control>
+
 				<control type="grouplist" id="3702100">
 					<posx>65</posx>
 					<posy>110</posy>
@@ -4523,7 +4574,6 @@ Search for window name
 					<itemgap>5</itemgap>
 					<orientation>vertical</orientation>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
-
 
 					<control type="image" id="3702101">
 						<include>DefaultButtonGridChannelLogo</include>
@@ -4556,7 +4606,6 @@ Search for window name
 						<include>DefaultButtonGridChannelLogo</include>
 					</control>				
 				</control>
-
 				
 				<!-- Grid EPG -->
 				<control type="group" id="3703000">

@@ -5292,6 +5292,13 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
+					<control type="image">
+						<posx>40</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
+						<texture>Logo_Background.png</texture>
+					</control>
 					<!-- Channel LOGO-->
 					<control type="image">
 						<posx>40</posx>
@@ -5406,6 +5413,13 @@
 						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
+					</control>
+					<control type="image">
+						<posx>40</posx>
+						<posy>10</posy>
+						<width>80</width>
+						<height>50</height>
+						<texture>Logo_Background.png</texture>
 					</control>
 					<!-- Channel LOGO-->					
 					<control type="image">
