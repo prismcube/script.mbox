@@ -353,14 +353,17 @@ class EPGWindow( BaseWindow ) :
 			self.ShowSearchDialog( )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			if self.mDeltaTime	== E_GRID_HALF_HOUR :
-				self.mDeltaTime	= E_GRID_HALF_HOUR/2	
-			else :
-				self.mDeltaTime	= E_GRID_HALF_HOUR
+			if self.mEPGMode == E_VIEW_GRID :
+				if self.mDeltaTime	== E_GRID_HALF_HOUR :
+					self.mDeltaTime	= E_GRID_HALF_HOUR/2
+				else :
+					self.mDeltaTime	= E_GRID_HALF_HOUR
 
-			self.mVisibleFocusCol = 0
-			self.UpdateAllEPGList( )
-			self.GridSetFocus( )
+				self.mVisibleFocusCol = 0
+				self.UpdateAllEPGList( )
+				self.GridSetFocus( )
+			else :
+				return
 
 
 	def onClick( self, aControlId ) :
