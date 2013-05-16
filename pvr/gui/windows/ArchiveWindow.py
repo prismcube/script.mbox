@@ -517,7 +517,10 @@ class ArchiveWindow( BaseWindow ) :
 		if ( aRecordInfo.mDuration % 60 ) != 0 :
 			recDuration += 1
 		recItem.setProperty( 'RecDuration', '%dm' %recDuration )
-		if aRecordInfo.mLocked :
+
+		#if aRecordInfo.mLocked :
+		if aRecordInfo.mLocked or \
+		   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( aRecordInfo.mRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			recItem.setProperty( 'RecIcon', thumbIcon )
@@ -570,7 +573,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 			
-		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+		#if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+		if ( aRecordInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
+		   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( aRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			thumbnaillist = []
@@ -676,7 +681,9 @@ class ArchiveWindow( BaseWindow ) :
 				recInfo = self.mRecordList[selectedPos]
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				#iEPG.printdebug()
-				if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+				#if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+				if recInfo.mLocked or \
+				   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( recInfo.mRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
 					if self.CheckPincode( ) == False :
 						return False
 
