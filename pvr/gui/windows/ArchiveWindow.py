@@ -321,8 +321,15 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
-					self.UpdateList(   )
+					self.UpdateList( )
 					#self.SetFocusList( self.mViewMode )
+					return
+
+				if self.mViewMode == E_VIEW_POSTER_WRAP and \
+				   self.mRecordList and len( self.mRecordList ) < 5 :
+					lastFocus = self.mCtrlPosterwrapList.getSelectedPosition( )
+					self.UpdateList( )
+					self.mCtrlPosterwrapList.selectItem( lastFocus )
 					return
 
 				isPlay = False
@@ -518,9 +525,8 @@ class ArchiveWindow( BaseWindow ) :
 			recDuration += 1
 		recItem.setProperty( 'RecDuration', '%dm' %recDuration )
 
-		#if aRecordInfo.mLocked :
 		if aRecordInfo.mLocked or \
-		   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( aRecordInfo.mRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
+		   self.mDataCache.GetPropertyAge( ) != 0 and aRecordInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			recItem.setProperty( 'RecIcon', thumbIcon )
@@ -572,10 +578,8 @@ class ArchiveWindow( BaseWindow ) :
 		recItem = self.mRecordListItems[ listindex ]
 
 		status = self.mDataCache.Player_GetStatus( )
-			
-		#if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
-		if ( aRecordInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
-		   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( aRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
+		if ( recInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
+		   ( self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) and status.mMode != ElisEnum.E_MODE_PVR ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			thumbnaillist = []
@@ -681,9 +685,8 @@ class ArchiveWindow( BaseWindow ) :
 				recInfo = self.mRecordList[selectedPos]
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				#iEPG.printdebug()
-				#if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
 				if recInfo.mLocked or \
-				   self.mDataCache.GetPropertyAge( ) != 0 and self.mDataCache.Record_GetAgeRating( recInfo.mRecordKey ) >= self.mDataCache.GetPropertyAge( ) :
+				   self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) :
 					if self.CheckPincode( ) == False :
 						return False
 
@@ -1114,6 +1117,12 @@ class ArchiveWindow( BaseWindow ) :
 				self.setProperty( 'RecDuration',  '%dMin' %recDuration )
 				self.setProperty( 'RecName', recInfo.mRecordName )
 
+				#has lock
+				isLock = E_TAG_FALSE
+				if recInfo.mLocked == 1 :
+					isLock = E_TAG_TRUE
+				self.setProperty( 'HasLock', isLock )
+
 				#age info
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				UpdatePropertyByAgeRating( self, iEPG )
@@ -1137,6 +1146,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.setProperty( 'RecName', '' )				
 		self.setProperty( 'EPGAgeRating', '' )
 		self.setProperty( 'HasAgeRating', 'None' )
+		self.setProperty( 'HasLock', E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_DOLBYPLUS, E_TAG_FALSE )
