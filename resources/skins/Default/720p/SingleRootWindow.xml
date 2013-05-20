@@ -20,7 +20,7 @@ Search for window name
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<include file="mbox_single_includes.xml">"mbox_single_includes.xml"</include>
-	<onload>SetProperty(GridItemGap,5)</onload>	
+	<onload>SetProperty(GridItemGap,3)</onload>	
 	<onload>SetProperty(ItemHeight,40)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
@@ -4460,9 +4460,86 @@ Search for window name
 						<label>-</label>
 					</control>
 				</control>
+				<control type="group">
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<control type="list" id="3702000">
+						<posx>65</posx>
+						<posy>110</posy>
+						<width>270</width>
+						<height>504</height>
+						<align>left</align>
+						<onleft></onleft>
+						<onright></onright>
+						<onup>3702000</onup>
+						<ondown>3702000</ondown>
+						<viewtype label="535">list</viewtype>
+						<!--pagecontrol>1003501</pagecontrol-->
+						<scrolltime>300</scrolltime>
+						<itemlayout height="63" width="270">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>270</width>
+								<height>60</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>5</posy>
+								<width>185</width>
+								<height>50</height>
+								<font>font13_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>selected</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</itemlayout>
+						<focusedlayout height="63" width="270">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>270</width>
+								<height>60</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>5</posy>
+								<width>185</width>
+								<height>50</height>
+								<font>font13_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>selected</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>[COLOR=blue]$INFO[ListItem.Label][/COLOR]</label>
+								<scroll>false</scroll>
+							</control>
+						</focusedlayout>
+					</control>
+				</control>
 
 				<!-- Grid Channel -->
-				<control type="grouplist" id="3702000">
+				<!--control type="grouplist" id="3702000">
 					<posx>65</posx>
 					<posy>110</posy>
 					<width>270</width>
@@ -4555,7 +4632,7 @@ Search for window name
 					<control type="image" id="3702110">
 						<include>DefaultButtonGridChannelLogo</include>
 					</control>				
-				</control>
+				</control-->
 
 				
 				<!-- Grid EPG -->
@@ -4567,18 +4644,19 @@ Search for window name
 					<align>left</align>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 
+					<!-- fake focus button -->
 					<control type="button" id="3703501">
-						<description>Fake button for foucs</description>
-						<posx>-100</posx>
-						<posy>-100</posy>
-						<width>0</width>
-						<height>0</height>
-						<label>-</label>
-						<font>-</font>
-						<texturenofocus>-</texturenofocus>
-						<texturefocus>-</texturefocus>
-						<visible>true</visible>
-					</control>
+						<height>60</height>
+						<width>270</width>
+						<textoffsetx>85</textoffsetx>
+						<textwidth>185</textwidth>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">StackFO_white2.png</texturefocus>
+						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+					</control>				
 
 					<control type="image" id="3703502">
 						<posx>-30</posx>
@@ -5052,7 +5130,7 @@ Search for window name
 						<width>240</width>
 						<height>550</height>
 						<onleft>3709000</onleft>
-						<onright condition="substring(Window.Property(EPGMode),grid)">SendClick(3703501)</onright>
+						<!--onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright-->
 						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
 						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
 						<onup>3709010</onup>
@@ -5093,10 +5171,10 @@ Search for window name
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label></label>
-						<onleft condition="substring(Window.Property(EPGMode),grid)">SendClick(3703501)</onleft>
+						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
 						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
 						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
-						<onright condition="substring(Window.Property(EPGMode),grid)">SendClick(3703501)</onright>
+						<!--onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright-->
 						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
 						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
 						<onup>3700101</onup>
@@ -5116,7 +5194,7 @@ Search for window name
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
 						<label>SCRIPT1009</label>
-						<onleft condition="substring(Window.Property(EPGMode),grid)">SendClick(3703501)</onleft>
+						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
 						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
 						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
 						<onright>3709010</onright>
@@ -5362,7 +5440,8 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(GridSelectedPosition)] / $INFO[Window.Property(GridNumItems)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Window.Property(GridCurrentPage)]/$INFO[Window.Property(GridNumPages)][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+				<!--label>([COLOR=blue]$INFO[Window.Property(GridSelectedPosition)] / $INFO[Window.Property(GridNumItems)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Window.Property(GridCurrentPage)]/$INFO[Window.Property(GridNumPages)][/COLOR])</label-->
 				<visible>substring(Window.Property(EPGMode), grid)</visible>
 			</control>
 			
