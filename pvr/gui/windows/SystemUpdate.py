@@ -455,11 +455,11 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_HDD :
 			line = MR_LANG( 'Check your HDD' )
 		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
-			line = MR_LANG( 'Check your flash memory' )
+			line = MR_LANG( 'Check your internal NAND flash' )
 		elif aMsg == E_STRING_CHECK_BLOCK_SIZE :
-			line = MR_LANG( 'Not enough space on flash memory' )
+			line = MR_LANG( 'Not enough space on NAND flash' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
-			line = MR_LANG( 'Failed to write on flash memory' )
+			line = MR_LANG( 'Failed to write on NAND flash' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )

@@ -250,7 +250,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 			else :
 				self.mCtrlHDDName.setLabel( MR_LANG( 'Name and Total Size : Unknown' ) )
-				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown degree celsius' ) )
+				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown' ) )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : Unknown' ) )
 				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : Unknown' ) )
 				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : Unknown' ) )
