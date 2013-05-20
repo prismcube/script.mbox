@@ -1717,6 +1717,17 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_GetRunningRecordInfo( aIndex )
 
 
+	def Record_GetAgeRating( self, aRecordKey ) :
+		if SUPPORT_RECORD_DATABASE == True :
+			recordDB = ElisRecordDB( )
+			recordAgeRating = recordDB.Record_GetAgeRating( aRecordKey )
+			recordDB.Close( )
+			return recordAgeRating
+
+		else :
+			return 0
+
+
 	def Record_GetCount( self, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :
 			recordDB = ElisRecordDB( )
