@@ -4644,20 +4644,6 @@ Search for window name
 					<align>left</align>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 
-					<!-- fake focus button -->
-					<control type="button" id="3703501">
-						<height>60</height>
-						<width>270</width>
-						<textoffsetx>85</textoffsetx>
-						<textwidth>185</textwidth>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font12_title</font>
-						<texturefocus border="5">StackFO_white2.png</texturefocus>
-						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
-						<pulseonselect>false</pulseonselect>
-					</control>				
-
 					<control type="image" id="3703502">
 						<posx>-30</posx>
 						<posy>505</posy>
@@ -5060,6 +5046,20 @@ Search for window name
 					<control type="button" id="3703100">
 						<include>DefaultButtonGridEPGValues</include>
 					</control>
+
+					<!-- fake focus button -->
+					<control type="button" id="3703501">
+						<height>60</height>
+						<width>270</width>
+						<textoffsetx>85</textoffsetx>
+						<textwidth>185</textwidth>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12_title</font>
+						<texturefocus border="5">StackFO_white2.png</texturefocus>
+						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+					</control>				
 
 					<!-- time sepeartor -->
 					<control type="image" id="3703500">
