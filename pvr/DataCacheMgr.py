@@ -1955,6 +1955,26 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Subtitle_Select( aPid, aPageId, aSubId )
 
 
+	def Subtitle_SetBySpeed( self, aSpeed = 100 ) :
+		selectedSubtitle = self.Subtitle_GetSelected( )
+		if ( not selectedSubtitle ) or selectedSubtitle.mError != 0 or selectedSubtitle.mPid <= 0 :
+			#LOG_TRACE( 'Subtitle : Not Selected' )
+			return
+
+		showSubtitle = False
+		if aSpeed == 100 or \
+		   aSpeed >= 200 and aSpeed <= 800 :
+			showSubtitle = True
+
+		ret = 0
+		if showSubtitle :
+			ret = self.Subtitle_Show( )
+		else :
+			ret = self.Subtitle_Hide( )
+
+		#LOG_TRACE( 'set Subtitle[%s] ret[%s] speed[%s]'% ( showSubtitle, ret, aSpeed ) )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
