@@ -1430,13 +1430,14 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowHotkeys( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
-			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDPlayNF.png', '', 'Zoom'), ('OSDRewindNF.png', '', 'Return to the current EPG'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+			#context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Return to the current EPG' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
 
 		elif  self.mEPGMode == E_VIEW_CHANNEL :
-			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDRewindNF.png', 'OSDForwardNF.png', 'Change channels'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDRewindNF.png', 'OSDForwardNF.png', MR_LANG( 'Change channels' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
 
 		else :
-			context = [ ('OSDLeft.png', '', 'Slide Menu'), ('OSDOK.png', '', 'Tune'), ('OSDRecordNF.png', '',  'Start recording'), ('OSDStopNF.png', '', 'Stop recording'), ('OSDTeletextNF.png', '', 'Search'), ('OSDTVRadio.png', '', 'TV/Radio'), ('OSDBack.png', 'OSDMenu.png', 'Go back') ]
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', 'Stop recording' ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
 			
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )

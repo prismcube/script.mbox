@@ -10,7 +10,6 @@ DIALOG_BOTTOM_IMAGE_ID		= 101
 DIALOG_LIST_ID				= 102
 DIALOG_BUTTON_OK_ID		= 301
 
-
 MAX_ITEM					= 12
 
 
@@ -18,7 +17,6 @@ class DialogHotkeys( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mItemList = []
-		self.mSelectedIndex = -1
 		self.mCtrlList = None
 		self.mItemCount = 0
 		self.mIsOk = None
@@ -64,8 +62,6 @@ class DialogHotkeys( BaseDialog ) :
 
 		# Set OK Button Position
 		self.getControl( DIALOG_BUTTON_OK_ID ).setPosition( DIALOG_WIDTH / 4 , height + 11 )
-
-		self.mSelectedIndex = -1
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
 
@@ -113,24 +109,7 @@ class DialogHotkeys( BaseDialog ) :
 			self.mItemList.append( ContextItem( MR_LANG( 'None' ) ) )
 		self.mItemCount = len( self.mItemList )
 
-		self.mSelectedIndex = aSelectedIndex
-
-
-	def GetSelectedAction( self ) :
-		if self.mSelectedIndex < 0 :
-			return -1
-
-		if self.mItemList == None or self.mItemCount <= 0 :
-			return -1
-
-		return self.mItemList[ self.mSelectedIndex ].mContextAction
-
-
-	def GetCloseStatus( self ) :
-		return self.mIsOk
-
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
-
