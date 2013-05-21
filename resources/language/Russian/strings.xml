@@ -440,8 +440,8 @@
 	<string id="3022">Качество</string>
 	<string id="3023">Файл не найден : %s</string>
 	<string id="3024">Тестовый сценарий недоступен : %s</string>
-	<string id="3025">RUS_Repeat Count</string>
-	<string id="3026">RUS_Record Time min</string>
+	<string id="3025">RUS_Repeat count</string>
+	<string id="3026">RUS_Recording duration in mins</string>
 	<string id="3027">RUS_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">Обновить каналы</string>
 	<string id="3029">Запись остановлена, недостаточно места на диске</string>
@@ -614,7 +614,7 @@
 	<string id="3196">DISEqC 1.1</string>
 	<string id="3197">Повтор DISEqC команды</string>
 	<string id="3198">Когда установлено Вкл, посылается повтор команды DISEqC</string>
-	<string id="3199">RUS_Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct</string>
+	<string id="3199">Выбрать один из желаемых транспондеров для проверки правильности настроек</string>
 	<string id="3200">Транспондер</string>
 	<string id="3201">При установке “Вкл” также будет производиться поиск по транспондерам, информация о которых получена со спутника</string>
 	<string id="3202">При установке “Выкл” будет производиться поиск только по имеющемуся списку транспондеров в памяти ресивера.</string>
@@ -1099,7 +1099,7 @@
 	<string id="3681">Вернуться к установкам антенны и спутников</string>
 	<string id="3682">Перейти к настройке даты и времени</string>
 	<string id="3683">Настройка Даты и Времени</string>
-	<string id="3684">RUS_When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select</string>
+	<string id="3684">При установке Автоматически, приставка самостоятельно будет синхронизировать время</string>
 	<string id="3685">Задать местное время</string>
 	<string id="3686">При установке Автоматически, приставка самостоятельно будет учитывать Летнее и Зимнее время</string>
 	<string id="3687">Перейти к поиску каналов</string>

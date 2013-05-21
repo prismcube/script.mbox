@@ -440,8 +440,8 @@
 	<string id="3022">TUR_Quality</string>
 	<string id="3023">TUR_File not found : %s</string>
 	<string id="3024">TUR_Test scenario not available : %s</string>
-	<string id="3025">TUR_Repeat Count</string>
-	<string id="3026">TUR_Record Time min</string>
+	<string id="3025">TUR_Repeat count</string>
+	<string id="3026">TUR_Recording duration in mins</string>
 	<string id="3027">TUR_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">TUR_Update channels</string>
 	<string id="3029">TUR_Recording stopped due to insufficient disk space</string>

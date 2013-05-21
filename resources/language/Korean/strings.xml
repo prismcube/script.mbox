@@ -440,8 +440,8 @@
 	<string id="3022">KOR_Quality</string>
 	<string id="3023">KOR_File not found : %s</string>
 	<string id="3024">KOR_Test scenario not available : %s</string>
-	<string id="3025">KOR_Repeat Count</string>
-	<string id="3026">KOR_Record Time min</string>
+	<string id="3025">KOR_Repeat count</string>
+	<string id="3026">KOR_Recording duration in mins</string>
 	<string id="3027">KOR_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">KOR_Update channels</string>
 	<string id="3029">KOR_Recording stopped due to insufficient disk space</string>

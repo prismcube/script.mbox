@@ -349,24 +349,26 @@ class ManualScan( SettingWindow ) :
 			self.mConfigTransponder.mNid = self.mTransponderList[self.mTransponderIndex].mNid
 
 
-	def DisableControl( self ) :	
-		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
-		if self.mIsManualSetup == 0 :
-			self.SetEnableControls( disablecontrols, False )
-		else :
+	def DisableControl( self ) :
+		disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+		if self.mHasTansponder :
 			self.SetEnableControls( disablecontrols, True )
 
-			if self.mConfigTransponder.mFECMode == 0 :
-				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
-				self.getControl( E_SpinEx03 + 3 ).selectItem( 0 )
-				self.SetEnableControl( E_SpinEx03, False )
+			disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
+			if self.mIsManualSetup == 0 :
+				self.SetEnableControls( disablecontrols, False )
 			else :
-				self.SetProp( E_SpinEx03, 0 )
-				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
-				self.SetEnableControl( E_SpinEx03, True )
+				self.SetEnableControls( disablecontrols, True )
 
-		if self.mHasTansponder == False :
-			disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+				if self.mConfigTransponder.mFECMode == 0 :
+					self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
+					self.getControl( E_SpinEx03 + 3 ).selectItem( 0 )
+					self.SetEnableControl( E_SpinEx03, False )
+				else :
+					self.SetProp( E_SpinEx03, 0 )
+					self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
+					self.SetEnableControl( E_SpinEx03, True )
+		else :
 			self.SetEnableControls( disablecontrols, False )
 
 

@@ -440,8 +440,8 @@
 	<string id="3022">POL_Quality</string>
 	<string id="3023">POL_File not found : %s</string>
 	<string id="3024">POL_Test scenario not available : %s</string>
-	<string id="3025">POL_Repeat Count</string>
-	<string id="3026">POL_Record Time min</string>
+	<string id="3025">POL_Repeat count</string>
+	<string id="3026">POL_Recording duration in mins</string>
 	<string id="3027">POL_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">POL_Update channels</string>
 	<string id="3029">POL_Recording stopped due to insufficient disk space</string>
