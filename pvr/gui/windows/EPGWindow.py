@@ -353,14 +353,17 @@ class EPGWindow( BaseWindow ) :
 			self.ShowSearchDialog( )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			if self.mDeltaTime	== E_GRID_HALF_HOUR :
-				self.mDeltaTime	= E_GRID_HALF_HOUR/2	
-			else :
-				self.mDeltaTime	= E_GRID_HALF_HOUR
+			if self.mEPGMode == E_VIEW_GRID :
+				if self.mDeltaTime	== E_GRID_HALF_HOUR :
+					self.mDeltaTime	= E_GRID_HALF_HOUR/2
+				else :
+					self.mDeltaTime	= E_GRID_HALF_HOUR
 
-			self.mVisibleFocusCol = 0
-			self.UpdateAllEPGList( )
-			self.GridSetFocus( )
+				self.mVisibleFocusCol = 0
+				self.UpdateAllEPGList( )
+				self.GridSetFocus( )
+			else :
+				return
 
 
 	def onClick( self, aControlId ) :
@@ -697,10 +700,11 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlList.selectItem( 0 )
 		else :
 			fucusIndex = 0
-			for channel in self.mChannelList:
-				if channel.mNumber == self.mCurrentChannel.mNumber :
-					break
-				fucusIndex += 1
+			if self.mCurrentChannel and self.mCurrentChannel.mError == 0 :
+				for channel in self.mChannelList:
+					if channel.mNumber == self.mCurrentChannel.mNumber :
+						break
+					fucusIndex += 1
 
 			self.mCtrlBigList.selectItem( fucusIndex )
 
@@ -1996,12 +2000,13 @@ class EPGWindow( BaseWindow ) :
 		self.mServiceType = self.mCurrentMode.mServiceType
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
 
+		lastChannelNumber = 1
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
 		else :
 			lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
 
-		self.mCurrentChannel = None
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		if lastChannelNumber < len( self.mChannelList ) :
 			channelIndex = lastChannelNumber - 1
 			if channelIndex >= 0:

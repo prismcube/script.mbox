@@ -130,6 +130,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mIsShowDialog = False
 		self.mEnableCasInfo = False
 		self.mCasInfoThread = None
+		self.mFirstTune = 0
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -1460,8 +1461,14 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel ) 				
+		isTune = True
+		if E_FIRST_TUNE_FAST and self.mFirstTune == False :
+			isTune = False
+			self.TuneChannel( )
+
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel, [isTune] )
 		self.mAsyncTuneTimer.start( )
+		self.mFirstTune = True
 
 
 	def StopAsyncTune( self ) :
@@ -1472,8 +1479,13 @@ class LivePlate( LivePlateWindow ) :
 		self.mAsyncTuneTimer  = None
 
 
-	@SetLock
-	def AsyncTuneChannel( self ) :
+	def AsyncTuneChannel( self, aTune ) :
+		if aTune :
+			self.TuneChannel( )
+
+		self.mFirstTune = False
+
+	def TuneChannel( self ) :
 		try :
 			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType, None, True )
 			#self.mFakeChannel.printdebug( )

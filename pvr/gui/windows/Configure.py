@@ -116,7 +116,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
-		MR_LANG( 'Delete eveything off your hard drive' ),
+		MR_LANG( 'Delete everything off your hard drive' ),
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	

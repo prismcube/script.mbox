@@ -153,7 +153,7 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
 		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ), tmplatitude, MR_LANG( 'Enter the latitude angle for your location' ) )
 		
-		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '', MR_LANG( 'Rotates the moter to 0 as a reference point' ) )
+		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '', MR_LANG( 'Rotates the motor to 0 as a reference point' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '', MR_LANG( 'Here you can setup satellites for Motorized USALS' ) )
 
 		if self.GetFirstInstallation( ) :

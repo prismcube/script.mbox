@@ -827,22 +827,19 @@ class NullWindow( BaseWindow ) :
 
 	def CloseSubTitle( self ) :
 		if self.mDataCache.Subtitle_IsShowing( ) :
-			#self.mSubTitleIsShow = True
 			self.mDataCache.Subtitle_Hide( )
-		#else :
-		#	self.mSubTitleIsShow = False
 
 
 	def CheckSubTitle( self ) :
-		#if self.mSubTitleIsShow :
-		#	self.mDataCache.Subtitle_Show( )
-
 		if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
 			return
 
-		selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
-		if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
-			self.mDataCache.Subtitle_Show( )
+		status = self.mDataCache.Player_GetStatus( )
+		if status :
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				self.mDataCache.Subtitle_SetBySpeed( )
+			else :
+				self.mDataCache.Subtitle_SetBySpeed( status.mSpeed )
 
 
 	def DialogPopupOK( self, aAction ) :
