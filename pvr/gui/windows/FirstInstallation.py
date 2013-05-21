@@ -24,6 +24,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mAsyncVideoSetThread		= None
 
 		self.mStepImage					= []
+		self.mBusyVideoSetting			= False
 		#self.mReloadSkinPosition		= False
 
 
@@ -106,8 +107,6 @@ class FirstInstallation( FTIWindow ) :
 
 		if self.GetFTIStep( ) == E_STEP_SELECT_LANGUAGE :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_VIDEO_AUDIO )
 			else :
 				if groupId == E_Input01 :
@@ -141,19 +140,19 @@ class FirstInstallation( FTIWindow ) :
 		elif self.GetFTIStep( ) == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ZOOM )
-				#self.setFocusId( E_FAKE_BUTTON )
-				#time.sleep( 0.3 )
-				#self.SetListControl( E_STEP_ANTENNA )
-				#self.mReloadSkinPosition = True
-				#xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 
-			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
+			elif groupId == E_SpinEx03 :
+				if self.mBusyVideoSetting :
+					return
 				if self.mAsyncVideoSetThread :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
 				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
+
+			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
+				self.ControlSelect( )
 
 			#elif groupId == E_SpinEx04 :
 				#self.mZoomRate = self.GetSelectedIndex( E_SpinEx04 )
@@ -188,8 +187,6 @@ class FirstInstallation( FTIWindow ) :
 				self.Close( )
 
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
-			self.setFocusId( E_FAKE_BUTTON )
-			time.sleep( 0.3 )
 			self.SetListControl( self.mPrevStepNum )
 
 
@@ -466,21 +463,41 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def AsyncVideoSetting( self ) :
+		self.mBusyVideoSetting = True
+		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
 		self.ControlSelect( )
+		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
+			print 'dhkim test same'
+			self.VideoRestore( restoreValue )
+		else :
+			self.mBusyVideoSetting = False
 
-		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-		if hdmiFormat == 'Automatic' :
-			return
-		iconIndex = ElisEnum.E_ICON_1080i
-		if hdmiFormat == '1080p' :
-			iconIndex = ElisEnum.E_ICON_1080p
-		#elif hdmiFormat == '1080p-25' :
-		#	iconIndex = ElisEnum.E_ICON_1080p
-		elif hdmiFormat == '720p' :
-			iconIndex = ElisEnum.E_ICON_720p
-		elif hdmiFormat == '576p' :
-			iconIndex = -1
-		self.mDataCache.Frontdisplay_Resolution( iconIndex )
+
+	def VideoRestore( self, aRestoreValue ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+		dialog.doModal( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+			iconIndex = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '1080p' :
+				iconIndex = ElisEnum.E_ICON_1080p
+			#elif hdmiFormat == '1080p-25' :
+			#	iconIndex = ElisEnum.E_ICON_1080p
+			elif hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				iconIndex = -1
+			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+		else :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetProp( aRestoreValue )
+			prop = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
+			control = self.getControl( E_SpinEx03 + 3 )
+			control.selectItem( prop )
+
+		self.mBusyVideoSetting = False
 
 
 	def LoadFormattedSatelliteNameList( self ) :
@@ -534,12 +551,8 @@ class FirstInstallation( FTIWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
 					dialog.doModal( )
 
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_DATE_TIME )
 			else :
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_DATE_TIME )
 
 		elif aControlId == E_SpinEx01 :
@@ -629,7 +642,5 @@ class FirstInstallation( FTIWindow ) :
 				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
 

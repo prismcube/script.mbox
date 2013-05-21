@@ -578,6 +578,7 @@ class ArchiveWindow( BaseWindow ) :
 		recItem = self.mRecordListItems[ listindex ]
 
 		status = self.mDataCache.Player_GetStatus( )
+
 		if ( recInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
 		   ( self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) and status.mMode != ElisEnum.E_MODE_PVR ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
