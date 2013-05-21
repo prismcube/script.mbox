@@ -10,7 +10,7 @@ E_SETTING_HEADER_TITLE			=	1002
 E_SETTING_DESCRIPTION			=	1003
 
 FIRST_PAGE						=	1
-LAST_PAGE 						=	28
+LAST_PAGE 						=	18
 MAXIMUM_TEXTBOX_NUM			=	2
 
 E_CONTROL_ID_LABEL_PAGENUM		= 	1004
@@ -38,11 +38,16 @@ class DialogHelp( SettingDialog ) :
 		self.SetFrontdisplayMessage( 'Help' )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( False )
+		language = XBMC_GetCurrentLanguage( )
 
 		if self.mInitialized == False :
 			helpString = self.getProperty( 'HelpString' )
 			if helpString :
-				self.mHelpString =  os.path.join( WinMgr.GetInstance( ).GetSkinXMLPath(), helpString )
+				HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, helpString )
+				if CheckDirectory( HelpStringPath ) :
+					self.mHelpString = HelpStringPath
+				else :
+					self.mHelpString = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', 'English', helpString )
 
 			self.MakeContentList( )
 			self.mInitialized = True
