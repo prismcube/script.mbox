@@ -2395,6 +2395,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateChannelAndEPG( )
 			return
 
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
+
 		LOG_TRACE( 'contextAction ret[%s]'% ret )
 
 		self.mMarkList = []
@@ -2602,6 +2605,7 @@ class ChannelListWindow( BaseWindow ) :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
 			context.append( ContextItem( MR_LANG( 'Delete all channels' ), CONTEXT_ACTION_MENU_DELETEALL ) )
+			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -2627,6 +2631,14 @@ class ChannelListWindow( BaseWindow ) :
 		self.StopAsyncEPG( )
 		self.SetVideoRestore( )
 		#WinMgr.GetInstance( ).CloseWindow( )
+
+
+	def ShowHotkeys( self ) :
+		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
 
 
 	def RestartAsyncEPG( self ) :
