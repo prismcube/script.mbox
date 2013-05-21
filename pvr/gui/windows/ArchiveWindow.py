@@ -570,7 +570,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 			
-		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			thumbnaillist = []
