@@ -179,7 +179,6 @@ class ArchiveWindow( BaseWindow ) :
 					self.SetVideoRestore( )
 					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 					WinMgr.GetInstance( ).CloseWindow( )
-				
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
@@ -190,7 +189,7 @@ class ArchiveWindow( BaseWindow ) :
 						self.StartRecordPlayback( False )
 					else :
 						self.StartRecordPlayback( True )
-						
+
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
 			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
@@ -206,7 +205,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
-				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
@@ -254,20 +252,20 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateList(  )
 			self.SelectLastRecordKey( )
 			#self.SetFocusList( self.mViewMode )
-		
+
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
 			self.mSortMode += 1
 			if self.mSortMode >= E_SORT_END :
 				self.mSortMode = 0 
-				
+
 			SetSetting( 'SORT_MODE', '%d' % self.mSortMode ) 								
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
 			self.UpdateList(  )
 			self.SelectLastRecordKey( )			
-			
+
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
 			LOG_TRACE( 'Mode=%d' % self.mSortMode )
@@ -287,6 +285,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == RADIOBUTTON_ID_WATCHED :
 			self.Load( )
 			self.UpdateList( )
+			self.UpdateViewMode( )
 			#self.SetFocusList( self.mViewMode )
 
 		elif aControlId == LIST_ID_COMMON_RECORD or aControlId == LIST_ID_THUMBNAIL_RECORD or aControlId == LIST_ID_POSTERWRAP_RECORD or aControlId == LIST_ID_FANART_RECORD :
@@ -299,7 +298,7 @@ class ArchiveWindow( BaseWindow ) :
 	def onFocus( self, controlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		if self.mInitialized == False :
 			return
 
@@ -325,11 +324,11 @@ class ArchiveWindow( BaseWindow ) :
 					#self.SetFocusList( self.mViewMode )
 					return
 
-				if self.mViewMode == E_VIEW_POSTER_WRAP and \
-				   self.mRecordList and len( self.mRecordList ) < 5 :
-					lastFocus = self.mCtrlPosterwrapList.getSelectedPosition( )
-					self.UpdateList( )
-					self.mCtrlPosterwrapList.selectItem( lastFocus )
+				#refresh preload
+				LOG_TRACE( '------------------------------------Event[%s]'% aEvent.getName( ) )
+				if self.mViewMode == E_VIEW_POSTER_WRAP :
+					thread = threading.Timer( 0.1, self.RefreshListItemByPosterWrap, [ aEvent ] )
+					thread.start( )
 					return
 
 				isPlay = False
@@ -366,22 +365,26 @@ class ArchiveWindow( BaseWindow ) :
 
 	def UpdateViewMode( self ) :
 		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
+		hideWatched = ''
+		if self.mCtrlHideWatched.isSelected( ) :
+			hideWatched = '(%s)'% MR_LANG( 'Hide Watched' )
+
 		if self.mViewMode == E_VIEW_LIST :
 			self.setProperty( 'ViewMode', 'common' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.setProperty( 'ViewMode', 'thumbnail' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Thumbnail' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Thumbnail' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
 			self.setProperty( 'ViewMode', 'posterwrap' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_FANART :			
 			self.setProperty( 'ViewMode', 'panart' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ), hideWatched ), 0 )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
 			self.setProperty( 'ViewMode', 'common' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ), hideWatched ), 0 )
 
 		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 		
@@ -597,6 +600,33 @@ class ArchiveWindow( BaseWindow ) :
 
 		xbmc.executebuiltin( 'container.refresh' )
 		#self.SetFocusList( self.mViewMode )
+
+
+	def RefreshListItemByPosterWrap( self, aEvent = None ) :
+		if not self.mRecordList and len( self.mRecordList ) < 1 :
+			LOG_TRACE( 'Recorditem None' )
+			return
+
+		lastFocus = self.mCtrlPosterwrapList.getSelectedPosition( )
+		if aEvent :
+			LOG_TRACE( '-------------------UpdatePlayStopThumbnail' )
+			self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
+			time.sleep( 0.02 )
+
+		#LOG_TRACE( '-----1------------- refresh thumbnail[%s] key[%s]'% ( self.mThumbnailHash.get( '%s'% aEvent.mRecordKey, -1 ), aEvent.mRecordKey ) )
+
+		self.mThumbnailHash = {}
+		self.mRecordListItems = []
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg') )
+		for i in range( len( thumbnaillist ) ) :
+			recKey = thumbnaillist[i].split('_')
+			LOG_TRACE( '--------------recKey[%s]'% recKey )
+			if recKey and recKey[2] :
+				self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
+
+		self.UpdateList( )
+		self.mCtrlPosterwrapList.selectItem( lastFocus )
+		#LOG_TRACE( '-----2------------- refresh thumbnail[%s] key[%s]'% ( self.mThumbnailHash.get( '%s'% aEvent.mRecordKey, -1 ), aEvent.mRecordKey ) )
 
 
 	def AddListItems( self ) :
@@ -1013,7 +1043,7 @@ class ArchiveWindow( BaseWindow ) :
 	def DoClearMark( self ) :
 		self.mMarkMode = False
 
-		if self.mRecordListItems == None :
+		if self.mRecordListItems == None or ( self.mRecordListItems and len( self.mRecordListItems ) < 1 ) :
 			return
  
 		for listItem in self.mRecordListItems :
@@ -1021,7 +1051,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def DoMarkToggle( self ) :
-		if self.mRecordListItems == None :
+		if self.mRecordListItems == None or ( self.mRecordListItems and len( self.mRecordListItems ) < 1 ) :
 			return
 			
 		selectedPos = self.GetSelectedPosition( )
@@ -1212,8 +1242,8 @@ class ArchiveWindow( BaseWindow ) :
 				
 				self.mEnableThread = True
 				self.mPlayProgressThread = self.PlayProgressThread( )
-			else :
 
+			else :
 				if self.mEnableThread == True and self.mPlayProgressThread :
 					self.mEnableThread = False
 					self.mPlayProgressThread.join( )
