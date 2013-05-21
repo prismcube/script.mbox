@@ -439,8 +439,8 @@
 "Quality";;"Qualité";;;;;;;"Качество";;;3022
 "File not found : %s";;;;;;;;;"Файл не найден : %s";;;3023
 "Test scenario not available : %s";;;;;;;;;"Тестовый сценарий недоступен : %s";;;3024
-"Repeat Count";;;;;;;;;;;;3025
-"Record Time min";;;;;;;;;;;;3026
+"Repeat count";;;;;;;;;;;;3025
+"Recording duration in mins";;;;;;;;;;;;3026
 "New channels have been loaded from PVR manager%s Press OK to continue updating your channel list";;;;;;;;;;;;3027
 "Update channels";;;;;;;;;"Обновить каналы";;;3028
 "Recording stopped due to insufficient disk space";;;;;;;;;"Запись остановлена, недостаточно места на диске";;;3029
@@ -613,7 +613,7 @@
 "Uncommitted Switch";"Uncommitted Switch";"Commutateur non engagé";"Uncommitted Switch";"Uncommitted Switch";"Uncommitted Switch";"Niet-toegewezen schakelaar";"Uncommitted Switch";"Uncommitted Switch";"DISEqC 1.1";;;3196
 "DiSEqC Repeat";"DiSEqC Wiederholung";"Répétition du DiSEqC ";"Ripetizione DiSEqC";"Repeticion DiSEqC";"Opakovani DiSEqC";"DiSEqC-herhaling";"Powtarzanie DiSEqC";"DiSEqC tekrarlama";"Повтор DISEqC команды";;;3197
 "When set to 'On', DiSEqC repeats its command";;;;;;;;;"Когда установлено Вкл, посылается повтор команды DISEqC";;;3198
-"Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct";;;;;;;;;;;;3199
+"Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct";;;;;;;;;"Выбрать один из желаемых транспондеров для проверки правильности настроек";;;3199
 "Transponder";;"Transpondeur";;;;;;;"Транспондер";;;3200
 "If you set to 'On', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels";;;;;;;;;"При установке “Вкл” также будет производиться поиск по транспондерам, информация о которых получена со спутника";;;3201
 "When set to 'Off', only the factory default transponders of the satellites you previously selected will be scanned for new channels.";;;;;;;;;"При установке “Выкл” будет производиться поиск только по имеющемуся списку транспондеров в памяти ресивера.";;;3202
@@ -1098,7 +1098,7 @@
 "Go back to the antenna and satellite setup page";;;;;;;;;"Вернуться к установкам антенны и спутников";;;3681
 "Go to the time and date setup page";;;;;;;;;"Перейти к настройке даты и времени";;;3682
 "Time and Date Setup";;;;;;;;;"Настройка Даты и Времени";;;3683
-"When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select";;;;;;;;;;;;3684
+"When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select";;;;;;;;;"При установке Автоматически, приставка самостоятельно будет синхронизировать время";;;3684
 "Enter the local time";;;;;;;;;"Задать местное время";;;3685
 "When set to 'Automatic', the system automatically change over to and from summer and winter time";;;;;;;;;"При установке Автоматически, приставка самостоятельно будет учитывать Летнее и Зимнее время";;;3686
 "Go back to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3687

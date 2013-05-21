@@ -440,8 +440,8 @@
 	<string id="3022">ARA_Quality</string>
 	<string id="3023">ARA_File not found : %s</string>
 	<string id="3024">ARA_Test scenario not available : %s</string>
-	<string id="3025">ARA_Repeat Count</string>
-	<string id="3026">ARA_Record Time min</string>
+	<string id="3025">ARA_Repeat count</string>
+	<string id="3026">ARA_Recording duration in mins</string>
 	<string id="3027">ARA_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">ARA_Update channels</string>
 	<string id="3029">ARA_Recording stopped due to insufficient disk space</string>

@@ -342,14 +342,14 @@ class HiddenTest( BaseWindow ) :
 			self.mStartTime = self.mDataCache.Datetime_GetLocalTime( ) + 5 * 60
 			count = 20
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Repeat Count' ), str( count ), 3 )
+			dialog.SetDialogProperty( MR_LANG( 'Repeat count' ), str( count ), 3 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				count = int( dialog.GetString( ) )
 
 			recTime = 5
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Record Time min' ), str( recTime ), 3 )
+			dialog.SetDialogProperty( MR_LANG( 'Recording duration in mins' ), str( recTime ), 3 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				recTime = int( dialog.GetString( ) )

@@ -440,8 +440,8 @@
 	<string id="3022">Quality</string>
 	<string id="3023">File not found : %s</string>
 	<string id="3024">Test scenario not available : %s</string>
-	<string id="3025">Repeat Count</string>
-	<string id="3026">Record Time min</string>
+	<string id="3025">Repeat count</string>
+	<string id="3026">Recording duration in mins</string>
 	<string id="3027">New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">Update channels</string>
 	<string id="3029">Recording stopped due to insufficient disk space</string>
