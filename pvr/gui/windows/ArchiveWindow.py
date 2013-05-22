@@ -179,7 +179,6 @@ class ArchiveWindow( BaseWindow ) :
 					self.SetVideoRestore( )
 					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 					WinMgr.GetInstance( ).CloseWindow( )
-				
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
@@ -190,7 +189,7 @@ class ArchiveWindow( BaseWindow ) :
 						self.StartRecordPlayback( False )
 					else :
 						self.StartRecordPlayback( True )
-						
+
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
 			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
@@ -206,7 +205,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
-				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
@@ -254,20 +252,20 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateList(  )
 			self.SelectLastRecordKey( )
 			#self.SetFocusList( self.mViewMode )
-		
+
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
 			self.mSortMode += 1
 			if self.mSortMode >= E_SORT_END :
 				self.mSortMode = 0 
-				
+
 			SetSetting( 'SORT_MODE', '%d' % self.mSortMode ) 								
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
 			self.UpdateList(  )
 			self.SelectLastRecordKey( )			
-			
+
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
 			LOG_TRACE( 'Mode=%d' % self.mSortMode )
@@ -287,6 +285,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == RADIOBUTTON_ID_WATCHED :
 			self.Load( )
 			self.UpdateList( )
+			self.UpdateViewMode( )
 			#self.SetFocusList( self.mViewMode )
 
 		elif aControlId == LIST_ID_COMMON_RECORD or aControlId == LIST_ID_THUMBNAIL_RECORD or aControlId == LIST_ID_POSTERWRAP_RECORD or aControlId == LIST_ID_FANART_RECORD :
@@ -299,7 +298,7 @@ class ArchiveWindow( BaseWindow ) :
 	def onFocus( self, controlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		if self.mInitialized == False :
 			return
 
@@ -321,8 +320,15 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
-					self.UpdateList(   )
+					self.UpdateList( )
 					#self.SetFocusList( self.mViewMode )
+					return
+
+				#refresh preload
+				LOG_TRACE( '------------------------------------Event[%s]'% aEvent.getName( ) )
+				if self.mViewMode == E_VIEW_POSTER_WRAP :
+					thread = threading.Timer( 0.1, self.RefreshListItemByPosterWrap, [ aEvent ] )
+					thread.start( )
 					return
 
 				isPlay = False
@@ -359,22 +365,26 @@ class ArchiveWindow( BaseWindow ) :
 
 	def UpdateViewMode( self ) :
 		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
+		hideWatched = ''
+		if self.mCtrlHideWatched.isSelected( ) :
+			hideWatched = '(%s)'% MR_LANG( 'Hide Watched' )
+
 		if self.mViewMode == E_VIEW_LIST :
 			self.setProperty( 'ViewMode', 'common' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.setProperty( 'ViewMode', 'thumbnail' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Thumbnail' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Thumbnail' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
 			self.setProperty( 'ViewMode', 'posterwrap' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_FANART :			
 			self.setProperty( 'ViewMode', 'panart' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ), hideWatched ), 0 )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
 			self.setProperty( 'ViewMode', 'common' )
-			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ) ), 0 )
+			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'List' ), hideWatched ), 0 )
 
 		self.SetSingleWindowPosition( E_ARCHIVE_WINDOW_BASE_ID )
 		
@@ -517,7 +527,9 @@ class ArchiveWindow( BaseWindow ) :
 		if ( aRecordInfo.mDuration % 60 ) != 0 :
 			recDuration += 1
 		recItem.setProperty( 'RecDuration', '%dm' %recDuration )
-		if aRecordInfo.mLocked :
+
+		if aRecordInfo.mLocked or \
+		   self.mDataCache.GetPropertyAge( ) != 0 and aRecordInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			recItem.setProperty( 'RecIcon', thumbIcon )
@@ -569,8 +581,9 @@ class ArchiveWindow( BaseWindow ) :
 		recItem = self.mRecordListItems[ listindex ]
 
 		status = self.mDataCache.Player_GetStatus( )
-			
-		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+
+		if ( recInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
+		   ( self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) and status.mMode != ElisEnum.E_MODE_PVR ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			thumbnaillist = []
@@ -588,6 +601,33 @@ class ArchiveWindow( BaseWindow ) :
 
 		xbmc.executebuiltin( 'container.refresh' )
 		#self.SetFocusList( self.mViewMode )
+
+
+	def RefreshListItemByPosterWrap( self, aEvent = None ) :
+		if not self.mRecordList and len( self.mRecordList ) < 1 :
+			LOG_TRACE( 'Recorditem None' )
+			return
+
+		lastFocus = self.mCtrlPosterwrapList.getSelectedPosition( )
+		if aEvent :
+			LOG_TRACE( '-------------------UpdatePlayStopThumbnail' )
+			self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
+			time.sleep( 0.02 )
+
+		#LOG_TRACE( '-----1------------- refresh thumbnail[%s] key[%s]'% ( self.mThumbnailHash.get( '%s'% aEvent.mRecordKey, -1 ), aEvent.mRecordKey ) )
+
+		self.mThumbnailHash = {}
+		self.mRecordListItems = []
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg') )
+		for i in range( len( thumbnaillist ) ) :
+			recKey = thumbnaillist[i].split('_')
+			LOG_TRACE( '--------------recKey[%s]'% recKey )
+			if recKey and recKey[2] :
+				self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
+
+		self.UpdateList( )
+		self.mCtrlPosterwrapList.selectItem( lastFocus )
+		#LOG_TRACE( '-----2------------- refresh thumbnail[%s] key[%s]'% ( self.mThumbnailHash.get( '%s'% aEvent.mRecordKey, -1 ), aEvent.mRecordKey ) )
 
 
 	def AddListItems( self ) :
@@ -676,7 +716,8 @@ class ArchiveWindow( BaseWindow ) :
 				recInfo = self.mRecordList[selectedPos]
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				#iEPG.printdebug()
-				if recInfo.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+				if recInfo.mLocked or \
+				   self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) :
 					if self.CheckPincode( ) == False :
 						return False
 
@@ -752,7 +793,8 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
-				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]
@@ -771,6 +813,7 @@ class ArchiveWindow( BaseWindow ) :
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			else :
 				return
@@ -815,6 +858,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_CLEAR_MARK :
 			self.DoClearMark( )
+
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
 		else :
 			LOG_ERR( 'Unknown Context Action' )
 
@@ -1003,15 +1049,23 @@ class ArchiveWindow( BaseWindow ) :
 	def DoClearMark( self ) :
 		self.mMarkMode = False
 
-		if self.mRecordListItems == None :
+		if self.mRecordListItems == None or ( self.mRecordListItems and len( self.mRecordListItems ) < 1 ) :
 			return
  
 		for listItem in self.mRecordListItems :
 			listItem.setProperty( 'Marked', 'False' )
 
 
+	def ShowHotkeys( self ) :
+		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDPlayNF.png', 'OSDOK.png', MR_LANG( 'Playback' ) ), ( 'OSDPauseNF.png', '', MR_LANG( 'Pause' ) ) , ( 'OSDStopNF.png', '', MR_LANG( 'Stop' ) ) , ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ) , ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+
+
 	def DoMarkToggle( self ) :
-		if self.mRecordListItems == None :
+		if self.mRecordListItems == None or ( self.mRecordListItems and len( self.mRecordListItems ) < 1 ) :
 			return
 			
 		selectedPos = self.GetSelectedPosition( )
@@ -1107,6 +1161,12 @@ class ArchiveWindow( BaseWindow ) :
 				self.setProperty( 'RecDuration',  '%dMin' %recDuration )
 				self.setProperty( 'RecName', recInfo.mRecordName )
 
+				#has lock
+				isLock = E_TAG_FALSE
+				if recInfo.mLocked == 1 :
+					isLock = E_TAG_TRUE
+				self.setProperty( 'HasLock', isLock )
+
 				#age info
 				iEPG = self.mDataCache.RecordItem_GetEventInfo( recInfo.mRecordKey )
 				UpdatePropertyByAgeRating( self, iEPG )
@@ -1130,6 +1190,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.setProperty( 'RecName', '' )				
 		self.setProperty( 'EPGAgeRating', '' )
 		self.setProperty( 'HasAgeRating', 'None' )
+		self.setProperty( 'HasLock', E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.setProperty( E_XML_PROPERTY_DOLBYPLUS, E_TAG_FALSE )
@@ -1195,8 +1256,8 @@ class ArchiveWindow( BaseWindow ) :
 				
 				self.mEnableThread = True
 				self.mPlayProgressThread = self.PlayProgressThread( )
-			else :
 
+			else :
 				if self.mEnableThread == True and self.mPlayProgressThread :
 					self.mEnableThread = False
 					self.mPlayProgressThread.join( )

@@ -353,13 +353,17 @@ class EPGWindow( BaseWindow ) :
 			self.ShowSearchDialog( )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			if self.mDeltaTime	== E_GRID_HALF_HOUR :
-				self.mDeltaTime	= E_GRID_HALF_HOUR/2	
-			else :
-				self.mDeltaTime	= E_GRID_HALF_HOUR
+			if self.mEPGMode == E_VIEW_GRID :
+				if self.mDeltaTime	== E_GRID_HALF_HOUR :
+					self.mDeltaTime	= E_GRID_HALF_HOUR/2
+				else :
+					self.mDeltaTime	= E_GRID_HALF_HOUR
 
-			self.mVisibleFocusCol = 0
-			self.UpdateAllEPGList( )
+				self.mVisibleFocusCol = 0
+				self.UpdateAllEPGList( )
+				self.GridSetFocus( )
+			else :
+				return
 
 
 	def onClick( self, aControlId ) :
@@ -695,10 +699,11 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlList.selectItem( 0 )
 		else :
 			fucusIndex = 0
-			for channel in self.mChannelList:
-				if channel.mNumber == self.mCurrentChannel.mNumber :
-					break
-				fucusIndex += 1
+			if self.mCurrentChannel and self.mCurrentChannel.mError == 0 :
+				for channel in self.mChannelList:
+					if channel.mNumber == self.mCurrentChannel.mNumber :
+						break
+					fucusIndex += 1
 
 			if self.mEPGMode == E_VIEW_GRID :
 				self.mCtrlGridChannelList.selectItem( fucusIndex )		
@@ -1329,6 +1334,8 @@ class EPGWindow( BaseWindow ) :
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
+			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
+
 
 		else :
 			timer = None
@@ -1353,6 +1360,7 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )				
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
+			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -1395,7 +1403,26 @@ class EPGWindow( BaseWindow ) :
 			
 		elif aContextAction == CONTEXT_SELECT_CHANNEL :
 			self.ShowSelectChannel( )
+
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
+
+
+	def ShowHotkeys( self ) :
+		if self.mEPGMode == E_VIEW_GRID :
+			#context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Return to the current EPG' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+
+		elif  self.mEPGMode == E_VIEW_CHANNEL :
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDRewindNF.png', 'OSDForwardNF.png', MR_LANG( 'Change channels' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+
+		else :
+			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start recording' ) ), ( 'OSDStopNF.png', '', 'Stop recording' ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
 			
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
@@ -1992,12 +2019,13 @@ class EPGWindow( BaseWindow ) :
 		self.mServiceType = self.mCurrentMode.mServiceType
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
 
+		lastChannelNumber = 1
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
 		else :
 			lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
 
-		self.mCurrentChannel = None
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		if lastChannelNumber < len( self.mChannelList ) :
 			channelIndex = lastChannelNumber - 1
 			if channelIndex >= 0:

@@ -87,6 +87,7 @@ class Configure( SettingWindow ) :
 
 		self.mUseUsbBackup			= False
 		self.mAsyncVideoSetThread	= None
+		self.mBusyVideoSetting		= False
 
 
 	def onInit( self ) :
@@ -115,7 +116,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
-		MR_LANG( 'Delete eveything off your hard drive' ),
+		MR_LANG( 'Delete everything off your hard drive' ),
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
@@ -248,13 +249,18 @@ class Configure( SettingWindow ) :
 				self.mAnalogAscpect = self.GetSelectedIndex( E_SpinEx02 )
 				self.SetListControl( ) 
 
-			else :
+			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_SpinEx02 :
+				if self.mBusyVideoSetting :
+					return
 				if self.mAsyncVideoSetThread :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
 				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
+
+			else :
+				self.ControlSelect( )
 
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -440,20 +446,40 @@ class Configure( SettingWindow ) :
 
 
 	def AsyncVideoSetting( self ) :
+		self.mBusyVideoSetting = True
+		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
 		self.ControlSelect( )
-		hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-		if hdmiFormat == 'Automatic' :
-			return
-		iconIndex = ElisEnum.E_ICON_1080i
-		if hdmiFormat == '1080p' :
-			iconIndex = ElisEnum.E_ICON_1080p
-		#elif hdmiFormat == '1080p-25' :
-		#	iconIndex = ElisEnum.E_ICON_1080p
-		elif hdmiFormat == '720p' :
-			iconIndex = ElisEnum.E_ICON_720p
-		elif hdmiFormat == '576p' :
-			iconIndex = -1
-		self.mDataCache.Frontdisplay_Resolution( iconIndex )
+		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
+			self.VideoRestore( restoreValue )
+		else :
+			self.mBusyVideoSetting = False
+
+
+	def VideoRestore( self, aRestoreValue ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+		dialog.doModal( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+			iconIndex = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '1080p' :
+				iconIndex = ElisEnum.E_ICON_1080p
+			#elif hdmiFormat == '1080p-25' :
+			#	iconIndex = ElisEnum.E_ICON_1080p
+			elif hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				iconIndex = -1
+			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+		else :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetProp( aRestoreValue )
+			prop = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
+			control = self.getControl( E_SpinEx02 + 3 )
+			control.selectItem( prop )
+
+		self.mBusyVideoSetting = False
 
 
 	def SetListControl( self ) :

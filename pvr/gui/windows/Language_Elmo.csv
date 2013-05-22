@@ -85,7 +85,7 @@
 "Handle your multimedia files in an easy and efficient way";;;;;;;;;"Простой способ управления мультимедийными файлами";;;1084
 "Display detailed information about your system status";;;;;;;;;"Вывод детальной информации о состоянии системы";;;1085
 "Manage all your multimedia content";;;;;;;;;"Управление мультимедийным контентом";;;1086
-"Check your PRISMCUBE RUBY info at a glance";;;;;;;;;"Check your PRISMCUBE RUBY info at a glance";;;1087
+"Check your PRISMCUBE RUBY info at a glance";;;;;;;;;"Информация о приемнике PRISMCUBE RUBY";;;1087
 "Select Action";;;;;;;;;"Выбор Действия";;;1089
 "To see all the other menus, press i button";;;;;;;;;"Для других разделов меню нажать i";;;1090
 "Previous";;"Précédent";;;;;;;"Пред";;;1091
@@ -98,7 +98,7 @@
 "Jump Rewind";;;;;;;;;"Прыг Назад";;;1098
 "Jump Forward";;;;;;;;;"Прыг Вперед";;;1099
 "Jump";;"sauter";;;;;;;"Прыжок";;;1100
-"Press the i button on the remote to open edit menus";;;;;;;;;;;;1101
+"Press the i button on the remote to open edit menus";;;;;;;;;"Нажмите кнопку i для редактирования каналов";;;1101
 "Update";;"Mise à jour";;;;;;;"Обновление";;;1103
 "No Signal";;"Pas de signal";;;;;;;"Нет Сигнала";;;1104
 "Scrambled";;;;;;;;;"Закодировано";;;1105
@@ -117,10 +117,10 @@
 "Get the latest updates on your PRISMCUBE RUBY";;;;;;;;;"Получить последнее обновление приставки";;;1118
 "Playback";;;;;;;;;"Воспроизведение";;;1119
 "List";;"Liste";;;;;;;"Список";;;1120
-"Add-on Manager";;;;;;;;;;;;1121
+"Add-on Manager";;;;;;;;;"Дополнения";;;1121
 "Last ServiceType";;;;;;;;;"Тип Последнего Сервиса";;;2001
 "CurrentVoutResolution";;;;;;;;;"Текущее Разрешение";;;2002
-"1080p-50";;;;;;;;;"1080p-50";;;2003
+"1080p";;;;;;;;;"1080p";;;2003
 "Normal";"Normal";"Normal";"Normale";"Normal";"Normalni";"Normaal";"zwykły";"Normal";"Нормально";;;2004
 "First";"Zuerst";"None";"Prima";"Primero";"Nejprve";"Eerst";"Najpierw";"Once";"Первый";;;2005
 "Serial kbd";;;;;;;;;"Serial kbd";;;2006
@@ -439,688 +439,690 @@
 "Quality";;"Qualité";;;;;;;"Качество";;;3022
 "File not found : %s";;;;;;;;;"Файл не найден : %s";;;3023
 "Test scenario not available : %s";;;;;;;;;"Тестовый сценарий недоступен : %s";;;3024
-"Repeat Count";;;;;;;;;;;;3025
-"Record Time min";;;;;;;;;;;;3026
-"Recording stopped due to insufficient disk space";;;;;;;;;"Запись остановлена, недостаточно места на диске";;;3027
-"Reloading channel list...";;;;;;;;;"Обновление списка каналов…";;;3028
-"Enter your PIN code";;;;;;;;;"Ввести пароль";;;3029
-"CAM initialized";;;;;;;;;"Инициализация Модуля";;;3030
-"Attention";;;;;;;;;"Внимание";;;3031
-"CAM removed";;;;;;;;;"Модуль Извлечен";;;3032
-"Add Timer";;;;;;;;;"Добавить Таймер";;;3033
-"Edit Recording";;"Modifier l'enregistrement";;;;;;;"Редактировать Запись";;;3034
-"Start Time";;"Heure de début";;;;;;;"Время Начала";;;3035
-"End Time";;;;;;;;;"Время Окончания";;;3036
-"mins";;;;;;;;;"минут";;;3037
-"From EPG";;;;;;;;;"С ТВ Гида";;;3038
-"Change Duration";;;;;;;;;"Изменить Длительность";;;3039
-"Enter the end time";;;;;;;;;"Задать время окончания";;;3040
-"Enter new duration";;;;;;;;;"Задать новую длительность";;;3041
-"in mins";;;;;;;;;"в минутах";;;3042
-"Add satellite";;;;;;;;;"Добавить спутник";;;3043
-"Confirm";"Bestatigen";"Confirmer ";"Conferma";"Confirmar";"Potvrdit";"Bevestigen";"Potwierd?";"Onaylayın";"Подтвердить";;;3044
-"Longitude Degree";;;;;;;;;"Долгота";;;3045
-"Enter name for this satellite";;;;;;;;;"Задать название спутника";;;3046
-"Satellite Name";"Satellitenname";"Nom du satellite";"Nome satellite";"Nombre de satelite";"Satelitni antena";"Satellietnaam";"Nazwa satelity";"Uydu ismi";"Название Спутника";;;3047
-"Longitude Direction";;;;;;;;;"Направление Долготы";;;3048
-"Longitude Angle";;;;;;;;;"Угол Долготы";;;3049
-"Band Type";;"Type de bande ";;;;;;;"Диапазон";;;3050
-"Automatic Power Down";;;;;;;;;"Автоматическое Отключение";;;3051
-"Start automatic power down after %s sec";;;;;;;;;"Отключаться Автоматически через %s сек";;;3052
-"Select HDMI or Analog for your video output";;;;;;;;;"Выбор HDMI или Аналог для вывода изображения";;;3053
-" - HDMI Format";;;;;;;;;" - Разрешение Видео на HDMI";;;3054
-" - TV Screen Format";;;;;;;;;" - Формат ТВ Экрана";;;3055
-" - HDMI Color Space";;;;;;;;;" - Цветовая Схема HDMI";;;3056
-" - TV Aspect Ratio";;;;;;;;;" - Соотношение Сторон ТВ Экрана";;;3057
-" - Picture Format";;;;;;;;;" - Формат Изображения";;;3058
-"Video Format";;;;;;;;;"Формат Видео";;;3059
-"Audio Setting";;"Réglage Audio";;;;;;;"Настройки Звука";;;3060
-"Move failed";;;;;;;;;"Ошибка перемещения";;;3061
-"Set Transponder";;;;;;;;;"Задать транспондер";;;3062
-"Enter TP frequency";;;;;;;;;"Ввести частоту транспондера";;;3063
-"Sorry, that's an irrelevant transponder frequency";;;;;;;;;"Извините, это неверная частота транспондера";;;3064
-"Enter symbol rate";;;;;;;;;"Задать скорость потока";;;3065
-"Frequency";"Frequenz";"Fréquence";"Frequenza";"Frecuencia";"Frekvence";"Frequentie";"Cz?stotliwo??";"Frekans";"Частота";;;3066
-"Symbol Rate";"Symbolrate";"Taux de symbole";"Symbolrate";"Tasa de simbolos";"Symbolova rychlost";"Symbolrate";"Symbol rate";"Sembol oranı";"Скорость Потока";;;3067
-"QPSK 1/2";;;;;;;;;"QPSK 1/2";;;3068
-"Delete";;"Supprimer";;;;;;;"Удалить";;;3069
-"Remove selections";;;;;;;;;"Удалить Выбранное";;;3070
-"Resume from";;;;;;;;;;;;3071
-"Delete all";;;;;;;;;"Удалить Все";;;3072
-"Multi-select";;;;;;;;;"Выбрать несколько";;;3073
-"Are you sure you want to remove%s all your bookmarks?";;;;;;;;;"Уверены что хотите удалить%s все метки?";;;3074
-"Delete all bookmarks";;;;;;;;;"Удалить все метки";;;3075
-"No Channel";;;;;;;;;"Нет Канала";;;3076
-"LNB Frequency";;"Fréquence de la LNB";;;;;;;"Частота LNB";;;3077
-"Low frequency";;;;;;;;;"Нижняя частота";;;3078
-"High frequency";;;;;;;;;"Высокая частота";;;3079
-"Switch frequency";;;;;;;;;"Частота переключения";;;3080
-"Low Frequency";"LNB-Low-Frequenz";"Basse fréquence ";"Frequenza LNB-Low";"Frecuencia LNB Low";"Nizkofrekven?ni LNB";"Lage frequentie van LNB";"Niska cz?st. LNB";"LNB-Low frekansı";"Нижняя частота";;;3081
-"High Frequency";"LNB-High-Frequenz";"Haute fréquence";"Frequenza LNB-High";"Frecuencia LNB High";"Vysokofrekven?ni LNB";"Hoge frequentie van LNB";"Wysoka cz?st. LNB";"LNB-High frekansı";"Высокая частота";;;3082
-"Switch Frequency";"LNB-Grenzfrequenz";"Changer les fréquences";"Frequenza limite LNB";"Frecuencia limite LNB";"Mezni frekvence LNB";"Grensfrequentie van LNB";"Cz?stotliwo?? graniczna LNB";"LNB sınır frekansı";"Частота переключения";;;3083
-"Once";;"Une fois";;;;;;;"Один Раз";;;3084
-"Weekly";;"Hebdomadaire";;;;;;;"Еженедельно";;;3085
-"Daily";;"Quotidien";;;;;;;"Ежедневно";;;3086
-"Fri";;"Ven";;;;;;;"Пят";;;3087
-"Mon";;"Lun";;;;;;;"Пон";;;3088
-"Sat";;"Sam";;;;;;;"Суб";;;3089
-"Sun";;"Dim ";;;;;;;"Вос";;;3090
-"Thu";;"Jeu";;;;;;;"Чет";;;3091
-"Tue";;"Mar";;;;;;;"Втр";;;3092
-"Wed";;"Mer";;;;;;;"Срд";;;3093
-"Unknown Error";;"Erreur inconnue";;;;;;;"Неизвестная Ошибка";;;3094
-"Edit Timer";;"Modifier la Minuterie";;;;;;;"Редактировать Таймер";;;3095
-"Add Manual Timer";;"Ajouter la minuterie manuellemment";;;;;;;"Добавить Таймер Вручную";;;3096
-"Recording";;"Enregistrement";;;;;;;"Запись";;;3097
-"Name";;"Nom";;;;;;;"Название";;;3098
-"Record Name";;;;;;;;;"Название Записи";;;3099
-"Start Date";;;;;;;;;"Дата Начала";;;3100
-"Rename timer";;;;;;;;;"Переименовать таймер";;;3101
-"A timer name must be at least %d characters long";;;;;;;;;"Название таймера должно содержать хотя бы %d символов";;;3102
-"Unable to edit the timer";;;;;;;;;"Невозможно изменить таймер";;;3103
-"The time you entered has already passed";;;;;;;;;"Введенное время уже прошло";;;3104
-"There is no valid timer";;;;;;;;;"Нет доступного таймера";;;3105
-"Enter the start time";;;;;;;;;"задать время начала";;;3106
-"Waiting";;;;;;;;;"Ожидание";;;3107
-"%s timed out";;;;;;;;;"%s timed out";;;3108
-"%s completed";;;;;;;;;"%s завершено";;;3109
-"No description";;;;;;;;;;;;3110
-"Manual Wifi Setup";;;;;;;;;;;;3111
-"Connect";;;;;;;;;;;;3112
-"Enter your SSID";;;;;;;;;"Задать имя вашей сети";;;3113
-"Assign a static IP address for wireless network";;;;;;;;;;;;3114
-"IP Settings";;;;;;;;;;;;3115
-" - IP Address";;;;;;;;;"- IP Адрес";;;3116
-"Enter your IP address";;;;;;;;;"Задать IP адрес приставки OPENBOX";;;3117
-" - Subnet Mask";;;;;;;;;"- Маска Сети";;;3118
-"Enter your subnet mask";;;;;;;;;"Задать маску используемой сети";;;3119
-" - Gateway";;;;;;;;;"- Шлюз";;;3120
-"Enter your gateway";;;;;;;;;"Задать шлюз используемой сети";;;3121
-" - DNS";;;;;;;;;"- DNS Сервер";;;3122
-"Enter the DNS server address";;;;;;;;;"Задать адрес сервера DNS";;;3123
-"Connect to a hidden wireless network";;;;;;;;;;;;3124
-"Hidden SSID";;;;;;;;;"Скрытая Сеть";;;3125
-" - SSID";;;;;;;;;;;;3126
-"Enter network name for the wireless network you wish to connect to";;;;;;;;;;;;3127
-" - Security";;;;;;;;;;;;3128
-"Select security type for the hidden wireless network";;;;;;;;;;;;3129
-"Enter an IP address";;;;;;;;;"Ввести IP адрес";;;3130
-"Please try again";;;;;;;;;"Попробуйте еще раз";;;3131
-"Lock";;"Verrouiller";;;;;;;"Блокировка";;;3132
-"Unlock";;"Déverrouiller";;;;;;;"Отменить Блокировку";;;3133
-"Skip";;"Passer";;;;;;;"Пропустить";;;3134
-"Unskip";;"Ne pas sauter";;;;;;;"Отмена Пропуска";;;3135
-"Move";;"déplacer";;;;;;;"Переместить";;;3136
-"Add to favorite group";;;;;;;;;"Добавить в группу";;;3137
-"Add OK";;;;;;;;;"Добавить ОК";;;3138
-"Create group";;;;;;;;;"Создать группу";;;3139
-"Rename favorite group";;"Renommer un groupe de favoris";;;;;;;"Переименовать группу любимые";;;3140
-"Rename OK";;;;;;;;;"Переименовать ОК";;;3141
-"Delete favorite group";;"Supprimer un groupe de favoris";;;;;;;"Удалить группу любимые";;;3142
-"Delete OK";;;;;;;;;"Удалить ОК";;;3143
-"Are you sure you want to stop the channel scan?";;;;;;;;;"Остановить сканирование каналов?";;;3144
-"Exit channel search";;;;;;;;;"Выйти из поиска каналов";;;3145
-"TV channels : %d %sRadio channels : %d";;;;;;;;;"ТВ каналы : %d %sРадио каналы : %d";;;3146
-"Channel Search Result";;;;;;;;;"Рузультат Поиска Каналов";;;3147
-"East Limit";;;;;;;;;"Восточный Лимит";;;3148
-"One step to East";;;;;;;;;"Один Шаг на Восток";;;3149
-"One step to West";;;;;;;;;"Один Шаг на Запад";;;3150
-"Rotate to East";;;;;;;;;"Перемещать на Восток";;;3151
-"Rotate to West";;;;;;;;;"Перемещать на Запад";;;3152
-"Store Position";;;;;;;;;"Сохранить Позицию";;;3153
-"West Limit";;;;;;;;;"Западный Лимит";;;3154
-"Reset complete";;;;;;;;;;;;3155
-"Reset limit complete";;;;;;;;;;;;3156
-"Reset limit failed to complete";;;;;;;;;;;;3157
-"Set complete";;;;;;;;;;;;3158
-"Set limit complete";;;;;;;;;;;;3159
-"Set limit failed to complete";;;;;;;;;;;;3160
-"Save complete";;;;;;;;;;;;3161
-"Save position complete";;;;;;;;;;;;3162
-"Save position failed to complete";;;;;;;;;;;;3163
-"Try again after stopping playback";" recordings and timeshift";;"None";"None";"None";"None";"None";"None";"Попробовать еще раз после остановки воспроизведения";;;3164
-"Timeshift not ready%s Please try again";;;;;;;;;;;;3165
-"No support %s";;;;;;;;;"Нет поддержки %s";;;3166
-"Add bookmark";;;;;;;;;"Добавить метку";;;3167
-"Start auto-chaptering";;;;;;;;;"Разбить на сюжеты автоматически";;;3168
-"Show all bookmarks";;;;;;;;;"Показать все метки";;;3169
-"You have reached the maximum number of%s bookmarks allowed";;;;;;;;;;;;3170
-"Make media length longer than %s secs%s to create a chapter";;;;;;;;;;;;3171
-"No teletext";;"Pas de teletexte";;;;;;;"Нет телетекста";;;3172
-"No teletext available";;;;;;;;;"Нет доступного телетекста";;;3173
-"No subtitle";;;;;;;;;"Нет субтитров";;;3174
-"No subtitle available";;;;;;;;;"Нет доступных субтитров";;;3175
-"Satellite Configuration";"Satelliten-Konfiguration";;"Configurazione satellite";"Configuracion satelites";"Konfigurace satelit?";"Satellietconfiguratie";"Konfiguracja satelity";"Uydu konfigurasyonu";"Конфигурация Спутников";;;3176
-"Are you sure you want to quit the first installation?";;;;;;;;;"Выйти из первичной установки?";;;3177
-"Exit installation";;;;;;;;;"Выйти из установки";;;3178
-"Select Satellite";"Satelliten auswahlen";"Sélectionnez un satellite";"Scegli i satelliti";"Seleccionar satelites";"Vyb?r satelitu";"Selecteer satelliet";"Wybor satelity";"Uyduları secme";"Выбрать Спутник";;;3179
-"Same name of satellite already exists";;;;;;;;;"Такое название спутника уже существует";;;3180
-"Select Transponder";"Transponder auswahlen";"Sélectionnez un transpondeur";"Scegli transponder";"Seleccionar transponder";"Vybrat transponder";"Transponder selecteren";"Wybierz transponder";"Transponder secme";"Выбрать Транспондер";;;3181
-"Add a new transponder first";;;;;;;;;"Добавьте транспондер сначала";;;3182
-"No transponder info available";;;;;;;;;"Нет информации о транспондере";;;3183
-"Select the desired satellite whose signal is to be received by the tuner";;;;;;;;;"Выбрать спутник с которого необходимо принять сигнал";;;3184
-"Select the LNB type used in your digital satellite system";;;;;;;;;"Выбрать тип конвертора LNB используемого в системе";;;3185
-"Select the LNB frequency to the LNB you are using";;;;;;;;;"Задать частоту имеющегося конвертора LNB";;;3186
-"22KHz Tone Control";;;;;;;;;"Тон 22кГц";;;3187
-"When set to 'On', LNBs will be switched between low and high band";;;;;;;;;"При значении Вкл будет производиться переключение диапазонов";;;3188
-"Committed Switch";;"Commutateur engagé";;;;;;;"DISEqC 1.0";;;3189
-"Select the committed switch number";;;;;;;;;"Задать номер входа переключателя DISEqC 1.0";;;3190
-"Select the uncommitted switch number";;;;;;;;;"Задать номер входа переключателя DISEqC 1.1";;;3191
-"Uncommitted Switch";"Uncommitted Switch";"Commutateur non engagé";"Uncommitted Switch";"Uncommitted Switch";"Uncommitted Switch";"Niet-toegewezen schakelaar";"Uncommitted Switch";"Uncommitted Switch";"DISEqC 1.1";;;3192
-"DiSEqC Repeat";"DiSEqC Wiederholung";"Répétition du DiSEqC ";"Ripetizione DiSEqC";"Repeticion DiSEqC";"Opakovani DiSEqC";"DiSEqC-herhaling";"Powtarzanie DiSEqC";"DiSEqC tekrarlama";"Повтор DISEqC команды";;;3193
-"When set to 'On', DiSEqC repeats its command";;;;;;;;;"Когда установлено Вкл, посылается повтор команды DISEqC";;;3194
-"Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct";;;;;;;;;;;;3195
-"Transponder";;"Transpondeur";;;;;;;"Транспондер";;;3196
-"If you set to 'On', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels";;;;;;;;;"При установке “Вкл” также будет производиться поиск по транспондерам, информация о которых получена со спутника";;;3197
-"When set to 'Off', only the factory default transponders of the satellites you previously selected will be scanned for new channels.";;;;;;;;;"При установке “Выкл” будет производиться поиск только по имеющемуся списку транспондеров в памяти ресивера.";;;3198
-"Search Range";;;;;;;;;"Диапазон Поиска";;;3199
-"Select the transponder frequency range for channel search";;;;;;;;;"Задать диапазон частот для поиска каналов";;;3200
-"Press OK button to start a channel search";;;;;;;;;"Нажать ОК для поиска каналов";;;3201
-"Start Channel Search";;;;;;;;;"Начать Поиск Каналов";;;3202
-"Edit Satellite Name";;"Editer le nom du satellite";;;;;;;"Изменить Название Спутника";;;3203
-"Edit Satellite Longitude";;;;;;;;;;;;3204
-"Add Transponder";;;;;;;;;"Добавить Транспондер";;;3205
-"Delete Transponder";"Transponder loschen";"Supprimer un transpondeur ";"Cancella transponder";"Borrar transponder";"Vymazani transponderu";"Transponder wissen";"Usu? transponder";"Transponder sil";"Удалить Транспондер";;;3206
-"Enter new name for this satellite";;;;;;;;;"Задать новое имя для этого спутника";;;3207
-"Longitude Direction : East";;;;;;;;;"Направление Долготы : Восток";;;3208
-"Longitude Direction : West";;;;;;;;;"Направление Долготы : Запад";;;3209
-"Restore longitude";;;;;;;;;;;;3210
-"Longitude degree";;;;;;;;;"Значение долготы";;;3211
-"Unable to add the transponder";;;;;;;;;"Невозможно добавить транспондер";;;3212
-"Unable to edit the transponder";;;;;;;;;"Невозможно изменить транспондер";;;3213
-"Are you sure you want to remove%s this transponder?";;;;;;;;;"Действительно хотите удалить этот транспондер?";;;3214
-"Delete transponder";;;;;;;;;"Удалить транспондер";;;3215
-"Unable to delete the transponder";;;;;;;;;"Невозможно удалить транспондер";;;3216
-"No channels available for the selected mode";;;;;;;;;"Нет доступных каналов для выбранного режима";;;3217
-"You have reached the maximum number of%s recordings allowed";;;;;;;;;"Превышено максимально доступное%s количество записей";;;3218
-"Antenna and Satellite Setup";;;;;;;;;"Настройки Антенны и Спутников";;;3219
-"When set to 'Separated', the tuner 2 receives its own signal input";;;;;;;;;"При установке Раздельно, тюнер 2 принимает независимый сигнал";;;3220
-"however it will receive only the channel level currently being received by the tuner 1 when this is set to 'Loopthrough'";;;;;;;;;"при конфигурации “Перемычка” будут ограничения по принимаемому сигналу";;;3221
-"Tuner 2 Connection";;"Connexion du Tuner 2";;;;;;;"Подключение Тюнера 2";;;3222
-"Tuner 2 Signal";;;;;;;;;"Тюнер 2 - Сигнал";;;3223
-"When set to 'Same with Tuner 1', both tuners are connected to the same signal source";;;;;;;;;"Имеются ограничения по приему при установке Так же как и Тюнер 1";;;3224
-"Select a control method for tuner 1";;;;;;;;;"Задать способ подключения тюнера 1";;;3225
-"Tuner 1 Control";;;;;;;;;"Тюнер 1 - Подключение";;;3226
-" - Tuner 1 Configuration";;;;;;;;;" - Тюнер 1 Конфигурация";;;3227
-"You can add, delete or configure satellites here";;;;;;;;;"Здесь можно добавлять, удалять и конфигурировать спутники";;;3228
-"Select a control method for tuner 2";;;;;;;;;"Задать способ подключения тюнера 2";;;3229
-"Tuner 2 Control";;;;;;;;;"Тюнер 2 - Подключение";;;3230
-" - Tuner 2 Configuration";;;;;;;;;" - Тюнер 2 Конфигурация";;;3231
-"No satellite data available";;;;;;;;;"Нет данных о спутниках";;;3232
-"Please reset your device to factory settings";;;;;;;;;"Пожалуйста сбросьте приставку в заводские установки";;;3233
-"Go to the configuration menu now?";;;;;;;;;"Перейти в меню конфигурации?";;;3234
-"When you perform a factory reset,%s all your settings revert to factory defaults";;;;;;;;;"После выполнения сброса,%s все настройки приймут заводские значения";;;3235
-"Do you want to save changes before exit?";;;;;;;;;"Хотите сохранить изменения перед выходом?";;;3236
-"Save configuration";;;;;;;;;"Сохранить конфигурацию";;;3237
-"Try again after stopping all your recordings first";;;;;;;;;"Попробуйте еще раз после окончания записи";;;3238
-"Delete all channels";;;;;;;;;"Удалить все каналы";;;3239
-"Are you sure you want to remove%s all your TV and radio channels?";;;;;;;;;"Уверены что хотите удалить все%s ТВ- и Радио- каналы?";;;3240
-"Are you sure you want to remove%s all channels from this favorite group?";;;;;;;;;"Уверены что хотите удалить все%s каналы из группы любимые?";;;3241
-"Your channel list is empty";;;;;;;;;"Список каналов пуст";;;3242
-"Edit Channels";;;;;;;;;"Редактировать Каналы";;;3243
-"Sort";;;;;;;;;"Сортировка";;;3244
-"Sorted by %s";;;;;;;;;"Сортировка по %s";;;3245
-"Save Result";;;;;;;;;"Сохранить Результат";;;3246
-"Do you want to save changes?";;;;;;;;;"Хотите сохранить изменения?";;;3247
-"FAVORITES";;;;;;;;;"ЛЮБИМЫЕ";;;3248
-"Are you sure you want to remove%s%s?";;;;;;;;;"Уверены что хотите удалить%s%s?";;;3249
-"Are you sure you want to delete the channels%s including currently recording or reserved?";;;;;;;;;"Уверены что хотите удалить каналы%s включая текущие записи и таймеры?";;;3250
-"Delete channels";;;;;;;;;"Удалить каналы";;;3251
-"Change Name";;;;;;;;;;;;3252
-"Create favorite group";;;;;;;;;"Создать группу любимых";;;3253
-"Add to this favorite group";;;;;;;;;"Добавить в эту группу любимых";;;3254
-"Remove from this group";;;;;;;;;"Удалить из этой группы";;;3255
-"Save and exit";;;;;;;;;"Сохранить и выйти";;;3256
-"Select channels you want to add to this group";;;;;;;;;"Выбрать каналы для добавления в группу";;;3257
-"Select a fav group you want to add channels to";;;;;;;;;"Выбрать группу любимых для добавления каналов";;;3258
-"Select a fav group you want to rename";;;;;;;;;"Выбрать группу для переименования";;;3259
-"Select a fav group you want to remove";;;;;;;;;"Выбрать группу для удаления";;;3260
-"Enter name for new favorite group";;;;;;;;;"Задать имя для новой группы любимые";;;3261
-"Enter new name for this favorite group";;;;;;;;;"Задать новое имя для группы любимых";;;3262
-"Edit channels";;;;;;;;;"Редактировать каналы";;;3263
-"Tuner %d Config : OneCable";;;;;;;;;"Тюнер %d Конфигурация : Unicable";;;3264
-"Tuner %d PIN code";;;;;;;;;"Пароль для Тюнера %d";;;3265
-"Tuner 1 PIN code";;;;;;;;;"Пароль для Тюнера 1";;;3266
-"Tuner 2 PIN code";;;;;;;;;"Пароль для Тюнера 2";;;3267
-"Select Tuner %d Frequency";;;;;;;;;;;;3268
-"Select Tuner 1 Frequency";;;;;;;;;;;;3269
-"Select Tuner 2 Frequency";;;;;;;;;;;;3270
-"Please set a different value for each tuner";;;;;;;;;"Задайте различные настройки для каждого тюнера";;;3271
-"Save Configuration";;;;;;;;;"Сохранить Конфигурацию";;;3272
-"When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code";;;;;;;;;;;;3273
-"Select an available transmission channel from SCR 0 to SCR 7 for tuner %d";;;;;;;;;"Выбор канала передачи от SCR 0 до SCR 7 для тюнера %d";;;3274
-"Tuner %d SCR";;;;;;;;;"SCR Тюнера %d";;;3275
-" - Tuner %d Frequency";;;;;;;;;;;;3276
-"Select a frequency for tuner %d";;;;;;;;;"Задать частоту для тюнера %d";;;3277
-" - Tuner %d PIN Code";;;;;;;;;;;;3278
-"Enter a PIN code for tuner %d";;;;;;;;;"Ввести пароль для тюнера %d";;;3279
-"Go back to the previous satellite configuration page";;;;;;;;;"Вернуться к старнице конфигурации спутников";;;3280
-"Go to the next satellite configuration page";;;;;;;;;"Перейти к странице конфигурации спутников";;;3281
-"Select an available transmission channel from SCR 0 to SCR 7 for tuner 1";;;;;;;;;"Выбор канала передачи от SCR 0 до SCR 7 для тюнера 1";;;3282
-"Tuner 1 SCR";;;;;;;;;"SCR Тюнера 1";;;3283
-" - Tuner 1 Frequency";;;;;;;;;;;;3284
-"Select a frequency for tuner 1";;;;;;;;;"Задать требуемую частоту для тюнера 1";;;3285
-" - Tuner 1 PIN Code";;;;;;;;;;;;3286
-"Enter a PIN code for tuner 1";;;;;;;;;"Ввести пароль для тюнера 1";;;3287
-"Select an available transmission channel from SCR 0 to SCR 7 for tuner 2";;;;;;;;;"Выбор канала передачи от SRC 0 до SRC 7 для тюнера 2";;;3288
-"Tuner 2 SCR";;;;;;;;;"SCR Тюнера 2";;;3289
-" - Tuner 2 Frequency";;;;;;;;;;;;3290
-"Select a frequency for tuner 2";;;;;;;;;"Задать требуемую частоту для тюнера 2";;;3291
-" - Tuner 2 PIN Code";;;;;;;;;;;;3292
-"Enter a PIN code for tuner 2";;;;;;;;;"Ввести пароль для тюнера 2";;;3293
-"The PIN code must be 4-digit long";;;;;;;;;"Пароль должен содержать 4 цифры";;;3294
-"Sorry, that PIN code does not match";;;;;;;;;"Извините, пароль не совпадает";;;3295
-"EPG None";;;;;;;;;"Нет ТВ Гида";;;3296
-"Recent channels";;;;;;;;;;;;3297
-"DiSEqC 1.0 Switch";;"Commutateur DiSEqC 1.0";;;;;;;"DiSEqC 1.0 Переключатель";;;3298
-"Select the DiSEqC switch which your satellite is connected to";;;;;;;;;"Задайте соответствиующие настройки DISEqC переключателя для спутника";;;3299
-"Tuner %d Config : %s";;;;;;;;;"Тюнер %d Конфигурация : %s";;;3300
-"You can only have 4 satellites for DiSEqC 1.0";;;;;;;;;"Доступно лишь 4 спутника для DISEqC 1.0";;;3301
-"You can only have 1 satellite for Simple LNB";;;;;;;;;"Доступен лишь один спутник для режима Один Конвертор LNB";;;3302
-"No configured satellite available";;;;;;;;;"Нет сконфигурированных спутников";;;3303
-"Delete satellite";;;;;;;;;"Удалить спутник";;;3304
-"Press the Next button to setup satellites";;;;;;;;;"Нажмите Далее чтобы задать спутники";;;3305
-"Go to the Channel Search page";;;;;;;;;"Перейти к Поиску Каналов";;;3306
-"Press OK button to setup %s";;;;;;;;;"Нажмите ОК чтобы задать %s";;;3307
-"Add Satellite";;;;;;;;;"Добавить Спутник";;;3308
-"Add a new satellite to your satellite list";;;;;;;;;"Дабавить новый спутник в список";;;3309
-"Delete Satellite";;"Supprimer un satellite";;;;;;;"Удалить Спутник";;;3310
-"Delete a satellite from your list";;;;;;;;;"Удалить спутник из имеющегося списка";;;3311
-"No channels available";;;;;;;;;"Нет доступных каналов";;;3312
-"View";;;;;;;;;"Просмотр";;;3313
-"Following";;;;;;;;;"Следующий";;;3314
-"No event";;;;;;;;;"Нет события";;;3315
-"Select channel";;;;;;;;;"Выбор канала";;;3316
-"Edit timer";;;;;;;;;"Изменить таймер";;;3317
-"Delete timer";;;;;;;;;"Удалить таймер";;;3318
-"Add timer";;;;;;;;;"Добавить таймер";;;3319
-"Add manual timer";;;;;;;;;"Добавить таймер вручную";;;3320
-"Delete all timers";;;;;;;;;"Удалить все таймеры";;;3321
-"Show all timers";;;;;;;;;"Показать все таймеры";;;3322
-"Extend information";;;;;;;;;"Дополнительная информация";;;3323
-"That programme has already finished";;;;;;;;;;;;3324
-"Are you sure you want to remove this timer?";;;;;;;;;"Уверены что хотите удалить таймер?";;;3325
-"Are you sure you want to remove all your timers?";;;;;;;;;"Уверены что хотите удалить все таймеры?";;;3326
-"Enter search keywords here";;;;;;;;;"Введите слово для поиска";;;3327
-"A keyword must be at least %d characters long";;;;;;;;;"Слово для поиска должно иемть минимум %d символов";;;3328
-"Select Channel";;"Sélectionnez une chaîne ";;;;;;;"Выбрать Канал";;;3329
-"Conditional Access";;"Accès sous Condition CAS";;;;;;;"Условный Доступ";;;3330
-"Not inserted";;;;;;;;;"Не установлено";;;3331
-"Smartcard Information";;"Information de la Smartcard";;;;;;;"Информация о смарткарте";;;3332
-"View Smartcard information";;;;;;;;;"Просмотр информации о смарткарте";;;3333
-"CAM Information";;;;;;;;;"Информация о модуле";;;3334
-"View CAM information";;;;;;;;;"Просмотр информации о модуле";;;3335
-"Rotate Antenna";;;;;;;;;"Перемещать Антенну";;;3336
-"You can control the movements of the motorized antenna here";;;;;;;;;"Здесь можно управлять перемещением моторизированной антенны";;;3337
-"Up/Down = Zoom in/out ( Current rate : %s ) %s Left/Right = Previous/Next step";;;;;;;;;;;;3338
-"You have reached the maximum rate";;;;;;;;;;;;3339
-"You have reached the minimum rate";;;;;;;;;;;;3340
-"Try again after stopping playback%s and timeshift";;;;;;;;;"Попробуйте еще раз после остановки%s воспроизведения или тайм-шифт";;;3341
-"Thumbnail";;;;;;;;;"Thumbnail";;;3342
-"Poster_wrap";;;;;;;;;"Poster_wrap";;;3343
-"Fanart";;;;;;;;;"Fanart";;;3344
-"Play from beginning";;;;;;;;;"Воспроизвести сначала";;;3345
-"Rename";;"Renommer ";;;;;;;"Переименовать";;;3346
-"Are you sure you want to delete this file?";;;;;;;;;"Уверены что хотите удалить этот файл?";;;3347
-"Delete file";;;;;;;;;"Удалить файл";;;3348
-"Are you sure you want to delete%s all your recorded files?";;;;;;;;;"Уверены что ходите удалить%s записанные файлы?";;;3349
-"Delete all your files";;;;;;;;;"Удалить все файлы";;;3350
-"Enter new name for this media file";;;;;;;;;"Задать новое имя файлу";;;3351
-"A filename must be at least %d characters long";;;;;;;;;"Имя файла должно иметь хотябы %d символов";;;3352
-"Parental Control";;;;;;;;;"Родительский Контроль";;;3353
-"Recording Option";;;;;;;;;"Настройки Записи";;;3354
-"Video Setting";;"Réglage vidéo";;;;;;;"Настройки Видео";;;3355
-"Network Setting";;"Paramétrage réseau";;;;;;;"Сетевые Настройки";;;3356
-"Time Setting";;;;;;;;;"Установки Времени";;;3357
-"HDD Format";;;;;;;;;"Форматирование Диска";;;3358
-"Factory Reset";;"Réinitialisation d'usine";;;;;;;"Сброс Настроек";;;3359
-"Miscellaneous";;;;;;;;;"Другое";;;3360
-"Change your PRISMCUBE RUBY language preferences";;;;;;;;;"Задать языковые настройки приставки OPENBOX";;;3361
-"Set limits on your kids' digital satellite receiver use";;;;;;;;;"Настроить возрастные ограничения для пользования приставкой";;;3362
-"Adjust general recording settings";;;;;;;;;"Задать основные настройки записи";;;3363
-"Set the system's digital audio output settings";;;;;;;;;"Настройка параметровы выхода звука";;;3364
-"Setup the output settings for TVs that support HDMI cable";;;;;;;;;"Настройка параметров видео на выходе HDMI";;;3365
-"Configure internet connection settings";;;;;;;;;"Настройка подключения к сети Интернет";;;3366
-"Adjust settings related to the system's date and time";;;;;;;;;"Настройки относящиеся к системному времени и дате";;;3367
-"Delete eveything off your hard drive";;;;;;;;;"Очистить содержимое жесткого диска";;;3368
-"Restore your system to factory settings";;;;;;;;;"Сброс настроек приставки к заводским значениям";;;3369
-"Change additional settings for PRISMCUBE RUBY";;;;;;;;;"Задать дополнительные настройки приставки OPENBOX";;;3370
-"Select Menu Language";;;;;;;;;"Выбор Языка Меню";;;3371
-"Change Language";;;;;;;;;"Изменить Язык";;;3372
-"Do you want to continue?";;;;;;;;;;;;3373
-"please wait after pressing OK button";;;;;;;;;"пожалуйста подождите после нажатия кнопки ОК";;;3374
-"Not support Win32";;;;;;;;;"Нет поддержки Win32";;;3375
-"Sorry, that's an incorrect PIN code";;;;;;;;;"Извините, введен неверный пароль";;;3376
-"Enter new PIN code";;;;;;;;;"Ввести новый пароль";;;3377
-"Confirm your PIN code";;;;;;;;;"Подтвердите пароль";;;3378
-"Change PIN code";;;;;;;;;"Изменить пароль";;;3379
-"Your PIN code has been changed successfully";;;;;;;;;"Пароль изменен успешно";;;3380
-"All settings will be restored to factory default";;;;;;;;;"Все настройки будут сброшены в заводские значения";;;3381
-"Performing a factory reset?";;;;;;;;;"Выполнить сброс настроек?";;;3382
-"Now restoring...";;;;;;;;;"Идет восстановление…";;;3383
-"Try again after stopping your playback";;;;;;;;;"Попробуйте еще раз после остановки воспроизведения";;;3384
-"Formatting media partition%s cannot be undone!";;;;;;;;;"Восстановление мультимедиа раздела%s будет невозможно!";;;3385
-"WARNING";;;;;;;;;"ПРЕДУПРЕЖДЕНИЕ";;;3386
-"Formatting HDD...";;;;;;;;;"Форматирование Диска…";;;3387
-"Formatting recording partition%s cannot be undone!";;;;;;;;;"Восстановление раздела записей%s будет невозможно!";;;3388
-"Everything on your hard drive will be erased";;;;;;;;;"Все данные на жестком диске будут удалены";;;3389
-"Format hard disk drive?";;;;;;;;;"Форматировать диск?";;;3390
-"Cannot find a hard drive";;;;;;;;;"Диск недоступен";;;3391
-"Menu Language";;;;;;;;;"Язык Меню";;;3392
-"Select the language you want the menu to be in";;;;;;;;;"Задать требуемый язык меню";;;3393
-"Select the language that you wish to listen to";;;;;;;;;"Язык звуковой дорожки будет выбран при наличии в вещании";;;3394
-"Select the language for the subtitle to be in";;;;;;;;;"Задать требуемый язык субтитров";;;3395
-"Select the language for the secondary subtitle to be in";;;;;;;;;"Задать второй язык субтитров";;;3396
-"Set the hearing impaired function";;;;;;;;;"Для людей с нарушением слуха";;;3397
-"Edit Parental Settings";;;;;;;;;"Изменить Настройки Блокировки";;;3398
-"Enter your PIN code to change the parental settings";;;;;;;;;"Ввести пароль для изменения настроек блокировки";;;3399
-" - Lock Main Menu";;;;;;;;;" - Блокировка Основного Меню";;;3400
-"Set a restriction for the main menu";;;;;;;;;"Задать ограничения для доступа к главному меню";;;3401
-" - Age Limit";;;;;;;;;" - Возрастные Ограничения";;;3402
-"Set an access restriction to chosen channels";;;;;;;;;"Задать возрастные ограничения для доступа к ТВ каналам";;;3403
-" - Change PIN Code";;;;;;;;;" - Изменить Пароль";;;3404
-"Change your PIN code";;;;;;;;;"Изменить текущий пароль";;;3405
-"When set to 'On', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected";;;;;;;;;"При установке Вкл, приставка автоматически будет начинать запись буфера тайм-шифт после выборе канала просмотра";;;3406
-"Select the preferred size of timeshift buffer";;;;;;;;;"Задать желаемый размер буфера тайм-шифт (1 час видео занимает примерно 2ГБ)";;;3407
-"Select recording duration for a channel that has no EPG info";;;;;;;;;"Задать длительность записи по умолчанию для каналов без ТВ Гида";;;3408
-"Set the pre-recording time for a EPG channel";;;;;;;;;"Установка времени отступа перед таймером записи по ТВ Гиду";;;3409
-"Set the post-recording time for a EPG channel";;;;;;;;;"Установка времени отступа после таймера записи по ТВ Гиду";;;3410
-"Dolby Audio";;;;;;;;;"Звук Dolby";;;3411
-"When set to 'On', Dolby Digital audio will be selected automatically when broadcast";;;;;;;;;"При установке Вкл, звук Dolby Digital будет выбираться автоматически при наличии его в вещании";;;3412
-"Set the Audio HDMI format";;;;;;;;;"Задать формат звука на выходе HDMI";;;3413
-"Select a delay time for audio";;;;;;;;;"Задать время задержки звука";;;3414
-"Set the display's HDMI resolution";;;;;;;;;"Задать разрешение экрана при использовании выхода HDMI";;;3415
-"Select the display format for TV screen";;;;;;;;;"Задать формат ТВ экрана ";;;3416
-"Set RGB or YUV for HDMI color space";;;;;;;;;"Выбор цветовой схемы HDMI между RGB и YUV";;;3417
-"Set aspect ratio of your TV";;;;;;;;;"Задать соотношение сторон ТВ Экрана";;;3418
-"Set picture format according to TV aspect ratio";;;;;;;;;"Задать формат изображения в соответствии с соотношением сторон ТВ Экрана";;;3419
-"Network Connection";;;;;;;;;"Тип Подключения";;;3420
-"Select ethernet or wireless for your network connection";;;;;;;;;"Выбрать подлючение кабелем Etherent или беспроводное Wi-Fi";;;3421
-"Network Link";;;;;;;;;"Подключение к Сети";;;3422
-"Show network link status";;;;;;;;;"Отображает состояние подключения к сети";;;3423
-"Search Wifi";;;;;;;;;;;;3424
-"Search for available wireless connections";;;;;;;;;;;;3425
-"IP Address";;"Adresse IP";;;;;;;"IP Адрес";;;3426
-"Subnet Mask";;"Masque de sous réseau";;;;;;;"Маска Сети";;;3427
-"Gateway";;"Passerelle";;;;;;;"Шлюз";;;3428
-"DNS";;"DNS";;;;;;;"DNS Сервер";;;3429
-"Press OK button to setup wireless network manually";;;;;;;;;;;;3430
-"Assign IP Address";;;;;;;;;"Получение IP Адреса";;;3431
-"When set to 'DHCP', your IP address will be automatically allocated by the DHCP server";;;;;;;;;"Если выбрано DHCP, то настройки автоматически будут получены от сервера";;;3432
-"Press OK button to save the IP address settings";;;;;;;;;"Нажать ОК чтобы сохранить настройки сети";;;3433
-"Apply";;"Appliquer";;;;;;;"Применить";;;3434
-"Not Supported";;;;;;;;;"Не Поддерживается";;;3435
-"Time and Date";;;;;;;;;"Время и Дата";;;3436
-"When set to 'Automatic', the time and date will be obtained automatically from the channel that you select";;;;;;;;;"При выборе значения Автоматически, время и дата будут подстраиваться к значениям, полученным на ТВ канале";;;3437
-"Select a channel you want to set your time and date by";;;;;;;;;"Выберите канал для синхронизации времени и даты";;;3438
-"Enter today's date";;;;;;;;;"Задать сегодняшнюю дату";;;3439
-"Set the local time";;;;;;;;;"Задать местное время";;;3440
-"Time";;"Heure ";;;;;;;"Время";;;3441
-"Set the time zone that will be the basis for the date and time display";;;;;;;;;"Задать часовой пояс для настройки времени";;;3442
-"When set to 'Automatic', the system automatically change over to summer time";;;;;;;;;"При выбранной установке Автоматически, будет производиться переход на летнее время и обратно ";;;3443
-"Press OK button to save time settings";;;;;;;;;"Нажмите кнопку ОК для сохранения настроек времени";;;3444
-"Format Media Partition";;;;;;;;;"Очистить Раздел Мультимедиа";;;3445
-"Press OK button to remove everything in the media partition";;;;;;;;;"Нажать кнопку ОК для форматирования раздела мультимедиа";;;3446
-"Format Recording Partition";;;;;;;;;"Очистить Раздел Записей";;;3447
-"Press OK button to remove everything in the recording partition";;;;;;;;;"Нажать кнопку ОК для форматирования раздела записей";;;3448
-"Format Hard Drive";;;;;;;;;"Очистить Весь Диск";;;3449
-"Press OK button to erase your hard disk drive";;;;;;;;;"Нажать кнопку ОК для форматирования всего диска";;;3450
-"Go to first installation after restoring system to the factory default";;;;;;;;;"Переход к первичной установке после сброса настроек";;;3451
-"Start Factory Reset";;;;;;;;;"Выболнить Сброс Настроек";;;3452
-"When set to 'On', the system switches to deep standby mode if you press 'Standby' button to help reduce the amount of electricity used";;;;;;;;;"При активировании этой опции, будет задействован ждущий режим с минимальным энергопотребелнием";;;3453
-"Set the time for switching into standby mode when not being used";;;;;;;;;"Задать время автоматического перехода в ждущий редим при отсутствии активности";;;3454
-"Adjust the fan speed level for your system";;;;;;;;;"Настроить режим работы вентилятора охлаждения";;;3455
-"Channel Banner Time";;;;;;;;;"Время Показа Инфопанели Канала";;;3456
-"Set the time for the channel info to be displayed when zapping";;;;;;;;;"Задать время отображения инфопанели после переключения канала";;;3457
-"Playback Banner Time";;;;;;;;;"Время Показа Инфопанели Воспроизведения";;;3458
-"Set the time for the playback info to be displayed on the screen";;;;;;;;;"Задать время отображения инфопанели после начала воспроизведения";;;3459
-"Enable RSS feed in the main menu";;;;;;;;;"Разрешить RSS поток в основном меню";;;3460
-"RSS Feed";;;;;;;;;"RSS Поток";;;3461
-"Now connecting...";;;;;;;;;"Сейчас подключение…";;;3462
-"Network setup failed to complete";;;;;;;;;"Ошибка настройки сети";;;3463
-"Invalid IP address";;;;;;;;;"Неверный IP адрес";;;3464
-"Now searching...";;;;;;;;;"Сейчас поиск…";;;3465
-"Wifi device not found";;;;;;;;;"Wi-Fi устройство не найдено";;;3466
-"Wifi service not found";;;;;;;;;;;;3467
-"    - Strength : %s Encryption : %s";;;;;;;;;"    - Сигнал : %s Шифрование : %s";;;3468
-"Select Wifi";;;;;;;;;"Выбор Сети";;;3469
-"SSID not configured";;;;;;;;;;;;3470
-"Enter an encryption key";;;;;;;;;"Ввести ключ шифрования";;;3471
-"The password must be between 8 and 64 characters";;;;;;;;;;;;3472
-"The password length is invalid";;;;;;;;;;;;3473
-"Wifi setup failed to complete";;;;;;;;;"Ошибка установки сети Wi-Fi";;;3474
-"Enter your local time";;;;;;;;;"Ввести местное время";;;3475
-"Setting time...";;;;;;;;;"Установка времени…";;;3476
-"Invalid input";;;;;;;;;"Неверное значение";;;3477
-"No time info was given by that channel";;;;;;;;;"Нет данных времени на этом канале";;;3478
-"Backup data?";;;;;;;;;"Резервное копирование данных?";;;3479
-"To backup your user data and XBMC add-ons,%s insert a USB flash memory";;;;;;;;;"Для резервного копирования данных и программ XBMC,%s вставьте USB накопитель";;;3480
-"Cannot find backup data";;;;;;;;;"Нет доступных резервных копий";;;3481
-"Formatting HDD cannot be undone!";;;;;;;;;"Форматирование диска необратимо!";;;3482
-"Start formatting without making a backup?";;;;;;;;;"начать форматирование без резервной копии?";;;3483
-"Not enough space on USB flash memory";;;;;;;;;"Недостаточно места на USB накопителе";;;3484
-"Please insert a USB flash memory";;;;;;;;;"Подключите USB накопитель";;;3485
-"Now backing up your user data...";;;;;;;;;"Сохранение резервной копии настроек";;;3486
-"Press OK button to format your HDD now";;;;;;;;;"Нажмите ОК для начала форматирования диска";;;3487
-"Start formatting HDD?";;;;;;;;;"Начать форматирование диска?";;;3488
-"Data backup failed";;;;;;;;;"Ошибка сохранения резервной копии";;;3489
-"Enter the size of the media partition in GB";;;;;;;;;"Задать размер для раздела Мультимедиа в ГБ";;;3490
-"Media partition will be %s GB";;;;;;;;;"Раздел Мультимедиа будет %s ГБ";;;3491
-"Make sure your antenna is properly set up";;;;;;;;;"Убедитесь что антенна установлена должным образом";;;3492
-"Go to the antenna setup page now?";;;;;;;;;"Перейти в меню настройки антенны?";;;3493
-"To receive a strong satellite signal,%s add satellites and set LNB parameters correctly";;;;;;;;;"Для приема сигнала со спутника,%s добавьте спутник и задайте параметры LNB";;;3494
-"Select the satellite on which the transponder you wish to scan is located";;;;;;;;;"Выберите спутник, транспондеры которого необходимо сканировать";;;3495
-"Search Type";;;;;;;;;"Тип Поиска";;;3496
-"Select whether you wish to scan free and scrambled, free only or scrambled only";;;;;;;;;"Выбор сканируемых каналов: открытые и кодированные, только открытые или только кодированные";;;3497
-"Start Search";;"Commencer la recherche";;;;;;;"Начать Поиск";;;3498
-"Configure the initial settings for OneCable";;;;;;;;;"Конфигурация базовых настроек для Unicable";;;3499
-"Initial Setup";;;;;;;;;"Базовые установки";;;3500
-"Number of Satellites";;"Le nombre de satellites";;;;;;;"Количество Спутников";;;3501
-"Select number of satellites for OneCable";;;;;;;;;"Задать количество спутников для Одного Кабеля";;;3502
-"Satellite %d";;;;;;;;;"Спутник %d";;;3503
-"Select a satellite name for satellite 1 first";;;;;;;;;"Сначала задайте название для спутника 1";;;3504
-"Add to favorite add-on";;;;;;;;;"Добавить программу в любимые";;;3505
-"Remove";;" Set Group";;;;;;;"Удалить";;;3506
-"Run";;;;;;;;;"Запустить";;;3507
-"No add-ons installed";;;;;;;;;"Нет установленных программ";;;3508
-"Select Add-on";;;;;;;;;"Выбрать Программу";;;3509
-"Delete favorite add-on";;;;;;;;;"Удалить программу из любимых";;;3510
-"Do you want to remove %s?";;;;;;;;;"Хотите удалить %s?";;;3511
-"Unable to change satellite name";;;;;;;;;"Невозможно изменить название спутника";;;3512
-"Unable to add a new satellite in the list";;;;;;;;;"Невозможно добавить спутник в список";;;3513
-"Same satellite already exists";;;;;;;;;;;;3514
-"Are you sure you want to remove%s this satellite?";;;;;;;;;"Уверены что хотите удалить%s этот спутник?";;;3515
-"Delete configured satellite first";;;;;;;;;;;;3516
-"Unable to remove the satellite from the list";;;;;;;;;"Невозвожно удалить спутник из списка";;;3517
-"Select a satellite you want to change settings";;;;;;;;;"Выбор спутника для изменения настроек";;;3518
-"Longitude";;"Longitude";;;;;;;"Долгота";;;3519
-"Change the name of the satellite you selected";;;;;;;;;"Изменить название выбранного спутника";;;3520
-"Rename Satellite";;;;;;;;;"Переименовать Спутник";;;3521
-"Add a new satellite to the list";;;;;;;;;"Добавить новый спутник в список";;;3522
-"Delete a satellite from the list";;;;;;;;;"Удалить спутник из списка";;;3523
-"Cannot find any results for that search";;;;;;;;;;;;3524
-"No results found";;;;;;;;;;;;3525
-"Back to previous page";;;;;;;;;"Вернуться на предыдущую страницу";;;3526
-"Are you sure you want to delete this timer?";;;;;;;;;"Уверенычто хотите удалить этот таймер?";;;3527
-"Download";;;;;;;;;"Загрузка";;;3528
-"Press OK button to download the firmware shown below";;;;;;;;;"Нжать ОК для загрузки версии ПО указанной внизу";;;3529
-"Do you want to install the firmware now?";;;;;;;;;"Установить версию ПО сейчас?";;;3530
-"Download firmware complete";;;;;;;;;"Загрузка ПО завершена";;;3531
-"Check your USB device";;;;;;;;;"Проверьте USB накопитель";;;3532
-"Cannot connect to server";;;;;;;;;"Невозможно подключиться к серверу";;;3533
-"Already updated to the latest version";;;;;;;;;"Уже обновлено на последнюю версию";;;3534
-"File is corrupted, try downloading it again";;;;;;;;;"Файл поврежден, повторите загрузку";;;3535
-"Please insert a USB flash memory and press OK";;;;;;;;;"Подключите USB накопитель и нажмите ОК";;;3536
-"File verification failed%s Try downloading it again";;;;;;;;;"Ошибка проверки файла%s Попробуйте загрузить еще раз";;;3537
-"Ready to update";;;;;;;;;"Готов к обновлению";;;3538
-"Network is disconnected";;;;;;;;;"Сеть отключена";;;3539
-"Insufficient disk space";;;;;;;;;"Недостаточно места на диске";;;3540
-"Not enough space on your HDD";;;;;;;;;;;;3541
-"Not enough space on your USB flash memory";;;;;;;;;"Недостаточно места на USB накопителе";;;3542
-"Update process failed";;;;;;;;;"Ошибка обновления";;;3543
-"Cannot find previous versions";;;;;;;;;"Невозможно найти предыдущие версии";;;3544
-"Cannot get the latest firmware%s Please try again";;;;;;;;;"Невозможно получить последнее обновление%s Попробуйте еще раз";;;3545
-"No released firmware available";;;;;;;;;"Нет доступных версий ПО";;;3546
-"Downloading...";;;;;;;;;"Загрузка…";;;3547
-"Check your HDD";;;;;;;;;;;;3548
-"Check your flash memory";;;;;;;;;;;;3549
-"Not enough space on flash memory";;;;;;;;;;;;3550
-"Failed to write on flash memory";;;;;;;;;;;;3551
-"Firmware Information";;;;;;;;;"Информация о ПО";;;3552
-"Size";;;;;;;;;"Размер";;;3553
-"Not attempted";;;;;;;;;"Не было попыток";;;3554
-"Please check firmware version first";;;;;;;;;"Сначала проверьте версию ПО";;;3555
-"Press OK to cancel downloading firmware updates";;;;;;;;;"Нажать ОК для отмены загрузки ПО";;;3556
-"Your system is up-to-date";;;;;;;;;"Установлена самая новая версия ПО";;;3557
-"Copy to HDD";;;;;;;;;;;;3558
-"Download complete. Press OK to copy firmware files to HDD";;;;;;;;;;;;3559
-"Copy to USB";;;;;;;;;"Копировать на USB";;;3560
-"Download complete. Press OK to copy firmware files to USB";;;;;;;;;"Загрузка завершена. Нажать ОК для копирования на USB";;;3561
-"Downloading firmware";;;;;;;;;"Загрузка ПО";;;3562
-"Firmware Version";;;;;;;;;"Версия ПО";;;3563
-"Firmware Update";;;;;;;;;"Обновление ПО";;;3564
-"Refresh firmware update";;;;;;;;;"Обновить доступность ПО";;;3565
-"Get previous versions";;;;;;;;;"Получить предыдущие версии ПО";;;3566
-"Previous firmware versions";;;;;;;;;"Предыдущие версии ПО";;;3567
-"Download the latest firmware for your PRISMCUBE RUBY";;;;;;;;;"Загрузить последнее ПО ресивера";;;3568
-"Update Firmware";;;;;;;;;"Обновить ПО";;;3569
-"Download a pre-configured channel list over the internet";;;;;;;;;"Загрузить список каналов из сети Интернет";;;3570
-"Update Channels via Internet";;;;;;;;;"Обновить Каналы через Интернет";;;3571
-"Import Channels from USB";;;;;;;;;"Загрузить Каналы с USB";;;3572
-"Import channel list via USB";;;;;;;;;"Загрузка списка каналов с USB";;;3573
-"Export Channels to USB";;;;;;;;;"Сохранить Каналы на USB";;;3574
-"Export channel list via USB";;;;;;;;;"Сохранить список каналов на USB";;;3575
-"Complete download, Press OK is install";;;;;;;;;"Загрузка завершена, Нажмите ОК для установки";;;3576
-"Check Firmware Version";;;;;;;;;"Проверка Версии ПО";;;3577
-"Check the latest firmware released on the update server";;;;;;;;;"Проверить доступность обновления ПО на сервере";;;3578
-"Checking files checksum...";;;;;;;;;"Проверка контрольный суммы файлов…";;;3579
-"Copying files to HDD...";;;;;;;;;;;;3580
-"Copying files to USB drive...";;;;;;;;;"Копирование файлов на USB…";;;3581
-"Copying files to internal storage...";;;;;;;;;;;;3582
-"Update now";;;;;;;;;"Обновить сейчас";;;3583
-"Follow the instructions on front panel display during the firmware installation process";;;;;;;;;"Следуйте инструкциям индикатора передней панели при обновлении ПО";;;3584
-"DO NOT POWER OFF%s DURING THE UPGRADING";;;;;;;;;;;;3585
-"DO NOT REMOVE YOUR USB%s DURING THE UPGRADING";;;;;;;;;"НЕ ИЗВЛЕКАТЬ USB НАКОПИТЕЛЬ%s ВО ВРЕМЯ ОБНОВЛЕНИЯ ПО";;;3586
-"Continue interrupted downloads?";;;;;;;;;"Продолжить прерванные загрузки?";;;3587
-"Resume downloading files";;;;;;;;;"Продолжить загрузку файлов";;;3588
-"Waiting...";;;;;;;;;"Ждите…";;;3589
-"Verifying...";;;;;;;;;"Проверка…";;;3590
-"Current Version";;;;;;;;;"Текущая Версия";;;3591
-"Downloading server information";;;;;;;;;"Информация о сервере скачивания";;;3592
-"Select Channel Package";;;;;;;;;"Выбрать Канал Пакета";;;3593
-"Update complete";;;;;;;;;"Обновление завершено";;;3594
-"Your channel list has been updated successfully";;;;;;;;;"Список каналов обновлен успешно";;;3595
-"File not found";;;;;;;;;"Файл не найден";;;3596
-"Now updating your channel list";;;;;;;;;"Идет обновление списка каналов";;;3597
-"Export complete";;;;;;;;;"Экспорт завершен";;;3598
-"Your channel list has been exported successfully";;;;;;;;;"Список каналов экспортирован успешно";;;3599
-"Tuner %s Config : Motorized, Usals";;;;;;;;;"Тюнер %s Конфигурация : Мотор, USALS";;;3600
-"Latitude degree";;;;;;;;;"Значение широты";;;3601
-"My Longitude Direction";;;;;;;;;"Направление Долготы Места";;;3602
-"Set the longitude direction for your area";;;;;;;;;"Выбрать направление долготы для вашего расположения";;;3603
-"Enter the longitude angle for your location";;;;;;;;;"Задать угол долготы для вашего расположения";;;3604
-"My Longitude Angle";;;;;;;;;"Значение Долготы Места";;;3605
-"My Latitude Direction";;;;;;;;;"Направление Широты Места";;;3606
-"Set the latitude direction for your area";;;;;;;;;"Выбрать направление широты для вашего расположения";;;3607
-"Enter the latitude angle for your location";;;;;;;;;"Задать угол широты для вашего расположения";;;3608
-"My Latitude Angle";;;;;;;;;"Значение Широты Места";;;3609
-"Reference Position to Null";;"Position de référence à zéro";;;;;;;"Перейти к Нулевой Позиции";;;3610
-"Rotates the moter to 0 as a reference point";;;;;;;;;"Передвигать антенну на 0";;;3611
-"Here you can setup satellites for Motorized USALS";;;;;;;;;"Задать требуемые спутники для моторизированной антенны USALS";;;3612
-"Manual Scan";;"Scan manuel ";;;;;;;"Ручное Сканирование";;;3613
-"Custom Setup";;;;;;;;;;;;3614
-"Enable/Disable custom setup";;;;;;;;;;;;3615
-"Select the transponder frequency for the selected satellite";;;;;;;;;;;;3616
-"Enter the transponder frequency for the selected satellite";;;;;;;;;;;;3617
-" - Transponder Frequency";;;;;;;;;" - Частота Транспондера";;;3618
-" - DVB Type";;;;;;;;;" - Тип Вещания DVB";;;3619
-"Select the Digital Video Broadcasting type for the selected satellite";;;;;;;;;"Задать тип вещания для выбранного спутника";;;3620
-" - FEC";;;;;;;;;" - FEC";;;3621
-"Select the error control mode of data transmission for the selected satellite";;;;;;;;;"Задать значение режима коррекции ошибок передачи данных ";;;3622
-" - Polarization";;;;;;;;;" - Поляризация";;;3623
-"Select the direction of the electrical and magnetic fields of signals for the satellite above";;;;;;;;;"Задать значение поляризации сигнала требуемого транспондера";;;3624
-" - Symbol Rate";;;;;;;;;" - Скорость Потока";;;3625
-"Set the amount of data, that is transmitted per second in the data stream";;;;;;;;;"Ввод значения скорости потока переданных данных в секунду для требуемого транспондера";;;3626
-"Automatic scan";;;;;;;;;"Автоматическое сканирование";;;3627
-"Search TV and radio channels without entering any satellite information";;;;;;;;;"Поиск ТВ- и Радио- каналов без ввода дополнительных данных";;;3628
-"Manual scan";;;;;;;;;"Сканировать вручную";;;3629
-"Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc";;;;;;;;;"Поиск ТВ- и Радио- каналов после ввода частоты, скорости потока и поляризации транспондера";;;3630
-"Select Frequency";;"Sélectionnez la fréquence";;;;;;;"Задать Частоту";;;3631
-"Configure the satellite first before you scan channels";;;;;;;;;"Настройте спутники перед сканированием каналов";;;3632
-"Satellite %s is not configured";;;;;;;;;"Спутник %s еще не сконфигурирован";;;3633
-"Select the frequency of the data stream, in which the channel is encoded";;;;;;;;;"Задать частоту потока данных с которой закодирован канал";;;3634
-"Polarization";;"Polarisation";;;;;;;"Поляризация";;;3635
-"Add a new transponder to the list";;;;;;;;;"Добавить новый транспондер в список";;;3636
-"Delete a transponder from the list";;;;;;;;;"Удалить транспондер из списка";;;3637
-"Configure your transponder settings";;;;;;;;;"Изменить данные транспондера";;;3638
-"Timer List";;;;;;;;;"Таймер";;;3639
-"Manage your XBMC add-ons";;;;;;;;;;;;3640
-"Try again after stopping playback, recordings%s and timeshift";;;;;;;;;"Попробуйте еще раз после остановки воспроизведения,%s записи или тайм-шифт";;;3641
-"Access your favorite in a convenient way";;;;;;;;;"Самый удобный доступ к часто используемым";;;3642
-"Get fast access to your favorite channels";;;;;;;;;;;;3643
-"No favorite group available";;;;;;;;;;;;3644
-"Favorite group";;;;;;;;;;;;3645
-"Failed to change favorite group";;;;;;;;;;;;3646
-"HDD";;;;;;;;;"Диск";;;3647
-"STB Information";;;;;;;;;"О Системе";;;3648
-"Product Name : %s";;;;;;;;;"Название : %s";;;3649
-"Product Number : %s";;;;;;;;;"Номер : %s";;;3650
-"Hardware Version : %s";;;;;;;;;"Аппаратная Версия : %s";;;3651
-"Release Version : %s";;;;;;;;;"Версия ПО : %s";;;3652
-"Bootloader Version : %s";;;;;;;;;"Версия Загрузчика : %s";;;3653
-"Name and Total Size : %s ( %s )";;;;;;;;;"Название и Объем : %s ( %s )";;;3654
-"Temperature : Busy";;;;;;;;;"Температура : Недоступно";;;3655
-"Media Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Мультимедиа : %s%% ( %s / %s )";;;3656
-"Program Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Программ : %s%% ( %s / %s )";;;3657
-"Recording Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Записей : %s%% ( %s / %s )";;;3658
-"Name and Total Size : Unknown";;;;;;;;;"Название и Объем : Неизвестно";;;3659
-"Media Partition Usage : Unknown";;;;;;;;;"Использование Раздела Мультимедиа : Неизвестно";;;3660
-"Program Partition Usage : Unknown";;;;;;;;;"Использование Раздела Программ : Неизвестно";;;3661
-"Recording Partition Usage : Unknown";;;;;;;;;"Использование Раздела Записей : Неизвестно";;;3662
-"Temperature : %s degree celsius";;;;;;;;;"Температура : %s градусов цельсия";;;3663
-"Exit Installation";;;;;;;;;"Выход из Установки";;;3664
-"Select Audio Language";;;;;;;;;"Выбор Звуковой Дорожки";;;3665
-"Language Setup";;;;;;;;;"Установки Языка";;;3666
-"Go to the video and audio setup page";;;;;;;;;"Перейти к аудио- и видео- настройкам";;;3667
-"Video and Audio Setup";;;;;;;;;"A/V Установки";;;3668
-"TV Screen Format";;"Format de l'écran TV";;;;;;;"Формат ТВ Экрана";;;3669
-"Select the display's HDMI resolution";;;;;;;;;"Задать разрешение экрана HDMI";;;3670
-"Go back to the language setup page";;;;;;;;;"Вернуться у выбору языков";;;3671
-"Go to the antenna and satellite setup page";;;;;;;;;"Перейти к установкам антенны";;;3672
-"Go back to the video and audio setup page";;;;;;;;;"Вернуться к аудио- и видео- настройкам";;;3673
-"Go to the satellite configuration page";;;;;;;;;"Перейти к конфигурации спутников";;;3674
-"Channel Search Setup";;;;;;;;;"Настройки Поиска Каналов";;"채널 검색 설정";3675
-"Do you want to perform a channel search in the first installation?";;;;;;;;;"Выполнить поиск каналов при первичной установке?";;;3676
-"Go back to the antenna and satellite setup page";;;;;;;;;"Вернуться к установкам антенны и спутников";;;3677
-"Go to the time and date setup page";;;;;;;;;"Перейти к настройке даты и времени";;;3678
-"Time and Date Setup";;;;;;;;;"Настройка Даты и Времени";;;3679
-"When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select";;;;;;;;;;;;3680
-"Enter the local time";;;;;;;;;"Задать местное время";;;3681
-"When set to 'Automatic', the system automatically change over to and from summer and winter time";;;;;;;;;"При установке Автоматически, приставка самостоятельно будет учитывать Летнее и Зимнее время";;;3682
-"Go back to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3683
-"Go to the summary of first installation page";;;;;;;;;"Перейти к завершению первичной установки";;;3684
-"Summary of First Installation";;;;;;;;;"Результат Первичной Установки";;;3685
-"Number of your TV Channels";;;;;;;;;"Количество ТВ каналов";;;3686
-"Number of your Radio Channels";;;;;;;;;"Количество Радиоканалов";;;3687
-"Exit the first installation";;;;;;;;;"Выйти из первичной установки";;;3688
-"Go back to the time and date setup page";;;;;;;;;"Перейти назад к установке даты и времени";;;3689
-"Today's date";;;;;;;;;"Дата сегодня";;;3690
-"Local time";;;;;;;;;"Местное время";;"지역 시간";3691
-"Setting Time...";;;;;;;;;"Установка Времени…";;;3692
-"Select the required LNB frequency to the LNB you are using";;;;;;;;;"Задать требуемую частоту LNB для используемого конвертора";;;3693
-"Static";;;;;;;;;"Статически";;;3694
-"Analog";;;;;;;;;"Аналог";;;3695
-"All Transponders";;;;;;;;;"Все Транспондеры";;;3696
-"Single Transponder";;;;;;;;;"Текущий Транспондер";;;3697
-"WEP";;;;;;;;;;;;3698
-"WPA";;;;;;;;;;;;3699
-"Set East Limit";;"Définir la position actuelle comme limite Est";;;;;;;"Установить Позицию как Восточный Лимит";;;3700
-"Set West Limit";;"Définir la position actuelle comme limite Ouest";;;;;;;"Установить Позицию как Западный Лимит";;;3701
-"East";;;;;;;;;"Восток";;;3702
-"West";;;;;;;;;"Запад";;;3703
-"North";;;;;;;;;"Север";;;3704
-"South";;;;;;;;;"Юг";;;3705
-"Finish";;"Terminer";;;;;;;"Окончание";;;3706
-"Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3707
-"New channels have been loaded from PVR manager%s Press OK to continue updating your channel list";;;;;;;;;;;;3708
-"Update channels";;;;;;;;;;;;3709
+"Repeat count";;;;;;;;;;;;3025
+"Recording duration in mins";;;;;;;;;;;;3026
+"New channels have been loaded from PVR manager%s Press OK to continue updating your channel list";;;;;;;;;;;;3027
+"Update channels";;;;;;;;;"Обновить каналы";;;3028
+"Recording stopped due to insufficient disk space";;;;;;;;;"Запись остановлена, недостаточно места на диске";;;3029
+"Reloading channel list...";;;;;;;;;"Обновление списка каналов…";;;3030
+"Enter your PIN code";;;;;;;;;"Ввести пароль";;;3031
+"CAM initialized";;;;;;;;;"Инициализация Модуля";;;3032
+"Attention";;;;;;;;;"Внимание";;;3033
+"CAM removed";;;;;;;;;"Модуль Извлечен";;;3034
+"Update complete";;;;;;;;;"Обновление завершено";;;3035
+"Your channel list has been updated successfully";;;;;;;;;"Список каналов обновлен успешно";;;3036
+"Add Timer";;;;;;;;;"Добавить Таймер";;;3037
+"Edit Recording";;"Modifier l'enregistrement";;;;;;;"Редактировать Запись";;;3038
+"Start Time";;"Heure de début";;;;;;;"Время Начала";;;3039
+"End Time";;;;;;;;;"Время Окончания";;;3040
+"mins";;;;;;;;;"минут";;;3041
+"From EPG";;;;;;;;;"С ТВ Гида";;;3042
+"Change Duration";;;;;;;;;"Изменить Длительность";;;3043
+"Enter the end time";;;;;;;;;"Задать время окончания";;;3044
+"Enter new duration";;;;;;;;;"Задать новую длительность";;;3045
+"in mins";;;;;;;;;"в минутах";;;3046
+"Add satellite";;;;;;;;;"Добавить спутник";;;3047
+"Confirm";"Bestatigen";"Confirmer ";"Conferma";"Confirmar";"Potvrdit";"Bevestigen";"Potwierd?";"Onaylayın";"Подтвердить";;;3048
+"Longitude Degree";;;;;;;;;"Долгота";;;3049
+"Enter name for this satellite";;;;;;;;;"Задать название спутника";;;3050
+"Satellite Name";"Satellitenname";"Nom du satellite";"Nome satellite";"Nombre de satelite";"Satelitni antena";"Satellietnaam";"Nazwa satelity";"Uydu ismi";"Название Спутника";;;3051
+"Longitude Direction";;;;;;;;;"Направление Долготы";;;3052
+"Longitude Angle";;;;;;;;;"Угол Долготы";;;3053
+"Band Type";;"Type de bande ";;;;;;;"Диапазон";;;3054
+"Automatic Power Down";;;;;;;;;"Автоматическое Отключение";;;3055
+"Start automatic power down after %s sec";;;;;;;;;"Отключаться Автоматически через %s сек";;;3056
+"Select HDMI or Analog for your video output";;;;;;;;;"Выбор HDMI или Аналог для вывода изображения";;;3057
+" - HDMI Format";;;;;;;;;" - Разрешение Видео на HDMI";;;3058
+" - TV Screen Format";;;;;;;;;" - Формат ТВ Экрана";;;3059
+" - HDMI Color Space";;;;;;;;;" - Цветовая Схема HDMI";;;3060
+" - TV Aspect Ratio";;;;;;;;;" - Соотношение Сторон ТВ Экрана";;;3061
+" - Picture Format";;;;;;;;;" - Формат Изображения";;;3062
+"Video Format";;;;;;;;;"Формат Видео";;;3063
+"Audio Setting";;"Réglage Audio";;;;;;;"Настройки Звука";;;3064
+"Move failed";;;;;;;;;"Ошибка перемещения";;;3065
+"Set Transponder";;;;;;;;;"Задать транспондер";;;3066
+"Enter TP frequency";;;;;;;;;"Ввести частоту транспондера";;;3067
+"Sorry, that's an irrelevant transponder frequency";;;;;;;;;"Извините, это неверная частота транспондера";;;3068
+"Enter symbol rate";;;;;;;;;"Задать скорость потока";;;3069
+"Frequency";"Frequenz";"Fréquence";"Frequenza";"Frecuencia";"Frekvence";"Frequentie";"Cz?stotliwo??";"Frekans";"Частота";;;3070
+"Symbol Rate";"Symbolrate";"Taux de symbole";"Symbolrate";"Tasa de simbolos";"Symbolova rychlost";"Symbolrate";"Symbol rate";"Sembol oranı";"Скорость Потока";;;3071
+"QPSK 1/2";;;;;;;;;"QPSK 1/2";;;3072
+"Delete";;"Supprimer";;;;;;;"Удалить";;;3073
+"Remove selections";;;;;;;;;"Удалить Выбранное";;;3074
+"Resume from";;;;;;;;;"Продолжить с";;;3075
+"Delete all";;;;;;;;;"Удалить Все";;;3076
+"Multi-select";;;;;;;;;"Выбрать несколько";;;3077
+"Are you sure you want to remove%s all your bookmarks?";;;;;;;;;"Уверены что хотите удалить%s все метки?";;;3078
+"Delete all bookmarks";;;;;;;;;"Удалить все метки";;;3079
+"No Channel";;;;;;;;;"Нет Канала";;;3080
+"LNB Frequency";;"Fréquence de la LNB";;;;;;;"Частота LNB";;;3081
+"Low frequency";;;;;;;;;"Нижняя частота";;;3082
+"High frequency";;;;;;;;;"Высокая частота";;;3083
+"Switch frequency";;;;;;;;;"Частота переключения";;;3084
+"Low Frequency";"LNB-Low-Frequenz";"Basse fréquence ";"Frequenza LNB-Low";"Frecuencia LNB Low";"Nizkofrekven?ni LNB";"Lage frequentie van LNB";"Niska cz?st. LNB";"LNB-Low frekansı";"Нижняя частота";;;3085
+"High Frequency";"LNB-High-Frequenz";"Haute fréquence";"Frequenza LNB-High";"Frecuencia LNB High";"Vysokofrekven?ni LNB";"Hoge frequentie van LNB";"Wysoka cz?st. LNB";"LNB-High frekansı";"Высокая частота";;;3086
+"Switch Frequency";"LNB-Grenzfrequenz";"Changer les fréquences";"Frequenza limite LNB";"Frecuencia limite LNB";"Mezni frekvence LNB";"Grensfrequentie van LNB";"Cz?stotliwo?? graniczna LNB";"LNB sınır frekansı";"Частота переключения";;;3087
+"Once";;"Une fois";;;;;;;"Один Раз";;;3088
+"Weekly";;"Hebdomadaire";;;;;;;"Еженедельно";;;3089
+"Daily";;"Quotidien";;;;;;;"Ежедневно";;;3090
+"Fri";;"Ven";;;;;;;"Пят";;;3091
+"Mon";;"Lun";;;;;;;"Пон";;;3092
+"Sat";;"Sam";;;;;;;"Суб";;;3093
+"Sun";;"Dim ";;;;;;;"Вос";;;3094
+"Thu";;"Jeu";;;;;;;"Чет";;;3095
+"Tue";;"Mar";;;;;;;"Втр";;;3096
+"Wed";;"Mer";;;;;;;"Срд";;;3097
+"Unknown Error";;"Erreur inconnue";;;;;;;"Неизвестная Ошибка";;;3098
+"Edit Timer";;"Modifier la Minuterie";;;;;;;"Редактировать Таймер";;;3099
+"Add Manual Timer";;"Ajouter la minuterie manuellemment";;;;;;;"Добавить Таймер Вручную";;;3100
+"Recording";;"Enregistrement";;;;;;;"Запись";;;3101
+"Name";;"Nom";;;;;;;"Название";;;3102
+"Record Name";;;;;;;;;"Название Записи";;;3103
+"Start Date";;;;;;;;;"Дата Начала";;;3104
+"Rename timer";;;;;;;;;"Переименовать таймер";;;3105
+"A timer name must be at least %d characters long";;;;;;;;;"Название таймера должно содержать хотя бы %d символов";;;3106
+"Unable to edit the timer";;;;;;;;;"Невозможно изменить таймер";;;3107
+"The time you entered has already passed";;;;;;;;;"Введенное время уже прошло";;;3108
+"There is no valid timer";;;;;;;;;"Нет доступного таймера";;;3109
+"Enter the start time";;;;;;;;;"задать время начала";;;3110
+"Waiting";;;;;;;;;"Ожидание";;;3111
+"%s timed out";;;;;;;;;"%s timed out";;;3112
+"%s completed";;;;;;;;;"%s завершено";;;3113
+"No description";;;;;;;;;"Нет описания";;;3114
+"Manual Wifi Setup";;;;;;;;;"Установки Wi-Fi Вручную";;;3115
+"Connect";;;;;;;;;"Подключитсья";;;3116
+"Enter your SSID";;;;;;;;;"Задать имя вашей сети";;;3117
+"Assign a static IP address for wireless network";;;;;;;;;"Назаначить статический IP адрес для беспроводной сети";;;3118
+"IP Settings";;;;;;;;;"Настройки IP";;;3119
+" - IP Address";;;;;;;;;"- IP Адрес";;;3120
+"Enter your IP address";;;;;;;;;"Задать IP адрес приставки OPENBOX";;;3121
+" - Subnet Mask";;;;;;;;;"- Маска Сети";;;3122
+"Enter your subnet mask";;;;;;;;;"Задать маску используемой сети";;;3123
+" - Gateway";;;;;;;;;"- Шлюз";;;3124
+"Enter your gateway";;;;;;;;;"Задать шлюз используемой сети";;;3125
+" - DNS";;;;;;;;;"- DNS Сервер";;;3126
+"Enter the DNS server address";;;;;;;;;"Задать адрес сервера DNS";;;3127
+"Connect to a hidden wireless network";;;;;;;;;"Подключиться к скрутой сети";;;3128
+"Hidden SSID";;;;;;;;;"Скрытая Сеть";;;3129
+" - SSID";;;;;;;;;"- Сеть";;;3130
+"Enter network name for the wireless network you wish to connect to";;;;;;;;;"Задать имя сети для подключения";;;3131
+" - Security";;;;;;;;;"- Шифрование";;;3132
+"Select security type for the hidden wireless network";;;;;;;;;"Тип шифрования для скрытой сети";;;3133
+"Enter an IP address";;;;;;;;;"Ввести IP адрес";;;3134
+"Please try again";;;;;;;;;"Попробуйте еще раз";;;3135
+"Lock";;"Verrouiller";;;;;;;"Блокировка";;;3136
+"Unlock";;"Déverrouiller";;;;;;;"Отменить Блокировку";;;3137
+"Skip";;"Passer";;;;;;;"Пропустить";;;3138
+"Unskip";;"Ne pas sauter";;;;;;;"Отмена Пропуска";;;3139
+"Move";;"déplacer";;;;;;;"Переместить";;;3140
+"Add to favorite group";;;;;;;;;"Добавить в группу";;;3141
+"Add OK";;;;;;;;;"Добавить ОК";;;3142
+"Create group";;;;;;;;;"Создать группу";;;3143
+"Rename favorite group";;"Renommer un groupe de favoris";;;;;;;"Переименовать группу любимые";;;3144
+"Rename OK";;;;;;;;;"Переименовать ОК";;;3145
+"Delete favorite group";;"Supprimer un groupe de favoris";;;;;;;"Удалить группу любимые";;;3146
+"Delete OK";;;;;;;;;"Удалить ОК";;;3147
+"Are you sure you want to stop the channel scan?";;;;;;;;;"Остановить сканирование каналов?";;;3148
+"Exit channel search";;;;;;;;;"Выйти из поиска каналов";;;3149
+"TV channels : %d %sRadio channels : %d";;;;;;;;;"ТВ каналы : %d %sРадио каналы : %d";;;3150
+"Channel Search Result";;;;;;;;;"Рузультат Поиска Каналов";;;3151
+"East Limit";;;;;;;;;"Восточный Лимит";;;3152
+"One step to East";;;;;;;;;"Один Шаг на Восток";;;3153
+"One step to West";;;;;;;;;"Один Шаг на Запад";;;3154
+"Rotate to East";;;;;;;;;"Перемещать на Восток";;;3155
+"Rotate to West";;;;;;;;;"Перемещать на Запад";;;3156
+"Store Position";;;;;;;;;"Сохранить Позицию";;;3157
+"West Limit";;;;;;;;;"Западный Лимит";;;3158
+"Reset complete";;;;;;;;;"Сброс завершен";;;3159
+"Reset limit complete";;;;;;;;;"Сброс лимитов завершен";;;3160
+"Reset limit failed to complete";;;;;;;;;"Ошибка сброса лимитов";;;3161
+"Set complete";;;;;;;;;"Установка завершена";;;3162
+"Set limit complete";;;;;;;;;"Установка лимита завершена";;;3163
+"Set limit failed to complete";;;;;;;;;"Ошибка установки лимита";;;3164
+"Save complete";;;;;;;;;"Сохранение завершено";;;3165
+"Save position complete";;;;;;;;;"Сохранение позиции завершено";;;3166
+"Save position failed to complete";;;;;;;;;"Ошибка сохранения позиции";;;3167
+"Try again after stopping playback";" recordings and timeshift";;"None";"None";"None";"None";"None";"None";"Попробовать еще раз после остановки воспроизведения";;;3168
+"Timeshift not ready%s Please try again";;;;;;;;;;;;3169
+"No support %s";;;;;;;;;"Нет поддержки %s";;;3170
+"Add bookmark";;;;;;;;;"Добавить метку";;;3171
+"Start auto-chaptering";;;;;;;;;"Разбить на сюжеты автоматически";;;3172
+"Show all bookmarks";;;;;;;;;"Показать все метки";;;3173
+"You have reached the maximum number of%s bookmarks allowed";;;;;;;;;"Превышено максимальное количество%s доступных меток";;;3174
+"Make media length longer than %s secs%s to create a chapter";;;;;;;;;"Видео должно быть длиннее %s сек%s сдля создания раздедов";;;3175
+"No teletext";;"Pas de teletexte";;;;;;;"Нет телетекста";;;3176
+"No teletext available";;;;;;;;;"Нет доступного телетекста";;;3177
+"No subtitle";;;;;;;;;"Нет субтитров";;;3178
+"No subtitle available";;;;;;;;;"Нет доступных субтитров";;;3179
+"Satellite Configuration";"Satelliten-Konfiguration";;"Configurazione satellite";"Configuracion satelites";"Konfigurace satelit?";"Satellietconfiguratie";"Konfiguracja satelity";"Uydu konfigurasyonu";"Конфигурация Спутников";;;3180
+"Are you sure you want to quit the first installation?";;;;;;;;;"Выйти из первичной установки?";;;3181
+"Exit installation";;;;;;;;;"Выйти из установки";;;3182
+"Select Satellite";"Satelliten auswahlen";"Sélectionnez un satellite";"Scegli i satelliti";"Seleccionar satelites";"Vyb?r satelitu";"Selecteer satelliet";"Wybor satelity";"Uyduları secme";"Выбрать Спутник";;;3183
+"Same name of satellite already exists";;;;;;;;;"Такое название спутника уже существует";;;3184
+"Select Transponder";"Transponder auswahlen";"Sélectionnez un transpondeur";"Scegli transponder";"Seleccionar transponder";"Vybrat transponder";"Transponder selecteren";"Wybierz transponder";"Transponder secme";"Выбрать Транспондер";;;3185
+"Add a new transponder first";;;;;;;;;"Добавьте транспондер сначала";;;3186
+"No transponder info available";;;;;;;;;"Нет информации о транспондере";;;3187
+"Select the desired satellite whose signal is to be received by the tuner";;;;;;;;;"Выбрать спутник с которого необходимо принять сигнал";;;3188
+"Select the LNB type used in your digital satellite system";;;;;;;;;"Выбрать тип конвертора LNB используемого в системе";;;3189
+"Select the LNB frequency to the LNB you are using";;;;;;;;;"Задать частоту имеющегося конвертора LNB";;;3190
+"22KHz Tone Control";;;;;;;;;"Тон 22кГц";;;3191
+"When set to 'On', LNBs will be switched between low and high band";;;;;;;;;"При значении Вкл будет производиться переключение диапазонов";;;3192
+"Committed Switch";;"Commutateur engagé";;;;;;;"DISEqC 1.0";;;3193
+"Select the committed switch number";;;;;;;;;"Задать номер входа переключателя DISEqC 1.0";;;3194
+"Select the uncommitted switch number";;;;;;;;;"Задать номер входа переключателя DISEqC 1.1";;;3195
+"Uncommitted Switch";"Uncommitted Switch";"Commutateur non engagé";"Uncommitted Switch";"Uncommitted Switch";"Uncommitted Switch";"Niet-toegewezen schakelaar";"Uncommitted Switch";"Uncommitted Switch";"DISEqC 1.1";;;3196
+"DiSEqC Repeat";"DiSEqC Wiederholung";"Répétition du DiSEqC ";"Ripetizione DiSEqC";"Repeticion DiSEqC";"Opakovani DiSEqC";"DiSEqC-herhaling";"Powtarzanie DiSEqC";"DiSEqC tekrarlama";"Повтор DISEqC команды";;;3197
+"When set to 'On', DiSEqC repeats its command";;;;;;;;;"Когда установлено Вкл, посылается повтор команды DISEqC";;;3198
+"Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct";;;;;;;;;"Выбрать один из желаемых транспондеров для проверки правильности настроек";;;3199
+"Transponder";;"Transpondeur";;;;;;;"Транспондер";;;3200
+"If you set to 'On', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels";;;;;;;;;"При установке “Вкл” также будет производиться поиск по транспондерам, информация о которых получена со спутника";;;3201
+"When set to 'Off', only the factory default transponders of the satellites you previously selected will be scanned for new channels.";;;;;;;;;"При установке “Выкл” будет производиться поиск только по имеющемуся списку транспондеров в памяти ресивера.";;;3202
+"Search Range";;;;;;;;;"Диапазон Поиска";;;3203
+"Select the transponder frequency range for channel search";;;;;;;;;"Задать диапазон частот для поиска каналов";;;3204
+"Press OK button to start a channel search";;;;;;;;;"Нажать ОК для поиска каналов";;;3205
+"Start Channel Search";;;;;;;;;"Начать Поиск Каналов";;;3206
+"Edit Satellite Name";;"Editer le nom du satellite";;;;;;;"Изменить Название Спутника";;;3207
+"Edit Satellite Longitude";;;;;;;;;"Изменить Долготу Спутника";;;3208
+"Add Transponder";;;;;;;;;"Добавить Транспондер";;;3209
+"Delete Transponder";"Transponder loschen";"Supprimer un transpondeur ";"Cancella transponder";"Borrar transponder";"Vymazani transponderu";"Transponder wissen";"Usu? transponder";"Transponder sil";"Удалить Транспондер";;;3210
+"Enter new name for this satellite";;;;;;;;;"Задать новое имя для этого спутника";;;3211
+"Longitude Direction : East";;;;;;;;;"Направление Долготы : Восток";;;3212
+"Longitude Direction : West";;;;;;;;;"Направление Долготы : Запад";;;3213
+"Restore longitude";;;;;;;;;"Восстановить долготу";;;3214
+"Longitude degree";;;;;;;;;"Значение долготы";;;3215
+"Unable to add the transponder";;;;;;;;;"Невозможно добавить транспондер";;;3216
+"Unable to edit the transponder";;;;;;;;;"Невозможно изменить транспондер";;;3217
+"Are you sure you want to remove%s this transponder?";;;;;;;;;"Действительно хотите удалить этот транспондер?";;;3218
+"Delete transponder";;;;;;;;;"Удалить транспондер";;;3219
+"Unable to delete the transponder";;;;;;;;;"Невозможно удалить транспондер";;;3220
+"No channels available for the selected mode";;;;;;;;;"Нет доступных каналов для выбранного режима";;;3221
+"You have reached the maximum number of%s recordings allowed";;;;;;;;;"Превышено максимально доступное%s количество записей";;;3222
+"Antenna and Satellite Setup";;;;;;;;;"Настройки Антенны и Спутников";;;3223
+"When set to 'Separated', the tuner 2 receives its own signal input";;;;;;;;;"При установке Раздельно, тюнер 2 принимает независимый сигнал";;;3224
+"however it will receive only the channel level currently being received by the tuner 1 when this is set to 'Loopthrough'";;;;;;;;;"при конфигурации “Перемычка” будут ограничения по принимаемому сигналу";;;3225
+"Tuner 2 Connection";;"Connexion du Tuner 2";;;;;;;"Подключение Тюнера 2";;;3226
+"Tuner 2 Signal";;;;;;;;;"Тюнер 2 - Сигнал";;;3227
+"When set to 'Same with Tuner 1', both tuners are connected to the same signal source";;;;;;;;;"Имеются ограничения по приему при установке Так же как и Тюнер 1";;;3228
+"Select a control method for tuner 1";;;;;;;;;"Задать способ подключения тюнера 1";;;3229
+"Tuner 1 Control";;;;;;;;;"Тюнер 1 - Подключение";;;3230
+" - Tuner 1 Configuration";;;;;;;;;" - Тюнер 1 Конфигурация";;;3231
+"You can add, delete or configure satellites here";;;;;;;;;"Здесь можно добавлять, удалять и конфигурировать спутники";;;3232
+"Select a control method for tuner 2";;;;;;;;;"Задать способ подключения тюнера 2";;;3233
+"Tuner 2 Control";;;;;;;;;"Тюнер 2 - Подключение";;;3234
+" - Tuner 2 Configuration";;;;;;;;;" - Тюнер 2 Конфигурация";;;3235
+"No satellite data available";;;;;;;;;"Нет данных о спутниках";;;3236
+"Please reset your device to factory settings";;;;;;;;;"Пожалуйста сбросьте приставку в заводские установки";;;3237
+"Go to the configuration menu now?";;;;;;;;;"Перейти в меню конфигурации?";;;3238
+"When you perform a factory reset,%s all your settings revert to factory defaults";;;;;;;;;"После выполнения сброса,%s все настройки приймут заводские значения";;;3239
+"Do you want to save changes before exit?";;;;;;;;;"Хотите сохранить изменения перед выходом?";;;3240
+"Save configuration";;;;;;;;;"Сохранить конфигурацию";;;3241
+"Try again after stopping all your recordings first";;;;;;;;;"Попробуйте еще раз после окончания записи";;;3242
+"Delete all channels";;;;;;;;;"Удалить все каналы";;;3243
+"Are you sure you want to remove%s all your TV and radio channels?";;;;;;;;;"Уверены что хотите удалить все%s ТВ- и Радио- каналы?";;;3244
+"Are you sure you want to remove%s all channels from this favorite group?";;;;;;;;;"Уверены что хотите удалить все%s каналы из группы любимые?";;;3245
+"Your channel list is empty";;;;;;;;;"Список каналов пуст";;;3246
+"Edit Channels";;;;;;;;;"Редактировать Каналы";;;3247
+"Sort";;;;;;;;;"Сортировка";;;3248
+"Sorted by %s";;;;;;;;;"Сортировка по %s";;;3249
+"Save Result";;;;;;;;;"Сохранить Результат";;;3250
+"Do you want to save changes?";;;;;;;;;"Хотите сохранить изменения?";;;3251
+"FAVORITES";;;;;;;;;"ЛЮБИМЫЕ";;;3252
+"Are you sure you want to remove%s%s?";;;;;;;;;"Уверены что хотите удалить%s%s?";;;3253
+"Are you sure you want to delete the channels%s including currently recording or reserved?";;;;;;;;;"Уверены что хотите удалить каналы%s включая текущие записи и таймеры?";;;3254
+"Delete channels";;;;;;;;;"Удалить каналы";;;3255
+"Change Name";;;;;;;;;"Изменить Имя";;;3256
+"Create favorite group";;;;;;;;;"Создать группу любимых";;;3257
+"Add to this favorite group";;;;;;;;;"Добавить в эту группу любимых";;;3258
+"Remove from this group";;;;;;;;;"Удалить из этой группы";;;3259
+"Save and exit";;;;;;;;;"Сохранить и выйти";;;3260
+"Select channels you want to add to this group";;;;;;;;;"Выбрать каналы для добавления в группу";;;3261
+"Select a fav group you want to add channels to";;;;;;;;;"Выбрать группу любимых для добавления каналов";;;3262
+"Select a fav group you want to rename";;;;;;;;;"Выбрать группу для переименования";;;3263
+"Select a fav group you want to remove";;;;;;;;;"Выбрать группу для удаления";;;3264
+"Enter name for new favorite group";;;;;;;;;"Задать имя для новой группы любимые";;;3265
+"Enter new name for this favorite group";;;;;;;;;"Задать новое имя для группы любимых";;;3266
+"Edit channels";;;;;;;;;"Редактировать каналы";;;3267
+"Tuner %d Config : OneCable";;;;;;;;;"Тюнер %d Конфигурация : Unicable";;;3268
+"Tuner %d PIN code";;;;;;;;;"Пароль для Тюнера %d";;;3269
+"Tuner 1 PIN code";;;;;;;;;"Пароль для Тюнера 1";;;3270
+"Tuner 2 PIN code";;;;;;;;;"Пароль для Тюнера 2";;;3271
+"Select Tuner %d Frequency";;;;;;;;;"Задать требуемую частоту для тюнера %d";;;3272
+"Select Tuner 1 Frequency";;;;;;;;;"Задать требуемую частоту для тюнера 1";;;3273
+"Select Tuner 2 Frequency";;;;;;;;;"Задать требуемую частоту для тюнера 2";;;3274
+"Please set a different value for each tuner";;;;;;;;;"Задайте различные настройки для каждого тюнера";;;3275
+"Save Configuration";;;;;;;;;"Сохранить Конфигурацию";;;3276
+"When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code";;;;;;;;;;;;3277
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner %d";;;;;;;;;"Выбор канала передачи от SCR 0 до SCR 7 для тюнера %d";;;3278
+"Tuner %d SCR";;;;;;;;;"SCR Тюнера %d";;;3279
+" - Tuner %d Frequency";;;;;;;;;" - Тюнер %d Частота";;;3280
+"Select a frequency for tuner %d";;;;;;;;;"Задать частоту для тюнера %d";;;3281
+" - Tuner %d PIN Code";;;;;;;;;" - Тюнер %d Пароль";;;3282
+"Enter a PIN code for tuner %d";;;;;;;;;"Ввести пароль для тюнера %d";;;3283
+"Go back to the previous satellite configuration page";;;;;;;;;"Вернуться к старнице конфигурации спутников";;;3284
+"Go to the next satellite configuration page";;;;;;;;;"Перейти к странице конфигурации спутников";;;3285
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner 1";;;;;;;;;"Выбор канала передачи от SCR 0 до SCR 7 для тюнера 1";;;3286
+"Tuner 1 SCR";;;;;;;;;"SCR Тюнера 1";;;3287
+" - Tuner 1 Frequency";;;;;;;;;" - Тюнер 1 Частота";;;3288
+"Select a frequency for tuner 1";;;;;;;;;"Задать требуемую частоту для тюнера 1";;;3289
+" - Tuner 1 PIN Code";;;;;;;;;" - Тюнер 1 Пароль";;;3290
+"Enter a PIN code for tuner 1";;;;;;;;;"Ввести пароль для тюнера 1";;;3291
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner 2";;;;;;;;;"Выбор канала передачи от SRC 0 до SRC 7 для тюнера 2";;;3292
+"Tuner 2 SCR";;;;;;;;;"SCR Тюнера 2";;;3293
+" - Tuner 2 Frequency";;;;;;;;;" - Тюнер 2 Частота";;;3294
+"Select a frequency for tuner 2";;;;;;;;;"Задать требуемую частоту для тюнера 2";;;3295
+" - Tuner 2 PIN Code";;;;;;;;;" - Тюнер 2 Пароль";;;3296
+"Enter a PIN code for tuner 2";;;;;;;;;"Ввести пароль для тюнера 2";;;3297
+"The PIN code must be 4-digit long";;;;;;;;;"Пароль должен содержать 4 цифры";;;3298
+"Sorry, that PIN code does not match";;;;;;;;;"Извините, пароль не совпадает";;;3299
+"EPG None";;;;;;;;;"Нет ТВ Гида";;;3300
+"Recent channels";;;;;;;;;"Последние каналы";;;3301
+"DiSEqC 1.0 Switch";;"Commutateur DiSEqC 1.0";;;;;;;"DiSEqC 1.0 Переключатель";;;3302
+"Select the DiSEqC switch which your satellite is connected to";;;;;;;;;"Задайте соответствиующие настройки DISEqC переключателя для спутника";;;3303
+"Tuner %d Config : %s";;;;;;;;;"Тюнер %d Конфигурация : %s";;;3304
+"You can only have 4 satellites for DiSEqC 1.0";;;;;;;;;"Доступно лишь 4 спутника для DISEqC 1.0";;;3305
+"You can only have 1 satellite for Simple LNB";;;;;;;;;"Доступен лишь один спутник для режима Один Конвертор LNB";;;3306
+"No configured satellite available";;;;;;;;;"Нет сконфигурированных спутников";;;3307
+"Delete satellite";;;;;;;;;"Удалить спутник";;;3308
+"Press the Next button to setup satellites";;;;;;;;;"Нажмите Далее чтобы задать спутники";;;3309
+"Go to the Channel Search page";;;;;;;;;"Перейти к Поиску Каналов";;;3310
+"Press OK button to setup %s";;;;;;;;;"Нажмите ОК чтобы задать %s";;;3311
+"Add Satellite";;;;;;;;;"Добавить Спутник";;;3312
+"Add a new satellite to your satellite list";;;;;;;;;"Дабавить новый спутник в список";;;3313
+"Delete Satellite";;"Supprimer un satellite";;;;;;;"Удалить Спутник";;;3314
+"Delete a satellite from your list";;;;;;;;;"Удалить спутник из имеющегося списка";;;3315
+"No channels available";;;;;;;;;"Нет доступных каналов";;;3316
+"View";;;;;;;;;"Просмотр";;;3317
+"Following";;;;;;;;;"Следующий";;;3318
+"No event";;;;;;;;;"Нет события";;;3319
+"Select channel";;;;;;;;;"Выбор канала";;;3320
+"Edit timer";;;;;;;;;"Изменить таймер";;;3321
+"Delete timer";;;;;;;;;"Удалить таймер";;;3322
+"Add timer";;;;;;;;;"Добавить таймер";;;3323
+"Add manual timer";;;;;;;;;"Добавить таймер вручную";;;3324
+"Delete all timers";;;;;;;;;"Удалить все таймеры";;;3325
+"Show all timers";;;;;;;;;"Показать все таймеры";;;3326
+"Extend information";;;;;;;;;"Дополнительная информация";;;3327
+"That programme has already finished";;;;;;;;;"Эта программа уже завершена";;;3328
+"Are you sure you want to remove this timer?";;;;;;;;;"Уверены что хотите удалить таймер?";;;3329
+"Are you sure you want to remove all your timers?";;;;;;;;;"Уверены что хотите удалить все таймеры?";;;3330
+"Enter search keywords here";;;;;;;;;"Введите слово для поиска";;;3331
+"A keyword must be at least %d characters long";;;;;;;;;"Слово для поиска должно иемть минимум %d символов";;;3332
+"Select Channel";;"Sélectionnez une chaîne ";;;;;;;"Выбрать Канал";;;3333
+"Conditional Access";;"Accès sous Condition CAS";;;;;;;"Условный Доступ";;;3334
+"Not inserted";;;;;;;;;"Не установлено";;;3335
+"Smartcard Information";;"Information de la Smartcard";;;;;;;"Информация о смарткарте";;;3336
+"View Smartcard information";;;;;;;;;"Просмотр информации о смарткарте";;;3337
+"CAM Information";;;;;;;;;"Информация о модуле";;;3338
+"View CAM information";;;;;;;;;"Просмотр информации о модуле";;;3339
+"Rotate Antenna";;;;;;;;;"Перемещать Антенну";;;3340
+"You can control the movements of the motorized antenna here";;;;;;;;;"Здесь можно управлять перемещением моторизированной антенны";;;3341
+"Up/Down = Zoom in/out ( Current rate : %s ) %s Left/Right = Previous/Next step";;;;;;;;;;;;3342
+"You have reached the maximum rate";;;;;;;;;;;;3343
+"You have reached the minimum rate";;;;;;;;;;;;3344
+"Try again after stopping playback%s and timeshift";;;;;;;;;"Попробуйте еще раз после остановки%s воспроизведения или тайм-шифт";;;3345
+"Thumbnail";;;;;;;;;"Thumbnail";;;3346
+"Poster_wrap";;;;;;;;;"Poster_wrap";;;3347
+"Fanart";;;;;;;;;"Fanart";;;3348
+"Play from beginning";;;;;;;;;"Воспроизвести сначала";;;3349
+"Rename";;"Renommer ";;;;;;;"Переименовать";;;3350
+"Are you sure you want to delete this file?";;;;;;;;;"Уверены что хотите удалить этот файл?";;;3351
+"Delete file";;;;;;;;;"Удалить файл";;;3352
+"Are you sure you want to delete%s all your recorded files?";;;;;;;;;"Уверены что ходите удалить%s записанные файлы?";;;3353
+"Delete all your files";;;;;;;;;"Удалить все файлы";;;3354
+"Enter new name for this media file";;;;;;;;;"Задать новое имя файлу";;;3355
+"A filename must be at least %d characters long";;;;;;;;;"Имя файла должно иметь хотябы %d символов";;;3356
+"Parental Control";;;;;;;;;"Родительский Контроль";;;3357
+"Recording Option";;;;;;;;;"Настройки Записи";;;3358
+"Video Setting";;"Réglage vidéo";;;;;;;"Настройки Видео";;;3359
+"Network Setting";;"Paramétrage réseau";;;;;;;"Сетевые Настройки";;;3360
+"Time Setting";;;;;;;;;"Установки Времени";;;3361
+"HDD Format";;;;;;;;;"Форматирование Диска";;;3362
+"Factory Reset";;"Réinitialisation d'usine";;;;;;;"Сброс Настроек";;;3363
+"Miscellaneous";;;;;;;;;"Другое";;;3364
+"Change your PRISMCUBE RUBY language preferences";;;;;;;;;"Задать языковые настройки приставки OPENBOX";;;3365
+"Set limits on your kids' digital satellite receiver use";;;;;;;;;"Настроить возрастные ограничения для пользования приставкой";;;3366
+"Adjust general recording settings";;;;;;;;;"Задать основные настройки записи";;;3367
+"Set the system's digital audio output settings";;;;;;;;;"Настройка параметровы выхода звука";;;3368
+"Setup the output settings for TVs that support HDMI cable";;;;;;;;;"Настройка параметров видео на выходе HDMI";;;3369
+"Configure internet connection settings";;;;;;;;;"Настройка подключения к сети Интернет";;;3370
+"Adjust settings related to the system's date and time";;;;;;;;;"Настройки относящиеся к системному времени и дате";;;3371
+"Delete everything off your hard drive";;;;;;;;;"Очистить содержимое жесткого диска";;;3372
+"Restore your system to factory settings";;;;;;;;;"Сброс настроек приставки к заводским значениям";;;3373
+"Change additional settings for PRISMCUBE RUBY";;;;;;;;;"Задать дополнительные настройки приставки OPENBOX";;;3374
+"Select Menu Language";;;;;;;;;"Выбор Языка Меню";;;3375
+"Change Language";;;;;;;;;"Изменить Язык";;;3376
+"Do you want to continue?";;;;;;;;;"Продолжать?";;;3377
+"please wait after pressing OK button";;;;;;;;;"пожалуйста подождите после нажатия кнопки ОК";;;3378
+"Not support Win32";;;;;;;;;"Нет поддержки Win32";;;3379
+"Sorry, that's an incorrect PIN code";;;;;;;;;"Извините, введен неверный пароль";;;3380
+"Enter new PIN code";;;;;;;;;"Ввести новый пароль";;;3381
+"Confirm your PIN code";;;;;;;;;"Подтвердите пароль";;;3382
+"Change PIN code";;;;;;;;;"Изменить пароль";;;3383
+"Your PIN code has been changed successfully";;;;;;;;;"Пароль изменен успешно";;;3384
+"All settings will be restored to factory default";;;;;;;;;"Все настройки будут сброшены в заводские значения";;;3385
+"Performing a factory reset?";;;;;;;;;"Выполнить сброс настроек?";;;3386
+"Now restoring...";;;;;;;;;"Идет восстановление…";;;3387
+"Try again after stopping your playback";;;;;;;;;"Попробуйте еще раз после остановки воспроизведения";;;3388
+"Formatting media partition%s cannot be undone!";;;;;;;;;"Восстановление мультимедиа раздела%s будет невозможно!";;;3389
+"WARNING";;;;;;;;;"ПРЕДУПРЕЖДЕНИЕ";;;3390
+"Formatting HDD...";;;;;;;;;"Форматирование Диска…";;;3391
+"Formatting recording partition%s cannot be undone!";;;;;;;;;"Восстановление раздела записей%s будет невозможно!";;;3392
+"Everything on your hard drive will be erased";;;;;;;;;"Все данные на жестком диске будут удалены";;;3393
+"Format hard disk drive?";;;;;;;;;"Форматировать диск?";;;3394
+"Cannot find a hard drive";;;;;;;;;"Диск недоступен";;;3395
+"Menu Language";;;;;;;;;"Язык Меню";;;3396
+"Select the language you want the menu to be in";;;;;;;;;"Задать требуемый язык меню";;;3397
+"Select the language that you wish to listen to";;;;;;;;;"Язык звуковой дорожки будет выбран при наличии в вещании";;;3398
+"Select the language for the subtitle to be in";;;;;;;;;"Задать требуемый язык субтитров";;;3399
+"Select the language for the secondary subtitle to be in";;;;;;;;;"Задать второй язык субтитров";;;3400
+"Set the hearing impaired function";;;;;;;;;"Для людей с нарушением слуха";;;3401
+"Edit Parental Settings";;;;;;;;;"Изменить Настройки Блокировки";;;3402
+"Enter your PIN code to change the parental settings";;;;;;;;;"Ввести пароль для изменения настроек блокировки";;;3403
+" - Lock Main Menu";;;;;;;;;" - Блокировка Основного Меню";;;3404
+"Set a restriction for the main menu";;;;;;;;;"Задать ограничения для доступа к главному меню";;;3405
+" - Age Limit";;;;;;;;;" - Возрастные Ограничения";;;3406
+"Set an access restriction to chosen channels";;;;;;;;;"Задать возрастные ограничения для доступа к ТВ каналам";;;3407
+" - Change PIN Code";;;;;;;;;" - Изменить Пароль";;;3408
+"Change your PIN code";;;;;;;;;"Изменить текущий пароль";;;3409
+"When set to 'On', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected";;;;;;;;;"При установке Вкл, приставка автоматически будет начинать запись буфера тайм-шифт после выборе канала просмотра";;;3410
+"Select the preferred size of timeshift buffer";;;;;;;;;"Задать желаемый размер буфера тайм-шифт (1 час видео занимает примерно 2ГБ)";;;3411
+"Select recording duration for a channel that has no EPG info";;;;;;;;;"Задать длительность записи по умолчанию для каналов без ТВ Гида";;;3412
+"Set the pre-recording time for a EPG channel";;;;;;;;;"Установка времени отступа перед таймером записи по ТВ Гиду";;;3413
+"Set the post-recording time for a EPG channel";;;;;;;;;"Установка времени отступа после таймера записи по ТВ Гиду";;;3414
+"Dolby Audio";;;;;;;;;"Звук Dolby";;;3415
+"When set to 'On', Dolby Digital audio will be selected automatically when broadcast";;;;;;;;;"При установке Вкл, звук Dolby Digital будет выбираться автоматически при наличии его в вещании";;;3416
+"Set the Audio HDMI format";;;;;;;;;"Задать формат звука на выходе HDMI";;;3417
+"Select a delay time for audio";;;;;;;;;"Задать время задержки звука";;;3418
+"Set the display's HDMI resolution";;;;;;;;;"Задать разрешение экрана при использовании выхода HDMI";;;3419
+"Select the display format for TV screen";;;;;;;;;"Задать формат ТВ экрана ";;;3420
+"Set RGB or YUV for HDMI color space";;;;;;;;;"Выбор цветовой схемы HDMI между RGB и YUV";;;3421
+"Set aspect ratio of your TV";;;;;;;;;"Задать соотношение сторон ТВ Экрана";;;3422
+"Set picture format according to TV aspect ratio";;;;;;;;;"Задать формат изображения в соответствии с соотношением сторон ТВ Экрана";;;3423
+"Network Connection";;;;;;;;;"Тип Подключения";;;3424
+"Select ethernet or wireless for your network connection";;;;;;;;;"Выбрать подлючение кабелем Etherent или беспроводное Wi-Fi";;;3425
+"Network Link";;;;;;;;;"Подключение к Сети";;;3426
+"Show network link status";;;;;;;;;"Отображает состояние подключения к сети";;;3427
+"Search Wifi";;;;;;;;;"Поиск Wi-Fi";;;3428
+"Search for available wireless connections";;;;;;;;;"Поиск доступных беспроводных подключений";;;3429
+"IP Address";;"Adresse IP";;;;;;;"IP Адрес";;;3430
+"Subnet Mask";;"Masque de sous réseau";;;;;;;"Маска Сети";;;3431
+"Gateway";;"Passerelle";;;;;;;"Шлюз";;;3432
+"DNS";;"DNS";;;;;;;"DNS Сервер";;;3433
+"Press OK button to setup wireless network manually";;;;;;;;;"Нажать ОК для установки беспроводной сети вручную";;;3434
+"Assign IP Address";;;;;;;;;"Получение IP Адреса";;;3435
+"When set to 'DHCP', your IP address will be automatically allocated by the DHCP server";;;;;;;;;"Если выбрано DHCP, то настройки автоматически будут получены от сервера";;;3436
+"Press OK button to save the IP address settings";;;;;;;;;"Нажать ОК чтобы сохранить настройки сети";;;3437
+"Apply";;"Appliquer";;;;;;;"Применить";;;3438
+"Not Supported";;;;;;;;;"Не Поддерживается";;;3439
+"Time and Date";;;;;;;;;"Время и Дата";;;3440
+"When set to 'Automatic', the time and date will be obtained automatically from the channel that you select";;;;;;;;;"При выборе значения Автоматически, время и дата будут подстраиваться к значениям, полученным на ТВ канале";;;3441
+"Select a channel you want to set your time and date by";;;;;;;;;"Выберите канал для синхронизации времени и даты";;;3442
+"Enter today's date";;;;;;;;;"Задать сегодняшнюю дату";;;3443
+"Set the local time";;;;;;;;;"Задать местное время";;;3444
+"Time";;"Heure ";;;;;;;"Время";;;3445
+"Set the time zone that will be the basis for the date and time display";;;;;;;;;"Задать часовой пояс для настройки времени";;;3446
+"When set to 'Automatic', the system automatically change over to summer time";;;;;;;;;"При выбранной установке Автоматически, будет производиться переход на летнее время и обратно ";;;3447
+"Press OK button to save time settings";;;;;;;;;"Нажмите кнопку ОК для сохранения настроек времени";;;3448
+"Format Media Partition";;;;;;;;;"Очистить Раздел Мультимедиа";;;3449
+"Press OK button to remove everything in the media partition";;;;;;;;;"Нажать кнопку ОК для форматирования раздела мультимедиа";;;3450
+"Format Recording Partition";;;;;;;;;"Очистить Раздел Записей";;;3451
+"Press OK button to remove everything in the recording partition";;;;;;;;;"Нажать кнопку ОК для форматирования раздела записей";;;3452
+"Format Hard Drive";;;;;;;;;"Очистить Весь Диск";;;3453
+"Press OK button to erase your hard disk drive";;;;;;;;;"Нажать кнопку ОК для форматирования всего диска";;;3454
+"Go to first installation after restoring system to the factory default";;;;;;;;;"Переход к первичной установке после сброса настроек";;;3455
+"Start Factory Reset";;;;;;;;;"Выболнить Сброс Настроек";;;3456
+"When set to 'On', the system switches to deep standby mode if you press 'Standby' button to help reduce the amount of electricity used";;;;;;;;;"При активировании этой опции, будет задействован ждущий режим с минимальным энергопотребелнием";;;3457
+"Set the time for switching into standby mode when not being used";;;;;;;;;"Задать время автоматического перехода в ждущий редим при отсутствии активности";;;3458
+"Adjust the fan speed level for your system";;;;;;;;;"Настроить режим работы вентилятора охлаждения";;;3459
+"Channel Banner Time";;;;;;;;;"Время Показа Инфопанели Канала";;;3460
+"Set the time for the channel info to be displayed when zapping";;;;;;;;;"Задать время отображения инфопанели после переключения канала";;;3461
+"Playback Banner Time";;;;;;;;;"Время Показа Инфопанели Воспроизведения";;;3462
+"Set the time for the playback info to be displayed on the screen";;;;;;;;;"Задать время отображения инфопанели после начала воспроизведения";;;3463
+"Enable RSS feed in the main menu";;;;;;;;;"Разрешить RSS поток в основном меню";;;3464
+"RSS Feed";;;;;;;;;"RSS Поток";;;3465
+"Now connecting...";;;;;;;;;"Сейчас подключение…";;;3466
+"Network setup failed to complete";;;;;;;;;"Ошибка настройки сети";;;3467
+"Invalid IP address";;;;;;;;;"Неверный IP адрес";;;3468
+"Now searching...";;;;;;;;;"Сейчас поиск…";;;3469
+"Wifi device not found";;;;;;;;;"Wi-Fi устройство не найдено";;;3470
+"Wifi service not found";;;;;;;;;"Wi-Fi сервис не найден";;;3471
+"    - Strength : %s Encryption : %s";;;;;;;;;"    - Сигнал : %s Шифрование : %s";;;3472
+"Select Wifi";;;;;;;;;"Выбор Сети";;;3473
+"SSID not configured";;;;;;;;;"Сеть не сконфигурирована";;;3474
+"Enter an encryption key";;;;;;;;;"Ввести ключ шифрования";;;3475
+"The password must be between 8 and 64 characters";;;;;;;;;"Длинна пароля должна быть в пределах 8-64 символов";;;3476
+"The password length is invalid";;;;;;;;;"Длинна пароля не соответствует";;;3477
+"Wifi setup failed to complete";;;;;;;;;"Ошибка установки сети Wi-Fi";;;3478
+"Enter your local time";;;;;;;;;"Ввести местное время";;;3479
+"Setting time...";;;;;;;;;"Установка времени…";;;3480
+"Invalid input";;;;;;;;;"Неверное значение";;;3481
+"No time info was given by that channel";;;;;;;;;"Нет данных времени на этом канале";;;3482
+"Backup data?";;;;;;;;;"Резервное копирование данных?";;;3483
+"To backup your user data and XBMC add-ons,%s insert a USB flash memory";;;;;;;;;"Для резервного копирования данных и программ XBMC,%s вставьте USB накопитель";;;3484
+"Cannot find backup data";;;;;;;;;"Нет доступных резервных копий";;;3485
+"Formatting HDD cannot be undone!";;;;;;;;;"Форматирование диска необратимо!";;;3486
+"Start formatting without making a backup?";;;;;;;;;"начать форматирование без резервной копии?";;;3487
+"Not enough space on USB flash memory";;;;;;;;;"Недостаточно места на USB накопителе";;;3488
+"Please insert a USB flash memory";;;;;;;;;"Подключите USB накопитель";;;3489
+"Now backing up your user data...";;;;;;;;;"Сохранение резервной копии настроек";;;3490
+"Press OK button to format your HDD now";;;;;;;;;"Нажмите ОК для начала форматирования диска";;;3491
+"Start formatting HDD?";;;;;;;;;"Начать форматирование диска?";;;3492
+"Data backup failed";;;;;;;;;"Ошибка сохранения резервной копии";;;3493
+"Enter the size of the media partition in GB";;;;;;;;;"Задать размер для раздела Мультимедиа в ГБ";;;3494
+"Media partition will be %s GB";;;;;;;;;"Раздел Мультимедиа будет %s ГБ";;;3495
+"Automatic Scan";;;;;;;;;"Автоматическое Сканирование";;;3496
+"Make sure your antenna is properly set up";;;;;;;;;"Убедитесь что антенна установлена должным образом";;;3497
+"Go to the antenna setup page now?";;;;;;;;;"Перейти в меню настройки антенны?";;;3498
+"To receive a strong satellite signal,%s add satellites and set LNB parameters correctly";;;;;;;;;"Для приема сигнала со спутника,%s добавьте спутник и задайте параметры LNB";;;3499
+"Select the satellite on which the transponder you wish to scan is located";;;;;;;;;"Выберите спутник, транспондеры которого необходимо сканировать";;;3500
+"Search Type";;;;;;;;;"Тип Поиска";;;3501
+"Select whether you wish to scan free and scrambled, free only or scrambled only";;;;;;;;;"Выбор сканируемых каналов: открытые и кодированные, только открытые или только кодированные";;;3502
+"Start Search";;"Commencer la recherche";;;;;;;"Начать Поиск";;;3503
+"Configure the initial settings for OneCable";;;;;;;;;"Конфигурация базовых настроек для Unicable";;;3504
+"Initial Setup";;;;;;;;;"Базовые установки";;;3505
+"Number of Satellites";;"Le nombre de satellites";;;;;;;"Количество Спутников";;;3506
+"Select number of satellites for OneCable";;;;;;;;;"Задать количество спутников для Одного Кабеля";;;3507
+"Satellite %d";;;;;;;;;"Спутник %d";;;3508
+"Select a satellite name for satellite 1 first";;;;;;;;;"Сначала задайте название для спутника 1";;;3509
+"Add to favorite add-on";;;;;;;;;"Добавить программу в любимые";;;3510
+"Remove";;" Set Group";;;;;;;"Удалить";;;3511
+"Run";;;;;;;;;"Запустить";;;3512
+"No add-ons installed";;;;;;;;;"Нет установленных программ";;;3513
+"Select Add-on";;;;;;;;;"Выбрать Программу";;;3514
+"Delete favorite add-on";;;;;;;;;"Удалить программу из любимых";;;3515
+"Do you want to remove %s?";;;;;;;;;"Хотите удалить %s?";;;3516
+"Unable to change satellite name";;;;;;;;;"Невозможно изменить название спутника";;;3517
+"Unable to add a new satellite in the list";;;;;;;;;"Невозможно добавить спутник в список";;;3518
+"Same satellite already exists";;;;;;;;;"Такой спутник уже существует";;;3519
+"Are you sure you want to remove%s this satellite?";;;;;;;;;"Уверены что хотите удалить%s этот спутник?";;;3520
+"Delete configured satellite first";;;;;;;;;"Сначала удалите сконфигурированный спутник";;;3521
+"Unable to remove the satellite from the list";;;;;;;;;"Невозвожно удалить спутник из списка";;;3522
+"Select a satellite you want to change settings";;;;;;;;;"Выбор спутника для изменения настроек";;;3523
+"Longitude";;"Longitude";;;;;;;"Долгота";;;3524
+"Change the name of the satellite you selected";;;;;;;;;"Изменить название выбранного спутника";;;3525
+"Rename Satellite";;;;;;;;;"Переименовать Спутник";;;3526
+"Add a new satellite to the list";;;;;;;;;"Добавить новый спутник в список";;;3527
+"Delete a satellite from the list";;;;;;;;;"Удалить спутник из списка";;;3528
+"Cannot find any results for that search";;;;;;;;;"Нет результатов для этого поиска";;;3529
+"No results found";;;;;;;;;"Нет рузультатов";;;3530
+"Back to previous page";;;;;;;;;"Вернуться на предыдущую страницу";;;3531
+"Are you sure you want to delete this timer?";;;;;;;;;"Уверенычто хотите удалить этот таймер?";;;3532
+"Download";;;;;;;;;"Загрузка";;;3533
+"Press OK button to download the firmware shown below";;;;;;;;;"Нжать ОК для загрузки версии ПО указанной внизу";;;3534
+"Do you want to install the firmware now?";;;;;;;;;"Установить версию ПО сейчас?";;;3535
+"Download firmware complete";;;;;;;;;"Загрузка ПО завершена";;;3536
+"Check your USB device";;;;;;;;;"Проверьте USB накопитель";;;3537
+"Cannot connect to server";;;;;;;;;"Невозможно подключиться к серверу";;;3538
+"Already updated to the latest version";;;;;;;;;"Уже обновлено на последнюю версию";;;3539
+"File is corrupted, try downloading it again";;;;;;;;;"Файл поврежден, повторите загрузку";;;3540
+"Please insert a USB flash memory and press OK";;;;;;;;;"Подключите USB накопитель и нажмите ОК";;;3541
+"File verification failed%s Try downloading it again";;;;;;;;;"Ошибка проверки файла%s Попробуйте загрузить еще раз";;;3542
+"Ready to update";;;;;;;;;"Готов к обновлению";;;3543
+"Network is disconnected";;;;;;;;;"Сеть отключена";;;3544
+"Insufficient disk space";;;;;;;;;"Недостаточно места на диске";;;3545
+"Not enough space on your HDD";;;;;;;;;"Недостаточно места на Диске";;;3546
+"Not enough space on your USB flash memory";;;;;;;;;"Недостаточно места на USB накопителе";;;3547
+"Update process failed";;;;;;;;;"Ошибка обновления";;;3548
+"Cannot find previous versions";;;;;;;;;"Невозможно найти предыдущие версии";;;3549
+"Cannot get the latest firmware%s Please try again";;;;;;;;;"Невозможно получить последнее обновление%s Попробуйте еще раз";;;3550
+"No released firmware available";;;;;;;;;"Нет доступных версий ПО";;;3551
+"Downloading...";;;;;;;;;"Загрузка…";;;3552
+"Check your HDD";;;;;;;;;"Проверка Диска";;;3553
+"Check your internal NAND flash";;;;;;;;;;;;3554
+"Not enough space on NAND flash";;;;;;;;;;;;3555
+"Failed to write on NAND flash";;;;;;;;;;;;3556
+"Firmware Information";;;;;;;;;"Информация о ПО";;;3557
+"Size";;;;;;;;;"Размер";;;3558
+"Not attempted";;;;;;;;;"Не было попыток";;;3559
+"Please check firmware version first";;;;;;;;;"Сначала проверьте версию ПО";;;3560
+"Press OK to cancel downloading firmware updates";;;;;;;;;"Нажать ОК для отмены загрузки ПО";;;3561
+"Your system is up-to-date";;;;;;;;;"Установлена самая новая версия ПО";;;3562
+"Copy to HDD";;;;;;;;;"Копировать на Диска";;;3563
+"Download complete. Press OK to copy firmware files to HDD";;;;;;;;;"Загрузка завершена. Нажать ОК для копирования на Диска";;;3564
+"Copy to USB";;;;;;;;;"Копировать на USB";;;3565
+"Download complete. Press OK to copy firmware files to USB";;;;;;;;;"Загрузка завершена. Нажать ОК для копирования на USB";;;3566
+"Downloading firmware";;;;;;;;;"Загрузка ПО";;;3567
+"Firmware Version";;;;;;;;;"Версия ПО";;;3568
+"Firmware Update";;;;;;;;;"Обновление ПО";;;3569
+"Refresh firmware update";;;;;;;;;"Обновить доступность ПО";;;3570
+"Get previous versions";;;;;;;;;"Получить предыдущие версии ПО";;;3571
+"Previous firmware versions";;;;;;;;;"Предыдущие версии ПО";;;3572
+"Download the latest firmware for your PRISMCUBE RUBY";;;;;;;;;"Загрузить последнее ПО ресивера";;;3573
+"Update Firmware";;;;;;;;;"Обновить ПО";;;3574
+"Download a pre-configured channel list over the internet";;;;;;;;;"Загрузить список каналов из сети Интернет";;;3575
+"Update Channels via Internet";;;;;;;;;"Обновить Каналы через Интернет";;;3576
+"Import Channels from USB";;;;;;;;;"Загрузить Каналы с USB";;;3577
+"Import channel list via USB";;;;;;;;;"Загрузка списка каналов с USB";;;3578
+"Export Channels to USB";;;;;;;;;"Сохранить Каналы на USB";;;3579
+"Export channel list via USB";;;;;;;;;"Сохранить список каналов на USB";;;3580
+"Complete download, Press OK is install";;;;;;;;;"Загрузка завершена, Нажмите ОК для установки";;;3581
+"Check Firmware Version";;;;;;;;;"Проверка Версии ПО";;;3582
+"Check the latest firmware released on the update server";;;;;;;;;"Проверить доступность обновления ПО на сервере";;;3583
+"Checking files checksum...";;;;;;;;;"Проверка контрольный суммы файлов…";;;3584
+"Copying files to HDD...";;;;;;;;;"Копирование файлов на Диска…";;;3585
+"Copying files to USB drive...";;;;;;;;;"Копирование файлов на USB…";;;3586
+"Copying files to internal storage...";;;;;;;;;;;;3587
+"Update now";;;;;;;;;"Обновить сейчас";;;3588
+"Follow the instructions on front panel display during the firmware installation process";;;;;;;;;"Следуйте инструкциям индикатора передней панели при обновлении ПО";;;3589
+"DO NOT POWER OFF%s DURING THE UPGRADING";;;;;;;;;;;;3590
+"DO NOT REMOVE YOUR USB%s DURING THE UPGRADING";;;;;;;;;"НЕ ИЗВЛЕКАТЬ USB НАКОПИТЕЛЬ%s ВО ВРЕМЯ ОБНОВЛЕНИЯ ПО";;;3591
+"Continue interrupted downloads?";;;;;;;;;"Продолжить прерванные загрузки?";;;3592
+"Resume downloading files";;;;;;;;;"Продолжить загрузку файлов";;;3593
+"Waiting...";;;;;;;;;"Ждите…";;;3594
+"Verifying...";;;;;;;;;"Проверка…";;;3595
+"Current Version";;;;;;;;;"Текущая Версия";;;3596
+"Downloading server information";;;;;;;;;"Информация о сервере скачивания";;;3597
+"Select Channel Package";;;;;;;;;"Выбрать Канал Пакета";;;3598
+"File not found";;;;;;;;;"Файл не найден";;;3599
+"Now updating your channel list";;;;;;;;;"Идет обновление списка каналов";;;3600
+"Export complete";;;;;;;;;"Экспорт завершен";;;3601
+"Your channel list has been exported successfully";;;;;;;;;"Список каналов экспортирован успешно";;;3602
+"Tuner %s Config : Motorized, Usals";;;;;;;;;"Тюнер %s Конфигурация : Мотор, USALS";;;3603
+"Latitude degree";;;;;;;;;"Значение широты";;;3604
+"My Longitude Direction";;;;;;;;;"Направление Долготы Места";;;3605
+"Set the longitude direction for your area";;;;;;;;;"Выбрать направление долготы для вашего расположения";;;3606
+"Enter the longitude angle for your location";;;;;;;;;"Задать угол долготы для вашего расположения";;;3607
+"My Longitude Angle";;;;;;;;;"Значение Долготы Места";;;3608
+"My Latitude Direction";;;;;;;;;"Направление Широты Места";;;3609
+"Set the latitude direction for your area";;;;;;;;;"Выбрать направление широты для вашего расположения";;;3610
+"Enter the latitude angle for your location";;;;;;;;;"Задать угол широты для вашего расположения";;;3611
+"My Latitude Angle";;;;;;;;;"Значение Широты Места";;;3612
+"Reference Position to Null";;"Position de référence à zéro";;;;;;;"Перейти к Нулевой Позиции";;;3613
+"Rotates the motor to 0 as a reference point";;;;;;;;;"Передвигать антенну на 0";;;3614
+"Here you can setup satellites for Motorized USALS";;;;;;;;;"Задать требуемые спутники для моторизированной антенны USALS";;;3615
+"Manual Scan";;"Scan manuel ";;;;;;;"Ручное Сканирование";;;3616
+"Custom Setup";;;;;;;;;;;;3617
+"Enable/Disable custom setup";;;;;;;;;;;;3618
+"Select the transponder frequency for the selected satellite";;;;;;;;;;;;3619
+"Enter the transponder frequency for the selected satellite";;;;;;;;;;;;3620
+" - Transponder Frequency";;;;;;;;;" - Частота Транспондера";;;3621
+" - DVB Type";;;;;;;;;" - Тип Вещания DVB";;;3622
+"Select the Digital Video Broadcasting type for the selected satellite";;;;;;;;;"Задать тип вещания для выбранного спутника";;;3623
+" - FEC";;;;;;;;;" - FEC";;;3624
+"Select the error control mode of data transmission for the selected satellite";;;;;;;;;"Задать значение режима коррекции ошибок передачи данных ";;;3625
+" - Polarization";;;;;;;;;" - Поляризация";;;3626
+"Select the direction of the electrical and magnetic fields of signals for the satellite above";;;;;;;;;"Задать значение поляризации сигнала требуемого транспондера";;;3627
+" - Symbol Rate";;;;;;;;;" - Скорость Потока";;;3628
+"Set the amount of data, that is transmitted per second in the data stream";;;;;;;;;"Ввод значения скорости потока переданных данных в секунду для требуемого транспондера";;;3629
+"Automatic scan";;;;;;;;;"Автоматическое сканирование";;;3630
+"Search TV and radio channels without entering any satellite information";;;;;;;;;"Поиск ТВ- и Радио- каналов без ввода дополнительных данных";;;3631
+"Manual scan";;;;;;;;;"Сканировать вручную";;;3632
+"Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc";;;;;;;;;"Поиск ТВ- и Радио- каналов после ввода частоты, скорости потока и поляризации транспондера";;;3633
+"Select Frequency";;"Sélectionnez la fréquence";;;;;;;"Задать Частоту";;;3634
+"Configure the satellite first before you scan channels";;;;;;;;;"Настройте спутники перед сканированием каналов";;;3635
+"Satellite %s is not configured";;;;;;;;;"Спутник %s еще не сконфигурирован";;;3636
+"Select the frequency of the data stream, in which the channel is encoded";;;;;;;;;"Задать частоту потока данных с которой закодирован канал";;;3637
+"Polarization";;"Polarisation";;;;;;;"Поляризация";;;3638
+"Add a new transponder to the list";;;;;;;;;"Добавить новый транспондер в список";;;3639
+"Delete a transponder from the list";;;;;;;;;"Удалить транспондер из списка";;;3640
+"Configure your transponder settings";;;;;;;;;"Изменить данные транспондера";;;3641
+"Timer List";;;;;;;;;"Таймер";;;3642
+"Manage your XBMC add-ons";;;;;;;;;"Управлять дополнениями XBMC";;;3643
+"Try again after stopping playback, recordings%s and timeshift";;;;;;;;;"Попробуйте еще раз после остановки воспроизведения,%s записи или тайм-шифт";;;3644
+"Access your favorite in a convenient way";;;;;;;;;"Самый удобный доступ к часто используемым";;;3645
+"Get fast access to your favorite channels";;;;;;;;;"Получить быстрый доступ к любимым каналам";;;3646
+"No favorite group available";;;;;;;;;"Нет доступной группы";;;3647
+"Favorite group";;;;;;;;;"Группа любимые";;;3648
+"Failed to change favorite group";;;;;;;;;"Ошибка изменения группы";;;3649
+"HDD";;;;;;;;;"Диск";;;3650
+"STB Information";;;;;;;;;"О Системе";;;3651
+"Product Name : %s";;;;;;;;;"Название : %s";;;3652
+"Product Number : %s";;;;;;;;;"Номер : %s";;;3653
+"Hardware Version : %s";;;;;;;;;"Аппаратная Версия : %s";;;3654
+"Release Version : %s";;;;;;;;;"Версия ПО : %s";;;3655
+"Bootloader Version : %s";;;;;;;;;"Версия Загрузчика : %s";;;3656
+"Name and Total Size : %s ( %s )";;;;;;;;;"Название и Объем : %s ( %s )";;;3657
+"Temperature : Busy";;;;;;;;;"Температура : Недоступно";;;3658
+"Media Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Мультимедиа : %s%% ( %s / %s )";;;3659
+"Program Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Программ : %s%% ( %s / %s )";;;3660
+"Recording Partition Usage : %s%% ( %s / %s )";;;;;;;;;"Использование Раздела Записей : %s%% ( %s / %s )";;;3661
+"Name and Total Size : Unknown";;;;;;;;;"Название и Объем : Неизвестно";;;3662
+"Temperature : Unknown";;;;;;;;;"Температура : Неизвестно";;;3663
+"Media Partition Usage : Unknown";;;;;;;;;"Использование Раздела Мультимедиа : Неизвестно";;;3664
+"Program Partition Usage : Unknown";;;;;;;;;"Использование Раздела Программ : Неизвестно";;;3665
+"Recording Partition Usage : Unknown";;;;;;;;;"Использование Раздела Записей : Неизвестно";;;3666
+"Temperature : %s degree celsius";;;;;;;;;"Температура : %s градусов цельсия";;;3667
+"Exit Installation";;;;;;;;;"Выход из Установки";;;3668
+"Select Audio Language";;;;;;;;;"Выбор Звуковой Дорожки";;;3669
+"Language Setup";;;;;;;;;"Установки Языка";;;3670
+"Go to the video and audio setup page";;;;;;;;;"Перейти к аудио- и видео- настройкам";;;3671
+"Video and Audio Setup";;;;;;;;;"A/V Установки";;;3672
+"TV Screen Format";;"Format de l'écran TV";;;;;;;"Формат ТВ Экрана";;;3673
+"Select the display's HDMI resolution";;;;;;;;;"Задать разрешение экрана HDMI";;;3674
+"Go back to the language setup page";;;;;;;;;"Вернуться у выбору языков";;;3675
+"Go to the antenna and satellite setup page";;;;;;;;;"Перейти к установкам антенны";;;3676
+"Go back to the video and audio setup page";;;;;;;;;"Вернуться к аудио- и видео- настройкам";;;3677
+"Go to the satellite configuration page";;;;;;;;;"Перейти к конфигурации спутников";;;3678
+"Channel Search Setup";;;;;;;;;"Настройки Поиска Каналов";;"채널 검색 설정";3679
+"Do you want to perform a channel search in the first installation?";;;;;;;;;"Выполнить поиск каналов при первичной установке?";;;3680
+"Go back to the antenna and satellite setup page";;;;;;;;;"Вернуться к установкам антенны и спутников";;;3681
+"Go to the time and date setup page";;;;;;;;;"Перейти к настройке даты и времени";;;3682
+"Time and Date Setup";;;;;;;;;"Настройка Даты и Времени";;;3683
+"When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select";;;;;;;;;"При установке Автоматически, приставка самостоятельно будет синхронизировать время";;;3684
+"Enter the local time";;;;;;;;;"Задать местное время";;;3685
+"When set to 'Automatic', the system automatically change over to and from summer and winter time";;;;;;;;;"При установке Автоматически, приставка самостоятельно будет учитывать Летнее и Зимнее время";;;3686
+"Go back to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3687
+"Go to the summary of first installation page";;;;;;;;;"Перейти к завершению первичной установки";;;3688
+"Summary of First Installation";;;;;;;;;"Результат Первичной Установки";;;3689
+"Number of your TV Channels";;;;;;;;;"Количество ТВ каналов";;;3690
+"Number of your Radio Channels";;;;;;;;;"Количество Радиоканалов";;;3691
+"Exit the first installation";;;;;;;;;"Выйти из первичной установки";;;3692
+"Go back to the time and date setup page";;;;;;;;;"Перейти назад к установке даты и времени";;;3693
+"Today's date";;;;;;;;;"Дата сегодня";;;3694
+"Local time";;;;;;;;;"Местное время";;"지역 시간";3695
+"Setting Time...";;;;;;;;;"Установка Времени…";;;3696
+"Select the required LNB frequency to the LNB you are using";;;;;;;;;"Задать требуемую частоту LNB для используемого конвертора";;;3697
+"Static";;;;;;;;;"Статически";;;3698
+"Analog";;;;;;;;;"Аналог";;;3699
+"All Transponders";;;;;;;;;"Все Транспондеры";;;3700
+"Single Transponder";;;;;;;;;"Текущий Транспондер";;;3701
+"WEP";;;;;;;;;"WEP";;;3702
+"WPA";;;;;;;;;"WPA";;;3703
+"Set East Limit";;"Définir la position actuelle comme limite Est";;;;;;;"Установить Позицию как Восточный Лимит";;;3704
+"Set West Limit";;"Définir la position actuelle comme limite Ouest";;;;;;;"Установить Позицию как Западный Лимит";;;3705
+"East";;;;;;;;;"Восток";;;3706
+"West";;;;;;;;;"Запад";;;3707
+"North";;;;;;;;;"Север";;;3708
+"South";;;;;;;;;"Юг";;;3709
+"Finish";;"Terminer";;;;;;;"Окончание";;;3710
+"Go to the channel search setup page";;;;;;;;;"Перейти к поиску каналов";;;3711
