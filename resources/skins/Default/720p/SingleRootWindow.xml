@@ -29,10 +29,10 @@ Search for window name
 		<!-- Default BackgroundImage -->
 		<control type="image">
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
 			<texture>backgrounds/SKINDEFAULT.jpg</texture>
 		</control>
 
@@ -73,10 +73,10 @@ Search for window name
 				<texturefocus>black-back.png</texturefocus>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
@@ -151,9 +151,9 @@ Search for window name
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>70r</posy>
-				<width>1280</width>
+				<posx>-13</posx>
+				<posy>80r</posy>
+				<width>1306</width>
 				<height>90</height>
 				<texture>floor.png</texture>
 				<animation effect="fade" time="250">Visible</animation>
@@ -669,10 +669,10 @@ Search for window name
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
-					<posx>0</posx>
+					<posx>-13</posx>
 					<posy>100r</posy>
-					<width>1280</width>
-					<height>128</height>
+					<width>1306</width>
+					<height>115</height>
 					<texture>floor.png</texture>
 					<include>DefaultVisibleFadeEffect</include>
 				</control>
@@ -1682,10 +1682,10 @@ Search for window name
 			<defaultcontrol always="true">1003621</defaultcontrol>
 			<control type="image">
 				<include>DefaultWindowFade</include>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
@@ -1700,10 +1700,10 @@ Search for window name
 			<control type="group">
 				<control type="image">
 					<description>media info background image</description>
-					<posx>0</posx>
+					<posx>-13</posx>
 					<posy>540</posy>
-					<width>1320</width>
-					<height>256</height>
+					<width>1306</width>
+					<height>187</height>
 					<texture>MediaInfoBackLower.png</texture>
 				</control>
 
@@ -2380,10 +2380,10 @@ Search for window name
 			-->
 			<visible>substring(Window.Property(CurrentWindow),2900000)</visible>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
@@ -2403,10 +2403,10 @@ Search for window name
 				<control type="group">
 					<control type="image">
 						<description>media info background image</description>
-						<posx>0</posx>
+						<posx>-13</posx>
 						<posy>540</posy>
-						<width>1320</width>
-						<height>256</height>
+						<width>1306</width>
+						<height>187</height>
 						<texture>MediaInfoBackLower.png</texture>
 					</control>
 				</control>
@@ -2420,7 +2420,7 @@ Search for window name
 					<control type="group" id="2900501">
 						<visible>substring(Window.Property(BookMarkShow),true)</visible>
 						<control type="list" id="2900500">
-							<width>1320</width>
+							<width>1280</width>
 							<height>100</height>
 							<onleft>2900500</onleft>
 							<onright>2900500</onright>
@@ -3362,10 +3362,10 @@ Search for window name
 			<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 			<defaultcontrol always="true">3309003</defaultcontrol>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
@@ -3373,10 +3373,10 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<control type="image">
 					<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
-					<posx>0</posx>
+					<posx>-13</posx>
 					<posy>100r</posy>
-					<width>1280</width>
-					<height>100</height>
+					<width>1306</width>
+					<height>115</height>
 					<texture>floor.png</texture>
 				</control>
 				<control type="group">
@@ -4300,10 +4300,10 @@ Search for window name
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">
-					<posx>0</posx>
+					<posx>-13</posx>
 					<posy>100r</posy>
-					<width>1280</width>
-					<height>100</height>
+					<width>1306</width>
+					<height>115</height>
 					<visible>!substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>		
 				</control>
@@ -4317,18 +4317,18 @@ Search for window name
 				</control>
 				<!-- Grid background -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>-13</posx>
 					<posy>100r</posy>
-					<width>48</width>
-					<height>100</height>
+					<width>61</width>
+					<height>115</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
 				<control type="image">
-					<posx>46r</posx>
+					<posx>1234</posx>
 					<posy>100r</posy>
-					<width>46</width>
-					<height>100</height>
+					<width>59</width>
+					<height>115</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
@@ -4336,7 +4336,7 @@ Search for window name
 					<posx>45</posx>
 					<posy>68r</posy>
 					<width>1190</width>
-					<height>68</height>
+					<height>83</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
@@ -5783,17 +5783,17 @@ Search for window name
 		<control type="group" id="4500000">
 			<visible>substring(Window.Property(CurrentWindow),4500000)</visible>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>black-back.png</texture>
 			</control>
 			<control type="image">
