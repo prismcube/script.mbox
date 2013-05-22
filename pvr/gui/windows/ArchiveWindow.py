@@ -327,7 +327,7 @@ class ArchiveWindow( BaseWindow ) :
 				#refresh preload
 				LOG_TRACE( '------------------------------------Event[%s]'% aEvent.getName( ) )
 				if self.mViewMode == E_VIEW_POSTER_WRAP :
-					thread = threading.Timer( 0.1, self.RefreshListItemByPosterWrap, [ aEvent ] )
+					thread = threading.Timer( 0.1, self.RefreshListItemByPosterWrap, [aEvent] )
 					thread.start( )
 					return
 
@@ -572,16 +572,20 @@ class ArchiveWindow( BaseWindow ) :
 				thumbIcon = 'DefaultAudioFO.png'
 
 		listindex = 0
-
 		for recInfo in self.mRecordList :
 			if recInfo.mRecordKey == aRecordKey :
 				break
 			listindex = listindex + 1
 
+		#isNoMatch
+		if listindex >= len( self.mRecordList ) :
+			xbmc.executebuiltin( 'container.refresh' )
+			LOG_TRACE( 'except refresh thumbnail, Not matched recordkey[%s]'% aRecordkey )
+			return
+
 		recItem = self.mRecordListItems[ listindex ]
 
 		status = self.mDataCache.Player_GetStatus( )
-
 		if ( recInfo.mLocked and status.mMode != ElisEnum.E_MODE_PVR ) or \
 		   ( self.mDataCache.GetPropertyAge( ) != 0 and recInfo.mAgeRating >= self.mDataCache.GetPropertyAge( ) and status.mMode != ElisEnum.E_MODE_PVR ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
@@ -610,7 +614,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		lastFocus = self.mCtrlPosterwrapList.getSelectedPosition( )
 		if aEvent :
-			LOG_TRACE( '-------------------UpdatePlayStopThumbnail' )
+			#LOG_TRACE( '-------------------UpdatePlayStopThumbnail' )
 			self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
 			time.sleep( 0.02 )
 
@@ -618,14 +622,26 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mThumbnailHash = {}
 		self.mRecordListItems = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg') )
-		for i in range( len( thumbnaillist ) ) :
-			recKey = thumbnaillist[i].split('_')
-			LOG_TRACE( '--------------recKey[%s]'% recKey )
-			if recKey and recKey[2] :
-				self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
+		try :
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg') )
+			for i in range( len( thumbnaillist ) ) :
+				recKey = thumbnaillist[i].split('_')
+				#LOG_TRACE( '--------------recKey[%s]'% recKey )
+				if recKey and recKey[2] :
+					self.mThumbnailHash[ recKey[2] ] = thumbnaillist[i]
 
-		self.UpdateList( )
+			for i in range( len( self.mRecordList ) ) :
+				self.UpdateListItem( self.mRecordList[i] )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" % ex )
+			self.UpdateList( )
+			self.mCtrlPosterwrapList.selectItem( lastFocus )
+			LOG_TRACE( '-------Retry update list' )
+			return
+
+		self.AddListItems( )
+
 		self.mCtrlPosterwrapList.selectItem( lastFocus )
 		#LOG_TRACE( '-----2------------- refresh thumbnail[%s] key[%s]'% ( self.mThumbnailHash.get( '%s'% aEvent.mRecordKey, -1 ), aEvent.mRecordKey ) )
 
