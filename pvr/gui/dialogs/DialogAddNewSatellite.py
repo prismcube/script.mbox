@@ -64,7 +64,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mLongitude  = dialog.GetNumber( )
+				self.mLongitude = dialog.GetNumber( )
 				self.DrawItem( )
 
 		elif groupId == E_DialogSpinEx02 :
@@ -95,8 +95,8 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 	def GetValue( self ) :
 		if self.mIsWest == 1 :
-			self.mLongitude = self.mLongitude + 1800
-
+			self.mLongitude = 3600 - self.mLongitude
+		
 		if self.mIsCBand == 0 :
 			self.mBand = ElisEnum.E_BAND_KU
 		else :

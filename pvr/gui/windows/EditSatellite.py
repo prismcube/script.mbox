@@ -203,10 +203,10 @@ class EditSatellite( SettingWindow ) :
 
 	def GetFormattedLongitude( self, aLongitude, aBand ) :
 		dir = 'E'
-		tmpLongitude  = aLongitude
+		tmpLongitude = aLongitude
 		if tmpLongitude > 1800 :
 			dir = 'W'
-			tmpLongitude = 3600 - aLongitude
+			tmpLongitude = 3600 - tmpLongitude
 
 		formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
 		return formattedName
