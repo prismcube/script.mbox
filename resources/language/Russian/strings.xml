@@ -440,9 +440,9 @@
 	<string id="3022">Качество</string>
 	<string id="3023">Файл не найден : %s</string>
 	<string id="3024">Тестовый сценарий недоступен : %s</string>
-	<string id="3025">RUS_Repeat count</string>
-	<string id="3026">RUS_Recording duration in mins</string>
-	<string id="3027">RUS_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
+	<string id="3025">Repeat count</string>
+	<string id="3026">Recording duration in mins</string>
+	<string id="3027">New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">Обновить каналы</string>
 	<string id="3029">Запись остановлена, недостаточно места на диске</string>
 	<string id="3030">Обновление списка каналов…</string>
@@ -489,7 +489,7 @@
 	<string id="3071">Скорость Потока</string>
 	<string id="3072">QPSK 1/2</string>
 	<string id="3073">Хотите сохранить изменения?</string>
-	<string id="3074">RUS_Time remaining : %s seconds</string>
+	<string id="3074">Time remaining : %s seconds</string>
 	<string id="3075">Удалить</string>
 	<string id="3076">Удалить Выбранное</string>
 	<string id="3077">Продолжить с</string>
@@ -586,7 +586,7 @@
 	<string id="3168">Сохранение позиции завершено</string>
 	<string id="3169">Ошибка сохранения позиции</string>
 	<string id="3170">Попробовать еще раз после остановки воспроизведения</string>
-	<string id="3171">RUS_Timeshift not ready%s Please try again</string>
+	<string id="3171">Timeshift not ready%s Please try again</string>
 	<string id="3172">Нет поддержки %s</string>
 	<string id="3173">Добавить метку</string>
 	<string id="3174">Разбить на сюжеты автоматически</string>
@@ -697,7 +697,7 @@
 	<string id="3279">Задать требуемую частоту для тюнера 2</string>
 	<string id="3280">Задайте различные настройки для каждого тюнера</string>
 	<string id="3281">Сохранить Конфигурацию</string>
-	<string id="3282">RUS_When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code</string>
+	<string id="3282">When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code</string>
 	<string id="3283">Выбор канала передачи от SCR 0 до SCR 7 для тюнера %d</string>
 	<string id="3284">SCR Тюнера %d</string>
 	<string id="3285"> - Тюнер %d Частота</string>
@@ -765,9 +765,9 @@
 	<string id="3347">Просмотр информации о модуле</string>
 	<string id="3348">Перемещать Антенну</string>
 	<string id="3349">Здесь можно управлять перемещением моторизированной антенны</string>
-	<string id="3350">RUS_Up/Down = Zoom in/out ( Current rate : %s ) %s Left/Right = Previous/Next step</string>
-	<string id="3351">RUS_You have reached the maximum rate</string>
-	<string id="3352">RUS_You have reached the minimum rate</string>
+	<string id="3350">Up/Down = Zoom in/out ( Current rate : %s ) %s Left/Right = Previous/Next step</string>
+	<string id="3351">You have reached the maximum rate</string>
+	<string id="3352">You have reached the minimum rate</string>
 	<string id="3353">Попробуйте еще раз после остановки%s воспроизведения или тайм-шифт</string>
 	<string id="3354">Thumbnail</string>
 	<string id="3355">Poster_wrap</string>
@@ -977,9 +977,9 @@
 	<string id="3559">Нет доступных версий ПО</string>
 	<string id="3560">Загрузка…</string>
 	<string id="3561">Проверка Диска</string>
-	<string id="3562">RUS_Check your internal NAND flash</string>
-	<string id="3563">RUS_Not enough space on NAND flash</string>
-	<string id="3564">RUS_Failed to write on NAND flash</string>
+	<string id="3562">Check your internal NAND flash</string>
+	<string id="3563">Not enough space on NAND flash</string>
+	<string id="3564">Failed to write on NAND flash</string>
 	<string id="3565">Информация о ПО</string>
 	<string id="3566">Размер</string>
 	<string id="3567">Не было попыток</string>
@@ -1010,10 +1010,10 @@
 	<string id="3592">Проверка контрольный суммы файлов…</string>
 	<string id="3593">Копирование файлов на Диска…</string>
 	<string id="3594">Копирование файлов на USB…</string>
-	<string id="3595">RUS_Copying files to internal storage...</string>
+	<string id="3595">Copying files to internal storage...</string>
 	<string id="3596">Обновить сейчас</string>
 	<string id="3597">Следуйте инструкциям индикатора передней панели при обновлении ПО</string>
-	<string id="3598">RUS_DO NOT POWER OFF%s DURING THE UPGRADING</string>
+	<string id="3598">DO NOT POWER OFF%s DURING THE UPGRADING</string>
 	<string id="3599">НЕ ИЗВЛЕКАТЬ USB НАКОПИТЕЛЬ%s ВО ВРЕМЯ ОБНОВЛЕНИЯ ПО</string>
 	<string id="3600">Продолжить прерванные загрузки?</string>
 	<string id="3601">Продолжить загрузку файлов</string>
@@ -1040,10 +1040,10 @@
 	<string id="3622">Передвигать антенну на 0</string>
 	<string id="3623">Задать требуемые спутники для моторизированной антенны USALS</string>
 	<string id="3624">Ручное Сканирование</string>
-	<string id="3625">RUS_Custom Setup</string>
-	<string id="3626">RUS_Enable/Disable custom setup</string>
-	<string id="3627">RUS_Select the transponder frequency for the selected satellite</string>
-	<string id="3628">RUS_Enter the transponder frequency for the selected satellite</string>
+	<string id="3625">Custom Setup</string>
+	<string id="3626">Enable/Disable custom setup</string>
+	<string id="3627">Select the transponder frequency for the selected satellite</string>
+	<string id="3628">Enter the transponder frequency for the selected satellite</string>
 	<string id="3629"> - Частота Транспондера</string>
 	<string id="3630"> - Тип Вещания DVB</string>
 	<string id="3631">Задать тип вещания для выбранного спутника</string>
