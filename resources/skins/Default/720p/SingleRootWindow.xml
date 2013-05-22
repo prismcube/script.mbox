@@ -4527,7 +4527,7 @@ Search for window name
 								<height>50</height>
 								<font>font13_title</font>
 								<textcolor>grey2</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -4564,10 +4564,10 @@ Search for window name
 								<height>50</height>
 								<font>font13_title</font>
 								<textcolor>grey2</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
-								<label>[COLOR=blue]$INFO[ListItem.Label][/COLOR]</label>
+								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
 						</focusedlayout>
