@@ -22,6 +22,7 @@ E_FILE_PROPERTY     = 'ElisProperty.py'
 E_FILE_MBOX_STRING  = 'MboxStrings.xml'
 E_FILE_MBOX_STRING_ID = 'MboxStringsID.py'
 
+E_DEBUG_NONE_STRING_WRITE = False
 
 def EucToUtf( aSource ) :
 	if aSource == None :
@@ -39,6 +40,8 @@ def EucToUtf( aSource ) :
 
 
 ################# 1.make language/strings.xml of strings.xml, reference language pack Elmo~.csv
+
+# deprecated
 def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
@@ -299,16 +302,20 @@ def makeLanguage(inFile):
 					#print len( rets ), rets
 
 
-					if len(ret) == len(wFileList)+1:
-						for i in range(len(ret)-1):
-							if ret[i+1] == '':
+					if len(ret) == len(wFileList)+1 :
+						for i in range(len(ret)-1) :
+							if ret[i+1] == '' :
 								#ret[i+1] = 'NONE_' + ret[0]
 								j = i + 1
 								if j >= len(wFileList) - 1 :
 									j = len(wFileList) - 1
-								ret[i+1] = '%s_'% wFileList[j][:3] + ret[0]
+
+								debugString = ''
+								if E_DEBUG_NONE_STRING_WRITE :
+									debugString = '%s_'% wFileList[j][:3]
+
+								ret[i+1] = debugString + ret[0]
 								#print '----------[%s]'% rets[i+1]
-								
 
 				# str id
 				#ret2= re.sub('\n', '', csvline)
@@ -338,7 +345,12 @@ def makeLanguage(inFile):
 					j = i + 1
 					if j >= len(wFileList) - 1 : 
 						j = len(wFileList) - 1
-					csvret[i+1] = '%s_'% wFileList[j][:3] + inStr[0]
+
+					debugString = ''
+					if E_DEBUG_NONE_STRING_WRITE :
+						debugString = '%s_'% wFileList[j][:3]
+
+					csvret[i+1] = debugString + inStr[0]
 					#print '----------[%s]'% csvret[i+1]
 
 
@@ -350,7 +362,7 @@ def makeLanguage(inFile):
 				csvret[i] = re.sub('%%', '%', csvret[i])
 				#csvret[i] = (csvret[i].decode('utf-8')).encode('utf-8', 'xmlcharrefreplace')
 			"""
-	
+
 			#write string.xml
 			for i in range(len(wFileList)):
 				try:
