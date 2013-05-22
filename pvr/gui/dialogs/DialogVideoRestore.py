@@ -21,9 +21,9 @@ class DialogVideoRestore( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mIsOk = E_DIALOG_STATE_CANCEL
-		self.getControl( E_HEADER ).setLabel( MR_LANG( 'Save video setting' ) )
-		self.getControl( E_BODY_LABEL_1 ).setLabel( MR_LANG( 'Do you want to save video setting?' ) )
-		self.getControl( E_BODY_LABEL_2 ).setLabel( MR_LANG( 'Restore video setting %s sec' ) % TIME_OUT )
+		self.getControl( E_HEADER ).setLabel( MR_LANG( 'HDMI Format' ) )
+		self.getControl( E_BODY_LABEL_1 ).setLabel( MR_LANG( 'Do you want to save changes?' ) )
+		self.getControl( E_BODY_LABEL_2 ).setLabel( MR_LANG( 'Time remaining : %s seconds' ) % TIME_OUT )
 		self.mEnableLocalThread = True
 		self.mThread = self.AsyncRestore( )
 		self.IsStandByClose( )
@@ -65,7 +65,7 @@ class DialogVideoRestore( BaseDialog ) :
 			time.sleep( 1 )
 			if self.mEnableLocalThread == False :
 				return
-			self.getControl( E_BODY_LABEL_2 ).setLabel( MR_LANG( 'Restore video setting %s sec' ) % ( TIME_OUT - i ) )
+			self.getControl( E_BODY_LABEL_2 ).setLabel( MR_LANG( 'Time remaining : %s seconds' ) % ( TIME_OUT - i ) )
 
 		thread = threading.Timer( 1, self.Close )
 		thread.start( )
