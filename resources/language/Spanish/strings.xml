@@ -440,8 +440,8 @@
 	<string id="3022">SPA_Quality</string>
 	<string id="3023">SPA_File not found : %s</string>
 	<string id="3024">SPA_Test scenario not available : %s</string>
-	<string id="3025">SPA_Repeat Count</string>
-	<string id="3026">SPA_Record Time min</string>
+	<string id="3025">SPA_Repeat count</string>
+	<string id="3026">SPA_Recording duration in mins</string>
 	<string id="3027">SPA_New channels have been loaded from PVR manager%s Press OK to continue updating your channel list</string>
 	<string id="3028">SPA_Update channels</string>
 	<string id="3029">SPA_Recording stopped due to insufficient disk space</string>

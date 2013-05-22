@@ -55,6 +55,7 @@ DIALOG_ID_AUTO_POWER_DOWN			= 24
 DIALOG_ID_HELP						= 25
 DIALOG_ID_MENUAL_WIFI				= 26
 DIALOG_ID_VIDEO_RESTORE				= 27
+DIALOG_ID_HOTKEYS						= 28
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -201,6 +202,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_VIDEO_RESTORE :
 				from pvr.gui.dialogs.DialogVideoRestore import DialogVideoRestore
 				return DialogVideoRestore( 'DialogVideoRestore.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_HOTKEYS :
+				from pvr.gui.dialogs.DialogHotkeys import DialogHotkeys
+				return DialogHotkeys( 'DialogHotkeys.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	from pvr.gui.dialogs.DialogTestCode import DialogTestCode
