@@ -159,6 +159,7 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 		self.mFocusButton = self.getControl( BUTTON_ID_FOCUS_BUTTON )
+		self.mFocusButton.setVisible( False )
 
 		self.mPreRecTime	= ElisPropertyEnum( 'Pre-Rec Time', self.mCommander ).GetProp( )
 		self.mPostRecTime = ElisPropertyEnum( 'Post-Rec Time', self.mCommander ).GetProp( )		
