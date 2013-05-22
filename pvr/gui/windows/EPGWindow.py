@@ -344,7 +344,10 @@ class EPGWindow( BaseWindow ) :
 			self.mEventBus.Register( self )			
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
-			self.SelectPrevChannel( )
+			if self.mEPGMode == E_VIEW_GRID :
+				self.GridGoToCurrent( )
+			else:
+				self.SelectPrevChannel( )
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
 			self.SelectNextChannel( )			
@@ -2361,6 +2364,17 @@ class EPGWindow( BaseWindow ) :
 				self.setFocusId( GROUP_ID_LEFT_SLIDE )
 
 
+	def GridGoToCurrent( self ) :
+		self.mLock.acquire( )
+		self.mVisibleFocusCol = 0
+		self.mShowingOffset = 0
+		self.mLock.release( )
+		self.SetTimeline( )
+		self.Flush( )
+		self.Load( )
+		self.UpdateList( )
+		self.GridSetFocus( )
+
 	def GridControlRight( self ) :
 		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )					
 		LOG_TRACE('self.mVisibleFocusRow=%d self.mVisibleFocusCol=%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ) )			
@@ -2619,6 +2633,12 @@ class EPGWindow( BaseWindow ) :
 
 
 	def GetTimerByFocus( self ) :
+		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
+
+		if gridMeta :
+			return self.GetTimerByEPG( gridMeta.mEPG )
+
+		"""
 		focusId = self.getFocusId( )
 
 		if focusId < BUTTON_ID_BASE_GRID or focusId >= BUTTON_ID_BASE_GRID + E_GRID_MAX_BUTTON_COUNT :
@@ -2632,6 +2652,7 @@ class EPGWindow( BaseWindow ) :
 
 				if gridMeta.mId == focusId :
 					return self.GetTimerByEPG( gridMeta.mEPG )
+		"""
 
 		return None
 
