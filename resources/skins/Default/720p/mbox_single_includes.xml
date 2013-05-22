@@ -705,7 +705,7 @@
 	</include>
 
 	<include name="DefaultButtonGridChannelValues">
-		<height>45</height>
+		<height>60</height>
 		<width>270</width>
 		<textoffsetx>85</textoffsetx>
 		<textwidth>185</textwidth>
@@ -725,7 +725,7 @@
 	</include>
 
 	<include name="DefaultButtonRunningRecValues">
-		<height>45</height>
+		<height>60</height>
 		<width>250</width>
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>
@@ -738,7 +738,7 @@
 	</include>
 
 	<include name="DefaultButtonScheduledValues">
-		<height>45</height>
+		<height>60</height>
 		<width>250</width>
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>
@@ -751,7 +751,7 @@
 	</include>
 
 	<include name="DefaultButtonGridEPGValues">
-		<height>45</height>
+		<height>60</height>
 		<width>250</width>
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>

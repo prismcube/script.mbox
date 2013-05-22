@@ -233,8 +233,10 @@ class Configure( SettingWindow ) :
 						time.sleep( 0.5 )
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
-			else :
+			elif groupId == E_SpinEx02 :
 				self.DisableControl( E_LANGUAGE )
+				self.ControlSelect( )
+			else :
 				self.ControlSelect( )
 
 		elif selectedId == E_HDMI_SETTING :
@@ -750,8 +752,13 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_SpinEx03, E_SpinEx04 ]
 			if selectedIndex == 0 :
 				self.SetEnableControls( visibleControlIds, False )
+				control = self.getControl( E_SpinEx04 + 3 )
+				time.sleep( 0.02 )
+				control.selectItem( 0 )
+				self.SetProp( E_SpinEx04, 0 )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
+
 		elif aSelectedItem == E_ETHERNET :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if self.mEthernetConnectMethod == NET_DHCP :

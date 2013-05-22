@@ -20,7 +20,6 @@ class DialogVideoRestore( BaseDialog ) :
 
 
 	def onInit( self ) :
-		print 'dhkim test start dialog'
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.getControl( E_HEADER ).setLabel( MR_LANG( 'Save video setting' ) )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( MR_LANG( 'Do you want to save video setting?' ) )
@@ -28,7 +27,6 @@ class DialogVideoRestore( BaseDialog ) :
 		self.mEnableLocalThread = True
 		self.mThread = self.AsyncRestore( )
 		self.IsStandByClose( )
-		print 'dhkim test end onInit dialog'
 
 
 	def onAction( self, aAction ) :
@@ -61,18 +59,9 @@ class DialogVideoRestore( BaseDialog ) :
 		pass
 
 
-	"""
-	def SetDialogProperty( self, aTitle = '', aLabel = '', aDefaultClose = False ) :
-		self.mTitle = aTitle
-		self.mLabel = aLabel
-		self.mDefaultIsOk = aDefaultClose
-	"""
-
 	@RunThread
 	def AsyncRestore( self ) :
-		print 'dhkim test start thread'
 		for i in range( TIME_OUT ) :
-			print 'dhkim test AsyncRestore time = %s' % ( TIME_OUT - i )
 			time.sleep( 1 )
 			if self.mEnableLocalThread == False :
 				return

@@ -470,9 +470,8 @@ class TunerConfigMgr( object ) :
 
 		if len( configuredList1 ) != len( currentconfiguredList1 ) :
 			return False
-		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
-			if len( configuredList2 ) != len( currentconfiguredList2 ) :
-				return False
+		if len( configuredList2 ) != len( currentconfiguredList2 ) :
+			return False
 			
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			for i in range( len( configuredList1 ) ) :
