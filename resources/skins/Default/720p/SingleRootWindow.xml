@@ -5144,6 +5144,7 @@ Search for window name
 						<texturefocus border="5">StackFO_white2.png</texturefocus>
 						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
+						<colordiffuse>75FFFFFF</colordiffuse>
 					</control>				
 
 					<!-- time sepeartor -->
