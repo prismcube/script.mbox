@@ -4510,6 +4510,13 @@ Search for window name
 								<posy>5</posy>
 								<width>80</width>
 								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
 							<!-- Channel Name -->
@@ -4534,6 +4541,13 @@ Search for window name
 								<width>270</width>
 								<height>60</height>
 								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
 							</control>
 							<control type="image">
 								<posx>0</posx>

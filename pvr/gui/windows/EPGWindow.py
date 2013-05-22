@@ -2482,6 +2482,12 @@ class EPGWindow( BaseWindow ) :
 		else :
 			self.mCtrlGridEPGInfo.setLabel(' ')
 
+		if channel == None :
+			self.mVisibleFocusRow = 0
+			self.mVisibleFocusCol = 0
+			self.mCtrlGridEPGInfo.setLabel(' ' )
+			return
+
 		if gridMeta :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
