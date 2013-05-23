@@ -414,7 +414,8 @@ class EPGWindow( BaseWindow ) :
 				self.SetVideoRestore( )
 			else :
 				self.SetPipScreen()
-				
+
+			self.mListItems = []				
 			self.UpdateAllEPGList( )
 			
 			#self.mLock.release( )
@@ -855,9 +856,10 @@ class EPGWindow( BaseWindow ) :
 
 		self.mDebugStart = time.time( )
 		try :
-			if self.mChannelList == None :
+			if self.mChannelList == None or len(self.mChannelList ) <= 0  :
 				self.mCtrlGridChannelList.reset( )
 				self.mListItems = []
+				xbmc.executebuiltin( 'container.refresh' )				
 				return
 
 			aUpdateOnly = True
