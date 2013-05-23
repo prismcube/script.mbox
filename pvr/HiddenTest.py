@@ -50,7 +50,7 @@ class HiddenTest( BaseWindow ) :
 			self.ShowContextMenu( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File not found : %s' ) % FILE_NAME_TEST )			
+			dialog.SetDialogProperty( 'Error', 'File not found : %s' % FILE_NAME_TEST )			
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -75,7 +75,7 @@ class HiddenTest( BaseWindow ) :
 
 		if menuCount == 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Test scenario not available : %s' ) % FILE_NAME_TEST )			
+			dialog.SetDialogProperty( 'Error', 'Test scenario not available : %s' % FILE_NAME_TEST )			
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -154,7 +154,7 @@ class HiddenTest( BaseWindow ) :
 			if len( target ) != ( len( prop ) - 1 ) :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), 'Property length is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( len( target ), ( len( prop ) - 1 ) ) )
+				dialog.SetDialogProperty( 'Error', 'Property length is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( len( target ), ( len( prop ) - 1 ) ) )
 				dialog.doModal( )
 				return
 
@@ -168,13 +168,13 @@ class HiddenTest( BaseWindow ) :
 
 				if prop[i+1][0] != target[i].mValue :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), 'Property value is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][0], target[i].mValue ) )
+					dialog.SetDialogProperty( 'Error', 'Property value is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][0], target[i].mValue ) )
 					dialog.doModal( )
 					errcnt = errcnt + 1
 					
 				if prop[i+1][1] != target[i].mString :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), 'Property string is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][1], target[i].mString ) )	
+					dialog.SetDialogProperty( 'Error', 'Property string is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][1], target[i].mString ) )	
 					dialog.doModal( )
 					errcnt = errcnt + 1
 
@@ -342,14 +342,14 @@ class HiddenTest( BaseWindow ) :
 			self.mStartTime = self.mDataCache.Datetime_GetLocalTime( ) + 5 * 60
 			count = 20
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Repeat count' ), str( count ), 3 )
+			dialog.SetDialogProperty( 'Repeat count', str( count ), 3 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				count = int( dialog.GetString( ) )
 
 			recTime = 5
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Recording duration in mins' ), str( recTime ), 3 )
+			dialog.SetDialogProperty( 'Recording duration in mins', str( recTime ), 3 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				recTime = int( dialog.GetString( ) )
