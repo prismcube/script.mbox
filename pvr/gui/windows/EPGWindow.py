@@ -1081,9 +1081,10 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateCurrentView( self, aUpdateOnly ) :
 		self.mDebugStart = time.time( )		
-		if self.mChannelList == None :
+		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.mCtrlBigList.reset( )
-			self.mListItems = []			
+			self.mListItems = []
+			xbmc.executebuiltin( 'container.refresh' )			
 			return
 
 		aUpdateOnly = True
@@ -1187,9 +1188,10 @@ class EPGWindow( BaseWindow ) :
 
 
 	def  UpdateFollowingView( self, aUpdateOnly ) :
-		if self.mChannelList == None :
+		if self.mChannelList == None or len( self.mChannelList ) <= 0:
 			self.mCtrlBigList.reset( )
-			self.mListItems = []			
+			self.mListItems = []
+			xbmc.executebuiltin( 'container.refresh' )			
 			return
 
 		aUpdateOnly = True
