@@ -3469,15 +3469,15 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>1</width>
-						<height>720</height>
+						<height>727</height>
 						<texture>black-back_noAlpha.png</texture>
-						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">Conditional</animation>
+						<animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>12</width>
-						<height>720</height>
+						<height>727</height>
 						<texture>MediaBladeSub_Part2.png</texture>
 						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
