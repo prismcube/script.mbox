@@ -678,7 +678,7 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateSelcetedPosition( self ) :
 	
-		if self.mChannelList == None :
+		if self.mChannelList == None or len(self.mChannelList) <= 0:
 			self.setProperty( 'SelectedPosition', '0' )
 			return
 
@@ -2500,10 +2500,7 @@ class EPGWindow( BaseWindow ) :
 				
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.mCtrlGridEPGInfo.setLabel(' ')
-			self.setProperty( 'GridSetPocusIndex', '0' )
 			return
-		else :
-			self.setProperty( 'GridSetPocusIndex', '%d'	%(self.mVisibleTopIndex +  self.mVisibleFocusRow ) )
 		
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
 		channel = None
