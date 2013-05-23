@@ -68,7 +68,8 @@ E_ACCELATOR_SHIFT_SECTION = 60
 
 E_PENDING_REPEAT_LIMIT = 10
 
-E_TINY_XSPEED = [ 25, 50, 125 ]
+E_TINY_XSPEED = [ 25, 50, 120 ]
+E_TINY_XSPEED_SUPPORT = False
 
 
 class TimeShiftPlate( BaseWindow ) :
@@ -1079,8 +1080,12 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = 25
 			elif self.mSpeed == 120 :
 				ret = 50
+				if not E_TINY_XSPEED_SUPPORT :
+					ret = -200
 			elif self.mSpeed == 200 :
 				ret = 100
+				if not E_TINY_XSPEED_SUPPORT :
+					ret = 120
 			elif self.mSpeed == 400 :
 				ret = 200
 			elif self.mSpeed == 800 :
@@ -1112,6 +1117,8 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mSpeed == 0 :
 				self.mDataCache.Player_Resume( )
 				ret = 25
+				if not E_TINY_XSPEED_SUPPORT :
+					ret = 120
 			elif self.mSpeed == 25 :
 				ret = 50
 			elif self.mSpeed == 50 :
@@ -1120,6 +1127,8 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = 200
 			elif self.mSpeed == 100 :
 				ret = 200
+				if not E_TINY_XSPEED_SUPPORT :
+					ret = 120
 			elif self.mSpeed == 200 :
 				ret = 400
 			elif self.mSpeed == 400 :
