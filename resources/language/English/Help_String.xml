@@ -97,7 +97,7 @@
 			<width>770</width>
 			<height>160</height>
 		</content>
-		<content name="To make best use of all PVR features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
+		<content name="To make best use of all features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
