@@ -223,6 +223,16 @@ class Configure( SettingWindow ) :
 						dialog.doModal( )
 						return
 
+					isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromPackage( )
+					if isDownload :
+						msg1 = MR_LANG( 'Downloading firmware' )
+						msg2 = MR_LANG( 'Try again after stopping job update firmware' )
+						msg = '%s%s%s'% ( msg1, NEW_LINE, msg2 )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+						dialog.doModal( )
+						return
+
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
 					dialog.doModal( )
