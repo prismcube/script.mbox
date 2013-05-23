@@ -231,6 +231,8 @@ class Configure( SettingWindow ) :
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
 						time.sleep( 0.5 )
+						if E_SUPPORT_SINGLE_WINDOW_MODE == True:
+							self.mRootWindow.mReloadControls = True
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
 			elif groupId == E_SpinEx02 :

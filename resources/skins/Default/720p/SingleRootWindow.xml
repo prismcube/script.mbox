@@ -4510,6 +4510,13 @@ Search for window name
 								<posy>5</posy>
 								<width>80</width>
 								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
 							<!-- Channel Name -->
@@ -4520,7 +4527,7 @@ Search for window name
 								<height>50</height>
 								<font>font13_title</font>
 								<textcolor>grey2</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -4540,6 +4547,13 @@ Search for window name
 								<posy>5</posy>
 								<width>80</width>
 								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
 							<!-- Channel Name -->
@@ -4550,10 +4564,10 @@ Search for window name
 								<height>50</height>
 								<font>font13_title</font>
 								<textcolor>grey2</textcolor>
-								<selectedcolor>selected</selectedcolor>
+								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
-								<label>[COLOR=blue]$INFO[ListItem.Label][/COLOR]</label>
+								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
 						</focusedlayout>
@@ -5130,6 +5144,7 @@ Search for window name
 						<texturefocus border="5">StackFO_white2.png</texturefocus>
 						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
+						<colordiffuse>75FFFFFF</colordiffuse>
 					</control>				
 
 					<!-- time sepeartor -->

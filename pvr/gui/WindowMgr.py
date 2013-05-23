@@ -409,6 +409,8 @@ class WindowMgr( object ) :
 
 	def ReloadWindow( self, aWindowId = WIN_ID_LIVE_PLATE, aParentId = WIN_ID_NULLWINDOW ) :
 		LOG_TRACE('-----------------------------last[%s] reload[%s]'% (self.mLastId, aWindowId) )
+		if E_SUPPORT_SINGLE_WINDOW_MODE == True:							
+			self.mRootWindow.mReloadControls = True
 
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			self.CopyIncludeFile( )
