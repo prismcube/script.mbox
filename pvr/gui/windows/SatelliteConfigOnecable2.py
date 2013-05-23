@@ -90,6 +90,12 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.ControlSelect( )
 			self.DisableControl( )
 
+		elif groupId == E_SpinEx02 :
+			self.mTempTunerScr[0] = self.GetSelectedIndex( E_SpinEx02 )
+
+		elif groupId == E_SpinEx03 :
+			self.mTempTunerScr[1] = self.GetSelectedIndex( E_SpinEx03 )
+
 		elif groupId == E_Input02 or groupId == E_Input04 :
 			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )

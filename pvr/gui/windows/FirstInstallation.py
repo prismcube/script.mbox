@@ -121,6 +121,13 @@ class FirstInstallation( FTIWindow ) :
 							dialog.doModal( )
 							return
 
+						isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromPackage( )
+						if isDownload :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Try again after completing firmware update' ) )
+							dialog.doModal( )
+							return
+
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
 						dialog.doModal( )
