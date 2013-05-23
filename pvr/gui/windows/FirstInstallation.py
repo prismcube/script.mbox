@@ -128,6 +128,8 @@ class FirstInstallation( FTIWindow ) :
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 							self.mInitialized = False
 							time.sleep( 0.5 )
+							if E_SUPPORT_SINGLE_WINDOW_MODE == True:							
+								self.mRootWindow.mReloadControls = True
 							XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 						
 				elif groupId == E_Input02 :

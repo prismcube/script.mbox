@@ -9,6 +9,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mPlatform = pvr.Platform.GetPlatform( )
+		self.mReloadControls = False
 
 
 	def onInit( self ) :
@@ -28,6 +29,13 @@ class RootWindow( xbmcgui.WindowXML ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 				else :
+					LOG_TRACE( "Reload Test")
+					if self.mReloadControls == True :
+						LOG_TRACE( "Reload Test")					
+						self.mReloadControls = False
+						self.LoadTimeShiftControl( )
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).LoadEPGControls( )
+					
 					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 					lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
 					LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )

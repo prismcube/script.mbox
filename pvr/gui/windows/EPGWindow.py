@@ -219,9 +219,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def LoadEPGControls( self ) :
+		self.mListItems = []
 		self.InitTimelineButtons( )
 		self.InitGridEPGButtons( )
-
 	
 
 	def onAction( self, aAction ) :
@@ -685,7 +685,7 @@ class EPGWindow( BaseWindow ) :
 		selectedPos = 0
 
 		if self.mEPGMode == E_VIEW_GRID :
-			selectedPos = self.mCtrlGridChannelList.getSelectedPosition( )		
+			selectedPos = self.GridGetSelectedPosition( )		
 		elif self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition( )		
 		else :
@@ -857,7 +857,7 @@ class EPGWindow( BaseWindow ) :
 		try :
 			if self.mChannelList == None :
 				self.mCtrlGridChannelList.reset( )
-				self.mListItems = []			
+				self.mListItems = []
 				return
 
 			aUpdateOnly = True
@@ -926,7 +926,7 @@ class EPGWindow( BaseWindow ) :
 		row = 0
 		col = 0
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
-		
+
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			epgList = self.mGridEPGList[i]
 			offsetX = 0
@@ -1526,7 +1526,7 @@ class EPGWindow( BaseWindow ) :
 		channel = None
 
 		if self.mEPGMode == E_VIEW_GRID  :
-			selectedPos = self.mCtrlGridChannelList.getSelectedPosition( )
+			selectedPos = self.GridGetSelectedPosition( )
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 			else :
@@ -1900,7 +1900,7 @@ class EPGWindow( BaseWindow ) :
 	def Tune( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
 
-			selectedPos = self.mCtrlGridChannelList.getSelectedPosition( )
+			selectedPos = self.GridGetSelectedPosition( )
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				LOG_TRACE( '' )
 				channel = self.mChannelList[ selectedPos ]
@@ -2207,11 +2207,10 @@ class EPGWindow( BaseWindow ) :
 			
 			if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
 				self.mUpdateEPGInfomationTimer.cancel( )
-			
 			self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
 			self.mUpdateEPGInfomationTimer.start( )
 			return
-			
+
 		self.Load( )
 		self.UpdateList( )
 		self.UpdateSelectedChannel( )
@@ -2230,9 +2229,9 @@ class EPGWindow( BaseWindow ) :
 	def AsyncUpdateEPGInfomation( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
 			self.mLock.acquire( )
-			self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )
+			self.mVisibleTopIndex = self.GridGetOffsetPosition( )
 			LOG_TRACE('LAEL98 TEST offsetPositon=%d' %self.mVisibleTopIndex )
-			self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex					
+			self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex					
 			self.mVisibleFocusCol = 0
 			self.mLock.release( )
 			self.Flush( )
@@ -2271,8 +2270,8 @@ class EPGWindow( BaseWindow ) :
 		if aMode == E_VIEW_GRID :	
 			self.setFocusId( LIST_ID_GRID_CHANNEL )
 			self.mLock.acquire( )			
-			self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )			
-			self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex		
+			self.mVisibleTopIndex = self.GridGetOffsetPosition( )			
+			self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex		
 			self.mVisibleFocusCol = 0
 			self.mLock.release( )
 			self.GridSetFocus( )			
@@ -2284,22 +2283,26 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( 'SetFocusList fail' )
 
 
-	def InitTimelineButtons( self ) :	
+	def InitTimelineButtons( self ) :
+		self.mCtrlTimelineButtons = []
 		for i in range( E_GRID_MAX_TIMELINE_COUNT ):
 			self.mCtrlTimelineButtons.append( self.getControl(BUTTON_ID_BASE_TIME_LINE + i) )
 
 
 	def InitGridEPGButtons( self ) :
+		self.mCtrlGridEPGButtonList = []
 		for i in range( E_GRID_MAX_BUTTON_COUNT ):
 			ctrlButton = self.getControl(BUTTON_ID_BASE_GRID + i)
 			ctrlButton.setVisible( False )
 			self.mCtrlGridEPGButtonList.append( ctrlButton )
 
+		self.mCtrlRecButtonList = []
 		for i in range( E_MAX_RECORD_COUNT ):
 			ctrlButton = self.getControl(BUTTON_ID_BASE_RUNNNING_REC + i)
 			ctrlButton.setVisible( False )
 			self.mCtrlRecButtonList.append( ctrlButton )
 
+		self.mCtrlScheduledButtonList = []
 		for i in range( E_GRID_SCHEDULED_BUTTON_COUNT ):
 			ctrlButton = self.getControl(BUTTON_ID_BASE_SCHEDULED + i)
 			ctrlButton.setVisible( False )
@@ -2402,8 +2405,8 @@ class EPGWindow( BaseWindow ) :
 	def GridControlUp( self ) :
 		LOG_TRACE('self.mVisibleTopIndex=%d self.mVisibleFocusRow=%d self.mVisibleFocusCol=%d' %( self.mVisibleTopIndex, self.mVisibleFocusRow, self.mVisibleFocusCol ) )
 		self.mLock.acquire( )
-		self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )		
-		self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex
+		self.mVisibleTopIndex = self.GridGetOffsetPosition( )		
+		self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex
 		self.mVisibleFocusCol = 0
 		self.mLock.release( )
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow , 0 ), None )
@@ -2420,8 +2423,8 @@ class EPGWindow( BaseWindow ) :
 	def GridControlDown( self ) :
 		LOG_TRACE('self.mVisibleTopIndex=%d self.mVisibleFocusRow=%d self.mVisibleFocusCol=%d' %( self.mVisibleTopIndex, self.mVisibleFocusRow, self.mVisibleFocusCol ) )
 		self.mLock.acquire( )
-		self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )		
-		self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex
+		self.mVisibleTopIndex = self.GridGetOffsetPosition( )		
+		self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex
 		self.mVisibleFocusCol = 0
 		self.mLock.release( )
 
@@ -2438,9 +2441,9 @@ class EPGWindow( BaseWindow ) :
 
 	def GridControlPageUp( self ) :
 		self.mLock.acquire( )
-		self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )
+		self.mVisibleTopIndex = self.GridGetOffsetPosition( )
 		LOG_TRACE('LAEL98 TEST offsetPositon=%d' %self.mVisibleTopIndex )
-		self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex		
+		self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex		
 		self.mVisibleFocusCol = 0
 		self.mLock.release( )
 		self.Flush( )
@@ -2451,9 +2454,9 @@ class EPGWindow( BaseWindow ) :
 
 	def GridControlPageDown( self ) :
 		self.mLock.acquire( )
-		self.mVisibleTopIndex = self.mCtrlGridChannelList.getOffsetPosition( )
+		self.mVisibleTopIndex = self.GridGetOffsetPosition( )
 		LOG_TRACE('LAEL98 TEST offsetPositon=%d' %self.mVisibleTopIndex )
-		self.mVisibleFocusRow = self.mCtrlGridChannelList.getSelectedPosition( ) - self.mVisibleTopIndex		
+		self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex		
 		self.mVisibleFocusCol = 0
 		self.mLock.release( )
 		self.Flush( )		
@@ -2461,6 +2464,19 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateList( )
 		self.GridSetFocus( )
 
+	def GridGetSelectedPosition( self ) :
+		pos =  self.mCtrlGridChannelList.getSelectedPosition( )
+		if pos < 0 :
+			pos = 0
+		return pos
+
+
+	def GridGetOffsetPosition( self ) :
+		pos = self.mCtrlGridChannelList.getOffsetPosition( )
+		if pos < 0 :
+			pos = 0
+		return pos
+		
 
 	def GridSetFocus( self ) :
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %(self.mVisibleTopIndex +  self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
