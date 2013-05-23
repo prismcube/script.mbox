@@ -123,11 +123,8 @@ class FirstInstallation( FTIWindow ) :
 
 						isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromPackage( )
 						if isDownload :
-							msg1 = MR_LANG( 'Downloading firmware' )
-							msg2 = MR_LANG( 'Try again after stopping job update firmware' )
-							msg = '%s%s%s'% ( msg1, NEW_LINE, msg2 )
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+							dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Try again after completing firmware update' ) )
 							dialog.doModal( )
 							return
 
