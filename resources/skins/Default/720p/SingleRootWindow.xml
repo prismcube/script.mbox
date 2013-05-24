@@ -1816,6 +1816,14 @@ Search for window name
 						<posy>20</posy>
 						<width>60</width>
 						<height>40</height>
+						<texture>Logo_Background.png</texture>
+						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
+					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>20</posy>
+						<width>60</width>
+						<height>40</height>
 						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
