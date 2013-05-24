@@ -1812,34 +1812,38 @@ Search for window name
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="image">
+						<description>Channel Logo Background</description>
 						<posx>-20</posx>
-						<posy>20</posy>
-						<width>60</width>
-						<height>40</height>
+						<posy>15</posy>
+						<width>90</width>
+						<height>55</height>
 						<texture>Logo_Background.png</texture>
 						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
 					</control>
 					<control type="image">
+						<description>Channel Logo Icon</description>
 						<posx>-20</posx>
-						<posy>20</posy>
-						<width>60</width>
-						<height>40</height>
+						<posy>15</posy>
+						<width>90</width>
+						<height>55</height>
 						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+						<colordiffuse>FFEFEFEF</colordiffuse>
 					</control>
 					<control type="label" id="1400601">
-						<posx>0</posx>
+						<description>Channel Number</description>
+						<posx>85</posx>
 						<posy>5</posy>
-						<width>200</width>
+						<width>160</width>
 						<height>50</height>
-						<align>center</align>
+						<align>left</align>
 						<font>font50caps_title</font>
 						<label>$INFO[Control.GetLabel]</label>
-						<description>Ch Num</description>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400602">
-						<posx>250</posx>
+						<description>Channel Name</description>
+						<posx>280</posx>
 						<posy>17</posy>
 						<align>left</align>
 						<width>450</width>
@@ -1847,11 +1851,10 @@ Search for window name
 						<font>font35_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
-						<description>Ch name</description>
 					</control>
 
 					<control type = "group">
-						<posx>245</posx>
+						<posx>275</posx>
 						<posy>-35</posy>
 						<control type="image" id="1400603">
 							<posx>0</posx>
@@ -1874,10 +1877,10 @@ Search for window name
 					</control>
 
 					<control type="group">
+						<description>labels for buttons</description>
 						<posx>-50</posx>
 						<posy>-37</posy>
 						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
-						<description>info explane</description>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -2011,7 +2014,7 @@ Search for window name
 					<include>DefaultInfoPlateGroup</include>
 
 					<control type="group">
-						<posx>710</posx>
+						<posx>740</posx>
 						<posy>-35</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2088,7 +2091,7 @@ Search for window name
 					<!-- color key -->
 					<control type="group">
 						<control type="grouplist">
-							<posx>430r</posx>
+							<posx>400r</posx>
 							<posy>-35</posy>
 							<width>300</width>
 							<height>40</height>
@@ -2172,7 +2175,7 @@ Search for window name
 					</control>
 
 					<control type="group">
-						<posx>705</posx>
+						<posx>735</posx>
 						<posy>18</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2281,10 +2284,10 @@ Search for window name
 
 		<!-- epg section -->
 				<control type="group" id="1400700">
-					<posx>50</posx>
+					<posx>80</posx>
 					<posy>660</posy>
 					<control type="label" id="1400701">
-						<posx>-50</posx>
+						<posx>-150</posx>
 						<posy>10</posy>
 						<width>300</width>
 						<font>font13caps</font>
@@ -2308,20 +2311,20 @@ Search for window name
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="label" id="1400703">
+						<description>EPG Name</description>
 						<posx>290</posx>
 						<posy>7</posy>
 						<width>400</width>
 						<textcolor>9f9c9f9b</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
-						<description>EPG Name</description>
 					</control>
 					<control type="label" id="1400704">
+						<description>EPG Start Time</description>
 						<posx>710</posx>
 						<posy>7</posy>
 						<align>left</align>
 						<font>font13_title</font>
 						<label>$INFO[Control.GetLabel]</label>
-						<description>EPG STime</description>
 					</control>
 					<control type="progress" id="1400707">
 						<description>progress control</description>
@@ -2336,11 +2339,11 @@ Search for window name
 						<overlaytexture></overlaytexture>
 					</control>
 					<control type="label" id="1400705">
+						<description>EPG End Time</description>
 						<posx>1040</posx>
 						<posy>7</posy>
 						<font>font13_title</font>
 						<label>$INFO[Control.GetLabel]</label>
-						<description>EPG ETime</description>
 					</control>
 					<control type="button" id="1400706">
 						<posx>1110</posx>

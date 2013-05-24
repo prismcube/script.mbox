@@ -49,7 +49,7 @@ NEXT_CHANNEL	= 1
 PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
-E_USE_CHANNEL_LOGO = False
+E_USE_CHANNEL_LOGO = True
 
 E_NOMAL_BLINKING_TIME	= 0.2
 E_MAX_BLINKING_COUNT	=  10
@@ -936,7 +936,8 @@ class LivePlate( LivePlateWindow ) :
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
-			self.mCtrlLblChannelNumber.setLabel( aValue )
+			#self.mCtrlLblChannelNumber.setLabel( aValue )
+			self.mCtrlLblChannelNumber.setLabel( '9999' )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
 			self.mCtrlLblChannelName.setLabel( aValue )

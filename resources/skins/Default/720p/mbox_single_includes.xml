@@ -5797,7 +5797,7 @@
 
 	<include name="DefaultInfoPlateGroup">
 		<control type="grouplist" id="1003620">
-			<posx>315</posx>
+			<posx>345</posx>
 			<posy>-35</posy>
 			<width>370</width>
 			<height>40</height>
