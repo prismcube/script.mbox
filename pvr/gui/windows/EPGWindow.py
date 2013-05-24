@@ -133,6 +133,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridItemGap = E_GRID_DEFAULT_GAP
 		self.mGridLastFoucusId = 0
 		self.mGridItemGap = 5
+		self.mGridKeepFocus = False		
 
 	def onInit( self ) :
 	
@@ -150,6 +151,7 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )
 
 		#GRID MODE
+		self.mGridKeepFocus = False		
 		self.mVisibleTopIndex = 0
 		self.mShowingOffset = 0
 		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
@@ -363,6 +365,7 @@ class EPGWindow( BaseWindow ) :
 					self.mDeltaTime	= E_GRID_HALF_HOUR
 
 				self.mVisibleFocusCol = 0
+				self.mGridKeepFocus = True
 				self.UpdateAllEPGList( )
 				self.GridSetFocus( )
 			else :
@@ -2206,7 +2209,10 @@ class EPGWindow( BaseWindow ) :
 			normalize = int( self.mDataCache.Datetime_GetGMTTime( ) / E_GRID_HALF_HOUR )
 			self.mShowingGMTTime = normalize * E_GRID_HALF_HOUR
 			self.SetTimeline( )
-			self.FocusCurrentChannel( )
+			if self.mGridKeepFocus == True :
+				self.mGridKeepFocus = False
+			else :
+				self.FocusCurrentChannel( )
 			
 			if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
 				self.mUpdateEPGInfomationTimer.cancel( )
