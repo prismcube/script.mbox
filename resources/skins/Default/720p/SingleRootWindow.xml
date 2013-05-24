@@ -2290,7 +2290,7 @@ Search for window name
 					<control type="label" id="1400701">
 						<posx>-40</posx>
 						<posy>10</posy>
-						<width>300</width>
+						<width>270</width>
 						<font>font13caps</font>
 						<align>left</align>
 						<textcolor>9f9f9f9b</textcolor>
