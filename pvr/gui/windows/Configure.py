@@ -21,9 +21,11 @@ E_AUDIO_SETTING			= 3
 E_HDMI_SETTING			= 4
 E_NETWORK_SETTING		= 5
 E_TIME_SETTING			= 6
-E_FORMAT_HDD			= 7
-E_FACTORY_RESET			= 8
-E_ETC					= 9
+E_EPG					= 7
+E_FORMAT_HDD			= 8
+E_FACTORY_RESET			= 9
+E_ETC					= 10
+
 E_ETHERNET				= 100
 E_WIFI					= 101
 
@@ -89,6 +91,11 @@ class Configure( SettingWindow ) :
 		self.mAsyncVideoSetThread	= None
 		self.mBusyVideoSetting		= False
 
+		self.mEpgGrabinngTime		= 10800
+		self.mEpgStartChannel		= 1
+		self.mEpgEndChannel			= 1
+		self.mEpgFavGroup			= 0
+
 
 	def onInit( self ) :
 		self.OpenBusyDialog( )
@@ -102,6 +109,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Video Setting' ),
 		MR_LANG( 'Network Setting' ),
 		MR_LANG( 'Time Setting' ),
+		MR_LANG( 'EPG' ),
 		MR_LANG( 'HDD Format' ),
 		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
@@ -118,6 +126,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
+		MR_LANG( 'Setup the EPG grabbing' ),
 		MR_LANG( 'Delete everything off your hard drive' ),
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
@@ -291,6 +300,33 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_TIME_SETTING :
 			self.TimeSetting( groupId )
+
+		elif selectedId == E_EPG :
+			if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
+				self.ControlSelect( )
+
+			elif groupId == E_SpinEx03 :
+				self.ControlSelect( )
+				self.DisableControl( E_EPG )
+
+			elif groupId == E_Input01 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( MR_LANG( 'EPG grabbing time' ), str( self.mEpgGrabinngTime ), 5 )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mEpgGrabinngTime = int( dialog.GetString( ) )
+					ElisPropertyInt( 'EPG Grabbing Time', self.mCommander ).SetProp( self.mEpgGrabinngTime )
+					self.SetControlLabel2String( E_Input01, str( self.mEpgGrabinngTime ) )
+
+			elif groupId == E_Input02 :
+				self.SetStartEndChannel( )
+
+			elif groupId == E_Input03 :
+				tmp = self.ShowFavoriteGroup( )
+				if tmp != -1 :
+					self.mEpgFavGroup = tmp
+					ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( self.mEpgFavGroup )
+					self.SetListControl( )
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -688,7 +724,7 @@ class Configure( SettingWindow ) :
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )				
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -696,6 +732,59 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 			time.sleep( 0.02 )
 			self.DisableControl( E_TIME_SETTING )
+
+		elif selectedId == E_EPG :
+			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
+
+			self.mEpgGrabinngTime = ElisPropertyInt( 'EPG Grabbing Time', self.mCommander ).GetProp( )
+			self.mEpgFavGroup = ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( )
+			self.mEpgStartChannel = ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).GetProp( )
+			self.mEpgEndChannel = ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).GetProp( )
+			groupName = 'None'
+
+			zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+			allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
+			if not allChannels or len( allChannels ) < 1 :
+				groupName = 'None'
+				self.mEpgStartChannel = 1
+				self.mEpgEndChannel = 1
+				ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
+				ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
+			else :
+				favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
+				if not favoriteGroup or len( favoriteGroup ) < 1 :
+					groupName = 'None'
+				else :
+					if self.mEpgFavGroup >= len( favoriteGroup ) :
+						print 'dhkim test mEpgFavGroup > len (favoriteGroup )'
+						self.mEpgFavGroup = 0
+						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 0 )
+					groupName = favoriteGroup[ self.mEpgFavGroup ].mGroupName
+
+				if self.mEpgStartChannel > len( allChannels ) or self.mEpgEndChannel > len( allChannels ) :
+					self.mEpgStartChannel = 1
+					self.mEpgEndChannel = 1
+					ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
+					ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
+
+			
+			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Auto EPG grabbing' ), MR_LANG( 'xxxxxxxxx' ) )
+			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', None, MR_LANG( 'xxxxxxxxx' ) )
+			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', None, MR_LANG( 'xxxxxxxxx' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'EPG grabbing time' ), str( self.mEpgGrabinngTime ), MR_LANG( 'xxxxx' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Auto EPG channel setting' ), MR_LANG( 'Start Channel Num : %s, End Channel Num : %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'xxxxx' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Auto EPG group setting' ), groupName, MR_LANG( 'xxxxx' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06,  E_Input04, E_Input05, E_Input06, E_Input07 ]
+			self.SetVisibleControls( hideControlIds, False )
+
+			self.InitControl( )
+			time.sleep( 0.2 )
+			self.DisableControl( E_EPG )
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -814,6 +903,15 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_Input03, True )
 					self.SetEnableControl( E_SpinEx02, False )
 					self.SetEnableControl( E_SpinEx03, False )
+
+		elif aSelectedItem == E_EPG :
+			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
+			if selectedIndex == 0 :
+				self.SetEnableControl( E_Input02, True )
+				self.SetEnableControl( E_Input03, False )
+			else :
+				self.SetEnableControl( E_Input02, False )
+				self.SetEnableControl( E_Input03, True )
 
 
 	def LoadEthernetInformation( self ) :
@@ -1319,3 +1417,73 @@ class Configure( SettingWindow ) :
 
 		else :
 			self.ControlSelect( )
+
+
+	def ShowFavoriteGroup( self ) :
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+
+		#check AllChannels
+		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
+		if not allChannels or len( allChannels ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
+			dialog.doModal( )
+			return -1
+
+		#check fav groups
+		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
+		if not favoriteGroup or len( favoriteGroup ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No favorite group available' ) )
+			dialog.doModal( )
+			return -1
+
+		favoriteList = []
+		for item in favoriteGroup :
+			favoriteList.append( item.mGroupName )
+
+		dialog = xbmcgui.Dialog( )
+		ret = dialog.select( MR_LANG( 'Favorite group' ), favoriteList, False, self.mEpgFavGroup )
+		if ret >= 0 :
+			return ret
+		else :
+			print 'dhkim test select none'
+			return -1
+
+
+	def SetStartEndChannel( self ) :
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+
+		#check AllChannels
+		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
+		if not allChannels or len( allChannels ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
+			dialog.doModal( )
+			return
+
+		channelList = []
+		for channel in allChannels :
+			channelList.append( '%s %s' % ( channel.mNumber, channel.mName ) )
+
+		dialog = xbmcgui.Dialog( )
+		ret = dialog.select( MR_LANG( 'Select start channel' ), channelList, False, 0 )
+		if ret >= 0 :
+			self.mEpgStartChannel = allChannels[ ret ].mNumber
+		else :
+			return
+		ret = dialog.select( MR_LANG( 'Select end channel' ), channelList, False, 0 )
+		if ret >= 0 :
+			self.mEpgEndChannel = allChannels[ ret ].mNumber
+		else :
+			return
+
+		if self.mEpgStartChannel > self.mEpgEndChannel :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'end channel available ' ) )
+			dialog.doModal( )
+			return
+
+		ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
+		ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
+		self.SetListControl( )
