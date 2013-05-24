@@ -590,7 +590,7 @@ class TimeShiftPlate( BaseWindow ) :
 				status = E_CONTROL_ID_BUTTON_PLAY
 			elif self.mSpeed < 0 :
 				status = E_CONTROL_ID_BUTTON_REWIND
-			elif self.mSpeed > 100 :
+			elif self.mSpeed > 100 or self.mSpeed in E_TINY_XSPEED :
 				status = E_CONTROL_ID_BUTTON_FORWARD
 
 			self.GetNextSpeed( E_ONINIT )
