@@ -1814,16 +1814,17 @@ Search for window name
 					<control type="image">
 						<description>Channel Logo Background</description>
 						<posx>-20</posx>
-						<posy>15</posy>
+						<posy>12</posy>
 						<width>90</width>
 						<height>55</height>
 						<texture>Logo_Background.png</texture>
+						<colordiffuse>FFEFEFEF</colordiffuse>
 						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
 					</control>
 					<control type="image">
 						<description>Channel Logo Icon</description>
 						<posx>-20</posx>
-						<posy>15</posy>
+						<posy>12</posy>
 						<width>90</width>
 						<height>55</height>
 						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
