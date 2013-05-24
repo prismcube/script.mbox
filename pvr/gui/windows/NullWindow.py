@@ -1012,6 +1012,15 @@ class NullWindow( BaseWindow ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 		if not oldChannel or oldChannel.mError != 0 :
 			oldChannel = self.mDataCache.Channel_GetCurrent( )
+
+		channelList = self.mDataCache.Channel_GetList( )
+		if not channelList or len( channelList ) < 1 or \
+		   ( oldChannel and self.mDataCache.Channel_GetCurr( oldChannel.mNumber ) == None ) :
+			self.mLoopCount = 0
+			self.NotAvailAction( )
+			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
+			return
+
 		self.AsyncTuneChannelByInput( oldChannel.mNumber, True )
 
 

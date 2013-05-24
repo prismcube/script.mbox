@@ -43,6 +43,7 @@ class EPGSearchWindow( BaseWindow ) :
 
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
 		self.mCtrlBigList = self.getControl( LIST_ID_BIG_EPG )
+		self.mCtrlBigList.reset()		
 
 		self.mCtrlTimeLabel = self.getControl( LABEL_ID_TIME )
 		self.mCtrlDateLabel = self.getControl( LABEL_ID_DATE )

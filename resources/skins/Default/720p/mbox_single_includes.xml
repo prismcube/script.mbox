@@ -5255,9 +5255,9 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			<control type="list" id="1003510">
-				<posx>75</posx>
+				<posx>50</posx>
 				<posy>70</posy>
-				<width>1200</width>
+				<width>1225</width>
 				<height>560</height>
 				<onleft>3709000</onleft>
 				<onright>1003511</onright>
@@ -5266,11 +5266,11 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003511</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="610">
+				<itemlayout height="70" width="635">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>755</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
@@ -5311,7 +5311,7 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
-						<width>450</width>
+						<width>475</width>
 						<height>37</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -5335,7 +5335,7 @@
 					</control-->
 					<!-- start time-->
 					<control type="label">
-						<posx>720</posx>
+						<posx>745</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
@@ -5350,7 +5350,7 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>30</posy>
-						<width>450</width>
+						<width>475</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>grey2</textcolor>
@@ -5363,7 +5363,7 @@
 					<!-- progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>587</posx>
+						<posx>612</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
@@ -5371,11 +5371,11 @@
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
+				<focusedlayout height="70" width="635">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>745</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(1003510)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)]</visible>
@@ -5384,7 +5384,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>755</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
@@ -5392,7 +5392,7 @@
 					<control type="image">
 						<posx>530</posx>
 						<posy>5</posy>
-						<width>200</width>
+						<width>225</width>
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 					</control>
@@ -5433,7 +5433,7 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
-						<width>450</width>
+						<width>475</width>
 						<height>30</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -5457,7 +5457,7 @@
 					</control-->
 					<!-- start time  -->
 					<control type="label">
-						<posx>720</posx>
+						<posx>745</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
@@ -5472,7 +5472,7 @@
 					<control type="label">
 						<posx>130</posx>
 						<posy>30</posy>
-						<width>450</width>
+						<width>475</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>
@@ -5485,7 +5485,7 @@
 					<!-- progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>587</posx>
+						<posx>612</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
