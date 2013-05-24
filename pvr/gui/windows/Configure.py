@@ -310,13 +310,14 @@ class Configure( SettingWindow ) :
 				self.DisableControl( E_EPG )
 
 			elif groupId == E_Input01 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'EPG grabbing time' ), str( self.mEpgGrabinngTime ), 5 )
-				dialog.doModal( )
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					self.mEpgGrabinngTime = int( dialog.GetString( ) )
+				time = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
+				time = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your EPG grabbing time' ), time )
+				tmptime = time.split( ':' )
+				intTime = int( tmptime[0] ) * 3600 + int( tmptime[1] ) * 60
+				if self.mEpgGrabinngTime != intTime :
+					self.mEpgGrabinngTime = intTime
 					ElisPropertyInt( 'EPG Grabbing Time', self.mCommander ).SetProp( self.mEpgGrabinngTime )
-					self.SetControlLabel2String( E_Input01, str( self.mEpgGrabinngTime ) )
+					self.SetControlLabel2String( E_Input01, '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ) )
 
 			elif groupId == E_Input02 :
 				self.SetStartEndChannel( )
@@ -740,12 +741,12 @@ class Configure( SettingWindow ) :
 			self.mEpgFavGroup = ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( )
 			self.mEpgStartChannel = ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).GetProp( )
 			self.mEpgEndChannel = ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).GetProp( )
-			groupName = 'None'
+			groupName = MR_LANG( 'None' )
 
 			zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 			allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
 			if not allChannels or len( allChannels ) < 1 :
-				groupName = 'None'
+				groupName = MR_LANG( 'None' )
 				self.mEpgStartChannel = 1
 				self.mEpgEndChannel = 1
 				ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
@@ -753,10 +754,9 @@ class Configure( SettingWindow ) :
 			else :
 				favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
 				if not favoriteGroup or len( favoriteGroup ) < 1 :
-					groupName = 'None'
+					groupName = MR_LANG( 'None' )
 				else :
 					if self.mEpgFavGroup >= len( favoriteGroup ) :
-						print 'dhkim test mEpgFavGroup > len (favoriteGroup )'
 						self.mEpgFavGroup = 0
 						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 0 )
 					groupName = favoriteGroup[ self.mEpgFavGroup ].mGroupName
@@ -768,12 +768,12 @@ class Configure( SettingWindow ) :
 					ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 
 			
-			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Auto EPG grabbing' ), MR_LANG( 'xxxxxxxxx' ) )
-			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', None, MR_LANG( 'xxxxxxxxx' ) )
-			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', None, MR_LANG( 'xxxxxxxxx' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'EPG grabbing time' ), str( self.mEpgGrabinngTime ), MR_LANG( 'xxxxx' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Auto EPG channel setting' ), MR_LANG( 'Start Channel Num : %s, End Channel Num : %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'xxxxx' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'Auto EPG group setting' ), groupName, MR_LANG( 'xxxxx' ) )
+			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Auto EPG grabbing' ), MR_LANG( 'When set to \'On\', the system automatically grabbin EPG' ) )
+			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', None, MR_LANG( 'Select EPG grabbing interval time' ) )
+			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', None, MR_LANG( 'Select EPG grabinng type' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'EPG grabbing time' ), '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ), MR_LANG( 'Input EPG grabinng time' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Auto EPG channel setting' ), MR_LANG( 'Start Channel Num : %s, End Channel Num : %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'Select EPG grabinng start channel and end channel' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Auto EPG group setting' ), groupName, MR_LANG( 'Select EPG grabinng favoriate name' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1447,7 +1447,6 @@ class Configure( SettingWindow ) :
 		if ret >= 0 :
 			return ret
 		else :
-			print 'dhkim test select none'
 			return -1
 
 
