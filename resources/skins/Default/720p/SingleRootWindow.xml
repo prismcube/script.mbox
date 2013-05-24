@@ -1701,7 +1701,7 @@ Search for window name
 				<control type="image">
 					<description>media info background image</description>
 					<posx>-13</posx>
-					<posy>540</posy>
+					<posy>547</posy>
 					<width>1306</width>
 					<height>187</height>
 					<texture>MediaInfoBackLower.png</texture>
@@ -1810,6 +1810,14 @@ Search for window name
 						<textcolor>red</textcolor>
 						<label>PLAYBACK</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
+					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>20</posy>
+						<width>60</width>
+						<height>40</height>
+						<texture>Logo_Background.png</texture>
+						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
 					</control>
 					<control type="image">
 						<posx>-20</posx>
@@ -2404,7 +2412,7 @@ Search for window name
 					<control type="image">
 						<description>media info background image</description>
 						<posx>-13</posx>
-						<posy>540</posy>
+						<posy>547</posy>
 						<width>1306</width>
 						<height>187</height>
 						<texture>MediaInfoBackLower.png</texture>
@@ -4365,7 +4373,7 @@ Search for window name
 				<posy>669</posy>
 				<width>440</width>
 				<height>32</height>
-				<visible>substring(Window.Property(EPGFootor),True) + substring(Window.Property(CurrentWindow),3700000)</visible>
+				<visible>substring(Window.Property(EPGFootor),True) + [substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)]</visible>
 				<control type="image">
 					<posx>20</posx>
 					<posy>0</posy>
@@ -5877,17 +5885,17 @@ Search for window name
 		<control type="group" id="4500000">
 			<visible>substring(Window.Property(CurrentWindow),4500000)</visible>
 			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
 				<texture>backgrounds/SKINDEFAULT.jpg</texture>
 			</control>
 			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
 				<texture>black-back.png</texture>
 			</control>
 			<control type="image">

@@ -224,6 +224,13 @@ class Configure( SettingWindow ) :
 						dialog.doModal( )
 						return
 
+					isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+					if isDownload :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Try again after completing firmware update' ) )
+						dialog.doModal( )
+						return
+
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
 					dialog.doModal( )
@@ -232,8 +239,6 @@ class Configure( SettingWindow ) :
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
 						time.sleep( 0.5 )
-						if E_SUPPORT_SINGLE_WINDOW_MODE == True:
-							self.mRootWindow.mReloadControls = True
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
 			elif groupId == E_SpinEx02 :

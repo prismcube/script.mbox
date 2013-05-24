@@ -307,6 +307,10 @@ class SystemUpdate( SettingWindow ) :
 			return False
 
 
+	def GetStatusFromFirmware( self ) :
+		return self.mGetDownloadThread
+
+
 	def Close( self ) :
 		if not self.mGetDownloadThread and \
 		   self.mEnableLocalThread and self.mCheckEthernetThread :
