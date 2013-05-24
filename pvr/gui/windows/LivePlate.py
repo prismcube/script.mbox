@@ -494,6 +494,7 @@ class LivePlate( LivePlateWindow ) :
 			self.mFakeChannel = prevChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateChannelLogo( self.mFakeChannel )
 			SetLock2(False)
 			
 			self.RestartAsyncTune( )
@@ -507,6 +508,7 @@ class LivePlate( LivePlateWindow ) :
 			self.mFakeChannel = nextChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateChannelLogo( self.mFakeChannel )
 			SetLock2(False)
 
 			self.RestartAsyncTune( )
@@ -520,6 +522,7 @@ class LivePlate( LivePlateWindow ) :
 			self.mFakeChannel = jumpChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateChannelLogo( self.mFakeChannel )
 			SetLock2(False)
 			
 			self.RestartAsyncTune( )
@@ -548,6 +551,7 @@ class LivePlate( LivePlateWindow ) :
 			self.InitControlGUI( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
+			self.UpdateChannelLogo( iChannel )
 			self.UpdateChannelGUI( )
 			return
 
@@ -722,18 +726,30 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdateEpgGUI( aEpg )
 
 
+	def UpdateChannelLogo( self, aChannel = None ) :
+		if not E_USE_CHANNEL_LOGO :
+			LOG_TRACE( 'No support Channel Logo' )
+			return
+
+		if not aChannel or aChannel.mError != 0 :
+			self.UpdatePropertyGUI( 'iChannelLogo', '' )
+			LOG_TRACE( 'Channel None, Logo None' )
+			return
+
+		logo = '%s_%s' %( aChannel.mCarrier.mDVBS.mSatelliteLongitude, aChannel.mSid )
+		LOG_TRACE( 'logo=%s' %logo )
+		LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+		chImage = self.mChannelLogo.GetLogo( logo, aChannel.mServiceType )
+		#if chImage == self.mChannelLogo.mDefaultLogo or chImage == self.mChannelLogo.mDefaultLogoRadio :
+		#	chImage = ''
+		self.UpdatePropertyGUI( 'iChannelLogo', '%s'% chImage )
+
+
 	def UpdateChannelGUI( self ) :
 		ch = self.mCurrentChannel
 		if ch :
 			try :
-				if E_USE_CHANNEL_LOGO :
-					logo = '%s_%s' %(ch.mCarrier.mDVBS.mSatelliteLongitude, ch.mSid )
-					LOG_TRACE( 'logo=%s' %logo )
-					LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					chImage = self.mChannelLogo.GetLogo( logo, ch.mServiceType )
-					if chImage == self.mChannelLogo.mDefaultLogo or chImage == self.mChannelLogo.mDefaultLogoRadio :
-						chImage = ''
-					self.UpdatePropertyGUI( 'iChannelLogo', '%s'% chImage )
+				#self.UpdateChannelLogo( ch )
 
 				#satellite
 				label = self.mDataCache.GetModeInfoByZappingMode( ch )
@@ -883,6 +899,7 @@ class LivePlate( LivePlateWindow ) :
 
 		tvValue = E_TAG_TRUE
 		raValue = E_TAG_FALSE
+		chLogoB = E_TAG_TRUE
 		if self.mCurrentChannel :
 			if self.mCurrentChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				tvValue = E_TAG_FALSE
@@ -890,6 +907,7 @@ class LivePlate( LivePlateWindow ) :
 		else :
 			tvValue = E_TAG_FALSE
 			raValue = E_TAG_FALSE
+			chLogoB = E_TAG_FALSE
 
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
@@ -906,7 +924,9 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
 		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
-		self.UpdatePropertyGUI( 'iChannelLogo', '' )
+		if E_USE_CHANNEL_LOGO :
+			self.UpdatePropertyGUI( 'iChannelLogoBack', chLogoB )
+			#self.UpdatePropertyGUI( 'iChannelLogo', '' )
 		if self.mCasInfoThread :
 			self.mEnableCasInfo = False
 			self.mCasInfoThread.join( )

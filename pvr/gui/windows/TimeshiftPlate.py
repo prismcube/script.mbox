@@ -861,9 +861,14 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT :
 			idx = self.mCtrlBookMarkList.getSelectedPosition( )
-			pos = self.mBookmarkButton[idx].getPosition( )
-			self.mCtrlImgCurrent.setPosition( pos[0], 0 )
+			if self.mBookmarkList and len( self.mBookmarkList ) > 0 :
+				controlId = self.mDataCache.GetBookmarkHash( self.mBookmarkList[idx].mOffset )
+				if controlId == -1 :
+					controlId = 0
 
+				pos = self.mBookmarkButton[controlId].getPosition( )
+				self.mCtrlImgCurrent.setPosition( pos[0], 0 )
+				#LOG_TRACE( 'refresh idx[%s] controlid[%s] pos[%s]'% ( idx, controlId, pos ) )
 
 		"""
 		elif aCtrlID == E_CONTROL_ID_BUTTON_JUMP_RR :
@@ -1529,6 +1534,7 @@ class TimeShiftPlate( BaseWindow ) :
 					nextPos = selectedPos - 1
 					if nextPos > -1 and nextPos <= len( self.mBookmarkList ) - 1 :
 						self.mCtrlBookMarkList.selectItem( nextPos )
+						time.sleep( 0.05 )
 						#self.UpdateControlListSelectItem( self.mCtrlBookMarkList, nextPos )
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT )
 
@@ -1872,6 +1878,7 @@ class TimeShiftPlate( BaseWindow ) :
 					#LOG_TRACE( 'bookmark unVisible id[%s] pos[%s] //// bookmark idx[%s] offset[%s]'% ( self.mBookmarkButton[controlId].getId(), self.mBookmarkButton[controlId].getPosition( ), controlId, bookmark.mOffset ) )
 
 			self.mDataCache.InitBookmarkHash( )
+			self.mDataCache.InitBookmarkButton( )
 			self.mDataCache.SetBookmarkButton( self.mBookmarkButton )
 			LOG_TRACE('erased Init. bookmark' )
 
