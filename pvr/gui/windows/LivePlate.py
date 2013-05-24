@@ -936,8 +936,7 @@ class LivePlate( LivePlateWindow ) :
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
-			#self.mCtrlLblChannelNumber.setLabel( aValue )
-			self.mCtrlLblChannelNumber.setLabel( '9999' )
+			self.mCtrlLblChannelNumber.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
 			self.mCtrlLblChannelName.setLabel( aValue )

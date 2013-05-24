@@ -1801,7 +1801,7 @@ Search for window name
 					<posx>50</posx>
 					<posy>600</posy>
 					<control type="label">
-						<posx>-50</posx>
+						<posx>-55</posx>
 						<posy>5</posy>
 						<width>300</width>
 						<height>50</height>
@@ -1832,7 +1832,7 @@ Search for window name
 					</control>
 					<control type="label" id="1400601">
 						<description>Channel Number</description>
-						<posx>85</posx>
+						<posx>90</posx>
 						<posy>5</posy>
 						<width>160</width>
 						<height>50</height>
@@ -1843,7 +1843,7 @@ Search for window name
 					</control>
 					<control type="label" id="1400602">
 						<description>Channel Name</description>
-						<posx>280</posx>
+						<posx>270</posx>
 						<posy>17</posy>
 						<align>left</align>
 						<width>450</width>
@@ -1854,7 +1854,7 @@ Search for window name
 					</control>
 
 					<control type = "group">
-						<posx>275</posx>
+						<posx>265</posx>
 						<posy>-35</posy>
 						<control type="image" id="1400603">
 							<posx>0</posx>
@@ -2014,7 +2014,7 @@ Search for window name
 					<include>DefaultInfoPlateGroup</include>
 
 					<control type="group">
-						<posx>740</posx>
+						<posx>730</posx>
 						<posy>-35</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2175,7 +2175,7 @@ Search for window name
 					</control>
 
 					<control type="group">
-						<posx>735</posx>
+						<posx>725</posx>
 						<posy>18</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -2284,14 +2284,14 @@ Search for window name
 
 		<!-- epg section -->
 				<control type="group" id="1400700">
-					<posx>80</posx>
+					<posx>70</posx>
 					<posy>660</posy>
 					<control type="label" id="1400701">
-						<posx>-150</posx>
+						<posx>-40</posx>
 						<posy>10</posy>
 						<width>300</width>
 						<font>font13caps</font>
-						<align>center</align>
+						<align>left</align>
 						<textcolor>9f9f9f9b</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
