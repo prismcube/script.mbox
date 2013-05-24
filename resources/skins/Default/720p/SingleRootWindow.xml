@@ -1701,7 +1701,7 @@ Search for window name
 				<control type="image">
 					<description>media info background image</description>
 					<posx>-13</posx>
-					<posy>540</posy>
+					<posy>547</posy>
 					<width>1306</width>
 					<height>187</height>
 					<texture>MediaInfoBackLower.png</texture>
@@ -2404,7 +2404,7 @@ Search for window name
 					<control type="image">
 						<description>media info background image</description>
 						<posx>-13</posx>
-						<posy>540</posy>
+						<posy>547</posy>
 						<width>1306</width>
 						<height>187</height>
 						<texture>MediaInfoBackLower.png</texture>
