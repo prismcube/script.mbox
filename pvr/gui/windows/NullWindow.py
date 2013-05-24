@@ -303,6 +303,11 @@ class NullWindow( BaseWindow ) :
 				LOG_TRACE( '----------------try recording' )
 				return
 
+			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+			if isDownload :
+				self.DialogPopupOK( actionId + 1000 )
+				return
+
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				if status.mMode == ElisEnum.E_MODE_PVR :
@@ -887,6 +892,9 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_MBOX_XBMC :
 			msg = MR_LANG( 'Try again after stopping playback' )
+
+		elif aAction == ( Action.ACTION_MBOX_XBMC + 1000 ) :
+			msg = MR_LANG( 'Try again after completing firmware update' )
 
 		elif aAction == Action.ACTION_MBOX_RECORD :
 			msg = MR_LANG( 'Try again after stopping playback' )
