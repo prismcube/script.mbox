@@ -92,6 +92,8 @@ class Configure( SettingWindow ) :
 
 	def onInit( self ) :
 		self.OpenBusyDialog( )
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -128,9 +130,9 @@ class Configure( SettingWindow ) :
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
-
-		position = self.mCtrlLeftGroup.getSelectedPosition( )
-		self.mCtrlLeftGroup.selectItem( position )
+		
+		if self.mPrevListItemID != -1 :
+			self.mCtrlLeftGroup.selectItem( self.mPrevListItemID )
 
 		self.mVisibleParental = False
 		self.mReLoadEthernetInformation = True
@@ -139,7 +141,6 @@ class Configure( SettingWindow ) :
 		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
 		self.SetListControl( )
-		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
 		self.CloseBusyDialog( )
@@ -206,10 +207,10 @@ class Configure( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		
+
 		if selectedId == E_LANGUAGE :
 			if groupId == E_Input01 :
 				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
@@ -488,6 +489,7 @@ class Configure( SettingWindow ) :
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
+		time.sleep( 0.02 )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
@@ -507,7 +509,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			time.sleep( 0.2 )
+			time.sleep( 0.02 )
 			self.DisableControl( E_LANGUAGE )
 
 		elif selectedId == E_PARENTAL :	
@@ -525,7 +527,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			time.sleep( 0.2 )
+			time.sleep( 0.02 )
 			self.DisableControl( E_PARENTAL )
 
 		elif selectedId == E_RECORDING_OPTION :
@@ -615,7 +617,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					self.DisableControl( E_WIFI )
 				else :
 					if self.mReLoadEthernetInformation == True :
@@ -637,7 +639,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					self.DisableControl( E_ETHERNET )
 
 				self.SetEnableControl( E_Input07, False )
@@ -687,7 +689,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			time.sleep( 0.2 )
+			time.sleep( 0.02 )
 			self.DisableControl( E_TIME_SETTING )
 
 		elif selectedId == E_FORMAT_HDD :
