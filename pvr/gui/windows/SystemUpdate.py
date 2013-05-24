@@ -307,7 +307,7 @@ class SystemUpdate( SettingWindow ) :
 			return False
 
 
-	def GetStatusFromPackage( self ) :
+	def GetStatusFromFirmware( self ) :
 		return self.mGetDownloadThread
 
 

@@ -261,6 +261,11 @@ class LivePlate( LivePlateWindow ) :
 				LOG_TRACE( '------------22----try recording' )
 				return
 
+			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+			if isDownload :
+				self.DialogPopup( Action.ACTION_MBOX_XBMC + 1000 )
+				return
+
 			status = self.mDataCache.Player_GetStatus( ) 
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
@@ -1061,6 +1066,11 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			self.ShowAudioVideoContext( )
+
+		elif aFocusId == ( Action.ACTION_MBOX_XBMC + 1000 ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+			dialog.doModal( )
 
 		self.RestartAutomaticHide( )
 		self.mIsShowDialog = False
