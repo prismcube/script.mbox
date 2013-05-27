@@ -153,7 +153,7 @@ class Configure( SettingWindow ) :
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
 		self.CloseBusyDialog( )
-		
+
 
 	def Close( self ) :
 		if self.mAsyncVideoSetThread :
@@ -172,7 +172,7 @@ class Configure( SettingWindow ) :
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -247,7 +247,6 @@ class Configure( SettingWindow ) :
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
-						import time
 						time.sleep( 0.5 )
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
@@ -311,9 +310,9 @@ class Configure( SettingWindow ) :
 				self.DisableControl( E_EPG )
 
 			elif groupId == E_Input01 :
-				time = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
-				time = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your EPG grabbing time' ), time )
-				tmptime = time.split( ':' )
+				timeT = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
+				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your EPG grabbing time' ), timeT )
+				tmptime = timeT.split( ':' )
 				intTime = int( tmptime[0] ) * 3600 + int( tmptime[1] ) * 60
 				if self.mEpgGrabinngTime != intTime :
 					self.mEpgGrabinngTime = intTime
