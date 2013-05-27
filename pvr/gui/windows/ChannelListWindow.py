@@ -110,7 +110,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.SetSingleWindowPosition( E_CHANNEL_LIST_BASE_ID )
 
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Channel List' )
+		self.SetFrontdisplayMessage( MR_LANG('Channel List') )
 		self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )

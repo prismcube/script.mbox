@@ -16,7 +16,7 @@ class AntennaSetup( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_ANTENNA_SETUP_BASE_ID )
-		self.SetFrontdisplayMessage( 'Antenna Setup' )
+		self.SetFrontdisplayMessage( MR_LANG('Antenna Setup') )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Antenna Setup' ) ) )

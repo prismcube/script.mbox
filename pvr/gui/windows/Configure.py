@@ -134,7 +134,7 @@ class Configure( SettingWindow ) :
 		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
-		self.SetFrontdisplayMessage( 'Configuration' )
+		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
