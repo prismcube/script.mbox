@@ -211,22 +211,30 @@ class DialogStopRecord( BaseDialog ) :
 			timer = self.mRunningTimerList[i]
 
 			#timer.printdebug( )
-			LOG_TRACE( 'START REC: %s' %TimeToString( timer.mRecordStartedTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-			LOG_TRACE( 'START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE( 'CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE( 'END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			#LOG_TRACE( 'START REC: %s' %TimeToString( timer.mRecordStartedTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+			#LOG_TRACE( 'START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			#LOG_TRACE( 'CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			#LOG_TRACE( 'END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 
+			recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )
+			duration = timer.mDuration
 
-			expectedRecording = self.mLocalTime - timer.mRecordStartedTime
+			if recInfo :
+				LOG_TRACE( 'START REC: %s' %TimeToString( recInfo.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )	
+				expectedRecording = self.mLocalTime - recInfo.mStartTime
+				duration = timer.mRecordStartedTime + timer.mDuration -  recInfo.mStartTime
+			else :
+				expectedRecording = self.mLocalTime - timer.mRecordStartedTime
+
 			if expectedRecording < 0 :
 				expectedRecording = 0
 
-			if timer.mDuration <= 0 : #to avoid exception
-				timer.mDuration = 1
+			if duration <= 0 : #to avoid exception
+				duration = 1
 
 			#self.mCtrlDuration[i].setLabel( '%d/%d Min' %(int(expectedRecording/60) , int(timer.mDuration/60) ) )
 			self.mCtrlDuration[i].setLabel( '%s' %(TimeToString( expectedRecording, TimeFormatEnum.E_HH_MM_SS ) ) )			
-			self.mCtrlProgress[i].setPercent( int( expectedRecording*100/timer.mDuration ) )
+			self.mCtrlProgress[i].setPercent( int( expectedRecording*100/duration ) )
 
 		self.mLock.release( )
 
