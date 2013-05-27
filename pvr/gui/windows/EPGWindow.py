@@ -110,6 +110,7 @@ class EPGWindow( BaseWindow ) :
 		self.mListItems = []
 		self.mTimerList = []
 		self.mUpdateEPGInfomationTimer = None
+		self.mResetListItems = False
 		
 
 		#GRID MODE
@@ -147,7 +148,7 @@ class EPGWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mSelectedIndex = 0
-		self.mListItems = []
+		#self.mListItems = []
 		self.Flush( )
 
 		#GRID MODE
@@ -510,6 +511,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def Flush( self ) :
+		if self.mResetListItems == True :
+			self.mResetListItems = False	
+			self.mListItems = []
 		self.mEPGList = []
 		self.mEPGHashTable = {}
 		self.mEPGCount = 0
@@ -1646,6 +1650,7 @@ class EPGWindow( BaseWindow ) :
 				self.mEventBus.Deregister( self )	
 				self.StopEPGUpdateTimer( )
 
+				self.mResetListItems = True
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
 

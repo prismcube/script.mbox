@@ -247,6 +247,7 @@ class Configure( SettingWindow ) :
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
+						import time
 						time.sleep( 0.5 )
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
