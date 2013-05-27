@@ -768,7 +768,7 @@ class Configure( SettingWindow ) :
 					ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 
 			
-			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Auto EPG grabbing' ), MR_LANG( 'When set to \'On\', the system automatically grabbin EPG' ) )
+			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Auto EPG grabbing' ), MR_LANG( 'When set to \'On\', the system automatically grabbing EPG' ) )
 			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', None, MR_LANG( 'Select EPG grabbing interval time' ) )
 			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', None, MR_LANG( 'Select EPG grabinng type' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'EPG grabbing time' ), '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ), MR_LANG( 'Input EPG grabinng time' ) )
