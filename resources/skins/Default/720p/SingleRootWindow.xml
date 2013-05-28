@@ -769,8 +769,9 @@ Search for window name
 							<height>41</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
+						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -779,7 +780,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -788,7 +789,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -833,7 +834,7 @@ Search for window name
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>550</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
@@ -854,9 +855,10 @@ Search for window name
 						</control-->
 
 						<control type="label">
+							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -866,8 +868,9 @@ Search for window name
 							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 						</control>
 						<control type="label">
-							<posx>580</posx>
-							<posy>0</posy>
+							<description>Move Icon</description>
+							<posx>535</posx>
+							<posy>-1</posy>
 							<width>80</width>
 							<height>40</height>
 							<font>font10_title</font>
@@ -905,7 +908,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -914,7 +917,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -923,7 +926,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -968,7 +971,7 @@ Search for window name
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>550</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
@@ -988,9 +991,10 @@ Search for window name
 							<label>$INFO[substring(ListItem.Property(iTunerNo),true)]</label>
 						</control-->
 						<control type="label">
+							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -1000,9 +1004,10 @@ Search for window name
 							<visible>substring(Window(10000).Property(isMove),true)</visible>
 						</control>
 						<control type="label">
+							<description>Focused Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>white</textcolor>
@@ -1013,8 +1018,9 @@ Search for window name
 							<visible>!substring(Window(10000).Property(isMove),true)</visible>
 						</control>
 						<control type="label">
-							<posx>580</posx>
-							<posy>0</posy>
+							<description>Move Icon</description>
+							<posx>535</posx>
+							<posy>-1</posy>
 							<width>80</width>
 							<height>40</height>
 							<font>font10_title</font>
@@ -1339,7 +1345,7 @@ Search for window name
 				<control type="label">
 					<posx>80r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -1352,7 +1358,7 @@ Search for window name
 				<control type="label">
 					<posx>80r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
