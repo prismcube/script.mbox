@@ -200,6 +200,13 @@ class Configure( SettingWindow ) :
 			if focusId != E_CONFIGURE_SUBMENU_LIST_ID :
 				self.ControlDown( )
 
+		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			if focusId == E_CONFIGURE_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
+				self.mPrevListItemID = selectedId
+				self.mReLoadEthernetInformation = True
+				self.mVisibleParental = False
+				self.SetListControl( )
+
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if focusId != E_CONFIGURE_SUBMENU_LIST_ID and ( ( focusId % 10 ) == 1 ) :
 				self.setFocusId( E_CONFIGURE_SUBMENU_LIST_ID )
@@ -423,6 +430,7 @@ class Configure( SettingWindow ) :
 				globalEvent = pvr.GlobalEvent.GetInstance( )
 				globalEvent.SendLocalOffsetToXBMC( )
 				self.mInitialized = False
+				self.mVideoOutput = E_VIDEO_HDMI
 				self.ResetAllControl( )
 				self.StopCheckNetworkTimer( )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( '' )
