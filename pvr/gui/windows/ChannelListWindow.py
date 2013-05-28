@@ -1200,8 +1200,10 @@ class ChannelListWindow( BaseWindow ) :
 					"""
 
 					#save zapping mode
-					self.mDataCache.Channel_Save( )
-					self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
+					if self.mIsSave or \
+					   self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
+						self.mDataCache.Channel_Save( )
+						self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
 
 					if self.mChannelList == None or len( self.mChannelList ) < 1 :
 						#### data cache re-load ####
