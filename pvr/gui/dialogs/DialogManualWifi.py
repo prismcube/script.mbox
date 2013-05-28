@@ -138,7 +138,7 @@ class DialogManualWifi( SettingDialog ) :
 		self.AddInputControl( E_DialogInput03, MR_LANG( ' - Gateway' ), self.mGateway, MR_LANG( 'Enter your gateway' ) )
 		self.AddInputControl( E_DialogInput04, MR_LANG( ' - DNS' ), self.mDns, MR_LANG( 'Enter the DNS server address' ) )
 		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHidden, MR_LANG( 'Connect to a hidden wireless network' ) )
-		self.AddInputControl( E_DialogInput05, MR_LANG( ' - SSID' ), self.mHiddenSSID, MR_LANG( 'Enter network name for the wireless network you wish to connect to' ) )
+		self.AddInputControl( E_DialogInput05, MR_LANG( ' - SSID' ), self.mHiddenSSID, MR_LANG( 'Enter a network name for the wireless network you wish to connect to' ) )
 		self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( ' - Security' ), USER_ENUM_LIST_ENCRYPT_TYPE, self.mEncryptType, MR_LANG( 'Select security type for the hidden wireless network' ) )
 		
 		self.AddOkCanelButton( )

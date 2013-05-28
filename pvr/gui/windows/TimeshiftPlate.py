@@ -1202,7 +1202,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		labelMode = GetStatusModeLabel( self.mMode )
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			labelMode = '[COLOR green]TIMESHIFT[/COLOR]'
+			labelMode = '[COLOR green]%s[/COLOR]'% MR_LANG( 'TIMESHIFT' )
 		elif self.mMode == ElisEnum.E_MODE_PVR :
 			buttonHide = False
 

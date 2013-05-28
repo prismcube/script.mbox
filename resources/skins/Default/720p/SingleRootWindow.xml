@@ -1808,7 +1808,7 @@ Search for window name
 						<align>center</align>
 						<font>font45caps_title</font>
 						<textcolor>red</textcolor>
-						<label>PLAYBACK</label>
+						<label>SCRIPT1123</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="image">
@@ -2595,7 +2595,7 @@ Search for window name
 							<posy>0</posy>
 							<font>font10</font>
 							<textcolor>grey</textcolor>
-							<label>More...</label>
+							<label>SCRIPT1122</label>
 						</control>
 					</control>
 				</control>
