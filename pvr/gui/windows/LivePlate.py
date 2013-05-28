@@ -82,7 +82,7 @@ class LivePlate( LivePlateWindow ) :
 		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
-		
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetBlinkingProperty( 'None' )
