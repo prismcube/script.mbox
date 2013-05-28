@@ -457,7 +457,7 @@ class ChannelListWindow( BaseWindow ) :
 				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 				if playingRecord and playingRecord.mError == 0 :
 					self.mIsPVR = True
-					label = 'PVR - P%04d.%s' %( playingRecord.mChannelNo, playingRecord.mRecordName )
+					label = '%s - P%04d.%s' %( MR_LANG( 'Playback' ), playingRecord.mChannelNo, playingRecord.mRecordName )
 
 			else :
 				#Live

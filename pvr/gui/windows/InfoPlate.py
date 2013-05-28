@@ -302,7 +302,7 @@ class InfoPlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, rec.mChannelName )
 
 				#satellite
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, 'Archive' )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '%s'% MR_LANG( 'Archive' ) )
 
 				#lock,cas
 				if rec.mLocked :

@@ -1666,6 +1666,8 @@ Search for window name
 					</control>
 				</control>
 			</control>
+
+			<!-- fake button -->
 			<control type="button" id="1300700">
 				<label>EPG</label>
 				<onclick>-</onclick>
@@ -2288,6 +2290,7 @@ Search for window name
 					<posx>70</posx>
 					<posy>660</posy>
 					<control type="label" id="1400701">
+						<description>Longitude info</description>
 						<posx>-40</posx>
 						<posy>10</posy>
 						<width>270</width>
@@ -2454,6 +2457,7 @@ Search for window name
 									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
 								</control>
 								<control type="label">
+									<description>TimeMs offset</description>
 									<posx>65</posx>
 									<posy>50</posy>
 									<width>80</width>
@@ -2464,6 +2468,7 @@ Search for window name
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
+									<description>Bookmark number</description>
 									<posx>5</posx>
 									<posy>20</posy>
 									<width>100</width>
@@ -2775,7 +2780,7 @@ Search for window name
 						<posy>580</posy>
 						<width>200</width>
 						<height>20</height>
-						<font>font30_title</font>
+						<font>font28_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<label>$INFO[Control.GetLabel]</label>
