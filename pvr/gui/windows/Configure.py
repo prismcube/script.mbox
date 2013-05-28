@@ -126,7 +126,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
 		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
-		MR_LANG( 'Configure the EPG grabber settings' ),
+		MR_LANG( 'Configure EPG grabber settings' ),
 		MR_LANG( 'Delete everything off your hard drive' ),
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
@@ -311,7 +311,7 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input01 :
 				timeT = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
-				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Start EPG grabbing time' ), timeT )
+				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter an start time' ), timeT )
 				tmptime = timeT.split( ':' )
 				intTime = int( tmptime[0] ) * 3600 + int( tmptime[1] ) * 60
 				if self.mEpgGrabinngTime != intTime :
@@ -362,7 +362,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )			
+			dialog.SetDialogProperty( MR_LANG( 'Enter a new PIN code' ), '', 4, True )
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -769,10 +769,10 @@ class Configure( SettingWindow ) :
 
 			
 			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Automatic EPG grabber' ), MR_LANG( 'When set to \'On\', the system automatically start to collect EPG data' ) )
-			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', MR_LANG( 'Grab Interval' ), MR_LANG( 'Adjust the refresh interval of the EPG scan' ) )
+			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', MR_LANG( 'Grab Interval' ), MR_LANG( 'Adjust EPG scan interval for each channel' ) )
 			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', MR_LANG( 'Grab Mode' ), MR_LANG( 'Select which channels to grab EPG data from' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Time' ), '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ), MR_LANG( 'Set the starting time for EPG grabber' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Start and End Channel' ), MR_LANG( 'Channel %s ~ %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'Select the channels for which you want to grab EPG data' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Time' ), '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ), MR_LANG( 'Set a starting time for EPG grabber' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Start and End Channel' ), MR_LANG( '%s ~ %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'Select the channels for which you want to grab EPG data' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Favorite Group' ), groupName, MR_LANG( 'Select a favorite group for EPG grabbing' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]

@@ -134,7 +134,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def onInit( self )  :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( MR_LANG('System Update') )
+		self.SetFrontdisplayMessage( MR_LANG( 'System Update' ) )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_SYSTEM_UPDATE_BASE_ID )

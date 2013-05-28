@@ -2026,9 +2026,9 @@ class DataCacheMgr( object ) :
 			if self.mCurrentChannel :
 				self.Frontdisplay_SetMessage( self.mCurrentChannel.mName )
 			else :
-				self.Frontdisplay_SetMessage('NoChannel')
+				self.Frontdisplay_SetMessage( MR_LANG( 'NoChannel' ) )
 		else :
-			self.Frontdisplay_SetMessage('NoChannel')		
+			self.Frontdisplay_SetMessage( MR_LANG( 'NoChannel' ) )
 
 
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
@@ -2252,7 +2252,7 @@ class DataCacheMgr( object ) :
 	
 	def SetMediaCenter( self, aValue = False ) :
 		if aValue == True :
-			self.Frontdisplay_SetMessage( 'Media Center' )
+			self.Frontdisplay_SetMessage( MR_LANG( 'Media Center' ) )
 		self.mStartMediaCenter = aValue
 
 

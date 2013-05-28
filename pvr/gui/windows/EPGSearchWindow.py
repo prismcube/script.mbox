@@ -32,7 +32,7 @@ class EPGSearchWindow( BaseWindow ) :
 	
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( MR_LANG('EPG Search') )
+		self.SetFrontdisplayMessage( MR_LANG( 'EPG Search' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
