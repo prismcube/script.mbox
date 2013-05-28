@@ -120,6 +120,7 @@
 "Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Add-on Manager";"Дополнения";"Add-on Manager";"Add-on Manager";1121
 "More";"More";"More";"More";"More";"More";"More";"More";"More";"More";"More";"More";1122
 "PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"PLAYBACK";"Воспроизведение";"PLAYBACK";"PLAYBACK";1123
+"Audio";"Audio";"Audio";"Audio";"Audio";"Audio";"Audio";"Audio";"Audio";"Звук";;;1124
 "Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";2001
 "CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -1176,3 +1177,23 @@
 "South";"South";"South";"South";"South";"South";"South";"South";"South";"Юг";"South";"South";3752
 "Finish";"Finish";"Terminer";"Finish";"Finish";"Finish";"Finish";"Finish";"Finish";"Окончание";"Finish";"Finish";3753
 "Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";3754
+"Press OK button to download the package shown below";;;;;;;;;;;;3755
+"Do you want to install the package now?";;;;;;;;;;;;3756
+"Download package complete";;;;;;;;;;;;3757
+"Cannot get the latest package%s Please try again";;;;;;;;;;;;3758
+"No released package available";;;;;;;;;;;;3759
+"Package Information";;;;;;;;;;;;3760
+"Please check package version first";;;;;;;;;;;;3761
+"Press OK to cancel downloading package updates";;;;;;;;;;;;3762
+"Download complete. Press OK to copy package files to HDD";;;;;;;;;;;;3763
+"Download complete. Press OK to copy package files to USB";;;;;;;;;;;;3764
+"Downloading package";;;;;;;;;;;;3765
+"Package Version";;;;;;;;;;;;3766
+"Package Update";;;;;;;;;;;;3767
+"Refresh package update";;;;;;;;;;;;3768
+"Previous package versions";;;;;;;;;;;;3769
+"Update Package";;;;;;;;;;;;3770
+"Check Package Version";;;;;;;;;;;;3771
+"Check the latest package released on the update server";;;;;;;;;;;;3772
+"Follow the instructions on front panel display during the package installation process";;;;;;;;;;;;3773
+"Select Channel Package";;;;;;;;;;;;3774
