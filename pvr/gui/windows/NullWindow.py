@@ -253,23 +253,6 @@ class NullWindow( BaseWindow ) :
 				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
-		elif actionId == Action.REMOTE_0 :
-
-			currentTime = self.mDataCache.Datetime_GetLocalTime( )
-			LOG_ERR( 'current E_AW_DD_MM_YYYY: %s' % TimeToString( currentTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-			LOG_ERR( 'current E_HH_MM: %s' % TimeToString( currentTime, TimeFormatEnum.E_HH_MM ) )
-			LOG_ERR( 'current E_DD_MM_YYYY_HH_MM: %s' % TimeToString( currentTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_ERR( 'current E_DD_MM_YYYY: %s' % TimeToString( currentTime, TimeFormatEnum.E_DD_MM_YYYY ) )
-			LOG_ERR( 'current E_AW_HH_MM: %s' % TimeToString( currentTime, TimeFormatEnum.E_AW_HH_MM ) )
-			LOG_ERR( 'current E_HH_MM_SS: %s' % TimeToString( currentTime, TimeFormatEnum.E_HH_MM_SS ) )
-			LOG_ERR( 'current E_WEEK_OF_DAY: %s' % TimeToString( currentTime, TimeFormatEnum.E_WEEK_OF_DAY ) )
-			LOG_ERR( 'current E_AW_DD_MON: %s' % TimeToString( currentTime, TimeFormatEnum.E_AW_DD_MON ) )
-			LOG_ERR( 'current E_AH_MM_SS: %s' % TimeToString( currentTime, TimeFormatEnum.E_AH_MM_SS ) )
-			LOG_ERR( 'current E_AW_DD_MM_YYYY_HH_MM: %s' % TimeToString( currentTime, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ) )	
-
-
-	
-			
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
