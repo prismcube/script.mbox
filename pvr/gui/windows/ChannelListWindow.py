@@ -1162,7 +1162,7 @@ class ChannelListWindow( BaseWindow ) :
 					#line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Save Result' ), MR_LANG( 'Do you want to save changes before exit?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Save result' ), MR_LANG( 'Do you want to save changes before exit?' ) )
 					dialog.doModal( )
 
 					answer = dialog.IsOK( )
@@ -1288,7 +1288,7 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head = MR_LANG( 'Save Result' )
+			head = MR_LANG( 'Save result' )
 			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -2201,7 +2201,7 @@ class ChannelListWindow( BaseWindow ) :
 			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			if aGroupName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, aGroupName ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete a favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, aGroupName ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2543,7 +2543,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE,  groupName ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete a favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE,  groupName ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )

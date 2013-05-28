@@ -197,11 +197,11 @@ class HiddenTest( BaseWindow ) :
 				ret = self.AddScenarioTimer( aMode, channel1, channel2 )
 				if ret :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'Complete', 'Timer add complete' )
+					dialog.SetDialogProperty( 'Complete', 'Adding a timer complete' )
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Channel match fail...' )
+				dialog.SetDialogProperty( 'Error', 'Channel match failed...' )
 				dialog.doModal( )
 
 		elif aMode == E_TBR_FM :
@@ -218,11 +218,11 @@ class HiddenTest( BaseWindow ) :
 
 			if ret :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Complete', 'Timer add complete' )
+				dialog.SetDialogProperty( 'Complete', 'Adding at timer complete' )
 				dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'add E_TBR_FM timer  fail...' )
+				dialog.SetDialogProperty( 'Error', 'Adding an E_TBR_FM timer failed...' )
 				dialog.doModal( )
 				
 		self.CloseBusyDialog( )
@@ -368,7 +368,7 @@ class HiddenTest( BaseWindow ) :
 					self.mStartTime = self.mStartTime + ( recTime * 60 ) + 360
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'Error', 'Add timer fail...' )
+					dialog.SetDialogProperty( 'Error', 'Adding a timer failed...' )
 					dialog.doModal( )
 					return False
 
@@ -393,7 +393,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -413,7 +413,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -442,7 +442,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -471,7 +471,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -500,7 +500,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -529,7 +529,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 
@@ -558,7 +558,7 @@ class HiddenTest( BaseWindow ) :
 				return True
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Add timer fail...step %s' % aStep )
+				dialog.SetDialogProperty( 'Error', 'Adding a timer failed...step %s' % aStep )
 				dialog.doModal( )
 				return False
 

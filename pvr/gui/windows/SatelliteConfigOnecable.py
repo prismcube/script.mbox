@@ -156,7 +156,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 	def AddNewSatellite( self, aPosition ) :
 		dialog = xbmcgui.Dialog( )
 		satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-		ret = dialog.select(  MR_LANG( 'Select Satellite' ), satelliteList )
+		ret = dialog.select(  MR_LANG( 'Select a satellite' ), satelliteList )
 		if ret >= 0 :
 			self.OpenBusyDialog( )
 

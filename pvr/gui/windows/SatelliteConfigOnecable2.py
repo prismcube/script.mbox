@@ -125,7 +125,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				dialog = xbmcgui.Dialog( )
 				currentindex = StringToListIndex( E_LIST_ONE_CABLE_TUNER_FREQUENCY, str( self.mTempTunerFreq[self.mTunerIndex] ) )
-				ret = dialog.select( MR_LANG( 'Select Tuner %d Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
+				ret = dialog.select( MR_LANG( 'Select a frequency for Tuner %d' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
 				if ret >= 0 :
 					self.mTempTunerFreq[self.mTunerIndex] = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ret] )
 
@@ -133,14 +133,14 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 				if groupId == E_Input01 :
 					dialog = xbmcgui.Dialog( )
 					currentindex = StringToListIndex( E_LIST_ONE_CABLE_TUNER_FREQUENCY, str( self.mTempTunerFreq[0] ) )
-					ret = dialog.select( MR_LANG( 'Select Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
+					ret = dialog.select( MR_LANG( 'Select a frequency for Tuner 1' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
 					if ret >= 0 :
 						self.mTempTunerFreq[0] = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ret] )
 
 				elif groupId == E_Input03 :					
 					dialog = xbmcgui.Dialog( )
 					currentindex = StringToListIndex( E_LIST_ONE_CABLE_TUNER_FREQUENCY, str( self.mTempTunerFreq[1] ) )
-					ret = dialog.select( MR_LANG( 'Select Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
+					ret = dialog.select( MR_LANG( 'Select a frequency for Tuner 2' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, False, currentindex )
 					if ret >= 0 :
 						self.mTempTunerFreq[1] = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ret] )
 
@@ -195,7 +195,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 				return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Save Configuration' ), MR_LANG( 'Do you want to save changes before exit?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Save configuration' ), MR_LANG( 'Do you want to save changes before exit?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :

@@ -854,8 +854,8 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import channel list via USB' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export channel list via USB' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import a pre-configured channel list via USB' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export your channel list via USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -1632,7 +1632,7 @@ class SystemUpdate( SettingWindow ) :
 			showtext.append( text[1] + '( ' + text[2] + ' )' )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
+		ret = dialog.select( MR_LANG( 'Select a channel package' ), showtext )
 		if ret >= 0 :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
@@ -1667,7 +1667,7 @@ class SystemUpdate( SettingWindow ) :
 			xmlFileList.append( os.path.basename( xmlFullPathList[i] ) )
 
 		dialog = xbmcgui.Dialog( )
-		select = dialog.select( MR_LANG( 'Select File' ), xmlFileList, False )
+		select = dialog.select( MR_LANG( 'Select a channel list file' ), xmlFileList, False )
 
 		if select >= 0 :
 			#check usb file

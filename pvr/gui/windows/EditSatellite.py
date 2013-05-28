@@ -82,7 +82,7 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
- 			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, self.mSatelliteIndex )
+			select = dialog.select( MR_LANG( 'Select a satellite' ), satelliteList, False, self.mSatelliteIndex )
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
 				self.InitConfig( )
@@ -133,7 +133,7 @@ class EditSatellite( SettingWindow ) :
 		# Delete Satellite
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete satellite' ), MR_LANG( 'Are you sure you want to remove%s this satellite?' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Delete a satellite' ), MR_LANG( 'Are you sure you want to remove%s this satellite?' )% NEW_LINE )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

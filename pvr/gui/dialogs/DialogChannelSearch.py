@@ -278,7 +278,7 @@ class DialogChannelSearch( BaseDialog ) :
 			LOG_TRACE( 'except close dialog' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
+		dialog.SetDialogProperty( MR_LANG( 'Channel search result' ), searchResult )
 		dialog.doModal( )
 		
 
