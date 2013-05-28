@@ -225,7 +225,7 @@ class Configure( SettingWindow ) :
 				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 				dialog = xbmcgui.Dialog( )
 				currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
-				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
+				ret = dialog.select( MR_LANG( 'Select menu language' ), menuLanguageList, False, currentindex )
 				if ret >= 0 and currentindex != ret :
 					if not self.mPlatform.IsPrismCube( ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -236,12 +236,12 @@ class Configure( SettingWindow ) :
 					isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 					if isDownload :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Try again after completing firmware update' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change menu language' ), MR_LANG( 'Try again after completing firmware update' ) )
 						dialog.doModal( )
 						return
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Change menu language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
 					dialog.doModal( )
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -311,7 +311,7 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input01 :
 				timeT = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
-				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter an start time' ), timeT )
+				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), timeT )
 				tmptime = timeT.split( ':' )
 				intTime = int( tmptime[0] ) * 3600 + int( tmptime[1] ) * 60
 				if self.mEpgGrabinngTime != intTime :
@@ -456,7 +456,7 @@ class Configure( SettingWindow ) :
 						self.CloseProgress( )
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Format hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Format your hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( )
@@ -1156,7 +1156,7 @@ class Configure( SettingWindow ) :
 			for channel in channelList :
 				channelNameList.append( channel.mName )
 
-			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
+			ret = dialog.select( MR_LANG( 'Select a channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -1443,7 +1443,7 @@ class Configure( SettingWindow ) :
 			favoriteList.append( item.mGroupName )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Favorite group' ), favoriteList, False, self.mEpgFavGroup )
+		ret = dialog.select( MR_LANG( 'Select a favorite group' ), favoriteList, False, self.mEpgFavGroup )
 		if ret >= 0 :
 			return ret
 		else :

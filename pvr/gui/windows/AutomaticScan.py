@@ -83,7 +83,7 @@ class AutomaticScan( SettingWindow ) :
 		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
+			select =  dialog.select( MR_LANG( 'Select a satellite' ), self.mFormattedList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select

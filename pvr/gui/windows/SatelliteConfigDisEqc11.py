@@ -121,7 +121,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
 			currentIndex = StringToListIndex( satelliteList, self.GetControlLabel2String( E_Input01 ) )
- 			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, currentIndex )
+			ret = dialog.select( MR_LANG( 'Select a satellite' ), satelliteList, False, currentIndex )
 
 			if ret >= 0 and currentIndex != ret :
 				satellite = self.mTunerMgr.GetMakedConfiguredSatellite( ret )
@@ -212,7 +212,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList, False, self.mSelectedTransponderIndex )
+				tempIndex = dialog.select( MR_LANG( 'Select a transponder' ), self.mTransponderList, False, self.mSelectedTransponderIndex )
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
@@ -475,7 +475,7 @@ class SatelliteConfigDisEqC11( FTIWindow ) :
 
 		elif aContextAction == CONTEXT_DELETE_TRANSPONDER :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Delete a transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

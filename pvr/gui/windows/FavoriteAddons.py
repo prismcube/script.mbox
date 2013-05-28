@@ -206,14 +206,14 @@ class FavoriteAddons( BaseWindow ) :
 	 			dialog.doModal( )
 			else :
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Add-on' ), addonList )
+				ret = dialog.select( MR_LANG( 'Select an add-on' ), addonList )
 				if ret >= 0 :
 					XBMC_AddFavAddon( addonList[ret] )
 					self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_DELETE_FAVORITE :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty(  MR_LANG( 'Delete favorite add-on' ),  MR_LANG( 'Do you want to remove %s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+				dialog.SetDialogProperty(  MR_LANG( 'Delete a favorite add-on' ),  MR_LANG( 'Do you want to remove %s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					XBMC_RemoveFavAddon( self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )

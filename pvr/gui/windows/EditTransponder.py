@@ -108,7 +108,7 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, self.mSatelliteIndex )
+			select = dialog.select( MR_LANG( 'Select a satellite' ), satelliteList, False, self.mSatelliteIndex )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -127,7 +127,7 @@ class EditTransponder( SettingWindow ) :
 					frequencylist.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
 
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Frequency' ), frequencylist, False, self.mTransponderIndex )
+				select = dialog.select( MR_LANG( 'Select a frequency' ), frequencylist, False, self.mTransponderIndex )
 
 				if select >= 0 and select != self.mTransponderIndex :
 					self.mTransponderIndex = select
@@ -228,7 +228,7 @@ class EditTransponder( SettingWindow ) :
 		elif groupId == E_Input06 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Delete a transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :

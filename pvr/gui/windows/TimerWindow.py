@@ -434,7 +434,7 @@ class TimerWindow( BaseWindow ) :
 			if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete timer' ), MR_LANG( 'Are you sure you want to delete this timer?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to delete this timer?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -449,7 +449,7 @@ class TimerWindow( BaseWindow ) :
 	
 			if timerId > 0 :		
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :

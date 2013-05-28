@@ -110,7 +110,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
+			select = dialog.select( MR_LANG( 'Select a satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select
@@ -132,7 +132,7 @@ class ManualScan( SettingWindow ) :
 		 				polarization = MR_LANG( 'Vertical' )
 					formattedTransponderList.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, self.mTransponderIndex )
+				select = dialog.select( MR_LANG( 'Select a transponder' ), formattedTransponderList, False, self.mTransponderIndex )
 
 				if select >=0 :
 					self.mTransponderIndex = select

@@ -96,7 +96,7 @@ class TunerConfiguration( FTIWindow ) :
 				else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-	 				ret = dialog.select(  MR_LANG( 'Add satellite' ), satelliteList )
+					ret = dialog.select(  MR_LANG( 'Add a satellite' ), satelliteList )
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
@@ -126,11 +126,11 @@ class TunerConfiguration( FTIWindow ) :
 					for i in range( len( self.mListItems ) ) :
 						satelliteList.append( self.mListItems[i].getLabel( ) )
 						
-		 			ret = dialog.select(  MR_LANG( 'Delete satellite' ), satelliteList[ 0 : self.mConfiguredCount ] )
+					ret = dialog.select(  MR_LANG( 'Delete a satellite' ), satelliteList[ 0 : self.mConfiguredCount ] )
  
 		 			if ret >= 0 :
 		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, satelliteList[ ret ] ) )
+						dialog.SetDialogProperty(  MR_LANG( 'Delete a satellite' ),  MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, satelliteList[ ret ] ) )
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
