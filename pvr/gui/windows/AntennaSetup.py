@@ -193,8 +193,8 @@ class AntennaSetup( SettingWindow ) :
 			else :
 				self.SetEnableControl( E_SpinEx02, True )
 
-			if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE or ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
-				self.SetEnableControl( E_SpinEx01, False )
+			#if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE or ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
+			#	self.SetEnableControl( E_SpinEx01, False )
 				#self.DisableControl( )
 
 		if aControlID == None or aControlID == E_SpinEx02 or aControlID == E_SpinEx01 :
@@ -235,9 +235,21 @@ class AntennaSetup( SettingWindow ) :
 				control.selectItem( E_TUNER_LOOPTHROUGH )
 				self.SetProp( E_SpinEx01, E_TUNER_LOOPTHROUGH )
 				self.SetEnableControl( E_SpinEx01, False )
-				self.DisableControl( )
+				
+				control = self.getControl( E_SpinEx02 + 3 )
+				control.selectItem( E_SAMEWITH_TUNER )
+				self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
+				self.SetEnableControl( E_SpinEx02, False )
+
+				control = self.getControl( E_SpinEx03 + 3 )
+				control.selectItem( E_ONE_CABLE )
+				self.SetProp( E_SpinEx03, E_ONE_CABLE )
 				self.SetFocusControl( E_SpinEx03 )
+
+				self.SetEnableControl( E_SpinEx04, False )
+				self.SetEnableControl( E_Input02, False )
 			else :
 				self.SetEnableControl( E_SpinEx01, True )
+				self.SetEnableControl( E_SpinEx02, True )
 			
 
