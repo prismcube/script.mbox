@@ -557,8 +557,8 @@ class InfoPlate( LivePlateWindow ) :
 
 	def AudioVideoContext( self ) :
 		context = []
-		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Video format' ), CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Audio track' ),  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
