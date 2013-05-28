@@ -294,10 +294,14 @@ class NullWindow( BaseWindow ) :
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+				#buyer issue, hide
 				elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-					self.Close( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+					labelMode = MR_LANG( 'LIVE' )
+					thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+					thread.start( )
+				#	self.Close( )
+				#	WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			if self.GetBlinkingProperty( ) != 'None' :
@@ -527,7 +531,9 @@ class NullWindow( BaseWindow ) :
 					self.SetBlinkingProperty( 'None' )
 
 				self.mDataCache.SetChannelReloadStatus( True )
-				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+
+				#buyer issue, hide info
+				#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			#elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			#	xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )

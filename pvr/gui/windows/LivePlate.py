@@ -294,6 +294,10 @@ class LivePlate( LivePlateWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status and status.mError == 0 and status.mMode :
 				ret = self.mDataCache.Player_Stop( )
+				labelMode = MR_LANG( 'LIVE' )
+				thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+				thread.start( )
+
 			else :
 				self.StopAutomaticHide( )
 				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )

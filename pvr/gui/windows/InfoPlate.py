@@ -248,6 +248,10 @@ class InfoPlate( LivePlateWindow ) :
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( self.mCurrentEPG )
 
+		iRussian = E_TAG_FALSE
+		if XBMC_GetCurrentLanguage( ) == 'Russian' :
+			iRussian = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
