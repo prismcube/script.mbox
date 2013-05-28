@@ -14,6 +14,8 @@ FILE_WPA_SUPPLICANT				=	'/etc/wpa_supplicant/wpa_supplicant.conf'
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
+COMMAND_COPY_CONFIG_INTERFACES	=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + '/config/interface'
+COMMAND_COPY_CONFIG_WPA_SUPPLICANT = "cp " + FILE_WPA_SUPPLICANT + " " + '/config/wpa_supplicant.conf'
 
 gNetworkMgr					= None
 
@@ -252,6 +254,7 @@ class IpParser( object ) :
 
 			self.SetEthernetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
+			os.system( COMMAND_COPY_CONFIG_INTERFACES )
 			self.IfUpDown( self.mEthernetDevName )
 			status = True
 			inputFile.close( )
@@ -533,6 +536,7 @@ class IpParser( object ) :
 			words += "}\n"
 			openFile.write( words )
 			openFile.close( )
+			os.system( COMMAND_COPY_CONFIG_WPA_SUPPLICANT )
 			self.WriteInterfaces( )
 			os.system( 'sync' )
 			return True
@@ -558,6 +562,7 @@ class IpParser( object ) :
 			inputFile.close( )
 			outputFile.close( )
 			os.system( COMMAND_COPY_INTERFACES )
+			os.system( COMMAND_COPY_CONFIG_INTERFACES )
 			os.system( 'sync' )
 
 		except Exception, e :
@@ -657,6 +662,7 @@ class IpParser( object ) :
 
 			self.SetEthernetNameServer( aIsStatic, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
+			os.system( COMMAND_COPY_CONFIG_INTERFACES )
 			status = True
 			inputFile.close( )
 			outputFile.close( )
