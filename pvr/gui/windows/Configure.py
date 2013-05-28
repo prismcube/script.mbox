@@ -309,12 +309,12 @@ class Configure( SettingWindow ) :
 			self.TimeSetting( groupId )
 
 		elif selectedId == E_EPG :
-			if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
-				self.ControlSelect( )
-
-			elif groupId == E_SpinEx03 :
+			if groupId == E_SpinEx01 or groupId == E_SpinEx03 :
 				self.ControlSelect( )
 				self.DisableControl( E_EPG )
+
+			elif groupId == E_SpinEx02 :
+				self.ControlSelect( )
 
 			elif groupId == E_Input01 :
 				timeT = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
@@ -913,13 +913,19 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_SpinEx03, False )
 
 		elif aSelectedItem == E_EPG :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
-			if selectedIndex == 0 :
-				self.SetEnableControl( E_Input02, True )
-				self.SetEnableControl( E_Input03, False )
+			visiblecontrols = [ E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]
+			if self.GetSelectedIndex( E_SpinEx01 ) == 1 :
+				self.SetEnableControls( visiblecontrols, False )
 			else :
-				self.SetEnableControl( E_Input02, False )
-				self.SetEnableControl( E_Input03, True )
+				self.SetEnableControls( visiblecontrols, True )
+
+				selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
+				if selectedIndex == 0 :
+					self.SetEnableControl( E_Input02, True )
+					self.SetEnableControl( E_Input03, False )
+				else :
+					self.SetEnableControl( E_Input02, False )
+					self.SetEnableControl( E_Input03, True )
 
 
 	def LoadEthernetInformation( self ) :
@@ -1494,3 +1500,4 @@ class Configure( SettingWindow ) :
 		ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
 		ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 		self.SetListControl( )
+
