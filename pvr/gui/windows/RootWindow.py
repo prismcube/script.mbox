@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-
+from pvr.Util import UpdateMonthTranslation, UpdateWeekdayTranslation
 
 class RootWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
@@ -13,6 +13,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onInit( self ) :
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
+
+		UpdateMonthTranslation( )
+		UpdateWeekdayTranslation( )
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :

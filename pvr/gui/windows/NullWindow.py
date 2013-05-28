@@ -253,6 +253,7 @@ class NullWindow( BaseWindow ) :
 				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
+
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 
