@@ -193,7 +193,8 @@ class EPGWindow( BaseWindow ) :
 
 		LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		#self.mChannelList = self.mDataCache.Channel_GetList( )
-		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+		#self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+		self.mChannelList = self.mDataCache.Channel_GetList( )		
 		self.UpdateFootor( )
 
 		if self.mChannelList == None :
@@ -2027,7 +2028,8 @@ class EPGWindow( BaseWindow ) :
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mServiceType = self.mCurrentMode.mServiceType
-		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+		#self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+		self.mChannelList = self.mDataCache.Channel_GetList( )
 
 		lastChannelNumber = 1
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
