@@ -451,7 +451,7 @@ class ChannelListWindow( BaseWindow ) :
 				if iChannel :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
-					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
+					label = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
@@ -1003,6 +1003,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ) :
+		ret = True
+		self.OpenBusyDialog( )
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
 				self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort )
@@ -1021,12 +1023,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.LoadChannelListHash( )
 
-
 		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
-			return False
+			LOG_ERR( 'Error exception[%s]'% e )
+			ret = False
 
-		return True
+		self.CloseBusyDialog( )
+		return ret
 
 
 	def SetSlideMenuHeader( self, aMode ) :
@@ -1204,6 +1206,7 @@ class ChannelListWindow( BaseWindow ) :
 					   self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 						self.mDataCache.Channel_Save( )
 						self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
+						#LOG_TRACE( '----------save and reload all Channels' )
 
 					if self.mChannelList == None or len( self.mChannelList ) < 1 :
 						#### data cache re-load ####
@@ -1217,7 +1220,8 @@ class ChannelListWindow( BaseWindow ) :
 							#### data cache re-load ####
 							self.mDataCache.LoadZappingmode( )
 							self.mDataCache.LoadZappingList( )
-							self.mDataCache.LoadChannelList( )
+							#self.mDataCache.LoadChannelList( )
+							self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 							#LOG_TRACE ( '===================== save yes: cache re-load' )
 
 							if self.mFlag_ModeChanged :
@@ -1238,18 +1242,24 @@ class ChannelListWindow( BaseWindow ) :
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
 					self.mListItems = None
-					if self.mFlag_DeleteAll or self.mIsSave or self.mFlag_DeleteAll_Fav : 
-						#restore backup zapping
-						isRestore = self.mDataCache.Channel_Restore( True )
-						self.mDataCache.Channel_Save( )
-						LOG_TRACE( 'Restore[%s]'% isRestore )
+					self.OpenBusyDialog( )
+					try :
+						if self.mFlag_DeleteAll or self.mIsSave or self.mFlag_DeleteAll_Fav : 
+							#restore backup zapping
+							isRestore = self.mDataCache.Channel_Restore( True )
+							self.mDataCache.Channel_Save( )
+							LOG_TRACE( 'Restore[%s]'% isRestore )
 
-					#self.mDataCache.Channel_SetCurrent( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
-					#### data cache re-load ####
-					self.mDataCache.LoadZappingmode( )
-					self.mDataCache.LoadZappingList( )
-					self.mDataCache.LoadChannelList( )
-					#LOG_TRACE ( '===================== save no: cache re-load' )
+						#self.mDataCache.Channel_SetCurrent( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
+						#### data cache re-load ####
+						self.mDataCache.LoadZappingmode( )
+						self.mDataCache.LoadZappingList( )
+						self.mDataCache.LoadChannelList( )
+						#LOG_TRACE ( '===================== save no: cache re-load' )
+
+					except Exception, e :
+						LOG_ERR( 'except[%s]'% e )
+					self.CloseBusyDialog( )
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if iChannel and iChannel.mError == 0 :
@@ -1291,15 +1301,20 @@ class ChannelListWindow( BaseWindow ) :
 			if answer == E_DIALOG_STATE_YES :
 				self.mIsSave = FLAG_MASK_NONE
 				self.mFlag_EditChanged = True
-				isSave = self.mDataCache.Channel_Save( )
-				self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
+				self.OpenBusyDialog( )
+				try :
+					isSave = self.mDataCache.Channel_Save( )
+					self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
 
-				#### data cache re-load ####
-				self.mDataCache.SetSkipChannelView( False )
-				self.mDataCache.LoadZappingmode( )
-				self.mDataCache.LoadZappingList( )
-				self.mDataCache.LoadChannelList( )
-				LOG_TRACE ( 'save[%s] cache re-load'% isSave)
+					#### data cache re-load ####
+					self.mDataCache.SetSkipChannelView( False )
+					self.mDataCache.LoadZappingmode( )
+					self.mDataCache.LoadZappingList( )
+					self.mDataCache.LoadChannelList( )
+					LOG_TRACE ( 'save[%s] cache re-load'% isSave)
+				except Exception, e :
+					LOG_ERR( 'except[%s]'% e )
+				self.CloseBusyDialog( )
 
 				if self.mRefreshCurrentChannel :
 					self.TuneChannel( self.mRefreshCurrentChannel )
@@ -1854,7 +1869,7 @@ class ChannelListWindow( BaseWindow ) :
 			isFind = False
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 
-					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), 'MOVE' )
+					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), MR_LANG( 'MOVE' ) )
 					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 					isFind = True

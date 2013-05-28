@@ -633,6 +633,44 @@ class DataCacheMgr( object ) :
 		self.LoadChannelList( FLAG_ZAPPING_LOAD )
 
 
+	def RefreshCacheByChannelList( self, aChannelList ) :
+		prevChannel = None
+		nextChannel = None
+		self.mChannelListHash = {}
+		self.mTPListByChannelHash = {}
+		self.mChannelList = aChannelList
+		if not self.mChannelList or len( self.mChannelList ) < 1 :
+			LOG_TRACE( 'ChannelList None' )
+			return
+
+		count = len( self.mChannelList )
+		LOG_TRACE( 'count=%d' %count )
+
+		prevChannel = self.mChannelList[count-1]
+
+		for i in range( count ) :
+			channel = self.mChannelList[i]
+			if i+1 < count :
+				nextChannel = self.mChannelList[i+1]
+			else:
+				nextChannel = self.mChannelList[0]
+
+			#LOG_TRACE("---------------------- CacheChannel -----------------")
+			try :
+				cacheChannel = CacheChannel( channel, prevChannel.mNumber, nextChannel.mNumber )
+				self.mChannelListHash[channel.mNumber] = cacheChannel
+				#cacheChannel.mChannel.printdebug( )
+				#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
+
+			except Exception, ex:
+				LOG_ERR( "Exception %s" %ex)
+
+			prevChannel = channel
+
+			if channel and channel.mError == 0 :
+				self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
+
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			#self.Channel_GetZappingList( )
