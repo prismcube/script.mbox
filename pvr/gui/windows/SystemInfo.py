@@ -83,7 +83,7 @@ class SystemInfo( SettingWindow ) :
 	def onInit( self )  :
 		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )		
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'System Info' )		
+		self.SetFrontdisplayMessage( MR_LANG('System Info') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSingleWindowPosition( E_SYSTEM_INFO_BASE_ID )

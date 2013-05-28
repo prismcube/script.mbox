@@ -84,7 +84,7 @@ class MainMenu( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
 		self.SetVisibleRss( )
-		self.SetFrontdisplayMessage( 'Main Menu' )
+		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		if self.mDataCache.GetMediaCenter( ) == True :

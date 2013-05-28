@@ -1976,7 +1976,8 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
-		self.mCommander.Frontdisplay_SetMessage( aName )
+		newName = aName.encode('utf-8')
+		self.mCommander.Frontdisplay_SetMessage( newName )
 
 
 	def Frontdisplay_SetCurrentMessage( self ) :
