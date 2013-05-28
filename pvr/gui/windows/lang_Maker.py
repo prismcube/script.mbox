@@ -948,7 +948,8 @@ gReservedWord += '"EXR" "EXU" "UAS" "MDU" "HDCP" "HDMI" "YUV" "HDMI / YUV" "DVB-
 gReservedWord += '"PAL" "NTSC" "SCART" "DE" "AT" "SI" "FTI" "EXR EXU SCR" "EXR ... / EXU ..." "UPnP"'
 gTimePattern  = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
 gUnitPattern  = '[0-9] Min|[0-9] s|[0-9] ms|[0-9] GB|[0-9] Sec|[0-9] Hour|[0-9] \%'
-gUnitPattern +=	'|QPSK [0-9]\/[0-9]|8PSK [0-9]\/[0-9]|DiSEqC [0-9]\.[0-9]|UAS [0-9]*'
+#gUnitPattern +=	'|QPSK [0-9]\/[0-9]|8PSK [0-9]\/[0-9]|DiSEqC [0-9]\.[0-9]|UAS [0-9]*'
+gUnitPattern +=	'|QPSK [0-9]\/[0-9]|8PSK [0-9]\/[0-9]|UAS [0-9]*'
 
 def AutoMakeLanguage() :
 	currDir = os.getcwd()
