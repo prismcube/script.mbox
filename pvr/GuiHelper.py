@@ -1139,17 +1139,17 @@ def GetStatusModeLabel( aMode ) :
 	labelMode = ''
 
 	if aMode == ElisEnum.E_MODE_LIVE :
-		labelMode = '[COLOR white]LIVE[/COLOR]'
+		labelMode = '[COLOR white]%s[/COLOR]'% MR_LANG( 'LIVE' )
 	elif aMode == ElisEnum.E_MODE_TIMESHIFT :
-		labelMode = '[COLOR green]TIMESHIFT[/COLOR]'
+		labelMode = '[COLOR green]%s[/COLOR]'% MR_LANG( 'TIMESHIFT' )
 	elif aMode == ElisEnum.E_MODE_PVR :
-		labelMode = '[COLOR red]PLAYBACK[/COLOR]'
+		labelMode = '[COLOR red]%s[/COLOR]'% MR_LANG( 'PLAYBACK' )
 	elif aMode == ElisEnum.E_MODE_EXTERNAL_PVR :
-		labelMode = 'EXTERNAL_PVR'
+		labelMode = '%s'% MR_LANG( 'EXTERNAL PLAYBACK' )
 	elif aMode == ElisEnum.E_MODE_MULTIMEDIA :
-		labelMode = 'MULTIMEDIA'
+		labelMode = '%s'% MR_LANG( 'MULTIMEDIA' )
 	else :
-		labelMode = 'UNKNOWN'
+		labelMode = '%s'% MR_LANG( 'UNKNOWN' )
 
 	return labelMode
 

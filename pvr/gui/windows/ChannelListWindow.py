@@ -451,7 +451,7 @@ class ChannelListWindow( BaseWindow ) :
 				if iChannel :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
-					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
+					label = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
@@ -1852,7 +1852,7 @@ class ChannelListWindow( BaseWindow ) :
 			isFind = False
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 
-					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), 'MOVE' )
+					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), MR_LANG( 'MOVE' ) )
 					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 					isFind = True
