@@ -1174,7 +1174,7 @@ class ArchiveWindow( BaseWindow ) :
 				recDuration =  int( recInfo.mDuration / 60 )
 				if ( recInfo.mDuration % 60 ) != 0 :
 					recDuration += 1
-				self.setProperty( 'RecDuration',  '%dMin' %recDuration )
+				self.setProperty( 'RecDuration',  '%d%s' %( recDuration, MR_LANG( 'min(s)' ) ) )
 				self.setProperty( 'RecName', recInfo.mRecordName )
 
 				#has lock

@@ -4754,7 +4754,7 @@ Search for window name
 					</control>
 
 					<control type="label" id="3703503">
-						<description>EPG</description>
+						<description>EPG info</description>
 						<posx>0</posx>
 						<posy>500</posy>
 						<width>800</width>
@@ -5771,6 +5771,7 @@ Search for window name
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 					</control>
 					<control type="label" id="4300052">
+						<description>download percent</description>
 						<posx>310</posx>
 						<posy>5</posy>
 						<font>font13_title</font>

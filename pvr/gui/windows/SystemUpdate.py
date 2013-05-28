@@ -1343,7 +1343,7 @@ class SystemUpdate( SettingWindow ) :
 		if aPercent > 100 :
 			aPercent = 100
 		self.mCtrlProgress.setPercent( aPercent )
-		self.mCtrlLabelPercent.setLabel( '{0:.2f}% downloaded'.format( round( aPercent, 2 ) ) )
+		self.mCtrlLabelPercent.setLabel( '%s%% %s'% ( '{0:.2f}'.format( round( aPercent, 2 ) ), MR_LANG( 'downloaded' ) ) )
 
 
 	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :

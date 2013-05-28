@@ -1672,7 +1672,8 @@ class DataCacheMgr( object ) :
 		if not self.Get_Player_AVBlank( ) :
 			self.mPlayingChannel = self.Channel_GetCurrent( )
 
-		thread = threading.Timer( 0.1, AsyncShowStatus, ['LIVE'] )
+		lblMode = MR_LANG( 'LIVE' )
+		thread = threading.Timer( 0.1, AsyncShowStatus, [lblMode] )
 		thread.start( )
 
 		"""

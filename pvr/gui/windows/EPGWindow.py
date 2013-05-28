@@ -486,7 +486,7 @@ class EPGWindow( BaseWindow ) :
 		elif self.mEPGMode == E_VIEW_CURRENT :			
 			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Current' ) ) )
 		elif self.mEPGMode == E_VIEW_FOLLOWING :			
-			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ),  MR_LANG( 'Following' ) ) )
+			self.mCtrlEPGMode.setLabel( '%s: %s' %( MR_LANG( 'View' ), MR_LANG( 'Following' ) ) )
 		else :
 			LOG_WARN( 'Unknown epg mode' )
 			
@@ -756,7 +756,7 @@ class EPGWindow( BaseWindow ) :
 			if epg :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'mins' ) ) )				
+				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'min(s)' ) ) )				
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )
@@ -2509,7 +2509,7 @@ class EPGWindow( BaseWindow ) :
 			self.mFocusButton.setVisible( False )
 				
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			self.mCtrlGridEPGInfo.setLabel(' ')
+			self.mCtrlGridEPGInfo.setLabel( ' ' )
 			return
 		
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
@@ -2517,45 +2517,45 @@ class EPGWindow( BaseWindow ) :
 		if self.mVisibleTopIndex + self.mVisibleFocusRow >= 0 and self.mVisibleTopIndex + self.mVisibleFocusRow < len( self.mChannelList ) :
 			channel = self.mChannelList[self.mVisibleTopIndex + self.mVisibleFocusRow]
 		else :
-			self.mCtrlGridEPGInfo.setLabel(' ')
+			self.mCtrlGridEPGInfo.setLabel( ' ' )
 
 		if channel == None :
 			self.mVisibleFocusRow = 0
 			self.mVisibleFocusCol = 0
-			self.mCtrlGridEPGInfo.setLabel(' ' )
+			self.mCtrlGridEPGInfo.setLabel( ' ' )
 			return
 
 		if gridMeta :
-			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
+			LOG_TRACE( 'gridMeta.mId=%d'% gridMeta.mId )
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 				start  = gridMeta.mEPG.mStartTime + localOffset
-				self.mCtrlGridEPGInfo.setLabel('%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+				self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' % ( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName ) )
 			else :
-				self.mCtrlGridEPGInfo.setLabel(' %04d %s' %( channel.mNumber, channel.mName) )			
+				self.mCtrlGridEPGInfo.setLabel( ' %04d %s' % ( channel.mNumber, channel.mName ) )			
 		else :
-			LOG_ERR( 'cannot find control (%d,%d)' %(self.mVisibleFocusRow,self.mVisibleFocusCol) )
-			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
+			LOG_ERR( 'cannot find control (%d,%d)' % ( self.mVisibleFocusRow,self.mVisibleFocusCol ) )
+			gridMeta = self.mEPGHashTable.get( '%d:%d' % ( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
 			if gridMeta :
-				LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
+				LOG_TRACE( 'gridMeta.mId=%d' %gridMeta.mId )
 				if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 					localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 					start  = gridMeta.mEPG.mStartTime + localOffset
-					self.mCtrlGridEPGInfo.setLabel('%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+					self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
 				else :
-					self.mCtrlGridEPGInfo.setLabel(' %04d %s' %( channel.mNumber, channel.mName) )			
+					self.mCtrlGridEPGInfo.setLabel( ' %04d %s' %( channel.mNumber, channel.mName) )			
 				self.mVisibleFocusCol = 0					
 
 			else :
 				self.mVisibleFocusRow = 0
 				self.mVisibleFocusCol = 0
-				self.mCtrlGridEPGInfo.setLabel(' ' )
+				self.mCtrlGridEPGInfo.setLabel( ' ' )
 
 		#cas image
 		if channel.mIsCA :
-			self.mCtrlGridCas.setImage('IconCas.png')
+			self.mCtrlGridCas.setImage( 'IconCas.png' )
 		else :
-			self.mCtrlGridCas.setImage('')
+			self.mCtrlGridCas.setImage( '' )
 
 		self.UpdateSelcetedPosition( )
 		

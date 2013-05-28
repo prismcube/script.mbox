@@ -29,7 +29,7 @@ class TimerWindow( BaseWindow ) :
 	
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( MR_LANG('Timer List') )
+		self.SetFrontdisplayMessage( MR_LANG( 'Timer List' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
