@@ -144,7 +144,7 @@ class EPGWindow( BaseWindow ) :
 		self.mFirstTune = False
 
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'EPG' )		
+		self.SetFrontdisplayMessage( MR_LANG('EPG') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mSelectedIndex = 0

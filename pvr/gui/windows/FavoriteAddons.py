@@ -39,7 +39,7 @@ class FavoriteAddons( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Favorite' )		
+		self.SetFrontdisplayMessage( MR_LANG('Favorite') )		
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 01'
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		print 'BUTTON_ID_FAVORITE_ADDONS :onInit 02'

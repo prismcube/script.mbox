@@ -21,7 +21,7 @@ class EditTransponder( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_EDIT_TRANSPONDER_BASE_ID )
-		self.SetFrontdisplayMessage( 'Edit Transponder' )		
+		self.SetFrontdisplayMessage( MR_LANG('Edit Transponder') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )
