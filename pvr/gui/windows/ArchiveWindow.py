@@ -72,7 +72,7 @@ class ArchiveWindow( BaseWindow ) :
 	def onInit( self ) :
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
-		self.SetFrontdisplayMessage( 'Archive' )		
+		self.SetFrontdisplayMessage( MR_LANG('Archive') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mUpdateInfomationTimer = None

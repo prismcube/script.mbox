@@ -35,7 +35,7 @@ class DialogHelp( SettingDialog ) :
 
 
 	def onInit( self ) :
-		self.SetFrontdisplayMessage( 'Help' )
+		self.SetFrontdisplayMessage( MR_LANG('Help') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( False )
 		language = XBMC_GetCurrentLanguage( )
@@ -90,7 +90,7 @@ class DialogHelp( SettingDialog ) :
 
 	def Close( self ) :
 		self.mStepNum = FIRST_PAGE
-		self.SetFrontdisplayMessage( 'Main Menu' )
+		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.CloseDialog( )
 
 

@@ -11,7 +11,7 @@ class ChannelSearch( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
-		self.SetFrontdisplayMessage( 'Channel Search' )		
+		self.SetFrontdisplayMessage( MR_LANG('Channel Search') )		
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
 

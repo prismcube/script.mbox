@@ -16,7 +16,7 @@ class EditSatellite( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_EDIT_SATELLITE_BASE_ID )
-		self.SetFrontdisplayMessage( 'Edit Satellite' )
+		self.SetFrontdisplayMessage( MR_LANG('Edit Satellite') )
 		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Edit Satellite' ) ) )

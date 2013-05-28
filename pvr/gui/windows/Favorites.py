@@ -17,7 +17,7 @@ class Favorites( BaseWindow ) :
 		self.SetActivate( True )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.SetFrontdisplayMessage( 'Favorites' )
+		self.SetFrontdisplayMessage( MR_LANG('Favorites') )
 		xbmc.executebuiltin( "ActivateWindow(favourites)" )
 		#Wait for favorites dialog activate
 		for loop in range( 25 ) :
@@ -87,7 +87,7 @@ class Favorites( BaseWindow ) :
 				return
 
 		else : # go to MediaWindows
-			self.SetFrontdisplayMessage( 'Media Center' )		
+			self.SetFrontdisplayMessage( MR_LANG('Media Center') )		
 			self.StopCheckTimer( )
 			return
 

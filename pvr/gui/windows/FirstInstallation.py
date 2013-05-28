@@ -31,7 +31,7 @@ class FirstInstallation( FTIWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
-		self.SetFrontdisplayMessage( 'First Installation' )
+		self.SetFrontdisplayMessage( MR_LANG('First Installation') )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 
 		self.SetFirstInstallation( True )
