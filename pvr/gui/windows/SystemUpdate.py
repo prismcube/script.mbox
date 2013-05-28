@@ -4,6 +4,9 @@ from version import LooseVersion
 from copy import deepcopy
 import stat
 import shutil
+import time
+import os
+import glob
 
 E_SYSTEM_UPDATE_BASE_ID = WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
@@ -1649,34 +1652,54 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 			return
 
-		#check usb file
-		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
-		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
-		if not os.path.exists( filePath ) :
+		xmlFullPathList = glob.glob( os.path.join( usbPath, 'updatechannel', '*.xml')  )
+
+		LOG_TRACE( 'XML file countd=%d' %len(xmlFullPathList ) )
+
+		if len( xmlFullPathList ) <= 0 :
+ 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel file in %s directory' ) %('updatechannel' ) )
+ 			dialog.doModal( )
+ 			return
+
+		xmlFileList = []
+		for i in range( len( xmlFullPathList )  ):
+			xmlFileList.append( os.path.basename( xmlFullPathList[i] ) )
+
+		dialog = xbmcgui.Dialog( )
+		select = dialog.select( MR_LANG( 'Select File' ), xmlFileList, False )
+
+		if select >= 0 :
+			#check usb file
+			strFilename = xmlFileList[select]
+			LOG_TRACE( 'select file name=%s' %strFilename )
+			filePath = os.path.join( usbPath, 'updatechannel', strFilename )
+			LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+			if not os.path.exists( filePath ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG('Error'), '%s %s' %( MR_LANG( 'File not found' ), strFilename ) )
+				dialog.doModal( )
+				return
+
+			self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+			shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
+			os.system( 'sync' )
+		
+			self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
+			self.mDataCache.LoadAllSatellite( )
+			self.mDataCache.LoadAllTransponder( )
+			self.mTunerMgr.SyncChannelBySatellite( )
+			self.mDataCache.Channel_ReLoad( )
+			self.mDataCache.Player_AVBlank( False )
+
+			os.remove( UPDATE_TEMP_CHANNEL )
+			os.system( 'sync' )		
+
+			self.CloseProgress( )
+
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG('Error'), '%s %s' %( MR_LANG( 'File not found' ), filePath ) )
+			dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
 			dialog.doModal( )
-			return
-
-		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
-		shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
-		os.system( 'sync' )
-	
-		self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
-		self.mDataCache.LoadAllSatellite( )
-		self.mDataCache.LoadAllTransponder( )
-		self.mTunerMgr.SyncChannelBySatellite( )
-		self.mDataCache.Channel_ReLoad( )
-		self.mDataCache.Player_AVBlank( False )
-
-		os.remove( UPDATE_TEMP_CHANNEL )
-		os.system( 'sync' )		
-
-		self.CloseProgress( )
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
-		dialog.doModal( )
 		
 	
 	def ExportChannelsToUSB( self ) :
@@ -1698,7 +1721,27 @@ class SystemUpdate( SettingWindow ) :
 		self.mCommander.System_ExportChannelList( UPDATE_TEMP_CHANNEL )
 		os.system( 'sync' )
 
-		filePath = os.path.join( usbPath, 'updatechannel', 'defaultchannel.xml' )
+		localTime = self.mDataCache.Datetime_GetLocalTime( )
+		strLocalTime = time.strftime('%d.%m.%Y_%H-%M', time.gmtime( localTime ) )
+		strFilename = 'settings_%s.xml' %strLocalTime
+	
+
+		LOG_TRACE( 'settings filename=%s' %strFilename )
+
+		filePath = os.path.join( usbPath, 'updatechannel', strFilename )
+		if os.path.exists( filePath ) :
+			LOG_TRACE( 'already exist file=%s' %filePath )		
+			for i in range( 10 ) :
+				strLocalTime = time.strftime('%d%m%Y_%H-%M', time.gmtime( localTime ) )
+				strFilename = 'settings_%s_%d.xml' %(strLocalTime, i + 1 )
+				filePath = os.path.join( usbPath, 'updatechannel', strFilename )				
+				if os.path.exists( filePath ) == False :
+					break
+				else :
+					LOG_TRACE( 'already exist file=%s' %filePath )						
+
+		LOG_TRACE( 'update file=%s' %filePath )
+
 		shutil.copyfile( UPDATE_TEMP_CHANNEL, filePath )
 		os.system( 'sync' )
 
