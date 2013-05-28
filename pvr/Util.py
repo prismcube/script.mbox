@@ -10,6 +10,8 @@ from ElisEnum import ElisEnum
 import threading
 
 gThreads = odict( )
+gAbbreviatedWeekday = {}
+gAbbreviatedMonth = {}
 
 def ClearThreads( ) :
 	gThreads.clear( )
@@ -88,8 +90,11 @@ class TimeFormatEnum( object ) :
 
 def TimeToString( aTime, aFlag = 0 ) :
 	strTime = ''
+	global gAbbreviatedWeekday
+	global gAbbreviatedMonth	
 	if aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
-		strTime = time.strftime('%a, %d.%m.%Y', time.gmtime( aTime ) )
+		weekday = time.strftime('%a', time.gmtime( aTime ) )
+		strTime = '%s, %s' %( gAbbreviatedWeekday.get(weekday,weekday), time.strftime('%d.%m.%Y', time.gmtime( aTime ) ) )
 	elif aFlag == TimeFormatEnum.E_HH_MM :
 		strTime = time.strftime('%H:%M', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
@@ -97,21 +102,57 @@ def TimeToString( aTime, aFlag = 0 ) :
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
 		strTime = time.strftime('%d.%m.%Y', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_AW_HH_MM :
-		strTime = time.strftime('%a, %H:%M', time.gmtime( aTime ) )
+		weekday = time.strftime('%a', time.gmtime( aTime ) )
+		strTime = '%s, %s' %( gAbbreviatedWeekday.get(weekday,weekday), time.strftime('%H:%M', time.gmtime( aTime ) ) )
 	elif aFlag == TimeFormatEnum.E_HH_MM_SS :
 		strTime = time.strftime('%H:%M:%S', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_WEEK_OF_DAY :
 		strTime = time.strftime('%a', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_AW_DD_MON :
-		strTime = time.strftime('%a. %d %b', time.gmtime( aTime ) )
+		weekday = time.strftime('%a', time.gmtime( aTime ) )
+		month = time.strftime('%b', time.gmtime( aTime ) )
+		strTime = '%s, %s %s' %( gAbbreviatedWeekday.get(weekday,weekday), time.strftime('%d', time.gmtime( aTime ) ), gAbbreviatedMonth.get(month, month))
+		#strTime = time.strftime('%a. %d %b', time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_AH_MM_SS :
 		strTime = '%02d:%s'% ( (aTime / 3600), time.strftime('%M:%S', time.gmtime( aTime ) ) )
 	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM :
-		strTime = time.strftime('%a, %d.%m.%Y %H:%M', time.gmtime( aTime ) )
+		weekday = time.strftime('%a', time.gmtime( aTime ) )
+		strTime = '%s, %s' %( gAbbreviatedWeekday.get(weekday,weekday), time.strftime('%d.%m.%Y %H:%M', time.gmtime( aTime ) ) )
+		#strTime = time.strftime('%a, %d.%m.%Y %H:%M', time.gmtime( aTime ) )
 	else :
-		strTime = time.strftime('%a, %d.%m.%Y', aTime )
+		weekday = time.strftime('%a', time.gmtime( aTime ) )
+		strTime = '%s, %s' %( gAbbreviatedWeekday.get(weekday,weekday), time.strftime('%d.%m.%Y', aTime ) )
+		#strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		#print 'strTime=%s' %strTime
 
 	return strTime
 
+
+def UpdateMonthTranslation( ) :
+	global gAbbreviatedWeekday
+	gAbbreviatedWeekday = {}
+	gAbbreviatedWeekday['Mon'] = xbmc.getLocalizedString(41)
+	gAbbreviatedWeekday['Tue'] = xbmc.getLocalizedString(42)
+	gAbbreviatedWeekday['Wed'] = xbmc.getLocalizedString(43)
+	gAbbreviatedWeekday['Thu'] = xbmc.getLocalizedString(44)
+	gAbbreviatedWeekday['Fri'] = xbmc.getLocalizedString(45)
+	gAbbreviatedWeekday['Sat'] = xbmc.getLocalizedString(46)	
+	gAbbreviatedWeekday['Sun'] = xbmc.getLocalizedString(47)
+
+
+def UpdateWeekdayTranslation( ) :
+	global gAbbreviatedMonth
+	gAbbreviatedMonth = {}
+	gAbbreviatedMonth['Jan'] = xbmc.getLocalizedString(51)
+	gAbbreviatedMonth['Feb'] = xbmc.getLocalizedString(52)
+	gAbbreviatedMonth['Mar'] = xbmc.getLocalizedString(53)
+	gAbbreviatedMonth['Apr'] = xbmc.getLocalizedString(54)
+	gAbbreviatedMonth['May'] = xbmc.getLocalizedString(55)
+	gAbbreviatedMonth['Jun'] = xbmc.getLocalizedString(56)
+	gAbbreviatedMonth['Jul'] = xbmc.getLocalizedString(57)
+	gAbbreviatedMonth['Aug'] = xbmc.getLocalizedString(58)
+	gAbbreviatedMonth['Sep'] = xbmc.getLocalizedString(59)
+	gAbbreviatedMonth['Oct'] = xbmc.getLocalizedString(60)
+	gAbbreviatedMonth['Nov'] = xbmc.getLocalizedString(61)
+	gAbbreviatedMonth['Dec'] = xbmc.getLocalizedString(62)	
 
