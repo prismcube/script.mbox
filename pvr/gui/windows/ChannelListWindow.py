@@ -2563,20 +2563,20 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = MR_LANG( 'Enter name for new favorite group' )
+				label = MR_LANG( 'Enter a name for new favorite group' )
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Enter new name for this favorite group' )
+				label = MR_LANG( 'Enter a new name for this favorite group' )
 
 			elif selectedAction == CONTEXT_ACTION_CHANGE_NAME :
 				idx = self.mCtrlListCHList.getSelectedPosition( )
 				groupName = self.mChannelList[idx].mName
 				default = groupName
 				result = '%d'%self.mChannelList[idx].mNumber + ':' + default + ':'
-				label = MR_LANG( 'Enter new name for this favorite group' )
+				label = MR_LANG( 'Enter a new name for this favorite group' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )

@@ -788,7 +788,7 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					strStartTime = TimeToString( self.mUsedWeeklyList[0].mStartTime, TimeFormatEnum.E_HH_MM )			
 
-			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter the start time' ), strStartTime )			
+			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )
 
 			tempList = strStartTime.split( ':', 1 )
 
@@ -843,7 +843,7 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					strEndTime = TimeToString( self.mUsedWeeklyList[0].mStartTime + self.mUsedWeeklyList[0].mDuration, TimeFormatEnum.E_HH_MM )			
 
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter the end time', strEndTime )	
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter an end time' ), strEndTime )
 
 			tempList = strEndTime.split( ':', 1 )
 

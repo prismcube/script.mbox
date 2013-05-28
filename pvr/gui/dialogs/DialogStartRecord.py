@@ -289,7 +289,7 @@ class DialogStartRecord( SettingDialog ) :
 			orgEndHour = int( tempList[0] )
 			orgEndMin = int( tempList[1] )
 			
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter the end time' ), strEndTime )		
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter an end time' ), strEndTime )
 
 			tempList = strEndTime.split( ':', 1 )
 
@@ -346,7 +346,7 @@ class DialogStartRecord( SettingDialog ) :
 
 				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter new duration' ), MR_LANG( 'in mins' ) ), '%d' %tempDuration  , 3 )
+			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter a new duration' ), MR_LANG( 'in mins' ) ), '%d' %tempDuration  , 3 )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
