@@ -1664,11 +1664,13 @@ class DataCacheMgr( object ) :
 		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
 			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
 
-		self.mPlayingChannel = self.Channel_GetCurrent( )
 		self.SetAVBlankByArchive( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
 		self.mPMTinstance = None
+		self.mPlayingChannel = None
+		if not self.Get_Player_AVBlank( ) :
+			self.mPlayingChannel = self.Channel_GetCurrent( )
 
 		thread = threading.Timer( 0.1, AsyncShowStatus, ['LIVE'] )
 		thread.start( )
