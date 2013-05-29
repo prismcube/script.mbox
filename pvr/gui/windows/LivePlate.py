@@ -1058,6 +1058,13 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetEPGList( self.mEPGList, self.mEPGListIdx )
 				dialog.doModal( )
 
+				closeAction = dialog.GetCloseStatus( )
+				if closeAction == Action.ACTION_CONTEXT_MENU :
+					self.mIsShowDialog = False
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+					return
+
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			status = self.mDataCache.GetLockedState( )
 			if status != ElisEnum.E_CC_SUCCESS :
