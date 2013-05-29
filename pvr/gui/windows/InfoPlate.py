@@ -655,7 +655,8 @@ class InfoPlate( LivePlateWindow ) :
 		ret = dialog.GetCloseStatus( )
 		if ret == Action.ACTION_CONTEXT_MENU :
 			self.Close( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			#WinMgr.GetInstance( ).CloseWindow( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 		else:
 			self.EventReceivedDialog( dialog )
 
