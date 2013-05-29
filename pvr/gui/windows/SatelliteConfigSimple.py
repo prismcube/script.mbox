@@ -423,7 +423,7 @@ class SatelliteConfigSimple( FTIWindow ) :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Longitude Direction : East' ), CONTEXT_LONGITUDE_EAST ) )
 			context.append( ContextItem( MR_LANG( 'Longitude Direction : West' ), CONTEXT_LONGITUDE_WEST ) )
-			context.append( ContextItem( MR_LANG( 'Restore longitude' ), CONTEXT_LONGITUDE_RESET ) )
+			context.append( ContextItem( MR_LANG( 'Reset Longitudes' ), CONTEXT_LONGITUDE_RESET ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
