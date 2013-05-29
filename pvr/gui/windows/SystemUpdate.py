@@ -1685,20 +1685,31 @@ class SystemUpdate( SettingWindow ) :
 			shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
 			os.system( 'sync' )
 		
-			self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
-			self.mDataCache.LoadAllSatellite( )
-			self.mDataCache.LoadAllTransponder( )
-			self.mTunerMgr.SyncChannelBySatellite( )
-			self.mDataCache.Channel_ReLoad( )
-			self.mDataCache.Player_AVBlank( False )
+			msgHead = MR_LANG( 'Update channels' )
+			msgLine = ''
+			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
+			if ret == ElisEnum.E_UPDATE_SUCCESS :
+				msgHead = MR_LANG( 'Update complete' )
+				msgLine = MR_LANG( 'Your channel list has been updated successfully' )
+				self.mDataCache.LoadAllSatellite( )
+				self.mDataCache.LoadAllTransponder( )
+				self.mTunerMgr.SyncChannelBySatellite( )
+				self.mDataCache.Channel_ReLoad( )
+				self.mDataCache.Player_AVBlank( False )
 
-			os.remove( UPDATE_TEMP_CHANNEL )
-			os.system( 'sync' )		
+				os.remove( UPDATE_TEMP_CHANNEL )
+				os.system( 'sync' )		
+
+			else :
+				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
+					msgLine = MR_LANG( '' )
+				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
+					msgLine = MR_LANG( '' )
 
 			self.CloseProgress( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
+			dialog.SetDialogProperty( msgHead, msgLine )
 			dialog.doModal( )
 		
 	
