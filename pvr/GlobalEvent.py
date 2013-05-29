@@ -195,9 +195,9 @@ class GlobalEvent( object ) :
 
 			else :
 				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
-					msgLine = MR_LANG( '' )
+					msgLine = MR_LANG( 'Please try again after stopping the recordings' )
 				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
-					msgLine = MR_LANG( '' )
+					msgLine = MR_LANG( 'Please try again after deleting your timers first' )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( msgHead, msgLine )
