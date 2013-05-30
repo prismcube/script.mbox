@@ -32,7 +32,7 @@
 			<ondown>9000</ondown>
 			<defaultcontrol always="true">500</defaultcontrol>
 			
-			<!-- RECORD1 -->
+			<!-- RECORD 1 -->
 			<control type="group" id="500">		
 				<posx>0</posx>
 				<posy>0</posy>

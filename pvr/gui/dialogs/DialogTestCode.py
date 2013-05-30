@@ -10,7 +10,7 @@ class DialogTestCode( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mMode = ElisEnum.E_MODE_LIVE
 
-
+	"""
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
@@ -27,6 +27,10 @@ class DialogTestCode( BaseDialog ) :
 
 		self.LoadToBookmark( )
 		self.mMoveP = 0
+	"""
+
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 
 	def onAction( self, aAction ) :
@@ -40,13 +44,45 @@ class DialogTestCode( BaseDialog ) :
 			self.CloseDialog( )
 
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
-			self.CloseDialog( )
+			#self.CloseDialog( )
+			#self.setProperty( 'iPlayerRewind', E_TAG_FALSE )
+			self.setProperty( 'iPlayerXpeed', E_TAG_FALSE )
+			self.setProperty( 'iPlayerResume', E_TAG_TRUE )
 
-		elif aAction == Action.ACTION_MOVE_LEFT :
-			self.MoveTest( -10 )
+		elif aAction == Action.ACTION_MBOX_REWIND :
+			self.setProperty( 'iPlayerResume', E_TAG_FALSE )
+			#self.setProperty( 'iPlayerRewind', E_TAG_TRUE )
+			self.setProperty( 'iPlayerXpeed', E_TAG_TRUE )
+			self.setProperty( 'iFileXpeed', 'OSD2x.png' )
+			self.setProperty( 'iXpeedArrow', 'Rewind' )
 
-		elif aAction == Action.ACTION_MOVE_RIGHT :
-			self.MoveTest( 10 )
+		elif aAction == Action.ACTION_MOVE_UP :
+			iRussian = E_TAG_FALSE
+			if XBMC_GetCurrentLanguage( ) == 'Russian' :
+				iRussian = E_TAG_TRUE
+			self.setProperty( 'iHotkeyGreenRussian', '%s'% iRussian )
+			self.setProperty( 'InfoPlateName', E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+
+		elif aAction == Action.ACTION_MOVE_DOWN :
+			iRussian = E_TAG_FALSE
+			if XBMC_GetCurrentLanguage( ) == 'Russian' :
+				iRussian = E_TAG_TRUE
+			self.setProperty( 'iHotkeyGreenRussian', '%s'% iRussian )
+			self.setProperty( 'InfoPlateName', E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+
+		#elif aAction == Action.ACTION_MOVE_LEFT :
+		#	self.MoveTest( -10 )
+
+		#elif aAction == Action.ACTION_MOVE_RIGHT :
+		#	self.MoveTest( 10 )
 
 
 	def onClick( self, aControlId ):
@@ -56,7 +92,7 @@ class DialogTestCode( BaseDialog ) :
 	def onFocus( self, aControlId ):
 		pass
 
-
+'''
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
@@ -174,6 +210,6 @@ class DialogTestCode( BaseDialog ) :
 			self.mBookmarkButton = []
 			LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
 
-
+'''
 
 

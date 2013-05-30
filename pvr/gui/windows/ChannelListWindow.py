@@ -1491,6 +1491,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 			self.mDataCache.SetChannelReloadStatus( False )
 
+			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+							
 			for iChannel in self.mChannelList :
 				"""
 				lblTPnum = 'T1'

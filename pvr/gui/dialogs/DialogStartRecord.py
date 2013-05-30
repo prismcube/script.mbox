@@ -188,7 +188,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
 				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration , TimeFormatEnum.E_HH_MM ) )
-				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d %s' % ( int( self.mTimer.mDuration / 60 ), MR_LANG( 'mins' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
+				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d %s' % ( int( self.mTimer.mDuration / 60 ), MR_LANG( 'min(s)' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 
 			else :
 				LOG_TRACE( 'self.mOTRInfo.mHasEPG=%d' %self.mOTRInfo.mHasEPG )
@@ -230,7 +230,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
 				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d %s' % ( duration, MR_LANG( 'mins' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
+				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d %s' % ( duration, MR_LANG( 'min(s)' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -274,7 +274,7 @@ class DialogStartRecord( SettingDialog ) :
 				duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )					
 				self.SetControlLabel2String( E_DialogInput01, TimeToString( self.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-				self.SetControlLabel2String( E_DialogInput03, '%d %s' %( duration, MR_LANG('mins') ) )
+				self.SetControlLabel2String( E_DialogInput03, '%d %s' %( duration, MR_LANG('min(s)') ) )
 
 
 	def ChangeEndTime( self ) :
@@ -331,7 +331,7 @@ class DialogStartRecord( SettingDialog ) :
 				duration = int( tmpEndTime/60 ) - int( self.mStartTime/60 )
 				
 			self.SetControlLabel2String( E_DialogInput02, TimeToString( tmpEndTime, TimeFormatEnum.E_HH_MM ) )
-			self.SetControlLabel2String( E_DialogInput03, '%d %s' %( duration, MR_LANG('mins') ) )
+			self.SetControlLabel2String( E_DialogInput03, '%d %s' %( duration, MR_LANG( 'min(s)' ) ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -367,7 +367,7 @@ class DialogStartRecord( SettingDialog ) :
 				else :
 					self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
 
-				self.SetControlLabel2String( E_DialogInput03, '%d %s' % ( duration, MR_LANG( 'mins' ) ) )
+				self.SetControlLabel2String( E_DialogInput03, '%d %s' % ( duration, MR_LANG( 'min(s)' ) ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -462,7 +462,7 @@ class DialogStartRecord( SettingDialog ) :
 
 	def CallballInputNumber( self, aGroupId, aString ) :
 		if aGroupId == E_DialogInput03 :
-			self.SetControlLabel2String( E_DialogInput03, '%s %s' % ( aString, MR_LANG( 'mins' ) ) )
+			self.SetControlLabel2String( E_DialogInput03, '%s %s' % ( aString, MR_LANG( 'min(s)' ) ) )
 
 
 	def FocusChangedAction( self, aGroupId ) :
