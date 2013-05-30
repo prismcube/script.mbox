@@ -47,6 +47,11 @@ class DialogAddManualTimer( SettingDialog ) :
 
 
 	def onInit( self ) :
+		global LIST_RECORDING_MODE
+		global LIST_WEEKLY
+		LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
+		LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
+
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
@@ -299,6 +304,8 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def DrawItem( self ) :
 		LOG_TRACE( 'self.mRecordingMode=%d' %self.mRecordingMode )
+		global LIST_RECORDING_MODE
+		global LIST_WEEKLY
 
 		try :
 
