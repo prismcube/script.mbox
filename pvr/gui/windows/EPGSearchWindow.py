@@ -118,6 +118,21 @@ class EPGSearchWindow( BaseWindow ) :
 			if self.mFocusId == LIST_ID_BIG_EPG:
 				self.UpdateEPGInfomation( )
 
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			selectedEPG = self.GetSelectedEPG( )		
+			if selectedEPG  :
+				timer = self.GetTimerByEPG( selectedEPG )
+				if timer :
+					self.DoContextAction( CONTEXT_EDIT_TIMER ) 				
+				else :
+					self.DoContextAction( CONTEXT_ADD_TIMER ) 
+
+		elif actionId == Action.ACTION_STOP :
+			self.DoContextAction( CONTEXT_DELETE_TIMER ) 
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.DoContextAction( CONTEXT_SEARCH ) 		
+		
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
