@@ -207,9 +207,9 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogHotkeys import DialogHotkeys
 				return DialogHotkeys( 'DialogHotkeys.xml', self.scriptDir )
 
-			#elif aDialogId == DIALOG_ID_TEST_WORK :
-			#	from pvr.gui.dialogs.DialogTestCode import DialogTestCode
-			#	return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
+			elif aDialogId == DIALOG_ID_TEST_WORK :
+				from pvr.gui.dialogs.DialogTestCode import DialogTestCode
+				return DialogTestCode( 'DialogTestCode2.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'Cannot find dialog' )
