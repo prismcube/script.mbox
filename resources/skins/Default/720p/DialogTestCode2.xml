@@ -1,0 +1,1592 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="group">
+			<defaultcontrol always="true">1003621</defaultcontrol>
+			<visible>false</visible>
+			<control type="image">
+				<include>DefaultWindowFade</include>
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
+				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
+			</control>
+			<control type="image" id="1400100">
+				<posx>1200</posx>
+				<posy>50</posy>
+				<width>60</width>
+				<height>25</height>
+				<texture>i_record.png</texture>
+				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
+			</control>
+			<control type="group">
+				<control type="image">
+					<description>media info background image</description>
+					<posx>-13</posx>
+					<posy>547</posy>
+					<width>1306</width>
+					<height>187</height>
+					<texture>MediaInfoBackLower.png</texture>
+				</control>
+
+		<!-- common date time -->
+				<!--control type="group">
+					<posx>190r</posx>
+					<posy>563</posy>
+					<control type="image">
+						<description>time background</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>240</width>
+						<height>35</height>
+						<texture flipx="true" border="32,0,0,0">header.png</texture>
+					</control>
+					<control type="label">
+						<description>time label</description>
+						<posx>60</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<label>$INFO[System.Time]</label>
+					</control>
+				</control-->
+
+
+		<!-- Rec info -->
+				<control type="group">
+					<posx>450r</posx>
+					<posy>540</posy>
+					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
+					<control type="group">
+						<posx>0</posx>
+						<posy>-20</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>450</width>
+							<height>35</height>
+							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+							<visible>Control.IsVisible(1400010)</visible>
+						</control>
+						<control type="image" id="1400010">
+							<posx>45</posx>
+							<posy>7</posy>
+							<width>60</width>
+							<height>25</height>
+							<texture>i_record.png</texture>
+							<visible>substring(Window.Property(ViewRecord1),true)</visible>
+						</control>
+						<control type="label" id="1400011">
+							<posx>116</posx>
+							<posy>7</posy>
+							<font>font12caps</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>21</posx>
+						<posy>-51</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>450</width>
+							<height>35</height>
+							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+							<visible>Control.IsVisible(1400015)</visible>
+						</control>
+						<control type="image" id="1400015">
+							<posx>25</posx>
+							<posy>7</posy>
+							<width>60</width>
+							<height>25</height>
+							<texture>i_record.png</texture>
+							<visible>substring(Window.Property(ViewRecord2),true)</visible>
+						</control>
+						<control type="label" id="1400016">
+							<posx>95</posx>
+							<posy>7</posy>
+							<font>font12caps</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+					</control>
+				</control>
+
+		<!-- info section -->
+				<control type="group" id="1400600">
+					<posx>50</posx>
+					<posy>600</posy>
+<!-- title -------------------------------->
+					<control type="label">
+						<posx>-55</posx>
+						<posy>5</posy>
+						<width>300</width>
+						<height>50</height>
+						<align>center</align>
+						<font>font35_title</font>
+						<textcolor>red</textcolor>
+						<label>SCRIPT1123</label>
+						<!--visible>substring(Window.Property(InfoPlateName),true)</visible-->
+					</control>
+					<control type="image">
+						<description>Channel Logo Background</description>
+						<posx>-20</posx>
+						<posy>12</posy>
+						<width>90</width>
+						<height>55</height>
+						<texture>Logo_Background.png</texture>
+						<colordiffuse>FFEFEFEF</colordiffuse>
+						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
+					</control>
+					<control type="image">
+						<description>Channel Logo Icon</description>
+						<posx>-20</posx>
+						<posy>12</posy>
+						<width>90</width>
+						<height>55</height>
+						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+						<colordiffuse>FFEFEFEF</colordiffuse>
+					</control>
+
+					<control type="label" id="1400601">
+						<description>Channel Number</description>
+						<posx>90</posx>
+						<posy>5</posy>
+						<width>160</width>
+						<height>50</height>
+						<align>left</align>
+						<font>font50caps_title</font>
+						<label>$INFO[Control.GetLabel]</label>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+					</control>
+					<control type="label" id="1400602">
+						<description>Channel Name</description>
+						<posx>270</posx>
+						<posy>17</posy>
+						<align>left</align>
+						<width>450</width>
+						<scroll>true</scroll>
+						<font>font35_title</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+
+					<control type = "group">
+						<posx>265</posx>
+						<posy>-35</posy>
+						<control type="image" id="1400603">
+							<posx>0</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>70</width>
+							<height>30</height>
+							<texture>tv.png</texture>
+							<visible>substring(Window.Property(ServiceTypeTV),true)</visible>
+						</control>
+						<control type="image" id="1400604">
+							<posx>0</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>70</width>
+							<height>30</height>
+							<texture>icon_radio2.png</texture>
+							<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
+						</control>
+					</control>
+
+					<control type="group">
+						<description>labels for buttons</description>
+						<posx>-50</posx>
+						<posy>-37</posy>
+						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>35</height>
+							<texture border="0,0,32,0">header.png</texture>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1032</label>
+							<visible>Control.HasFocus(1003621)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1033</label>
+							<visible>Control.HasFocus(1003622)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1034</label>
+							<visible>Control.HasFocus(1003623)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1035</label>
+							<visible>Control.HasFocus(1003624)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1036</label>
+							<visible>Control.HasFocus(1003625)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1037</label>
+							<visible>Control.HasFocus(1003626)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1038</label>
+							<visible>Control.HasFocus(1003627)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1039</label>
+							<visible>Control.HasFocus(1003628)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1040</label>
+							<visible>Control.HasFocus(1400702)</visible>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1041</label>
+							<visible>Control.HasFocus(1400706)</visible>
+						</control>
+					</control>
+
+		<!-- button control -->
+					<include>DefaultInfoPlateGroup</include>
+
+					<control type="group">
+						<posx>730</posx>
+						<posy>-35</posy>
+						<control type="grouplist">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>300</width>
+							<height>30</height>
+							<itemgap>5</itemgap>
+							<visible>true</visible>
+							<orientation>horizontal</orientation>
+							<control type="group">
+								<width>30</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iLock),true)</visible>
+								<control type="image">
+									<posx>5</posx>
+									<posy>0</posy>
+									<width>30</width>
+									<height>30</height>
+									<texture>IconLock.png</texture>
+								</control>
+							</control>
+							<control type="image">
+								<posx>40</posx>
+								<posy>1</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconT1.png</texture>
+								<visible>substring(Window.Property(iTuner1),true)</visible>
+							</control>
+							<control type="image">
+								<posx>40</posx>
+								<posy>1</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconT2.png</texture>
+								<visible>substring(Window.Property(iTuner2),true)</visible>
+							</control>
+
+							<control type="image">
+								<posx>75</posx>
+								<posy>1</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconCas.png</texture>
+								<visible>substring(Window.Property(iCas),true)</visible>
+							</control>
+							<control type="group">
+								<posx>110</posx>
+								<posy>10</posy>
+								<control type="label">
+									<posx>0</posx>
+									<posy>8</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<font>font10</font>
+									<textcolor>grey</textcolor>
+									<label>$INFO[Window.Property(iCasInfo)]</label>
+									<visible>substring(Window.Property(iCas),true)</visible>
+								</control>
+							</control>
+
+						</control>
+					</control>
+
+					<!-- color key -->
+					<control type="group">
+						<control type="grouplist">
+							<posx>400r</posx>
+							<posy>-35</posy>
+							<width>300</width>
+							<height>40</height>
+							<itemgap>2</itemgap>
+							<visible>true</visible>
+							<align>right</align>
+							<orientation>horizontal</orientation>
+							<control type="group">
+								<width>30</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+								<control type="image">
+									<width>30</width>
+									<height>30</height>
+									<texture>settings-button-nofocus-red.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>30</width>
+									<height>30</height>
+									<font>font10</font>
+									<label></label>
+								</control>
+							</control>
+							<control type="group">
+								<width>80</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+								<control type="image">
+									<width>80</width>
+									<height>30</height>
+									<texture>settings-button-nofocus-green.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>80</width>
+									<height>30</height>
+									<font>font10</font>
+									<align>center</align>
+									<label>SCRIPT1039</label>
+								</control>
+							</control>
+							<control type="group">
+								<width>50</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+								<control type="image">
+									<width>50</width>
+									<height>30</height>
+									<texture>settings-button-nofocus-green.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>50</width>
+									<height>30</height>
+									<font>font10</font>
+									<align>center</align>
+									<label>SCRIPT1039</label>
+								</control>
+							</control>
+							<control type="group">
+								<width>48</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+								<control type="image">
+									<width>48</width>
+									<height>30</height>
+									<texture>settings-button-nofocus-yellow.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>48</width>
+									<height>30</height>
+									<font>font10</font>
+									<align>center</align>
+									<label>SCRIPT1124</label>
+								</control>
+							</control>
+							<control type="group">
+								<width>48</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+								<control type="image">
+									<width>48</width>
+									<height>30</height>
+									<texture>settings-button-nofocus.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>48</width>
+									<height>30</height>
+									<font>font10</font>
+									<align>center</align>
+									<label>SCRIPT1060</label>
+								</control>
+							</control>
+						</control>
+					</control>
+
+					<control type="group">
+						<posx>725</posx>
+						<posy>18</posy>
+						<control type="grouplist">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>510</width>
+							<height>40</height>
+							<itemgap>15</itemgap>
+							<visible>true</visible>
+							<orientation>horizontal</orientation>
+							<control type="group">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<visible>substring(Window.Property(HasAgeRating),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<texture>ageIcon.png</texture>
+								</control>
+								<control type="label">
+									<posx>18</posx>
+									<posy>6</posy>
+									<width>50</width>
+									<height>10</height>
+									<font>font15</font>
+									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+								</control>
+							</control>
+							<control type="group" id="1400608">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<visible>substring(Window.Property(HasTeletext),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<texture>IconTeletext.png</texture>
+								</control>
+							</control>
+							<control type="group" id="1400605">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<visible>substring(Window.Property(HasSubtitle),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<texture>IconSubtitle.png</texture>
+								</control>
+							</control>
+							<control type="group" id="1400606">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>118</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasDolby),true)</visible>
+								<control type="image">
+									<posx>5</posx>
+									<posy>4</posy>
+									<width>118</width>
+									<height>30</height>
+									<texture>dolbydigital.png</texture>
+								</control>
+							</control>
+							<control type="group" id="1400609">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>118</width>
+								<height>30</height>
+								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+								<control type="image">
+									<posx>5</posx>
+									<posy>4</posy>
+									<width>118</width>
+									<height>30</height>
+									<texture>dolbydigitalplus.png</texture>
+								</control>
+							</control>
+							<control type="group" id="1400607">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>85</width>
+								<height>40</height>
+								<visible>substring(Window.Property(HasHD),true)</visible>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>85</width>
+									<height>40</height>
+									<texture>OverlayHD.png</texture>
+								</control>
+							</control>
+						</control>
+					</control>
+
+				</control>
+
+		<!-- epg section -->
+				<control type="group" id="1400700">
+					<posx>70</posx>
+					<posy>660</posy>
+					<control type="label" id="1400701">
+						<description>Longitude info</description>
+						<posx>-40</posx>
+						<posy>10</posy>
+						<width>270</width>
+						<font>font13caps</font>
+						<align>left</align>
+						<textcolor>9f9f9f9b</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="button" id="1400702">
+						<posx>253</posx>
+						<posy>16</posy>
+						<width>25</width>
+						<height>15</height>
+						<label></label>
+						<font></font>
+						<texturefocus>scroll-left-focus.png</texturefocus>
+						<texturenofocus>scroll-left.png</texturenofocus>
+						<onleft></onleft>
+						<onright>1400706</onright>
+						<onup>1003621</onup>
+						<ondown></ondown>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+					</control>
+					<control type="label" id="1400703">
+						<description>EPG Name</description>
+						<posx>290</posx>
+						<posy>7</posy>
+						<width>400</width>
+						<textcolor>9f9c9f9b</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="label" id="1400704">
+						<description>EPG Start Time</description>
+						<posx>710</posx>
+						<posy>7</posy>
+						<align>left</align>
+						<font>font13_title</font>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="progress" id="1400707">
+						<description>progress control</description>
+						<posx>780</posx>
+						<posy>21</posy>
+						<width>250</width>
+						<height>8</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<lefttexture></lefttexture>
+						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<righttexture></righttexture>
+						<overlaytexture></overlaytexture>
+					</control>
+					<control type="label" id="1400705">
+						<description>EPG End Time</description>
+						<posx>1040</posx>
+						<posy>7</posy>
+						<font>font13_title</font>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="button" id="1400706">
+						<posx>1110</posx>
+						<posy>16</posy>
+						<align>right</align>
+						<width>25</width>
+						<height>15</height>
+						<label></label>
+						<font></font>
+						<texturefocus>scroll-right-focus.png</texturefocus>
+						<texturenofocus>scroll-right.png</texturenofocus>
+						<onleft>1400702</onleft>
+						<onright></onright>
+						<onup>1003621</onup>
+						<ondown></ondown>
+						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+					</control>
+				</control>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+		</control>
+
+
+		<!-- *********** E_Timeshift ********** -->
+		<control type="group">
+			<defaultcontrol always="true">2900202</defaultcontrol>
+			<!--
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
+			-->
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
+				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
+			</control>
+			<control type="image" id="2900100">
+				<posx>1200</posx>
+				<posy>50</posy>
+				<width>60</width>
+				<height>25</height>
+				<texture>i_record.png</texture>
+				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
+			</control>
+			<control type="group">
+				<animation effect="fade" start="0" end="100" time="400">Visible</animation>
+				<animation effect="fade" start="100" end="0" time="400">Hidden</animation>
+				<animation effect="slide" start="0,0" end="0,70r" time="300" tween="quadratic" easing="out" condition="!ControlGroup(1003750).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1003750).HasFocus">Conditional</animation>
+				<control type="group">
+					<control type="image">
+						<description>media info background image</description>
+						<posx>-13</posx>
+						<posy>547</posy>
+						<width>1306</width>
+						<height>187</height>
+						<texture>MediaInfoBackLower.png</texture>
+					</control>
+				</control>
+
+				<!-- bookmark thumnail-->
+				<control type="group">
+					<posx>0</posx>
+					<posy>460</posy>
+					<animation effect="fade" start="0" end="100" time="400" condition="Control.HasFocus(2900500)">Conditional</animation>
+					<animation effect="fade" start="100" end="0" time="400" condition="!Control.HasFocus(2900500)">Conditional</animation>
+					<control type="group" id="2900501">
+						<visible>substring(Window.Property(BookMarkShow),true)</visible>
+						<control type="list" id="2900500">
+							<width>1280</width>
+							<height>100</height>
+							<onleft>2900500</onleft>
+							<onright>2900500</onright>
+							<onup>2900500</onup>
+							<ondown>2900202</ondown>
+							<scrolltime>300</scrolltime>
+							<focusposition>3</focusposition>
+							<orientation>horizontal</orientation>
+							<preloaditems>4</preloaditems>
+							<itemlayout height="81" width="130">
+								<control type="image">
+									<posx>0</posx>
+									<posy>15</posy>
+									<width>130</width>
+									<height>85</height>
+									<aspectratio>stretch</aspectratio>
+									<bordertexture border="5">button-nofocus.png</bordertexture>
+									<bordersize>4</bordersize>
+									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
+								</control>
+								<control type="label">
+									<description>TimeMs offset</description>
+									<posx>65</posx>
+									<posy>50</posy>
+									<width>80</width>
+									<height>22</height>
+									<align>center</align>
+									<aligny>center</aligny>
+									<font>font12</font>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+								<control type="label">
+									<description>Bookmark number</description>
+									<posx>5</posx>
+									<posy>20</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<aligny>center</aligny>
+									<font>font10</font>
+									<label>$INFO[ListItem.Label2]</label>
+								</control>
+							</itemlayout>
+							<focusedlayout height="81" width="130">
+								<control type="image">
+									<posx>0</posx>
+									<posy>15</posy>
+									<width>130</width>
+									<height>85</height>
+									<aspectratio>stretch</aspectratio>
+									<bordertexture border="5">button-focus.png</bordertexture>
+									<bordersize>4</bordersize>
+									<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
+									<!--animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation-->
+									<animation effect="zoom" start="100" end="130" center="auto" time="300" tween="quadratic" easing="in">focus</animation>
+								</control>
+								<control type="label">
+									<posx>65</posx>
+									<posy>50</posy>
+									<width>100</width>
+									<height>22</height>
+									<align>center</align>
+									<aligny>center</aligny>
+									<font>font13</font>
+									<textcolor>white</textcolor>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+								<control type="label">
+									<posx>-15</posx>
+									<posy>10</posy>
+									<width>100</width>
+									<height>10</height>
+									<align>left</align>
+									<aligny>center</aligny>
+									<font>font13</font>
+									<label>$INFO[ListItem.Label2]</label>
+								</control>
+							</focusedlayout>
+						</control>
+					</control>
+				</control>
+
+				<!-- Rec info -->
+				<control type="group">
+					<posx>450r</posx>
+					<posy>540</posy>
+					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(2900010) | Control.IsVisible(2900015)">conditional</animation>
+					<control type="group">
+						<posx>0</posx>
+						<posy>-20</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>450</width>
+							<height>35</height>
+							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+							<visible>Control.IsVisible(2900010)</visible>
+						</control>
+						<control type="image" id="2900010">
+							<posx>45</posx>
+							<posy>7</posy>
+							<width>60</width>
+							<height>25</height>
+							<texture>i_record.png</texture>
+							<visible>substring(Window.Property(ViewRecord1),true)</visible>
+						</control>
+						<control type="label" id="2900011">
+							<posx>116</posx>
+							<posy>7</posy>
+							<font>font12caps</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>21</posx>
+						<posy>-51</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>450</width>
+							<height>35</height>
+							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+							<visible>Control.IsVisible(2900015)</visible>
+						</control>
+						<control type="image" id="2900015">
+							<posx>25</posx>
+							<posy>7</posy>
+							<width>60</width>
+							<height>25</height>
+							<texture>i_record.png</texture>
+							<visible>substring(Window.Property(ViewRecord2),true)</visible>
+						</control>
+						<control type="label" id="2900016">
+							<posx>95</posx>
+							<posy>7</posy>
+							<font>font12caps</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+					</control>
+				</control>
+
+				<!-- info section -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>590</posy>
+					<control type="group">
+						<posx>40</posx>
+						<posy>30</posy>
+						<visible>!ControlGroup(1003750).HasFocus</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>20</width>
+							<height>20</height>
+							<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
+							<texture>OSDLeft.png</texture>
+						</control>
+						<control type="label">
+							<posx>25</posx>
+							<posy>0</posy>
+							<font>font10</font>
+							<textcolor>grey</textcolor>
+							<label>SCRIPT1122</label>
+						</control>
+					</control>
+				</control>
+
+			<!-- color key -->
+				<control type="group">
+					<control type="grouplist">
+						<posx>200r</posx>
+						<posy>565</posy>
+						<width>300</width>
+						<height>40</height>
+						<itemgap>1</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+							<control type="image">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-red.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label></label>
+							</control>
+						</control>
+						<control type="group">
+							<width>80</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+							<control type="image">
+								<width>80</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>80</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label>SCRIPT1039</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>50</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+							<control type="image">
+								<width>50</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>50</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label>SCRIPT1039</label>
+							</control>
+						</control>
+
+						<control type="group">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+							<control type="image">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-yellow.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label>SCRIPT1124</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+							<control type="image">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label>SCRIPT1060</label>
+							</control>
+						</control>
+					</control>
+				</control>
+
+				<!-- play section -->
+				<!--control type="group">
+					<posx>230</posx>
+					<posy>575</posy>
+					<include>TimeshiftPlateFocusButton</include>
+				</control-->
+				<control type="group">
+					<posx>230</posx>
+					<posy>575</posy>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>-2</posy>
+						<width>120</width>
+						<height>60</height>
+						<texture>OSDSeekFrame.png</texture>
+						<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+					</control>
+					<control type="image">
+						<posx>-10</posx>
+						<posy>13</posy>
+						<width>13</width>
+						<height>45</height>
+						<texture>OSDSeekRewind.png</texture>
+						<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+						<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
+					</control>
+					<control type="image">
+						<posx>84</posx>
+						<posy>13</posy>
+						<width>13</width>
+						<height>45</height>
+						<texture>OSDSeekForward.png</texture>
+						<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+						<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Forward)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>OSDRewindNF.png</texture>
+						<visible>substring(Window.Property(iPlayerRewind),true)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(Window.Property(iPlayerResume),true)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>OSDPauseNF.png</texture>
+						<visible>substring(Window.Property(iPlayerPause),true)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>OSDStopNF.png</texture>
+						<visible>substring(Window.Property(iPlayerStop),true)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>OSDForwardNF.png</texture>
+						<visible>substring(Window.Property(iPlayerForward),true)</visible>
+					</control>
+					<control type="image" id="1003760">
+						<posx>14</posx>
+						<posy>2</posy>
+						<width>50</width>
+						<height>50</height>
+						<texture>$INFO[Window.Property(iFileXpeed)]</texture>
+						<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+					</control>
+				</control>
+
+				<control type="group" id="2900300">
+					<posx>100</posx>
+					<posy>50</posy>
+					<include>DefaultTimeshiftPlateGroup</include>
+				</control>
+
+			<!-- EPG section -->
+				<control type="group">
+					<!--control type="progress" id="2900200">
+						<description>progress review</description>
+						<posx>400</posx>
+						<posy>595</posy>
+						<width>780</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">OSDProgressMid_RED.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
+						<animation effect="fade" time="300">VisibleChange</animation>
+						<visible>false</visible>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+					</control-->
+					<control type="progress" id="2900201">
+						<description>progress control</description>
+						<posx>400</posx>
+						<posy>595</posy>
+						<width>780</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
+					</control>
+					<!--control type="grouplist" id="1003620">
+						<posx>400</posx>
+						<posy>603</posy>
+						<width>777</width>
+						<height>40</height>
+						<itemgap>0</itemgap>
+						<pagecontrol></pagecontrol>
+						<orientation>horizontal</orientation>
+						<usecontrolcoords>false</usecontrolcoords>
+						<animation effect="fade" time="300">VisibleChange</animation>
+						<visible>substring(Window.Property(IsShift),true)</visible>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+						<include>TimeshiftSliderBG</include>
+					</control-->
+					<control type="button" id="2900202">
+						<description>play time</description>
+						<posx>400</posx>
+						<posy>590</posy>
+						<width>5</width>
+						<height>20</height>
+						<texturefocus>osd_slider_nibNF.png</texturefocus>
+						<texturenofocus>osd_slider_nibNF.png</texturenofocus>
+						<onleft>2900202</onleft>
+						<onright>2900202</onright>
+						<onup>2900500</onup>
+						<ondown>1003750</ondown>
+					</control>
+					<control type="label" id="2900204">
+						<description>start</description>
+						<posx>410</posx>
+						<posy>600</posy>
+						<width>100</width>
+						<height>15</height>
+						<textcolor>white</textcolor>
+						<font>font12</font>
+					</control>
+<!-- title -------------------------------->
+					<control type="label" id="2900203">
+						<description>mode</description>
+						<posx>5</posx>
+						<posy>580</posy>
+						<width>210</width>
+						<height>20</height>
+						<font>font24_title</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>center</align>
+						<!--label>$INFO[Control.GetLabel]</label-->
+						<label>SCRIPT1123</label>
+						<!--label>SCRIPT3021</label-->
+						<!--label>a123456789012345678901234567890</label-->
+					</control>
+				</control>
+				<control type="group">
+					<posx>300</posx>
+					<posy>590</posy>
+					<control type="label" id="2900221">
+						<description>start</description>
+						<posx>25</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>00:00:00</label>
+					</control>
+					<control type="label" id="2900222">
+						<description>end</description>
+						<posx>890</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+
+				<!-- bookmark point-->
+				<!--control type="group">
+					<posx>395</posx>
+					<posy>590</posy>
+					<visible>substring(Window.Property(BookMarkPointShow),true)</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>780</width>
+						<height>36</height>
+						<control type="image" id="2900600">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900601">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900602">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900603">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900604">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900605">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900606">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900607">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900608">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900609">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900610">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900611">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900612">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900613">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900614">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900615">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900616">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900617">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900618">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900619">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900620">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900621">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900622">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900623">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900624">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900625">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900626">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900627">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900628">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900629">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900630">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900631">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900632">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900633">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900634">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900635">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900636">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900637">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900638">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900639">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900640">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900641">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900642">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900643">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900644">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900645">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900646">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900647">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900648">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900649">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900650">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900651">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900652">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900653">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900654">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900655">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900656">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900657">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900658">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900659">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900660">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900661">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900662">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900663">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900664">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900665">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900666">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900667">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900668">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900669">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900670">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900671">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900672">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900673">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900674">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900675">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900676">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900677">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900678">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900679">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900680">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900681">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900682">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900683">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900684">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900685">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900686">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900687">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900688">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900689">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900690">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900691">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900692">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900693">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900694">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900695">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900696">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900697">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900698">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+						<control type="image" id="2900699">
+							<include>TimeshiftBookmarkPoint</include>
+						</control>
+
+						<control type="image" id="2900701">
+							<include>TimeshiftBookmarkCurrent</include>
+							<visible>Control.HasFocus(2900500)</visible>
+						</control>
+
+					</control-->
+				</control>
+			</control>
+
+
+	</controls>
+</window>
