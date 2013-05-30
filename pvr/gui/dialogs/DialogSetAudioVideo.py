@@ -182,6 +182,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 			if hdmiFormat == 'Automatic' :
+				self.mBusyVideoSetting = False
 				return
 			iconIndex = ElisEnum.E_ICON_1080i
 			if hdmiFormat == '1080p' :

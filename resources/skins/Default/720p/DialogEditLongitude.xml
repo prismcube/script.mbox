@@ -17,21 +17,6 @@
 				<height>30</height>
 				<texture border="45,45,45,0">DialogContextTop.png</texture>
 			</control>
-			<!--control type="button" id="103">
-				<description>Close Window button</description>
-				<posx>260</posx>
-				<posy>-24</posy>
-				<width>64</width>
-				<height>32</height>
-				<onup>102</onup>
-				<ondown>102</ondown>
-				<onleft>102</onleft>
-				<onright>102</onright>
-				<label>-</label>
-				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
-			</control-->
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
@@ -46,15 +31,23 @@
 				<height>25</height>
 				<texture border="20,0,19,20">DialogContextBottom.png</texture>
 			</control>
+			<control type="label" id="103">
+				<posx>20</posx>
+				<posy>-5</posy>
+				<width>310</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<font>font14</font>
+			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
-				<posy>5</posy>
+				<posy>33</posy>
 				<width>310</width>
 				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
-				<!--onleft>103</onleft>
-				<onright>103</onright-->
 				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
