@@ -3927,7 +3927,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3942,7 +3942,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3957,7 +3957,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3972,7 +3972,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -5553,7 +5553,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>80r</posx>
 				<posy>47r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -5569,7 +5569,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>80r</posx>
 				<posy>47r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -5585,7 +5585,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>60r</posx>
 				<posy>50r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
