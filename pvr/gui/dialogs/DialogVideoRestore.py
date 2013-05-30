@@ -9,7 +9,7 @@ E_BODY_LABEL_1	= 200
 E_BODY_LABEL_2	= 201
 
 
-TIME_OUT		= 10
+TIME_OUT		= 15
 
 
 class DialogVideoRestore( BaseDialog ) :

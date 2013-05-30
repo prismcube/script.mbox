@@ -282,7 +282,7 @@ class Configure( SettingWindow ) :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
-				self.mAsyncVideoSetThread = threading.Timer( 1, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread = threading.Timer( 3, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
 
 			else :
