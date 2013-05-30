@@ -438,10 +438,6 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
-		elif actionId == Action.ACTION_MOVE_DOWN :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
-			dialog.doModal( )
-
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
