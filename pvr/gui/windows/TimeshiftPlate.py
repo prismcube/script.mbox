@@ -521,6 +521,11 @@ class TimeShiftPlate( BaseWindow ) :
 		visible = E_TAG_FALSE
 		if self.mMode == ElisEnum.E_MODE_PVR : 
 			visible = E_TAG_TRUE
+			iRussian = E_TAG_FALSE
+			if XBMC_GetCurrentLanguage( ) == 'Russian' :
+				iRussian = E_TAG_TRUE
+			self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
+
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 
 		if self.mPrekey :
@@ -661,15 +666,17 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				visible = E_TAG_FALSE
 				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				visible = E_TAG_FALSE

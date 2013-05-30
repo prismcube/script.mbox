@@ -248,6 +248,10 @@ class InfoPlate( LivePlateWindow ) :
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( self.mCurrentEPG )
 
+		iRussian = E_TAG_FALSE
+		if XBMC_GetCurrentLanguage( ) == 'Russian' :
+			iRussian = E_TAG_TRUE
+		self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
@@ -553,8 +557,8 @@ class InfoPlate( LivePlateWindow ) :
 
 	def AudioVideoContext( self ) :
 		context = []
-		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Video format' ), CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Audio track' ),  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -651,7 +655,8 @@ class InfoPlate( LivePlateWindow ) :
 		ret = dialog.GetCloseStatus( )
 		if ret == Action.ACTION_CONTEXT_MENU :
 			self.Close( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			#WinMgr.GetInstance( ).CloseWindow( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 		else:
 			self.EventReceivedDialog( dialog )
 

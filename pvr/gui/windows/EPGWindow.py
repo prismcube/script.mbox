@@ -134,7 +134,8 @@ class EPGWindow( BaseWindow ) :
 		self.mGridItemGap = E_GRID_DEFAULT_GAP
 		self.mGridLastFoucusId = 0
 		self.mGridItemGap = 5
-		self.mGridKeepFocus = False		
+		self.mGridKeepFocus = False	
+		self.mGridFocusTime = 0
 
 	def onInit( self ) :
 	
@@ -152,6 +153,7 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )
 
 		#GRID MODE
+		self.mGridFocusTime = 0
 		self.mGridKeepFocus = False		
 		self.mVisibleTopIndex = 0
 		self.mShowingOffset = 0
@@ -2362,6 +2364,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )		
 			self.mLock.acquire( )
 			self.mVisibleFocusCol -= 1
+			self.mGridFocusTime  = int( gridMeta.mEPG.mStartTime +  gridMeta.mEPG.mDuration/2 )
 			self.mLock.release( )
 			self.GridSetFocus( )
 		else :
@@ -2369,6 +2372,7 @@ class EPGWindow( BaseWindow ) :
 				self.mLock.acquire( )
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset -= self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
+				self.mGridFocusTime = 0
 				self.mLock.release( )				
 				self.SetTimeline( )
 				self.Flush( )
@@ -2398,6 +2402,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
 			self.mLock.acquire( )			
 			self.mVisibleFocusCol += 1
+			self.mGridFocusTime  = int( gridMeta.mEPG.mStartTime +  gridMeta.mEPG.mDuration/2 )
 			self.mLock.release( )			
 			self.GridSetFocus( )
 		else :
@@ -2405,6 +2410,7 @@ class EPGWindow( BaseWindow ) :
 				self.mLock.acquire( )
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset += self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
+				self.mGridFocusTime = 0
 				self.mLock.release( )
 				LOG_TRACE( 'self.mShowingOffset=%d' %self.mShowingOffset )
 				self.SetTimeline( )
@@ -2424,11 +2430,16 @@ class EPGWindow( BaseWindow ) :
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow , 0 ), None )
 		if gridMeta :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
-			self.GridSetFocus( )
+			if self.mGridFocusTime == 0 :
+				self.mVisibleFocusCol = 0
+			else :
+				self.GridFocusFind( )
+			self.GridSetFocus( )				
 		else :
 			self.Flush( )
 			self.Load( )
 			self.UpdateList( )
+			self.GridFocusFind( )						
 			self.GridSetFocus( )
 
 
@@ -2437,17 +2448,23 @@ class EPGWindow( BaseWindow ) :
 		self.mLock.acquire( )
 		self.mVisibleTopIndex = self.GridGetOffsetPosition( )		
 		self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex
-		self.mVisibleFocusCol = 0
 		self.mLock.release( )
 
+		self.mVisibleFocusCol = 0
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
 		if gridMeta :
 			LOG_TRACE('gridMeta.mId=%d' %gridMeta.mId )
+			if self.mGridFocusTime == 0 :
+				self.mVisibleFocusCol = 0
+			else :
+				self.GridFocusFind( )
 			self.GridSetFocus( )
 		else :
+			self.mVisibleFocusCol = 0		
 			self.Flush( )
 			self.Load( )
 			self.UpdateList( )
+			self.GridFocusFind( )
 			self.GridSetFocus( )
 
 
@@ -2461,6 +2478,7 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )
 		self.Load( )
 		self.UpdateList( )
+		self.GridFocusFind( )
 		self.GridSetFocus( )
 
 
@@ -2474,6 +2492,7 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )		
 		self.Load( )
 		self.UpdateList( )
+		self.GridFocusFind( )		
 		self.GridSetFocus( )
 
 	def GridGetSelectedPosition( self ) :
@@ -2490,6 +2509,17 @@ class EPGWindow( BaseWindow ) :
 		return pos
 		
 
+	def GridFocusFind( self ) :
+		for i in range( E_GRID_MAX_COL_COUNT ) :
+			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, i ), None )
+			if  gridMeta :
+				self.mVisibleFocusCol = i			
+				if gridMeta.mEPG.mStartTime <= self.mGridFocusTime and self.mGridFocusTime <= gridMeta.mEPG.mStartTime + gridMeta.mEPG.mDuration :
+					break
+			else :
+				break
+
+	
 	def GridSetFocus( self ) :
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %(self.mVisibleTopIndex +  self.mVisibleFocusRow, self.mVisibleFocusCol ), None )
 		#LOG_TRACE( 'LAEL98 TEST Row=%d Col=%d' %( self.mVisibleFocusRow, self.mVisibleFocusCol ) )

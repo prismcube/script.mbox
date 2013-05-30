@@ -1,14 +1,14 @@
 from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
 
-E_MOVE_WEST					= 0
-E_STEP_WEST					= 1
-E_STOP						= 2
-E_STEP_EAST					= 3
-E_MOVE_EAST					= 4
-E_LIMIT_RESET				= 5
-E_WEST_LIMIT				= 6
-E_EAST_LIMIT				= 7
+E_MOVE_EAST					= 0
+E_STEP_EAST					= 1
+E_STOP							= 2
+E_STEP_WEST					= 3
+E_MOVE_WEST					= 4
+E_LIMIT_RESET					= 5
+E_EAST_LIMIT					= 6
+E_WEST_LIMIT					= 7
 E_SAVE_POSITION				= 8
 #E_CLOSE						= 9
 
@@ -36,7 +36,7 @@ class DialogMoveAntenna( BaseDialog ) :
 
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
-		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'West Limit' ), MR_LANG( 'East Limit' ),  MR_LANG( 'Store Position' ) ]
+		context = [ MR_LANG( 'Rotate to East' ), MR_LANG( 'One step to East' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to West' ), MR_LANG( 'Rotate to West' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'East Limit' ), MR_LANG( 'West Limit' ),  MR_LANG( 'Store Position' ) ]
 		icon = [ 'OSDRewindNF.png', 'OSDLeft.png', 'OSDPauseNF.png', 'OSDRight.png', 'OSDForwardNF.png' ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
@@ -81,24 +81,24 @@ class DialogMoveAntenna( BaseDialog ) :
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
-			self.mCtrlList.selectItem( E_MOVE_WEST )
-			self.mCommander.Motorized_GoWest( self.mTunerIndex )
+			self.mCtrlList.selectItem( E_MOVE_EAST )
+			self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.mCtrlList.selectItem( E_STEP_WEST )
-			self.mCommander.Motorized_StepWest( self.mTunerIndex )
+			self.mCtrlList.selectItem( E_STEP_EAST )
+			self.mCommander.Motorized_StepEast( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			self.mCtrlList.selectItem( E_STOP )
 			self.mCommander.Motorized_Stop( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.mCtrlList.selectItem( E_STEP_EAST )
-			self.mCommander.Motorized_StepEast( self.mTunerIndex )
+			self.mCtrlList.selectItem( E_STEP_WEST )
+			self.mCommander.Motorized_StepWest( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_MBOX_FF :
-			self.mCtrlList.selectItem( E_MOVE_EAST )
-			self.mCommander.Motorized_GoEast( self.mTunerIndex )
+			self.mCtrlList.selectItem( E_MOVE_WEST )
+			self.mCommander.Motorized_GoWest( self.mTunerIndex )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -113,20 +113,20 @@ class DialogMoveAntenna( BaseDialog ) :
 			self.CloseDialog( )
 		else :
 			selectedIndex = self.mCtrlList.getSelectedPosition( )
-			if selectedIndex == E_MOVE_WEST :
-				self.mCommander.Motorized_GoWest( self.mTunerIndex )
-
-			elif selectedIndex == E_STEP_WEST :
-				self.mCommander.Motorized_StepWest( self.mTunerIndex )
-
-			elif selectedIndex == E_STOP :
-				self.mCommander.Motorized_Stop( self.mTunerIndex )
+			if selectedIndex == E_MOVE_EAST :
+				self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 			elif selectedIndex == E_STEP_EAST :
 				self.mCommander.Motorized_StepEast( self.mTunerIndex )
 
-			elif selectedIndex == E_MOVE_EAST :
-				self.mCommander.Motorized_GoEast( self.mTunerIndex )
+			elif selectedIndex == E_STOP :
+				self.mCommander.Motorized_Stop( self.mTunerIndex )
+
+			elif selectedIndex == E_STEP_WEST :
+				self.mCommander.Motorized_StepWest( self.mTunerIndex )
+
+			elif selectedIndex == E_MOVE_WEST :
+				self.mCommander.Motorized_GoWest( self.mTunerIndex )
 
 			elif selectedIndex == E_LIMIT_RESET :
 				ret = self.mCommander.Motorized_ResetLimit( self.mTunerIndex )
@@ -137,20 +137,20 @@ class DialogMoveAntenna( BaseDialog ) :
 					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Reset limit failed to complete' ) )
 		 		dialog.doModal( )
 			
-			elif selectedIndex == E_WEST_LIMIT :
-				ret = self.mCommander.Motorized_SetWestLimit( self.mTunerIndex )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				if ret :
-					dialog.SetDialogProperty(  MR_LANG( 'Set complete' ),  MR_LANG( 'West limit is set' ) )
-				else :
-					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Set limit failed to complete' ) )
-		 		dialog.doModal( )
-
 			elif selectedIndex == E_EAST_LIMIT :
 				ret = self.mCommander.Motorized_SetEastLimit( self.mTunerIndex )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				if ret :
 					dialog.SetDialogProperty(  MR_LANG( 'Set complete' ),  MR_LANG( 'East limit is set' ) )
+				else :
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Set limit failed to complete' ) )
+		 		dialog.doModal( )
+
+			elif selectedIndex == E_WEST_LIMIT :
+				ret = self.mCommander.Motorized_SetWestLimit( self.mTunerIndex )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				if ret :
+					dialog.SetDialogProperty(  MR_LANG( 'Set complete' ),  MR_LANG( 'West limit is set' ) )
 				else :
 					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'Set limit failed to complete' ) )
 		 		dialog.doModal( )

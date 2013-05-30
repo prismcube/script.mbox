@@ -294,6 +294,10 @@ class LivePlate( LivePlateWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status and status.mError == 0 and status.mMode :
 				ret = self.mDataCache.Player_Stop( )
+				labelMode = MR_LANG( 'LIVE' )
+				thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+				thread.start( )
+
 			else :
 				self.StopAutomaticHide( )
 				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )
@@ -1054,6 +1058,13 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetEPGList( self.mEPGList, self.mEPGListIdx )
 				dialog.doModal( )
 
+				closeAction = dialog.GetCloseStatus( )
+				if closeAction == Action.ACTION_CONTEXT_MENU :
+					self.mIsShowDialog = False
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+					return
+
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			status = self.mDataCache.GetLockedState( )
 			if status != ElisEnum.E_CC_SUCCESS :
@@ -1291,8 +1302,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def ShowAudioVideoContext( self ) :
 		context = []
-		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Video format' ), CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( MR_LANG( 'Audio track' ),  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )

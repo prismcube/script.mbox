@@ -769,8 +769,9 @@ Search for window name
 							<height>41</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
+						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -779,7 +780,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -788,7 +789,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -833,7 +834,7 @@ Search for window name
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>550</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
@@ -854,9 +855,10 @@ Search for window name
 						</control-->
 
 						<control type="label">
+							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -866,8 +868,9 @@ Search for window name
 							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 						</control>
 						<control type="label">
-							<posx>580</posx>
-							<posy>0</posy>
+							<description>Move Icon</description>
+							<posx>535</posx>
+							<posy>-1</posy>
 							<width>80</width>
 							<height>40</height>
 							<font>font10_title</font>
@@ -905,7 +908,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -914,7 +917,7 @@ Search for window name
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -923,7 +926,7 @@ Search for window name
 						</control>
 						<!-- is Tuner1 Tuner2 -->
 						<control type="image">
-							<posx>590</posx>
+							<posx>595</posx>
 							<posy>5</posy>
 							<width>40</width>
 							<height>30</height>
@@ -968,7 +971,7 @@ Search for window name
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>550</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
@@ -988,9 +991,10 @@ Search for window name
 							<label>$INFO[substring(ListItem.Property(iTunerNo),true)]</label>
 						</control-->
 						<control type="label">
+							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -1000,9 +1004,10 @@ Search for window name
 							<visible>substring(Window(10000).Property(isMove),true)</visible>
 						</control>
 						<control type="label">
+							<description>Focused Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>660</width>
+							<width>460</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>white</textcolor>
@@ -1013,8 +1018,9 @@ Search for window name
 							<visible>!substring(Window(10000).Property(isMove),true)</visible>
 						</control>
 						<control type="label">
-							<posx>580</posx>
-							<posy>0</posy>
+							<description>Move Icon</description>
+							<posx>535</posx>
+							<posy>-1</posy>
 							<width>80</width>
 							<height>40</height>
 							<font>font10_title</font>
@@ -1339,7 +1345,7 @@ Search for window name
 				<control type="label">
 					<posx>80r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -1352,7 +1358,7 @@ Search for window name
 				<control type="label">
 					<posx>80r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -1808,7 +1814,7 @@ Search for window name
 						<width>300</width>
 						<height>50</height>
 						<align>center</align>
-						<font>font45caps_title</font>
+						<font>font35_title</font>
 						<textcolor>red</textcolor>
 						<label>SCRIPT1123</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
@@ -2121,21 +2127,41 @@ Search for window name
 								</control>
 							</control>
 							<control type="group">
-								<width>90</width>
+								<width>80</width>
 								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
+								<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
 								<control type="image">
-									<width>90</width>
+									<width>80</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-green.png</texture>
 								</control>
 								<control type="label">
-									<posx>6</posx>
+									<posx>0</posx>
 									<posy>0</posy>
 									<width>80</width>
 									<height>30</height>
 									<font>font10</font>
-									<label>BOOKMARK</label>
+									<align>center</align>
+									<label>SCRIPT1039</label>
+								</control>
+							</control>
+							<control type="group">
+								<width>50</width>
+								<height>30</height>
+								<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+								<control type="image">
+									<width>50</width>
+									<height>30</height>
+									<texture>settings-button-nofocus-green.png</texture>
+								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>50</width>
+									<height>30</height>
+									<font>font10</font>
+									<align>center</align>
+									<label>SCRIPT1039</label>
 								</control>
 							</control>
 							<control type="group">
@@ -2153,7 +2179,8 @@ Search for window name
 									<width>45</width>
 									<height>30</height>
 									<font>font10</font>
-									<label>AUDIO</label>
+									<align>center</align>
+									<label>SCRIPT1124</label>
 								</control>
 							</control>
 							<control type="group">
@@ -2166,12 +2193,12 @@ Search for window name
 									<texture>settings-button-nofocus.png</texture>
 								</control>
 								<control type="label">
-									<posx>3</posx>
+									<posx>2</posx>
 									<posy>0</posy>
 									<width>45</width>
 									<height>30</height>
 									<font>font10</font>
-									<label>VIDEO</label>
+									<label>SCRIPT1060</label>
 								</control>
 							</control>
 						</control>
@@ -2634,23 +2661,44 @@ Search for window name
 							</control>
 						</control>
 						<control type="group">
-							<width>90</width>
+							<width>80</width>
 							<height>30</height>
-							<visible>substring(Window.Property(iHotkeyGreen),true)</visible>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
 							<control type="image">
-								<width>90</width>
+								<width>80</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-green.png</texture>
 							</control>
 							<control type="label">
-								<posx>6</posx>
+								<posx>0</posx>
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>BOOKMARK</label>
+								<align>center</align>
+								<label>SCRIPT1039</label>
 							</control>
 						</control>
+						<control type="group">
+							<width>50</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+							<control type="image">
+								<width>50</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>50</width>
+								<height>30</height>
+								<font>font10</font>
+								<align>center</align>
+								<label>SCRIPT1039</label>
+							</control>
+						</control>
+
 						<control type="group">
 							<width>48</width>
 							<height>30</height>
@@ -2666,7 +2714,8 @@ Search for window name
 								<width>45</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>AUDIO</label>
+								<align>center</align>
+								<label>SCRIPT1124</label>
 							</control>
 						</control>
 						<control type="group">
@@ -2679,12 +2728,13 @@ Search for window name
 								<texture>settings-button-nofocus.png</texture>
 							</control>
 							<control type="label">
-								<posx>3</posx>
+								<posx>2</posx>
 								<posy>0</posy>
 								<width>45</width>
 								<height>30</height>
 								<font>font10</font>
-								<label>VIDEO</label>
+								<align>center</align>
+								<label>SCRIPT1060</label>
 							</control>
 						</control>
 					</control>
@@ -2773,14 +2823,13 @@ Search for window name
 						<textcolor>white</textcolor>
 						<font>font12</font>
 					</control>
-
 					<control type="label" id="2900203">
 						<description>mode</description>
 						<posx>20</posx>
 						<posy>580</posy>
-						<width>200</width>
+						<width>250</width>
 						<height>20</height>
-						<font>font28_title</font>
+						<font>font24_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<label>$INFO[Control.GetLabel]</label>
