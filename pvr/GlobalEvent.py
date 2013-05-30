@@ -181,14 +181,27 @@ class GlobalEvent( object ) :
 			#self.SetSingleWindowPosition( WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
-		elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Update channels' ), MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE )
-			dialog.doModal( )
-			self.mDataCache.SetStanbyClosing( True )
-			self.mIsChannelUpdateEvent = True
-			thread = threading.Timer( 1, self.StanByClose )
-			thread.start( )
+		elif aEvent.getName( ) == ElisEventPVRManagerUpdate.getName( ) :
+			msgHead = MR_LANG( 'Update channels' )
+			msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
+			if aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( msgHead, msgLine )
+				dialog.doModal( )
+				self.mDataCache.SetStanbyClosing( True )
+				self.mIsChannelUpdateEvent = True
+				thread = threading.Timer( 1, self.StanByClose )
+				thread.start( )
+
+			else :
+				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
+					msgLine = MR_LANG( 'Please try again after stopping the recordings' )
+				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
+					msgLine = MR_LANG( 'Please try again after deleting your timers first' )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( msgHead, msgLine )
+				dialog.doModal( )
 
 
 	def AsyncHddFull( self ) :
@@ -518,8 +531,10 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Update complete' ), MR_LANG( 'Your channel list has been updated successfully' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted in order to complete the update' ) )
 			dialog.doModal( )
+
+			self.mDataCache.System_Reboot( )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
