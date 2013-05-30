@@ -263,7 +263,7 @@ class SystemUpdate( SettingWindow ) :
 		E_UPDATE_FIRMWARE_USE_USB = False
 
 		hddPath = self.mDataCache.HDD_GetMountPath( 'program' )
-		if hddPath :
+		if hddPath and E_UPDATE_FIRMWARE_USB_ONLY == False :
 			LOG_TRACE( 'Check HDD True[%s]'% hddPath )
 			E_DEFAULT_PATH_HDD = hddPath
 			E_DEFAULT_PATH_DOWNLOAD = '%s/download'% E_DEFAULT_PATH_HDD
@@ -1174,7 +1174,7 @@ class SystemUpdate( SettingWindow ) :
 		E_UPDATE_FIRMWARE_USE_USB = False
 
 		hddPath = self.mDataCache.HDD_GetMountPath( 'program' )
-		if hddPath :
+		if hddPath and E_UPDATE_FIRMWARE_USB_ONLY == False :
 			LOG_TRACE( 'Check HDD True[%s]'% hddPath )
 			E_DEFAULT_PATH_HDD = hddPath
 			E_DEFAULT_PATH_DOWNLOAD = '%s/download'% E_DEFAULT_PATH_HDD
