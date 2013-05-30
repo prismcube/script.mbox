@@ -5881,79 +5881,83 @@
 	</include>
 
 	<include name="TimeshiftPlateFocusButton">
-		<control type="image">
-			<posx>-37</posx>
-			<posy>-2</posy>
-			<width>130</width>
-			<height>65</height>
-			<texture>OSDSeekFrame.png</texture>
-			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
-		</control>
-		<control type="image">
-			<posx>-27</posx>
-			<posy>15</posy>
-			<width>13</width>
-			<height>45</height>
-			<texture>OSDSeekRewind.png</texture>
-			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
-			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
-		</control>
-		<control type="image">
-			<posx>67</posx>
-			<posy>15</posy>
-			<width>13</width>
-			<height>45</height>
-			<texture>OSDSeekForward.png</texture>
-			<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
-			<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Forward)</visible>
-		</control>
-		<control type="image">
-			<posx>0</posx>
+		<control type="group">
+			<posx>15</posx>
 			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>OSDRewindNF.png</texture>
-			<visible>substring(Window.Property(iPlayerRewind),true)</visible>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>OSDPlayNF.png</texture>
-			<visible>substring(Window.Property(iPlayerResume),true)</visible>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>OSDPauseNF.png</texture>
-			<visible>substring(Window.Property(iPlayerPause),true)</visible>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>OSDStopNF.png</texture>
-			<visible>substring(Window.Property(iPlayerStop),true)</visible>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>OSDForwardNF.png</texture>
-			<visible>substring(Window.Property(iPlayerForward),true)</visible>
-		</control>
-		<control type="image" id="1003760">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>55</width>
-			<height>55</height>
-			<texture>$INFO[Window.Property(iFileXpeed)]</texture>
-			<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+			<control type="image">
+				<posx>-37</posx>
+				<posy>-2</posy>
+				<width>120</width>
+				<height>60</height>
+				<texture>OSDSeekFrame.png</texture>
+				<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+			</control>
+			<control type="image">
+				<posx>-27</posx>
+				<posy>13</posy>
+				<width>13</width>
+				<height>45</height>
+				<texture>OSDSeekRewind.png</texture>
+				<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+				<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Rewind)</visible>
+			</control>
+			<control type="image">
+				<posx>57</posx>
+				<posy>13</posy>
+				<width>13</width>
+				<height>45</height>
+				<texture>OSDSeekForward.png</texture>
+				<aspectratio scalediffuse="false" align="left" aligny="top">keep</aspectratio>
+				<visible>substring(Window.Property(iPlayerXpeed),true) + substring(Window.Property(iXpeedArrow),Forward)</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>OSDRewindNF.png</texture>
+				<visible>substring(Window.Property(iPlayerRewind),true)</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>OSDPlayNF.png</texture>
+				<visible>substring(Window.Property(iPlayerResume),true)</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>OSDPauseNF.png</texture>
+				<visible>substring(Window.Property(iPlayerPause),true)</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>OSDStopNF.png</texture>
+				<visible>substring(Window.Property(iPlayerStop),true)</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>OSDForwardNF.png</texture>
+				<visible>substring(Window.Property(iPlayerForward),true)</visible>
+			</control>
+			<control type="image" id="1003760">
+				<posx>4</posx>
+				<posy>2</posy>
+				<width>50</width>
+				<height>50</height>
+				<texture>$INFO[Window.Property(iFileXpeed)]</texture>
+				<visible>substring(Window.Property(iPlayerXpeed),true)</visible>
+			</control>
 		</control>
 	</include>
 
