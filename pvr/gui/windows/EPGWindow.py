@@ -2513,8 +2513,8 @@ class EPGWindow( BaseWindow ) :
 		for i in range( E_GRID_MAX_COL_COUNT ) :
 			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, i ), None )
 			if  gridMeta :
+				self.mVisibleFocusCol = i			
 				if gridMeta.mEPG.mStartTime <= self.mGridFocusTime and self.mGridFocusTime <= gridMeta.mEPG.mStartTime + gridMeta.mEPG.mDuration :
-					self.mVisibleFocusCol = i
 					break
 			else :
 				break
