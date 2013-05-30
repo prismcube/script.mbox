@@ -1809,7 +1809,7 @@ Search for window name
 					<posx>50</posx>
 					<posy>600</posy>
 					<control type="label">
-						<posx>-55</posx>
+						<posx>-40</posx>
 						<posy>5</posy>
 						<width>300</width>
 						<height>50</height>
@@ -2109,18 +2109,18 @@ Search for window name
 							<align>right</align>
 							<orientation>horizontal</orientation>
 							<control type="group">
-								<width>30</width>
+								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyRed),true)</visible>
 								<control type="image">
-									<width>30</width>
+									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-red.png</texture>
 								</control>
 								<control type="label">
 									<posx>0</posx>
 									<posy>0</posy>
-									<width>30</width>
+									<width>48</width>
 									<height>30</height>
 									<font>font10</font>
 									<label></label>
@@ -2174,9 +2174,9 @@ Search for window name
 									<texture>settings-button-nofocus-yellow.png</texture>
 								</control>
 								<control type="label">
-									<posx>3</posx>
+									<posx>0</posx>
 									<posy>0</posy>
-									<width>45</width>
+									<width>48</width>
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
@@ -2184,20 +2184,21 @@ Search for window name
 								</control>
 							</control>
 							<control type="group">
-								<width>45</width>
+								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
 								<control type="image">
-									<width>45</width>
+									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus.png</texture>
 								</control>
 								<control type="label">
-									<posx>2</posx>
+									<posx>0</posx>
 									<posy>0</posy>
-									<width>45</width>
+									<width>48</width>
 									<height>30</height>
 									<font>font10</font>
+									<align>center</align>
 									<label>SCRIPT1060</label>
 								</control>
 							</control>
@@ -2611,7 +2612,7 @@ Search for window name
 					<posx>0</posx>
 					<posy>590</posy>
 					<control type="group">
-						<posx>20</posx>
+						<posx>40</posx>
 						<posy>30</posy>
 						<visible>!ControlGroup(1003750).HasFocus</visible>
 						<control type="image">
@@ -2643,20 +2644,21 @@ Search for window name
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
 						<control type="group">
-							<width>30</width>
+							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
 							<control type="image">
-								<width>30</width>
+								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-red.png</texture>
 							</control>
 							<control type="label">
-								<posx>2</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>30</width>
+								<width>48</width>
 								<height>30</height>
 								<font>font10</font>
+								<align>center</align>
 								<label></label>
 							</control>
 						</control>
@@ -2709,9 +2711,9 @@ Search for window name
 								<texture>settings-button-nofocus-yellow.png</texture>
 							</control>
 							<control type="label">
-								<posx>3</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>45</width>
+								<width>48</width>
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
@@ -2728,9 +2730,9 @@ Search for window name
 								<texture>settings-button-nofocus.png</texture>
 							</control>
 							<control type="label">
-								<posx>2</posx>
+								<posx>0</posx>
 								<posy>0</posy>
-								<width>45</width>
+								<width>48</width>
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
@@ -2825,13 +2827,14 @@ Search for window name
 					</control>
 					<control type="label" id="2900203">
 						<description>mode</description>
-						<posx>20</posx>
+						<posx>5</posx>
 						<posy>580</posy>
-						<width>250</width>
+						<width>210</width>
 						<height>20</height>
 						<font>font24_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
+						<align>center</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
@@ -3927,7 +3930,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3942,7 +3945,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3957,7 +3960,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -3972,7 +3975,7 @@ Search for window name
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -5553,7 +5556,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>80r</posx>
 				<posy>47r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -5569,7 +5572,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>80r</posx>
 				<posy>47r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -5585,7 +5588,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<posx>60r</posx>
 				<posy>50r</posy>
-				<width>300</width>
+				<width>340</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>

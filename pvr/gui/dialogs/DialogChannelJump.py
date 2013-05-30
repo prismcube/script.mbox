@@ -157,7 +157,7 @@ class DialogChannelJump( BaseDialog ) :
 			fChannel = self.mDataCache.Channel_GetByNumber( int( self.mChannelNumber ) )
 
 		if fChannel == None or fChannel.mError != 0 :
-			LOG_TRACE( 'No search Channel[%s]'% self.mChannelNumber )
+			LOG_TRACE( 'No search channel[%s]'% self.mChannelNumber )
 			self.mFlagFind = True
 			self.mFindChannel = self.mDataCache.Channel_GetCurrent( )
 			self.mAsynViewTime = 5

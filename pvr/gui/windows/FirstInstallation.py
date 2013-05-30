@@ -155,7 +155,7 @@ class FirstInstallation( FTIWindow ) :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
-				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread = threading.Timer( 1, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
 
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
@@ -474,7 +474,6 @@ class FirstInstallation( FTIWindow ) :
 		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
 		self.ControlSelect( )
 		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
-			print 'dhkim test same'
 			self.VideoRestore( restoreValue )
 		else :
 			self.mBusyVideoSetting = False
@@ -487,6 +486,7 @@ class FirstInstallation( FTIWindow ) :
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 			if hdmiFormat == 'Automatic' :
+				self.mBusyVideoSetting = False
 				return
 			iconIndex = ElisEnum.E_ICON_1080i
 			if hdmiFormat == '1080p' :
