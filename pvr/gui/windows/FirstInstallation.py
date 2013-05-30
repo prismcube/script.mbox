@@ -155,7 +155,7 @@ class FirstInstallation( FTIWindow ) :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
-				self.mAsyncVideoSetThread = threading.Timer( 0.5, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread = threading.Timer( 1, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
 
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
