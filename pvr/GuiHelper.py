@@ -956,7 +956,8 @@ def SetWriteToFlash( aFile ) :
 	isWrite = -4
 	try :
 		cmd1 = 'flash_erase /dev/mtd%s 0 0'% mtdNumber
-		cmd2 = 'nandwrite -a -p -b 4 /dev/mtd%s %s'% ( mtdNumber, aFile )
+		#cmd2 = 'nandwrite -a -p -b 4 /dev/mtd%s %s'% ( mtdNumber, aFile )
+		cmd2 = 'nandwrite -p /dev/mtd%s %s'% ( mtdNumber, aFile )
 
 		returnCode = os.system( cmd1 )
 		os.system( 'sync' )
