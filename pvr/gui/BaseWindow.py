@@ -437,9 +437,15 @@ class BaseWindow( BaseObjectWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			channelList = self.mDataCache.Channel_GetList( )
 			if iChannel and channelList and len( channelList ) > 0 :
-				self.mDataCache.Channel_InvalidateCurrent( )
-				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-				self.mDataCache.SetParentLockPass( True )
+				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
+				   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+					pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+
+				else :
+					self.mDataCache.Channel_InvalidateCurrent( )
+					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+					self.mDataCache.SetParentLockPass( True )
 
 			self.UpdateVolume( )
 			thread = threading.Timer( 1.0, self.mDataCache.SyncMute )
