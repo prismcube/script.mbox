@@ -858,7 +858,7 @@ Search for window name
 							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>460</width>
+							<width>410</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -871,7 +871,7 @@ Search for window name
 							<description>Move Icon</description>
 							<posx>535</posx>
 							<posy>-1</posy>
-							<width>80</width>
+							<width>85</width>
 							<height>40</height>
 							<font>font10_title</font>
 							<textcolor>grey3</textcolor>
@@ -994,7 +994,7 @@ Search for window name
 							<description>Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>460</width>
+							<width>410</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>grey3</textcolor>
@@ -1007,7 +1007,7 @@ Search for window name
 							<description>Focused Channel Number & Name</description>
 							<posx>30</posx>
 							<posy>0</posy>
-							<width>460</width>
+							<width>410</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>white</textcolor>
@@ -1021,7 +1021,7 @@ Search for window name
 							<description>Move Icon</description>
 							<posx>535</posx>
 							<posy>-1</posy>
-							<width>80</width>
+							<width>85</width>
 							<height>40</height>
 							<font>font10_title</font>
 							<textcolor>grey2</textcolor>
