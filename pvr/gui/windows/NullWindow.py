@@ -438,6 +438,14 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
+			self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
+			self.mDialogShowInit.SetDialogHideButton( True )
+			self.mDialogShowInit.SetAutoCloseTime( 5 )
+			self.mDialogShowInit.doModal( )
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )

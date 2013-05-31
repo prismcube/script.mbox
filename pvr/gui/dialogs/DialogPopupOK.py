@@ -93,6 +93,11 @@ class DialogPopupOK( BaseDialog ) :
 			self.mLabel1 = ''
 
 
+	def SetDialogHideButton( self, aHide = False ) :
+		if aHide :
+			self.getControl( E_BUTTON_OK ).setVisible( 'False' )
+
+
 	def GetStayCount( self ) :
 		return self.mStayCount
 
