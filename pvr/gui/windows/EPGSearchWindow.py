@@ -118,6 +118,21 @@ class EPGSearchWindow( BaseWindow ) :
 			if self.mFocusId == LIST_ID_BIG_EPG:
 				self.UpdateEPGInfomation( )
 
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			selectedEPG = self.GetSelectedEPG( )		
+			if selectedEPG  :
+				timer = self.GetTimerByEPG( selectedEPG )
+				if timer :
+					self.DoContextAction( CONTEXT_EDIT_TIMER ) 				
+				else :
+					self.DoContextAction( CONTEXT_ADD_TIMER ) 
+
+		elif actionId == Action.ACTION_STOP :
+			self.DoContextAction( CONTEXT_DELETE_TIMER ) 
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.DoContextAction( CONTEXT_SEARCH ) 		
+		
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
@@ -411,6 +426,7 @@ class EPGSearchWindow( BaseWindow ) :
 
 		if selectedEPG  :		
 			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
+		context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -440,6 +456,9 @@ class EPGSearchWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_EXTEND_INFOMATION :
 			self.ShowDetailInfomation( )
+
+		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
+			self.ShowHotkeys( )
 
 
 	def ShowEPGTimer( self ) :
@@ -566,6 +585,14 @@ class EPGSearchWindow( BaseWindow ) :
 			dialog.SetEPG( epg )
 			dialog.doModal( )
 		self.mEventBus.Register( self )
+
+
+	def ShowHotkeys( self ) :
+		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
+		dialog.SetProperty( context )
+		dialog.doModal( )
 
 
 	def LoadTimerList( self ) :
