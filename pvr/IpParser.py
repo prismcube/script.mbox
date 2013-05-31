@@ -6,16 +6,14 @@ from pvr.Util import RunThread
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
 FILE_NAME_TEMP_INTERFACES		= 	'/mtmp/interface'
 FILE_NAME_RESOLV_CONF			=	'/etc/resolv.conf'
-FILE_NAME_AUTO_RESOLV_CONF		=	'/etc/init.d/update-resolv.sh'
-FILE_NAME_AUTO_RESOLV_LINK		=	'/etc/rc5.d/S90resolve.conf'
 FILE_TEMP						=	'/mtmp/ip_temp'
 FILE_WPA_SUPPLICANT				=	'/etc/wpa_supplicant/wpa_supplicant.conf'
-
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
 COMMAND_COPY_CONFIG_INTERFACES	=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + '/config/interfaces'
-COMMAND_COPY_CONFIG_WPA_SUPPLICANT = "cp " + FILE_WPA_SUPPLICANT + " " + '/config/wpa_supplicant.conf'
+COMMAND_COPY_CONFIG_WPA_SUPPLICANT	= "cp " + FILE_WPA_SUPPLICANT + " " + '/config/wpa_supplicant.conf'
+COMMAND_COPY_CONFIG_RESOLVE_CONF	= "cp " + FILE_NAME_RESOLV_CONF + " " + '/config/resolv.conf'
 
 gNetworkMgr					= None
 
@@ -326,13 +324,10 @@ class IpParser( object ) :
 	def SetEthernetNameServer( self, aType, aNameAddress ) :
 		try :
 			if aType == NET_DHCP :
-				os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
+				os.system( 'rm -rf /config/resolv.conf' )
 			else :
 				os.system( 'echo nameserver %s' % aNameAddress.strip( ) + '> ' + FILE_NAME_RESOLV_CONF )
-				os.system( 'echo echo nameserver %s \> %s > %s' % ( aNameAddress.strip( ), FILE_NAME_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_CONF ) )
-				os.system( 'chmod 755 %s' % FILE_NAME_AUTO_RESOLV_CONF )
-				if os.path.isfile( FILE_NAME_AUTO_RESOLV_LINK ) == False :
-					os.system( 'ln -s %s %s' % ( FILE_NAME_AUTO_RESOLV_CONF, FILE_NAME_AUTO_RESOLV_LINK ) )
+				os.system( COMMAND_COPY_CONFIG_RESOLVE_CONF )
 			return True
 			
 		except Exception, e :
@@ -575,7 +570,6 @@ class IpParser( object ) :
 	def ConnectWifi( self ) :
 		dev = self.GetWifidevice( )
 		try :
-			os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
 			self.IfUpDown( dev )
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
