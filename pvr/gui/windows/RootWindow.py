@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.Util import UpdateMonthTranslation, UpdateWeekdayTranslation
+from pvr.XBMCInterface import XBMC_GetCurrentLanguage
+
 
 class RootWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
@@ -16,6 +18,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
+		self.CheckLanguage( )
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
@@ -142,3 +145,40 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.setProperty( 'Signal', 'False' )
 		else :
 			self.setProperty( 'Signal', 'True' )
+
+
+	def CheckLanguage( self ) :
+		languageProp	= ElisPropertyEnum( 'Language', self.mCommander )
+
+		#LOG_TRACE( "current MW Lanauge=%d" %languageProp.GetProp() )
+		xbmcLanguage = XBMC_GetCurrentLanguage( )
+		#LOG_TRACE( "current XBMC Lanauge=%s" %xbmcLanguage )
+
+		newLanguage = languageProp.GetProp( )
+		if xbmcLanguage ==  'German' :
+			newLanguage = ElisEnum.E_DEUTSCH
+		elif xbmcLanguage ==  'French' :
+			newLanguage = ElisEnum.E_FRENCH
+		elif xbmcLanguage ==  'Italian' :
+			newLanguage = ElisEnum.E_ITALIAN
+		elif xbmcLanguage ==  'Spanish' or xbmcLanguage ==  'Spanish (Argentina)' or xbmcLanguage ==  'Spanish (Mexico)':
+			newLanguage = ElisEnum.E_SPANISH
+		elif xbmcLanguage ==  'Czech' :
+			newLanguage = ElisEnum.E_CZECH
+		elif xbmcLanguage ==  'Dutch' :
+			newLanguage = ElisEnum.E_DUTCH
+		elif xbmcLanguage ==  'Polish' :
+			newLanguage = ElisEnum.E_POLISH
+		elif xbmcLanguage ==  'Turkish' :
+			newLanguage = ElisEnum.E_TURKISH
+		elif xbmcLanguage ==  'Russian' :
+			newLanguage = ElisEnum.E_RUSSIAN
+		else :
+			newLanguage = ElisEnum.E_ENGLISH
+
+		#LOG_TRACE( "new M/W Lanauge=%d %s" %(newLanguage, languageProp.GetPropString() ) )
+
+		if newLanguage != languageProp.GetProp() :
+			languageProp.SetProp( newLanguage  )		
+			#LOG_TRACE( "changed MW Lanauge=%s" %ElisPropertyEnum( 'Language', self.mCommander ).GetPropString( )  )
+
