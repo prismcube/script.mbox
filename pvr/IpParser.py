@@ -38,8 +38,7 @@ class IpParser( object ) :
 
 
 	def IfUpDown( self, aDev ) :
-		if self.GetCurrentServiceType( ) == NETWORK_WIRELESS :
-			os.system( 'wpa_cli terminate' )
+		os.system( 'wpa_cli terminate' )
 		os.system( 'touch /mtmp/iftest_%s' % aDev )
 		time.sleep( 1 )
 		for i in range( 20 ) :
