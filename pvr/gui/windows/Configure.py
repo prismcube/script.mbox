@@ -334,7 +334,7 @@ class Configure( SettingWindow ) :
 				if tmp != -1 :
 					if tmp == 0 :
 						#self.mEpgFavGroup = 10000
-						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 10000 )
+						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 255 )
 					else :
 						self.mEpgFavGroup = tmp - 1
 						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( self.mEpgFavGroup )
@@ -774,7 +774,7 @@ class Configure( SettingWindow ) :
 				if not favoriteGroup or len( favoriteGroup ) < 1 :
 					groupName = MR_LANG( 'None' )
 				else :
-					if ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( ) == 10000 :
+					if ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( ) == 255 :
 						groupName = MR_LANG( 'All' )
 					else :
 						if self.mEpgFavGroup >= len( favoriteGroup ) :
@@ -1292,7 +1292,10 @@ class Configure( SettingWindow ) :
 	def CheckNetworkStatus( self ) :
 		self.mStateNetLink = NetMgr.GetInstance( ).CheckInternetState( )
 		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
-		self.SetControlLabel2String( E_Input07, self.mStateNetLink )
+		try :
+			self.SetControlLabel2String( E_Input07, self.mStateNetLink )
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s] : Bad timing access control' % e )
 
 
 	def StartCheckNetworkTimer( self ) :
