@@ -185,9 +185,9 @@ class GlobalEvent( object ) :
 			msgHead = MR_LANG( 'Update channels' )
 			msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
 			if aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( msgHead, msgLine )
-				dialog.doModal( )
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( msgHead, msgLine )
+				#dialog.doModal( )
 				self.mDataCache.SetStanbyClosing( True )
 				self.mIsChannelUpdateEvent = True
 				thread = threading.Timer( 1, self.StanByClose )
@@ -533,7 +533,7 @@ class GlobalEvent( object ) :
 			"""
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Update complete' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
 			dialog.doModal( )
 
 			self.mDataCache.System_Reboot( )
