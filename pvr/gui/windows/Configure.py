@@ -332,8 +332,12 @@ class Configure( SettingWindow ) :
 			elif groupId == E_Input03 :
 				tmp = self.ShowFavoriteGroup( )
 				if tmp != -1 :
-					self.mEpgFavGroup = tmp
-					ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( self.mEpgFavGroup )
+					if tmp == 0 :
+						#self.mEpgFavGroup = 10000
+						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 10000 )
+					else :
+						self.mEpgFavGroup = tmp - 1
+						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( self.mEpgFavGroup )
 					self.SetListControl( )
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
@@ -438,7 +442,12 @@ class Configure( SettingWindow ) :
 				self.CloseProgress( )
 				self.mDataCache.Channel_TuneDefault( False )
 				NetMgr.GetInstance( ).SetIsConfigureWindow( False )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'System reboot' ) )
+	 			dialog.doModal( )
+				self.mCommander.System_Reboot( )
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :
@@ -765,10 +774,13 @@ class Configure( SettingWindow ) :
 				if not favoriteGroup or len( favoriteGroup ) < 1 :
 					groupName = MR_LANG( 'None' )
 				else :
-					if self.mEpgFavGroup >= len( favoriteGroup ) :
-						self.mEpgFavGroup = 0
-						ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 0 )
-					groupName = favoriteGroup[ self.mEpgFavGroup ].mGroupName
+					if ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( ) == 10000 :
+						groupName = MR_LANG( 'All favorite group' )
+					else :
+						if self.mEpgFavGroup >= len( favoriteGroup ) :
+							self.mEpgFavGroup = 0
+							ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 0 )
+						groupName = favoriteGroup[ self.mEpgFavGroup ].mGroupName
 
 				if self.mEpgStartChannel > len( allChannels ) or self.mEpgEndChannel > len( allChannels ) :
 					self.mEpgStartChannel = 1
@@ -1454,11 +1466,12 @@ class Configure( SettingWindow ) :
 			return -1
 
 		favoriteList = []
+		favoriteList.append( 'All favorite group' )
 		for item in favoriteGroup :
 			favoriteList.append( item.mGroupName )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select a favorite group' ), favoriteList, False, self.mEpgFavGroup )
+		ret = dialog.select( MR_LANG( 'Select a favorite group' ), favoriteList, False, self.mEpgFavGroup + 1 )
 		if ret >= 0 :
 			return ret
 		else :
