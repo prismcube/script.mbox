@@ -14,7 +14,7 @@ FILE_WPA_SUPPLICANT				=	'/etc/wpa_supplicant/wpa_supplicant.conf'
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
-COMMAND_COPY_CONFIG_INTERFACES	=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + '/config/interface'
+COMMAND_COPY_CONFIG_INTERFACES	=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + '/config/interfaces'
 COMMAND_COPY_CONFIG_WPA_SUPPLICANT = "cp " + FILE_WPA_SUPPLICANT + " " + '/config/wpa_supplicant.conf'
 
 gNetworkMgr					= None
@@ -38,8 +38,7 @@ class IpParser( object ) :
 
 
 	def IfUpDown( self, aDev ) :
-		if self.GetCurrentServiceType( ) == NETWORK_WIRELESS :
-			os.system( 'wpa_cli terminate' )
+		os.system( 'wpa_cli terminate' )
 		os.system( 'touch /mtmp/iftest_%s' % aDev )
 		time.sleep( 1 )
 		for i in range( 20 ) :
