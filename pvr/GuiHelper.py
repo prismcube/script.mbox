@@ -211,15 +211,15 @@ def EnumToString( aType, aValue ) :
 
 	elif aType == 'mode' :
 		if aValue == ElisEnum.E_MODE_ALL :
-			ret = MR_LANG( 'ALL Channels' )
+			ret = MR_LANG( 'All Channels' )
 		elif aValue == ElisEnum.E_MODE_FAVORITE :
-			ret = MR_LANG( 'favorite' )
+			ret = MR_LANG( 'Favorite' )
 		elif aValue == ElisEnum.E_MODE_NETWORK :
-			ret = MR_LANG( 'network' )
+			ret = MR_LANG( 'Network' )
 		elif aValue == ElisEnum.E_MODE_SATELLITE :
-			ret = MR_LANG( 'satellite' )
+			ret = MR_LANG( 'Satellite' )
 		elif aValue == ElisEnum.E_MODE_CAS :
-			ret = MR_LANG( 'fta/cas' )
+			ret = MR_LANG( 'FTA/CAS' )
 
 	elif aType == 'sort' :
 		if aValue == ElisEnum.E_SORT_BY_DEFAULT :
