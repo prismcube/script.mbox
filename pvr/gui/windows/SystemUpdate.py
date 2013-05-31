@@ -1779,7 +1779,7 @@ class SystemUpdate( SettingWindow ) :
 			msgLine = ''
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
-				msgHead = MR_LANG( 'Update complete' )
+				msgHead = MR_LANG( 'Update channels' )
 				#msgLine = MR_LANG( 'Your channel list has been updated successfully' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 				"""
