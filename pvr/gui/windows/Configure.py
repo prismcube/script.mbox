@@ -445,7 +445,7 @@ class Configure( SettingWindow ) :
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'System reboot' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
 	 			dialog.doModal( )
 				self.mCommander.System_Reboot( )
 
@@ -775,7 +775,7 @@ class Configure( SettingWindow ) :
 					groupName = MR_LANG( 'None' )
 				else :
 					if ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).GetProp( ) == 10000 :
-						groupName = MR_LANG( 'All favorite group' )
+						groupName = MR_LANG( 'All' )
 					else :
 						if self.mEpgFavGroup >= len( favoriteGroup ) :
 							self.mEpgFavGroup = 0
@@ -1466,7 +1466,7 @@ class Configure( SettingWindow ) :
 			return -1
 
 		favoriteList = []
-		favoriteList.append( 'All favorite group' )
+		favoriteList.append( MR_LANG( 'All' ) )
 		for item in favoriteGroup :
 			favoriteList.append( item.mGroupName )
 
