@@ -392,7 +392,7 @@
 	<include name="DefaultSettingDialogButtonOKCancel">
 		<control type="button" id="1006997">
 			<description>Yes button</description>
-			<width>200</width>
+			<width>210</width>
 			<height>40</height>
 			<font>font12_title</font>
 			<textcolor>white</textcolor>
@@ -405,7 +405,7 @@
 		</control>
 		<control type="button" id="1006999">
 			<description>Cancel button</description>
-			<width>200</width>
+			<width>210</width>
 			<height>40</height>
 			<font>font12_title</font>
 			<textcolor>white</textcolor>
