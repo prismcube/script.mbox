@@ -533,7 +533,7 @@ class GlobalEvent( object ) :
 			"""
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted in order to complete the update' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
 			dialog.doModal( )
 
 			self.mDataCache.System_Reboot( )
