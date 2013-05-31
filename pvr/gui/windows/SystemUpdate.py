@@ -1082,8 +1082,8 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				#self.OpenBusyDialog( )
-				#self.mDataCache.System_Reboot( )
+				self.OpenBusyDialog( )
+				self.mDataCache.System_Reboot( )
 
 
 		elif aStep == E_UPDATE_STEP_ERROR_NETWORK :
