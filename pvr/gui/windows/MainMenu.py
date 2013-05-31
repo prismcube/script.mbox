@@ -330,7 +330,7 @@ class MainMenu( BaseWindow ) :
 			dialog.doModal( )
 			return
 
-		favoriteList = ['All Channels']
+		favoriteList = [MR_LANG( 'All Channels' )]
 		for item in favoriteGroup :
 			favoriteList.append( item.mGroupName )
 
