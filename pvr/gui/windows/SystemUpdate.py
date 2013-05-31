@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+from pvr.XBMCInterface import XBMC_CheckNetworkStatus
 from fileDownloader import DownloadFile
 from version import LooseVersion
 from copy import deepcopy
@@ -22,9 +23,9 @@ E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update.html?product=ruby'
-E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download.html?key='
-E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download.html?unzipfiles='
+E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
+E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
+E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
 
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
@@ -50,7 +51,7 @@ E_UPDATE_STEP_VERIFY      = 7
 E_UPDATE_STEP_NAND_WRITE  = 8
 E_UPDATE_STEP_FINISH      = 9
 E_UPDATE_STEP_UPDATE_NOW  = 10
-E_UPDATE_STEP_ERROR_NETWORK = 10
+E_UPDATE_STEP_ERROR_NETWORK = 11
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
@@ -77,6 +78,7 @@ E_STRING_CHECK_HDD_SPACE   = 17
 E_STRING_CHECK_BLOCK_FLASH = 18
 E_STRING_CHECK_BLOCK_SIZE  = 19
 E_STRING_CHECK_NAND_WRITE  = 20
+E_STRING_CHECK_CENCEL  = 21
 
 UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
@@ -212,7 +214,7 @@ class SystemUpdate( SettingWindow ) :
 	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
-			LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
+			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
 			self.LoadInit( )
 
 		elif groupId == E_Input02 :
@@ -224,20 +226,15 @@ class SystemUpdate( SettingWindow ) :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 			else :
-				LOG_TRACE('------------isDownload[%s] downThread[%s]'% ( self.mIsDownload, self.mGetDownloadThread ) )
+				#LOG_TRACE('------------isDownload[%s] downThread[%s]'% ( self.mIsDownload, self.mGetDownloadThread ) )
 				if self.mIsDownload :
 					self.UpdateHandler( )
 					if self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
 						self.mStepPage = E_UPDATE_STEP_READY
 				else :
 					if self.mGetDownloadThread :
-						self.mIsCancel = True
-						self.mGetDownloadThread.join( )
-						self.mGetDownloadThread = None
-						self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
-						self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
-						self.ShowDescription( E_Input02 )
-						LOG_TRACE( '------------cancel(download)' )
+						self.SetFailProcess( E_STRING_CHECK_CENCEL )
+
 					else :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
@@ -329,13 +326,34 @@ class SystemUpdate( SettingWindow ) :
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
+	def CheckEthernetType( self ) :
+		if E_USE_OLD_NETWORK :
+			import pvr.IpParser as NetMgr
+		else :
+			import pvr.NetworkMgr as NetMgr
+
+		nType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+		return nType
+
+
 	@RunThread
 	def CheckEthernetThread( self ) :
 		count = 0
+		nType = self.CheckEthernetType( )
+		LOG_TRACE( '--------------nType[%s]'% nType )
 		while self.mEnableLocalThread :
 			if ( count % 20 ) == 0 :
 				if self.mStepPage >= E_UPDATE_STEP_PROVISION and self.mStepPage <= E_UPDATE_STEP_DOWNLOAD :
-					status = CheckEthernet( 'eth0' )
+					status = 'down'
+					if nType == NETWORK_ETHERNET :
+						status = CheckEthernet( 'eth0' )
+
+					else :
+						wifiRet = XBMC_CheckNetworkStatus( )
+						if wifiRet == 'Connected' or wifiRet == 'Busy' :
+							status = 'up'
+						LOG_TRACE('------------wifi ret[%s] status[%s]'% ( wifiRet, status ) )
+
 					if status != 'down' :
 						self.mLinkStatus = True
 					else :
@@ -1064,16 +1082,20 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				self.OpenBusyDialog( )
-				self.mDataCache.System_Reboot( )
+				#self.OpenBusyDialog( )
+				#self.mDataCache.System_Reboot( )
 
 
 		elif aStep == E_UPDATE_STEP_ERROR_NETWORK :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_UNLINK_NETWORK )
+			thread = threading.Timer( 0.5, self.SetFailProcess, [E_STRING_CHECK_UNLINK_NETWORK] )
+			thread.start( )
+			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_UNLINK_NETWORK )
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
+
+			self.SetFailProcess( E_STRING_CHECK_CENCEL )
 
 		return stepResult
 
@@ -1220,6 +1242,7 @@ class SystemUpdate( SettingWindow ) :
 		isExist = GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES )
 		#LOG_TRACE('-------------req unzipfiles[%s] ret[%s]'% ( request, isExist ) )
 
+		reqFile = ''
 		tagNames = ['url']
 		retList = ParseStringInXML( E_DOWNLOAD_PATH_FWURL, tagNames, 'urlinfo' )
 		#LOG_TRACE('------------ret urlinfo[%s]'% retList )
@@ -1276,32 +1299,96 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
 
-		self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
-		if aIsResume :
-			self.mWorkingDownloader.resume( self.ShowProgress )
-		else :
-			self.mWorkingDownloader.download( self.ShowProgress )
+		try :
+			self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
+			if aIsResume :
+				self.mWorkingDownloader.resume( self.ShowProgress )
+			else :
+				self.mWorkingDownloader.download( self.ShowProgress )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			self.mIsCancel = False
+			self.mIsDownload = False
+			self.mStepPage = E_UPDATE_STEP_READY
 
 		self.mDialogProgress.close( )
 		self.mDialogProgress = None
 
 
 	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
-		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+		#LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+		self.mCancel_temp = False
 
 		self.SetControlLabel2String( E_Input02, MR_LANG( 'Cancel' ) )
 		self.EditDescription( E_Input02, MR_LANG( 'Press OK to cancel downloading firmware updates' ) )
 		self.ShowDescription( E_Input02 )
 
-		self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
-		if aIsResume :
-			self.mWorkingDownloader.resume( self.ShowProgress2 )
-		else :
-			self.mWorkingDownloader.download( self.ShowProgress2 )
+		try :
+			self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
+			if aIsResume :
+				self.mWorkingDownloader.resume( self.ShowProgress2 )
+			else :
+				self.mWorkingDownloader.download( self.ShowProgress2 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			self.mIsCancel = False
+			self.mIsDownload = False
+			self.mStepPage = E_UPDATE_STEP_READY
+			if self.mWorkingDownloader :
+				self.mWorkingDownloader.abort( True )
+
+			LOG_TRACE( '------download stop' )
+			return
+
 
 		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
 		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
 			self.mIsDownload = True
+			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
+
+		"""
+		else :
+			LOG_TRACE( '------------------download fail, link[%s] cencel[%s]'% ( self.mLinkStatus, self.mCancel_temp ) )
+			if self.mLinkStatus != True :
+				thread = threading.Timer( 0.3, self.SetFailProcess, [E_STRING_CHECK_UNLINK_NETWORK] )
+				thread.start( )
+		"""
+
+	def SetFailProcess( self, aFailNo ) :
+		if aFailNo == E_STRING_CHECK_UNLINK_NETWORK :
+			self.mIsCancel = False
+			self.mIsDownload = False
+			self.mStepPage = E_UPDATE_STEP_READY
+			if self.mWorkingDownloader :
+				self.mWorkingDownloader.abort( True )
+			self.mWorkingDownloader = None
+
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_UNLINK_NETWORK )
+
+			msgLine = MR_LANG( 'Checking network status' )
+			threadDialog = self.ShowProgressDialog( 30, msgLine, None, '' )
+			self.OpenBusyDialog( )
+			time.sleep( 30 )
+			self.CloseBusyDialog( )
+			if self.mShowProgressThread :
+				self.mShowProgressThread.SetResult( True )
+				self.mShowProgressThread = None
+
+			if threadDialog :
+				threadDialog.join( )
+
+
+		elif aFailNo == E_STRING_CHECK_CENCEL :
+			self.mIsCancel = True
+			if self.mGetDownloadThread :
+				self.mGetDownloadThread.join( )
+			self.mGetDownloadThread = None
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+			self.ShowDescription( E_Input02 )
+			LOG_TRACE( '------------cancel(download)' )
 
 
 	#this function is callback
@@ -1318,6 +1405,7 @@ class SystemUpdate( SettingWindow ) :
 			   self.mWorkingDownloader and self.mLinkStatus != True :
 				self.mWorkingDownloader.abort( True )
 				self.mIsDownload = False
+				self.mStepPage = E_UPDATE_STEP_READY
 				LOG_TRACE( '--------------abort' )
 
 
@@ -1333,8 +1421,10 @@ class SystemUpdate( SettingWindow ) :
 			if self.mWorkingDownloader and self.mIsCancel or \
 			   self.mWorkingDownloader and self.mLinkStatus != True :
 				self.mWorkingDownloader.abort( True )
+				self.mCancel_temp = self.mIsCancel
 				self.mIsCancel = False
 				self.mIsDownload = False
+				self.mStepPage = E_UPDATE_STEP_READY
 				LOG_TRACE( '--------------abort(download)' )
 
 
@@ -1691,27 +1781,31 @@ class SystemUpdate( SettingWindow ) :
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
 				msgHead = MR_LANG( 'Update complete' )
 				msgLine = MR_LANG( 'Your channel list has been updated successfully' )
+				"""
 				self.mDataCache.LoadAllSatellite( )
 				self.mDataCache.LoadAllTransponder( )
 				self.mTunerMgr.SyncChannelBySatellite( )
 				self.mDataCache.Channel_ReLoad( )
 				self.mDataCache.Player_AVBlank( False )
-
 				os.remove( UPDATE_TEMP_CHANNEL )
 				os.system( 'sync' )		
+				"""
 
 			else :
 				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
-					msgLine = MR_LANG( '' )
+					msgLine = MR_LANG( 'Please try again after stopping the recordings' )
 				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
-					msgLine = MR_LANG( '' )
+					msgLine = MR_LANG( 'Please try again after deleting your timers first' )
 
 			self.CloseProgress( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( msgHead, msgLine )
 			dialog.doModal( )
-		
+
+			if ret == ElisEnum.E_UPDATE_SUCCESS :
+				self.mDataCache.System_Reboot( )
+
 	
 	def ExportChannelsToUSB( self ) :
 		LOG_TRACE( '' )

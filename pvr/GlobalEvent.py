@@ -521,14 +521,16 @@ class GlobalEvent( object ) :
 		self.mDataCache.SetStanbyClosing( False )
 
 		if self.mIsChannelUpdateEvent :
-			xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+			"""
+			xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 			self.mDataCache.LoadAllSatellite( )
 			self.mDataCache.LoadAllTransponder( )
 			import pvr.TunerConfigMgr
 			pvr.TunerConfigMgr.GetInstance( ).SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
 			self.mDataCache.Player_AVBlank( False )
-			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+			xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+			"""
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted in order to complete the update' ) )

@@ -35,7 +35,7 @@ class DownloadFile(object):
             downloader.resume()
     """        
     
-    def __init__(self, url, localFileName=None, auth=None, timeout=120.0, autoretry=False, retries=5):
+    def __init__(self, url, localFileName=None, auth=None, timeout=10.0, autoretry=False, retries=1):
         """Note that auth argument expects a tuple, ('username','password')"""
         self.url = url
         self.urlFileName = None

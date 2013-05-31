@@ -376,3 +376,6 @@ def XBMC_SetLocalOffset( aLocalOffset ) :
 		xbmc.setLocalOffset( aLocalOffset )
 
 
+def XBMC_CheckNetworkStatus( ) :
+	return xbmc.getInfoLabel( 'System.internetstate' )
+
