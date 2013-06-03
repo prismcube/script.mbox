@@ -27,6 +27,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
+		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
 
 		self.InitProperty( )
 		self.SetHeaderLabel( self.mDialogTitle )
