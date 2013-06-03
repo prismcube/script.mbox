@@ -1086,7 +1086,7 @@ class SystemUpdate( SettingWindow ) :
 				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
-				self.mDialogShowInit.SetDialogHideButton( True )
+				self.mDialogShowInit.SetButtonVisible( False )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
 

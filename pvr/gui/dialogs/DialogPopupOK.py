@@ -20,6 +20,7 @@ class DialogPopupOK( BaseDialog ) :
 		self.mAutoClose		= False
 		self.mAutoCloseTime = 5
 		self.mClosed		= False
+		self.mButtonVisible = True
 
 
 	def onInit( self ) :
@@ -29,6 +30,8 @@ class DialogPopupOK( BaseDialog ) :
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel1 )
 		self.getControl( E_BODY_LABEL_2 ).setLabel( self.mLabel2 )
 		self.getControl( E_BODY_LABEL_3 ).setLabel( self.mLabel3 )
+		if not self.GetButtonVisible( ) :
+			self.getControl( E_BUTTON_OK ).setVisible( False )
 
 		self.mStayCount = self.GetStayCount( )
 		if self.mAutoClose :
@@ -93,9 +96,12 @@ class DialogPopupOK( BaseDialog ) :
 			self.mLabel1 = ''
 
 
-	def SetDialogHideButton( self, aHide = False ) :
-		if aHide :
-			self.getControl( E_BUTTON_OK ).setVisible( 'False' )
+	def SetButtonVisible( self, aVisible = True ) :
+		self.mButtonVisible = aVisible
+
+
+	def GetButtonVisible( self ) :
+		return self.mButtonVisible
 
 
 	def GetStayCount( self ) :
