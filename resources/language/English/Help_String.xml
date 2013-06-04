@@ -32,7 +32,7 @@
 			<width>540</width>
 			<height>160</height>
 		</content>
-		<content name="6. ETHERNET : Local area network port.[CR]7. USB HOST : Connects to the USB memory.[CR]8. AC MAINS : Connects to a plug in the AC mains power cord.">
+		<content name="7. USB HOST : Connects to the USB memory.[CR]8. AC MAINS : Connects to a plug in the AC mains power cord.">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>565</posy>
@@ -49,7 +49,7 @@
 			<width>316</width>
 			<height>480</height>
 		</content>
-		<content name="1. TV POWER : Turns your TV on or off.[CR]2. STANDBY : Switches between operation and standby modes.[CR]3. COLOR : Access special functions in some menus.[CR]4. SOURCE : Controls the outputs of TV.[CR]5. XBMC : Displays the XBMC Media Center.[CR]6. TV/RADIO : Switches between TV and Radio modes.">
+		<content name="1. TV POWER : Turns your TV on or off.[CR]2. STANDBY : Switches between operation and standby modes.[CR]3. COLOR : Access special functions in some menus.[CR]4. SOURCE : Controls the outputs of TV.[CR]5. XBMC : Displays the XBMC Media Center.[CR]6. TV/RADIO : Switches between TV and radio modes.">
 			<type>textbox</type>
 			<posx>80</posx>
 			<posy>565</posy>
@@ -114,7 +114,7 @@
 			<width>800</width>
 			<height>102</height>
 		</content>
-		<content name="The channel information is automatically displayed on the Info plate when changing channels.[CR][CR]1. CURRENT CHANNEL NUMBER AND NAME : Displays current TV/Radio channel number and name.[CR]2. CHANGE EPG : Press the DOWN button then press the LEFT/RIGHT button to view previous/next EPG.[CR]3. PROGRESS BAR : Displays programme start time, end time and progress bar.[CR]4. FUNCTION BUTTONS : Extended Information, Teletext, Subtitle, Start/Stop Recording, Mute and A/V Setting.">
+		<content name="The channel information is automatically displayed on the Info plate when changing channels.[CR][CR]1. CURRENT CHANNEL NUMBER AND NAME : Displays current TV/Radio channel number and name.[CR]2. EPG DATA : Press the DOWN button then press the LEFT/RIGHT button to view previous/next EPG.[CR]3. PROGRESS BAR : Displays programme start time, end time and progress bar.[CR]4. FUNCTION BUTTONS : Extended Information, Teletext, Subtitle, Start/Stop Recording, Mute and A/V Setting.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
