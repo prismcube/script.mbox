@@ -8,7 +8,7 @@ from odict import odict
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.gui.GuiConfig InitTranslateByEnumList
+from pvr.gui.GuiConfig import InitTranslateByEnumList
 
 if sys.version_info < (2, 7):
     import simplejson
