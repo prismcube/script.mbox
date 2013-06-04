@@ -149,6 +149,8 @@ class Configure( SettingWindow ) :
 		self.mUseNetworkType = NetMgr.GetInstance( ).GetCurrentServiceType( )
 		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
+		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
+
 		self.SetListControl( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
