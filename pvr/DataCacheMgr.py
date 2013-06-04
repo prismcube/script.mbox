@@ -13,12 +13,9 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.gui.GuiConfig import *
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG, AsyncShowStatus
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG, AsyncShowStatus, SetSetting
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
-	#from pvr.IpParser import *
-
 else :
 	gFlagUseDB = False
 
@@ -391,19 +388,19 @@ class DataCacheMgr( object ) :
 		self.mTransponderLists = []
 		self.mTransponderListHash = {}
 
-	 	#if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-		for satellite in self.mAllSatelliteList :
-			if SUPPORT_CHANNEL_DATABASE	== True :
-				channelDB = ElisChannelDB( )
-				transponderList = channelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				channelDB.Close( )
-			else :
-				transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-			self.mTransponderLists.append( transponderList )
-			hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
-			self.mTransponderListHash[hashKey] = transponderList
-		#else :
-			#LOG_WARN('Has no Configured Satellite')
+		if self.GetEmptySatelliteInfo( ) == False :
+			for satellite in self.mAllSatelliteList :
+				if SUPPORT_CHANNEL_DATABASE	== True :
+					channelDB = ElisChannelDB( )
+					transponderList = channelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+					channelDB.Close( )
+				else :
+					transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				self.mTransponderLists.append( transponderList )
+				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
+				self.mTransponderListHash[hashKey] = transponderList
+		else :
+			LOG_WARN('Has no All Satellite')
 
 
 	def LoadGetListEpgByChannel( self ) :
@@ -2413,7 +2410,6 @@ class DataCacheMgr( object ) :
 		self.Channel_ReLoad( )
 
 		#8. Settings Property
-		from pvr.GuiHelper import *
 		SetSetting( 'RSS_FEED', '1' )
 
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )

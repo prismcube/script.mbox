@@ -8,6 +8,10 @@ import shutil
 import time
 import os
 import glob
+if E_USE_OLD_NETWORK :
+	import pvr.IpParser as NetMgr
+else :
+	import pvr.NetworkMgr as NetMgr
 
 E_SYSTEM_UPDATE_BASE_ID = WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
@@ -1571,7 +1575,7 @@ class SystemUpdate( SettingWindow ) :
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
 			if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
-				from pvr.IpParser import *
+				#from pvr.IpParser import *
 
 				fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'w' )
 				if fd :

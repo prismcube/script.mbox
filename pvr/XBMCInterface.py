@@ -8,6 +8,7 @@ from odict import odict
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.GuiConfig InitTranslateByEnumList
 
 if sys.version_info < (2, 7):
     import simplejson
@@ -351,7 +352,7 @@ def XBMC_SetCurrentLanguage( aLanguage ) :
 
 
 def XBMC_CheckChangeLanguage( aNewLanguage ) :
-	from pvr.gui.GuiConfig import *
+	#from pvr.gui.GuiConfig import *
 	maxTime = 15
 	loopTime = 0
 	inteval = 1
