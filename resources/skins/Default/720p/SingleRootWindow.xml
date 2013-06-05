@@ -3438,6 +3438,22 @@ Search for window name
 				<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-150</posy>
+				<width>1306</width>
+				<height>256</height>
+				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),panart)</visible>
+				<texture flipy="true">HomeNowPlayingBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>230r</posy>
+				<width>1306</width>
+				<height>238</height>
+				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),panart)</visible>
+				<texture>HomeNowPlayingBack.png</texture>
+			</control>
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="image">

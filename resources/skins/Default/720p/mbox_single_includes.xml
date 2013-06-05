@@ -4756,7 +4756,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<posx>0</posx>
-			<posy>80</posy>
+			<posy>130</posy>
 			<control type="wraplist" id="1003420">
 				<visible>true</visible>
 				<posx>-100</posx>
@@ -4848,7 +4848,7 @@
 			</control>
 			<control type="scrollbar" id="1003421">
 				<posx>180</posx>
-				<posy>390</posy>
+				<posy>480</posy>
 				<width>880</width>
 				<height>25</height>
 				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
@@ -4866,9 +4866,9 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<control type="label">
-				<posx>-15</posx>
-				<posy>500</posy>
-				<width>1280</width>
+				<posx>110</posx>
+				<posy>510</posy>
+				<width>1035</width>
 				<height>35</height>
 				<font>font30_title</font>
 				<textcolor>white</textcolor>
@@ -4879,9 +4879,9 @@
 				<info>Container(1003420).ListItem(0).Label2</info>
 			</control>
 			<control type="label">
-				<posx>15</posx>
-				<posy>540</posy>
-				<width>1220</width>
+				<posx>110</posx>
+				<posy>550</posy>
+				<width>1035</width>
 				<height>20</height>
 				<font>font13</font>
 				<textcolor>white</textcolor>
@@ -4892,9 +4892,9 @@
 				<info>Container(1003420).ListItem(0).Label</info>
 			</control>
 			<control type="label">
-				<posx>-15</posx>
-				<posy>562</posy>
-				<width>1280</width>
+				<posx>110</posx>
+				<posy>572</posy>
+				<width>1035</width>
 				<height>20</height>
 				<font>font13</font>
 				<textcolor>white</textcolor>
@@ -4911,7 +4911,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),panart)</visible>
 			<posx>0</posx>
-			<posy>440</posy>
+			<posy>430</posy>
 			<control type="fixedlist" id="1003430">
 				<posx>-20</posx>
 				<posy>0</posy>
@@ -5001,9 +5001,9 @@
 				</focusedlayout>
 			</control>
 			<control type="label">
-				<posx>-70</posx>
+				<posx>100</posx>
 				<posy>193</posy>
-				<width>1100</width>
+				<width>770</width>
 				<height>30</height>
 				<font>font30</font>
 				<textcolor>white</textcolor>
@@ -5014,9 +5014,9 @@
 				<info>Container(1003430).ListItem(0).Label2</info>
 			</control>
 			<control type="label">
-				<posx>-70</posx>
+				<posx>100</posx>
 				<posy>223</posy>
-				<width>1100</width>
+				<width>770</width>
 				<height>25</height>
 				<font>font12</font>
 				<textcolor>white</textcolor>

@@ -70,6 +70,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
+		self.setProperty( 'SetBackgroundColor', '1' )
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Archive') )		
@@ -1138,6 +1139,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		self.setProperty( 'SetBackgroundColor', '16777215' )
 		self.mEventBus.Deregister( self )
 		SetLock2( True )
 		self.mEnableThread = False
