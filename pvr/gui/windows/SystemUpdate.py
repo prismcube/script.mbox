@@ -753,6 +753,7 @@ class SystemUpdate( SettingWindow ) :
 			"""
 
 			try :
+				RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
 				if E_UPDATE_FIRMWARE_USE_USB :
@@ -845,6 +846,7 @@ class SystemUpdate( SettingWindow ) :
 				#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
 				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+					RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 					if not E_UPDATE_FIRMWARE_USE_USB :
 						InitFlash( )
@@ -1072,27 +1074,30 @@ class SystemUpdate( SettingWindow ) :
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
+			self.CheckItems( )
+
 			line1 = MR_LANG( 'DO NOT POWER OFF%s DURING THE UPGRADING' )% NEW_LINE
 			if E_UPDATE_FIRMWARE_USE_USB :
 				line1 = MR_LANG( 'DO NOT REMOVE YOUR USB%s DURING THE UPGRADING' )% NEW_LINE
-			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			#dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
-			#dialog.doModal( )
-			#ret = dialog.IsOK( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
+			dialog.doModal( )
+			ret = dialog.IsOK( )
 
-			ret = E_DIALOG_STATE_YES
+			#ret = E_DIALOG_STATE_YES
 			if ret == E_DIALOG_STATE_YES :
-				self.CheckItems( )
 				if E_UPDATE_FIRMWARE_USE_USB :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
+				"""
 				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
+				"""
 
 				self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
