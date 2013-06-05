@@ -5080,9 +5080,9 @@
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>5</posx>
-						<posy>10</posy>
-						<width>25</width>
-						<height>25</height>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5158,9 +5158,9 @@
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>5</posx>
-						<posy>10</posy>
-						<width>25</width>
-						<height>25</height>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture>IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5287,8 +5287,8 @@
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
-						<width>28</width>
-						<height>28</height>
+						<width>32</width>
+						<height>32</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5409,8 +5409,8 @@
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
-						<width>28</width>
-						<height>28</height>
+						<width>32</width>
+						<height>32</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5574,8 +5574,8 @@
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
-						<width>28</width>
-						<height>28</height>
+						<width>32</width>
+						<height>32</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5672,8 +5672,8 @@
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
-						<width>28</width>
-						<height>28</height>
+						<width>32</width>
+						<height>32</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
