@@ -576,11 +576,15 @@ class SystemUpdate( SettingWindow ) :
 				buttonFocus  = E_Input02
 				button2Enable = True
 
+				button2Label = MR_LANG( 'Update now' )
+				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+				"""
 				button2Label = MR_LANG( 'Copy to HDD' )
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
 				if E_UPDATE_FIRMWARE_USE_USB :
 					button2Label  = MR_LANG( 'Copy to USB' )
 					button2Desc   = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
+				"""
 
 			else :
 				buttonFocus  = E_Input02
@@ -1126,9 +1130,26 @@ class SystemUpdate( SettingWindow ) :
 		#if not self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD ) :
 		#	return
 
+		#0. show download progress(percent by size)
+		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+		if E_UPDATE_FIRMWARE_USE_USB :
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+
+		cursize = 0
+		tempFile = '%s/%s'% ( unpackPath, self.mPVSData.mFileName )
+		if CheckDirectory( tempFile ) :
+			cursize = os.stat( tempFile )[stat.ST_SIZE]
+
+		self.UpdatePropertyGUI( 'ShowProgress', E_TAG_TRUE )
+		percent = 1.0 * cursize / self.mPVSData.mSize * 100
+		self.SetLabelThread( percent )
+
+
+		#1. check md5sum to download zipFile
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
 			return
 
+		#2. check usb( no hdd or usb only )
 		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
 		if E_UPDATE_FIRMWARE_USE_USB :
 			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
@@ -1137,7 +1158,7 @@ class SystemUpdate( SettingWindow ) :
 		#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 		#if not self.VerifiedUnPack( tempFile, False ) :
 
-		#remove old_Version
+		#3. remove old_Version
 		unpackPath = E_DEFAULT_PATH_DOWNLOAD
 		if E_UPDATE_FIRMWARE_USE_USB :
 			unpackPath = self.mDataCache.USB_GetMountPath( )
@@ -1147,17 +1168,20 @@ class SystemUpdate( SettingWindow ) :
 			if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
 				RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
+		#4. unzip and copy
 		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
 			return
 
+		#5. check md5sum to unziped file
 		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
 			return
 
-		#flash write from HDD
+		#6. flash write to nand flag ( from HDD mode )
 		if not E_UPDATE_FIRMWARE_USE_USB :
 			if not self.UpdateStepPage( E_UPDATE_STEP_NAND_WRITE ) :
 				return
 
+		#7. backup files and reboot
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
 		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
@@ -1183,11 +1207,15 @@ class SystemUpdate( SettingWindow ) :
 			#if E_DEFAULT_DIR_UNZIP != self.mPVSData.mUnzipDir :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
+			button2Label = MR_LANG( 'Update now' )
+			button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+			"""
 			button2Label = MR_LANG( 'Copy to HDD' )
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
 			if E_UPDATE_FIRMWARE_USE_USB :
 				button2Label = MR_LANG( 'Copy to USB' )
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
+			"""
 
 			if self.mWinId == xbmcgui.getCurrentWindowId( ) and \
 			   self.mStepPage > E_UPDATE_STEP_READY and self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
@@ -1467,8 +1495,10 @@ class SystemUpdate( SettingWindow ) :
 
 		#self.OpenBusyDialog( )
 		if aShowProgress :
+			title = MR_LANG( 'Checking files checksum' )
+			line1 = MR_LANG( 'Verifying...' )
 			dialogProgress = xbmcgui.DialogProgress( )
-			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
+			dialogProgress.create( title, line1 )
 
 		isVerify = True
 		totalFiles = len( fileList )
