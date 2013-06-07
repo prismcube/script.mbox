@@ -254,7 +254,7 @@ class GlobalEvent( object ) :
 
 
 	def GetRecordingInfo( self ) :
-		labelInfo = MR_LANG( 'Reloading channel list...' )
+		labelInfo = '%s%s'% ( MR_LANG( 'Reloading channel list' ), ING )
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)

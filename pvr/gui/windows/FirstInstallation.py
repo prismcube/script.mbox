@@ -617,7 +617,7 @@ class FirstInstallation( FTIWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 20, MR_LANG( 'Setting time...' ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 20, '%s%s'% ( MR_LANG( 'Setting time' ), ING ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :

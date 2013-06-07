@@ -480,7 +480,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_HAVE_NONE :
 			line = MR_LANG( 'No released firmware available' )
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
-			line = MR_LANG( 'Downloading...' )
+			line = '%s%s'% ( MR_LANG( 'Downloading' ), ING )
 		elif aMsg == E_STRING_CHECK_HDD :
 			line = MR_LANG( 'Check your HDD' )
 		elif aMsg == E_STRING_CHECK_BLOCK_FLASH :
@@ -963,7 +963,7 @@ class SystemUpdate( SettingWindow ) :
 			if not CheckDirectory( tempFile ) or os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			threadDialog = self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 30, '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
@@ -994,10 +994,10 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			unpackPath = E_DEFAULT_PATH_DOWNLOAD
-			stepMsg = MR_LANG( 'Copying files to HDD...' )
+			stepMsg = '%s%s'% ( MR_LANG( 'Copying files to HDD' ), ING )
 			if E_UPDATE_FIRMWARE_USE_USB :
 				unpackPath = self.mDataCache.USB_GetMountPath( )
-				stepMsg = MR_LANG( 'Copying files to USB drive...' )
+				stepMsg = '%s%s'% ( MR_LANG( 'Copying files to USB drive' ), ING )
 
 			if unpackPath :
 				time.sleep( 0.3 )
@@ -1042,7 +1042,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			imgFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, writeFile )
-			threadDialog = self.ShowProgressDialog( 20, MR_LANG( 'Copying files to internal storage...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 20, '%s%s'% ( MR_LANG( 'Copying files to internal storage' ), ING ), None, strStepNo )
 
 			self.OpenBusyDialog( )
 			ret = SetWriteToFlash( imgFile )
@@ -1340,7 +1340,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProgressDialog( self, aIsResume, aRemoteFile, aDestFile ) :
 		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( self.mWorkingItem.mName, MR_LANG( 'Waiting...' ) )
+		self.mDialogProgress.create( self.mWorkingItem.mName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
 
 		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
 
@@ -1495,8 +1495,8 @@ class SystemUpdate( SettingWindow ) :
 
 		#self.OpenBusyDialog( )
 		if aShowProgress :
-			title = MR_LANG( 'Checking files checksum' )
-			line1 = MR_LANG( 'Verifying...' )
+			title = '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING )
+			line1 = '%s%s'% ( MR_LANG( 'Verifying' ), ING )
 			dialogProgress = xbmcgui.DialogProgress( )
 			dialogProgress.create( title, line1 )
 
@@ -1548,7 +1548,7 @@ class SystemUpdate( SettingWindow ) :
 		self.OpenBusyDialog( )
 		if aShowProgress :
 			dialogProgress = xbmcgui.DialogProgress( )
-			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
+			dialogProgress.create( self.mPVSData.mName, '%s%s'% ( MR_LANG( 'Verifying' ), ING ) )
 
 		isVerify = True
 		totalFiles = len( fileList )
