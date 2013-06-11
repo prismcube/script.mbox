@@ -1193,6 +1193,10 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
 
+		if E_UPDATE_FIRMWARE_USE_USB :
+			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
+				return
+
 		#0. show download progress(percent by size)
 		unpackPath = E_DEFAULT_PATH_DOWNLOAD
 		if E_UPDATE_FIRMWARE_USE_USB :
