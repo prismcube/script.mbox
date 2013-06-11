@@ -828,8 +828,6 @@ class SystemUpdate( SettingWindow ) :
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
 				if E_UPDATE_FIRMWARE_USE_USB :
 					unpackPath = self.mDataCache.USB_GetMountPath( )
-				else :
-					InitFlash( )
 
 				if unpackPath :
 					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
@@ -918,8 +916,6 @@ class SystemUpdate( SettingWindow ) :
 				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
 					RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
-					if not E_UPDATE_FIRMWARE_USE_USB :
-						InitFlash( )
 
 				self.SetFocusControl( E_Input02 )
 
