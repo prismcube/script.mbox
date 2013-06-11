@@ -690,11 +690,9 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 			CreateDirectory( '%s'% os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
-			getPvs = E_DEFAULT_URL_PVS
-			if E_UPDATE_2ND_SECNARIO :
-				getPvs = '%s&version=%s'% ( E_DEFAULT_URL_PVS, self.mCurrData.mVersion )
-			isDownload = GetURLpage( getPvs, E_DOWNLOAD_INFO_PVS )
-			LOG_TRACE( '-------req pvs url[%s] ret[%s]'% ( getPvs, isDownload ) )
+			requrl = '%s&version=%s'% ( E_DEFAULT_URL_PVS, self.mCurrData.mVersion )
+			isDownload = GetURLpage( requrl, E_DOWNLOAD_INFO_PVS )
+			LOG_TRACE( '-------req pvs url[%s] ret[%s]'% ( requrl, isDownload ) )
 
 			if isDownload :
 				mPVSList = []
@@ -731,19 +729,18 @@ class SystemUpdate( SettingWindow ) :
 							iPVS.mActions = actions
 						#if pvsData[9] :
 						#	iPVS.mUnzipDir = pvsData[9]
-						if E_UPDATE_2ND_SECNARIO :
-							if pvsData[9] :
-								for item in pvsData[9] :
-									iSCRIPT = SCRIPTClass( )
-									iSCRIPT.mScriptKey      = item[0]
-									iSCRIPT.mScriptFileName = item[1]
-									iSCRIPT.mScriptMd5      = item[2]
-									iPVS.mShellScripts.append( iSCRIPT )
+						if pvsData[9] :
+							for item in pvsData[9] :
+								iSCRIPT = SCRIPTClass( )
+								iSCRIPT.mScriptKey      = item[0]
+								iSCRIPT.mScriptFileName = item[1]
+								iSCRIPT.mScriptMd5      = item[2]
+								iPVS.mShellScripts.append( iSCRIPT )
 
-								if iPVS.mShellScripts and len( iPVS.mShellScripts ) > 0 :
-									iPVS.mShellScript.mScriptKey      = iPVS.mShellScripts[0].mScriptKey
-									iPVS.mShellScript.mScriptFileName = iPVS.mShellScripts[0].mScriptFileName
-									iPVS.mShellScript.mScriptMd5      = iPVS.mShellScripts[0].mScriptMd5
+							if iPVS.mShellScripts and len( iPVS.mShellScripts ) > 0 :
+								iPVS.mShellScript.mScriptKey      = iPVS.mShellScripts[0].mScriptKey
+								iPVS.mShellScript.mScriptFileName = iPVS.mShellScripts[0].mScriptFileName
+								iPVS.mShellScript.mScriptMd5      = iPVS.mShellScripts[0].mScriptMd5
 
 						iPVS.mName = MR_LANG( 'Downloading firmware' )
 						iPVS.mType = E_TYPE_ADDONS
@@ -1229,42 +1226,14 @@ class SystemUpdate( SettingWindow ) :
 		if E_UPDATE_FIRMWARE_USE_USB :
 			unpackPath = self.mDataCache.USB_GetMountPath( )
 
+		#3. check shell
+		if not self.CheckShellDownload( self.mPVSData.mShellScript ) :
+			return
 
-		if E_UPDATE_2ND_SECNARIO :
-			#3. check shell
-			if not self.CheckShellDownload( self.mPVSData.mShellScript ) :
-				return
-
-			#4. run shell
-			scriptFile = '%s/%s'% ( unpackPath, self.mPVSData.mShellScript.mScriptFileName )
-			if not self.DoCommandRunShell( scriptFile, self.mPVSData.mFileName ) :
-				return
-
-		else :
-			#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
-			#if not self.VerifiedUnPack( tempFile, False ) :
-
-			#3. remove old_Version
-			if unpackPath :
-				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
-				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
-
-			#4. unzip and copy
-			if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
-				return
-
-			#5. check md5sum to unziped file
-			if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
-				return
-
-			#6. flash write to nand flag ( from HDD mode )
-			if not E_UPDATE_FIRMWARE_USE_USB :
-				if not self.UpdateStepPage( E_UPDATE_STEP_NAND_WRITE ) :
-					return
-
-		#7. backup files and reboot
-		#self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
+		#4. run shell
+		scriptFile = '%s/%s'% ( unpackPath, self.mPVSData.mShellScript.mScriptFileName )
+		if not self.DoCommandRunShell( scriptFile, self.mPVSData.mFileName ) :
+			return
 
 
 	@RunThread
