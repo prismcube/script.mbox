@@ -407,6 +407,13 @@ def CreateDirectory( aPath ) :
 	os.makedirs( aPath, 0644 )
 
 
+def CreateFile( aPath ) :
+	try :
+		open( aPath, 'w', 0644 )
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+
 def RemoveDirectory( aPath ) :
 	if not os.path.exists( aPath ) :
 		return
@@ -663,18 +670,17 @@ def GetUnpackDirectory( aZipFile ) :
 	return unzipDir
 
 
-def GetSTBVersion( ) :
-	stbversion = ''
-	openFile = '/etc/stbversion'
+def GetFileRead( aOpenFile ) :
+	readLines = ''
 	try :
-		fp = open( openFile, 'r' )
-		stbversion = fp.readline( ).strip( )
+		fp = open( aOpenFile, 'r' )
+		readLines = fp.readline( ).strip( )
 		fp.close( )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, openFile ) )
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, aOpenFile ) )
 
-	return stbversion
+	return readLines
 
 
 def GetCurrentVersion( ) :
@@ -792,7 +798,7 @@ def GetURLpage( aUrl, aWriteFileName = None ) :
 	return isExist
 
 
-def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
+def ParseStringInXML( xmlFile, tagNames, aRootName = 'software', tagNames2 = '' ) :
 	lists = []
 	#if os.path.exists(xmlFile) :
 	if xmlFile :
@@ -804,16 +810,32 @@ def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
 			for tagName in tagNames :
 				if node.findall( tagName ) :
 					descList = []
+					scriptList=[]
 					for element in node.findall( tagName ) :
 						#elementry = [ str(element.text), '%s\r\n'% str(element) ]
 						elementry = str( element.text )
 						if tagName == 'description' or tagName == 'action' :
 							descList.append( elementry )
+
+						elif tagName == 'script' :
+							script_elementry = []
+							for _tagName in tagNames2 :
+								ele = ''
+								for sub_node in element.getchildren( ) :
+									if sub_node.tag == _tagName :
+										ele = str( sub_node.text )
+
+								script_elementry.append( ele )
+							scriptList.append( script_elementry )
+
 						else :
 							lines.append( elementry )
 
 					if descList and len( descList ) :
 						lines.append( descList )
+
+					if scriptList and len( scriptList ) :
+						lines.append( scriptList )
 
 				else :
 					lines.append('')
