@@ -42,22 +42,22 @@ class Launcher( object ):
 				self.DoElisTest( )
 				self.InitCacheMgr( )
 				#if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
-					#self.StartWebInterface( )
-					
+				#self.StartWebInterface( )
+
 				self.InitWindowMgr( )
 				self.WaitShutdown( )
 			except Exception, ex:
 				#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				#dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
-	 			#dialog.doModal( )
-	 			LOG_TRACE('Error exception[%s]'% ex)
+				#dialog.doModal( )
+				print 'Error exception[%s]'% ex
 
-	 			self.mLoadCount += 1
-	 			LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
-	 			self.mShutdowning = False
-	 			self.Shutdown( )
-	 			time.sleep( 5 )
-	 			self.Run( )
+				self.mLoadCount += 1
+				LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
+				self.mShutdowning = False
+				self.Shutdown( )
+				time.sleep( 5 )
+				self.Run( )
 		finally:
 			print 'Launcher end'
 
