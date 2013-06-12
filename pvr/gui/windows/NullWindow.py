@@ -438,6 +438,15 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
+		elif actionId == Action.ACTION_MOVE_UP :
+			dialog = xbmcgui.DialogProgress( )
+			dialog.create( 'TEST', 'test' )
+			dialog.update( 50 )
+			time.sleep( 10 )
+			dialog.close( )
+			
+
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
