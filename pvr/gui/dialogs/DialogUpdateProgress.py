@@ -1,11 +1,12 @@
 from pvr.gui.WindowImport import *
-import os, threading
+import os, threading, copy
 
 PROGRESS_SCAN		= 400
 BUTTON_CANCEL		= 300
 BUTTON_CLOSE		= 301
 LABEL_TITLE			= 200
 LABEL_STRING		= 201
+TEXTBOX				= 202
 
 E_COMMAND_SHELL_STATUS    = '/mtmp/update.status'
 E_COMMAND_SHELL_CANCEL    = '/mtmp/force.stop'
@@ -17,7 +18,6 @@ E_COMMAND_SHELL_LOG       = '/mtmp/update.log'
 class DialogUpdateProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mLimitTime 		= 10
 		self.mTitle				= None
 		self.mFinish			= False
 		self.mScriptFile 		= ''
@@ -26,6 +26,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mRunShellThread    = None
 		self.mReturnShell       = 0
 		self.mStatusCancel      = False
+		self.mResultOutputs		= ''
 
 
 	def onInit( self ) :
@@ -36,13 +37,14 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mCtrlLabelTitle	= self.getControl( LABEL_TITLE )
 		self.mCtrlLabelString	= self.getControl( LABEL_STRING )
 		self.mCtrlProgress		= self.getControl( PROGRESS_SCAN )
+		self.mCtrlTextbox		= self.getControl( TEXTBOX )
 
 		self.mCtrlLabelTitle.setLabel( self.mTitle )
-		self.mCtrlLabelString.setLabel( MR_LANG( 'Waiting' ) + ' - 0 %' )
+		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready' ) + ' - 0 %' )
 
 		#self.DrawProgress( )
 		#self.setProperty( 'ShellDescription', mLine )
-		thread = threading.Timer( 0.5, self.DoCommandRunShell )
+		thread = threading.Timer( 1, self.DoCommandRunShell )
 		thread.start( )
 
 
@@ -52,26 +54,23 @@ class DialogUpdateProgress( BaseDialog ) :
 			return
 
 		if self.mStatusCancel :
-			LOG_TRACE( 'blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : canceling' )
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.UpdateStepShellCancel( )
-			self.Close( )
 
 
 	def onClick( self, aControlId ) :
 		if self.mStatusCancel :
-			LOG_TRACE( 'blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : canceling' )
 			return
 
 		if aControlId == BUTTON_CLOSE :
 			self.UpdateStepShellCancel( )
-			self.Close( )
 
 		elif aControlId == BUTTON_CANCEL :
 			self.UpdateStepShellCancel( )
-			self.Close( )
 
 
 	def onFocus( self, aControlId ) :
@@ -79,19 +78,18 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def SetDialogProperty( self, aTitle, aScriptFile, aFirmware ) :
-		self.mLimitTime  = aLimitTime
 		self.mTitle      = aTitle
 		self.mScriptFile = aScriptFile
 		self.mFirmware   = aFirmware
 		self.mFinish     = False
-		self.mStatusCancel = False
+		self.mStatusCancel  = False
 
 
 	def TimeoutProgress( self, aLimitTime, aTitle ) :
 		if aLimitTime < 1 :
-			break
+			return
 
-		waitTime = 1
+		waitTime = 1.0
 		while self.mRunShellThread :
 			if waitTime > aLimitTime :
 				self.DrawProgress( 0, MR_LANG( 'timed out' ) )
@@ -110,9 +108,9 @@ class DialogUpdateProgress( BaseDialog ) :
 		if aLabel == None :
 			aLabel = MR_LANG( 'Waiting' )
 
-		mLabel = aLabel + ' - %d %%' % percent
+		mLabel = aLabel + ' - %s %%' % aPercent
 		self.mCtrlLabelString.setLabel( mLabel )
-		self.mCtrlProgress.setPercent( percent )
+		self.mCtrlProgress.setPercent( aPercent )
 
 
 	def Close( self ) :
@@ -138,6 +136,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		RemoveDirectory( E_COMMAND_SHELL_COMPLETE )
 		os.system( 'sync' )
 
+		LOG_TRACE( '--------shell[%s] fw[%s]'% ( self.mScriptFile, self.mFirmware ) )
 		if self.mScriptFile :
 			thread = threading.Timer( 0.1, self.UpdateStepRunShell )
 			thread.start( )
@@ -197,9 +196,11 @@ class DialogUpdateProgress( BaseDialog ) :
 			time.sleep( 1 )
 			return
 
+		outputs = ''
+		self.mResultOutputs = ''
 		f = open( E_COMMAND_SHELL_LOG )
 		f.seek( 0, 2 )            # go to END
-		outputs = ''
+		endline = 0
 		while self.mRunShellThread :
 			if CheckDirectory( E_COMMAND_SHELL_COMPLETE ) :
 				LOG_TRACE( '-------------------done complete' )
@@ -216,8 +217,11 @@ class DialogUpdateProgress( BaseDialog ) :
 				for v in lines :
 					#print v,
 					outputs += v
+					endline += 1
 					self.setProperty( 'ShellDescription', outputs )
-			else:
+					self.mCtrlTextbox.scroll( endline )
+					self.mResultOutputs = copy.deepcopy( outputs )
+			else :
 				time.sleep( 0.5 )
 
 		f.close( )
@@ -227,6 +231,7 @@ class DialogUpdateProgress( BaseDialog ) :
 	def UpdateStepShellProgress( self ) :
 		title = MR_LANG( 'Waiting' )
 
+		curr = 0.0
 		while self.mRunShell :
 			if CheckDirectory( E_COMMAND_SHELL_STOP ) :
 				LOG_TRACE( '-------------------stop' )
@@ -237,13 +242,24 @@ class DialogUpdateProgress( BaseDialog ) :
 				percent = GetFileRead( E_COMMAND_SHELL_STATUS )
 				RemoveDirectory( E_COMMAND_SHELL_STATUS )
 				if percent and percent.isdigit( ) :
-					self.DrawProgress( percent, title )
+					self.DrawProgress( int( percent ), title )
+					curr = float( percent )
+
+			else :
+				curr += 0.25
+				if curr > 95 :
+					curr = 95
+				self.DrawProgress( int( curr ), title )
+				if curr % 0.5 == 0 :
+					self.mResultOutputs += '.'
+					self.setProperty( 'ShellDescription', self.mResultOutputs )
 
 			time.sleep( 0.5 )
 
 		self.mRunShell = False
 
 
+	@RunThread
 	def UpdateStepShellCancel( self ) :
 		LOG_TRACE( '--------------abort(shell)' )
 		self.mStatusCancel = True
@@ -255,5 +271,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		LOG_TRACE( '--------------abort(shell) runThread[%s]'% self.mRunShellThread )
 
 		self.mRunShellThread = None
+
+		self.Close( )
 
 

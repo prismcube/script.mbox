@@ -72,7 +72,7 @@
 				<haspath>true</haspath>
 				<font>font13</font>
 			</control>
-			<control type="textbox">
+			<control type="textbox" id="202">
 				<posx>30</posx>
 				<posy>60</posy>
 				<width>530</width>

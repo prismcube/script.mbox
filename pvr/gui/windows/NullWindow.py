@@ -444,7 +444,19 @@ class NullWindow( BaseWindow ) :
 			dialog.update( 50 )
 			time.sleep( 10 )
 			dialog.close( )
-			
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			scriptFile = '/mnt/hdd0/program/download/updater5.sh'
+			firmware = 'update_ruby_1.0.0.rc2_Update_Test.zip'
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+			dialog.SetDialogProperty( MR_LANG( 'UPDATE' ), scriptFile, firmware )
+			dialog.doModal( )
+
+			shell = dialog.GetResult( )
+			LOG_TRACE( '-------------------ret[%s]'% shell )
+			if shell :
+				InitFlash( )
+
 
 
 		else :
