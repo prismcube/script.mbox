@@ -2510,6 +2510,10 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def GridFocusFind( self ) :
+		if self.mGridFocusTime == 0 :
+			self.mVisibleFocusCol = 0
+			return
+	
 		for i in range( E_GRID_MAX_COL_COUNT ) :
 			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, i ), None )
 			if  gridMeta :
