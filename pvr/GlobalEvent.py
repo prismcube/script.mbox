@@ -164,9 +164,11 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
-				self.mDataCache.SetStanbyClosing( True )
-				thread = threading.Timer( 1, self.StanByClose )
-				thread.start( )
+				from ElisProperty import ElisPropertyEnum
+				if ElisPropertyEnum( 'Deep Standby', self.mCommander ).GetProp( ) != 0 :
+					self.mDataCache.SetStanbyClosing( True )
+					thread = threading.Timer( 1, self.StanByClose )
+					thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
@@ -226,7 +228,10 @@ class GlobalEvent( object ) :
 		self.mDataCache.InitBookmarkButton( )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT )
-		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+		else :
+			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
 	def AsyncPowerSave( self ) :
