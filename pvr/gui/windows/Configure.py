@@ -1410,9 +1410,9 @@ class Configure( SettingWindow ) :
 			fd = open( scriptFile, 'w' )
 			if fd :
 				fd.writelines( '#!/bin/sh\n' )
-				fd.writelines( 'modprobe usb_storage\n' )
-				fd.writelines( 'sleep 3\n' )
-				fd.writelines( 'mount /dev/sdb1 /media/usb/sdb1\n' )
+				#fd.writelines( 'modprobe usb_storage\n' )
+				#fd.writelines( 'sleep 3\n' )
+				#fd.writelines( 'mount /dev/sdb1 /media/usb/sdb1\n' )
 				usbpath = self.mDataCache.USB_GetMountPath( )
 				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/userdata\n' )
 				fd.writelines( 'mkdir -p /mnt/hdd0/program/.xbmc/addons\n' )
