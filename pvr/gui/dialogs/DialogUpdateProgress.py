@@ -27,6 +27,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mReturnShell       = 0
 		self.mStatusCancel      = False
 		self.mResultOutputs		= ''
+		self.mShowBlink			= False
 
 
 	def onInit( self ) :
@@ -42,11 +43,10 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mCtrlLabelTitle.setLabel( self.mTitle )
 		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready' ) + ' - 0 %' )
 
-		#self.DrawProgress( )
-		#self.setProperty( 'ShellDescription', mLine )
 		thread = threading.Timer( 1, self.DoCommandRunShell )
 		thread.start( )
-
+		#self.mEnd = False
+		#self.Test( )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -55,6 +55,9 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		if self.mStatusCancel :
 			LOG_TRACE( '------------blocking key : canceling' )
+			if not self.mShowBlink :
+				label = MR_LANG( 'Wait' )
+				self.AsyncShowAlarm( label )
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
@@ -64,6 +67,9 @@ class DialogUpdateProgress( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if self.mStatusCancel :
 			LOG_TRACE( '------------blocking key : canceling' )
+			if not self.mShowBlink :
+				label = MR_LANG( 'Wait' )
+				self.AsyncShowAlarm( label )
 			return
 
 		if aControlId == BUTTON_CLOSE :
@@ -115,6 +121,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def Close( self ) :
 		#self.mEventBus.Deregister( self )
+		self.mEnd = True
 		time.sleep( 1 )
 		self.CloseDialog( )
 
@@ -196,12 +203,14 @@ class DialogUpdateProgress( BaseDialog ) :
 			time.sleep( 1 )
 			return
 
+		LINEMAX = ( self.mCtrlTextbox.getHeight( ) - 20 ) / 20
 		outputs = ''
+		testline = []
 		self.mResultOutputs = ''
 		f = open( E_COMMAND_SHELL_LOG )
 		f.seek( 0, 2 )            # go to END
-		endline = 0
 		while self.mRunShellThread :
+			isAdd = False
 			if CheckDirectory( E_COMMAND_SHELL_COMPLETE ) :
 				LOG_TRACE( '-------------------done complete' )
 				self.mReturnShell = 0
@@ -216,13 +225,19 @@ class DialogUpdateProgress( BaseDialog ) :
 			if lines :
 				for v in lines :
 					#print v,
+					testline.append( v )
 					outputs += v
-					endline += 1
-					self.setProperty( 'ShellDescription', outputs )
-					self.mCtrlTextbox.scroll( endline )
+					if len( testline ) > LINEMAX :
+						testline.pop( 0 )
+						outputs = ''
+						for t in testline :
+							outputs += t
 					self.mResultOutputs = copy.deepcopy( outputs )
+					self.setProperty( 'ShellDescription', outputs )
+
 			else :
 				time.sleep( 0.5 )
+
 
 		f.close( )
 		self.mRunShell = False
@@ -233,6 +248,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		curr = 0.0
 		while self.mRunShell :
+			isAdd = False
 			if CheckDirectory( E_COMMAND_SHELL_STOP ) :
 				LOG_TRACE( '-------------------stop' )
 				self.mReturnShell = -1
@@ -251,6 +267,7 @@ class DialogUpdateProgress( BaseDialog ) :
 					curr = 95
 				self.DrawProgress( int( curr ), title )
 				if curr % 0.5 == 0 :
+					isAdd = True
 					self.mResultOutputs += '.'
 					self.setProperty( 'ShellDescription', self.mResultOutputs )
 
@@ -273,5 +290,28 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mRunShellThread = None
 
 		self.Close( )
+
+
+	@RunThread
+	def AsyncShowAlarm( self, aMessage ) :
+		self.mShowBlink = True
+		self.setProperty( 'ShowStatusLabel', '%s'% aMessage )
+
+		loopCount = 0
+		while loopCount <= 5 :
+			#if self.mWinId != xbmcgui.getCurrentWindowDialogId( ) :
+			#	break
+
+			self.setProperty( 'StatusLabel', 'True' )
+			time.sleep( 0.2 )
+			self.setProperty( 'StatusLabel', 'False' )
+			time.sleep( 0.2 )
+			loopCount += 0.4
+
+		self.setProperty( 'StatusLabel', 'False' )
+		self.setProperty( 'StatusLabel', '' )
+
+		self.mShowBlink = False
+
 
 

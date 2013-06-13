@@ -83,7 +83,6 @@
 				<textcolor>grey3</textcolor>
 				<wrapmultiline>true</wrapmultiline>
 				<pagecontrol>61</pagecontrol>
-				<!--autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll-->
 				<label>$INFO[Window.Property(ShellDescription)]</label>
 			</control>
 
@@ -134,6 +133,20 @@
 			</control>
 
 		</control>
+		<control type="label">
+			<posx>370</posx>
+			<posy>330</posy>
+			<width>500</width>
+			<height>50</height>
+			<font>font35_title</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>grey2</textcolor>
+			<label>$INFO[Window.Property(ShowStatusLabel)]</label>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<visible>substring(Window.Property(StatusLabel),true)</visible>
+		</control>
+
 	</controls>
 </window>
 

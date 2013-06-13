@@ -1218,6 +1218,7 @@ class SystemUpdate( SettingWindow ) :
 
 		shell = dialog.GetResult( )
 		if not shell :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 			return
 
 		#7. backup files and reboot
