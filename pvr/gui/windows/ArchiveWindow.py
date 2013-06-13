@@ -840,7 +840,8 @@ class ArchiveWindow( BaseWindow ) :
 			dialog.doModal( )
 			
 			contextAction = dialog.GetSelectedAction( )
-			self.DoContextAction( contextAction ) 
+			self.DoContextAction( contextAction )
+			self.SetFocusList( self.mViewMode )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

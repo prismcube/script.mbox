@@ -327,6 +327,7 @@ class TimerWindow( BaseWindow ) :
 		
 		contextAction = dialog.GetSelectedAction( )
 		self.DoContextAction( contextAction ) 
+		self.setFocusId( LIST_ID_BIG_TIMER )
 
 
 	def DoContextAction( self, aContextAction ) :

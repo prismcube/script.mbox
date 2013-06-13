@@ -2617,6 +2617,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.DoContextAction( aMode, selectedAction, groupName )
 
 		self.mIsSave |= FLAG_MASK_ADD
+		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 
 	def ShowContextMenu( self ) :
