@@ -65,6 +65,11 @@ E_UPDATE_STEP_RUN_SHELL   = 20
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
+E_RESULT_UPDATE_DONE     = 0
+E_RESULT_ERROR_FAIL      = -1
+E_RESULT_ERROR_CANCEL    = -2
+E_RESULT_ERROR_CHECKSUME = -3
+
 E_STRING_ATTENTION     = 0
 E_STRING_ERROR         = 1
 E_STRING_CHECK_USB       = 0
@@ -133,7 +138,7 @@ class PVSClass( object ) :
 		print 'mId= %s'%self.mId
 		print 'mType= %s'%self.mType
 		print 'mError= %s'%self.mError
-		for item in self.mShellScript :
+		for item in self.mShellScripts :
 			print 'mScriptKey= %s'% item.mScriptKey
 			print 'mScriptFileName= %s'% item.mScriptFileName
 			print 'mScriptMd5= %s'% item.mScriptMd5
@@ -308,7 +313,8 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 			if self.mGetDownloadThread :
-				self.InitPVSData( )
+				if self.InitPVSData( ) :
+					self.mStepPage = E_UPDATE_STEP_DOWNLOAD
 			else :
 				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
@@ -405,14 +411,15 @@ class SystemUpdate( SettingWindow ) :
 			curWinID = xbmcgui.getCurrentWindowId( )
 			updateWinID = self.mWinId
 			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				curWinID = WinMgr.GetInstance( ).GetLastWindowID( )
+				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
 				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
 
- 			if curWinID != updateWinID :
- 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
- 				self.LoadInit( )
+			if curWinID != updateWinID :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
+				time.sleep( 1 )
+				self.LoadInit( )
 
-			elif curWinID == updateWinID and self.mStepPage == E_UPDATE_STEP_HOME :
+			elif curWinID == updateWinID and self.mStepPage <= E_UPDATE_STEP_READY :
 				self.LoadInit( )
 
 
@@ -1009,7 +1016,7 @@ class SystemUpdate( SettingWindow ) :
 			if not CheckDirectory( tempFile ) or os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			threadDialog = self.ShowProgressDialog( 30, '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING ), None )
+			threadDialog = self.ShowProgressDialog( 30, '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
@@ -1134,7 +1141,6 @@ class SystemUpdate( SettingWindow ) :
 			#dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
 			#dialog.doModal( )
 			#ret = dialog.IsOK( )
-
 			ret = E_DIALOG_STATE_YES
 			if ret == E_DIALOG_STATE_YES :
 				if E_UPDATE_FIRMWARE_USE_USB :
@@ -1148,10 +1154,13 @@ class SystemUpdate( SettingWindow ) :
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
 
-				#self.OpenBusyDialog( )
-				#self.mDataCache.System_Reboot( )
-				InitFlash( )
-				self.mStepPage = E_UPDATE_STEP_READY
+				if E_UPDATE_TEST_DEBUG :
+					InitFlash( )
+					self.mStepPage = E_UPDATE_STEP_READY
+					return
+
+				self.OpenBusyDialog( )
+				self.mDataCache.System_Reboot( )
 
 
 		elif aStep == E_UPDATE_STEP_ERROR_NETWORK :
@@ -1192,9 +1201,10 @@ class SystemUpdate( SettingWindow ) :
 		self.SetLabelThread( percent )
 
 
+		# deprecate - check for DialogUpdateProcess
 		#1. check md5sum to download zipFile
-		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
-			return
+		#if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
+		#	return
 
 		#2. check usb( no hdd or usb only )
 		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
@@ -1213,12 +1223,24 @@ class SystemUpdate( SettingWindow ) :
 		#4. run shell
 		scriptFile = '%s/%s'% ( unpackPath, self.mPVSData.mShellScript.mScriptFileName )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
-		dialog.SetDialogProperty( MR_LANG( 'UPDATE' ), scriptFile, self.mPVSData.mFileName )
+		dialog.SetDialogProperty( MR_LANG( 'UPDATE' ), unpackPath, self.mPVSData )
 		dialog.doModal( )
 
 		shell = dialog.GetResult( )
-		if not shell :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+		if shell < E_RESULT_UPDATE_DONE :
+			mTitle = E_STRING_ERROR
+			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if shell == E_RESULT_ERROR_FAIL :
+				errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			elif shell == E_RESULT_ERROR_CANCEL :
+				return
+
+			elif shell == E_RESULT_ERROR_CHECKSUME :
+				errmsg = E_STRING_CHECK_CORRUPT
+
+			self.DialogPopup( mTitle, errmsg )
 			return
 
 		#7. backup files and reboot
@@ -1257,7 +1279,14 @@ class SystemUpdate( SettingWindow ) :
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 			"""
 
-			if self.mWinId == xbmcgui.getCurrentWindowId( ) and \
+			curWinID = xbmcgui.getCurrentWindowId( )
+			updateWinID = self.mWinId
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
+				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
+
+			LOG_TRACE('-------------------step[%s]'% self.mStepPage )
+			if curWinID == updateWinID and \
 			   self.mStepPage > E_UPDATE_STEP_READY and self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
 				self.SetControlLabel2String( E_Input02, button2Label )
 				self.EditDescription( E_Input02, button2Desc )

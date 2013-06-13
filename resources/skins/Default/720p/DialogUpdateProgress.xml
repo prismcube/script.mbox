@@ -82,7 +82,7 @@
 				<font>font12</font>
 				<textcolor>grey3</textcolor>
 				<wrapmultiline>true</wrapmultiline>
-				<pagecontrol>61</pagecontrol>
+				<!--pagecontrol>61</pagecontrol-->
 				<label>$INFO[Window.Property(ShellDescription)]</label>
 			</control>
 
@@ -113,7 +113,7 @@
 			</control>
 
 			<!-- Scrollbar -->
-			<control type="scrollbar" id="61">
+			<!--control type="scrollbar" id="61">
 				<posx>560</posx>
 				<posy>60</posy>
 				<width>25</width>
@@ -130,11 +130,11 @@
 				<onup>61</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-			</control>
+			</control-->
 
 		</control>
 		<control type="label">
-			<posx>370</posx>
+			<posx>390</posx>
 			<posy>330</posy>
 			<width>500</width>
 			<height>50</height>

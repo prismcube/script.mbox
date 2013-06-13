@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import os, threading, copy
+import os, threading, copy, stat
 
 PROGRESS_SCAN		= 400
 BUTTON_CANCEL		= 300
@@ -14,20 +14,24 @@ E_COMMAND_SHELL_STOP      = '/mtmp/update.stop'
 E_COMMAND_SHELL_COMPLETE  = '/mtmp/update.complete'
 E_COMMAND_SHELL_LOG       = '/mtmp/update.log'
 
+E_RESULT_UPDATE_DONE     = 0
+E_RESULT_ERROR_FAIL      = -1
+E_RESULT_ERROR_CANCEL    = -2
+E_RESULT_ERROR_CHECKSUME = -3
 
 class DialogUpdateProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mTitle				= None
-		self.mFinish			= False
-		self.mScriptFile 		= ''
-		self.mFirmware 			= ''
+		self.mTitle             = None
+		self.mFinish            = 0
+		self.mBaseDirectory     = ''
+		self.mPVSData           = None
 		self.mRunShell          = True
 		self.mRunShellThread    = None
-		self.mReturnShell       = 0
+		self.mReturnShell       = E_RESULT_UPDATE_DONE
 		self.mStatusCancel      = False
-		self.mResultOutputs		= ''
-		self.mShowBlink			= False
+		self.mResultOutputs     = ''
+		self.mShowBlink         = False
 
 
 	def onInit( self ) :
@@ -35,18 +39,17 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		#self.mEventBus.Register( self )
 
-		self.mCtrlLabelTitle	= self.getControl( LABEL_TITLE )
-		self.mCtrlLabelString	= self.getControl( LABEL_STRING )
-		self.mCtrlProgress		= self.getControl( PROGRESS_SCAN )
-		self.mCtrlTextbox		= self.getControl( TEXTBOX )
+		self.mCtrlLabelTitle    = self.getControl( LABEL_TITLE )
+		self.mCtrlLabelString   = self.getControl( LABEL_STRING )
+		self.mCtrlProgress      = self.getControl( PROGRESS_SCAN )
+		self.mCtrlTextbox       = self.getControl( TEXTBOX )
 
 		self.mCtrlLabelTitle.setLabel( self.mTitle )
 		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready' ) + ' - 0 %' )
 
-		thread = threading.Timer( 1, self.DoCommandRunShell )
+		thread = threading.Timer( 1, self.DoUpdateHandler )
 		thread.start( )
-		#self.mEnd = False
-		#self.Test( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -83,15 +86,15 @@ class DialogUpdateProgress( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aTitle, aScriptFile, aFirmware ) :
-		self.mTitle      = aTitle
-		self.mScriptFile = aScriptFile
-		self.mFirmware   = aFirmware
-		self.mFinish     = False
+	def SetDialogProperty( self, aTitle, aBaseDir, aPVSData ) :
+		self.mBaseDirectory = aBaseDir
+		self.mTitle         = aTitle
+		self.mPVSData       = aPVSData
+		self.mFinish        = E_RESULT_UPDATE_DONE
 		self.mStatusCancel  = False
 
 
-	def TimeoutProgress( self, aLimitTime, aTitle ) :
+	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '' ) :
 		if aLimitTime < 1 :
 			return
 
@@ -105,7 +108,11 @@ class DialogUpdateProgress( BaseDialog ) :
 			if percent > 100 :
 				percent = 100
 			self.DrawProgress( percent, aTitle )
-			
+
+			if aOutPuts :
+				aOutPuts += '.'
+				self.setProperty( 'ShellDescription', aOutPuts )
+
 			waitTime += 1
 			time.sleep( 1 )
 
@@ -114,8 +121,9 @@ class DialogUpdateProgress( BaseDialog ) :
 		if aLabel == None :
 			aLabel = MR_LANG( 'Waiting' )
 
-		mLabel = aLabel + ' - %s %%' % aPercent
-		self.mCtrlLabelString.setLabel( mLabel )
+		if aPercent > 0 :
+			aLabel += ' - %s %%' % aPercent
+		self.mCtrlLabelString.setLabel( aLabel )
 		self.mCtrlProgress.setPercent( aPercent )
 
 
@@ -130,9 +138,44 @@ class DialogUpdateProgress( BaseDialog ) :
 		return self.mFinish
 
 
+	def DoUpdateHandler( self ) :
+		if self.CheckFirmware( ) :
+			self.DoCommandRunShell( )
+
+		self.Close( )
+
+
+	def CheckFirmware( self ) :
+		tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
+		LOG_TRACE( '----------------file[%s]'% tempFile )
+		#self.mPVSData.printdebug( )
+
+		if ( not CheckDirectory( tempFile ) ) or ( not self.mPVSData ) or \
+		   os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
+			self.mFinish = E_RESULT_ERROR_CHECKSUME
+			return False
+
+		self.mStatusCancel = True
+
+		self.mRunShellThread = True
+		desc = '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING )
+		thread = threading.Timer( 0.1, self.TimeoutProgress, [ 30, desc , desc ] )
+		thread.start( )
+
+		ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
+		self.mRunShellThread = False
+
+		if thread :
+			thread.join ( )
+
+		time.sleep( 1 )
+		self.mStatusCancel = False
+
+		return ret
+
+
 	def DoCommandRunShell( self ) :
-		ret = True
-		self.mReturnShell = 0
+		self.mReturnShell = E_RESULT_UPDATE_DONE
 		self.mRunShell = True
 		self.mRunShellThread = None
 
@@ -143,9 +186,11 @@ class DialogUpdateProgress( BaseDialog ) :
 		RemoveDirectory( E_COMMAND_SHELL_COMPLETE )
 		os.system( 'sync' )
 
-		LOG_TRACE( '--------shell[%s] fw[%s]'% ( self.mScriptFile, self.mFirmware ) )
-		if self.mScriptFile :
-			thread = threading.Timer( 0.1, self.UpdateStepRunShell )
+		scriptShell = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mShellScript.mScriptFileName )
+		firmware = self.mPVSData.mFileName
+		LOG_TRACE( '--------shell[%s] fw[%s]'% ( scriptShell, firmware ) )
+		if scriptShell :
+			thread = threading.Timer( 0.1, self.UpdateStepRunShell, [ scriptShell, firmware ] )
 			thread.start( )
 
 			self.mRunShellThread = threading.Timer( 0.5, self.UpdateStepShellStatus )
@@ -162,7 +207,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			thread2.join( )
 
 		else :
-			self.mReturnShell = -1
+			self.mReturnShell = E_RESULT_ERROR_FAIL
 			self.mRunShell = False
 
 		#while self.mRunShell :
@@ -172,56 +217,77 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		percent = 100
 		statusLabel = MR_LANG( 'Complete' )
-		if self.mReturnShell < 0 :
+		if self.mReturnShell < E_RESULT_UPDATE_DONE :
 			percent = 0
-			if self.mReturnShell == -1 :
+			if self.mReturnShell == E_RESULT_ERROR_FAIL :
 				LOG_TRACE( '--------shell fail' )
 				statusLabel = MR_LANG( 'Fail' )
-			elif self.mReturnShell < -1 :
+			elif self.mReturnShell == E_RESULT_ERROR_CANCEL :
 				LOG_TRACE( '--------shell cancel' )
 				statusLabel = MR_LANG( 'Cancel' )
+			else :
+				LOG_TRACE( '--------unknown fail' )
+				statusLabel = MR_LANG( 'Fail' )
 
 			self.mRunShell = False
-			ret = False
 
 		self.DrawProgress( percent, statusLabel )
-		self.mFinish = ret
-		self.Close( )
+		self.mFinish = self.mReturnShell
 
 
-	def UpdateStepRunShell( self ) :
-		cmd = '%s start %s'% ( self.mScriptFile, self.mFirmware )
+	def UpdateStepRunShell( self, aScript, aFirmware ) :
+		cmd = '%s start %s'% ( aScript, aFirmware )
 		LOG_TRACE( '---------------run shell[%s]'% cmd )
 		os.system( cmd )
 
 
 	def UpdateStepShellStatus( self ) :
+		waitTime = 0
+		while waitTime < 5 :
+			if CheckDirectory( E_COMMAND_SHELL_LOG ) :
+				break
+
+			waitTime += 1
+			time.sleep( 1 )
+
 		if not CheckDirectory( E_COMMAND_SHELL_LOG ) :
 			self.mRunShell = False
-			self.mReturnShell = -1
+			self.mReturnShell = E_RESULT_ERROR_FAIL
 			LOG_TRACE( '---------------file not found [%s]'% E_COMMAND_SHELL_LOG )
 			time.sleep( 1 )
+			return
+
+		fp = None
+		try :
+			fp = open( E_COMMAND_SHELL_LOG )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			fp = None
+
+		if fp == None :
+			self.mRunShell = False
+			self.mReturnShell = E_RESULT_ERROR_FAIL
 			return
 
 		LINEMAX = ( self.mCtrlTextbox.getHeight( ) - 20 ) / 20
 		outputs = ''
 		testline = []
 		self.mResultOutputs = ''
-		f = open( E_COMMAND_SHELL_LOG )
-		f.seek( 0, 2 )            # go to END
+
+		fp.seek( 0, 2 )            # go to END
 		while self.mRunShellThread :
 			isAdd = False
 			if CheckDirectory( E_COMMAND_SHELL_COMPLETE ) :
 				LOG_TRACE( '-------------------done complete' )
-				self.mReturnShell = 0
+				self.mReturnShell = E_RESULT_UPDATE_DONE
 				break
 
 			if CheckDirectory( E_COMMAND_SHELL_STOP ) :
 				LOG_TRACE( '-------------------stop' )
-				self.mReturnShell = -1
+				self.mReturnShell = E_RESULT_ERROR_FAIL
 				break
 
-			lines = f.readlines( )
+			lines = fp.readlines( )
 			if lines :
 				for v in lines :
 					#print v,
@@ -238,8 +304,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			else :
 				time.sleep( 0.5 )
 
-
-		f.close( )
+		fp.close( )
 		self.mRunShell = False
 
 
@@ -251,7 +316,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			isAdd = False
 			if CheckDirectory( E_COMMAND_SHELL_STOP ) :
 				LOG_TRACE( '-------------------stop' )
-				self.mReturnShell = -1
+				self.mReturnShell = E_RESULT_ERROR_FAIL
 				break
 
 			if CheckDirectory( E_COMMAND_SHELL_STATUS ) :
@@ -281,10 +346,10 @@ class DialogUpdateProgress( BaseDialog ) :
 		LOG_TRACE( '--------------abort(shell)' )
 		self.mStatusCancel = True
 		CreateFile( E_COMMAND_SHELL_CANCEL )
-		self.mReturnShell = -2
+		self.mReturnShell = E_RESULT_ERROR_CANCEL
 		self.mRunShell = False
 
-		thread = self.TimeoutProgress( 60, MR_LANG( 'Canceling' ) )
+		self.TimeoutProgress( 60, MR_LANG( 'Canceling' ) )
 		LOG_TRACE( '--------------abort(shell) runThread[%s]'% self.mRunShellThread )
 
 		self.mRunShellThread = None
@@ -298,7 +363,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.setProperty( 'ShowStatusLabel', '%s'% aMessage )
 
 		loopCount = 0
-		while loopCount <= 5 :
+		while loopCount <= 2 :
 			#if self.mWinId != xbmcgui.getCurrentWindowDialogId( ) :
 			#	break
 
