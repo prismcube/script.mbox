@@ -1596,6 +1596,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,       E_TAG_FALSE )
 
 
 	def Epgevent_GetCurrent( self ) :
@@ -1775,6 +1776,9 @@ class ChannelListWindow( BaseWindow ) :
 				pass
 			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID :
 				pass
+
+			#update cas info
+			UpdateCasInfo( self, self.mNavChannel )
 				
 			"""
 			#is cas?

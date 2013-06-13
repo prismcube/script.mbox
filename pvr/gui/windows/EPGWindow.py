@@ -160,7 +160,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
-		self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
+		#self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 		self.mFocusButton = self.getControl( BUTTON_ID_FOCUS_BUTTON )
@@ -696,11 +696,19 @@ class EPGWindow( BaseWindow ) :
 		selectedPos = 0
 
 		if self.mEPGMode == E_VIEW_GRID :
-			selectedPos = self.GridGetSelectedPosition( )		
+			selectedPos = self.GridGetSelectedPosition( )
+			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[selectedPos]
 		elif self.mEPGMode == E_VIEW_CHANNEL :
-			selectedPos = self.mCtrlList.getSelectedPosition( )		
+			selectedPos = self.mCtrlList.getSelectedPosition( )
+			channel = self.mSelectChannel
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[selectedPos]
+
+		if channel :
+			UpdateCasInfo( self, channel )
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
@@ -2586,13 +2594,13 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusRow = 0
 				self.mVisibleFocusCol = 0
 				self.mCtrlGridEPGInfo.setLabel( ' ' )
-
+		"""
 		#cas image
 		if channel.mIsCA :
 			self.mCtrlGridCas.setImage( 'IconCas.png' )
 		else :
 			self.mCtrlGridCas.setImage( '' )
-
+		"""
 		self.UpdateSelcetedPosition( )
 		
 		"""

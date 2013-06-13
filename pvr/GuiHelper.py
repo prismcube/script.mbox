@@ -68,34 +68,50 @@ def HasCasInfoByChannel( aChannel ) :
 	casInfo = []
 
 	if aChannel.mIsCA & ElisEnum.E_MEDIAGUARD :
-		casInfo.append( 'MediaGuard' )
+		casInfo.append( 'S' ) #SECA MediaGuard
 
 	if aChannel.mIsCA & ElisEnum.E_VIACCESS :
-		casInfo.append( 'Viaccess' )
+		casInfo.append( 'V' ) #Viaccess
 
 	if aChannel.mIsCA & ElisEnum.E_NAGRA :
-		casInfo.append( 'Nagra' )
+		casInfo.append( 'N' ) #Nagra
 
 	if aChannel.mIsCA & ElisEnum.E_IRDETO :
-		casInfo.append( 'Irdeto' )
+		casInfo.append( 'I' ) #Irdeto
 
 	if aChannel.mIsCA & ElisEnum.E_CONAX :
-		casInfo.append( 'Conax' )
+		casInfo.append( 'CO' ) #Conax
 
 	if aChannel.mIsCA & ElisEnum.E_CRYPTOWORKS :
-		casInfo.append( 'Cryptoworks' )
+		casInfo.append( 'CW' ) #Cryptoworks
 
 	if aChannel.mIsCA & ElisEnum.E_NDS :
-		casInfo.append( 'NDS' )
+		casInfo.append( 'ND' ) #NDS
 
 	if aChannel.mIsCA & ElisEnum.E_BETADIGITAL :
-		casInfo.append( 'Betadigital' )
+		casInfo.append( 'B' ) #Betadigital
 
-	if aChannel.mIsCA & ElisEnum.E_OTHERS :
-		casInfo.append( 'Others' )
+	if aChannel.mIsCA & ElisEnum.E_DRECRYPT :
+		casInfo.append( 'DC' ) #DRECript
+
+	if aChannel.mIsCA & ElisEnum.E_VERIMATRIX :
+		casInfo.append( 'VM' ) #Verimatrix
 
 	LOG_TRACE('----------mask[%s] CasInfo[%s]'% ( aChannel.mIsCA, casInfo ) )
 	return casInfo
+
+
+def UpdateCasInfo( self, aChannel ) :
+	from pvr.gui.GuiConfig import E_XML_PROPERTY_CAS
+
+	casInfo = HasCasInfoByChannel( aChannel )
+	if casInfo :
+		self.setProperty( E_XML_PROPERTY_CAS, 'True' )
+		for casName in casInfo :
+			aPropertyID = 'iCas' + casName
+			self.setProperty( aPropertyID, casName )
+	else :
+		self.setProperty( E_XML_PROPERTY_CAS, 'False' )
 
 
 def HasEPGComponent( aEPG, aFlag ) :

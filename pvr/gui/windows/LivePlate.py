@@ -128,8 +128,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mLoopCount = 0
 		self.mShowOpenWindow = None
 		self.mIsShowDialog = False
-		self.mEnableCasInfo = False
-		self.mCasInfoThread = None
+		#self.mEnableCasInfo = False
+		#self.mCasInfoThread = None
 		self.mFirstTune = 0
 
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
@@ -762,7 +762,7 @@ class LivePlate( LivePlateWindow ) :
 				#lock,cas
 				if ch.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-
+				"""
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_TRUE )
 					casInfo = HasCasInfoByChannel( ch )
@@ -785,6 +785,9 @@ class LivePlate( LivePlateWindow ) :
 
 						else :
 							self.UpdatePropertyGUI( 'iCasInfo', '' )
+				"""
+				if ch.mIsCA :
+					UpdateCasInfo( self, ch )
 
 				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
 				if mTPnum == 0 :
@@ -829,7 +832,7 @@ class LivePlate( LivePlateWindow ) :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,HasEPGComponent( aEpg, ElisEnum.E_HasDolbyDigital ) )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       HasEPGComponent( aEpg, ElisEnum.E_HasHDVideo ) )
 
-
+	"""
 	@RunThread
 	def ShowCasInfoThread( self, aCasInfo ) :
 		while self.mEnableCasInfo :
@@ -846,7 +849,7 @@ class LivePlate( LivePlateWindow ) :
 			time.sleep( 0.1 )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
 		self.mCasInfoThread = None
-
+	"""
 
 	@RunThread
 	def EPGProgressThread( self ):
@@ -931,11 +934,12 @@ class LivePlate( LivePlateWindow ) :
 		if E_USE_CHANNEL_LOGO :
 			self.UpdatePropertyGUI( 'iChannelLogoBack', chLogoB )
 			#self.UpdatePropertyGUI( 'iChannelLogo', '' )
+		"""
 		if self.mCasInfoThread :
 			self.mEnableCasInfo = False
 			self.mCasInfoThread.join( )
 		self.mEnableCasInfo = False
-
+		"""
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
@@ -1464,12 +1468,12 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
-
+		"""
 		if self.mCasInfoThread :
 			self.mEnableCasInfo = False
 			self.mCasInfoThread.join( )
 		self.mEnableCasInfo = False
-
+		"""
 		self.StopBlinkingIconTimer( )
 		self.SetBlinkingProperty( 'None' )
 

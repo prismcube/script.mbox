@@ -6299,6 +6299,126 @@
 		</control>
 	</include>
 
+	<include name="CASInfo">
+		<control type="grouplist">
+			<posx>0</posx>
+			<posy>10</posy>
+			<width>350</width>
+			<height>30</height>
+			<itemgap>2</itemgap>
+			<visible>true</visible>
+			<orientation>horizontal</orientation>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D1.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasB),B)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A1.png</texture>
+				<visible>substring(Window.Property(iCasB),B) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D2.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasI),I)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D2.png</texture>
+				<visible>substring(Window.Property(iCasI),I) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D3.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasS),S)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A3.png</texture>
+				<visible>substring(Window.Property(iCasS),S) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D4.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasV),V)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A4.png</texture>
+				<visible>substring(Window.Property(iCasV),V) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D5.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasN),N)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A5.png</texture>
+				<visible>substring(Window.Property(iCasN),N) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D6.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasCW),CW)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A6.png</texture>
+				<visible>substring(Window.Property(iCasCW),CW) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D7.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasND),ND)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A7.png</texture>
+				<visible>substring(Window.Property(iCasND),ND) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D8.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasCO),CO)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A8.png</texture>
+				<visible>substring(Window.Property(iCasCO),CO) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D9.png</texture>
+				<colordiffuse>80FFFFFFFF</colordiffuse>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasDC),DC)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A9.png</texture>
+				<visible>substring(Window.Property(iCasDC),DC) + substring(Window.Property(iCas),true)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>D10.png</texture>
+				<visible>substring(Window.Property(iCas),false) | !substring(Window.Property(iCasVM),VM)</visible>
+			</control>
+			<control type="image">
+				<include>CASIconSize</include>
+				<texture>A10.png</texture>
+				<visible>substring(Window.Property(iCasVM),VM) + substring(Window.Property(iCas),true)</visible>
+			</control>
+		</control>
+	</include>
+
+	<include name="CASIconSize">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>22</width>
+		<height>15</height>
+	</include>
+
 	<include name="UseFakeButtonAnimation">
 		<animation condition="!Control.HasFocus(1000999)" type="Conditional" reversible="false">
 			<effect type="fade" start="0" end="100" time="300"/>

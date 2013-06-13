@@ -88,7 +88,7 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None
-		self.mEnableCasInfo = False
+		#self.mEnableCasInfo = False
 		self.mIsShowDialog = False
 		self.mSpeed = 0
 		self.mPMTInfo = self.mDataCache.GetCurrentPMTEventByPVR( )
@@ -311,7 +311,7 @@ class InfoPlate( LivePlateWindow ) :
 				#lock,cas
 				if rec.mLocked :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
-
+				"""
 				self.mEnableCasInfo = False
 				if rec.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
@@ -325,6 +325,9 @@ class InfoPlate( LivePlateWindow ) :
 
 					else :
 						self.UpdatePropertyGUI( 'iCasInfo', '' )
+				"""
+				if rec.mIsCA :
+					UpdateCasInfo( self, rec )
 
 				#record name
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy( rec.mRecordName ) )
@@ -350,7 +353,7 @@ class InfoPlate( LivePlateWindow ) :
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-
+	"""
 	@RunThread
 	def ShowCasInfoThread( self, aCasInfo ) :
 		while self.mEnableCasInfo :
@@ -366,7 +369,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			time.sleep( 0.5 )
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
-
+	"""
 
 	@RunThread
 	def EPGProgressThread( self ):
@@ -439,7 +442,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
 		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )
-		self.mEnableCasInfo = False
+		#self.mEnableCasInfo = False
 
 
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -705,7 +708,7 @@ class InfoPlate( LivePlateWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
-		self.mEnableCasInfo = False
+		#self.mEnableCasInfo = False
 
 		self.StopAutomaticHide( )
 		#WinMgr.GetInstance( ).CloseWindow( )
