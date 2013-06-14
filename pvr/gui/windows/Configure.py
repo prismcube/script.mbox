@@ -1401,6 +1401,8 @@ class Configure( SettingWindow ) :
 			self.mDataCache.Player_AVBlank( True )
 			if self.mUseUsbBackup :
 				self.MakeBackupScript( )
+				CreateDirectory( E_DEFAULT_BACKUP_PATH )
+				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
 			self.mCommander.Make_Dedicated_HDD( )
 
 
