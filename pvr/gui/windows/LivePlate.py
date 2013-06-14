@@ -269,9 +269,16 @@ class LivePlate( LivePlateWindow ) :
 			status = self.mDataCache.Player_GetStatus( ) 
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
+
+			if not CheckHdd( ) :
+				self.StopAutomaticHide( )
+				msg = MR_LANG( 'Installing and executing XBMC addons%s may not work properly without an internal HDD'% NEW_LINE )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
 				
-			self.SetMediaCenter( )
 			self.Close( )
+			self.SetMediaCenter( )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
