@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import os, threading, copy, stat
+import os, threading, copy, stat, re
 
 PROGRESS_SCAN		= 400
 BUTTON_CANCEL		= 300
@@ -18,6 +18,7 @@ E_RESULT_UPDATE_DONE     = 0
 E_RESULT_ERROR_FAIL      = -1
 E_RESULT_ERROR_CANCEL    = -2
 E_RESULT_ERROR_CHECKSUME = -3
+
 
 class DialogUpdateProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -96,7 +97,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mRunShellThread = None
 
 
-	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '' ) :
+	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '', aDefaultPer = 0 ) :
 		if aLimitTime < 1 :
 			return
 
@@ -106,7 +107,7 @@ class DialogUpdateProgress( BaseDialog ) :
 				self.DrawProgress( 0, MR_LANG( 'Timed out' ) )
 				break
 
-			percent = int( waitTime / aLimitTime * 100 )
+			percent = int( waitTime / aLimitTime * 100 ) + aDefaultPer
 			if percent > 100 :
 				percent = 100
 			self.DrawProgress( percent, aTitle )
@@ -141,10 +142,67 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def DoUpdateHandler( self ) :
-		if self.CheckFirmware( ) :
+		if self.DoPreviousAction( ) and self.CheckFirmware( ) :
 			self.DoCommandRunShell( )
 
 		self.Close( )
+
+
+	def DoPreviousAction( self ) :
+		ret = True
+		if not self.mPVSData :
+			self.mFinish = E_RESULT_ERROR_FAIL
+			return False
+
+		if not self.mPVSData.mActions :
+			LOG_TRACE( '--------- No Actions' )
+			return True
+
+		try :
+			actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )
+			LOG_TRACE( 'len[%s] actions[%s]'% ( len( actions ), actions ) )
+
+			if not actions or len( actions ) < 1 :
+				LOG_TRACE( '--------- No Actions' )
+				return True
+
+			desc = '%s'% MR_LANG( 'Previous in progress' )
+			outputs = '[*] Previous Actions%s'% NEW_LINE
+			cmdlen = len( actions )
+			count = 0
+			for cmd in actions :
+
+				LOG_TRACE( '----------action[%s]'% cmd )
+				if self.mStatusCancel :
+					self.mFinish = E_RESULT_ERROR_CANCEL
+					ret = False
+					break
+
+				count += 1.0
+				outputs += '%s%s'% ( cmd, NEW_LINE )
+				percent = int( ( count / cmdlen ) * 100 )
+
+				self.setProperty( 'ShellDescription', outputs )
+
+				self.mRunShellThread = True
+				thread = threading.Timer( 0.1, self.TimeoutProgress, [ 60, desc, outputs, percent ] )
+				thread.start( )
+				os.system( cmd )
+				self.DrawProgress( percent, desc )
+				LOG_TRACE( '---------per[%s] count[%s]'% ( percent, count ) )
+
+				self.mRunShellThread = False
+				if thread :
+					thread.join( )
+
+				time.sleep( 1 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			self.mFinish = E_RESULT_ERROR_FAIL
+			ret = False
+
+		return ret
 
 
 	def CheckFirmware( self ) :
