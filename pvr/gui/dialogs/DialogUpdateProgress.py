@@ -45,7 +45,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mCtrlTextbox       = self.getControl( TEXTBOX )
 
 		self.mCtrlLabelTitle.setLabel( self.mTitle )
-		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready' ) + ' - 0 %' )
+		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready to update' ) )
 
 		thread = threading.Timer( 1, self.DoUpdateHandler )
 		thread.start( )
@@ -57,9 +57,9 @@ class DialogUpdateProgress( BaseDialog ) :
 			return
 
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : cancelling' )
 			if not self.mShowBlink :
-				label = MR_LANG( 'Wait' )
+				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
 			return
 
@@ -69,9 +69,9 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : canceling' )
+			LOG_TRACE( '------------blocking key : cancelling' )
 			if not self.mShowBlink :
-				label = MR_LANG( 'Wait' )
+				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
 			return
 
@@ -101,7 +101,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		waitTime = 1.0
 		while self.mRunShellThread :
 			if waitTime > aLimitTime :
-				self.DrawProgress( 0, MR_LANG( 'timed out' ) )
+				self.DrawProgress( 0, MR_LANG( 'Timed out' ) )
 				break
 
 			percent = int( waitTime / aLimitTime * 100 )
@@ -158,8 +158,9 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mStatusCancel = True
 
 		self.mRunShellThread = True
-		desc = '%s%s'% ( MR_LANG( 'Checking files checksum' ), ING )
-		thread = threading.Timer( 0.1, self.TimeoutProgress, [ 30, desc , desc ] )
+		desc1 = '%s'% MR_LANG( 'Verification in progress' )
+		desc2 = '[*] Checking files checksum'
+		thread = threading.Timer( 0.1, self.TimeoutProgress, [ 30, desc1 , desc2 ] )
 		thread.start( )
 
 		ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
@@ -216,18 +217,18 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 		percent = 100
-		statusLabel = MR_LANG( 'Complete' )
+		statusLabel = MR_LANG( 'Completed' )
 		if self.mReturnShell < E_RESULT_UPDATE_DONE :
 			percent = 0
 			if self.mReturnShell == E_RESULT_ERROR_FAIL :
 				LOG_TRACE( '--------shell fail' )
-				statusLabel = MR_LANG( 'Fail' )
+				statusLabel = MR_LANG( 'Failed' )
 			elif self.mReturnShell == E_RESULT_ERROR_CANCEL :
 				LOG_TRACE( '--------shell cancel' )
-				statusLabel = MR_LANG( 'Cancel' )
+				statusLabel = MR_LANG( 'Aborted' )
 			else :
 				LOG_TRACE( '--------unknown fail' )
-				statusLabel = MR_LANG( 'Fail' )
+				statusLabel = MR_LANG( 'Failed' )
 
 			self.mRunShell = False
 
@@ -309,7 +310,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def UpdateStepShellProgress( self ) :
-		title = MR_LANG( 'Waiting' )
+		title = MR_LANG( 'Installation in progress' )
 
 		curr = 0.0
 		while self.mRunShell :
@@ -349,7 +350,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mReturnShell = E_RESULT_ERROR_CANCEL
 		self.mRunShell = False
 
-		self.TimeoutProgress( 60, MR_LANG( 'Canceling' ) )
+		self.TimeoutProgress( 60, MR_LANG( 'Aborting' ) )
 		LOG_TRACE( '--------------abort(shell) runThread[%s]'% self.mRunShellThread )
 
 		self.mRunShellThread = None
