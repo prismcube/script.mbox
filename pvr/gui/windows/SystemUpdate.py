@@ -794,6 +794,8 @@ class SystemUpdate( SettingWindow ) :
 			"""
 
 			try :
+				backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+				RemoveDirectory( backupScript )
 				RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
@@ -885,6 +887,8 @@ class SystemUpdate( SettingWindow ) :
 				#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
 				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+					backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+					RemoveDirectory( backupScript )
 					RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
@@ -1710,6 +1714,8 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('2. network settings ------' )
 		try :
+			backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+			RemoveDirectory( backupScript )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
