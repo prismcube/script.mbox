@@ -490,6 +490,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
+			pass
 		"""
 
 

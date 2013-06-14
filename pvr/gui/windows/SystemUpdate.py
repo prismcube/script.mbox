@@ -27,13 +27,15 @@ E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-#E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
-#E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
-#E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
-E_DEFAULT_URL_PVS         = 'http://192.168.103.120/update.html?product=ruby'
-E_DEFAULT_URL_REQUEST_FW  = 'http://192.168.103.120/download.html?key='
-E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://192.168.103.120/download.html?unzipfiles='
-E_DEFAULT_URL_REQUEST_SHELL = 'http://192.168.103.120/script/'
+E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
+E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
+E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
+E_DEFAULT_URL_REQUEST_SHELL = 'http://update.prismcube.com/script/'
+
+#E_DEFAULT_URL_PVS         = 'http://192.168.103.120/update.html?product=ruby'
+#E_DEFAULT_URL_REQUEST_FW  = 'http://192.168.103.120/download.html?key='
+#E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://192.168.103.120/download.html?unzipfiles='
+#E_DEFAULT_URL_REQUEST_SHELL = 'http://192.168.103.120/script/'
 
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
@@ -1221,7 +1223,6 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		#4. run shell
-		scriptFile = '%s/%s'% ( unpackPath, self.mPVSData.mShellScript.mScriptFileName )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
 		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData )
 		dialog.doModal( )
