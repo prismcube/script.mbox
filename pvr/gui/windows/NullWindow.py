@@ -438,6 +438,25 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			from pvr.gui.windows.SystemUpdate import SCRIPTClass, PVSClass
+			iPVSData = PVSClass( )
+			iPVSData.mFileName = 'update_ruby_1.0.0.rc2_Update_Test.zip'
+			iPVSData.mMd5 = 'a62064abd41c2a59c4703cd174a463de'
+			iPVSData.mSize = 189322973
+			iPVSData.mShellScript.mScriptFileName = 'updater7.sh'
+			basedir = '/mnt/hdd0/program/download'
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+			dialog.SetDialogProperty( MR_LANG( 'System Update' ), basedir, iPVSData )
+			dialog.doModal( )
+
+			shell = dialog.GetResult( )
+			if shell == 0 :
+				InitFlash( )
+			LOG_TRACE( '--------------result[%s]'% shell )
+
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -482,6 +501,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
+			pass
 		"""
 
 
