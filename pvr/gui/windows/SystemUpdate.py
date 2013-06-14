@@ -1270,7 +1270,7 @@ class SystemUpdate( SettingWindow ) :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
 			button2Label = MR_LANG( 'Update now' )
-			button2Desc  = MR_LANG( 'Downlaod complete. Press OK to start firmware update' )
+			button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 			"""
 			button2Label = MR_LANG( 'Copy to HDD' )
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
