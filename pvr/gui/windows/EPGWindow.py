@@ -234,7 +234,6 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		self.GetFocusId()
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -296,10 +295,13 @@ class EPGWindow( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )			
 	 			dialog.doModal( )
 				return
-		
+
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
+			focusId = self.GetFocusId( )
+			if focusId  == SCROLL_ID_COMMON_EPG or focusId == SCROLL_ID_BIG_EPG :
+				return
 			contextAction = self.ShowContextMenu( )
 
 			if contextAction == CONTEXT_SHOW_ALL_TIMERS or contextAction == CONTEXT_SEARCH :
