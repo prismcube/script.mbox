@@ -2,6 +2,7 @@ from pvr.gui.WindowImport import *
 import time
 
 E_CONTROL_ID_LIST = 3850
+E_CONTROL_ID_SCROLL = 3851
 
 DIALOG_BUTTON_CLOSE_ID = 3800
 DIALOG_HEADER_LABEL_ID = 3801
@@ -82,6 +83,9 @@ class DialogBookmark( BaseDialog ) :
 			self.Close( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
+			focusId = self.GetFocusId( )
+			if focusId == E_CONTROL_ID_SCROLL :
+				return
 			self.ShowContextMenu( )
 
 
