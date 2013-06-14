@@ -1776,19 +1776,23 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('4. preprocess.sh ------' )
 		preprocessFile = '%s/preprocess.sh'% E_DEFAULT_BACKUP_PATH
-		try :
-			fd = open( preprocessFile, 'w' )
 
-			if fd :
-				if self.mPVSData and self.mPVSData.mActions :
-					fd.writelines( '#!/bin/sh\n' )
-					fd.writelines( '%s\n'% self.mPVSData.mActions )
+		if self.mPVSData and self.mPVSData.mActions :
+			try :
+				actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )
+				LOG_TRACE( 'len[%s] actions[%s]'% ( len( actions ), actions ) )
+				if actions and len( actions ) > 0 :
+					fd = open( preprocessFile, 'w' )
+					if fd :
+						fd.writelines( '#!/bin/sh\n' )
+						for cmd in actions :
+							fd.writelines( '%s\n'% cmd )
 
-				fd.close( )
-				os.chmod( preprocessFile, 0755 )
+						fd.close( )
+						os.chmod( preprocessFile, 0755 )
 
-		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
 
 
 		LOG_TRACE('5. make run script ------' )
