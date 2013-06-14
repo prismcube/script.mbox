@@ -53,6 +53,8 @@ MININUM_KEYWORD_SIZE			= 3
 E_USE_FIXED_INTERVAL			= False
 E_SEVEN_DAYS_EPG_TIME 			= 24 * 3600 * 7
 
+E_GRID_MAX_CACHE_SIZE			= 100
+
 E_GRID_HALF_HOUR				= 30 * 60
 E_GRID_MAX_TIMELINE_COUNT		= 8
 E_GRID_MAX_ROW_COUNT			= 8
@@ -566,6 +568,11 @@ class EPGWindow( BaseWindow ) :
 			channelCount = len( self.mChannelList )
 		else :
 			LOG_WARN( 'no channel')
+
+		#LOG_TRACE( 'self.mGridEPGCache size=%d' %len( self.mGridEPGCache ) )
+
+		if len( self.mGridEPGCache ) > E_GRID_MAX_CACHE_SIZE :
+			self.mGridEPGCache = {}
 
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			#DrawChannel
@@ -2213,10 +2220,10 @@ class EPGWindow( BaseWindow ) :
 	def UpdateAllEPGList( self ) :
 		self.mLock.acquire( )
 		self.Flush( )
+		self.mGridEPGCache = {}		
 		self.mLock.release( )
 	
 		if self.mEPGMode == E_VIEW_GRID :
-			self.mGridEPGCache = {}
 			self.UpdateGridChannelList( )
 			normalize = int( self.mDataCache.Datetime_GetGMTTime( ) / E_GRID_HALF_HOUR )
 			self.mShowingGMTTime = normalize * E_GRID_HALF_HOUR
@@ -2380,10 +2387,10 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset -= self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 				self.mGridFocusTime = 0
+				self.mGridEPGCache = {}
 				self.mLock.release( )				
 				self.SetTimeline( )
 				self.Flush( )
-				self.mGridEPGCache = {}				
 				self.Load( )
 				self.UpdateList( )
 				self.GridSetFocus( )
@@ -2395,10 +2402,10 @@ class EPGWindow( BaseWindow ) :
 		self.mLock.acquire( )
 		self.mVisibleFocusCol = 0
 		self.mShowingOffset = 0
+		self.mGridEPGCache = {}
 		self.mLock.release( )
 		self.SetTimeline( )
 		self.Flush( )
-		self.mGridEPGCache = {}		
 		self.Load( )
 		self.UpdateList( )
 		self.GridSetFocus( )
