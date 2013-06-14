@@ -1147,7 +1147,7 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE #Your system will reboot in %s seconds...
+				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )

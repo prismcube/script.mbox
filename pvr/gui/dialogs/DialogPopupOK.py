@@ -124,9 +124,15 @@ class DialogPopupOK( BaseDialog ) :
 
 
 	def AutoClose( self ) :
+		self.mCtrlLabel2 = self.getControl( E_BODY_LABEL_2 )
 		for i in range( self.mAutoCloseTime * 5 ) :
 			if self.mClosed :
 				return
+
+			countdown = int( self.mAutoCloseTime - int( i / 5 ) )
+			label = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' ) % countdown, ING )
+			self.mCtrlLabel2.setLabel( label )
+
 			time.sleep( 0.2 )
 
 		try :
