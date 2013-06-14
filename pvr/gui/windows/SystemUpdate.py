@@ -604,7 +604,7 @@ class SystemUpdate( SettingWindow ) :
 				button2Enable = True
 
 				button2Label = MR_LANG( 'Update now' )
-				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+				button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 				"""
 				button2Label = MR_LANG( 'Copy to HDD' )
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
@@ -949,8 +949,8 @@ class SystemUpdate( SettingWindow ) :
 				#showProgress  = E_TAG_FALSE
 				buttonFocus   = E_Input02
 				button2Enable = True
-				button2Label = MR_LANG( 'Install')
-				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+				button2Label = MR_LANG( 'Update now')
+				button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
@@ -1127,7 +1127,7 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Complete' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
@@ -1147,7 +1147,7 @@ class SystemUpdate( SettingWindow ) :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
+				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE #Your system will reboot in %s seconds...
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
@@ -1223,7 +1223,7 @@ class SystemUpdate( SettingWindow ) :
 		#4. run shell
 		scriptFile = '%s/%s'% ( unpackPath, self.mPVSData.mShellScript.mScriptFileName )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
-		dialog.SetDialogProperty( MR_LANG( 'UPDATE' ), unpackPath, self.mPVSData )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData )
 		dialog.doModal( )
 
 		shell = dialog.GetResult( )
@@ -1270,7 +1270,7 @@ class SystemUpdate( SettingWindow ) :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
 			button2Label = MR_LANG( 'Update now' )
-			button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+			button2Desc  = MR_LANG( 'Downlaod complete. Press OK to start firmware update' )
 			"""
 			button2Label = MR_LANG( 'Copy to HDD' )
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
