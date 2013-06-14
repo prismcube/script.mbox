@@ -53,6 +53,8 @@ MININUM_KEYWORD_SIZE			= 3
 E_USE_FIXED_INTERVAL			= False
 E_SEVEN_DAYS_EPG_TIME 			= 24 * 3600 * 7
 
+E_GRID_MAX_CACHE_SIZE			= 100
+
 E_GRID_HALF_HOUR				= 30 * 60
 E_GRID_MAX_TIMELINE_COUNT		= 8
 E_GRID_MAX_ROW_COUNT			= 8
@@ -157,7 +159,7 @@ class EPGWindow( BaseWindow ) :
 		self.mGridKeepFocus = False		
 		self.mVisibleTopIndex = 0
 		self.mShowingOffset = 0
-		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
+		self.mGridEPGCache = {}
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
 		#self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
@@ -569,6 +571,11 @@ class EPGWindow( BaseWindow ) :
 		else :
 			LOG_WARN( 'no channel')
 
+		#LOG_TRACE( 'self.mGridEPGCache size=%d' %len( self.mGridEPGCache ) )
+
+		if len( self.mGridEPGCache ) > E_GRID_MAX_CACHE_SIZE :
+			self.mGridEPGCache = {}
+
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			#DrawChannel
 			epgList = []
@@ -578,8 +585,12 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( 'GRID error offsetPosition=%d i=%d channelCount=%d' %( self.mVisibleTopIndex , i,channelCount ) )
 				break
 
+			if self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None ) :
+				continue
+
 			channel = self.mChannelList[ self.mVisibleTopIndex + i]
 			if channel :
+
 				epgList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid,  channel.mTsid,  channel.mOnid, gmtFrom, gmtUntil, 20 )
 			
 				if epgList == None or len ( epgList ) <= 0 or len ( epgList ) == 20 or epgList[0].mError != 0 :
@@ -610,7 +621,8 @@ class EPGWindow( BaseWindow ) :
 						epgList.append( epgEvent )
 						epgCount += 1
 				
-				self.mGridEPGList[i]=epgList
+				#self.mGridEPGList[i]=epgList
+				self.mGridEPGCache[ '%d' %( self.mVisibleTopIndex + i) ] = epgList
 
 				epgTotalCount += epgCount
 				
@@ -950,7 +962,8 @@ class EPGWindow( BaseWindow ) :
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
-			epgList = self.mGridEPGList[i]
+			#epgList = self.mGridEPGList[i]
+			epgList = self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None )			
 			offsetX = 0
 			offsetX2 = 0
 			if epgList :
@@ -2217,6 +2230,7 @@ class EPGWindow( BaseWindow ) :
 	def UpdateAllEPGList( self ) :
 		self.mLock.acquire( )
 		self.Flush( )
+		self.mGridEPGCache = {}		
 		self.mLock.release( )
 	
 		if self.mEPGMode == E_VIEW_GRID :
@@ -2383,6 +2397,7 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset -= self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 				self.mGridFocusTime = 0
+				self.mGridEPGCache = {}
 				self.mLock.release( )				
 				self.SetTimeline( )
 				self.Flush( )
@@ -2397,12 +2412,14 @@ class EPGWindow( BaseWindow ) :
 		self.mLock.acquire( )
 		self.mVisibleFocusCol = 0
 		self.mShowingOffset = 0
+		self.mGridEPGCache = {}
 		self.mLock.release( )
 		self.SetTimeline( )
 		self.Flush( )
 		self.Load( )
 		self.UpdateList( )
 		self.GridSetFocus( )
+
 
 	def GridControlRight( self ) :
 		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )					
@@ -2424,7 +2441,8 @@ class EPGWindow( BaseWindow ) :
 				self.mLock.release( )
 				LOG_TRACE( 'self.mShowingOffset=%d' %self.mShowingOffset )
 				self.SetTimeline( )
-				self.Flush( )				
+				self.Flush( )
+				self.mGridEPGCache = {}				
 				self.Load( )
 				self.UpdateList( )
 				self.GridSetFocus( )
