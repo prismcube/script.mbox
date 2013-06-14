@@ -321,6 +321,14 @@ class NullWindow( BaseWindow ) :
 
 				self.mDataCache.Player_Stop( )
 
+			if not CheckHdd( ) :
+				self.CloseSubTitle( )
+				msg = MR_LANG( 'Installing and executing XBMC addons%s may not work properly without an internal HDD' )% NEW_LINE
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+				self.CheckSubTitle( )
+
 			self.Close( )
 			self.SetMediaCenter( )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
@@ -482,6 +490,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
+			pass
 		"""
 
 

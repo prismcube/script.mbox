@@ -300,6 +300,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_SCROLLBAR_CHANNEL or self.mFocusId == E_CONTROL_ID_SCROLLBAR_SUBMENU :
+				return
 			self.ShowContextMenu( )
 
 
@@ -2617,7 +2620,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.DoContextAction( aMode, selectedAction, groupName )
 
 		self.mIsSave |= FLAG_MASK_ADD
-		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 
 	def ShowContextMenu( self ) :
