@@ -32,6 +32,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mStatusCancel      = False
 		self.mResultOutputs     = ''
 		self.mShowBlink         = False
+		self.mCheckFirmware     = False
 
 
 	def onInit( self ) :
@@ -92,6 +93,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mPVSData       = aPVSData
 		self.mFinish        = E_RESULT_UPDATE_DONE
 		self.mStatusCancel  = False
+		self.mRunShellThread = None
 
 
 	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '' ) :
@@ -99,7 +101,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			return
 
 		waitTime = 1.0
-		while self.mRunShellThread :
+		while self.mRunShellThread or self.mCheckFirmware :
 			if waitTime > aLimitTime :
 				self.DrawProgress( 0, MR_LANG( 'Timed out' ) )
 				break
@@ -149,28 +151,33 @@ class DialogUpdateProgress( BaseDialog ) :
 		tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
 		LOG_TRACE( '----------------file[%s]'% tempFile )
 		#self.mPVSData.printdebug( )
+		#LOG_TRACE( 'exist[%s] pvs[%s] size[%s %s]'% ( CheckDirectory( tempFile ), self.mPVSData, os.stat( tempFile )[stat.ST_SIZE], self.mPVSData.mSize ) )
 
 		if ( not CheckDirectory( tempFile ) ) or ( not self.mPVSData ) or \
 		   os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 			self.mFinish = E_RESULT_ERROR_CHECKSUME
 			return False
 
-		self.mStatusCancel = True
-
-		self.mRunShellThread = True
+		self.mCheckFirmware = True
 		desc1 = '%s'% MR_LANG( 'Verification in progress' )
 		desc2 = '[*] Checking files checksum'
 		thread = threading.Timer( 0.1, self.TimeoutProgress, [ 30, desc1 , desc2 ] )
 		thread.start( )
 
 		ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
-		self.mRunShellThread = False
+		self.mCheckFirmware = False
 
 		if thread :
 			thread.join ( )
 
+		if self.mStatusCancel :
+			ret = False
+
+		if ret :
+			self.DrawProgress( 100, desc1 )
+
 		time.sleep( 1 )
-		self.mStatusCancel = False
+
 
 		return ret
 
@@ -234,6 +241,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		self.DrawProgress( percent, statusLabel )
 		self.mFinish = self.mReturnShell
+		time.sleep( 1 )
 
 
 	def UpdateStepRunShell( self, aScript, aFirmware ) :
@@ -347,15 +355,22 @@ class DialogUpdateProgress( BaseDialog ) :
 		LOG_TRACE( '--------------abort(shell)' )
 		self.mStatusCancel = True
 		CreateFile( E_COMMAND_SHELL_CANCEL )
-		self.mReturnShell = E_RESULT_ERROR_CANCEL
-		self.mRunShell = False
+		self.mFinish        = E_RESULT_ERROR_CANCEL
+		self.mReturnShell   = E_RESULT_ERROR_CANCEL
+		self.mRunShell      = False
+
+		if self.mCheckFirmware :
+			self.mCheckFirmware = False
+			time.sleep( 1 )
+			self.mCheckFirmware = True
 
 		self.TimeoutProgress( 60, MR_LANG( 'Aborting' ) )
 		LOG_TRACE( '--------------abort(shell) runThread[%s]'% self.mRunShellThread )
 
 		self.mRunShellThread = None
+		self.mCheckFirmware = False
 
-		self.Close( )
+		#self.Close( )
 
 
 	@RunThread
