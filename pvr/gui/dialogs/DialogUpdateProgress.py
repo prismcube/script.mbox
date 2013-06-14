@@ -158,6 +158,9 @@ class DialogUpdateProgress( BaseDialog ) :
 			LOG_TRACE( '--------- No Actions' )
 			return True
 
+		desc = '%s'% MR_LANG( 'Previous in progress' )
+		outputs = '[*] Previous Actions%s'% NEW_LINE
+
 		try :
 			actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )
 			LOG_TRACE( 'len[%s] actions[%s]'% ( len( actions ), actions ) )
@@ -166,8 +169,6 @@ class DialogUpdateProgress( BaseDialog ) :
 				LOG_TRACE( '--------- No Actions' )
 				return True
 
-			desc = '%s'% MR_LANG( 'Previous in progress' )
-			outputs = '[*] Previous Actions%s'% NEW_LINE
 			cmdlen = len( actions )
 			count = 0
 			for cmd in actions :
@@ -183,12 +184,12 @@ class DialogUpdateProgress( BaseDialog ) :
 				percent = int( ( count / cmdlen ) * 100 )
 
 				self.setProperty( 'ShellDescription', outputs )
+				self.DrawProgress( percent, desc )
 
 				self.mRunShellThread = True
 				thread = threading.Timer( 0.1, self.TimeoutProgress, [ 60, desc, outputs, percent ] )
 				thread.start( )
 				os.system( cmd )
-				self.DrawProgress( percent, desc )
 				LOG_TRACE( '---------per[%s] count[%s]'% ( percent, count ) )
 
 				self.mRunShellThread = False
@@ -201,6 +202,23 @@ class DialogUpdateProgress( BaseDialog ) :
 			LOG_ERR( 'except[%s]'% e )
 			self.mFinish = E_RESULT_ERROR_FAIL
 			ret = False
+
+		percent = 100
+		statusLabel = desc
+		if self.mFinish < E_RESULT_UPDATE_DONE :
+			percent = 0
+			if self.mFinish == E_RESULT_ERROR_FAIL :
+				LOG_TRACE( '--------previous action fail' )
+				statusLabel = MR_LANG( 'Failed' )
+			elif self.mFinish == E_RESULT_ERROR_CANCEL :
+				LOG_TRACE( '--------previous action cancel' )
+				statusLabel = MR_LANG( 'Aborted' )
+			else :
+				LOG_TRACE( '--------previous action unknown fail' )
+				statusLabel = MR_LANG( 'Failed' )
+
+		self.DrawProgress( percent, statusLabel )
+		time.sleep( 1 )
 
 		return ret
 

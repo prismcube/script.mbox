@@ -31,12 +31,6 @@ E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
 E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
 E_DEFAULT_URL_REQUEST_SHELL = 'http://update.prismcube.com/script/'
-
-#E_DEFAULT_URL_PVS         = 'http://192.168.103.120/update.html?product=ruby'
-#E_DEFAULT_URL_REQUEST_FW  = 'http://192.168.103.120/download.html?key='
-#E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://192.168.103.120/download.html?unzipfiles='
-#E_DEFAULT_URL_REQUEST_SHELL = 'http://192.168.103.120/script/'
-
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
 E_CONTROL_ID_GROUP_PVS      = 9000 + E_SYSTEM_UPDATE_BASE_ID
