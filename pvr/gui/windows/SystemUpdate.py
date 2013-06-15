@@ -532,10 +532,10 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'Date' ), iPVS.mDate ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'Version' ), iPVS.mVersion ) )
 			lblSize = ''
-			if iPVS.mSize < 10000000 :
-				lblSize = '%s KB'% ( iPVS.mSize / 1000 )
+			if iPVS.mSize < 1024*1024 :
+				lblSize = '%s KB'% int( iPVS.mSize / 1024 )
 			else :
-				lblSize = '%s MB'% ( iPVS.mSize / 1000000 )
+				lblSize = '%s MB'% int( iPVS.mSize / (1024*1024) )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'Size' ), lblSize ) )
 			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'Description' ) )
