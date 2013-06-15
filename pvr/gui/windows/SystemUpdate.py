@@ -265,6 +265,12 @@ class SystemUpdate( SettingWindow ) :
 
 		elif groupId == E_Input03 :
 			LOG_TRACE( 'Import Channels from USB' )
+			if self.GetStatusFromFirmware( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+				dialog.doModal( )
+				return
+
 			self.ImportChannelsFromUSB( )
 
 		elif groupId == E_Input04 :
