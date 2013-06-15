@@ -222,10 +222,13 @@ class EditSatellite( SettingWindow ) :
 
 	def CheckConfiguredSatellite( self, aLongitude, aBand ) :
 		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		for satellite in configuredSatelliteList :
-			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
-				return False
-		return True
+		if configuredSatelliteList and configuredSatelliteList[0].mError == 0 :
+			for satellite in configuredSatelliteList :
+				if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
+					return False
+			return True
+		else :
+			return True
 
 
 	def GetEditedPosition( self, aLongitude, aBand ) :
