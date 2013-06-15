@@ -31,12 +31,6 @@ E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
 E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
 E_DEFAULT_URL_REQUEST_SHELL = 'http://update.prismcube.com/script/'
-
-#E_DEFAULT_URL_PVS         = 'http://192.168.103.120/update.html?product=ruby'
-#E_DEFAULT_URL_REQUEST_FW  = 'http://192.168.103.120/download.html?key='
-#E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://192.168.103.120/download.html?unzipfiles='
-#E_DEFAULT_URL_REQUEST_SHELL = 'http://192.168.103.120/script/'
-
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
 E_CONTROL_ID_GROUP_PVS      = 9000 + E_SYSTEM_UPDATE_BASE_ID
@@ -800,6 +794,8 @@ class SystemUpdate( SettingWindow ) :
 			"""
 
 			try :
+				backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+				RemoveDirectory( backupScript )
 				RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
@@ -891,6 +887,8 @@ class SystemUpdate( SettingWindow ) :
 				#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
 				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+					backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+					RemoveDirectory( backupScript )
 					RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
 
@@ -1716,6 +1714,8 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('2. network settings ------' )
 		try :
+			backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+			RemoveDirectory( backupScript )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
@@ -1782,19 +1782,23 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('4. preprocess.sh ------' )
 		preprocessFile = '%s/preprocess.sh'% E_DEFAULT_BACKUP_PATH
-		try :
-			fd = open( preprocessFile, 'w' )
 
-			if fd :
-				if self.mPVSData and self.mPVSData.mActions :
-					fd.writelines( '#!/bin/sh\n' )
-					fd.writelines( '%s\n'% self.mPVSData.mActions )
+		if self.mPVSData and self.mPVSData.mActions :
+			try :
+				actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )
+				LOG_TRACE( 'len[%s] actions[%s]'% ( len( actions ), actions ) )
+				if actions and len( actions ) > 0 :
+					fd = open( preprocessFile, 'w' )
+					if fd :
+						fd.writelines( '#!/bin/sh\n' )
+						for cmd in actions :
+							fd.writelines( '%s\n'% cmd )
 
-				fd.close( )
-				os.chmod( preprocessFile, 0755 )
+						fd.close( )
+						os.chmod( preprocessFile, 0755 )
 
-		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
 
 
 		LOG_TRACE('5. make run script ------' )

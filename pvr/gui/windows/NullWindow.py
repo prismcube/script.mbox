@@ -454,6 +454,25 @@ class NullWindow( BaseWindow ) :
 
 		"""
 		#test
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			from pvr.gui.windows.SystemUpdate import SCRIPTClass, PVSClass
+			iPVSData = PVSClass( )
+			iPVSData.mFileName = 'update_ruby_1.0.0.rc2_Update_Test.zip'
+			iPVSData.mMd5 = 'a62064abd41c2a59c4703cd174a463de'
+			iPVSData.mSize = 189322973
+			iPVSData.mShellScript.mScriptFileName = 'updater7.sh'
+			iPVSData.mActions = 'sleep 1\necho Test1\necho Test2\nsleep 2\necho Action end'
+			basedir = '/mnt/hdd0/program/download'
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+			dialog.SetDialogProperty( MR_LANG( 'System Update' ), basedir, iPVSData )
+			dialog.doModal( )
+
+			shell = dialog.GetResult( )
+			if shell == 0 :
+				InitFlash( )
+			LOG_TRACE( '--------------result[%s]'% shell )
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			print 'youn check ation right'
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE1 )
