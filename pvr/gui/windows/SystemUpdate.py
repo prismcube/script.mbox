@@ -26,7 +26,7 @@ E_DOWNLOAD_PATH_FWURL     = '/mtmp/fwUrl'
 E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
-E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
+#E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
 E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
@@ -308,7 +308,7 @@ class SystemUpdate( SettingWindow ) :
 				return
 
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
-			#LOG_TRACE('-------------------------usbpath[%s] define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
+			LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
 		if self.mPVSData and self.mPVSData.mError == 0 :
 			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
@@ -1039,7 +1039,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 		elif aStep == E_UPDATE_STEP_CHECKUSB :
-			#if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
 			if not self.mDataCache.USB_GetMountPath( ) :
 				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_USB_NOT )
 				stepResult = False
@@ -1188,15 +1187,16 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
 
+		#0. check usb( no hdd or usb only )
 		if E_UPDATE_FIRMWARE_USE_USB :
 			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
 				return
 
-		#0. show download progress(percent by size)
+		# re-defines downpath : hdd or usb by self.LoadInit( )
+		#LOG_TRACE('----------------re_define downpath[%s]'% E_DEFAULT_PATH_DOWNLOAD )
 		unpackPath = E_DEFAULT_PATH_DOWNLOAD
-		if E_UPDATE_FIRMWARE_USE_USB :
-			unpackPath = self.mDataCache.USB_GetMountPath( )
 
+		#1. show download progress(percent by size)
 		cursize = 0
 		tempFile = '%s/%s'% ( unpackPath, self.mPVSData.mFileName )
 		if CheckDirectory( tempFile ) :
@@ -1206,27 +1206,16 @@ class SystemUpdate( SettingWindow ) :
 		percent = 1.0 * cursize / self.mPVSData.mSize * 100
 		self.SetLabelThread( percent )
 
-
-		# deprecate - check for DialogUpdateProcess
-		#1. check md5sum to download zipFile
+		# deprecate - instead of DialogUpdateProcess
+		#2. check md5sum to download zipFile
 		#if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
 		#	return
 
-		#2. check usb( no hdd or usb only )
-		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
-		if E_UPDATE_FIRMWARE_USE_USB :
-			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
-				return
-
-		unpackPath = E_DEFAULT_PATH_DOWNLOAD
-		if E_UPDATE_FIRMWARE_USE_USB :
-			unpackPath = self.mDataCache.USB_GetMountPath( )
-
-		#3. check shell
+		#2. check shell
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKSHELL ) :
 			return
 
-		#4. run shell
+		#3. run shell
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
 		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData )
 		dialog.doModal( )
@@ -1248,7 +1237,7 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( mTitle, errmsg )
 			return
 
-		#7. backup files and reboot
+		#4. backup files and reboot
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
 		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
