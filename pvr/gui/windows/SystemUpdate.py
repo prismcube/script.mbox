@@ -307,6 +307,12 @@ class SystemUpdate( SettingWindow ) :
 				self.UpdateStepPage( E_UPDATE_STEP_HOME )
 				return
 
+			if self.CheckUSBTypeNTFS( usbPath ) :
+				self.OpenAnimation( )
+				self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+				self.UpdateStepPage( E_UPDATE_STEP_HOME )
+				return
+
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
 			LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
@@ -356,6 +362,26 @@ class SystemUpdate( SettingWindow ) :
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
+
+
+	def CheckUSBTypeNTFS( self, aUsbPath ) :
+		isNtfs = False
+		if not aUsbPath :
+			aUsbPath = self.mDataCache.USB_GetMountPath( )
+
+		if aUsbPath :
+			token = aUsbPath.split( '/' )
+			token = token[len(token)-1]
+			LOG_TRACE( '------usbpath[%s] token[%s]'% ( aUsbPath, token ) )
+
+			isNtfs = CheckUSBTypeNTFS( aUsbPath, token )
+			LOG_TRACE( '-------ntfs[%s]'% isNtfs )
+
+		if isNtfs :
+			msg1 = MR_LANG( 'No support %s' ) % 'NTFS'
+			self.DialogPopup( E_STRING_ATTENTION, msg1 )
+
+		return isNtfs
 
 
 	def CheckEthernetType( self ) :
@@ -518,6 +544,8 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Not enough space on NAND flash' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
 			line = MR_LANG( 'Failed to write on NAND flash' )
+		else :
+			line = aMsg
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -1039,9 +1067,14 @@ class SystemUpdate( SettingWindow ) :
 
 
 		elif aStep == E_UPDATE_STEP_CHECKUSB :
-			if not self.mDataCache.USB_GetMountPath( ) :
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if not usbPath :
 				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_USB_NOT )
 				stepResult = False
+
+			if self.CheckUSBTypeNTFS( usbPath ) :
+				stepResult = False
+
 
 		elif aStep == E_UPDATE_STEP_UNPACKING :
 			if self.mPVSData == None or self.mPVSData.mError != 0 :
@@ -1324,6 +1357,9 @@ class SystemUpdate( SettingWindow ) :
 			if not usbPath :
 				LOG_TRACE( 'Not Exist USB' )
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+				return False
+
+			if self.CheckUSBTypeNTFS( usbPath ) :
 				return False
 
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath

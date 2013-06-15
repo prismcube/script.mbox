@@ -1040,6 +1040,28 @@ def GetImgPath( aUnzipList, aFindFile ) :
 	return imgFile
 
 
+def CheckUSBTypeNTFS( aMountPath, aToken ) :
+	isNTFS = False
+	cmd = "mount | awk '/%s/ {print $5}'" % aToken
+	ret = ''
+	if sys.version_info < ( 2, 7 ) :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		ret = p.stdout.read( ).strip( )
+		p.stdout.close( )
+
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		( ret, err ) = p.communicate( )
+		ret = ret.strip( )
+
+	if ret.strip( ) == 'vfat' :
+		isNTFS = False
+	else :
+		isNTFS = True
+
+	return isNTFS
+
+
 class GuiSkinPosition( object ) :
 	def __init__( self ) :
 		self.mLeft	 = 0
