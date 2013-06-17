@@ -21,6 +21,7 @@ class DialogPopupOK( BaseDialog ) :
 		self.mAutoCloseTime = 5
 		self.mClosed		= False
 		self.mButtonVisible = True
+		self.mDialogType    = 'popup'
 
 
 	def onInit( self ) :
@@ -91,9 +92,14 @@ class DialogPopupOK( BaseDialog ) :
 		self.mLabel1 = aLabel1
 		self.mLabel2 = aLabel2
 		self.mLabel3 = aLabel3
+		self.mDialogType = 'popup'
 		if self.mLabel2 == '' and self.mLabel3 == '' :
 			self.mLabel2 = self.mLabel1
 			self.mLabel1 = ''
+
+
+	def SetDialogType( self, aPopupType = 'popup' ) :
+		self.mDialogType = aPopupType
 
 
 	def SetButtonVisible( self, aVisible = True ) :
@@ -129,9 +135,10 @@ class DialogPopupOK( BaseDialog ) :
 			if self.mClosed :
 				return
 
-			countdown = int( self.mAutoCloseTime - int( i / 5 ) )
-			label = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' ) % countdown, ING )
-			self.mCtrlLabel2.setLabel( label )
+			if self.mDialogType == 'update' :
+				countdown = int( self.mAutoCloseTime - int( i / 5 ) )
+				label = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' ) % countdown, ING )
+				self.mCtrlLabel2.setLabel( label )
 
 			time.sleep( 0.2 )
 

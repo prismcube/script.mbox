@@ -1189,6 +1189,7 @@ class SystemUpdate( SettingWindow ) :
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
+				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
 
@@ -1385,7 +1386,10 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
-		os.chmod( mShell, 0755 )
+		try :
+			os.chmod( mShell, 0755 )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
 		isExist = GetURLpage( request, E_DOWNLOAD_PATH_FWURL )
@@ -1899,7 +1903,10 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
-		os.chmod( mShell, 0755 )
+		try :
+			os.chmod( mShell, 0755 )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
 		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
 			LOG_TRACE( '----------------verify fail, shell err' )
