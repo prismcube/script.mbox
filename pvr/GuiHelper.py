@@ -97,6 +97,9 @@ def HasCasInfoByChannel( aChannel ) :
 	if aChannel.mIsCA & ElisEnum.E_VERIMATRIX :
 		casInfo.append( 'VM' ) #Verimatrix
 
+	if aChannel.mIsCA & ElisEnum.E_OTHERS :
+		casInfo.append( 'O' ) #Others
+
 	LOG_TRACE('----------mask[%s] CasInfo[%s]'% ( aChannel.mIsCA, casInfo ) )
 	return casInfo
 
@@ -104,14 +107,26 @@ def HasCasInfoByChannel( aChannel ) :
 def UpdateCasInfo( self, aChannel ) :
 	from pvr.gui.GuiConfig import E_XML_PROPERTY_CAS
 
+	self.setProperty( 'iCasB', '' )
+	self.setProperty( 'iCasI', '' )
+	self.setProperty( 'iCasS', '' )
+	self.setProperty( 'iCasV', '' )
+	self.setProperty( 'iCasN', '' )
+	self.setProperty( 'iCasCW', '' )
+	self.setProperty( 'iCasND', '' )
+	self.setProperty( 'iCasCO', '' )
+	self.setProperty( 'iCasDC', '' )
+	self.setProperty( 'iCasVM', '' )
+	self.setProperty( 'iCasO', '' )
+
 	casInfo = HasCasInfoByChannel( aChannel )
+	self.setProperty( E_XML_PROPERTY_CAS, 'True' )
 	if casInfo :
-		self.setProperty( E_XML_PROPERTY_CAS, 'True' )
 		for casName in casInfo :
 			aPropertyID = 'iCas' + casName
 			self.setProperty( aPropertyID, casName )
 	else :
-		self.setProperty( E_XML_PROPERTY_CAS, 'False' )
+		return
 
 
 def HasEPGComponent( aEPG, aFlag ) :
