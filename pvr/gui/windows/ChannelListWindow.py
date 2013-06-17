@@ -1789,6 +1789,8 @@ class ChannelListWindow( BaseWindow ) :
 				#scrambled
 				#ToDO : pincode
 			"""
+		else :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_FALSE )
 
 		#component
 		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )

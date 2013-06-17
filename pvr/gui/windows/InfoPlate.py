@@ -326,8 +326,8 @@ class InfoPlate( LivePlateWindow ) :
 					else :
 						self.UpdatePropertyGUI( 'iCasInfo', '' )
 				"""
-				if rec.mIsCA :
-					UpdateCasInfo( self, rec )
+				#if rec.mIsCA :
+				UpdateCasInfo( self, rec )
 
 				#record name
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy( rec.mRecordName ) )

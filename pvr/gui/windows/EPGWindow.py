@@ -79,7 +79,7 @@ BUTTON_ID_BASE_GRID				= E_EPG_WINDOW_BASE_ID + 3001
 BUTTON_ID_SHOWING_DATE			= E_EPG_WINDOW_BASE_ID + 1010
 IMAGE_ID_TIME_SEPERATOR			= E_EPG_WINDOW_BASE_ID + 3500
 BUTTON_ID_FOCUS_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
-IMAGE_ID_GRID_CAS				= E_EPG_WINDOW_BASE_ID + 3502
+#IMAGE_ID_GRID_CAS				= E_EPG_WINDOW_BASE_ID + 3502
 LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3503
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
@@ -236,6 +236,7 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
+		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -723,6 +724,8 @@ class EPGWindow( BaseWindow ) :
 
 		if channel :
 			UpdateCasInfo( self, channel )
+		else :
+			self.setProperty( E_XML_PROPERTY_CAS, 'False' )
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 

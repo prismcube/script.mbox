@@ -793,8 +793,8 @@ class LivePlate( LivePlateWindow ) :
 						else :
 							self.UpdatePropertyGUI( 'iCasInfo', '' )
 				"""
-				if ch.mIsCA :
-					UpdateCasInfo( self, ch )
+				#if ch.mIsCA :
+				UpdateCasInfo( self, ch )
 
 				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
 				if mTPnum == 0 :
@@ -804,6 +804,8 @@ class LivePlate( LivePlateWindow ) :
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
+		else :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_FALSE )
 
 
 	def UpdateEpgGUI( self, aEpg ) :
@@ -926,7 +928,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       tvValue )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,    raValue )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,      E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TELETEXT, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
