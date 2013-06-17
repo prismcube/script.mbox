@@ -1054,10 +1054,10 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 		( ret, err ) = p.communicate( )
 		ret = ret.strip( )
 
-	if ret.strip( ) == 'vfat' :
-		isNTFS = False
-	else :
+	if ret.strip( ).lower( ) == 'tntfs' or ret.strip( ).lower( ) == 'ntfs' :
 		isNTFS = True
+	else :
+		isNTFS = False
 
 	return isNTFS
 
