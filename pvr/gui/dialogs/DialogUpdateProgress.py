@@ -52,10 +52,12 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mCtrlLabelTitle.setLabel( self.mTitle )
 		self.mCtrlLabelString.setLabel( MR_LANG( 'Ready to update' ) )
 
+		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 1 )
 		thread = threading.Timer( 1, self.DoUpdateHandler )
 		thread.start( )
 
 		LOG_TRACE( '-----usb mode[%s]'% self.mUSBmode )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -138,6 +140,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def Close( self ) :
 		#self.mEventBus.Deregister( self )
+		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 0 )
 		if self.mUSBmode and ( not self.mUSBThread ) or \
 		   self.mUSBmode and ( not self.mUSBAttached ) :
 			self.mFinish = E_RESULT_ERROR_FAIL
@@ -192,8 +195,8 @@ class DialogUpdateProgress( BaseDialog ) :
 			LOG_TRACE( '--------- No Actions' )
 			return True
 
-		desc = '%s'% MR_LANG( 'Previous in progress' )
-		outputs = '[*] Previous Actions%s'% NEW_LINE
+		desc = '%s'% MR_LANG( 'Prework in progress' )
+		outputs = '[*] Prework actions%s'% NEW_LINE
 
 		try :
 			actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )

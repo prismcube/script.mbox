@@ -628,7 +628,7 @@ class SystemUpdate( SettingWindow ) :
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 			#LOG_TRACE( '----------------downpath[%s]'% tempFile )
 
-			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
+			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion >= self.mPVSData.mVersion :
 				isInit = 2
 				buttonFocus  = E_Input01
 				button2Enable = False
@@ -798,7 +798,7 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSList and len( self.mPVSList ) > 0 :
 			if self.mCurrData and self.mCurrData.mError == 0 and \
 			   self.mPVSData and self.mPVSData.mError == 0 and \
-			   self.mCurrData.mVersion == self.mPVSData.mVersion :
+			   self.mCurrData.mVersion >= self.mPVSData.mVersion :
 				self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 		else :
@@ -1522,6 +1522,7 @@ class SystemUpdate( SettingWindow ) :
 		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
 		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
 			self.mIsDownload = True
+			os.system( 'sync' )
 			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
 
 		"""

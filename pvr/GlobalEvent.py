@@ -468,9 +468,9 @@ class GlobalEvent( object ) :
 			LOG_TRACE( 'Another dialog aready popuped!!' )
 			return
 
-		msg = MR_LANG( 'USB Attached' )
+		msg = MR_LANG( 'USB attached' )
 		if not aAttatch :
-			msg = MR_LANG( 'USB Detached' )
+			msg = MR_LANG( 'USB detached' )
 
 		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), msg )
