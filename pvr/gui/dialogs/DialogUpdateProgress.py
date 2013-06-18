@@ -172,7 +172,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
 			isExist = CheckDirectory( tempFile )
 			LOG_TRACE( '--------------usb mUSBAttached[%s] isExist[%s]'% ( self.mUSBAttached, isExist ) )
-			if not self.mUSBAttached or ( not isExist ) :
+			if ( not self.mUSBAttached ) or ( not isExist ) :
 				self.mUSBAttached = False
 				LOG_TRACE( '-------------------stop usb deteched' )
 				self.UpdateStepShellCancel( )
@@ -286,6 +286,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			self.DrawProgress( 100, desc1 )
 		else :
 			self.mFinish = E_RESULT_ERROR_FAIL
+			LOG_TRACE( '---------fail to md5sum' )
 
 		time.sleep( 1 )
 
@@ -328,6 +329,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		else :
 			self.mReturnShell = E_RESULT_ERROR_FAIL
 			self.mRunShell = False
+			LOG_TRACE( '------------shell script none[%s]'% scriptShell )
 
 
 		#last usb check
@@ -335,8 +337,9 @@ class DialogUpdateProgress( BaseDialog ) :
 			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 			tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
 			isExist = CheckDirectory( tempFile )
-			if self.mUSBAttached or ( not isExist ) :
+			if ( not self.mUSBAttached ) or ( not isExist ) :
 				self.mReturnShell = E_RESULT_ERROR_FAIL
+				LOG_TRACE( '---------------updat fail, usb deteched[%s] isExist[%s] file[%s]'% ( self.mUSBAttached, isExist, tempFile ) )
 
 
 		percent = 100
