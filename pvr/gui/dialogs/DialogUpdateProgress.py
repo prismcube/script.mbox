@@ -103,6 +103,8 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mRunShellThread = None
 		self.mUSBmode       = aUsbmode
 		self.mUSBThread     = None
+		if self.mUSBmode :
+			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 
 
 	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '', aDefaultPer = 0 ) :
@@ -171,7 +173,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 			tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
 			isExist = CheckDirectory( tempFile )
-			LOG_TRACE( '--------------usb mUSBAttached[%s] isExist[%s]'% ( self.mUSBAttached, isExist ) )
+			LOG_TRACE( '--------------mUSBAttached[%s] isExist[%s]'% ( self.mUSBAttached, isExist ) )
 			if ( not self.mUSBAttached ) or ( not isExist ) :
 				self.mUSBAttached = False
 				LOG_TRACE( '-------------------stop usb deteched' )
@@ -258,13 +260,15 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def CheckFirmware( self ) :
 		tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
+		isExist = CheckDirectory( tempFile )
 		LOG_TRACE( '----------------file[%s]'% tempFile )
 		#self.mPVSData.printdebug( )
-		#LOG_TRACE( 'exist[%s] pvs[%s] size[%s %s]'% ( CheckDirectory( tempFile ), self.mPVSData, os.stat( tempFile )[stat.ST_SIZE], self.mPVSData.mSize ) )
+		LOG_TRACE( 'exist[%s] pvs[%s] usbfile size[%s] xml size[%s] path[%s]'% ( isExist, self.mPVSData, os.stat( tempFile )[stat.ST_SIZE], self.mPVSData.mSize, tempFile ) )
 
-		if ( not CheckDirectory( tempFile ) ) or ( not self.mPVSData ) or \
+		if ( not isExist ) or ( not self.mPVSData ) or \
 		   os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 			self.mFinish = E_RESULT_ERROR_CHECKSUME
+			LOG_TRACE( '---------------check error, firmware' )
 			return False
 
 		self.mCheckFirmware = True
@@ -339,7 +343,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			isExist = CheckDirectory( tempFile )
 			if ( not self.mUSBAttached ) or ( not isExist ) :
 				self.mReturnShell = E_RESULT_ERROR_FAIL
-				LOG_TRACE( '---------------updat fail, usb deteched[%s] isExist[%s] file[%s]'% ( self.mUSBAttached, isExist, tempFile ) )
+				LOG_TRACE( '---------------update fail, usb deteched[%s] isExist[%s] file[%s]'% ( self.mUSBAttached, isExist, tempFile ) )
 
 
 		percent = 100
