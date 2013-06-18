@@ -79,6 +79,10 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+			if unpackPath :
+				self.mDataCache.SetUSBAttached( True )
+
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				return

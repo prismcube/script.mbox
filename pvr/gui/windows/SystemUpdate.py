@@ -156,6 +156,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mEnableLocalThread 	= False
 		self.mCheckEthernetThread 	= None
 		self.mStepPage              = E_UPDATE_STEP_HOME
+		self.mWorkingDownloader     = None
+
 
 	def onInit( self )  :
 		self.SetActivate( True )
@@ -177,6 +179,7 @@ class SystemUpdate( SettingWindow ) :
 		#self.mCurrData = None
 		self.mIndexLastVersion = 0
 		self.mShowProgressThread = None
+		self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Update' ) ) )
@@ -417,6 +420,13 @@ class SystemUpdate( SettingWindow ) :
 					else :
 						self.mLinkStatus = False
 						self.UpdateStepPage( E_UPDATE_STEP_ERROR_NETWORK )
+
+					if E_UPDATE_FIRMWARE_USE_USB :
+						self.mUSBAttached = self.mDataCache.GetUSBAttached( )
+						tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
+						isExist = CheckDirectory( tempFile )
+						if not self.mUSBAttached or ( not isExist ) :
+							self.mUSBAttached = False
 
 			time.sleep( 0.05 )
 			count = count + 1
@@ -1251,7 +1261,7 @@ class SystemUpdate( SettingWindow ) :
 
 		#3. run shell
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
-		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData, E_UPDATE_FIRMWARE_USE_USB )
 		dialog.doModal( )
 
 		shell = dialog.GetResult( )
@@ -1499,6 +1509,11 @@ class SystemUpdate( SettingWindow ) :
 			self.mStepPage = E_UPDATE_STEP_READY
 			if self.mWorkingDownloader :
 				self.mWorkingDownloader.abort( True )
+			self.mWorkingDownloader = None
+
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+			self.ShowDescription( E_Input02 )
 
 			LOG_TRACE( '------download stop' )
 			return
@@ -1543,9 +1558,14 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aFailNo == E_STRING_CHECK_CENCEL :
 			self.mIsCancel = True
+
+			self.OpenBusyDialog( )
 			if self.mGetDownloadThread :
 				self.mGetDownloadThread.join( )
+			time.sleep( 1 )
+			self.CloseBusyDialog( )
 			self.mGetDownloadThread = None
+
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
 			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
 			self.ShowDescription( E_Input02 )
@@ -1580,7 +1600,8 @@ class SystemUpdate( SettingWindow ) :
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, percent, self.mWorkingItem.mSize ) )
 
 			if self.mWorkingDownloader and self.mIsCancel or \
-			   self.mWorkingDownloader and self.mLinkStatus != True :
+			   self.mWorkingDownloader and self.mLinkStatus != True or \
+			   self.mWorkingDownloader and E_UPDATE_FIRMWARE_USE_USB and ( not self.mUSBAttached ) :
 				self.mWorkingDownloader.abort( True )
 				self.mCancel_temp = self.mIsCancel
 				self.mIsCancel = False

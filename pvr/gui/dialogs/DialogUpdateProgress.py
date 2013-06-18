@@ -34,6 +34,9 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mResultOutputs     = ''
 		self.mShowBlink         = False
 		self.mCheckFirmware     = False
+		self.mUSBAttached 		= False
+		self.mUSBmode           = False
+		self.mUSBThread         = False
 
 
 	def onInit( self ) :
@@ -52,6 +55,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		thread = threading.Timer( 1, self.DoUpdateHandler )
 		thread.start( )
 
+		LOG_TRACE( '-----usb mode[%s]'% self.mUSBmode )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -88,13 +92,15 @@ class DialogUpdateProgress( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aTitle, aBaseDir, aPVSData ) :
+	def SetDialogProperty( self, aTitle, aBaseDir, aPVSData, aUsbmode = False ) :
 		self.mBaseDirectory = aBaseDir
 		self.mTitle         = aTitle
 		self.mPVSData       = aPVSData
 		self.mFinish        = E_RESULT_UPDATE_DONE
 		self.mStatusCancel  = False
 		self.mRunShellThread = None
+		self.mUSBmode       = aUsbmode
+		self.mUSBThread     = None
 
 
 	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '', aDefaultPer = 0 ) :
@@ -132,6 +138,15 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def Close( self ) :
 		#self.mEventBus.Deregister( self )
+		if self.mUSBmode and ( not self.mUSBThread ) or \
+		   self.mUSBmode and ( not self.mUSBAttached ) :
+			self.mFinish = E_RESULT_ERROR_FAIL
+
+		if self.mUSBThread :
+			self.mUSBmode = False
+			self.mUSBThread.join( )
+			LOG_TRACE( '----------USBThread join end' )
+
 		self.mEnd = True
 		time.sleep( 1 )
 		self.CloseDialog( )
@@ -142,10 +157,29 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def DoUpdateHandler( self ) :
+		if self.mUSBmode :
+			self.mUSBThread = self.CheckUSBThread( )
+
 		if self.DoPreviousAction( ) and self.CheckFirmware( ) :
 			self.DoCommandRunShell( )
 
 		self.Close( )
+
+
+	@RunThread
+	def CheckUSBThread( self ) :
+		while self.mUSBmode :
+			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
+			tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
+			isExist = CheckDirectory( tempFile )
+			LOG_TRACE( '--------------usb mUSBAttached[%s] isExist[%s]'% ( self.mUSBAttached, isExist ) )
+			if not self.mUSBAttached or ( not isExist ) :
+				self.mUSBAttached = False
+				LOG_TRACE( '-------------------stop usb deteched' )
+				self.UpdateStepShellCancel( )
+				break
+
+			time.sleep( 0.5 )
 
 
 	def DoPreviousAction( self ) :
@@ -251,10 +285,12 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		if ret :
 			self.DrawProgress( 100, desc1 )
+		else :
+			self.mFinish = E_RESULT_ERROR_FAIL
 
 		time.sleep( 1 )
 
-
+		LOG_TRACE( '---------md5sum ret[%s]'% ret )
 		return ret
 
 
