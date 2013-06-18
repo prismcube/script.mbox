@@ -423,10 +423,6 @@ class SystemUpdate( SettingWindow ) :
 
 					if E_UPDATE_FIRMWARE_USE_USB :
 						self.mUSBAttached = self.mDataCache.GetUSBAttached( )
-						tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
-						isExist = CheckDirectory( tempFile )
-						if not self.mUSBAttached or ( not isExist ) :
-							self.mUSBAttached = False
 
 			time.sleep( 0.05 )
 			count = count + 1

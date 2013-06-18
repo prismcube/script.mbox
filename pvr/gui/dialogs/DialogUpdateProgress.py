@@ -141,10 +141,6 @@ class DialogUpdateProgress( BaseDialog ) :
 	def Close( self ) :
 		#self.mEventBus.Deregister( self )
 		ElisPropertyInt( 'Update Flag', self.mCommander ).SetProp( 0 )
-		if self.mUSBmode and ( not self.mUSBThread ) or \
-		   self.mUSBmode and ( not self.mUSBAttached ) :
-			self.mFinish = E_RESULT_ERROR_FAIL
-
 		if self.mUSBThread :
 			self.mUSBmode = False
 			self.mUSBThread.join( )
@@ -333,9 +329,14 @@ class DialogUpdateProgress( BaseDialog ) :
 			self.mReturnShell = E_RESULT_ERROR_FAIL
 			self.mRunShell = False
 
-		#while self.mRunShell :
-		#	time.sleep( 1 )
-		#	LOG_TRACE( '---------------wait shell[%s]'% self.mRunShell )
+
+		#last usb check
+		if self.mUSBmode :
+			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
+			tempFile = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mFileName )
+			isExist = CheckDirectory( tempFile )
+			if self.mUSBAttached or ( not isExist ) :
+				self.mReturnShell = E_RESULT_ERROR_FAIL
 
 
 		percent = 100
