@@ -332,6 +332,10 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def DoCommandRunShell( self ) :
+		LOG_TRACE( '----------------cancel[%s]'% self.mStatusCancel )
+		if self.mStatusCancel :
+			return
+
 		self.mReturnShell = E_RESULT_UPDATE_DONE
 		self.mRunShell = True
 		self.mRunShellThread = None
