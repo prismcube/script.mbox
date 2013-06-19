@@ -85,7 +85,6 @@
 				<!--pagecontrol>61</pagecontrol-->
 				<label>$INFO[Window.Property(ShellDescription)]</label>
 			</control>
-
 			<control type="progress" id="400">
 				<description>Progressbar</description>
 				<posx>30</posx>

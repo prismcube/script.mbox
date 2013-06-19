@@ -561,7 +561,7 @@ def CheckEthernet( aEthName ) :
 	return status
 
 
-def CheckMD5Sum( aSourceFile, aMd5 = None ) :
+def CheckMD5Sum( aSourceFile, aMd5 = None, aResult = False ) :
 	isVerify = False
 	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
 
@@ -579,13 +579,15 @@ def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 			( readMd5, err ) = p.communicate( )
 			readMd5 = readMd5.strip( )
 
-		
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if aMd5 :
 			if readMd5 == aMd5 :
 				isVerify = True
 		else :
 			isVerify = readMd5
+
+		if aResult :
+			isVerify = ( isVerify, readMd5, aMd5 )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )

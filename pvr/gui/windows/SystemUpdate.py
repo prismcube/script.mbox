@@ -1273,6 +1273,12 @@ class SystemUpdate( SettingWindow ) :
 
 			elif shell == E_RESULT_ERROR_CHECKSUME :
 				errmsg = E_STRING_CHECK_CORRUPT
+				self.mStepPage = E_UPDATE_STEP_READY
+				self.mIsDownload = False
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				self.ShowDescription( E_Input02 )
+				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
 
 			self.DialogPopup( mTitle, errmsg )
 			return
@@ -1923,6 +1929,7 @@ class SystemUpdate( SettingWindow ) :
 
 		try :
 			os.chmod( mShell, 0755 )
+			os.system( 'sync' )
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 

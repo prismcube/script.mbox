@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import os, threading, copy, stat, re
+import os, threading, copy, stat, re, types
 
 PROGRESS_SCAN		= 400
 BUTTON_CANCEL		= 300
@@ -37,6 +37,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mUSBAttached 		= False
 		self.mUSBmode           = False
 		self.mUSBThread         = False
+		self.mCheckSumError     = False
 
 
 	def onInit( self ) :
@@ -103,6 +104,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mRunShellThread = None
 		self.mUSBmode       = aUsbmode
 		self.mUSBThread     = None
+		self.mCheckSumError = False
 		if self.mUSBmode :
 			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 
@@ -163,6 +165,12 @@ class DialogUpdateProgress( BaseDialog ) :
 
 		if self.DoPreviousAction( ) and self.CheckFirmware( ) :
 			self.DoCommandRunShell( )
+
+		while not self.mStatusCancel and self.mCheckSumError :
+			time.sleep( 0.5 )
+
+		if self.mCheckSumError :
+			self.mFinish = E_RESULT_ERROR_CHECKSUME
 
 		self.Close( )
 
@@ -263,12 +271,17 @@ class DialogUpdateProgress( BaseDialog ) :
 		isExist = CheckDirectory( tempFile )
 		LOG_TRACE( '----------------file[%s]'% tempFile )
 		#self.mPVSData.printdebug( )
-		LOG_TRACE( 'exist[%s] pvs[%s] usbfile size[%s] xml size[%s] path[%s]'% ( isExist, self.mPVSData, os.stat( tempFile )[stat.ST_SIZE], self.mPVSData.mSize, tempFile ) )
+		#LOG_TRACE( 'exist[%s] pvs[%s] usbfile size[%s] xml size[%s] path[%s]'% ( isExist, self.mPVSData, os.stat( tempFile )[stat.ST_SIZE], self.mPVSData.mSize, tempFile ) )
 
 		if ( not isExist ) or ( not self.mPVSData ) or \
 		   os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
-			self.mFinish = E_RESULT_ERROR_CHECKSUME
+			self.mCheckSumError = True
 			LOG_TRACE( '---------------check error, firmware' )
+			desc = '[*] Error checking files'
+			outputs = '%s%s%s'% ( E_TAG_COLOR_RED, desc, E_TAG_COLOR_END )
+			self.setProperty( 'ShellDescription', outputs )
+			self.DrawProgress( 0, MR_LANG( 'Failed' ) )
+			RemoveDirectory( tempFile )
 			return False
 
 		self.mCheckFirmware = True
@@ -277,21 +290,41 @@ class DialogUpdateProgress( BaseDialog ) :
 		thread = threading.Timer( 0.1, self.TimeoutProgress, [ 30, desc1 , desc2 ] )
 		thread.start( )
 
-		ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
+		ret = False
+		retval = CheckMD5Sum( tempFile, self.mPVSData.mMd5, True )
 		self.mCheckFirmware = False
 
 		if thread :
 			thread.join ( )
 
-		if self.mStatusCancel :
-			ret = False
+		LOG_TRACE( '---------retval[%s]'% list( retval ) )
+		if type( retval ) == types.TupleType :
+			ret, readmd5, xmlmd5 = retval
+			LOG_TRACE( '--------------ret[%s] read[%s] xml[%s]'% ( ret, readmd5, xmlmd5 ) )
+			if not ret :
+				outputs = '%s%s%s%sFail%s%s'% ( desc2, NEW_LINE, NEW_LINE, E_TAG_COLOR_RED, E_TAG_COLOR_END, NEW_LINE )
+				outputs += 'object file : %s%s%s%s'% ( E_TAG_COLOR_RED, readmd5, E_TAG_COLOR_END, NEW_LINE )
+				outputs += 'source file : %s%s'% ( xmlmd5, NEW_LINE )
 
-		if ret :
-			self.DrawProgress( 100, desc1 )
+				self.setProperty( 'ShellDescription', outputs )
+				RemoveDirectory( tempFile )
+
 		else :
-			self.mFinish = E_RESULT_ERROR_FAIL
+			ret = retval
+
+		percent = 100
+		statusLabel = desc1
+		if not ret :
+			percent = 0
+			statusLabel = MR_LANG( 'Failed' )
+			ret = False
+			self.mCheckSumError = True
+			if self.mStatusCancel :
+				self.mFinish = E_RESULT_ERROR_CANCEL
+
 			LOG_TRACE( '---------fail to md5sum' )
 
+		self.DrawProgress( percent, statusLabel )
 		time.sleep( 1 )
 
 		LOG_TRACE( '---------md5sum ret[%s]'% ret )
