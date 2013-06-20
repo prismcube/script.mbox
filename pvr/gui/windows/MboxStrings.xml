@@ -122,6 +122,7 @@
 	<string id="1122">More</string>
 	<string id="1123">PLAYBACK</string>
 	<string id="1124">Audio</string>
+	<string id="1125">Edit</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
