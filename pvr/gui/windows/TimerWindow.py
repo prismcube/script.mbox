@@ -4,6 +4,7 @@ E_TIMER_WINDOW_BASE_ID			=  WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_
 
 BUTTON_ID_GO_PARENT				= E_TIMER_WINDOW_BASE_ID + 100
 LIST_ID_BIG_TIMER				= E_BASE_WINDOW_ID + 3610
+SCROLL_ID_BIG_TIMER			= E_BASE_WINDOW_ID + 3611
 
 LABEL_ID_TIME					= E_TIMER_WINDOW_BASE_ID + 300
 LABEL_ID_DATE					= E_TIMER_WINDOW_BASE_ID + 301
@@ -12,7 +13,6 @@ LABEL_ID_DURATION				= E_TIMER_WINDOW_BASE_ID + 302
 IMAMGE_ID_HD					= E_TIMER_WINDOW_BASE_ID + 310
 IMAMGE_ID_DOLBY					= E_TIMER_WINDOW_BASE_ID + 311
 IMAMGE_ID_SUBTITLE				= E_TIMER_WINDOW_BASE_ID + 312
-
 
 CONTEXT_GO_PARENT				= 1
 CONTEXT_EDIT_TIMER				= 2
@@ -106,6 +106,9 @@ class TimerWindow( BaseWindow ) :
 				self.GoParentTimer( )
 		
 		elif actionId == Action.ACTION_CONTEXT_MENU :
+			focusId = self.GetFocusId( )
+			if focusId == SCROLL_ID_BIG_TIMER :
+				return
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
@@ -326,7 +329,7 @@ class TimerWindow( BaseWindow ) :
 		dialog.doModal( )
 		
 		contextAction = dialog.GetSelectedAction( )
-		self.DoContextAction( contextAction ) 
+		self.DoContextAction( contextAction )
 
 
 	def DoContextAction( self, aContextAction ) :

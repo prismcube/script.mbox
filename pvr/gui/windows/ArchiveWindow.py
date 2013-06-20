@@ -19,6 +19,11 @@ LIST_ID_THUMBNAIL_RECORD			= E_BASE_WINDOW_ID + 3410
 LIST_ID_POSTERWRAP_RECORD			= E_BASE_WINDOW_ID + 3420
 LIST_ID_FANART_RECORD				= E_BASE_WINDOW_ID + 3430
 
+SCROLL_ID_COMMON_VIEW			= E_BASE_WINDOW_ID + 3401
+SCROLL_ID_THUMBNAIL_VIEW			= E_BASE_WINDOW_ID + 3411
+SCROLL_ID_POSTERWRAP_VIEW			= E_BASE_WINDOW_ID + 3421
+SCROLL_ID_FANART_VIEW			= E_BASE_WINDOW_ID + 3431
+
 
 E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID	=  E_ARCHIVE_WINDOW_BASE_ID + 9003
 
@@ -208,6 +213,8 @@ class ArchiveWindow( BaseWindow ) :
 					self.UpdateArchiveInfomation( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
+			if focusId == SCROLL_ID_COMMON_VIEW or focusId == SCROLL_ID_POSTERWRAP_VIEW or focusId == SCROLL_ID_FANART_VIEW or focusId == SCROLL_ID_THUMBNAIL_VIEW :
+				return
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_STOP :
@@ -840,7 +847,7 @@ class ArchiveWindow( BaseWindow ) :
 			dialog.doModal( )
 			
 			contextAction = dialog.GetSelectedAction( )
-			self.DoContextAction( contextAction ) 
+			self.DoContextAction( contextAction )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

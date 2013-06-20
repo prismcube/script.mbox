@@ -79,6 +79,10 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
+			unpackPath = self.mDataCache.USB_GetMountPath( )
+			if unpackPath :
+				self.mDataCache.SetUSBAttached( True )
+
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				return
@@ -321,6 +325,14 @@ class NullWindow( BaseWindow ) :
 
 				self.mDataCache.Player_Stop( )
 
+			if not CheckHdd( ) :
+				self.CloseSubTitle( )
+				msg = MR_LANG( 'Installing and executing XBMC addons%s may not work properly without an internal HDD' )% NEW_LINE
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+				self.CheckSubTitle( )
+
 			self.Close( )
 			self.SetMediaCenter( )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
@@ -446,6 +458,25 @@ class NullWindow( BaseWindow ) :
 
 		"""
 		#test
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			from pvr.gui.windows.SystemUpdate import SCRIPTClass, PVSClass
+			iPVSData = PVSClass( )
+			iPVSData.mFileName = 'update_ruby_1.0.0.rc2_Update_Test.zip'
+			iPVSData.mMd5 = 'a62064abd41c2a59c4703cd174a463de'
+			iPVSData.mSize = 189322973
+			iPVSData.mShellScript.mScriptFileName = 'updater7.sh'
+			iPVSData.mActions = 'sleep 1\necho Test1\necho Test2\nsleep 2\necho Action end'
+			basedir = '/mnt/hdd0/program/download'
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+			dialog.SetDialogProperty( MR_LANG( 'System Update' ), basedir, iPVSData )
+			dialog.doModal( )
+
+			shell = dialog.GetResult( )
+			if shell == 0 :
+				InitFlash( )
+			LOG_TRACE( '--------------result[%s]'% shell )
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			print 'youn check ation right'
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE1 )
@@ -482,6 +513,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
+			pass
 		"""
 
 

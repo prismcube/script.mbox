@@ -66,7 +66,15 @@ class DownloadFile(object):
             if not data:
                 fileObj.close()
                 break
-            fileObj.write(data)
+            #fileObj.write(data)
+            try:
+                fileObj.write(data)
+            except Exception, e :
+                print 'write error, except[%s]'% e
+                self.abort( True )
+                raise IOError
+                break
+
             self.cur += 8192
             if callBack:
                 callBack(cursize=self.cur)

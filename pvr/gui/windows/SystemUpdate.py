@@ -26,11 +26,11 @@ E_DOWNLOAD_PATH_FWURL     = '/mtmp/fwUrl'
 E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
-E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
+#E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
 E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
 E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
-
+E_DEFAULT_URL_REQUEST_SHELL = 'http://update.prismcube.com/script/'
 E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
 
 E_CONTROL_ID_GROUP_PVS      = 9000 + E_SYSTEM_UPDATE_BASE_ID
@@ -53,11 +53,18 @@ E_UPDATE_STEP_CHECKUSB    = 5
 E_UPDATE_STEP_UNPACKING   = 6
 E_UPDATE_STEP_VERIFY      = 7
 E_UPDATE_STEP_NAND_WRITE  = 8
-E_UPDATE_STEP_FINISH      = 9
-E_UPDATE_STEP_UPDATE_NOW  = 10
-E_UPDATE_STEP_ERROR_NETWORK = 11
+E_UPDATE_STEP_CHECKSHELL  = 9
+E_UPDATE_STEP_FINISH      = 10
+E_UPDATE_STEP_UPDATE_NOW  = 11
+E_UPDATE_STEP_ERROR_NETWORK = 12
+E_UPDATE_STEP_RUN_SHELL   = 20
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
+
+E_RESULT_UPDATE_DONE     = 0
+E_RESULT_ERROR_FAIL      = -1
+E_RESULT_ERROR_CANCEL    = -2
+E_RESULT_ERROR_CHECKSUME = -3
 
 E_STRING_ATTENTION     = 0
 E_STRING_ERROR         = 1
@@ -86,6 +93,12 @@ E_STRING_CHECK_CENCEL  = 21
 
 UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
 
+class SCRIPTClass( object ) :
+	def __init__( self ) :
+		self.mScriptKey				= None
+		self.mScriptFileName		= None
+		self.mScriptMd5				= None
+
 class PVSClass( object ) :
 	def __init__( self ) :
 		self.mKey					= None
@@ -102,13 +115,15 @@ class PVSClass( object ) :
 		self.mId					= None
 		self.mType					= None
 		self.mError					= -1
+		self.mShellScript			= SCRIPTClass
+		self.mShellScripts			= []
 
 	def printdebug( self ):
 		print 'Class  PVSClass'
 		print 'mKey= %s'% self.mKey
 		print 'mName= %s'%self.mName
 		print 'mFileName= %s'%self.mFileName
-		print 'mDate= %d'%self.mDate
+		print 'mDate= %s'%self.mDate
 		print 'mDescription= %s'%self.mDescription
 		print 'mActions= %s'%self.mActions
 		print 'mMd5= %s'%self.mMd5
@@ -119,6 +134,10 @@ class PVSClass( object ) :
 		print 'mId= %s'%self.mId
 		print 'mType= %s'%self.mType
 		print 'mError= %s'%self.mError
+		for item in self.mShellScripts :
+			print 'mScriptKey= %s'% item.mScriptKey
+			print 'mScriptFileName= %s'% item.mScriptFileName
+			print 'mScriptMd5= %s'% item.mScriptMd5
 
 
 class SystemUpdate( SettingWindow ) :
@@ -137,6 +156,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mEnableLocalThread 	= False
 		self.mCheckEthernetThread 	= None
 		self.mStepPage              = E_UPDATE_STEP_HOME
+		self.mWorkingDownloader     = None
+
 
 	def onInit( self )  :
 		self.SetActivate( True )
@@ -158,6 +179,7 @@ class SystemUpdate( SettingWindow ) :
 		#self.mCurrData = None
 		self.mIndexLastVersion = 0
 		self.mShowProgressThread = None
+		self.mUSBAttached = self.mDataCache.GetUSBAttached( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Update' ) ) )
@@ -184,6 +206,7 @@ class SystemUpdate( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepPage == E_UPDATE_STEP_HOME :
 				self.Close( )
+
 			else :
 				self.OpenAnimation( )
 				self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
@@ -217,6 +240,7 @@ class SystemUpdate( SettingWindow ) :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
+		LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
 			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
 			self.LoadInit( )
@@ -244,6 +268,12 @@ class SystemUpdate( SettingWindow ) :
 
 		elif groupId == E_Input03 :
 			LOG_TRACE( 'Import Channels from USB' )
+			if self.GetStatusFromFirmware( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+				dialog.doModal( )
+				return
+
 			self.ImportChannelsFromUSB( )
 
 		elif groupId == E_Input04 :
@@ -280,15 +310,22 @@ class SystemUpdate( SettingWindow ) :
 				self.UpdateStepPage( E_UPDATE_STEP_HOME )
 				return
 
+			if self.CheckUSBTypeNTFS( usbPath ) :
+				self.OpenAnimation( )
+				self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+				self.UpdateStepPage( E_UPDATE_STEP_HOME )
+				return
+
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
-			#LOG_TRACE('-------------------------usbpath[%s] define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
+			LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
 		if self.mPVSData and self.mPVSData.mError == 0 :
 			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 			if self.mGetDownloadThread :
-				self.InitPVSData( )
+				if self.InitPVSData( ) :
+					self.mStepPage = E_UPDATE_STEP_DOWNLOAD
 			else :
 				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
@@ -330,6 +367,26 @@ class SystemUpdate( SettingWindow ) :
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
+	def CheckUSBTypeNTFS( self, aUsbPath ) :
+		isNtfs = False
+		if not aUsbPath :
+			aUsbPath = self.mDataCache.USB_GetMountPath( )
+
+		if aUsbPath :
+			token = aUsbPath.split( '/' )
+			token = token[len(token)-1]
+			LOG_TRACE( '------usbpath[%s] token[%s]'% ( aUsbPath, token ) )
+
+			isNtfs = CheckUSBTypeNTFS( aUsbPath, token )
+			LOG_TRACE( '-------ntfs[%s]'% isNtfs )
+
+		if isNtfs :
+			msg1 = MR_LANG( 'No support %s' ) % 'NTFS'
+			self.DialogPopup( E_STRING_ATTENTION, msg1 )
+
+		return isNtfs
+
+
 	def CheckEthernetType( self ) :
 		if E_USE_OLD_NETWORK :
 			import pvr.IpParser as NetMgr
@@ -364,12 +421,15 @@ class SystemUpdate( SettingWindow ) :
 						self.mLinkStatus = False
 						self.UpdateStepPage( E_UPDATE_STEP_ERROR_NETWORK )
 
+					if E_UPDATE_FIRMWARE_USE_USB :
+						self.mUSBAttached = self.mDataCache.GetUSBAttached( )
+
 			time.sleep( 0.05 )
 			count = count + 1
 
 
 	@RunThread
-	def ShowProgressDialog( self, aLimitTime, aTitle, aEventName = None, aStep = None ) :
+	def ShowProgressDialog( self, aLimitTime, aTitle, aEventName = None, aStep = '' ) :
 		self.mShowProgressThread = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 		self.mShowProgressThread.SetDialogProperty( aLimitTime, aTitle, aEventName, aStep )
 		self.mShowProgressThread.doModal( )
@@ -385,14 +445,15 @@ class SystemUpdate( SettingWindow ) :
 			curWinID = xbmcgui.getCurrentWindowId( )
 			updateWinID = self.mWinId
 			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				curWinID = WinMgr.GetInstance( ).GetLastWindowID( )
+				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
 				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
 
- 			if curWinID != updateWinID :
- 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
- 				self.LoadInit( )
+			if curWinID != updateWinID :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
+				time.sleep( 1 )
+				self.LoadInit( )
 
-			elif curWinID == updateWinID and self.mStepPage == E_UPDATE_STEP_HOME :
+			elif curWinID == updateWinID and self.mStepPage <= E_UPDATE_STEP_READY :
 				self.LoadInit( )
 
 
@@ -489,6 +550,8 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Not enough space on NAND flash' )
 		elif aMsg == E_STRING_CHECK_NAND_WRITE :
 			line = MR_LANG( 'Failed to write on NAND flash' )
+		else :
+			line = aMsg
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -509,10 +572,10 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'Date' ), iPVS.mDate ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'Version' ), iPVS.mVersion ) )
 			lblSize = ''
-			if iPVS.mSize < 10000000 :
-				lblSize = '%s KB'% ( iPVS.mSize / 1000 )
+			if iPVS.mSize < 1024*1024 :
+				lblSize = '%s KB'% int( iPVS.mSize / 1024 )
 			else :
-				lblSize = '%s MB'% ( iPVS.mSize / 1000000 )
+				lblSize = '%s MB'% int( iPVS.mSize / (1024*1024) )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'Size' ), lblSize ) )
 			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'Description' ) )
@@ -561,7 +624,7 @@ class SystemUpdate( SettingWindow ) :
 			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 			#LOG_TRACE( '----------------downpath[%s]'% tempFile )
 
-			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
+			if not aForce and self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion >= self.mPVSData.mVersion :
 				isInit = 2
 				buttonFocus  = E_Input01
 				button2Enable = False
@@ -577,7 +640,7 @@ class SystemUpdate( SettingWindow ) :
 				button2Enable = True
 
 				button2Label = MR_LANG( 'Update now' )
-				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+				button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 				"""
 				button2Label = MR_LANG( 'Copy to HDD' )
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
@@ -638,13 +701,15 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 			CreateDirectory( '%s'% os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
-			isDownload = GetURLpage( E_DEFAULT_URL_PVS, E_DOWNLOAD_INFO_PVS )
-			#LOG_TRACE( '[pvs]%s'% isDownload )
+			requrl = '%s&version=%s'% ( E_DEFAULT_URL_PVS, self.mCurrData.mVersion )
+			isDownload = GetURLpage( requrl, E_DOWNLOAD_INFO_PVS )
+			LOG_TRACE( '-------req pvs url[%s] ret[%s]'% ( requrl, isDownload ) )
 
 			if isDownload :
 				mPVSList = []
-				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action']
-				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
+				tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description', 'action', 'script' ]
+				tagNames2= ['scriptkey', 'fileName', 'md5']
+				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames, 'software', tagNames2 )
 				if retList and len( retList ) > 0 :
 					for pvsData in retList :
 						iPVS = PVSClass( )
@@ -675,6 +740,18 @@ class SystemUpdate( SettingWindow ) :
 							iPVS.mActions = actions
 						#if pvsData[9] :
 						#	iPVS.mUnzipDir = pvsData[9]
+						if pvsData[9] :
+							for item in pvsData[9] :
+								iSCRIPT = SCRIPTClass( )
+								iSCRIPT.mScriptKey      = item[0]
+								iSCRIPT.mScriptFileName = item[1]
+								iSCRIPT.mScriptMd5      = item[2]
+								iPVS.mShellScripts.append( iSCRIPT )
+
+							if iPVS.mShellScripts and len( iPVS.mShellScripts ) > 0 :
+								iPVS.mShellScript.mScriptKey      = iPVS.mShellScripts[0].mScriptKey
+								iPVS.mShellScript.mScriptFileName = iPVS.mShellScripts[0].mScriptFileName
+								iPVS.mShellScript.mScriptMd5      = iPVS.mShellScripts[0].mScriptMd5
 
 						iPVS.mName = MR_LANG( 'Downloading firmware' )
 						iPVS.mType = E_TYPE_ADDONS
@@ -717,7 +794,7 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSList and len( self.mPVSList ) > 0 :
 			if self.mCurrData and self.mCurrData.mError == 0 and \
 			   self.mPVSData and self.mPVSData.mError == 0 and \
-			   self.mCurrData.mVersion == self.mPVSData.mVersion :
+			   self.mCurrData.mVersion >= self.mPVSData.mVersion :
 				self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 		else :
@@ -757,13 +834,13 @@ class SystemUpdate( SettingWindow ) :
 			"""
 
 			try :
+				backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+				RemoveDirectory( backupScript )
 				RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				unpackPath = E_DEFAULT_PATH_DOWNLOAD
 				if E_UPDATE_FIRMWARE_USE_USB :
 					unpackPath = self.mDataCache.USB_GetMountPath( )
-				else :
-					InitFlash( )
 
 				if unpackPath :
 					#RemoveDirectory( '%s/%s'% ( unpackPath, E_DEFAULT_DIR_UNZIP ) )
@@ -850,10 +927,10 @@ class SystemUpdate( SettingWindow ) :
 				#RemoveDirectory( '%s/%s'% ( unpackPath, self.mPVSData.mUnzipDir ) )
 				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
 				if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
+					backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+					RemoveDirectory( backupScript )
 					RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 					RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
-					if not E_UPDATE_FIRMWARE_USE_USB :
-						InitFlash( )
 
 				self.SetFocusControl( E_Input02 )
 
@@ -912,8 +989,8 @@ class SystemUpdate( SettingWindow ) :
 				#showProgress  = E_TAG_FALSE
 				buttonFocus   = E_Input02
 				button2Enable = True
-				button2Label = MR_LANG( 'Install')
-				button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+				button2Label = MR_LANG( 'Update now')
+				button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
@@ -955,6 +1032,22 @@ class SystemUpdate( SettingWindow ) :
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
+		elif aStep == E_UPDATE_STEP_CHECKSHELL :
+			self.mEnableLocalThread = True
+			self.mCheckEthernetThread = self.CheckEthernetThread( )
+
+			if self.mPVSData == None or self.mPVSData.mError != 0 :
+				stepResult = False
+			else :
+				stepResult = self.CheckShellDownload( self.mPVSData.mShellScript )
+
+			if self.mEnableLocalThread and self.mCheckEthernetThread :
+				self.mEnableLocalThread = False
+				self.mCheckEthernetThread.join( )
+				self.mCheckEthernetThread = None
+			self.mEnableLocalThread = False
+
+
 		elif aStep == E_UPDATE_STEP_CHECKFILE :
 			if self.mPVSData == None or self.mPVSData.mError != 0 :
 				return False
@@ -980,10 +1073,14 @@ class SystemUpdate( SettingWindow ) :
 
 
 		elif aStep == E_UPDATE_STEP_CHECKUSB :
-			#if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
-			if not self.mDataCache.USB_GetMountPath( ) :
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if not usbPath :
 				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_USB_NOT )
 				stepResult = False
+
+			if self.CheckUSBTypeNTFS( usbPath ) :
+				stepResult = False
+
 
 		elif aStep == E_UPDATE_STEP_UNPACKING :
 			if self.mPVSData == None or self.mPVSData.mError != 0 :
@@ -1074,7 +1171,7 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update now' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
 			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
 			self.ShowDescription( E_Input02 )
 
@@ -1083,25 +1180,29 @@ class SystemUpdate( SettingWindow ) :
 			line1 = MR_LANG( 'DO NOT POWER OFF%s DURING THE UPGRADING' )% NEW_LINE
 			if E_UPDATE_FIRMWARE_USE_USB :
 				line1 = MR_LANG( 'DO NOT REMOVE YOUR USB%s DURING THE UPGRADING' )% NEW_LINE
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
-			dialog.doModal( )
-			ret = dialog.IsOK( )
 
-			#ret = E_DIALOG_STATE_YES
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			#dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s'% line1 )
+			#dialog.doModal( )
+			#ret = dialog.IsOK( )
+			ret = E_DIALOG_STATE_YES
 			if ret == E_DIALOG_STATE_YES :
 				if E_UPDATE_FIRMWARE_USE_USB :
 					RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 					RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 
-				"""
-				msg1 = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
+				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
+				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
 				self.mDialogShowInit.doModal( )
-				"""
+
+				if E_UPDATE_TEST_DEBUG :
+					InitFlash( )
+					self.mStepPage = E_UPDATE_STEP_READY
+					return
 
 				self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
@@ -1126,15 +1227,16 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
 
-		#LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
-		#if not self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD ) :
-		#	return
-
-		#0. show download progress(percent by size)
-		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+		#0. check usb( no hdd or usb only )
 		if E_UPDATE_FIRMWARE_USE_USB :
-			unpackPath = self.mDataCache.USB_GetMountPath( )
+			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
+				return
 
+		# re-defines downpath : hdd or usb by self.LoadInit( )
+		#LOG_TRACE('----------------re_define downpath[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		unpackPath = E_DEFAULT_PATH_DOWNLOAD
+
+		#1. show download progress(percent by size)
 		cursize = 0
 		tempFile = '%s/%s'% ( unpackPath, self.mPVSData.mFileName )
 		if CheckDirectory( tempFile ) :
@@ -1144,44 +1246,44 @@ class SystemUpdate( SettingWindow ) :
 		percent = 1.0 * cursize / self.mPVSData.mSize * 100
 		self.SetLabelThread( percent )
 
+		# deprecate - instead of DialogUpdateProcess
+		#2. check md5sum to download zipFile
+		#if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
+		#	return
 
-		#1. check md5sum to download zipFile
-		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
+		#2. check shell
+		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKSHELL ) :
 			return
 
-		#2. check usb( no hdd or usb only )
-		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
-		if E_UPDATE_FIRMWARE_USE_USB :
-			if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
+		#3. run shell
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), unpackPath, self.mPVSData, E_UPDATE_FIRMWARE_USE_USB )
+		dialog.doModal( )
+
+		shell = dialog.GetResult( )
+		if shell < E_RESULT_UPDATE_DONE :
+			mTitle = E_STRING_ERROR
+			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if shell == E_RESULT_ERROR_FAIL :
+				errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			elif shell == E_RESULT_ERROR_CANCEL :
 				return
 
-		#tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
-		#if not self.VerifiedUnPack( tempFile, False ) :
+			elif shell == E_RESULT_ERROR_CHECKSUME :
+				errmsg = E_STRING_CHECK_CORRUPT
+				self.mStepPage = E_UPDATE_STEP_READY
+				self.mIsDownload = False
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				self.ShowDescription( E_Input02 )
+				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
 
-		#3. remove old_Version
-		unpackPath = E_DEFAULT_PATH_DOWNLOAD
-		if E_UPDATE_FIRMWARE_USE_USB :
-			unpackPath = self.mDataCache.USB_GetMountPath( )
-
-		if unpackPath :
-			request = '%s%s'% ( E_DEFAULT_URL_REQUEST_UNZIPFILES, self.mPVSData.mKey )
-			if GetURLpage( request, E_DOWNLOAD_PATH_UNZIPFILES ) :
-				RemoveUnzipFiles( unpackPath, False, E_DOWNLOAD_PATH_UNZIPFILES )
-
-		#4. unzip and copy
-		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
+			self.DialogPopup( mTitle, errmsg )
 			return
 
-		#5. check md5sum to unziped file
-		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
-			return
-
-		#6. flash write to nand flag ( from HDD mode )
-		if not E_UPDATE_FIRMWARE_USE_USB :
-			if not self.UpdateStepPage( E_UPDATE_STEP_NAND_WRITE ) :
-				return
-
-		#7. backup files and reboot
+		#4. backup files and reboot
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
 		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
@@ -1208,7 +1310,7 @@ class SystemUpdate( SettingWindow ) :
 			#	E_DEFAULT_DIR_UNZIP = '%s'% self.mPVSData.mUnzipDir
 
 			button2Label = MR_LANG( 'Update now' )
-			button2Desc  = MR_LANG( 'Complete download, Press OK is install' )
+			button2Desc  = MR_LANG( 'Download complete. Press OK to start firmware update' )
 			"""
 			button2Label = MR_LANG( 'Copy to HDD' )
 			button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to HDD' )
@@ -1217,7 +1319,14 @@ class SystemUpdate( SettingWindow ) :
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 			"""
 
-			if self.mWinId == xbmcgui.getCurrentWindowId( ) and \
+			curWinID = xbmcgui.getCurrentWindowId( )
+			updateWinID = self.mWinId
+			if E_SUPPORT_SINGLE_WINDOW_MODE :
+				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
+				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
+
+			LOG_TRACE('-------------------step[%s]'% self.mStepPage )
+			if curWinID == updateWinID and \
 			   self.mStepPage > E_UPDATE_STEP_READY and self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
 				self.SetControlLabel2String( E_Input02, button2Label )
 				self.EditDescription( E_Input02, button2Desc )
@@ -1263,6 +1372,9 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 				return False
 
+			if self.CheckUSBTypeNTFS( usbPath ) :
+				return False
+
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
 			usbSize = GetDeviceSize( usbPath )
 			if usbSize <= ( self.mPVSData.mSize + self.mPVSData.mUnpackSize ) :
@@ -1275,6 +1387,22 @@ class SystemUpdate( SettingWindow ) :
 
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
+		#shellscript download
+		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVS.mShellScript.mScriptFileName )
+		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVS.mShellScript.mScriptFileName )
+		isExist = GetURLpage( request, mShell )
+		LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
+
+		if isExist == False :
+			LOG_TRACE( '----------------download fail, shell none' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
+			return False
+
+		try :
+			os.chmod( mShell, 0755 )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
 		isExist = GetURLpage( request, E_DOWNLOAD_PATH_FWURL )
 		#LOG_TRACE('-------------req fwUrl[%s] ret[%s]'% ( request, isExist ) )
@@ -1383,6 +1511,11 @@ class SystemUpdate( SettingWindow ) :
 			self.mStepPage = E_UPDATE_STEP_READY
 			if self.mWorkingDownloader :
 				self.mWorkingDownloader.abort( True )
+			self.mWorkingDownloader = None
+
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+			self.ShowDescription( E_Input02 )
 
 			LOG_TRACE( '------download stop' )
 			return
@@ -1391,6 +1524,7 @@ class SystemUpdate( SettingWindow ) :
 		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
 		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
 			self.mIsDownload = True
+			os.system( 'sync' )
 			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
 
 		"""
@@ -1427,9 +1561,14 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aFailNo == E_STRING_CHECK_CENCEL :
 			self.mIsCancel = True
+
+			self.OpenBusyDialog( )
 			if self.mGetDownloadThread :
 				self.mGetDownloadThread.join( )
+			time.sleep( 1 )
+			self.CloseBusyDialog( )
 			self.mGetDownloadThread = None
+
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
 			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
 			self.ShowDescription( E_Input02 )
@@ -1464,7 +1603,8 @@ class SystemUpdate( SettingWindow ) :
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, percent, self.mWorkingItem.mSize ) )
 
 			if self.mWorkingDownloader and self.mIsCancel or \
-			   self.mWorkingDownloader and self.mLinkStatus != True :
+			   self.mWorkingDownloader and self.mLinkStatus != True or \
+			   self.mWorkingDownloader and E_UPDATE_FIRMWARE_USE_USB and ( not self.mUSBAttached ) :
 				self.mWorkingDownloader.abort( True )
 				self.mCancel_temp = self.mIsCancel
 				self.mIsCancel = False
@@ -1474,11 +1614,30 @@ class SystemUpdate( SettingWindow ) :
 
 
 	@RunThread
-	def SetLabelThread( self, aPercent ) :
-		if aPercent > 100 :
-			aPercent = 100
-		self.mCtrlProgress.setPercent( aPercent )
-		self.mCtrlLabelPercent.setLabel( '%s%% %s'% ( '{0:.2f}'.format( round( aPercent, 2 ) ), MR_LANG( 'downloaded' ) ) )
+	def SetLabelThread( self, aPercent, aTitle = None, aLimitTime = 0 ) :
+		mTitle = MR_LANG( 'downloaded' )
+		if aTitle :
+			mTitle = aTitle
+
+		if aLimitTime :
+			count = 0
+			while count < aLimitTime and self.mShowProgressThread :
+				time.sleep( 1 )
+				count += 1.0
+
+				aPercent = float( count / aLimitTime * 100 )
+				if not self.mShowProgressThread :
+					aPercent = 100
+					count = aLimitTime
+
+				self.mCtrlProgress.setPercent( aPercent )
+				self.mCtrlLabelPercent.setLabel( '%s%% %s'% ( '{0:.2f}'.format( round( aPercent, 2 ) ), mTitle ) )
+
+		else :
+			if aPercent > 100 :
+				aPercent = 100
+			self.mCtrlProgress.setPercent( aPercent )
+			self.mCtrlLabelPercent.setLabel( '%s%% %s'% ( '{0:.2f}'.format( round( aPercent, 2 ) ), mTitle ) )
 
 
 	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :
@@ -1614,6 +1773,8 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('2. network settings ------' )
 		try :
+			backupScript = '%s.sh'% E_DEFAULT_BACKUP_PATH
+			RemoveDirectory( backupScript )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
@@ -1680,19 +1841,23 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('4. preprocess.sh ------' )
 		preprocessFile = '%s/preprocess.sh'% E_DEFAULT_BACKUP_PATH
-		try :
-			fd = open( preprocessFile, 'w' )
 
-			if fd :
-				if self.mPVSData and self.mPVSData.mActions :
-					fd.writelines( '#!/bin/sh\n' )
-					fd.writelines( '%s\n'% self.mPVSData.mActions )
+		if self.mPVSData and self.mPVSData.mActions :
+			try :
+				actions = re.split( '\n', self.mPVSData.mActions.rstrip( ) )
+				LOG_TRACE( 'len[%s] actions[%s]'% ( len( actions ), actions ) )
+				if actions and len( actions ) > 0 :
+					fd = open( preprocessFile, 'w' )
+					if fd :
+						fd.writelines( '#!/bin/sh\n' )
+						for cmd in actions :
+							fd.writelines( '%s\n'% cmd )
 
-				fd.close( )
-				os.chmod( preprocessFile, 0755 )
+						fd.close( )
+						os.chmod( preprocessFile, 0755 )
 
-		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
 
 
 		LOG_TRACE('5. make run script ------' )
@@ -1749,6 +1914,36 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
 
+	def CheckShellDownload( self, aPVSScript ) :
+		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVSScript.mScriptFileName )
+		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVSScript.mScriptFileName )
+		isExist = CheckDirectory( mShell )
+		if not isExist :
+			isExist = GetURLpage( request, mShell )
+			LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
+
+		if isExist == False :
+			LOG_TRACE( '----------------download fail, shell none' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
+			return False
+
+		try :
+			os.chmod( mShell, 0755 )
+			os.system( 'sync' )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
+			LOG_TRACE( '----------------verify fail, shell err' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
+			return False
+
+		return isExist
+
+
+
+
+	#----------------------- update channels -----------------------
 	def UpdateChannelsByInternet( self ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Downloading server information' ), 20 )
 		if self.DownloadInfoFile( ) == False :

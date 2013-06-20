@@ -36,7 +36,7 @@ class BackupSettings( object ) :
 
 		LOG_TRACE( '------------------------------Check Backup' )
 		if CheckDirectory( E_DEFAULT_BACKUP_PATH ) :
-			self.CheckBackup( )
+			#self.CheckBackup( )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 
 		if CheckDirectory( '%s.sh'% E_DEFAULT_BACKUP_PATH ) :

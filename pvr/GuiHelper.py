@@ -68,34 +68,65 @@ def HasCasInfoByChannel( aChannel ) :
 	casInfo = []
 
 	if aChannel.mIsCA & ElisEnum.E_MEDIAGUARD :
-		casInfo.append( 'MediaGuard' )
+		casInfo.append( 'S' ) #SECA MediaGuard
 
 	if aChannel.mIsCA & ElisEnum.E_VIACCESS :
-		casInfo.append( 'Viaccess' )
+		casInfo.append( 'V' ) #Viaccess
 
 	if aChannel.mIsCA & ElisEnum.E_NAGRA :
-		casInfo.append( 'Nagra' )
+		casInfo.append( 'N' ) #Nagra
 
 	if aChannel.mIsCA & ElisEnum.E_IRDETO :
-		casInfo.append( 'Irdeto' )
+		casInfo.append( 'I' ) #Irdeto
 
 	if aChannel.mIsCA & ElisEnum.E_CONAX :
-		casInfo.append( 'Conax' )
+		casInfo.append( 'CO' ) #Conax
 
 	if aChannel.mIsCA & ElisEnum.E_CRYPTOWORKS :
-		casInfo.append( 'Cryptoworks' )
+		casInfo.append( 'CW' ) #Cryptoworks
 
 	if aChannel.mIsCA & ElisEnum.E_NDS :
-		casInfo.append( 'NDS' )
+		casInfo.append( 'ND' ) #NDS
 
 	if aChannel.mIsCA & ElisEnum.E_BETADIGITAL :
-		casInfo.append( 'Betadigital' )
+		casInfo.append( 'B' ) #Betadigital
+
+	if aChannel.mIsCA & ElisEnum.E_DRECRYPT :
+		casInfo.append( 'DC' ) #DRECript
+
+	if aChannel.mIsCA & ElisEnum.E_VERIMATRIX :
+		casInfo.append( 'VM' ) #Verimatrix
 
 	if aChannel.mIsCA & ElisEnum.E_OTHERS :
-		casInfo.append( 'Others' )
+		casInfo.append( 'O' ) #Others
 
 	LOG_TRACE('----------mask[%s] CasInfo[%s]'% ( aChannel.mIsCA, casInfo ) )
 	return casInfo
+
+
+def UpdateCasInfo( self, aChannel ) :
+	from pvr.gui.GuiConfig import E_XML_PROPERTY_CAS
+
+	self.setProperty( 'iCasB', '' )
+	self.setProperty( 'iCasI', '' )
+	self.setProperty( 'iCasS', '' )
+	self.setProperty( 'iCasV', '' )
+	self.setProperty( 'iCasN', '' )
+	self.setProperty( 'iCasCW', '' )
+	self.setProperty( 'iCasND', '' )
+	self.setProperty( 'iCasCO', '' )
+	self.setProperty( 'iCasDC', '' )
+	self.setProperty( 'iCasVM', '' )
+	self.setProperty( 'iCasO', '' )
+
+	casInfo = HasCasInfoByChannel( aChannel )
+	self.setProperty( E_XML_PROPERTY_CAS, 'True' )
+	if casInfo :
+		for casName in casInfo :
+			aPropertyID = 'iCas' + casName
+			self.setProperty( aPropertyID, casName )
+	else :
+		return
 
 
 def HasEPGComponent( aEPG, aFlag ) :
@@ -407,6 +438,13 @@ def CreateDirectory( aPath ) :
 	os.makedirs( aPath, 0644 )
 
 
+def CreateFile( aPath ) :
+	try :
+		open( aPath, 'w', 0644 )
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+
 def RemoveDirectory( aPath ) :
 	if not os.path.exists( aPath ) :
 		return
@@ -523,7 +561,7 @@ def CheckEthernet( aEthName ) :
 	return status
 
 
-def CheckMD5Sum( aSourceFile, aMd5 = None ) :
+def CheckMD5Sum( aSourceFile, aMd5 = None, aResult = False ) :
 	isVerify = False
 	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
 
@@ -541,13 +579,15 @@ def CheckMD5Sum( aSourceFile, aMd5 = None ) :
 			( readMd5, err ) = p.communicate( )
 			readMd5 = readMd5.strip( )
 
-		
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if aMd5 :
 			if readMd5 == aMd5 :
 				isVerify = True
 		else :
 			isVerify = readMd5
+
+		if aResult :
+			isVerify = ( isVerify, readMd5, aMd5 )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
@@ -663,18 +703,17 @@ def GetUnpackDirectory( aZipFile ) :
 	return unzipDir
 
 
-def GetSTBVersion( ) :
-	stbversion = ''
-	openFile = '/etc/stbversion'
+def GetFileRead( aOpenFile ) :
+	readLines = ''
 	try :
-		fp = open( openFile, 'r' )
-		stbversion = fp.readline( ).strip( )
+		fp = open( aOpenFile, 'r' )
+		readLines = fp.readline( ).strip( )
 		fp.close( )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] cmd[%s]'% ( e, openFile ) )
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, aOpenFile ) )
 
-	return stbversion
+	return readLines
 
 
 def GetCurrentVersion( ) :
@@ -792,7 +831,7 @@ def GetURLpage( aUrl, aWriteFileName = None ) :
 	return isExist
 
 
-def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
+def ParseStringInXML( xmlFile, tagNames, aRootName = 'software', tagNames2 = '' ) :
 	lists = []
 	#if os.path.exists(xmlFile) :
 	if xmlFile :
@@ -804,16 +843,32 @@ def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
 			for tagName in tagNames :
 				if node.findall( tagName ) :
 					descList = []
+					scriptList=[]
 					for element in node.findall( tagName ) :
 						#elementry = [ str(element.text), '%s\r\n'% str(element) ]
 						elementry = str( element.text )
 						if tagName == 'description' or tagName == 'action' :
 							descList.append( elementry )
+
+						elif tagName == 'script' :
+							script_elementry = []
+							for _tagName in tagNames2 :
+								ele = ''
+								for sub_node in element.getchildren( ) :
+									if sub_node.tag == _tagName :
+										ele = str( sub_node.text )
+
+								script_elementry.append( ele )
+							scriptList.append( script_elementry )
+
 						else :
 							lines.append( elementry )
 
 					if descList and len( descList ) :
 						lines.append( descList )
+
+					if scriptList and len( scriptList ) :
+						lines.append( scriptList )
 
 				else :
 					lines.append('')
@@ -1000,6 +1055,28 @@ def GetImgPath( aUnzipList, aFindFile ) :
 			break
 
 	return imgFile
+
+
+def CheckUSBTypeNTFS( aMountPath, aToken ) :
+	isNTFS = False
+	cmd = "mount | awk '/%s/ {print $5}'" % aToken
+	ret = ''
+	if sys.version_info < ( 2, 7 ) :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		ret = p.stdout.read( ).strip( )
+		p.stdout.close( )
+
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		( ret, err ) = p.communicate( )
+		ret = ret.strip( )
+
+	if ret.strip( ).lower( ) == 'tntfs' or ret.strip( ).lower( ) == 'ntfs' :
+		isNTFS = True
+	else :
+		isNTFS = False
+
+	return isNTFS
 
 
 class GuiSkinPosition( object ) :

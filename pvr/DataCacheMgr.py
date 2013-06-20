@@ -143,7 +143,8 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel					= False
 
 		self.mStandByClose						= False
-		self.mSearchNewChannel				= False				 
+		self.mSearchNewChannel					= False
+		self.mUSBAttatched						= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -2464,4 +2465,12 @@ class DataCacheMgr( object ) :
 	def GetSearchNewChannel( self ) :
 		return self.mSearchNewChannel
 
+
+	def GetUSBAttached( self ) :
+		return self.mUSBAttatched
+
+
+	@DataLock
+	def SetUSBAttached( self, aAttached = False ) :
+		self.mUSBAttatched = aAttached
 

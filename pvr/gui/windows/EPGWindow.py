@@ -53,6 +53,8 @@ MININUM_KEYWORD_SIZE			= 3
 E_USE_FIXED_INTERVAL			= False
 E_SEVEN_DAYS_EPG_TIME 			= 24 * 3600 * 7
 
+E_GRID_MAX_CACHE_SIZE			= 100
+
 E_GRID_HALF_HOUR				= 30 * 60
 E_GRID_MAX_TIMELINE_COUNT		= 8
 E_GRID_MAX_ROW_COUNT			= 8
@@ -77,7 +79,7 @@ BUTTON_ID_BASE_GRID				= E_EPG_WINDOW_BASE_ID + 3001
 BUTTON_ID_SHOWING_DATE			= E_EPG_WINDOW_BASE_ID + 1010
 IMAGE_ID_TIME_SEPERATOR			= E_EPG_WINDOW_BASE_ID + 3500
 BUTTON_ID_FOCUS_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
-IMAGE_ID_GRID_CAS				= E_EPG_WINDOW_BASE_ID + 3502
+#IMAGE_ID_GRID_CAS				= E_EPG_WINDOW_BASE_ID + 3502
 LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3503
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
@@ -157,10 +159,10 @@ class EPGWindow( BaseWindow ) :
 		self.mGridKeepFocus = False		
 		self.mVisibleTopIndex = 0
 		self.mShowingOffset = 0
-		self.mGridEPGList = [None] * E_GRID_MAX_ROW_COUNT
+		self.mGridEPGCache = {}
 		self.mGridLastFoucusId = BUTTON_ID_BASE_GRID
 		self.mCtrlGridTimeSeperator = self.getControl( IMAGE_ID_TIME_SEPERATOR )
-		self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
+		#self.mCtrlGridCas	= self.getControl( IMAGE_ID_GRID_CAS )
 		self.mCtrlGridEPGInfo = self.getControl( LABEL_ID_GRID_EPG )
 		self.mGridItemGap = int( self.getProperty( 'GridItemGap' ) )
 		self.mFocusButton = self.getControl( BUTTON_ID_FOCUS_BUTTON )
@@ -234,7 +236,7 @@ class EPGWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		self.GetFocusId()
+		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -296,10 +298,13 @@ class EPGWindow( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )			
 	 			dialog.doModal( )
 				return
-		
+
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
+			focusId = self.GetFocusId( )
+			if focusId  == SCROLL_ID_COMMON_EPG or focusId == SCROLL_ID_BIG_EPG :
+				return
 			contextAction = self.ShowContextMenu( )
 
 			if contextAction == CONTEXT_SHOW_ALL_TIMERS or contextAction == CONTEXT_SEARCH :
@@ -567,6 +572,11 @@ class EPGWindow( BaseWindow ) :
 		else :
 			LOG_WARN( 'no channel')
 
+		#LOG_TRACE( 'self.mGridEPGCache size=%d' %len( self.mGridEPGCache ) )
+
+		if len( self.mGridEPGCache ) > E_GRID_MAX_CACHE_SIZE :
+			self.mGridEPGCache = {}
+
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			#DrawChannel
 			epgList = []
@@ -576,8 +586,12 @@ class EPGWindow( BaseWindow ) :
 				LOG_ERR( 'GRID error offsetPosition=%d i=%d channelCount=%d' %( self.mVisibleTopIndex , i,channelCount ) )
 				break
 
+			if self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None ) :
+				continue
+
 			channel = self.mChannelList[ self.mVisibleTopIndex + i]
 			if channel :
+
 				epgList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid,  channel.mTsid,  channel.mOnid, gmtFrom, gmtUntil, 20 )
 			
 				if epgList == None or len ( epgList ) <= 0 or len ( epgList ) == 20 or epgList[0].mError != 0 :
@@ -608,7 +622,8 @@ class EPGWindow( BaseWindow ) :
 						epgList.append( epgEvent )
 						epgCount += 1
 				
-				self.mGridEPGList[i]=epgList
+				#self.mGridEPGList[i]=epgList
+				self.mGridEPGCache[ '%d' %( self.mVisibleTopIndex + i) ] = epgList
 
 				epgTotalCount += epgCount
 				
@@ -696,11 +711,21 @@ class EPGWindow( BaseWindow ) :
 		selectedPos = 0
 
 		if self.mEPGMode == E_VIEW_GRID :
-			selectedPos = self.GridGetSelectedPosition( )		
+			selectedPos = self.GridGetSelectedPosition( )
+			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[selectedPos]
 		elif self.mEPGMode == E_VIEW_CHANNEL :
-			selectedPos = self.mCtrlList.getSelectedPosition( )		
+			selectedPos = self.mCtrlList.getSelectedPosition( )
+			channel = self.mSelectChannel
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[selectedPos]
+
+		if channel :
+			UpdateCasInfo( self, channel )
+		else :
+			self.setProperty( E_XML_PROPERTY_CAS, 'False' )
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
@@ -940,7 +965,8 @@ class EPGWindow( BaseWindow ) :
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
-			epgList = self.mGridEPGList[i]
+			#epgList = self.mGridEPGList[i]
+			epgList = self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None )			
 			offsetX = 0
 			offsetX2 = 0
 			if epgList :
@@ -2207,6 +2233,7 @@ class EPGWindow( BaseWindow ) :
 	def UpdateAllEPGList( self ) :
 		self.mLock.acquire( )
 		self.Flush( )
+		self.mGridEPGCache = {}		
 		self.mLock.release( )
 	
 		if self.mEPGMode == E_VIEW_GRID :
@@ -2373,6 +2400,7 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset -= self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 				self.mGridFocusTime = 0
+				self.mGridEPGCache = {}
 				self.mLock.release( )				
 				self.SetTimeline( )
 				self.Flush( )
@@ -2387,12 +2415,14 @@ class EPGWindow( BaseWindow ) :
 		self.mLock.acquire( )
 		self.mVisibleFocusCol = 0
 		self.mShowingOffset = 0
+		self.mGridEPGCache = {}
 		self.mLock.release( )
 		self.SetTimeline( )
 		self.Flush( )
 		self.Load( )
 		self.UpdateList( )
 		self.GridSetFocus( )
+
 
 	def GridControlRight( self ) :
 		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )					
@@ -2414,7 +2444,8 @@ class EPGWindow( BaseWindow ) :
 				self.mLock.release( )
 				LOG_TRACE( 'self.mShowingOffset=%d' %self.mShowingOffset )
 				self.SetTimeline( )
-				self.Flush( )				
+				self.Flush( )
+				self.mGridEPGCache = {}				
 				self.Load( )
 				self.UpdateList( )
 				self.GridSetFocus( )
@@ -2510,6 +2541,10 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def GridFocusFind( self ) :
+		if self.mGridFocusTime == 0 :
+			self.mVisibleFocusCol = 0
+			return
+	
 		for i in range( E_GRID_MAX_COL_COUNT ) :
 			gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, i ), None )
 			if  gridMeta :
@@ -2582,13 +2617,13 @@ class EPGWindow( BaseWindow ) :
 				self.mVisibleFocusRow = 0
 				self.mVisibleFocusCol = 0
 				self.mCtrlGridEPGInfo.setLabel( ' ' )
-
+		"""
 		#cas image
 		if channel.mIsCA :
 			self.mCtrlGridCas.setImage( 'IconCas.png' )
 		else :
 			self.mCtrlGridCas.setImage( '' )
-
+		"""
 		self.UpdateSelcetedPosition( )
 		
 		"""

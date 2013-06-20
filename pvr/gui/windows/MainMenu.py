@@ -222,6 +222,12 @@ class MainMenu( BaseWindow ) :
 
 				self.mDataCache.Player_Stop( )
 
+			if not CheckHdd( ) :
+				msg = MR_LANG( 'Installing and executing XBMC addons%s may not work properly without an internal HDD' )% NEW_LINE
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+
 			self.SetMediaCenter( )
 			self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :

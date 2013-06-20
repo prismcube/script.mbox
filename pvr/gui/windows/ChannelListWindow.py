@@ -300,6 +300,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_SCROLLBAR_CHANNEL or self.mFocusId == E_CONTROL_ID_SCROLLBAR_SUBMENU :
+				return
 			self.ShowContextMenu( )
 
 
@@ -1596,6 +1599,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,       E_TAG_FALSE )
 
 
 	def Epgevent_GetCurrent( self ) :
@@ -1775,6 +1779,9 @@ class ChannelListWindow( BaseWindow ) :
 				pass
 			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID :
 				pass
+
+			#update cas info
+			UpdateCasInfo( self, self.mNavChannel )
 				
 			"""
 			#is cas?
@@ -1782,6 +1789,8 @@ class ChannelListWindow( BaseWindow ) :
 				#scrambled
 				#ToDO : pincode
 			"""
+		else :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, E_TAG_FALSE )
 
 		#component
 		self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )

@@ -337,6 +337,12 @@ class EPGSearchWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
+		if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+			channel = self.mChannelList[selectedPos]
+
+		if channel :
+			UpdateCasInfo( self, channel )
+
 
 	def UpdateEPGInfomation( self ) :
 		self.UpdateSelcetedPosition( )

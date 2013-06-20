@@ -164,9 +164,11 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
-				self.mDataCache.SetStanbyClosing( True )
-				thread = threading.Timer( 1, self.StanByClose )
-				thread.start( )
+				from ElisProperty import ElisPropertyEnum
+				if ElisPropertyEnum( 'Deep Standby', self.mCommander ).GetProp( ) != 0 :
+					self.mDataCache.SetStanbyClosing( True )
+					thread = threading.Timer( 1, self.StanByClose )
+					thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
@@ -203,6 +205,16 @@ class GlobalEvent( object ) :
 				dialog.SetDialogProperty( msgHead, msgLine )
 				dialog.doModal( )
 
+		elif aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) :
+			self.mDataCache.SetUSBAttached( False )
+			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [False] )
+			thread.start( )
+
+		elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+			self.mDataCache.SetUSBAttached( True )
+			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [True] )
+			thread.start( )
+
 
 	def AsyncHddFull( self ) :
 		self.mIsHddFullDialogOpened = True
@@ -226,7 +238,10 @@ class GlobalEvent( object ) :
 		self.mDataCache.InitBookmarkButton( )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT )
-		xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+		else :
+			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 
 	def AsyncPowerSave( self ) :
@@ -445,6 +460,21 @@ class GlobalEvent( object ) :
 		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) )
 		self.mDialogShowInit.SetAutoCloseTime( 3 )
+		self.mDialogShowInit.doModal( )
+
+
+	def ShowAttatchDialog( self, aAttatch = False ) :
+		if xbmcgui.getCurrentWindowDialogId( ) != 9999 :
+			LOG_TRACE( 'Another dialog aready popuped!!' )
+			return
+
+		msg = MR_LANG( 'USB attached' )
+		if not aAttatch :
+			msg = MR_LANG( 'USB detached' )
+
+		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+		self.mDialogShowInit.SetAutoCloseTime( 1 )
 		self.mDialogShowInit.doModal( )
 
 
