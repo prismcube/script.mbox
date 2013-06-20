@@ -1941,6 +1941,47 @@ class SystemUpdate( SettingWindow ) :
 		return isExist
 
 
+	def CheckBootOnAlarm( self ) :
+		try :
+			mCurrentVersion = ''
+			ret = GetCurrentVersion( )
+			if ret and len( ret ) > 0 :
+				mCurrentVersion = ret[0]
+
+			tempFile = '/mtmp/versionCheck'
+			requrl = '%s&version=%s'% ( E_DEFAULT_URL_PVS, mCurrentVersion )
+			isDownload = GetURLpage( requrl, tempFile )
+			LOG_TRACE( '-------req pvs url[%s] ret[%s]'% ( requrl, isDownload ) )
+
+			if not isDownload :
+				LOG_TRACE( '---------request None' )
+				return
+
+			mPVSList = []
+			tagNames = [ 'version' ]
+			retList = ParseStringInXML( tempFile, tagNames, 'software' )
+			LOG_TRACE( 'retList[%s]'% retList )
+			if not retList or len( retList ) < 1 :
+				LOG_TRACE( 'request version None' )
+				return
+
+			newVersion = ''
+			for pvsVersion in retList :
+				LOG_TRACE( 'check version : %s'% pvsVersion )
+				if pvsVersion[0] and mCurrentVersion < pvsVersion[0] :
+					newVersion = pvsVersion[0]
+					break
+
+			LOG_TRACE( 'current[%s] newVersion[%s]'% ( mCurrentVersion, newVersion ) )
+			if newVersion :
+				iHead = MR_LANG( 'New Version' )
+				iLine = '%s'% newVersion
+				iconN = self.getProperty( 'fwAlarmIcon' )
+				xbmc.executebuiltin( 'Notification(%s,%s,5,%s)'% ( iHead, iLine, iconN ) )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
 
 
 	#----------------------- update channels -----------------------
