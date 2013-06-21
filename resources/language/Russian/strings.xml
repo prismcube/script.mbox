@@ -476,8 +476,8 @@
 	<string id="3031">Ввести пароль</string>
 	<string id="3032">Инициализация Модуля</string>
 	<string id="3033">Внимание</string>
-	<string id="3034">USB attached</string>
-	<string id="3035">USB detached</string>
+	<string id="3034">Connected</string>
+	<string id="3035">Removed</string>
 	<string id="3036">Модуль Извлечен</string>
 	<string id="3037">Ресивер необходимо перезагрузить%s для окончания обновления ПО</string>
 	<string id="3038">Your system will reboot in %s seconds</string>

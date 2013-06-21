@@ -480,8 +480,8 @@
 	<string id="3031">Enter your PIN code</string>
 	<string id="3032">CAM initialized</string>
 	<string id="3033">Attention</string>
-	<string id="3034">USB attached</string>
-	<string id="3035">USB detached</string>
+	<string id="3034">Connected</string>
+	<string id="3035">Removed</string>
 	<string id="3036">CAM removed</string>
 	<string id="3037">Your system must be restarted%s in order to complete the update</string>
 	<string id="3038">Your system will reboot in %s seconds</string>
