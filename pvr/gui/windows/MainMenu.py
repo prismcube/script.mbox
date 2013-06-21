@@ -288,7 +288,10 @@ class MainMenu( BaseWindow ) :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorite in a convenient way' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
-			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit TV/radio channel list and sort them in the numerical or alphabetic order' ) )
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display a list of your TV/radio channels' ) )
+
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Delete, rename and lock your channels' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
