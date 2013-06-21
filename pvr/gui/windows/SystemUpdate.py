@@ -1941,7 +1941,7 @@ class SystemUpdate( SettingWindow ) :
 		return isExist
 
 
-	def CheckBootOnAlarm( self ) :
+	def CheckBootOnVersion( self ) :
 		try :
 			mCurrentVersion = ''
 			ret = GetCurrentVersion( )
