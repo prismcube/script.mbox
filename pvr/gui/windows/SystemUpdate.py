@@ -1977,7 +1977,7 @@ class SystemUpdate( SettingWindow ) :
 				iHead = MR_LANG( 'New Version' )
 				iLine = '%s'% newVersion
 				iconN = self.getProperty( 'fwAlarmIcon' )
-				xbmc.executebuiltin( 'Notification(%s,%s,5,%s)'% ( iHead, iLine, iconN ) )
+				xbmc.executebuiltin( 'Notification(%s,%s,3000,%s)'% ( iHead, iLine, iconN ) )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
