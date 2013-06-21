@@ -24,7 +24,7 @@ Search for window name
 	<onload>SetProperty(ItemHeight,40)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
-	<onload>SetProperty(fwAlarmIcon,PopupTitleNotice.png)</onload>
+	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
 	<controls>
 
 		<!-- Default BackgroundImage -->
