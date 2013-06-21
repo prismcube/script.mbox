@@ -39,6 +39,7 @@ BUTTON_ID_UPDATE				= E_MAIN_MENU_BASE_ID + 90108
 
 BUTTON_ID_CHANNEL_LIST_FAVORITE = E_MAIN_MENU_BASE_ID + 90412
 BUTTON_ID_CHANNEL_LIST_LIST		= E_MAIN_MENU_BASE_ID + 90413
+BUTTON_ID_CHANNEL_LIST_EDIT		= E_MAIN_MENU_BASE_ID + 90414
 
 
 E_MAIN_MENU_DEFAULT_FOCUS_ID	=  E_MAIN_MENU_BASE_ID + 9000
@@ -197,6 +198,9 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
+			self.GoToEditChannelList( )
+
 		#elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
 		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 			self.SetMediaCenter( )
@@ -284,7 +288,10 @@ class MainMenu( BaseWindow ) :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorite in a convenient way' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
-			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Edit TV/radio channel list and sort them in the numerical or alphabetic order' ) )
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display a list of your TV/radio channels' ) )
+
+		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Delete, rename and lock your channels' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
@@ -405,5 +412,31 @@ class MainMenu( BaseWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', MR_LANG( 'Failed to change favorite group' ) )
 			dialog.doModal( )
+
+
+	def GoToEditChannelList( self ) :
+		iHead = ''
+		iLine = ''
+		isError = False
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			isError = True
+			iHead = MR_LANG( 'Attention' )
+			iLine = MR_LANG( 'Try again after stopping all your recordings first' )
+
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+		if self.mDataCache.Channel_GetCount( zappingmode.mServiceType ) < 1 :
+			isError = True
+			iHead = MR_LANG( 'Error' )
+			iLine = MR_LANG( 'Your channel list is empty' )
+
+		if isError :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( iHead, iLine )
+			dialog.doModal( )
+			return
+
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW ).SetEditMode( True )
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 

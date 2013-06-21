@@ -101,6 +101,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mAgeLimit = 0
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+		self.mSetEditMode = False
 
 
 	def onInit(self):
@@ -221,7 +222,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
-
 
 
 	def onAction( self, aAction ) :
@@ -423,6 +423,10 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 
+	def SetEditMode( self, aMode = False ) :
+		self.mSetEditMode = aMode
+
+
 	def LoadChannelListHash( self ) :
 		self.mChannelListHash = {}
 		if self.mChannelList and len( self.mChannelList ) > 0 :
@@ -477,7 +481,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		#clear label
 		self.ResetLabel( )
-		self.UpdateChannelList( )
+
+		if self.mSetEditMode :
+			self.mSetEditMode = False
+			self.GoToEditWindow( )
+		else :
+			self.UpdateChannelList( )
 
 		#initialize get epg event
 		#self.Epgevent_GetCurrent( )
@@ -1512,6 +1521,8 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 				if iChannel.mIsCA : 
 					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+				if iChannel.mIsHD : 
+					listItem.setProperty( E_XML_PROPERTY_IHD,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecordInfo1 :
 						if iChannel.mSid == self.mRecordInfo1.mServiceId and \
@@ -1599,7 +1610,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBYPLUS,E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_IHD,      E_TAG_FALSE )
 
 
 	def Epgevent_GetCurrent( self ) :
@@ -1891,6 +1903,7 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+			if iChannel.mIsHD    : listItem.setProperty( E_XML_PROPERTY_IHD,  E_TAG_TRUE )
 
 			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
 			if mTPnum == E_CONFIGURED_TUNER_1 :

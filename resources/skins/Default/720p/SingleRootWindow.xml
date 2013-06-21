@@ -24,6 +24,7 @@ Search for window name
 	<onload>SetProperty(ItemHeight,40)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
+	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
 	<controls>
 
 		<!-- Default BackgroundImage -->
@@ -356,7 +357,11 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1075</label>
 						</control>
-						<control type="image" id="1290414">
+						<control type="button" id="1290414">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>SCRIPT1125</label>
+						</control>
+						<control type="image" id="1290415">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>
@@ -776,7 +781,7 @@ Search for window name
 							<width>40</width>
 							<height>30</height>
 							<visible>substring(ListItem.Property(iTuner1),true)</visible>
-							<texture>IconT1w.png</texture>
+							<texture>IconT1.png</texture>
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
@@ -785,7 +790,7 @@ Search for window name
 							<width>40</width>
 							<height>30</height>
 							<visible>substring(ListItem.Property(iTuner2),true)</visible>
-							<texture>IconT2w.png</texture>
+							<texture>IconT2.png</texture>
 						</control>
 						<!-- is Tuner1 & Tuner2 -->
 						<control type="image">
@@ -794,16 +799,25 @@ Search for window name
 							<width>40</width>
 							<height>30</height>
 							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-							<texture>IconT12w.png</texture>
+							<texture>IconT12.png</texture>
 						</control>
 						<!-- is cas? -->
 						<control type="image">
-							<posx>650</posx>
+							<posx>635</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
-							<texture>IconCas.png</texture>
+							<texture>IconCas1.png</texture>
 							<visible>substring(ListItem.Property(iCas),true)</visible>
+						</control>
+						<!-- is hd? -->
+						<control type="image">
+							<posx>670</posx>
+							<posy>5</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconHD.png</texture>
+							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
 						<!-- is locked? -->
 						<control type="image">
@@ -935,12 +949,21 @@ Search for window name
 						</control>
 						<!-- is cas? -->
 						<control type="image">
-							<posx>650</posx>
+							<posx>635</posx>
 							<posy>5</posy>
 							<width>30</width>
 							<height>30</height>
 							<texture>IconCas.png</texture>
 							<visible>substring(ListItem.Property(iCas),true)</visible>
+						</control>
+						<!-- is hd? -->
+						<control type="image">
+							<posx>670</posx>
+							<posy>5</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconHD.png</texture>
+							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
 						<!-- is locked? -->
 						<control type="image">
