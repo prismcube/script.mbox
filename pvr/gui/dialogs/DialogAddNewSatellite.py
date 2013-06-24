@@ -19,7 +19,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 	def onInit( self ) :
 		self.setProperty( 'DialogDrawFinished', 'False' )
 		self.mLongitude = 0
-		self.SetHeaderLabel( MR_LANG( 'Add satellite' ) )
+		self.SetHeaderLabel( MR_LANG( 'Add Satellite' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
@@ -71,7 +71,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter a name for this satellite' ), self.mSatelliteName, 15 )
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter satellite name' ), self.mSatelliteName, 15 )
 			self.DrawItem( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :

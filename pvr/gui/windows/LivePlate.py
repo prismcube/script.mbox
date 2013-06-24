@@ -272,7 +272,7 @@ class LivePlate( LivePlateWindow ) :
 
 			if not CheckHdd( ) :
 				self.StopAutomaticHide( )
-				msg = MR_LANG( 'Installing and executing XBMC addons%s may not work properly without an internal HDD' )% NEW_LINE
+				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )

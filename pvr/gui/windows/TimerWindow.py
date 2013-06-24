@@ -318,11 +318,11 @@ class TimerWindow( BaseWindow ) :
 		context = []
 
 		context.append( ContextItem( MR_LANG( 'Back to previous page' ), CONTEXT_GO_PARENT ) )
-		
+
 		if self.mListItems and len( self.mListItems ) > 0 :
-			context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
-			context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
-			context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )			
+			context.append( ContextItem( MR_LANG( 'Edit' ), CONTEXT_EDIT_TIMER ) )
+			context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE_TIMER ) )
+			context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL_TIMERS ) )
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -366,7 +366,7 @@ class TimerWindow( BaseWindow ) :
 						break
 
 				if timer == None or timer.mWeeklyTimerCount <= 0 :
-					LOG_WARN( 'Cannot find weekly timers' )
+					LOG_WARN( 'Could not find weekly timers' )
 					return
 
 				if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
@@ -392,7 +392,7 @@ class TimerWindow( BaseWindow ) :
 					timer = self.mTimerList[selectedPos]
 
 					if timer == None :
-						LOG_WARN( 'Cannot find weekly timers' )
+						LOG_WARN( 'Could not find weekly timers' )
 						return
 		
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
@@ -431,13 +431,13 @@ class TimerWindow( BaseWindow ) :
 					break
 
 			if timer == None or timer.mWeeklyTimerCount <= 0 :
-				LOG_WARN( 'Cannot find weekly timers' )
+				LOG_WARN( 'Could not find weekly timers' )
 				return
 
 			if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to delete this timer?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Are you sure you want to delete this timer?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -452,7 +452,7 @@ class TimerWindow( BaseWindow ) :
 	
 			if timerId > 0 :		
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -467,7 +467,7 @@ class TimerWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )

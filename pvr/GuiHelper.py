@@ -347,7 +347,7 @@ def StringToListIndex( aList, aString ) :
 		if aList[i].lower( ) == aString.lower( ) :
 			return i
 
-	LOG_ERR( 'Cannot found list item : %s' % aString )
+	LOG_ERR( 'Could not find any list items : %s' % aString )
 	return 0
 
 
@@ -396,7 +396,7 @@ class CacheMRLanguage( object ) :
 			try :
 				#print 'xml_string[%s] id[%s] parse[%s]'% (string, strId, xmlString)
 				if xmlString == "" or xmlString == None :
-					LOG_ERR( 'Cannot find string' )
+					LOG_ERR( 'Could not find string' )
 					return string
 
 				string = xmlString
@@ -459,7 +459,7 @@ def RemoveDirectory( aPath ) :
 			os.unlink( aPath )
 			ret = True
 		else :
-			LOG_TRACE( 'Cannot remove, non type file[%s]'% aPath )
+			LOG_TRACE( 'Could not remove, non type file[%s]'% aPath )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s]'% e )
@@ -687,7 +687,7 @@ def GetUnpackByMD5( aFile ) :
 			value = pars[0].strip()
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] Cannot open[%s]'% ( e, openFile ) )
+		LOG_ERR( 'except[%s] Could not open[%s]'% ( e, openFile ) )
 
 	return value
 

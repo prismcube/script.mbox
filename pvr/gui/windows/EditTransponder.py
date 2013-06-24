@@ -108,7 +108,7 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select a satellite' ), satelliteList, False, self.mSatelliteIndex )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, self.mSatelliteIndex )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -127,7 +127,7 @@ class EditTransponder( SettingWindow ) :
 					frequencylist.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
 
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select a frequency' ), frequencylist, False, self.mTransponderIndex )
+				select = dialog.select( MR_LANG( 'Select Frequency' ), frequencylist, False, self.mTransponderIndex )
 
 				if select >= 0 and select != self.mTransponderIndex :
 					self.mTransponderIndex = select
@@ -228,7 +228,7 @@ class EditTransponder( SettingWindow ) :
 		elif groupId == E_Input06 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete a transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Transponder' ), MR_LANG( 'Are you sure you want to remove%s this transponder?' )% NEW_LINE )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -331,7 +331,7 @@ class EditTransponder( SettingWindow ) :
 
 		self.AddInputControl( E_Input05, MR_LANG( 'Add Transponder' ), '', MR_LANG( 'Add a new transponder to the list' ) )
 		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'Delete a transponder from the list' ) )
-		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder settings' ) )
+		self.AddInputControl( E_Input07, MR_LANG( 'Edit' ), '', MR_LANG( 'Configure your transponder settings' ) )
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddEnumControl( E_SpinEx01, 'Network Search', None, networkSearchDescription )
 		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Search Range' ), USER_ENUM_LIST_SEARCH_RANGE, self.mSearchRange, MR_LANG( 'Select the transponder frequency range for channel search' ) )

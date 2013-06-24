@@ -110,7 +110,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select a satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select
@@ -132,7 +132,7 @@ class ManualScan( SettingWindow ) :
 		 				polarization = MR_LANG( 'Vertical' )
 					formattedTransponderList.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select a transponder' ), formattedTransponderList, False, self.mTransponderIndex )
+				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, self.mTransponderIndex )
 
 				if select >=0 :
 					self.mTransponderIndex = select
@@ -143,7 +143,7 @@ class ManualScan( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter a TP frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
+				dialog.SetDialogProperty( MR_LANG( 'Enter TP Frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					tempval = dialog.GetString( )
@@ -161,7 +161,7 @@ class ManualScan( SettingWindow ) :
 		# Symbol Rate
 		elif groupId == E_Input03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter a symbol rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Symbol Rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
