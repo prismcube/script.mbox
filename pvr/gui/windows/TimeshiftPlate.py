@@ -160,6 +160,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mStartTimeShowed = False
 		self.mIsPlay = FLAG_PLAY
 		self.mOldPlayTime = 0
+		self.mOldStartTime = 0
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -994,16 +995,31 @@ class TimeShiftPlate( BaseWindow ) :
 					#tempCurrentTime = self.mInitCurTime
 
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
-				#duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
-				duration = self.mTimeshift_endTime / 1000.0
+				"""
+				duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000.0
 				tempStartTime = localTime - duration
 				tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000.0 )
 				tempEndTime = localTime
-				if self.mOldPlayTime > 0 :
-					if ( status.mSpeed in E_TINY_XSPEED ) and self.mOldPlayTime > tempCurrentTime :
-						tempCurrentTime = self.mOldPlayTime
-					#elif status.mSpeed < 0 and self.mOldPlayTime < tempCurrentTime :
-					#	tempCurrentTime = self.mOldPlayTime
+				"""
+
+				duration = int( self.mTimeshift_endTime / 1000.0 )
+				if tempStartTime < 1 :
+					tempStartTime = localTime - duration
+					tempCurrentTime = tempStartTime + int( self.mTimeshift_curTime / 1000.0 )
+				else :
+					tempStartTime += localTime - duration
+					tempCurrentTime = ( localTime - duration ) + int( tempCurrentTime )
+				tempEndTime = localTime
+				#LOG_TRACE( '----------------start_o[%s] start_c[%s]'% ( int( self.mTimeshift_staTime / 1000.0 ), tempStartTime ) )
+
+				if self.mOldPlayTime > 0 and self.mAccelator == 0 :
+					if ( status.mSpeed in E_TINY_XSPEED ) or status.mSpeed == 100 :
+						if self.mOldPlayTime > tempCurrentTime :
+							tempCurrentTime = self.mOldPlayTime
+
+				if self.mOldStartTime > 0 and self.mAccelator == 0 :
+					if self.mOldStartTime > tempStartTime :
+						tempStartTime = self.mOldStartTime
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
 				if self.mPlayingRecordInfo and self.mPlayingRecordInfo.mError == 0 :
@@ -1025,7 +1041,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mRepeatTimeout = 1
 				if self.mSpeed == 100 :
 					self.mRepeatTimeout = 1
-				elif self.mSpeed > 0 and self.mSpeed <= 120 :
+				elif self.mSpeed in E_TINY_XSPEED :
 					self.mRepeatTimeout = 0.5
 				else :
 					self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
@@ -1042,18 +1058,18 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
 
 			if lbl_timeS != '' :
-				if self.mStartTimeShowed == False :
-					self.mInitCurTime = tempEndTime / 1000000
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
-					self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+				self.mInitCurTime = tempEndTime / 1000000
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
+				self.mOldStartTime = tempStartTime
 			if lbl_timeP != '' and status.mSpeed != 0 :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 				self.mOldPlayTime = tempCurrentTime
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 
-			if tempStartTime > 0 :
-				self.mStartTimeShowed = True
+			#if tempStartTime > 0 :
+			#	self.mStartTimeShowed = True
 
 			#LOG_TRACE('mStartTimeShowed[%s] start[%s] curr[%s]'% ( self.mStartTimeShowed, tempStartTime, tempCurrentTime ) )
 			self.GetNextSpeed( E_ONINIT )
@@ -1228,8 +1244,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 				#update localTime
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-				#lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
-				#self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
 				if self.mIsPlay != FLAG_STOP :
 					if not self.mFlagUserMove :
@@ -1241,7 +1255,7 @@ class TimeShiftPlate( BaseWindow ) :
 			time.sleep( loopDelay )
 			count = count + loopDelay
 
-		#self.mThreadProgress = None
+		self.mThreadProgress = None
 
 
 	def UpdateProgress( self, aUserMoving = 0, aMoveBy = E_MOVE_BY_TIME ) :
@@ -1250,19 +1264,19 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeP = ''
 
 			#calculate current position
-			#playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
-			#curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
-			playSize = self.mTimeshift_endTime
-			curTime = self.mTimeshift_curTime + aUserMoving
+			playSize = self.mTimeshift_endTime - self.mTimeshift_staTime
+			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
+
 			if aMoveBy == E_MOVE_BY_MARK :
-				curTime = self.mTimeshift_staTime + aUserMoving
-			if curTime < self.mTimeshift_staTime :
-				curTime = self.mTimeshift_staTime
+				curTime = aUserMoving
+
+			if curTime < 0 :
+				curTime = 0
 
 			if playSize > 0 and curTime >= 0 :
-				self.mProgress_idx = (curTime / float(playSize))  * 100.0
+				self.mProgress_idx = ( curTime / float( playSize ) )  * 100.0
 
-				#LOG_TRACE( 'curTime[%s] playSize[%s] idx[%s]'% ( curTime,playSize,self.mProgress_idx ) )
+				#LOG_TRACE( 'curTime[%s] playSize[%s] percent[%s]%%'% ( curTime, playSize, self.mProgress_idx ) )
 				#LOG_TRACE( 'staTime[%s] curTime[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mTimeshift_curTime, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
@@ -1271,7 +1285,6 @@ class TimeShiftPlate( BaseWindow ) :
 					self.mProgress_idx = 0
 
 				#progress drawing
-				#if not self.mFlagUserMove :
 				posx = int( self.mProgress_idx * E_PROGRESS_WIDTH_MAX / 100 )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_TAG_POSY )
 				self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, self.mProgress_idx )
@@ -1814,15 +1827,18 @@ class TimeShiftPlate( BaseWindow ) :
 		section = mediaTime / 10
 		offset = 0
 		self.mJumpToOffset = []
+		#LOG_TRACE( '------------timeshift media[%s] section[%s]'% ( mediaTime, section ) )
 
 		if self.mBookmarkList and len( self.mBookmarkList ) > 0 :
 			for item in self.mBookmarkList :
 				self.mJumpToOffset.append( item.mTimeMs )
 		else :
 			self.mJumpToOffset.append( 0 )
+			#self.mJumpToOffset.append( self.mTimeshift_staTime )
 			for i in range( 1, 10 ) :
 				offset += section
 				self.mJumpToOffset.append( offset )
+			#LOG_TRACE( '------------timeshift jumps[%s]'% self.mJumpToOffset )
 
 
 	def JumpToTrack( self, aDirection ) :
@@ -1831,11 +1847,12 @@ class TimeShiftPlate( BaseWindow ) :
 			self.InitShiftPostion( )
 
 		stayOn = 1
-		current = self.mTimeshift_playTime
+		current = self.mTimeshift_playTime - self.mTimeshift_staTime
+		idx = 0
 		tot = len(self.mJumpToOffset)
 		if aDirection == E_CONTROL_ID_BUTTON_JUMP_FF :
 			for idx in range( tot ) :
-				if current < self.mJumpToOffset[idx] :
+				if current + 10000 < self.mJumpToOffset[idx] :
 					#LOG_TRACE('--------------ff idx[%s]'% idx )
 					break
 		else :
@@ -1856,7 +1873,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		jump = self.mJumpToOffset[idx]
 		#ret = self.mDataCache.Player_JumpToIFrame( jump )
-		#LOG_TRACE('----------ret[%s] current[%s] idx[%s] jump[%s] offset[%s]'% ( ret, current, idx, jump, self.mJumpToOffset ) )
+		#LOG_TRACE('----------current[%s] idx[%s] jump[%s] offset[%s]'% ( current, idx, jump, self.mJumpToOffset ) )
 
 		return jump
 
@@ -1966,7 +1983,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateProgress( userMovingMs, E_MOVE_BY_MARK )
 		#self.UpdateProgressReview( userMovingMs, E_MOVE_BY_MARK )
-		#LOG_TRACE( '-----------key[%s] moving[%s] accelator[%s]'% ( aMoveTrack, userMovingMs, self.mAccelator ) )
+		#LOG_TRACE( '-----------focusid[%s] moving[%s] accelator[%s]'% ( aMoveTrack, userMovingMs, self.mAccelator ) )
 
 		tempStartTime   = self.mTimeshift_staTime / 1000
 		tempCurrentTime = self.mTimeshift_curTime / 1000
@@ -1983,7 +2000,7 @@ class TimeShiftPlate( BaseWindow ) :
 			timeFormat = TimeFormatEnum.E_AH_MM_SS
 
 		lblCurrentTime = tempCurrentTime + ( userMovingMs / 1000 )
-		self.mAsyncMove = userMovingMs
+		self.mAsyncMove = userMovingMs + self.mTimeshift_staTime
 
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
@@ -2047,10 +2064,15 @@ class TimeShiftPlate( BaseWindow ) :
 		tempEndTime     = self.mTimeshift_endTime / 1000
 		timeFormat      = TimeFormatEnum.E_HH_MM_SS
 		if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			duration = ( self.mTimeshift_endTime - self.mTimeshift_staTime ) / 1000
-			tempStartTime = self.mLocalTime - duration
-			tempCurrentTime = tempStartTime + ( self.mTimeshift_curTime / 1000 )
-			tempEndTime =  self.mLocalTime
+			duration = self.mTimeshift_endTime / 1000
+			if tempStartTime < 1 :
+				tempStartTime = self.mLocalTime - duration
+				tempCurrentTime = tempStartTime + tempCurrentTime
+			else :
+				tempStartTime += self.mLocalTime - duration
+				tempCurrentTime = ( self.mLocalTime - duration ) + tempCurrentTime
+			tempEndTime = self.mLocalTime
+
 
 		elif self.mMode == ElisEnum.E_MODE_PVR :
 			timeFormat = TimeFormatEnum.E_AH_MM_SS
@@ -2091,7 +2113,7 @@ class TimeShiftPlate( BaseWindow ) :
 					if self.mSpeed != 100 :
 						self.mDataCache.Player_Resume( )
 					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
-				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% ( frameJump, self.mAccelator, ( self.mUserMoveTime / 10000 ), ret ) )
+				#LOG_TRACE('2============aStartOnLeft[%s] accelator[%s] MoveSec[%s] userMove[%s] ret[%s]'% ( aStartOnLeft, self.mAccelator, self.mAsyncMove, ( self.mUserMoveTime / 10000 ), ret ) )
 				self.InitTimeShift( )
 				self.mFlagUserMove = False
 				self.mAccelator = 0
