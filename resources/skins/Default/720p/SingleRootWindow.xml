@@ -3404,8 +3404,10 @@ Search for window name
 					<width>750</width>
 					<height>410</height>
 					<itemgap>0</itemgap>
-					<onup>1007001</onup>
-					<ondown>1007003</ondown>
+					<ondown condition="substring(Window.Property(IsFTI),True)">1007003</ondown>
+					<ondown condition="!substring(Window.Property(IsFTI),True)">1709000</ondown>
+					<onup condition="substring(Window.Property(IsFTI),True)">1007001</onup>
+					<onup condition="!substring(Window.Property(IsFTI),True)">1709000</onup>
 					<onleft>1709001</onleft>
 					<onright>1709001</onright>
 					<pagecontrol>1709001</pagecontrol>
