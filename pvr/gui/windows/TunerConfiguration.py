@@ -85,7 +85,7 @@ class TunerConfiguration( FTIWindow ) :
 			position = self.mCtrlMainList.getSelectedPosition( )
 
 			if self.mConfiguredCount == position :
-				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
+				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount >= E_MAX_SATELLITE_COUNT :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'You can only have 4 satellites for DiSEqC 1.0' ) )
 		 			dialog.doModal( )

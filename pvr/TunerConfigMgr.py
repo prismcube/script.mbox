@@ -281,7 +281,7 @@ class TunerConfigMgr( object ) :
 			aSatellite.mIsOneCable = 0
 			aSatellite.mMotorizedData = 0
 			aSatellite.mDisEqc11 = 0
-			if aSatellite.mSlotNumber > 3 :
+			if aSatellite.mSlotNumber >= E_MAX_SATELLITE_COUNT :
 				aSatellite.mIsConfigUsed = 0
 			else :
 				aSatellite.mIsConfigUsed = 1
