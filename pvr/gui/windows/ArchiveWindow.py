@@ -314,18 +314,24 @@ class ArchiveWindow( BaseWindow ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				#LOG_TRACE( '-------------------Event[%s] key[%s]'% ( aEvent.getName( ), aEvent.mKey ) )
 				if aEvent.mType == ElisEnum.E_EOF_END :
-					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+					if self.mPlayingRecord and self.mPlayingRecord.mRecordKey == aEvent.mKey :
+						#LOG_TRACE( '=================================correct stop' )
+						#xbmc.executebuiltin( 'xbmc.Action(stop)' )
+						self.StopRecordPlayback( )
 
 			elif aEvent.getName( ) == ElisEventPlaybackStarted.getName( ) :
 				self.UpdatePlayStopThumbnail( aEvent.mKey, True )
 
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
-				if self.mPlayingRecord :
+				#LOG_TRACE( '-------------------Event[%s] key[%s]'% ( aEvent.getName( ), aEvent.mKey ) )
+				if self.mPlayingRecord and self.mPlayingRecord.mRecordKey == aEvent.mKey :
 					self.UpdatePlayStopThumbnail( aEvent.mKey, False )
 					self.UpdatePlayStatus( )
 
 			elif aEvent.getName( ) == ElisEventJpegEncoded.getName( ) :
+				#LOG_TRACE( '-------------------Event[%s] key[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 				if self.mCtrlHideWatched.isSelected( ) :
 					self.Load( )
 					self.UpdateList( )
@@ -333,16 +339,17 @@ class ArchiveWindow( BaseWindow ) :
 					return
 
 				#refresh preload
-				LOG_TRACE( '------------------------------------Event[%s]'% aEvent.getName( ) )
+				#LOG_TRACE( '------------------------------------Event[%s]'% aEvent.getName( ) )
 				if self.mViewMode == E_VIEW_POSTER_WRAP :
 					thread = threading.Timer( 0.1, self.RefreshListItemByPosterWrap, [aEvent] )
 					thread.start( )
 					return
 
-				isPlay = False
-				if self.mPlayingRecord :
-					isPlay = True
-				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, isPlay )
+				#isPlay = False
+				#if self.mPlayingRecord :
+				#	isPlay = True
+				#self.UpdatePlayStopThumbnail( aEvent.mRecordKey, isPlay )
+				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
 				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
 
@@ -610,6 +617,7 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Playing', 'True' )
 		else :
 			recItem.setProperty( 'Playing', 'False' )
+		LOG_TRACE( '----------------playing[%s] recKey[%s] idx[%s]'% ( aIsStartEvent, recInfo.mRecordKey, listindex ) )
 
 		xbmc.executebuiltin( 'container.refresh' )
 		#self.SetFocusList( self.mViewMode )
@@ -723,7 +731,9 @@ class ArchiveWindow( BaseWindow ) :
 
 	def StopRecordPlayback( self ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			LOG_TRACE( '-----------------------------1----' )
 			ret = self.mDataCache.Player_Stop( )
+			LOG_TRACE( '-----------------------------2----' )
 			self.mLastFocusItem = -1
 
 
@@ -753,9 +763,12 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 				else :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+
 				SetLock2( True )
 				self.mPlayingRecord = recInfo
-				SetLock2( False )				
+				SetLock2( False )
+				LOG_TRACE( '-----------start recKey[%s]'% recInfo.mRecordKey )
+
 				self.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
 

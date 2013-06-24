@@ -106,9 +106,19 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 			if aEvent.mType == ElisEnum.E_EOF_END :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW and \
-				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE :
-					LOG_TRACE( 'CHECK onEVENT[%s] stop'% aEvent.getName( ) )
-					self.mDataCache.Player_Stop( )
+				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE and \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW :
+					LOG_TRACE( 'CHECK onEVENT[%s] stop key[%s]'% ( aEvent.getName( ), aEvent.mKey ) )
+					mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+					if mPlayingRecord :
+						#isArchive and recordKey == EOF Key
+						if mPlayingRecord.mRecordKey == aEvent.mKey :
+							LOG_TRACE('--------------------------global stop' )
+							self.mDataCache.Player_Stop( )
+					else :
+						#isTimeshift
+						LOG_TRACE('--------------------------global stop' )
+						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
