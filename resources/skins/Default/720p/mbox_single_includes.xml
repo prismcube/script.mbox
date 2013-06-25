@@ -5312,7 +5312,7 @@
 						<posx>130</posx>
 						<posy>5</posy>
 						<width>475</width>
-						<height>37</height>
+						<height>30</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
@@ -5364,10 +5364,11 @@
 					<control type="progress" >
 						<description>EPG progress control</description>
 						<posx>612</posx>
-						<posy>50</posy>
+						<posy>45</posy>
 						<width>130</width>
-						<height>8</height>
+						<height>14</height>
 						<progress>percent</progress>
+						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
@@ -5486,10 +5487,11 @@
 					<control type="progress" >
 						<description>EPG progress control</description>
 						<posx>612</posx>
-						<posy>50</posy>
+						<posy>45</posy>
 						<width>130</width>
-						<height>8</height>
+						<height>14</height>
 						<progress>percent</progress>
+						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</focusedlayout>
