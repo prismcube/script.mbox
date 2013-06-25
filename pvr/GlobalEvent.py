@@ -478,14 +478,16 @@ class GlobalEvent( object ) :
 			LOG_TRACE( 'Another dialog aready popuped!!' )
 			return
 
-		msg = MR_LANG( 'USB attached' )
+		msg = MR_LANG( 'Connected' )
 		if not aAttatch :
-			msg = MR_LANG( 'USB detached' )
-
+			msg = MR_LANG( 'Removed' )
+		"""
 		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 		self.mDialogShowInit.SetAutoCloseTime( 1 )
 		self.mDialogShowInit.doModal( )
+		"""
+		xbmc.executebuiltin( 'Notification(USB Device, %s, 3000, USB.png)'%msg )
 
 
 	def ShowEventDialog( self, aEvent ) :
@@ -573,7 +575,7 @@ class GlobalEvent( object ) :
 			"""
 			self.mIsChannelUpdateEvent = False
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Update channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
 			dialog.doModal( )
 
 			self.mDataCache.System_Reboot( )

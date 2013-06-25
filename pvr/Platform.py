@@ -80,7 +80,7 @@ class Platform( object ) :
 					# sample input : 12.0-BETA3 Git:20121206-ae60d24
 					self.mXBMCVersion = float( vs.split( )[0].split( '-' )[0] )
 				except ValueError :
-					print 'Cannot determine version of XBMC from build version: %s. Returning %s' % ( vs, self.mXBMCVersion )
+					print 'Could not determine version of XBMC from build version: %s. Returning %s' % ( vs, self.mXBMCVersion )
 
 		print 'xbmc version=%s' %self.mXBMCVersion
 

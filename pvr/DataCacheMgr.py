@@ -2152,7 +2152,7 @@ class DataCacheMgr( object ) :
 			checkCount = self.Channel_GetCount( newZappingMode.mServiceType )
 			#LOG_TRACE( '-------------check type[%s] count[%s]'% ( newZappingMode.mServiceType, checkCount ) )
 			if checkCount < 1 :
-				LOG_TRACE('Cannot change. currType[%s] failType[%s] 1:TV, 2:Radio, channel is None'% ( zappingMode.mServiceType, newZappingMode.mServiceType ) )
+				LOG_TRACE('Could not change. currType[%s] failType[%s] 1:TV, 2:Radio, channel is None'% ( zappingMode.mServiceType, newZappingMode.mServiceType ) )
 				return False
 
 			#LOG_TRACE('------changed settings')

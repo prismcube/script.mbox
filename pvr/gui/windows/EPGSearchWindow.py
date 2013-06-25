@@ -222,7 +222,7 @@ class EPGSearchWindow( BaseWindow ) :
 		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
 			self.mEPGList = None
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'No results found' ), MR_LANG( 'Cannot find any results for that search') )
+			dialog.SetDialogProperty( MR_LANG( 'No results found' ), MR_LANG( 'Could not find any results for that search') )
 			dialog.doModal( )
 			return
 		"""
@@ -548,7 +548,7 @@ class EPGSearchWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Are you sure you want to delete this timer?'  ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :

@@ -628,7 +628,7 @@ class EPGWindow( BaseWindow ) :
 				epgTotalCount += epgCount
 				
 			else :
-				LOG_ERR( 'Cannot find channel' )
+				LOG_ERR( 'Could not find the channel' )
 				break
 
 		end = time.time( )
@@ -1038,7 +1038,7 @@ class EPGWindow( BaseWindow ) :
 				row += 1
 
 			else :
-				LOG_ERR( 'Cannot find epgList' )
+				LOG_ERR( 'Could not find epgList' )
 				continue
 					
 
@@ -1565,7 +1565,7 @@ class EPGWindow( BaseWindow ) :
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 			else :
-				LOG_ERR( 'Cannot find the channel' )
+				LOG_ERR( 'Could not find the channel' )
 				return
 		
 		elif self.mEPGMode == E_VIEW_CHANNEL  :
@@ -1576,7 +1576,7 @@ class EPGWindow( BaseWindow ) :
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 			else :
-				LOG_ERR( 'Cannot find the channel' )
+				LOG_ERR( 'Could not find the channel' )
 				return
 	
 		dialog.SetChannel( channel )			
@@ -1623,7 +1623,7 @@ class EPGWindow( BaseWindow ) :
 
 		if timer :		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete a timer' ), MR_LANG( 'Are you sure you want to remove this timer?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Are you sure you want to remove this timer?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -1640,7 +1640,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -1742,7 +1742,7 @@ class EPGWindow( BaseWindow ) :
 		for channel in self.mChannelList :
 			channelNameList.append( '%04d %s' %( channel.mNumber, channel.mName ) )
 
-		ret = dialog.select( MR_LANG( 'Select a channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) ) )
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) ) )
 
 		if ret >= 0 :
 			self.mSelectChannel = self.mChannelList[ ret ]
@@ -2179,7 +2179,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 			self.UpdateAllEPGList( )
 		else: 
-			LOG_ERR( 'Cannot find next channel' )
+			LOG_ERR( 'Could find the next channel' )
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )
@@ -2224,7 +2224,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 			self.UpdateAllEPGList( )
 		else: 
-			LOG_ERR( 'Cannot find next channel' )
+			LOG_ERR( 'Could find the next channel' )
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )

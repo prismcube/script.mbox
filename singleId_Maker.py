@@ -169,7 +169,7 @@ def ParseSource( aSourceFile ) :
 	try :
 		fp = open(changeFile, 'w')
 	except Exception, e :
-		print 'except[%s] Cannot open file[%s]'% ( e, changeFile )
+		print 'except[%s] Could not open file[%s]'% ( e, changeFile )
 		return
 
 	count = 0

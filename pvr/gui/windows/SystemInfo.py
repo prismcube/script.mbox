@@ -465,7 +465,7 @@ class SystemInfo( SettingWindow ) :
 			else :
 				temperature = MR_LANG( 'Unknown' )
 
-			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s degree celsius' ) % temperature )
+			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s Degree Celsius' ) % temperature )
 
 
 	def StartCheckHddTempTimer( self ) :

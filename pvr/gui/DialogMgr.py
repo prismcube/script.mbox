@@ -222,7 +222,7 @@ class DialogMgr( object ) :
 			#	return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
 
 			else :
-				LOG_ERR( 'Cannot find dialog' )
+				LOG_ERR( 'Could not find the dialog' )
 
 		except Exception, ex :
 			LOG_ERR( '-----------------------> except[%s]' %ex )

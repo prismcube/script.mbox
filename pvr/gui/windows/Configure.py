@@ -234,7 +234,7 @@ class Configure( SettingWindow ) :
 				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 				dialog = xbmcgui.Dialog( )
 				currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
-				ret = dialog.select( MR_LANG( 'Select menu language' ), menuLanguageList, False, currentindex )
+				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
 				if ret >= 0 and currentindex != ret :
 					if not self.mPlatform.IsPrismCube( ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -245,12 +245,12 @@ class Configure( SettingWindow ) :
 					isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 					if isDownload :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change menu language' ), MR_LANG( 'Try again after completing firmware update' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change Menu Language' ), MR_LANG( 'Try again after completing firmware update' ) )
 						dialog.doModal( )
 						return
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Change menu language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Change Menu Language' ), MR_LANG( 'Do you want to continue?' ), MR_LANG( 'please wait after pressing OK button' ) )
 					dialog.doModal( )
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -375,7 +375,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter a new PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -481,7 +481,7 @@ class Configure( SettingWindow ) :
 						self.DedicatedFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find a hard drive' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
 	 			dialog.doModal( )
 
 	 	elif selectedId == E_ETC :
@@ -660,7 +660,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
 				self.OpenBusyDialog( )
-				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
+				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
@@ -862,7 +862,7 @@ class Configure( SettingWindow ) :
 			self.InitControl( )
 
 		else :
-			LOG_ERR( 'Cannot find selected ID' )
+			LOG_ERR( 'Could not find the selected ID' )
 
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
@@ -1185,7 +1185,7 @@ class Configure( SettingWindow ) :
 			for channel in channelList :
 				channelNameList.append( channel.mName )
 
-			ret = dialog.select( MR_LANG( 'Select a channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -1333,7 +1333,7 @@ class Configure( SettingWindow ) :
 				self.BackupAndFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find backup data' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find backup data' ) )
 				dialog.doModal( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1478,7 +1478,7 @@ class Configure( SettingWindow ) :
 			favoriteList.append( item.mGroupName )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select a favorite group' ), favoriteList, False, self.mEpgFavGroup + 1 )
+		ret = dialog.select( MR_LANG( 'Select Favorite Group' ), favoriteList, False, self.mEpgFavGroup + 1 )
 		if ret >= 0 :
 			return ret
 		else :
@@ -1501,12 +1501,12 @@ class Configure( SettingWindow ) :
 			channelList.append( '%s %s' % ( channel.mNumber, channel.mName ) )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select a start channel number' ), channelList, False, 0 )
+		ret = dialog.select( MR_LANG( 'Start channel number' ), channelList, False, 0 )
 		if ret >= 0 :
 			self.mEpgStartChannel = allChannels[ ret ].mNumber
 		else :
 			return
-		ret = dialog.select( MR_LANG( 'Select an end channel number' ), channelList, False, 0 )
+		ret = dialog.select( MR_LANG( 'End channel number' ), channelList, False, 0 )
 		if ret >= 0 :
 			self.mEpgEndChannel = allChannels[ ret ].mNumber
 		else :

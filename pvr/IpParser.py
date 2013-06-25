@@ -602,7 +602,7 @@ class IpParser( object ) :
 				return status
 
 		else :
-			LOG_ERR( 'Cannot find wifi device' )
+			LOG_ERR( 'Could not find wifi device' )
 
 
 	def GetWifiUseHiddenSsid( self ) :

@@ -511,7 +511,7 @@ class SystemUpdate( SettingWindow ) :
 		if aMsg == E_STRING_CHECK_USB :
 			line = MR_LANG( 'Check your USB device' )
 		elif aMsg == E_STRING_CHECK_ADDRESS :
-			line = MR_LANG( 'Cannot connect to server' )
+			line = MR_LANG( 'Could not connect to server' )
 		elif aMsg == E_STRING_CHECK_UPDATED :
 			line = MR_LANG( 'Already updated to the latest version' )
 		elif aMsg == E_STRING_CHECK_CORRUPT :
@@ -531,13 +531,13 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
 			line = MR_LANG( 'Not enough space on your USB flash memory' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
-			line = MR_LANG( 'Cannot connect to server' )
+			line = MR_LANG( 'Could not connect to server' )
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
 			line = MR_LANG( 'Update process failed' )
 		elif aMsg == E_STRING_CHECK_NOT_OLDVERSION :
-			line = MR_LANG( 'Cannot find previous versions' )
+			line = MR_LANG( 'Could not find previous versions' )
 		elif aMsg == E_STRING_CHECK_FAILED :
-			line = MR_LANG( 'Cannot get the latest firmware%s Please try again' )% NEW_LINE
+			line = MR_LANG( 'Could not get the latest firmware%s Please try again' )% NEW_LINE
 		elif aMsg == E_STRING_CHECK_HAVE_NONE :
 			line = MR_LANG( 'No released firmware available' )
 		elif aMsg == E_STRING_CHECK_DOWNLOADING :
@@ -887,7 +887,7 @@ class SystemUpdate( SettingWindow ) :
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Previous firmware versions' ), verList, False, self.mIndexLastVersion )
+			select =  dialog.select( MR_LANG( 'Previous Firmware versions' ), verList, False, self.mIndexLastVersion )
 
 			if select < 0 :
 				return
@@ -1974,10 +1974,10 @@ class SystemUpdate( SettingWindow ) :
 
 			LOG_TRACE( 'current[%s] newVersion[%s]'% ( mCurrentVersion, newVersion ) )
 			if newVersion :
-				iHead = MR_LANG( 'New Version' )
-				iLine = '%s'% newVersion
+				iHead = MR_LANG( 'System Update' )
+				iLine = ' %s %s'% ( newVersion, MR_LANG( 'is now available' ) )
 				iconN = self.getProperty( 'fwAlarmIcon' )
-				xbmc.executebuiltin( 'Notification(%s,%s,3000,%s)'% ( iHead, iLine, iconN ) )
+				xbmc.executebuiltin( 'Notification(%s,%s,3500,%s)'% ( iHead, iLine, iconN ) )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
@@ -2005,7 +2005,7 @@ class SystemUpdate( SettingWindow ) :
 			showtext.append( text[1] + '( ' + text[2] + ' )' )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select a channel package' ), showtext )
+		ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
 		if ret >= 0 :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
@@ -2040,7 +2040,7 @@ class SystemUpdate( SettingWindow ) :
 			xmlFileList.append( os.path.basename( xmlFullPathList[i] ) )
 
 		dialog = xbmcgui.Dialog( )
-		select = dialog.select( MR_LANG( 'Select a channel list file' ), xmlFileList, False )
+		select = dialog.select( MR_LANG( 'Select Channel List file' ), xmlFileList, False )
 
 		if select >= 0 :
 			#check usb file

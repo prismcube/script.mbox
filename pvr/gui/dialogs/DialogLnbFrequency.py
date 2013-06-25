@@ -64,7 +64,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		elif groupId == E_DialogInput01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Low frequency' ), self.mLowFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Low Frequency' ), self.mLowFreq, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mLowFreq = dialog.GetString( )
@@ -72,7 +72,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'High frequency' ), self.mHighFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'High Frequency' ), self.mHighFreq, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mHighFreq = dialog.GetString( )
@@ -80,7 +80,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		elif groupId == E_DialogInput03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Switch frequency' ), self.mThreshFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Switch Frequency' ), self.mThreshFreq, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mThreshFreq = dialog.GetString( )

@@ -167,6 +167,9 @@ E_MOTORIZE_1_2					= 3
 E_MOTORIZE_USALS				= 4
 E_ONE_CABLE						= 5
 
+# MAX DISEQC_1_0_COUNT
+E_MAX_SATELLITE_COUNT			= 16
+
 # TUNER CONNECTION TYPE
 E_TUNER_SEPARATED				= 0
 E_TUNER_LOOPTHROUGH				= 1
@@ -261,6 +264,7 @@ USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_VIDEO_OUTPUT			= [ MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) ]
 USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Single Transponder' ), MR_LANG( 'All Transponders' ) ]
 USER_ENUM_LIST_ENCRYPT_TYPE			= [ MR_LANG( 'None' ), MR_LANG( 'WEP' ), MR_LANG( 'WPA' ) ]
+USER_ENUM_LIST_UPDATE_NOTIFY		= [ MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Every' ) ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]

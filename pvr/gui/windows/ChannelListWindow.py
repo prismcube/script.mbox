@@ -1174,7 +1174,7 @@ class ChannelListWindow( BaseWindow ) :
 					#line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Save result' ), MR_LANG( 'Do you want to save changes before exit?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Save Result' ), MR_LANG( 'Do you want to save changes before exit?' ) )
 					dialog.doModal( )
 
 					answer = dialog.IsOK( )
@@ -1300,7 +1300,7 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head = MR_LANG( 'Save result' )
+			head = MR_LANG( 'Save Result' )
 			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -2225,7 +2225,7 @@ class ChannelListWindow( BaseWindow ) :
 			aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			if aGroupName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete a favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, aGroupName ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Favorite Group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE, aGroupName ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2342,7 +2342,7 @@ class ChannelListWindow( BaseWindow ) :
 			if isIncludeRec or isIncludeTimer :
 				msg = MR_LANG( 'Are you sure you want to delete the channels%s including currently recording or reserved?' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete channels' ), msg )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Channels' ), msg )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2471,15 +2471,15 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
-					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Delete favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Add to a favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create a favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename a favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Delete a favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
-					context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create a favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2492,14 +2492,14 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				context.append( ContextItem( MR_LANG( 'Change Name' ), CONTEXT_ACTION_CHANGE_NAME ) )
+				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 			else :
 				context = []
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add to this favorite group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			if not self.mChannelList :
 				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE_FAV_CURRENT ) )	
-			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename a favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
@@ -2567,7 +2567,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete a favorite group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE,  groupName ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Favorite Group' ), MR_LANG( 'Are you sure you want to remove%s%s?' ) % ( NEW_LINE,  groupName ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2587,20 +2587,20 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = MR_LANG( 'Enter a name for new favorite group' )
+				label = MR_LANG( 'Enter favorite group name' )
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Enter a new name for this favorite group' )
+				label = MR_LANG( 'Enter new favorite group name' )
 
 			elif selectedAction == CONTEXT_ACTION_CHANGE_NAME :
 				idx = self.mCtrlListCHList.getSelectedPosition( )
 				groupName = self.mChannelList[idx].mName
 				default = groupName
 				result = '%d'%self.mChannelList[idx].mNumber + ':' + default + ':'
-				label = MR_LANG( 'Enter a new name for this favorite group' )
+				label = MR_LANG( 'Enter new channel name' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
@@ -2610,7 +2610,7 @@ class ChannelListWindow( BaseWindow ) :
 			if name :
 				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
 				   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-					LOG_TRACE( 'cannot fav.rename : same name' )
+					LOG_TRACE( 'could not rename fav. : same name exist' )
 					return
 
 				groupName = result + name
@@ -2645,7 +2645,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG( 'Delete all channels' ), CONTEXT_ACTION_MENU_DELETEALL ) )
+			context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_MENU_DELETEALL ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
