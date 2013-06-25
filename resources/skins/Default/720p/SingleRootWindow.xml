@@ -6175,9 +6175,9 @@ Search for window name
 							</control>
 							<!-- Channel Name -->
 							<control type="label">
-								<posx>90</posx>
-								<posy>5</posy>
-								<width>185</width>
+								<posx>92</posx>
+								<posy>6</posy>
+								<width>195</width>
 								<height>30</height>
 								<font>font13_title</font>
 								<textcolor>grey2</textcolor>
@@ -6191,17 +6191,18 @@ Search for window name
 							<control type="progress" >
 								<description>EPG progress control</description>
 								<posx>300</posx>
-								<posy>20</posy>
+								<posy>17</posy>
 								<width>70</width>
-								<height>7</height>
+								<height>9</height>
 								<progress>percent</progress>
+								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
 							<control type="label">
-								<posx>90</posx>
-								<posy>35</posy>
-								<width>285</width>
+								<posx>92</posx>
+								<posy>36</posy>
+								<width>280</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
@@ -6236,13 +6237,13 @@ Search for window name
 							</control>
 							<!-- Channel Name -->
 							<control type="label">
-								<posx>90</posx>
-								<posy>5</posy>
-								<width>185</width>
+								<posx>92</posx>
+								<posy>6</posy>
+								<width>195</width>
 								<height>30</height>
 								<font>font13_title</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -6252,21 +6253,22 @@ Search for window name
 							<control type="progress" >
 								<description>EPG progress control</description>
 								<posx>300</posx>
-								<posy>20</posy>
+								<posy>17</posy>
 								<width>70</width>
-								<height>7</height>
+								<height>9</height>
 								<progress>percent</progress>
+								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
 							<control type="label">
-								<posx>90</posx>
-								<posy>35</posy>
-								<width>285</width>
+								<posx>92</posx>
+								<posy>36</posy>
+								<width>280</width>
 								<height>20</height>
 								<font>font12</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -6276,8 +6278,8 @@ Search for window name
 					</control>
 				</control>
 				<control type="label">
-					<posx>890</posx>
-					<posy>57r</posy>
+					<posx>892</posx>
+					<posy>56r</posy>
 					<width>300</width>
 					<height>20</height>
 					<font>font12</font>
