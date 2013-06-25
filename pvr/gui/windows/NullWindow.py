@@ -82,7 +82,9 @@ class NullWindow( BaseWindow ) :
 			unpackPath = self.mDataCache.USB_GetMountPath( )
 			if unpackPath :
 				self.mDataCache.SetUSBAttached( True )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).CheckBootOnVersion( )
+
+			thread = threading.Timer( 0.1, self.FirmwareNotify )
+			thread.start( )
 
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
@@ -1166,4 +1168,28 @@ class NullWindow( BaseWindow ) :
 			move = dialog.GetMoveToJump( )
 			if move :
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
+
+
+	def FirmwareNotify( self ) :
+		isNotify = False
+		try :
+			fwNotify = int( GetSetting( 'UPDATE_NOTIFY' ) )
+			LOG_TRACE( '----fwNotify[%s]'% fwNotify )
+			if fwNotify == 0 :
+				LOG_TRACE( '----fwNotify None' )
+			elif fwNotify == 1 :
+				fwNotifyCount = int( GetSetting( 'UPDATE_NOTIFY_COUNT' ) )
+				LOG_TRACE( '----fwNotifyCount[%s]'% fwNotifyCount )
+				if fwNotifyCount < 5 :
+					isNotify = True
+					fwNotifyCount += 1
+					SetSetting( 'UPDATE_NOTIFY_COUNT', '%d'% fwNotifyCount )
+			elif fwNotify == 2 :
+				isNotify = True
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+		if fwNotify :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).CheckBootOnVersion( )
 

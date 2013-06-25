@@ -17,7 +17,8 @@
 
 	<!-- Firmware update notify -->
 	<setting id="UPDATE_NOTIFY" type="enum" label="UpdateNotify" values="0|1|2" default="1" />
-	
+	<setting id="UPDATE_NOTIFY_COUNT" type="enum" label="UpdateNotifyCount" values="0|1|2|3|4|5" default="0" />
+
 	<!--
 	<setting id="Username" type="text" label="config" default="default" />
 	<setting id="testbool" type="bool" label="config" default="true" />

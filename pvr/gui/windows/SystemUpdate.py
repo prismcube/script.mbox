@@ -1827,7 +1827,9 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE('3. user settings ------' )
 		mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
 		#LOG_TRACE( 'mboxDir[%s]'% mboxDir )
-		backupFileList = [  '%s/resources/settings.xml'% mboxDir,
+		backupFileList = [  
+							#'%s/resources/settings.xml'% mboxDir,
+							'%s/.xbmc/userdata/addon_data/script.mbox/settings.xml'% E_DEFAULT_PATH_HDD,
 							'%s/.xbmc/userdata/guisettings.xml'% E_DEFAULT_PATH_HDD 
 						 ]
 		try :

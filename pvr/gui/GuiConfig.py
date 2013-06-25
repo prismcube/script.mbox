@@ -282,7 +282,7 @@ E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
 
 def InitTranslateByEnumList( ) :
 	global USER_ENUM_LIST_ON_OFF, USER_ENUM_LIST_YES_NO, USER_ENUM_LIST_DHCP_STATIC, USER_ENUM_LIST_NETWORK_TYPE, USER_ENUM_LIST_VIDEO_OUTPUT
-	global USER_ENUM_LIST_SEARCH_RANGE, E_LIST_LNB_TYPE, E_LIST_MOTORIZE_ACTION, E_LIST_MY_LONGITUDE, E_LIST_MY_LATITUDE
+	global USER_ENUM_LIST_SEARCH_RANGE, E_LIST_LNB_TYPE, E_LIST_MOTORIZE_ACTION, E_LIST_MY_LONGITUDE, E_LIST_MY_LATITUDE, USER_ENUM_LIST_UPDATE_NOTIFY
 
 	InitializedByVariableList( USER_ENUM_LIST_ON_OFF, MR_LANG( 'Off' ), MR_LANG( 'On' ) )
 	InitializedByVariableList( USER_ENUM_LIST_YES_NO, MR_LANG( 'No' ), MR_LANG( 'Yes' ) )
@@ -297,6 +297,7 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) )
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
+	InitializedByVariableList( USER_ENUM_LIST_UPDATE_NOTIFY, MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Every' ) )
 	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )
 
 

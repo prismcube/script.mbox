@@ -1454,6 +1454,9 @@ class Configure( SettingWindow ) :
 		elif aGroupId == E_SpinEx07 :
 			self.mUpdateNotify = self.GetSelectedIndex( E_SpinEx07 )
 			SetSetting( 'UPDATE_NOTIFY', '%d' % self.mUpdateNotify )
+			if self.mUpdateNotify == 1 :
+				SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
+
 
 		else :
 			self.ControlSelect( )
