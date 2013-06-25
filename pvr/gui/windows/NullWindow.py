@@ -83,8 +83,9 @@ class NullWindow( BaseWindow ) :
 			if unpackPath :
 				self.mDataCache.SetUSBAttached( True )
 
-			thread = threading.Timer( 0.1, self.FirmwareNotify )
-			thread.start( )
+			if E_RELEASE_V1_1 :
+				thread = threading.Timer( 0.1, self.FirmwareNotify )
+				thread.start( )
 
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )

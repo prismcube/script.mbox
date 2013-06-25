@@ -104,7 +104,12 @@ class GlobalEvent( object ) :
 					LOG_TRACE( 'Already opened, hddfull' )
 
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
-			if aEvent.mType == ElisEnum.E_EOF_END :
+			if aEvent.mType == ElisEnum.E_EOF_START :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE :
+					ret = self.mDataCache.Player_Resume( )
+					LOG_TRACE( 'EventRecv EOF_START play_resume( ) ret[%s]'% ret )
+
+			elif aEvent.mType == ElisEnum.E_EOF_END :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW and \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE and \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW :
