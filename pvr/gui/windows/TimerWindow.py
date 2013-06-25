@@ -69,7 +69,7 @@ class TimerWindow( BaseWindow ) :
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mCurrentMode.mServiceType )
 		self.mChannelListHash = {}
 
-		LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
+		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
 		if self.mChannelList :
 			for channel in self.mChannelList :

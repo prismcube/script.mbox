@@ -373,7 +373,14 @@ class NullWindow( BaseWindow ) :
 				self.CheckSubTitle( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or \
-		     actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			if actionId == Action.ACTION_MOVE_RIGHT :
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_LIVE :
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
+					return
+
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
