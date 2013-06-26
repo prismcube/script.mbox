@@ -71,6 +71,8 @@ class DialogPopupOK( BaseDialog ) :
 				self.mClosed = True
 				self.CloseDialog( )
 
+			self.mStayCount -= 1
+
 
 	def onFocus( self, aControlId ) :
 		pass
