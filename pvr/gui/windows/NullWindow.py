@@ -83,7 +83,7 @@ class NullWindow( BaseWindow ) :
 			if unpackPath :
 				self.mDataCache.SetUSBAttached( True )
 
-			if E_RELEASE_V1_1 :
+			if E_V1_1_UPDATE_NOTIFY :
 				thread = threading.Timer( 0.1, self.FirmwareNotify )
 				thread.start( )
 
