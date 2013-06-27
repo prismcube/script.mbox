@@ -945,7 +945,7 @@ Search for window name
 							<width>24</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner1),true)</visible>
-							<texture>IconT1w.png</texture>
+							<texture>IconT1w_new.png</texture>
 						</control>
 						<!-- is Tuner2 -->
 						<control type="image">
@@ -954,7 +954,7 @@ Search for window name
 							<width>24</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner2),true)</visible>
-							<texture>IconT2w.png</texture>
+							<texture>IconT2w_new.png</texture>
 						</control>
 						<!-- is Tuner1 & Tuner2 -->
 						<control type="image">
@@ -963,7 +963,7 @@ Search for window name
 							<width>24</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-							<texture>IconT12w.png</texture>
+							<texture>IconT12w_new.png</texture>
 						</control>
 						<!-- is locked? -->
 						<control type="image">
