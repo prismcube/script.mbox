@@ -2251,6 +2251,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
 			#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub ) )
 
+			#re-print current path
+			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub :
+				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+				zappingName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+				if zappingName :
+					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
+					self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
+
 
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
