@@ -6118,10 +6118,10 @@ Search for window name
 				<posy>0</posy>
 				<width>0</width>
 				<height>0</height>
-				<label></label>
-				<font></font>
-				<texturenofocus></texturenofocus>
-				<texturefocus></texturefocus>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>-</texturenofocus>
+				<texturefocus>-</texturefocus>
 				<visible>true</visible>
 			</control>
 			
@@ -6186,8 +6186,8 @@ Search for window name
 						<width>490</width>
 						<height>560</height>
 						<align>left</align>
-						<onleft>-</onleft>
-						<onright>-</onright>
+						<onleft></onleft>
+						<onright></onright>
 						<onup>4601000</onup>
 						<ondown>4601000</ondown>
 						<viewtype label="535">list</viewtype>

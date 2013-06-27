@@ -202,6 +202,7 @@ class SimpleChannelList( BaseWindow ) :
 		strNoEvent = MR_LANG( 'No event' )
 
 		if aUpdateOnly == False :
+			self.mListItems = []
 			for i in range( len( self.mChannelList ) ) :
 				listItem = xbmcgui.ListItem( '', '' )
 				self.mListItems.append( listItem )				
