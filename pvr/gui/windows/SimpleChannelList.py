@@ -326,7 +326,10 @@ class SimpleChannelList( BaseWindow ) :
 				if self.mCurrentChannel.mNumber == channel.mNumber :
 					self.Close( )
 					return
-				
+
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
+
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 			self.mFirstTune = True
