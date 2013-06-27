@@ -48,8 +48,8 @@
 					<height>71</height>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<onleft>-</onleft>
-					<onright>-</onright>
+					<onleft></onleft>
+					<onright></onright>
 				</control>
 				<control type="image">
 					<posx>350</posx>
@@ -116,8 +116,8 @@
 					<height>71</height>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<onleft>-</onleft>
-					<onright>-</onright>
+					<onleft></onleft>
+					<onright></onright>
 				</control>
 				<control type="image">
 					<posx>350</posx>

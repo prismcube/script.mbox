@@ -180,7 +180,7 @@ class SimpleChannelList( BaseWindow ) :
 			xbmc.executebuiltin( 'container.refresh' )			
 			return
 
-		aUpdateOnly = True
+		#aUpdateOnly = True
 		if self.mListItems == None  :
 			aUpdateOnly = False
 			self.mLock.acquire( )
