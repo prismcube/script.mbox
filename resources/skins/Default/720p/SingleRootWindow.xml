@@ -765,7 +765,7 @@ Search for window name
 					<movement>2</movement>
 					<visible>true</visible>
 					<enable>!Control.HasFocus(1300101) | !Control.HasFocus(1300102) | !ControlGroup(1309001).HasFocus</enable>
-					<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(1300061)">Conditional</animation>
+					<!--animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(1300061)">Conditional</animation-->
 					<itemlayout height="40" width="700">
 						<control type="image">
 							<posx>0</posx>
