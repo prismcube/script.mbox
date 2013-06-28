@@ -140,9 +140,10 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def ChannelItems( self ) :
 		for iChannel in self.mDefaultList :
-			#ToDO : isAvailable check
-			if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :
-				continue
+			#isAvailable check, if channelList then all view
+			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :
+					continue
 
 			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 

@@ -31,6 +31,8 @@ class DialogTestCode( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+		self.mLimit = False
+		self.TestList( )
 
 
 	def onAction( self, aAction ) :
@@ -38,11 +40,19 @@ class DialogTestCode( BaseDialog ) :
 			self.CloseDialog( )
 
 		elif aAction == Action.ACTION_SELECT_ITEM :
-			pass
+			if self.mLimit :
+				self.mLimit = False
+			else :
+				self.mLimit = True
+			self.TestList( )
+
 
 		elif aAction == Action.ACTION_STOP :
 			self.CloseDialog( )
 
+		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
+			self.TestScreen( )
+		"""
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			#self.CloseDialog( )
 			#self.setProperty( 'iPlayerRewind', E_TAG_FALSE )
@@ -77,7 +87,7 @@ class DialogTestCode( BaseDialog ) :
 			self.setProperty( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
 			self.setProperty( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
 			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
-
+		"""
 		#elif aAction == Action.ACTION_MOVE_LEFT :
 		#	self.MoveTest( -10 )
 
@@ -91,6 +101,64 @@ class DialogTestCode( BaseDialog ) :
 
 	def onFocus( self, aControlId ):
 		pass
+
+
+	def TestScreen( self ) :
+		self.getControl( 3050 ).reset( )
+		for i in range( 1, 4 ) :
+			imgFile = '%s.png'% i
+			self.setProperty( 'RadioSCR', imgFile )
+			time.sleep( 5 )
+
+		self.setProperty( 'RadioSCR', '' )
+
+
+	def TestList( self ) :
+		mCtrlList = self.getControl( 3050 )
+		mCtrlList.reset()
+		mChannelList = self.mDataCache.Channel_GetList( )
+		mListItems = []
+		if self.mLimit :
+			mChannelList = mChannelList[:12]
+
+		color = ['brown', 'yellow', 'orange', 'blue', 'red', 'purple', 'green', 'pink', 'violet', 'silver', 'golden' ]
+		idx = 0
+		for iChannel in mChannelList :
+
+			if idx >= len( color ) :
+				idx = 0
+			#listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ), '', 'IconHD.png', 'icon-rss.png' )
+			itemLabel = '%04d %s [COLOR %s][B]%s[/B][/COLOR]'% ( iChannel.mNumber, iChannel.mName, color[idx], '[HD]' )
+			idx += 1
+
+			listItem = None
+			if self.mLimit :
+				listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ) )
+			else :
+				listItem = xbmcgui.ListItem( itemLabel )
+
+			if iChannel.mLocked : 
+				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+			if iChannel.mIsCA : 
+				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+			if iChannel.mIsHD : 
+				posx = '%s'% ( 130 + len( iChannel.mName ) )
+				listItem.setProperty( 'iHDPosx', posx )
+				listItem.setProperty( E_XML_PROPERTY_IHD,  E_TAG_TRUE )
+				listItem.setIconImage( 'IconHD.png' )
+				LOG_TRACE( '---------------- posx[%s] len[%s]'% ( posx, len( iChannel.mName ) ) )
+
+			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+			if mTPnum == E_CONFIGURED_TUNER_1 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+			elif mTPnum == E_CONFIGURED_TUNER_1_2 :
+				listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
+
+			mListItems.append( listItem )
+
+		mCtrlList.addItems( mListItems )
 
 '''
 	def onEvent( self, aEvent ) :

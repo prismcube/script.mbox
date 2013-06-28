@@ -183,6 +183,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveItem = []
 		self.mItemCount = 0
 		self.mIsPVR = False
+		self.mSetMarkCount = 0
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
@@ -997,6 +998,7 @@ class ChannelListWindow( BaseWindow ) :
 			#channel list update
 			self.mMarkList = []
 			self.mListItems = None
+			self.mSetMarkCount = 0
 			self.mDataCache.Channel_ResetOldChannelList( )
 			self.mCtrlListCHList.reset( )
 			self.UpdateChannelList( )
@@ -1510,23 +1512,19 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 							
 			for iChannel in self.mChannelList :
-				"""
-				lblTPnum = 'T1'
-				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
-				if mTPnum == E_CONFIGURED_TUNER_2 :
-					lblTPnum = 'T1'
-				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
-					lblTPnum = 'T1, T2'
-				"""
 
-				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+				itemLabel = '%04d %s'% ( iChannel.mNumber, iChannel.mName )
+				if iChannel.mIsHD : 
+					itemLabel = '%04d %s [COLOR orange]%s[/COLOR]'% ( iChannel.mNumber, iChannel.mName, '<HD>' )
+
+				listItem = xbmcgui.ListItem( itemLabel )
 
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 				if iChannel.mIsCA : 
 					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
-				if iChannel.mIsHD : 
-					listItem.setProperty( E_XML_PROPERTY_IHD,  E_TAG_TRUE )
+				#if iChannel.mIsHD : 
+				#	listItem.setProperty( E_XML_PROPERTY_IHD,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecordInfo1 :
 						if iChannel.mSid == self.mRecordInfo1.mServiceId and \
@@ -2169,24 +2167,29 @@ class ChannelListWindow( BaseWindow ) :
 			self.mMarkList.append( aPos )
 
 		iChannel = self.mChannelList[ aPos ]
-		listItem = self.mCtrlListCHList.getListItem(aPos)
+		listItem = self.mCtrlListCHList.getListItem( aPos )
 
 		#mark toggle: disable/enable
 		if listItem.getProperty(E_XML_PROPERTY_MARK) == E_TAG_TRUE : 
 			listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_FALSE)
 			listItem.setLabel( '%04d %s'% ( iChannel.mNumber, iChannel.mName ) )
 		else :
+			self.mSetMarkCount += 1
 			listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
-			listItem.setLabel( '%04d %s  [COLOR white]#%s[/COLOR]'% ( iChannel.mNumber, iChannel.mName, idx + 1 ) )
+			listItem.setLabel( '%04d %s  [COLOR white]#%s[/COLOR]'% ( iChannel.mNumber, iChannel.mName, self.mSetMarkCount ) )
 
 
 	def ClearMark( self ) :
+		self.mSetMarkCount = 0
 		if self.mMarkList == None or len( self.mMarkList ) < 1 or \
 		   self.mChannelList == None or len( self.mChannelList ) < 1 :
 			return
 
 		for pos in self.mMarkList :
-			self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
+			iChannel = self.mChannelList[ pos ]
+			listItem = self.mCtrlListCHList.getListItem( pos )
+			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
+			listItem.setLabel( '%04d %s'% ( iChannel.mNumber, iChannel.mName ) )
 
 
 	def LoadFavoriteGroupList( self ) :
