@@ -5355,7 +5355,7 @@ Search for window name
 						<width>240</width>
 						<height>550</height>
 						<onleft>3709000</onleft>
-						<!--onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright-->
+						<onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright>
 						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
 						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
 						<onup>3709010</onup>

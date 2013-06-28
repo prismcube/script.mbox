@@ -124,6 +124,7 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlScheduledButtonList = []
 		self.mCtrlFocusButton = None
 		#self.mCtrlGridNavigationButtons	= []	
+		self.mCtrlPrevFocusId = 0
 		
 		self.mShowingGMTTime = 0
 		self.mShowingOffset = 0		
@@ -251,11 +252,14 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if self.mEPGMode == E_VIEW_GRID	:
 				focusId = self.getFocusId( )
-				if focusId == LIST_ID_GRID_CHANNEL  :
+				if focusId == LIST_ID_GRID_CHANNEL and self.mCtrlPrevFocusId != RADIIOBUTTON_ID_EXTRA :
 					self.GridControlRight( )
+				elif  focusId == BUTTON_ID_SEARCH :
+					self.mCtrlPrevFocusId = RADIIOBUTTON_ID_EXTRA
+					pass
 				else :
+					self.mCtrlPrevFocusId = BUTTON_ID_SEARCH
 					self.setFocusId( LIST_ID_GRID_CHANNEL )
-					
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if self.mEPGMode == E_VIEW_GRID	:
@@ -264,9 +268,10 @@ class EPGWindow( BaseWindow ) :
 				if focusId == LIST_ID_GRID_CHANNEL  :
 					LOG_TRACE('lael98 test focusid=%d' %focusId )				
 					self.GridControlLeft( )
+				elif  focusId == RADIIOBUTTON_ID_EXTRA :
+					self.setFocusId( LIST_ID_GRID_CHANNEL )
 				else :
 					self.setFocusId( LIST_ID_GRID_CHANNEL )
-
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if self.mEPGMode == E_VIEW_GRID	:
