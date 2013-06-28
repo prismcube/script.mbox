@@ -137,10 +137,9 @@ class DialogTestCode( BaseDialog ) :
 			else :
 				listItem = xbmcgui.ListItem( itemLabel )
 
-			if iChannel.mLocked : 
-				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-			if iChannel.mIsCA : 
-				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mIsHD : 
 				posx = '%s'% ( 130 + len( iChannel.mName ) )
 				listItem.setProperty( 'iHDPosx', posx )

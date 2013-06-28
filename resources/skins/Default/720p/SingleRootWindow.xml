@@ -78,7 +78,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/RADIOSKIN.png</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
 			<control type="image">
@@ -846,18 +846,52 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
+						<!-- is move? -->
+						<control type="image">
+							<posx>580</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Move.png</texture>
+							<visible>substring(ListItem.Property(iMove),true)</visible>
+						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>550</posx>
-							<posy>5</posy>
+							<posx>610</posx>
+							<posy>14</posy>
 							<width>30</width>
-							<height>30</height>
+							<height>12</height>
 							<texture>DI_Skip.png</texture>
 							<visible>substring(ListItem.Property(iSkip),true)</visible>
 						</control>
-						<!-- TPNum -->
-						<!--control type="label">
-							<posx>630</posx>
+						<control type="label">
+							<description>Channel Number</description>
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<control type="label">
+							<description>Channel Name</description>
+							<posx>85</posx>
+							<posy>0</posy>
+							<width>350</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+						<control type="label">
+							<description>Channel HD</description>
+							<posx>440</posx>
 							<posy>0</posy>
 							<width>100</width>
 							<height>40</height>
@@ -865,45 +899,10 @@ Search for window name
 							<textcolor>grey3</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[Window.Property(iTunerNo)]</label>
-						</control-->
-
-						<control type="label">
-							<description>Channel Number & Name</description>
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>410</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-						</control>
-						<control type="label">
-							<description>Move Icon</description>
-							<posx>535</posx>
-							<posy>-1</posy>
-							<width>85</width>
-							<height>40</height>
-							<font>font10_title</font>
-							<textcolor>grey3</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
+							<label>$INFO[ListItem.Property(iHDLabel)]</label>
 						</control>
 					</itemlayout>
 					<focusedlayout height="40" width="700">
-						<!--control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<texture border="0,2,0,2">MenuItemNF.png</texture>
-							<visible>substring(Window(10000).Property(isEmpty),true)</visible>
-						</control-->
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -992,18 +991,51 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
+						<!-- is move? -->
+						<control type="image">
+							<posx>580</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Move.png</texture>
+							<visible>substring(ListItem.Property(iMove),true)</visible>
+						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>550</posx>
-							<posy>5</posy>
+							<posx>610</posx>
+							<posy>12</posy>
 							<width>30</width>
-							<height>30</height>
+							<height>15</height>
 							<texture>DI_Skip.png</texture>
 							<visible>substring(ListItem.Property(iSkip),true)</visible>
 						</control>
-						<!-- TPNum -->
-						<!--control type="label">
-							<posx>630</posx>
+						<control type="label">
+							<description>Channel Number</description>
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<control type="label">
+							<description>Channel Name</description>
+							<posx>85</posx>
+							<posy>0</posy>
+							<width>350</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+						</control>
+						<control type="label">
+							<description>Channel HD</description>
+							<posx>440</posx>
 							<posy>0</posy>
 							<width>100</width>
 							<height>40</height>
@@ -1011,47 +1043,7 @@ Search for window name
 							<textcolor>grey3</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[substring(ListItem.Property(iTunerNo),true)]</label>
-						</control-->
-						<control type="label">
-							<description>Channel Number & Name</description>
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>410</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-							<visible>substring(Window(10000).Property(isMove),true)</visible>
-						</control>
-						<control type="label">
-							<description>Focused Channel Number & Name</description>
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>410</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>white</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-							<visible>!substring(Window(10000).Property(isMove),true)</visible>
-						</control>
-						<control type="label">
-							<description>Move Icon</description>
-							<posx>535</posx>
-							<posy>-1</posy>
-							<width>85</width>
-							<height>40</height>
-							<font>font10_title</font>
-							<textcolor>grey2</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
+							<label>$INFO[ListItem.Property(iHDLabel)]</label>
 						</control>
 					</focusedlayout>
 				</control>
@@ -1725,7 +1717,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/RADIOSKIN.png</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
 			<control type="image" id="1400100">
@@ -2472,7 +2464,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/RADIOSKIN.png</texture>
 				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible>
 			</control>
 			<control type="image" id="2900100">
@@ -6091,7 +6083,7 @@ Search for window name
 				<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
 				<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(1000999)">Conditional</animation>
 				-->
-				<texture>backgrounds/SKINDEFAULT.jpg</texture>
+				<texture>backgrounds/RADIOSKIN.png</texture>
 			</control>
 			<control type="image" id="8899">
 				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
