@@ -774,50 +774,50 @@ Search for window name
 							<height>41</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
-						<!-- is Tuner1 -->
+						<!-- is hd? -->
 						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner1),true)</visible>
-							<texture>IconT1.png</texture>
-						</control>
-						<!-- is Tuner2 -->
-						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner2),true)</visible>
-							<texture>IconT2.png</texture>
-						</control>
-						<!-- is Tuner1 & Tuner2 -->
-						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-							<texture>IconT12.png</texture>
+							<posx>611</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<texture>IconHD1g.png</texture>
+							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
 						<!-- is cas? -->
 						<control type="image">
-							<posx>635</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>IconCas1.png</texture>
+							<posx>640</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<texture>IconCas1g.png</texture>
 							<visible>substring(ListItem.Property(iCas),true)</visible>
 						</control>
-						<!-- is hd? -->
+						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>670</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>IconHD.png</texture>
-							<visible>substring(ListItem.Property(iHD),true)</visible>
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner1),true)</visible>
+							<texture>IconT1g.png</texture>
+						</control>
+						<!-- is Tuner2 -->
+						<control type="image">
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner2),true)</visible>
+							<texture>IconT2g.png</texture>
+						</control>
+						<!-- is Tuner1 & Tuner2 -->
+						<control type="image">
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
+							<texture>IconT12g.png</texture>
 						</control>
 						<!-- is locked? -->
 						<control type="image">
@@ -920,50 +920,50 @@ Search for window name
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
 						</control>
-						<!-- is Tuner1 -->
+						<!-- is hd? -->
 						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner1),true)</visible>
-							<texture>IconT1w.png</texture>
-						</control>
-						<!-- is Tuner2 -->
-						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner2),true)</visible>
-							<texture>IconT2w.png</texture>
-						</control>
-						<!-- is Tuner1 & Tuner2 -->
-						<control type="image">
-							<posx>595</posx>
-							<posy>5</posy>
-							<width>40</width>
-							<height>30</height>
-							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-							<texture>IconT12w.png</texture>
+							<posx>611</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<texture>IconHD1w.png</texture>
+							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
 						<!-- is cas? -->
 						<control type="image">
-							<posx>635</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>IconCas.png</texture>
+							<posx>640</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<texture>IconCas1w.png</texture>
 							<visible>substring(ListItem.Property(iCas),true)</visible>
 						</control>
-						<!-- is hd? -->
+						<!-- is Tuner1 -->
 						<control type="image">
-							<posx>670</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>IconHD.png</texture>
-							<visible>substring(ListItem.Property(iHD),true)</visible>
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner1),true)</visible>
+							<texture>IconT1w_new.png</texture>
+						</control>
+						<!-- is Tuner2 -->
+						<control type="image">
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner2),true)</visible>
+							<texture>IconT2w_new.png</texture>
+						</control>
+						<!-- is Tuner1 & Tuner2 -->
+						<control type="image">
+							<posx>668</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
+							<texture>IconT12w_new.png</texture>
 						</control>
 						<!-- is locked? -->
 						<control type="image">
