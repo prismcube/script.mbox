@@ -1010,43 +1010,85 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
-						<control type="label">
-							<description>Channel Number</description>
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>60</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>white</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+						<control type="group">
+							<visible>!substring(Window(10000).Property(isMove),true)</visible>
+							<control type="label">
+								<description>Channel Number</description>
+								<posx>30</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>selected</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="label">
+								<description>Channel Name</description>
+								<posx>85</posx>
+								<posy>0</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>selected</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+							</control>
+							<control type="label">
+								<description>Channel HD</description>
+								<posx>440</posx>
+								<posy>0</posy>
+								<width>100</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Property(iHDLabel)]</label>
+							</control>
 						</control>
-						<control type="label">
-							<description>Channel Name</description>
-							<posx>85</posx>
-							<posy>0</posy>
-							<width>350</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>white</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
-						</control>
-						<control type="label">
-							<description>Channel HD</description>
-							<posx>440</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(iHDLabel)]</label>
+						<control type="group">
+							<visible>substring(Window(10000).Property(isMove),true)</visible>
+							<control type="label">
+								<description>Channel Number</description>
+								<posx>30</posx>
+								<posy>0</posy>
+								<width>60</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="label">
+								<description>Channel Name</description>
+								<posx>85</posx>
+								<posy>0</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+							</control>
+							<control type="label">
+								<description>Channel HD</description>
+								<posx>440</posx>
+								<posy>0</posy>
+								<width>100</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Property(iHDLabel)]</label>
+							</control>
 						</control>
 					</focusedlayout>
 				</control>

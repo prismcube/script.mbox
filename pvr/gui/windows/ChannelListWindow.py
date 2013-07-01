@@ -2075,6 +2075,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mListItems = None
 			self.mMarkList = []
 			self.mMoveList = []
+			self.mSetMarkCount = 0
 			self.mCtrlListCHList.reset( )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
