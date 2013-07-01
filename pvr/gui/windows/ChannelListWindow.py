@@ -2216,10 +2216,13 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mChannelList[ pos ]
 			hdLabel = ''
 			if iChannel.mIsHD :
-				hdLabel = E_TAG_COLOR_HD_LABEL
+				if len( iChannel.mName ) < 31 :
+					hdLabel = E_TAG_COLOR_HD_LABEL
+
 			listItem = self.mCtrlListCHList.getListItem( pos )
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 			listItem.setLabel2( '%s %s'% ( iChannel.mName, hdLabel ) )
+			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
 
 
 	def LoadFavoriteGroupList( self ) :
