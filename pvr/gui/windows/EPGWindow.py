@@ -269,7 +269,11 @@ class EPGWindow( BaseWindow ) :
 					LOG_TRACE('lael98 test focusid=%d' %focusId )				
 					self.GridControlLeft( )
 				elif  focusId == RADIIOBUTTON_ID_EXTRA :
-					self.setFocusId( LIST_ID_GRID_CHANNEL )
+					if self.mCtrlPrevFocusId == RADIIOBUTTON_ID_EXTRA :
+						self.mCtrlPrevFocusId = BUTTON_ID_SEARCH
+						pass
+					else :
+						self.setFocusId( LIST_ID_GRID_CHANNEL )
 				else :
 					self.setFocusId( LIST_ID_GRID_CHANNEL )
 
