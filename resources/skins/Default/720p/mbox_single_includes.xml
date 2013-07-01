@@ -6060,7 +6060,6 @@
 			<focusposition>0</focusposition>
 			<movement>2</movement>
 			<visible>true</visible>
-			<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(1003951)">Conditional</animation>
 			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
 			<itemlayout height="40" width="580">
 				<control type="image">
@@ -6072,16 +6071,25 @@
 				</control>
 				<!-- is cas? -->
 				<control type="image">
-					<posx>500</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>IconCas.png</texture>
+					<posx>540</posx>
+					<posy>12</posy>
+					<width>24</width>
+					<height>18</height>
+					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
+				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>510</posx>
+					<posy>14</posy>
+					<width>30</width>
+					<height>12</height>
+					<texture>DI_Skip.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
 				</control>
 				<!-- is lock? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>5</posx>
 					<posy>7</posy>
 					<width>30</width>
 					<height>30</height>
@@ -6090,7 +6098,7 @@
 				</control>
 				<!-- is mark? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>-3</posx>
 					<posy>10</posy>
 					<width>20</width>
 					<height>20</height>
@@ -6106,20 +6114,10 @@
 					<texture>IconPlateRec.png</texture>
 					<visible>substring(ListItem.Property(iRec),true)</visible>
 				</control>
-				<!-- is skip? -->
-				<control type="image">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>DI_Skip.png</texture>
-					<visible>substring(ListItem.Property(iSkip),true)</visible>
-				</control>
-
 				<control type="label">
 					<posx>30</posx>
 					<posy>0</posy>
-					<width>560</width>
+					<width>60</width>
 					<height>40</height>
 					<font>font13</font>
 					<textcolor>grey3</textcolor>
@@ -6129,16 +6127,26 @@
 					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 				</control>
 				<control type="label">
-					<posx>500</posx>
+					<posx>85</posx>
 					<posy>0</posy>
-					<width>80</width>
+					<width>350</width>
 					<height>40</height>
-					<font>font10_title</font>
-					<textcolor>grey2</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<align>right</align>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
+				</control>
+				<control type="label">
+					<posx>440</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Property(iHDLabel)]</label>
 				</control>
 			</itemlayout>
 			<focusedlayout height="40" width="580">
@@ -6158,16 +6166,25 @@
 				</control>
 				<!-- is cas? -->
 				<control type="image">
-					<posx>500</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>IconCas.png</texture>
+					<posx>540</posx>
+					<posy>12</posy>
+					<width>24</width>
+					<height>18</height>
+					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
+				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>510</posx>
+					<posy>14</posy>
+					<width>30</width>
+					<height>12</height>
+					<texture>DI_Skip.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
 				</control>
 				<!-- is lock? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>5</posx>
 					<posy>7</posy>
 					<width>30</width>
 					<height>30</height>
@@ -6176,7 +6193,7 @@
 				</control>
 				<!-- is mark? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>-3</posx>
 					<posy>10</posy>
 					<width>20</width>
 					<height>20</height>
@@ -6192,19 +6209,10 @@
 					<texture>IconPlateRec.png</texture>
 					<visible>substring(ListItem.Property(iRec),true)</visible>
 				</control>
-				<!-- is skip? -->
-				<control type="image">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>DI_Skip.png</texture>
-					<visible>substring(ListItem.Property(iSkip),true)</visible>
-				</control>
 				<control type="label">
 					<posx>30</posx>
 					<posy>0</posy>
-					<width>560</width>
+					<width>60</width>
 					<height>40</height>
 					<font>font13</font>
 					<textcolor>white</textcolor>
@@ -6214,16 +6222,27 @@
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 				<control type="label">
-					<posx>500</posx>
+					<posx>85</posx>
 					<posy>0</posy>
-					<width>80</width>
+					<width>350</width>
 					<height>40</height>
-					<font>font10_title</font>
-					<textcolor>grey2</textcolor>
+					<font>font13</font>
+					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
-					<align>right</align>
+					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
+				</control>
+				<control type="label">
+					<posx>440</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Property(iHDLabel)]</label>
 				</control>
 			</focusedlayout>
 		</control>

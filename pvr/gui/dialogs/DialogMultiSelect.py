@@ -134,7 +134,7 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def ListItems( self ) :
 		for item in self.mDefaultList :
-			listItem = xbmcgui.ListItem( '%s'% item )
+			listItem = xbmcgui.ListItem( '', '%s'% item )
 			self.mListItems.append( listItem )
 
 
@@ -145,7 +145,13 @@ class DialogMultiSelect( BaseDialog ) :
 				if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :
 					continue
 
-			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+			hdLabel = ''
+			if iChannel.mIsHD :
+				hdLabel = E_TAG_COLOR_HD_LABEL
+			listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+			if len( iChannel.mName ) > 30 :
+				listItem.setLabel2( '%s'% iChannel.mName )
+				listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
 
 			if iChannel.mLocked : 
 				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )

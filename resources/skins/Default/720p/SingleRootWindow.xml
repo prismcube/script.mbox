@@ -783,6 +783,24 @@ Search for window name
 							<texture>IconHD1g.png</texture>
 							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
+						<!-- is move? -->
+						<control type="image">
+							<posx>580</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Move.png</texture>
+							<visible>substring(ListItem.Property(iMove),true)</visible>
+						</control>
+						<!-- is skip? -->
+						<control type="image">
+							<posx>610</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Skip.png</texture>
+							<visible>substring(ListItem.Property(iSkip),true)</visible>
+						</control>
 						<!-- is cas? -->
 						<control type="image">
 							<posx>640</posx>
@@ -821,7 +839,7 @@ Search for window name
 						</control>
 						<!-- is locked? -->
 						<control type="image">
-							<posx>-5</posx>
+							<posx>0</posx>
 							<posy>6</posy>
 							<width>40</width>
 							<height>30</height>
@@ -830,7 +848,7 @@ Search for window name
 						</control>
 						<!-- is marked? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>-5</posx>
 							<posy>10</posy>
 							<width>20</width>
 							<height>20</height>
@@ -845,24 +863,6 @@ Search for window name
 							<height>30</height>
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
-						</control>
-						<!-- is move? -->
-						<control type="image">
-							<posx>580</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
-							<texture>DI_Move.png</texture>
-							<visible>substring(ListItem.Property(iMove),true)</visible>
-						</control>
-						<!-- is skip? -->
-						<control type="image">
-							<posx>610</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
-							<texture>DI_Skip.png</texture>
-							<visible>substring(ListItem.Property(iSkip),true)</visible>
 						</control>
 						<control type="label">
 							<description>Channel Number</description>
@@ -928,6 +928,24 @@ Search for window name
 							<texture>IconHD1w.png</texture>
 							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
+						<!-- is move? -->
+						<control type="image">
+							<posx>580</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Move.png</texture>
+							<visible>substring(ListItem.Property(iMove),true)</visible>
+						</control>
+						<!-- is skip? -->
+						<control type="image">
+							<posx>610</posx>
+							<posy>14</posy>
+							<width>30</width>
+							<height>12</height>
+							<texture>DI_Skip.png</texture>
+							<visible>substring(ListItem.Property(iSkip),true)</visible>
+						</control>
 						<!-- is cas? -->
 						<control type="image">
 							<posx>640</posx>
@@ -966,7 +984,7 @@ Search for window name
 						</control>
 						<!-- is locked? -->
 						<control type="image">
-							<posx>-5</posx>
+							<posx>0</posx>
 							<posy>6</posy>
 							<width>40</width>
 							<height>30</height>
@@ -975,7 +993,7 @@ Search for window name
 						</control>
 						<!-- is marked? -->
 						<control type="image">
-							<posx>0</posx>
+							<posx>-5</posx>
 							<posy>10</posy>
 							<width>20</width>
 							<height>20</height>
@@ -991,24 +1009,6 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
-						<!-- is move? -->
-						<control type="image">
-							<posx>580</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
-							<texture>DI_Move.png</texture>
-							<visible>substring(ListItem.Property(iMove),true)</visible>
-						</control>
-						<!-- is skip? -->
-						<control type="image">
-							<posx>610</posx>
-							<posy>12</posy>
-							<width>30</width>
-							<height>15</height>
-							<texture>DI_Skip.png</texture>
-							<visible>substring(ListItem.Property(iSkip),true)</visible>
-						</control>
 						<control type="label">
 							<description>Channel Number</description>
 							<posx>30</posx>
@@ -1016,7 +1016,8 @@ Search for window name
 							<width>60</width>
 							<height>40</height>
 							<font>font13</font>
-							<textcolor>grey3</textcolor>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>
@@ -1028,7 +1029,8 @@ Search for window name
 							<width>350</width>
 							<height>40</height>
 							<font>font13</font>
-							<textcolor>grey3</textcolor>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label2]</label>
