@@ -974,13 +974,9 @@ class TimeShiftPlate( BaseWindow ) :
 			#self.mTimeshift_curTime = 0.0
 			#self.mTimeshift_endTime = 0.0
 			self.mTimeshift_playTime= status.mPlayTimeInMs
-
-			if status.mStartTimeInMs :
-				self.mTimeshift_staTime = status.mStartTimeInMs #/ 1000.0
-			if status.mPlayTimeInMs :
-				self.mTimeshift_curTime = status.mPlayTimeInMs  #/ 1000.0
-			#if status.mEndTimeInMs :
-			#	self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
+			self.mTimeshift_staTime = status.mStartTimeInMs
+			self.mTimeshift_curTime = status.mPlayTimeInMs
+			self.mTimeshift_endTime = status.mEndTimeInMs
 
 			tempStartTime   = self.mTimeshift_staTime / 1000.0
 			tempCurrentTime = self.mTimeshift_curTime / 1000.0
