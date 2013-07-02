@@ -13,7 +13,9 @@ class SimpleChannelList( BaseWindow ) :
 
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mLock = thread.allocate_lock( )		
+		self.mLock = thread.allocate_lock( )
+		self.mChannelList = None
+		self.mCurrentChannel = None		
 		self.mEPGHashTable = {}
 		self.mEPGList	= []	
 		self.mListItems = []		
@@ -60,6 +62,10 @@ class SimpleChannelList( BaseWindow ) :
 
 		self.mInitialized = True
 		self.setFocusId( LIST_ID_BIG_CHANNEL )
+
+
+	def ResetControls( self ) :
+		self.mListItems = []
 
 
 	def onAction( self, aAction ) :
@@ -142,6 +148,16 @@ class SimpleChannelList( BaseWindow ) :
 		self.mEPGHashTable = {}
 
 
+	def PreAction( self ) :
+		if self.mChannelList == None or self.mCurrentChannel == None or self.mListItems == None :
+			return
+
+		self.mChannelList = self.mDataCache.Channel_GetList( )
+
+		if len( self.mChannelList ) > 0 and  len( self.mChannelList ) == len( self.mListItems ) :	
+			self.FocusCurrentChannel( )
+
+
 	def UpdateAllEPGList( self ) :
 		self.Flush( )
 		self.Load( )
@@ -180,7 +196,7 @@ class SimpleChannelList( BaseWindow ) :
 			xbmc.executebuiltin( 'container.refresh' )			
 			return
 
-		#aUpdateOnly = True
+		aUpdateOnly = True
 		if self.mListItems == None  :
 			aUpdateOnly = False
 			self.mLock.acquire( )
@@ -202,10 +218,10 @@ class SimpleChannelList( BaseWindow ) :
 		strNoEvent = MR_LANG( 'No event' )
 
 		if aUpdateOnly == False :
-			self.mListItems = []
 			for i in range( len( self.mChannelList ) ) :
 				listItem = xbmcgui.ListItem( '', '' )
-				self.mListItems.append( listItem )				
+				self.mListItems.append( listItem )
+
 			self.mCtrlBigList.addItems( self.mListItems )
 		
 		for i in range( len( self.mChannelList ) ) :
@@ -267,7 +283,7 @@ class SimpleChannelList( BaseWindow ) :
 			return
 
 		fucusIndex = 0
-		if self.mCurrentChannel and self.mCurrentChannel.mError == 0 :
+		if self.mCurrentChannel and self.mCurrentChannel.mError == 0  and self.mChannelList:
 			for channel in self.mChannelList:
 				if channel.mNumber == self.mCurrentChannel.mNumber :
 					break

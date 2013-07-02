@@ -176,6 +176,9 @@ class WindowMgr( object ) :
 						self.mRootWindow.setProperty( 'SettingPip', 'False' )
 						self.mRootWindow.setProperty( 'SettingBackground', 'False' )
 						time.sleep( 0.3 )
+
+					if aWindowId == WIN_ID_SIMPLE_CHANNEL_LIST :
+						self.mWindows[aWindowId].PreAction( )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					self.mWindows[aWindowId].onInit( )
@@ -216,6 +219,9 @@ class WindowMgr( object ) :
 							self.mRootWindow.setProperty( 'SettingPip', 'False' )
 							self.mRootWindow.setProperty( 'SettingBackground', 'False' )
 							time.sleep( 0.3 )
+
+						if parentId == WIN_ID_SIMPLE_CHANNEL_LIST :
+							self.mWindows[parentId].PreAction( )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						self.mWindows[parentId].onInit( )									
