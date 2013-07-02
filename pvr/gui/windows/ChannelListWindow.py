@@ -2681,19 +2681,19 @@ class ChannelListWindow( BaseWindow ) :
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
 
-			name = ''
+			isConfirmed = kb.isConfirmed( )
 			name = kb.getText( )
-			if name :
-				if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
-				   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-					LOG_TRACE( 'could not rename fav. : same name exist' )
-					return
-
-				groupName = result + name
-
-			else :
+			if not isConfirmed or name == None or name == '' :
 				LOG_TRACE('no favName or cencel')
 				return
+
+			if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
+			   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
+				LOG_TRACE( 'could not rename fav. : same name exist' )
+				return
+
+			groupName = result + name
+
 
 		#LOG_TRACE( 'mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
