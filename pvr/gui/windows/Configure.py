@@ -97,6 +97,17 @@ class Configure( SettingWindow ) :
 		self.mEpgEndChannel			= 1
 		self.mEpgFavGroup			= 0
 
+		self.mAudioLanguageList		= []
+		self.mSubtitleLanguageList	= []
+		self.mSubtitleLanguageList_S= []
+
+		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
+		for i in range( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mSubtitleLanguageList.append( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
+		for i in range( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mSubtitleLanguageList_S.append( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
+
 
 	def onInit( self ) :
 		self.OpenBusyDialog( )
@@ -260,10 +271,29 @@ class Configure( SettingWindow ) :
 						time.sleep( 0.5 )
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 
-			elif groupId == E_SpinEx02 :
-				self.DisableControl( E_LANGUAGE )
-				self.ControlSelect( )
-			else :
+			elif groupId == E_Input02 :
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Audio language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
+				if ret >= 0 :
+					ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
+					self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
+
+			elif groupId == E_Input03 :
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Subtitle language' ), self.mSubtitleLanguageList, False, StringToListIndex( self.mSubtitleLanguageList, self.GetControlLabel2String( E_Input03 ) ) )
+				if ret >= 0 :
+					ElisPropertyEnum( 'Subtitle Language', self.mCommander ).SetPropIndex( ret )
+					self.SetControlLabel2String( E_Input03, self.mSubtitleLanguageList[ ret ] )
+					self.DisableControl( E_LANGUAGE )
+
+			elif groupId == E_Input04 :
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Secondary Subtitle Language' ), self.mSubtitleLanguageList_S, False, StringToListIndex( self.mSubtitleLanguageList_S, self.GetControlLabel2String( E_Input04 ) ) )
+				if ret >= 0 :
+					ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).SetPropIndex( ret )
+					self.SetControlLabel2String( E_Input04, self.mSubtitleLanguageList_S[ ret ] )
+
+			elif groupId == E_SpinEx01 :
 				self.ControlSelect( )
 
 		elif selectedId == E_HDMI_SETTING :
@@ -559,16 +589,16 @@ class Configure( SettingWindow ) :
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), XBMC_GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
-			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx04, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Subtitle Language' ), self.mSubtitleLanguageList[ ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language for the subtitle to be in' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Secondary Subtitle Language' ), self.mSubtitleLanguageList_S[ ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx01, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
 
-			visibleControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -876,14 +906,15 @@ class Configure( SettingWindow ) :
 
 	def DisableControl( self, aSelectedItem ) :
 		if aSelectedItem == E_LANGUAGE :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )
-			visibleControlIds = [ E_SpinEx03, E_SpinEx04 ]
-			if selectedIndex == 0 :
+			#selectedIndex = self.GetSelectedIndex( E_SpinEx02 )
+			subTitleValue = ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetProp( )
+			visibleControlIds = [ E_Input04, E_SpinEx01 ]
+			if subTitleValue == 0 :
 				self.SetEnableControls( visibleControlIds, False )
-				control = self.getControl( E_SpinEx04 + 3 )
+				control = self.getControl( E_SpinEx01 + 3 )
 				time.sleep( 0.02 )
 				control.selectItem( 0 )
-				self.SetProp( E_SpinEx04, 0 )
+				self.SetProp( E_SpinEx01, 0 )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 

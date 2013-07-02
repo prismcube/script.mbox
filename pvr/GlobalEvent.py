@@ -232,10 +232,14 @@ class GlobalEvent( object ) :
 
 
 	def AsyncHddFull( self ) :
+		keyblock = 0
+		currentWinid = self.GetCurrentWindowIdForStanByClose( )
+		if currentWinid == WinMgr.WIN_ID_LIVE_PLATE or currentWinid == WinMgr.WIN_ID_TIMESHIFT_PLATE :
+			keyblock = 1
 		self.mIsHddFullDialogOpened = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-		dialog.SetStayCount( 1 )
+		dialog.SetStayCount( keyblock )
 		dialog.doModal( )
 
 		self.mIsHddFullDialogOpened = False

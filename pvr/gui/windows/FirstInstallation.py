@@ -19,13 +19,12 @@ class FirstInstallation( FTIWindow ) :
 		self.mTime						= 0
 		self.mSetupChannel				= None
 		self.mHasChannel				= False
-		#self.mZoomRate					= 0
 
 		self.mAsyncVideoSetThread		= None
 
 		self.mStepImage					= []
 		self.mBusyVideoSetting			= False
-		#self.mReloadSkinPosition		= False
+		self.mReloadSkinPosition		= False
 
 
 	def onInit( self ) :
@@ -35,10 +34,10 @@ class FirstInstallation( FTIWindow ) :
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 
 		self.SetFirstInstallation( True )
-		#if self.mReloadSkinPosition :
-		#	WinMgr.GetInstance( ).LoadSkinPosition( )
-		#	self.mReloadSkinPosition = False
-		#	self.SetListControl( E_STEP_ANTENNA )
+		if self.mReloadSkinPosition :
+			WinMgr.GetInstance( ).LoadSkinPosition( )
+			self.mReloadSkinPosition = False
+			#self.SetListControl( E_STEP_ANTENNA )
 			
 		self.SetPipScreen( )
 		
@@ -146,7 +145,10 @@ class FirstInstallation( FTIWindow ) :
 
 		elif self.GetFTIStep( ) == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ZOOM )
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+				self.mReloadSkinPosition = True
+				self.SetFTIStep( E_STEP_ANTENNA )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 			elif groupId == E_SpinEx03 :
 				if self.mBusyVideoSetting :
@@ -161,16 +163,6 @@ class FirstInstallation( FTIWindow ) :
 			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 				self.ControlSelect( )
 
-			#elif groupId == E_SpinEx04 :
-				#self.mZoomRate = self.GetSelectedIndex( E_SpinEx04 )
-				#XBMC_SetSkinZoom( int( E_LIST_SKIN_ZOOM_RATE[ self.mZoomRate ] ) )
-				#WinMgr.GetInstance( ).LoadSkinPosition( )
-				#self.SetPipScreen( )
-
-			#elif groupId == E_Input01 :
-			#	self.mReloadSkinPosition = True
-			#	xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
-
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 :
 				self.ControlSelect( )
@@ -180,7 +172,10 @@ class FirstInstallation( FTIWindow ) :
 			elif groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.GotoAntennaNextStep( )
 			elif groupId == E_FIRST_TIME_INSTALLATION_PREV :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ZOOM )
+				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
+				self.mReloadSkinPosition = True
+				self.SetFTIStep( E_STEP_VIDEO_AUDIO )
+				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 				return
 
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
@@ -251,14 +246,11 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_VIDEO_AUDIO :
-			#self.mZoomRate = getZoomRateIndex( XBMC_GetSkinZoom( ) )
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
-			#self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Video Zoom' ), E_LIST_SKIN_ZOOM_RATE, self.mZoomRate, MR_LANG( 'Zoom in/out your TV screen' ) )
-			#self.AddInputControl( E_Input01, MR_LANG( 'Video Calibration' ), '', MR_LANG( 'Calibrate your display to get the best viewing experience' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
