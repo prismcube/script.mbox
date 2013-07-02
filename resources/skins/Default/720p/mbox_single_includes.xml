@@ -4226,7 +4226,7 @@
 			<control type="label" id="1006301">
 				<posx>10</posx>
 				<posy>0</posy>
-				<width>100</width>
+				<width>135</width>
 				<height>40</height>
 				<font>font13</font>
 				<textcolor>grey2</textcolor>
@@ -4237,26 +4237,26 @@
 				<visible>Control.IsVisible(1006300)</visible>
 			</control>
 			<control type="panel" id="1006302">
-				<posx>130</posx>
-				<width>420</width>
+				<posx>155</posx>
+				<width>385</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<orientation>horizontal</orientation>
 				<visible>Control.IsVisible(1006300)</visible>
-				<itemlayout height="40" width="60">
+				<itemlayout height="40" width="55">
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 					</control>
 					<control type="label">
-						<posx>30</posx>
+						<posx>25</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -4266,9 +4266,9 @@
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>30</posx>
+						<posx>25</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>FFFF0000</textcolor>
@@ -4278,11 +4278,11 @@
 						<visible>substring(ListItem.Property(Used),True)</visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="40" width="60">
+				<focusedlayout height="40" width="55">
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<bordertexture border="5">folder-focus.png</bordertexture>
 						<bordersize>5</bordersize>
@@ -4290,9 +4290,9 @@
 						<texture background="true">button-nofocus.png</texture>
 					</control>
 					<control type="label">
-						<posx>30</posx>
+						<posx>25</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -4302,9 +4302,9 @@
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>30</posx>
+						<posx>25</posx>
 						<posy>0</posy>
-						<width>60</width>
+						<width>55</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>FFFF0000</textcolor>

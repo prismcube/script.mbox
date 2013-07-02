@@ -9,14 +9,17 @@ E_BUTTON_ADD				= 200
 E_BUTTON_CANCEL				= 201
 
 E_ONCE						= 0
-E_DAILY						= 1
-E_WEEKLY					= 2
+E_WEEKLY					= 1
+E_DAILY						= 2
+
 
 
 WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
 
-LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
+#LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
+LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Weekly' ), '%s(7 %s)' %(MR_LANG( 'Weekly' ), MR_LANG( 'Days' ))  ]
 LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
+
 
 MININUM_KEYWORD_SIZE  		= 3
 ONE_DAY_SECONDS				= 3600*24
@@ -49,7 +52,8 @@ class DialogAddManualTimer( SettingDialog ) :
 	def onInit( self ) :
 		global LIST_RECORDING_MODE
 		global LIST_WEEKLY
-		LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
+		#LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
+		LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Weekly' ), '%s(7 %s)' %(MR_LANG( 'Weekly' ), MR_LANG( 'Days' ))  ]
 		LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
 
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -315,7 +319,8 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Start Date' ), [ MR_LANG( 'Date' ) ], 0 )			
 			#self.AddInputControl(  E_DialogSpinEx02, 'Date', 'Date' )
 			self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
-			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )			
+			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )
+			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of week' ) )
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
 			self.AddOkCanelButton( )
