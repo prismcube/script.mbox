@@ -786,26 +786,26 @@ Search for window name
 						<!-- is move? -->
 						<control type="image">
 							<posx>580</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
+							<posy>13</posy>
+							<width>28</width>
+							<height>18</height>
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>610</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
-							<texture>DI_Skip.png</texture>
+							<posx>608</posx>
+							<posy>13</posy>
+							<width>26</width>
+							<height>18</height>
+							<texture>DI_Skip1g.png</texture>
 							<visible>substring(ListItem.Property(iSkip),true)</visible>
 						</control>
 						<!-- is cas? -->
 						<control type="image">
 							<posx>640</posx>
 							<posy>12</posy>
-							<width>24</width>
+							<width>26</width>
 							<height>18</height>
 							<texture>IconCas1g.png</texture>
 							<visible>substring(ListItem.Property(iCas),true)</visible>
@@ -814,7 +814,7 @@ Search for window name
 						<control type="image">
 							<posx>668</posx>
 							<posy>12</posy>
-							<width>24</width>
+							<width>26</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner1),true)</visible>
 							<texture>IconT1g.png</texture>
@@ -823,7 +823,7 @@ Search for window name
 						<control type="image">
 							<posx>668</posx>
 							<posy>12</posy>
-							<width>24</width>
+							<width>26</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner2),true)</visible>
 							<texture>IconT2g.png</texture>
@@ -832,7 +832,7 @@ Search for window name
 						<control type="image">
 							<posx>668</posx>
 							<posy>12</posy>
-							<width>24</width>
+							<width>26</width>
 							<height>18</height>
 							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 							<texture>IconT12g.png</texture>
@@ -931,19 +931,19 @@ Search for window name
 						<!-- is move? -->
 						<control type="image">
 							<posx>580</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
+							<posy>13</posy>
+							<width>28</width>
+							<height>18</height>
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>610</posx>
-							<posy>14</posy>
-							<width>30</width>
-							<height>12</height>
-							<texture>DI_Skip.png</texture>
+							<posx>608</posx>
+							<posy>13</posy>
+							<width>26</width>
+							<height>18</height>
+							<texture>DI_Skip1g.png</texture>
 							<visible>substring(ListItem.Property(iSkip),true)</visible>
 						</control>
 						<!-- is locked? -->
@@ -979,7 +979,7 @@ Search for window name
 							<control type="image">
 								<posx>640</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<texture>IconCas1w.png</texture>
 								<visible>substring(ListItem.Property(iCas),true)</visible>
@@ -988,7 +988,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
 								<texture>IconT1w_new.png</texture>
@@ -997,7 +997,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2w_new.png</texture>
@@ -1006,7 +1006,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 								<texture>IconT12w_new.png</texture>
@@ -1056,7 +1056,7 @@ Search for window name
 							<control type="image">
 								<posx>640</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<texture>IconCas1g.png</texture>
 								<visible>substring(ListItem.Property(iCas),true)</visible>
@@ -1065,7 +1065,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
 								<texture>IconT1g.png</texture>
@@ -1074,7 +1074,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2g.png</texture>
@@ -1083,7 +1083,7 @@ Search for window name
 							<control type="image">
 								<posx>668</posx>
 								<posy>12</posy>
-								<width>24</width>
+								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 								<texture>IconT12g.png</texture>
