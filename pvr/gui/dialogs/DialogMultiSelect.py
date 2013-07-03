@@ -159,6 +159,8 @@ class DialogMultiSelect( BaseDialog ) :
 				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : 
 				listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+			if iChannel.mIsHD and E_V1_1_HD_ICON_USE :
+				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
 
 			self.mListItems.append( listItem )
 

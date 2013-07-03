@@ -766,7 +766,7 @@ Search for window name
 					<movement>2</movement>
 					<visible>true</visible>
 					<enable>!Control.HasFocus(1300101) | !Control.HasFocus(1300102) | !ControlGroup(1309001).HasFocus</enable>
-					<itemlayout height="40" width="700">
+					<itemlayout height="40" width="780">
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -774,32 +774,32 @@ Search for window name
 							<height>41</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
-						<!-- is hd? -->
-						<!--control type="image">
-							<posx>611</posx>
-							<posy>12</posy>
-							<width>24</width>
-							<height>18</height>
-							<texture>IconHD1g.png</texture>
-							<visible>substring(ListItem.Property(iHD),true)</visible>
-						</control-->
 						<!-- is move? -->
 						<control type="image">
-							<posx>580</posx>
+							<posx>0</posx>
 							<posy>13</posy>
-							<width>28</width>
-							<height>18</height>
+							<width>22</width>
+							<height>16</height>
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
 						<!-- is skip? -->
 						<control type="image">
-							<posx>608</posx>
+							<posx>586</posx>
 							<posy>13</posy>
 							<width>26</width>
 							<height>18</height>
 							<texture>DI_Skip1g.png</texture>
 							<visible>substring(ListItem.Property(iSkip),true)</visible>
+						</control>
+						<!-- is hd? -->
+						<control type="image">
+							<posx>614</posx>
+							<posy>12</posy>
+							<width>24</width>
+							<height>18</height>
+							<texture>IconHD1g.png</texture>
+							<visible>substring(ListItem.Property(iHD),true)</visible>
 						</control>
 						<!-- is cas? -->
 						<control type="image">
@@ -839,16 +839,16 @@ Search for window name
 						</control>
 						<!-- is locked? -->
 						<control type="image">
-							<posx>0</posx>
-							<posy>6</posy>
-							<width>40</width>
-							<height>30</height>
+							<posx>8</posx>
+							<posy>9</posy>
+							<width>35</width>
+							<height>25</height>
 							<texture>OverlayLocked.png</texture>
 							<visible>substring(ListItem.Property(iLock),true)</visible>
 						</control>
 						<!-- is marked? -->
 						<control type="image">
-							<posx>-5</posx>
+							<posx>0</posx>
 							<posy>10</posy>
 							<width>20</width>
 							<height>20</height>
@@ -866,7 +866,7 @@ Search for window name
 						</control>
 						<control type="label">
 							<description>Channel Number</description>
-							<posx>30</posx>
+							<posx>35</posx>
 							<posy>0</posy>
 							<width>60</width>
 							<height>40</height>
@@ -878,7 +878,7 @@ Search for window name
 						</control>
 						<control type="label">
 							<description>Channel Name</description>
-							<posx>85</posx>
+							<posx>90</posx>
 							<posy>0</posy>
 							<width>350</width>
 							<height>40</height>
@@ -902,7 +902,7 @@ Search for window name
 							<label>$INFO[ListItem.Property(iHDLabel)]</label>
 						</control>
 					</itemlayout>
-					<focusedlayout height="40" width="700">
+					<focusedlayout height="40" width="780">
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -919,45 +919,27 @@ Search for window name
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
 						</control>
-						<!-- is hd? -->
-						<!--control type="image">
-							<posx>611</posx>
-							<posy>12</posy>
-							<width>24</width>
-							<height>18</height>
-							<texture>IconHD1w.png</texture>
-							<visible>substring(ListItem.Property(iHD),true)</visible>
-						</control-->
 						<!-- is move? -->
 						<control type="image">
-							<posx>580</posx>
+							<posx>0</posx>
 							<posy>13</posy>
-							<width>28</width>
-							<height>18</height>
+							<width>22</width>
+							<height>16</height>
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
-						<!-- is skip? -->
-						<control type="image">
-							<posx>608</posx>
-							<posy>13</posy>
-							<width>26</width>
-							<height>18</height>
-							<texture>DI_Skip1g.png</texture>
-							<visible>substring(ListItem.Property(iSkip),true)</visible>
-						</control>
 						<!-- is locked? -->
 						<control type="image">
-							<posx>0</posx>
-							<posy>6</posy>
-							<width>40</width>
-							<height>30</height>
+							<posx>8</posx>
+							<posy>9</posy>
+							<width>35</width>
+							<height>25</height>
 							<texture>OverlayLocked.png</texture>
 							<visible>substring(ListItem.Property(iLock),true)</visible>
 						</control>
 						<!-- is marked? -->
 						<control type="image">
-							<posx>-5</posx>
+							<posx>0</posx>
 							<posy>10</posy>
 							<width>20</width>
 							<height>20</height>
@@ -973,8 +955,26 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
+						<!-- is skip? -->
+						<control type="image">
+							<posx>586</posx>
+							<posy>13</posy>
+							<width>26</width>
+							<height>18</height>
+							<texture>DI_Skip1g.png</texture>
+							<visible>substring(ListItem.Property(iSkip),true)</visible>
+						</control>
 						<control type="group">
 							<visible>!substring(Window(10000).Property(isMove),true)</visible>
+							<!-- is hd? -->
+							<control type="image">
+								<posx>614</posx>
+								<posy>12</posy>
+								<width>24</width>
+								<height>18</height>
+								<texture>IconHD1w.png</texture>
+								<visible>substring(ListItem.Property(iHD),true)</visible>
+							</control>
 							<!-- is cas? -->
 							<control type="image">
 								<posx>640</posx>
@@ -1013,7 +1013,7 @@ Search for window name
 							</control>
 							<control type="label">
 								<description>Channel Number</description>
-								<posx>30</posx>
+								<posx>35</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>40</height>
@@ -1026,7 +1026,7 @@ Search for window name
 							</control>
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>85</posx>
+								<posx>90</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
@@ -1035,6 +1035,7 @@ Search for window name
 								<selectedcolor>selected</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
+								<scroll>true</scroll>
 								<label>$INFO[ListItem.Label2]</label>
 							</control>
 							<control type="label">
@@ -1052,6 +1053,15 @@ Search for window name
 						</control>
 						<control type="group">
 							<visible>substring(Window(10000).Property(isMove),true)</visible>
+							<!-- is hd? -->
+							<control type="image">
+								<posx>614</posx>
+								<posy>12</posy>
+								<width>24</width>
+								<height>18</height>
+								<texture>IconHD1g.png</texture>
+								<visible>substring(ListItem.Property(iHD),true)</visible>
+							</control>
 							<!-- is cas? -->
 							<control type="image">
 								<posx>640</posx>
@@ -1090,7 +1100,7 @@ Search for window name
 							</control>
 							<control type="label">
 								<description>Channel Number</description>
-								<posx>30</posx>
+								<posx>35</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>40</height>
@@ -1102,7 +1112,7 @@ Search for window name
 							</control>
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>85</posx>
+								<posx>90</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
@@ -1130,7 +1140,7 @@ Search for window name
 			</control>
 			<!--  Path Info -->
 			<control type="group" id="1300020">
-				<posx>0</posx>
+				<posx>5</posx>
 				<posy>-20</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300021">
@@ -1958,9 +1968,10 @@ Search for window name
 						<description>Channel Name</description>
 						<posx>270</posx>
 						<posy>17</posy>
-						<align>left</align>
 						<width>450</width>
+						<height>50</height>
 						<scroll>true</scroll>
+						<align>left</align>
 						<font>font35_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<label>$INFO[Control.GetLabel]</label>

@@ -48,9 +48,6 @@ E_UPDATE_FIRMWARE_USE_USB   = False
 E_UPDATE_FIRMWARE_USB_ONLY  = False
 E_UPDATE_TEST_DEBUG         = False
 
-#patch v1.1
-E_V1_1_UPDATE_NOTIFY        = False
-
 # USE CHANNEL_LOGO
 E_USE_CHANNEL_LOGO			= True
 
@@ -448,6 +445,12 @@ E_DEFAULT_ACTION_CLICK_EVENT	= 1000
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
+
+#patch v1.1
+E_V1_1_UPDATE_NOTIFY        = False
+E_V1_1_HD_ICON_USE          = True
+if E_V1_1_HD_ICON_USE :
+	E_TAG_COLOR_HD_LABEL = ''
 
 
 ############################ Global Function For GUI ############################

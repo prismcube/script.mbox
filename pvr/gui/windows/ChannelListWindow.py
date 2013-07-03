@@ -1521,12 +1521,14 @@ class ChannelListWindow( BaseWindow ) :
 				listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 				if len( iChannel.mName ) > 30 :
 					listItem.setLabel2( '%s'% iChannel.mName )
-					listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
+					listItem.setProperty( 'iHDLabel', hdLabel )
 
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 				if iChannel.mIsCA : 
 					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+				if iChannel.mIsHD and E_V1_1_HD_ICON_USE :
+					listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
 
 				if self.mRecCount :
 					if self.mRecordInfo1 :
@@ -1618,6 +1620,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_IMOVE,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'iHDLabel', '' )
+		if E_V1_1_HD_ICON_USE :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_IHD,  E_TAG_FALSE )
 
 
 	def Epgevent_GetCurrent( self ) :
@@ -1905,17 +1909,19 @@ class ChannelListWindow( BaseWindow ) :
 				if iChannel.mNumber == item.mNumber : 
 					listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '[COLOR white]%s[/COLOR] %s'% ( iChannel.mName, hdLabel ) )
 					listItem.setProperty( E_XML_PROPERTY_IMOVE, E_TAG_TRUE )
-					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
+					#listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 					isFind = True
 					break
 
 			if not isFind :
 				listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
-			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
+			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', hdLabel )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+			if iChannel.mIsHD and E_V1_1_HD_ICON_USE :
+				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
 
 			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
 			if mTPnum == E_CONFIGURED_TUNER_1 :
@@ -2188,9 +2194,8 @@ class ChannelListWindow( BaseWindow ) :
 		#mark toggle: disable/enable
 		if listItem.getProperty( E_XML_PROPERTY_MARK ) == E_TAG_TRUE : 
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-			#listItem.setLabel2( '%s %s'% ( iChannel.mName, hdLabel ) )
 			if len( iChannel.mName ) > 30 :
-				listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
+				listItem.setProperty( 'iHDLabel', hdLabel )
 				listItem.setLabel2( '%s'% iChannel.mName )
 			else :
 				listItem.setLabel2( '%s %s'% ( iChannel.mName, hdLabel ) )
@@ -2198,13 +2203,15 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.mSetMarkCount += 1
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
-			#listItem.setLabel2( '%s %s  [COLOR white]#%s[/COLOR]'% ( iChannel.mName, hdLabel, self.mSetMarkCount ) )
+			numLabel = ''
+			#numLabel= '  [COLOR white]#%s[/COLOR]'% self.mSetMarkCount
+			hdLabel = ' %s%s'% ( hdLabel, numLabel )
+			chName = '%s%s'% ( iChannel.mName, hdLabel )
 			if len( iChannel.mName ) > 30 :
-				hdLabel = '%s  [COLOR white]#%s[/COLOR]'% ( E_TAG_COLOR_HD_LABEL, self.mSetMarkCount )
+				chName = '%s'% iChannel.mName
 				listItem.setProperty( 'iHDLabel', hdLabel )
-				listItem.setLabel2( '%s'% iChannel.mName )
-			else :
-				listItem.setLabel2( '%s %s  [COLOR white]#%s[/COLOR]'% ( iChannel.mName, hdLabel, self.mSetMarkCount ) )
+
+			listItem.setLabel2( chName )
 
 
 	def ClearMark( self ) :
@@ -2223,7 +2230,8 @@ class ChannelListWindow( BaseWindow ) :
 			listItem = self.mCtrlListCHList.getListItem( pos )
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 			listItem.setLabel2( '%s %s'% ( iChannel.mName, hdLabel ) )
-			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
+			if len( iChannel.mName ) > 30 :
+				listItem.setProperty( 'iHDLabel', hdLabel )
 
 
 	def LoadFavoriteGroupList( self ) :
@@ -2522,7 +2530,17 @@ class ChannelListWindow( BaseWindow ) :
 		self.SubMenuAction( E_SLIDE_ACTION_SUB )
 		#recovery last focus
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
-		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+		"""
+		lastTop = self.mCtrlListCHList.getOffsetPosition( )
+		if lastTop < 0 :
+			lastTop = 0
+		self.mCtrlListCHList.setVisible( False )
+		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastTop, E_TAG_SET_SELECT_POSITION )
+		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
+		time.sleep( 0.15 )
+		self.mCtrlListCHList.setVisible( True )
+		self.UpdateControlGUI( E_SLIDE_CLOSE )
+		"""
 
 
 	def ShowEditContextMenu( self, aMode, aMove = None ) :
@@ -2616,13 +2634,14 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( 'Cancelled back or previous, actionid[%s]'% actionId )
 				return
 
-			self.mMarkList = dialog.GetSelectedList( )
+			mMarkList = dialog.GetSelectedList( )
 			#LOG_TRACE('-------add group[%s]-----dialog list[%s]'% ( groupName, self.mMarkList ) )
 
-			if self.mMarkList == None or len( self.mMarkList ) < 1 :
+			if mMarkList == None or len( mMarkList ) < 1 :
 				LOG_TRACE( 'Cancelled by context dialog, No select' )
 				return
 
+			self.mMarkList = deepcopy( mMarkList )
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \

@@ -598,7 +598,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -881,19 +881,21 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'RSS Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable RSS feed in the main menu' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+
 			if E_V1_1_UPDATE_NOTIFY :
 				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
-			else :
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+				visibleControlIds.append( E_SpinEx07 )
 
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_SpinEx07 ]
+
 			if E_V1_1_UPDATE_NOTIFY :
-				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			else :
-				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_SpinEx07 ]
+				idx = hideControlIds.remove( E_SpinEx07 )
+
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )

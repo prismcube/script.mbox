@@ -6069,6 +6069,24 @@
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>485</posx>
+					<posy>13</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>DI_Skip1g.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
+				</control>
+				<!-- is hd? -->
+				<control type="image">
+					<posx>513</posx>
+					<posy>12</posy>
+					<width>24</width>
+					<height>18</height>
+					<texture>IconHD1g.png</texture>
+					<visible>substring(ListItem.Property(iHD),true)</visible>
+				</control>
 				<!-- is cas? -->
 				<control type="image">
 					<posx>540</posx>
@@ -6078,21 +6096,12 @@
 					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
-				<!-- is skip? -->
-				<control type="image">
-					<posx>510</posx>
-					<posy>14</posy>
-					<width>30</width>
-					<height>12</height>
-					<texture>DI_Skip.png</texture>
-					<visible>substring(ListItem.Property(iSkip),true)</visible>
-				</control>
 				<!-- is lock? -->
 				<control type="image">
-					<posx>5</posx>
-					<posy>7</posy>
-					<width>30</width>
-					<height>30</height>
+					<posx>4</posx>
+					<posy>9</posy>
+					<width>35</width>
+					<height>25</height>
 					<texture>OverlayLocked.png</texture>
 					<visible>substring(ListItem.Property(iLock),true)</visible>
 				</control>
@@ -6164,6 +6173,24 @@
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemFO.png</texture>
 				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>485</posx>
+					<posy>13</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>DI_Skip1g.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
+				</control>
+				<!-- is hd? -->
+				<control type="image">
+					<posx>513</posx>
+					<posy>12</posy>
+					<width>24</width>
+					<height>18</height>
+					<texture>IconHD1g.png</texture>
+					<visible>substring(ListItem.Property(iHD),true)</visible>
+				</control>
 				<!-- is cas? -->
 				<control type="image">
 					<posx>540</posx>
@@ -6173,21 +6200,12 @@
 					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
-				<!-- is skip? -->
-				<control type="image">
-					<posx>510</posx>
-					<posy>14</posy>
-					<width>30</width>
-					<height>12</height>
-					<texture>DI_Skip.png</texture>
-					<visible>substring(ListItem.Property(iSkip),true)</visible>
-				</control>
 				<!-- is lock? -->
 				<control type="image">
-					<posx>5</posx>
-					<posy>7</posy>
-					<width>30</width>
-					<height>30</height>
+					<posx>4</posx>
+					<posy>9</posy>
+					<width>35</width>
+					<height>25</height>
 					<texture>OverlayLocked.png</texture>
 					<visible>substring(ListItem.Property(iLock),true)</visible>
 				</control>
