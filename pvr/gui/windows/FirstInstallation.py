@@ -138,7 +138,7 @@ class FirstInstallation( FTIWindow ) :
 						
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Audio language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
+					ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
@@ -609,7 +609,7 @@ class FirstInstallation( FTIWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 20, '%s%s'% ( MR_LANG( 'Setting time' ), ING ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 20, '%s%s'% ( MR_LANG( 'Setting Time' ), ING ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :

@@ -511,7 +511,7 @@ class InfoPlate( LivePlateWindow ) :
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'No teletext' ), MR_LANG( 'No teletext available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No Teletext' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 			else :
 				self.mIsShowDialog = False
@@ -536,7 +536,7 @@ class InfoPlate( LivePlateWindow ) :
 				return
 			elif ret == -2 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'No subtitle' ), MR_LANG( 'No subtitle available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No Subtitle' ), MR_LANG( 'No subtitle available' ) )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :

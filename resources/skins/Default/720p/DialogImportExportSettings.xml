@@ -50,7 +50,7 @@
 					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>Network</label>
+					<label>Network Settings</label>
 					<onup>1007463</onup>
 					<ondown>1006997</ondown>
 				</control>

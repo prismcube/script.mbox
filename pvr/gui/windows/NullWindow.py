@@ -161,7 +161,7 @@ class NullWindow( BaseWindow ) :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
+				dialog.SetDialogProperty( MR_LANG( 'Enter PIN Code' ), '', 4, True )
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 				tempval = dialog.GetString( )
