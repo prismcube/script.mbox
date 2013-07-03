@@ -978,8 +978,10 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.OpenBusyDialog( )
 
-			for recInfo in self.mRecordList :
-				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
+			#deprecated
+			#for recInfo in self.mRecordList :
+			#	self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
+			self.mDataCache.Record_DeleteAllRecord( self.mServiceType )
 
 			self.CloseBusyDialog( )
 
@@ -1025,11 +1027,26 @@ class ArchiveWindow( BaseWindow ) :
 		if len( aDeleteList ) > 0 :
 			self.OpenBusyDialog( )
 
+			"""
+			#deprecated
 			count = len( aDeleteList )
 			for i in range( count ) :
 				position = aDeleteList[i]
 				LOG_TRACE( 'i=%d serviceType=%d key=%d' %( position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
 				self.mDataCache.Record_DeleteRecord( self.mRecordList[position].mRecordKey, self.mServiceType )
+			"""
+
+			keyList = []
+			testList = []
+			for i in range( len( aDeleteList ) ) :
+				position = aDeleteList[i]
+				#LOG_TRACE( 'i=%d serviceType=%d key=%d' %( position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
+				recKey = ElisEInteger( )
+				recKey.mParam = self.mRecordList[position].mRecordKey
+				keyList.append( recKey )
+				testList.append( self.mRecordList[position].mRecordKey )
+			self.mDataCache.Record_DeleteByKeyList( self.mServiceType, keyList )
+			LOG_TRACE( '---------------deleteList[%s]'% testList )
 
 			self.Flush( )
 			self.Load( )

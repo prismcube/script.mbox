@@ -1813,6 +1813,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
 
 
+	def Record_DeleteByKeyList( self, aServiceType, aKeyList ) :
+		return self.mCommander.Record_DeleteByKeyList( aServiceType, aKeyList )
+
+
+	def Record_DeleteAllRecord( self, aServiceType ) :
+		return self.mCommander.Record_DeleteAllRecord( aServiceType )
+
+
 	def Record_SetLock(self, aKey, aServiceType, aLock ) :
 		return self.mCommander.Record_SetLock( aKey, aServiceType, aLock )
 

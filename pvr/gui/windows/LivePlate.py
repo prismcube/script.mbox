@@ -1081,6 +1081,8 @@ class LivePlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			status = self.mDataCache.GetLockedState( )
 			if status != ElisEnum.E_CC_SUCCESS :
+				#ToDO : not support m/w, will be 1.2
+				"""
 				statusSignal = MR_LANG( 'No Signal' )
 				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 					statusSignal = MR_LANG( 'Scrambled' )
@@ -1088,6 +1090,7 @@ class LivePlate( LivePlateWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
 				dialog.doModal( )
 				self.mIsShowDialog = False
+				"""
 				self.RestartAutomaticHide( )
 				return
 

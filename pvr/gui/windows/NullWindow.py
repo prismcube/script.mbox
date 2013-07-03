@@ -360,7 +360,8 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
-					self.DialogPopupOK( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+				#	ToDO : not support m/w, will be 1.2
+				#	self.DialogPopupOK( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 					return
 
 				if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
