@@ -5884,9 +5884,9 @@
 				<control type="image">
 					<posx>500</posx>
 					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>IconCas.png</texture>
+					<width>26</width>
+					<height>18</height>
+					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
 				<!-- is lock? -->
@@ -5970,9 +5970,9 @@
 				<control type="image">
 					<posx>500</posx>
 					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>IconCas.png</texture>
+					<width>26</width>
+					<height>18</height>
+					<texture>IconCas1w.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
 				<!-- is lock? -->

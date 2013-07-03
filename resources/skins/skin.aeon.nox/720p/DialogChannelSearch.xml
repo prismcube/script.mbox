@@ -108,10 +108,10 @@
 					</control>
 					<control type="image">
 						<posx>410</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconCas.png</texture>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1g.png</texture>
 						<visible>substring(ListItem.Property(IsCas),True)</visible>
 					</control>
 				</itemlayout>
@@ -137,10 +137,10 @@
 					</control>
 					<control type="image">
 						<posx>410</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconCas.png</texture>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1w.png</texture>
 						<visible>substring(ListItem.Property(IsCas),True)</visible>
 					</control>
 				</focusedlayout>
@@ -212,10 +212,10 @@
 					</control>
 					<control type="image">
 						<posx>410</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconCas.png</texture>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1g.png</texture>
 						<visible>substring(ListItem.Property(IsCas),True)</visible>
 					</control>
 				</itemlayout>
@@ -241,10 +241,10 @@
 					</control>
 					<control type="image">
 						<posx>410</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>IconCas.png</texture>
+						<posy>12</posy>
+						<width>26</width>
+						<height>18</height>
+						<texture>IconCas1w.png</texture>
 						<visible>substring(ListItem.Property(IsCas),True)</visible>
 					</control>
 				</focusedlayout>

@@ -273,14 +273,14 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input02 :
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Audio language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
+				ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
 				if ret >= 0 :
 					ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 					self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
 
 			elif groupId == E_Input03 :
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Subtitle language' ), self.mSubtitleLanguageList, False, StringToListIndex( self.mSubtitleLanguageList, self.GetControlLabel2String( E_Input03 ) ) )
+				ret = dialog.select( MR_LANG( 'Select Subtitle Language' ), self.mSubtitleLanguageList, False, StringToListIndex( self.mSubtitleLanguageList, self.GetControlLabel2String( E_Input03 ) ) )
 				if ret >= 0 :
 					ElisPropertyEnum( 'Subtitle Language', self.mCommander ).SetPropIndex( ret )
 					self.SetControlLabel2String( E_Input03, self.mSubtitleLanguageList[ ret ] )
@@ -882,7 +882,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'RSS Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable RSS feed in the main menu' ) )
 			if E_V1_1_UPDATE_NOTIFY :
-				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notify' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Set the notification count for firmware update' ) )
+				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
 			else :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -1547,12 +1547,12 @@ class Configure( SettingWindow ) :
 			channelList.append( '%s %s' % ( channel.mNumber, channel.mName ) )
 
 		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Start channel number' ), channelList, False, 0 )
+		ret = dialog.select( MR_LANG( 'Start Channel Number' ), channelList, False, 0 )
 		if ret >= 0 :
 			self.mEpgStartChannel = allChannels[ ret ].mNumber
 		else :
 			return
-		ret = dialog.select( MR_LANG( 'End channel number' ), channelList, False, 0 )
+		ret = dialog.select( MR_LANG( 'End Channel Number' ), channelList, False, 0 )
 		if ret >= 0 :
 			self.mEpgEndChannel = allChannels[ ret ].mNumber
 		else :

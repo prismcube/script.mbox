@@ -267,7 +267,7 @@ USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_VIDEO_OUTPUT			= [ MR_LANG( 'HDMI' ), MR_LANG( 'Analog' ) ]
 USER_ENUM_LIST_SEARCH_RANGE			= [ MR_LANG( 'Single Transponder' ), MR_LANG( 'All Transponders' ) ]
 USER_ENUM_LIST_ENCRYPT_TYPE			= [ MR_LANG( 'None' ), MR_LANG( 'WEP' ), MR_LANG( 'WPA' ) ]
-USER_ENUM_LIST_UPDATE_NOTIFY		= [ MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Every' ) ]
+USER_ENUM_LIST_UPDATE_NOTIFY		= [ MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Always' ) ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -300,7 +300,7 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( E_LIST_MOTORIZE_ACTION, MR_LANG( 'Reset Limits' ), MR_LANG( 'Set East Limit' ), MR_LANG( 'Set West Limit' ) )
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
-	InitializedByVariableList( USER_ENUM_LIST_UPDATE_NOTIFY, MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Every' ) )
+	InitializedByVariableList( USER_ENUM_LIST_UPDATE_NOTIFY, MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Always' ) )
 	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )
 
 
