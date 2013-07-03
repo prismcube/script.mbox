@@ -146,6 +146,8 @@ class DataCacheMgr( object ) :
 		self.mSearchNewChannel					= False
 		self.mUSBAttatched						= False
 
+		self.mRootWindowId						= 0
+
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
 
@@ -2481,4 +2483,12 @@ class DataCacheMgr( object ) :
 	@DataLock
 	def SetUSBAttached( self, aAttached = False ) :
 		self.mUSBAttatched = aAttached
+
+
+	def SetRootWindowId( self, aId ) :
+		self.mRootWindowId = aId
+
+
+	def GetRootWindowId( self ) :
+		return self.mRootWindowId
 
