@@ -91,7 +91,11 @@ E_STRING_CHECK_BLOCK_SIZE  = 19
 E_STRING_CHECK_NAND_WRITE  = 20
 E_STRING_CHECK_CENCEL  = 21
 
-UPDATE_TEMP_CHANNEL		= '/mtmp/updatechannel.xml'
+UPDATE_TEMP_CHANNEL					= '/mtmp/updatechannel.xml'
+UPDATE_NETWORK_INTERFACES			= '/etc/network/interfaces'
+UPDATE_NETWORK_INTERFACES_CONFIG	= '/config/interfaces'
+UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
+UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
 
 class SCRIPTClass( object ) :
 	def __init__( self ) :
@@ -274,11 +278,11 @@ class SystemUpdate( SettingWindow ) :
 				dialog.doModal( )
 				return
 
-			self.ImportChannelsFromUSB( )
+			self.ImportSettingsFromUSB( )
 
 		elif groupId == E_Input04 :
 			LOG_TRACE( 'Export Channels to USB' )		
-			self.ExportChannelsToUSB( )
+			self.ExportSettingsToUSB( )
 
 
 	def onFocus( self, aControlId ) :
@@ -959,8 +963,8 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Channels from USB' ), '', MR_LANG( 'Import a pre-configured channel list via USB' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Channels to USB' ), '',  MR_LANG( 'Export your channel list via USB' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Import Settings from USB' ), '', MR_LANG( 'Import a pre-configured settings via USB' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Export Settings to USB' ), '',  MR_LANG( 'Export your settings via USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -2016,7 +2020,7 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
-	def ImportChannelsFromUSB( self ) :
+	def ImportSettingsFromUSB( self ) :
 		LOG_TRACE( '' )
 		#check usb mount
 		usbPath = self.mDataCache.USB_GetMountPath( )
@@ -2025,13 +2029,54 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 			return
 
-		xmlFullPathList = glob.glob( os.path.join( usbPath, 'updatechannel', '*.xml')  )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_IMPORT_EXPORT_SETTINGS )
+		dialog.SetSelect( True, False )
+		dialog.doModal( )
+
+		isSelectedChannels = dialog.GetSelectChannels( )
+		isSelectedNetwork  = dialog.GetSelectNetwork( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if isSelectedChannels or isSelectedNetwork :
+				if isSelectedNetwork :
+					self.ImportNetworkFromUSB( usbPath )
+				if isSelectedChannels:
+					self.ImportChannelsFromUSB( usbPath )
+				
+
+	def ImportNetworkFromUSB( self, aUsbPath ) :
+		filePathInterfaces = os.path.join( aUsbPath, 'updatenetwork', 'interfaces' )
+		filePathWpaSupplicant = os.path.join( aUsbPath, 'updatenetwork', 'wpa_supplicant.conf' )
+		
+		if not os.path.exists( filePathInterfaces ) or not os.path.exists( filePathWpaSupplicant ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No network setting file in %s directory' ) % ( 'updatenetwork' ) )
+ 			dialog.doModal( )
+ 			return
+
+ 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now importing your network settings' ), 30 )
+ 		shutil.copyfile( filePathInterfaces, UPDATE_NETWORK_INTERFACES )
+ 		shutil.copyfile( filePathInterfaces, UPDATE_NETWORK_INTERFACES_CONFIG )
+ 		shutil.copyfile( filePathWpaSupplicant, UPDATE_NETWORK_WPASUPPLICANT )
+ 		shutil.copyfile( filePathWpaSupplicant, UPDATE_NETWORK_WPASUPPLICANT_CONFIG )
+		os.system( 'sync' )
+		os.system( 'ifdown eth0' )
+		os.system( 'wpa_cli terminate' )
+		os.system( '/etc/init.d/networking restart' )
+		self.CloseProgress( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG('Import complete'), MR_LANG('Your network settings has been imported') )
+		dialog.doModal( )
+
+
+	def ImportChannelsFromUSB( self, aUsbPath ) :
+		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml')  )
 
 		LOG_TRACE( 'XML file countd=%d' %len(xmlFullPathList ) )
 
 		if len( xmlFullPathList ) <= 0 :
  			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel file in %s directory' ) %('updatechannel' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel file in %s directory' ) % ( 'updatechannel' ) )
  			dialog.doModal( )
  			return
 
@@ -2046,7 +2091,7 @@ class SystemUpdate( SettingWindow ) :
 			#check usb file
 			strFilename = xmlFileList[select]
 			LOG_TRACE( 'select file name=%s' %strFilename )
-			filePath = os.path.join( usbPath, 'updatechannel', strFilename )
+			filePath = os.path.join( aUsbPath, 'updatechannel', strFilename )
 			LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
 			if not os.path.exists( filePath ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2063,22 +2108,11 @@ class SystemUpdate( SettingWindow ) :
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
 				msgHead = MR_LANG( 'Update channels' )
-				#msgLine = MR_LANG( 'Your channel list has been updated successfully' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
-				"""
-				self.mDataCache.LoadAllSatellite( )
-				self.mDataCache.LoadAllTransponder( )
-				self.mTunerMgr.SyncChannelBySatellite( )
-				self.mDataCache.Channel_ReLoad( )
-				self.mDataCache.Player_AVBlank( False )
-				os.remove( UPDATE_TEMP_CHANNEL )
-				os.system( 'sync' )		
-				"""
-
 			else :
-				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
+				if ret == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
 					msgLine = MR_LANG( 'Please try again after stopping the recordings' )
-				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
+				elif ret == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
 					msgLine = MR_LANG( 'Please try again after deleting your timers first' )
 
 			self.CloseProgress( )
@@ -2091,7 +2125,7 @@ class SystemUpdate( SettingWindow ) :
 				self.mDataCache.System_Reboot( )
 
 	
-	def ExportChannelsToUSB( self ) :
+	def ExportSettingsToUSB( self ) :
 		LOG_TRACE( '' )
 		#check usb mount
 		usbPath = self.mDataCache.USB_GetMountPath( )
@@ -2100,9 +2134,49 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 			return
 
-		#check usb file
-		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
-		filePath = os.path.join( usbPath, 'updatechannel' )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_IMPORT_EXPORT_SETTINGS )
+		dialog.SetSelect( True, False )
+		dialog.doModal( )
+
+		isSelectedChannels = dialog.GetSelectChannels( )
+		isSelectedNetwork  = dialog.GetSelectNetwork( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if isSelectedChannels or isSelectedNetwork :
+				self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
+
+				if isSelectedChannels:
+					self.ExportChannelsToUSB( usbPath )
+				if isSelectedNetwork :
+					self.ExportNetworkToUSB( usbPath )
+
+				self.CloseProgress( )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your settings has been exported successfully') )
+				dialog.doModal( )
+
+
+	def ExportNetworkToUSB( self, aUsbPath ) :
+		filePath = os.path.join( aUsbPath, 'updatenetwork' )
+		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
+		if not os.path.exists( filePath ) :
+			os.mkdir( filePath, 0777 )
+
+		if os.path.exists( UPDATE_NETWORK_INTERFACES ) :
+			shutil.copyfile( UPDATE_NETWORK_INTERFACES, filePath + '/interfaces' )
+			os.system( 'sync' )
+		else :
+			LOG_ERR( 'interfaces file is not found' )
+
+		if os.path.exists( UPDATE_NETWORK_WPASUPPLICANT ) :
+			shutil.copyfile( UPDATE_NETWORK_WPASUPPLICANT, filePath + '/wpa_supplicant.conf' )
+			os.system( 'sync' )
+		else :
+			LOG_ERR( 'wpa_supplicant.conf file is not found' )
+
+
+	def ExportChannelsToUSB( self, aUsbPath ) :
+		filePath = os.path.join( aUsbPath, 'updatechannel' )
 		LOG_TRACE( 'UPDATE FILE PATH=%s' %filePath )
 		if not os.path.exists( filePath ) :
 			os.mkdir( filePath, 0777 )
@@ -2117,13 +2191,13 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE( 'settings filename=%s' %strFilename )
 
-		filePath = os.path.join( usbPath, 'updatechannel', strFilename )
+		filePath = os.path.join( aUsbPath, 'updatechannel', strFilename )
 		if os.path.exists( filePath ) :
 			LOG_TRACE( 'already exist file=%s' %filePath )		
 			for i in range( 10 ) :
 				strLocalTime = time.strftime('%d%m%Y_%H-%M', time.gmtime( localTime ) )
 				strFilename = 'settings_%s_%d.xml' %(strLocalTime, i + 1 )
-				filePath = os.path.join( usbPath, 'updatechannel', strFilename )				
+				filePath = os.path.join( aUsbPath, 'updatechannel', strFilename )				
 				if os.path.exists( filePath ) == False :
 					break
 				else :
@@ -2136,12 +2210,6 @@ class SystemUpdate( SettingWindow ) :
 
 		os.remove( UPDATE_TEMP_CHANNEL )
 		os.system( 'sync' )		
-		
-		self.CloseProgress( )
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your channel list has been exported successfully') )
-		dialog.doModal( )
 
 
 	def ParseList( self ) :
@@ -2182,7 +2250,9 @@ class SystemUpdate( SettingWindow ) :
 		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 		ret = self.DownloadxmlFile( aKey )
 		if ret :
-			self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
+			ret1 = self.mCommander.System_SetManualChannelList( '/mtmp/defaultchannel.xml' )
+			if ret1 == ElisEnum.E_UPDATE_FAILED_BY_RECORD or ret1 == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
+				return False
 			self.mDataCache.LoadAllSatellite( )
 			self.mDataCache.LoadAllTransponder( )
 			self.mTunerMgr.SyncChannelBySatellite( )
