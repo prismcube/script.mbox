@@ -156,6 +156,7 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )
 
 		#GRID MODE
+		self.mCtrlPrevFocusId = 0		
 		self.mGridFocusTime = 0
 		self.mGridKeepFocus = False		
 		self.mVisibleTopIndex = 0
@@ -245,7 +246,8 @@ class EPGWindow( BaseWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			focusId = self.getFocusId( )
 			if focusId == BUTTON_ID_EPG_MODE or focusId == RADIIOBUTTON_ID_EXTRA or focusId == BUTTON_ID_SEARCH:
-				self.SetFocusList( self.mEPGMode )				
+				self.SetFocusList( self.mEPGMode )
+				self.mCtrlPrevFocusId = 0				
 			else :
 				self.Close( )
 	
@@ -256,10 +258,9 @@ class EPGWindow( BaseWindow ) :
 					self.GridControlRight( )
 				elif  focusId == BUTTON_ID_SEARCH :
 					self.mCtrlPrevFocusId = RADIIOBUTTON_ID_EXTRA
-					pass
 				else :
-					self.mCtrlPrevFocusId = BUTTON_ID_SEARCH
 					self.setFocusId( LIST_ID_GRID_CHANNEL )
+					self.mCtrlPrevFocusId = 0
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if self.mEPGMode == E_VIEW_GRID	:
@@ -271,11 +272,12 @@ class EPGWindow( BaseWindow ) :
 				elif  focusId == RADIIOBUTTON_ID_EXTRA :
 					if self.mCtrlPrevFocusId == RADIIOBUTTON_ID_EXTRA :
 						self.mCtrlPrevFocusId = BUTTON_ID_SEARCH
-						pass
 					else :
 						self.setFocusId( LIST_ID_GRID_CHANNEL )
+						self.mCtrlPrevFocusId = 0						
 				else :
 					self.setFocusId( LIST_ID_GRID_CHANNEL )
+					self.mCtrlPrevFocusId = 0
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if self.mEPGMode == E_VIEW_GRID	:
