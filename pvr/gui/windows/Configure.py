@@ -86,7 +86,14 @@ class Configure( SettingWindow ) :
 		self.mVideoOutput			= E_VIDEO_HDMI
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
-		self.mUpdateNotify			= int( GetSetting( 'UPDATE_NOTIFY' ) )
+		self.mUpdateNotify			= 0
+		try :
+			self.mUpdateNotify = int( GetSetting( 'UPDATE_NOTIFY' ) )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			CopyToFile( '/usr/share/xbmc/addons/script.mbox/resources/settings.xml.org', '/usr/share/xbmc/addons/script.mbox/resources/settings.xml' )
+			self.mUpdateNotify = 0
 
 		self.mUseUsbBackup			= False
 		self.mAsyncVideoSetThread	= None
