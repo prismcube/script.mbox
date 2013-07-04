@@ -90,18 +90,21 @@ class AntennaSetup( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.SetVideoRestore( )
 				self.OpenBusyDialog( )
 				self.SetTunerProperty( )
 				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 					self.SaveConfiguration( )
+
 				self.mTunerMgr.SyncChannelBySatellite( )
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_ReLoad( )
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
+				self.SetVideoRestore( )
 				self.OpenBusyDialog( )
-				#if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
-				self.mTunerMgr.CancelConfiguration( )
+				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
+					self.mTunerMgr.CancelConfiguration( )
 				self.mTunerMgr.SyncChannelBySatellite( )
 				self.mDataCache.Channel_ReTune( )
 
@@ -197,9 +200,9 @@ class AntennaSetup( SettingWindow ) :
 	def CloseWindow( self ) :
 		self.mTunerMgr.SetNeedLoad( True )
 		self.ResetAllControl( )
-		time.sleep( 3 )
+		#time.sleep( 3 )
 		self.CloseBusyDialog( )
-		self.SetVideoRestore( )
+		#self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
