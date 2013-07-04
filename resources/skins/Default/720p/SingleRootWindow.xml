@@ -6408,7 +6408,7 @@ Search for window name
 				<control type="label">
 					<posx>892</posx>
 					<posy>53r</posy>
-					<width>300</width>
+					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
