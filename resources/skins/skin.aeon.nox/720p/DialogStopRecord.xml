@@ -63,8 +63,8 @@
 					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
 					<animation effect="fade" start="100" end="70">Focus</animation>					
-					<onleft>-</onleft>
-					<onright>-</onright>
+					<onleft></onleft>
+					<onright></onright>
 				</control>
 				<control type="label" id="502">
 					<posx>10</posx>

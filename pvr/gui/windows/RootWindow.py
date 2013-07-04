@@ -25,7 +25,8 @@ class RootWindow( xbmcgui.WindowXML ) :
 				if self.mInitialized == False :
 					self.CheckFirstRun( )
 					self.LoadTimeShiftControl( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).LoadEPGControls( )					
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
 					self.mInitialized = True
@@ -34,7 +35,8 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 				else :
 					self.LoadTimeShiftControl( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).LoadEPGControls( )					
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 					lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
 					LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
