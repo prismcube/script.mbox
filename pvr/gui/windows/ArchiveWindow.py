@@ -912,7 +912,7 @@ class ArchiveWindow( BaseWindow ) :
 					break
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete a file' ), MR_LANG( 'Are you sure you want to delete this file?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete File' ), MR_LANG( 'Are you sure you want to delete this file?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -946,7 +946,7 @@ class ArchiveWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all your files' ), MR_LANG( 'Are you sure you want to delete%s all your recorded files?' )% NEW_LINE )
+		dialog.SetDialogProperty( MR_LANG( 'Delete All Files' ), MR_LANG( 'Are you sure you want to delete%s all your recorded files?' )% NEW_LINE )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -1124,7 +1124,7 @@ class ArchiveWindow( BaseWindow ) :
 		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 #		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
-		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
+		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter PIN Code' ), '', 4, True )
 		pincodeDialog.doModal( )
 		
 		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :

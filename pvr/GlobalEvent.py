@@ -577,8 +577,8 @@ class GlobalEvent( object ) :
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
-		if self.mDataCache.GetMediaCenter( ) :
-			return xbmcgui.getCurrentWindowId( )
-		else :
+		if self.mDataCache.GetRootWindowId( ) == xbmcgui.getCurrentWindowId( ) :
 			return WinMgr.GetInstance( ).GetLastWindowID( )
+		else :
+			return xbmcgui.getCurrentWindowId( )	
 

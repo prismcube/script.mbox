@@ -19,6 +19,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
 		self.CheckLanguage( )
+		self.mDataCache.SetRootWindowId( xbmcgui.getCurrentWindowId( ) )
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
