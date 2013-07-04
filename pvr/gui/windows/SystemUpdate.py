@@ -441,7 +441,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def AsyncCompleteDialog( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Download firmware complete' ), MR_LANG( 'Do you want to install the firmware now?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Download Complete' ), MR_LANG( 'Do you want to install the firmware now?' ) )
 		dialog.doModal( )
 
 		answer = dialog.IsOK( )
@@ -891,7 +891,7 @@ class SystemUpdate( SettingWindow ) :
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Previous Firmware versions' ), verList, False, self.mIndexLastVersion )
+			select =  dialog.select( MR_LANG( 'Previous Firmware Versions' ), verList, False, self.mIndexLastVersion )
 
 			if select < 0 :
 				return
@@ -963,8 +963,8 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Settings from USB' ), '', MR_LANG( 'Import a pre-configured settings via USB' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Settings to USB' ), '',  MR_LANG( 'Export your settings via USB' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -1197,7 +1197,7 @@ class SystemUpdate( SettingWindow ) :
 
 				msg1 = '%s%s'% ( MR_LANG( 'Your system will reboot in %s seconds' )% 5, ING )
 				self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart required' ), msg1 )
+				self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Restart Required' ), msg1 )
 				self.mDialogShowInit.SetButtonVisible( False )
 				self.mDialogShowInit.SetDialogType( 'update' )
 				self.mDialogShowInit.SetAutoCloseTime( 5 )
@@ -1449,7 +1449,7 @@ class SystemUpdate( SettingWindow ) :
 				return True
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Resume downloading files' ), MR_LANG( 'Continue interrupted downloads?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Resume Downloading' ), MR_LANG( 'Continue interrupted downloads?' ) )
 			dialog.doModal( )
 
 			ret = dialog.IsOK( )
@@ -2014,7 +2014,7 @@ class SystemUpdate( SettingWindow ) :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Update complete'), MR_LANG('Your channel list has been updated successfully') )
+				dialog.SetDialogProperty( MR_LANG('Update Complete'), MR_LANG('Your channel list has been updated successfully') )
 				dialog.doModal( )
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
@@ -2049,7 +2049,7 @@ class SystemUpdate( SettingWindow ) :
 		
 		if not os.path.exists( filePathInterfaces ) or not os.path.exists( filePathWpaSupplicant ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No network setting file in %s directory' ) % ( 'updatenetwork' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No network setting file found in %s directory' ) % ( 'updatenetwork' ) )
  			dialog.doModal( )
  			return
 
@@ -2065,7 +2065,7 @@ class SystemUpdate( SettingWindow ) :
 		self.CloseProgress( )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG('Import complete'), MR_LANG('Your network settings has been imported') )
+		dialog.SetDialogProperty( MR_LANG('Import Complete'), MR_LANG('Your network settings have been imported successfully') )
 		dialog.doModal( )
 
 
@@ -2085,7 +2085,7 @@ class SystemUpdate( SettingWindow ) :
 			xmlFileList.append( os.path.basename( xmlFullPathList[i] ) )
 
 		dialog = xbmcgui.Dialog( )
-		select = dialog.select( MR_LANG( 'Select Channel List file' ), xmlFileList, False )
+		select = dialog.select( MR_LANG( 'Select Channel List File' ), xmlFileList, False )
 
 		if select >= 0 :
 			#check usb file
@@ -2152,7 +2152,7 @@ class SystemUpdate( SettingWindow ) :
 				self.CloseProgress( )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Export complete'), MR_LANG('Your settings has been exported successfully') )
+				dialog.SetDialogProperty( MR_LANG('Export Complete'), MR_LANG('Your settings have been exported successfully') )
 				dialog.doModal( )
 
 

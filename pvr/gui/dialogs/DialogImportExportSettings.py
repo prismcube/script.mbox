@@ -24,7 +24,7 @@ class DialogImportExportSettings( SettingDialog ) :
 		self.mCtrlRadioChannels.setSelected( self.mIsSetChannelList )
 		self.mCtrlRadioNetwork.setSelected( self.mIsSetNetwork )
 		
-		self.SetHeaderLabel( MR_LANG( 'Select settings' ) )
+		self.SetHeaderLabel( MR_LANG( 'Select Configuration Data' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.mIsOk = E_DIALOG_STATE_NO
