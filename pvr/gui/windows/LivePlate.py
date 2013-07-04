@@ -1631,7 +1631,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mDataCache.Player_AVBlank( True )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+			dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :

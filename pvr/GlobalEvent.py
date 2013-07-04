@@ -200,7 +200,7 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
 		elif aEvent.getName( ) == ElisEventPVRManagerUpdate.getName( ) :
-			msgHead = MR_LANG( 'Update channels' )
+			msgHead = MR_LANG( 'Update Channels' )
 			msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
 			if aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
 				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -411,7 +411,7 @@ class GlobalEvent( object ) :
 			self.mDataCache.Player_AVBlank( True )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+		dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 		dialog.SetCheckStatus( E_CHECK_PARENTLOCK )
 		dialog.doModal( )
 
@@ -497,7 +497,7 @@ class GlobalEvent( object ) :
 		self.mDialogShowInit.SetAutoCloseTime( 1 )
 		self.mDialogShowInit.doModal( )
 		"""
-		xbmc.executebuiltin( 'Notification(USB Device, %s, 3000, USB.png)'%msg )
+		xbmc.executebuiltin( 'Notification(%s, %s, 3000, USB.png)'%( MR_LANG( 'USB Device' ), msg ) )
 
 
 	def ShowEventDialog( self, aEvent ) :

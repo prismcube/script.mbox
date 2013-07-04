@@ -2133,7 +2133,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.mDataCache.SetPincodeDialog( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+		dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 		dialog.doModal( )
 
 		ret = False

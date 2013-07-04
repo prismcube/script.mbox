@@ -31,7 +31,7 @@
 					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>Channels</label>
+					<label>SCRIPT1089</label>
 					<onup>1006997</onup>
 					<ondown>1007464</ondown>
 				</control>
@@ -50,7 +50,7 @@
 					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>Network Settings</label>
+					<label>SCRIPT1090</label>
 					<onup>1007463</onup>
 					<ondown>1006997</ondown>
 				</control>

@@ -2105,11 +2105,11 @@ class SystemUpdate( SettingWindow ) :
 			shutil.copyfile( filePath, UPDATE_TEMP_CHANNEL )
 			os.system( 'sync' )
 		
-			msgHead = MR_LANG( 'Update channels' )
+			msgHead = MR_LANG( 'Update Channels' )
 			msgLine = ''
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
-				msgHead = MR_LANG( 'Update channels' )
+				msgHead = MR_LANG( 'Update Channels' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 			else :
 				if ret == ElisEnum.E_UPDATE_FAILED_BY_RECORD :

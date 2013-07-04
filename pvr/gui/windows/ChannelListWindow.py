@@ -515,7 +515,7 @@ class ChannelListWindow( BaseWindow ) :
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head = MR_LANG( 'Delete all channels' )
+		head = MR_LANG( 'Delete All Channels' )
 		line1 = MR_LANG( 'Are you sure you want to remove%s all your TV and radio channels?' )% NEW_LINE
 		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			line1 = MR_LANG( 'Are you sure you want to remove%s all channels from this favorite group?' )% NEW_LINE
@@ -2379,7 +2379,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aContextAction == CONTEXT_ACTION_LOCK :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+			dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mDataCache.Channel_LockByNumber( True, int(self.mUserMode.mServiceType), numList )
@@ -2388,7 +2388,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_UNLOCK :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+			dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mDataCache.Channel_LockByNumber( False, int(self.mUserMode.mServiceType), numList )
