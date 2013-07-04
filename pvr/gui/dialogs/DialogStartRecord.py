@@ -346,7 +346,7 @@ class DialogStartRecord( SettingDialog ) :
 
 				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter new duration' ), MR_LANG( 'in mins' ) ), '%d' %tempDuration  , 3 )
+			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter New Duration' ), MR_LANG( 'in mins' ) ), '%d' %tempDuration  , 3 )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

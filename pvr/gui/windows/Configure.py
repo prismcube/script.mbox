@@ -375,7 +375,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Enter PIN Code' ), '', 4, True )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
@@ -406,7 +406,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Enter New PIN Code' ), '', 4, True )
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -420,7 +420,7 @@ class Configure( SettingWindow ) :
 				return
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Confirm your PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN Code' ), '', 4, True )
 			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -440,7 +440,7 @@ class Configure( SettingWindow ) :
 
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Change PIN Code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
@@ -478,7 +478,7 @@ class Configure( SettingWindow ) :
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
 	 			dialog.doModal( )
 				self.mCommander.System_Reboot( )
 
@@ -1255,7 +1255,7 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 20, '%s%s'% ( MR_LANG( 'Setting time' ), ING ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 20, '%s%s'% ( MR_LANG( 'Setting Time' ), ING ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
@@ -1427,12 +1427,12 @@ class Configure( SettingWindow ) :
 	def MakeDedicate( self ) :
 		mediasize = 100
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter the size of the media partition in GB' ), '%s' % mediasize , 3 )
+		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediasize , 3 )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			mediasize = dialog.GetString( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Media partition will be %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.OpenBusyDialog( )

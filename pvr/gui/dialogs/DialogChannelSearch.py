@@ -63,7 +63,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 		self.mAbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		self.mAbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ), True )
+		self.mAbortDialog.SetDialogProperty( MR_LANG( 'Exit Channel Search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ), True )
 
 
 	def onAction( self, aAction ) :
@@ -278,7 +278,7 @@ class DialogChannelSearch( BaseDialog ) :
 			LOG_TRACE( 'except close dialog' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Channel search result' ), searchResult )
+		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
 		dialog.doModal( )
 		
 

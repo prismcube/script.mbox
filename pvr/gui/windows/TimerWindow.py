@@ -69,7 +69,7 @@ class TimerWindow( BaseWindow ) :
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mCurrentMode.mServiceType )
 		self.mChannelListHash = {}
 
-		LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
+		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
 		if self.mChannelList :
 			for channel in self.mChannelList :
@@ -467,7 +467,7 @@ class TimerWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete All Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )

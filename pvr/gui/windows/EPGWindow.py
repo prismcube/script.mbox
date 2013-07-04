@@ -228,7 +228,7 @@ class EPGWindow( BaseWindow ) :
 		self.mInitialized = True
 
 
-	def LoadEPGControls( self ) :
+	def ResetControls( self ) :
 		self.mListItems = []
 		self.InitTimelineButtons( )
 		self.InitGridEPGButtons( )
@@ -913,10 +913,11 @@ class EPGWindow( BaseWindow ) :
 				aUpdateOnly = False
 				self.mLock.acquire( )
 				self.mListItems = []
-				self.mLock.release( )			
+				self.mLock.release( )
+				LOG_TRACE( 'UpdateOnly------------>Create' )				
 			else :
 				if len( self.mChannelList ) != len( self.mListItems ) :
-					LOG_TRACE( 'UpdateOnly------------>Create' )
+					LOG_TRACE( 'UpdateOnly------------>Create %d : %d' %( len( self.mChannelList ), len( self.mListItems ) ) )
 					aUpdateOnly = False 
 					self.mLock.acquire( )
 					self.mListItems = []
@@ -1651,7 +1652,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete All Timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )

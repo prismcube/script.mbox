@@ -164,7 +164,7 @@ class NullWindow( BaseWindow ) :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				self.CloseSubTitle( )			
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
+				dialog.SetDialogProperty( MR_LANG( 'Enter PIN Code' ), '', 4, True )
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 				tempval = dialog.GetString( )
@@ -377,7 +377,14 @@ class NullWindow( BaseWindow ) :
 				self.CheckSubTitle( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY or \
-		     actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			if actionId == Action.ACTION_MOVE_RIGHT :
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_LIVE :
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
+					return
+
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
