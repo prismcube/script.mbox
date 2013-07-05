@@ -7,7 +7,6 @@ E_ANTENNA_SETUP_SUBMENU_LIST_ID		=  E_ANTENNA_SETUP_BASE_ID + 9000
 E_ANTENNA_SETUP_DEFAULT_FOCUS_ID	=  E_ANTENNA_SETUP_SUBMENU_LIST_ID
 
 
-
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -40,12 +39,10 @@ class AntennaSetup( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 2 Signal' ), E_LIST_TUNER2_SIGNAL, self.mTunerSignal, MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
 		self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
 		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
-		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 2' ) )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner2Control, MR_LANG( 'Select a control method for tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
 		self.InitControl( )
-
-		#time.sleep( 0.2 )
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetDefaultControl( )
@@ -95,18 +92,17 @@ class AntennaSetup( SettingWindow ) :
 				self.SetTunerProperty( )
 				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 					self.SaveConfiguration( )
-
-				self.mTunerMgr.SyncChannelBySatellite( )
-				self.mDataCache.Channel_InvalidateCurrent( )
-				self.mDataCache.Channel_ReLoad( )
+					self.mTunerMgr.SyncChannelBySatellite( )
+					self.mDataCache.Channel_InvalidateCurrent( )
+					self.mDataCache.Channel_ReLoad( )
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				self.SetVideoRestore( )
 				self.OpenBusyDialog( )
 				if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 					self.mTunerMgr.CancelConfiguration( )
-				self.mTunerMgr.SyncChannelBySatellite( )
-				self.mDataCache.Channel_ReTune( )
+					self.mTunerMgr.SyncChannelBySatellite( )
+					self.mDataCache.Channel_ReTune( )
 
 			else :
 				return
@@ -143,7 +139,6 @@ class AntennaSetup( SettingWindow ) :
 				self.mTuner1Control = self.GetSelectedIndex( E_SpinEx03 )
 			elif groupId == E_SpinEx04 :
 				self.mTuner2Control = self.GetSelectedIndex( E_SpinEx04 )
-			#self.ControlSelect( )
 			self.DisableControl( groupId )
 
 
@@ -159,11 +154,9 @@ class AntennaSetup( SettingWindow ) :
 		self.SetTunerProperty( )
 		if aGroupId == E_Input01 :
 			self.mTunerMgr.SetCurrentTunerNumber( E_TUNER_1 )
-			#configcontrol = self.mTuner1Control
 
 		elif aGroupId == E_Input02 :
 			self.mTunerMgr.SetCurrentTunerNumber( E_TUNER_2 )
-			#configcontrol = self.mTuner2Control
 
 		if self.mTunerMgr.CompareCurrentConfiguredState( ) == False or self.mTunerMgr.CompareConfigurationProperty( ) == False :
 			self.OpenBusyDialog( )
@@ -200,9 +193,7 @@ class AntennaSetup( SettingWindow ) :
 	def CloseWindow( self ) :
 		self.mTunerMgr.SetNeedLoad( True )
 		self.ResetAllControl( )
-		#time.sleep( 3 )
 		self.CloseBusyDialog( )
-		#self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -213,7 +204,6 @@ class AntennaSetup( SettingWindow ) :
 				time.sleep( 0.02 )
 				control.selectItem( E_SAMEWITH_TUNER )
 				self.mTunerSignal = E_SAMEWITH_TUNER
-				#self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
 				self.SetEnableControl( E_SpinEx02, False )
 				if self.mTunerConnection == E_TUNER_ONECABLE :
 					self.SetEnableControl( E_SpinEx03, False )
@@ -224,14 +214,11 @@ class AntennaSetup( SettingWindow ) :
 				self.SetEnableControl( E_SpinEx03, True )
 
 		if aControlID == None or aControlID == E_SpinEx02 or aControlID == E_SpinEx01 :
-			#selectedIndex = self.mTunerMgr.GetCurrentTunerConfigType( )
 			if self.mTunerSignal == E_SAMEWITH_TUNER :
 				if self.GetSelectedIndex( E_SpinEx03 ) != self.GetSelectedIndex( E_SpinEx04 ) :
 					control = self.getControl( E_SpinEx04 + 3 )
-					#prop = self.mTunerMgr.GetTunerTypeByTunerIndex( E_TUNER_1 )
 					control.selectItem( self.mTuner1Control )
 					self.mTuner2Control = self.mTuner1Control
-					#self.SetProp( E_SpinEx04, prop )
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
 			else :
@@ -241,10 +228,8 @@ class AntennaSetup( SettingWindow ) :
 		if aControlID == E_SpinEx03 :
 			if self.mTunerSignal == E_SAMEWITH_TUNER :
 				control = self.getControl( E_SpinEx04 + 3 )
-				#prop = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 				control.selectItem( self.mTuner1Control )
 				self.mTuner2Control = self.mTuner1Control
-				#self.SetProp( E_SpinEx04, prop )
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
 
@@ -266,8 +251,6 @@ class AntennaSetup( SettingWindow ) :
 		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
 			self.mTunerConnection		= E_TUNER_ONECABLE
 			self.mTunerSignal			= E_SAMEWITH_TUNER
-			#self.mTuner1Control			= E_DISEQC_1_0
-			#self.mTuner2Control			= E_DISEQC_1_0
 		else :
 			self.mTunerConnection		= ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
 			self.mTunerSignal			= ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )

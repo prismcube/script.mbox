@@ -461,9 +461,9 @@ class TunerConfigMgr( object ) :
 
 
 	def CompareCurrentConfiguredState( self ) :
-		configuredList1		= self.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )	
+		configuredList1		= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_1 )	
 		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
-		configuredList2		= self.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 ) 
+		configuredList2		= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_2 ) 
 		currentconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
 		if currentconfiguredList1 == None or currentconfiguredList2 == None or len( configuredList1 ) == 0 or len( configuredList1 ) == 0 :
 			return False

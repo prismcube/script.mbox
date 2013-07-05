@@ -6492,7 +6492,7 @@ Search for window name
 
 		<!-- Setting Window Controls -->
 		<control type="group" id="11000001">
-			<posy>10</posy>
+			<posy>-100</posy>
 			<visible>substring(Window.Property(SettingBackground),True)</visible>
 			<include>DefaultSettingWindowEffect</include>
 			<include>SpinEx01</include>
