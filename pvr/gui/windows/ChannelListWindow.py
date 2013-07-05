@@ -479,6 +479,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCurrentChannel = iChannel.mNumber
 
 					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ).upper(), iChannel.mName )
+					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_INVALID :
+						if not self.mChannelList or len( self.mChannelList ) < 1 :
+							label = MR_LANG( 'No Channel' )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
