@@ -39,7 +39,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
-			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Press OK button to setup %s' ) % (self.mSatelliteNamelist[i]) )
+			self.AddInputControl( startId, '%s %s'% ( MR_LANG( 'Satellite' ), ( i + 1 ) ), self.mSatelliteNamelist[i], '%s %s'% ( MR_LANG( 'Press OK button to setup' ), self.mSatelliteNamelist[i] ) )
 			startId += 100
 
 		if self.GetFirstInstallation( ) :
