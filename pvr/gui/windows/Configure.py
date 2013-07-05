@@ -835,7 +835,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', MR_LANG( 'Grab Interval' ), MR_LANG( 'Adjust EPG scan interval for each channel' ) )
 			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', MR_LANG( 'Grab Mode' ), MR_LANG( 'Select which channels to grab EPG data from' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Start Time' ), '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) ), MR_LANG( 'Set a starting time for EPG grabber' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Start and End Channel' ), MR_LANG( '%s ~ %s' ) % ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'Select the channels for which you want to grab EPG data' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Start and End Channel' ), '%s ~ %s'% ( self.mEpgStartChannel, self.mEpgEndChannel ) , MR_LANG( 'Select the channels for which you want to grab EPG data' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Favorite Group' ), groupName, MR_LANG( 'Select a favorite group for EPG grabbing' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]

@@ -203,13 +203,13 @@ class SystemInfo( SettingWindow ) :
 			self.OpenBusyDialog( )
 			self.StopCheckHddTempTimer( )
 
-			versionHardware		= MR_LANG( 'Unknown' )
-			versionBootloader		= MR_LANG( 'Unknown' )
+			versionHardware   = MR_LANG( 'Unknown' )
+			versionBootloader = MR_LANG( 'Unknown' )
 
 			version_info = self.mCommander.System_GetVersion( )
 			if version_info :
-				versionHardware			= version_info.mHwVersion
-				versionBootloader		= version_info.mLoadVersion
+				versionHardware   = version_info.mHwVersion
+				versionBootloader = version_info.mLoadVersion
 
 			visibleControlIds	= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			hideControlIds		= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
@@ -218,11 +218,11 @@ class SystemInfo( SettingWindow ) :
 			for i in range( len( visibleControlIds ) ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
 
-			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % self.GetProductName( ) )
-			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % self.GetProductNymber( ) )
-			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % versionHardware )
-			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Release Version : %s' ) % self.GetReleaseVersion( ) )
-			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % versionBootloader )
+			self.mCtrlVersionProductName.setLabel(   '%s : %s'% ( MR_LANG( 'Product Name' ), self.GetProductName( ) ) )
+			self.mCtrlVersionProductNumber.setLabel( '%s : %s'% ( MR_LANG( 'Product Number' ) , self.GetProductNymber( ) ) )
+			self.mCtrlVersionHardware.setLabel(      '%s : %s'% ( MR_LANG( 'Hardware Version' ) , versionHardware ) )
+			self.mCtrlVersionSoftware.setLabel(      '%s : %s'% ( MR_LANG( 'Release Version' ) , self.GetReleaseVersion( ) ) )
+			self.mCtrlVersionBootloader.setLabel(    '%s : %s'% ( MR_LANG( 'Bootloader Version' ) , versionBootloader ) )
 
 			self.CloseBusyDialog( )
 
@@ -237,17 +237,17 @@ class SystemInfo( SettingWindow ) :
 
 			if CheckHdd( ) :
 				self.StartCheckHddTempTimer( )
-				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDName.setLabel(	'%s : %s ( %s )'% ( MR_LANG( 'Name and Total Size' ), self.GetHDDName( ), self.GetTotalSize( ) ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeMedia.setLabel( '%s : %s%% ( %s / %s )'% ( MR_LANG( 'Media Partition Usage' ), percent, used_size, total_size ) )
 				total_size, used_size, percent = self.GetPartitionSize( 'sda3' )
 				self.mCtrlProgressProgram.setPercent( percent )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeProgram.setLabel( '%s : %s%% ( %s / %s )'% ( MR_LANG( 'Program Partition Usage' ), percent, used_size, total_size ) )
 				total_size, used_size, percent = self.GetRecordFreeSize( )
 				self.mCtrlProgressRecord.setPercent( percent )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeRecord.setLabel( '%s : %s%% ( %s / %s )'% ( MR_LANG( 'Recording Partition Usage' ), percent, used_size, total_size ) )
 			else :
 				self.mCtrlHDDName.setLabel( MR_LANG( 'Name and Total Size : Unknown' ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown' ) )
@@ -323,9 +323,10 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetPartitionSize( self, aName ) :
-		total_size = MR_LANG( 'Unknown' )
-		used_size = MR_LANG( 'Unknown' )
-		percent = MR_LANG( 'Unknown' )
+		defaultSize = MR_LANG( 'Unknown' )
+		total_size = defaultSize
+		used_size = defaultSize
+		percent = defaultSize
 		try :
 			cmd = "df -h | awk '/%s/ {print $2}'" % aName
 			if sys.version_info < ( 2, 7 ) :
@@ -368,13 +369,14 @@ class SystemInfo( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
-			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' )
+			return defaultSize, defaultSize, defaultSize
 
 
 	def GetRecordFreeSize( self ) :
-		total_size = MR_LANG( 'Unknown' )
-		used_size = MR_LANG( 'Unknown' )
-		percent = MR_LANG( 'Unknown' )
+		defaultSize = MR_LANG( 'Unknown' )
+		total_size = defaultSize
+		used_size = defaultSize
+		percent = defaultSize
 		try :
 			if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
 				total_size	= self.mCommander.Record_GetPartitionSize( )
@@ -395,7 +397,7 @@ class SystemInfo( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
-			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' )
+			return defaultSize, defaultSize, defaultSize
 
 
 	def GetHDDName( self ) :
@@ -444,7 +446,8 @@ class SystemInfo( SettingWindow ) :
 
 
 	def ShowHDDTemperature( self ) :
-		temperature = MR_LANG( 'Unknown' )
+		defaultLang = MR_LANG( 'Unknown' )
+		temperature = defaultLang
 		device = '/dev/sda'
 		cmd = 'hddtemp %s -n -q' % device
 
@@ -460,10 +463,10 @@ class SystemInfo( SettingWindow ) :
 					temperature = temperature.strip( )
 
 				if IsNumber( temperature ) == False :
-					temperature = MR_LANG( 'Unknown' )
+					temperature = defaultLang
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
 			else :
-				temperature = MR_LANG( 'Unknown' )
+				temperature = defaultLang
 
 			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s Degree Celsius' ) % temperature )
 
