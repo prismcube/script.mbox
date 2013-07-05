@@ -1198,7 +1198,9 @@ class NullWindow( BaseWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
-			CopyToFile( '/usr/share/xbmc/addons/script.mbox/resources/settings.xml.org', '/usr/share/xbmc/addons/script.mbox/resources/settings.xml' )
+			SetSetting( 'UPDATE_NOTIFY', '0' )
+			SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
+			LOG_TRACE( '-------------add cached UPDATE_NOTIFY=0 UPDATE_NOTIFY_COUNT=0' )
 
 		if isNotify :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).CheckBootOnVersion( )
