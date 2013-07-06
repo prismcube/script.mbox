@@ -92,14 +92,26 @@ class AutomaticScan( SettingWindow ) :
 		# Start Search
 		elif groupId == E_Input02 :
 			if self.mSatelliteIndex == 0 :
+				if self.CheckTransponder( self.mConfiguredSatelliteList ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no transponder satellite' ) )
+					dialog.doModal( )
+					return
+
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 			else :
 				configuredSatelliteList = []
 				config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
-
 				configuredSatelliteList.append( config )
+
+				if self.CheckTransponder( configuredSatelliteList ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no transponder in the satellite' ) )
+					dialog.doModal( )
+					return
+				
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( configuredSatelliteList )				
 				dialog.doModal( )
@@ -143,4 +155,17 @@ class AutomaticScan( SettingWindow ) :
 
 		for config in self.mConfiguredSatelliteList :
 			self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
-		
+
+
+	def CheckTransponder( self, aSatelliteList) :
+		for satellite in aSatelliteList :
+			tp = self.mDataCache.GetTransponderListBySatellite( satellite.mLongitude, satellite.mBand )
+			if tp and tp[0].mError == 0 :
+				print 'dhkim test ok!'
+				continue
+			else :
+				print 'dhkim test fail'
+				return False
+
+		return True
+
