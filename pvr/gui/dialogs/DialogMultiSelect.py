@@ -139,16 +139,23 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def ChannelItems( self ) :
+		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+
 		for iChannel in self.mDefaultList :
+			iChNumber = iChannel.mNumber
+
 			#isAvailable check, if channelList then all view
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mDataCache.Channel_GetCurr( iChannel.mNumber ) == None :
 					continue
 
+				if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+					iChNumber = iChannel.mPresentationNumber
+
 			hdLabel = ''
 			if iChannel.mIsHD :
 				hdLabel = E_TAG_COLOR_HD_LABEL
-			listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+			listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 			if len( iChannel.mName ) > 30 :
 				listItem.setLabel2( '%s'% iChannel.mName )
 				listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )

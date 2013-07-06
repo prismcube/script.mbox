@@ -1514,14 +1514,17 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( False )
 
 			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
-							
+
 			for iChannel in self.mChannelList :
+				iChNumber = iChannel.mNumber
+				if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+					iChNumber = iChannel.mPresentationNumber
 
 				hdLabel = ''
 				if iChannel.mIsHD :
 					hdLabel = E_TAG_COLOR_HD_LABEL
 
-				listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 				if len( iChannel.mName ) > 30 :
 					listItem.setLabel2( '%s'% iChannel.mName )
 					listItem.setProperty( 'iHDLabel', hdLabel )
@@ -1901,6 +1904,10 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = showList[i]
 			if iChannel == None : continue
 
+			iChNumber = iChannel.mNumber
+			if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				iChNumber = iChannel.mPresentationNumber
+
 			hdLabel = ''
 			if iChannel.mIsHD :
 				if len( iChannel.mName ) < 31 :
@@ -1910,7 +1917,7 @@ class ChannelListWindow( BaseWindow ) :
 			isFind = False
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 
-					listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '[COLOR white]%s[/COLOR] %s'% ( iChannel.mName, hdLabel ) )
+					listItem = xbmcgui.ListItem( '%04d'% iChNumber, '[COLOR white]%s[/COLOR] %s'% ( iChannel.mName, hdLabel ) )
 					listItem.setProperty( E_XML_PROPERTY_IMOVE, E_TAG_TRUE )
 					#listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
@@ -1918,7 +1925,7 @@ class ChannelListWindow( BaseWindow ) :
 					break
 
 			if not isFind :
-				listItem = xbmcgui.ListItem( '%04d'% iChannel.mNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', hdLabel )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )

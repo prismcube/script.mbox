@@ -1059,6 +1059,7 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = threading.Timer( 0.05, self.AsyncTuneByPrevious )
 		self.mAsyncTuneTimer.start( )
 
+
 	def AsyncTuneByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 		if not oldChannel or oldChannel.mError != 0 :
@@ -1072,7 +1073,11 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
 			return
 
-		self.AsyncTuneChannelByInput( oldChannel.mNumber, True )
+		iChNumber = oldChannel.mNumber
+		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			iChNumber = oldChannel.mPresentationNumber
+		self.AsyncTuneChannelByInput( iChNumber, True )
 
 
 	def RestartAsyncTuneByHistory( self ) :

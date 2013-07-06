@@ -27,6 +27,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
 		self.mIsChannelListWindow = False
 		self.mBackKeyCheck = False
+		self.mPresentNumHash 	= {}
 
 
 	def onInit( self ) :
@@ -150,11 +151,33 @@ class DialogChannelJump( BaseDialog ) :
 		return iChannel
 
 
+	def GetPresentToChannelNumber( self ) :
+		iChNumber = int( self.mChannelNumber )
+		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			#ToDO : find real ch number
+			if self.mIsChannelListWindow :
+				#ToDo
+				pass
+
+			else :
+				channelList = self.mDataCache.Channel_GetList( )
+				if channelList and len( channelList ) > 0 :
+					idx = iChNumber - 1
+					if idx < 1 :
+						LOG_TRACE( '-------------no present number' )
+						return
+					self.mChannelNumber = channelList[ idx ].mNumber
+
+
 	def SearchChannel( self ) :
+		fChannel = None
+		self.GetPresentToChannelNumber( )
+
 		if self.mIsChannelListWindow :
-			fChannel = self.Channel_GetByNumberFromChannelListWindow( int( self.mChannelNumber ) )
+			fChannel = self.Channel_GetByNumberFromChannelListWindow( self.mChannelNumber )
 		else:
-			fChannel = self.mDataCache.Channel_GetByNumber( int( self.mChannelNumber ) )
+			fChannel = self.mDataCache.Channel_GetByNumber( self.mChannelNumber )
 
 		if fChannel == None or fChannel.mError != 0 :
 			LOG_TRACE( 'No search channel[%s]'% self.mChannelNumber )
