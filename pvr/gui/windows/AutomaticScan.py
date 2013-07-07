@@ -94,7 +94,7 @@ class AutomaticScan( SettingWindow ) :
 			if self.mSatelliteIndex == 0 :
 				if self.CheckTransponder( self.mConfiguredSatelliteList ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no transponder satellite' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'At least one transponder must be exist in each satellite' ) )
 					dialog.doModal( )
 					return
 
@@ -108,7 +108,7 @@ class AutomaticScan( SettingWindow ) :
 
 				if self.CheckTransponder( configuredSatelliteList ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no transponder in the satellite' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder found in that satellite' ) )
 					dialog.doModal( )
 					return
 				
