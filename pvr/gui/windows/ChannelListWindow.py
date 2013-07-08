@@ -2828,7 +2828,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True )
+		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True, E_INPUT_MAX, self.mUserMode.mMode )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )

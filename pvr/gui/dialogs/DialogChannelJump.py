@@ -26,8 +26,8 @@ class DialogChannelJump( BaseDialog ) :
 		self.mMaxChannelNum		= E_INPUT_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
 		self.mIsChannelListWindow = False
-		self.mBackKeyCheck = False
-		self.mPresentNumHash 	= {}
+		self.mBackKeyCheck      = False
+		self.mChannelListMode   = ElisEnum.E_MODE_ALL
 
 
 	def onInit( self ) :
@@ -114,11 +114,12 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX ) :
+	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX, aZappingMode = 0 ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
 		self.mChannelListHash = aChannelListHash
 		self.mIsChannelListWindow = aIsChannelListWindow
+		self.mChannelListMode = aZappingMode
 
 
 	def SetLabelChannelNumber( self ) :
@@ -154,20 +155,27 @@ class DialogChannelJump( BaseDialog ) :
 	def GetPresentToChannelNumber( self ) :
 		iChNumber = int( self.mChannelNumber )
 		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
-		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			#ToDO : find real ch number
+		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE or \
+		   self.mIsChannelListWindow and self.mChannelListMode == ElisEnum.E_MODE_FAVORITE :
+			#find real ch number
 			if self.mIsChannelListWindow :
-				#ToDo
-				pass
+				if not self.mChannelListHash :
+					return
+				for chNumber, iChannel in self.mChannelListHash.iteritems():
+					#LOG_TRACE( '--------chNumber[%s] present[%s]'% ( chNumber, iChannel.mPresentationNumber ) )
+					if iChannel.mPresentationNumber == iChNumber :
+						iChNumber = iChannel.mNumber
+						#LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
+						break
 
 			else :
+				mPresentNum = iChNumber - 1
 				channelList = self.mDataCache.Channel_GetList( )
-				if channelList and len( channelList ) > 0 :
-					idx = iChNumber - 1
-					if idx < 1 :
-						LOG_TRACE( '-------------no present number' )
-						return
-					self.mChannelNumber = channelList[ idx ].mNumber
+				if channelList and len( channelList ) > mPresentNum :
+					iChNumber = channelList[ mPresentNum ].mNumber
+					#LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
+
+			self.mChannelNumber = '%s'% iChNumber
 
 
 	def SearchChannel( self ) :
@@ -175,9 +183,9 @@ class DialogChannelJump( BaseDialog ) :
 		self.GetPresentToChannelNumber( )
 
 		if self.mIsChannelListWindow :
-			fChannel = self.Channel_GetByNumberFromChannelListWindow( self.mChannelNumber )
+			fChannel = self.Channel_GetByNumberFromChannelListWindow( int( self.mChannelNumber ) )
 		else:
-			fChannel = self.mDataCache.Channel_GetByNumber( self.mChannelNumber )
+			fChannel = self.mDataCache.Channel_GetByNumber( int( self.mChannelNumber ) )
 
 		if fChannel == None or fChannel.mError != 0 :
 			LOG_TRACE( 'No search channel[%s]'% self.mChannelNumber )
