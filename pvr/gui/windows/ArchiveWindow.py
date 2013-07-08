@@ -1327,12 +1327,17 @@ class ArchiveWindow( BaseWindow ) :
 				self.mEnableThread = False
 				self.mPlayProgressThread.join( )
 
+			chName = MR_LANG( 'No Channel' )
 			self.mCtrlPlayProgress.setPercent( 0 )			
-			channel = self.mDataCache.Channel_GetCurrent( )
-			if channel :
-				self.mCtrlPlayName.setLabel( channel.mName )
-			else :
-				self.mCtrlPlayName.setLabel( '' )
+			iChannelList = self.mDataCache.Channel_GetList( )
+			if iChannelList and len( iChannelList ) > 0 :
+				channel = self.mDataCache.Channel_GetCurrent( )
+				if channel :
+					chName = '%s'% channel.mName
+				else :
+					chName = ''
+
+			self.mCtrlPlayName.setLabel( chName )
 
 		self.mCtrlPlayStart.setLabel( '' )
 		self.mCtrlPlayEnd.setLabel( '' )
