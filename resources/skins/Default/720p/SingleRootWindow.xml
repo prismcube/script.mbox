@@ -1282,6 +1282,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>50</posy>
 						<width>350</width>
+						<height>15</height>
 						<font>font13caps</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
@@ -2452,6 +2453,7 @@ Search for window name
 						<posx>-40</posx>
 						<posy>10</posy>
 						<width>270</width>
+						<height>15</height>
 						<font>font13caps</font>
 						<align>left</align>
 						<textcolor>9f9f9f9b</textcolor>
