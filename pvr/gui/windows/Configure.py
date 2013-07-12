@@ -106,17 +106,6 @@ class Configure( SettingWindow ) :
 		self.mEpgEndChannel			= 1
 		self.mEpgFavGroup			= 0
 
-		self.mAudioLanguageList		= []
-		self.mSubtitleLanguageList	= []
-		self.mSubtitleLanguageList_S= []
-
-		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-		for i in range( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mSubtitleLanguageList.append( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-		for i in range( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mSubtitleLanguageList_S.append( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-
 
 	def onInit( self ) :
 		self.OpenBusyDialog( )
@@ -157,6 +146,8 @@ class Configure( SettingWindow ) :
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
+
+		self.MakeLanguageList( )
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -1578,4 +1569,25 @@ class Configure( SettingWindow ) :
 		ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
 		ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 		self.SetListControl( )
+
+
+	def MakeLanguageList ( self ) :
+		self.mAudioLanguageList		= []
+		self.mSubtitleLanguageList	= []
+		self.mSubtitleLanguageList_S	= []
+
+		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
+		for i in range( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			subtitle = ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False )
+			if subtitle == 'Disable' :
+				self.mSubtitleLanguageList.append( MR_LANG( 'Disable' ) )
+			else :
+				self.mSubtitleLanguageList.append( subtitle )
+		for i in range( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			secondarySubtitle = ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False )
+			if secondarySubtitle == 'Disable' :
+				self.mSubtitleLanguageList_S.append( MR_LANG( 'Disable' ) )
+			else :
+				self.mSubtitleLanguageList_S.append( secondarySubtitle )
 
