@@ -405,7 +405,17 @@ class MainMenu( BaseWindow ) :
 			# channel tune, default 1'st
 			iChannelList = self.mDataCache.Channel_GetList( )
 			if iChannelList and len( iChannelList ) > 0 :
-				self.mDataCache.Channel_SetCurrent( iChannelList[0].mNumber, iChannelList[0].mServiceType, None, True )
+				iChannel = self.mDataCache.Channel_GetCurrent( )
+				if iChannel and iChannel.mError == 0 :
+					fChannel = self.mDataCache.Channel_GetCurr( iChannel.mNumber )
+					if fChannel and fChannel.mError == 0 :
+						iChannel = fChannel
+					else :
+						iChannel = iChannelList[0]
+				else :
+					iChannel = iChannelList[0]
+
+				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, None, True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 		else :
