@@ -12,6 +12,7 @@ class DialogChannelJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mChannelNumber		= ''
+		self.mInputString		= ''
 		self.mCtrlChannelNum	= None
 		self.mCtrlChannelName	= None
 		self.mCtrlEPGName		= None
@@ -75,10 +76,12 @@ class DialogChannelJump( BaseDialog ) :
 				return
 
 			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
-			self.mChannelNumber += inputString
-			self.mChannelNumber = '%d' % int( self.mChannelNumber )
-			if int( self.mChannelNumber ) > self.mMaxChannelNum :
-				self.mChannelNumber = inputString
+			LOG_TRACE( '------saveStr[%s] input[%s]'% ( self.mInputString, inputString ) )
+			self.mInputString += inputString
+			self.mInputString = '%d' % int( self.mInputString )
+			if int( self.mInputString ) > self.mMaxChannelNum :
+				self.mInputString = inputString
+			LOG_TRACE( '---------inputNum[%s]'% ( self.mInputString ) )
 			self.SetLabelChannelNumber( )
 
 			self.SetLabelChannelName( )
@@ -94,10 +97,11 @@ class DialogChannelJump( BaseDialog ) :
 
 			if inputNum >= 2 and inputNum <= 9 :
 				inputString = '%d' % inputNum
-				self.mChannelNumber += inputString
-				self.mChannelNumber = '%d' % int( self.mChannelNumber )
-				if int( self.mChannelNumber ) > self.mMaxChannelNum :
-					self.mChannelNumber = inputString
+				self.mInputString += inputString
+				self.mInputString = '%d' % int( self.mInputString )
+				if int( self.mInputString ) > self.mMaxChannelNum :
+					self.mInputString = inputString
+				LOG_TRACE( '---------input[%s]'% ( self.mInputString ) )
 				self.SetLabelChannelNumber( )
 
 				self.SetLabelChannelName( )
@@ -120,11 +124,12 @@ class DialogChannelJump( BaseDialog ) :
 		self.mChannelListHash = aChannelListHash
 		self.mIsChannelListWindow = aIsChannelListWindow
 		self.mChannelListMode = aZappingMode
+		self.mInputString = '%s'% aChannelFirstNum
 
 
 	def SetLabelChannelNumber( self ) :
 		self.mFlagFind = False
-		self.mCtrlChannelNum.setLabel( self.mChannelNumber )
+		self.mCtrlChannelNum.setLabel( self.mInputString )
 
 
 	def SetLabelChannelName( self, aChannelName = MR_LANG( 'No Channel' ) ) :
@@ -153,7 +158,8 @@ class DialogChannelJump( BaseDialog ) :
 
 
 	def GetPresentToChannelNumber( self ) :
-		iChNumber = int( self.mChannelNumber )
+		iChNumber = int( self.mInputString )
+		LOG_TRACE( '----check1-----iChNumber[%s]'% iChNumber )
 		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE or \
 		   self.mIsChannelListWindow and self.mChannelListMode == ElisEnum.E_MODE_FAVORITE :
@@ -161,21 +167,32 @@ class DialogChannelJump( BaseDialog ) :
 			if self.mIsChannelListWindow :
 				if not self.mChannelListHash :
 					return
+
+				isFind = False
 				for chNumber, iChannel in self.mChannelListHash.iteritems():
 					#LOG_TRACE( '--------chNumber[%s] present[%s]'% ( chNumber, iChannel.mPresentationNumber ) )
 					if iChannel.mPresentationNumber == iChNumber :
+						isFind = True
 						iChNumber = iChannel.mNumber
-						#LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
+						LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
 						break
+
+				if not isFind :
+					iChNumber = 0
+					LOG_TRACE( '-------fail' )
 
 			else :
 				mPresentNum = iChNumber - 1
 				channelList = self.mDataCache.Channel_GetList( )
 				if channelList and len( channelList ) > mPresentNum :
 					iChNumber = channelList[ mPresentNum ].mNumber
-					#LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
+					LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
+				else :
+					iChNumber = 0
+					LOG_TRACE( '-------fail' )
 
-			self.mChannelNumber = '%s'% iChNumber
+		self.mChannelNumber = '%s'% iChNumber
+		LOG_TRACE( '----check2-----iChNumber[%s] inputStr[%s]'% ( iChNumber, self.mInputString ) )
 
 
 	def SearchChannel( self ) :

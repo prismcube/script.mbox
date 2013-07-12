@@ -1516,14 +1516,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 
 			for iChannel in self.mChannelList :
-				iChNumber = iChannel.mNumber
-				if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
-					iChNumber = iChannel.mPresentationNumber
-
 				hdLabel = ''
 				if iChannel.mIsHD :
 					hdLabel = E_TAG_COLOR_HD_LABEL
 
+				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 				if len( iChannel.mName ) > 30 :
 					listItem.setLabel2( '%s'% iChannel.mName )
@@ -1904,16 +1901,13 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = showList[i]
 			if iChannel == None : continue
 
-			iChNumber = iChannel.mNumber
-			if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
-				iChNumber = iChannel.mPresentationNumber
+			iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
 
 			hdLabel = ''
 			if iChannel.mIsHD :
 				if len( iChannel.mName ) < 31 :
 					hdLabel = E_TAG_COLOR_HD_LABEL
 
-			#listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 			isFind = False
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 

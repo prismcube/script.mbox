@@ -539,12 +539,9 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = iChannel
 				self.mFakeChannel    = iChannel
 				self.mLastChannel    = iChannel
-				currNumber = '%s'% self.mFakeChannel.mNumber
+				currNumber = '%s'% self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 				currName = self.mFakeChannel.mName
 				SetLock2(False)
-
-				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-					currNumber = '%s'% self.mFakeChannel.mPresentationNumber
 
 			self.InitControlGUI( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
@@ -556,10 +553,7 @@ class LivePlate( LivePlateWindow ) :
 		if isTune :
 			SetLock2( True )
 			self.mFakeChannel = tuneCh
-			iChNumber = self.mFakeChannel.mNumber
-			if self.mZappingMode and self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-				iChNumber = self.mFakeChannel.mPresentationNumber
-
+			iChNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% iChNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.UpdateChannelLogo( self.mFakeChannel )

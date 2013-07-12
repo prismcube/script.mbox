@@ -1073,10 +1073,7 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
 			return
 
-		iChNumber = oldChannel.mNumber
-		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
-		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			iChNumber = oldChannel.mPresentationNumber
+		iChNumber = self.mDataCache.CheckPresentationNumber( oldChannel )
 		self.AsyncTuneChannelByInput( iChNumber, True )
 
 
