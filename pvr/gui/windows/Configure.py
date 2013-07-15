@@ -699,11 +699,11 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
-				self.OpenBusyDialog( )
+				#self.OpenBusyDialog( )
 				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
-					self.LoadWifiInformation( )
+					#self.LoadWifiInformation( )
 					self.AddInputControl( E_Input01, MR_LANG( 'Search Wifi' ), self.mCurrentSsid, MR_LANG( 'Search for available wireless connections' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
@@ -723,7 +723,7 @@ class Configure( SettingWindow ) :
 					self.DisableControl( E_WIFI )
 				else :
 					if self.mReLoadEthernetInformation == True :
-						self.LoadEthernetInformation( )				
+						self.LoadEthernetInformation( )
 						self.mReLoadEthernetInformation = False
 
 					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mEthernetConnectMethod, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
@@ -748,7 +748,7 @@ class Configure( SettingWindow ) :
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 					self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
-				self.CloseBusyDialog( )
+				#self.CloseBusyDialog( )
 
 			else :
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
@@ -1058,7 +1058,7 @@ class Configure( SettingWindow ) :
 		apList = []
 
 		if aControlId == E_Input01 :
-			self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Now searching' ), ING ), 30 )
+			self.mProgressThread = self.ShowProgress( '%s%s' % ( MR_LANG( 'Now searching' ), ING ), 30 )
 			time.sleep( 0.5 )
 			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) == False :
 				self.CloseProgress( )
