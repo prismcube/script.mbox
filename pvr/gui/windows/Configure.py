@@ -694,7 +694,7 @@ class Configure( SettingWindow ) :
 				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
-					#self.LoadWifiInformation( )
+					self.LoadWifiInformation( )
 					self.AddInputControl( E_Input01, MR_LANG( 'Search Wifi' ), self.mCurrentSsid, MR_LANG( 'Search for available wireless connections' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
