@@ -164,6 +164,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mZappingName = ''
 		self.mChannelList = []
 		self.mChannelListHash = {}
+		self.mChannelListForMove = []
 		self.mRecCount = 0
 		self.mRecordInfo1 = None
 		self.mRecordInfo2 = None
@@ -435,10 +436,12 @@ class ChannelListWindow( BaseWindow ) :
 
 	def LoadChannelListHash( self ) :
 		self.mChannelListHash = {}
+		self.mChannelListForMove = []
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			for i in range( len( self.mChannelList ) ) :
 				chNumber = self.mChannelList[i].mNumber
 				self.mChannelListHash[chNumber] = self.mChannelList[i]
+				self.mChannelListForMove.append( chNumber )
 
 		LOG_TRACE( '-------------------hash len[%s]'% len(self.mChannelListHash) )
 
@@ -1892,13 +1895,16 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ShowMoveToGUI( self, aStart, aEnd, aInit = False ) :
 		self.mListItems = []
-		showList = self.mNewChannelList
-		if aInit :
-			showList = self.mChannelList
-			#self.mCtrlListCHList.reset( )
+		#showList = self.mNewChannelList
+		#if aInit :
+		#	showList = self.mChannelList
 
 		for i in range( aStart, aEnd ) :
-			iChannel = showList[i]
+			#iChannel = showList[i]
+			iChannel = self.mChannelListHash.get( self.mNewChannelList[ i ], None )
+			if aInit :
+				iChannel = self.mChannelList[ i ]
+
 			if iChannel == None : continue
 
 			iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
@@ -1909,8 +1915,9 @@ class ChannelListWindow( BaseWindow ) :
 					hdLabel = E_TAG_COLOR_HD_LABEL
 
 			isFind = False
-			for item in self.mMoveList :
-				if iChannel.mNumber == item.mNumber : 
+			for chNumber in self.mMoveList :
+				item = self.mChannelListHash.get( chNumber, None )
+				if item and iChannel.mNumber == item.mNumber : 
 					listItem = xbmcgui.ListItem( '%04d'% iChNumber, '[COLOR white]%s[/COLOR] %s'% ( iChannel.mName, hdLabel ) )
 					listItem.setProperty( E_XML_PROPERTY_IMOVE, E_TAG_TRUE )
 					#listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
@@ -1937,7 +1944,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
-			self.mListItems.append(listItem)
+			self.mListItems.append( listItem )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
@@ -1948,7 +1955,9 @@ class ChannelListWindow( BaseWindow ) :
 			try :
 				self.mMoveList = []
 				self.mRefreshCurrentIdx = -1
-				self.mNewChannelList = deepcopy( self.mChannelList )
+				self.mNewChannelList = deepcopy( self.mChannelListForMove )
+				#LOG_TRACE( 'len channelList[%s] newList[%s] hash[%s]'% ( len(self.mChannelList), len(self.mNewChannelList), len(self.mChannelListHash) ) )
+
 				listHeight = self.mCtrlListCHList.getHeight( )
 				self.mItemCount = listHeight / self.mItemHeight
 				#LOG_TRACE( 'listHeight[%d] itemHeight[%d] itemCount[%d]'% (listHeight, self.mItemHeight, self.mItemCount) )
@@ -1963,32 +1972,30 @@ class ChannelListWindow( BaseWindow ) :
 				self.mMarkListBackup = deepcopy( self.mMarkList )
 
 				#2. make listing of ichannel in marked idx
-				idxFirst = int( sorted(self.mMarkList)[0] )
-				for idx in range( len(self.mMarkList) ) :
-					i = int( self.mMarkList[idx] )
-					item = self.mNewChannelList[i]
-					self.mMoveList.append( item )
-				for idx in range( len(self.mMarkList) ) :
-					i = int( self.mMarkList[idx] )
+				for idx in self.mMarkList :
+					self.mMoveList.append( self.mNewChannelList[idx] )
+				self.mMarkList.sort( )
+				idxFirst = self.mMarkList[0]
+				LOG_TRACE( 'markList[%s] moveList[%s] idxFirst[%s]'% ( self.mMarkList, self.mMoveList, idxFirst ) )
+				for idx in range( len( self.mMarkList ) ) :
 					nextIdx = idxFirst + idx
-					self.mMarkList[idx] = nextIdx
-					findIdx  = self.mNewChannelList.index( self.mMoveList[idx] )
-					finditem = self.mNewChannelList[findIdx]
-					self.mNewChannelList.pop( findIdx )
-					self.mNewChannelList.insert( nextIdx, finditem )
-				#LOG_TRACE( '2====mark[%s]'% self.mMarkList )
+					findIdx = self.mNewChannelList.index( self.mMoveList[idx] )
+					delNum  = self.mNewChannelList.pop( findIdx )
+					self.mNewChannelList.insert( nextIdx, self.mMoveList[idx] )
+					#LOG_TRACE( 'pop : findIdx[%s] chNum[%s] delIdx[%s]    insert : nextIdx[%s] chNum[%s]'% ( findIdx, self.mMoveList[idx], delNum, nextIdx, self.mMoveList[idx] ) )
+				#LOG_TRACE( 'newList[%s]'% self.mNewChannelList )
+				LOG_TRACE( '2====mark[%s] move[%s]'% ( self.mMarkList, self.mMoveList ) )
 
 				#find current channel
 				for i in range( len( self.mMarkList ) ) :
 					idx = self.mMarkList[i]
-					if self.mNewChannelList[idx].mNumber == self.mCurrentChannel :
+					if self.mNewChannelList[idx] == self.mCurrentChannel :
 						self.mRefreshCurrentIdx = i
 				#LOG_TRACE( 'mRefreshCurrentIdx[%s]'% self.mRefreshCurrentIdx )
 
-
 				self.mMoveFlag = True
 				self.mListItems = []
-				chCount = len(self.mNewChannelList)
+				chCount = len( self.mNewChannelList )
 				self.mViewFirst = idxFirst
 				self.mViewEnd = idxFirst + self.mItemCount
 
@@ -2001,9 +2008,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mViewFirst = chCount - self.mItemCount
 					self.mViewEnd = chCount
 
-
-				LOG_TRACE( '2====mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
-
+				LOG_TRACE( '2====mark[%s] view[%s]~[%s]'% ( self.mMarkList, self.mViewFirst, self.mViewEnd ) )
 				self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_TRUE )
 
@@ -2021,27 +2026,39 @@ class ChannelListWindow( BaseWindow ) :
 
 				makeNumber = idxFirst + 1
 				makeFavidx = idxFirst + 1
-				LOG_TRACE( 'insert makeFavidx[%s], makeNumber[%s]'% (makeFavidx, makeNumber) )
+				LOG_TRACE( 'insert makeFavidx[%s], makeNumber[%s]'% ( makeFavidx, makeNumber ) )
 				LOG_TRACE( 'mark[%s]'% self.mMarkList )
+
+				#moveList = []
+				#for item in self.mMoveList :
+				#	moveList.append( item.mNumber )
+				#LOG_TRACE( 'moveList[%s]'% moveList )
 				moveList = []
-				for item in self.mMoveList :
-					moveList.append( item.mNumber )
-				LOG_TRACE( 'moveList[%s]'% moveList )
+				for chNumber in self.mMoveList :
+					item = self.mChannelListHash.get( chNumber, None )
+					if item :
+						moveList.append( item )
 
 				idxCurrent = -1
 				ret = False
 				if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
-						ret = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, self.mUserMode.mServiceType, self.mMoveList )
+						ret = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, self.mUserMode.mServiceType, moveList )
 						LOG_TRACE( '==========group========[%s]'% groupName )
 				else :
-					ret = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, self.mMoveList )
+					ret = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
 
 					if ret and self.mRefreshCurrentIdx != -1 :
 						idxCurrent = self.mMarkList[self.mRefreshCurrentIdx]
-						LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
-
+						#LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
+						"""
+						chNumber = self.mNewChannelList[idxCurrent]
+						chName = self.mChannelListHash.get( chNumber, None )
+						if chName :
+							chName = chName.mName
+						LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, chNumber, chName ) )
+						"""
 
 				LOG_TRACE( 'move[%s]'% ret )
 
@@ -2089,8 +2106,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
-			self.mNewChannelList = self.mChannelList
-			#self.SubMenuAction( E_SLIDE_ACTION_SUB )
 			self.ShowMoveToGUI( 0, len( self.mChannelList ), True )
 			#self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mLastPos, E_TAG_SET_SELECT_POSITION )
 			if self.mMarkListBackup and len( self.mMarkListBackup ) > 0 :
@@ -2134,25 +2149,25 @@ class ChannelListWindow( BaseWindow ) :
 
 			#pop moveList
 			popidx = self.mMarkList[0]
+			ctrlItem = []
 			for idx in self.mMoveList :
 				item = self.mNewChannelList.pop( popidx )
-				#LOG_TRACE( 'pop idx[%s] item[%s] len[%s]'% (popidx, item.mNumber, len(self.mNewChannelList)) )
-
+				#LOG_TRACE( 'pop idx[%s] item[%s] len[%s]'% ( popidx, item.mNumber, len( self.mNewChannelList ) ) )
 
 			#update index in moveList
 			for idx in self.mMarkList :
-				idxNew = int(idx) + updown
+				idxNew = int( idx ) + updown
 				markList.append( idxNew )
 			self.mMarkList = []
 			self.mMarkList = markList
 			insertPos = self.mMarkList[0]
 
 			#insert moveList
-			for i in range(len(self.mMoveList)) :
+			for i in range( len( self.mMoveList ) ) :
 				idx = lastidx - i
-				self.mNewChannelList.insert(insertPos, self.mMoveList[idx])
+				self.mNewChannelList.insert( insertPos, self.mMoveList[idx] )
 
-			#LOG_TRACE( 'insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len(self.mNewChannelList)) )
+			#LOG_TRACE( 'insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len( self.mNewChannelList ) ) )
 
 			#show top ~ bottom
 			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
@@ -2160,12 +2175,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewEnd   = self.mViewEnd   + updown
 				#LOG_TRACE( 'changed view item' )
 
-			bottom = len(self.mNewChannelList)
+			bottom = len( self.mNewChannelList )
 			if self.mViewEnd > bottom :
 				self.mViewFirst = bottom - self.mItemCount
 				self.mViewEnd = bottom
 
-			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% (self.mViewFirst, self.mViewEnd, insertPos) )
+			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% ( self.mViewFirst, self.mViewEnd, insertPos ) )
 			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
