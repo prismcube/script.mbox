@@ -161,10 +161,8 @@ class AutomaticScan( SettingWindow ) :
 		for satellite in aSatelliteList :
 			tp = self.mDataCache.GetTransponderListBySatellite( satellite.mLongitude, satellite.mBand )
 			if tp and tp[0].mError == 0 :
-				print 'dhkim test ok!'
 				continue
 			else :
-				print 'dhkim test fail'
 				return False
 
 		return True
