@@ -740,7 +740,7 @@ Search for window name
 				<control type="label">
 					<posx>58</posx>
 					<posy>5</posy>
-					<width>400</width>
+					<width>500</width>
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
@@ -3662,7 +3662,7 @@ Search for window name
 				<control type="label">
 					<posx>73</posx>
 					<posy>5</posy>
-					<width>400</width>
+					<width>500</width>
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
@@ -4594,7 +4594,7 @@ Search for window name
 				<control type="label">
 					<posx>58</posx>
 					<posy>5</posy>
-					<width>400</width>
+					<width>500</width>
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
@@ -5820,7 +5820,7 @@ Search for window name
 				<control type="label">
 					<posx>58</posx>
 					<posy>5</posy>
-					<width>400</width>
+					<width>500</width>
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
