@@ -20,7 +20,11 @@ E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
 
 # SERVER ADDRESS
-PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
+PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
+PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
+#PRISMCUBE_SERVER_FW_REFERENCE = 'ruby_1.0'
+PRISMCUBE_SERVER_FW_REFERENCE = 'CCC'
+
 
 # SUPPORT : SKIN RELOAD 'Q' KEY
 E_SUPPORT_USE_KEY_Q = False
@@ -41,9 +45,11 @@ E_USE_OLD_NETWORK			= True
 E_USE_AUTO_CONNECT			= False
 
 #use to usb
+E_UPDATE_FIRMWARE_SCENARIO_3RD = True	# v1.0.2 higher, apply to 2013.07.13
 E_UPDATE_FIRMWARE_USE_USB   = False
 E_UPDATE_FIRMWARE_USB_ONLY  = False
-E_UPDATE_TEST_DEBUG         = False
+E_UPDATE_TEST_DEBUG         = True
+E_UPDATE_TEST_TESTBED       = True
 
 # USE CHANNEL_LOGO
 E_USE_CHANNEL_LOGO			= True
@@ -385,6 +391,8 @@ E_TAG_FALSE   				= 'False'
 E_TAG_ADD_ITEM 				= 'addItem'
 E_TAG_COLOR_RED   			= '[COLOR red]'
 E_TAG_COLOR_GREEN 			= '[COLOR green]'
+E_TAG_COLOR_BLUE 			= '[COLOR blue]'
+E_TAG_COLOR_GREY 			= '[COLOR grey]'
 E_TAG_COLOR_END   			= '[/COLOR]'
 E_TAG_COLOR_HD_LABEL        = '[COLOR orange]%s[/COLOR]'% ( '<HD>' )
 E_TAG_SET_SELECT_POSITION 	= 'selectItem'
