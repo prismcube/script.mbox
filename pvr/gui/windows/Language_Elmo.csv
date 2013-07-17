@@ -21,7 +21,7 @@
 "Transponder Info";"Transponder Info";"Informations du transpondeur";"Transponder Info";"Transponder Info";"Transponder Info";"Transponder Info";"Transponder Info";"Transponder Info";"Информация Транспондера";"Transponder Info";"Transponder Info";1020
 "Go Back";"Go Back";"Retour";"Go Back";"Go Back";"Go Back";"Go Back";"Go Back";"Go Back";"Назад";"Go Back";"Go Back";1021
 "OK";"OK";"OK";"OK";"OK";"OK";"OK";"OK";"OK";"ОК";"OK";"OK";1022
-"Record";"Record";"accéder à vos extensions XBMC convenablement";"Record";"Record";"Record";"Record";"Record";"Record";"Запись";"Record";"Record";1023
+"Record";"Record";"Enregistrer";"Record";"Record";"Record";"Record";"Record";"Record";"Запись";"Record";"Record";1023
 "Duration";"Dauer";"Durée";"Durata";"Duracion";"Trvani";"Duur";"Czas trwania";"Sure";"Продолжительность";"Duration";"Duration";1024
 "Start";"Start";"Commencer";"Start";"Start";"Start";"Start";"Start";"Start";"Начать";"Start";"시작";1025
 "Cancel";"Abbrechen";"Annuler";"Annulla";"Cancelar";"Storno";"Annuleren";"Przerwij";"?ptal";"Отменить";"Cancel";"취소";1026
@@ -206,7 +206,7 @@
 "Channel Search Mode";"Programmsuchlauf-Modus";"Mode de recherche canal";"Modo ciclo di ricerca dei programmi";"Modo busqueda canales";"re?im vyhledavani program?";"Modus voor Zoeken naar programma's";"Tryb wyszukiwania programow";"Program arama modu";"Режим Поиска Каналов";"Channel Search Mode";"Channel Search Mode";2082
 "free only";"nur freie";"Gratuit seulement";"solo in chiaro";"solo sin codificar";"jen volne";"alleen vrije";"tylko darmowe";"Sadece ?ifresizler";"Только Открытые";"free only";"free only";2083
 "scrambled only";"nur verschlusselte";"Cryptées seulement";"solo criptato";"solo codificados";"jen kodovane";"alleen gecodeerde";"tylko kodowane";"Sadece ?ifreliler";"Только Кодированные";"scrambled only";"scrambled only";2084
-"free and scrambled";"free and scrambled";"gratuites et cryptées";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"Открытые и Кодированные";"free and scrambled";"free and scrambled";2085
+"free and scrambled";"free and scrambled";"Gratuites et cryptées";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"free and scrambled";"Открытые и Кодированные";"free and scrambled";"free and scrambled";2085
 "Network Search";"NIT-Suchlauf";"Recherche réseau";"Ricerca rete";"Busqueda de red";"Vyhledavani sit?";"Zoeken naar netwerken";"Szukaj sieci";"?ebeke arama";"Сетевой Поиск";"Network Search";"Network Search";2086
 "DVB Type";"DVB-Typ";"Type du DVB";"Tipo DVB";"Tipo DVB";"Typ DVB";"DVB-type";"typ DVB";"DVB tipi";"Тип DVB";"DVB Type";"DVB Type";2087
 "DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";"DVB-S2 (HD)";2088

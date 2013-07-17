@@ -22,7 +22,7 @@
 	<string id="1020">Informations du transpondeur</string>
 	<string id="1021">Retour</string>
 	<string id="1022">OK</string>
-	<string id="1023">accéder à vos extensions XBMC convenablement</string>
+	<string id="1023">Enregistrer</string>
 	<string id="1024">Durée</string>
 	<string id="1025">Commencer</string>
 	<string id="1026">Annuler</string>
@@ -207,7 +207,7 @@
 	<string id="2082">Mode de recherche canal</string>
 	<string id="2083">Gratuit seulement</string>
 	<string id="2084">Cryptées seulement</string>
-	<string id="2085">gratuites et cryptées</string>
+	<string id="2085">Gratuites et cryptées</string>
 	<string id="2086">Recherche réseau</string>
 	<string id="2087">Type du DVB</string>
 	<string id="2088">DVB-S2 (HD)</string>
