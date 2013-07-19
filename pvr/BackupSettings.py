@@ -54,7 +54,11 @@ class BackupSettings( object ) :
 
 
 	def SetNetwork( self ) :
-		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) == pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
+		if not self.mPlatform.IsPrismCube( ) :
+			LOG_TRACE( 'No support platform' )
+			return
+
+		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) >= pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
 			LOG_TRACE( 'passed network setting by Frodo version' )
 			return
 	
