@@ -46,6 +46,9 @@ CONTEXT_SHOW_ALL_TIMERS			= 5
 CONTEXT_EXTEND_INFOMATION		= 6
 CONTEXT_SEARCH					= 7
 CONTEXT_SELECT_CHANNEL			= 8
+CONTEXT_ADD_VIEW_TIMER			= 9
+CONTEXT_EDIT_VIEW_TIMER			= 10
+CONTEXT_DELETE_VIEW_TIMER		= 11
 
 
 MININUM_KEYWORD_SIZE			= 3
@@ -1418,6 +1421,12 @@ class EPGWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
+
+		context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+		context.append( ContextItem( MR_LANG( 'Edit ViewTimer' ), CONTEXT_EDIT_VIEW_TIMER ) )
+		context.append( ContextItem( MR_LANG( 'Delete ViewTimer' ), CONTEXT_DELETE_VIEW_TIMER ) )
+
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
@@ -1462,6 +1471,13 @@ class EPGWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
 			self.ShowHotkeys( )
+
+		elif aContextAction == CONTEXT_ADD_VIEW_TIMER :
+			self.ShowViewTimer( )
+		elif aContextAction == CONTEXT_EDIT_VIEW_TIMER :
+			self.ShowViewTimer( CONTEXT_EDIT_VIEW_TIMER )
+		elif aContextAction == CONTEXT_DELETE_VIEW_TIMER :
+			pass
 
 
 	def ShowHotkeys( self ) :
@@ -1598,6 +1614,59 @@ class EPGWindow( BaseWindow ) :
 	
 		dialog.SetChannel( channel )			
 
+		dialog.doModal( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
+			if dialog.GetConflictTimer( ) == None :
+				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
+				infoDialog.doModal( )
+			else :
+				RecordConflict( dialog.GetConflictTimer( ) )
+			return
+
+		#self.StopEPGUpdateTimer( )
+		self.UpdateListUpdateOnly( )
+		#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
+
+	def ShowViewTimer( self, aAction = CONTEXT_ADD_VIEW_TIMER ) :
+		#if HasAvailableRecordingHDD( ) == False :
+		#	return
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
+
+
+		if aAction == CONTEXT_EDIT_VIEW_TIMER :
+			dialog.SetTimer( True )
+
+		channel = None
+
+		if self.mEPGMode == E_VIEW_GRID  :
+			selectedPos = self.GridGetSelectedPosition( )
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
+			else :
+				LOG_ERR( 'Could not find the channel' )
+				return
+
+		elif self.mEPGMode == E_VIEW_CHANNEL  :
+			#channel = self.mDataCache.Channel_GetCurrent( )
+			channel = self.mSelectChannel
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
+			else :
+				LOG_ERR( 'Could not find the channel' )
+				return
+
+		LOG_TRACE( '----------channel[%s]'% channel )
+		if not channel :
+			LOG_TRACE( 'Could not find the channel' )
+			return
+
+		dialog.SetChannel( channel )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
