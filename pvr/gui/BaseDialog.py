@@ -92,7 +92,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) and \
+			if self.mPlatform.GetXBMCVersion( ) >= self.mPlatform.GetFrodoVersion( ) and \
 			   aVolumeStep == 0 : 
 				mute = True
 				if self.mCommander.Player_GetMute( ) :
