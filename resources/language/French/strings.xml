@@ -689,7 +689,7 @@
 	<string id="3244">Configuration de l'antenne et du satellite</string>
 	<string id="3245">Quand vous choisissez Séparés, le tuner 2 reçoit sa propre entrée de signal</string>
 	<string id="3246">cependant, il va recevoir seulement le niveau du canal actuellement reçu par le tuner 1 quand ceci est défini sur pré-monté</string>
-	<string id="3247">Connexion Tuner 2</string>
+	<string id="3247">Connexion Tuner</string>
 	<string id="3248">Signal Tuner 2</string>
 	<string id="3249">Quand vous choisissez Comme le tuner 1, les deux tuners seront connectés à la même source de signal</string>
 	<string id="3250">Choisissez une méthode de contrôle pour le Tuner 1</string>
