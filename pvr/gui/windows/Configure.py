@@ -106,17 +106,6 @@ class Configure( SettingWindow ) :
 		self.mEpgEndChannel			= 1
 		self.mEpgFavGroup			= 0
 
-		self.mAudioLanguageList		= []
-		self.mSubtitleLanguageList	= []
-		self.mSubtitleLanguageList_S= []
-
-		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-		for i in range( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mSubtitleLanguageList.append( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-		for i in range( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
-			self.mSubtitleLanguageList_S.append( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False ) )
-
 
 	def onInit( self ) :
 		self.OpenBusyDialog( )
@@ -157,6 +146,8 @@ class Configure( SettingWindow ) :
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
+
+		self.MakeLanguageList( )
 
 		self.mCtrlLeftGroup = self.getControl( E_CONFIGURE_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -699,7 +690,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
-				self.OpenBusyDialog( )
+				#self.OpenBusyDialog( )
 				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
 				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
@@ -723,7 +714,7 @@ class Configure( SettingWindow ) :
 					self.DisableControl( E_WIFI )
 				else :
 					if self.mReLoadEthernetInformation == True :
-						self.LoadEthernetInformation( )				
+						self.LoadEthernetInformation( )
 						self.mReLoadEthernetInformation = False
 
 					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mEthernetConnectMethod, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
@@ -748,7 +739,7 @@ class Configure( SettingWindow ) :
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 					self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
-				self.CloseBusyDialog( )
+				#self.CloseBusyDialog( )
 
 			else :
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
@@ -1058,7 +1049,7 @@ class Configure( SettingWindow ) :
 		apList = []
 
 		if aControlId == E_Input01 :
-			self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Now searching' ), ING ), 30 )
+			self.mProgressThread = self.ShowProgress( '%s%s' % ( MR_LANG( 'Now searching' ), ING ), 30 )
 			time.sleep( 0.5 )
 			if NetMgr.GetInstance( ).LoadSetWifiTechnology( ) == False :
 				self.CloseProgress( )
@@ -1578,4 +1569,25 @@ class Configure( SettingWindow ) :
 		ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
 		ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 		self.SetListControl( )
+
+
+	def MakeLanguageList ( self ) :
+		self.mAudioLanguageList		= []
+		self.mSubtitleLanguageList	= []
+		self.mSubtitleLanguageList_S	= []
+
+		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i, False ) )
+		for i in range( ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			subtitle = ElisPropertyEnum( 'Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False )
+			if subtitle == 'Disable' :
+				self.mSubtitleLanguageList.append( MR_LANG( 'Disable' ) )
+			else :
+				self.mSubtitleLanguageList.append( subtitle )
+		for i in range( ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetIndexCount( ) ) :
+			secondarySubtitle = ElisPropertyEnum( 'Secondary Subtitle Language', self.mCommander ).GetPropStringByIndex( i, False )
+			if secondarySubtitle == 'Disable' :
+				self.mSubtitleLanguageList_S.append( MR_LANG( 'Disable' ) )
+			else :
+				self.mSubtitleLanguageList_S.append( secondarySubtitle )
 

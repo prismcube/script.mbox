@@ -390,6 +390,23 @@ class BaseWindow( BaseObjectWindow ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def UpdateMediaCenterVolume( self ) :
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------blocking avblank' )
+			return
+
+		volume = 0
+		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) == self.mPlatform.GetFrodoVersion( ) :
+				volume =  XBMC_GetVolume( )
+
+		else :
+			volume = self.mCommander.Player_GetVolume( )
+
+		LOG_TRACE( 'GET VOLUME=%d' %volume )
+		self.mCommander.Player_SetVolume( volume )
+
+
 	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
 		startTime = time.time()
 		loopTime = 0.0
@@ -445,10 +462,12 @@ class BaseWindow( BaseObjectWindow ) :
 				else :
 					self.mDataCache.Channel_InvalidateCurrent( )
 					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+					self.mDataCache.SyncMute( )
 					self.mDataCache.SetParentLockPass( True )
 
-			self.UpdateVolume( )
-			thread = threading.Timer( 1.0, self.mDataCache.SyncMute )
+			#self.UpdateVolume( )
+			self.UpdateMediaCenterVolume( )
+			thread = threading.Timer( 0.9, self.mDataCache.SyncMute )
 			thread.start( )
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )

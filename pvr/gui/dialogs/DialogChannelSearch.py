@@ -6,13 +6,12 @@ LABEL_ID_TRANSPONDER_INFO		= 404
 PROGRESS_ID_SCAN				= 200
 LIST_ID_TV						= 400
 LIST_ID_RADIO					= 402
-BUTTON_ID_CANCEL				= 300
 BUTTON_ID_CLOSE					= 104
 
 # Scan MODE
-E_SCAN_NONE					= 0
-E_SCAN_SATELLITE			= 1
-E_SCAN_TRANSPONDER			= 2
+E_SCAN_NONE						= 0
+E_SCAN_SATELLITE				= 1
+E_SCAN_TRANSPONDER				= 2
 
 INVALID_CHANNEL					= 65534
 
@@ -22,6 +21,7 @@ class DialogChannelSearch( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mScanMode					= E_SCAN_NONE
 		self.mIsFinished				= True
+		self.mIsOpenAbortDialog			= False
 		self.mTransponderList			= []
 		self.mConfiguredSatelliteList	= []
 		self.mLongitude					= 0
@@ -43,7 +43,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.mIsFinished			= False	
-		#self.mTimer					= None
+		self.mIsOpenAbortDialog		= False
+
 		self.mNewTVChannelList		= []
 		self.mNewRadioChannelList	= []
 		self.mTvListItems			= []
@@ -72,7 +73,11 @@ class DialogChannelSearch( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.ScanAbort( )
+			if self.mIsFinished :
+				self.mEventBus.Deregister( self )
+				self.CloseDialog( )
+			else :
+				self.ScanAbort( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -92,9 +97,12 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
-		if focusId == BUTTON_ID_CANCEL or focusId == BUTTON_ID_CLOSE :
-			self.ScanAbort( )
-
+		if focusId == BUTTON_ID_CLOSE :
+			if self.mIsFinished :
+				self.mEventBus.Deregister( self )
+				self.CloseDialog( )
+			else :
+				self.ScanAbort( )
 
 
 	def onFocus( self, controlId ) :
@@ -164,46 +172,18 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ScanAbort( self ) :
-		if self.mIsFinished :
-			try :
-				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
-			except Exception, ex :
-				LOG_TRACE( 'except open busydialog' )
+		self.mIsOpenAbortDialog = True
+		self.mAbortDialog.doModal( )
+		self.mIsOpenAbortDialog = False
+		if self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
+			self.mCommander.Channelscan_Abort( )
+			self.LoadChannelSearchedData( )
 			self.mEventBus.Deregister( self )
-			self.mDataCache.Channel_Save( )
-			self.mDataCache.LoadZappingList( )
-			self.mDataCache.LoadChannelList( )
-			iZapping = self.mDataCache.Zappingmode_GetCurrent( )
-			if iZapping and iZapping.mError == 0 :
-				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
-			self.mDataCache.SetChannelReloadStatus( True )
-			iChannel = self.mDataCache.Channel_GetCurrent( True )
-			self.mDataCache.mCurrentChannel = iChannel
-
-			if self.mScanMode == E_SCAN_TRANSPONDER :
-				self.mCommander.ScanHelper_Start( )
-
-			else :
-				if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
-					self.mDataCache.Channel_ReTune( )
-				else :
-					self.mDataCache.Channel_TuneDefault( False, iChannel )
-
-			self.NewTransponderAdd( )
-			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.CloseDialog( )
-		else :
-			self.mAbortDialog.doModal( )
-			if self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
-				self.mCommander.Channelscan_Abort( )
-				#xbmc.executebuiltin( "Dialog.Close(busydialog)" )
-				self.mIsFinished = True
-				self.ScanAbort( )
-			elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_NO :
-				return
-			elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
-				return
+		elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_NO :
+			return
+		elif self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
+			return
 
 
 	def onEvent( self, aEvent ) :
@@ -248,9 +228,39 @@ class DialogChannelSearch( BaseDialog ) :
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			self.DefaultTuneInSearchedChannel( )
+
+			if self.mIsOpenAbortDialog :
+				self.mAbortDialog.close( )
+			
+			self.mIsFinished = True
+			self.LoadChannelSearchedData( )
 			self.mCtrlProgress.setPercent( 100 )
-			timer = threading.Timer( 0.5, self.ShowResult )
+			timer = threading.Timer( 0.3, self.ShowResult )
 			timer.start( )
+
+
+	def LoadChannelSearchedData( self ) :
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+		self.mDataCache.Channel_Save( )
+		self.mDataCache.LoadZappingList( )
+		self.mDataCache.LoadChannelList( )
+		iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+		if iZapping and iZapping.mError == 0 :
+			self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
+		self.mDataCache.SetChannelReloadStatus( True )
+		iChannel = self.mDataCache.Channel_GetCurrent( True )
+		self.mDataCache.mCurrentChannel = iChannel
+
+		if self.mScanMode == E_SCAN_TRANSPONDER :
+			self.mCommander.ScanHelper_Start( )
+
+		else :
+			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
+				self.mDataCache.Channel_ReTune( )
+			else :
+				self.mDataCache.Channel_TuneDefault( False, iChannel )
+		self.NewTransponderAdd( )
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 
 
 	@SetLock
@@ -267,21 +277,14 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ShowResult( self ) :
-		self.mIsFinished = True
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
 		searchResult = MR_LANG( 'TV channels : %d %sRadio channels : %d' ) % ( tvCount, NEW_LINE, radioCount )
-
-		try :
-			self.mAbortDialog.close( )
-		except Exception, ex :
-			LOG_TRACE( 'except close dialog' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
 		dialog.doModal( )
 		
-
 
 	def DefaultTuneInSearchedChannel( self ) :
 		if self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -293,7 +296,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 				self.ChannelTune( self.mStoreTVChannel[0] )
 
-				#self.mDataCache.Channel_SetCurrent( self.mStoreTVChannel[0].mNumber, self.mStoreTVChannel[0].mServiceType )
 		else :
 			if len( self.mStoreRadioChannel ) > 0 :
 				for channel in self.mStoreRadioChannel :
@@ -302,8 +304,6 @@ class DialogChannelSearch( BaseDialog ) :
 						return
 
 				self.ChannelTune( self.mStoreRadioChannel[0] )
-
-				#self.mDataCache.Channel_SetCurrent( self.mStoreRadioChannel[0].mNumber, self.mStoreRadioChannel[0].mServiceType )
 
 
 	def ChannelTune( self, aChannel ) :
