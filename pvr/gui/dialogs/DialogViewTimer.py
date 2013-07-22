@@ -28,7 +28,7 @@ class DialogViewTimer( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mChannel = None
-		self.mMode = False
+		self.mTimer = None
 		self.mRecordName = MR_LANG( 'None' )
 		self.mErrorMessage = MR_LANG( 'Unknown Error' )
 		self.mWeeklyStart = 0
@@ -49,15 +49,15 @@ class DialogViewTimer( SettingDialog ) :
 		self.setProperty( 'DialogDrawFinished', 'False' )
 
 		mTitle = MR_LANG( 'Add View Timer' )
-		if self.mMode :
+		if self.mTimer :
 			mTitle = MR_LANG( 'Edit View Timer' )
 
 		self.SetHeaderLabel( mTitle )
 		if self.mChannel :
 			self.mRecordName = self.mChannel.mName
 
-		#self.Reload( )
 		self.DrawItem( )
+		self.Reload( )
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
@@ -82,9 +82,9 @@ class DialogViewTimer( SettingDialog ) :
 			if groupId == E_DialogInput01 :
 				self.ShowRecordName( )
 
-			elif groupId == E_DialogSpinEx02 :
-				selectIndex = self.GetSelectedIndex( E_DialogSpinEx02 )
-				if focusId == E_DialogSpinEx02 + 1 : 
+			elif groupId == E_DialogSpinEx01 :
+				selectIndex = self.GetSelectedIndex( E_DialogSpinEx01 )
+				if focusId == E_DialogSpinEx01 + 1 :
 					self.ChangeStartDay( True )
 				else :
 					self.ChangeStartDay( False )
@@ -139,8 +139,8 @@ class DialogViewTimer( SettingDialog ) :
 		self.mChannel = aChannel
 
 
-	def SetTimer( self, aIsEdit = False ) :
-		self.mMode = aIsEdit
+	def SetTimer( self, aTimer = None ) :
+		self.mTimer = aTimer
 
 
 	def IsOK( self ) :
@@ -152,20 +152,15 @@ class DialogViewTimer( SettingDialog ) :
 
 
 	def DrawItem( self ) :
-		LOG_TRACE( 'self.mMode[%s]'% self.mMode )
+		LOG_TRACE( 'self.mTimer[%s]'% self.mTimer )
 		#global LIST_RECORDING_MODE
 		#global LIST_WEEKLY
 
 		try :
-
 			self.ResetAllControl( )
-			#self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_RECORDING_MODE, self.mRecordingMode )
 			self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Date' ), [ MR_LANG( 'Date' ) ], 0 )			
-			#self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
-			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of week' ) )
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
-			#self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
 			self.AddOkCanelButton( )
 
 			self.SetAutoHeight( True )
@@ -193,7 +188,7 @@ class DialogViewTimer( SettingDialog ) :
 			self.mWeeklyStart = newWeekyStart
 
 		LOG_TRACE( 'New StartTime =%s'% TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-		self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+		self.SetListControlItemLabel( E_DialogSpinEx01, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 
 
 	def ShowRecordName( self ) :
@@ -217,31 +212,43 @@ class DialogViewTimer( SettingDialog ) :
 
 
 	def DoAddTimer( self ) :
+		retTimer = False
 		try :
 			LOG_TRACE( 'Edit Mode' )
 
 			strStartTime = self.GetControlLabel2String( E_DialogInput02 )
 
-			#LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE( 'startTime=%s'% strStartTime )
+			tempList = strStartTime.split( ':', 1 )
+			startHour = int( tempList[0] )
+			startMin = int( tempList[1] )
+			startTime = startHour * 3600 + startMin * 60 + self.mWeeklyStart
+
+			LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE( 'strStartTime[%s] startTime[%s]'% ( strStartTime, startTime ) )
 
 			#Normalize EndTime
 			#aTimerId, aNewStartTime, aNewDuration
 			#ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
-
-			if ret[0].mParam == -1 or ret[0].mError == -1 :
-				self.mConflictTimer = ret
-				self.mErrorMessage = MR_LANG( 'Error' )
-				return False
+			ret = None
+			if self.mTimer :
+				ret = self.mDataCache.Timer_EditViewTimer( self.mTimer.mTimerId, startTime )
 			else :
-				self.mConflictTimer = None
+				ret = self.mDataCache.Timer_AddViewTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mRecordName )
 
-			return True
+			retTimer = True
+			if not ret :
+				self.mConflictTimer = None
+			else :
+				if ret[0].mParam == -1 or ret[0].mError == -1 :
+					self.mConflictTimer = ret
+					self.mErrorMessage = MR_LANG( 'Error' )
+					retTimer = False
 
 		except Exception, ex :
 			LOG_ERR( 'Exception %s' %ex )
+			retTimer = False
 
-		return False
+		return retTimer
 
 			
 	def ShowStartTime( self ) :
@@ -253,7 +260,7 @@ class DialogViewTimer( SettingDialog ) :
 			#	strStartTime = TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM )
 
 			localTime = self.mDataCache.Datetime_GetLocalTime( )
-			strStartTime = TimeToString( slocalTime, TimeFormatEnum.E_HH_MM )
+			strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
 
 			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )
 
@@ -271,11 +278,22 @@ class DialogViewTimer( SettingDialog ) :
 			"""
 
 			self.SetControlLabel2String( E_DialogInput02, strStartTime )
-			self.SetControlLabel2String( E_DialogInput03, strEndTime )
 
 		except Exception, ex :
 			LOG_ERR( 'Exception %s'% ex )
 
+
+	def Reload( self ) :
+		self.SetControlLabel2String( E_DialogInput01, self.mRecordName )
+
+		localTime = self.mDataCache.Datetime_GetLocalTime( )
+		strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
+		self.SetControlLabel2String( E_DialogInput02, strStartTime )
+
+		days = int( localTime / ONE_DAY_SECONDS )
+		self.mWeeklyStart = days * ONE_DAY_SECONDS
+		LOG_TRACE( 'New StartTime =%s'% TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+		self.SetListControlItemLabel( E_DialogSpinEx01, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 
 
 

@@ -47,8 +47,6 @@ CONTEXT_EXTEND_INFOMATION		= 6
 CONTEXT_SEARCH					= 7
 CONTEXT_SELECT_CHANNEL			= 8
 CONTEXT_ADD_VIEW_TIMER			= 9
-CONTEXT_EDIT_VIEW_TIMER			= 10
-CONTEXT_DELETE_VIEW_TIMER		= 11
 
 
 MININUM_KEYWORD_SIZE			= 3
@@ -64,6 +62,7 @@ E_GRID_MAX_ROW_COUNT			= 8
 E_GRID_MAX_COL_COUNT			= 20
 E_GRID_MAX_BUTTON_COUNT			= 100
 E_GRID_SCHEDULED_BUTTON_COUNT	= 20
+E_GRID_SCHEDULED_VIEW_BUTTON_COUNT	= 20
 E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 60
 E_GRID_DEFAULT_GAP				= 5
@@ -88,6 +87,7 @@ GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
 BUTTON_ID_BASE_RUNNNING_REC		= E_EPG_WINDOW_BASE_ID + 3601
 BUTTON_ID_BASE_SCHEDULED		= E_EPG_WINDOW_BASE_ID + 3701
+BUTTON_ID_BASE_SCHEDULED_VIEW	= E_EPG_WINDOW_BASE_ID + 3801
 
 
 
@@ -125,6 +125,7 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlGridEPGButtonList = []
 		self.mCtrlRecButtonList = []
 		self.mCtrlScheduledButtonList = []
+		self.mCtrlScheduledViewButtonList = []
 		self.mCtrlFocusButton = None
 		#self.mCtrlGridNavigationButtons	= []	
 		self.mCtrlPrevFocusId = 0
@@ -1387,6 +1388,8 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
+			context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )
@@ -1414,18 +1417,14 @@ class EPGWindow( BaseWindow ) :
 			else :
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
+			context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )				
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
-
-
-		context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
-		context.append( ContextItem( MR_LANG( 'Edit ViewTimer' ), CONTEXT_EDIT_VIEW_TIMER ) )
-		context.append( ContextItem( MR_LANG( 'Delete ViewTimer' ), CONTEXT_DELETE_VIEW_TIMER ) )
-
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -1474,10 +1473,6 @@ class EPGWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ADD_VIEW_TIMER :
 			self.ShowViewTimer( )
-		elif aContextAction == CONTEXT_EDIT_VIEW_TIMER :
-			self.ShowViewTimer( CONTEXT_EDIT_VIEW_TIMER )
-		elif aContextAction == CONTEXT_DELETE_VIEW_TIMER :
-			pass
 
 
 	def ShowHotkeys( self ) :
@@ -1536,8 +1531,8 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
-		if HasAvailableRecordingHDD( ) == False :
-			return
+		#if HasAvailableRecordingHDD( ) == False :
+		#	return
 			
 		selectedEPG = self.GetSelectedEPG( )
 
@@ -1546,7 +1541,10 @@ class EPGWindow( BaseWindow ) :
 		if selectedEPG :
 			timer = self.GetTimerByEPG( selectedEPG )
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				self.ShowManualTimer( selectedEPG, timer )
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					self.ShowViewTimer( )
+				else :
+					self.ShowManualTimer( selectedEPG, timer )
 
 		else :
 			if self.mEPGMode == E_VIEW_GRID :
@@ -1559,7 +1557,10 @@ class EPGWindow( BaseWindow ) :
 					timer = self.GetTimerByChannel( channel )					
 		
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				self.ShowManualTimer( None, timer )				
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					self.ShowViewTimer( )
+				else :
+					self.ShowManualTimer( None, timer )				
 	
 
 	def ShowManualTimer( self, aEPG=None, aTimer=None ) :
@@ -1630,18 +1631,34 @@ class EPGWindow( BaseWindow ) :
 		#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
-	def ShowViewTimer( self, aAction = CONTEXT_ADD_VIEW_TIMER ) :
+	def ShowViewTimer( self ) :
 		#if HasAvailableRecordingHDD( ) == False :
 		#	return
 
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
+		#1.get timer
+		timer = None
+		selectedEPG = self.GetSelectedEPG( )
+		if selectedEPG :
+			timer = self.GetTimerByEPG( selectedEPG )
+			#if timer and timer.mTimerId > 0 :	# Edit Mode
+			#	pass
+
+		else :
+			if self.mEPGMode == E_VIEW_GRID :
+				timer = self.GetTimerByFocus( )
+
+			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
+				selectedPos = self.mCtrlBigList.getSelectedPosition( )
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+					channel = self.mChannelList[ selectedPos ]
+					timer = self.GetTimerByChannel( channel )
+
+			#if timer and timer.mTimerId > 0 :	# Edit Mode
+			#	pass
 
 
-		if aAction == CONTEXT_EDIT_VIEW_TIMER :
-			dialog.SetTimer( True )
-
+		#2.get channel
 		channel = None
-
 		if self.mEPGMode == E_VIEW_GRID  :
 			selectedPos = self.GridGetSelectedPosition( )
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
@@ -1666,6 +1683,8 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'Could not find the channel' )
 			return
 
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
+		dialog.SetTimer( timer )
 		dialog.SetChannel( channel )
 		dialog.doModal( )
 
@@ -2435,6 +2454,12 @@ class EPGWindow( BaseWindow ) :
 			ctrlButton.setVisible( False )
 			self.mCtrlScheduledButtonList.append( ctrlButton )
 
+		self.mCtrlScheduledViewButtonList = []
+		for i in range( E_GRID_SCHEDULED_VIEW_BUTTON_COUNT ):
+			ctrlButton = self.getControl(BUTTON_ID_BASE_SCHEDULED_VIEW + i)
+			ctrlButton.setVisible( False )
+			self.mCtrlScheduledViewButtonList.append( ctrlButton )
+
 
 	def SetTimeline( self ) :
 		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
@@ -2738,6 +2763,7 @@ class EPGWindow( BaseWindow ) :
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT		
 		recCount = 0
 		timerCount = 0
+		timerCount2 = 0
 		#not runningTimer
 		if self.mTimerList and len( self.mTimerList ) > 0  :
 			try :	
@@ -2776,9 +2802,11 @@ class EPGWindow( BaseWindow ) :
 							LOG_TRACE( 'start=%s' %TimeToString( start + localOffset, TimeFormatEnum.E_HH_MM )	)
 							LOG_TRACE( 'end=%s' %TimeToString( end + localOffset, TimeFormatEnum.E_HH_MM )	)					
 							
-							drawWidth = int( ( end-start ) * self.mGridCanvasWidth/drawableTime ) 
+							drawWidth = int( ( end-start ) * self.mGridCanvasWidth/drawableTime )
+							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+								drawWidth = 5
 
-							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d' %( offsetX, offsetY, drawWidth ) )
+							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d mTimerType[%s]' %( offsetX, offsetY, drawWidth, timer.mTimerType ) )
 
 							if drawWidth <= 0 :
 								LOG_ERR( 'drawWidth is too small' )
@@ -2788,10 +2816,18 @@ class EPGWindow( BaseWindow ) :
 							if isRunning and recCount < len( self.mCtrlRecButtonList ) :
 								ctrlButton = self.mCtrlRecButtonList[recCount]
 								recCount += 1
-							
-							elif recCount < len( self.mCtrlScheduledButtonList ) :
-								ctrlButton = self.mCtrlScheduledButtonList[timerCount]
-								timerCount += 1
+
+							else :
+								if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+									if recCount < len( self.mCtrlScheduledViewButtonList ) :
+										ctrlButton = self.mCtrlScheduledViewButtonList[timerCount2]
+										timerCount2 += 1
+										LOG_TRACE( '--------------------------set viewTimer[%s %s]'% ( timer.mStartTime, timer.mDuration ) )
+								else :
+									if recCount < len( self.mCtrlScheduledButtonList ) :
+										ctrlButton = self.mCtrlScheduledButtonList[timerCount]
+										timerCount += 1
+										LOG_TRACE( '--------------------------set Timer' )
 
 							if ctrlButton :
 								ctrlButton.setPosition( offsetX, offsetY )
@@ -2805,7 +2841,10 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlRecButtonList[recCount + i].setVisible( False )
 
 		for i in range( len( self.mCtrlScheduledButtonList ) - timerCount ) :
-			self.mCtrlScheduledButtonList[timerCount + i].setVisible( False )		
+			self.mCtrlScheduledButtonList[timerCount + i].setVisible( False )
+
+		for i in range( len( self.mCtrlScheduledViewButtonList ) - timerCount2 ) :
+			self.mCtrlScheduledViewButtonList[timerCount2 + i].setVisible( False )
 
 
 	def GetTimerByFocus( self ) :

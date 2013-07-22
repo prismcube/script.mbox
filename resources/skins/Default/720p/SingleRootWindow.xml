@@ -5045,6 +5045,68 @@ Search for window name
 						<include>DefaultButtonScheduledValues</include>
 					</control>
 
+					<!-- Scheduled ViewTimer -->
+					<control type="button" id="3703801">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703802">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703803">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703804">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703805">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703806">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703807">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703808">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703809">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703810">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+
+					<control type="button" id="3703811">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703812">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703813">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703814">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703815">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703816">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703817">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703818">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703819">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703820">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
 
 					<!-- Normal Grid EPG -->					
 					<control type="button" id="3703001">

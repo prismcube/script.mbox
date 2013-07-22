@@ -750,6 +750,19 @@
 		<colordiffuse>FF00FF00</colordiffuse>
 	</include>
 
+	<include name="DefaultButtonScheduledViewTimeValues">
+		<height>60</height>
+		<width>250</width>
+		<textoffsetx>5</textoffsetx>
+		<align>center</align>
+		<aligny>center</aligny>
+		<font>font12</font>
+		<texturefocus border="5">StackFO_white2.png</texturefocus>
+		<texturenofocus border="5">StackNF.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+		<colordiffuse>FF0000FF</colordiffuse>
+	</include>
+
 	<include name="DefaultButtonGridEPGValues">
 		<height>60</height>
 		<width>250</width>
