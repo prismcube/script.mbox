@@ -264,7 +264,7 @@
 "DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";"DiSEqC 1.3";2140
 "Motor Control Tuner2";"Motor Control Tuner2";"Contrôle du moteur Tuner2";"Motor Control Tuner2";"Motor Control Tuner2";"Motor Control Tuner2";"Motor Control Tuner2";"Motor Control Tuner2";"Motor Control Tuner2";"Управление Мотором Тюнер2";"Motor Control Tuner2";"Motor Control Tuner2";2141
 "Band";"Band";"Bande";"Banda";"Banda";"Pasmo";"Band";"Pasmo";"Bant";"Диапазон";"Band";"Band";2142
-"Ku Band";"Ku-Band";"bande Ku";"Banda Ku";"Banda Ku";"Pasmo Ku";"Ku-band";"Pasmo Ku";"Ku bandı";"Ku-Диапазон";"Ku Band";"Ku Band";2143
+"Ku Band";"Ku-Band";"Bande Ku";"Banda Ku";"Banda Ku";"Pasmo Ku";"Ku-band";"Pasmo Ku";"Ku bandı";"Ku-Диапазон";"Ku Band";"Ku Band";2143
 "C Band";"C-Band";"Bande C";"Banda C";"Banda C";"Pasmo C";"C-band";"Pasmo C";"C bandı";"С-Диапазон";"C Band";"C Band";2144
 "Language";"Language";"Langage";"Language";"Language";"Language";"Language";"Language";"Language";"Язык";"Language";"Language";2145
 "Country";"Country";"Pays";"Country";"Country";"Country";"Country";"Country";"Country";"Страна";"Country";"Country";2146
@@ -546,13 +546,13 @@
 "Days";"Days";"Days";"Days";"Days";"Days";"Days";"Days";"Days";"Days";"Days";"Days";3102
 "Once";"Once";"Une fois";"Once";"Once";"Once";"Once";"Once";"Once";"Один Раз";"Once";"Once";3103
 "Weekly";"Weekly";"Chaque semaine";"Weekly";"Weekly";"Weekly";"Weekly";"Weekly";"Weekly";"Еженедельно";"Weekly";"Weekly";3104
-"Fri";"Fri";"Vendredi";"Fri";"Fri";"Fri";"Fri";"Fri";"Fri";"Пят";"Fri";"Fri";3105
-"Mon";"Mon";"Lundi";"Mon";"Mon";"Mon";"Mon";"Mon";"Mon";"Пон";"Mon";"Mon";3106
-"Sat";"Sat";"Samedi";"Sat";"Sat";"Sat";"Sat";"Sat";"Sat";"Суб";"Sat";"Sat";3107
-"Sun";"Sun";"Dimanche";"Sun";"Sun";"Sun";"Sun";"Sun";"Sun";"Вос";"Sun";"Sun";3108
-"Thu";"Thu";"Jeudi";"Thu";"Thu";"Thu";"Thu";"Thu";"Thu";"Чет";"Thu";"Thu";3109
-"Tue";"Tue";"Mardi";"Tue";"Tue";"Tue";"Tue";"Tue";"Tue";"Втр";"Tue";"Tue";3110
-"Wed";"Wed";"Mercredi";"Wed";"Wed";"Wed";"Wed";"Wed";"Wed";"Срд";"Wed";"Wed";3111
+"Fri";"Fri";"Ve";"Fri";"Fri";"Fri";"Fri";"Fri";"Fri";"Пят";"Fri";"Fri";3105
+"Mon";"Mon";"Lu";"Mon";"Mon";"Mon";"Mon";"Mon";"Mon";"Пон";"Mon";"Mon";3106
+"Sat";"Sat";"Sa";"Sat";"Sat";"Sat";"Sat";"Sat";"Sat";"Суб";"Sat";"Sat";3107
+"Sun";"Sun";"Di";"Sun";"Sun";"Sun";"Sun";"Sun";"Sun";"Вос";"Sun";"Sun";3108
+"Thu";"Thu";"Je";"Thu";"Thu";"Thu";"Thu";"Thu";"Thu";"Чет";"Thu";"Thu";3109
+"Tue";"Tue";"Ma";"Tue";"Tue";"Tue";"Tue";"Tue";"Tue";"Втр";"Tue";"Tue";3110
+"Wed";"Wed";"Me";"Wed";"Wed";"Wed";"Wed";"Wed";"Wed";"Срд";"Wed";"Wed";3111
 "Unknown Error";"Unknown Error";"Erreur inconnue";"Unknown Error";"Unknown Error";"Unknown Error";"Unknown Error";"Unknown Error";"Unknown Error";"Неизвестная Ошибка";"Unknown Error";"Unknown Error";3112
 "Edit Timer";"Edit Timer";"Editer le minuteur";"Edit Timer";"Edit Timer";"Edit Timer";"Edit Timer";"Edit Timer";"Edit Timer";"Редактировать Таймер";"Edit Timer";"Edit Timer";3113
 "Add Manual Timer";"Add Manual Timer";"Ajouter un minuteur manuel";"Add Manual Timer";"Add Manual Timer";"Add Manual Timer";"Add Manual Timer";"Add Manual Timer";"Add Manual Timer";"Добавить Таймер Вручную";"Add Manual Timer";"Add Manual Timer";3114
