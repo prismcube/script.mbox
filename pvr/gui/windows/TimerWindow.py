@@ -239,7 +239,11 @@ class TimerWindow( BaseWindow ) :
 					else :
 						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
-					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )							
+					timerName = '%s'% timer.mName
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+						timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
+
+					listItem = xbmcgui.ListItem( tempChannelName, timerName )							
 
 					tempName = '%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
 					listItem.setProperty( 'StartTime', tempName )
@@ -271,15 +275,19 @@ class TimerWindow( BaseWindow ) :
 					else :
 						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
-					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
+					timerName = '%s'% timer.mName
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+						timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
+
+					listItem = xbmcgui.ListItem( tempChannelName, timerName )	
 
 					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
 						tempName = MR_LANG( 'Weekly' )
 						listItem.setProperty( 'Duration', '' )
 						tempDuration = ''
 					else :
-						tempName = '%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
-						tempDuration = '%s~%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+						tempName = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+						tempDuration = '%s~%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
 
 					listItem.setProperty( 'StartTime', tempName )
 					listItem.setProperty( 'Duration', tempDuration )
@@ -373,11 +381,12 @@ class TimerWindow( BaseWindow ) :
 					LOG_TRACE( '' )
 					#timer.printdebug( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
-					LOG_TRACE( '' )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
-					LOG_TRACE( '' )					
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
+						dialog.SetTimer( timer )
+
 					dialog.doModal( )
-					LOG_TRACE( '' )					
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
 						if dialog.GetConflictTimer( ) == None :
@@ -397,6 +406,10 @@ class TimerWindow( BaseWindow ) :
 		
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
+						dialog.SetTimer( timer )
+
 					dialog.doModal( )
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :

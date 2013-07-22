@@ -1542,13 +1542,13 @@ class EPGWindow( BaseWindow ) :
 			timer = self.GetTimerByEPG( selectedEPG )
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( )
+					self.ShowViewTimer( True )
 				else :
 					self.ShowManualTimer( selectedEPG, timer )
 
 		else :
 			if self.mEPGMode == E_VIEW_GRID :
-				timer = self.GetTimerByFocus( )			
+				timer = self.GetTimerByFocus( )
 		
 			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
@@ -1558,7 +1558,7 @@ class EPGWindow( BaseWindow ) :
 		
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( )
+					self.ShowViewTimer( True )
 				else :
 					self.ShowManualTimer( None, timer )				
 	
@@ -1631,31 +1631,31 @@ class EPGWindow( BaseWindow ) :
 		#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
-	def ShowViewTimer( self ) :
+	def ShowViewTimer( self, aIsEdit = False ) :
 		#if HasAvailableRecordingHDD( ) == False :
 		#	return
 
 		#1.get timer
 		timer = None
 		selectedEPG = self.GetSelectedEPG( )
-		if selectedEPG :
-			timer = self.GetTimerByEPG( selectedEPG )
-			#if timer and timer.mTimerId > 0 :	# Edit Mode
-			#	pass
+		if aIsEdit :
+			if selectedEPG :
+				timer = self.GetTimerByEPG( selectedEPG )
+				if timer and timer.mTimerId < 1 :	# Edit Mode
+					timer = None
 
-		else :
-			if self.mEPGMode == E_VIEW_GRID :
-				timer = self.GetTimerByFocus( )
+			else :
+				if self.mEPGMode == E_VIEW_GRID :
+					timer = self.GetTimerByFocus( )
 
-			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
-				selectedPos = self.mCtrlBigList.getSelectedPosition( )
-				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-					channel = self.mChannelList[ selectedPos ]
-					timer = self.GetTimerByChannel( channel )
+				elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
+					selectedPos = self.mCtrlBigList.getSelectedPosition( )
+					if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+						channel = self.mChannelList[ selectedPos ]
+						timer = self.GetTimerByChannel( channel )
 
-			#if timer and timer.mTimerId > 0 :	# Edit Mode
-			#	pass
-
+				if timer and timer.mTimerId < 1 :	# Edit Mode
+					timer = None
 
 		#2.get channel
 		channel = None
@@ -1686,6 +1686,8 @@ class EPGWindow( BaseWindow ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
 		dialog.SetTimer( timer )
 		dialog.SetChannel( channel )
+		dialog.SetEPG( selectedEPG  )
+
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
@@ -1905,6 +1907,8 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mTimerList :
 			LOG_TRACE( 'self.mTimerList len=%d' %len( self.mTimerList ) )
+			for timer in self.mTimerList :
+				LOG_TRACE( '-----------------mTimerType[%s]'% timer.mTimerType )
 
 
 	def GetTimerByChannel( self, aChannel ) :
@@ -2798,11 +2802,10 @@ class EPGWindow( BaseWindow ) :
 							offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset )*self.mGridCanvasWidth/drawableTime )
 							offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
 
-
 							LOG_TRACE( 'start=%s' %TimeToString( start + localOffset, TimeFormatEnum.E_HH_MM )	)
 							LOG_TRACE( 'end=%s' %TimeToString( end + localOffset, TimeFormatEnum.E_HH_MM )	)					
-							
-							drawWidth = int( ( end-start ) * self.mGridCanvasWidth/drawableTime )
+
+							drawWidth = int( ( end-start ) * self.mGridCanvasWidth / drawableTime )
 							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
 								drawWidth = 5
 
@@ -2813,21 +2816,20 @@ class EPGWindow( BaseWindow ) :
 								break
 
 							ctrlButton = None
-							if isRunning and recCount < len( self.mCtrlRecButtonList ) :
-								ctrlButton = self.mCtrlRecButtonList[recCount]
-								recCount += 1
-
+							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+								if timerCount2 < len( self.mCtrlScheduledViewButtonList ) :
+									ctrlButton = self.mCtrlScheduledViewButtonList[timerCount2]
+									timerCount2 += 1
+									LOG_TRACE( '--------------------------set viewTimer[%s %s]'% ( timer.mStartTime, timer.mDuration ) )
 							else :
-								if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-									if recCount < len( self.mCtrlScheduledViewButtonList ) :
-										ctrlButton = self.mCtrlScheduledViewButtonList[timerCount2]
-										timerCount2 += 1
-										LOG_TRACE( '--------------------------set viewTimer[%s %s]'% ( timer.mStartTime, timer.mDuration ) )
-								else :
-									if recCount < len( self.mCtrlScheduledButtonList ) :
-										ctrlButton = self.mCtrlScheduledButtonList[timerCount]
-										timerCount += 1
-										LOG_TRACE( '--------------------------set Timer' )
+								if isRunning and recCount < len( self.mCtrlRecButtonList ) :
+									ctrlButton = self.mCtrlRecButtonList[recCount]
+									recCount += 1
+
+								elif recCount < len( self.mCtrlScheduledButtonList ) :
+									ctrlButton = self.mCtrlScheduledButtonList[timerCount]
+									timerCount += 1
+									LOG_TRACE( '--------------------------set Timer' )
 
 							if ctrlButton :
 								ctrlButton.setPosition( offsetX, offsetY )
@@ -2835,7 +2837,7 @@ class EPGWindow( BaseWindow ) :
 								ctrlButton.setVisible( True )
 
 			except Exception, ex :
-				LOG_ERR( "Exception %s" %ex )
+				LOG_ERR( 'Exception %s' %ex )
 
 		for i in range( len( self.mCtrlRecButtonList ) - recCount ) :
 			self.mCtrlRecButtonList[recCount + i].setVisible( False )

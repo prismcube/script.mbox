@@ -29,6 +29,7 @@ class DialogViewTimer( SettingDialog ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mChannel = None
 		self.mTimer = None
+		self.mEPG = None
 		self.mRecordName = MR_LANG( 'None' )
 		self.mErrorMessage = MR_LANG( 'Unknown Error' )
 		self.mWeeklyStart = 0
@@ -143,6 +144,10 @@ class DialogViewTimer( SettingDialog ) :
 		self.mTimer = aTimer
 
 
+	def SetEPG( self, aEPG = None ) :
+		self.mEPG = aEPG
+
+
 	def IsOK( self ) :
 		return self.mIsOk
 
@@ -226,9 +231,6 @@ class DialogViewTimer( SettingDialog ) :
 			LOG_TRACE( 'startTime=%s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 			LOG_TRACE( 'strStartTime[%s] startTime[%s]'% ( strStartTime, startTime ) )
 
-			#Normalize EndTime
-			#aTimerId, aNewStartTime, aNewDuration
-			#ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
 			ret = None
 			if self.mTimer :
 				ret = self.mDataCache.Timer_EditViewTimer( self.mTimer.mTimerId, startTime )
@@ -259,8 +261,8 @@ class DialogViewTimer( SettingDialog ) :
 			#if self.mTimer :
 			#	strStartTime = TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM )
 
-			localTime = self.mDataCache.Datetime_GetLocalTime( )
-			strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
+			#localTime = self.mDataCache.Datetime_GetLocalTime( )
+			#strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
 
 			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )
 
@@ -287,6 +289,11 @@ class DialogViewTimer( SettingDialog ) :
 		self.SetControlLabel2String( E_DialogInput01, self.mRecordName )
 
 		localTime = self.mDataCache.Datetime_GetLocalTime( )
+		if self.mEPG and self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( ) > localTime :
+			localTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset( )
+
+		if self.mTimer :
+			localTime = self.mTimer.mStartTime
 		strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
 		self.SetControlLabel2String( E_DialogInput02, strStartTime )
 
