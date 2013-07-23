@@ -148,7 +148,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="1. DISEQC 1.0 : It allows multiple antennas to be connected to the STB simultaneously. You can connect up to 4 satellites.[CR]2. DISEQC 1.1 : It allows you to connect up to 64 different satellites.[CR]3. MOTORIZED DISEQC 1.2 : You can set the position of your desired satellites if you have a motorized antenna.[CR]4. MOTORIZED USALS : You can set the motor antenna for efficient channel search in USALS.[CR]5. ONECABLE : It enables the delivery of broadcast programming over a single cable to multiple users.[CR]6. SIMPLE LNB : It is used when only one satellite is connected.">
+		<content name="1. DISEQC 1.0 : It allows multiple antennas to be connected to the STB simultaneously. You can connect up to 4 satellites.[CR]2. DISEQC 1.1 : It allows you to connect up to 64 different satellites.[CR]3. MOTORIZED DISEQC 1.2 : You can set the position of your desired satellites if you have a motorized antenna.[CR]4. MOTORIZED USALS : You can set the motor antenna for efficient channel search in USALS.[CR]5. SIMPLE LNB : It is used when only one satellite is connected.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
