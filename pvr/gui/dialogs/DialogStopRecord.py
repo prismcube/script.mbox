@@ -278,8 +278,9 @@ class DialogStopRecord( BaseDialog ) :
 		LOG_TRACE( "self.mRunningRecordCount=%d" %self.mRunningRecordCount )
 
 		if self.mRunningRecordCount <= 0 :
-			self.mLock.release( )			
-			self.Close( )
+			self.mLock.release( )
+			xbmc.executebuiltin('xbmc.Action(previousmenu)')			
+			#self.Close( )
 			return
 
 		else :
