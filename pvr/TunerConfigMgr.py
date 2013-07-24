@@ -230,11 +230,13 @@ class TunerConfigMgr( object ) :
 			if len( tuner2ConfiguredList ) > 0 :
 				self.SatelliteSetFlag( tuner2ConfiguredList, E_TUNER_2, self.GetTunerTypeByTunerIndex( E_TUNER_2 ) )
 
+		"""
 		for st in tuner1ConfiguredList :
 			st.printdebug( )
 
 		for st in tuner2ConfiguredList :
 			st.printdebug( )
+		"""
 
 		if len( tuner1ConfiguredList ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( tuner1ConfiguredList )
@@ -461,11 +463,11 @@ class TunerConfigMgr( object ) :
 
 
 	def CompareCurrentConfiguredState( self ) :
-		configuredList1		= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_1 )	
-		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
-		configuredList2		= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_2 ) 
-		currentconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
-		if currentconfiguredList1 == None or currentconfiguredList2 == None or len( configuredList1 ) == 0 or len( configuredList1 ) == 0 :
+		configuredList1			= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_1 )
+		currentconfiguredList1	= self.GetCurrentSatelliteList( E_TUNER_1 )
+		configuredList2			= self.GetOriginalConfiguredListByTunerNumber( E_TUNER_2 )
+		currentconfiguredList2	= self.GetCurrentSatelliteList( E_TUNER_2 )
+		if len( currentconfiguredList1 ) == 0 or len( currentconfiguredList2 ) == 0 or len( configuredList1 ) == 0 or len( configuredList1 ) == 0 :
 			return False
 
 		if len( configuredList1 ) != len( currentconfiguredList1 ) :
@@ -484,6 +486,7 @@ class TunerConfigMgr( object ) :
 			for i in range( len( configuredList2 ) ) :
 				if configuredList2[i].__dict__ != currentconfiguredList2[i].__dict__ :
 					return False
+
 		return True
 
 
