@@ -52,10 +52,11 @@ class DialogViewTimer( SettingDialog ) :
 		mTitle = MR_LANG( 'Add View Timer' )
 		if self.mTimer :
 			mTitle = MR_LANG( 'Edit View Timer' )
+			self.mRecordName = self.mTimer.mName
+		elif self.mChannel :
+			self.mRecordName = self.mChannel.mName
 
 		self.SetHeaderLabel( mTitle )
-		if self.mChannel :
-			self.mRecordName = self.mChannel.mName
 
 		self.DrawItem( )
 		self.Reload( )

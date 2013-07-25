@@ -217,6 +217,7 @@ class TimerWindow( BaseWindow ) :
 				listItem.setProperty( 'StartTime', '' )
 				listItem.setProperty( 'Duration', '' )
 				listItem.setProperty( 'TimerType', 'None' )
+				listItem.setProperty( 'ViewTimer', 'None' )
 				listItem.setProperty( 'HasEvent', 'false' )
 
 				self.mListItems.append( listItem )					
@@ -240,8 +241,8 @@ class TimerWindow( BaseWindow ) :
 						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
 					timerName = '%s'% timer.mName
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-						timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
+					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					#	timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timerName )							
 
@@ -276,8 +277,8 @@ class TimerWindow( BaseWindow ) :
 						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
 
 					timerName = '%s'% timer.mName
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-						timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
+					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					#	timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timerName )	
 
@@ -296,6 +297,11 @@ class TimerWindow( BaseWindow ) :
 						listItem.setProperty( 'TimerType', 'Running' )
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
+
+					hasView = 'None'
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+						hasView = 'True'
+					listItem.setProperty( 'ViewTimer', hasView )
 
 					listItem.setProperty( 'HasEvent', 'false' )
 
