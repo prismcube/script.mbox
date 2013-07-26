@@ -1112,15 +1112,12 @@ class EPGWindow( BaseWindow ) :
 
 				listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MON ) )
 
-				timer = self.GetTimerByEPG( epgEvent )
+				timer = self.GetTimerByEPG( epgEvent, True )
 				if timer :
 					if self.IsRunningTimer( timer ) == True :
 						listItem.setProperty( 'TimerType', 'Running' )
 					else :
-						if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-							listItem.setProperty( 'ViewTimer', 'True' )
-						else :
-							listItem.setProperty( 'TimerType', 'Schedule' )
+						listItem.setProperty( 'TimerType', 'Schedule' )
 
 					hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
 					listItem.setProperty( 'ViewTimer', hasTimer )
@@ -1199,16 +1196,14 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'Duration', '' )
 					listItem.setProperty( 'HasEvent', 'true' )
 					listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
-					timer= self.GetTimerByEPG( epgEvent )
+
+					timer = self.GetTimerByEPG( epgEvent, True )
 
 					if timer :
 						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-								listItem.setProperty( 'ViewTimer', 'True' )
-							else :
-								listItem.setProperty( 'TimerType', 'Schedule' )
+							listItem.setProperty( 'TimerType', 'Schedule' )
 
 						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
 						listItem.setProperty( 'ViewTimer', hasTimer )
@@ -1226,16 +1221,13 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'false' )
 
-					timer = self.GetTimerByChannel( channel )
+					timer = self.GetTimerByChannel( channel, True )
 
 					if timer :
 						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-								listItem.setProperty( 'ViewTimer', 'True' )
-							else :
-								listItem.setProperty( 'TimerType', 'Schedule' )
+							listItem.setProperty( 'TimerType', 'Schedule' )
 
 						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
 						listItem.setProperty( 'ViewTimer', hasTimer )
@@ -1317,15 +1309,12 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'true' )
 
-					timer = self.GetTimerByEPG( epgEvent )
+					timer = self.GetTimerByEPG( epgEvent, True )
 					if timer :
 						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-								listItem.setProperty( 'ViewTimer', 'True' )
-							else :
-								listItem.setProperty( 'TimerType', 'Schedule' )
+							listItem.setProperty( 'TimerType', 'Schedule' )
 
 						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
 						listItem.setProperty( 'ViewTimer', hasTimer )
@@ -1343,16 +1332,13 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'false' )
 
-					timer = self.GetTimerByChannel( channel )
+					timer = self.GetTimerByChannel( channel, True )
 
 					if timer :
 						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-								listItem.setProperty( 'ViewTimer', 'True' )
-							else :
-								listItem.setProperty( 'TimerType', 'Schedule' )
+							listItem.setProperty( 'TimerType', 'Schedule' )
 
 						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
 						listItem.setProperty( 'ViewTimer', hasTimer )
@@ -1640,31 +1626,64 @@ class EPGWindow( BaseWindow ) :
 		if not aTimerList or len( aTimerList ) < 1 :
 			return -1
 
+		channelNo = ''
+		lblTypeRec  = '(%s)'% MR_LANG( 'R-Timer' )
+		lblTypeView = '(%s)'% MR_LANG( 'V-Timer' )
 		strTimerList = []
 		if aTimer :
+			channelNo = '%s'% aTimer.mChannelNo
 			tempDate = '%s'% ( TimeToString( aTimer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
 			tempDuration = '%s~%s'% ( TimeToString( aTimer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( aTimer.mStartTime + aTimer.mDuration, TimeFormatEnum.E_HH_MM ) )
 			mDate = '[%s %s]'% ( tempDate, tempDuration )
-			mName = '%04d %s'% ( aTimer.mChannelNo, aTimer.mName )
+
+			lblSpace = ' '
+			lblName = aTimer.mName
+			if lblName :
+				if len( lblName ) > 18 :
+					lblName = '%s%s'% ( lblName[:18], ING )
+				else :
+					tmpDummy = 18 - len( lblName )
+					lblSpace *= tmpDummy
+					lblName = '%s%s'% ( lblName, lblSpace )
+			else :
+				lblSpace *= 18
+				lblName = '%s%s'% ( lblName, lblSpace )
+
+			mName = '%s %s'% ( lblTypeRec, lblName )
 
 			strLabel = '%s %s'% ( mName, mDate )
 			strTimerList.append( strLabel )
 
 		for timer in aTimerList :
+			channelNo = '%s'% timer.mChannelNo
 			tempDate = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
 			tempDuration = '%s'% TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM )
 			mDate = '[%s %s]'% ( tempDate, tempDuration )
-			mName = '%04d %s'% ( timer.mChannelNo, timer.mName )
+			lblSpace = ' '
+			lblName = timer.mName
+			if lblName :
+				if len( lblName ) > 25 :
+					lblName = '%s%s'% ( lblName[:25], ING )
+				else :
+					tmpDummy = 25 - len( lblName )
+					lblSpace *= tmpDummy
+					lblName = '%s%s'% ( lblName, lblSpace )
+			else :
+				lblSpace *= 25
+				lblName = '%s%s'% ( lblName, lblSpace )
+
+			mName = '%s %s'% ( lblTypeView, lblName )
 
 			strLabel = '%s %s'% ( mName, mDate )
 			strTimerList.append( strLabel )
 
-		isSelect = -1
 		mTitle = MR_LANG( 'Select Timer' )
-		if aTimer :
-			isSelect = xbmcgui.Dialog( ).select( mTitle, strTimerList, False, 0 )
-		else :
-			isSelect = xbmcgui.Dialog( ).select( mTitle, strTimerList )
+		lblTitle = '%s'% mTitle
+		if channelNo :
+			lblTitle = '%s(%04d)'% ( mTitle, int( channelNo ) )
+
+		isSelect = -1
+		isSelect = xbmcgui.Dialog( ).select( lblTitle, strTimerList )
 
 		LOG_TRACE('---------------select[%s]'% isSelect )
 		if isSelect < 0 :
