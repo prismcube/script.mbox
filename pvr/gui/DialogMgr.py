@@ -59,6 +59,7 @@ DIALOG_ID_HOTKEYS					= 28
 DIALOG_ID_EDIT_LONGITUDE			= 29
 DIALOG_ID_UPDATE_PROGRESS			= 30
 DIALOG_ID_IMPORT_EXPORT_SETTINGS	= 31
+DIALOG_ID_VIEW_TIMER				= 32
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -221,6 +222,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_IMPORT_EXPORT_SETTINGS :
 				from pvr.gui.dialogs.DialogImportExportSettings import DialogImportExportSettings
 				return DialogImportExportSettings( 'DialogImportExportSettings.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_VIEW_TIMER :
+				from pvr.gui.dialogs.DialogViewTimer import DialogViewTimer
+				return DialogViewTimer( 'DialogViewTimer.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	from pvr.gui.dialogs.DialogTestCode import DialogTestCode
