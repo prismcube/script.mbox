@@ -1131,7 +1131,7 @@ class EPGWindow( BaseWindow ) :
 				if E_V1_2_APPLY_VIEW_TIMER :
 					hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
 					listItem.setProperty( 'ViewTimer', hasTimer )
-					LOG_TRACE( '-------------------viewTimer property[%s]'% hasTimer )
+					#LOG_TRACE( '-------------------viewTimer property[%s]'% hasTimer )
 
 				if aUpdateOnly == False :
 					self.mListItems.append( listItem )
@@ -1209,7 +1209,7 @@ class EPGWindow( BaseWindow ) :
 					timer = self.GetTimerByEPG( epgEvent, True )
 
 					if timer :
-						LOG_TRACE( '---------timerType[%s]'% timer.mTimerType )
+						#LOG_TRACE( '---------timerType[%s]'% timer.mTimerType )
 						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
@@ -1221,7 +1221,7 @@ class EPGWindow( BaseWindow ) :
 					if E_V1_2_APPLY_VIEW_TIMER :
 						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
 						listItem.setProperty( 'ViewTimer', hasTimer )
-						LOG_TRACE( '---------propety View[%s]'% hasTimer )
+						#LOG_TRACE( '---------propety View[%s]'% hasTimer )
 
 				else :
 					listItem = self.mListItems[i]

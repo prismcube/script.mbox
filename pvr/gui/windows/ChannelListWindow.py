@@ -176,6 +176,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_DeleteAll = False
 		self.mFlag_DeleteAll_Fav = False
 		self.mRefreshCurrentChannel = False
+		self.mTimerListByDelete = []
+		self.mTimerListHash = {}
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -443,7 +445,22 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListHash[chNumber] = self.mChannelList[i]
 				self.mChannelListForMove.append( chNumber )
 
-		LOG_TRACE( '-------------------hash len[%s]'% len(self.mChannelListHash) )
+		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
+
+		self.mTimerListHash = {}
+		timerList = self.mDataCache.Timer_GetTimerList( )
+		if timerList and len( timerList ) > 0 :
+			for timer in timerList :
+				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
+				self.mTimerListHash[timerKey] = timer
+
+		LOG_TRACE( '-------------timer hash len[%s]'% len( self.mTimerListHash ) )
+
+
+	def GetTimerByIDs( self, aSid, aTsid, aOnid ) :
+		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
+			return None
+		return self.mTimerListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
 	def Initialize( self ):
@@ -534,11 +551,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
+			self.mTimerListByDelete = []
 			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )
 				favName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				LOG_TRACE( '------------------favName[%s]'% favName )
 				if favName :
+					self.mTimerListByDelete = self.mDataCache.Timer_GetTimerList( )
 					iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
 					if iChannelList and len( iChannelList ) > 0 :
 						numList = []
@@ -546,11 +565,17 @@ class ChannelListWindow( BaseWindow ) :
 							chNum = ElisEInteger( )
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
+
+							#timer = self.GetTimerByIDs( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+							#if timer and timer.mTimerId > 0 :
+							#	self.mTimerListByDelete.append( timer )
+
 						self.mDataCache.Channel_Backup( )
 						self.mFlag_DeleteAll_Fav = True
 						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, self.mUserMode.mServiceType, numList )
 
 			else :
+				self.mTimerListByDelete = self.mDataCache.Timer_GetTimerList( )
 				isBackup = self.mDataCache.Channel_Backup( )
 				isDelete = self.mDataCache.Channel_DeleteAll( )
 				if isDelete :
@@ -675,6 +700,10 @@ class ChannelListWindow( BaseWindow ) :
 			if ret != E_DIALOG_STATE_CANCEL :
 				if self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 					self.mDataCache.Channel_ResetOldChannelList( )
+					if self.mTimerListByDelete and len( self.mTimerListByDelete ) > 0 :
+						for timer in self.mTimerListByDelete :
+							self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+							LOG_TRACE( 'delete timer id[%s] type[%s] name[%s]'% ( timer.mTimerId, timer.mTimerType, timer.mName ) )
 
 				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
