@@ -170,23 +170,27 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	def StopRecord( self, aControlId ) :
+		try :
+			LOG_TRACE( 'aControlId=%d'% aControlId )
+			if aControlId == BUTTON_ID_RECORD_1 :
+				timer = self.mRunningTimerList[0]
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+				self.mIsOk = E_DIALOG_STATE_YES
+				self.Close( )
+			elif aControlId == BUTTON_ID_RECORD_2 :
+				timer = self.mRunningTimerList[1]
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
+				self.mIsOk = E_DIALOG_STATE_YES
+				self.Close( )
+			elif aControlId == BUTTON_ID_CANCEL :
+				self.mIsOk = E_DIALOG_STATE_CANCEL
+				self.Close( )
+			else :
+				LOG_ERR( 'Could not find any control' )
 
-		LOG_TRACE( 'aControlId=%d' %aControlId)
-		if aControlId == BUTTON_ID_RECORD_1 :
-			timer = self.mRunningTimerList[0]
-			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
-			self.mIsOk = E_DIALOG_STATE_YES
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 			self.Close( )
-		elif aControlId == BUTTON_ID_RECORD_2 :
-			timer = self.mRunningTimerList[1]
-			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
-			self.mIsOk = E_DIALOG_STATE_YES
-			self.Close( )
-		elif aControlId == BUTTON_ID_CANCEL :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close( )
-		else :
-			LOG_ERR( 'Could not find any control' )
 
 
 	@RunThread

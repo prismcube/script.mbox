@@ -1125,9 +1125,10 @@ class EPGWindow( BaseWindow ) :
 					else :
 						listItem.setProperty( 'TimerType', 'Schedule' )
 
-					hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
-					listItem.setProperty( 'ViewTimer', hasTimer )
-					LOG_TRACE( '-------------------viewTimer property[%s]'% hasTimer )
+					if E_V1_2_APPLY_VIEW_TIMER :
+						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
+						listItem.setProperty( 'ViewTimer', hasTimer )
+						LOG_TRACE( '-------------------viewTimer property[%s]'% hasTimer )
 
 				else :
 					listItem.setProperty( 'TimerType', 'None' )
@@ -1214,8 +1215,9 @@ class EPGWindow( BaseWindow ) :
 						else :
 							listItem.setProperty( 'TimerType', 'Schedule' )
 
-						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
-						listItem.setProperty( 'ViewTimer', hasTimer )
+						if E_V1_2_APPLY_VIEW_TIMER :
+							hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
+							listItem.setProperty( 'ViewTimer', hasTimer )
 
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
@@ -1238,8 +1240,9 @@ class EPGWindow( BaseWindow ) :
 						else :
 							listItem.setProperty( 'TimerType', 'Schedule' )
 
-						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
-						listItem.setProperty( 'ViewTimer', hasTimer )
+						if E_V1_2_APPLY_VIEW_TIMER :
+							hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
+							listItem.setProperty( 'ViewTimer', hasTimer )
 
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
@@ -1328,8 +1331,9 @@ class EPGWindow( BaseWindow ) :
 						else :
 							listItem.setProperty( 'TimerType', 'Schedule' )
 
-						hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
-						listItem.setProperty( 'ViewTimer', hasTimer )
+						if E_V1_2_APPLY_VIEW_TIMER :
+							hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
+							listItem.setProperty( 'ViewTimer', hasTimer )
 
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
@@ -1352,8 +1356,9 @@ class EPGWindow( BaseWindow ) :
 						else :
 							listItem.setProperty( 'TimerType', 'Schedule' )
 
-						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
-						listItem.setProperty( 'ViewTimer', hasTimer )
+						if E_V1_2_APPLY_VIEW_TIMER :
+							hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
+							listItem.setProperty( 'ViewTimer', hasTimer )
 
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
@@ -1426,7 +1431,8 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
-			context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
@@ -1455,7 +1461,8 @@ class EPGWindow( BaseWindow ) :
 			else :
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
-			context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	
@@ -1578,7 +1585,8 @@ class EPGWindow( BaseWindow ) :
 
 		if selectedEPG :
 			timer = self.GetTimerByEPG( selectedEPG, True )
-			timer = self.CheckExistViewTimer( selectedEPG, None, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( selectedEPG, None, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
@@ -1600,7 +1608,8 @@ class EPGWindow( BaseWindow ) :
 					iChannel = self.mChannelList[ selectedPos ]
 					timer = self.GetTimerByChannel( iChannel, True )
 
-			timer = self.CheckExistViewTimer( None, iChannel, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( None, iChannel, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
@@ -1781,29 +1790,7 @@ class EPGWindow( BaseWindow ) :
 		#if HasAvailableRecordingHDD( ) == False :
 		#	return
 
-		"""
 		#1.get timer
-		selectedEPG = self.GetSelectedEPG( )
-		if aIsEdit :
-			if selectedEPG :
-				timer = self.GetTimerByEPG( selectedEPG )
-				if timer and timer.mTimerId < 1 :	# Edit Mode
-					timer = None
-
-			else :
-				if self.mEPGMode == E_VIEW_GRID :
-					timer = self.GetTimerByFocus( )
-
-				elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
-					selectedPos = self.mCtrlBigList.getSelectedPosition( )
-					if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-						channel = self.mChannelList[ selectedPos ]
-						timer = self.GetTimerByChannel( channel )
-
-				if timer and timer.mTimerId < 1 :	# Edit Mode
-					timer = None
-		"""
-
 		timer = aTimer
 		selectedEPG = self.GetSelectedEPG( )
 
@@ -1862,7 +1849,8 @@ class EPGWindow( BaseWindow ) :
 
 		if epg :
 			timer = self.GetTimerByEPG( epg, True )
-			timer = self.CheckExistViewTimer( epg, None, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( epg, None, timer )
 
 		else :
 			iChannel = None
@@ -1882,7 +1870,8 @@ class EPGWindow( BaseWindow ) :
 				iChannel = self.mCurrentChannel
 				timer = self.GetTimerByChannel( iChannel, True )
 
-			timer = self.CheckExistViewTimer( None, iChannel, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( None, iChannel, timer )
 
 		if timer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -2414,7 +2403,8 @@ class EPGWindow( BaseWindow ) :
 
 		if selectedEPG :
 			timer = self.GetTimerByEPG( selectedEPG, True )
-			timer = self.CheckExistViewTimer( selectedEPG, None, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( selectedEPG, None, timer )
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
 					self.ShowViewTimer( timer )
@@ -2438,7 +2428,8 @@ class EPGWindow( BaseWindow ) :
 					iChannel = self.mChannelList[ selectedPos ]
 					timer = self.GetTimerByChannel( iChannel, True )
 
-			timer = self.CheckExistViewTimer( None, iChannel, timer )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				timer = self.CheckExistViewTimer( None, iChannel, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
