@@ -23,15 +23,30 @@ E_DEFAULT_DIR_UNZIP       = 'update_ruby'
 E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DOWNLOAD_PATH_FWURL     = '/mtmp/fwUrl'
+E_DOWNLOAD_PATH_SHURL     = '/mtmp/shUrl'
 E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 #E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update_new.html?product=ruby'
-E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download_new.html?key='
-E_DEFAULT_URL_REQUEST_UNZIPFILES  = 'http://update.prismcube.com/download_new.html?unzipfiles='
-E_DEFAULT_URL_REQUEST_SHELL = 'http://update.prismcube.com/script/'
-E_DEFAULT_CHANNEL_LIST		= 'http://update.prismcube.com/channel.html'
+
+if E_UPDATE_TEST_TESTBED :
+	PRISMCUBE_SERVER_FW_UPDATE  = 'http://192.168.100.158'
+
+
+#update_2nd
+E_DEFAULT_URL_PVS         = '%s/update_new.html?product=ruby'% PRISMCUBE_SERVER_FW_UPDATE
+E_DEFAULT_URL_REQUEST_FW  = '%s/download_new.html?key='% PRISMCUBE_SERVER_FW_UPDATE
+E_DEFAULT_URL_REQUEST_UNZIPFILES = '%s/download_new.html?unzipfiles='% PRISMCUBE_SERVER_FW_UPDATE
+E_DEFAULT_URL_REQUEST_SHELL = '%s/script/'% PRISMCUBE_SERVER_FW_UPDATE
+
+#update_3rd
+if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+	E_DEFAULT_URL_PVS         = '%s/fwlist.html?product=ruby&folder=%s'% ( PRISMCUBE_SERVER_FW_UPDATE, E_UPDATE_FIRMWARE_REFERENCE_PATH )
+	E_DEFAULT_URL_REQUEST_FW  = '%s/fwdownload.html?fw='% PRISMCUBE_SERVER_FW_UPDATE
+	E_DEFAULT_URL_REQUEST_UNZIPFILES = '%s/fwdownload.html?unzipfiles='% PRISMCUBE_SERVER_FW_UPDATE
+	E_DEFAULT_URL_REQUEST_SHELL = '%s/fwdownload.html?script='% PRISMCUBE_SERVER_FW_UPDATE
+
+E_DEFAULT_CHANNEL_LIST		= '%s/channel.html'% PRISMCUBE_SERVER_FW_UPDATE
 
 E_CONTROL_ID_GROUP_PVS      = 9000 + E_SYSTEM_UPDATE_BASE_ID
 E_CONTROL_ID_LABEL_TITLE    = 99 + E_SYSTEM_UPDATE_BASE_ID
@@ -572,7 +587,10 @@ class SystemUpdate( SettingWindow ) :
 		if iPVS.mName :
 			self.SetEnableControl( E_Input02, True )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'Firmware Information' ) )
+			lblTitle = MR_LANG( 'Firmware Information' )
+			if E_UPDATE_TEST_TESTBED :
+				lblTitle = '%s - TEST BED'% lblTitle
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   lblTitle )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'Date' ), iPVS.mDate ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'Version' ), iPVS.mVersion ) )
 			lblSize = ''
@@ -1392,7 +1410,16 @@ class SystemUpdate( SettingWindow ) :
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		#shellscript download
+		isExist = self.CheckShellDownload( aPVS.mShellScript, True )
+		if not isExist :
+			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
+			LOG_TRACE( '-------fail, download shell err, mIsDownload[%s]'% self.mIsDownload )
+			return False
+
+		"""
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVS.mShellScript.mScriptFileName )
+		if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+			request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVS.mShellScript.mScriptKey )
 		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVS.mShellScript.mScriptFileName )
 		isExist = GetURLpage( request, mShell )
 		LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
@@ -1406,6 +1433,7 @@ class SystemUpdate( SettingWindow ) :
 			os.chmod( mShell, 0755 )
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+		"""
 
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
 		isExist = GetURLpage( request, E_DOWNLOAD_PATH_FWURL )
@@ -1920,17 +1948,33 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
 
-	def CheckShellDownload( self, aPVSScript ) :
+	def CheckShellDownload( self, aPVSScript, aForce = False ) :
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVSScript.mScriptFileName )
 		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVSScript.mScriptFileName )
 		isExist = CheckDirectory( mShell )
-		if not isExist :
+		if not isExist or aForce :
+			if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVSScript.mScriptKey )
+				isExist = GetURLpage( request, E_DOWNLOAD_PATH_SHURL )
+				LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
+
+				reqFile = ''
+				tagNames = ['url']
+				retList = ParseStringInXML( E_DOWNLOAD_PATH_SHURL, tagNames, 'urlinfo' )
+				#LOG_TRACE('------------ret urlinfo[%s]'% retList )
+				if retList and len( retList ) > 0 :
+					reqFile = retList[0][0]
+
+				request = reqFile
+
 			isExist = GetURLpage( request, mShell )
 			LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
 
 		if isExist == False :
 			LOG_TRACE( '----------------download fail, shell none' )
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
+			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE] )
+			thread.start( )
+			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
 		try :
@@ -1941,7 +1985,9 @@ class SystemUpdate( SettingWindow ) :
 
 		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
 			LOG_TRACE( '----------------verify fail, shell err' )
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
+			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_VERIFY] )
+			thread.start( )
+			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
 			return False
 
 		return isExist
