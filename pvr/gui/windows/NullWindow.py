@@ -1073,7 +1073,9 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
 			return
 
-		iChNumber = self.mDataCache.CheckPresentationNumber( oldChannel )
+		iChNumber = oldChannel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( oldChannel )
 		self.AsyncTuneChannelByInput( iChNumber, True )
 
 

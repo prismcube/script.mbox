@@ -40,7 +40,7 @@ E_DEFAULT_URL_REQUEST_UNZIPFILES = '%s/download_new.html?unzipfiles='% PRISMCUBE
 E_DEFAULT_URL_REQUEST_SHELL = '%s/script/'% PRISMCUBE_SERVER_FW_UPDATE
 
 #update_3rd
-if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+if E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD :
 	E_DEFAULT_URL_PVS         = '%s/fwlist.html?product=ruby&folder=%s'% ( PRISMCUBE_SERVER_FW_UPDATE, E_UPDATE_FIRMWARE_REFERENCE_PATH )
 	E_DEFAULT_URL_REQUEST_FW  = '%s/fwdownload.html?fw='% PRISMCUBE_SERVER_FW_UPDATE
 	E_DEFAULT_URL_REQUEST_UNZIPFILES = '%s/fwdownload.html?unzipfiles='% PRISMCUBE_SERVER_FW_UPDATE
@@ -1418,7 +1418,7 @@ class SystemUpdate( SettingWindow ) :
 
 		"""
 		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVS.mShellScript.mScriptFileName )
-		if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+		if E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD :
 			request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVS.mShellScript.mScriptKey )
 		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVS.mShellScript.mScriptFileName )
 		isExist = GetURLpage( request, mShell )
@@ -1953,7 +1953,7 @@ class SystemUpdate( SettingWindow ) :
 		mShell = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVSScript.mScriptFileName )
 		isExist = CheckDirectory( mShell )
 		if not isExist or aForce :
-			if E_UPDATE_FIRMWARE_SCENARIO_3RD :
+			if E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD :
 				request = '%s%s'% ( E_DEFAULT_URL_REQUEST_SHELL, aPVSScript.mScriptKey )
 				isExist = GetURLpage( request, E_DOWNLOAD_PATH_SHURL )
 				LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )

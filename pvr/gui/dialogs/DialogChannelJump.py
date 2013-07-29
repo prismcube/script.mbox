@@ -197,7 +197,10 @@ class DialogChannelJump( BaseDialog ) :
 
 	def SearchChannel( self ) :
 		fChannel = None
-		self.GetPresentToChannelNumber( )
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			self.GetPresentToChannelNumber( )
+		else :
+			self.mChannelNumber = self.mInputString
 
 		if self.mIsChannelListWindow :
 			fChannel = self.Channel_GetByNumberFromChannelListWindow( int( self.mChannelNumber ) )

@@ -48,17 +48,6 @@ E_UPDATE_FIRMWARE_USB_ONLY  = False
 E_UPDATE_TEST_DEBUG         = True
 E_UPDATE_TEST_TESTBED       = True
 
-#patch v1.1
-E_V1_1_UPDATE_NOTIFY        = False
-E_V1_1_HD_ICON_USE          = True
-if E_V1_1_HD_ICON_USE :
-	E_TAG_COLOR_HD_LABEL = ''
-
-#patch v1.2
-# v1.0.2 higher, apply to 2013.07.13
-E_UPDATE_FIRMWARE_SCENARIO_3RD = True
-E_UPDATE_FIRMWARE_REFERENCE_PATH = 'ruby_1x'
-
 # USE CHANNEL_LOGO
 E_USE_CHANNEL_LOGO			= True
 
@@ -468,6 +457,18 @@ E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
 
+#patch v1.1
+E_V1_1_UPDATE_NOTIFY        = False
+E_V1_1_HD_ICON_USE          = True
+if E_V1_1_HD_ICON_USE :
+	E_TAG_COLOR_HD_LABEL = ''
+
+#patch v1.2
+# v1.0.2 higher, apply to 2013.07.13
+E_UPDATE_FIRMWARE_REFERENCE_PATH = 'ruby_1x'
+E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
+E_V1_2_APPLY_PRESENTATION_NUMBER = True
+E_V1_2_APPLY_VIEW_TIMER = True
 
 ############################ Global Function For GUI ############################
 

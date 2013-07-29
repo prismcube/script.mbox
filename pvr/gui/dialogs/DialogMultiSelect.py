@@ -140,7 +140,9 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def ChannelItems( self ) :
 		for iChannel in self.mDefaultList :
-			iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
+			iChNumber = iChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
 
 			#isAvailable check, if channelList then all view
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :

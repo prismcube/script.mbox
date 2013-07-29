@@ -768,7 +768,9 @@ class EPGWindow( BaseWindow ) :
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )		
 		elif self.mSelectChannel :
-			iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
+			iChNumber = self.mSelectChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
 			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( iChNumber, self.mSelectChannel.mName ) )
 		else:
 			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )
@@ -943,7 +945,9 @@ class EPGWindow( BaseWindow ) :
 			
 			for i in range( len( self.mChannelList ) ) :
 				channel = self.mChannelList[i]
-				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+				iChNumber = channel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
 				tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 
 				listItem = self.mListItems[i]
@@ -1170,7 +1174,9 @@ class EPGWindow( BaseWindow ) :
 		
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
-			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			iChNumber = channel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
 			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 			hasEpg = False
 
@@ -1274,7 +1280,9 @@ class EPGWindow( BaseWindow ) :
 
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
-			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			iChNumber = channel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
 			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 			hasEpg = False
 
@@ -1762,10 +1770,15 @@ class EPGWindow( BaseWindow ) :
 		channelNameList = []
 
 		for channel in self.mChannelList :
-			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			iChNumber = channel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
 			channelNameList.append( '%04d %s' %( iChNumber, channel.mName ) )
 
-		iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
+		iChNumber = self.mSelectChannel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
+
 		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( iChNumber, self.mSelectChannel.mName ) ) )
 
 		if ret >= 0 :
@@ -2616,7 +2629,10 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlGridEPGInfo.setLabel( ' ' )
 			return
 
-		iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+		iChNumber = channel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+
 		if gridMeta :
 			LOG_TRACE( 'gridMeta.mId=%d'% gridMeta.mId )
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :

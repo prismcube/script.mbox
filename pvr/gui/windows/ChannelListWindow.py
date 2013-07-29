@@ -1523,7 +1523,10 @@ class ChannelListWindow( BaseWindow ) :
 				if iChannel.mIsHD :
 					hdLabel = E_TAG_COLOR_HD_LABEL
 
-				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+				iChNumber = iChannel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
 				if len( iChannel.mName ) > 30 :
 					listItem.setLabel2( '%s'% iChannel.mName )
@@ -1907,7 +1910,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			if iChannel == None : continue
 
-			iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+			iChNumber = iChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
 
 			hdLabel = ''
 			if iChannel.mIsHD :

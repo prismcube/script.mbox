@@ -539,12 +539,14 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = iChannel
 				self.mFakeChannel    = iChannel
 				self.mLastChannel    = iChannel
-				currNumber = '%s'% self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
+				currNumber = self.mFakeChannel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					currNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 				currName = self.mFakeChannel.mName
 				SetLock2(False)
 
 			self.InitControlGUI( )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '%s'% currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
 			self.UpdateChannelLogo( iChannel )
 			self.UpdateChannelGUI( )
@@ -553,7 +555,9 @@ class LivePlate( LivePlateWindow ) :
 		if isTune :
 			SetLock2( True )
 			self.mFakeChannel = tuneCh
-			iChNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
+			iChNumber = self.mFakeChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% iChNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.UpdateChannelLogo( self.mFakeChannel )
