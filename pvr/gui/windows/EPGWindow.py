@@ -764,13 +764,14 @@ class EPGWindow( BaseWindow ) :
 	def UpdateSelectedChannel( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
 			return
-
-		chName = MR_LANG( 'No Channel' )
-		if self.mChannelList and len( self.mChannelList ) > 0 :
-			if self.mSelectChannel :
-				chName = '%04d %s'% ( self.mSelectChannel.mNumber, self.mSelectChannel.mName )
-
-		self.mCtrlEPGChannelLabel.setLabel( chName )
+	
+		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )		
+		elif self.mSelectChannel :
+			iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
+			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( iChNumber, self.mSelectChannel.mName ) )
+		else:
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )
 
 
 	def UpdateCurrentChannel( self ) :
@@ -942,7 +943,8 @@ class EPGWindow( BaseWindow ) :
 			
 			for i in range( len( self.mChannelList ) ) :
 				channel = self.mChannelList[i]
-				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+				tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 
 				listItem = self.mListItems[i]
 				listItem.setLabel( tempChannelName )
@@ -1163,12 +1165,13 @@ class EPGWindow( BaseWindow ) :
 		if aUpdateOnly == False :
 			for i in range( len( self.mChannelList ) ) :
 				listItem = xbmcgui.ListItem( '', '' )
-				self.mListItems.append( listItem )				
-			self.mCtrlBigList.addItems( self.mListItems )				
+				self.mListItems.append( listItem )
+			self.mCtrlBigList.addItems( self.mListItems )
 		
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
-			tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 			hasEpg = False
 
 			try :
@@ -1271,7 +1274,8 @@ class EPGWindow( BaseWindow ) :
 
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
-			tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 			hasEpg = False
 
 			try :
@@ -1756,10 +1760,13 @@ class EPGWindow( BaseWindow ) :
 	
 		dialog = xbmcgui.Dialog( )
 		channelNameList = []
-		for channel in self.mChannelList :
-			channelNameList.append( '%04d %s' %( channel.mNumber, channel.mName ) )
 
-		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) ) )
+		for channel in self.mChannelList :
+			iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			channelNameList.append( '%04d %s' %( iChNumber, channel.mName ) )
+
+		iChNumber = self.mDataCache.CheckPresentationNumber( self.mSelectChannel )
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( iChNumber, self.mSelectChannel.mName ) ) )
 
 		if ret >= 0 :
 			self.mSelectChannel = self.mChannelList[ ret ]
@@ -2609,14 +2616,15 @@ class EPGWindow( BaseWindow ) :
 			self.mCtrlGridEPGInfo.setLabel( ' ' )
 			return
 
+		iChNumber = self.mDataCache.CheckPresentationNumber( channel )
 		if gridMeta :
 			LOG_TRACE( 'gridMeta.mId=%d'% gridMeta.mId )
 			if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 				start  = gridMeta.mEPG.mStartTime + localOffset
-				self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' % ( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName ) )
+				self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' % ( iChNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName ) )
 			else :
-				self.mCtrlGridEPGInfo.setLabel( ' %04d %s' % ( channel.mNumber, channel.mName ) )			
+				self.mCtrlGridEPGInfo.setLabel( ' %04d %s' % ( iChNumber, channel.mName ) )			
 		else :
 			LOG_ERR( 'cannot find control (%d,%d)' % ( self.mVisibleFocusRow,self.mVisibleFocusCol ) )
 			gridMeta = self.mEPGHashTable.get( '%d:%d' % ( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
@@ -2625,9 +2633,9 @@ class EPGWindow( BaseWindow ) :
 				if gridMeta.mEPG and gridMeta.mEPG.mEventId >  0  :
 					localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 					start  = gridMeta.mEPG.mStartTime + localOffset
-					self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' %( channel.mNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
+					self.mCtrlGridEPGInfo.setLabel( '%04d %s (%s~%s) %s' %( iChNumber, channel.mName, TimeToString( start , TimeFormatEnum.E_AW_HH_MM ), TimeToString( start + gridMeta.mEPG.mDuration, TimeFormatEnum.E_HH_MM ), gridMeta.mEPG.mEventName  ) )
 				else :
-					self.mCtrlGridEPGInfo.setLabel( ' %04d %s' %( channel.mNumber, channel.mName) )			
+					self.mCtrlGridEPGInfo.setLabel( ' %04d %s' %( iChNumber, channel.mName) )			
 				self.mVisibleFocusCol = 0					
 
 			else :

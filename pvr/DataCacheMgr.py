@@ -2498,3 +2498,16 @@ class DataCacheMgr( object ) :
 	def GetRootWindowId( self ) :
 		return self.mRootWindowId
 
+
+	def CheckPresentationNumber( self, aChannel, aMode = None ) :
+		zappingMode = aMode
+		if aMode == None :
+			zappingMode = self.mZappingMode
+
+		iChNumber = aChannel.mNumber
+		if zappingMode and zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			iChNumber = aChannel.mPresentationNumber
+
+		return iChNumber
+
+

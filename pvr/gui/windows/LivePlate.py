@@ -496,48 +496,32 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def ChannelTune( self, aDir, aInitChannel = 0 ):
+		isTune = False
+		tuneCh = self.mFakeChannel
 		if aDir == PREV_CHANNEL :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mFakeChannel )
 			if prevChannel == None or prevChannel.mError != 0 :
 				return -1
 
-			SetLock2(True)
-			self.mFakeChannel = prevChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-			
-			self.RestartAsyncTune( )
+			isTune = True
+			tuneCh = prevChannel
 
 		elif aDir == NEXT_CHANNEL :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
 			if nextChannel == None or nextChannel.mError != 0 :
 				return -1
 
-			SetLock2(True)
-			self.mFakeChannel = nextChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-
-			self.RestartAsyncTune( )
+			isTune = True
+			tuneCh = nextChannel
 
 		elif aDir == CURR_CHANNEL :
 			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
 			if jumpChannel == None or jumpChannel.mError != 0 :
 				return -1
-				
-			SetLock2(True)
-			self.mFakeChannel = jumpChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-			
-			self.RestartAsyncTune( )
 
+			isTune = True
+			tuneCh = jumpChannel
+				
 		elif aDir == INIT_CHANNEL :
 			currNumber = ''
 			currName = MR_LANG( 'No Channel' )
@@ -555,7 +539,7 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = iChannel
 				self.mFakeChannel    = iChannel
 				self.mLastChannel    = iChannel
-				currNumber = '%s'% self.mFakeChannel.mNumber
+				currNumber = '%s'% self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 				currName = self.mFakeChannel.mName
 				SetLock2(False)
 
@@ -565,6 +549,17 @@ class LivePlate( LivePlateWindow ) :
 			self.UpdateChannelLogo( iChannel )
 			self.UpdateChannelGUI( )
 			return
+
+		if isTune :
+			SetLock2( True )
+			self.mFakeChannel = tuneCh
+			iChNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% iChNumber ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateChannelLogo( self.mFakeChannel )
+			SetLock2( False )
+
+			self.RestartAsyncTune( )
 
 
 	def EPGListMoveToIndex( self ) :
