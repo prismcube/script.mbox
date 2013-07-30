@@ -2208,13 +2208,12 @@ Search for window name
 					<!-- color key -->
 					<control type="group">
 						<control type="grouplist">
-							<posx>400r</posx>
+							<posx>210r</posx>
 							<posy>-35</posy>
-							<width>400</width>
+							<width>300</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
 							<visible>true</visible>
-							<align>right</align>
 							<orientation>horizontal</orientation>
 							<control type="group" id="1400510">
 								<width>48</width>
@@ -2770,9 +2769,9 @@ Search for window name
 			<!-- color key -->
 				<control type="group">
 					<control type="grouplist">
-						<posx>300r</posx>
+						<posx>210r</posx>
 						<posy>565</posy>
-						<width>400</width>
+						<width>300</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
 						<visible>true</visible>
