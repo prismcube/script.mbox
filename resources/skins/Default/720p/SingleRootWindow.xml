@@ -2210,40 +2210,41 @@ Search for window name
 						<control type="grouplist">
 							<posx>400r</posx>
 							<posy>-35</posy>
-							<width>300</width>
+							<width>400</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
 							<visible>true</visible>
 							<align>right</align>
 							<orientation>horizontal</orientation>
-							<control type="group">
+							<control type="group" id="1400510">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-								<control type="image">
+								<control type="image" id="1400511">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-red.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400512">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
 									<font>font10</font>
+									<align>center</align>
 									<label></label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400520">
 								<width>80</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-								<control type="image">
+								<control type="image" id="1400521">
 									<width>80</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-green.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400522">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>80</width>
@@ -2272,16 +2273,16 @@ Search for window name
 									<label>SCRIPT1039</label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400530">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-								<control type="image">
+								<control type="image" id="1400531">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-yellow.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400532">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
@@ -2291,16 +2292,16 @@ Search for window name
 									<label>SCRIPT1124</label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400540">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-								<control type="image">
+								<control type="image" id="1400541">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400542">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
@@ -2769,23 +2770,23 @@ Search for window name
 			<!-- color key -->
 				<control type="group">
 					<control type="grouplist">
-						<posx>200r</posx>
+						<posx>300r</posx>
 						<posy>565</posy>
-						<width>300</width>
+						<width>400</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
-						<control type="group">
+						<control type="group" id="2900510">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-							<control type="image">
+							<control type="image" id="2900511">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-red.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900512">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2795,16 +2796,16 @@ Search for window name
 								<label></label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="group" id="2900520">
 							<width>80</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-							<control type="image">
+							<control type="image" id="2900521">
 								<width>80</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-green.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900522">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>80</width>
@@ -2834,16 +2835,16 @@ Search for window name
 							</control>
 						</control>
 
-						<control type="group">
+						<control type="group" id="2900530">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-							<control type="image">
+							<control type="image" id="2900531">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-yellow.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900532">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2853,16 +2854,16 @@ Search for window name
 								<label>SCRIPT1124</label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="group" id="2900540">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-							<control type="image">
+							<control type="image" id="2900541">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900542">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2874,6 +2875,7 @@ Search for window name
 						</control>
 					</control>
 				</control>
+
 
 				<!-- play section -->
 				<control type="group">

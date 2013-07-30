@@ -469,6 +469,7 @@ if E_V1_1_HD_ICON_USE :
 E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
 E_V1_2_APPLY_PRESENTATION_NUMBER = True
 E_V1_2_APPLY_VIEW_TIMER = True
+E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 ############################ Global Function For GUI ############################
 

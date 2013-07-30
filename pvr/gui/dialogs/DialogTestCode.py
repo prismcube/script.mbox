@@ -5,6 +5,15 @@ import time, math
 E_CONTROL_ID_LIST_SHOW_BOOKMARK		= 500
 E_CONTROL_ID_LIST_SHOW_PROGRESS2	= 200
 
+E_CONTROL_ID_HOTKEY_RED_IMAGE 		= 511
+E_CONTROL_ID_HOTKEY_RED_LABEL 		= 512
+E_CONTROL_ID_HOTKEY_GREEN_IMAGE 	= 521
+E_CONTROL_ID_HOTKEY_GREEN_LABEL 	= 522
+E_CONTROL_ID_HOTKEY_YELLOW_IMAGE 	= 531
+E_CONTROL_ID_HOTKEY_YELLOW_LABEL 	= 532
+E_CONTROL_ID_HOTKEY_BLUE_IMAGE 		= 541
+E_CONTROL_ID_HOTKEY_BLUE_LABEL 		= 542
+
 class DialogTestCode( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
@@ -52,6 +61,30 @@ class DialogTestCode( BaseDialog ) :
 
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			self.TestScreen( )
+
+		elif aAction == Action.ACTION_MOVE_DOWN :
+			self.setProperty( 'iHotkeys', E_TAG_FALSE )
+			self.setProperty( 'InfoPlateName', E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+			self.setProperty( 'iHotkeys', E_TAG_TRUE )
+
+		elif aAction == Action.ACTION_MOVE_UP :
+			self.setProperty( 'iHotkeys', E_TAG_FALSE )
+			if E_V1_2_APPLY_TEXTWIDTH_LABEL :
+				ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Number' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
+				ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Fast' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+				ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Vertical' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+
+			self.setProperty( 'InfoPlateName', E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
+			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+			self.setProperty( 'iHotkeys', E_TAG_TRUE )
+
 		"""
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			#self.CloseDialog( )
