@@ -932,7 +932,7 @@ class Configure( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, False )
 			if not E_USE_OLD_NETWORK :
 				self.SetEnableControl( E_Input06, False )
-				
+
 		elif aSelectedItem == E_PARENTAL :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input02 ]
 			if self.mVisibleParental == True :
