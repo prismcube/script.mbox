@@ -28,6 +28,9 @@ class DialogYesNoCancel( BaseDialog ) :
 			thread = threading.Timer( 0.3, self.AutoClose )
 			thread.start( )
 
+		if self.mDefaultIsOk :
+			self.setFocusId( E_BUTTON_YES )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

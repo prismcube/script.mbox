@@ -1040,6 +1040,9 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
 			LOG_TRACE('-----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
 
+			ElisPropertyInt( 'Update Download Flag', self.mCommander ).SetProp( 1 )
+			LOG_TRACE( '------------------download flag set, not unmount device from standby' )
+
 			self.mEnableLocalThread = True
 			self.mCheckEthernetThread = self.CheckEthernetThread( )
 
@@ -1053,6 +1056,9 @@ class SystemUpdate( SettingWindow ) :
 				self.mCheckEthernetThread.join( )
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
+
+			ElisPropertyInt( 'Update Download Flag', self.mCommander ).SetProp( 0 )
+			LOG_TRACE( '------------------download flag unset, unmount device from standby' )
 
 		elif aStep == E_UPDATE_STEP_CHECKSHELL :
 			self.mEnableLocalThread = True

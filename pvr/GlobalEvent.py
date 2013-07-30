@@ -585,18 +585,18 @@ class GlobalEvent( object ) :
 					mName = '%04d %s%s'% ( timer.mChannelNo, timer.mName[:20], ING )
 
 				line1 = '[COLOR orange]%s %s[/COLOR]'% ( mName, mDate )
-				line2 = '%s'% MR_LANG( 'Are you sure you want to remove this timer?' )
+				line2 = '%s'% ( MR_LANG( 'Are you sure you want to channel change after %s minute?' ) % '5' )
 
 				mHead = MR_LANG( 'View Timer' )
 				mLine = '%s%s%s'% ( line1, NEW_LINE, line2 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( mHead, mLine )
+				dialog.SetDialogProperty( mHead, mLine, True )
 				dialog.SetAutoCloseProperty( True, 10 )
 				dialog.doModal( )
 
 				ret = dialog.IsOK( )
-				if ret == E_DIALOG_STATE_YES :
+				if ret == E_DIALOG_STATE_NO :
 					self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 					LOG_TRACE( 'delete timer[%s]'% timer.mTimerId )
 
