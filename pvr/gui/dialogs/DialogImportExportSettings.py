@@ -1,8 +1,9 @@
 from pvr.gui.WindowImport import *
 
 
-E_CONTROL_ID_RADIO_CHANNELS		= 1007463
-E_CONTROL_ID_RADIO_NETWORK		= 1007464
+E_CONTROL_ID_RADIO_CHANNELS			= 1007463
+E_CONTROL_ID_RADIO_NETWORK			= 1007464
+E_CONTROL_ID_RADIO_CUSTOM_SCRIPT	= 1007465
 
 
 class DialogImportExportSettings( SettingDialog ) :
@@ -10,9 +11,12 @@ class DialogImportExportSettings( SettingDialog ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mCtrlRadioChannels	= None
 		self.mCtrlRadioNetwork	= None
+		self.mCtrlCustomScript	= None
 
 		self.mIsSetChannelList	= False
 		self.mIsSetNetwork		= False
+		self.mIsSetCustomScript = False
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -21,8 +25,11 @@ class DialogImportExportSettings( SettingDialog ) :
 
 		self.mCtrlRadioChannels	= self.getControl( E_CONTROL_ID_RADIO_CHANNELS )
 		self.mCtrlRadioNetwork	= self.getControl( E_CONTROL_ID_RADIO_NETWORK )
+		self.mCtrlCustomScript	= self.getControl( E_CONTROL_ID_RADIO_CUSTOM_SCRIPT )
+
 		self.mCtrlRadioChannels.setSelected( self.mIsSetChannelList )
 		self.mCtrlRadioNetwork.setSelected( self.mIsSetNetwork )
+		self.mCtrlCustomScript.setSelected( self.mIsSetCustomScript )
 		
 		self.SetHeaderLabel( MR_LANG( 'Select Configuration Data' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
@@ -62,9 +69,10 @@ class DialogImportExportSettings( SettingDialog ) :
 		pass
 
 
-	def SetSelect( self, aChannels = False, aNetwork = False ) :
+	def SetSelect( self, aChannels = False, aNetwork = False, aCustomScript = False ) :
 		self.mIsSetChannelList	= aChannels
 		self.mIsSetNetwork		= aNetwork
+		self.mIsSetCustomScript	= aCustomScript
 
 
 	def GetSelectChannels( self ) :
@@ -73,4 +81,7 @@ class DialogImportExportSettings( SettingDialog ) :
 
 	def GetSelectNetwork( self ) :
 		return self.mCtrlRadioNetwork.isSelected( )
+
+	def GetSelectCustomScript( self ) :
+		return self.mCtrlCustomScript.isSelected( )
 
