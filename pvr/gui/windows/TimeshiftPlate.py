@@ -33,6 +33,15 @@ E_CONTROL_ID_IMAGE_XPEED 			= E_BASE_WINDOW_ID + 3760
 E_CONTROL_ID_IMAGE_BOOKMARK_POINT   = E_TIMESHIFT_PLATE_BASE_ID + 600
 E_CONTROL_ID_IMAGE_BOOKMARK_CURRENT = E_TIMESHIFT_PLATE_BASE_ID + 701
 
+E_CONTROL_ID_HOTKEY_RED_IMAGE 		= E_TIMESHIFT_PLATE_BASE_ID + 511
+E_CONTROL_ID_HOTKEY_RED_LABEL 		= E_TIMESHIFT_PLATE_BASE_ID + 512
+E_CONTROL_ID_HOTKEY_GREEN_IMAGE 	= E_TIMESHIFT_PLATE_BASE_ID + 521
+E_CONTROL_ID_HOTKEY_GREEN_LABEL 	= E_TIMESHIFT_PLATE_BASE_ID + 522
+E_CONTROL_ID_HOTKEY_YELLOW_IMAGE 	= E_TIMESHIFT_PLATE_BASE_ID + 531
+E_CONTROL_ID_HOTKEY_YELLOW_LABEL 	= E_TIMESHIFT_PLATE_BASE_ID + 532
+E_CONTROL_ID_HOTKEY_BLUE_IMAGE 		= E_TIMESHIFT_PLATE_BASE_ID + 541
+E_CONTROL_ID_HOTKEY_BLUE_LABEL 		= E_TIMESHIFT_PLATE_BASE_ID + 542
+
 E_EXTENDED_TINY_REWIND  = E_CONTROL_ID_BUTTON_REWIND  + 1000
 E_EXTENDED_TINY_FORWARD = E_CONTROL_ID_BUTTON_FORWARD + 1000
 
@@ -516,16 +525,24 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitPreviousAction( self ) :
+		LOG_TRACE( '--------------------------getLabel[%s]'% self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ) )
+		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Bookmark' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 		visible = E_TAG_FALSE
+
 		if self.mMode == ElisEnum.E_MODE_PVR : 
 			visible = E_TAG_TRUE
-			iRussian = E_TAG_FALSE
-			if XBMC_GetCurrentLanguage( ) == 'Russian' :
-				iRussian = E_TAG_TRUE
-			self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
+			if not E_V1_2_APPLY_TEXTWIDTH_LABEL :
+				iRussian = E_TAG_FALSE
+				if XBMC_GetCurrentLanguage( ) == 'Russian' :
+					iRussian = E_TAG_TRUE
+				self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
 
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,   visible )
 

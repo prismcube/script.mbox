@@ -24,6 +24,14 @@ E_CONTROL_ID_LABEL_EPG_STARTTIME		= E_LIVE_PLATE_BASE_ID + 704
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= E_LIVE_PLATE_BASE_ID + 705
 E_CONTROL_ID_PROGRESS_EPG 				= E_LIVE_PLATE_BASE_ID + 707
 
+E_CONTROL_ID_HOTKEY_RED_IMAGE 			= E_LIVE_PLATE_BASE_ID + 511
+E_CONTROL_ID_HOTKEY_RED_LABEL 			= E_LIVE_PLATE_BASE_ID + 512
+E_CONTROL_ID_HOTKEY_GREEN_IMAGE 		= E_LIVE_PLATE_BASE_ID + 521
+E_CONTROL_ID_HOTKEY_GREEN_LABEL 		= E_LIVE_PLATE_BASE_ID + 522
+E_CONTROL_ID_HOTKEY_YELLOW_IMAGE 		= E_LIVE_PLATE_BASE_ID + 531
+E_CONTROL_ID_HOTKEY_YELLOW_LABEL 		= E_LIVE_PLATE_BASE_ID + 532
+E_CONTROL_ID_HOTKEY_BLUE_IMAGE 			= E_LIVE_PLATE_BASE_ID + 541
+E_CONTROL_ID_HOTKEY_BLUE_LABEL 			= E_LIVE_PLATE_BASE_ID + 542
 
 E_LIVE_PLATE_DEFAULT_FOCUS_ID			=  E_BASE_WINDOW_ID + 3621
 
@@ -417,6 +425,9 @@ class LivePlate( LivePlateWindow ) :
 		if self.mCurrentEPG :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
+		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
@@ -496,48 +507,32 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def ChannelTune( self, aDir, aInitChannel = 0 ):
+		isTune = False
+		tuneCh = self.mFakeChannel
 		if aDir == PREV_CHANNEL :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mFakeChannel )
 			if prevChannel == None or prevChannel.mError != 0 :
 				return -1
 
-			SetLock2(True)
-			self.mFakeChannel = prevChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-			
-			self.RestartAsyncTune( )
+			isTune = True
+			tuneCh = prevChannel
 
 		elif aDir == NEXT_CHANNEL :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
 			if nextChannel == None or nextChannel.mError != 0 :
 				return -1
 
-			SetLock2(True)
-			self.mFakeChannel = nextChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-
-			self.RestartAsyncTune( )
+			isTune = True
+			tuneCh = nextChannel
 
 		elif aDir == CURR_CHANNEL :
 			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
 			if jumpChannel == None or jumpChannel.mError != 0 :
 				return -1
-				
-			SetLock2(True)
-			self.mFakeChannel = jumpChannel
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-			self.UpdateChannelLogo( self.mFakeChannel )
-			SetLock2(False)
-			
-			self.RestartAsyncTune( )
 
+			isTune = True
+			tuneCh = jumpChannel
+				
 		elif aDir == INIT_CHANNEL :
 			currNumber = ''
 			currName = MR_LANG( 'No Channel' )
@@ -555,16 +550,31 @@ class LivePlate( LivePlateWindow ) :
 				self.mCurrentChannel = iChannel
 				self.mFakeChannel    = iChannel
 				self.mLastChannel    = iChannel
-				currNumber = '%s'% self.mFakeChannel.mNumber
+				currNumber = self.mFakeChannel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					currNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
 				currName = self.mFakeChannel.mName
 				SetLock2(False)
 
 			self.InitControlGUI( )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '%s'% currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
 			self.UpdateChannelLogo( iChannel )
 			self.UpdateChannelGUI( )
 			return
+
+		if isTune :
+			SetLock2( True )
+			self.mFakeChannel = tuneCh
+			iChNumber = self.mFakeChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( self.mFakeChannel )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% iChNumber ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateChannelLogo( self.mFakeChannel )
+			SetLock2( False )
+
+			self.RestartAsyncTune( )
 
 
 	def EPGListMoveToIndex( self ) :

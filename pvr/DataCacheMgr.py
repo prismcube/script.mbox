@@ -1970,6 +1970,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
 
 
+	def Timer_AddViewTimer( self, aChannelNo, aServiceType, aStartTime, aTimerName ) :
+		return self.mCommander.Timer_AddViewTimer( aChannelNo, aServiceType, aStartTime, aTimerName )
+
+
+	def Timer_EditViewTimer( self, aTimerId,  aNewStartTime ) :
+		return self.mCommander.Timer_EditViewTimer( aTimerId, aNewStartTime )
+
+
 	def Teletext_Show( self ) :
 		return self.mCommander.Teletext_Show( )
 
@@ -2497,4 +2505,17 @@ class DataCacheMgr( object ) :
 
 	def GetRootWindowId( self ) :
 		return self.mRootWindowId
+
+
+	def CheckPresentationNumber( self, aChannel, aMode = None ) :
+		zappingMode = aMode
+		if aMode == None :
+			zappingMode = self.mZappingMode
+
+		iChNumber = aChannel.mNumber
+		if zappingMode and zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			iChNumber = aChannel.mPresentationNumber
+
+		return iChNumber
+
 

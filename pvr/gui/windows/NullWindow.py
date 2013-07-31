@@ -1059,6 +1059,7 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = threading.Timer( 0.05, self.AsyncTuneByPrevious )
 		self.mAsyncTuneTimer.start( )
 
+
 	def AsyncTuneByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 		if not oldChannel or oldChannel.mError != 0 :
@@ -1072,7 +1073,10 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
 			return
 
-		self.AsyncTuneChannelByInput( oldChannel.mNumber, True )
+		iChNumber = oldChannel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( oldChannel )
+		self.AsyncTuneChannelByInput( iChNumber, True )
 
 
 	def RestartAsyncTuneByHistory( self ) :

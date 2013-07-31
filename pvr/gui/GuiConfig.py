@@ -20,7 +20,10 @@ E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
 
 # SERVER ADDRESS
-PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
+PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
+PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
+PRISMCUBE_REQUEST_FW_PATH = 'ruby_1x'
+
 
 # SUPPORT : SKIN RELOAD 'Q' KEY
 E_SUPPORT_USE_KEY_Q = False
@@ -43,7 +46,8 @@ E_USE_AUTO_CONNECT			= False
 #use to usb
 E_UPDATE_FIRMWARE_USE_USB   = False
 E_UPDATE_FIRMWARE_USB_ONLY  = False
-E_UPDATE_TEST_DEBUG         = False
+E_UPDATE_TEST_DEBUG         = True
+E_UPDATE_TEST_TESTBED       = True
 
 # USE CHANNEL_LOGO
 E_USE_CHANNEL_LOGO			= True
@@ -385,6 +389,8 @@ E_TAG_FALSE   				= 'False'
 E_TAG_ADD_ITEM 				= 'addItem'
 E_TAG_COLOR_RED   			= '[COLOR red]'
 E_TAG_COLOR_GREEN 			= '[COLOR green]'
+E_TAG_COLOR_BLUE 			= '[COLOR blue]'
+E_TAG_COLOR_GREY 			= '[COLOR grey]'
 E_TAG_COLOR_END   			= '[/COLOR]'
 E_TAG_COLOR_HD_LABEL        = '[COLOR orange]%s[/COLOR]'% ( '<HD>' )
 E_TAG_SET_SELECT_POSITION 	= 'selectItem'
@@ -458,6 +464,12 @@ E_V1_1_HD_ICON_USE          = True
 if E_V1_1_HD_ICON_USE :
 	E_TAG_COLOR_HD_LABEL = ''
 
+#patch v1.2
+# v1.0.2 higher, apply to 2013.07.13
+E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
+E_V1_2_APPLY_PRESENTATION_NUMBER = True
+E_V1_2_APPLY_VIEW_TIMER = True
+E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 ############################ Global Function For GUI ############################
 
