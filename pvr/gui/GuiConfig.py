@@ -22,7 +22,7 @@ E_WINDOW_HEIGHT		= 720
 # SERVER ADDRESS
 PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
 PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
-PRISMCUBE_REQUEST_FW_PATH = 'ruby_1x'
+PRISMCUBE_REQUEST_FW_PATH = 'ruby_v1.xxx.xxx'
 
 
 # SUPPORT : SKIN RELOAD 'Q' KEY
@@ -466,10 +466,10 @@ if E_V1_1_HD_ICON_USE :
 
 #patch v1.2
 # v1.0.2 higher, apply to 2013.07.13
-E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = False
-E_V1_2_APPLY_PRESENTATION_NUMBER = False
-E_V1_2_APPLY_VIEW_TIMER = False
-E_V1_2_APPLY_TEXTWIDTH_LABEL = False
+E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
+E_V1_2_APPLY_PRESENTATION_NUMBER = True
+E_V1_2_APPLY_VIEW_TIMER = True
+E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 ############################ Global Function For GUI ############################
 
