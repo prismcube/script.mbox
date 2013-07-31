@@ -16,6 +16,7 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.mLabel = ''
 		self.mAutoCloseFlag = False
 		self.mAutoCloseTime = 0
+		self.mDefaultFocusYes = False
 
 
 	def onInit( self ) :
@@ -28,7 +29,7 @@ class DialogYesNoCancel( BaseDialog ) :
 			thread = threading.Timer( 0.3, self.AutoClose )
 			thread.start( )
 
-		if self.mDefaultIsOk :
+		if self.mDefaultFocusYes :
 			self.setFocusId( E_BUTTON_YES )
 
 
@@ -80,9 +81,10 @@ class DialogYesNoCancel( BaseDialog ) :
 			self.CloseDialog( )
 
 
-	def SetAutoCloseProperty( self, aFlag = False, aTime = 0 ) :
+	def SetAutoCloseProperty( self, aFlag = False, aTime = 0, aIsYes = False ) :
 		self.mAutoCloseFlag = aFlag
 		self.mAutoCloseTime = aTime
+		self.mDefaultFocusYes = aIsYes
 
 
 	def AutoClose( self ) :

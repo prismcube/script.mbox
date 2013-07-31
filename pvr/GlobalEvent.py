@@ -562,7 +562,7 @@ class GlobalEvent( object ) :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( mHead, mLine, True )
-				dialog.SetAutoCloseProperty( True, 10 )
+				dialog.SetAutoCloseProperty( True, 20, True )
 				dialog.doModal( )
 
 				ret = dialog.IsOK( )
