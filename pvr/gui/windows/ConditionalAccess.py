@@ -34,14 +34,15 @@ class ConditionalAccess( SettingWindow ) :
 			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
 			camName = cardinfo.mName
 		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
-		
+		self.AddEnumControl( E_SpinEx01, 'AlphaCrypt Multiple Decryption', MR_LANG( 'Support Multicrypt' ), MR_LANG( 'When set to \'On\', 2 channel scramble decode supported' ) )
+
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetDefaultControl( )
 
 		
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		actionId = aAction.getId( )
@@ -62,7 +63,7 @@ class ConditionalAccess( SettingWindow ) :
 			
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
@@ -74,7 +75,7 @@ class ConditionalAccess( SettingWindow ) :
 				
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		if self.mInitialized :

@@ -271,7 +271,7 @@ class SystemUpdate( SettingWindow ) :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
 		elif groupId == E_Input03 :
-			LOG_TRACE( 'Import Channels from USB' )
+			LOG_TRACE( 'Import Settings from USB' )
 			if self.GetStatusFromFirmware( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
@@ -281,7 +281,7 @@ class SystemUpdate( SettingWindow ) :
 			self.ImportSettingsFromUSB( )
 
 		elif groupId == E_Input04 :
-			LOG_TRACE( 'Export Channels to USB' )		
+			LOG_TRACE( 'Export Settings to USB' )		
 			self.ExportSettingsToUSB( )
 
 

@@ -158,12 +158,12 @@ class SettingWindow( BaseWindow ) :
 			self.setFocusId( E_FIRST_TIME_INSTALLATION_NEXT )
 
 
-	def HasControlItem( self, aCtrlItem, aContgrolId  ) :
+	def HasControlItem( self, aCtrlItem, aContgrolId ) :
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
 				return True
 		elif aCtrlItem.mControlType == aCtrlItem.E_SETTING_INPUT_CONTROL :
-			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId  or aCtrlItem.mControlId + 3 == aContgrolId :	
+			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId :	
 				return True
 		else :
 			if aCtrlItem.mControlId == aContgrolId :

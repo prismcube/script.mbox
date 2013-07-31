@@ -11,9 +11,9 @@ class ChannelSearch( SettingWindow ) :
 	def onInit( self ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
-		self.SetFrontdisplayMessage( MR_LANG('Channel Search') )		
+		self.SetFrontdisplayMessage( MR_LANG( 'Channel Search' ) )
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
-		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
+		self.SetHeaderTitle( "%s - %s" % ( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
 
 		self.SetPipScreen( )
 
@@ -23,7 +23,6 @@ class ChannelSearch( SettingWindow ) :
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetDefaultControl( )
-
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
@@ -69,7 +68,7 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
@@ -83,15 +82,9 @@ class ChannelSearch( SettingWindow ) :
 				
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
+		if self.IsActivate( ) == False :
 			return
 	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 
-
-	def CheckNoChannel( self ) :
-		if self.mDataCache.Channel_GetList( ) :
-			return True
-		else :
-			return False

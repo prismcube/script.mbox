@@ -48,8 +48,6 @@ class GlobalEvent( object ) :
 
 		self.mDialogShowParental = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 		self.mDialogShowEvent = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CAS_EVENT )
-		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 
 
 	@classmethod
@@ -456,31 +454,15 @@ class GlobalEvent( object ) :
 
 	def CamInsertRemove( self, aInserted ) :
 		if aInserted :
-			try :
-				self.mDialogCasClose.mClosed = True
-				self.mDialogCasClose.close( )
-				thread = threading.Timer( 0.3, self.ShowInitCamDialog )
-				thread.start( )
-			except Exception, ex :
-				LOG_TRACE( 'except close dialog' )
-			#self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) ) )
+			self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
 		else :
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) ) )
 			try :
 				self.mDialogShowParental.close( )
 				self.mDialogShowEvent.close( )
-				self.mDialogShowInit.mClosed = True
-				self.mDialogShowInit.close( )
-				thread = threading.Timer( 0.3, self.ShowRemovedCamDialog )
-				thread.start( )
 			except Exception, ex :
 				LOG_TRACE( 'except close dialog' )
-
-
-	def ShowInitCamDialog( self ) :
-		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM initialized' ) )
-		self.mDialogShowInit.SetAutoCloseTime( 3 )
-		self.mDialogShowInit.doModal( )
 
 
 	def ShowAttatchDialog( self, aAttatch = False ) :
@@ -491,13 +473,8 @@ class GlobalEvent( object ) :
 		msg = MR_LANG( 'Connected' )
 		if not aAttatch :
 			msg = MR_LANG( 'Removed' )
-		"""
-		self.mDialogShowInit = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		self.mDialogShowInit.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-		self.mDialogShowInit.SetAutoCloseTime( 1 )
-		self.mDialogShowInit.doModal( )
-		"""
-		xbmc.executebuiltin( 'Notification(%s, %s, 3000, USB.png)'%( MR_LANG( 'USB Device' ), msg ) )
+
+		xbmc.executebuiltin( 'Notification(%s, %s, 3000, USB.png)' % ( MR_LANG( 'USB Device' ), msg ) )
 
 
 	def ShowEventDialog( self, aEvent ) :
@@ -518,13 +495,6 @@ class GlobalEvent( object ) :
 			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 1, self.mDialogShowParental.GetString( ), len( self.mDialogShowParental.GetString( ) ) )
 		else :
 			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 0, 'None', 4 )
-
-
-	def ShowRemovedCamDialog( self ) :
-		self.mDialogCasClose = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		self.mDialogCasClose.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'CAM removed' ) )
-		self.mDialogCasClose.SetAutoCloseTime( 3 )
-		self.mDialogCasClose.doModal( )
 
 
 	def ChannelChangedByRecord( self, aEvent ) :
