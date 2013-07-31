@@ -268,6 +268,7 @@ class GlobalEvent( object ) :
 
 
 	def AsyncPowerSave( self ) :
+		xbmc.executebuiltin( 'Settings.Save' )
 		self.mIsDialogOpend = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
 
@@ -572,8 +573,8 @@ class GlobalEvent( object ) :
 
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
 			mHead = MR_LANG( 'Timer Notification' )
-			mLine = MR_LANG( 'Your channel will be changed %s minute later' )% 1
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, PopupTitleNotice.png)'% ( mHead, mLine ) )
+			mLine = MR_LANG( 'The channel will be changed %s min later' )% 1
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
 
 		else :
 			# E_VIEWTIMER_FAILED_BY_RECORD
@@ -583,6 +584,7 @@ class GlobalEvent( object ) :
 
 
 	def StanByClose( self ) :
+		xbmc.executebuiltin( 'Settings.Save' )
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
 

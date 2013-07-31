@@ -48,6 +48,9 @@ if E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD :
 
 E_DEFAULT_CHANNEL_LIST		= '%s/channel.html'% PRISMCUBE_SERVER_FW_UPDATE
 
+E_DEFAULT_EXPORT_CUSTOM_SCRIPT = 'export.sh'
+E_DEFAULT_IMPORT_CUSTOM_SCRIPT = 'import.sh'
+
 E_CONTROL_ID_GROUP_PVS      = 9000 + E_SYSTEM_UPDATE_BASE_ID
 E_CONTROL_ID_LABEL_TITLE    = 99 + E_SYSTEM_UPDATE_BASE_ID
 E_CONTROL_ID_LABEL_VERSION  = 100 + E_SYSTEM_UPDATE_BASE_ID
@@ -2074,6 +2077,13 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
+	def GetExistImportCustomScript( self, aUsbPath ) :
+		print 'dhkim test aUsbPath = %s' % aUsbPath
+		if os.path.exists( aUsbPath + '/' + E_DEFAULT_IMPORT_CUSTOM_SCRIPT ) :
+			return True
+		return False
+
+
 	def ImportSettingsFromUSB( self ) :
 		LOG_TRACE( '' )
 		#check usb mount
@@ -2084,12 +2094,26 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_IMPORT_EXPORT_SETTINGS )
-		dialog.SetSelect( True, False )
+		isExistCustomScript = self.GetExistImportCustomScript( usbPath )
+		dialog.SetSelect( True, False, isExistCustomScript )
 		dialog.doModal( )
 
 		isSelectedChannels = dialog.GetSelectChannels( )
 		isSelectedNetwork  = dialog.GetSelectNetwork( )
+		isSelectedCustomScript  = dialog.GetSelectCustomScript( )
+
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if isSelectedCustomScript :
+				if isExistCustomScript :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CUSTOM_SCRIPT_PROGRESS )
+					dialog.SetDialogProperty( usbPath + '/' + E_DEFAULT_IMPORT_CUSTOM_SCRIPT )
+					dialog.doModal( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No custom import script file found in usb' ) )
+		 			dialog.doModal( )
+		 			return
+
 			if isSelectedChannels or isSelectedNetwork :
 				if isSelectedNetwork :
 					self.ImportNetworkFromUSB( usbPath )
@@ -2178,6 +2202,13 @@ class SystemUpdate( SettingWindow ) :
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
 				self.mDataCache.System_Reboot( )
 
+
+	def GetExistExportCustomScript( self, aUsbPath ) :
+		print 'dhkim test aUsbPath = %s' % aUsbPath
+		if os.path.exists( aUsbPath + '/' + E_DEFAULT_EXPORT_CUSTOM_SCRIPT ) :
+			return True
+		return False
+
 	
 	def ExportSettingsToUSB( self ) :
 		LOG_TRACE( '' )
@@ -2189,12 +2220,26 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_IMPORT_EXPORT_SETTINGS )
-		dialog.SetSelect( True, False )
+		isExistCustomScript = self.GetExistExportCustomScript( usbPath )
+		dialog.SetSelect( True, False, isExistCustomScript )
 		dialog.doModal( )
 
-		isSelectedChannels = dialog.GetSelectChannels( )
-		isSelectedNetwork  = dialog.GetSelectNetwork( )
+		isSelectedChannels		= dialog.GetSelectChannels( )
+		isSelectedNetwork 		= dialog.GetSelectNetwork( )
+		isSelectedCustomScript  = dialog.GetSelectCustomScript( )
+
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if isSelectedCustomScript :
+				if isExistCustomScript :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CUSTOM_SCRIPT_PROGRESS )
+					dialog.SetDialogProperty( usbPath + '/' + E_DEFAULT_EXPORT_CUSTOM_SCRIPT )
+					dialog.doModal( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No custom export script file found in usb' ) )
+		 			dialog.doModal( )
+		 			return
+
 			if isSelectedChannels or isSelectedNetwork :
 				self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list' ), 30 )
 

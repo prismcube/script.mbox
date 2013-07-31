@@ -482,7 +482,7 @@
 	<string id="3037">USB Device</string>
 	<string id="3038">Do you want to change the channel %s minutes later?</string>
 	<string id="3039">Timer Notification</string>
-	<string id="3040">Your channel will be changed %s minute later</string>
+	<string id="3040">The channel will be changed %s min later</string>
 	<string id="3041">Ресивер необходимо перезагрузить%s для окончания обновления ПО</string>
 	<string id="3042">Ресивер будет перезагружен через %s секунд</string>
 	<string id="3043">Добавить Таймер</string>
