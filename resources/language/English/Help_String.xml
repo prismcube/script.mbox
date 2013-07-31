@@ -112,7 +112,7 @@
 			<posx>225</posx>
 			<posy>270</posy>
 			<width>800</width>
-			<height>102</height>
+			<height>107</height>
 		</content>
 		<content name="The channel information is automatically displayed on the Info plate when changing channels.[CR][CR]1. CURRENT CHANNEL NUMBER AND NAME : Displays current TV/Radio channel number and name.[CR]2. EPG DATA : Press the DOWN button then press the LEFT/RIGHT button to view previous/next EPG.[CR]3. PROGRESS BAR : Displays programme start time, end time and progress bar.[CR]4. FUNCTION BUTTONS : Extended Information, Teletext, Subtitle, Start/Stop Recording, Mute and A/V Setting.">
 			<type>textbox</type>
@@ -216,7 +216,7 @@
 			<width>832</width>
 			<height>470</height>
 		</content>
-		<content name="1. Select a channel you want to add to your favorite group[CR]2. Choose ADD TO FAVORITE GROUP on the context menu then press OK[CR]3. Select a group from the list of available favorite groups then press OK.">
+		<content name="1. Select channels you want to add to your favorite group[CR]2. Choose ADD TO FAVORITE GROUP on the context menu then press OK[CR]3. Select a group from the list of available favorite groups then press OK.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -319,6 +319,23 @@
 			<height>470</height>
 		</content>
 		<content name="When the add-on has finished downloading, XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section. ( e.g. Flickr in the pictures, YouTube in the video section of Media, etc )">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="19" title="Getting Further Help" location="">
+		<content name="help/website.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>821</width>
+			<height>470</height>
+		</content>
+		<content name="For more information about Prismcube Ruby, please visit our website www.prismcube.com.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
