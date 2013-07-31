@@ -34,7 +34,7 @@ class ConditionalAccess( SettingWindow ) :
 			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
 			camName = cardinfo.mName
 		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
-		self.AddEnumControl( E_SpinEx01, 'AlphaCrypt Multiple Decryption', MR_LANG( 'Support Multicrypt' ), MR_LANG( 'When set to \'On\', 2 channel scramble decode supported' ) )
+		self.AddEnumControl( E_SpinEx01, 'AlphaCrypt Multiple Decryption', MR_LANG( 'AlphaCrypt Multicrypt' ), MR_LANG( 'When set to \'On\', the system will descramble up to 2 scrambled channels on same transponder simultaneously' ) )
 
 		self.InitControl( )
 		self.mInitialized = True

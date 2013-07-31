@@ -229,6 +229,11 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [True] )
 			thread.start( )
 
+		elif aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
+			LOG_TRACE( '-----------------------event name[%s]'% aEvent.getName( ) )
+			thread = threading.Timer( 0.1, self.ChannelChangedByRecord, [aEvent] )
+			thread.start( )
+
 
 	def AsyncHddFull( self ) :
 		keyblock = 0
@@ -502,8 +507,19 @@ class GlobalEvent( object ) :
 			LOG_TRACE('no event data')
 			return
 
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			self.mDataCache.Player_Stop( )
+
+		if aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
+			ret = self.CheckViewTimer( aEvent )
+			if ret :
+				LOG_TRACE( 'success, change channel by view timer' )
+				if status.mMode != ElisEnum.E_MODE_LIVE :
+					self.mDataCache.Player_Stop( )
+			else :
+				LOG_TRACE( 'Alarm view timer' )
+				return
 
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingMode and zappingMode.mServiceType != aEvent.mServiceType :
@@ -522,6 +538,48 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 		#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 		LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+
+
+	def CheckViewTimer( self, aEvent ) :
+		viewResult = False
+		if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
+			viewResult = True
+		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_WAIT :
+			timer = self.mDataCache.Timer_GetById( aEvent.mTimerID )
+			if timer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				tempDate = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+				tempDuration = '%s'% TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM )
+				mDate = '[%s %s]'% ( tempDate, tempDuration )
+				mName = '%04d %s'% ( timer.mChannelNo, timer.mName )
+				if timer.mName and len( timer.mName ) > 20 :
+					mName = '%04d %s%s'% ( timer.mChannelNo, timer.mName[:20], ING )
+
+				line1 = '[COLOR orange]%s %s[/COLOR]'% ( mName, mDate )
+				line2 = '%s'% ( MR_LANG( 'Do you want to change the channel %s minutes later?' ) % '5' )
+
+				mHead = MR_LANG( 'Timer Notification' )
+				mLine = '%s%s%s'% ( line1, NEW_LINE, line2 )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( mHead, mLine, True )
+				dialog.SetAutoCloseProperty( True, 20, True )
+				dialog.doModal( )
+
+				ret = dialog.IsOK( )
+				if ret == E_DIALOG_STATE_NO :
+					self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+					LOG_TRACE( 'delete timer[%s]'% timer.mTimerId )
+
+		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
+			mHead = MR_LANG( 'Timer Notification' )
+			mLine = MR_LANG( 'The channel will be changed %s min later' )% 1
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
+
+		else :
+			# E_VIEWTIMER_FAILED_BY_RECORD
+			LOG_TRACE( 'View timer failed to change the channel' )
+
+		return viewResult
 
 
 	def StanByClose( self ) :

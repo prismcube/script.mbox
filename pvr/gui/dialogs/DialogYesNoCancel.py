@@ -14,6 +14,9 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.mTitle = ''
 		self.mLabel = ''
+		self.mAutoCloseFlag = False
+		self.mAutoCloseTime = 0
+		self.mDefaultFocusYes = False
 
 
 	def onInit( self ) :
@@ -22,6 +25,13 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
 		self.IsStandByClose( )
 
+		if self.mAutoCloseFlag :
+			thread = threading.Timer( 0.3, self.AutoClose )
+			thread.start( )
+
+		if self.mDefaultFocusYes :
+			self.setFocusId( E_BUTTON_YES )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -29,7 +39,10 @@ class DialogYesNoCancel( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.mAutoCloseFlag = False
 			self.CloseDialog( )
+
+		self.mAutoCloseFlag = False
 
 
 	def onClick( self, aControlId ) :
@@ -39,6 +52,7 @@ class DialogYesNoCancel( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_NO
 		elif aControlId == E_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
+		self.mAutoCloseFlag = False
 		self.CloseDialog( )
 
 
@@ -63,5 +77,34 @@ class DialogYesNoCancel( BaseDialog ) :
 				self.mIsOk = E_DIALOG_STATE_YES
 			else :
 				self.mIsOk = E_DIALOG_STATE_NO
+			self.mAutoCloseFlag = False
 			self.CloseDialog( )
+
+
+	def SetAutoCloseProperty( self, aFlag = False, aTime = 0, aIsYes = False ) :
+		self.mAutoCloseFlag = aFlag
+		self.mAutoCloseTime = aTime
+		self.mDefaultFocusYes = aIsYes
+
+
+	def AutoClose( self ) :
+		if not self.mAutoCloseFlag or self.mDataCache.GetStanbyClosing( ) :
+			LOG_TRACE( 'mAutoCloseFlag[%s] GetStanbyClosing[%s]'% ( self.mAutoCloseFlag, self.mDataCache.GetStanbyClosing( ) ) )
+			return
+
+		loopCount = self.mAutoCloseTime * 10
+		while loopCount > 0 :
+			if not self.mAutoCloseFlag :
+				LOG_TRACE( 'selected, break auto close' )
+				break
+
+			if loopCount % 10 == 0 :
+				LOG_TRACE( 'Auto Close %s second'% ( loopCount / 10 ) )
+
+			loopCount -= 2
+			time.sleep( 0.2 )
+
+		if self.mAutoCloseFlag :
+			self.CloseDialog( )
+
 

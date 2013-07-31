@@ -1282,6 +1282,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>50</posy>
 						<width>350</width>
+						<height>15</height>
 						<font>font13caps</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
@@ -2207,42 +2208,42 @@ Search for window name
 					<!-- color key -->
 					<control type="group">
 						<control type="grouplist">
-							<posx>400r</posx>
+							<posx>210r</posx>
 							<posy>-35</posy>
 							<width>300</width>
 							<height>40</height>
 							<itemgap>2</itemgap>
 							<visible>true</visible>
-							<align>right</align>
 							<orientation>horizontal</orientation>
-							<control type="group">
+							<control type="group" id="1400510">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-								<control type="image">
+								<control type="image" id="1400511">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-red.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400512">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
 									<font>font10</font>
+									<align>center</align>
 									<label></label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400520">
 								<width>80</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-								<control type="image">
+								<control type="image" id="1400521">
 									<width>80</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-green.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400522">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>80</width>
@@ -2271,16 +2272,16 @@ Search for window name
 									<label>SCRIPT1039</label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400530">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-								<control type="image">
+								<control type="image" id="1400531">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus-yellow.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400532">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
@@ -2290,16 +2291,16 @@ Search for window name
 									<label>SCRIPT1124</label>
 								</control>
 							</control>
-							<control type="group">
+							<control type="group" id="1400540">
 								<width>48</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-								<control type="image">
+								<control type="image" id="1400541">
 									<width>48</width>
 									<height>30</height>
 									<texture>settings-button-nofocus.png</texture>
 								</control>
-								<control type="label">
+								<control type="label" id="1400542">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>48</width>
@@ -2452,6 +2453,7 @@ Search for window name
 						<posx>-40</posx>
 						<posy>10</posy>
 						<width>270</width>
+						<height>15</height>
 						<font>font13caps</font>
 						<align>left</align>
 						<textcolor>9f9f9f9b</textcolor>
@@ -2767,23 +2769,23 @@ Search for window name
 			<!-- color key -->
 				<control type="group">
 					<control type="grouplist">
-						<posx>200r</posx>
+						<posx>210r</posx>
 						<posy>565</posy>
 						<width>300</width>
 						<height>40</height>
 						<itemgap>1</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
-						<control type="group">
+						<control type="group" id="2900510">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-							<control type="image">
+							<control type="image" id="2900511">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-red.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900512">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2793,16 +2795,16 @@ Search for window name
 								<label></label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="group" id="2900520">
 							<width>80</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-							<control type="image">
+							<control type="image" id="2900521">
 								<width>80</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-green.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900522">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>80</width>
@@ -2832,16 +2834,16 @@ Search for window name
 							</control>
 						</control>
 
-						<control type="group">
+						<control type="group" id="2900530">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-							<control type="image">
+							<control type="image" id="2900531">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus-yellow.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900532">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2851,16 +2853,16 @@ Search for window name
 								<label>SCRIPT1124</label>
 							</control>
 						</control>
-						<control type="group">
+						<control type="group" id="2900540">
 							<width>48</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-							<control type="image">
+							<control type="image" id="2900541">
 								<width>48</width>
 								<height>30</height>
 								<texture>settings-button-nofocus.png</texture>
 							</control>
-							<control type="label">
+							<control type="label" id="2900542">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>48</width>
@@ -2872,6 +2874,7 @@ Search for window name
 						</control>
 					</control>
 				</control>
+
 
 				<!-- play section -->
 				<control type="group">
@@ -5045,6 +5048,68 @@ Search for window name
 						<include>DefaultButtonScheduledValues</include>
 					</control>
 
+					<!-- Scheduled ViewTimer -->
+					<control type="button" id="3703801">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703802">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703803">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703804">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703805">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703806">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703807">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703808">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703809">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703810">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+
+					<control type="button" id="3703811">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703812">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703813">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703814">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703815">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703816">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703817">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703818">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703819">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
+					<control type="button" id="3703820">
+						<include>DefaultButtonScheduledViewTimeValues</include>
+					</control>
 
 					<!-- Normal Grid EPG -->					
 					<control type="button" id="3703001">

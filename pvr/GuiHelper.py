@@ -1254,3 +1254,35 @@ def AsyncShowStatus( aStatus ) :
 	rootWinow.setProperty( 'PlayStatusLabel', '' )
 
 
+def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aControlIdGroup = None ) :
+	if not aControlIdImage :
+		return
+	if aText == '' and ( not aControlIdText ) :
+		return
+	"""
+	if aControlIdText :
+		LOG_TRACE( 'control txtControl[%s]'% aControlIdText.getId( ) )
+	if aControlIdImage :
+		LOG_TRACE( 'control imgControl[%s]'% aControlIdImage.getId( ) )
+	if aControlIdGroup :
+		LOG_TRACE( 'control grpControl[%s]'% aControlIdGroup.getId( ) )
+	"""
+
+	lblText = ''
+	if aText == '' and aControlIdText :
+		lblText = '%s'% aControlIdText.getLabel( )
+	if aText != '' :
+		lblText = '%s'% aText
+
+	#LOG_TRACE( '---------text[%s]'% lblText )
+	if lblText != '' :
+		mWidth = aControlIdText.CalcTextWidth( lblText )
+		aControlIdImage.setWidth( int( mWidth ) + 7 )
+		aControlIdText.setWidth( int( mWidth ) + 7 )
+		aControlIdText.setLabel( lblText )
+		if aControlIdGroup :
+			aControlIdGroup.setWidth( int( mWidth ) + 7 )
+			#LOG_TRACE( '-------group width' )
+		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
+
+

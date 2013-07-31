@@ -60,6 +60,7 @@ DIALOG_ID_EDIT_LONGITUDE			= 29
 DIALOG_ID_UPDATE_PROGRESS			= 30
 DIALOG_ID_IMPORT_EXPORT_SETTINGS	= 31
 DIALOG_ID_CUSTOM_SCRIPT_PROGRESS	= 32
+DIALOG_ID_VIEW_TIMER				= 33
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -226,6 +227,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_CUSTOM_SCRIPT_PROGRESS :
 				from pvr.gui.dialogs.DialogCustomScriptProgress import DialogCustomScriptProgress
 				return DialogCustomScriptProgress( 'DialogCustomScriptProgress.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_VIEW_TIMER :
+				from pvr.gui.dialogs.DialogViewTimer import DialogViewTimer
+				return DialogViewTimer( 'DialogViewTimer.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	from pvr.gui.dialogs.DialogTestCode import DialogTestCode

@@ -23,6 +23,15 @@ E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= 705 + E_INFO_PLATE_BASE_ID
 E_CONTROL_ID_PROGRESS_EPG 				= 707 + E_INFO_PLATE_BASE_ID
 
+E_CONTROL_ID_HOTKEY_RED_IMAGE 			= E_INFO_PLATE_BASE_ID + 511
+E_CONTROL_ID_HOTKEY_RED_LABEL 			= E_INFO_PLATE_BASE_ID + 512
+E_CONTROL_ID_HOTKEY_GREEN_IMAGE 		= E_INFO_PLATE_BASE_ID + 521
+E_CONTROL_ID_HOTKEY_GREEN_LABEL 		= E_INFO_PLATE_BASE_ID + 522
+E_CONTROL_ID_HOTKEY_YELLOW_IMAGE 		= E_INFO_PLATE_BASE_ID + 531
+E_CONTROL_ID_HOTKEY_YELLOW_LABEL 		= E_INFO_PLATE_BASE_ID + 532
+E_CONTROL_ID_HOTKEY_BLUE_IMAGE 			= E_INFO_PLATE_BASE_ID + 541
+E_CONTROL_ID_HOTKEY_BLUE_LABEL 			= E_INFO_PLATE_BASE_ID + 542
+
 E_CONTROL_DEFAULT_HIDE = [ 
 	E_CONTROL_ID_BUTTON_START_RECORDING,
 	E_CONTROL_ID_BUTTON_STOP_RECORDING
@@ -248,10 +257,16 @@ class InfoPlate( LivePlateWindow ) :
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( self.mCurrentEPG )
 
-		iRussian = E_TAG_FALSE
-		if XBMC_GetCurrentLanguage( ) == 'Russian' :
-			iRussian = E_TAG_TRUE
-		self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
+		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Bookmark' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+		else :
+			iRussian = E_TAG_FALSE
+			if XBMC_GetCurrentLanguage( ) == 'Russian' :
+				iRussian = E_TAG_TRUE
+			self.UpdatePropertyGUI( 'iHotkeyGreenRussian', '%s'% iRussian )
+
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )

@@ -16,31 +16,23 @@
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>30</posx>
+				<posx>40</posx>
+
 				<!-- Recording Name -->
-				<control type="label" id ="101">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>550</width>
-					<height>40</height>
-					<font>font13</font>
-					<textcolor>white</textcolor>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-				<!-- Recording -->
-				<include>DialogSpinEx01</include>
-				<!-- Duration -->
-				<include>DialogInput04</include>
-				<!--StartTime -->
 				<include>DialogInput01</include>
-				<!--EndTim -->
+
+				<!-- Weekly -->
+				<include>DialogSpinDay</include>
+
+				<!-- Date -->
+				<include>DialogSpinEx01</include>
+				
+				<!--StartTime -->
 				<include>DialogInput02</include>
-				<!-- Duration -->
-				<include>DialogInput03</include>
+
 				<!-- OK/Cancel -->
 				<include>DefaultSettingDialogButtonOKCancel</include>
+
 			</control>
 		</control>
 	</controls>

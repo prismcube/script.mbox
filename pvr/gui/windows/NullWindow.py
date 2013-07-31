@@ -695,15 +695,19 @@ class NullWindow( BaseWindow ) :
 
 			
 			if otrInfo.mTimeshiftAvailable :
+				timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+				LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+			
 				if otrInfo.mHasEPG == True :			
-					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
-					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
 				
 					copyTimeshift  = localTime - otrInfo.mEventStartTime
 					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
 					if copyTimeshift > timeshiftRecordSec :
 						copyTimeshift = timeshiftRecordSec
 					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+				else :
+					self.ShowRecordingStartDialog( )
+					return
 
 			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
 
@@ -1059,6 +1063,7 @@ class NullWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = threading.Timer( 0.05, self.AsyncTuneByPrevious )
 		self.mAsyncTuneTimer.start( )
 
+
 	def AsyncTuneByPrevious( self ) :
 		oldChannel = self.mDataCache.Channel_GetOldChannel( )
 		if not oldChannel or oldChannel.mError != 0 :
@@ -1072,7 +1077,10 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( '----------------- Can not setCurrent by No Channel previous' )
 			return
 
-		self.AsyncTuneChannelByInput( oldChannel.mNumber, True )
+		iChNumber = oldChannel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( oldChannel )
+		self.AsyncTuneChannelByInput( iChNumber, True )
 
 
 	def RestartAsyncTuneByHistory( self ) :
