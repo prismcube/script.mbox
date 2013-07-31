@@ -31,6 +31,8 @@
 				</control>
 				<!-- Recording -->
 				<include>DialogSpinEx01</include>
+				<!-- Duration -->
+				<include>DialogInput04</include>
 				<!--StartTime -->
 				<include>DialogInput01</include>
 				<!--EndTim -->

@@ -20,6 +20,7 @@ E_GROUP_LIST_CONTROL		= 8000
 E_FROM_NOW					= 0 
 E_FROM_EPG					= 1
 
+E_NO_EPG_MAX_TIMESHIFT_COPY	=  60
 
 LIST_COPY_MODE =[ MR_LANG( 'No'), MR_LANG( 'Yes' ) ]
 
@@ -36,10 +37,12 @@ class DialogStartRecord( SettingDialog ) :
 		self.mEndTime					= 0
 		self.mCopyMode					= E_FROM_NOW
 		self.mConflictTimer				= None
+		self.mCopyTimeshiftMin			= 0
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+		self.mCopyTimeshiftMin = 0		
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
 
@@ -89,6 +92,9 @@ class DialogStartRecord( SettingDialog ) :
 
 			elif groupId == E_DialogInput03 :
 				self.ChangeDuraton( )
+				
+			elif groupId == E_DialogInput04 :
+				self.ChangeCopyDuraton( )
 
 			elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :	
 				self.StartRecord( )
@@ -216,10 +222,16 @@ class DialogStartRecord( SettingDialog ) :
 				else :
 					self.AddLabelControl( E_LABEL_RECORD_NAME )
 					self.SetControlLabelString(E_LABEL_RECORD_NAME, self.mOTRInfo.mEventName )
-
-					self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'From EPG' ), LIST_COPY_MODE, E_FROM_NOW )
-					self.SetEnableControl( E_DialogSpinEx01, False )
-
+					self.SetVisibleControl( E_DialogSpinEx01, False )
+					if self.mOTRInfo.mTimeshiftAvailable :
+						self.mCopyTimeshiftMin = int( self.mOTRInfo.mTimeshiftRecordMs/(1000*60) )
+						if self.mCopyTimeshiftMin > E_NO_EPG_MAX_TIMESHIFT_COPY :
+							self.mCopyTimeshiftMin = E_NO_EPG_MAX_TIMESHIFT_COPY
+						self.AddInputControl( E_DialogInput04, MR_LANG( 'Timeshift Copy Duration' ),  '%d %s' % ( self.mCopyTimeshiftMin, MR_LANG( 'min(s)' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = self.mCopyTimeshiftMin )
+					else :
+						self.AddInputControl( E_DialogInput04, MR_LANG( 'Timeshift Copy Duration' ),  '0 %s' % ( MR_LANG( 'min(s)' ) ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 0 )
+						self.SetEnableControl( E_DialogInput04, False )						
+						
 				duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )
 				
 				LOG_TRACE( 'Name=%s' %self.mOTRInfo.mEventName )
@@ -373,6 +385,32 @@ class DialogStartRecord( SettingDialog ) :
 			LOG_ERR( "Exception %s" %ex )
 
 
+	def ChangeCopyDuraton( self ) :
+		try :	
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter New Duration' ), MR_LANG( 'in mins' ) ), '%d' %self.mCopyTimeshiftMin  , 3 )
+ 			dialog.doModal( )
+
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				duration = int( dialog.GetString( ) )
+				LOG_TRACE( 'Duration = %d' % duration )
+
+				copyTimeshiftSec = int( self.mOTRInfo.mTimeshiftRecordMs/(1000*60) )
+				if copyTimeshiftSec > E_NO_EPG_MAX_TIMESHIFT_COPY :
+					copyTimeshiftSec = E_NO_EPG_MAX_TIMESHIFT_COPY
+
+				if duration >= 0  and duration <=  copyTimeshiftSec :
+					self.mCopyTimeshiftMin = duration
+				elif duration >  copyTimeshiftSec :
+					self.mCopyTimeshiftMin = copyTimeshiftSec
+				else :
+					self.mCopyTimeshiftMin = 0					
+				self.SetControlLabel2String( E_DialogInput04, '%d %s' % ( self.mCopyTimeshiftMin, MR_LANG( 'min(s)' ) ) )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
+
+
 	def StartRecord( self ) :
 		try :
 			if self.mTimer :
@@ -424,7 +462,8 @@ class DialogStartRecord( SettingDialog ) :
 						if copyTimeshift > timeshiftRecordSec :
 							copyTimeshift = timeshiftRecordSec
 						LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
-
+					else :
+						copyTimeshift = self.mCopyTimeshiftMin *60
 
 				LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
 
@@ -463,6 +502,8 @@ class DialogStartRecord( SettingDialog ) :
 	def CallballInputNumber( self, aGroupId, aString ) :
 		if aGroupId == E_DialogInput03 :
 			self.SetControlLabel2String( E_DialogInput03, '%s %s' % ( aString, MR_LANG( 'min(s)' ) ) )
+		elif aGroupId == E_DialogInput04 :
+			self.SetControlLabel2String( E_DialogInput04, '%s %s' % ( aString, MR_LANG( 'min(s)' ) ) )
 
 
 	def FocusChangedAction( self, aGroupId ) :
@@ -487,4 +528,10 @@ class DialogStartRecord( SettingDialog ) :
 				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration, TimeFormatEnum.E_HH_MM ) )
 			else :
 				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
+				
+		elif aGroupId == E_DialogInput04 :
+			self.mCopyTimeshiftMin = int( self.GetControlLabel2String( E_DialogInput04 ).split( )[0] )
+			if self.mCopyTimeshiftMin > E_NO_EPG_MAX_TIMESHIFT_COPY :
+				self.mCopyTimeshiftMin = E_NO_EPG_MAX_TIMESHIFT_COPY
+			LOG_TRACE( 'change timeshift copy duration =%d' %self.mCopyTimeshiftMin )
 

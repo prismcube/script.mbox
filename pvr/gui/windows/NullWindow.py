@@ -695,15 +695,19 @@ class NullWindow( BaseWindow ) :
 
 			
 			if otrInfo.mTimeshiftAvailable :
+				timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+				LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+			
 				if otrInfo.mHasEPG == True :			
-					timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
-					LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
 				
 					copyTimeshift  = localTime - otrInfo.mEventStartTime
 					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
 					if copyTimeshift > timeshiftRecordSec :
 						copyTimeshift = timeshiftRecordSec
 					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+				else :
+					self.ShowRecordingStartDialog( )
+					return
 
 			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
 
