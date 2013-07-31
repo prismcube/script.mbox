@@ -268,6 +268,7 @@ class GlobalEvent( object ) :
 
 
 	def AsyncPowerSave( self ) :
+		xbmc.executebuiltin( 'Settings.Save' )
 		self.mIsDialogOpend = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
 
@@ -583,6 +584,7 @@ class GlobalEvent( object ) :
 
 
 	def StanByClose( self ) :
+		xbmc.executebuiltin( 'Settings.Save' )
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
 
