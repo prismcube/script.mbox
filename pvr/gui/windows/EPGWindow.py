@@ -1429,7 +1429,7 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if E_V1_2_APPLY_VIEW_TIMER :
-				context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add view timer' ), CONTEXT_ADD_VIEW_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
@@ -1459,7 +1459,7 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if E_V1_2_APPLY_VIEW_TIMER :
-				context.append( ContextItem( MR_LANG( 'Add ViewTimer' ), CONTEXT_ADD_VIEW_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add view timer' ), CONTEXT_ADD_VIEW_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	

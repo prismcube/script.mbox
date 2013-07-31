@@ -555,9 +555,9 @@ class GlobalEvent( object ) :
 					mName = '%04d %s%s'% ( timer.mChannelNo, timer.mName[:20], ING )
 
 				line1 = '[COLOR orange]%s %s[/COLOR]'% ( mName, mDate )
-				line2 = '%s'% ( MR_LANG( 'Are you sure you want to channel change after %s minute?' ) % '5' )
+				line2 = '%s'% ( MR_LANG( 'Do you want to change the channel %s minutes later?' ) % '5' )
 
-				mHead = MR_LANG( 'View Timer' )
+				mHead = MR_LANG( 'Timer Notification' )
 				mLine = '%s%s%s'% ( line1, NEW_LINE, line2 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -571,13 +571,13 @@ class GlobalEvent( object ) :
 					LOG_TRACE( 'delete timer[%s]'% timer.mTimerId )
 
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
-			mHead = MR_LANG( 'View Timer' )
-			mLine = MR_LANG( 'Channel change later %s min' )% 1
+			mHead = MR_LANG( 'Timer Notification' )
+			mLine = MR_LANG( 'Your channel will be changed %s minute later' )% 1
 			xbmc.executebuiltin( 'Notification(%s, %s, 3000, PopupTitleNotice.png)'% ( mHead, mLine ) )
 
 		else :
 			# E_VIEWTIMER_FAILED_BY_RECORD
-			LOG_TRACE( 'Fail to channel change by view timer' )
+			LOG_TRACE( 'View timer failed to change the channel' )
 
 		return viewResult
 
