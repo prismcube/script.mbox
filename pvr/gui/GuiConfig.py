@@ -46,8 +46,8 @@ E_USE_AUTO_CONNECT			= False
 #use to usb
 E_UPDATE_FIRMWARE_USE_USB   = False
 E_UPDATE_FIRMWARE_USB_ONLY  = False
-E_UPDATE_TEST_DEBUG         = True
-E_UPDATE_TEST_TESTBED       = True
+E_UPDATE_TEST_DEBUG         = False
+E_UPDATE_TEST_TESTBED       = False
 
 # USE CHANNEL_LOGO
 E_USE_CHANNEL_LOGO			= True
@@ -466,10 +466,10 @@ if E_V1_1_HD_ICON_USE :
 
 #patch v1.2
 # v1.0.2 higher, apply to 2013.07.13
-E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
-E_V1_2_APPLY_PRESENTATION_NUMBER = True
-E_V1_2_APPLY_VIEW_TIMER = True
-E_V1_2_APPLY_TEXTWIDTH_LABEL = True
+E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = False
+E_V1_2_APPLY_PRESENTATION_NUMBER = False
+E_V1_2_APPLY_VIEW_TIMER = False
+E_V1_2_APPLY_TEXTWIDTH_LABEL = False
 
 ############################ Global Function For GUI ############################
 
