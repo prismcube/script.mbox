@@ -482,7 +482,7 @@
 	<string id="3037">USB Device</string>
 	<string id="3038">Do you want to change the channel %s minutes later?</string>
 	<string id="3039">Timer Notification</string>
-	<string id="3040">Your channel will be changed %s minute later</string>
+	<string id="3040">The channel will be changed %s min later</string>
 	<string id="3041">Votre système doit être redémarré%s pour compléter la mise à jour</string>
 	<string id="3042">Votre système va redémarrer dans %s secondes</string>
 	<string id="3043">Ajouter minuteur</string>

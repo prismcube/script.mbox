@@ -572,8 +572,8 @@ class GlobalEvent( object ) :
 
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
 			mHead = MR_LANG( 'Timer Notification' )
-			mLine = MR_LANG( 'Your channel will be changed %s minute later' )% 1
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, PopupTitleNotice.png)'% ( mHead, mLine ) )
+			mLine = MR_LANG( 'The channel will be changed %s min later' )% 1
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
 
 		else :
 			# E_VIEWTIMER_FAILED_BY_RECORD
