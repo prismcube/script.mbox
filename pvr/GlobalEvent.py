@@ -410,6 +410,11 @@ class GlobalEvent( object ) :
 
 
 	def ShowPincodeDialog( self, aCmd ) :
+		if self.mDataCache.GetMediaCenter( ) == True :
+			self.mDataCache.SetPincodeDialog( False )
+			LOG_TRACE( 'No popup in MediaCenter' )
+			return
+
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
