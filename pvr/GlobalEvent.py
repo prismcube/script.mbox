@@ -545,7 +545,14 @@ class GlobalEvent( object ) :
 		viewResult = False
 		if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
 			viewResult = True
+			if self.mDataCache.GetMediaCenter( ) == True :
+				self.mDataCache.SetAlarmByViewTimer( True )
+
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_WAIT :
+			if self.mDataCache.GetMediaCenter( ) == True :
+				LOG_TRACE( 'No popup in MediaCenter' )
+				return
+
 			timer = self.mDataCache.Timer_GetById( aEvent.mTimerID )
 			if timer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
 				tempDate = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
@@ -572,6 +579,10 @@ class GlobalEvent( object ) :
 					LOG_TRACE( 'delete timer[%s]'% timer.mTimerId )
 
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
+			if self.mDataCache.GetMediaCenter( ) == True :
+				LOG_TRACE( 'No alarm in MediaCenter' )
+				return
+
 			mHead = MR_LANG( 'Timer Notification' )
 			mLine = MR_LANG( 'The channel will be changed %s min later' )% 1
 			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )

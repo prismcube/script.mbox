@@ -226,10 +226,14 @@ class SimpleChannelList( BaseWindow ) :
 		
 		for i in range( len( self.mChannelList ) ) :
 			channel = self.mChannelList[i]
+			iChNumber = channel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+
 			if self.IsRunningTimer( runningTimers, channel ) :
-				tempChannelName = '[COLOR=red]%04d %s[/COLOR]' %( channel.mNumber, channel.mName )
+				tempChannelName = '[COLOR=red]%04d %s[/COLOR]' %( iChNumber, channel.mName )
 			else :
-				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+				tempChannelName = '%04d %s' %( iChNumber, channel.mName )
 
 			hasEpg = False
 

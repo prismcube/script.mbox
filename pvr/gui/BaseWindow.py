@@ -481,6 +481,12 @@ class BaseWindow( BaseObjectWindow ) :
 			self.mDataCache.SetMediaCenter( False )
 			InitTranslateByEnumList( )
 
+			if self.mDataCache.GetAlarmByViewTimer( ) :
+				self.mDataCache.SetAlarmByViewTimer( False )
+				mHead = MR_LANG( 'Timer Notification' )
+				mLine = MR_LANG( 'Channel changed by view timer' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
+
 		self.SetRadioScreen( )
 
 
