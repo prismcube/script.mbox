@@ -260,7 +260,7 @@ class GlobalEvent( object ) :
 
 		self.mDataCache.InitBookmarkButton( )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-		self.CheckParentLock( E_PARENTLOCK_INIT )
+		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 		else :
