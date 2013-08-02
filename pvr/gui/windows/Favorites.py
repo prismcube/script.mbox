@@ -80,12 +80,14 @@ class Favorites( BaseWindow ) :
 		currentID = xbmcgui.getCurrentWindowId( )
 		if currentID == self.mWinId :
 			dialogID = xbmcgui.getCurrentWindowDialogId( )
+			#remove because of hangup when radio addon file is favorite 
+			"""
 			if dialogID == XBMC_WINDOW_DIALOG_INVALID :
 				LOG_TRACE( 'FAV TEST break' )
 				self.mCheckTimer = None
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 				return
-
+			"""
 		else : # go to MediaWindows
 			self.SetFrontdisplayMessage( MR_LANG('Media Center') )		
 			self.StopCheckTimer( )
