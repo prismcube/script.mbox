@@ -145,6 +145,7 @@ class DataCacheMgr( object ) :
 		self.mStandByClose						= False
 		self.mSearchNewChannel					= False
 		self.mUSBAttatched						= False
+		self.mChangedByViewTimer				= False
 
 		self.mRootWindowId						= 0
 
@@ -2517,5 +2518,13 @@ class DataCacheMgr( object ) :
 			iChNumber = aChannel.mPresentationNumber
 
 		return iChNumber
+
+
+	def SetAlarmByViewTimer( self, aViewTimer = False ) :
+		self.mChangedByViewTimer = aViewTimer
+
+
+	def GetAlarmByViewTimer( self ) :
+		return self.mChangedByViewTimer
 
 

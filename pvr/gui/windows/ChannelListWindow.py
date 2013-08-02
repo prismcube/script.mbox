@@ -882,6 +882,8 @@ class ChannelListWindow( BaseWindow ) :
 		currentChannel = self.mDataCache.Channel_GetCurrent( )
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )
 		if ret :
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
 			#if currentChannel and currentChannel.mError == 0 :
 			#	LOG_TRACE( 'oldch: num[%s] type[%s] name[%s] re[%s]'% ( currentChannel.mNumber, currentChannel.mServiceType, currentChannel.mName, self.mRefreshCurrentChannel ) )
 			if currentChannel and not self.mRefreshCurrentChannel and \

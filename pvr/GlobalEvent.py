@@ -258,7 +258,7 @@ class GlobalEvent( object ) :
 
 		self.mDataCache.InitBookmarkButton( )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-		self.CheckParentLock( E_PARENTLOCK_INIT )
+		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 		else :
@@ -408,6 +408,11 @@ class GlobalEvent( object ) :
 
 
 	def ShowPincodeDialog( self, aCmd ) :
+		if self.mDataCache.GetMediaCenter( ) == True :
+			self.mDataCache.SetPincodeDialog( False )
+			LOG_TRACE( 'No popup in MediaCenter' )
+			return
+
 		LOG_TRACE('--------blank m/w[%s] mbox[%s] lockDialog[%s]'% ( self.mDataCache.Channel_GetInitialBlank( ), self.mDataCache.Get_Player_AVBlank(), self.mDataCache.GetPincodeDialog( ) ) )
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
@@ -543,7 +548,14 @@ class GlobalEvent( object ) :
 		viewResult = False
 		if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
 			viewResult = True
+			if self.mDataCache.GetMediaCenter( ) == True :
+				self.mDataCache.SetAlarmByViewTimer( True )
+
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_WAIT :
+			if self.mDataCache.GetMediaCenter( ) == True :
+				LOG_TRACE( 'No popup in MediaCenter' )
+				return
+
 			timer = self.mDataCache.Timer_GetById( aEvent.mTimerID )
 			if timer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
 				tempDate = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
@@ -570,6 +582,10 @@ class GlobalEvent( object ) :
 					LOG_TRACE( 'delete timer[%s]'% timer.mTimerId )
 
 		elif aEvent.mResult == ElisEnum.E_VIEWTIMER_SOON :
+			if self.mDataCache.GetMediaCenter( ) == True :
+				LOG_TRACE( 'No alarm in MediaCenter' )
+				return
+
 			mHead = MR_LANG( 'Timer Notification' )
 			mLine = MR_LANG( 'The channel will be changed %s min later' )% 1
 			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
