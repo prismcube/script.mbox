@@ -178,11 +178,9 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
-				from ElisProperty import ElisPropertyEnum
-				if ElisPropertyEnum( 'Deep Standby', self.mCommander ).GetProp( ) != 0 :
-					self.mDataCache.SetStanbyClosing( True )
-					thread = threading.Timer( 1, self.StanByClose )
-					thread.start( )
+				self.mDataCache.SetStanbyClosing( True )
+				thread = threading.Timer( 1, self.StanByClose )
+				thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
@@ -288,7 +286,7 @@ class GlobalEvent( object ) :
 			dialog.doModal( )
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 				self.mCommander.AppHBBTV_Ready( 1 )
-			
+
 		self.mIsDialogOpend = False
 
 
