@@ -699,17 +699,37 @@ class InfoPlate( LivePlateWindow ) :
 				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				timer = isRunningTimerList[0]
-				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+
+				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				iChNumber = recInfo.mChannelNo
+				if channel :
+					iChNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( iChNumber ), recInfo.mChannelName )
 
 			elif isRunRec == 2 and runningRecordCount == 2 :
 				setPropertyRecord1 = 'True'
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				timer = isRunningTimerList[0]
-				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				iChNumber = recInfo.mChannelNo
+				if channel :
+					iChNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+				strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( iChNumber ), recInfo.mChannelName )
+
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				timer = isRunningTimerList[1]
-				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				iChNumber = recInfo.mChannelNo
+				if channel :
+					iChNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+				strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( ( timer.mStartTime + timer.mDuration) , TimeFormatEnum.E_HH_MM ), int( iChNumber ), recInfo.mChannelName )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )

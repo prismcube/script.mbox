@@ -1420,13 +1420,26 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 			else :
 			"""
-			timer = self.GetTimerByEPG( selectedEPG )
+
+			timer = self.GetTimerByEPG( selectedEPG, True )
+
 			if timer :
 				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
 			else:
-				context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
-				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+				if E_V1_2_APPLY_VIEW_TIMER :
+					viewTimer = self.GetViewTimerByEPG( selectedEPG )
+					if viewTimer :
+						context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
+						context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
+						context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+						context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
+					else :
+						context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
+						context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+				else :
+					context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
+					context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if E_V1_2_APPLY_VIEW_TIMER :
 				context.append( ContextItem( MR_LANG( 'Add view timer' ), CONTEXT_ADD_VIEW_TIMER ) )
@@ -1441,21 +1454,31 @@ class EPGWindow( BaseWindow ) :
 
 
 		else :
+			channel = None
 			timer = None
 
 			if self.mEPGMode == E_VIEW_GRID :
 				timer = self.GetTimerByFocus( )
+				selectedPos = self.GridGetSelectedPosition( )
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+					channel = self.mChannelList[ selectedPos ]
 
 			elif self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
-					timer = self.GetTimerByChannel( channel )
+					timer = self.GetTimerByChannel( channel, True )
 
 			if timer :
 				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
 			else :
+				if E_V1_2_APPLY_VIEW_TIMER :
+					viewTimer = self.GetViewTimerByEPG( None, channel )
+					if viewTimer :
+						context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
+						context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
+
 				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if E_V1_2_APPLY_VIEW_TIMER :
@@ -1633,6 +1656,7 @@ class EPGWindow( BaseWindow ) :
 				timer = viewList[0]
 
 			timerCount += len( viewList )
+			#LOG_TRACE('-------------view len[%s] total[%s]'% ( len( viewList ), timerCount ) )
 
 		if timerCount > 1 :
 			timer = self.ShowDialogListTimer( viewList, timer )
@@ -1699,6 +1723,12 @@ class EPGWindow( BaseWindow ) :
 
 		mTitle = MR_LANG( 'Select Timer' )
 		lblTitle = '%s'% mTitle
+
+		channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+		if channel :
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				channelNo = self.mDataCache.CheckPresentationNumber( channel )
+
 		if channelNo :
 			lblTitle = '%s(%04d)'% ( mTitle, int( channelNo ) )
 
@@ -2110,7 +2140,7 @@ class EPGWindow( BaseWindow ) :
 			if aEPG :
 				startTime = aEPG.mStartTime + self.mLocalOffset
 				endTime = startTime + aEPG.mDuration
-				#LOG_TRACE( 'start[%s] end[%s] offset[%s]'% ( startTime, endTime, self.mLocalOffset ) )
+				#LOG_TRACE( 'epg : start[%s] end[%s] offset[%s]'% ( startTime, endTime, self.mLocalOffset ) )
 				#LOG_TRACE( 'epg ch[%s] sid[%s] tsid[%s] onid[%s]'% ( aEPG.mEventName, aEPG.mSid, aEPG.mTsid, aEPG.mOnid ) )
 
 			for i in range( len( self.mTimerList ) ) :
@@ -2119,7 +2149,7 @@ class EPGWindow( BaseWindow ) :
 				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
 					#LOG_TRACE( 'timer ch[%s] sid[%s] tsid[%s] onid[%s]'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid ) )
 					if aEPG and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid and \
-					   timer.mStartTime >= startTime and timer.mStartTime <= endTime :
+					   timer.mStartTime >= startTime and timer.mStartTime < endTime :
 						if aIsRequestList :
 							reqTimerList.append( timer )
 							continue
@@ -3086,7 +3116,7 @@ class EPGWindow( BaseWindow ) :
 		gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + self.mVisibleFocusRow, 0 ), None )
 
 		if gridMeta :
-			return self.GetTimerByEPG( gridMeta.mEPG )
+			return self.GetTimerByEPG( gridMeta.mEPG, True )
 
 		"""
 		focusId = self.getFocusId( )

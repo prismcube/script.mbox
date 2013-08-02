@@ -563,9 +563,17 @@ class GlobalEvent( object ) :
 				tempDate = '%s'% ( TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
 				tempDuration = '%s'% TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM )
 				mDate = '[%s %s]'% ( tempDate, tempDuration )
-				mName = '%04d %s'% ( timer.mChannelNo, timer.mName )
+
+				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				iChNumber = timer.mChannelNo
+				if channel :
+					iChNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+
+				mName = '%04d %s'% ( iChNumber, timer.mName )
 				if timer.mName and len( timer.mName ) > 20 :
-					mName = '%04d %s%s'% ( timer.mChannelNo, timer.mName[:20], ING )
+					mName = '%04d %s%s'% ( iChNumber, timer.mName[:20], ING )
 
 				line1 = '[COLOR orange]%s %s[/COLOR]'% ( mName, mDate )
 				line2 = '%s'% ( MR_LANG( 'Do you want to change the channel %s minutes later?' ) % '5' )

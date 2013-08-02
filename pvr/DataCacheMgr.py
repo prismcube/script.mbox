@@ -111,6 +111,7 @@ class DataCacheMgr( object ) :
 		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
+		self.mChannelListHashForTimer			= {}
 		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
@@ -644,6 +645,7 @@ class DataCacheMgr( object ) :
 		prevChannel = None
 		nextChannel = None
 		self.mChannelListHash = {}
+		self.mChannelListHashForTimer = {}
 		self.mTPListByChannelHash = {}
 		self.mChannelList = aChannelList
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
@@ -676,6 +678,9 @@ class DataCacheMgr( object ) :
 
 			if channel and channel.mError == 0 :
 				self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
+				channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+				self.mChannelListHashForTimer[channelKey] = channel
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
@@ -726,6 +731,7 @@ class DataCacheMgr( object ) :
 		prevChannel = None
 		nextChannel = None
 		self.mChannelListHash = {}
+		self.mChannelListHashForTimer = {}
 
 		if newCount < 1 :
 			LOG_TRACE('count=%d'% newCount)
@@ -773,6 +779,9 @@ class DataCacheMgr( object ) :
 
 				if channel and channel.mError == 0 :
 					self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
+
+					channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
+					self.mChannelListHashForTimer[channelKey] = channel
 
 
 
@@ -908,7 +917,6 @@ class DataCacheMgr( object ) :
 
 		else :
 			return self.mChannelList
-
 
 
 	def Channel_GetCount( self, aType = ElisEnum.E_SERVICE_TYPE_TV ) :
@@ -1503,6 +1511,12 @@ class DataCacheMgr( object ) :
  
 			self.Frontdisplay_SetIcon( ElisEnum.E_ICON_REC, recCount )
 			return self.mCommander.Channel_GetZappingList( aSync )
+
+
+	def GetChannelByTimer( self, aSid, aTsid, aOnid ) :
+		if self.mChannelListHashForTimer == None or len( self.mChannelListHashForTimer ) <= 0 :
+			return None
+		return self.mChannelListHashForTimer.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
 	def GetChannelReloadStatus( self ) :
