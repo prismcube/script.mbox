@@ -280,14 +280,6 @@ class SystemInfo( SettingWindow ) :
 		return MR_LANG( 'Unknown' )
 
 
-	def GetHardwareVersion( self ) :
-		return '1.00'
-
-
-	def GetBootloaderVersion( self ) :
-		return '1.00'
-
-
 	def GetReleaseVersion( self ) :
 		ret = GetCurrentVersion( )
 		if not ret[0] :
