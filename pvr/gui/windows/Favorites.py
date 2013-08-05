@@ -12,10 +12,12 @@ class Favorites( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mCheckTimer = None
+		self.mIsPlaying = False
 
 	def onInit( self ) :
+		self.setProperty( 'SetBackgroundColor', '%s' %int( 0x2f2f2f ) )	
 		self.SetActivate( True )
-
+		self.mIsPlaying = False
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetFrontdisplayMessage( MR_LANG('Favorites') )
 		xbmc.executebuiltin( "ActivateWindow(favourites)" )
@@ -38,6 +40,7 @@ class Favorites( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.StopCheckTimer( )
+			self.setProperty( 'SetBackgroundColor', '%s' %int( 0xffffff ) )	
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
@@ -78,16 +81,49 @@ class Favorites( BaseWindow ) :
 			return
 
 		currentID = xbmcgui.getCurrentWindowId( )
+
+		count = 0
+
+		xbmcgui.getCurrentWindowId( )		
 		if currentID == self.mWinId :
 			dialogID = xbmcgui.getCurrentWindowDialogId( )
 			#remove because of hangup when radio addon file is favorite 
-			"""
-			if dialogID == XBMC_WINDOW_DIALOG_INVALID :
-				LOG_TRACE( 'FAV TEST break' )
-				self.mCheckTimer = None
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
-				return
-			"""
+			isPlaying = xbmc.Player().isPlaying()
+			LOG_TRACE( 'LAEL98 TEST is plalying=%s' %isPlaying )
+			if dialogID == XBMC_WINDOW_DIALOG_INVALID and isPlaying == False :
+
+				if self.mIsPlaying == True :
+					self.SetFrontdisplayMessage( MR_LANG('Favorites') )
+					xbmc.executebuiltin( "ActivateWindow(favourites)" )
+					#Wait for favorites dialog activate
+					for loop in range( 25 ) :
+						dialogID = xbmcgui.getCurrentWindowDialogId( )
+						if dialogID == XBMC_WINDOW_DIALOG_FAVOURITES :
+							break
+						time.sleep( 0.2 )
+				else :
+					time.sleep( 0.2 )
+					for i in range( 10 ) :
+						dialogID = xbmcgui.getCurrentWindowDialogId( )
+						isPlaying = xbmc.Player().isPlaying()						
+
+						if dialogID == XBMC_WINDOW_DIALOG_INVALID and isPlaying == False :
+							count += 1
+							time.sleep( 0.2 )
+						else :
+							count = 0
+							break
+
+					if count >= 10 :
+						self.mCheckTimer = None
+						self.mIsPlaying = False
+						self.setProperty( 'SetBackgroundColor', '%s' %int( 0xffffff ) )	
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+						self.mIsPlaying = False					
+						return
+
+			self.mIsPlaying = isPlaying
+
 		else : # go to MediaWindows
 			self.SetFrontdisplayMessage( MR_LANG('Media Center') )		
 			self.StopCheckTimer( )

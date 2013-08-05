@@ -201,12 +201,7 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
 			self.GoToEditChannelList( )
 
-		#elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
-		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
-			self.SetMediaCenter( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
-
-		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
+		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
@@ -258,6 +253,9 @@ class MainMenu( BaseWindow ) :
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
+			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
+				
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
