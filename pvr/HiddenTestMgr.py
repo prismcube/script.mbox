@@ -1,9 +1,9 @@
 import xbmc, xbmcgui, time, socket, struct, random, sys, inspect
 import pvr.DataCacheMgr
 from pvr.Util import TimeToString, TimeFormatEnum, RunThread
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.ElisMgr
-from ElisEventClass import *
+from elisinterface.ElisEventClass import *
 
 
 KeyCode = {

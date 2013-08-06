@@ -4,13 +4,13 @@ import socket
 from SocketServer import *
 import time
 from pvr.Util import RunThread
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from ElisCommander import ElisCommander
-from net.Net import EventServer, EventHandler, EventRequest
-from ElisEventClass import *
-from ElisEventBus import ElisEventBus
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.ElisCommander import ElisCommander
+from elisinterface.net.Net import EventServer, EventHandler, EventRequest
+from elisinterface.ElisEventClass import *
+from elisinterface.ElisEventBus import ElisEventBus
+from elisinterface.ElisAction import ElisAction
+from elisinterface.ElisEnum import ElisEnum
 import pvr.NetConfig as NetConfig
 import threading
 import select

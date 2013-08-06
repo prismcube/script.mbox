@@ -1,6 +1,6 @@
 from pvr.gui.GuiConfig import *
 from pvr.gui.SettingWindow import SettingWindow
-from ElisProperty import ElisPropertyEnum
+from elisinterface.ElisProperty import ElisPropertyEnum
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from types import * 

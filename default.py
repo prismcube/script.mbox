@@ -8,12 +8,12 @@ import os, sys, xbmcaddon, shutil
 
 if __name__ == '__main__' :
 	scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
-	sys.path.append( os.path.join( scriptDir, 'pvr' ) )
-	sys.path.append( os.path.join( scriptDir, 'resources' ) )
-	sys.path.append( os.path.join( scriptDir, 'webinterface' ) )		
+	#sys.path.append( os.path.join( scriptDir, 'pvr' ) )
+	#sys.path.append( os.path.join( scriptDir, 'resources' ) )
+	#sys.path.append( os.path.join( scriptDir, 'webinterface' ) )		
 
-	elisDir = xbmcaddon.Addon( 'script.module.elisinterface' ).getAddonInfo( 'path' )
-	sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )
+	#elisDir = xbmcaddon.Addon( 'script.module.elisinterface' ).getAddonInfo( 'path' )
+	#sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )
 
 #	import xbmcgui
 #	import xbmc
@@ -42,5 +42,5 @@ if __name__ == '__main__' :
 	from pvr.Util import MakeDir
 	MakeDir( cacheDir )
 
-	import Launcher
+	import pvr.Launcher as Launcher
 	Launcher.GetInstance( ).Run( )

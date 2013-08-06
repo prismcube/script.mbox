@@ -5,8 +5,8 @@ import time
 import thread
 
 from pvr.gui.GuiConfig import *
-from gui.BaseDialog import BaseDialog
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.BaseDialog import BaseDialog
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.ElisMgr
 import pvr.DataCacheMgr

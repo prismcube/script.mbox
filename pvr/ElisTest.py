@@ -1,9 +1,9 @@
 
 
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
+from elisinterface.ElisAction import ElisAction
+from elisinterface.ElisEnum import ElisEnum
 
 
 class ElisTest( object ) :

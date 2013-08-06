@@ -10,7 +10,7 @@ from inspect import currentframe
 import pvr.ElisMgr
 import pvr.gui.WindowMgr as WindowMgr
 from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.NetConfig as NetConfig
 import pvr.DataCacheMgr
 import pvr.GlobalEvent

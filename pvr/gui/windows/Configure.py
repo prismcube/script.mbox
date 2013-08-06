@@ -461,7 +461,7 @@ class Configure( SettingWindow ) :
 				if iZapping and iZapping.mError == 0 :
 					self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 				self.mDataCache.SetChannelReloadStatus( True )
-	 			from ElisProperty import ResetHash
+	 			from elisinterface.ElisProperty import ResetHash
 				ResetHash( )
 				self.mDataCache.SetDefaultByFactoryReset( )
 				globalEvent = pvr.GlobalEvent.GetInstance( )

@@ -5,9 +5,9 @@ import time
 import thread
 
 from pvr.gui.GuiConfig import *
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 
 try :
 	import xml.etree.cElementTree as ElementTree

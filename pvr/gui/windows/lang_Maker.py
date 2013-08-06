@@ -529,7 +529,7 @@ def parseProperty( elisDir, stringXML ):
 		return -1
 
 	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))
-	from ElisProperty import _propertyMapEnum
+	from elisinterface.ElisProperty import _propertyMapEnum
 
 	reservedHash = {}
 	for element in re.findall('"([^"]*)"', gReservedWord) :

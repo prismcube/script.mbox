@@ -1,6 +1,6 @@
 from datetime import datetime
 from webinterface import Webinterface
-from ElisClass import *
+from elisinterface.ElisClass import *
 
 class ElmoGetCurrent( Webinterface ) :
 

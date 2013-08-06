@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-from ElisClass import *
+from elisinterface.ElisClass import *
 
 E_EPG_SEARC_BASE_ID				=  WinMgr.WIN_ID_EPG_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 E_EPG_WINDOW_BASE_ID			=  WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID

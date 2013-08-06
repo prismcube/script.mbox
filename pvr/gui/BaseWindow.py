@@ -1,7 +1,7 @@
 from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 import pvr.ChannelLogoMgr
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_GetMute

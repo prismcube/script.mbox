@@ -1,6 +1,6 @@
 from decorator import decorator
-from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from elisinterface.ElisEventClass import *
+from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
@@ -35,16 +35,16 @@ SUPPORT_TIMER_DATABASE   = gFlagUseDB
 SUPPORT_RECORD_DATABASE  = gFlagUseDB
 
 if SUPPORT_EPG_DATABASE == True :
-	from ElisEPGDB import ElisEPGDB
+	from elisinterface.ElisEPGDB import ElisEPGDB
 
 if SUPPORT_CHANNEL_DATABASE == True :
-	from ElisChannelDB import ElisChannelDB
+	from elisinterface.ElisChannelDB import ElisChannelDB
 
 if SUPPORT_TIMER_DATABASE == True :
-	from ElisTimerDB import ElisTimerDB
+	from elisinterface.ElisTimerDB import ElisTimerDB
 
 if SUPPORT_RECORD_DATABASE == True :
-	from ElisRecordDB import ElisRecordDB
+	from elisinterface.ElisRecordDB import ElisRecordDB
 
 gDataCacheMgr = None
 gDataLock = thread.allocate_lock( )

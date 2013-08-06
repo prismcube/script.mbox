@@ -715,7 +715,7 @@ class NetworkMgr( object ) :
 
 
 	def SetNetworkProperty( self, aAddress, aNetmask, aGateway, aNameserver ) :
-		from ElisProperty import ElisPropertyInt
+		from elisinterface.ElisProperty import ElisPropertyInt
 		import pvr.ElisMgr
 		command = pvr.ElisMgr.GetInstance( ).GetCommander( )
 

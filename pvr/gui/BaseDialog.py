@@ -1,6 +1,6 @@
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import Property
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2

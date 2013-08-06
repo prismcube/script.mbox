@@ -7,9 +7,9 @@ import shutil
 import weakref
 
 from pvr.gui.GuiConfig import *
-from gui.BaseWindow import BaseWindow
+from pvr.gui.BaseWindow import BaseWindow
 from inspect import currentframe
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
 import pvr.DataCacheMgr
 from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom

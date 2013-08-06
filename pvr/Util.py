@@ -6,7 +6,7 @@ from threading import Thread
 
 from decorator import decorator
 from odict import odict
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 import threading
 
 gThreads = odict( )

@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 import pvr.ScanHelper as ScanHelper
-from ElisClass import ElisISatelliteInfo
+from elisinterface.ElisClass import ElisISatelliteInfo
 
 
 E_CONFIG_MOTORIZED_12_BASE_ID = WinMgr.WIN_ID_CONFIG_MOTORIZED_12 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 

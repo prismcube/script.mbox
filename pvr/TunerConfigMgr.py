@@ -1,8 +1,8 @@
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from ElisClass import ElisISatelliteConfig
+from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from elisinterface.ElisClass import ElisISatelliteConfig
 from pvr.gui.GuiConfig import *
 
 

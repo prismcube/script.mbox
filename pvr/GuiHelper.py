@@ -1,7 +1,7 @@
 import xbmc, xbmcgui, xbmcaddon, sys, os, shutil, time, re, stat
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 import pvr.Platform
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 try :
 	import xml.etree.cElementTree as ElementTree
@@ -228,7 +228,7 @@ def GetSelectedLongitudeString( aLongitude, aName ) :
 
 
 def EnumToString( aType, aValue ) :
-	from ElisEnum import ElisEnum
+	from elisinterface.ElisEnum import ElisEnum
 	ret = ''
 	if aType == 'type' :
 		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
@@ -1128,7 +1128,7 @@ def ShowSubtitle( ) :
 	import pvr.DataCacheMgr
 	import pvr.gui.DialogMgr as DiaMgr
 	from pvr.gui.GuiConfig import ContextItem
-	from ElisEnum import ElisEnum
+	from elisinterface.ElisEnum import ElisEnum
 	dataCache = pvr.DataCacheMgr.GetInstance( )
 
 	ret = -2

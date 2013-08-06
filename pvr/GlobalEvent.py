@@ -178,7 +178,7 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
-				from ElisProperty import ElisPropertyEnum
+				from elisinterface.ElisProperty import ElisPropertyEnum
 				if ElisPropertyEnum( 'Deep Standby', self.mCommander ).GetProp( ) != 0 :
 					self.mDataCache.SetStanbyClosing( True )
 					thread = threading.Timer( 1, self.StanByClose )

@@ -1,6 +1,6 @@
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.GuiHelper import MR_LANG
 
 E_ADD_XBMC_HTTP_FUNCTION			= True

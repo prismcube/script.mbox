@@ -146,7 +146,7 @@ class HiddenTest( BaseWindow ) :
 
 	def CheckProperty( self ) :
 		self.OpenBusyDialog( )
-		from ElisProperty import GetPropertyTable
+		from elisinterface.ElisProperty import GetPropertyTable
 		table = GetPropertyTable( )
 		errcnt = 0
 		for prop in table :

@@ -5,9 +5,9 @@ import xbmcaddon
 
 from decorator import decorator
 from odict import odict
-from ElisEnum import ElisEnum
+from elisinterface.ElisEnum import ElisEnum
 import pvr.Platform
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.gui.GuiConfig import InitTranslateByEnumList
 
 if sys.version_info < (2, 7):
@@ -333,7 +333,7 @@ def XBMC_GetCurrentLanguage( ) :
 		
 
 def XBMC_SetCurrentLanguage( aLanguage ) :
-	from ElisProperty import ResetHash
+	from elisinterface.ElisProperty import ResetHash
 	ResetHash( )
 
 	LOG_TRACE( 'aLanguage=%s' %aLanguage )
