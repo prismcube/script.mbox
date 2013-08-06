@@ -880,17 +880,25 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.Player_Stop( )
 
 		currentChannel = self.mDataCache.Channel_GetCurrent( )
-		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )
+
+		isSameChannel = False
+		if currentChannel and currentChannel.mServiceType == iChannel.mServiceType and \
+		   currentChannel.mSid == iChannel.mSid and currentChannel.mTsid == iChannel.mTsid and \
+		   currentChannel.mOnid == iChannel.mOnid :
+			isSameChannel = True
+
+		ret = False
+		if isSameChannel :
+			ret = True
+		else :
+			ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
+
 		if ret :
-			if not self.mDataCache.Get_Player_AVBlank( ) :
+			if ( not isSameChannel ) and (  not self.mDataCache.Get_Player_AVBlank( )  ):
 				self.mDataCache.Player_AVBlank( True )
 			#if currentChannel and currentChannel.mError == 0 :
 			#	LOG_TRACE( 'oldch: num[%s] type[%s] name[%s] re[%s]'% ( currentChannel.mNumber, currentChannel.mServiceType, currentChannel.mName, self.mRefreshCurrentChannel ) )
-			if currentChannel and not self.mRefreshCurrentChannel and \
-			   currentChannel.mServiceType == iChannel.mServiceType and \
-			   currentChannel.mSid == iChannel.mSid and \
-			   currentChannel.mTsid == iChannel.mTsid and \
-			   currentChannel.mOnid == iChannel.mOnid :
+			if isSameChannel and not self.mRefreshCurrentChannel :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.Close( )
