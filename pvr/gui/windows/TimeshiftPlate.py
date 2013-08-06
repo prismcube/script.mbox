@@ -1361,36 +1361,65 @@ class TimeShiftPlate( BaseWindow ) :
 			setPropertyRecord1 = 'True'
 			#recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
 			timer = isRunningTimerList[0]
+			iChName   = timer.mName
+			iChNumber = timer.mChannelNo
 			startTime = timer.mStartTime
 			endTime = startTime + timer.mDuration
 			recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )				
 			if recInfo :
-				recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )
 				startTime = recInfo.mStartTime
-			strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+				iChName   = recInfo.mChannelName
+				iChNumber = recInfo.mChannelNo
+
+			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			iChNumber = recInfo.mChannelNo
+			if channel :
+				iChNumber = channel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ), int( iChNumber ), iChName )
 
 		elif isRunRec == 2 and runningRecordCount == 2 :
 			setPropertyRecord1 = 'True'
 			setPropertyRecord2 = 'True'
 			#recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
 			timer = isRunningTimerList[0]
+			iChName   = timer.mName
+			iChNumber = timer.mChannelNo
 			startTime = timer.mStartTime
 			endTime = startTime + timer.mDuration
 			recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )				
 			if recInfo :
-				recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )
 				startTime = recInfo.mStartTime
-			strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+				iChName   = recInfo.mChannelName
+				iChNumber = recInfo.mChannelNo
+
+			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			if channel :
+				iChNumber = channel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			strLabelRecord1 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime , TimeFormatEnum.E_HH_MM ), int( iChNumber ), iChName )
 
 			#recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
 			timer = isRunningTimerList[1]
+			iChName   = timer.mName
+			iChNumber = timer.mChannelNo
 			startTime = timer.mStartTime
 			endTime = startTime + timer.mDuration
 			recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )				
 			if recInfo :
-				recInfo = self.mDataCache.Record_GetRecordInfoByKey( timer.mRecordKey )
 				startTime = recInfo.mStartTime
-			strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime , TimeFormatEnum.E_HH_MM ), int( recInfo.mChannelNo ), recInfo.mChannelName )
+				iChName   = recInfo.mChannelName
+				iChNumber = recInfo.mChannelNo
+
+			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			iChNumber = recInfo.mChannelNo
+			if channel :
+				iChNumber = channel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			strLabelRecord2 = '(%s~%s)  %04d %s'% ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime , TimeFormatEnum.E_HH_MM ), int( iChNumber ), iChName )
 
 		btnValue = False
 		if isRunRec >= 1 :

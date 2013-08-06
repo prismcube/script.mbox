@@ -115,14 +115,20 @@ class DialogAddTimer( BaseDialog ) :
 				LOG_TRACE( 'CUR : %s' %TimeToString( localTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 				LOG_TRACE( 'END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 
+				"""
 				channel = None
 				if self.mChannelList  and len( self.mChannelList ) > 0 :
 					for channel in self.mChannelList :
 						if channel.mSid == self.mEPG.mSid and  channel.mTsid == self.mEPG.mTsid and channel.mOnid == self.mEPG.mOnid :
 							break;
+				"""
 
+				channel = self.mDataCache.GetChannelByTimer( self.mEPG.mSid, self.mEPG.mTsid, self.mEPG.mOnid )
 				if channel :
-					self.getControl( E_LABEL_CHANNEL_NAME ).setLabel( '%04d %s' %( channel.mNumber, channel.mName ) )
+					iChNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+					self.getControl( E_LABEL_CHANNEL_NAME ).setLabel( '%04d %s' %( iChNumber, channel.mName ) )
 				else :
 					self.getControl( E_LABEL_CHANNEL_NAME ).setLabel(  MR_LANG('Unknown')  )
 

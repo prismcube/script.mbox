@@ -2289,6 +2289,22 @@ class ChannelListWindow( BaseWindow ) :
 				listItem.setProperty( 'iHDLabel', hdLabel )
 
 
+	def SetListItemToGUI( self, aProperty = None, aValue = E_TAG_FALSE ) :
+		if not self.mMarkList or len( self.mMarkList ) < 1 :
+			LOG_TRACE( 'No has markList' )
+			return
+
+		if not aProperty :
+			LOG_TRACE( 'No property' )
+
+		for pos in self.mMarkList :
+			listItem = self.mCtrlListCHList.getListItem( pos )
+			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
+			listItem.setProperty( aProperty, aValue )
+
+		self.mMarkList = []
+
+
 	def LoadFavoriteGroupList( self ) :
 		self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType )
 		self.mFavoriteGroupList = []
@@ -2394,6 +2410,7 @@ class ChannelListWindow( BaseWindow ) :
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
+		isRefresh = True
 		isIncludeRec = False
 		isIncludeTimer = False
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
@@ -2425,7 +2442,7 @@ class ChannelListWindow( BaseWindow ) :
 					   self.mRecordInfo2.mChannelName == self.mChannelList[idx].mName and \
 					   self.mRecordInfo2.mChannelNo == self.mChannelList[idx].mNumber ) :
 						isIncludeRec = True
-				LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
+				#LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
 
 			if not numList or len( numList ) < 1 :
 				LOG_TRACE( 'MarkList failed!!!' )
@@ -2438,6 +2455,9 @@ class ChannelListWindow( BaseWindow ) :
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mDataCache.Channel_LockByNumber( True, int(self.mUserMode.mServiceType), numList )
+				if ret :
+					isRefresh = False
+					self.SetListItemToGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			else :
 				return
 
@@ -2447,18 +2467,30 @@ class ChannelListWindow( BaseWindow ) :
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mDataCache.Channel_LockByNumber( False, int(self.mUserMode.mServiceType), numList )
+				if ret :
+					isRefresh = False
+					self.SetListItemToGUI( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
 			else :
 				return
 
 		elif aContextAction == CONTEXT_ACTION_SKIP :
 			ret = self.mDataCache.Channel_SkipByNumber( True, int(self.mUserMode.mServiceType), numList )
+			if ret :
+				isRefresh = False
+				self.SetListItemToGUI( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
 
 		elif aContextAction == CONTEXT_ACTION_UNSKIP :
 			ret = self.mDataCache.Channel_SkipByNumber( False, int(self.mUserMode.mServiceType), numList )
+			if ret :
+				isRefresh = False
+				self.SetListItemToGUI( E_XML_PROPERTY_SKIP, E_TAG_FALSE )
 
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
-			if aGroupName : 
+			if aGroupName :
 				ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
+				if ret :
+					isRefresh = False
+					self.SetListItemToGUI( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 				LOG_TRACE('---------num ret[%s] len[%s] list[%s] markList[%s]'% ( ret, len(numList), ClassToList('convert',numList), self.mMarkList ) )
 			else :
 				ret = 'group None'
@@ -2527,6 +2559,9 @@ class ChannelListWindow( BaseWindow ) :
 			if aGroupName :
 				name = re.split( ':', aGroupName )
 				ret = self.mDataCache.Channel_ChangeChannelName( int( name[0] ), self.mUserMode.mServiceType, name[2] )
+				if ret :
+					isRefresh = False
+					self.SetListItemToGUI( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
 				#LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
@@ -2580,11 +2615,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'contextAction ret[%s]'% ret )
 
-		self.mMarkList = []
-		self.mListItems = None
-		self.SubMenuAction( E_SLIDE_ACTION_SUB )
-		#recovery last focus
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
+		if isRefresh :
+			self.mMarkList = []
+			self.mListItems = None
+			self.SubMenuAction( E_SLIDE_ACTION_SUB )
+			#recovery last focus
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
 		"""
 		lastTop = self.mCtrlListCHList.getOffsetPosition( )
 		if lastTop < 0 :

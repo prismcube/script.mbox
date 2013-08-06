@@ -232,13 +232,19 @@ class TimerWindow( BaseWindow ) :
 
 					weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
-					channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
-
+					#channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
+					channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
 					#channel.printdebug()
+
+					iChName   = timer.mName
+					iChNumber = timer.mChannelNo
 					if channel :
-						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
-					else :
-						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
+						iChName   = channel.mName
+						iChNumber = channel.mNumber
+						if E_V1_2_APPLY_PRESENTATION_NUMBER :
+							iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+
+					tempChannelName = '%04d %s' %( iChNumber, iChName )
 
 					timerName = '%s'% timer.mName
 					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
@@ -268,13 +274,19 @@ class TimerWindow( BaseWindow ) :
 				for i in range( len( self.mTimerList ) ) :
 					timer = self.mTimerList[i]
 
-					channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
-
+					#channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
+					channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
 					#channel.printdebug()
+
+					iChName   = timer.mName
+					iChNumber = timer.mChannelNo
 					if channel :
-						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
-					else :
-						tempChannelName = '%04d %s' %( timer.mChannelNo, timer.mName )					
+						iChName   = channel.mName
+						iChNumber = channel.mNumber
+						if E_V1_2_APPLY_PRESENTATION_NUMBER :
+							iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+
+					tempChannelName = '%04d %s' %( iChNumber, iChName )					
 
 					timerName = '%s'% timer.mName
 					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
