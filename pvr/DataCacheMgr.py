@@ -1330,15 +1330,31 @@ class DataCacheMgr( object ) :
 	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			tunerTP = None
+			recCount = self.Record_GetRunningRecorderCount( )
+
 			if self.mChannelListDBTable == E_TABLE_ZAPPING :
 				loopthrough = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
-				recCount = self.Record_GetRunningRecorderCount( )
 				if tunerTP == 1 and loopthrough :
 					tunerTP = 1
 				else :
 					tunerTP = 2
 			channelDB = ElisChannelDB( )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
+
+			if recCount > 0 :
+				channelDB2 = ElisChannelDB( )				
+				favoriteList = channelDB2.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, E_TABLE_ALLCHANNEL )
+				favoriteHash =  {}
+				for  channel in favoriteList :
+					favoriteHash['%s' %channel.mNumber]= channel
+
+				for channel in channelList :
+					refChannel = favoriteHash.get( '%d' %(channel.mNumber ), None )
+					if refChannel :
+						channel.mPresentationNumber = refChannel.mPresentationNumber
+
+				channelDB2.Close()
+				
 			channelDB.Close( )
 			return channelList
 		else :
