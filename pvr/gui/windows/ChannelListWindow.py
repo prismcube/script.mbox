@@ -1732,7 +1732,8 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
-			self.mCtrlLabelChannelName.setLabel( aValue )
+			if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW: 		
+				self.mCtrlLabelChannelName.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_LONGITUDE_INFO :
 			self.mCtrlLabelLongitudeInfo.setLabel( aValue )
