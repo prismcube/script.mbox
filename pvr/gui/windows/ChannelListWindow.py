@@ -974,8 +974,16 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif aAction == E_SLIDE_ACTION_SUB :
-			idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
-			idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
+			LOG_TRACE( 'mode: user[%s,%s %s] prev[%s,%s %s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )		
+			LOG_TRACE( 'OUT: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )			
+
+			if aForce == True :
+				idxMain = self.mUserSlidePos.mMain
+				idxSub  = self.mUserSlidePos.mSub
+			else :
+				idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
+				idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
+			
 			zappingName = ''
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mUserSlidePos.mMain == idxMain and \
@@ -1064,7 +1072,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#current zapping backup
 			#self.mDataCache.Channel_Backup( )
-
+			LOG_TRACE( 'mode: user[%s,%s %s] prev[%s,%s %s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )		
 
 	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ) :
 		ret = True
@@ -1724,7 +1732,8 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
-			self.mCtrlLabelChannelName.setLabel( aValue )
+			if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW: 		
+				self.mCtrlLabelChannelName.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_LONGITUDE_INFO :
 			self.mCtrlLabelLongitudeInfo.setLabel( aValue )
