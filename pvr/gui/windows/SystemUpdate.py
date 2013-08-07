@@ -2110,7 +2110,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No custom import script file found in usb' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No script for importing configuration found in USB' ) )
 		 			dialog.doModal( )
 		 			return
 
@@ -2236,7 +2236,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No custom export script file found in usb' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No script for exporting configuration found in USB' ) )
 		 			dialog.doModal( )
 		 			return
 

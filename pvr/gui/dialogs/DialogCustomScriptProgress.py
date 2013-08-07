@@ -54,7 +54,7 @@ class DialogCustomScriptProgress( BaseDialog ) :
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Parsing custom script file error' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not read script from file' ) )
  			dialog.doModal( )
  			self.CloseDialog( )
 
@@ -157,7 +157,7 @@ class DialogCustomScriptProgress( BaseDialog ) :
 					self.setProperty( 'ShellDescription', outputs )
 
 					if v.rstrip( ) == 'finish!!!' :
-						self.mCtrlLabelString.setLabel( MR_LANG( 'Finished' ) )
+						self.mCtrlLabelString.setLabel( MR_LANG( 'Completed' ) )
 						self.mCtrlButtonCancel.setLabel( MR_LANG( 'Close' ) )
 						self.mCtrlProgress.setPercent( 100 )
 						time.sleep( 1 )
@@ -165,7 +165,7 @@ class DialogCustomScriptProgress( BaseDialog ) :
 
 					elif v.rstrip( ) == 'start!!!' :
 						time.sleep( 1 )
-						self.mCtrlLabelString.setLabel( MR_LANG( 'Running' ) )
+						self.mCtrlLabelString.setLabel( MR_LANG( 'Processing' ) )
 
 					elif v.startswith( 'step' ) :
 						words = string.split( v )
