@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from subprocess import *
 import re
+from uuid import getnode as get_mac
 
 
 #for test
@@ -11,15 +12,18 @@ if sys.version_info < (2, 7):
 else:
     import json as simplejson 
 
-E_VERSION						=	0
-E_HDD							=	1
+E_SYSTEM						=	0
+E_VERSION						=	1
+E_HDD							=	2
 
 E_SYSTEM_INFO_BASE_ID			=  WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 GROUP_ID_MAIN					=	E_SYSTEM_INFO_BASE_ID + 3000
 
 LABEL_ID_PRODUCT_NAME			=	E_SYSTEM_INFO_BASE_ID + 2500
-LABEL_ID_PRODUCT_NUMBER			=	E_SYSTEM_INFO_BASE_ID + 2501
+LABEL_ID_SERIAL_NUMBER			=	E_SYSTEM_INFO_BASE_ID + 2501
+LABEL_ID_MAC_ADDRESS			=	E_SYSTEM_INFO_BASE_ID + 2801
+
 LABEL_ID_HARDWARE_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2502
 LABEL_ID_SOFTWARE_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2503
 LABEL_ID_BOOTLOADER_VERSION		=	E_SYSTEM_INFO_BASE_ID + 2504
@@ -39,11 +43,7 @@ E_SYSTEM_INFO_SUBMENU_LIST_ID	=   E_SYSTEM_INFO_BASE_ID + 9000
 E_SYSTEM_INFO_DEFAULT_FOCUS_ID	=   E_SYSTEM_INFO_SUBMENU_LIST_ID
 
 
-
 TIME_SEC_CHECK_HDD_TEMP			=	0.05
-
-
-
 
 
 class SystemInfo( SettingWindow ) :
@@ -51,8 +51,10 @@ class SystemInfo( SettingWindow ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mCtrlLeftGroup 			= None
 
-		self.mCtrlVersionProductName	= None
-		self.mCtrlVersionProductNumber	= None
+		self.mCtrlSystemProductName		= None
+		self.mCtrlSystemSerialNumber	= None
+		self.mCtrlSystemMacAddress		= None
+
 		self.mCtrlVersionHardware		= None
 		self.mCtrlVersionSoftware		= None
 		self.mCtrlVersionBootloader		= None
@@ -90,17 +92,19 @@ class SystemInfo( SettingWindow ) :
 
 		self.mGroupItems = []
 
+		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'System' ) ) )
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'Version' ) ) )
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
 
-		#self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
 		self.SetHeaderTitle( MR_LANG( 'STB Information' ) )
 
 		self.mCtrlLeftGroup = self.getControl( E_SYSTEM_INFO_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
-		self.mCtrlVersionProductName	= self.getControl( LABEL_ID_PRODUCT_NAME )
-		self.mCtrlVersionProductNumber	= self.getControl( LABEL_ID_PRODUCT_NUMBER )
+		self.mCtrlSystemProductName		= self.getControl( LABEL_ID_PRODUCT_NAME )
+		self.mCtrlSystemSerialNumber	= self.getControl( LABEL_ID_SERIAL_NUMBER )
+		self.mCtrlSystemMacAddress		= self.getControl( LABEL_ID_MAC_ADDRESS )
+
 		self.mCtrlVersionHardware		= self.getControl( LABEL_ID_HARDWARE_VERSION )
 		self.mCtrlVersionSoftware		= self.getControl( LABEL_ID_SOFTWARE_VERSION )
 		self.mCtrlVersionBootloader		= self.getControl( LABEL_ID_BOOTLOADER_VERSION )
@@ -183,23 +187,30 @@ class SystemInfo( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 
-		"""
-		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
-			if aControlId == E_SYSTEM_INFO_SUBMENU_LIST_ID :
-				self.SetListControl( )
-				if self.mLastFocused != aControlId :
-					self.mLastFocused = aControlId
-				if self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
-					self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
-		"""
-
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( GROUP_ID_MAIN ).setVisible( False )
 
-		if selectedId == E_VERSION :
+		if selectedId == E_SYSTEM :
+			self.OpenBusyDialog( )
+			self.StopCheckHddTempTimer( )
+
+			visibleControlIds	= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_SERIAL_NUMBER, LABEL_ID_MAC_ADDRESS ]
+			hideControlIds		= [ LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION, LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
+			for i in range( len( hideControlIds ) ) :
+				self.SetVisibleControl( hideControlIds[i], False )
+			for i in range( len( visibleControlIds ) ) :
+				self.SetVisibleControl( visibleControlIds[i], True )
+
+			self.mCtrlSystemProductName.setLabel(   '%s : %s'% ( MR_LANG( 'Product Name' ), self.GetProductName( ) ) )
+			self.mCtrlSystemSerialNumber.setLabel( '%s : %s'% ( MR_LANG( 'Serial Number' ) , self.GetSerialNymber( ) ) )
+			self.mCtrlSystemMacAddress.setLabel( '%s : %s'% ( MR_LANG( 'Ethernet Mac Address' ) , self.GetMacAddress( ) ) )
+
+			self.CloseBusyDialog( )
+
+		elif selectedId == E_VERSION :
 			self.OpenBusyDialog( )
 			self.StopCheckHddTempTimer( )
 
@@ -208,18 +219,16 @@ class SystemInfo( SettingWindow ) :
 
 			version_info = self.mCommander.System_GetVersion( )
 			if version_info :
-				versionHardware   = version_info.mHwVersion
-				versionBootloader = version_info.mLoadVersion
+				versionHardware   = '%s.0.0' % version_info.mHwVersion
+				versionBootloader = '%s.0.0' % version_info.mLoadVersion
 
-			visibleControlIds	= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
-			hideControlIds		= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
+			visibleControlIds	= [ LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
+			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_SERIAL_NUMBER, LABEL_ID_MAC_ADDRESS, LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
 			for i in range( len( hideControlIds ) ) :
 				self.SetVisibleControl( hideControlIds[i], False )
 			for i in range( len( visibleControlIds ) ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
-
-			self.mCtrlVersionProductName.setLabel(   '%s : %s'% ( MR_LANG( 'Product Name' ), self.GetProductName( ) ) )
-			self.mCtrlVersionProductNumber.setLabel( '%s : %s'% ( MR_LANG( 'Product Number' ) , self.GetProductNymber( ) ) )
+			 
 			self.mCtrlVersionHardware.setLabel(      '%s : %s'% ( MR_LANG( 'Hardware Version' ) , versionHardware ) )
 			self.mCtrlVersionSoftware.setLabel(      '%s : %s'% ( MR_LANG( 'Release Version' ) , self.GetReleaseVersion( ) ) )
 			self.mCtrlVersionBootloader.setLabel(    '%s : %s'% ( MR_LANG( 'Bootloader Version' ) , versionBootloader ) )
@@ -229,7 +238,7 @@ class SystemInfo( SettingWindow ) :
 		elif selectedId == E_HDD :
 			self.OpenBusyDialog( )
 			visibleControlIds	= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
-			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
+			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_SERIAL_NUMBER, LABEL_ID_MAC_ADDRESS, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			for i in range( len( hideControlIds ) ) :
 				self.SetVisibleControl( hideControlIds[i], False )
 			for i in range( len( visibleControlIds ) ) :
@@ -267,16 +276,20 @@ class SystemInfo( SettingWindow ) :
 		return 'PRISMCUBE RUBY'
 
 
-	def GetProductNymber( self ) :
-		return '00ASV3824ASDMARUSYS322'
-
-
-	def GetHardwareVersion( self ) :
-		return '1.00'
-
-
-	def GetBootloaderVersion( self ) :
-		return '1.00'
+	def GetSerialNymber( self ) :
+		try :
+			if ( os.path.exists( '/config/serial' ) ) :
+				f = open( '/config/serial', 'r' )
+				lines = f.readline( ).strip( )
+				f.close( )
+				return lines
+			else :
+				LOG_ERR( 'not exists /config/serial' )
+				return MR_LANG( 'Unknown' )
+			
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return MR_LANG( 'Unknown' )
 
 
 	def GetReleaseVersion( self ) :
@@ -289,6 +302,27 @@ class SystemInfo( SettingWindow ) :
 
 		retInfo = ret[0] + ' ( %s )' % ret[1]
 		return retInfo
+
+
+	def GetMacAddress( self ) :
+		try :
+			if ( os.path.exists( '/sys/class/net/eth0/address' ) ) :
+				f = open( '/sys/class/net/eth0/address', 'rb' )
+				data = f.readlines( )
+				f.close( )
+				if data :
+					data = str( data[0] )
+					data = data.strip( )
+					return data
+
+				return MR_LANG( 'Unknown' )
+			else :
+				LOG_ERR( 'not exists /sys/class/net/eth0/address' )
+				return MR_LANG( 'Unknown' )
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return MR_LANG( 'Unknown' )
 
 
 	def RunningGetLastDate( self, aDirname ) :
