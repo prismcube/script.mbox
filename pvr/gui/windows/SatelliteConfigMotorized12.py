@@ -408,7 +408,7 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 	def DoContextAction( self, aContextAction ) :
 		if aContextAction == CONTEXT_EDIT_SATELLITE_NAME :
-			kb = xbmc.Keyboard( self.mDataCache.GetSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Enter new satellite name' ), False )
+			kb = xbmc.Keyboard( self.mDataCache.GetSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Enter New Satellite Name' ), False )
 			kb.setHiddenInput( False )
 			kb.doModal( )
 

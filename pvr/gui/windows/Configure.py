@@ -351,7 +351,7 @@ class Configure( SettingWindow ) :
 
 			elif groupId == E_Input01 :
 				timeT = '%02d:%02d' % ( ( self.mEpgGrabinngTime / 3600 ), ( self.mEpgGrabinngTime % 3600 / 60 ) )
-				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), timeT )
+				timeT = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter Start Time' ), timeT )
 				tmptime = timeT.split( ':' )
 				intTime = int( tmptime[0] ) * 3600 + int( tmptime[1] ) * 60
 				if self.mEpgGrabinngTime != intTime :
@@ -1073,7 +1073,7 @@ class Configure( SettingWindow ) :
 			dialog = xbmcgui.Dialog( )
 			apNameList = []
 			for ap in apList :
-				apNameList.append( ap[0] + MR_LANG( '    - Strength : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
+				apNameList.append( ap[0] + MR_LANG( '    - Strength :%s, Encryption : %s' ) % ( ap[1], ap[2] ) )
 			dialog = xbmcgui.Dialog( )
 			ret = dialog.select( MR_LANG( 'Select Wifi' ), apNameList )
 			if ret >= 0 :
@@ -1104,12 +1104,12 @@ class Configure( SettingWindow ) :
 
 	def ConnectCurrentWifi( self ) :
 		if self.mEncryptType != ENCRYPT_OPEN :
-			dialog = xbmc.Keyboard( self.mPassWord, MR_LANG( 'Enter an encryption key' ), True )
+			dialog = xbmc.Keyboard( self.mPassWord, MR_LANG( 'Enter Encryption Key' ), True )
 			dialog.setHiddenInput( True )
 			dialog.doModal( )
 			if( dialog.isConfirmed( ) ) :
 				self.mPassWord = dialog.getText( )
-				#self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter an encryption key' ), self.mPassWord, 48 )
+				#self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter Encryption Key' ), self.mPassWord, 48 )
 				if self.mEncryptType == ENCRYPT_TYPE_WPA and ( len( self.mPassWord ) < 8 or len( self.mPassWord ) > 64 ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password must be between 8 and 64 characters' ) )
@@ -1196,9 +1196,9 @@ class Configure( SettingWindow ) :
 
 	def ShowIpInputDialog( self, aIpAddr ) :
 		if aIpAddr == 'None' :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), '0.0.0.0' )			
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP Address' ), '0.0.0.0' )
 		else :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), aIpAddr )
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP Address' ), aIpAddr )
 		return aIpAddr
 
 
@@ -1232,11 +1232,11 @@ class Configure( SettingWindow ) :
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
 
 		elif aControlId == E_Input02 :
-			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Enter today\'s date' ), self.mDate )
+			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Enter Today\'s Date' ), self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
 
 		elif aControlId == E_Input03 :
-			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your local time' ), self.mTime )
+			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter Local Time' ), self.mTime )
 			self.SetControlLabel2String( E_Input03, self.mTime )		
 			return
 

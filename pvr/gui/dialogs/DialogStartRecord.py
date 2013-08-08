@@ -301,7 +301,7 @@ class DialogStartRecord( SettingDialog ) :
 			orgEndHour = int( tempList[0] )
 			orgEndMin = int( tempList[1] )
 			
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter an end time' ), strEndTime )
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter End Time' ), strEndTime )
 
 			tempList = strEndTime.split( ':', 1 )
 

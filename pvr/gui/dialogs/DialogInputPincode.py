@@ -58,13 +58,13 @@ class DialogInputPincode( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
-		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :		# number
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :		# number key
 			self.InputNumber( int( actionId ) - Action.REMOTE_0 )
 
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			self.InputNumber( actionId + 2 - Action.ACTION_JUMP_SMS2 )
 			
-		elif actionId == Action.ACTION_PARENT_DIR : 							# back space
+		elif actionId == Action.ACTION_PARENT_DIR : 							# backspace key
 			self.DeleteValue( )
 
 		elif actionId == Action.ACTION_PAGE_UP:
@@ -187,7 +187,7 @@ class DialogInputPincode( BaseDialog ) :
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					
-					self.getControl( E_DIALOG_HEADER ).setLabel( MR_LANG( 'Please try again' ) )
+					self.getControl( E_DIALOG_HEADER ).setLabel( MR_LANG( 'Please Try Again' ) )
 			else :
 				temp = '*'
 				self.mCtrlInputLabel.setLabel( temp*length )

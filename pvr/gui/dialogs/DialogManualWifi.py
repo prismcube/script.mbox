@@ -87,7 +87,7 @@ class DialogManualWifi( SettingDialog ) :
 			self.SetControlLabel2String( E_DialogInput04, self.mDns )
 
 		elif groupId == E_DialogInput05 :
-			self.mHiddenSSID = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSSID, 30 )
+			self.mHiddenSSID = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter SSID' ), self.mHiddenSSID, 30 )
 			self.SetControlLabel2String( E_DialogInput05, self.mHiddenSSID )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
@@ -165,8 +165,8 @@ class DialogManualWifi( SettingDialog ) :
 
 	def ShowIpInputDialog( self, aIpAddr ) :
 		if aIpAddr == 'None' :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), '0.0.0.0' )			
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP Address' ), '0.0.0.0' )
 		else :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), aIpAddr )
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP Address' ), aIpAddr )
 		return aIpAddr
 

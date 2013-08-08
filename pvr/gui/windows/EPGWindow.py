@@ -1946,7 +1946,7 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowSearchDialog( self ) :
 		try :
-			kb = xbmc.Keyboard( '', MR_LANG( 'Enter search keywords here' ), False )			
+			kb = xbmc.Keyboard( '', MR_LANG( 'Enter Search Keywords' ), False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
