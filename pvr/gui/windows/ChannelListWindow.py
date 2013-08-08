@@ -2174,38 +2174,97 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
 			updown= 0
-			moveidx = 0
+			topPos = 0
 			markList= []
 			lastidx = len(self.mMarkList) - 1
 
 			#1. moving
-			if aMove == Action.ACTION_MOVE_UP :	
-				updown = -1
-				moveidx = self.mMarkList[0] + updown
+			LOG_TRACE( 'LAEL98 TEST topPos=%d updown=%d self.mMarkList=%d len( self.mNewChannelList )=%d' %( topPos, updown,  len(self.mMarkList), len( self.mNewChannelList )  ) )
+			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
 
-			elif aMove == Action.ACTION_MOVE_DOWN :	
-				updown = 1
-				moveidx = self.mMarkList[lastidx] + updown
+			try :
+				topPos = self.mMarkList[0]
+				markCount = len( self.mMarkList  )
+				channelCount = len( self.mNewChannelList )
+				maxShowCount =  self.mItemCount
+				
+				if channelCount  <= self.mItemCount :
+					maxShowCount = channelCount
 
-			elif aMove == Action.ACTION_PAGE_UP :	
-				updown = -self.mItemCount
-				moveidx = self.mMarkList[0] + updown
+				for idx in self.mMarkList :
+					LOG_TRACE( 'MARK LIST=%d' %int( idx ) )
 
-			elif aMove == Action.ACTION_PAGE_DOWN :	
-				updown = self.mItemCount
-				moveidx = self.mMarkList[lastidx] + updown
+				if aMove == Action.ACTION_MOVE_UP :
+					if topPos == 0 :
+						return
+					updown = -1
 
-			# barrier blocking
-			if moveidx < 0 or moveidx > len( self.mNewChannelList ) - 1 :
-				LOG_TRACE( 'List limit, DO NOT move!! moveidx[%s]'% moveidx)
-				return
+					LOG_TRACE( 'PAGEUP topPos=%d' %topPos )
+					if topPos + updown < self.mViewFirst:	
+						LOG_TRACE( 'MOVEUP updown=%d' %updown )
+						LOG_TRACE( 'MOVEUP before self.mViewFirst=%d' %self.mViewFirst )						
+						self.mViewFirst =  self.mViewFirst + updown
+						LOG_TRACE( 'MOVEUP after self.mViewFirst=%d' %self.mViewFirst )
 
+				elif aMove == Action.ACTION_MOVE_DOWN :	
+					updown = 1
+					LOG_TRACE( 'MOVEDOWN topPos=%d' %topPos )					
+					if topPos + markCount + updown > channelCount :
+						return
+
+					LOG_TRACE( 'MOVEDOWN before self.mViewFirst=%d' %self.mViewFirst )
+					LOG_TRACE( 'MOVEDOWN topPos + markCount + updow=%d' %(topPos + markCount + updown ) )
+					LOG_TRACE( 'MOVEDOWN self.mViewFirst + maxShowCount =%d' %( self.mViewFirst + maxShowCount  ) )					
+					
+					if topPos + markCount + updown > self.mViewFirst + maxShowCount :					
+						self.mViewFirst =  self.mViewFirst + updown
+					LOG_TRACE( 'MOVEDOWN after self.mViewFirst=%d' %self.mViewFirst )
+
+				elif aMove == Action.ACTION_PAGE_UP :	
+					if topPos == 0 :
+						return
+					LOG_TRACE( 'PAGEUP topPos=%d' %topPos )
+					if topPos - maxShowCount < 0 :
+						updown = -topPos
+						LOG_TRACE( 'PAGEUP updown=%d' %updown )
+						LOG_TRACE( 'PAGEUP before self.mViewFirst=%d' %self.mViewFirst )						
+						self.mViewFirst =  self.mViewFirst + updown
+						LOG_TRACE( 'PAGEUP after self.mViewFirst=%d' %self.mViewFirst )
+					else :
+						updown = -maxShowCount
+						LOG_TRACE( 'PAGEUP updown=%d' %updown )
+						LOG_TRACE( 'PAGEUP before self.mViewFirst=%d' %self.mViewFirst )						
+						self.mViewFirst =  self.mViewFirst + updown
+						LOG_TRACE( 'PAGEUP after self.mViewFirst=%d' %self.mViewFirst )
+
+				elif aMove == Action.ACTION_PAGE_DOWN :
+					LOG_TRACE( 'PAGEDOWN topPos=%d' %topPos )
+
+					if topPos + markCount == channelCount :
+						LOG_TRACE( 'PAGEDOWN reach max' )					
+						return
+
+					if topPos + markCount + maxShowCount > channelCount :
+						updown = channelCount - ( topPos + markCount  )
+						#updown = topPos + maxShowCount + markCount - ( channelCount + markCount )
+					else :
+						updown = maxShowCount
+
+					LOG_TRACE( 'MOVEDOWN updown=%d' %updown )
+					
+					LOG_TRACE( 'MOVEDOWN before self.mViewFirst=%d' %self.mViewFirst )
+					self.mViewFirst =  self.mViewFirst + updown
+					LOG_TRACE( 'MOVEDOWN after self.mViewFirst =%d' %self.mViewFirst )					
+				
+ 			except :
+				import traceback
+				LOG_TRACE( 'traceback=%s' %traceback.format_exc() )
+ 
 			#pop moveList
 			popidx = self.mMarkList[0]
 			ctrlItem = []
 			for idx in self.mMoveList :
 				item = self.mNewChannelList.pop( popidx )
-				#LOG_TRACE( 'pop idx[%s] item[%s] len[%s]'% ( popidx, item.mNumber, len( self.mNewChannelList ) ) )
 
 			#update index in moveList
 			for idx in self.mMarkList :
@@ -2219,25 +2278,34 @@ class ChannelListWindow( BaseWindow ) :
 			for i in range( len( self.mMoveList ) ) :
 				idx = lastidx - i
 				self.mNewChannelList.insert( insertPos, self.mMoveList[idx] )
-
-			#LOG_TRACE( 'insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len( self.mNewChannelList ) ) )
-
+			
 			#show top ~ bottom
-			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
-				self.mViewFirst = self.mViewFirst + updown
-				self.mViewEnd   = self.mViewEnd   + updown
-				#LOG_TRACE( 'changed view item' )
+			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
+			
+			#if ( topPos + updown) < self.mViewFirst or ( topPos +  updown)  >= self.mViewEnd :
+			#	self.mViewFirst = self.mViewFirst + updown
+
+			LOG_TRACE( 'LAEL98 TEST self.mViewFirst=%d updown=%d' %( self.mViewFirst, updown) )			
+
+			if self.mViewFirst < 0 :
+				self.mViewFirst = 0
+
+
+			self.mViewEnd = self.mViewFirst +  maxShowCount
 
 			bottom = len( self.mNewChannelList )
 			if self.mViewEnd > bottom :
-				self.mViewFirst = bottom - self.mItemCount
+				LOG_TRACE( 'reach Limit ')
+				self.mViewFirst = bottom - maxShowCount
 				self.mViewEnd = bottom
 
+			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
 			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% ( self.mViewFirst, self.mViewEnd, insertPos ) )
 			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
-			pos = '%s'% ( self.mViewFirst + 1 )
+			pos = '%s'% ( int( self.mMarkList[0] )  + 1 )
+			LOG_TRACE( 'POS=%s' %pos )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
 
 
