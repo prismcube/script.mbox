@@ -219,8 +219,8 @@ class SystemInfo( SettingWindow ) :
 
 			version_info = self.mCommander.System_GetVersion( )
 			if version_info :
-				versionHardware   = version_info.mHwVersion
-				versionBootloader = version_info.mLoadVersion
+				versionHardware   = '%s.0.0' % version_info.mHwVersion
+				versionBootloader = '%s.0.0' % version_info.mLoadVersion
 
 			visibleControlIds	= [ LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_SERIAL_NUMBER, LABEL_ID_MAC_ADDRESS, LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
@@ -277,7 +277,19 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetSerialNymber( self ) :
-		return MR_LANG( 'Unknown' )
+		try :
+			if ( os.path.exists( '/config/serial' ) ) :
+				f = open( '/config/serial', 'r' )
+				lines = f.readline( ).strip( )
+				f.close( )
+				return lines
+			else :
+				LOG_ERR( 'not exists /config/serial' )
+				return MR_LANG( 'Unknown' )
+			
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return MR_LANG( 'Unknown' )
 
 
 	def GetReleaseVersion( self ) :
@@ -297,6 +309,7 @@ class SystemInfo( SettingWindow ) :
 			if ( os.path.exists( '/sys/class/net/eth0/address' ) ) :
 				f = open( '/sys/class/net/eth0/address', 'rb' )
 				data = f.readlines( )
+				f.close( )
 				if data :
 					data = str( data[0] )
 					data = data.strip( )
