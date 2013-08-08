@@ -206,7 +206,7 @@ class SystemInfo( SettingWindow ) :
 
 			self.mCtrlSystemProductName.setLabel(   '%s : %s'% ( MR_LANG( 'Product Name' ), self.GetProductName( ) ) )
 			self.mCtrlSystemSerialNumber.setLabel( '%s : %s'% ( MR_LANG( 'Serial Number' ) , self.GetSerialNymber( ) ) )
-			self.mCtrlSystemMacAddress.setLabel( '%s : %s'% ( MR_LANG( 'Ethernet Mac Address' ) , self.GetMacAddress( ) ) )
+			self.mCtrlSystemMacAddress.setLabel( '%s : %s'% ( MR_LANG( 'Ethernet MAC Address' ) , self.GetMacAddress( ) ) )
 
 			self.CloseBusyDialog( )
 
@@ -246,7 +246,7 @@ class SystemInfo( SettingWindow ) :
 
 			if CheckHdd( ) :
 				self.StartCheckHddTempTimer( )
-				self.mCtrlHDDName.setLabel(	'%s : %s ( %s )'% ( MR_LANG( 'Name and Total Size' ), self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDName.setLabel(	'%s : %s ( %s )'% ( MR_LANG( 'Model and Capacity' ), self.GetHDDName( ), self.GetTotalSize( ) ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
@@ -258,7 +258,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCtrlProgressRecord.setPercent( percent )
 				self.mCtrlHDDSizeRecord.setLabel( '%s : %s%% ( %s / %s )'% ( MR_LANG( 'Recording Partition Usage' ), percent, used_size, total_size ) )
 			else :
-				self.mCtrlHDDName.setLabel( MR_LANG( 'Name and Total Size : Unknown' ) )
+				self.mCtrlHDDName.setLabel( MR_LANG( 'Model and Capacity : Unknown' ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown' ) )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : Unknown' ) )
 				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : Unknown' ) )
@@ -425,7 +425,7 @@ class SystemInfo( SettingWindow ) :
 				else :
 					total_size	= '%sM' % total_size
 			else :
-				LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Fail!!!' )
+				LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Failed!!!' )
 
 			return total_size, used_size, percent
 
