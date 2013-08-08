@@ -2182,38 +2182,65 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
 			updown= 0
-			moveidx = 0
+			topPos = 0
 			markList= []
 			lastidx = len(self.mMarkList) - 1
 
 			#1. moving
-			if aMove == Action.ACTION_MOVE_UP :	
-				updown = -1
-				moveidx = self.mMarkList[0] + updown
+			try :
+				topPos = self.mMarkList[0]
+				markCount = len( self.mMarkList  )
+				channelCount = len( self.mNewChannelList )
+				maxShowCount =  self.mItemCount
+				
+				if channelCount  <= self.mItemCount :
+					maxShowCount = channelCount
 
-			elif aMove == Action.ACTION_MOVE_DOWN :	
-				updown = 1
-				moveidx = self.mMarkList[lastidx] + updown
+				if aMove == Action.ACTION_MOVE_UP :
+					if topPos == 0 :
+						return
+					updown = -1
 
-			elif aMove == Action.ACTION_PAGE_UP :	
-				updown = -self.mItemCount
-				moveidx = self.mMarkList[0] + updown
+					if topPos + updown < self.mViewFirst:	
+						self.mViewFirst =  self.mViewFirst + updown
 
-			elif aMove == Action.ACTION_PAGE_DOWN :	
-				updown = self.mItemCount
-				moveidx = self.mMarkList[lastidx] + updown
+				elif aMove == Action.ACTION_MOVE_DOWN :	
+					updown = 1
+					if topPos + markCount + updown > channelCount :
+						return
+					if topPos + markCount + updown > self.mViewFirst + maxShowCount :					
+						self.mViewFirst =  self.mViewFirst + updown
 
-			# barrier blocking
-			if moveidx < 0 or moveidx > len( self.mNewChannelList ) - 1 :
-				LOG_TRACE( 'List limit, DO NOT move!! moveidx[%s]'% moveidx)
-				return
+				elif aMove == Action.ACTION_PAGE_UP :	
+					if topPos == 0 :
+						return
+					if topPos - maxShowCount < 0 :
+						updown = -topPos
+						self.mViewFirst =  self.mViewFirst + updown
+					else :
+						updown = -maxShowCount
+						self.mViewFirst =  self.mViewFirst + updown
 
+				elif aMove == Action.ACTION_PAGE_DOWN :
+					if topPos + markCount == channelCount :
+						return
+
+					if topPos + markCount + maxShowCount > channelCount :
+						updown = channelCount - ( topPos + markCount  )
+						#updown = topPos + maxShowCount + markCount - ( channelCount + markCount )
+					else :
+						updown = maxShowCount
+
+					self.mViewFirst =  self.mViewFirst + updown
+ 			except :
+				import traceback
+				LOG_TRACE( 'traceback=%s' %traceback.format_exc() )
+ 
 			#pop moveList
 			popidx = self.mMarkList[0]
 			ctrlItem = []
 			for idx in self.mMoveList :
 				item = self.mNewChannelList.pop( popidx )
-				#LOG_TRACE( 'pop idx[%s] item[%s] len[%s]'% ( popidx, item.mNumber, len( self.mNewChannelList ) ) )
 
 			#update index in moveList
 			for idx in self.mMarkList :
@@ -2227,25 +2254,28 @@ class ChannelListWindow( BaseWindow ) :
 			for i in range( len( self.mMoveList ) ) :
 				idx = lastidx - i
 				self.mNewChannelList.insert( insertPos, self.mMoveList[idx] )
+			
+			#if ( topPos + updown) < self.mViewFirst or ( topPos +  updown)  >= self.mViewEnd :
+			#	self.mViewFirst = self.mViewFirst + updown
 
-			#LOG_TRACE( 'insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len( self.mNewChannelList ) ) )
+			if self.mViewFirst < 0 :
+				self.mViewFirst = 0
 
-			#show top ~ bottom
-			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
-				self.mViewFirst = self.mViewFirst + updown
-				self.mViewEnd   = self.mViewEnd   + updown
-				#LOG_TRACE( 'changed view item' )
+
+			self.mViewEnd = self.mViewFirst +  maxShowCount
 
 			bottom = len( self.mNewChannelList )
 			if self.mViewEnd > bottom :
-				self.mViewFirst = bottom - self.mItemCount
+				LOG_TRACE( 'reach Limit ')
+				self.mViewFirst = bottom - maxShowCount
 				self.mViewEnd = bottom
 
+			#LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
 			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% ( self.mViewFirst, self.mViewEnd, insertPos ) )
 			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
-			pos = '%s'% ( self.mViewFirst + 1 )
+			pos = '%s'% ( int( self.mMarkList[0] )  + 1 )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
 
 
