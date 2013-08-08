@@ -274,6 +274,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
+			if self.mMoveFlag :
+				self.setFocusId( E_CONTROL_ID_LIST_CHANNEL_LIST )
+				return
+			
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 				if position == E_SLIDE_MENU_ALLCHANNEL :
@@ -285,6 +289,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
+			if self.mMoveFlag :
+				self.setFocusId( E_CONTROL_ID_LIST_CHANNEL_LIST )
+				return
+
 			#LOG_TRACE('--------------focus[%s]'% self.mFocusId )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
@@ -2574,11 +2582,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_NAME :
 			if aGroupName :
+				#toDO : update just channel name instead of refresh
 				name = re.split( ':', aGroupName )
-				ret = self.mDataCache.Channel_ChangeChannelName( int( name[0] ), self.mUserMode.mServiceType, name[2] )
-				if ret :
-					isRefresh = False
-					self.SetListItemToGUI( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
+				self.mDataCache.Channel_ChangeChannelName( int( name[0] ), self.mUserMode.mServiceType, name[2] )
 				#LOG_TRACE( 'ch[%s] old[%s] new[%s]'% ( name[0], name[1], name[2] ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
