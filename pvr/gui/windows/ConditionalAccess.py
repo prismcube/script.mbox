@@ -55,6 +55,12 @@ class ConditionalAccess( SettingWindow ) :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.ControlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.ControlRight( )
+
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
 			
