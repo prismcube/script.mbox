@@ -2179,9 +2179,6 @@ class ChannelListWindow( BaseWindow ) :
 			lastidx = len(self.mMarkList) - 1
 
 			#1. moving
-			LOG_TRACE( 'LAEL98 TEST topPos=%d updown=%d self.mMarkList=%d len( self.mNewChannelList )=%d' %( topPos, updown,  len(self.mMarkList), len( self.mNewChannelList )  ) )
-			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
-
 			try :
 				topPos = self.mMarkList[0]
 				markCount = len( self.mMarkList  )
@@ -2191,57 +2188,33 @@ class ChannelListWindow( BaseWindow ) :
 				if channelCount  <= self.mItemCount :
 					maxShowCount = channelCount
 
-				for idx in self.mMarkList :
-					LOG_TRACE( 'MARK LIST=%d' %int( idx ) )
-
 				if aMove == Action.ACTION_MOVE_UP :
 					if topPos == 0 :
 						return
 					updown = -1
 
-					LOG_TRACE( 'PAGEUP topPos=%d' %topPos )
 					if topPos + updown < self.mViewFirst:	
-						LOG_TRACE( 'MOVEUP updown=%d' %updown )
-						LOG_TRACE( 'MOVEUP before self.mViewFirst=%d' %self.mViewFirst )						
 						self.mViewFirst =  self.mViewFirst + updown
-						LOG_TRACE( 'MOVEUP after self.mViewFirst=%d' %self.mViewFirst )
 
 				elif aMove == Action.ACTION_MOVE_DOWN :	
 					updown = 1
-					LOG_TRACE( 'MOVEDOWN topPos=%d' %topPos )					
 					if topPos + markCount + updown > channelCount :
 						return
-
-					LOG_TRACE( 'MOVEDOWN before self.mViewFirst=%d' %self.mViewFirst )
-					LOG_TRACE( 'MOVEDOWN topPos + markCount + updow=%d' %(topPos + markCount + updown ) )
-					LOG_TRACE( 'MOVEDOWN self.mViewFirst + maxShowCount =%d' %( self.mViewFirst + maxShowCount  ) )					
-					
 					if topPos + markCount + updown > self.mViewFirst + maxShowCount :					
 						self.mViewFirst =  self.mViewFirst + updown
-					LOG_TRACE( 'MOVEDOWN after self.mViewFirst=%d' %self.mViewFirst )
 
 				elif aMove == Action.ACTION_PAGE_UP :	
 					if topPos == 0 :
 						return
-					LOG_TRACE( 'PAGEUP topPos=%d' %topPos )
 					if topPos - maxShowCount < 0 :
 						updown = -topPos
-						LOG_TRACE( 'PAGEUP updown=%d' %updown )
-						LOG_TRACE( 'PAGEUP before self.mViewFirst=%d' %self.mViewFirst )						
 						self.mViewFirst =  self.mViewFirst + updown
-						LOG_TRACE( 'PAGEUP after self.mViewFirst=%d' %self.mViewFirst )
 					else :
 						updown = -maxShowCount
-						LOG_TRACE( 'PAGEUP updown=%d' %updown )
-						LOG_TRACE( 'PAGEUP before self.mViewFirst=%d' %self.mViewFirst )						
 						self.mViewFirst =  self.mViewFirst + updown
-						LOG_TRACE( 'PAGEUP after self.mViewFirst=%d' %self.mViewFirst )
 
 				elif aMove == Action.ACTION_PAGE_DOWN :
-					LOG_TRACE( 'PAGEDOWN topPos=%d' %topPos )
-
 					if topPos + markCount == channelCount :
-						LOG_TRACE( 'PAGEDOWN reach max' )					
 						return
 
 					if topPos + markCount + maxShowCount > channelCount :
@@ -2250,12 +2223,7 @@ class ChannelListWindow( BaseWindow ) :
 					else :
 						updown = maxShowCount
 
-					LOG_TRACE( 'MOVEDOWN updown=%d' %updown )
-					
-					LOG_TRACE( 'MOVEDOWN before self.mViewFirst=%d' %self.mViewFirst )
 					self.mViewFirst =  self.mViewFirst + updown
-					LOG_TRACE( 'MOVEDOWN after self.mViewFirst =%d' %self.mViewFirst )					
-				
  			except :
 				import traceback
 				LOG_TRACE( 'traceback=%s' %traceback.format_exc() )
@@ -2279,13 +2247,8 @@ class ChannelListWindow( BaseWindow ) :
 				idx = lastidx - i
 				self.mNewChannelList.insert( insertPos, self.mMoveList[idx] )
 			
-			#show top ~ bottom
-			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
-			
 			#if ( topPos + updown) < self.mViewFirst or ( topPos +  updown)  >= self.mViewEnd :
 			#	self.mViewFirst = self.mViewFirst + updown
-
-			LOG_TRACE( 'LAEL98 TEST self.mViewFirst=%d updown=%d' %( self.mViewFirst, updown) )			
 
 			if self.mViewFirst < 0 :
 				self.mViewFirst = 0
@@ -2299,13 +2262,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewFirst = bottom - maxShowCount
 				self.mViewEnd = bottom
 
-			LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
+			#LOG_TRACE( 'self.mViewFirst=%d self.mViewEnd=%d' %(self.mViewFirst, self.mViewEnd ) )
 			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% ( self.mViewFirst, self.mViewEnd, insertPos ) )
 			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
 			pos = '%s'% ( int( self.mMarkList[0] )  + 1 )
-			LOG_TRACE( 'POS=%s' %pos )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
 
 
