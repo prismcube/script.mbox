@@ -71,7 +71,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter satellite name' ), self.mSatelliteName, 15 )
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter Satellite Name' ), self.mSatelliteName, 15 )
 			self.DrawItem( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :

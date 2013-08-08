@@ -265,7 +265,7 @@ class DialogViewTimer( SettingDialog ) :
 			#localTime = self.mDataCache.Datetime_GetLocalTime( )
 			#strStartTime = TimeToString( localTime, TimeFormatEnum.E_HH_MM )
 
-			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )
+			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter Start Time' ), strStartTime )
 
 			tempList = strStartTime.split( ':', 1 )
 			startHour = int( tempList[0] )

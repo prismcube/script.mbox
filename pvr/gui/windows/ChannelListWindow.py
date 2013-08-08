@@ -2712,12 +2712,12 @@ class ChannelListWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
-					context.append( ContextItem( '%s'% MR_LANG( 'Add to a favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Create a favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Rename a favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Delete a favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Add channels to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Delete favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
-					context.append( ContextItem( '%s'% MR_LANG( 'Create a favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2734,10 +2734,10 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				context = []
 
-			context.append( ContextItem( '%s'% MR_LANG( 'Add to this favorite group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Add channels to this group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			if not self.mChannelList :
-				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE_FAV_CURRENT ) )	
-			context.append( ContextItem( '%s'% MR_LANG( 'Rename a favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( MR_LANG( 'Delete this favorite group' ), CONTEXT_ACTION_DELETE_FAV_CURRENT ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
@@ -2769,7 +2769,7 @@ class ChannelListWindow( BaseWindow ) :
 			channelList = self.AddFavoriteChannels( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 			dialog.SetPreviousBlocking( False )
-			dialog.SetDefaultProperty( MR_LANG( 'Select channels you want to add to this group' ), channelList, E_MODE_CHANNEL_LIST )
+			dialog.SetDefaultProperty( MR_LANG( 'Add Channels to This Favorite Group' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 
@@ -2792,9 +2792,9 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
- 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Select a fav group you want to add channels to' )
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Select a fav group you want to rename' )
- 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Select a fav group you want to remove' )
+			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add Channels to Favorite Group' )
+			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Favorite Group' )
+			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Favorite Group' )
 
  			grpIdx = xbmcgui.Dialog( ).select( title, self.mFavoriteGroupList )
  			groupName = self.mFavoriteGroupList[grpIdx]
@@ -2826,20 +2826,20 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = MR_LANG( 'Enter favorite group name' )
+				label = MR_LANG( 'Enter Favorite Group Name' )
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Enter new favorite group name' )
+				label = MR_LANG( 'Enter New Favorite Group Name' )
 
 			elif selectedAction == CONTEXT_ACTION_CHANGE_NAME :
 				idx = self.mCtrlListCHList.getSelectedPosition( )
 				groupName = self.mChannelList[idx].mName
 				default = groupName
 				result = '%d'%self.mChannelList[idx].mNumber + ':' + default + ':'
-				label = MR_LANG( 'Enter new channel name' )
+				label = MR_LANG( 'Enter New Channel Name' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )

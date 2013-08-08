@@ -89,7 +89,7 @@ class EditSatellite( SettingWindow ) :
 
 		# Edit Satellite Name
 		elif groupId == E_Input03 :
-			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Enter new satellite name' ), False )
+			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Enter New Satellite Name' ), False )
 			kb.setHiddenInput( False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :

@@ -528,7 +528,7 @@ def parseProperty( elisDir, stringXML ):
 		print 'Could not find source directory!\n'
 		return -1
 
-	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))
+	sys.path.append(os.path.join(elisDir, 'lib'))
 	from elisinterface.ElisProperty import _propertyMapEnum
 
 	reservedHash = {}

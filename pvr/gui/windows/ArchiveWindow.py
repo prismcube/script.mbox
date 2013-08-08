@@ -999,7 +999,7 @@ class ArchiveWindow( BaseWindow ) :
 				return False
 		
 		try :
-			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter new name' ), False )
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter New Name' ), False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
