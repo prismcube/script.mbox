@@ -149,6 +149,7 @@ class DataCacheMgr( object ) :
 		self.mChangedByViewTimer				= False
 
 		self.mRootWindowId						= 0
+		self.mRootWindow							= None
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -212,6 +213,8 @@ class DataCacheMgr( object ) :
 		LOG_ERR('after=%s' %after )		
 		LOG_ERR('--------------> diff=%s' %( after - before ) )
 
+	def SetRootWindow( self, aRootWindow ) :
+		self.mRootWindow	= aRootWindow
 
 	def Load( self ) :
 
@@ -1053,6 +1056,9 @@ class DataCacheMgr( object ) :
 
 		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
 		self.Channel_SetOldChannelList( aServiceType )
+
+		if self.mRootWindow :
+			self.mRootWindow.setProperty( 'Signal', 'True' )
 
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			if aTemporaryHash :

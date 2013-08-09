@@ -15,6 +15,8 @@ import pvr.DataCacheMgr
 from pvr.XBMCInterface import XBMC_GetCurrentSkinName, XBMC_GetResolution, XBMC_GetSkinZoom
 from pvr.Util import SetLock, SetLock2
 import pvr.gui.DialogMgr as DiaMgr
+import pvr.ScanHelper as ScanHelper
+
 
 try :
 	import xml.etree.cElementTree as ElementTree
@@ -402,6 +404,9 @@ class WindowMgr( object ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
+
+		pvr.DataCacheMgr.GetInstance( ).SetRootWindow( self.mRootWindow )
+		ScanHelper.GetInstance( ).SetRootWindow( self.mRootWindow )
 
 
 	def ResetAllWindows( self ) :

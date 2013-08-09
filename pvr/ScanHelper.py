@@ -17,8 +17,13 @@ def GetInstance( ) :
 class ScanHelper( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mRootWindow = None
 
 
+	def SetRootWindow( self, aRootWindow ) :
+		self.mRootWindow = aRootWindow
+
+	
 	def ScanHelper_Start( self, aWin ) :
 		self.mCommander.ScanHelper_Start( )
 		aWin.setProperty( 'ViewProgress', 'True' )
@@ -50,6 +55,8 @@ class ScanHelper( object ) :
 
 	def ScanHelper_Stop( self, aWin, aReturn=True ) :
 		self.mCommander.ScanHelper_Stop( aReturn )
+		if self.mRootWindow :
+			self.mRootWindow.setProperty( 'Signal', 'True' )		
 		aWin.setProperty( 'ViewProgress', 'False' )
 
 
