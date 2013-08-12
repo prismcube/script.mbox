@@ -1677,10 +1677,10 @@ class ChannelListWindow( BaseWindow ) :
 				   iChannel.mSid == self.mNavChannel.mSid and iChannel.mTsid == self.mNavChannel.mTsid and \
 				   iChannel.mOnid == self.mNavChannel.mOnid :
 					isFind = True
-					#LOG_TRACE( '---------------------refresh item idx[%s] channel[%s] name[%s]'% ( iChannelIdx, iChannel.mNumber, iChannel.mName ) )
-					if self.mLastChannel and self.mLastChannel.mNumber != iChannel.mNumber :
+					LOG_TRACE( '---------------------refresh item idx[%s] channel[%s] name[%s]'% ( iChannelIdx, iChannel.mNumber, iChannel.mName ) )
+					if self.mLastChannel :
 						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
-						#LOG_TRACE( '----------------retune number by changed, tune ch[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
+						LOG_TRACE( '------[find]----------retune number by changed, tune ch[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
 					break
 
 			#if iChannel.mNumber == self.mCurrentChannel :
@@ -1690,6 +1690,16 @@ class ChannelListWindow( BaseWindow ) :
 
 		if isFind == False :
 			iChannelIdx = 0
+			if self.mLastChannel :
+				iChannel = self.mDataCache.Channel_GetCurr( self.mLastChannel )
+				if not iChannel :
+					iChannel = self.mDataCache.Channel_GetNext( self.mLastChannel )
+
+				if iChannel :
+					iChannelIdx = int( iChannel.mNumber ) - 1
+					self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+					LOG_TRACE( '--------[not found]--------retune number by changed, tune ch[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
+
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, iChannelIdx, E_TAG_SET_SELECT_POSITION )
 		time.sleep( 0.02 )
@@ -2183,7 +2193,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mMoveFlag = False
 
 				if idxCurrent != -1 :
-					self.mRefreshCurrentChannel = self.mChannelList[idxCurrent].mNumber
+					self.mLastChannel = self.mChannelList[idxCurrent]
 					#LOG_TRACE( 'after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
 
 				self.mCtrlListCHList.reset( )
@@ -2564,15 +2574,12 @@ class ChannelListWindow( BaseWindow ) :
 				delNumber = chNum.mParam
 				if self.mLastChannel :
 					iChNumber = self.mLastChannel.mNumber
-				#if E_V1_2_APPLY_PRESENTATION_NUMBER :
-				#	iChNumber = self.GetPresentToChannelNumber( iChNumber, self.mUserMode )
-				#	delNumber = self.GetPresentToChannelNumber( delNumber, self.mUserMode )
 
 				lastChannel = self.mChannelListHash.get( iChNumber, None )
 				delChannel  = self.mChannelListHash.get( delNumber, None )
 				#LOG_TRACE( '----------------current[%s] mark[%s] last[%s] del[%s]'% ( self.mCurrentChannel, idx, lastChannel, delChannel ) )
 				if lastChannel and delChannel :
-					#LOG_TRACE( '------------lastChannel[%s] delChannel[%s]'% ( lastChannel.mNumber, delChannel.mNumber ) )
+					LOG_TRACE( '------------lastChannel[%s] delChannel[%s]'% ( lastChannel.mNumber, delChannel.mNumber ) )
 					if lastChannel.mServiceType == delChannel.mServiceType and \
 					   lastChannel.mSid == delChannel.mSid and lastChannel.mTsid == delChannel.mTsid and \
 					   lastChannel.mOnid == delChannel.mOnid :
@@ -2619,6 +2626,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.mDataCache.Channel_LockByNumber( False, int(self.mUserMode.mServiceType), numList )
 				if ret :
 					isRefresh = False
+					self.mLastChannel = None
 					self.SetListItemToGUI( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
 			else :
 				return
@@ -2633,6 +2641,7 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.mDataCache.Channel_SkipByNumber( False, int(self.mUserMode.mServiceType), numList )
 			if ret :
 				isRefresh = False
+				self.mLastChannel = None
 				self.SetListItemToGUI( E_XML_PROPERTY_SKIP, E_TAG_FALSE )
 
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
