@@ -4243,7 +4243,7 @@ Search for window name
 					<shadowcolor>black</shadowcolor>
 				</control>
 				<control type="group" id="3403000">
-					<!-- VERSION -->
+					<!-- SYSTEM -->
 					<control type="label" id="3402500">
 						<posx>290</posx>
 						<posy>100</posy>
@@ -4260,7 +4260,7 @@ Search for window name
 						<font>font13</font>
 						<textcolor>white</textcolor>
 					</control>
-					<control type="label" id="3402502">
+					<control type="label" id="3402801">
 						<posx>290</posx>
 						<posy>170</posy>
 						<width>700</width>
@@ -4268,9 +4268,18 @@ Search for window name
 						<font>font13</font>
 						<textcolor>white</textcolor>
 					</control>
+					<!-- VERSION -->
+					<control type="label" id="3402502">
+						<posx>290</posx>
+						<posy>100</posy>
+						<width>700</width>
+						<height>35</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+					</control>
 					<control type="label" id="3402503">
 						<posx>290</posx>
-						<posy>205</posy>
+						<posy>135</posy>
 						<width>700</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4278,7 +4287,7 @@ Search for window name
 					</control>
 					<control type="label" id="3402504">
 						<posx>290</posx>
-						<posy>240</posy>
+						<posy>170</posy>
 						<width>700</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4287,7 +4296,7 @@ Search for window name
 					<!-- HDD -->
 					<control type="label" id="3402600">
 						<posx>290</posx>
-						<posy>103</posy>
+						<posy>100</posy>
 						<width>900</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4295,7 +4304,7 @@ Search for window name
 					</control>
 					<control type="label" id="3402605">
 						<posx>290</posx>
-						<posy>140</posy>
+						<posy>135</posy>
 						<width>900</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4303,7 +4312,7 @@ Search for window name
 					</control>
 					<control type="label" id="3402602">
 						<posx>290</posx>
-						<posy>175</posy>
+						<posy>170</posy>
 						<width>900</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4311,7 +4320,7 @@ Search for window name
 					</control>
 					<control type="progress" id="3402702">
 						<posx>290</posx>
-						<posy>206</posy>
+						<posy>201</posy>
 						<width>350</width>
 						<height>18</height>
 						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
@@ -4320,7 +4329,7 @@ Search for window name
 					</control>
 					<control type="label" id="3402603">
 						<posx>290</posx>
-						<posy>225</posy>
+						<posy>220</posy>
 						<width>900</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4328,7 +4337,7 @@ Search for window name
 					</control>
 					<control type="progress" id="3402703">
 						<posx>290</posx>
-						<posy>256</posy>
+						<posy>251</posy>
 						<width>350</width>
 						<height>18</height>
 						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
@@ -4337,7 +4346,7 @@ Search for window name
 					</control>
 					<control type="label" id="3402604">
 						<posx>290</posx>
-						<posy>275</posy>
+						<posy>270</posy>
 						<width>900</width>
 						<height>35</height>
 						<font>font13</font>
@@ -4345,7 +4354,7 @@ Search for window name
 					</control>
 					<control type="progress" id="3402704">
 						<posx>290</posx>
-						<posy>306</posy>
+						<posy>301</posy>
 						<width>350</width>
 						<height>18</height>
 						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>

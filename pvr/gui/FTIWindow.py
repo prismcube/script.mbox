@@ -26,9 +26,9 @@ class FTIWindow( SettingWindow ) :
 			else :
 				self.SetFTIWindowProperty( True )
 		else :
-			if self.mDataCache.GetStanbyClosing( ) :
-				return
-			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
+			if not self.mDataCache.GetStanbyClosing( ) :
+				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
+
 			if E_SUPPORT_SINGLE_WINDOW_MODE :
 				self.setProperty( 'IsFTI', 'False' )
 			else :

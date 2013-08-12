@@ -195,7 +195,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-				<control type="label" id="1001003">
+			<control type="label" id="1001003">
 				<posx>60</posx>
 				<posy>62</posy>
 				<width>700</width>
