@@ -246,7 +246,7 @@ class SystemInfo( SettingWindow ) :
 
 			if CheckHdd( ) :
 				self.StartCheckHddTempTimer( )
-				self.mCtrlHDDName.setLabel(	'%s : %s ( %s )'% ( MR_LANG( 'Model and Capacity' ), self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDName.setLabel(	'%s : %s ( %s )'% ( MR_LANG( 'Model' ), self.GetHDDName( ), self.GetTotalSize( ) ) )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Busy' ) )
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
@@ -258,11 +258,11 @@ class SystemInfo( SettingWindow ) :
 				self.mCtrlProgressRecord.setPercent( percent )
 				self.mCtrlHDDSizeRecord.setLabel( '%s : %s%% ( %s / %s )'% ( MR_LANG( 'Recording Partition Usage' ), percent, used_size, total_size ) )
 			else :
-				self.mCtrlHDDName.setLabel( MR_LANG( 'Model and Capacity : Unknown' ) )
-				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : Unknown' ) )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : Unknown' ) )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : Unknown' ) )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : Unknown' ) )
+				self.mCtrlHDDName.setLabel( '%s : %s'% ( MR_LANG( 'Model'), MR_LANG( 'Unknown' ) ) )
+				self.mCtrlHDDTemperature.setLabel( '%s : %s'% ( MR_LANG( 'Temperature'), MR_LANG( 'Unknown' ) ) )
+				self.mCtrlHDDSizeMedia.setLabel( '%s : %s'% ( MR_LANG( 'Media Partition Usage'), MR_LANG( 'Unknown' ) ) )
+				self.mCtrlHDDSizeProgram.setLabel( '%s : %s'% ( MR_LANG( 'Program Partition Usage'), MR_LANG( 'Unknown' ) ) )
+				self.mCtrlHDDSizeRecord.setLabel( '%s : %s'% ( MR_LANG( 'Recording Partition Usage'), MR_LANG( 'Unknown' ) ) )
 				self.mCtrlProgressMedia.setPercent( 0 )
 				self.mCtrlProgressProgram.setPercent( 0 )
 				self.mCtrlProgressRecord.setPercent( 0 )
@@ -502,7 +502,7 @@ class SystemInfo( SettingWindow ) :
 			else :
 				temperature = defaultLang
 
-			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s Degree Celsius' ) % temperature )
+			self.mCtrlHDDTemperature.setLabel( '%s : %s %s'% ( MR_LANG( 'Temperature' ), temperature, MR_LANG( 'Degree Celsius' ) ) )
 
 
 	def StartCheckHddTempTimer( self ) :
