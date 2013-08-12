@@ -667,6 +667,13 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
+				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
+				if self.mLastChannel == None :
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					if not iChannel :
+						iChannel = self.mChannelList[0]
+					self.mLastChannel = iChannel
+				LOG_TRACE( '----------------memory last chNum[%s] iChannel[%s]'% ( self.mCurrentChannel, self.mLastChannel ) )
 				"""
 				# default mode AllChannel : enter EditMode
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
@@ -696,6 +703,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			except Exception, e :
 				LOG_TRACE( 'Error except[%s]'% e )
+				self.mMarkList = []
+				self.GoToPreviousWindow( )
+				LOG_TRACE( '-----------restore mViewMode[%s]'% self.mViewMode )
 
 		else :
 			self.GoToPreviousWindow( )
@@ -853,7 +863,7 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mChannelListHash.get( int(aJumpNumber), None ) 
 			if iChannel == None :
 				return
-			#LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
+			LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 			#detected to jump focus
 			chindex = 0
@@ -906,7 +916,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.Player_AVBlank( True )
 			#if currentChannel and currentChannel.mError == 0 :
 			#	LOG_TRACE( 'oldch: num[%s] type[%s] name[%s] re[%s]'% ( currentChannel.mNumber, currentChannel.mServiceType, currentChannel.mName, self.mRefreshCurrentChannel ) )
-			if isSameChannel and not self.mRefreshCurrentChannel :
+			if isSameChannel :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.Close( )
@@ -1396,15 +1406,36 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_ERR( 'except[%s]'% e )
 				self.CloseBusyDialog( )
 
+				LOG_TRACE( '-----------refresh isTune[%s] lastCh[%s]'% ( self.mRefreshCurrentChannel, self.mCurrentChannel ) )
 				if self.mRefreshCurrentChannel :
-					self.TuneChannel( self.mRefreshCurrentChannel )
 					self.mRefreshCurrentChannel = False
+					iChannel = self.mLastChannel
+					#LOG_TRACE( '-----------find lastCh[%s]'% iChannel )
+					defaultTune = True
+					if iChannel :
+						#LOG_TRACE( '--------find lastCh[%s]'% iChannel.mNumber )
+						nextChannel = self.mDataCache.Channel_GetCurr( iChannel.mNumber )
+						if nextChannel :
+							#LOG_TRACE( '-----------refresh tune channel[%s]'% nextChannel.mNumber )
+							self.TuneChannel( nextChannel.mNumber )
+							defaultTune = False
+
+					if defaultTune :
+						#LOG_TRACE( '-----------refresh tune default' )
+						if not self.mDataCache.Get_Player_AVBlank( ) :
+							self.mDataCache.Player_AVBlank( True )
+						#first tune
+						if self.mChannelList and len( self.mChannelList ) > 0 :
+							self.TuneChannel( self.mChannelList[0].mNumber )
+
 
 			elif answer == E_DIALOG_STATE_NO :
 				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mDataCache.Channel_Restore( True )
 				self.mDataCache.Channel_Save( )
 				LOG_TRACE( 'Restore[%s]'% isSave )
+
+		self.mRefreshCurrentChannel = False
 
 		return answer
 
@@ -2462,6 +2493,32 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
 
 
+	def GetPresentToChannelNumber( self, aChNumber, aMode ) :
+		iChNumber = aChNumber
+		LOG_TRACE( '----check1-----iChNumber[%s]'% iChNumber )
+		if aMode and aMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			#find real ch number
+			if not self.mChannelListHash :
+				iChNumber = 0
+				return
+
+			isFind = False
+			for chNumber, iChannel in self.mChannelListHash.iteritems():
+				#LOG_TRACE( '--------chNumber[%s] present[%s]'% ( chNumber, iChannel.mPresentationNumber ) )
+				if iChannel.mPresentationNumber == aChNumber :
+					isFind = True
+					iChNumber = iChannel.mNumber
+					LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( aChNumber, iChNumber ) )
+					break
+
+			if not isFind :
+				iChNumber = 0
+				LOG_TRACE( '-------fail' )
+
+		LOG_TRACE( '----check2-----iChNumber[%s]'% iChNumber )
+		return iChNumber
+
+
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
@@ -2483,8 +2540,29 @@ class ChannelListWindow( BaseWindow ) :
 				chNum.mParam = self.mChannelList[idx].mNumber
 				numList.append( chNum )
 
-				if self.mCurrentChannel == self.mChannelList[idx].mNumber :
-					isRefreshCurrentChannel = True
+				#if self.mCurrentChannel == self.mChannelList[idx].mNumber :
+				#	isRefreshCurrentChannel = True
+
+				iChNumber = self.mCurrentChannel
+				delNumber = chNum.mParam
+				if self.mLastChannel :
+					iChNumber = self.mLastChannel.mNumber
+				#if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				#	iChNumber = self.GetPresentToChannelNumber( iChNumber, self.mUserMode )
+				#	delNumber = self.GetPresentToChannelNumber( delNumber, self.mUserMode )
+
+				lastChannel = self.mChannelListHash.get( iChNumber, None )
+				delChannel  = self.mChannelListHash.get( delNumber, None )
+				#LOG_TRACE( '----------------current[%s] mark[%s] last[%s] del[%s]'% ( self.mCurrentChannel, idx, lastChannel, delChannel ) )
+				if lastChannel and delChannel :
+					#LOG_TRACE( '------------lastChannel[%s] delChannel[%s]'% ( lastChannel.mNumber, delChannel.mNumber ) )
+					if lastChannel.mServiceType == delChannel.mServiceType and \
+					   lastChannel.mSid == delChannel.mSid and lastChannel.mTsid == delChannel.mTsid and \
+					   lastChannel.mOnid == delChannel.mOnid :
+						isRefreshCurrentChannel = True
+						iChannel = self.mDataCache.Channel_GetNext( lastChannel )
+						if iChannel :
+							self.mLastChannel = iChannel
 
 				#check rec item
 				if self.mRecCount :
@@ -2585,8 +2663,11 @@ class ChannelListWindow( BaseWindow ) :
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), 1, numList )
 
+				LOG_TRACE( '----------------isRefresh[%s] ret[%s]'% ( isRefreshCurrentChannel, ret ) )
+
 				#reset Tune by Next Channel
 				if ret and isRefreshCurrentChannel :
+					"""
 					afterCount = len( self.mChannelList ) - len( numList )
 					if afterCount < 1 :
 						self.mRefreshCurrentChannel = False
@@ -2597,11 +2678,18 @@ class ChannelListWindow( BaseWindow ) :
 							self.mRefreshCurrentChannel = int( self.mCurrentChannel ) - 1
 						else :
 							self.mRefreshCurrentChannel = afterCount
+					"""
+					self.mRefreshCurrentChannel = True
 
 			else :
 				aGroupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				if aGroupName :
 					ret = self.mDataCache.Favoritegroup_RemoveChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
+					LOG_TRACE( '----------------isRefresh[%s] ret[%s]'% ( isRefreshCurrentChannel, ret ) )
+
+					if ret and isRefreshCurrentChannel :
+						self.mRefreshCurrentChannel = True
+
 				else :
 					ret = 'group None'
 
