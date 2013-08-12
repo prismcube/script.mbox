@@ -773,6 +773,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
+					self.mLastChannel = None
 					self.mIsTune = False
 					self.Epgevent_GetCurrent( )
 
@@ -1658,17 +1659,33 @@ class ChannelListWindow( BaseWindow ) :
 		#get last channel
 		iChannel = None
 		iChannel = self.mDataCache.Channel_GetCurrent( reloadPos )
+		if self.mLastChannel :
+			iChannel = self.mLastChannel
+			#LOG_TRACE( '---------------------last channel[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
+
 		if iChannel :
 			self.mNavChannel = iChannel
 			self.mCurrentChannel = self.mNavChannel.mNumber
+			#LOG_TRACE( '---------------------last channel[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 		#detected to last focus
 		isFind = False
 		iChannelIdx = 0
 		for iChannel in self.mChannelList :
-			if iChannel.mNumber == self.mCurrentChannel :
-				isFind = True
-				break
+			if self.mNavChannel :
+				if iChannel.mServiceType == self.mNavChannel.mServiceType and \
+				   iChannel.mSid == self.mNavChannel.mSid and iChannel.mTsid == self.mNavChannel.mTsid and \
+				   iChannel.mOnid == self.mNavChannel.mOnid :
+					isFind = True
+					#LOG_TRACE( '---------------------refresh item idx[%s] channel[%s] name[%s]'% ( iChannelIdx, iChannel.mNumber, iChannel.mName ) )
+					if self.mLastChannel and self.mLastChannel.mNumber != iChannel.mNumber :
+						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+						#LOG_TRACE( '----------------retune number by changed, tune ch[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
+					break
+
+			#if iChannel.mNumber == self.mCurrentChannel :
+			#	isFind = True
+			#	break
 			iChannelIdx += 1
 
 		if isFind == False :
