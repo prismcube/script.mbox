@@ -1114,6 +1114,39 @@ class DataCacheMgr( object ) :
 				self.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 
+	def Channel_SetCurrentByUpdateSync( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
+		ret = False
+		self.mCurrentEvent = None
+
+		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
+		self.Channel_SetOldChannelList( aServiceType )
+
+		if self.mRootWindow :
+			self.mRootWindow.setProperty( 'Signal', 'True' )
+
+		if aTemporaryHash :
+			iChannel = aTemporaryHash.get( aChannelNumber, None )
+			if iChannel :
+				self.mCurrentChannel = iChannel
+				ret = True
+
+		else :
+			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
+			if cacheChannel :
+				self.mCurrentChannel = cacheChannel.mChannel
+				ret = True
+
+		channel = self.Channel_GetCurrent( not ret )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
+		self.mPlayingChannel = None
+
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		if aFrontMessage == True :
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+			self.Frontdisplay_SetMessage( channel.mName )
+		return ret
+
+
 	def Channel_GetPrev( self, aChannel ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
