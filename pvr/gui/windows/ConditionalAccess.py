@@ -78,6 +78,9 @@ class ConditionalAccess( SettingWindow ) :
 			
 		elif groupId == E_Input02 :
 			self.mCommander.Cicam_EnterMMI( CAS_SLOT_NUM_1 )
+
+		elif groupId == E_SpinEx01 :
+			self.ControlSelect( )
 				
 
 	def onFocus( self, aControlId ) :
