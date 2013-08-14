@@ -2052,12 +2052,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ShowMoveToGUI( self, aStart, aEnd, aInit = False ) :
 		self.mListItems = []
-		#showList = self.mNewChannelList
-		#if aInit :
-		#	showList = self.mChannelList
 
 		for i in range( aStart, aEnd ) :
-			#iChannel = showList[i]
 			iChannel = self.mChannelListHash.get( self.mNewChannelList[ i ], None )
 			if aInit :
 				iChannel = self.mChannelList[ i ]
@@ -2113,7 +2109,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.OpenBusyDialog( )
 			try :
 				self.mMoveList = []
-				self.mRefreshCurrentIdx = -1
 				self.mNewChannelList = deepcopy( self.mChannelListForMove )
 				#LOG_TRACE( 'len channelList[%s] newList[%s] hash[%s]'% ( len(self.mChannelList), len(self.mNewChannelList), len(self.mChannelListHash) ) )
 
@@ -2125,7 +2120,7 @@ class ChannelListWindow( BaseWindow ) :
 					lastPos = self.mCtrlListCHList.getSelectedPosition( )
 					self.mMarkList.append( lastPos )
 					LOG_TRACE( 'last position[%s]'% lastPos )
-				
+
 				#self.mMarkList.sort( )
 				LOG_TRACE( '1====mark[%s]'% self.mMarkList )
 				self.mMarkListBackup = deepcopy( self.mMarkList )
@@ -2144,13 +2139,6 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'pop : findIdx[%s] chNum[%s] delIdx[%s]    insert : nextIdx[%s] chNum[%s]'% ( findIdx, self.mMoveList[idx], delNum, nextIdx, self.mMoveList[idx] ) )
 				#LOG_TRACE( 'newList[%s]'% self.mNewChannelList )
 				LOG_TRACE( '2====mark[%s] move[%s]'% ( self.mMarkList, self.mMoveList ) )
-
-				#find current channel
-				for i in range( len( self.mMarkList ) ) :
-					idx = self.mMarkList[i]
-					if self.mNewChannelList[idx] == self.mCurrentChannel :
-						self.mRefreshCurrentIdx = i
-				#LOG_TRACE( 'mRefreshCurrentIdx[%s]'% self.mRefreshCurrentIdx )
 
 				self.mMoveFlag = True
 				self.mListItems = []
@@ -2208,17 +2196,6 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					ret = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
 
-					if ret and self.mRefreshCurrentIdx != -1 :
-						idxCurrent = self.mMarkList[self.mRefreshCurrentIdx]
-						#LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
-						"""
-						chNumber = self.mNewChannelList[idxCurrent]
-						chName = self.mChannelListHash.get( chNumber, None )
-						if chName :
-							chName = chName.mName
-						LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, chNumber, chName ) )
-						"""
-
 				LOG_TRACE( 'move[%s]'% ret )
 
 				if ret :
@@ -2232,14 +2209,9 @@ class ChannelListWindow( BaseWindow ) :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB )
 				self.mMoveFlag = False
 
-				#if idxCurrent != -1 :
-				#	self.mLastChannel = self.mChannelList[idxCurrent]
-					#LOG_TRACE( 'after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
-
 				self.mCtrlListCHList.reset( )
 				self.ShowMoveToGUI( 0, len( self.mChannelList ), True )
 				#LOG_TRACE ( '========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
-
 
 				self.mCtrlListCHList.setVisible( False )
 
@@ -2270,6 +2242,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mMarkListBackup and len( self.mMarkListBackup ) > 0 :
 				for idx in self.mMarkListBackup :
 					self.SetMark( idx )
+
 			self.mCtrlListCHList.setVisible( False )
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mViewEnd - 1, E_TAG_SET_SELECT_POSITION )
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idxFirst, E_TAG_SET_SELECT_POSITION )
@@ -2282,16 +2255,16 @@ class ChannelListWindow( BaseWindow ) :
 			updown= 0
 			topPos = 0
 			markList= []
-			lastidx = len(self.mMarkList) - 1
+			lastidx = len( self.mMarkList ) - 1
 
 			#1. moving
 			try :
 				topPos = self.mMarkList[0]
 				markCount = len( self.mMarkList  )
 				channelCount = len( self.mNewChannelList )
-				maxShowCount =  self.mItemCount
-				
-				if channelCount  <= self.mItemCount :
+				maxShowCount = self.mItemCount
+
+				if channelCount <= self.mItemCount :
 					maxShowCount = channelCount
 
 				if aMove == Action.ACTION_MOVE_UP :
@@ -2358,7 +2331,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mViewFirst < 0 :
 				self.mViewFirst = 0
-
 
 			self.mViewEnd = self.mViewFirst +  maxShowCount
 
