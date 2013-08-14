@@ -150,7 +150,7 @@ class GlobalEvent( object ) :
 					self.mDataCache.Subtitle_Show( )
 					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = True
 			else :
-				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_Show( ) :
+				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_IsShowing( ) :
 					self.mDataCache.Subtitle_Hide( )
 					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = False
 
