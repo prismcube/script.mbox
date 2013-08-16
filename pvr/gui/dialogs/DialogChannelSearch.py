@@ -241,7 +241,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def LoadChannelSearchedData( self ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
-		#self.mDataCache.Channel_Save( )
+		self.mDataCache.Channel_Save( )
 		self.mDataCache.LoadZappingList( )
 		self.mDataCache.LoadChannelList( )
 		iZapping = self.mDataCache.Zappingmode_GetCurrent( )
