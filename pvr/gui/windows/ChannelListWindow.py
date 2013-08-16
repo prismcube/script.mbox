@@ -3033,7 +3033,7 @@ class ChannelListWindow( BaseWindow ) :
 		isOK = dialog.IsOK( )
 		if isOK == E_DIALOG_STATE_YES :
 			inputNumber = dialog.GetChannelLast( )
-			#LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
+			#LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% ( inputNumber, self.mCurrentChannel ) )
 
 			if int( self.mCurrentChannel ) == int( inputNumber ) :
 				ch = None
@@ -3051,7 +3051,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateChannelAndEPG( )
 
 			else :
-				self.TuneChannel( int(inputNumber) )
+				if int( inputNumber ) > 0 :
+					self.TuneChannel( int( inputNumber ) )
+					LOG_TRACE( '----------------------- setTune' )
 
 
 	def ShowRecordingStartDialog( self ) :

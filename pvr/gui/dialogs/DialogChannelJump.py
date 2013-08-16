@@ -20,6 +20,7 @@ class DialogChannelJump( BaseDialog ) :
 
 		self.mFlagFind          = False
 		self.mChannelListHash   = {}
+		self.mPresentNumberHash = {}
 		self.mAsyncTuneTimer    = None
 		self.mFakeChannel       = None
 		self.mFakeEPG           = None
@@ -126,6 +127,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mChannelListMode = aZappingMode
 		self.mInputString = '%s'% aChannelFirstNum
 
+		self.InitHashToPresentNumber( )
 
 	def SetLabelChannelNumber( self ) :
 		self.mFlagFind = False
@@ -142,6 +144,27 @@ class DialogChannelJump( BaseDialog ) :
 
 	def SetPogress( self, aPercent = 0 ) :
 		self.mCtrlProgress.setPercent( aPercent )
+
+
+	def InitHashToPresentNumber( self ) :
+		self.mPresentNumberHash = {}
+		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE or \
+		   self.mIsChannelListWindow and self.mChannelListMode == ElisEnum.E_MODE_FAVORITE :
+			if self.mIsChannelListWindow :
+				if not self.mChannelListHash :
+					return
+
+				for chNumber, iChannel in self.mChannelListHash.iteritems( ):
+					self.mPresentNumberHash[iChannel.mPresentationNumber] = iChannel
+
+			else :
+				channelList = self.mDataCache.Channel_GetList( )
+				if channelList and len( channelList ) > 0 :
+					for iChannel in channelList :
+						self.mPresentNumberHash[iChannel.mPresentationNumber] = iChannel
+
+			#LOG_TRACE( '---------mPresentNumberHash len[%s]'% len( self.mPresentNumberHash ) )
 
 
 	def Channel_GetByNumberFromChannelListWindow( self, aNumber ) :
@@ -163,33 +186,15 @@ class DialogChannelJump( BaseDialog ) :
 		mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if mZappingMode and mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE or \
 		   self.mIsChannelListWindow and self.mChannelListMode == ElisEnum.E_MODE_FAVORITE :
+
 			#find real ch number
-			if self.mIsChannelListWindow :
-				if not self.mChannelListHash :
-					return
-
-				isFind = False
-				for chNumber, iChannel in self.mChannelListHash.iteritems():
-					#LOG_TRACE( '--------chNumber[%s] present[%s]'% ( chNumber, iChannel.mPresentationNumber ) )
-					if iChannel.mPresentationNumber == iChNumber :
-						isFind = True
-						iChNumber = iChannel.mNumber
-						LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
-						break
-
-				if not isFind :
-					iChNumber = 0
-					LOG_TRACE( '-------fail' )
-
+			iChannel = self.mPresentNumberHash.get( iChNumber, None )
+			if iChannel :
+				iChNumber = iChannel.mNumber
 			else :
-				mPresentNum = iChNumber - 1
-				channelList = self.mDataCache.Channel_GetList( )
-				if channelList and len( channelList ) > mPresentNum :
-					iChNumber = channelList[ mPresentNum ].mNumber
-					LOG_TRACE( '-------found------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
-				else :
-					iChNumber = 0
-					LOG_TRACE( '-------fail' )
+				iChNumber = 0
+
+			LOG_TRACE( '-------input[%s] realCh[%s]'% ( self.mChannelNumber, iChNumber ) )
 
 		self.mChannelNumber = '%s'% iChNumber
 		LOG_TRACE( '----check2-----iChNumber[%s] inputStr[%s]'% ( iChNumber, self.mInputString ) )
@@ -211,6 +216,7 @@ class DialogChannelJump( BaseDialog ) :
 			LOG_TRACE( 'No search channel[%s]'% self.mChannelNumber )
 			self.mFlagFind = True
 			self.mFindChannel = self.mDataCache.Channel_GetCurrent( )
+			self.mChannelNumber = 0
 			self.mAsynViewTime = 5
 			self.RestartAsyncTune( )
 			return
