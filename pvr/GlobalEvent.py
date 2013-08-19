@@ -10,7 +10,8 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
 	WinMgr.WIN_ID_LIVE_PLATE,
 	#WinMgr.WIN_ID_CONFIGURE,
-	#WinMgr.WIN_ID_ARCHIVE_WINDOW,
+	WinMgr.WIN_ID_ARCHIVE_WINDOW,
+	WinMgr.WIN_ID_TIMER_WINDOW,
 	#WinMgr.WIN_ID_SYSTEM_INFO,
 	#WinMgr.WIN_ID_MEDIACENTER,
 	WinMgr.WIN_ID_EPG_WINDOW,
@@ -149,7 +150,7 @@ class GlobalEvent( object ) :
 					self.mDataCache.Subtitle_Show( )
 					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = True
 			else :
-				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_Show( ) :
+				if selectedSubtitle and selectedSubtitle.mError == 0 or self.mDataCache.Subtitle_IsShowing( ) :
 					self.mDataCache.Subtitle_Hide( )
 					#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mSubTitleIsShow = False
 
@@ -512,18 +513,19 @@ class GlobalEvent( object ) :
 			return
 
 		status = self.mDataCache.Player_GetStatus( )
-		if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			self.mDataCache.Player_Stop( )
-
 		if aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
 			ret = self.CheckViewTimer( aEvent )
 			if ret :
 				LOG_TRACE( 'success, change channel by view timer' )
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					self.mDataCache.Player_Stop( )
+				self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
 			else :
 				LOG_TRACE( 'Alarm view timer' )
 				return
+
+		if status.mMode != ElisEnum.E_MODE_TIMESHIFT :
+			self.mDataCache.Player_Stop( )
 
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingMode and zappingMode.mServiceType != aEvent.mServiceType :

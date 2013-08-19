@@ -189,9 +189,7 @@ class TimeShiftPlate( BaseWindow ) :
 		label = self.GetModeValue( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
-		#self.GetNextSpeed( E_ONINIT )
-		#self.InitBookmarkThumnail( )
-		self.InitPreviousAction( )
+		isShowSlide = self.InitPreviousAction( )
 		self.InitAccelatorSection( )
 
 		self.mPrekey = None
@@ -199,10 +197,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mAutomaticHide = True
 			self.mInitialized = True
 
-		self.RestartAutomaticHide( )
+		if not isShowSlide :
+			self.RestartAutomaticHide( )
 		self.mOnBlockTimer_GreenKey = time.time( )
-		#thread = threading.Timer( 0.1, AsyncShowStatus, [label] )
-		#thread.start( )
 
 
 	def onAction( self, aAction ) :
@@ -525,6 +522,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def InitPreviousAction( self ) :
+		isShowSlide = False
 		LOG_TRACE( '--------------------------getLabel[%s]'% self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ) )
 		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
 			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Bookmark' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
@@ -600,7 +598,10 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_TRACE( '-----------play focus[%s]'% self.getFocusId( ) )
 
 			elif self.mPrekey == E_DEFAULT_ACTION_CLICK_EVENT + CONTEXT_ACTION_SHOW_BOOKMARK :
+				self.setFocusId( E_CONTROL_ID_BUTTON_BOOKMARK )
+				self.UpdatePropertyGUI( 'iButtonShow', E_TAG_TRUE )
 				self.onClick( E_CONTROL_ID_BUTTON_BOOKMARK )
+				isShowSlide = True
 
 
 		else :
@@ -621,6 +622,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		LOG_TRACE('default focus[%s]'% self.getFocusId( ) )
+		return isShowSlide
 
 
 	def TimeshiftAction( self, aFocusId ) :

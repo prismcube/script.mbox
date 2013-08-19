@@ -657,7 +657,7 @@ class DataCacheMgr( object ) :
 			return
 
 		count = len( self.mChannelList )
-		LOG_TRACE( 'count=%d' %count )
+		LOG_TRACE( '-------2-------------count[%d]'% count )
 
 		prevChannel = self.mChannelList[count-1]
 
@@ -700,6 +700,7 @@ class DataCacheMgr( object ) :
 				mSort = self.mZappingMode.mSortingMode
 
 			if mMode == ElisEnum.E_MODE_ALL :
+				LOG_TRACE( '---------get db skip[%s] tbl[%s] Sync[%s] type[%s] mode[%s] sort[%s]'% ( self.mSkip, self.mChannelListDBTable, aSync, aType, aMode, aSort ) )
 				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort )
 
 			elif mMode == ElisEnum.E_MODE_SATELLITE :
@@ -731,6 +732,8 @@ class DataCacheMgr( object ) :
 		if oldCount != newCount :
 			self.SetChannelReloadStatus( True )
 
+		LOG_TRACE( '-------------------count old[%s] new[%s]'% ( oldCount, newCount ) )
+
 
 		prevChannel = None
 		nextChannel = None
@@ -738,7 +741,7 @@ class DataCacheMgr( object ) :
 		self.mChannelListHashForTimer = {}
 
 		if newCount < 1 :
-			LOG_TRACE('count=%d'% newCount)
+			LOG_TRACE('---------newCount-------------count[%d]'% newCount)
 			self.SetChannelReloadStatus( True )
 			#if not self.Get_Player_AVBlank( ) :
 			#	self.Player_AVBlank( True )
@@ -752,7 +755,7 @@ class DataCacheMgr( object ) :
 		self.mChannelList = tmpChannelList
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
-			LOG_TRACE( 'count=%d' %count )
+			LOG_TRACE( '-------1---------------count[%d]'% count )
 
 			prevChannel = self.mChannelList[count-1]
 
@@ -1115,6 +1118,39 @@ class DataCacheMgr( object ) :
 				self.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType, None, True )
 
 
+	def Channel_SetCurrentByUpdateSync( self, aChannelNumber, aServiceType, aTemporaryHash = None, aFrontMessage = False ) :
+		ret = False
+		self.mCurrentEvent = None
+
+		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
+		self.Channel_SetOldChannelList( aServiceType )
+
+		if self.mRootWindow :
+			self.mRootWindow.setProperty( 'Signal', 'True' )
+
+		if aTemporaryHash :
+			iChannel = aTemporaryHash.get( aChannelNumber, None )
+			if iChannel :
+				self.mCurrentChannel = iChannel
+				ret = True
+
+		else :
+			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
+			if cacheChannel :
+				self.mCurrentChannel = cacheChannel.mChannel
+				ret = True
+
+		channel = self.Channel_GetCurrent( not ret )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
+		self.mPlayingChannel = None
+
+		LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+		if aFrontMessage == True :
+			LOG_TRACE( 'LAEL98 TEST FRONTDISPLAY ' )
+			self.Frontdisplay_SetMessage( channel.mName )
+		return ret
+
+
 	def Channel_GetPrev( self, aChannel ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
@@ -1347,10 +1383,11 @@ class DataCacheMgr( object ) :
 					tunerTP = 2
 			channelDB = ElisChannelDB( )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
-
+			channelDB.Close( )
 			if recCount > 0 :
 				channelDB2 = ElisChannelDB( )				
 				favoriteList = channelDB2.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, E_TABLE_ALLCHANNEL )
+				channelDB2.Close( )
 				favoriteHash =  {}
 				for  channel in favoriteList :
 					favoriteHash['%s' %channel.mNumber]= channel
@@ -1360,10 +1397,8 @@ class DataCacheMgr( object ) :
 					if refChannel :
 						channel.mPresentationNumber = refChannel.mPresentationNumber
 
-				channelDB2.Close()
-				
-			channelDB.Close( )
 			return channelList
+
 		else :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 

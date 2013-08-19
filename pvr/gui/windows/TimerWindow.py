@@ -144,6 +144,11 @@ class TimerWindow( BaseWindow ) :
 				LOG_TRACE( 'Record status chanaged' )
 				self.UpdateList( )
 
+			if aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
+				if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
+					LOG_TRACE( 'view timer expired' )
+					self.UpdateList( )
+
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
