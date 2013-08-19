@@ -146,6 +146,10 @@ class SettingWindow( BaseWindow ) :
 
 
 	def SetDefaultControl( self ) :
+		if self.mDataCache.GetDelaySettingWindow( ) :
+			time.sleep( 1 )
+			self.mDataCache.SetDelaySettingWindow( False )
+
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
 			if self.mControlList[0].mEnable :
 				self.setFocusId( self.mControlList[0].mControlId + 1 )

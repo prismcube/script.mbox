@@ -147,6 +147,7 @@ class DataCacheMgr( object ) :
 		self.mSearchNewChannel					= False
 		self.mUSBAttatched						= False
 		self.mChangedByViewTimer				= False
+		self.mDelaySettingWindow				= True
 
 		self.mRootWindowId						= 0
 		self.mRootWindow							= None
@@ -2563,4 +2564,11 @@ class DataCacheMgr( object ) :
 	def GetAlarmByViewTimer( self ) :
 		return self.mChangedByViewTimer
 
+
+	def SetDelaySettingWindow( self, aValue ) :
+		self.mDelaySettingWindow = aValue
+
+
+	def GetDelaySettingWindow( self ) :
+		return self.mDelaySettingWindow
 

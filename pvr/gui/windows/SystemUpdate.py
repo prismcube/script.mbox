@@ -996,7 +996,8 @@ class SystemUpdate( SettingWindow ) :
 			self.SetVisibleControl( E_Input04, True )
 
 			self.InitControl( )
-			self.SetFocusControl( E_Input01 )
+			#self.SetFocusControl( E_Input01 )
+			self.SetDefaultControl( )
 
 			#self.mPVSData = None
 			self.ResetLabel( False )

@@ -440,6 +440,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetMediaCenter( self ) :
 		self.mDataCache.SetMediaCenter( True )
+		self.mDataCache.SetDelaySettingWindow( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)

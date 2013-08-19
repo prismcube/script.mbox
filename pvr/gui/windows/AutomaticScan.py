@@ -30,7 +30,8 @@ class AutomaticScan( SettingWindow ) :
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
-			self.SetFocusControl( E_Input01 )
+			#self.SetFocusControl( E_Input01 )
+			self.SetDefaultControl( )
 			self.mInitialized = True
 			self.SetDefaultControl( )
 		else :
