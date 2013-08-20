@@ -2599,7 +2599,7 @@ class ChannelListWindow( BaseWindow ) :
 			#blocking all skip
 			if len( numList ) >= len( self.mChannelList ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not skip all' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Skipping all channels is not allowed' ) )
 				dialog.doModal( )
 				return
 
