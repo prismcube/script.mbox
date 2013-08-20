@@ -450,7 +450,7 @@ class Configure( SettingWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mCommander.Player_SetMute( True )
-				self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Now restoring' ), ING ), 30 )
+				self.mProgressThread = self.ShowProgress( '%s%s' % ( MR_LANG( 'Now restoring' ), ING ), 30 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )

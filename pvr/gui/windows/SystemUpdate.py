@@ -2072,8 +2072,14 @@ class SystemUpdate( SettingWindow ) :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Update Complete'), MR_LANG('Your channel list has been updated successfully') )
+				dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your channel list has been updated successfully' ) )
 				dialog.doModal( )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
+				dialog.doModal( )
+
+				self.mDataCache.System_Reboot( )
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
@@ -2354,10 +2360,11 @@ class SystemUpdate( SettingWindow ) :
 			if ret1 == ElisEnum.E_UPDATE_FAILED_BY_RECORD or ret1 == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
 				return False
 			self.mDataCache.LoadAllSatellite( )
+			self.mDataCache.LoadConfiguredSatellite( )
 			self.mDataCache.LoadAllTransponder( )
 			self.mTunerMgr.SyncChannelBySatellite( )
-			self.mDataCache.Channel_ReLoad( )
-			self.mDataCache.Player_AVBlank( False )
+			#self.mDataCache.Channel_ReLoad( )
+			#self.mDataCache.Player_AVBlank( False )
 			self.CloseProgress( )
 			return True
 		else :
