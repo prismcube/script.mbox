@@ -2090,7 +2090,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetExistImportCustomScript( self, aUsbPath ) :
-		print 'dhkim test aUsbPath = %s' % aUsbPath
 		if os.path.exists( aUsbPath + '/' + E_DEFAULT_IMPORT_CUSTOM_SCRIPT ) :
 			return True
 		return False
@@ -2216,7 +2215,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetExistExportCustomScript( self, aUsbPath ) :
-		print 'dhkim test aUsbPath = %s' % aUsbPath
 		if os.path.exists( aUsbPath + '/' + E_DEFAULT_EXPORT_CUSTOM_SCRIPT ) :
 			return True
 		return False

@@ -219,8 +219,9 @@ class SystemInfo( SettingWindow ) :
 
 			version_info = self.mCommander.System_GetVersion( )
 			if version_info :
-				versionHardware   = '%s.0.0' % version_info.mHwVersion
-				versionBootloader = '%s.0.0' % version_info.mLoadVersion
+				versionHardware   = '1.0.%s' % version_info.mHwVersion
+				tmp = '%02d' % version_info.mLoadVersion
+				versionBootloader = '1.%s.%s' % ( tmp[0], tmp[1] )
 
 			visibleControlIds	= [ LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			hideControlIds		= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_SERIAL_NUMBER, LABEL_ID_MAC_ADDRESS, LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
