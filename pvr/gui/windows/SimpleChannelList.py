@@ -106,10 +106,15 @@ class SimpleChannelList( BaseWindow ) :
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
 
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			if self.mFocusId  == LIST_ID_BIG_CHANNEL :
+				self.Tune( )
+
 
 	def onClick( self, aControlId ) :
-		if aControlId  == LIST_ID_BIG_CHANNEL :
-			self.Tune( )
+		LOG_TRACE( 'onClick' )
+		#if aControlId  == LIST_ID_BIG_CHANNEL :
+		#	self.Tune( )
 
 
 	def onFocus( self, aControlId ) :
