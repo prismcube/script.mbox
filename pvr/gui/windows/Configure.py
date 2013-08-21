@@ -480,7 +480,7 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
 	 			dialog.doModal( )
-				self.mCommander.System_Reboot( )
+				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :

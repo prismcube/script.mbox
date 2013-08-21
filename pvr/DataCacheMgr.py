@@ -2226,7 +2226,17 @@ class DataCacheMgr( object ) :
 
 
 	def System_Reboot( self ) :
-		return self.mCommander.System_Reboot( )
+		xbmc.executebuiltin( 'Settings.Save' )
+		time.sleep( 1 )
+		if not self.mCommander.System_Reboot( ) :
+			LOG_ERR( 'System_Reboot Fail' )
+
+
+	def System_Shutdown( self ) :
+		xbmc.executebuiltin( 'Settings.Save' )
+		time.sleep( 1 )
+		if not self.mCommander.System_Shutdown( ) :
+			LOG_ERR( 'System_Shutdown Fail' )
 
 
 	def ToggleTVRadio( self ) :

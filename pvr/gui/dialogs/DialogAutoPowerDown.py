@@ -55,7 +55,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 				return
 			self.mCtrlLabel.setLabel( MR_LANG( 'Start automatic power down after %s sec' ) % ( TIME_OUT - i ) )
 
-		self.mCommander.System_Shutdown( )
+		self.mDataCache.System_Shutdown( )
 		thread = threading.Timer( 0.5, self.Close )
 		thread.start( )
 				
