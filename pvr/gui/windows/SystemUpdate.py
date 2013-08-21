@@ -2070,7 +2070,7 @@ class SystemUpdate( SettingWindow ) :
 		ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
 		if ret >= 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a reset?' ), MR_LANG( 'Your channel list and satellite settings will be changed' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a channel update?' ), MR_LANG( 'All your previous channels will be deleted' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -2081,7 +2081,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
+					dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
 					dialog.doModal( )
 
 					self.mDataCache.System_Reboot( )
