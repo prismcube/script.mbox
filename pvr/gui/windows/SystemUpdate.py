@@ -2069,19 +2069,24 @@ class SystemUpdate( SettingWindow ) :
 		dialog = xbmcgui.Dialog( )
 		ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
 		if ret >= 0 :
-			result = self.GetChannelUpdate( makelist[ret][0] )
-			if result :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your channel list has been updated successfully' ) )
-				dialog.doModal( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a reset?' ), MR_LANG( 'Your channel list and satellite settings will be changed' ) )
+			dialog.doModal( )
 
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
-				dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				result = self.GetChannelUpdate( makelist[ret][0] )
+				if result :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your channel list has been updated successfully' ) )
+					dialog.doModal( )
 
-				self.mDataCache.System_Reboot( )
-			else :
-				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Update Complete' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
+					dialog.doModal( )
+
+					self.mDataCache.System_Reboot( )
+				else :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
 
 
 	def GetExistImportCustomScript( self, aUsbPath ) :
