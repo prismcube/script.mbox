@@ -219,7 +219,7 @@ class DataCacheMgr( object ) :
 
 	def Load( self ) :
 
-		self.LoadVolumeAndSyncMute( False ) #False : LoadVolume Only
+		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
@@ -289,7 +289,7 @@ class DataCacheMgr( object ) :
 		lastMute = self.mCommander.Player_GetMute( )
 		lastXBMCMute = XBMC_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute ) )
-
+		LOG_TRACE( 'xbmc mute[%s]'% ( lastXBMCMute ) )
 		if lastMute :
 			if isSyncMuteOn :
 				if lastXBMCMute :
