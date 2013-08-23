@@ -996,7 +996,8 @@ class DataCacheMgr( object ) :
 			if currentChannel.mServiceType != aServiceType or \
 			   currentChannel.mSid != newChannel.mSid or \
 			   currentChannel.mTsid != newChannel.mTsid or \
-			   currentChannel.mOnid != newChannel.mOnid :
+			   currentChannel.mOnid != newChannel.mOnid or \
+			   currentChannel.mNumber != newChannel.mNumber :
 				self.mOldChannel = currentChannel
 				#LOG_TRACE('init oldCh[%s %s]'% ( self.mOldChannel.mNumber, self.mOldChannel.mName ) )
 
@@ -1012,7 +1013,8 @@ class DataCacheMgr( object ) :
 		for ch in self.mOldChannelList :
 			if ch.mSid == self.mOldChannel.mSid and \
 			   ch.mTsid == self.mOldChannel.mTsid and \
-			   ch.mOnid == self.mOldChannel.mOnid :
+			   ch.mOnid == self.mOldChannel.mOnid and \
+			   ch.mNumber == self.mOldChannel.mNumber :
 				self.mOldChannelList.remove( ch )
 				break
 
