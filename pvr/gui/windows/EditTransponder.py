@@ -211,10 +211,7 @@ class EditTransponder( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
 						dialog.doModal( )
-
 						self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist_Add )
-						self.CloseBusyDialog( )
-						return
 					
 					self.mDataCache.LoadAllTransponder( )
 					self.mTransponderIndex = self.GetEditedPosition( frequency )
