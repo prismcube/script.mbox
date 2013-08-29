@@ -921,7 +921,7 @@ class ChannelListWindow( BaseWindow ) :
 		isSameChannel = False
 		if currentChannel and currentChannel.mServiceType == iChannel.mServiceType and \
 		   currentChannel.mSid == iChannel.mSid and currentChannel.mTsid == iChannel.mTsid and \
-		   currentChannel.mOnid == iChannel.mOnid :
+		   currentChannel.mOnid == iChannel.mOnid and currentChannel.mNumber == iChannel.mNumber :
 			isSameChannel = True
 
 		ret = False
