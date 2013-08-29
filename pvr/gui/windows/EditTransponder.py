@@ -181,15 +181,6 @@ class EditTransponder( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
-					tmplist = []
-					tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
-					if ret != True :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
-						dialog.doModal( )
-						self.CloseBusyDialog( )
-						return
 
 					# ADD
 					frequency, fec, polarization, simbolrate = dialog.GetValue( )
@@ -201,14 +192,27 @@ class EditTransponder( SettingWindow ) :
 					newTransponder.mPolarization = polarization
 					newTransponder.mFECMode = fec
 
-					tmplist = []
-					tmplist.append( newTransponder )
+					tmplist_Add = []
+					tmplist_Add.append( newTransponder )
 
-					ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
+					ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist_Add )
 					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
 						dialog.doModal( )
+						self.CloseBusyDialog( )
+						return
+
+					# DELETE
+					tmplist_Delete = []
+					tmplist_Delete.append( self.mTransponderList[self.mTransponderIndex] )
+					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist_Delete )
+					if ret != True :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
+						dialog.doModal( )
+
+						self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist_Add )
 						self.CloseBusyDialog( )
 						return
 					
