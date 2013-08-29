@@ -402,7 +402,7 @@ class IpParser( object ) :
 
 	def GetWifiEncryptType( self ) :
 		enc = self.GetEncryptType( )
-		if enc == None :
+		if enc == 'NONE' :
 			if self.GetConfiguredPassword( ) == None :
 				return ENCRYPT_OPEN
 			else :
@@ -521,7 +521,7 @@ class IpParser( object ) :
 					words += aPassWord + "\n"
 				else:
 					words += "\"" + aPassWord + "\"\n"
-				words += "\tauth_alg=SHARED\n"
+				words += "\tauth_alg=LEAP\n"
 			elif aEncryptType == ENCRYPT_TYPE_WPA :
 				words += "\tkey_mgmt=WPA-PSK\n"
 				words += "\tpsk=\"" + aPassWord + "\"\n"

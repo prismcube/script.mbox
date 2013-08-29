@@ -1115,7 +1115,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password must be between 8 and 64 characters' ) )
 					dialog.doModal( )
 					return
-				if self.mEncryptType == ENCRYPT_TYPE_WEP and  len( self.mPassWord ) < 6 :
+				if self.mEncryptType == ENCRYPT_TYPE_WEP and  len( self.mPassWord ) < 5 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password length is invalid' ) )
 					dialog.doModal( )
@@ -1133,7 +1133,7 @@ class Configure( SettingWindow ) :
 				ret1 = NetMgr.GetInstance( ).WriteWifiConfigFile( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
 				ret2 = NetMgr.GetInstance( ).WriteWifiConfig( self.mCurrentSsid, self.mPassWord, self.mUseHiddenId )
 				ret3 = NetMgr.GetInstance( ).LoadWifiService( )
-			else :				
+			else :
 				ret1 = NetMgr.GetInstance( ).WriteWifiInterfaces( self.mUseStatic, self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
 				ret2 = NetMgr.GetInstance( ).WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 				ret3 = NetMgr.GetInstance( ).ConnectWifi( )
@@ -1155,7 +1155,7 @@ class Configure( SettingWindow ) :
 				# use Connman
 
 				time.sleep( 0.5 )
-				self.LoadWifiAddress( )
+				#self.LoadWifiAddress( )
 				NetMgr.GetInstance( ).SetNetworkProperty( self.mWifiAddress, self.mWifiSubnet, self.mWifiGateway, self.mWifiDns )
 				self.SetListControl( )
 				self.CloseProgress( )
