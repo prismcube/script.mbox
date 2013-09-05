@@ -175,7 +175,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_ModeChanged = False
 		self.mFlag_DeleteAll = False
 		self.mFlag_DeleteAll_Fav = False
-		self.mTimerListByDelete = []
 		self.mTimerListHash = {}
 		self.mLastChannel = None
 		self.mLastChannelList = []
@@ -462,10 +461,14 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mTimerListHash = {}
 		timerList = self.mDataCache.Timer_GetTimerList( )
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			timerList = self.mDataCache.GetTimerList( )
+
 		if timerList and len( timerList ) > 0 :
 			for timer in timerList :
 				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
 				self.mTimerListHash[timerKey] = timer
+				LOG_TRACE( '---------timerKey[%s] tch[%s] tName[%s]'% ( timerKey, timer.mChannelNo, timer.mName ) )
 
 		LOG_TRACE( '-------------timer hash len[%s]'% len( self.mTimerListHash ) )
 
@@ -483,6 +486,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def Initialize( self ):
+		self.mDataCache.LoadTimerList( )
 		self.LoadRecordingInfo( )
 
 		#already cache load
@@ -570,13 +574,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
-			self.mTimerListByDelete = []
 			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )
 				favName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				LOG_TRACE( '------------------favName[%s]'% favName )
 				if favName :
-					self.mTimerListByDelete = self.mDataCache.Timer_GetTimerList( )
 					iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
 					if iChannelList and len( iChannelList ) > 0 :
 						numList = []
@@ -585,18 +587,13 @@ class ChannelListWindow( BaseWindow ) :
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
 
-							#timer = self.GetTimerByIDs( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
-							#if timer and timer.mTimerId > 0 :
-							#	self.mTimerListByDelete.append( timer )
-
 						self.mDataCache.Channel_Backup( )
 						self.mFlag_DeleteAll_Fav = True
 						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, self.mUserMode.mServiceType, numList )
 
 			else :
-				self.mTimerListByDelete = self.mDataCache.Timer_GetTimerList( )
 				isBackup = self.mDataCache.Channel_Backup( )
-				isDelete = self.mDataCache.Channel_DeleteAll( )
+				isDelete = self.mDataCache.Channel_DeleteAll( False )
 				if isDelete :
 					self.mFlag_DeleteAll = True
 
@@ -672,6 +669,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			try :
 				#self.mEventBus.Deregister( self )
+				self.mDataCache.LoadTimerList( )
 				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
 				self.mDataCache.SetSkipChannelView( True )
@@ -730,10 +728,6 @@ class ChannelListWindow( BaseWindow ) :
 			if ret != E_DIALOG_STATE_CANCEL :
 				if self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 					self.mDataCache.Channel_ResetOldChannelList( )
-					if self.mTimerListByDelete and len( self.mTimerListByDelete ) > 0 :
-						for timer in self.mTimerListByDelete :
-							self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
-							LOG_TRACE( 'delete timer id[%s] type[%s] name[%s]'% ( timer.mTimerId, timer.mTimerType, timer.mName ) )
 
 				if self.mFlag_DeleteAll and ret == E_DIALOG_STATE_YES :
 					if not self.mDataCache.Get_Player_AVBlank( ) :
@@ -1412,13 +1406,13 @@ class ChannelListWindow( BaseWindow ) :
 				self.OpenBusyDialog( )
 				try :
 					isSave = self.mDataCache.Channel_Save( )
-					self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
 
 					#### data cache re-load ####
 					self.mDataCache.SetSkipChannelView( False )
 					self.mDataCache.LoadZappingmode( )
 					self.mDataCache.LoadZappingList( )
 					self.mDataCache.LoadChannelList( )
+					self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
 					LOG_TRACE ( 'save[%s] cache re-load'% isSave)
 				except Exception, e :
 					LOG_ERR( 'except[%s]'% e )
@@ -2187,18 +2181,18 @@ class ChannelListWindow( BaseWindow ) :
 						moveList.append( item )
 
 				idxCurrent = -1
-				ret = False
+				isMoved = False
 				if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
-						ret = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, self.mUserMode.mServiceType, moveList )
+						isMoved = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, self.mUserMode.mServiceType, moveList )
 						LOG_TRACE( '==========group========[%s]'% groupName )
 				else :
-					ret = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
+					isMoved = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
 
-				LOG_TRACE( 'move[%s]'% ret )
+				LOG_TRACE( 'move[%s]'% isMoved )
 
-				if ret :
+				if isMoved :
 					ret = self.mDataCache.Channel_Save( )
 					#LOG_TRACE( 'save[%s]'% ret )
 
@@ -2422,10 +2416,22 @@ class ChannelListWindow( BaseWindow ) :
 		if not aProperty :
 			LOG_TRACE( 'No property' )
 
+		intValue = 0
+		if aValue == E_TAG_TRUE :
+			intValue = 1
+
 		for pos in self.mMarkList :
+			#icon update
 			listItem = self.mCtrlListCHList.getListItem( pos )
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 			listItem.setProperty( aProperty, aValue )
+
+			#data update
+			if self.mChannelList and len( self.mChannelList ) > pos :
+				if aProperty == E_XML_PROPERTY_LOCK :
+					self.mChannelList[pos].mLocked = intValue
+				elif aProperty == E_XML_PROPERTY_SKIP :
+					self.mChannelList[pos].mSkipped = intValue
 
 		self.mMarkList = []
 
@@ -2535,6 +2541,8 @@ class ChannelListWindow( BaseWindow ) :
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
+		timerList = []
+		isNomark = False
 		isRefresh = True
 		isIncludeRec = False
 		isIncludeTimer = False
@@ -2544,25 +2552,33 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList :
 			#1.no mark : set current position item
 			if not self.mMarkList :
+				isNomark = True
 				self.mMarkList.append( lastPos )
 
 			#2.set mark : list all
 			isRefreshCurrentChannel = False
 			for idx in self.mMarkList :
+				iChannel = self.mChannelList[idx]
 				chNum = ElisEInteger( )
-				chNum.mParam = self.mChannelList[idx].mNumber
+				chNum.mParam = iChannel.mNumber
 				numList.append( chNum )
+
+				if not isIncludeTimer :
+					iTimer = self.GetTimerByIDs( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+					if iTimer :
+						isIncludeTimer = True
+						LOG_TRACE( '------------exist timerCh[%s %s] iChannel[%s %s]'% ( iTimer.mChannelNo, iTimer.mName, iChannel.mNumber, iChannel.mName ) )
 
 				#check rec item
 				if self.mRecCount :
 					if self.mRecordInfo1 and \
-					   ( self.mRecordInfo1.mServiceId == self.mChannelList[idx].mSid and \
-					   self.mRecordInfo1.mChannelName == self.mChannelList[idx].mName and \
-					   self.mRecordInfo1.mChannelNo == self.mChannelList[idx].mNumber ) or \
+					   ( self.mRecordInfo1.mServiceId == iChannel.mSid and \
+					   self.mRecordInfo1.mChannelName == iChannel.mName and \
+					   self.mRecordInfo1.mChannelNo == iChannel.mNumber ) or \
 					   self.mRecordInfo2 and \
-					   ( self.mRecordInfo2.mServiceId == self.mChannelList[idx].mSid and \
-					   self.mRecordInfo2.mChannelName == self.mChannelList[idx].mName and \
-					   self.mRecordInfo2.mChannelNo == self.mChannelList[idx].mNumber ) :
+					   ( self.mRecordInfo2.mServiceId == iChannel.mSid and \
+					   self.mRecordInfo2.mChannelName == iChannel.mName and \
+					   self.mRecordInfo2.mChannelNo == iChannel.mNumber ) :
 						isIncludeRec = True
 				#LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
 
@@ -2625,20 +2641,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = 'group None'
 
 		elif aContextAction == CONTEXT_ACTION_DELETE :
-			#check added Timer
-			mTimerList = []
-			timerList = self.mDataCache.Timer_GetTimerList( )
-			if timerList and len( timerList ) > 0 :
-				for iTimer in timerList :
-					for idx in self.mMarkList :
-						if iTimer.mSid == self.mChannelList[idx].mSid and \
-						   iTimer.mTsid == self.mChannelList[idx].mTsid and \
-						   iTimer.mOnid == self.mChannelList[idx].mOnid :
-							isIncludeTimer = True
-							LOG_TRACE('timerCh[%s %s] mark idx[%s] ch[%s %s]'% (iTimer.mChannelNo, iTimer.mName, idx, self.mChannelList[idx].mNumber, self.mChannelList[idx].mName) )
-							mTimerList.append( iTimer )
-
-			LOG_TRACE('isRec[%s] isTimer[%s]'% (isIncludeRec, isIncludeTimer) )
+			LOG_TRACE('isRec[%s] isTimer[%s]'% ( isIncludeRec, isIncludeTimer ) )
 			if isIncludeRec or isIncludeTimer :
 				msg = MR_LANG( 'Are you sure you want to delete the channels%s including currently recording or reserved?' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -2646,13 +2649,8 @@ class ChannelListWindow( BaseWindow ) :
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
-				if answer == E_DIALOG_STATE_YES :
-					#delete timer
-					for iTimer in mTimerList :
-						self.mDataCache.Timer_DeleteTimer( iTimer.mTimerId )
-				else :
-					#cancel for appended lastpos
-					if self.mMarkList and len( self.mMarkList ) < 2 :
+				if answer != E_DIALOG_STATE_YES :
+					if isNomark :
 						self.mMarkList = []
 					return
 
@@ -2672,7 +2670,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_MOVE :
 			self.mLastPos = lastPos
-			self.SetMoveMode(FLAG_OPT_MOVE, None )
+			self.SetMoveMode( FLAG_OPT_MOVE, None )
 			return
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_NAME :
@@ -2737,8 +2735,10 @@ class ChannelListWindow( BaseWindow ) :
 			self.mMarkList = []
 			self.mListItems = None
 			self.SubMenuAction( E_SLIDE_ACTION_SUB )
+
 			#recovery last focus
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
+
 		"""
 		lastTop = self.mCtrlListCHList.getOffsetPosition( )
 		if lastTop < 0 :

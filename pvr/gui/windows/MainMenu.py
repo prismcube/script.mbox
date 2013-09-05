@@ -146,6 +146,7 @@ class MainMenu( BaseWindow ) :
 				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
 					self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
+				self.mDataCache.LoadTimerList( )
 				if aControlId == BUTTON_ID_INSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
@@ -201,7 +202,7 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
 			self.GoToEditChannelList( )
 
-		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
+		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
