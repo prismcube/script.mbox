@@ -12,7 +12,7 @@ import urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
-gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean' ]
+gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean' 'Slovak' ]
 
 
 def GetSetting( aID ) :
