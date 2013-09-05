@@ -336,7 +336,7 @@ def makeLanguage(inFile):
 					break
 
 			if searchOn == False:
-				csvret = ['','','','','','','','','','','','','','']	
+				csvret = ['','','','','','','','','','','','','','']
 				csvret2= ['','','','','','','','','','','','','',''] # language pack is 0~12, 13'th <-- id
 				csvret2[13]= inID[0]
 				csvret[0] = inStr[0]
