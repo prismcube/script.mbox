@@ -994,7 +994,7 @@ def AutoMakeLanguage() :
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'copy to ../resource/language')
 	langDir = mboxDir + '/resources/language'
-	#copyLanguage('language', langDir)
+	copyLanguage('language', langDir)
 
 	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed..')
 
