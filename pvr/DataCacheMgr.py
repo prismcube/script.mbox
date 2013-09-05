@@ -112,6 +112,7 @@ class DataCacheMgr( object ) :
 
 		self.mChannelListHash					= {}
 		self.mChannelListHashForTimer			= {}
+		self.mAllChannelListHash				= {}
 		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
@@ -148,6 +149,7 @@ class DataCacheMgr( object ) :
 		self.mUSBAttatched						= False
 		self.mChangedByViewTimer				= False
 		self.mDelaySettingWindow				= True
+		self.mTimerList							= self.Timer_GetTimerList( )
 
 		self.mRootWindowId						= 0
 		self.mRootWindow							= None
@@ -327,6 +329,14 @@ class DataCacheMgr( object ) :
 	def LoadTime( self ) :
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+
+
+	def LoadTimerList( self ) :
+		self.mTimerList = self.Timer_GetTimerList( )
+
+
+	def GetTimerList( self ) :
+		return self.mTimerList
 
 
 	def LoadAllSatellite( self ) :
@@ -791,7 +801,6 @@ class DataCacheMgr( object ) :
 					self.mChannelListHashForTimer[channelKey] = channel
 
 
-
 	def LoadZappingmode( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mZappingMode = self.Zappingmode_GetCurrent( True )
@@ -959,18 +968,26 @@ class DataCacheMgr( object ) :
 						LOG_TRACE( 'Reload AllChannels')					
 						return self.mAllChannelList
 
-			LOG_TRACE( 'Reload AllChannels')
+			LOG_TRACE( 'Reload AllChannels' )
 
 			channelDB = ElisChannelDB( )
 			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 			channelDB.Close( )
-			return self.mAllChannelList
+			#return self.mAllChannelList
 
 		else :
-			return self.mCommander.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
+			self.mAllChannelList = self.mCommander.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
-		LOG_TRACE( 'Reload AllChannels')
-		return None
+		self.mAllChannelListHash = {}
+		if self.mAllChannelList and len( self.mAllChannelList ) > 0 :
+			for iChannel in self.mAllChannelList :
+				channelKey = '%d:%d:%d'% ( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+				self.mAllChannelListHash[channelKey] = iChannel
+				LOG_TRACE( '---------hash key[%s] no[%s] name[%s]'% ( channelKey, iChannel.mNumber, iChannel.mName ) )
+
+		self.UpdateTimerChannelByChangeNumber( )
+		#LOG_TRACE( 'Reload AllChannels len[%s] hashLen[%s]'% ( len( self.mAllChannelList ), len( self.mAllChannelListHash ) ) )
+		return self.mAllChannelList
 
 
 	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :
@@ -1492,14 +1509,15 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_DeleteByNumber( aType, aUseDB, aNumList )
 
 
-	def Channel_DeleteAll( self ) :
+	def Channel_DeleteAll( self, aDeleteTimer = True ) :
 		#delete timer
-		mTimerList = []
-		mTimerList = self.Timer_GetTimerList( )
+		if aDeleteTimer :
+			mTimerList = []
+			mTimerList = self.Timer_GetTimerList( )
 
-		if mTimerList :
-			for timer in mTimerList:
-				self.Timer_DeleteTimer( timer.mTimerId )
+			if mTimerList :
+				for timer in mTimerList:
+					self.Timer_DeleteTimer( timer.mTimerId )
 
 		return self.mCommander.Channel_DeleteAll( )
 
@@ -1533,7 +1551,7 @@ class DataCacheMgr( object ) :
 
 			self.SetSkipChannelView( False )
 			if ret :
-				self.mCommander.Channel_Save( )
+				self.Channel_Save( )
 				self.SetChannelReloadStatus( True )
 
 		except Exception, e :
@@ -1541,6 +1559,41 @@ class DataCacheMgr( object ) :
 			self.SetSkipChannelView( False )
 
 		return ret
+
+
+	def UpdateTimerChannelByChangeNumber( self ) :
+		mEditTimerList = []
+		newNumber = []
+		oldNumber = []
+		zappingMode = self.Zappingmode_GetCurrent( )
+		timerList = self.GetTimerList( )
+		LOG_TRACE( '------------mAllChannelListHash len[%s]'% len( self.mAllChannelListHash ) )
+		if timerList and len( timerList ) > 0 :
+			for timer in timerList :
+				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
+				iChannel = self.mAllChannelListHash.get( timerKey, None )
+				LOG_TRACE( '---------timerId[%s] timerKey[%s] iChannel[%s]'% ( timer.mTimerId, timerKey, iChannel ) )
+				if iChannel :
+					LOG_TRACE( '---------find iChannel, timerId[%s] Tch[%s] type[%s],  ich[%s] type[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mServiceType, iChannel.mNumber, iChannel.mServiceType ) )
+					if timer.mServiceType == iChannel.mServiceType and timer.mChannelNo != iChannel.mNumber :
+						chTimer = ElisETimerChannel( )
+						chTimer.mTimerID = timer.mTimerId
+						chTimer.mNewChannel = iChannel.mNumber
+						mEditTimerList.append( chTimer )
+
+						newNumber.append( iChannel.mNumber )
+						oldNumber.append( timer.mChannelNo )
+						LOG_TRACE( '---------change timer(change number) timerId[%s] name[%s] oldNo[%s] newNo[%s]'% ( timer.mTimerId, timer.mName, timer.mChannelNo, iChannel.mNumber ) )
+
+				else :
+					LOG_TRACE( '---------channel not found, zappingmode[%s] timer serviceType[%s]'% ( zappingMode, timer.mServiceType ) )
+					if zappingMode and zappingMode.mServiceType == timer.mServiceType :
+						ret = self.Timer_DeleteTimer( timer.mTimerId )
+						LOG_TRACE( '---------delete timer(channel not found) ret[%s] timerId[%s] no[%s] name[%s]'% ( ret, timer.mTimerId, timer.mChannelNo, timer.mName ) )
+
+		if mEditTimerList and len( mEditTimerList ) > 0 :
+			ret = self.Timer_ChangeChannel( mEditTimerList )
+			LOG_TRACE( '------------UpdateTimerChannelByChangeNumber ret[%s] len[%s] newNumber[%s], timerHashLen[%s] oldNumber[%s]'% ( ret, len( newNumber ), newNumber, len( timerList ), oldNumber ) )
 
 
 	def Channel_ChangeChannelName( self, aChannelNumber, aServiceType, aNewName ) :
@@ -1970,6 +2023,10 @@ class DataCacheMgr( object ) :
 
 	def Timer_EditManualTimer(self , aTimerId, aNewStartTime, aNewDuration ) :
 		return self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration )	
+
+
+	def Timer_ChangeChannel( self, aETimerChannel ) :
+		return self.mCommander.Timer_ChangeChannel( aETimerChannel )
 
 
 	def Timer_GetById( self, aTimderId ) :
