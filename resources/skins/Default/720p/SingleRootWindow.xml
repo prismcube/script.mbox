@@ -3572,14 +3572,14 @@ Search for window name
 				<width>1306</width>
 				<height>734</height>
 				<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
-				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 			</control>
 			<control type="image">
 				<posx>-13</posx>
 				<posy>-150</posy>
 				<width>1306</width>
 				<height>256</height>
-				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),panart)</visible>
+				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)</visible>
 				<texture flipy="true">HomeNowPlayingBack.png</texture>
 			</control>
 			<control type="image">
@@ -3587,7 +3587,7 @@ Search for window name
 				<posy>230r</posy>
 				<width>1306</width>
 				<height>238</height>
-				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),panart)</visible>
+				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)</visible>
 				<texture>HomeNowPlayingBack.png</texture>
 			</control>
 			<control type="group">
@@ -3623,7 +3623,7 @@ Search for window name
 			<control type="image">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<description>Section header image</description>
-				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 				<posx>20</posx>
 				<posy>3</posy>
 				<width>35</width>
@@ -3634,7 +3634,7 @@ Search for window name
 
 			<control type="label" id="1009551">
 				<include>DefaultWindowOpenCloseAnimation</include>
-				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
 				<posx>65</posx>
 				<posy>5</posy>
 				<width min="0" max="800">auto</width>
@@ -3739,7 +3739,7 @@ Search for window name
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),panart)">1003430</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3309010</onup>
 						<ondown>3309010</ondown>
 						<itemgap>0</itemgap>
@@ -3772,11 +3772,11 @@ Search for window name
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),panart)">1003430</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),panart)">1003430</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3300104</onup>
 						<ondown>3300101</ondown>
 					</control>
@@ -3788,7 +3788,7 @@ Search for window name
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),panart)">1003430</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
 						<onright>3300102</onright>
 						<onup>3300100</onup>
 						<ondown>3300104</ondown>
@@ -3802,7 +3802,7 @@ Search for window name
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
-						<onright condition="substring(Window.Property(ViewMode),panart)">1003430</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3300101</onup>
 						<ondown>3300104</ondown>
 						<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
@@ -3824,7 +3824,7 @@ Search for window name
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
-						<onleft condition="substring(Window.Property(ViewMode),panart)">1003430</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
 						<onright>3309010</onright>
 						<onup>3300101</onup>
 						<ondown>3300100</ondown>
@@ -4123,7 +4123,7 @@ Search for window name
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
-				<!-- Item Position and Page Number for panart list-->
+				<!-- Item Position and Page Number for fanart list-->
 				<control type="label">
 					<posx>90r</posx>
 					<posy>47r</posy>
@@ -4135,7 +4135,7 @@ Search for window name
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
-					<visible>substring(Window.Property(ViewMode),panart) </visible>
+					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
 		</control>
