@@ -753,7 +753,7 @@
 	<string id="3307">Select Frequency for Tuner 1</string>
 	<string id="3308">Select Frequency for Tuner 2</string>
 	<string id="3309">Please set a different value for each tuner</string>
-	<string id="3310"> OneCable </string>
+	<string id="3310">When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code</string>
 	<string id="3311">Select an available transmission channel from SCR 0 to SCR 7 for tuner %d</string>
 	<string id="3312">Tuner %d SCR</string>
 	<string id="3313"> - Tuner %d Frequency</string>
@@ -961,7 +961,7 @@
 	<string id="3515">Press OK button to erase your hard disk drive</string>
 	<string id="3516">Go to first installation after restoring system to the factory default</string>
 	<string id="3517">Start Factory Reset</string>
-	<string id="3518">Standby</string>
+	<string id="3518">When set to 'On', the system switches to deep standby mode if you press 'Standby' button to help reduce the amount of electricity used</string>
 	<string id="3519">Set the time for switching into standby mode when not being used</string>
 	<string id="3520">Adjust the fan speed level for your system</string>
 	<string id="3521">Channel Banner Time</string>

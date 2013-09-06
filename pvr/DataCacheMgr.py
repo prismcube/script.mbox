@@ -983,7 +983,7 @@ class DataCacheMgr( object ) :
 			for iChannel in self.mAllChannelList :
 				channelKey = '%d:%d:%d'% ( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 				self.mAllChannelListHash[channelKey] = iChannel
-				LOG_TRACE( '---------hash key[%s] no[%s] name[%s]'% ( channelKey, iChannel.mNumber, iChannel.mName ) )
+				#LOG_TRACE( '---------hash key[%s] no[%s] name[%s]'% ( channelKey, iChannel.mNumber, iChannel.mName ) )
 
 		self.UpdateTimerChannelByChangeNumber( )
 		#LOG_TRACE( 'Reload AllChannels len[%s] hashLen[%s]'% ( len( self.mAllChannelList ), len( self.mAllChannelListHash ) ) )
@@ -1567,14 +1567,14 @@ class DataCacheMgr( object ) :
 		oldNumber = []
 		zappingMode = self.Zappingmode_GetCurrent( )
 		timerList = self.GetTimerList( )
-		LOG_TRACE( '------------mAllChannelListHash len[%s]'% len( self.mAllChannelListHash ) )
+		#LOG_TRACE( '------------mAllChannelListHash len[%s]'% len( self.mAllChannelListHash ) )
 		if timerList and len( timerList ) > 0 :
 			for timer in timerList :
 				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
 				iChannel = self.mAllChannelListHash.get( timerKey, None )
-				LOG_TRACE( '---------timerId[%s] timerKey[%s] iChannel[%s]'% ( timer.mTimerId, timerKey, iChannel ) )
+				#LOG_TRACE( '---------timerId[%s] timerKey[%s] iChannel[%s]'% ( timer.mTimerId, timerKey, iChannel ) )
 				if iChannel :
-					LOG_TRACE( '---------find iChannel, timerId[%s] Tch[%s] type[%s],  ich[%s] type[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mServiceType, iChannel.mNumber, iChannel.mServiceType ) )
+					#LOG_TRACE( '---------find iChannel, timerId[%s] Tch[%s] type[%s],  ich[%s] type[%s]'% ( timer.mTimerId, timer.mChannelNo, timer.mServiceType, iChannel.mNumber, iChannel.mServiceType ) )
 					if timer.mServiceType == iChannel.mServiceType and timer.mChannelNo != iChannel.mNumber :
 						chTimer = ElisETimerChannel( )
 						chTimer.mTimerID = timer.mTimerId
@@ -1583,17 +1583,17 @@ class DataCacheMgr( object ) :
 
 						newNumber.append( iChannel.mNumber )
 						oldNumber.append( timer.mChannelNo )
-						LOG_TRACE( '---------change timer(change number) timerId[%s] name[%s] oldNo[%s] newNo[%s]'% ( timer.mTimerId, timer.mName, timer.mChannelNo, iChannel.mNumber ) )
+						#LOG_TRACE( '---------change timer(change number) timerId[%s] name[%s] oldNo[%s] newNo[%s]'% ( timer.mTimerId, timer.mName, timer.mChannelNo, iChannel.mNumber ) )
 
 				else :
-					LOG_TRACE( '---------channel not found, zappingmode[%s] timer serviceType[%s]'% ( zappingMode, timer.mServiceType ) )
+					#LOG_TRACE( '---------channel not found, zappingmode[%s] timer serviceType[%s]'% ( zappingMode, timer.mServiceType ) )
 					if zappingMode and zappingMode.mServiceType == timer.mServiceType :
 						ret = self.Timer_DeleteTimer( timer.mTimerId )
-						LOG_TRACE( '---------delete timer(channel not found) ret[%s] timerId[%s] no[%s] name[%s]'% ( ret, timer.mTimerId, timer.mChannelNo, timer.mName ) )
+						#LOG_TRACE( '---------delete timer(channel not found) ret[%s] timerId[%s] no[%s] name[%s]'% ( ret, timer.mTimerId, timer.mChannelNo, timer.mName ) )
 
 		if mEditTimerList and len( mEditTimerList ) > 0 :
 			ret = self.Timer_ChangeChannel( mEditTimerList )
-			LOG_TRACE( '------------UpdateTimerChannelByChangeNumber ret[%s] len[%s] newNumber[%s], timerHashLen[%s] oldNumber[%s]'% ( ret, len( newNumber ), newNumber, len( timerList ), oldNumber ) )
+			#LOG_TRACE( '------------UpdateTimerChannelByChangeNumber ret[%s] len[%s] newNumber[%s], timerHashLen[%s] oldNumber[%s]'% ( ret, len( newNumber ), newNumber, len( timerList ), oldNumber ) )
 
 
 	def Channel_ChangeChannelName( self, aChannelNumber, aServiceType, aNewName ) :
