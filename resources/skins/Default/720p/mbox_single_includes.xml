@@ -4916,13 +4916,14 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)] ($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
+				<visible>!substring(Container(1003420).CurrentPage,0)</visible>
 			</control>
 		</control>
 	</include>
 
 	<include name="DefaultFanartArchiveView">
 		<control type="group">
-			<visible>substring(Window.Property(ViewMode),panart)</visible>
+			<visible>substring(Window.Property(ViewMode),fanart)</visible>
 			<posx>0</posx>
 			<posy>430</posy>
 			<control type="fixedlist" id="1003430">
@@ -5038,6 +5039,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>$INFO[Container(1003430).ListItem(0).Label] ($INFO[Container(1003430).ListItem(0).Property(RecDate)]  $INFO[Container(1003430).ListItem(0).Property(RecDuration)])</label>
+				<visible>!substring(Container(1003430).CurrentPage,0)</visible>
 			</control>
 			<control type="scrollbar" id="1003431">
 				<posx>150</posx>

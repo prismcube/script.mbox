@@ -529,10 +529,13 @@ class GlobalEvent( object ) :
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingMode and zappingMode.mServiceType != aEvent.mServiceType :
 			zappingMode.mServiceType = aEvent.mServiceType
+			self.mDataCache.SetChannelReloadStatus( True )
+			self.mDataCache.Channel_ResetOldChannelList( )
 			self.mDataCache.Zappingmode_SetCurrent( zappingMode )
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
+			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType.mServiceType, False )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetRadioScreen( )
 
 		self.mDataCache.Player_AVBlank( True )
