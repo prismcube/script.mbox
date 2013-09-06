@@ -31,6 +31,9 @@ class IpParser( object ) :
 	def __init__( self ) :
 		self.mEthernetDevName	= 'eth0'
 		self.mIsConfigureWindow	= False
+		if not os.path.exists( '/etc/wpa_supplicant' ) :
+			os.system( 'mkdir /etc/wpa_supplicant -p' )
+			os.system( 'touch /etc/wpa_supplicant/wpa_supplicant.conf' )
 		if E_USE_AUTO_CONNECT :
 			self.CheckNetworkThread( )
 
@@ -521,7 +524,7 @@ class IpParser( object ) :
 					words += aPassWord + "\n"
 				else:
 					words += "\"" + aPassWord + "\"\n"
-				words += "\tauth_alg=LEAP\n"
+				words += "\tauth_alg=SHARED\n"
 			elif aEncryptType == ENCRYPT_TYPE_WPA :
 				words += "\tkey_mgmt=WPA-PSK\n"
 				words += "\tpsk=\"" + aPassWord + "\"\n"

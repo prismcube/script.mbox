@@ -394,7 +394,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.setProperty( 'ViewMode', 'posterwrap' )
 			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Poster_wrap' ), hideWatched ), 0 )
 		elif self.mViewMode == E_VIEW_FANART :			
-			self.setProperty( 'ViewMode', 'panart' )
+			self.setProperty( 'ViewMode', 'fanart' )
 			self.SetHeaderTitle( "%s - %s %s"%( MR_LANG( 'Archive' ), MR_LANG( 'Fanart' ), hideWatched ), 0 )
 		else :
 			self.mViewMode = E_VIEW_LIST 		
