@@ -37,7 +37,7 @@
 	<string id="1035">Spustiť záznam</string>
 	<string id="1036">Zastaviť záznam</string>
 	<string id="1037">Mute</string>
-	<string id="1038">A / V nastavenia</string>
+	<string id="1038">A/V nastavenia</string>
 	<string id="1039">Záložka</string>
 	<string id="1040">EPG Teraz</string>
 	<string id="1041">EPG Nasledujúce</string>
@@ -45,7 +45,7 @@
 	<string id="1043">Archív</string>
 	<string id="1044">EPG</string>
 	<string id="1045">Zoznam kanálov</string>
-	<string id="1046">Fav . Doplnky</string>
+	<string id="1046">Fav. Doplnky</string>
 	<string id="1047">Media Center</string>
 	<string id="1048">Info</string>
 	<string id="1049">Pomoc</string>
@@ -81,7 +81,7 @@
 	<string id="1079">Zobraziť vašu zbierku snímok a spustiť ich ako prezentáciu s prechodovými efektmi</string>
 	<string id="1080">Prehrávať video od začiatku alebo pokračovať v prezeraní od chvíle, kedy bolo zastavené</string>
 	<string id="1081">Prechádzajte vašimi hlavnými zložkami a prehrávajte hudobné súbory</string>
-	<string id="1082">Spustiť nainštalované doplnky , ktoré zlepšujú vlastnosti a funkcie XBMC</string>
+	<string id="1082">Spustiť nainštalované doplnky, ktoré zlepšujú vlastnosti a funkcie XBMC</string>
 	<string id="1083">Konfigurovať všeobecné nastavenie XBMC</string>
 	<string id="1084">Používajte vaše multimediálne súbory jednoducho a efektívnym spôsobom</string>
 	<string id="1085">Zobraziť podrobné informácie o stave systému</string>
@@ -881,12 +881,12 @@
 	<string id="3435">Vykonať výrobné nastavenie?</string>
 	<string id="3436">Obnovovanie</string>
 	<string id="3437">Vyžaduje sa reštartovanie</string>
-	<string id="3438">Pre kompletné vykonanie výrobných nastavení je nutný reštart %s systému</string>
+	<string id="3438">Pre kompletné vykonanie výrobných nastavení je nutný reštart%s systému</string>
 	<string id="3439">Skúste to znova po ukončení prehrávania</string>
-	<string id="3440">Formátovanie partície média %s sa nedá vrátiť späť!</string>
+	<string id="3440">Formátovanie partície média%s sa nedá vrátiť späť!</string>
 	<string id="3441">UPOZORNENIE</string>
 	<string id="3442">Formátovanie HDD</string>
-	<string id="3443">Formátovanie partície záznamu %s nemožno vrátiť späť!</string>
+	<string id="3443">Formátovanie partície záznamu%s nemožno vrátiť späť!</string>
 	<string id="3444">Všetko na pevnom disku bude vymazané</string>
 	<string id="3445">Formátovať pevný disk?</string>
 	<string id="3446">Nepodarilo sa nájsť pevný disk</string>
