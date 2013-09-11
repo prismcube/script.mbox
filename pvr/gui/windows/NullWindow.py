@@ -9,6 +9,8 @@ E_BUTTON_ID_FAKE      = E_NULL_WINDOW_BASE_ID + 9000
 E_NOMAL_BLINKING_TIME = 0.2
 E_MAX_BLINKING_COUNT  =  10
 
+E_LINKAGE_ICON_TIMEOUT	= 5
+
 E_NO_TUNE  = False
 E_SET_TUNE = True
 
@@ -18,7 +20,8 @@ class NullWindow( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncTuneTimer = None
 		self.mAsyncShowTimer = None
-		self.mRecordBlinkingTimer = None	
+		self.mRecordBlinkingTimer = None
+		self.mLinkageServiceTimer = None			
 		self.mOnTimeDelay = 0
 		self.mPreviousBlockTime = 1.0
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
@@ -133,6 +136,8 @@ class NullWindow( BaseWindow ) :
 		self.mOnTimeDelay = time.time( )
 		self.mOnBlockTimer_GreenKey = time.time( )
 
+		self.UpdateLinkageService( )
+
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s] count[%s] type[%s]'% (sys.getrecursionlimit( ), len(currentStack), currentStack.count, type(currentStack) ) )
@@ -189,6 +194,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
+
+				if self.mDataCache.GetLinkageService(  ) : #hide linkage service icon
+					self.StopLinkageServiceTimer()
+					return
+
 				if ( time.time( ) - self.mOnTimeDelay ) < 1.5 :
 					LOG_TRACE( '------blocking Time back key' )
 					return
@@ -449,8 +459,8 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
-			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
-				LOG_TRACE( 'blocking time Green key' )
+			if abs( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
+				LOG_TRACE( 'blocking time Green key diff=%s' %(time.time( ) - self.mOnBlockTimer_GreenKey) )
 				return
 
 			self.mOnBlockTimer_GreenKey = time.time( )
@@ -853,7 +863,9 @@ class NullWindow( BaseWindow ) :
 		self.CloseSubTitle( )
 
 		self.StopBlinkingIconTimer( )
-		self.SetBlinkingProperty( 'None' )		
+		self.SetBlinkingProperty( 'None' )
+
+		self.StopLinkageServiceTimer( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
@@ -981,27 +993,33 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_COLOR_GREEN :
 			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode != ElisEnum.E_MODE_PVR :
-				self.mIsShowDialog = False
-				return
-			
-			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-			if playingRecord == None or playingRecord.mError != 0 :
-				self.mIsShowDialog = False
-				return
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+				if playingRecord == None or playingRecord.mError != 0 :
+					self.mIsShowDialog = False
+					return
 
-			bookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
-			if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
-				head = MR_LANG( 'Error' )
-				msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
-			else :
+				bookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
+				if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+					head = MR_LANG( 'Error' )
+					msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
+				else :
 
-				status = self.mDataCache.Player_GetStatus( )
-				if status.mSpeed != 100 :
-					self.mDataCache.Player_Resume( )
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mSpeed != 100 :
+						self.mDataCache.Player_Resume( )
 
-				self.mDataCache.Player_CreateBookmark( )
-				self.mIsShowDialog = False
+					self.mDataCache.Player_CreateBookmark( )
+					self.mIsShowDialog = False
+					return
+			else : #Show Linkage Service
+				if self.mDataCache.GetLinkageService(  ) :
+					self.CloseSubTitle( )				
+					self.ShowLinkageChannels( )
+					self.CheckSubTitle( )
+					self.mIsShowDialog = False					
+				else :
+					self.mIsShowDialog = False
 				return
 
 
@@ -1212,4 +1230,71 @@ class NullWindow( BaseWindow ) :
 
 		if isNotify :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).CheckBootOnVersion( )
+
+
+	def UpdateLinkageService( self, aForceHide=False ) :
+		if aForceHide == True :
+			LOG_TRACE( 'Force hide linkage service' )
+			self.setProperty( 'HasLinkageService', 'False' )
+			return
+				
+		status = self.mDataCache.Player_GetStatus( )
+
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			self.setProperty( 'HasLinkageService', 'False' )
+		else :
+			hasLinkageService = self.mDataCache.GetLinkageService(  )
+			if hasLinkageService :
+				self.setProperty( 'HasLinkageService', 'True' )
+				self.StartLinkageServiceTimer()
+				
+			else :
+				self.setProperty( 'HasLinkageService', 'False' )
+
+
+	def ShowLinkageChannels( self ) :
+		dialog = xbmcgui.Dialog( )
+		linkageChannelList = []
+		channelNameList = []
+
+		linkageChannelList = self.mCommander.EPGEvent_GetLinkageChannel( )
+		#self.mSid, self.mTsid, self.mOnid, self.mEventId, self.mChannelName
+
+		if linkageChannelList==None or len ( linkageChannelList ) <= 0 :
+			LOG_WARN( "Has no linkage channel")
+			return
+
+		LOG_TRACE('--------------- Linkage Channel List ----------------------')
+		for linkageChannel in linkageChannelList :
+			linkageChannel.printdebug( )
+			channelNameList.append( linkageChannel.mChannelName )
+
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+
+		if ret >= 0 :
+			linkageChannel = linkageChannelList[ ret ]
+			if linkageChannel :
+				currentChannel = self.mDataCache.Channel_GetCurrent( )
+				LOG_TRACE( 'TUNE LinkageService %s, %s, %s, %s, %s, %s' %( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True) )
+				self.mCommander.Channel_SetCurrentLinkageChannel( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True)
+
+
+
+	def AsyncLinkageTimeout( self ) :
+		self.setProperty( 'HasLinkageService', 'False' )
+
+
+	def StartLinkageServiceTimer( self ) :
+		self.mLinkageServiceTimer  = threading.Timer( E_LINKAGE_ICON_TIMEOUT, self.AsyncLinkageTimeout )
+		self.mLinkageServiceTimer.start( )
+	
+
+	def StopLinkageServiceTimer( self ) :
+		self.setProperty( 'HasLinkageService', 'False' )	
+		if self.mLinkageServiceTimer and self.mLinkageServiceTimer.isAlive( ) :
+			self.mLinkageServiceTimer.cancel( )
+			del self.mLinkageServiceTimer
+			
+		self.mLinkageServiceTimer = None
+
 
