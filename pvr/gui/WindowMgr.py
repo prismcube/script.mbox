@@ -60,6 +60,7 @@ WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
 WIN_ID_ZOOM							= 35
 WIN_ID_SIMPLE_CHANNEL_LIST			= 36
+WIN_ID_PIP_WINDOW					= 37
 
 
 WIN_ID_HIDDEN_TEST					= 99
@@ -299,6 +300,7 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
 			from pvr.gui.windows.Zoom import Zoom
 			from pvr.gui.windows.SimpleChannelList import SimpleChannelList			
+			from pvr.gui.windows.PIPWindow import PIPWindow
 			from pvr.HiddenTest import HiddenTest
 
 
@@ -338,6 +340,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
 				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow  )
 				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow  )				
+				self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )				
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
 
 			else :
@@ -385,6 +388,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_ZOOM] = Zoom( 'Zoom.xml', self.mScriptDir  )
 				#self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( 'Zoom.xml', self.mScriptDir  )				
+				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( 'PIPWindow.xml', self.mScriptDir  )				
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
 				"""

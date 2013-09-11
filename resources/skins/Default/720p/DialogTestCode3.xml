@@ -1,0 +1,126 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="4700000">
+			<!--visible>substring(Window.Property(CurrentWindow),4700000)</visible-->
+			<defaultcontrol always="true">4709000</defaultcontrol>
+			<control type="button" id="4709000">
+				<description>empty button</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1</width>
+				<height>1</height>
+				<texturenofocus>black-back.png</texturenofocus>
+				<texturefocus>black-back.png</texturefocus>
+			</control>
+			<control type="image">
+				<posx>700</posx>
+				<posy>53r</posy>
+				<width>600</width>
+				<height>53</height>
+				<texture>black-back_noAlpha.png</texture>
+				<colordiffuse>DFFFFFFF</colordiffuse>
+			</control>
+
+			<control type="group">
+				<control type="image" id="4701000">
+					<posx>857</posx>
+					<posy>170</posy>
+					<width>352</width>
+					<height>198</height>
+					<texture>ThumbShadowNF.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+					<visible>!Control.IsVisible(4701001)</visible>
+				</control>
+				<control type="image" id="4701001">
+					<posx>835</posx>
+					<posy>131</posy>
+					<width>425</width>
+					<height>265</height>
+					<texture>ThumbShadowFO.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+				<visible>substring(Window.Property(ShowFocusPIP),true)</visible>
+				</control>
+			</control>
+
+			<control type="label">
+				<posx>100r</posx>
+				<posy>53r</posy>
+				<width>500</width>
+				<height>50</height>
+				<font>font35_title</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>PIP Window - Channel : $INFO[Window.Property(ShowPIPChannelNumber)]</label>
+			</control>
+
+			<control type="group">
+				<visible>substring(Window.Property(SettingPIP),true)</visible>
+				<control type="image">
+					<posx>300</posx>
+					<posy>150</posy>
+					<width>680</width>
+					<height>420</height>
+					<texture>black-back_noAlpha.png</texture>
+					<colordiffuse>BFFFFFFF</colordiffuse>
+				</control>
+				<control type="label">
+					<posx>300</posx>
+					<posy>150</posy>
+					<width>680</width>
+					<height>420</height>
+					<font>font30_title</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[Window.Property(SetContextAction)]</label>
+				</control>
+
+				<control type="image">
+					<posx>300</posx>
+					<posy>330</posy>
+					<width>50</width>
+					<height>50</height>
+					<texture>Arrow-left-focus.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+				</control>
+				<control type="image">
+					<posx>350r</posx>
+					<posy>330</posy>
+					<width>50</width>
+					<height>50</height>
+					<texture>Arrow-right-focus.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+				</control>
+				<control type="image">
+					<posx>600</posx>
+					<posy>150</posy>
+					<width>50</width>
+					<height>50</height>
+					<texture>Arrow-right-focus.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+					<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>600</posx>
+					<posy>200r</posy>
+					<width>50</width>
+					<height>50</height>
+					<texture>Arrow-left-focus.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+					<animation effect="rotate" center="auto" start="0" end="90" time="100" condition="true">Conditional</animation>
+				</control>
+			</control>
+
+		</control>
+
+		<!-- Time & Date -->
+		<include>DefaultCommonTime</include>
+		<include>DefaultCommonDate</include>
+		<include>DefaultCommonLiveStatus</include>
+
+	</controls>
+</window>

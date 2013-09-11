@@ -381,7 +381,7 @@ class NullWindow( BaseWindow ) :
 			if actionId == Action.ACTION_MOVE_RIGHT :
 				status = self.mDataCache.Player_GetStatus( )
 				if status.mMode == ElisEnum.E_MODE_LIVE :
-					self.Close( )
+					self.Close( False )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
 					return
 
@@ -461,6 +461,40 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
+
+		elif actionId == Action.ACTION_MOVE_UP :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			"""
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			self.mDataCache.PIP_Start( iChannel.mNumber )
+
+			pChNumber = self.mDataCache.PIP_GetCurrent( )
+			LOG_TRACE( 'PIP_GetCurrent[%s]'% pChNumber )
+			channelList = self.mDataCache.PIP_GetTunableList( )
+			tunableList = []
+			for item in channelList :
+				tunableList.append( item.mParam )
+			LOG_TRACE( 'PIP_GetTunableList[%s]'% tunableList )
+			prevNumber = self.mDataCache.PIP_GetPrevAvailable( 1 )
+			LOG_TRACE( 'PIP_GetPrevAvailable[%s]'% prevNumber )
+			"""
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			"""
+			pChNumber = self.mDataCache.PIP_GetCurrent( )
+			LOG_TRACE( 'PIP_GetCurrent[%s]'% pChNumber )
+			channelList = self.mDataCache.PIP_GetTunableList( )
+			tunableList = []
+			for item in channelList :
+				tunableList.append( item.mParam )
+			LOG_TRACE( 'PIP_GetTunableList[%s]'% tunableList )
+			nextNumber = self.mDataCache.PIP_GetNextAvailable( 23 )
+			LOG_TRACE( 'PIP_GetNextAvailable[%s]'% nextNumber )
+			"""
+
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
+			#dialog.doModal( )
 
 		else :
 			self.NotAvailAction( )
@@ -845,7 +879,7 @@ class NullWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def Close( self ) :
+	def Close( self, aPIPClose = True ) :
 		self.mEnableBlickingTimer = False	
 		self.mEventBus.Deregister( self )
 		self.StopAsyncTimerByBackKey( )
@@ -853,7 +887,15 @@ class NullWindow( BaseWindow ) :
 		self.CloseSubTitle( )
 
 		self.StopBlinkingIconTimer( )
-		self.SetBlinkingProperty( 'None' )		
+		self.SetBlinkingProperty( 'None' )
+
+		"""
+		if aPIPClose :
+			showPip = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).GetPIPStatus( )
+			if showPip :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).Close( )
+				LOG_TRACE( '------------ close pip' )
+		"""
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )

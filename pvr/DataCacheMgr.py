@@ -150,6 +150,7 @@ class DataCacheMgr( object ) :
 		self.mChangedByViewTimer				= False
 		self.mDelaySettingWindow				= True
 		self.mTimerList							= self.Timer_GetTimerList( )
+		self.mChannelListTunablePIP				= []
 
 		self.mRootWindowId						= 0
 		self.mRootWindow							= None
@@ -801,6 +802,11 @@ class DataCacheMgr( object ) :
 					self.mChannelListHashForTimer[channelKey] = channel
 
 
+		#reload tunableList for PIP
+		if aSync == 0 and mType == ElisEnum.E_SERVICE_TYPE_TV :
+			self.PIP_SetTunableList( )
+
+
 	def LoadZappingmode( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mZappingMode = self.Zappingmode_GetCurrent( True )
@@ -1236,14 +1242,21 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
-	def Channel_GetByNumber( self, aNumber ) :
+	def Channel_GetByNumber( self, aNumber, aUseDB = False ) :
+		if aUseDB :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				channelDB = ElisChannelDB( )
+				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.Close( )
+				return channel
 
-		cacheChannel = self.mChannelListHash.get( aNumber, None )
-		if cacheChannel == None :
-			return None
+		else :
+			cacheChannel = self.mChannelListHash.get( aNumber, None )
+			if cacheChannel == None :
+				return None
 
-		channel = cacheChannel.mChannel
-		return channel
+			channel = cacheChannel.mChannel
+			return channel
 
 
 	@DataLock
@@ -2675,4 +2688,59 @@ class DataCacheMgr( object ) :
 
 	def GetDelaySettingWindow( self ) :
 		return self.mDelaySettingWindow
+
+
+	def PIP_Start( self, aNumber ) :
+		return self.mCommander.PIP_Start( aNumber )
+
+
+	def PIP_Stop( self ) :
+		return self.mCommander.PIP_Stop( )
+
+
+	def PIP_SetDimension( self, aPosX, aPosY, aWidth, aHeight ) :
+		return self.mCommander.PIP_SetDimension( aPosX, aPosY, aWidth, aHeight )
+
+
+	def PIP_GetCurrent( self ) :
+		return self.mCommander.PIP_GetCurrent( )
+
+
+	def PIP_GetTunableList( self, aTemporaryReload = 0 ) :
+		if aTemporaryReload :
+			tunableList = []
+			retList = self.mCommander.PIP_GetTunableList( )
+			if retList and len( retList ) > 0 :
+				for item in retList :
+					tunableList.append( item.mParam )
+
+			return tunableList
+
+		else :
+			return self.mChannelListTunablePIP
+
+
+	def PIP_SetTunableList( self ) :
+		self.mChannelListTunablePIP = []
+
+		retList = self.mCommander.PIP_GetTunableList( )
+		if retList and len( retList ) > 0 :
+			for item in retList :
+				self.mChannelListTunablePIP.append( item.mParam )
+
+		return self.mChannelListTunablePIP
+
+
+	def PIP_IsPIPAvailable( self, aNumber ) :
+		return self.mCommander.PIP_IsPIPAvailable( aNumber )
+
+
+	def PIP_GetPrevAvailable( self, aNumber ) :
+		return self.mCommander.PIP_GetPrevAvailable( aNumber )
+
+
+	def PIP_GetNextAvailable( self, aNumber ) :
+		return self.mCommander.PIP_GetNextAvailable( aNumber )
+
+
 

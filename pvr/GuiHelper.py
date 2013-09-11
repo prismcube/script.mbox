@@ -1116,6 +1116,29 @@ class GuiSkinPosition( object ) :
 		return int( x ), int( y ), int( w ), int( h )
 
 
+	def GetPipPosition2( self, aX, aY, aWidth, aHeight ) :
+		from pvr.gui.GuiConfig import E_WINDOW_HEIGHT, E_WINDOW_WIDTH
+		x = aX
+		y = aY
+		w = aWidth
+		h = aHeight
+
+		#x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		#y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+		#w = w * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		#h = h * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+
+		x = x - self.mLeft
+		y = y - self.mTop
+		print '----------------------mLeft[%s] mRight[%s] mTop[%s] bottom[%s] zoom[%s]'% ( self.mLeft, self.mRight, self.mTop, self.mBottom, self.mZoom )
+
+		x = round( x )
+		y = round( y )
+		w = round( w )
+		h = round( h )
+		return int( x ), int( y ), int( w ), int( h )
+
+
 	def SetPosition( self, aLeft, aTop, aRight, aBottom, aZoom ) :
 		self.mLeft	 = aLeft
 		self.mTop	 = aTop
