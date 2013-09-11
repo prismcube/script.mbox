@@ -521,7 +521,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
 
-					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ).upper(), iChannel.mName )
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ), iChannel.mName )
 					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_INVALID :
 						if not self.mChannelList or len( self.mChannelList ) < 1 :
 							label = MR_LANG( 'No Channel' )
@@ -1038,7 +1038,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mUserMode.mSortingMode = nextSort
 				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
 
-				label = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
+				label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
@@ -1091,7 +1091,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = idxMain
 			self.mUserSlidePos.mSub  = idxSub
 
-			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 			if zappingName :
 				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
@@ -1568,13 +1568,13 @@ class ChannelListWindow( BaseWindow ) :
 		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		#path tree, Mainmenu/Submenu
-		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
 		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
-		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
+		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
@@ -1740,7 +1740,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
+		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ), self.mNavChannel.mName )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 		#LOG_TRACE('-----------curr[%s]'% (iChannelIdx + 1) )
@@ -1922,7 +1922,7 @@ class ChannelListWindow( BaseWindow ) :
 			#update channel name
 			if self.mIsTune == True :
 				#strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
-				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ), self.mNavChannel.mName )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
@@ -2531,7 +2531,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#re-print current path
 			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub :
-				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 				zappingName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				if zappingName :
 					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
