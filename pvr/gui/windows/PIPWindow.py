@@ -2,7 +2,7 @@ from pvr.gui.WindowImport import *
 import traceback
 
 E_PIP_WINDOW_BASE_ID		=  WinMgr.WIN_ID_PIP_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
-PIP_ID_CHANNEL				= E_PIP_WINDOW_BASE_ID + 1000
+CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
 
 CTRL_ID_GROUP_PIP			= E_PIP_WINDOW_BASE_ID + 1000
 CTRL_ID_IMAGE_NFOCUSED		= E_PIP_WINDOW_BASE_ID + 1001
@@ -10,13 +10,32 @@ CTRL_ID_IMAGE_FOCUSED		= E_PIP_WINDOW_BASE_ID + 1002
 CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
 CTRL_ID_LABEL_CHANNEL		= E_PIP_WINDOW_BASE_ID + 1004
 
+CTRL_ID_GROUP_OSD_STATUS	= E_PIP_WINDOW_BASE_ID + 2001
+CTRL_ID_IMAGE_OSD_STATUS	= E_PIP_WINDOW_BASE_ID + 2002
+
+CTRL_ID_IMAGE_ARROW_LEFT	= E_PIP_WINDOW_BASE_ID + 3001
+CTRL_ID_IMAGE_ARROW_RIGHT	= E_PIP_WINDOW_BASE_ID + 3002
+CTRL_ID_IMAGE_ARROW_TOP		= E_PIP_WINDOW_BASE_ID + 3003
+CTRL_ID_IMAGE_ARROW_BOTTOM	= E_PIP_WINDOW_BASE_ID + 3004
+
+CTRL_ID_GROUP_LIST_PIP		= E_PIP_WINDOW_BASE_ID + 8000
+CTRL_ID_BUTTON_NEXT_PIP		= E_PIP_WINDOW_BASE_ID + 8001
+CTRL_ID_BUTTON_PREV_PIP		= E_PIP_WINDOW_BASE_ID + 8002
+CTRL_ID_BUTTON_MUTE_PIP		= E_PIP_WINDOW_BASE_ID + 8003
+CTRL_ID_BUTTON_ACTIVE_PIP	= E_PIP_WINDOW_BASE_ID + 8004
+CTRL_ID_BUTTON_MOVE_PIP		= E_PIP_WINDOW_BASE_ID + 8005
+CTRL_ID_BUTTON_SIZE_PIP		= E_PIP_WINDOW_BASE_ID + 8006
+CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
+CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
+CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
+
 E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
 CONTEXT_ACTION_DONE_PIP		= 0
 CONTEXT_ACTION_MOVE_PIP		= 1
 CONTEXT_ACTION_SIZE_PIP		= 2
 CONTEXT_ACTION_ACTIVE_PIP	= 3
 CONTEXT_ACTION_DEFAULT_PIP 	= 4
-CONTEXT_ACTION_CLOSE_PIP	= 5
+CONTEXT_ACTION_STOP_PIP	= 5
 
 E_POSX_ABILITY   = 10
 E_POSY_ABILITY   = 5
@@ -27,6 +46,7 @@ E_HEIGHT_ABILITY = 10
 CURR_CHANNEL_PIP = 0
 PREV_CHANNEL_PIP = 1
 NEXT_CHANNEL_PIP = 2
+SWITCH_CHANNEL_PIP = 3
 
 '''
 class PIPWindow( BaseWindow ) :
@@ -64,7 +84,7 @@ class PIPWindow( BaseWindow ) :
 		self.Load( )
 
 		#self.mEventBus.Register( self )
-		#self.setFocusId( PIP_ID_CHANNEL )
+		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 
 
 	def onAction( self, aAction ) :
@@ -114,7 +134,7 @@ class PIPWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			return
-			#if self.mFocusId  == PIP_ID_CHANNEL :
+			#if self.mFocusId  == CTRL_ID_BUTTON_NEXT_PIP :
 			#	self.Tune( )
 
 
@@ -216,13 +236,13 @@ class PIPWindow( BaseWindow ) :
 
 		return pChNumber
 
-'''
+
 
 #-------------------------------------------------------------------------------------------------
-#class DialogTestCode( BaseDialog ) :
-#	def __init__( self, *args, **kwargs ) :
-#		BaseDialog.__init__( self, *args, **kwargs )
-
+class DialogTestCode( BaseDialog ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseDialog.__init__( self, *args, **kwargs )
+'''
 class PIPWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -235,7 +255,7 @@ class PIPWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
+		self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
 		#self.SetPipScreen( )
 
 		self.mCtrlGroupPIP     = self.getControl( CTRL_ID_GROUP_PIP )
@@ -243,6 +263,12 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlLabelChannel = self.getControl( CTRL_ID_LABEL_CHANNEL )
 		self.mCtrlImageFocusNF = self.getControl( CTRL_ID_IMAGE_NFOCUSED )
 		self.mCtrlImageFocusFO = self.getControl( CTRL_ID_IMAGE_FOCUSED )
+		self.mCtrlImageArrowLeft   = self.getControl( CTRL_ID_IMAGE_ARROW_LEFT )
+		self.mCtrlImageArrowRight  = self.getControl( CTRL_ID_IMAGE_ARROW_RIGHT )
+		self.mCtrlImageArrowTop    = self.getControl( CTRL_ID_IMAGE_ARROW_TOP )
+		self.mCtrlImageArrowBottom = self.getControl( CTRL_ID_IMAGE_ARROW_BOTTOM )
+		self.mCtrlGroupOsdStatus   = self.getControl( CTRL_ID_GROUP_OSD_STATUS )
+		self.mCtrlImageOsdStatus   = self.getControl( CTRL_ID_IMAGE_OSD_STATUS )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.PIP_GetCurrent( )
@@ -266,8 +292,12 @@ class PIPWindow( BaseWindow ) :
 		
 		self.Load( )
 
+		labelMode = MR_LANG( 'PIP Window' )
+		thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+		thread.start( )
+
 		#self.mEventBus.Register( self )
-		#self.setFocusId( PIP_ID_CHANNEL )
+		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 
 
 	def onAction( self, aAction ) :
@@ -279,7 +309,7 @@ class PIPWindow( BaseWindow ) :
 		if self.GlobalAction( actionId ) :
 			return
 
-		LOG_TRACE('onAction[%d] viewMode[%s]'% ( actionId, self.mViewMode ) )
+		LOG_TRACE('onAction[%d] viewMode[%s] focus[%s]'% ( actionId, self.mViewMode, self.mFocusId ) )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
@@ -294,13 +324,13 @@ class PIPWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			ret = self.DoSettingToPIP( actionId )
-			if not ret :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
+#			if not ret :
+#				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			ret = self.DoSettingToPIP( actionId )
-			if not ret :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+#			if not ret :
+#				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
@@ -330,14 +360,11 @@ class PIPWindow( BaseWindow ) :
 			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
-				self.mViewMode = CONTEXT_ACTION_DONE_PIP
-				self.ResetLabel( ) 
-				return
+			pass
 
-		elif actionId == Action.ACTION_CONTEXT_MENU :
-			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
-				self.ShowContextMenu( )
+#		elif actionId == Action.ACTION_CONTEXT_MENU :
+#			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
+#				self.ShowContextMenu( )
 
 		else :
 			#self.NotAvailAction( )
@@ -345,14 +372,48 @@ class PIPWindow( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		LOG_TRACE( 'onClick' )
-		#if aControlId  == LIST_ID_BIG_CHANNEL :
-		#	self.Tune( )
+		LOG_TRACE( 'onClick[%s]'% aControlId )
+
+		if aControlId  == CTRL_ID_BUTTON_PREV_PIP :
+			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_NEXT_PIP :
+			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
+			pass
+
+		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
+			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP :
+			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
+				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
+			else :
+				self.mViewMode = CONTEXT_ACTION_DONE_PIP
+				self.ResetLabel( )
+
+		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP :
+			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
+				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
+			else :
+				self.mViewMode = CONTEXT_ACTION_DONE_PIP
+				self.ResetLabel( )
+
+		elif aControlId  == CTRL_ID_BUTTON_DEFAULT_PIP :
+			self.DoContextAction( CONTEXT_ACTION_DEFAULT_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_EXIT_PIP :
+			self.Close( False )
+
+		elif aControlId  == CTRL_ID_BUTTON_STOP_PIP :
+			self.DoContextAction( CONTEXT_ACTION_STOP_PIP )
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
+#		if self.IsActivate( ) == False  :
+#			return
 
 
 	def onEvent( self, aEvent ) :
@@ -383,56 +444,17 @@ class PIPWindow( BaseWindow ) :
 			LOG_TRACE( '---------pip stop ret[%s]'% ret )
 			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
 
+		status = self.mDataCache.Player_GetStatus( )
+		labelMode = GetStatusModeLabel( status.mMode )
+		thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
+		thread.start( )
+
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-		#self.CloseDialog( )
+#		self.CloseDialog( )
 
 
 	def GetPIPStatus( self ) :
 		return self.mPIPStart
-
-
-	def ResetLabel( self ) :
-		self.UpdatePropertyGUI( 'SetContextAction', '' )
-		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
-		self.UpdatePropertyGUI( 'ShowFocusPIP', E_TAG_TRUE )
-
-
-	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
-		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
-		if aPropertyID == None :
-			return False
-
-		self.setProperty( aPropertyID, aValue )
-		if aPropertyID == 'SettingPIP' and aValue == E_TAG_TRUE :
-			lbltxt = ''
-			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
-				lbltxt = MR_LANG( 'Set move to PIP' )
-			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
-				lbltxt = MR_LANG( 'Set size to PIP' )
-
-			self.setProperty( 'SetContextAction', lbltxt )
-
-
-	def UpdatePositionGUI( self ) :
-		x = self.mPosCurrent[0] - 22
-		y = self.mPosCurrent[1] - 39
-		w = self.mPosCurrent[2] + 73
-		h = self.mPosCurrent[3] + 67
-
-		self.mCtrlGroupPIP.setPosition( x, y )
-		self.mCtrlGroupPIP.setWidth( w )
-		self.mCtrlGroupPIP.setHeight( h )
-
-		self.mCtrlImageBlank.setWidth( w )
-		self.mCtrlImageBlank.setHeight( h )
-		self.mCtrlLabelChannel.setWidth( w )
-
-		self.mCtrlImageFocusNF.setWidth( w )
-		self.mCtrlImageFocusNF.setHeight( h )
-		#self.mCtrlImageFocusNF.setPosition( x, y )
-		self.mCtrlImageFocusFO.setWidth( w )
-		self.mCtrlImageFocusFO.setHeight( h )
-		#self.mCtrlImageFocusFO.setPosition( x, y )
 
 
 	def Load( self ) :
@@ -440,11 +462,11 @@ class PIPWindow( BaseWindow ) :
 
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
-			self.Position_LoadNotifyFromPIP( )
+			self.LoadPositionPIP( )
 			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_TRUE )
 
 
-	def Position_LoadNotifyFromPIP( self ) :
+	def LoadPositionPIP( self ) :
 		posNotify = E_DEFAULT_POSITION_PIP
 		try :
 			posGet = GetSetting( 'PIP_POSITION' )
@@ -461,10 +483,10 @@ class PIPWindow( BaseWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 			posNotify = E_DEFAULT_POSITION_PIP
 
-		self.Position_SetNotifyFromPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+		self.SetPositionPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
 
 
-	def Position_SetNotifyFromPIP( self, aPosX = 827, aPosY = 125, aWidth = 352, aHeight = 188 ) :
+	def SetPositionPIP( self, aPosX = 827, aPosY = 125, aWidth = 352, aHeight = 188 ) :
 		"""
 		from pvr.GuiHelper import GetInstanceSkinPosition
 		skinPos = GetInstanceSkinPosition( )
@@ -486,7 +508,7 @@ class PIPWindow( BaseWindow ) :
 		posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
 		SetSetting( 'PIP_POSITION', posNotify )
 
-		self.UpdatePositionGUI( )
+		self.SetGUIToPIP( )
 
 
 	def Channel_GetCurrentByPIP( self ) :
@@ -561,6 +583,24 @@ class PIPWindow( BaseWindow ) :
 			if fakeChannel :
 				fakeChannel = self.mDataCache.PIP_GetNextAvailable( 1 )
 
+		elif aDir == SWITCH_CHANNEL_PIP :
+			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				lblTitle = MR_LANG( 'Attention' )
+				lblMsg = MR_LANG( 'Can not switch PIP, Current mode Radio' )
+				dialog.SetDialogProperty( lblTitle, lblMsg )
+				dialog.doModal( )
+				return
+			
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if fakeChannel and iChannel :
+				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel, ElisEnum.E_SERVICE_TYPE_TV )
+				if not ret :
+					LOG_TRACE( 'Fail to switch' )
+					return
+				fakeChannel = iChannel.mNumber
+
+
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mPIPStart :
 				LOG_TRACE( '--------Already started PIP' )
@@ -573,26 +613,28 @@ class PIPWindow( BaseWindow ) :
 
 		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s]'% ( aDir, fakeChannel, self.mCurrentChannel ) )
 		if fakeChannel :
-			ret = self.mDataCache.PIP_Start( fakeChannel )
-			LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, fakeChannel ) )
-			if ret :
-				isBlank = E_TAG_FALSE
-				self.mPIPStart = True
-				self.mCurrentChannel = fakeChannel
-
 			#find iChannel in channelList(tv only)
 			iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel )
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
 				iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel, True )
 
 			if iChannel :
-				if E_V1_2_APPLY_PRESENTATION_NUMBER :
-					fakeChannel = self.mDataCache.CheckPresentationNumber( iChannel )
+				ret = self.mDataCache.PIP_Start( fakeChannel )
+				LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, fakeChannel ) )
+				if ret :
+					isBlank = E_TAG_FALSE
+					self.mPIPStart = True
+					self.mCurrentChannel = fakeChannel
 
-				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
+				pChNumber = iChannel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					pChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
+
+				#label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
+				label = '%s - %s'% ( pChNumber, iChannel.mName )
 				self.mCtrlLabelChannel.setLabel( label )
 
-			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% fakeChannel ) 
+			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
 		self.UpdatePropertyGUI( 'BlankPIP', isBlank ) 
 		return True
@@ -604,7 +646,7 @@ class PIPWindow( BaseWindow ) :
 		context.append( ContextItem( MR_LANG( 'Set size to PIP' ), CONTEXT_ACTION_SIZE_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Active screen to PIP' ), CONTEXT_ACTION_ACTIVE_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Load to Default' ), CONTEXT_ACTION_DEFAULT_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Close PIP' ), CONTEXT_ACTION_CLOSE_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Stop PIP' ), CONTEXT_ACTION_STOP_PIP ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -631,9 +673,10 @@ class PIPWindow( BaseWindow ) :
 
 		elif aAction == CONTEXT_ACTION_DEFAULT_PIP :
 			self.mViewMode = CONTEXT_ACTION_DONE_PIP
-			self.Position_SetNotifyFromPIP( )
+			self.SetPositionPIP( )
+			self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
 
-		elif aAction == CONTEXT_ACTION_CLOSE_PIP :
+		elif aAction == CONTEXT_ACTION_STOP_PIP :
 			self.mViewMode = CONTEXT_ACTION_DONE_PIP
 			self.Close( )
 
@@ -648,34 +691,35 @@ class PIPWindow( BaseWindow ) :
 			return ret
 
 		ret = True
-		posx  = self.mPosCurrent[0]
-		posy  = self.mPosCurrent[1]
-		width = self.mPosCurrent[2]
-		height= self.mPosCurrent[3]
+		pipX, pipY, pipW, pipH = ( 0, 0, 0, 0 )
 		if aAction == Action.ACTION_MOVE_LEFT :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
-				posx -= E_POSX_ABILITY
+				pipX -= E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
-				width -= E_WIDTH_ABILITY
+				pipW -= E_WIDTH_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_RIGHT :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
-				posx += E_POSX_ABILITY
+				pipX += E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
-				width += E_WIDTH_ABILITY
+				pipW += E_WIDTH_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_UP :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
-				posy -= E_POSY_ABILITY
+				pipY -= E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
-				height -= E_HEIGHT_ABILITY
+				pipH -= E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_DOWN :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
-				posy += E_POSY_ABILITY
+				pipY += E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
-				height += E_HEIGHT_ABILITY
+				pipH += E_HEIGHT_ABILITY
 
+		posx  = self.mPosCurrent[0] + pipX
+		posy  = self.mPosCurrent[1] + pipY
+		width = self.mPosCurrent[2] + pipW
+		height= self.mPosCurrent[3] + pipH
 		LOG_TRACE( 'set posX[%s] posY[%s] width[%s] height[%s]'% ( posx, posy, width, height ) )
 
 		#limit
@@ -686,7 +730,81 @@ class PIPWindow( BaseWindow ) :
 			LOG_TRACE( '----------limit False' )
 			return ret
 
-		self.Position_SetNotifyFromPIP( posx, posy, width, height )
+		self.SetPositionPIP( posx, posy, width, height )
 		return ret
 
+
+	def ResetLabel( self ) :
+		self.UpdatePropertyGUI( 'SetContextAction', '' )
+		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
+		time.sleep( 0.2 )
+		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
+
+
+	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
+		if aPropertyID == None :
+			return False
+
+		self.setProperty( aPropertyID, aValue )
+		if aPropertyID == 'SettingPIP' and aValue == E_TAG_TRUE :
+			lbltxt = ''
+			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
+				lbltxt = MR_LANG( 'Set move to PIP' )
+			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
+				lbltxt = MR_LANG( 'Set size to PIP' )
+
+			self.setProperty( 'SetContextAction', lbltxt )
+			self.SetGUIArrow( True )
+
+
+	def SetGUIToPIP( self ) :
+		x = self.mPosCurrent[0] - 16
+		y = self.mPosCurrent[1] - 35
+		w = self.mPosCurrent[2] + 60
+		h = self.mPosCurrent[3] + 55
+
+		#ch name
+		self.mCtrlLabelChannel.setWidth( w )
+
+		#pip panel
+		self.mCtrlGroupPIP.setPosition( x, y )
+
+		self.mCtrlGroupPIP.setWidth( w )
+		self.mCtrlGroupPIP.setHeight( h )
+
+		self.mCtrlImageBlank.setWidth( w )
+		self.mCtrlImageBlank.setHeight( h )
+
+		self.mCtrlImageFocusNF.setWidth( w + 50 )
+		self.mCtrlImageFocusNF.setHeight( h + 55 )
+
+		self.mCtrlImageFocusFO.setWidth( w )
+		self.mCtrlImageFocusFO.setHeight( h )
+
+		#osd panel
+		self.mCtrlGroupOsdStatus.setPosition( 20, h - 20 )
+		if w > 330 :
+			self.mCtrlImageOsdStatus.setWidth( w - 42 )
+
+		self.SetGUIArrow( )
+
+
+	def SetGUIArrow( self, aInit = False ) :
+		#arrow at move, size
+
+		x = self.mPosCurrent[0]
+		y = self.mPosCurrent[1]
+		w = self.mPosCurrent[2]
+		h = self.mPosCurrent[3]
+		#LOG_TRACE( '------------x[%s] y[%s] w[%s] h[%s] w/2[%s] h/2[%s]'% ( x,y, w, h, w/2, h/2 ) )
+
+		if not aInit and self.mViewMode != CONTEXT_ACTION_SIZE_PIP : 
+			return
+
+		self.mCtrlImageArrowLeft.setPosition  ( 0,      int( h / 2 ) )
+		self.mCtrlImageArrowRight.setPosition ( 40 + w, int( h / 2 ) )
+
+		self.mCtrlImageArrowTop.setPosition   ( 20 + int( w / 2 ), -20 )
+		self.mCtrlImageArrowBottom.setPosition( 20 + int( w / 2 ), 20 + h )
 

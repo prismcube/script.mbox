@@ -463,35 +463,12 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
+			self.Close( False )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
-			"""
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-			self.mDataCache.PIP_Start( iChannel.mNumber )
-
-			pChNumber = self.mDataCache.PIP_GetCurrent( )
-			LOG_TRACE( 'PIP_GetCurrent[%s]'% pChNumber )
-			channelList = self.mDataCache.PIP_GetTunableList( )
-			tunableList = []
-			for item in channelList :
-				tunableList.append( item.mParam )
-			LOG_TRACE( 'PIP_GetTunableList[%s]'% tunableList )
-			prevNumber = self.mDataCache.PIP_GetPrevAvailable( 1 )
-			LOG_TRACE( 'PIP_GetPrevAvailable[%s]'% prevNumber )
-			"""
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
-			"""
-			pChNumber = self.mDataCache.PIP_GetCurrent( )
-			LOG_TRACE( 'PIP_GetCurrent[%s]'% pChNumber )
-			channelList = self.mDataCache.PIP_GetTunableList( )
-			tunableList = []
-			for item in channelList :
-				tunableList.append( item.mParam )
-			LOG_TRACE( 'PIP_GetTunableList[%s]'% tunableList )
-			nextNumber = self.mDataCache.PIP_GetNextAvailable( 23 )
-			LOG_TRACE( 'PIP_GetNextAvailable[%s]'% nextNumber )
-			"""
+			self.CloseToPIP( )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
 
 			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
 			#dialog.doModal( )
@@ -889,13 +866,8 @@ class NullWindow( BaseWindow ) :
 		self.StopBlinkingIconTimer( )
 		self.SetBlinkingProperty( 'None' )
 
-		"""
 		if aPIPClose :
-			showPip = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).GetPIPStatus( )
-			if showPip :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).Close( )
-				LOG_TRACE( '------------ close pip' )
-		"""
+			self.CloseToPIP( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
@@ -909,7 +881,14 @@ class NullWindow( BaseWindow ) :
 				self.mCommander.AppHBBTV_Ready( 0 )
 				self.mHBBTVReady = False 
 				LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
-			
+
+
+	def CloseToPIP( self ) :
+		showPip = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).GetPIPStatus( )
+		if showPip :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).Close( )
+			LOG_TRACE( '------------ close pip' )
+
 
 	def ForceSetCurrent( self ) :
 		pass

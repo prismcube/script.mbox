@@ -1257,7 +1257,7 @@ def GetStatusModeLabel( aMode ) :
 
 def AsyncShowStatus( aStatus ) :
 	import pvr.gui.WindowMgr as WinMgr
-	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW,WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU ]
+	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU, WinMgr.WIN_ID_PIP_WINDOW ]
 
 	rootWinow = xbmcgui.Window( 10000 )
 	rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
