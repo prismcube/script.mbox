@@ -7,7 +7,7 @@ CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
 CTRL_ID_GROUP_PIP			= E_PIP_WINDOW_BASE_ID + 1000
 CTRL_ID_IMAGE_NFOCUSED		= E_PIP_WINDOW_BASE_ID + 1001
 CTRL_ID_IMAGE_FOCUSED		= E_PIP_WINDOW_BASE_ID + 1002
-CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
+#CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
 CTRL_ID_LABEL_CHANNEL		= E_PIP_WINDOW_BASE_ID + 1004
 
 CTRL_ID_GROUP_OSD_STATUS	= E_PIP_WINDOW_BASE_ID + 2001
@@ -259,7 +259,7 @@ class PIPWindow( BaseWindow ) :
 		#self.SetPipScreen( )
 
 		self.mCtrlGroupPIP     = self.getControl( CTRL_ID_GROUP_PIP )
-		self.mCtrlImageBlank   = self.getControl( CTRL_ID_IMAGE_BLANK )
+		#self.mCtrlImageBlank   = self.getControl( CTRL_ID_IMAGE_BLANK )
 		self.mCtrlLabelChannel = self.getControl( CTRL_ID_LABEL_CHANNEL )
 		self.mCtrlImageFocusNF = self.getControl( CTRL_ID_IMAGE_NFOCUSED )
 		self.mCtrlImageFocusFO = self.getControl( CTRL_ID_IMAGE_FOCUSED )
@@ -280,6 +280,7 @@ class PIPWindow( BaseWindow ) :
 		self.mViewMode = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent = deepcopy( E_DEFAULT_POSITION_PIP )
 		self.mCurrentChannel = None
+		self.mPIP_EnableAudio = False
 
 		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
@@ -381,7 +382,7 @@ class PIPWindow( BaseWindow ) :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
 
 		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
-			pass
+			self.SetAudioPIP( )
 
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
 			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
@@ -436,6 +437,9 @@ class PIPWindow( BaseWindow ) :
 		#self.mEventBus.Deregister( self )
 
 		self.UpdatePropertyGUI( 'ShowFocusPIP', E_TAG_FALSE )
+
+		if self.mPIP_EnableAudio :
+			self.mDataCache.PIP_EnableAudio( False )
 
 		if aStopPIP :
 			ret = self.mDataCache.PIP_Stop( )
@@ -618,6 +622,7 @@ class PIPWindow( BaseWindow ) :
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
 				iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel, True )
 
+			pChNumber = fakeChannel
 			if iChannel :
 				ret = self.mDataCache.PIP_Start( fakeChannel )
 				LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, fakeChannel ) )
@@ -630,8 +635,8 @@ class PIPWindow( BaseWindow ) :
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					pChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
 
-				#label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
-				label = '%s - %s'% ( pChNumber, iChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
+				#label = '%s - %s'% ( pChNumber, iChannel.mName )
 				self.mCtrlLabelChannel.setLabel( label )
 
 			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
@@ -773,11 +778,11 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlGroupPIP.setWidth( w )
 		self.mCtrlGroupPIP.setHeight( h )
 
-		self.mCtrlImageBlank.setWidth( w )
-		self.mCtrlImageBlank.setHeight( h )
+		#self.mCtrlImageBlank.setWidth( w )
+		#self.mCtrlImageBlank.setHeight( h )
 
-		self.mCtrlImageFocusNF.setWidth( w + 50 )
-		self.mCtrlImageFocusNF.setHeight( h + 55 )
+		self.mCtrlImageFocusNF.setWidth( w )
+		self.mCtrlImageFocusNF.setHeight( h )
 
 		self.mCtrlImageFocusFO.setWidth( w )
 		self.mCtrlImageFocusFO.setHeight( h )
@@ -807,4 +812,24 @@ class PIPWindow( BaseWindow ) :
 
 		self.mCtrlImageArrowTop.setPosition   ( 20 + int( w / 2 ), -20 )
 		self.mCtrlImageArrowBottom.setPosition( 20 + int( w / 2 ), 20 + h )
+
+
+	def SetAudioPIP( self ) :
+		isMainAudioBlock = False
+		#1. check audio in main
+		mute, volume = self.GetAudioStatus( )
+
+		if mute or volume < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			lblTitle = MR_LANG( 'Attention' )
+			lblMsg = MR_LANG( 'Can not enable audio, Check main audio' )
+			dialog.SetDialogProperty( lblTitle, lblMsg )
+			dialog.doModal( )
+			return
+
+		isEnable = not self.mPIP_EnableAudio
+		ret = self.mDataCache.PIP_EnableAudio( isEnable )
+		if ret :
+			self.mPIP_EnableAudio = isEnable
+
 

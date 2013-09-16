@@ -407,6 +407,26 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mCommander.Player_SetVolume( volume )
 
 
+	def GetAudioStatus( self ) :
+		mute, volume = ( False, 0 )
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------GetAudioStatus avblank' )
+			mute = True
+
+		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) >= self.mPlatform.GetFrodoVersion( ) :
+				if not mute :
+					mute = XBMC_GetMute( )
+				volume =  XBMC_GetVolume( )
+
+		else :
+			if not mute :
+				mute = self.mCommander.Player_GetMute( )
+			volume = self.mCommander.Player_GetVolume( )
+
+		return mute, volume
+
+
 	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
 		startTime = time.time()
 		loopTime = 0.0

@@ -2743,4 +2743,7 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_GetNextAvailable( aNumber )
 
 
+	def PIP_EnableAudio( self, aEnable = True ) :
+		return self.mCommander.PIP_EnableAudio( aEnable )
+
 
