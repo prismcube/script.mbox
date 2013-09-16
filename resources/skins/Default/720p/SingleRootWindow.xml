@@ -6505,8 +6505,8 @@ Search for window name
 				<visible>substring(Window.Property(OpenPIP),true)</visible>
 				<control type="group">
 					<control type="image" id="4701001">
-						<posx>0</posx>
-						<posy>0</posy>
+						<posx>20</posx>
+						<posy>16</posy>
 						<width>425</width>
 						<height>265</height>
 						<texture>black-back_noAlpha.png</texture>
@@ -6584,8 +6584,8 @@ Search for window name
 						<control type="button" id="4708003">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDVolumeMuteFO.png</texturefocus>
-							<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
+							<texturefocus>OSDAudioFO.png</texturefocus>
+							<texturenofocus>OSDAudioNF.png</texturenofocus>
 							<!--onclick>Mute</onclick-->
 						</control>
 						<control type="button" id="4708004">

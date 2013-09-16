@@ -608,6 +608,7 @@ class PIPWindow( BaseWindow ) :
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mPIPStart :
 				LOG_TRACE( '--------Already started PIP' )
+				self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
 				return False
 
 			if not fakeChannel :
@@ -641,8 +642,32 @@ class PIPWindow( BaseWindow ) :
 
 			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
-		self.UpdatePropertyGUI( 'BlankPIP', isBlank ) 
+		self.UpdatePropertyGUI( 'BlankPIP', isBlank )
 		return True
+
+
+	def ResetLabel( self ) :
+		self.UpdatePropertyGUI( 'SetContextAction', '' )
+		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
+		time.sleep( 0.2 )
+		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
+
+
+	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
+		if aPropertyID == None :
+			return False
+
+		self.setProperty( aPropertyID, aValue )
+		if aPropertyID == 'SettingPIP' and aValue == E_TAG_TRUE :
+			lbltxt = ''
+			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
+				lbltxt = MR_LANG( 'Set move to PIP' )
+			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
+				lbltxt = MR_LANG( 'Set size to PIP' )
+
+			self.setProperty( 'SetContextAction', lbltxt )
+			self.SetGUIArrow( True )
 
 
 	def ShowContextMenu( self ) :
@@ -739,30 +764,6 @@ class PIPWindow( BaseWindow ) :
 		return ret
 
 
-	def ResetLabel( self ) :
-		self.UpdatePropertyGUI( 'SetContextAction', '' )
-		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
-		time.sleep( 0.2 )
-		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
-
-
-	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
-		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
-		if aPropertyID == None :
-			return False
-
-		self.setProperty( aPropertyID, aValue )
-		if aPropertyID == 'SettingPIP' and aValue == E_TAG_TRUE :
-			lbltxt = ''
-			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
-				lbltxt = MR_LANG( 'Set move to PIP' )
-			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
-				lbltxt = MR_LANG( 'Set size to PIP' )
-
-			self.setProperty( 'SetContextAction', lbltxt )
-			self.SetGUIArrow( True )
-
-
 	def SetGUIToPIP( self ) :
 		x = self.mPosCurrent[0] - 16
 		y = self.mPosCurrent[1] - 35
@@ -781,8 +782,8 @@ class PIPWindow( BaseWindow ) :
 		#self.mCtrlImageBlank.setWidth( w )
 		#self.mCtrlImageBlank.setHeight( h )
 
-		self.mCtrlImageFocusNF.setWidth( w )
-		self.mCtrlImageFocusNF.setHeight( h )
+		self.mCtrlImageFocusNF.setWidth( w - 42 )
+		self.mCtrlImageFocusNF.setHeight( h - 20 )
 
 		self.mCtrlImageFocusFO.setWidth( w )
 		self.mCtrlImageFocusFO.setHeight( h )
