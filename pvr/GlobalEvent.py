@@ -45,6 +45,7 @@ class GlobalEvent( object ) :
 		self.mEventId = None
 		self.mIsChannelUpdateEvent = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mTunerMgr	= pvr.TunerConfigMgr.GetInstance( )
 		self.SendLocalOffsetToXBMC( )
 
 		self.mDialogShowParental = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -203,6 +204,8 @@ class GlobalEvent( object ) :
 				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				#dialog.SetDialogProperty( msgHead, msgLine )
 				#dialog.doModal( )
+				self.mDataCache.LoadConfiguredSatellite( )
+				self.mTunerMgr.SyncChannelBySatellite( )
 				self.mDataCache.SetStanbyClosing( True )
 				self.mIsChannelUpdateEvent = True
 				thread = threading.Timer( 1, self.StanByClose )
