@@ -1123,19 +1123,20 @@ class GuiSkinPosition( object ) :
 		w = aWidth
 		h = aHeight
 
-		#x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
-		#y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
-		#w = w * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
-		#h = h * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+		x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+		w = w * ( self.mRight / float( E_WINDOW_WIDTH ) )
+		h = h * ( self.mBottom / float( E_WINDOW_HEIGHT ) )
 
-		x = x - self.mLeft
-		y = y - self.mTop
-		print '----------------------mLeft[%s] mRight[%s] mTop[%s] bottom[%s] zoom[%s]'% ( self.mLeft, self.mRight, self.mTop, self.mBottom, self.mZoom )
+		x = x + self.mLeft
+		y = y + self.mTop
 
 		x = round( x )
 		y = round( y )
 		w = round( w )
 		h = round( h )
+		print '----------------------mLeft[%s] mRight[%s] mTop[%s] bottom[%s] zoom[%s]'% ( self.mLeft, self.mRight, self.mTop, self.mBottom, self.mZoom )
+		print '----------------------x[%s] y[%s] w[%s] h[%s]'% ( x, y, w, h )
 		return int( x ), int( y ), int( w ), int( h )
 
 

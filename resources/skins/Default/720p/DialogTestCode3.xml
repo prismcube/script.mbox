@@ -3,40 +3,16 @@
 	<defaultcontrol always="true">4708000</defaultcontrol>
 	<controls>
 		<control type="group" id="4700000">
-			<!--visible>substring(Window.Property(CurrentWindow),4700000)</visible-->
-			<!--defaultcontrol always="true">4708000</defaultcontrol-->
-			<!--control type="button" id="4700001">
-				<description>empty button</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1</width>
-				<height>1</height>
-				<texturenofocus>black-back.png</texturenofocus>
-				<texturefocus>black-back.png</texturefocus>
-				<onClick>SetFocus(4708000)</onClick>
-			</control-->
-
+			<!--visible>substring(Window.Property(CurrentWindow),4700000)</visible>
+			<defaultcontrol always="true">4708000</defaultcontrol-->
+			<posx>0</posx>
+			<posy>-2</posy>
 			<control type="group" id="4701000">
 				<posx>835</posx>
 				<posy>131</posy>
 				<visible>substring(Window.Property(OpenPIP),true)</visible>
 				<control type="group">
 					<control type="image" id="4701001">
-						<posx>-25</posx>
-						<posy>0</posy>
-						<width>425</width>
-						<height>300</height>
-						<texture></texture>
-						<colordiffuse>DFFFFFFF</colordiffuse>
-					</control>
-					<control type="image" id="4701002">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>425</width>
-						<height>265</height>
-						<texture>PIPFocus.png</texture>
-					</control>
-					<control type="image" id="4701003">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>425</width>
@@ -44,26 +20,32 @@
 						<texture>black-back_noAlpha.png</texture>
 						<visible>substring(Window.Property(BlankPIP),true)</visible>
 					</control>
-				</control>
-				<control type="label" id="4701004">
-					<posx>30</posx>
-					<posy>195</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
-					<scroll>false</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[Control.GetLabel]</label>
-				</control>
-
-				<control type="group" id="4702001">
-					<posx>0</posx>
-					<posy>0</posy>
-					<control type="image" id="4702002">
+					<control type="image" id="4701002">
 						<posx>0</posx>
 						<posy>0</posy>
+						<width>425</width>
+						<height>265</height>
+						<texture border="10">StackFO_white2.png</texture>
+					</control>
+				</control>
+				<control type="group" id="4702000">
+					<posx>0</posx>
+					<posy>0</posy>
+					<control type="label" id="4702001">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="image" id="4702002">
+						<posx>0</posx>
+						<posy>-1</posy>
 						<width>370</width>
 						<height>65</height>
 						<texture>black-back_noAlpha.png</texture>
@@ -101,9 +83,9 @@
 						<control type="button" id="4708003">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDVolumeMuteFO.png</texturefocus>
-							<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
-							<onclick>Mute</onclick>
+							<texturefocus>OSDAudioFO.png</texturefocus>
+							<texturenofocus>OSDAudioNF.png</texturenofocus>
+							<!--onclick>Mute</onclick-->
 						</control>
 						<control type="button" id="4708004">
 							<width>35</width>
@@ -277,36 +259,52 @@
 				</control>
 
 				<control type="group" id="4703000">
-					<posx>-15</posx>
-					<posy>0</posy>
+					<posx>-35</posx>
+					<posy>-15</posy>
 					<visible>substring(Window.Property(SettingPIP),true)</visible>
-					<control type="image" id="4703001">
+					<control type="group">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<texture>Arrow-left-focus.png</texture>
+						<control type="image" id="4703001">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-left-focus.png</texture>
+						</control>
 					</control>
-					<control type="image" id="4703002">
-						<posx>0</posx>
+					<control type="group">
+						<posx>30</posx>
 						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<texture>Arrow-right-focus.png</texture>
+						<control type="image" id="4703002">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-right-focus.png</texture>
+						</control>
 					</control>
-					<control type="image" id="4703003">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<texture>Arrow-top-focus.png</texture>
+					<control type="group">
+						<posx>10</posx>
+						<posy>-20</posy>
+						<control type="image" id="4703003">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-top-focus.png</texture>
+						</control>
 					</control>
-					<control type="image" id="4703004">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<texture>Arrow-bottom-focus.png</texture>
+					<control type="group">
+						<posx>10</posx>
+						<posy>5</posy>
+						<control type="image" id="4703004">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-bottom-focus.png</texture>
+						</control>
 					</control>
 				</control>
 			</control>
@@ -333,6 +331,7 @@
 			</control>
 
 		</control>
+
 
 		<!-- Time & Date -->
 		<include>DefaultCommonTime</include>

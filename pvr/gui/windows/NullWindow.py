@@ -465,10 +465,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.Close( False )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
+			#dialog.doModal( )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.CloseToPIP( )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
 
 			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
 			#dialog.doModal( )
