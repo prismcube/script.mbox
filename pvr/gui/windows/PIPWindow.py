@@ -131,8 +131,8 @@ class PIPWindow( BaseWindow ) :
 		self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
-		self.SetPipScreen( )
+		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
+		#self.SetRadioScreen( )
 
 		self.mCtrlGroupPIP     = self.getControl( CTRL_ID_GROUP_PIP )
 		self.mCtrlLabelChannel = self.getControl( CTRL_ID_LABEL_CHANNEL )
@@ -155,8 +155,11 @@ class PIPWindow( BaseWindow ) :
 		self.mChannelListHash = {}
 		self.mViewMode = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent = deepcopy( E_DEFAULT_POSITION_PIP )
+		self.mFakeChannel = None
 		self.mCurrentChannel = None
 		self.mPIP_EnableAudio = False
+		self.mFirstTune = 0
+		self.mAsyncTuneTimer = None
 
 		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
@@ -324,6 +327,9 @@ class PIPWindow( BaseWindow ) :
 			LOG_TRACE( '---------pip stop ret[%s]'% ret )
 			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
 
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+			self.mAsyncTuneTimer.join( )
+
 		status = self.mDataCache.Player_GetStatus( )
 		labelMode = GetStatusModeLabel( status.mMode )
 		thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
@@ -442,9 +448,8 @@ class PIPWindow( BaseWindow ) :
 
 
 	def ChannelTuneToPIP( self, aDir ) :
-		isBlank = E_TAG_TRUE
 		fakeChannel = self.mCurrentChannel
-		self.UpdatePropertyGUI( 'BlankPIP', isBlank )
+		self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel :
 			fakeChannel = self.Channel_GetCurrentByPIP( )
@@ -482,12 +487,11 @@ class PIPWindow( BaseWindow ) :
 			if self.mPIPStart :
 				LOG_TRACE( '--------Already started PIP' )
 				self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
-				return False
+				return True
 
 			if not fakeChannel :
 				self.Close( )
 				return False
-
 
 		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s]'% ( aDir, fakeChannel, self.mCurrentChannel ) )
 		if fakeChannel :
@@ -498,34 +502,26 @@ class PIPWindow( BaseWindow ) :
 
 			pChNumber = fakeChannel
 			if iChannel :
-				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
-				#label = '%s - %s'% ( pChNumber, iChannel.mName )
-				self.mCtrlLabelChannel.setLabel( label )
-
-				ret = self.mDataCache.PIP_Start( fakeChannel )
-				LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, fakeChannel ) )
-				if ret :
-					isBlank = E_TAG_FALSE
-					self.mPIPStart = True
-					self.mCurrentChannel = fakeChannel
+				self.mFakeChannel = fakeChannel
+				self.RestartAsyncTune( )
 
 				pChNumber = iChannel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					pChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
 
-				#label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
 				#label = '%s - %s'% ( pChNumber, iChannel.mName )
-				#self.mCtrlLabelChannel.setLabel( label )
+				self.mCtrlLabelChannel.setLabel( label )
 
 			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
-		self.UpdatePropertyGUI( 'BlankPIP', isBlank )
 		return True
 
 
 	def ResetLabel( self ) :
 		self.UpdatePropertyGUI( 'SetContextAction', '' )
 		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
+		self.UpdatePropertyGUI( 'ShowOSDStatus', E_TAG_TRUE )
 		time.sleep( 0.2 )
 		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
 
@@ -543,6 +539,7 @@ class PIPWindow( BaseWindow ) :
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
 				lbltxt = MR_LANG( 'Set size to PIP' )
 
+			self.setProperty( 'ShowOSDStatus', E_TAG_FALSE )
 			self.setProperty( 'SetContextAction', lbltxt )
 			self.SetGUIArrow( True )
 
@@ -644,8 +641,8 @@ class PIPWindow( BaseWindow ) :
 	def SetGUIToPIP( self ) :
 		x = self.mPosCurrent[0]
 		y = self.mPosCurrent[1]
-		w = self.mPosCurrent[2] + 10
-		h = self.mPosCurrent[3] + 10
+		w = self.mPosCurrent[2]# + 10
+		h = self.mPosCurrent[3]# + 10
 
 		#ch name
 		self.mCtrlLabelChannel.setWidth( w )
@@ -664,8 +661,8 @@ class PIPWindow( BaseWindow ) :
 
 		#base overlay for radio mode
 		self.mCtrlImageBasePIP.setPosition( x, y )
-		self.mCtrlImageBasePIP.setWidth( w )
-		self.mCtrlImageBasePIP.setHeight( h )
+		self.mCtrlImageBasePIP.setWidth( w - 10 )
+		self.mCtrlImageBasePIP.setHeight( h - 10 )
 
 		#osd panel
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
@@ -711,4 +708,50 @@ class PIPWindow( BaseWindow ) :
 		if ret :
 			self.mPIP_EnableAudio = isEnable
 
+
+	def RestartAsyncTune( self ) :
+		self.StopAsyncTune( )
+		self.StartAsyncTune( )
+
+
+	def StartAsyncTune( self ) :
+		isTune = True
+		if E_FIRST_TUNE_FAST and self.mFirstTune == False :
+			isTune = False
+			self.TuneChannel( )
+
+		self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel, [isTune] )
+		self.mAsyncTuneTimer.start( )
+		self.mFirstTune = True
+
+
+	def StopAsyncTune( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+			self.mAsyncTuneTimer.cancel( )
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer = None
+
+
+	def AsyncTuneChannel( self, aTune ) :
+		if aTune :
+			self.TuneChannel( )
+
+		self.mFirstTune = False
+
+	def TuneChannel( self ) :
+		try :
+			ret = self.mDataCache.PIP_Start( self.mFakeChannel )
+			LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, self.mFakeChannel ) )
+			if ret :
+				self.mPIPStart = True
+				self.mCurrentChannel = self.mFakeChannel
+				#self.mLastChannel = self.mCurrentChannel
+				self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
+
+			else :
+				LOG_ERR('Tune failed')
+			
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
