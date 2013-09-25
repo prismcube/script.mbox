@@ -6527,7 +6527,7 @@ Search for window name
 					<control type="group" id="4702000">
 						<posx>0</posx>
 						<posy>0</posy>
-						<control type="label" id="4702001">
+						<!--control type="label" id="4702001">
 							<posx>10</posx>
 							<posy>-30</posy>
 							<width>425</width>
@@ -6538,7 +6538,7 @@ Search for window name
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[Control.GetLabel]</label>
-						</control>
+						</control-->
 						<control type="image" id="4702002">
 							<posx>0</posx>
 							<posy>-1</posy>
@@ -6681,7 +6681,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Mute</label>
+									<label>Audio On / Off</label>
 									<visible>Control.HasFocus(4708003)</visible>
 								</control>
 								<control type="label">
@@ -6867,8 +6867,9 @@ Search for window name
 			<control type="group" id="1008899">
 				<posx>744</posx>
 				<posy>136</posy>
+				<visible>substring(Window.Property(OpenPIP),true)</visible>
 				<control type="image" id="1002001">
-					<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(OpenPIP),true)</visible>
+					<visible>substring(Window.Property(TVRadio),true)</visible>
 					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4700000)]</visible-->
 					<posx>0</posx>
 					<posy>0</posy>
@@ -6884,6 +6885,19 @@ Search for window name
 					<texture>black-back_noAlpha.png</texture>
 					<visible>substring(Window.Property(BlankPIP),true)</visible>
 				</control>
+						<control type="label" id="4702001">
+							<posx>10</posx>
+							<posy>-30</posy>
+							<width>425</width>
+							<height>30</height>
+							<font>font12</font>
+							<textcolor>grey</textcolor>
+							<scroll>false</scroll>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+
 				<control type="image" id="1002003">
 					<posx>0</posx>
 					<posy>5</posy>
@@ -6898,13 +6912,38 @@ Search for window name
 					<width>425</width>
 					<height>30</height>
 					<font>font12</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
 					<align>center</align>
 					<aligny>center</aligny>
-					<label>SCRIPT1014</label>
+					<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
 					<visible>Control.IsVisible(1002003)</visible>
 				</control>
+				<control type="label" id="1002005">
+					<posx>10</posx>
+					<posy>-30</posy>
+					<width>425</width>
+					<height>30</height>
+					<font>font12</font>
+					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>grey2</textcolor>
+					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),False)</visible>
+				</control>
+				<control type="label" id="1002006">
+					<posx>10</posx>
+					<posy>-30</posy>
+					<width>425</width>
+					<height>30</height>
+					<font>font12</font>
+					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>grey2</textcolor>
+					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),Scramble)</visible>
+				</control>
+
 			</control>
 		</control>
 

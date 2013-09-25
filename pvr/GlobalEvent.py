@@ -127,6 +127,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
+			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
@@ -137,10 +138,24 @@ class GlobalEvent( object ) :
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
-			else :
+			elif aEvent.mStatus == ElisEnum.E_CC_SUCCESS :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'Scramble' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'PIPSignal', 'True' )
+				#self.mDataCache.SetLockedState( ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL )
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'False' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'PIPSignal', 'True' )
+				#self.mDataCache.SetLockedState( ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'True' )
+				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'PIPSignal', 'True' )
+				#self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return

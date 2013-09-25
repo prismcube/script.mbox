@@ -33,6 +33,8 @@ CTRL_ID_GROUP_BASE_PIP		= E_BASE_WINDOW_ID + 8899
 CTRL_ID_IMAGE_BASE_PIP		= E_BASE_WINDOW_ID + 2001
 CTRL_ID_IMAGE_NFOCUSED		= E_BASE_WINDOW_ID + 2002
 CTRL_ID_LABEL_LOCK			= E_BASE_WINDOW_ID + 2004
+CTRL_ID_LABEL_SCRAMBLE		= E_BASE_WINDOW_ID + 2005
+CTRL_ID_LABEL_NOSIGNAL		= E_BASE_WINDOW_ID + 2006
 
 
 E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
@@ -124,6 +126,8 @@ class DialogTestCode( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 '''
+
+
 class PIPWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -154,25 +158,29 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlGroupBasePIP     = self.getControl( CTRL_ID_GROUP_BASE_PIP )
 		self.mCtrlImageBasePIP     = self.getControl( CTRL_ID_IMAGE_BASE_PIP )
 		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
+		self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
+		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		#self.mServiceType	 = self.mCurrentMode.mServiceType
 		#LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 
-		self.mChannelList = self.mDataCache.Channel_GetList( )
+		self.mChannelList = []
 		self.mChannelListHash = {}
+		self.mTunableList = []
 		self.mViewMode = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent = deepcopy( E_DEFAULT_POSITION_PIP )
 		self.mFakeChannel = None
 		self.mPIP_EnableAudio = False
 		self.mFirstTune = 0
 		self.mAsyncTuneTimer = None
+		self.mIndexAvail = 0
 
 		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
-		if self.mChannelList :
-			for channel in self.mChannelList :
-				self.mChannelListHash[ '%d:%d:%d' %( channel.mSid, channel.mTsid, channel.mOnid) ] = channel
+		#if self.mChannelList :
+		#	for channel in self.mChannelList :
+		#		self.mChannelListHash[ '%d:%d:%d' %( channel.mSid, channel.mTsid, channel.mOnid) ] = channel
 	
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mInitialized = True
@@ -298,9 +306,8 @@ class PIPWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
-#		if self.IsActivate( ) == False  :
-#			return
+		if self.IsActivate( ) == False  :
+			return
 
 
 	def onEvent( self, aEvent ) :
@@ -322,6 +329,7 @@ class PIPWindow( BaseWindow ) :
 		LOG_TRACE( 'PIP Window close')
 		#self.mEventBus.Deregister( self )
 
+		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 		self.UpdatePropertyGUI( 'ShowFocusPIP', E_TAG_FALSE )
 
 		if self.mPIP_EnableAudio :
@@ -354,6 +362,11 @@ class PIPWindow( BaseWindow ) :
 
 	def Load( self ) :
 		self.ResetLabel( )
+
+		self.mIndexLimit = 0
+		numList = self.mDataCache.PIP_GetTunableList( )
+		if numList and len( numList ) > 0 :
+			self.mIndexLimit = len( numList )
 
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
@@ -462,15 +475,25 @@ class PIPWindow( BaseWindow ) :
 
 		if not fakeChannel :
 			fakeChannel = self.Channel_GetCurrentByPIP( )
+			#iChannel = self.mDataCache.PIP_GetByNumber( fakeChannel )
 			LOG_TRACE( '---------Channel_GetCurrentByPIP[%s]'% fakeChannel )
+			#fakeChannel = self.mChannelListHash.get( fakeChannel, None )
 
 		if aDir == PREV_CHANNEL_PIP :
+			#fakeChannel = self.PIP_GetPrev( self.mCurrentChannel )
 			if fakeChannel :
-				fakeChannel = self.mDataCache.PIP_GetPrevAvailable( 1 )
+				self.mIndexAvail += 1
+				startTime = time.time()
+				fakeChannel = self.mDataCache.PIP_GetPrevAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
+				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
 
 		elif aDir == NEXT_CHANNEL_PIP :
+			#fakeChannel = self.PIP_GetNext( self.mCurrentChannel )
 			if fakeChannel :
-				fakeChannel = self.mDataCache.PIP_GetNextAvailable( 1 )
+				self.mIndexAvail += 1
+				startTime = time.time()
+				fakeChannel = self.mDataCache.PIP_GetNextAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
+				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
 
 		elif aDir == SWITCH_CHANNEL_PIP :
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -508,19 +531,22 @@ class PIPWindow( BaseWindow ) :
 
 		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s %s]'% ( aDir, fakeChannel, self.mCurrentChannel.mNumber, self.mCurrentChannel.mName ) )
 		if fakeChannel :
+			pChNumber = fakeChannel
+
 			#find iChannel in channelList(tv only)
-			iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel )
+			iChannel = self.mDataCache.PIP_GetByNumber( fakeChannel )
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
 				iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel, True )
 
-			pChNumber = fakeChannel
 			if iChannel :
 				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
 				#label = '%s - %s'% ( pChNumber, iChannel.mName )
 				self.mCtrlLabelChannel.setLabel( label )
 
+				startTime = time.time()
 				self.mFakeChannel = iChannel
 				self.RestartAsyncTune( )
+				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
 
 				pChNumber = iChannel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
@@ -677,8 +703,16 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlImageBasePIP.setHeight( bh )
 		self.mCtrlLabelLock.setWidth( bw )
 		self.mCtrlLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlLabelScramble.setWidth( bw )
+		self.mCtrlLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlLabelNoSignal.setWidth( bw )
+		self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+
+		self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
+
 		self.mCtrlImageFocusNF.setWidth( bw )
 		self.mCtrlImageFocusNF.setHeight( bh )
+
 
 		#osd panel
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
@@ -747,14 +781,15 @@ class PIPWindow( BaseWindow ) :
 
 
 	def StartAsyncTune( self ) :
-		isTune = True
-		if E_FIRST_TUNE_FAST and self.mFirstTune == False :
-			isTune = False
-			self.TuneChannel( )
+		#isTune = True
+		#if E_FIRST_TUNE_FAST and self.mFirstTune == False :
+		#	isTune = False
+		#	self.TuneChannel( )
 
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel, [isTune] )
+		#self.mAsyncTuneTimer = threading.Timer( 1, self.AsyncTuneChannel, [isTune] )
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.TuneChannel )
 		self.mAsyncTuneTimer.start( )
-		self.mFirstTune = True
+		#self.mFirstTune = True
 
 
 	def StopAsyncTune( self ) :
@@ -773,6 +808,7 @@ class PIPWindow( BaseWindow ) :
 
 	def TuneChannel( self ) :
 		try :
+			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 			LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, self.mFakeChannel ) )

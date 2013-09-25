@@ -474,6 +474,9 @@ class NullWindow( BaseWindow ) :
 			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
 			#dialog.doModal( )
 
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )

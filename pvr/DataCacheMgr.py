@@ -72,6 +72,13 @@ def GetInstance( ) :
 	return gDataCacheMgr
 
 
+class CacheChannelPIP( object ) :
+	def __init__( self, aChannel, aPrevKey, aNextKey ) :
+		self.mChannel = aChannel
+		self.mPrevKey = aPrevKey
+		self.mNextKey = aNextKey
+
+
 class CacheChannel( object ) :
 	def __init__( self, aChannel, aPrevKey, aNextKey ) :
 		self.mChannel = aChannel
@@ -150,7 +157,8 @@ class DataCacheMgr( object ) :
 		self.mChangedByViewTimer				= False
 		self.mDelaySettingWindow				= True
 		self.mTimerList							= self.Timer_GetTimerList( )
-		self.mChannelListTunablePIP				= []
+		self.mChannelListPIP					= []
+		self.mChannelListHashPIP				= {}
 
 		self.mRootWindowId						= 0
 		self.mRootWindow							= None
@@ -803,8 +811,8 @@ class DataCacheMgr( object ) :
 
 
 		#reload tunableList for PIP
-		if aSync == 0 and mType == ElisEnum.E_SERVICE_TYPE_TV :
-			self.PIP_SetTunableList( )
+		#if aSync == 0 and mType == ElisEnum.E_SERVICE_TYPE_TV :
+		self.PIP_SetTunableList( )
 
 
 	def LoadZappingmode( self ) :
@@ -2708,27 +2716,81 @@ class DataCacheMgr( object ) :
 
 	def PIP_GetTunableList( self, aTemporaryReload = 0 ) :
 		if aTemporaryReload :
-			tunableList = []
+			tunableList = self.PIP_InitChannel( )
+
+			"""
 			retList = self.mCommander.PIP_GetTunableList( )
 			if retList and len( retList ) > 0 :
 				for item in retList :
 					tunableList.append( item.mParam )
+					iChannel = channelListHash.get( item.mParam, None )
+					if iChannel :
+						tunableList.append( iChannel )
+			"""
 
 			return tunableList
 
 		else :
-			return self.mChannelListTunablePIP
+			return self.mChannelListPIP
+
+
+	def PIP_InitChannel( self ) :
+		channelListPIP = []
+
+		#2.find pip channel in 1
+		aTunableList = self.mCommander.PIP_GetTunableList( )
+
+		if aTunableList and len( aTunableList ) > 0 :
+			#1.current channel in TV
+			currentMode = self.Zappingmode_GetCurrent( )
+			channelList = self.Channel_GetList( )
+			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
+				channelList = self.Channel_GetList( True, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_ALPHABET )
+
+			channelListHash = {}
+			if channelList and len( channelList ) > 0 :
+				for channel in channelList :
+					channelListHash[channel.mNumber] = channel
+
+				for item in aTunableList :
+					iChannel = channelListHash.get( item.mParam, None )
+					if iChannel :
+						channelListPIP.append( iChannel )
+
+		return channelListPIP
 
 
 	def PIP_SetTunableList( self ) :
-		self.mChannelListTunablePIP = []
+		self.mChannelListPIP = self.PIP_InitChannel( )
+		self.mChannelListHashPIP = {}
 
-		retList = self.mCommander.PIP_GetTunableList( )
-		if retList and len( retList ) > 0 :
-			for item in retList :
-				self.mChannelListTunablePIP.append( item.mParam )
+		count = len( self.mChannelListPIP )
+		LOG_TRACE( '-------2-------------count[%d]'% count )
+		if count < 1 :
+			return False
 
-		return self.mChannelListTunablePIP
+		#3.init prev,next
+		prevChannel = self.mChannelListPIP[count-1]
+		for i in range( count ) :
+			channel = self.mChannelListPIP[i]
+			if i+1 < count :
+				nextChannel = self.mChannelListPIP[i+1]
+			else:
+				nextChannel = self.mChannelListPIP[0]
+
+			try :
+				cacheChannel = CacheChannelPIP( channel, prevChannel.mNumber, nextChannel.mNumber )
+				self.mChannelListHashPIP[channel.mNumber] = cacheChannel
+
+				#cacheChannel.mChannel.printdebug( )
+				#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
+
+			except Exception, ex:
+				LOG_ERR( "Exception %s" %ex)
+
+			prevChannel = channel
+
+		return self.mChannelListPIP
 
 
 	def PIP_IsPIPAvailable( self, aNumber ) :
@@ -2745,5 +2807,72 @@ class DataCacheMgr( object ) :
 
 	def PIP_EnableAudio( self, aEnable = True ) :
 		return self.mCommander.PIP_EnableAudio( aEnable )
+
+
+	def PIP_GetPrev( self, aChannel ) :
+		if aChannel	== None or aChannel.mError != 0 :
+			return None
+
+		cacheChannel = self.mChannelListHashPIP.get( aChannel.mNumber, None )
+		if cacheChannel == None :
+			# retry find first channel
+			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
+				last = len( self.mChannelListPIP ) - 1
+				return self.PIP_GetNext( self.mChannelListPIP[last] )
+
+			return None
+
+		prevKey = cacheChannel.mPrevKey
+		channel = self.mChannelListHashPIP.get( prevKey, None )
+		if channel == None :
+			return None
+		#LOG_TRACE('------------ Prev Channel-------------------')
+		#channel.printdebug( )
+		return channel.mChannel
+
+
+	def PIP_GetNext( self, aChannel ) :
+		if aChannel	== None or aChannel.mError != 0 :
+			return None
+
+		cacheChannel = self.mChannelListHashPIP.get(aChannel.mNumber, None)
+		if cacheChannel == None :
+			# retry find end channel
+			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
+				cacheChannel = self.mChannelListHashPIP.get( self.mChannelListPIP[0].mNumber, None )
+				if cacheChannel == None :
+					return None
+				prevKey = cacheChannel.mPrevKey
+				channel = self.mChannelListHashPIP.get( prevKey, None )
+				if channel == None :
+					return None
+				return channel.mChannel
+
+			return None
+
+		nextKey = cacheChannel.mNextKey
+		channel = self.mChannelListHashPIP.get( nextKey, None )
+		if channel == None :
+			return None
+		#LOG_TRACE('------------ Next Channel-------------------')
+		#channel.printdebug( )
+		return channel.mChannel
+
+
+	def PIP_GetByNumber( self, aNumber, aUseDB = False ) :
+		if aUseDB :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				channelDB = ElisChannelDB( )
+				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.Close( )
+				return channel
+
+		else :
+			cacheChannel = self.mChannelListHashPIP.get( aNumber, None )
+			if cacheChannel == None :
+				return None
+
+			channel = cacheChannel.mChannel
+			return channel
 
 
