@@ -6516,14 +6516,6 @@ Search for window name
 					<posy>131</posy>
 					<visible>substring(Window.Property(OpenPIP),true)</visible>
 					<control type="group">
-						<control type="image" id="4701001">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>265</height>
-							<texture>black-back_noAlpha.png</texture>
-							<visible>substring(Window.Property(BlankPIP),true)</visible>
-						</control>
 						<control type="image" id="4701002">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -6531,28 +6523,6 @@ Search for window name
 							<height>265</height>
 							<texture border="5">StackFO_white2.png</texture>
 						</control>
-						<control type="image" id="4701003">
-							<posx>5</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>OverlayLocked.png</texture>
-							<visible>substring(Window.Property(iLockPIP),true)</visible>
-						</control>
-						<control type="label" id="4701004">
-							<posx>10</posx>
-							<posy>-30</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font12</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>SCRIPT1014</label>
-							<visible>Control.IsVisible(4701003)</visible>
-						</control>
-
 					</control>
 					<control type="group" id="4702000">
 						<posx>0</posx>
@@ -6894,14 +6864,47 @@ Search for window name
 				-->
 				<texture>video_pig_overlay.png</texture>
 			</control>
-			<control type="image" id="18899">
-				<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(OpenPIP),true)</visible>
-				<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4700000)]</visible-->
-				<posx>857</posx>
-				<posy>170</posy>
-				<width>352</width>
-				<height>198</height>
-				<texture>video_pig_overlay.png</texture>
+			<control type="group" id="1008899">
+				<posx>744</posx>
+				<posy>136</posy>
+				<control type="image" id="1002001">
+					<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(OpenPIP),true)</visible>
+					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4700000)]</visible-->
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>328</width>
+					<height>170</height>
+					<texture>video_pig_overlay.png</texture>
+				</control>
+				<control type="image" id="1002002">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>328</width>
+					<height>170</height>
+					<texture>black-back_noAlpha.png</texture>
+					<visible>substring(Window.Property(BlankPIP),true)</visible>
+				</control>
+				<control type="image" id="1002003">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>OverlayLocked.png</texture>
+					<visible>substring(Window.Property(iLockPIP),true)</visible>
+				</control>
+				<control type="label" id="1002004">
+					<posx>10</posx>
+					<posy>-30</posy>
+					<width>425</width>
+					<height>30</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1014</label>
+					<visible>Control.IsVisible(1002003)</visible>
+				</control>
 			</control>
 		</control>
 

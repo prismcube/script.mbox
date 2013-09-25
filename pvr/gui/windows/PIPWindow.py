@@ -5,9 +5,9 @@ E_PIP_WINDOW_BASE_ID		=  WinMgr.WIN_ID_PIP_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_
 CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
 
 CTRL_ID_GROUP_PIP			= E_PIP_WINDOW_BASE_ID + 1000
-CTRL_ID_IMAGE_NFOCUSED		= E_PIP_WINDOW_BASE_ID + 1001
+#CTRL_ID_IMAGE_NFOCUSED		= E_PIP_WINDOW_BASE_ID + 1001
 CTRL_ID_IMAGE_FOCUSED		= E_PIP_WINDOW_BASE_ID + 1002
-CTRL_ID_LABEL_LOCK			= E_PIP_WINDOW_BASE_ID + 1004
+#CTRL_ID_LABEL_LOCK			= E_PIP_WINDOW_BASE_ID + 1004
 
 CTRL_ID_GROUP_OSD_STATUS	= E_PIP_WINDOW_BASE_ID + 2000
 CTRL_ID_IMAGE_OSD_STATUS	= E_PIP_WINDOW_BASE_ID + 2002
@@ -29,7 +29,11 @@ CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
 CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
 CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
 
-CTRL_ID_IMAGE_BASE_PIP		= 18899
+CTRL_ID_GROUP_BASE_PIP		= E_BASE_WINDOW_ID + 8899
+CTRL_ID_IMAGE_BASE_PIP		= E_BASE_WINDOW_ID + 2001
+CTRL_ID_IMAGE_NFOCUSED		= E_BASE_WINDOW_ID + 2002
+CTRL_ID_LABEL_LOCK			= E_BASE_WINDOW_ID + 2004
+
 
 E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
 CONTEXT_ACTION_DONE_PIP		= 0
@@ -147,6 +151,7 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlImageArrowBottom = self.getControl( CTRL_ID_IMAGE_ARROW_BOTTOM )
 		self.mCtrlGroupOsdStatus   = self.getControl( CTRL_ID_GROUP_OSD_STATUS )
 		self.mCtrlImageOsdStatus   = self.getControl( CTRL_ID_IMAGE_OSD_STATUS )
+		self.mCtrlGroupBasePIP     = self.getControl( CTRL_ID_GROUP_BASE_PIP )
 		self.mCtrlImageBasePIP     = self.getControl( CTRL_ID_IMAGE_BASE_PIP )
 		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
 
@@ -328,6 +333,8 @@ class PIPWindow( BaseWindow ) :
 				self.mPIPStart = False
 			LOG_TRACE( '---------pip stop ret[%s]'% ret )
 			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
 
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
@@ -508,16 +515,16 @@ class PIPWindow( BaseWindow ) :
 
 			pChNumber = fakeChannel
 			if iChannel :
+				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
+				#label = '%s - %s'% ( pChNumber, iChannel.mName )
+				self.mCtrlLabelChannel.setLabel( label )
+
 				self.mFakeChannel = iChannel
 				self.RestartAsyncTune( )
 
 				pChNumber = iChannel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					pChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
-
-				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
-				#label = '%s - %s'% ( pChNumber, iChannel.mName )
-				self.mCtrlLabelChannel.setLabel( label )
 
 			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
@@ -653,25 +660,25 @@ class PIPWindow( BaseWindow ) :
 		#ch name
 		self.mCtrlLabelChannel.setWidth( w )
 
-		self.mCtrlLabelLock.setWidth( w )
-		self.mCtrlLabelLock.setPosition( 0, int( ( h - 10 ) / 2 ) )
-
 		#pip panel
 		self.mCtrlGroupPIP.setPosition( x, y )
 
 		self.mCtrlGroupPIP.setWidth( w )
 		self.mCtrlGroupPIP.setHeight( h )
 
-		self.mCtrlImageFocusNF.setWidth( w )
-		self.mCtrlImageFocusNF.setHeight( h )
-
 		self.mCtrlImageFocusFO.setWidth( w )
 		self.mCtrlImageFocusFO.setHeight( h )
 
 		#base overlay for radio mode
-		self.mCtrlImageBasePIP.setPosition( x, y )
-		self.mCtrlImageBasePIP.setWidth( w - 10 )
-		self.mCtrlImageBasePIP.setHeight( h - 10 )
+		bh = h - 10
+		bw = w - 10
+		self.mCtrlGroupBasePIP.setPosition( x, y )
+		self.mCtrlImageBasePIP.setWidth( bw )
+		self.mCtrlImageBasePIP.setHeight( bh )
+		self.mCtrlLabelLock.setWidth( bw )
+		self.mCtrlLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlImageFocusNF.setWidth( bw )
+		self.mCtrlImageFocusNF.setHeight( bh )
 
 		#osd panel
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
@@ -745,7 +752,7 @@ class PIPWindow( BaseWindow ) :
 			isTune = False
 			self.TuneChannel( )
 
-		self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel, [isTune] )
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel, [isTune] )
 		self.mAsyncTuneTimer.start( )
 		self.mFirstTune = True
 
@@ -766,11 +773,11 @@ class PIPWindow( BaseWindow ) :
 
 	def TuneChannel( self ) :
 		try :
+			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 			LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, self.mFakeChannel ) )
 			if ret :
 				self.mPIPStart = True
-				self.mCurrentChannel = self.mFakeChannel
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
 					self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )
@@ -780,6 +787,7 @@ class PIPWindow( BaseWindow ) :
 
 			else :
 				LOG_ERR('Tune failed')
+				self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
