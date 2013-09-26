@@ -16,6 +16,7 @@ if sys.version_info < (2, 7):
 else:
     import json as simplejson
 
+
 class Action(object) :
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
@@ -189,7 +190,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mIsActivate = False
 		self.mRelayAction = None
 		self.setProperty( 'IsCustomWindow', 'True' )
-	
+
 
 	@classmethod
 	def GetName( cls ):
@@ -313,6 +314,9 @@ class BaseWindow( BaseObjectWindow ) :
 
 		self.setProperty( 'TVRadio', radio )
 		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( )
+
 		return radio
 
 
@@ -464,6 +468,9 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
+
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 
 	def CheckMediaCenter( self ) :

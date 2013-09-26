@@ -36,12 +36,11 @@ CTRL_ID_LABEL_LOCK			= E_BASE_WINDOW_ID + 2004
 CTRL_ID_LABEL_SCRAMBLE		= E_BASE_WINDOW_ID + 2005
 CTRL_ID_LABEL_NOSIGNAL		= E_BASE_WINDOW_ID + 2006
 
-
 E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
 CONTEXT_ACTION_DONE_PIP		= 0
 CONTEXT_ACTION_MOVE_PIP		= 1
 CONTEXT_ACTION_SIZE_PIP		= 2
-CONTEXT_ACTION_ACTIVE_PIP	= 3
+CONTEXT_ACTION_SWITCH_PIP	= 3
 CONTEXT_ACTION_DEFAULT_PIP 	= 4
 CONTEXT_ACTION_STOP_PIP	= 5
 
@@ -50,91 +49,26 @@ E_POSY_ABILITY   = 5
 E_WIDTH_ABILITY  = 20
 E_HEIGHT_ABILITY = 10
 
-
 CURR_CHANNEL_PIP = 0
 PREV_CHANNEL_PIP = 1
 NEXT_CHANNEL_PIP = 2
 SWITCH_CHANNEL_PIP = 3
 
-'''
-class PIPWindow( BaseWindow ) :
-	def __init__( self, *args, **kwargs ) :
-		BaseWindow.__init__( self, *args, **kwargs )
-		self.mLock = thread.allocate_lock( )
-		self.mPIPStart = False
-	
-
-	def onInit( self ) :
-		self.SetActivate( True )
-		self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
-		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
-		#self.SetPipScreen( )
-
-
-	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
-		self.GetFocusId( )
-		actionId = aAction.getId( )
-		if self.GlobalAction( actionId ) :
-			return
-
-		#LOG_TRACE('onAction=%d' %actionId )
-
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			return
-			#if self.mFocusId  == CTRL_ID_BUTTON_NEXT_PIP :
-			#	self.Tune( )
-
-		else :
-			self.NotAvailAction( )
-			LOG_TRACE( 'unknown key[%s]'% actionId )
-
-
-	def onClick( self, aControlId ) :
-		LOG_TRACE( 'onClick' )
-		#if aControlId  == LIST_ID_BIG_CHANNEL :
-		#	self.Tune( )
-
-
-	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
-
-	def Close( self ) :
-		LOG_TRACE( 'PIP Window close')
-		#self.mEventBus.Deregister( self )
-		ret = self.mDataCache.PIP_Stop( )
-		if ret :
-			self.mPIPStart = False
-		LOG_TRACE( '---------pip stop ret[%s]'% ret )
-
-		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-		#self.CloseDialog( )
-
-
-
-#-------------------------------------------------------------------------------------------------
-class DialogTestCode( BaseDialog ) :
-	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )
-'''
+PIP_CHECKWINDOW = [
+	WinMgr.WIN_ID_NULLWINDOW,
+	WinMgr.WIN_ID_MAINMENU,
+	WinMgr.WIN_ID_TIMESHIFT_PLATE,
+	WinMgr.WIN_ID_LIVE_PLATE
+]
 
 
 class PIPWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mLock = thread.allocate_lock( )
 		self.mPIPStart = False
 		self.mCurrentChannel = ElisIChannel( )
 		self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
+		self.mCurrentChannel.mError = -1
 
 
 	def onInit( self ) :
@@ -145,10 +79,10 @@ class PIPWindow( BaseWindow ) :
 		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
 		#self.SetRadioScreen( )
 
-		self.mCtrlGroupPIP     = self.getControl( CTRL_ID_GROUP_PIP )
-		self.mCtrlLabelChannel = self.getControl( CTRL_ID_LABEL_CHANNEL )
-		self.mCtrlImageFocusNF = self.getControl( CTRL_ID_IMAGE_NFOCUSED )
-		self.mCtrlImageFocusFO = self.getControl( CTRL_ID_IMAGE_FOCUSED )
+		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
+		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
+		self.mCtrlImageFocusNF     = self.getControl( CTRL_ID_IMAGE_NFOCUSED )
+		self.mCtrlImageFocusFO     = self.getControl( CTRL_ID_IMAGE_FOCUSED )
 		self.mCtrlImageArrowLeft   = self.getControl( CTRL_ID_IMAGE_ARROW_LEFT )
 		self.mCtrlImageArrowRight  = self.getControl( CTRL_ID_IMAGE_ARROW_RIGHT )
 		self.mCtrlImageArrowTop    = self.getControl( CTRL_ID_IMAGE_ARROW_TOP )
@@ -162,25 +96,16 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
-		#self.mServiceType	 = self.mCurrentMode.mServiceType
-		#LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 
 		self.mChannelList = []
 		self.mChannelListHash = {}
 		self.mTunableList = []
 		self.mViewMode = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent = deepcopy( E_DEFAULT_POSITION_PIP )
-		self.mFakeChannel = None
 		self.mPIP_EnableAudio = False
-		self.mFirstTune = 0
 		self.mAsyncTuneTimer = None
 		self.mIndexAvail = 0
-
-		#LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
-		
-		#if self.mChannelList :
-		#	for channel in self.mChannelList :
-		#		self.mChannelListHash[ '%d:%d:%d' %( channel.mSid, channel.mTsid, channel.mOnid) ] = channel
+		self.mFakeChannel = self.mCurrentChannel
 	
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mInitialized = True
@@ -199,12 +124,12 @@ class PIPWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 	
-		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
 
-		LOG_TRACE('onAction[%d] viewMode[%s] focus[%s]'% ( actionId, self.mViewMode, self.mFocusId ) )
+		#self.GetFocusId( )
+		#LOG_TRACE('onAction[%d] viewMode[%s] focus[%s]'% ( actionId, self.mViewMode, self.mFocusId ) )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
@@ -218,14 +143,10 @@ class PIPWindow( BaseWindow ) :
 			self.DoSettingToPIP( actionId )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			ret = self.DoSettingToPIP( actionId )
-#			if not ret :
-#				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
+			self.DoSettingToPIP( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			ret = self.DoSettingToPIP( actionId )
-#			if not ret :
-#				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			self.DoSettingToPIP( actionId )
 
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
@@ -237,33 +158,16 @@ class PIPWindow( BaseWindow ) :
 			LOG_TRACE( 'Not supported Radio' )
 			return
 
-			"""
-			self.mEventBus.Deregister( self )
-
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode == ElisEnum.E_MODE_LIVE :
-				ret = self.ToggleTVRadio( )
-				if ret :
-					self.SetRadioScreen( self.mServiceType )
-
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
-					dialog.doModal( )
-
-			self.mEventBus.Register( self )			
-			"""
-
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
+
+		else :
+			self.NotAvailAction( )
+			LOG_TRACE( 'unknown key[%s]'% actionId )
 
 #		elif actionId == Action.ACTION_CONTEXT_MENU :
 #			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 #				self.ShowContextMenu( )
-
-		else :
-			#self.NotAvailAction( )
-			LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
 	def onClick( self, aControlId ) :
@@ -318,12 +222,6 @@ class PIPWindow( BaseWindow ) :
 				LOG_TRACE( 'record start/stop event' )
 				#ToDO
 
-			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-				if self.mFirstTune == True :
-					self.mFirstTune = False
-					LOG_TRACE( '--------------- First Tune -----------------' )
-					#ToDO
-
 
 	def Close( self, aStopPIP = True ) :
 		LOG_TRACE( 'PIP Window close')
@@ -336,13 +234,7 @@ class PIPWindow( BaseWindow ) :
 			self.mDataCache.PIP_EnableAudio( False )
 
 		if aStopPIP :
-			ret = self.mDataCache.PIP_Stop( )
-			if ret :
-				self.mPIPStart = False
-			LOG_TRACE( '---------pip stop ret[%s]'% ret )
-			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
-			self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
-			self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
+			self.PIP_Stop( )
 
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
@@ -353,7 +245,36 @@ class PIPWindow( BaseWindow ) :
 		thread.start( )
 
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-#		self.CloseDialog( )
+
+
+	def PIP_Stop( self ) :
+		ret = self.mDataCache.PIP_Stop( )
+		LOG_TRACE( '---------PIP_Stop ret[%s]'% ret )
+		if ret :
+			self.mPIPStart = False
+			self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
+			self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
+
+
+	def PIP_Check( self, aStop = False ) :
+		if not E_V1_2_APPLY_PIP :
+			return
+
+		if aStop or self.mDataCache.GetMediaCenter( ) :
+			self.PIP_Stop( )
+			return
+
+		if self.GetPIPStatus( ) :
+			isShow = False
+			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
+				isShow = True
+
+			ret = self.mDataCache.PIP_AVBlank( not isShow )
+			self.UpdatePropertyGUI( 'OpenPIP', '%s'% isShow )
+			LOG_TRACE( 'GetLastWindowID[%s] PIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
+
+		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mPIPStart, self.getProperty( 'OpenPIP' ) ) )
 
 
 	def GetPIPStatus( self ) :
@@ -363,10 +284,12 @@ class PIPWindow( BaseWindow ) :
 	def Load( self ) :
 		self.ResetLabel( )
 
-		self.mIndexLimit = 0
+		"""
+		self.mIndexLimit = 1
 		numList = self.mDataCache.PIP_GetTunableList( )
 		if numList and len( numList ) > 0 :
 			self.mIndexLimit = len( numList )
+		"""
 
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
@@ -470,30 +393,24 @@ class PIPWindow( BaseWindow ) :
 
 
 	def ChannelTuneToPIP( self, aDir ) :
-		fakeChannel = self.mCurrentChannel.mNumber
+		fakeChannel = self.mCurrentChannel
 		self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
 
-		if not fakeChannel :
-			fakeChannel = self.Channel_GetCurrentByPIP( )
-			#iChannel = self.mDataCache.PIP_GetByNumber( fakeChannel )
-			LOG_TRACE( '---------Channel_GetCurrentByPIP[%s]'% fakeChannel )
-			#fakeChannel = self.mChannelListHash.get( fakeChannel, None )
+		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
+			chNumber = self.Channel_GetCurrentByPIP( )
+			fakeChannel = self.mDataCache.PIP_GetByNumber( chNumber )
+			if fakeChannel :
+				LOG_TRACE( '---load------Channel_GetCurrentByPIP[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
 
 		if aDir == PREV_CHANNEL_PIP :
-			#fakeChannel = self.PIP_GetPrev( self.mCurrentChannel )
-			if fakeChannel :
-				self.mIndexAvail += 1
-				startTime = time.time()
-				fakeChannel = self.mDataCache.PIP_GetPrevAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
-				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
+			fakeChannel = self.mDataCache.PIP_GetPrev( self.mFakeChannel )
+			#self.mIndexAvail += 1
+			#fakeChannel = self.mDataCache.PIP_GetPrevAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
 
 		elif aDir == NEXT_CHANNEL_PIP :
-			#fakeChannel = self.PIP_GetNext( self.mCurrentChannel )
-			if fakeChannel :
-				self.mIndexAvail += 1
-				startTime = time.time()
-				fakeChannel = self.mDataCache.PIP_GetNextAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
-				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
+			fakeChannel = self.mDataCache.PIP_GetNext( self.mFakeChannel )
+			#self.mIndexAvail += 1
+			#fakeChannel = self.mDataCache.PIP_GetNextAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
 
 		elif aDir == SWITCH_CHANNEL_PIP :
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -508,51 +425,49 @@ class PIPWindow( BaseWindow ) :
 
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if fakeChannel and iChannel :
-				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel, ElisEnum.E_SERVICE_TYPE_TV )
+				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 				if not ret :
 					LOG_TRACE( 'Fail to switch' )
-					if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) :
+					if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) and \
+					   self.getProperty( 'PIPSignal' ) == E_TAG_TRUE :
 						self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
 					return
 
-				fakeChannel = iChannel.mNumber
+				fakeChannel = iChannel
 
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mPIPStart :
 				LOG_TRACE( '--------Already started PIP' )
-				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) :
+				self.mDataCache.PIP_AVBlank( False )
+
+				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) and \
+				   self.getProperty( 'PIPSignal' ) == E_TAG_TRUE :
 					self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
 
 				return True
 
 			if not fakeChannel :
 				self.Close( )
+				lblTitle = MR_LANG( 'Attention' )
+				lblMsg = MR_LANG( 'Can not open PIP, Tunable not found' )
+				dialog.SetDialogProperty( lblTitle, lblMsg )
+				dialog.doModal( )
 				return False
 
 		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s %s]'% ( aDir, fakeChannel, self.mCurrentChannel.mNumber, self.mCurrentChannel.mName ) )
 		if fakeChannel :
-			pChNumber = fakeChannel
+			LOG_TRACE('----------fakeChannel[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
+			label = 'PIP - %s'% fakeChannel.mName
+			self.mCtrlLabelChannel.setLabel( label )
 
-			#find iChannel in channelList(tv only)
-			iChannel = self.mDataCache.PIP_GetByNumber( fakeChannel )
-			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-				iChannel = self.mDataCache.Channel_GetByNumber( fakeChannel, True )
-
-			if iChannel :
-				label = '%s - %s'% ( EnumToString( 'type', ElisEnum.E_SERVICE_TYPE_TV ).upper(), iChannel.mName )
-				#label = '%s - %s'% ( pChNumber, iChannel.mName )
-				self.mCtrlLabelChannel.setLabel( label )
-
-				startTime = time.time()
-				self.mFakeChannel = iChannel
-				self.RestartAsyncTune( )
-				LOG_TRACE( '-------------excute time[%s]'% ( time.time() - startTime ) )
-
-				pChNumber = iChannel.mNumber
-				if E_V1_2_APPLY_PRESENTATION_NUMBER :
-					pChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
+			pChNumber = fakeChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				pChNumber = self.mDataCache.CheckPresentationNumber( fakeChannel )
 
 			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
+
+			self.mFakeChannel = fakeChannel
+			self.RestartAsyncTune( )
 
 		return True
 
@@ -587,7 +502,7 @@ class PIPWindow( BaseWindow ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Set move to PIP' ), CONTEXT_ACTION_MOVE_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Set size to PIP' ), CONTEXT_ACTION_SIZE_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Active screen to PIP' ), CONTEXT_ACTION_ACTIVE_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Active screen to PIP' ), CONTEXT_ACTION_SWITCH_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Load to Default' ), CONTEXT_ACTION_DEFAULT_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Stop PIP' ), CONTEXT_ACTION_STOP_PIP ) )
 
@@ -611,7 +526,7 @@ class PIPWindow( BaseWindow ) :
 		elif aAction == CONTEXT_ACTION_SIZE_PIP :
 			self.UpdatePropertyGUI( 'SettingPIP', E_TAG_TRUE ) 
 
-		elif aAction == CONTEXT_ACTION_ACTIVE_PIP :
+		elif aAction == CONTEXT_ACTION_SWITCH_PIP :
 			pass
 
 		elif aAction == CONTEXT_ACTION_DEFAULT_PIP :
@@ -629,7 +544,7 @@ class PIPWindow( BaseWindow ) :
 		if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 			return ret
 
-		elif self.mViewMode == CONTEXT_ACTION_ACTIVE_PIP :
+		elif self.mViewMode == CONTEXT_ACTION_SWITCH_PIP :
 			#ToDO
 			return ret
 
@@ -781,15 +696,8 @@ class PIPWindow( BaseWindow ) :
 
 
 	def StartAsyncTune( self ) :
-		#isTune = True
-		#if E_FIRST_TUNE_FAST and self.mFirstTune == False :
-		#	isTune = False
-		#	self.TuneChannel( )
-
-		#self.mAsyncTuneTimer = threading.Timer( 1, self.AsyncTuneChannel, [isTune] )
 		self.mAsyncTuneTimer = threading.Timer( 0.5, self.TuneChannel )
 		self.mAsyncTuneTimer.start( )
-		#self.mFirstTune = True
 
 
 	def StopAsyncTune( self ) :
@@ -799,12 +707,6 @@ class PIPWindow( BaseWindow ) :
 
 		self.mAsyncTuneTimer = None
 
-
-	def AsyncTuneChannel( self, aTune ) :
-		if aTune :
-			self.TuneChannel( )
-
-		self.mFirstTune = False
 
 	def TuneChannel( self ) :
 		try :
@@ -820,10 +722,12 @@ class PIPWindow( BaseWindow ) :
 				else :
 					self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
 					self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
+					self.UpdatePropertyGUI( 'PIPSignal', E_TAG_TRUE )
 
 			else :
 				LOG_ERR('Tune failed')
 				self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
+				self.UpdatePropertyGUI( 'PIPSignal', E_TAG_FALSE )
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

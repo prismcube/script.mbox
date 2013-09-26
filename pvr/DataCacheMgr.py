@@ -2809,6 +2809,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_EnableAudio( aEnable )
 
 
+	def PIP_StopIfStarted( self ) :
+		return self.mCommander.PIP_StopIfStarted( )
+
+
+	def PIP_AVBlank( self, aBlank ) :
+		return self.mCommander.PIP_AVBlank( aBlank )
+
+
 	def PIP_GetPrev( self, aChannel ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None

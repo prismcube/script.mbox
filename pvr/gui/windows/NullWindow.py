@@ -381,7 +381,7 @@ class NullWindow( BaseWindow ) :
 			if actionId == Action.ACTION_MOVE_RIGHT :
 				status = self.mDataCache.Player_GetStatus( )
 				if status.mMode == ElisEnum.E_MODE_LIVE :
-					self.Close( False )
+					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
 					return
 
@@ -463,16 +463,12 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.Close( False )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
-			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
-			#dialog.doModal( )
+			if E_V1_2_APPLY_PIP :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.CloseToPIP( )
-
-			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
-			#dialog.doModal( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -860,7 +856,7 @@ class NullWindow( BaseWindow ) :
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
-	def Close( self, aPIPClose = True ) :
+	def Close( self ) :
 		self.mEnableBlickingTimer = False	
 		self.mEventBus.Deregister( self )
 		self.StopAsyncTimerByBackKey( )
@@ -869,9 +865,6 @@ class NullWindow( BaseWindow ) :
 
 		self.StopBlinkingIconTimer( )
 		self.SetBlinkingProperty( 'None' )
-
-		if aPIPClose :
-			self.CloseToPIP( )
 
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
@@ -885,13 +878,6 @@ class NullWindow( BaseWindow ) :
 				self.mCommander.AppHBBTV_Ready( 0 )
 				self.mHBBTVReady = False 
 				LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
-
-
-	def CloseToPIP( self ) :
-		showPip = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).GetPIPStatus( )
-		if showPip :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).Close( )
-			LOG_TRACE( '------------ close pip' )
 
 
 	def ForceSetCurrent( self ) :
