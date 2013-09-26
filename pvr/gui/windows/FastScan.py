@@ -23,7 +23,6 @@ class FastScan( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_FAST_SCAN_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Fast Scan') )		
-		#self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Fast Scan' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
@@ -146,8 +145,7 @@ class FastScan( SettingWindow ) :
 			nameList = []
 
 			for provider in root.findall( 'Provider' ) :
-				for name in provider.findall( 'OPDescription' ) :
-					#print 'dhkim test OPDescription = %s' % name.text
+				for name in provider.findall( 'PidDescription' ) :
 					nameList.append( name.text.encode( 'utf-8' ) )
 
 			if len( nameList ) > 0 :
