@@ -272,6 +272,7 @@ class PIPWindow( BaseWindow ) :
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			self.UpdatePropertyGUI( 'OpenPIP', '%s'% isShow )
+			self.UpdatePropertyGUI( 'ShowNamePIP', '%s'% ( not isShow ) )
 			LOG_TRACE( 'GetLastWindowID[%s] PIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
 
 		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mPIPStart, self.getProperty( 'OpenPIP' ) ) )
@@ -476,6 +477,8 @@ class PIPWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( 'SetContextAction', '' )
 		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'ShowOSDStatus', E_TAG_TRUE )
+		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_TRUE )
+
 		time.sleep( 0.2 )
 		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
 

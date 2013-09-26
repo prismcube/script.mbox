@@ -6896,6 +6896,7 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel]</label>
+					<visible>substring(Window.Property(ShowNamePIP),true)</visible>
 				</control>
 
 				<control type="image" id="1002003">

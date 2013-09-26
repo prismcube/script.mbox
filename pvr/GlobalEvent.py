@@ -272,6 +272,7 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
 
 		self.mDataCache.InitBookmarkButton( )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :

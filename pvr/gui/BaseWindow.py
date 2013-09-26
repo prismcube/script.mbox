@@ -314,8 +314,6 @@ class BaseWindow( BaseObjectWindow ) :
 
 		self.setProperty( 'TVRadio', radio )
 		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
-		import pvr.gui.WindowMgr as WinMgr
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( )
 
 		return radio
 

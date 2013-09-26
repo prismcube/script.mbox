@@ -180,6 +180,7 @@ class WindowMgr( object ) :
 						self.mWindows[aWindowId].PreAction( )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
 					self.mWindows[aWindowId].onInit( )
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
