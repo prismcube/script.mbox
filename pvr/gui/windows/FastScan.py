@@ -3,7 +3,7 @@ from elementtree import ElementTree
 
 E_FAST_SCAN_BASE_ID = WinMgr.WIN_ID_FAST_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
-FILE_PROVIDER	= '/config/Provider.xml'
+FILE_PROVIDER	= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/Provider.xml'
 
 
 class FastScan( SettingWindow ) :
