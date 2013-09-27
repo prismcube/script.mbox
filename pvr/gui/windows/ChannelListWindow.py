@@ -177,7 +177,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_DeleteAll_Fav = False
 		self.mTimerListHash = {}
 		self.mLastChannel = None
-		self.mLastChannelList = []
+		self.mLastChannelListHash = {}
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -676,8 +676,11 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
-				self.mLastChannelList = deepcopy( self.mChannelList )
+
+				for iChannel in self.mChannelList :
+					self.mLastChannelListHash[iChannel.mNumber] = iChannel
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
+
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if not iChannel :
@@ -709,7 +712,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				ret = self.mDataCache.Channel_Backup( )
 				#LOG_TRACE( 'channelBackup[%s]'% ret )
-
 
 			except Exception, e :
 				LOG_TRACE( 'Error except[%s]'% e )
@@ -1085,6 +1087,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mSetMarkCount = 0
 			self.mDataCache.Channel_ResetOldChannelList( )
 			self.mCtrlListCHList.reset( )
+
 			self.UpdateChannelList( )
 
 			#path tree, Mainmenu/Submanu
@@ -1431,12 +1434,12 @@ class ChannelListWindow( BaseWindow ) :
 		isChange = False
 		lastCount = 0
 		currCount = 0
-		if self.mLastChannelList :
-			lastCount = len( self.mLastChannelList )
-		if self.mChannelList :
-			currCount = len( self.mChannelList )
+		if self.mLastChannelListHash :
+			lastCount = len( self.mLastChannelListHash )
+		if self.mChannelListHash :
+			currCount = len( self.mChannelListHash )
 
-		if lastCount != currCount or self.mLastChannelList != self.mChannelList :
+		if lastCount != currCount or self.mLastChannelListHash != self.mChannelListHash :
 			isChange = True
 
 		LOG_TRACE( '-----------refresh isChange[%s] lastCh[%s]'% ( isChange, self.mCurrentChannel ) )
