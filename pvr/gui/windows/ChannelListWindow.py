@@ -454,7 +454,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListHash[chNumber] = iChannel
 				self.mChannelListForMove.append( chNumber )
 
-				channelKey = '%d:%d:%d'% ( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+				channelKey = '%d:%d:%d:%d'% ( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 				self.mChannelListHashIDs[channelKey] = iChannel
 
 		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
@@ -466,23 +466,23 @@ class ChannelListWindow( BaseWindow ) :
 
 		if timerList and len( timerList ) > 0 :
 			for timer in timerList :
-				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
+				timerKey = '%d:%d:%d:%d'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid )
 				self.mTimerListHash[timerKey] = timer
 				LOG_TRACE( '---------timerKey[%s] tch[%s] tName[%s]'% ( timerKey, timer.mChannelNo, timer.mName ) )
 
 		LOG_TRACE( '-------------timer hash len[%s]'% len( self.mTimerListHash ) )
 
 
-	def GetTimerByIDs( self, aSid, aTsid, aOnid ) :
+	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
 		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
 			return None
-		return self.mTimerListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aSid, aTsid, aOnid ) :
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid ) :
 		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
 			return None
-		return self.mChannelListHashIDs.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+		return self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
 	def Initialize( self ):
@@ -1451,9 +1451,9 @@ class ChannelListWindow( BaseWindow ) :
 		if lastCh :
 			LOG_TRACE( '--------last ch[%s] name[%s]'% ( lastCh.mNumber, lastCh.mName ) )
 
-			fChannel = self.GetChannelByIDs( lastCh.mSid, lastCh.mTsid, lastCh.mOnid )
+			fChannel = self.GetChannelByIDs( lastCh.mNumber, lastCh.mSid, lastCh.mTsid, lastCh.mOnid )
 			if not fChannel :
-				#delete(skip)? then current is next
+				#delete(skip)? then current is prev(array) ch
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					idx = int( lastCh.mPresentationNumber ) - 1
 					if idx < len( self.mChannelList ) :
@@ -1716,8 +1716,9 @@ class ChannelListWindow( BaseWindow ) :
 		iChannelIdx = 0
 		if E_V1_2_APPLY_PRESENTATION_NUMBER :
 			if self.mNavChannel :
-				iChannel = self.GetChannelByIDs( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
+				iChannel = self.GetChannelByIDs( self.mNavChannel.mNumber, self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
 				if iChannel :
+					#find array index
 					iChannelIdx = int( iChannel.mPresentationNumber ) - 1
 
 		else :
@@ -1726,7 +1727,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mNavChannel :
 					if iChannel.mServiceType == self.mNavChannel.mServiceType and \
 					   iChannel.mSid == self.mNavChannel.mSid and iChannel.mTsid == self.mNavChannel.mTsid and \
-					   iChannel.mOnid == self.mNavChannel.mOnid :
+					   iChannel.mOnid == self.mNavChannel.mOnid and iChannel.mNumber == self.mNavChannel.mNumber :
 						isFind = True
 						break
 
@@ -2564,7 +2565,7 @@ class ChannelListWindow( BaseWindow ) :
 				numList.append( chNum )
 
 				if not isIncludeTimer :
-					iTimer = self.GetTimerByIDs( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+					iTimer = self.GetTimerByIDs( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 					if iTimer :
 						isIncludeTimer = True
 						LOG_TRACE( '------------exist timerCh[%s %s] iChannel[%s %s]'% ( iTimer.mChannelNo, iTimer.mName, iChannel.mNumber, iChannel.mName ) )
