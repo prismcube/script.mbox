@@ -145,7 +145,7 @@ class FastScan( SettingWindow ) :
 			nameList = []
 
 			for provider in root.findall( 'Provider' ) :
-				for name in provider.findall( 'PidDescription' ) :
+				for name in provider.findall( 'OPDescription' ) :
 					nameList.append( name.text.encode( 'utf-8' ) )
 
 			if len( nameList ) > 0 :
