@@ -153,6 +153,7 @@ class DataCacheMgr( object ) :
 
 		self.mRootWindowId						= 0
 		self.mRootWindow							= None
+		self.mHasLinkageService					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1095,6 +1096,9 @@ class DataCacheMgr( object ) :
 				if cacheChannel :
 					self.mCurrentChannel = cacheChannel.mChannel
 					ret = True
+
+		if ret == True : #Reset LinkageService
+			self.mHasLinkageService = False
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
@@ -2677,4 +2681,12 @@ class DataCacheMgr( object ) :
 
 	def GetDelaySettingWindow( self ) :
 		return self.mDelaySettingWindow
+
+
+	def SetLinkageService( self, aBool ) :
+		self.mHasLinkageService = aBool
+
+
+	def GetLinkageService( self ) :
+		return self.mHasLinkageService
 
