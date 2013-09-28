@@ -3,7 +3,7 @@ from elementtree import ElementTree
 
 E_FAST_SCAN_BASE_ID = WinMgr.WIN_ID_FAST_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 
-FILE_PROVIDER	= '/config/Provider.xml'
+FILE_PROVIDER	= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/Provider.xml'
 
 
 class FastScan( SettingWindow ) :
@@ -23,7 +23,6 @@ class FastScan( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_FAST_SCAN_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Fast Scan') )		
-		#self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Fast Scan' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
@@ -147,7 +146,6 @@ class FastScan( SettingWindow ) :
 
 			for provider in root.findall( 'Provider' ) :
 				for name in provider.findall( 'OPDescription' ) :
-					#print 'dhkim test OPDescription = %s' % name.text
 					nameList.append( name.text.encode( 'utf-8' ) )
 
 			if len( nameList ) > 0 :
