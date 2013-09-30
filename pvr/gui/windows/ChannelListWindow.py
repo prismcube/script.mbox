@@ -1717,8 +1717,10 @@ class ChannelListWindow( BaseWindow ) :
 		if E_V1_2_APPLY_PRESENTATION_NUMBER :
 			if self.mNavChannel :
 				iChannel = self.GetChannelByIDs( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
-				if iChannel :
-					iChannelIdx = int( iChannel.mPresentationNumber ) - 1
+				if iChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+					#iChannelIdx = int( iChannel.mPresentationNumber ) - 1
+					iChannelIdx = self.mChannelList.index(iChannel)
+
 
 		else :
 			isFind = False
