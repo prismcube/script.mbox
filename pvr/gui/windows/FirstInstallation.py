@@ -651,26 +651,18 @@ class FirstInstallation( FTIWindow ) :
 		else :
 			tmp = self.mSatelliteIndex - 1
 
-		satellite = self.mConfiguredSatelliteList[ tmp ]
-		self.mTransponderList = []
-		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( satellite.mSatelliteLongitude, satellite.mBandType )
-		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
-			self.mTransponderList.sort( self.ByFrequency )
-			self.mHasTansponder = True
+		if len( self.mConfiguredSatelliteList ) > 0 :
+			satellite = self.mConfiguredSatelliteList[ tmp ]
+			self.mTransponderList = []
+			self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( satellite.mSatelliteLongitude, satellite.mBandType )
+			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+				self.mTransponderList.sort( self.ByFrequency )
+				self.mHasTansponder = True
+			else :
+				self.mHasTansponder = False
 		else :
 			self.mHasTansponder = False
 
-
-		"""
-		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		self.mFormattedList = []
-		if self.mConfiguredSatelliteList == None :
-			self.mFormattedList.append( MR_LANG( 'None' ) )
-		else :
-			self.mFormattedList.append( MR_LANG( 'All' ) )
-			for config in self.mConfiguredSatelliteList :
-				self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
-		"""
 
 	def SetConfigTransponder( self ) :
 		self.mConfigTransponder = ElisITransponderInfo( )
