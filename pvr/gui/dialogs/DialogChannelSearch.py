@@ -12,6 +12,7 @@ BUTTON_ID_CLOSE					= 104
 E_SCAN_NONE						= 0
 E_SCAN_SATELLITE				= 1
 E_SCAN_TRANSPONDER				= 2
+E_SCAN_PROVIDER					= 3
 
 INVALID_CHANNEL					= 65534
 
@@ -37,6 +38,12 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mStoreTVChannel			= []
 		self.mStoreRadioChannel			= []
 		self.mManualTpSearch			= False
+
+		# for fast scan
+		self.mTunerIndex 				= E_TUNER_1
+		self.mUseNumbering				= 0
+		self.mUseNaming					= 0
+		self.mProviderStruct 			= None
 
 
 	def onInit( self ) :
@@ -160,12 +167,23 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
 
+	def SetProvider( self, aTunerIndex, aUseNumbering, aUseNaming, aProviderStruct ) :
+		self.mScanMode = E_SCAN_PROVIDER
+		self.mTunerIndex = aTunerIndex
+		self.mUseNumbering = aUseNumbering
+		self.mUseNaming	= aUseNaming
+		self.mProviderStruct = aProviderStruct
+		
+
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
-			ret = self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
+			self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
-			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
+			self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
+
+		elif self.mScanMode == E_SCAN_PROVIDER :
+			self.mCommander.ChannelScan_StartFastChannelScan( self.mTunerIndex, self.mUseNumbering, self.mUseNaming, self.mProviderStruct )
 
 		else :
 			self.mIsFinished = True
@@ -176,7 +194,10 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mAbortDialog.doModal( )
 		self.mIsOpenAbortDialog = False
 		if self.mAbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-			self.mCommander.Channelscan_Abort( )
+			if self.mScanMode == E_SCAN_PROVIDER :
+				self.mCommander.ChannelScan_AbortFastChannelScan( )
+			else :
+				self.mCommander.Channelscan_Abort( )
 			self.LoadChannelSearchedData( )
 			self.mEventBus.Deregister( self )
 			self.CloseDialog( )
