@@ -207,7 +207,6 @@ class DialogChannelSearch( BaseDialog ) :
 		else:
 			self.mCtrlProgress.setPercent( percent )
 
-
 		if aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
 			strPol = MR_LANG( 'Vertical' )
 			if aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_HORIZONTAL or aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_LEFT :
