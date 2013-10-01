@@ -445,6 +445,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def LoadChannelListHash( self ) :
+		startTime = time.time()
 		self.mChannelListHash = {}
 		self.mChannelListHashIDs = {}
 		self.mChannelListForMove = []
@@ -471,6 +472,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( '---------timerKey[%s] tch[%s] tName[%s]'% ( timerKey, timer.mChannelNo, timer.mName ) )
 
 		LOG_TRACE( '-------------timer hash len[%s]'% len( self.mTimerListHash ) )
+		LOG_TRACE( '-----init hash-----execute time[%s]'% ( time.time() - startTime ) ) # -5.4sec
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
@@ -787,7 +789,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True, True )
 					if not self.mChannelList or len( self.mChannelList ) < 1 :
 						self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
-					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) )
+						LOG_TRACE( '--------------------------------------ttttttt---------------------------' )
+					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) ) # -5.4sec
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
