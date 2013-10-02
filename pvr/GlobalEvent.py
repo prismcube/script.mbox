@@ -661,7 +661,7 @@ class GlobalEvent( object ) :
 	def CheckLinkageService( self ) :
 		epg = self.mDataCache.GetEpgeventCurrent( )
 		if epg :
-			epg.printdebug()		
+			#epg.printdebug()		
 			hasLinkageService = self.mDataCache.GetLinkageService(  )
 
 			if hasLinkageService !=  epg.mHasLinkageService : #if linkage service changed
