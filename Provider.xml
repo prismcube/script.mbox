@@ -94,9 +94,9 @@ DVBS2_8PSK_9_10
 		<Polarization>LNB_HORIZONTAL</Polarization>
 		<FECMode>DVBS_3_4</FECMode>
 		<Pid>920</Pid>
-		<PidDescription>Te'le'SAT</PidDescription>
+		<PidDescription>TéléSAT</PidDescription>
 		<OPIndetifier>109</OPIndetifier>
-		<OPDescription>Te'le'SAT</OPDescription>
+		<OPDescription>TéléSAT</OPDescription>
 		<HDList>false</HDList>
 	</Provider>
 	<Provider>
@@ -214,9 +214,9 @@ DVBS2_8PSK_9_10
 		<Polarization>LNB_HORIZONTAL</Polarization>
 		<FECMode>DVBS2_8PSK_2_3</FECMode>
 		<Pid>920</Pid>
-		<PidDescription>Te'le'SAT Astra3</PidDescription>
+		<PidDescription>TéléSAT Astra3</PidDescription>
 		<OPIndetifier>200</OPIndetifier>
-		<OPDescription>Te'le'SAT Astra3</OPDescription>
+		<OPDescription>TéléSAT Astra3</OPDescription>
 		<HDList>true</HDList>
 	</Provider>
 	<Provider>
