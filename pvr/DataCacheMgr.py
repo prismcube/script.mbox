@@ -762,6 +762,7 @@ class DataCacheMgr( object ) :
 		#if self.mChannelList and tmpChannelList :
 		#	LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
 
+		startTime = time.time()
 		self.mChannelList = tmpChannelList
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
@@ -799,6 +800,8 @@ class DataCacheMgr( object ) :
 
 					channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
 					self.mChannelListHashForTimer[channelKey] = channel
+
+		LOG_TRACE( '--------DataCache HashInit--execute time[%s]'% ( time.time() - startTime ) )
 
 
 	def LoadZappingmode( self ) :

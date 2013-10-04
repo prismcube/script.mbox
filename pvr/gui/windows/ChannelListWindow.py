@@ -800,6 +800,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
 						LOG_TRACE( '--------------------------------------ttttttt---------------------------' )
 					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) ) # -5.4sec
+
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
@@ -1680,6 +1681,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			return 
 
+		createListItem = 0
+		startTime2 = time.time()
+		startTime3 = 0
 		reloadPos = False
 		if self.mListItems == None or self.mDataCache.GetChannelReloadStatus( ) == True :
 			self.mListItems = []
@@ -1687,7 +1691,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 			self.mDataCache.SetChannelReloadStatus( False )
 
-			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+			#self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 
 			for iChannel in self.mChannelList :
 				hdLabel = ''
@@ -1698,7 +1702,9 @@ class ChannelListWindow( BaseWindow ) :
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
 
+				startTime3 = time.time()
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+				createListItem += ( time.time() - startTime3 )
 				if len( iChannel.mName ) > 30 :
 					listItem.setLabel2( '%s'% iChannel.mName )
 					listItem.setProperty( 'iHDLabel', hdLabel )
@@ -1738,7 +1744,11 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
+		LOG_TRACE( '--------UIListup addItem--execute time[%s] createListItem[%s]'% ( ( time.time() - startTime2 ), createListItem ) )
+
+		startTime2 = time.time()
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+		LOG_TRACE( '--------UIListup addControl--execute time[%s]'% ( time.time() - startTime2 ) )
 
 		#refresh sync tune and current focus
 		LOG_TRACE( '---------------------last[%s]'% self.mLastChannel )
