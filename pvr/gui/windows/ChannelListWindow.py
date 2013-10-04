@@ -2922,17 +2922,17 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
 			   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-				LOG_TRACE( 'could not rename fav. : same name exist' )
+				LOG_TRACE( 'could not rename fav. : same name exists' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Exist same name' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name already exists' ) )
 				dialog.doModal( )
 				return
 
 			symbolPattern = '\'|\"|\%|\^|\&|\*|\`'
 			if bool( re.search( symbolPattern, name, re.IGNORECASE ) ) :
-				LOG_TRACE( '------------could not symbol : %s'% symbolPattern )
+				LOG_TRACE( '------------invalid characters : %s'% symbolPattern )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not symbol' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name contains invalid characters' ) )
 				dialog.doModal( )
 				return
 
