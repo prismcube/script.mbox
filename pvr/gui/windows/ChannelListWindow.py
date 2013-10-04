@@ -679,9 +679,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
 
+				startTime = time.time()
 				for iChannel in self.mChannelList :
 					self.mLastChannelListHash[iChannel.mNumber] = iChannel
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
+				LOG_TRACE( '--------backupHash--execute time[%s]'% ( time.time() - startTime ) )
+
 
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -701,16 +704,22 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
 				#LOG_TRACE( 'IN: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
 
+				startTime = time.time()
 				self.mListItems = None
 				self.mCtrlListCHList.reset( )
 				self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
+				LOG_TRACE( '--------InitSlideMenuHeader--execute time[%s]'% ( time.time() - startTime ) )
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+				startTime = time.time()
 				self.UpdateControlGUI( E_SLIDE_CLOSE )
+				LOG_TRACE( '--------E_SLIDE_CLOSE--execute time[%s]'% ( time.time() - startTime ) )
 
 				#clear label
+				startTime = time.time()
 				self.ResetLabel( )
 				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
+				LOG_TRACE( '--------labelReset--execute time[%s]'% ( time.time() - startTime ) )
 
 				ret = self.mDataCache.Channel_Backup( )
 				#LOG_TRACE( 'channelBackup[%s]'% ret )
@@ -784,7 +793,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCtrlListCHList.reset( )
 					startTime = time.time()
 					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
-					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) )
+					LOG_TRACE( '--------InitSlideMenuHeader--execute time[%s]'% ( time.time() - startTime ) )
 					startTime = time.time()
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True, True )
 					if not self.mChannelList or len( self.mChannelList ) < 1 :
@@ -794,13 +803,17 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
+					startTime = time.time()
 					self.mIsTune = False
 					self.Epgevent_GetCurrent( )
+					LOG_TRACE( '--------epgFind--execute time[%s]'% ( time.time() - startTime ) )
 
 					#clear label
+					startTime = time.time()
 					self.ResetLabel( )
 					self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 					self.UpdateChannelAndEPG( )
+					LOG_TRACE( '--------labelReset--execute time[%s]'% ( time.time() - startTime ) )
 
 				else :
 					self.mLastChannel = None
@@ -1424,8 +1437,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.OpenBusyDialog( )
 				try :
 					self.mUserMode = deepcopy( self.mPrevMode )
+					startTime = time.time()
 					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
+					LOG_TRACE( '--------Zappingmode_SetCurrent--execute time[%s]'% ( time.time() - startTime ) ) #13.7sec
+					startTime = time.time()
 					isSave = self.mDataCache.Channel_Save( )
+					LOG_TRACE( '--------Channel_Save--execute time[%s]'% ( time.time() - startTime ) ) #13.7sec
 
 					#### data cache re-load ####
 					self.mDataCache.SetSkipChannelView( False )
@@ -1433,10 +1450,10 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.LoadZappingList( )
 					startTime = time.time()
 					self.mDataCache.LoadChannelList( )
-					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) ) #13.7sec
+					LOG_TRACE( '--------LoadChannelList--execute time[%s]'% ( time.time() - startTime ) ) #13.7sec
 					startTime = time.time()
 					self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
-					LOG_TRACE( '----------execute time[%s]'% ( time.time() - startTime ) ) #14.27sec
+					LOG_TRACE( '--------Channel_GetAllChannels--execute time[%s]'% ( time.time() - startTime ) ) #14.27sec
 					LOG_TRACE ( 'save[%s] cache re-load'% isSave)
 				except Exception, e :
 					LOG_ERR( 'except[%s]'% e )
@@ -1640,6 +1657,8 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[LIST] START[%s]'% starttime
 
 		#no channel is set Label comment
+		startTime = time.time()
+
 		self.mCtrlListCHList.reset( )
 		if E_SUPPORT_FRODO_EMPTY_LISTITEM :
 			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
@@ -1773,6 +1792,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
+		LOG_TRACE( '--------UIListup--execute time[%s]'% ( time.time() - startTime ) )
 
 
 	def ResetLabel( self ) :
