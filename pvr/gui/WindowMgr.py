@@ -60,6 +60,7 @@ WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
 WIN_ID_ZOOM							= 35
 WIN_ID_SIMPLE_CHANNEL_LIST			= 36
+WIN_ID_FAST_SCAN					= 37
 
 
 WIN_ID_HIDDEN_TEST					= 99
@@ -298,7 +299,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
 			from pvr.gui.windows.Zoom import Zoom
-			from pvr.gui.windows.SimpleChannelList import SimpleChannelList			
+			from pvr.gui.windows.SimpleChannelList import SimpleChannelList
+			from pvr.gui.windows.FastScan import FastScan
 			from pvr.HiddenTest import HiddenTest
 
 
@@ -336,9 +338,11 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow  )
-				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow  )				
+				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
+				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
+				self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
+				
 
 			else :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )

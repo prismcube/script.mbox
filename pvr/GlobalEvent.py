@@ -81,6 +81,8 @@ class GlobalEvent( object ) :
 				#LOG_TRACE('ignore event, same event')
 				return -1
 			self.CheckParentLock( E_PARENTLOCK_EIT, aEvent )
+			self.CheckLinkageService()
+
 
 		elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
 			LOG_TRACE( '----------received ElisPMTReceivedEvent' )
@@ -655,3 +657,17 @@ class GlobalEvent( object ) :
 		else :
 			return xbmcgui.getCurrentWindowId( )	
 
+
+	def CheckLinkageService( self ) :
+		epg = self.mDataCache.GetEpgeventCurrent( )
+		if epg :
+			#epg.printdebug()		
+			hasLinkageService = self.mDataCache.GetLinkageService(  )
+
+			if hasLinkageService !=  epg.mHasLinkageService : #if linkage service changed
+				self.mDataCache.SetLinkageService( epg.mHasLinkageService )
+				LOG_TRACE('LAEL98 TEST')
+
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+					LOG_TRACE('LAEL98 TEST')				
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).UpdateLinkageService( )			

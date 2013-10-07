@@ -1731,10 +1731,10 @@ class ChannelListWindow( BaseWindow ) :
 		if E_V1_2_APPLY_PRESENTATION_NUMBER :
 			if self.mNavChannel :
 				iChannel = self.GetChannelByIDs( self.mNavChannel.mNumber, self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
-				if iChannel :
+				if iChannel and self.mChannelList and len( self.mChannelList ) > 0 :
 					#find array index
-					iChannelIdx = int( iChannel.mPresentationNumber ) - 1
-					#iChannelIdx = self.mChannelList.index(iChannel)
+					#iChannelIdx = int( iChannel.mPresentationNumber ) - 1
+					iChannelIdx = self.mChannelList.index( iChannel )
 
 		else :
 			isFind = False
@@ -2933,7 +2933,18 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
 			   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-				LOG_TRACE( 'could not rename fav. : same name exist' )
+				LOG_TRACE( 'could not rename fav. : same name exists' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name already exists' ) )
+				dialog.doModal( )
+				return
+
+			symbolPattern = '\'|\"|\%|\^|\&|\*|\`'
+			if bool( re.search( symbolPattern, name, re.IGNORECASE ) ) :
+				LOG_TRACE( '------------invalid characters : %s'% symbolPattern )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name contains invalid characters' ) )
+				dialog.doModal( )
 				return
 
 			groupName = result + name

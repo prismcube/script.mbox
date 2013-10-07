@@ -19,6 +19,7 @@ class ChannelSearch( SettingWindow ) :
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Automatic Scan' ), '', MR_LANG( 'Search TV and radio channels without entering any satellite information' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'Manual Scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
+		self.AddInputControl( E_Input03, MR_LANG( 'Fast Scan' ), '', MR_LANG( 'Scan channels from specific satellite TV service provider' ) )
 
 		self.InitControl( )
 		self.mInitialized = True
@@ -79,6 +80,10 @@ class ChannelSearch( SettingWindow ) :
 		elif groupId == E_Input02 :
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
+
+		elif groupId == E_Input03 :
+			self.ResetAllControl( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAST_SCAN )
 				
 
 	def onFocus( self, aControlId ) :

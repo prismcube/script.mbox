@@ -1,0 +1,267 @@
+<!-- PrismCube provider information for fast scan
+SatelliteBand	: BAND_KU, BAND_C
+Polarization	: LNB_HORIZONTAL, LNB_VERTICAL
+FECMode			:
+DVBS_1_2
+DVBS_2_3
+DVBS_3_4
+DVBS_5_6
+DVBS_7_8
+DVBS2_QPSK_1_2
+DVBS2_QPSK_3_5
+DVBS2_QPSK_2_3
+DVBS2_QPSK_3_4
+DVBS2_QPSK_4_5
+DVBS2_QPSK_5_6
+DVBS2_QPSK_8_9
+DVBS2_QPSK_9_10
+DVBS2_8PSK_3_5
+DVBS2_8PSK_2_3
+DVBS2_8PSK_3_4
+DVBS2_8PSK_5_6
+DVBS2_8PSK_8_9
+DVBS2_8PSK_9_10
+-->
+<!-- Last updated 2013 09 28 
+		self.providers = {}
+		self.providers['Canal Digitaal'] = (0, 900, True)
+		self.providers['TV Vlaanderen'] = (0, 910, True)
+		self.providers['TÃƒÂ©lÃƒÂ©SAT'] = (0, 920, True)
+		self.providers['Mobistar NL'] = (0, 930, False)
+		self.providers['Mobistar FR'] = (0, 940, False)
+		self.providers['AustriaSat'] = (0, 950, False)
+		self.providers['Skylink Czech Republic'] = (1, 30, False)
+		self.providers['Skylink Slovak Republic'] = (1, 31, False)
+		self.providers['Canal Digitaal Astra3'] = (2, 900, True)
+		self.providers['TV Vlaanderen Astra3'] = (2, 910, True)
+		self.providers['TÃƒÂ©lÃƒÂ©SAT Astra3'] = (2, 920, True)
+		self.providers['Mobistar NL Astra3'] = (2, 930, False)
+		self.providers['Mobistar FR Astra3'] = (2, 940, False)
+		self.providers['AustriaSat Astra3'] = (2, 950, False)
+
+		self.transponders = ((12515000, 22000000, eDVBFrontendParametersSatellite.FEC_5_6, 192,
+			eDVBFrontendParametersSatellite.Polarisation_Horizontal, eDVBFrontendParametersSatellite.Inversion_Unknown,
+			eDVBFrontendParametersSatellite.System_DVB_S, eDVBFrontendParametersSatellite.Modulation_QPSK,
+			eDVBFrontendParametersSatellite.RollOff_alpha_0_35, eDVBFrontendParametersSatellite.Pilot_Off),
+			(12070000, 27500000, eDVBFrontendParametersSatellite.FEC_3_4, 235,
+			eDVBFrontendParametersSatellite.Polarisation_Horizontal, eDVBFrontendParametersSatellite.Inversion_Unknown,
+			eDVBFrontendParametersSatellite.System_DVB_S, eDVBFrontendParametersSatellite.Modulation_QPSK,
+			eDVBFrontendParametersSatellite.RollOff_alpha_0_35, eDVBFrontendParametersSatellite.Pilot_Off),
+			(12187000, 27500000, eDVBFrontendParametersSatellite.FEC_2_3, 235,
+			eDVBFrontendParametersSatellite.Polarisation_Horizontal, eDVBFrontendParametersSatellite.Inversion_Unknown,
+			eDVBFrontendParametersSatellite.System_DVB_S2, eDVBFrontendParametersSatellite.Modulation_8PSK,
+			eDVBFrontendParametersSatellite.RollOff_alpha_0_35, eDVBFrontendParametersSatellite.Pilot_Off))
+
+-->
+<Providers>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>900</Pid>
+		<PidDescription>CanalDigital</PidDescription>
+		<OPIndetifier>106</OPIndetifier>
+		<OPDescription>CanalDigital</OPDescription>
+		<HDList>true</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>910</Pid>
+		<PidDescription>TV Vlaanderen</PidDescription>
+		<OPIndetifier>108</OPIndetifier>
+		<OPDescription>TV Vlaanderen</OPDescription>
+		<HDList>true</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>920</Pid>
+		<PidDescription>TéléSAT</PidDescription>
+		<OPIndetifier>109</OPIndetifier>
+		<OPDescription>TéléSAT</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>930</Pid>
+		<PidDescription>Mobistar NL</PidDescription>
+		<OPIndetifier>110</OPIndetifier>
+		<OPDescription>Mobistar NL</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>940</Pid>
+		<PidDescription>Mobistar FR</PidDescription>
+		<OPIndetifier>111</OPIndetifier>
+		<OPDescription>Mobistar FR</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 1</SatelliteName>
+		<SatelliteLongitude>192</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>105</TransponderId>
+		<Frequency>12515</Frequency>
+		<Symbolrate>22000</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>950</Pid>
+		<PidDescription>Austria Sat</PidDescription>
+		<OPIndetifier>100</OPIndetifier>
+		<OPDescription>Austria Sat</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12070</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>30</Pid>
+		<PidDescription>Skylink Czech Republic</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>Skylink Czech Republic</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12070</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS_3_4</FECMode>
+		<Pid>31</Pid>
+		<PidDescription>Skylink Slovak Republic</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>Skylink Slovak Republic</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>900</Pid>
+		<PidDescription>CanalDigital Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>CanalDigital Astra3</OPDescription>
+		<HDList>true</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>910</Pid>
+		<PidDescription>TV Vlaanderen Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>TV Vlaanderen Astra3</OPDescription>
+		<HDList>true</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>920</Pid>
+		<PidDescription>TéléSAT Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>TéléSAT Astra3</OPDescription>
+		<HDList>true</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>930</Pid>
+		<PidDescription>Mobistar NL Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>Mobistar NL Astra3</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>940</Pid>
+		<PidDescription>Mobistar FR Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>Mobistar FR Astra3</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+	<Provider>
+		<SatelliteName>Astra 3</SatelliteName>
+		<SatelliteLongitude>235</SatelliteLongitude>
+		<SatelliteBand>BAND_KU</SatelliteBand>
+		<TransponderId>3219</TransponderId>
+		<Frequency>12187</Frequency>
+		<Symbolrate>27500</Symbolrate>
+		<Polarization>LNB_HORIZONTAL</Polarization>
+		<FECMode>DVBS2_8PSK_2_3</FECMode>
+		<Pid>950</Pid>
+		<PidDescription>Austria Sat Astra3</PidDescription>
+		<OPIndetifier>200</OPIndetifier>
+		<OPDescription>Austria Sat Astra3</OPDescription>
+		<HDList>false</HDList>
+	</Provider>
+</Providers>

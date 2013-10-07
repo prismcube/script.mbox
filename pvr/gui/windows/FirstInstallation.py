@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 from pvr.XBMCInterface import XBMC_SetSkinZoom
+import pvr.ScanHelper as ScanHelper
 
 E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -26,6 +27,14 @@ class FirstInstallation( FTIWindow ) :
 		self.mBusyVideoSetting			= False
 		self.mReloadSkinPosition		= False
 
+		self.mIsManualSetup				= 0
+		self.mSatelliteIndex			= 0
+		self.mTransponderList			= []
+		self.mTransponderIndex			= 0
+		self.mConfigTransponder			= None
+		self.mIsManualTp				= 0
+		self.mIsReloadChannelSearchStep = False
+
 		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
 			self.mTunerConnection		= E_TUNER_ONECABLE
 			self.mTunerSignal			= E_SAMEWITH_TUNER
@@ -40,6 +49,7 @@ class FirstInstallation( FTIWindow ) :
 
 	def onInit( self ) :
 		self.SetActivate( True )
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('First Installation') )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
@@ -50,7 +60,6 @@ class FirstInstallation( FTIWindow ) :
 			self.mReloadSkinPosition = False
 
 		self.SetPipScreen( )
-		
 		self.SetListControl( self.GetFTIStep( ) )
 		
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
@@ -78,6 +87,9 @@ class FirstInstallation( FTIWindow ) :
 
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+
+		self.GlobalSettingAction( self, actionId )
+		
 		if self.GlobalAction( actionId ) :
 			return
 
@@ -102,10 +114,10 @@ class FirstInstallation( FTIWindow ) :
 			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.ControlUp( )
+			self.ControlUp( self )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.ControlDown( )
+			self.ControlDown( self )
 
 
 	def onClick( self, aControlId ) :
@@ -212,6 +224,10 @@ class FirstInstallation( FTIWindow ) :
 				self.Close( )
 
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.mEventBus.Deregister( self )
+			self.OpenBusyDialog( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			self.CloseBusyDialog( )
 			self.SetListControl( self.mPrevStepNum )
 
 
@@ -221,6 +237,23 @@ class FirstInstallation( FTIWindow ) :
 	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
+
+
+	def onEvent( self, aEvent ) :
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId and self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
+			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+				self.UpdateStatus( aEvent )
+
+
+	def UpdateStatus( self, aEvent ) :
+		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			if aEvent.mIsLocked :
+			#	if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
+			#else :
+			#	if not self.mDataCache.Get_Player_AVBlank( ) :
+			#		self.mDataCache.Player_AVBlank( True )
 
 
 	def Close( self ) :
@@ -236,11 +269,14 @@ class FirstInstallation( FTIWindow ) :
 			self.SetTunerProperty( )
 			self.mTunerMgr.SaveConfiguration( )
 			self.mDataCache.Channel_TuneDefault( )
+
+		self.mEventBus.Deregister( self )
+		ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
-	def SetListControl( self, aStep ) :
+	def SetListControl( self, aStep, aSetFocus=True ) :
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		
@@ -261,7 +297,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -280,7 +316,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -302,7 +338,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -318,25 +354,47 @@ class FirstInstallation( FTIWindow ) :
 		elif aStep == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.mPrevStepNum = E_STEP_ANTENNA
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
+			self.mIsManualTp = 0
 			self.LoadFormattedSatelliteNameList( )
+			self.LoadTransponderList( )
+			self.SetConfigTransponder( )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Channel Search' ), USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )			
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Manual Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable Manual scan' ) )
+			description = MR_LANG( 'Select or enter the transponder frequency for the selected satellite' )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, description, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
+			self.AddEnumControl( E_SpinEx03, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
+
+			if self.mConfigTransponder.mFECMode == ElisEnum.E_FEC_UNDEFINED :
+				self.SetProp( E_SpinEx03, 0 )
+			else :
+				self.SetProp( E_SpinEx03, 1 )
+
+			self.AddEnumControl( E_SpinEx04, 'FEC', MR_LANG( ' - FEC' ), MR_LANG( 'Select the error control mode of data transmission for the selected satellite' ) )
+			self.SetProp( E_SpinEx04, self.mConfigTransponder.mFECMode )
+
+			self.AddEnumControl( E_SpinEx05, 'Polarisation', MR_LANG( ' - Polarization' ), MR_LANG( 'Select the direction of the electrical and magnetic fields of signals for the satellite above' ) )
+			self.SetProp( E_SpinEx05, self.mConfigTransponder.mPolarization )
+
+			self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transmitted per second in the data stream' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 60000 )
+
 			networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
-			self.AddEnumControl( E_SpinEx02, 'Network Search', None, networkSearchDescription )
-			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
+			self.AddEnumControl( E_SpinEx06, 'Network Search', None, networkSearchDescription )
+			self.AddEnumControl( E_SpinEx07, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
-			self.SetDefaultControl( )
+			if aSetFocus :
+				self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
@@ -374,7 +432,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.InitControl( )
 			time.sleep( 0.2 )
@@ -403,7 +461,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -453,11 +511,39 @@ class FirstInstallation( FTIWindow ) :
 					self.SetEnableControl( E_SpinEx04, False )
 
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
-			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_Input01 ]
+			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
+				self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+				self.mIsManualSetup = 0
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
+
+			if self.mSatelliteIndex == 0 :
+				visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
+				self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+				self.mIsManualSetup = 0
+				self.SetEnableControls( visibleControlIds, False )
+				return
+
+			visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
+			if self.mIsManualSetup == 0 :
+				self.SetEnableControls( visibleControlIds, False )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			else :
+				self.SetEnableControls( visibleControlIds, True )
+				self.mEventBus.Register( self )
+				ScanHelper.GetInstance( ).ScanHelper_Start( self )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+				if self.mConfigTransponder.mFECMode == 0 :
+					self.getControl( E_SpinEx04 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
+					self.getControl( E_SpinEx04 + 3 ).selectItem( 0 )
+					self.SetEnableControl( E_SpinEx04, False )
+				else :
+					self.SetProp( E_SpinEx04, 0 )
+					self.getControl( E_SpinEx04 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
+					self.SetEnableControl( E_SpinEx04, True )
 
 		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
@@ -482,7 +568,7 @@ class FirstInstallation( FTIWindow ) :
 					
 					self.SetEnableControl( E_Input01, False )
 					self.SetEnableControl( E_Input02, True )
-					self.SetEnableControl( E_Input03, True )					
+					self.SetEnableControl( E_Input03, True )
 					self.SetEnableControl( E_SpinEx02, False )
 					self.SetEnableControl( E_SpinEx03, False )
 
@@ -526,14 +612,73 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def LoadFormattedSatelliteNameList( self ) :
-		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+		self.mConfiguredSatelliteList = []
 		self.mFormattedList = []
-		if self.mConfiguredSatelliteList == None :
-			self.mFormattedList.append( MR_LANG( 'None' ) )
-		else :
+
+		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+
+		if configuredSatelliteList1 and configuredSatelliteList1[0].mError == 0 :
+			self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList1 )
+
+		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
+			if configuredSatelliteList1 :
+				if configuredSatelliteList2 and configuredSatelliteList2[0].mError == 0 :
+					for config in configuredSatelliteList2 :
+						find = False
+						for compare in configuredSatelliteList1 :
+							if ( config.mSatelliteLongitude == compare.mSatelliteLongitude ) and ( config.mBandType == compare.mBandType ) :
+								find = True
+								break
+
+						if find == False :
+							self.mConfiguredSatelliteList.append( config )
+			else :
+				if configuredSatelliteList2 :
+					self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList2 )
+
+		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.mFormattedList.append( MR_LANG( 'All' ) )
 			for config in self.mConfiguredSatelliteList :
-				self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
+				self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
+		else :
+			self.mFormattedList.append( MR_LANG( 'None' ) )
+
+
+	def LoadTransponderList( self ) :
+		if self.mSatelliteIndex == 0 :
+			tmp = self.mSatelliteIndex
+		else :
+			tmp = self.mSatelliteIndex - 1
+
+		if len( self.mConfiguredSatelliteList ) > 0 :
+			satellite = self.mConfiguredSatelliteList[ tmp ]
+			self.mTransponderList = []
+			self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( satellite.mSatelliteLongitude, satellite.mBandType )
+			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+				self.mTransponderList.sort( self.ByFrequency )
+				self.mHasTansponder = True
+			else :
+				self.mHasTansponder = False
+		else :
+			self.mHasTansponder = False
+
+
+	def SetConfigTransponder( self ) :
+		self.mConfigTransponder = ElisITransponderInfo( )
+		self.mConfigTransponder.reset( )
+		if self.mHasTansponder == True :	
+			self.mConfigTransponder.mFrequency = self.mTransponderList[self.mTransponderIndex].mFrequency
+			self.mConfigTransponder.mFECMode = self.mTransponderList[self.mTransponderIndex].mFECMode
+			self.mConfigTransponder.mSymbolRate = self.mTransponderList[self.mTransponderIndex].mSymbolRate
+			self.mConfigTransponder.mPolarization = self.mTransponderList[self.mTransponderIndex].mPolarization
+			self.mConfigTransponder.mTsid = self.mTransponderList[self.mTransponderIndex].mTsid
+			self.mConfigTransponder.mOnid = self.mTransponderList[self.mTransponderIndex].mOnid
+			self.mConfigTransponder.mNid = self.mTransponderList[self.mTransponderIndex].mNid
+
+
+	def ByFrequency( self, aArg1, aArg2 ) :
+		return cmp( aArg1.mFrequency, aArg2.mFrequency )
 
 
 	def ChannelSearchConfig( self, aControlId ) :
@@ -541,35 +686,119 @@ class FirstInstallation( FTIWindow ) :
 			dialog = xbmcgui.Dialog( )
 			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
 			if select >= 0 and select != self.mSatelliteIndex :
-				self.mSatelliteIndex = select
-			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
+				self.mSatelliteIndex	= select
+				self.mTransponderIndex	= 0
+				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG, False )
+			#self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
+
+		elif aControlId == E_Input02 :
+			formattedTransponderList = []
+			for i in range( len( self.mTransponderList ) ) :
+				if self.mTransponderList[i].mPolarization == ElisEnum.E_LNB_HORIZONTAL :
+	 				polarization = MR_LANG( 'Horizontal' )
+	 			else :
+	 				polarization = MR_LANG( 'Vertical' )
+				formattedTransponderList.append( '%dMHz   %dKS/s   %s' % ( self.mTransponderList[i].mFrequency, self.mTransponderList[i].mSymbolRate, polarization ) )
+			dialog = xbmcgui.Dialog( )
+			select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, self.mTransponderIndex )
+
+			if select >=0 :
+				self.mTransponderIndex = select
+				#self.SetConfigTransponder( )
+				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG, False )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		elif aControlId == E_Input03 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Symbol Rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				tempval = dialog.GetString( )
+				if int( tempval ) > 60000 :
+					self.mConfigTransponder.mSymbolRate = 60000
+				elif int( tempval ) < 1000 :
+					self.mConfigTransponder.mSymbolRate = 1000
+				else :
+					self.mConfigTransponder.mSymbolRate = int( tempval )
+
+				self.SetControlLabel2String( E_Input03, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		elif aControlId == E_SpinEx01 :
+			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
+				self.mIsChannelSearch = False
+			else :
+				self.mIsChannelSearch = True
+			self.DisableControl( )
+
+		elif aControlId == E_SpinEx02 :
+			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx02 )
+			self.DisableControl( )
+
+		elif aControlId == E_SpinEx03 :
+			if self.GetSelectedIndex( E_SpinEx03 ) == 0 :
+				self.mConfigTransponder.mFECMode = ElisEnum.E_FEC_UNDEFINED		
+			else :
+				self.mConfigTransponder.mFECMode = ElisEnum.E_DVBS2_QPSK_1_2
+	
+			self.DisableControl( )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		elif aControlId == E_SpinEx04 :
+			self.ControlSelect( )
+			property = ElisPropertyEnum( 'FEC', self.mCommander )
+			self.mConfigTransponder.mFECMode = property.GetProp( )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		elif aControlId == E_SpinEx05 :
+			self.mConfigTransponder.mPolarization = self.GetSelectedIndex( E_SpinEx05 )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		elif aControlId == E_SpinEx06 or aControlId == E_SpinEx07 :
+			self.ControlSelect( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			self.mEventBus.Deregister( self )
+			self.OpenBusyDialog( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			self.CloseBusyDialog( )
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList :
-					channelList = self.mDataCache.Channel_GetList( )
-					if channelList and channelList[0].mError == 0 :
-						ret = self.mDataCache.Channel_DeleteAll( )
-						self.mDataCache.Channel_Save( )
-						self.mDataCache.Channel_ReLoad( False )
-						if ret :
-							if not self.mDataCache.Get_Player_AVBlank( ) :
-								self.mDataCache.Player_AVBlank( True )
-							self.mDataCache.Channel_InvalidateCurrent( )
-							#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					if self.mIsManualSetup == 0 :
+						channelList = self.mDataCache.Channel_GetList( )
+						if channelList and channelList[0].mError == 0 :
+							ret = self.mDataCache.Channel_DeleteAll( )
+							self.mDataCache.Channel_Save( )
+							self.mDataCache.Channel_ReLoad( False )
+							if ret :
+								if not self.mDataCache.Get_Player_AVBlank( ) :
+									self.mDataCache.Player_AVBlank( True )
+								self.mDataCache.Channel_InvalidateCurrent( )
+								#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 
-					if self.mSatelliteIndex == 0 :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
-						dialog.doModal( )			
+						if self.mSatelliteIndex == 0 :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+							dialog.SetConfiguredSatellite( self.mDataCache.Satellite_GetConfiguredList( ) )
+							dialog.doModal( )			
+						else :
+							configuredSatelliteList = []
+							config = ElisISatelliteInfo( )
+							config.mLongitude = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ].mSatelliteLongitude
+							config.mBand = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ].mBandType
+							config.mName = self.mDataCache.GetSatelliteName( config.mLongitude, config.mBand )
+
+							configuredSatelliteList.append( config )
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+							dialog.SetConfiguredSatellite( configuredSatelliteList )				
+							dialog.doModal( )
 					else :
-						configuredSatelliteList = []
-						config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
+						transponderList = []
+			 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
+						transponderList.append( self.mConfigTransponder )
 
-						configuredSatelliteList.append( config )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-						dialog.SetConfiguredSatellite( configuredSatelliteList )				
-						dialog.doModal( )			
+						dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList, self.mIsManualTp )
+						dialog.doModal( )
 						
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -580,15 +809,35 @@ class FirstInstallation( FTIWindow ) :
 			else :
 				self.SetListControl( E_STEP_DATE_TIME )
 
-		elif aControlId == E_SpinEx01 :
-			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
-				self.mIsChannelSearch = False
-			else :
-				self.mIsChannelSearch = True
-			self.DisableControl( )
 
-		elif aControlId == E_SpinEx02 or aControlId == E_SpinEx03 :
-			self.ControlSelect( )
+	def CallballInputNumber( self, aGroupId, aString ) :
+		if self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
+			if aGroupId == E_Input02 :
+				if self.mIsManualTp == 0 :
+					self.mIsManualTp = 1
+				self.mConfigTransponder.mFrequency = int( aString )
+				self.SetControlLabel2String( aGroupId, aString + ' MHz' )
+				if self.mConfigTransponder.mFrequency >= 3000 :
+					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+			elif aGroupId == E_Input03 :
+				self.mConfigTransponder.mSymbolRate = int( aString )
+				self.SetControlLabel2String( aGroupId, aString + ' KS/s' )
+				if self.mConfigTransponder.mSymbolRate >= 1000 :
+					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+
+	def FocusChangedAction( self, aGroupId ) :
+		if self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
+			if aGroupId == E_Input02 and self.mConfigTransponder.mFrequency < 3000 :
+				self.mConfigTransponder.mFrequency = 3000
+				self.SetControlLabel2String( E_Input02, '%s MHz' % self.mConfigTransponder.mFrequency )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				
+			elif aGroupId == E_Input03 and self.mConfigTransponder.mSymbolRate < 1000 :
+				self.mConfigTransponder.mSymbolRate = 1000
+				self.SetControlLabel2String( E_Input03, '%s KS/s' % self.mConfigTransponder.mSymbolRate )
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
 
 
 	def TimeSetting( self, aControlId ) :
