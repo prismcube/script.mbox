@@ -177,6 +177,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_DeleteAll_Fav = False
 		self.mTimerListHash = {}
 		self.mLastChannel = None
+		self.mLastChannelList = []
 		self.mLastChannelListHash = {}
 
 		#edit mode
@@ -677,14 +678,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
 
-				for iChannel in self.mChannelList :
-					self.mLastChannelListHash[iChannel.mNumber] = iChannel
+				self.mLastChannelList = []
+				if self.mChannelList and len( self.mChannelList ) > 0 :
+					for iChannel in self.mChannelList :
+						#self.mLastChannelListHash[iChannel.mNumber] = iChannel
+						self.mLastChannelList.append( iChannel )
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
 
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if not iChannel :
-						iChannel = self.mChannelList[0]
+						if self.mChannelList and len( self.mChannelList ) > 0 :
+							iChannel = self.mChannelList[0]
 					self.mLastChannel = iChannel
 				LOG_TRACE( '----------------memory last chNum[%s] iChannel[%s]'% ( self.mCurrentChannel, self.mLastChannel ) )
 				"""
@@ -782,6 +787,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCtrlListCHList.reset( )
 					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
@@ -1066,7 +1072,7 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
 			elif idxMain == E_SLIDE_MENU_FAVORITE :
-				if self.mListFavorite : 
+				if self.mListFavorite :
 					item = self.mListFavorite[idxSub]
 					zappingName = item.mGroupName
 					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
@@ -1408,6 +1414,8 @@ class ChannelListWindow( BaseWindow ) :
 				self.mFlag_EditChanged = True
 				self.OpenBusyDialog( )
 				try :
+					self.mUserMode = deepcopy( self.mPrevMode )
+					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
 					isSave = self.mDataCache.Channel_Save( )
 
 					#### data cache re-load ####
@@ -1434,12 +1442,12 @@ class ChannelListWindow( BaseWindow ) :
 		isChange = False
 		lastCount = 0
 		currCount = 0
-		if self.mLastChannelListHash :
-			lastCount = len( self.mLastChannelListHash )
+		if self.mLastChannelList :
+			lastCount = len( self.mLastChannelList )
 		if self.mChannelListHash :
-			currCount = len( self.mChannelListHash )
+			currCount = len( self.mChannelList )
 
-		if lastCount != currCount or self.mLastChannelListHash != self.mChannelListHash :
+		if lastCount != currCount or self.mLastChannelList != self.mChannelList :
 			isChange = True
 
 		LOG_TRACE( '-----------refresh isChange[%s] lastCh[%s]'% ( isChange, self.mCurrentChannel ) )
@@ -1647,7 +1655,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 			self.mDataCache.SetChannelReloadStatus( False )
 
-			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+			#self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 
 			for iChannel in self.mChannelList :
 				hdLabel = ''
@@ -1721,9 +1729,9 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mNavChannel :
 				iChannel = self.GetChannelByIDs( self.mNavChannel.mNumber, self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
 				if iChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+					#find array index
 					#iChannelIdx = int( iChannel.mPresentationNumber ) - 1
-					iChannelIdx = self.mChannelList.index(iChannel)
-
+					iChannelIdx = self.mChannelList.index( iChannel )
 
 		else :
 			isFind = False
