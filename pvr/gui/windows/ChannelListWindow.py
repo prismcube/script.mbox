@@ -177,6 +177,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFlag_DeleteAll_Fav = False
 		self.mTimerListHash = {}
 		self.mLastChannel = None
+		self.mLastChannelList = []
 		self.mLastChannelListHash = {}
 
 		#edit mode
@@ -677,14 +678,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
 
-				for iChannel in self.mChannelList :
-					self.mLastChannelListHash[iChannel.mNumber] = iChannel
+				self.mLastChannelList = []
+				if self.mChannelList and len( self.mChannelList ) > 0 :
+					for iChannel in self.mChannelList :
+						#self.mLastChannelListHash[iChannel.mNumber] = iChannel
+						self.mLastChannelList.append( iChannel )
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
 
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if not iChannel :
-						iChannel = self.mChannelList[0]
+						if self.mChannelList and len( self.mChannelList ) > 0 :
+							iChannel = self.mChannelList[0]
 					self.mLastChannel = iChannel
 				LOG_TRACE( '----------------memory last chNum[%s] iChannel[%s]'% ( self.mCurrentChannel, self.mLastChannel ) )
 				"""
@@ -781,9 +786,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mListItems = None
 					self.mCtrlListCHList.reset( )
 					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
-					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True, True )
-					if not self.mChannelList or len( self.mChannelList ) < 1 :
-						self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
 
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
@@ -964,7 +967,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, aForce )
 
 
-	def SubMenuAction( self, aAction = E_SLIDE_ACTION_MAIN, aMenuIndex = 0, aForce = None, aUpdateOnly = False ) :
+	def SubMenuAction( self, aAction = E_SLIDE_ACTION_MAIN, aMenuIndex = 0, aForce = None ) :
 		#if self.mFlag_DeleteAll :
 		#	return
 
@@ -1047,40 +1050,34 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
-			if aUpdateOnly :
-				retPass = True
-				self.mChannelList = self.mDataCache.Channel_GetList( )
-				self.LoadChannelListHash( )
+			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
+				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
+				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
+				#LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
-			else :
-				if idxMain == E_SLIDE_MENU_ALLCHANNEL :
-					self.mUserMode.mMode = ElisEnum.E_MODE_ALL
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
-					#LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
+			elif idxMain == E_SLIDE_MENU_SATELLITE :
+				if self.mListSatellite :
+					item = self.mListSatellite[idxSub]
+					zappingName = item.mName
+					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '' )
+					#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
 
-				elif idxMain == E_SLIDE_MENU_SATELLITE :
-					if self.mListSatellite :
-						item = self.mListSatellite[idxSub]
-						zappingName = item.mName
-						self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
-						retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '' )
-						#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
+			elif idxMain == E_SLIDE_MENU_FTACAS :
+				if self.mListCasList :
+					zappingName = self.mListCasList[idxSub].mName
+					caid = self.mListCasList[idxSub].mCAId
+					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '' )
+					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
-				elif idxMain == E_SLIDE_MENU_FTACAS :
-					if self.mListCasList :
-						zappingName = self.mListCasList[idxSub].mName
-						caid = self.mListCasList[idxSub].mCAId
-						self.mUserMode.mMode = ElisEnum.E_MODE_CAS
-						retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '' )
-						#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
-
-				elif idxMain == E_SLIDE_MENU_FAVORITE :
-					if self.mListFavorite : 
-						item = self.mListFavorite[idxSub]
-						zappingName = item.mGroupName
-						self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
-						retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName )
-						#LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
+			elif idxMain == E_SLIDE_MENU_FAVORITE :
+				if self.mListFavorite :
+					item = self.mListFavorite[idxSub]
+					zappingName = item.mGroupName
+					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName )
+					#LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
 
 			if retPass == False :
@@ -1445,12 +1442,12 @@ class ChannelListWindow( BaseWindow ) :
 		isChange = False
 		lastCount = 0
 		currCount = 0
-		if self.mLastChannelListHash :
-			lastCount = len( self.mLastChannelListHash )
+		if self.mLastChannelList :
+			lastCount = len( self.mLastChannelList )
 		if self.mChannelListHash :
-			currCount = len( self.mChannelListHash )
+			currCount = len( self.mChannelList )
 
-		if lastCount != currCount or self.mLastChannelListHash != self.mChannelListHash :
+		if lastCount != currCount or self.mLastChannelList != self.mChannelList :
 			isChange = True
 
 		LOG_TRACE( '-----------refresh isChange[%s] lastCh[%s]'% ( isChange, self.mCurrentChannel ) )
