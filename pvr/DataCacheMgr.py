@@ -974,7 +974,9 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'Reload AllChannels' )
 
 			channelDB = ElisChannelDB( )
+			channelDB.SetListUse( True )
 			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
+			channelDB.SetListUse( False )
 			channelDB.Close( )
 			#return self.mAllChannelList
 
