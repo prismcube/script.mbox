@@ -161,7 +161,10 @@ class DataCacheMgr( object ) :
 		self.mChannelListHashPIP				= {}
 
 		self.mRootWindowId						= 0
-		self.mRootWindow							= None
+		self.mRootWindow						= None
+		self.mHasLinkageService					= False
+
+		self.mVideoOutput						= E_VIDEO_HDMI
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -985,7 +988,9 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'Reload AllChannels' )
 
 			channelDB = ElisChannelDB( )
+			channelDB.SetListUse( True )
 			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
+			channelDB.SetListUse( False )
 			channelDB.Close( )
 			#return self.mAllChannelList
 
@@ -1109,6 +1114,9 @@ class DataCacheMgr( object ) :
 				if cacheChannel :
 					self.mCurrentChannel = cacheChannel.mChannel
 					ret = True
+
+		if ret == True : #Reset LinkageService
+			self.mHasLinkageService = False
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
@@ -1428,6 +1436,7 @@ class DataCacheMgr( object ) :
 				channelDB2 = ElisChannelDB( )				
 				favoriteList = channelDB2.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, E_TABLE_ALLCHANNEL )
 				channelDB2.Close( )
+				"""
 				favoriteHash =  {}
 				for  channel in favoriteList :
 					favoriteHash['%s' %channel.mNumber]= channel
@@ -1436,6 +1445,7 @@ class DataCacheMgr( object ) :
 					refChannel = favoriteHash.get( '%d' %(channel.mNumber ), None )
 					if refChannel :
 						channel.mPresentationNumber = refChannel.mPresentationNumber
+				"""
 
 			return channelList
 
@@ -2698,6 +2708,22 @@ class DataCacheMgr( object ) :
 		return self.mDelaySettingWindow
 
 
+	def SetLinkageService( self, aBool ) :
+		self.mHasLinkageService = aBool
+
+
+	def GetLinkageService( self ) :
+		return self.mHasLinkageService
+
+
+	def SetVideoOutput( self, aVideoOutput = E_VIDEO_HDMI ) :
+		self.mVideoOutput = aVideoOutput
+
+
+	def GetVideoOutput( self ) :
+		return self.mVideoOutput
+
+
 	def PIP_Start( self, aNumber ) :
 		return self.mCommander.PIP_Start( aNumber )
 
@@ -2871,7 +2897,9 @@ class DataCacheMgr( object ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
+				channelDB.SetListUse( 3 )
 				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.SetListUse( False )
 				channelDB.Close( )
 				return channel
 
@@ -2882,5 +2910,4 @@ class DataCacheMgr( object ) :
 
 			channel = cacheChannel.mChannel
 			return channel
-
 

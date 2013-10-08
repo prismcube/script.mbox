@@ -12,7 +12,7 @@ import urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
-gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean', 'Slovak' ]
+gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean', 'Slovak', 'Ukrainian' ]
 
 
 def GetSetting( aID ) :
@@ -232,13 +232,13 @@ def EnumToString( aType, aValue ) :
 	ret = ''
 	if aType == 'type' :
 		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
-			ret = MR_LANG( 'tv' )
+			ret = MR_LANG( 'TV' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_RADIO :
-			ret = MR_LANG( 'radio' )
+			ret = MR_LANG( 'Radio' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_DATA :
-			ret = MR_LANG( 'data' )
+			ret = MR_LANG( 'Data' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_INVALID :
-			ret = MR_LANG( 'type_invalid' )
+			ret = MR_LANG( 'Type_Invalid' )
 
 	elif aType == 'mode' :
 		if aValue == ElisEnum.E_MODE_ALL :
@@ -254,15 +254,15 @@ def EnumToString( aType, aValue ) :
 
 	elif aType == 'sort' :
 		if aValue == ElisEnum.E_SORT_BY_DEFAULT :
-			ret = MR_LANG( 'default' )
+			ret = MR_LANG( 'Default' )
 		elif aValue == ElisEnum.E_SORT_BY_ALPHABET :
-			ret = MR_LANG( 'alphabet' )
+			ret = MR_LANG( 'Alphabet' )
 		elif aValue == ElisEnum.E_SORT_BY_CARRIER :
-			ret = MR_LANG( 'carrier' )
+			ret = MR_LANG( 'Carrier' )
 		elif aValue == ElisEnum.E_SORT_BY_NUMBER :
-			ret = MR_LANG( 'number' )
+			ret = MR_LANG( 'Number' )
 		elif aValue == ElisEnum.E_SORT_BY_HD :
-			ret = MR_LANG( 'hd' )
+			ret = MR_LANG( 'HD' )
 
 	elif aType == 'Polarization' :
 		if aValue == ElisEnum.E_LNB_HORIZONTAL :
@@ -272,9 +272,9 @@ def EnumToString( aType, aValue ) :
 		elif aValue == ElisEnum.E_LNB_LEFT :
 			ret = 'Left'
 		elif aValue == ElisEnum.E_LNB_RIGHT :
-			ret = 'Righ'
+			ret = 'Right'
 
-	return ret.upper( )
+	return ret
 
 
 def AgeLimit( aPropertyAge, aEPGAge, aAgeGurantee ) :

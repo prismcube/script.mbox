@@ -178,6 +178,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mTimerListHash = {}
 		self.mLastChannel = None
 		self.mLastChannelList = []
+		self.mLastChannelListHash = {}
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -454,7 +455,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListHash[chNumber] = iChannel
 				self.mChannelListForMove.append( chNumber )
 
-				channelKey = '%d:%d:%d'% ( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+				channelKey = '%d:%d:%d:%d'% ( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 				self.mChannelListHashIDs[channelKey] = iChannel
 
 		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
@@ -466,23 +467,23 @@ class ChannelListWindow( BaseWindow ) :
 
 		if timerList and len( timerList ) > 0 :
 			for timer in timerList :
-				timerKey = '%d:%d:%d'% ( timer.mSid, timer.mTsid, timer.mOnid )
+				timerKey = '%d:%d:%d:%d'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid )
 				self.mTimerListHash[timerKey] = timer
 				LOG_TRACE( '---------timerKey[%s] tch[%s] tName[%s]'% ( timerKey, timer.mChannelNo, timer.mName ) )
 
 		LOG_TRACE( '-------------timer hash len[%s]'% len( self.mTimerListHash ) )
 
 
-	def GetTimerByIDs( self, aSid, aTsid, aOnid ) :
+	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
 		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
 			return None
-		return self.mTimerListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aSid, aTsid, aOnid ) :
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid ) :
 		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
 			return None
-		return self.mChannelListHashIDs.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+		return self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
 	def Initialize( self ):
@@ -521,7 +522,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
 
-					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ).upper(), iChannel.mName )
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ), iChannel.mName )
 					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_INVALID :
 						if not self.mChannelList or len( self.mChannelList ) < 1 :
 							label = MR_LANG( 'No Channel' )
@@ -676,12 +677,19 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
-				self.mLastChannelList = deepcopy( self.mChannelList )
+
+				self.mLastChannelList = []
+				if self.mChannelList and len( self.mChannelList ) > 0 :
+					for iChannel in self.mChannelList :
+						#self.mLastChannelListHash[iChannel.mNumber] = iChannel
+						self.mLastChannelList.append( iChannel )
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
+
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if not iChannel :
-						iChannel = self.mChannelList[0]
+						if self.mChannelList and len( self.mChannelList ) > 0 :
+							iChannel = self.mChannelList[0]
 					self.mLastChannel = iChannel
 				LOG_TRACE( '----------------memory last chNum[%s] iChannel[%s]'% ( self.mCurrentChannel, self.mLastChannel ) )
 				"""
@@ -709,7 +717,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				ret = self.mDataCache.Channel_Backup( )
 				#LOG_TRACE( 'channelBackup[%s]'% ret )
-
 
 			except Exception, e :
 				LOG_TRACE( 'Error except[%s]'% e )
@@ -780,6 +787,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCtrlListCHList.reset( )
 					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+
 					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
@@ -1038,7 +1046,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mUserMode.mSortingMode = nextSort
 				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
 
-				label = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
+				label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
@@ -1064,7 +1072,7 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
 			elif idxMain == E_SLIDE_MENU_FAVORITE :
-				if self.mListFavorite : 
+				if self.mListFavorite :
 					item = self.mListFavorite[idxSub]
 					zappingName = item.mGroupName
 					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
@@ -1085,13 +1093,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.mSetMarkCount = 0
 			self.mDataCache.Channel_ResetOldChannelList( )
 			self.mCtrlListCHList.reset( )
+
 			self.UpdateChannelList( )
 
 			#path tree, Mainmenu/Submanu
 			self.mUserSlidePos.mMain = idxMain
 			self.mUserSlidePos.mSub  = idxSub
 
-			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 			if zappingName :
 				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
@@ -1405,6 +1414,8 @@ class ChannelListWindow( BaseWindow ) :
 				self.mFlag_EditChanged = True
 				self.OpenBusyDialog( )
 				try :
+					self.mUserMode = deepcopy( self.mPrevMode )
+					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
 					isSave = self.mDataCache.Channel_Save( )
 
 					#### data cache re-load ####
@@ -1433,7 +1444,7 @@ class ChannelListWindow( BaseWindow ) :
 		currCount = 0
 		if self.mLastChannelList :
 			lastCount = len( self.mLastChannelList )
-		if self.mChannelList :
+		if self.mChannelListHash :
 			currCount = len( self.mChannelList )
 
 		if lastCount != currCount or self.mLastChannelList != self.mChannelList :
@@ -1451,9 +1462,9 @@ class ChannelListWindow( BaseWindow ) :
 		if lastCh :
 			LOG_TRACE( '--------last ch[%s] name[%s]'% ( lastCh.mNumber, lastCh.mName ) )
 
-			fChannel = self.GetChannelByIDs( lastCh.mSid, lastCh.mTsid, lastCh.mOnid )
+			fChannel = self.GetChannelByIDs( lastCh.mNumber, lastCh.mSid, lastCh.mTsid, lastCh.mOnid )
 			if not fChannel :
-				#delete(skip)? then current is next
+				#delete(skip)? then current is prev(array) ch
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					idx = int( lastCh.mPresentationNumber ) - 1
 					if idx < len( self.mChannelList ) :
@@ -1568,13 +1579,13 @@ class ChannelListWindow( BaseWindow ) :
 		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		#path tree, Mainmenu/Submenu
-		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
 		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
-		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ).upper(), lblSort.upper() )
+		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
@@ -1644,7 +1655,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 			self.mDataCache.SetChannelReloadStatus( False )
 
-			self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+			#self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
 
 			for iChannel in self.mChannelList :
 				hdLabel = ''
@@ -1716,9 +1727,11 @@ class ChannelListWindow( BaseWindow ) :
 		iChannelIdx = 0
 		if E_V1_2_APPLY_PRESENTATION_NUMBER :
 			if self.mNavChannel :
-				iChannel = self.GetChannelByIDs( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
-				if iChannel :
-					iChannelIdx = int( iChannel.mPresentationNumber ) - 1
+				iChannel = self.GetChannelByIDs( self.mNavChannel.mNumber, self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
+				if iChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+					#find array index
+					#iChannelIdx = int( iChannel.mPresentationNumber ) - 1
+					iChannelIdx = self.mChannelList.index( iChannel )
 
 		else :
 			isFind = False
@@ -1726,7 +1739,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mNavChannel :
 					if iChannel.mServiceType == self.mNavChannel.mServiceType and \
 					   iChannel.mSid == self.mNavChannel.mSid and iChannel.mTsid == self.mNavChannel.mTsid and \
-					   iChannel.mOnid == self.mNavChannel.mOnid :
+					   iChannel.mOnid == self.mNavChannel.mOnid and iChannel.mNumber == self.mNavChannel.mNumber :
 						isFind = True
 						break
 
@@ -1740,7 +1753,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
+		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ), self.mNavChannel.mName )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 		#LOG_TRACE('-----------curr[%s]'% (iChannelIdx + 1) )
@@ -1922,7 +1935,7 @@ class ChannelListWindow( BaseWindow ) :
 			#update channel name
 			if self.mIsTune == True :
 				#strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
-				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ), self.mNavChannel.mName )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
@@ -2531,7 +2544,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#re-print current path
 			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub :
-				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 				zappingName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				if zappingName :
 					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
@@ -2564,7 +2577,7 @@ class ChannelListWindow( BaseWindow ) :
 				numList.append( chNum )
 
 				if not isIncludeTimer :
-					iTimer = self.GetTimerByIDs( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+					iTimer = self.GetTimerByIDs( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 					if iTimer :
 						isIncludeTimer = True
 						LOG_TRACE( '------------exist timerCh[%s %s] iChannel[%s %s]'% ( iTimer.mChannelNo, iTimer.mName, iChannel.mNumber, iChannel.mName ) )
@@ -2917,7 +2930,18 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_RENAME_FAV and groupName == name or \
 			   selectedAction == CONTEXT_ACTION_CHANGE_NAME and groupName == name :
-				LOG_TRACE( 'could not rename fav. : same name exist' )
+				LOG_TRACE( 'could not rename fav. : same name exists' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name already exists' ) )
+				dialog.doModal( )
+				return
+
+			symbolPattern = '\'|\"|\%|\^|\&|\*|\`'
+			if bool( re.search( symbolPattern, name, re.IGNORECASE ) ) :
+				LOG_TRACE( '------------invalid characters : %s'% symbolPattern )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name contains invalid characters' ) )
+				dialog.doModal( )
 				return
 
 			groupName = result + name

@@ -39,7 +39,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup 		= None
 		self.mGroupItems 			= []
 		self.mLastFocused 			= E_CONFIGURE_SUBMENU_LIST_ID
-		self.mPrevListItemID 		= -1
+		self.mPrevListItemID 		= 0
 
 		self.mUseNetworkType		= NETWORK_ETHERNET
 
@@ -84,6 +84,7 @@ class Configure( SettingWindow ) :
 		self.mProgressThread		= None
 
 		self.mVideoOutput			= E_VIDEO_HDMI
+
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 		self.mUpdateNotify			= 0
@@ -162,6 +163,7 @@ class Configure( SettingWindow ) :
 		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
+		self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
 
 		self.SetListControl( )
 		self.StartCheckNetworkTimer( )
@@ -299,6 +301,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_HDMI_SETTING :
 			if groupId == E_SpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
+				self.mDataCache.SetVideoOutput( self.mVideoOutput )
 				self.SetListControl( )
 				return
 
@@ -582,7 +585,7 @@ class Configure( SettingWindow ) :
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
-		time.sleep( 0.02 )
+		self.WaitInitialize( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
@@ -602,7 +605,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			time.sleep( 0.02 )
+			self.WaitInitialize( )
 			self.DisableControl( E_LANGUAGE )
 
 		elif selectedId == E_PARENTAL :	
@@ -620,7 +623,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			time.sleep( 0.02 )
+			self.WaitInitialize( )
 			self.DisableControl( E_PARENTAL )
 
 		elif selectedId == E_RECORDING_OPTION :
@@ -710,7 +713,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
-					time.sleep( 0.02 )
+					self.WaitInitialize( )
 					self.DisableControl( E_WIFI )
 				else :
 					if self.mReLoadEthernetInformation == True :
@@ -732,7 +735,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
-					time.sleep( 0.02 )
+					self.WaitInitialize( )
 					self.DisableControl( E_ETHERNET )
 
 				self.SetEnableControl( E_Input07, False )
@@ -782,7 +785,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			time.sleep( 0.02 )
+			self.WaitInitialize( )
 			self.DisableControl( E_TIME_SETTING )
 
 		elif selectedId == E_EPG :
@@ -837,7 +840,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			time.sleep( 0.2 )
+			self.WaitInitialize( )
 			self.DisableControl( E_EPG )
 
 		elif selectedId == E_FORMAT_HDD :
@@ -914,7 +917,7 @@ class Configure( SettingWindow ) :
 			if subTitleValue == 0 :
 				self.SetEnableControls( visibleControlIds, False )
 				control = self.getControl( E_SpinEx01 + 3 )
-				time.sleep( 0.02 )
+				self.WaitInitialize( )
 				control.selectItem( 0 )
 				self.SetProp( E_SpinEx01, 0 )
 			else :
@@ -957,7 +960,7 @@ class Configure( SettingWindow ) :
 				else :
 					localTimeOffsetControl = self.getControl( E_SpinEx02 + 3 )
 					summerTimeControl = self.getControl( E_SpinEx03 + 3 )
-					time.sleep( 0.02 )
+					self.WaitInitialize( )
 					localTimeOffsetControl.selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetIndexByProp( 0 ) )
 					summerTimeControl.selectItem( SUMMER_TIME_OFF )
 					
@@ -1590,4 +1593,11 @@ class Configure( SettingWindow ) :
 				self.mSubtitleLanguageList_S.append( MR_LANG( 'Disable' ) )
 			else :
 				self.mSubtitleLanguageList_S.append( secondarySubtitle )
+
+
+	def WaitInitialize( self ) :
+		if self.mInitialized :
+			time.sleep( 0.02 )
+		else :
+			time.sleep( 0.2 )
 

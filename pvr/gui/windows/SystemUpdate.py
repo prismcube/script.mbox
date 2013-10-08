@@ -270,7 +270,12 @@ class SystemUpdate( SettingWindow ) :
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				self.UpdateChannelsByInternet( )
+				if self.mDataCache.Satellite_GetConfiguredList( ) :
+					self.UpdateChannelsByInternet( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
+					dialog.doModal( )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -2055,7 +2060,6 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		makelist = self.ParseList( )
-
 		if makelist == None :
 			self.CloseProgress( )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
@@ -2084,6 +2088,8 @@ class SystemUpdate( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
 					dialog.doModal( )
 
+					self.mDataCache.LoadConfiguredSatellite( )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.System_Reboot( )
 				else :
 					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
@@ -2196,6 +2202,8 @@ class SystemUpdate( SettingWindow ) :
 			msgLine = ''
 			ret = self.mCommander.System_SetManualChannelList( UPDATE_TEMP_CHANNEL )
 			if ret == ElisEnum.E_UPDATE_SUCCESS :
+				self.mDataCache.LoadConfiguredSatellite( )
+				self.mTunerMgr.SyncChannelBySatellite( )
 				msgHead = MR_LANG( 'Update Channels' )
 				msgLine = MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE
 			else :

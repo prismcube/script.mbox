@@ -92,6 +92,35 @@ Search for window name
 				<texture>i_record.png</texture>
 				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
 			</control>
+			<control type="group">
+				<posx>50</posx>
+				<posy>50</posy>
+				<visible>substring(Window.Property(HasLinkageService),True)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>180</width>
+					<height>51</height>
+					<texture>multifeed.png</texture>
+				</control>
+				<!--control type="image">
+					<posx>-5</posx>
+					<posy>0</posy>
+					<width>160</width>
+					<height>50</height>
+					<texture>black-back_noAlpha.png</texture>
+				</control>
+				<control type="label">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>50</height>					
+					<font>font13_title</font>
+					<label>Multi-Feed</label>
+					<align>center</align>					
+					<textcolor>white</textcolor>
+				</control-->
+			</control>
 			<control type="label">
 				<posx>550</posx>
 				<posy>330</posy>
@@ -6496,9 +6525,9 @@ Search for window name
 		</control>
 
 		<!-- *********** E_PIPWindow  *********** -->
-		<control type="group" id="4700000">
-			<visible>substring(Window.Property(CurrentWindow),4700000)</visible>
-			<defaultcontrol always="true">4708000</defaultcontrol>
+		<control type="group" id="4800000">
+			<visible>substring(Window.Property(CurrentWindow),4800000)</visible>
+			<defaultcontrol always="true">4808000</defaultcontrol>
 			<control type="image">
 				<posx>-13</posx>
 				<posy>-7</posy>
@@ -6511,12 +6540,12 @@ Search for window name
 			<control type="group">
 				<posx>-5</posx>
 				<posy>-5</posy>
-				<control type="group" id="4701000">
+				<control type="group" id="4801000">
 					<posx>835</posx>
 					<posy>131</posy>
 					<visible>substring(Window.Property(OpenPIP),true)</visible>
 					<control type="group">
-						<control type="image" id="4701002">
+						<control type="image" id="4801002">
 							<posx>0</posx>
 							<posy>0</posy>
 							<width>425</width>
@@ -6524,10 +6553,10 @@ Search for window name
 							<texture border="5">StackFO_white2.png</texture>
 						</control>
 					</control>
-					<control type="group" id="4702000">
+					<control type="group" id="4802000">
 						<posx>0</posx>
 						<posy>0</posy>
-						<!--control type="label" id="4702001">
+						<!--control type="label" id="4802001">
 							<posx>10</posx>
 							<posy>-30</posy>
 							<width>425</width>
@@ -6539,7 +6568,7 @@ Search for window name
 							<aligny>center</aligny>
 							<label>$INFO[Control.GetLabel]</label>
 						</control-->
-						<control type="image" id="4702002">
+						<control type="image" id="4802002">
 							<posx>0</posx>
 							<posy>-1</posy>
 							<width>370</width>
@@ -6547,7 +6576,7 @@ Search for window name
 							<texture>black-back_noAlpha.png</texture>
 							<colordiffuse>DFFFFFFF</colordiffuse>
 						</control>
-						<control type="grouplist" id="4708000">
+						<control type="grouplist" id="4808000">
 							<posx>0</posx>
 							<posy>0</posy>
 							<width>370</width>
@@ -6561,59 +6590,59 @@ Search for window name
 							<ondown></ondown>
 							<onleft></onleft>
 							<onright></onright>
-							<!--visible>!Control.IsVisible(4703000)</visible-->
+							<!--visible>!Control.IsVisible(4803000)</visible-->
 							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
-							<defaultcontrol always="true">4708001</defaultcontrol>
-							<control type="button" id="4708001">
+							<defaultcontrol always="true">4808001</defaultcontrol>
+							<control type="button" id="4808001">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDChannelUPFO.png</texturefocus>
 								<texturenofocus>OSDChannelUPNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708002">
+							<control type="button" id="4808002">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDChannelDownFO.png</texturefocus>
 								<texturenofocus>OSDChannelDownNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708003">
+							<control type="button" id="4808003">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDAudioFO.png</texturefocus>
 								<texturenofocus>OSDAudioNF.png</texturenofocus>
 								<!--onclick>Mute</onclick-->
 							</control>
-							<control type="button" id="4708004">
+							<control type="button" id="4808004">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDRepeatFO.png</texturefocus>
 								<texturenofocus>OSDRepeatNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708005">
+							<control type="button" id="4808005">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDMoveFO.png</texturefocus>
 								<texturenofocus>OSDMoveNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708006">
+							<control type="button" id="4808006">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDSizeFO.png</texturefocus>
 								<texturenofocus>OSDSizeNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708007">
+							<control type="button" id="4808007">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDDefaultFO.png</texturefocus>
 								<texturenofocus>OSDDefaultNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708008">
+							<control type="button" id="4808008">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDBackFO.png</texturefocus>
 								<texturenofocus>OSDBackNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4708009">
+							<control type="button" id="4808009">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDPowerFO.png</texturefocus>
@@ -6626,7 +6655,7 @@ Search for window name
 							<posx>10</posx>
 							<posy>40</posy>
 							<control type="group">
-								<visible>Control.IsVisible(4703000)</visible>
+								<visible>Control.IsVisible(4803000)</visible>
 								<control type="label">
 									<posx>0</posx>
 									<posy>-30</posy>
@@ -6650,7 +6679,7 @@ Search for window name
 							</control>
 
 							<control type="group">
-								<visible>!Control.IsVisible(4703000)</visible>
+								<visible>!Control.IsVisible(4803000)</visible>
 								<control type="label">
 									<posx>0</posx>
 									<posy>0</posy>
@@ -6660,7 +6689,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Next Channel</label>
-									<visible>Control.HasFocus(4708001)</visible>
+									<visible>Control.HasFocus(4808001)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6671,7 +6700,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Previous Channel</label>
-									<visible>Control.HasFocus(4708002)</visible>
+									<visible>Control.HasFocus(4808002)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6682,7 +6711,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Audio On / Off</label>
-									<visible>Control.HasFocus(4708003)</visible>
+									<visible>Control.HasFocus(4808003)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6693,7 +6722,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Switch full screen to PIP</label>
-									<visible>Control.HasFocus(4708004)</visible>
+									<visible>Control.HasFocus(4808004)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6704,7 +6733,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Set move to PIP</label>
-									<visible>Control.HasFocus(4708005)</visible>
+									<visible>Control.HasFocus(4808005)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6715,7 +6744,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Set size to PIP</label>
-									<visible>Control.HasFocus(4708006)</visible>
+									<visible>Control.HasFocus(4808006)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6726,7 +6755,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Reset to default</label>
-									<visible>Control.HasFocus(4708007)</visible>
+									<visible>Control.HasFocus(4808007)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6737,7 +6766,7 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Go to full screen</label>
-									<visible>Control.HasFocus(4708008)</visible>
+									<visible>Control.HasFocus(4808008)</visible>
 								</control>
 								<control type="label">
 									<posx>0</posx>
@@ -6748,20 +6777,20 @@ Search for window name
 									<font>font10</font>
 									<textcolor>grey</textcolor>
 									<label>Stop PIP</label>
-									<visible>Control.HasFocus(4708009)</visible>
+									<visible>Control.HasFocus(4808009)</visible>
 								</control>
 							</control>
 						</control>
 					</control>
 
-					<control type="group" id="4703000">
+					<control type="group" id="4803000">
 						<posx>-35</posx>
 						<posy>-20</posy>
 						<visible>substring(Window.Property(SettingPIP),true)</visible>
 						<control type="group">
 							<posx>0</posx>
 							<posy>0</posy>
-							<control type="image" id="4703001">
+							<control type="image" id="4803001">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>50</width>
@@ -6772,7 +6801,7 @@ Search for window name
 						<control type="group">
 							<posx>20</posx>
 							<posy>0</posy>
-							<control type="image" id="4703002">
+							<control type="image" id="4803002">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>50</width>
@@ -6783,7 +6812,7 @@ Search for window name
 						<control type="group">
 							<posx>10</posx>
 							<posy>-20</posy>
-							<control type="image" id="4703003">
+							<control type="image" id="4803003">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>50</width>
@@ -6794,7 +6823,7 @@ Search for window name
 						<control type="group">
 							<posx>10</posx>
 							<posy>5</posy>
-							<control type="image" id="4703004">
+							<control type="image" id="4803004">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>50</width>
@@ -6837,7 +6866,7 @@ Search for window name
 		<!-- PIP Image & Radio Image -->
 		<control type="group">
 			<control type="image" id="1008800">
-				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)+ !substring(Window.Property(CurrentWindow),4700000)</visible>
+				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)+ !substring(Window.Property(CurrentWindow),4800000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -6851,7 +6880,7 @@ Search for window name
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4700000)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4800000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -6870,7 +6899,7 @@ Search for window name
 				<visible>substring(Window.Property(OpenPIP),true)</visible>
 				<control type="image" id="1002001">
 					<visible>substring(Window.Property(TVRadio),true)</visible>
-					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4700000)]</visible-->
+					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4800000)]</visible-->
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>328</width>
@@ -6885,7 +6914,7 @@ Search for window name
 					<texture>black-back_noAlpha.png</texture>
 					<visible>substring(Window.Property(BlankPIP),true)</visible>
 				</control>
-				<control type="label" id="4702001">
+				<control type="label" id="4802001">
 					<posx>10</posx>
 					<posy>-30</posy>
 					<width>425</width>

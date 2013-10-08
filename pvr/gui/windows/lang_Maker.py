@@ -48,7 +48,7 @@ def csvToXML():
 	openFile = os.getcwd() + '/%s'% E_FILE_CSV
 	wFile1 = '%s'% E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -213,7 +213,7 @@ def makeLanguage(inFile):
 	#openFile = os.getcwd() + '/test.csv'
 	wFile1 = E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -336,9 +336,9 @@ def makeLanguage(inFile):
 					break
 
 			if searchOn == False:
-				csvret = ['','','','','','','','','','','','','','']
-				csvret2= ['','','','','','','','','','','','','',''] # language pack is 0~12, 13'th <-- id
-				csvret2[13]= inID[0]
+				csvret= ['','','','','','','','','','','','','','','']
+				csvret2= ['','','','','','','','','','','','','','',''] # language pack is 0~13, 14'th <-- id
+				csvret2[14]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
 					#csvret[i+1] = 'NONE_' + inStr[0]
@@ -750,7 +750,7 @@ def copyLanguage(srcDir, langDir) :
 
 # resource/../strings.xml to CSV
 def Make_NewCSV( ) :
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
 
 	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
 	langDir = mboxDir + '/resources/language'
@@ -896,7 +896,7 @@ def updateCSV( ) :
 			if csvHash.get( stringEng[1], -1 ) == -1 :
 				newString.append( stringEng )
 
-				temp = '\"%s\";;;;;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
+				temp = '\"%s\";;;;;;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
 				csvString[tags].append( temp )
 				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
 
@@ -1002,9 +1002,9 @@ def AutoMakeLanguage() :
 ########## test
 def test():
 	pattern = '"([^"]*)"'
-	wFileList = re.findall(pattern, '"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK"')
+	wFileList = re.findall(pattern, '"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"')
 	#line = '"4 Sec","4 Sek.","4 s","4 sec.","4 seg.","4 s","4 sec.","4 sek.","4 sn.","4 секунды",667'
-	line = '"Sports",,,,,,,"bb",,,,,,827'
+	line = '"Sports",,,,,,,"bb",,,,,,,827'
 	ret = re.findall(pattern, line)
 	if len(ret) < len(wFileList):
 		ret = re.sub('"', '', line)
