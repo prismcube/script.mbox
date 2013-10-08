@@ -17,7 +17,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mAudioTrack			= []
 		self.mMode					= CONTEXT_ACTION_VIDEO_SETTING
 
-		self.mVideoOutput			= E_VIDEO_HDMI
+		self.mVideoOutput			= self.mDataCache.GetVideoOutput( )
 		self.mAnalogAscpect			= E_16_9
 		self.mAsyncVideoSetThread 	= None
 		self.mBusyVideoSetting		= False
@@ -84,6 +84,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 			groupId = self.GetGroupId( aControlId )
 			if groupId == E_DialogSpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_DialogSpinEx01 )
+				self.mDataCache.SetVideoOutput( self.mVideoOutput )
 				time.sleep( 0.02 )
 				self.DrawItem( )
 				return

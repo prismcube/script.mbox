@@ -84,6 +84,7 @@ class Configure( SettingWindow ) :
 		self.mProgressThread		= None
 
 		self.mVideoOutput			= E_VIDEO_HDMI
+
 		self.mAnalogAscpect			= E_16_9
 		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 		self.mUpdateNotify			= 0
@@ -162,6 +163,7 @@ class Configure( SettingWindow ) :
 		NetMgr.GetInstance( ).SetIsConfigureWindow( True )
 
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
+		self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
 
 		self.SetListControl( )
 		self.StartCheckNetworkTimer( )
@@ -299,6 +301,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_HDMI_SETTING :
 			if groupId == E_SpinEx01 :
 				self.mVideoOutput = self.GetSelectedIndex( E_SpinEx01 )
+				self.mDataCache.SetVideoOutput( self.mVideoOutput )
 				self.SetListControl( )
 				return
 

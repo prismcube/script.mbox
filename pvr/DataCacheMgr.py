@@ -152,8 +152,10 @@ class DataCacheMgr( object ) :
 		self.mTimerList							= self.Timer_GetTimerList( )
 
 		self.mRootWindowId						= 0
-		self.mRootWindow							= None
+		self.mRootWindow						= None
 		self.mHasLinkageService					= False
+
+		self.mVideoOutput						= E_VIDEO_HDMI
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -2689,4 +2691,12 @@ class DataCacheMgr( object ) :
 
 	def GetLinkageService( self ) :
 		return self.mHasLinkageService
+
+
+	def SetVideoOutput( self, aVideoOutput = E_VIDEO_HDMI ) :
+		self.mVideoOutput = aVideoOutput
+
+
+	def GetVideoOutput( self ) :
+		return self.mVideoOutput
 
