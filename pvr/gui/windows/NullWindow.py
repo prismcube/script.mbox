@@ -87,7 +87,7 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.SetUSBAttached( True )
 
 			if E_V1_1_UPDATE_NOTIFY :
-				thread = threading.Timer( 0.1, self.FirmwareNotify )
+				thread = threading.Timer( 5, self.FirmwareNotify )
 				thread.start( )
 
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
