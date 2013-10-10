@@ -575,9 +575,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
+			isBackup = self.mDataCache.Channel_Backup( )
+
 			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )
-				favName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+				idxSub = self.mUserSlidePos.mSub
+				favName = self.mFavoriteGroupList[idxSub]
 				LOG_TRACE( '------------------favName[%s]'% favName )
 				if favName :
 					iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
@@ -588,12 +591,54 @@ class ChannelListWindow( BaseWindow ) :
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
 
-						self.mDataCache.Channel_Backup( )
 						self.mFlag_DeleteAll_Fav = True
 						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, self.mUserMode.mServiceType, numList )
+				else :
+					LOG_TRACE( 'except, no favName idx[%s] name[%s]'% ( idxSub, self.mFavoriteGroupList ) )
+
+
+			elif self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
+				idxSub = self.mUserSlidePos.mSub
+				if self.mUserMode and self.mListSatellite and len( self.mListSatellite ) > idxSub :
+					item = self.mListSatellite[idxSub]
+					self.mDataCache.SetSkipChannelView( True )
+					tvList = self.mDataCache.Channel_GetListBySatellite( ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_SATELLITE, ElisEnum.E_SORT_BY_NUMBER, item.mLongitude, item.mBand )
+					raList = self.mDataCache.Channel_GetListBySatellite( ElisEnum.E_SERVICE_TYPE_RADIO, ElisEnum.E_MODE_SATELLITE, ElisEnum.E_SORT_BY_NUMBER, item.mLongitude, item.mBand )
+					self.mDataCache.SetSkipChannelView( False )
+
+					isDelete = False
+					if tvList and len( tvList ) > 0 :
+						isDelete = True
+						numList = []
+						for iChannel in tvList :
+							chNum = ElisEInteger( )
+							chNum.mParam = iChannel.mNumber
+							numList.append( chNum )
+
+						ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
+						LOG_TRACE( 'delete tv len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+
+					if raList and len( raList ) > 0 :
+						isDelete = True
+						numList = []
+						for iChannel in raList :
+							chNum = ElisEInteger( )
+							chNum.mParam = iChannel.mNumber
+							numList.append( chNum )
+
+						ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
+						LOG_TRACE( 'delete radio len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+
+					if isDelete :
+						#self.mFlag_DeleteAll_Fav = True
+						self.mDataCache.Channel_Save( )
+						#pass
+
+				else :
+					LOG_TRACE( 'except, no satellite idx[%s] name[%s]'% ( idxSub, self.mListSatellite ) )
+
 
 			else :
-				isBackup = self.mDataCache.Channel_Backup( )
 				isDelete = self.mDataCache.Channel_DeleteAll( False )
 				if isDelete :
 					self.mFlag_DeleteAll = True
