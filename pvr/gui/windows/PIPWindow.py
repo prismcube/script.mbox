@@ -112,6 +112,7 @@ class PIPWindow( BaseWindow ) :
 		self.mPosCurrent      = deepcopy( E_DEFAULT_POSITION_PIP )
 		self.mPIP_EnableAudio = False
 		self.mAsyncTuneTimer  = None
+		self.mAsyncInputTimer = None
 		self.mIndexAvail      = 0
 		self.mFakeChannel     = self.mCurrentChannel
 		self.mInputString     = ''
@@ -258,6 +259,7 @@ class PIPWindow( BaseWindow ) :
 		if aStopPIP :
 			self.PIP_Stop( )
 
+		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
 
@@ -438,6 +440,7 @@ class PIPWindow( BaseWindow ) :
 
 		elif aDir == INPUT_CHANNEL_PIP :
 			self.StopAsyncTune( )
+			self.StopAsyncHideInput( )
 			self.SetLabelInputNumber( )
 			fakeChannel = self.mDataCache.PIP_GetByNumber( int( self.mInputString ) )
 			if fakeChannel :
@@ -445,6 +448,7 @@ class PIPWindow( BaseWindow ) :
 				self.RestartAsyncTune( fakeChannel )
 			else :
 				self.SetLabelInputName( )
+				self.RestartAsyncHideInput( )
 
 			return
 
@@ -759,7 +763,7 @@ class PIPWindow( BaseWindow ) :
 
 
 	def StopAsyncTune( self ) :
-		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
+		if self.mAsyncTuneTimer and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.cancel( )
 			del self.mAsyncTuneTimer
 
@@ -769,9 +773,9 @@ class PIPWindow( BaseWindow ) :
 	def TuneChannel( self, aChannel = None ) :
 		try :
 			if aChannel :
-				self.mInputString = ''
+				self.StopAsyncHideInput( )
+				self.ResetHideInput( )
 				self.mCurrentChannel = aChannel
-				self.UpdatePropertyGUI( 'InputNumber', E_TAG_FALSE )
 				self.ChannelTuneToPIP( -1 )
 
 			self.mIndexAvail = 0
@@ -795,4 +799,28 @@ class PIPWindow( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	def RestartAsyncHideInput( self ) :
+		self.StopAsyncHideInput( )
+		self.StartAsyncHideInput( )
+
+
+	def StartAsyncHideInput( self ) :
+		self.mAsyncInputTimer = threading.Timer( 5, self.ResetHideInput )
+		self.mAsyncInputTimer.start( )
+
+
+	def StopAsyncHideInput( self ) :
+		if self.mAsyncInputTimer and self.mAsyncInputTimer.isAlive( ) :
+			self.mAsyncInputTimer.cancel( )
+			del self.mAsyncInputTimer
+
+		self.mAsyncInputTimer = None
+
+
+	def ResetHideInput( self ) :
+		self.mInputString = ''
+		self.UpdatePropertyGUI( 'InputNumber', E_TAG_FALSE )
+
 
