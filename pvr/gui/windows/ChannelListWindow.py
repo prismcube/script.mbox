@@ -610,24 +610,40 @@ class ChannelListWindow( BaseWindow ) :
 					if tvList and len( tvList ) > 0 :
 						isDelete = True
 						numList = []
+						count = 0
 						for iChannel in tvList :
 							chNum = ElisEInteger( )
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
+							count += 1
+							if count % 3000 == 0 :
+								ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
+								LOG_TRACE( 'delete tv len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+								numList = []
 
-						ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
-						LOG_TRACE( 'delete tv len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+
+						if numList and len( numList ) > 0 :
+							ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
+							LOG_TRACE( 'delete tv total[%s] len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( count, len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
 
 					if raList and len( raList ) > 0 :
 						isDelete = True
 						numList = []
+						count = 0
 						for iChannel in raList :
 							chNum = ElisEInteger( )
 							chNum.mParam = iChannel.mNumber
 							numList.append( chNum )
+							count += 1
+							if count % 3000 == 0 :
+								ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
+								LOG_TRACE( 'delete radio len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+								numList = []
 
-						ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
-						LOG_TRACE( 'delete radio len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+
+						if numList and len( numList ) > 0 :
+							ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
+							LOG_TRACE( 'delete radio total[%s] len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( count, len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
 
 					if isDelete :
 						#self.mFlag_DeleteAll_Fav = True
