@@ -2994,7 +2994,22 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_MENU_DELETEALL ) )
+			lblLine = MR_LANG( 'Delete all' )
+			if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
+				idxSub = self.mUserSlidePos.mSub
+				if self.mListSatellite and len( self.mListSatellite ) > idxSub :
+					item = self.mListSatellite[idxSub]
+					lblLine = '%s - %s'% ( lblLine, item.mName )
+
+			elif self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				self.LoadFavoriteGroupList( )
+				idxSub = self.mUserSlidePos.mSub
+				if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > idxSub :
+					favName = self.mFavoriteGroupList[idxSub]
+					if favName :
+						lblLine = '%s %s'% ( lblLine, favName )
+
+			context.append( ContextItem( lblLine, CONTEXT_ACTION_MENU_DELETEALL ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
