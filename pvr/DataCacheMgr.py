@@ -1533,6 +1533,14 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_DeleteBySatellite( self, aLongitude, aBand ) :
+		ret = self.mCommander.Channel_DeleteBySatellite( aLongitude, aBand )
+		if ret :
+			self.Channel_Save( )
+
+		return ret
+
+
+	def Channel_DeleteBySatellite_( self, aLongitude, aBand ) :
 		aTypeAll = []
 		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_TV )
 		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_RADIO )

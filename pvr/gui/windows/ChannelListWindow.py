@@ -575,6 +575,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
+			self.OpenBusyDialog( )
 			isBackup = self.mDataCache.Channel_Backup( )
 
 			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
@@ -601,63 +602,22 @@ class ChannelListWindow( BaseWindow ) :
 				idxSub = self.mUserSlidePos.mSub
 				if self.mUserMode and self.mListSatellite and len( self.mListSatellite ) > idxSub :
 					item = self.mListSatellite[idxSub]
-					self.mDataCache.SetSkipChannelView( True )
-					tvList = self.mDataCache.Channel_GetListBySatellite( ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_SATELLITE, ElisEnum.E_SORT_BY_NUMBER, item.mLongitude, item.mBand )
-					raList = self.mDataCache.Channel_GetListBySatellite( ElisEnum.E_SERVICE_TYPE_RADIO, ElisEnum.E_MODE_SATELLITE, ElisEnum.E_SORT_BY_NUMBER, item.mLongitude, item.mBand )
-					self.mDataCache.SetSkipChannelView( False )
-
-					isDelete = False
-					if tvList and len( tvList ) > 0 :
-						isDelete = True
-						numList = []
-						count = 0
-						for iChannel in tvList :
-							chNum = ElisEInteger( )
-							chNum.mParam = iChannel.mNumber
-							numList.append( chNum )
-							count += 1
-							if count % 3000 == 0 :
-								ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
-								LOG_TRACE( 'delete tv len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
-								numList = []
-
-
-						if numList and len( numList ) > 0 :
-							ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_TV, 0, numList )
-							LOG_TRACE( 'delete tv total[%s] len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( count, len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
-
-					if raList and len( raList ) > 0 :
-						isDelete = True
-						numList = []
-						count = 0
-						for iChannel in raList :
-							chNum = ElisEInteger( )
-							chNum.mParam = iChannel.mNumber
-							numList.append( chNum )
-							count += 1
-							if count % 3000 == 0 :
-								ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
-								LOG_TRACE( 'delete radio len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
-								numList = []
-
-
-						if numList and len( numList ) > 0 :
-							ret1 = self.mDataCache.Channel_DeleteByNumber( ElisEnum.E_SERVICE_TYPE_RADIO, 0, numList )
-							LOG_TRACE( 'delete radio total[%s] len[%s] ret[%s] fav[%s] longitude[%s] band[%s]'% ( count, len( numList ), ret1, item.mName, item.mLongitude, item.mBand ) )
+					isDelete = self.mDataCache.Channel_DeleteBySatellite( item.mLongitude, item.mBand )
+					LOG_TRACE( '-----------Channel_DeleteBySatellite ret[%s] longitude[%s] band[%s]'% ( isDelete, item.mLongitude, item.mBand ) )
 
 					if isDelete :
-						#self.mFlag_DeleteAll_Fav = True
-						self.mDataCache.Channel_Save( )
+						self.mFlag_DeleteAll_Fav = True
 						#pass
 
 				else :
 					LOG_TRACE( 'except, no satellite idx[%s] name[%s]'% ( idxSub, self.mListSatellite ) )
 
-
 			else :
 				isDelete = self.mDataCache.Channel_DeleteAll( False )
 				if isDelete :
 					self.mFlag_DeleteAll = True
+
+			self.CloseBusyDialog( )
 
 		return ret
 
