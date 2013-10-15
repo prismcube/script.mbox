@@ -4,11 +4,10 @@ from pvr.gui.WindowImport import *
 #TEXTBOX_ID_TITLE					= 100
 #TEXTBOX_ID_DESCRIPTION				= 101
 #LABEL_ID_DATE						= 102
+SCROLL_ID_SHOW						= 110
 GROUP_ID_BASE						= 300
 BUTTON_ID_PREV						= 301
 BUTTON_ID_NEXT						= 302
-BUTTON_ID_UP						= 303
-BUTTON_ID_DOWN						= 304
 
 EPGLIST_EXCEPTWINDOW = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_EPG_WINDOW ]
 
@@ -56,6 +55,7 @@ class DialogExtendEPG( BaseDialog ) :
 
 		self.setProperty( 'EPGPrev', button1 )
 		self.setProperty( 'EPGNext', button2 )
+
 		if button2 == E_TAG_TRUE :
 			self.UpdateSetFocus( BUTTON_ID_NEXT )
 
@@ -104,10 +104,10 @@ class DialogExtendEPG( BaseDialog ) :
 				self.setFocusId( BUTTON_ID_NEXT )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.EPGNavigation( BUTTON_ID_UP )
+			self.setFocusId( SCROLL_ID_SHOW )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.EPGNavigation( BUTTON_ID_DOWN )
+			self.setFocusId( SCROLL_ID_SHOW )
 
 
 	def onClick( self, aControlId ) :
