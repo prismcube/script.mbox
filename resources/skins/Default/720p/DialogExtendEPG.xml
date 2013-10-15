@@ -25,6 +25,8 @@
 					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
 					<onleft></onleft>
 					<onright>302</onright>
+					<ondown>110</ondown>
+					<onup>110</onup>
 					<visible>substring(Window.Property(EPGPrev),true)</visible>
 				</control>
 				<control type="button" id="302">
@@ -37,6 +39,8 @@
 					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
 					<onleft>301</onleft>
 					<onright></onright>
+					<ondown>110</ondown>
+					<onup>110</onup>
 					<visible>substring(Window.Property(EPGNext),true)</visible>
 				</control>
 				<control type="label">
@@ -100,8 +104,28 @@
 				  <font>font13</font>
 				  <textcolor>FFFFFFFF</textcolor>
 				  <wrapmultiline>true</wrapmultiline>
-				  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+				  <pagecontrol>110</pagecontrol>
+				  <autoscroll delay="3000" time="1000" repeat="10000">!Control.HasFocus(110)</autoscroll>
 				  <label>$INFO[Window.Property(EPGDescription)]</label>
+			</control>
+			<!-- Scrollbar -->
+			<control type="scrollbar" id="110">
+				<posx>1050</posx>
+				<posy>135</posy>
+				<width>25</width>
+				<height>321</height>
+				<include>DefaultWindowFade</include>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onleft></onleft>
+				<onright></onright>
+				<ondown></ondown>
+				<onup></onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
 			</control>
 			<control type="label" id="102">
 				<posx>830</posx>

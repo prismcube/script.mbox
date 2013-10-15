@@ -596,7 +596,15 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					LOG_TRACE( 'except, no favName idx[%s] name[%s]'% ( idxSub, self.mFavoriteGroupList ) )
 
+			else :
+				isDelete = self.mDataCache.Channel_DeleteAll( False )
+				if isDelete :
+					self.mFlag_DeleteAll = True
 
+
+
+			"""
+			#ToDO : will be operate by elis-commander
 			elif self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 				idxSub = self.mUserSlidePos.mSub
 				if self.mUserMode and self.mListSatellite and len( self.mListSatellite ) > idxSub :
@@ -652,12 +660,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				else :
 					LOG_TRACE( 'except, no satellite idx[%s] name[%s]'% ( idxSub, self.mListSatellite ) )
-
-
-			else :
-				isDelete = self.mDataCache.Channel_DeleteAll( False )
-				if isDelete :
-					self.mFlag_DeleteAll = True
+			"""
 
 		return ret
 
