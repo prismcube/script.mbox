@@ -608,7 +608,6 @@ class ChannelListWindow( BaseWindow ) :
 					if isDelete :
 						self.mFlag_DeleteAll_Fav = True
 						#pass
-
 				else :
 					LOG_TRACE( 'except, no satellite idx[%s] name[%s]'% ( idxSub, self.mListSatellite ) )
 

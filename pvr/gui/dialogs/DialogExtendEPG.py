@@ -7,6 +7,8 @@ from pvr.gui.WindowImport import *
 GROUP_ID_BASE						= 300
 BUTTON_ID_PREV						= 301
 BUTTON_ID_NEXT						= 302
+BUTTON_ID_UP						= 303
+BUTTON_ID_DOWN						= 304
 
 EPGLIST_EXCEPTWINDOW = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_EPG_WINDOW ]
 
@@ -88,10 +90,24 @@ class DialogExtendEPG( BaseDialog ) :
 				self.EPGNavigation( self.mFocusId )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.EPGNavigation( BUTTON_ID_PREV )
+			self.GetFocusId( )
+			if self.mFocusId == BUTTON_ID_PREV or self.mFocusId == BUTTON_ID_NEXT :
+				self.EPGNavigation( BUTTON_ID_PREV )
+			else :
+				self.setFocusId( BUTTON_ID_PREV )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.EPGNavigation( BUTTON_ID_NEXT )
+			self.GetFocusId( )
+			if self.mFocusId == BUTTON_ID_PREV or self.mFocusId == BUTTON_ID_NEXT :
+				self.EPGNavigation( BUTTON_ID_NEXT )
+			else :
+				self.setFocusId( BUTTON_ID_NEXT )
+
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.EPGNavigation( BUTTON_ID_UP )
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.EPGNavigation( BUTTON_ID_DOWN )
 
 
 	def onClick( self, aControlId ) :
