@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <help>
-	<page number="1" title=">Přední Panel" location="">
+	<page number="1" title="Přední Panel" location="">
 		<content name="help/front.png">
 			<type>image</type>
 			<posx>240</posx>
@@ -25,7 +25,7 @@
 			<width>780</width>
 			<height>177</height>
 		</content>
-		<content name="1. LNB 1 IN, LNB 2 IN : Připojení satelitní antény.[CR]2. [CR]3. S / PDIF : Připojení k audio systému pomocí S / PDIF kabelu.CR]4. RS – 232C : Připojení k PC.">
+		<content name="1. LNB 1 IN, LNB 2 IN : Připojení satelitní antény.[CR]2. VIDEO, AUDIO : Připojení k televizoru nebo videorekordéru pomocí kabelu RCA.[CR]3. S / PDIF : Připojení k audio systému pomocí S / PDIF kabelu.[CR]4. RS–232C : Připojení k PC.">
 			<type>textbox</type>
 			<posx>80</posx>
 			<posy>565</posy>
@@ -49,14 +49,14 @@
 			<width>316</width>
 			<height>480</height>
 		</content>
-		<content name="1. TV POWER : Slouží k vypnutí nebo zapnutí TV.[CR]2. STANDBY : Přepínání mezi zapnutým a pohotovostním režimem.[CR]3. BAREVNÉ : Přístup ke speciálním funkcím v některých nabídkách.[CR]4. ZDROJ : Ovládá výstupy TV.[CR]5.XBMC : Zobrazí XBMC Media Center.">
+		<content name="1. TV POWER : Slouží k vypnutí nebo zapnutí TV.[CR]2. STANDBY : Přepínání mezi zapnutým a pohotovostním režimem.[CR]3. BAREVNÉ : Přístup ke speciálním funkcím v některých nabídkách.[CR]4. ZDROJ : Ovládá výstupy TV.[CR]5. XBMC : Zobrazí XBMC Media Center.[CR]6. TV / RADIO : Přepíná mezi režimy TV a rádio.">
 			<type>textbox</type>
 			<posx>80</posx>
 			<posy>565</posy>
 			<width>540</width>
 			<height>160</height>
 		</content>
-		<content name="6. TV / RADIO : Přepíná mezi režimy TV a rádio.[CR]7. RECORD : Záznam živého vysílání.[CR]8. STOP : Zastaví nahrávání nebo přejde do aktuálního programu.[CR]9. PLAY / PAUSE : Pozastavení živého vysílání nebo nahrávání.[CR]10. RYCHLE PŘETOČIT VZAD : Rychlé přetáčení dozadu.[CR]11. RYCHLE PŘETOČIT VPŘED : Rychlé přetáčení dopředu.[CR]12. ARCHIV : Zobrazí okno Archivu.">
+		<content name="7. RECORD : Záznam živého vysílání.[CR]8. STOP : Zastaví nahrávání nebo přejde do aktuálního programu.[CR]9. PLAY / PAUSE : Pozastavení živého vysílání nebo nahrávání.[CR]10. RYCHLE PŘETOČIT VZAD : Rychlé přetáčení dozadu.[CR]11. RYCHLE PŘETOČIT VPŘED : Rychlé přetáčení dopředu.[CR]12. ARCHIV : Zobrazí okno Archivu.">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>565</posy>
@@ -84,7 +84,7 @@
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>565</posy>
-			<width>540</width>
+			<width>570</width>
 			<height>160</height>
 		</content>
 	</page>
@@ -165,7 +165,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob , jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější , pokud víte , které satelity chcete vyhledat a také jejich parametry.">
+		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob , jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější, pokud víte, které satelity chcete vyhledat a také jejich parametry.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -208,7 +208,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Přidání kanálů do oblíbené skupiny." location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
+	<page number="12" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -216,7 +216,7 @@
 			<width>832</width>
 			<height>470</height>
 		</content>
-		<content name="1. Vyberte kanály , které chcete přidat do své oblíbené skupiny.[CR]2. Zvolte volbu PŘIDAT K OBLÍBENÉ SKUPINĚ v místní nabídce stiskněte tlačítko OK.[CR]3. Vyberte skupinu ze seznamu dostupných skupin oblíbených položek a stiskněte tlačítko OK.">
+		<content name="1. Vyberte kanály, které chcete přidat do své oblíbené skupiny.[CR]2. Zvolte volbu PŘIDAT K OBLÍBENÉ SKUPINĚ v místní nabídce stiskněte tlačítko OK.[CR]3. Vyberte skupinu ze seznamu dostupných skupin oblíbených položek a stiskněte tlačítko OK.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -293,7 +293,7 @@
 		</content>
 	</page>
 	
-	<page number="17" title="Instalace aplikace Firefox" location="(MÉDIA> SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
+	<page number="17" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -301,7 +301,7 @@
 			<width>840</width>
 			<height>470</height>
 		</content>
-		<content name="Doplňky jsou balíky, které přidávají různé vlastnosti a funkce, které obvykle nejsou součástí XBMC.[CR][CR]1. Vyberte PRISMCUBE 'S doplňky a stiskněte tlačítko OK.[CR]2. Přejděte dolů na požadovanou kategorii a stiskněte tlačítko OK.[CR]3. Vyberte doplněk, který chcete nainstalovat.[CR]4. Souhrnné dialogové okno umožňuje vidět různé vlastnosti doplňků.[CR]5. Zvolte možnost automatického stahování a instalace.">
+		<content name="Doplňky jsou balíky, které přidávají různé vlastnosti a funkce, které obvykle nejsou součástí XBMC.[CR][CR]1. Vyberte PRISMCUBE'S doplňky a stiskněte tlačítko OK.[CR]2. Přejděte dolů na požadovanou kategorii a stiskněte tlačítko OK.[CR]3. Vyberte doplněk, který chcete nainstalovat.[CR]4. Souhrnné dialogové okno umožňuje vidět různé vlastnosti doplňků.[CR]5. Zvolte možnost automatického stahování a instalace.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
