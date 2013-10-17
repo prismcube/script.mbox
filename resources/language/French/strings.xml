@@ -11,8 +11,8 @@
 	<string id="1009">Option Misc</string>
 	<string id="1010">Choisir type de vue</string>
 	<string id="1011">Choisir ordre de tri</string>
-	<string id="1012">Ordre: décroissant</string>
-	<string id="1013">Ordre: croissant</string>
+	<string id="1012">Ordre : Décroissant</string>
+	<string id="1013">Ordre : Croissant</string>
 	<string id="1014">Verrouillée</string>
 	<string id="1015">Choisir la liste des chaînes</string>
 	<string id="1016">Aucune information EPG</string>
@@ -480,11 +480,11 @@
 	<string id="3010">HD</string>
 	<string id="3011">Disque dur non détecté</string>
 	<string id="3012">Désactiver les sous-titres</string>
-	<string id="3013">Direct</string>
-	<string id="3014">Timeshift</string>
-	<string id="3015">Lecteur externe</string>
-	<string id="3016">Multimédia</string>
-	<string id="3017">Inconnu</string>
+	<string id="3013">DIRECT</string>
+	<string id="3014">TIMESHIFT</string>
+	<string id="3015">LECTEUR EXTERNE</string>
+	<string id="3016">MULTIMÉDIA</string>
+	<string id="3017">INCONNU</string>
 	<string id="3018">Inconnu</string>
 	<string id="3019">Aucune chaîne</string>
 	<string id="3020">Puissance</string>

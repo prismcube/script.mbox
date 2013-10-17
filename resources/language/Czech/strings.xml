@@ -585,7 +585,7 @@
 	<string id="3115">Obnovit z</string>
 	<string id="3116">Smazat vše</string>
 	<string id="3117">Vícenásobný - výběr</string>
-	<string id="3118">Jste si jisti , že chcete odstranit%s všechny vaše záložky?</string>
+	<string id="3118">Jste si jisti, že chcete odstranit%s všechny vaše záložky?</string>
 	<string id="3119">Odstranit všechny záložky</string>
 	<string id="3120">Žádný kanál</string>
 	<string id="3121">Výběr konfiguračních dat</string>
@@ -643,7 +643,7 @@
 	<string id="3173">Smazat OK</string>
 	<string id="3174">Jste si jisti, že chcete zastavit prohledávání kanálů?</string>
 	<string id="3175">Opustit vyhledávání kanálů</string>
-	<string id="3176">Televizní kanály : %d kanálů %sRádio : %d</string>
+	<string id="3176">Televizní kanály : %d %sKanálů rádio : %d</string>
 	<string id="3177">Výsledek hledání kanálů</string>
 	<string id="3178">Východní Limit</string>
 	<string id="3179">Jeden krok na východ</string>
@@ -663,13 +663,13 @@
 	<string id="3193">Tato pozice je uložena</string>
 	<string id="3194">Uložení pozice se nepodařilo dokončit</string>
 	<string id="3195">Zkuste to znovu po zastavení přehrávání</string>
-	<string id="3196">Timeshift není připraven % s Prosím zkuste to znovu</string>
+	<string id="3196">Timeshift není připraven%s Prosím zkuste to znovu</string>
 	<string id="3197">Nepodporováno %s</string>
 	<string id="3198">Přidat záložku</string>
 	<string id="3199">Spustit Automatické - oddělování</string>
 	<string id="3200">Zobrazit všechny záložky</string>
-	<string id="3201">Dosáhli jste maximální počet %s záložek</string>
-	<string id="3202">Délka média je delší než %s sekund %s k vytvoření kapitoly</string>
+	<string id="3201">Dosáhli jste maximální počet%s záložek</string>
+	<string id="3202">Délka média je delší než %s sekund%s k vytvoření kapitoly</string>
 	<string id="3203">Žádný Teletext</string>
 	<string id="3204">Žádný teletext není dostupný</string>
 	<string id="3205">Žádné titulky</string>
@@ -1048,7 +1048,7 @@
 	<string id="3578">Automatické skenování</string>
 	<string id="3579">Zkontrolujte, zda vaše anténa je správně nastavena</string>
 	<string id="3580">Přejít na stránku nastavení antény teď?</string>
-	<string id="3581">Pro získání silného satelitního signálu %s je nutné zadat satelit a LNB parametry korektně</string>
+	<string id="3581">Pro získání silného satelitního signálu%s je nutné zadat satelit a LNB parametry korektně</string>
 	<string id="3582">Alespoň jeden transpondér musí existovat v každém satelitu</string>
 	<string id="3583">Žádný satelitní transpondér nenalezen</string>
 	<string id="3584">Vyberte satelit na kterém TP chcete skenovat</string>
@@ -1091,7 +1091,7 @@
 	<string id="3621">Aktualizován na nejnovější verzi</string>
 	<string id="3622">Soubor je poškozen, zkuste převzít znovu</string>
 	<string id="3623">Prosím, vložte USB flash paměť a stiskněte tlačítko OK</string>
-	<string id="3624">Ověření souboru %s se nepodařilo, Zkuste stáhnout znovu</string>
+	<string id="3624">Ověření souboru se nepodařilo%s Zkuste stáhnout znovu</string>
 	<string id="3625">Síť je odpojená</string>
 	<string id="3626">Dostatek místa na disku</string>
 	<string id="3627">Nedostatečný prostor na HDD</string>

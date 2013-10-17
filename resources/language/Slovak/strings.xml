@@ -65,7 +65,7 @@
 	<string id="1063">Správca súborov</string>
 	<string id="1064">Profily</string>
 	<string id="1065">Informácie o systéme</string>
-	<string id="1066">Nastavte digitálny satelitný prijímač vrátane antény , vyhľadávanie kanálov , aktualizácie , atď</string>
+	<string id="1066">Nastavte digitálny satelitný prijímač vrátane antény, vyhľadávanie kanálov, aktualizácie, atď</string>
 	<string id="1067">Prehrávanie predošlých nahratých televíznych programov</string>
 	<string id="1068">Zobrazenie informácií o programe jednotlivých kanálov v čase a dátume zadania</string>
 	<string id="1069">Zobrazenie zoznamu TV/rádio kanálov</string>
@@ -613,7 +613,7 @@
 	<string id="3143">Zadajte SSID</string>
 	<string id="3144">Priradenie statickej IP adresy pre bezdrôtovú sieť</string>
 	<string id="3145">Nastavenie IP</string>
-	<string id="3146"> - IP adresa</string>
+	<string id="3146"> - IP adresa</string>
 	<string id="3147">Zadajte IP adresu</string>
 	<string id="3148"> - Maska podsiete</string>
 	<string id="3149">Zadajte masku podsiete</string>
@@ -623,9 +623,9 @@
 	<string id="3153">Zadajte adresu servera DNS</string>
 	<string id="3154">Pripojiť k skrytej bezdrôtovej sieti</string>
 	<string id="3155">Skrytá SSID</string>
-	<string id="3156"> - SSID</string>
-	<string id="3157">Zadajte názov siete pre bezdrôtovú sieť , ku ktorej sa chcete pripojiť</string>
-	<string id="3158"> - Bezpečnosť</string>
+	<string id="3156"> - SSID</string>
+	<string id="3157">Zadajte názov siete pre bezdrôtovú sieť, ku ktorej sa chcete pripojiť</string>
+	<string id="3158"> - Bezpečnosť</string>
 	<string id="3159">Vyberte typ zabezpečenia pre skrytú bezdrôtovú sieť</string>
 	<string id="3160">Zadajte adresu IP</string>
 	<string id="3161">Skúste to znova prosím</string>
@@ -643,7 +643,7 @@
 	<string id="3173">Zmazať OK</string>
 	<string id="3174">Ste si istí, že chcete zastaviť prehľadávanie kanálov?</string>
 	<string id="3175">Opustiť vyhľadávanie kanálov</string>
-	<string id="3176">Televízne kanály : %d kanálov %sRádio : %d</string>
+	<string id="3176">Televízne kanály : %d %sKanálov rádio : %d</string>
 	<string id="3177">Výsledok hľadania kanálov</string>
 	<string id="3178">Východný Limit</string>
 	<string id="3179">Jeden krok na východ</string>
@@ -663,13 +663,13 @@
 	<string id="3193">Táto pozícia je uložená</string>
 	<string id="3194">Uloženie pozície sa nepodarilo dokončiť</string>
 	<string id="3195">Skúste to znovu po zastavení prehrávania</string>
-	<string id="3196">Timeshift nie je pripravený %s Prosím skúste to znova</string>
+	<string id="3196">Timeshift nie je pripravený%s Prosím skúste to znova</string>
 	<string id="3197">Nepodporované %s</string>
 	<string id="3198">Pridať záložku</string>
 	<string id="3199">Spustiť Automatické-oddeľovanie</string>
 	<string id="3200">Zobraziť všetky záložky</string>
-	<string id="3201">Dosiahli ste maximálny počet %s záložiek</string>
-	<string id="3202">Dĺžka média je dlhšia ako %s sekúnd %s k vytvoreniu kapitoly</string>
+	<string id="3201">Dosiahli ste maximálny počet%s záložiek</string>
+	<string id="3202">Dĺžka média je dlhšia ako %s sekúnd%s k vytvoreniu kapitoly</string>
 	<string id="3203">Žiadny Teletext</string>
 	<string id="3204">Žiadny teletext nie je dostupný</string>
 	<string id="3205">Žiadne titulky</string>
@@ -739,8 +739,8 @@
 	<string id="3269">Uložiť konfiguráciu</string>
 	<string id="3270">Skúste to znovu po zastavení všetkých vašich nahrávok</string>
 	<string id="3271">Vymazať všetky kanály</string>
-	<string id="3272">Ste si istí , že chcete odstrániť%s všetky vaše televízne a rádio programy?</string>
-	<string id="3273">Ste si istí , že chcete odstrániť%s všetky programy z tejto obľúbenej skupiny?</string>
+	<string id="3272">Ste si istí, že chcete odstrániť%s všetky vaše televízne a rádio programy?</string>
+	<string id="3273">Ste si istí, že chcete odstrániť%s všetky programy z tejto obľúbenej skupiny?</string>
 	<string id="3274">Váš zoznam kanálov je prázdny</string>
 	<string id="3275">Editácia programov</string>
 	<string id="3276">Triedenie</string>
@@ -797,7 +797,7 @@
 	<string id="3327">Vyberte frekvenciu tunera 2</string>
 	<string id="3328"> - Tuner 2 PIN kód</string>
 	<string id="3329">Zadajte PIN kód pre tuner 2</string>
-	<string id="3330">PIN kód musí byť 4 - miestny</string>
+	<string id="3330">PIN kód musí byť 4-miestny</string>
 	<string id="3331">Prepáčte, PIN kód nezodpovedá</string>
 	<string id="3332">Žiadne EPG</string>
 	<string id="3333">Žiadny teletext</string>
@@ -870,14 +870,14 @@
 	<string id="3400">Hore/dole = Zoom in/out (aktuálna intenzita : %s) %sDoľava/Doprava = Predchádzajúci/Ďalší krok</string>
 	<string id="3401">Dosiahli ste maximálnu intenzitu</string>
 	<string id="3402">Dosiahli ste minimálnu intenzitu</string>
-	<string id="3403">Skúste to znova po zastavení prehrávania %s a timeshiftu</string>
+	<string id="3403">Skúste to znova po zastavení prehrávania%s a timeshiftu</string>
 	<string id="3404">Náhľad</string>
 	<string id="3405">Poster_wrap</string>
 	<string id="3406">Fanart</string>
 	<string id="3407">Hrať od začiatku</string>
 	<string id="3408">Naozaj chcete odstrániť tento súbor?</string>
 	<string id="3409">Odstrániť súbor</string>
-	<string id="3410">Naozaj chcete odstrániť %s všetky vaše nahrané súbory?</string>
+	<string id="3410">Naozaj chcete odstrániť%s všetky vaše nahrané súbory?</string>
 	<string id="3411">Odstrániť všetky súbory</string>
 	<string id="3412">Zadajte nový názov</string>
 	<string id="3413">Názov súboru musí obsahovať minimálne %d znakov</string>
@@ -1048,7 +1048,7 @@
 	<string id="3578">Automatické skenovanie</string>
 	<string id="3579">Skontrolujte, či Vaša anténa je správne nastavená</string>
 	<string id="3580">Prejsť na stránku nastavenia antény teraz?</string>
-	<string id="3581">Pre získanie silného satelitného signálu %s je nutné zadať satelit a LNB parametre korektne</string>
+	<string id="3581">Pre získanie silného satelitného signálu%s je nutné zadať satelit a LNB parametre korektne</string>
 	<string id="3582">Aspoň jeden transpondér musí existovať v každom satelite</string>
 	<string id="3583">Žiaden satelitný transpondér nenájdený</string>
 	<string id="3584">Vyberte satelit na ktorom TP chcete skenovať</string>
@@ -1098,7 +1098,7 @@
 	<string id="3628">Nie je dostatok miesta na USB flash pamäti</string>
 	<string id="3629">Proces aktualizácie zlyhala</string>
 	<string id="3630">Nie je môžné nájsť predchádzajúce verzie</string>
-	<string id="3631">Nie je môžné získať najnovší firmware %s, prosím skúste to znova</string>
+	<string id="3631">Nie je môžné získať najnovší firmware%s, prosím skúste to znova</string>
 	<string id="3632">Firmware nie je k dispozícii</string>
 	<string id="3633">Sťahovanie</string>
 	<string id="3634">Skontrolujte HDD</string>
@@ -1221,7 +1221,7 @@
 	<string id="3751">Verzia</string>
 	<string id="3752">Bootloader verzia</string>
 	<string id="3753">Model</string>
-	<string id="3754">Teplota: zaneprázdnený</string>
+	<string id="3754">Teplota : zaneprázdnený</string>
 	<string id="3755">Využité miesto pre médiá</string>
 	<string id="3756">Využité miesto pre Program</string>
 	<string id="3757">Využité miesto pre nahrávky</string>

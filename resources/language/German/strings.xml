@@ -918,7 +918,7 @@
 	<string id="3448">Werkreset durchführen?</string>
 	<string id="3449">Jetzt erfolgt Zurückstellung</string>
 	<string id="3450">Restart erforderlich</string>
-	<string id="3451">Ihr System muss restarted%s werdenum den Werkreset zu vervollständigen</string>
+	<string id="3451">Ihr System muss restarted werdenum den%s Werkreset zu vervollständigen</string>
 	<string id="3452">Versuchen Sie es erneut nachdem Sie playback gestoppt haben</string>
 	<string id="3453">Formatieren der Media Partition%s kann nicht rückgängig gemacht werden!</string>
 	<string id="3454">WARNUNG</string>
