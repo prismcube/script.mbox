@@ -123,7 +123,7 @@
 		</content>
 	</page>
 	
-	<page number="7" title="Prvotné inštalácia" location="(INŠTALÁCIA > PRVOTNÁ INŠTALÁCIA)">
+	<page number="7" title="Prvotné Inštalácia" location="(INŠTALÁCIA > PRVOTNÁ INŠTALÁCIA)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>

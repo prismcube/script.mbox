@@ -165,7 +165,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob , jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější, pokud víte, které satelity chcete vyhledat a také jejich parametry.">
+		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob, jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější, pokud víte, které satelity chcete vyhledat a také jejich parametry.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -174,7 +174,7 @@
 		</content>
 	</page>
 		
-	<page number="10" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU> EDITACE KANÁLŮ)">
+	<page number="10" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
