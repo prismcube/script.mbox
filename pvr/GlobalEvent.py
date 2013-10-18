@@ -17,7 +17,8 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_EPG_WINDOW,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
-	WinMgr.WIN_ID_INFO_PLATE
+	WinMgr.WIN_ID_INFO_PLATE,
+	WinMgr.WIN_ID_PIP_WINDOW
 	#WinMgr.WIN_ID_FAVORITE_ADDONS,
 	#WinMgr.WIN_ID_SYSTEM_UPDATE,
 	#WinMgr.WIN_ID_HELP
@@ -129,6 +130,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
+			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'Scramble' )
@@ -139,10 +141,22 @@ class GlobalEvent( object ) :
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 
-			else :
+			elif aEvent.mStatus == ElisEnum.E_CC_SUCCESS :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'True' )
 				#WinMgr.GetInstance( ).mRootWindow.setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'Scramble' )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'False' )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'False' )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'True' )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
@@ -263,6 +277,7 @@ class GlobalEvent( object ) :
 			xbmc.executebuiltin( 'xbmc.Action(mute)' )
 
 		self.mDataCache.InitBookmarkButton( )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0x2b :

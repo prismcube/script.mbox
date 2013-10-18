@@ -61,6 +61,7 @@ WIN_ID_EPG_SEARCH					= 34
 WIN_ID_ZOOM							= 35
 WIN_ID_SIMPLE_CHANNEL_LIST			= 36
 WIN_ID_FAST_SCAN					= 37
+WIN_ID_PIP_WINDOW					= 38
 
 
 WIN_ID_HIDDEN_TEST					= 99
@@ -180,6 +181,7 @@ class WindowMgr( object ) :
 						self.mWindows[aWindowId].PreAction( )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
 					self.mWindows[aWindowId].onInit( )
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
@@ -301,6 +303,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.Zoom import Zoom
 			from pvr.gui.windows.SimpleChannelList import SimpleChannelList
 			from pvr.gui.windows.FastScan import FastScan
+			from pvr.gui.windows.PIPWindow import PIPWindow
+
 			from pvr.HiddenTest import HiddenTest
 
 
@@ -341,6 +345,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
 				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
 				self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
+				self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )				
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
 				
 
@@ -389,6 +394,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_ZOOM] = Zoom( 'Zoom.xml', self.mScriptDir  )
 				#self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( 'Zoom.xml', self.mScriptDir  )				
+				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( 'PIPWindow.xml', self.mScriptDir  )				
 				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
 				"""

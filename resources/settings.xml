@@ -19,6 +19,9 @@
 	<setting id="UPDATE_NOTIFY" type="enum" label="UpdateNotify" values="0|1|2" default="1" />
 	<setting id="UPDATE_NOTIFY_COUNT" type="enum" label="UpdateNotifyCount" values="0|1|2|3|4|5" default="0" />
 
+	<!-- PIP position -->
+	<setting id="PIP_POSITION" type="text" label="PIPPostion" values="857|170|352|198" default="857|170|352|198" />
+
 	<!--
 	<setting id="Username" type="text" label="config" default="default" />
 	<setting id="testbool" type="bool" label="config" default="true" />
