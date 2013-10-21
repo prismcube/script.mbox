@@ -407,7 +407,7 @@ class CacheMRLanguage( object ) :
 				print 'except[%s]'% e
 
 		#print 'strId[%s]trans[%s]'% (strId, string)
-		return string
+		return string.replace( '%n', '\r\n' )
 
 
 gStrLanguage = GetInstance( )
