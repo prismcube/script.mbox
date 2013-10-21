@@ -437,6 +437,11 @@ class GlobalEvent( object ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
 
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_MAINMENU :
+			self.mDataCache.SetPincodeDialog( False )
+			LOG_TRACE( 'No popup in MainMenu' )
+			return
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Enter PIN Code' ) )
 		dialog.SetCheckStatus( E_CHECK_PARENTLOCK )
