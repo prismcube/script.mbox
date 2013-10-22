@@ -815,7 +815,8 @@ class DataCacheMgr( object ) :
 
 		#reload tunableList for PIP
 		#if aSync == 0 and mType == ElisEnum.E_SERVICE_TYPE_TV :
-		self.PIP_SetTunableList( )
+		if E_V1_2_APPLY_PIP :
+			self.PIP_SetTunableList( )
 
 
 	def LoadZappingmode( self ) :
@@ -2386,10 +2387,11 @@ class DataCacheMgr( object ) :
 
 			#2.find channel, Exist last Channel
 			lastChannelNumber = ElisPropertyInt( lastChannelProperty, self.mCommander ).GetProp( )
+			LOG_TRACE( '-----------------ElisPropertyInt lastChannelNumber[%s]'% lastChannelNumber )
 			cacheChannel = self.mChannelListHash.get( lastChannelNumber, None )
 			if cacheChannel :
 				iChannel = cacheChannel.mChannel
-				#LOG_TRACE( 'find last Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
+				LOG_TRACE( 'find last Channel ch[%s %s] type[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mServiceType ) )
 
 			if iChannel :
 				self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
@@ -2782,7 +2784,7 @@ class DataCacheMgr( object ) :
 			currentMode = self.Zappingmode_GetCurrent( )
 			channelList = self.Channel_GetList( )
 			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-				channelList = self.Channel_GetList( True, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_ALPHABET )
+				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV )
 
 			channelListHash = {}
 			if channelList and len( channelList ) > 0 :
