@@ -189,6 +189,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mItemCount = 0
 		self.mIsPVR = False
 		self.mSetMarkCount = 0
+		self.mRestoreTuneChannel = self.mDataCache.Channel_GetCurrent( )
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
@@ -703,6 +704,7 @@ class ChannelListWindow( BaseWindow ) :
 					for iChannel in self.mChannelList :
 						self.mLastChannelList.append( iChannel )
 				self.mLastChannel = self.mChannelListHash.get( self.mCurrentChannel, None )
+				self.mRestoreTuneChannel = self.mDataCache.Channel_GetCurrent( )
 
 				if self.mLastChannel == None :
 					iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -711,8 +713,8 @@ class ChannelListWindow( BaseWindow ) :
 							iChannel = self.mChannelList[0]
 					self.mLastChannel = iChannel
 
-				else :
-					LOG_TRACE( '----------------memory last curr[%s] ch[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+				if self.mLastChannel :
+					LOG_TRACE( 'edit in----current[%s] last ch[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 
 				"""
 				# default mode AllChannel : enter EditMode
@@ -802,10 +804,17 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'OUT: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
 
 					if self.mLastChannel :
-						LOG_TRACE( '-------edit out----ret[%s] last[%s %s]'% ( ret, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+						LOG_TRACE( 'edit out----ret[%s] last[%s %s]'% ( ret, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 
 					if ret != E_DIALOG_STATE_YES :
-						self.mLastChannel = None
+						currChannel = self.mDataCache.Channel_GetCurrent( )
+						if self.mRestoreTuneChannel and currChannel and self.mRestoreTuneChannel != currChannel :
+							self.mLastChannel = self.mRestoreTuneChannel
+							self.mCurrentChannel = self.mLastChannel.mNumber
+							self.mDataCache.Channel_SetCurrent( self.mLastChannel.mNumber, self.mLastChannel.mServiceType )
+							LOG_TRACE( 'restore tune last[%s %s]'% ( self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+						else :
+							LOG_TRACE( 'backup last None' )
 
 					self.mListItems = None
 					self.mCtrlListCHList.reset( )
@@ -1313,7 +1322,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
 						self.mLoadMode.mMode = ElisEnum.E_MODE_ALL
 						self.GetChannelList( self.mLoadMode.mServiceType, self.mLoadMode.mMode, self.mLoadMode.mSortingMode, 0, 0, 0, '' )
-						LOG_TRACE( '---------deleteBySatellite reload len[%s]'% len ( self.mChannelList ) )
+						#LOG_TRACE( 'deleteBySatellite reload len[%s]'% len ( self.mChannelList ) )
 
 					if self.mUserSlidePos.mMain == 1 :
 						groupInfo = self.mListSatellite[self.mUserSlidePos.mSub]
@@ -1347,10 +1356,9 @@ class ChannelListWindow( BaseWindow ) :
 
 					#rule : fav or satellite
 					if self.mFlag_DeleteAll_Fav :
-						LOG_TRACE( '--------------------------------curr[%s]'% self.mCurrentChannel )
 						if self.mChannelList == None or len( self.mChannelList ) < 1 :
 							self.mFlag_DeleteAll = True
-							LOG_TRACE( '---------deleteBySatellite ch list None, avblank' )
+							LOG_TRACE( 'deleteBySatellite ch list None, avblank' )
 
 						else :
 							currIdx = 0
@@ -1359,7 +1367,7 @@ class ChannelListWindow( BaseWindow ) :
 
 							self.mLastChannel = self.mChannelList[currIdx]
 							self.UpdateLastChannel( True )
-							LOG_TRACE( '---------deleteBySatellite----last[%s] reTune[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+							#LOG_TRACE( 'deleteBySatellite----last[%s] reTune[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 							self.mLastChannel = None
 
 					#rule : public
@@ -1500,8 +1508,9 @@ class ChannelListWindow( BaseWindow ) :
 		currCh = self.mDataCache.Channel_GetCurrent( )
 		if lastCh and currCh and lastCh.mNumber != currCh.mNumber :
 			isChange = True
-		LOG_TRACE( '-----------refresh isChange[%s] currCh[%s]'% ( isChange, self.mCurrentChannel ) )
-		LOG_TRACE( '-----------refresh currCh[%s] lastCh[%s]'% ( currCh.mNumber, lastCh.mNumber ) )
+
+		#LOG_TRACE( '-----------refresh isChange[%s] current[%s]'% ( isChange, self.mCurrentChannel ) )
+		#LOG_TRACE( '-----------refresh currCh[%s] lastCh[%s]'% ( currCh.mNumber, lastCh.mNumber ) )
 
 		if ( not aForce ) and ( not isChange ) :
 			LOG_TRACE( '-----------no changed' )
@@ -1510,33 +1519,34 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( '-----------find lastCh[%s]'% lastCh )
 		defaultTune = True
 		if lastCh :
-			LOG_TRACE( '--------last ch[%s] name[%s]'% ( lastCh.mNumber, lastCh.mName ) )
+			LOG_TRACE( '1. last ch[%s] name[%s]'% ( lastCh.mNumber, lastCh.mName ) )
 
 			fChannel = self.GetChannelByIDs( lastCh.mNumber, lastCh.mSid, lastCh.mTsid, lastCh.mOnid )
 			if not fChannel :
 				#delete(skip)? then current is prev(array) ch
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					idx = int( lastCh.mPresentationNumber ) - 1
-					LOG_TRACE( '-------------------------lastCh update idx[%s] len[%s] fCh[%s]'% ( idx, len( self.mChannelList ), fChannel ) )
+					#LOG_TRACE( '2. tune channel skip or delete : find lastCh idx[%s] len[%s] fCh[%s]'% ( idx, len( self.mChannelList ), fChannel ) )
 
 					if self.mChannelList and idx < len( self.mChannelList ) :
 						fChannel = self.mChannelList[idx]
-						LOG_TRACE( '-------------------------lastCh update idx[%s] len[%s] fCh[%s]'% ( idx, len( self.mChannelList ), fChannel ) )
+						if fChannel :
+							LOG_TRACE( '2. tune channel skip or delete : find update idx[%s] len[%s] fCh[%s]'% ( idx, len( self.mChannelList ), fChannel ) )
 
 				else :
 					fChannel = self.mDataCache.Channel_GetCurr( lastCh.mNumber )
 
 			if fChannel :
+				LOG_TRACE( '3. find update last fChannel[%s %s]'% ( fChannel.mNumber, fChannel.mName ) )
 				if aForce or fChannel.mNumber != lastCh.mNumber or \
 				   fChannel.mServiceType != lastCh.mServiceType or \
 				   fChannel.mSid != lastCh.mSid or fChannel.mTsid != lastCh.mTsid or fChannel.mOnid != lastCh.mOnid :
-					LOG_TRACE( '-----------refresh tune ch[%s] name[%s]'% ( fChannel.mNumber, fChannel.mName ) )
-					#self.TuneChannel( fChannel.mNumber )
 					defaultTune = False
 					ret = self.mDataCache.Channel_SetCurrent( fChannel.mNumber, fChannel.mServiceType )
+					LOG_TRACE( '4. refresh tune ch[%s] name[%s]'% ( fChannel.mNumber, fChannel.mName ) )
 
 		if defaultTune :
-			LOG_TRACE( '-----------last None, refresh tune default' )
+			LOG_TRACE( '5. last None, refresh tune default' )
 			#1. find setCurrent channel
 			fChannel = self.mDataCache.Channel_GetCurrent( True )
 
@@ -1555,7 +1565,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if ret and fChannel :
-			LOG_TRACE( 'check current channel and setTune Done' )
+			LOG_TRACE( '6. finished last update : check current channel and setTune Done' )
 			return fChannel
 
 			#first tune
@@ -1563,12 +1573,12 @@ class ChannelListWindow( BaseWindow ) :
 				#self.TuneChannel( self.mChannelList[0].mNumber )
 				fChannel = self.mChannelList[0]
 				self.mDataCache.Channel_SetCurrent( fChannel.mNumber, fChannel.mServiceType )
-				LOG_TRACE( 'check current channel and default first setTune' )
+				LOG_TRACE( '7. default tune : check current channel and default first setTune' )
 
 			else :
 				if not self.mDataCache.Get_Player_AVBlank( ) :
 					self.mDataCache.Player_AVBlank( True )
-					LOG_TRACE( 'channelList is None len[%s]'% len( self.mChannelList ) )
+					LOG_TRACE( '----------channelList is None' )
 
 
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
@@ -1789,22 +1799,24 @@ class ChannelListWindow( BaseWindow ) :
 		iChannel = None
 		#refresh sync tune and current focus
 		if self.mLastChannel :
-			LOG_TRACE( '---------------------lastCh[%s %s]'% ( self.mLastChannel.mNumber, self.mLastChannel.mName )  )
+			LOG_TRACE( 'focus update lastCh[%s %s]'% ( self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 		else :
 			LOG_TRACE( '---------------------last None' )
 
 		if self.mLastChannel and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			LOG_TRACE( 'check last channel' )
 			iChannel = self.UpdateLastChannel( )
 			self.mLastChannel = None
 
 		#get last channel
 		if not iChannel :
 			iChannel = self.mDataCache.Channel_GetCurrent( reloadPos )
+			#LOG_TRACE( 'set focus Channel_GetCurrent ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 		if iChannel :
 			self.mNavChannel = iChannel
 			self.mCurrentChannel = self.mNavChannel.mNumber
-			#LOG_TRACE( '---------------------last channel[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
+			LOG_TRACE( 'set focus channel[%s] name[%s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 		#detected to last focus
 		iChannelIdx = 0
@@ -2204,8 +2216,8 @@ class ChannelListWindow( BaseWindow ) :
 			try :
 				self.mMoveList = []
 				self.mNewChannelList = deepcopy( self.mChannelListForMove )
-				self.mCurrChannel = self.mDataCache.Channel_GetCurrent( True )
-				#LOG_TRACE( '------------------------in------------------current[%s %s]'% ( self.mCurrChannel.mNumber, self.mCurrChannel.mName ) )
+				self.mRestoreTuneChannel = self.mDataCache.Channel_GetCurrent( True )
+				#LOG_TRACE( 'move in------------------current[%s %s]'% ( self.mRestoreTuneChannel.mNumber, self.mRestoreTuneChannel.mName ) )
 				#LOG_TRACE( 'len channelList[%s] newList[%s] hash[%s]'% ( len(self.mChannelList), len(self.mNewChannelList), len(self.mChannelListHash) ) )
 
 				listHeight = self.mCtrlListCHList.getHeight( )
@@ -2317,13 +2329,13 @@ class ChannelListWindow( BaseWindow ) :
 				time.sleep( 0.15 )
 				self.mCtrlListCHList.setVisible( True )
 
-				if self.mCurrChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+				if self.mRestoreTuneChannel and self.mChannelList and len( self.mChannelList ) > 0 :
 					iCurrent = None
 					for iChannel in self.mChannelList :
-						if self.mCurrChannel.mName == iChannel.mName and \
-						   self.mCurrChannel.mSid  == iChannel.mSid and \
-						   self.mCurrChannel.mTsid == iChannel.mTsid and \
-						   self.mCurrChannel.mOnid == iChannel.mOnid :
+						if self.mRestoreTuneChannel.mName == iChannel.mName and \
+						   self.mRestoreTuneChannel.mSid  == iChannel.mSid and \
+						   self.mRestoreTuneChannel.mTsid == iChannel.mTsid and \
+						   self.mRestoreTuneChannel.mOnid == iChannel.mOnid :
 							iCurrent = iChannel
 							break
 
@@ -2331,7 +2343,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCurrentChannel = iCurrent.mNumber
 						self.mLastChannel = iCurrent
 						ret = self.mDataCache.Channel_SetCurrent( iCurrent.mNumber, iCurrent.mServiceType )
-				#LOG_TRACE( '------------------------out------------------current[%s %s] last[%s %s]'% ( self.mCurrChannel.mNumber, self.mCurrChannel.mName, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+				#LOG_TRACE( 'move out------------------current[%s %s] last[%s %s]'% ( self.mRestoreTuneChannel.mNumber, self.mRestoreTuneChannel.mName, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )

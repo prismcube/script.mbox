@@ -1046,6 +1046,9 @@ class DataCacheMgr( object ) :
 		if not self.mOldChannel or self.mOldChannel.mError != 0 :
 			return
 
+		if not self.mOldChannelList or len( self.mOldChannelList ) < 1 :
+			self.mOldChannelList = []
+
 		for ch in self.mOldChannelList :
 			if ch.mSid == self.mOldChannel.mSid and \
 			   ch.mTsid == self.mOldChannel.mTsid and \
