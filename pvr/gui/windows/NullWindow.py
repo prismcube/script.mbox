@@ -197,7 +197,7 @@ class NullWindow( BaseWindow ) :
 
 				if self.mDataCache.GetLinkageService(  ) : #hide linkage service icon
 					self.StopLinkageServiceTimer()
-					return
+					#return
 
 				if ( time.time( ) - self.mOnTimeDelay ) < 1.5 :
 					LOG_TRACE( '------blocking Time back key' )

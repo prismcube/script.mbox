@@ -668,6 +668,8 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLinkageService( epg.mHasLinkageService )
 				LOG_TRACE('LAEL98 TEST')
 
-				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or  \
+					WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					LOG_TRACE('LAEL98 TEST')				
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).UpdateLinkageService( )			
+					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
+					
