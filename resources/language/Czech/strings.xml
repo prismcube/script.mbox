@@ -110,7 +110,7 @@
 	<string id="1110">Přístup k oblíbeným XBMC doplňkům jednoduchým způsobem</string>
 	<string id="1111">Proveďte následující kroky, aby byl váš PRISMCUBE RUBY připraven k použití</string>
 	<string id="1112">Vyberte typ připojení kabelů na vašem STB a konfigurujte nastavení DiSEqC</string>
-	<string id="1113">Proveďte rychlé a snadné automatické skenování kanálů , nebo vyhledávání kanálů ručně</string>
+	<string id="1113">Proveďte rychlé a snadné automatické skenování kanálů, nebo vyhledávání kanálů ručně</string>
 	<string id="1114">Přidání, odstranění nebo přejmenování satelitů</string>
 	<string id="1115">Přidat nové transpondéry nebo upravit již existující transpondéry</string>
 	<string id="1116">Konfigurovat obecná nastavení vašeho digitálního satelitního přijímače</string>
@@ -493,7 +493,7 @@
 	<string id="3023">Nové kanály byly načteny z PVR manažera%s. Stisknutím tlačítka OK pokračujte v aktualizaci seznamu kanálů</string>
 	<string id="3024">Zkuste to znovu po ukončení nahrávání</string>
 	<string id="3025">Zkuste to znovu po odstranění časovače</string>
-	<string id="3026">Nahrávání se zastavilo kvůli nedostatku místa na disku</string>
+	<string id="3026">Nahrávání se zastavilo kvůli nedostatku%n místa na disku</string>
 	<string id="3027">Opětovné načtení seznamu kanálů</string>
 	<string id="3028">Zadejte PIN kód</string>
 	<string id="3029">CAM inicializován</string>
@@ -711,13 +711,13 @@
 	<string id="3241">Zadat nový název satelitu</string>
 	<string id="3242">Nelze přidat transpondér</string>
 	<string id="3243">Nelze upravit transpondér</string>
-	<string id="3244">Jste si jisti , že chcete odstranit%s tento transpondér ?</string>
+	<string id="3244">Jste si jisti, že chcete odstranit%s tento transpondér?</string>
 	<string id="3245">Odstranění transpondéru</string>
 	<string id="3246">Nelze smazat transpondér</string>
 	<string id="3247">Instalace a spuštění XBMC add-ons%s nemůže řádně fungovat bez interního HDD</string>
 	<string id="3248">Žádné kanály nejsou k dispozici pro zvolený režim</string>
 	<string id="3249">Zkuste to znovu po dokončení aktualizace firmwaru</string>
-	<string id="3250">Dosáhli jste maximální počet %s povolených nahrávek</string>
+	<string id="3250">Dosáhli jste maximální počet%s povolených nahrávek</string>
 	<string id="3251">Nastavení Antény a Satelitu</string>
 	<string id="3252">Při nastavení volby 'oddělený', tuner 2 přijímá svůj signál</string>
 	<string id="3253">Při nastavení volby 'loop-through' je možné sledovat signál pouze z tuneru 1</string>
@@ -734,7 +734,7 @@
 	<string id="3264">Žádné satelitní údaje nejsou k dispozici</string>
 	<string id="3265">Prosím, vyresetujte zařízení do továrního nastavení</string>
 	<string id="3266">Vejít do konfiguračního menu teď?</string>
-	<string id="3267">Při obnovení továrního nastavení ,%s budou všechny vaše nastavení vráceny na výchozí hodnoty</string>
+	<string id="3267">Při obnovení továrního nastavení,%s budou všechny vaše nastavení vráceny na výchozí hodnoty</string>
 	<string id="3268">Chcete uložit změny před ukončením?</string>
 	<string id="3269">Uložit konfiguraci</string>
 	<string id="3270">Zkuste to znovu po zastavení všech vašich nahrávek</string>
@@ -864,7 +864,7 @@
 	<string id="3394">CAM Informace</string>
 	<string id="3395">Zobrazit informace o CAM</string>
 	<string id="3396">AlphaCrypt Multicrypt</string>
-	<string id="3397">Pokud je nastavena volba 'Zap' , systém bude dekódovat až 2 kódované programy na stejném transpondéru současně</string>
+	<string id="3397">Pokud je nastavena volba 'Zap', systém bude dekódovat až 2 kódované programy na stejném transpondéru současně</string>
 	<string id="3398">Otočení antény</string>
 	<string id="3399">Zde můžete ovládat pohyb motorizovaného antény</string>
 	<string id="3400">Nahoru/dolů = Zoom in/out (aktuální intenzita : %s) %sDoleva/Doprava = Předchozí/Další krok</string>
@@ -877,7 +877,7 @@
 	<string id="3407">Hrát od začátku</string>
 	<string id="3408">Opravdu chcete odstranit tento soubor?</string>
 	<string id="3409">Odstranit soubor</string>
-	<string id="3410">Opravdu chcete odstranit %s všechny vaše nahrané soubory?</string>
+	<string id="3410">Opravdu chcete odstranit všechny%s vaše nahrané soubory?</string>
 	<string id="3411">Odstranit všechny soubory</string>
 	<string id="3412">Zadejte nový název</string>
 	<string id="3413">Název souboru musí obsahovat minimálně %d znaků</string>
@@ -918,7 +918,7 @@
 	<string id="3448">Provést výrobní nastavení?</string>
 	<string id="3449">Obnovení</string>
 	<string id="3450">Vyžaduje se restart</string>
-	<string id="3451">Pro kompletní provedení továrního nastavení je nutný restart%s systému</string>
+	<string id="3451">Pro kompletní provedení továrního nastavení je nutný%s restart systému</string>
 	<string id="3452">Zkuste to znovu po ukončení přehrávání</string>
 	<string id="3453">Formátování oddílu média%s nelze vrátit zpět!</string>
 	<string id="3454">UPOZORNĚNÍ</string>
@@ -972,7 +972,7 @@
 	<string id="3502">Není podporován</string>
 	<string id="3503">Datum a čas</string>
 	<string id="3504">Pokud je nastaven na 'Automaticky', čas a datum se získá automaticky z kanálu, který zvolíte</string>
-	<string id="3505">Vyberte kanál , podle kterého chcete nastavit čas a datum</string>
+	<string id="3505">Vyberte kanál, podle kterého chcete nastavit čas a datum</string>
 	<string id="3506">Zadejte dnešní datum</string>
 	<string id="3507">Nastavit místní čas</string>
 	<string id="3508">Čas</string>
@@ -1098,7 +1098,7 @@
 	<string id="3628">Není dostatek místa na USB flash paměti</string>
 	<string id="3629">Proces aktualizace selhala</string>
 	<string id="3630">Není možné nalézt předchozí verze</string>
-	<string id="3631">Není možné získat nejnovější firmware %s, prosím zkuste to znovu</string>
+	<string id="3631">Není možné získat nejnovější firmware%s, prosím zkuste to znovu</string>
 	<string id="3632">Firmware není k dispozici</string>
 	<string id="3633">Stěhování</string>
 	<string id="3634">Zkontrolujte HDD</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Dokončit</string>
 	<string id="3802">Přejít na stránku nastavení vyhledávání kanálů</string>
 	<string id="3803">Channel is changed by view timer</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>

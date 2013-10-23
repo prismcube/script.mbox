@@ -490,10 +490,10 @@
 	<string id="3020">Forza</string>
 	<string id="3021">Qualità</string>
 	<string id="3022">Aggiornamento Canali</string>
-	<string id="3023">Sono stati caricati nuovi canali da PVR%s Premere OK per continuare ad aggiornare la vostra lista di canali</string>
-	<string id="3024">Riprova dopo aver interrotto le registrazioni</string>
-	<string id="3025">Riprova dopo l'eliminazione dei tuoi timer precedenti</string>
-	<string id="3026">Spazio su disco insufficiente. Registrazione interrotta</string>
+	<string id="3023">Sono stati caricati nuovi canali da PVR Premere OK%s per continuare ad aggiornare la vostra lista di canali</string>
+	<string id="3024">Sind Sie sicher dass Sie die erstinstallation verlassen wollen?</string>
+	<string id="3025">Riprova dopo l'eliminazione dei tuoi%n timer precedenti</string>
+	<string id="3026">Spazio su disco insufficiente%n Registrazione interrotta</string>
 	<string id="3027">Ricarica lista canali</string>
 	<string id="3028">Inserisci il PIN</string>
 	<string id="3029">CAM inizializzata</string>
@@ -1048,7 +1048,7 @@
 	<string id="3578">Scansione automatica</string>
 	<string id="3579">Assicurarsi che l'antenna sia correttamente impostata</string>
 	<string id="3580">Vai alla pagina di impostazione antenna adesso?</string>
-	<string id="3581">Per ricevere un forte segnale satellitare,%s Aggiungi satelliti e impostare correttamente i parametri di LNB</string>
+	<string id="3581">Per ricevere un forte segnale satellitare, Aggiungi%s satelliti e impostare correttamente i parametri di LNB</string>
 	<string id="3582">Almeno un trasponditore deve essere presente in ogni satellite</string>
 	<string id="3583">Nessun transponder trovato in quel satellite</string>
 	<string id="3584">Selezionare il satellite e transponder che si desidera eseguire la scansione</string>
@@ -1074,7 +1074,7 @@
 	<string id="3604">Eliminare satellite configurato</string>
 	<string id="3605">Impossibile rimuovere il satellite dalla lista</string>
 	<string id="3606">Selezionare un satellite che si desidera modificare le impostazioni</string>
-	<string id="3607">Longitudine</string>
+	<string id="3607">-Sind Sie sicher dass Sie die erstinstallation verlassen wollen?</string>
 	<string id="3608">Cambiare il nome del satellite selezionato</string>
 	<string id="3609">Aggiungere un nuovo satellite alla lista</string>
 	<string id="3610">Eliminare un satellite dalla lista</string>
@@ -1137,8 +1137,8 @@
 	<string id="3667">Copiare i file nella memoria interna</string>
 	<string id="3668">Riavviare</string>
 	<string id="3669">Seguire le istruzioni sul display del pannello anteriore durante il processo di installazione del firmware</string>
-	<string id="3670">NON SPEGNERE%s durante l'aggiornamento</string>
-	<string id="3671">NON RIMUOVERE LA TUA%s USB durante l'aggiornamento</string>
+	<string id="3670">NON SPEGNERE%s DURANTE L'AGGIORNAMENTO</string>
+	<string id="3671">NON RIMUOVERE LA TUA%s USB DURANTE L'AGGIORNAMENTO</string>
 	<string id="3672">Continuare download interrotti?</string>
 	<string id="3673">Riprendere il download</string>
 	<string id="3674">Controllo dello stato della rete</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Terminare</string>
 	<string id="3802">Vai alla pagina di configurazione ricerca canali</string>
 	<string id="3803">Ulteriore assistenza</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>

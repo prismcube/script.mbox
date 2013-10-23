@@ -492,8 +492,8 @@
 	<string id="3022">Zaktualizuj kanały</string>
 	<string id="3023">Załadowano nowe kanały z menedżera PVR%s Wciśnij OK, aby zaktualizować listę</string>
 	<string id="3024">Spróbuj ponownie po zatrzymaniu nagrywania</string>
-	<string id="3025">Spróbuj ponownie po usunięciu zaprogramowanych zdarzeń</string>
-	<string id="3026">Nagrywanie zatrzymane z powodu braku miejsca na dysku</string>
+	<string id="3025">Spróbuj ponownie po usunięciu%n zaprogramowanych zdarzeń</string>
+	<string id="3026">Nagrywanie zatrzymane z powodu braku%n miejsca na dysku</string>
 	<string id="3027">Odświeżanie listy kanałów</string>
 	<string id="3028">Wprowadź kod PIN</string>
 	<string id="3029">Moduł CAM uruchomiony</string>
@@ -716,7 +716,7 @@
 	<string id="3246">Nie można usunąć transpondera</string>
 	<string id="3247">Instalacja i uruchamianie dodatków XBMC%s może nie działać poprawnie bez zainstalowanego wewnętrznego HDD</string>
 	<string id="3248">Brak kanałów dla wskazanego trybu</string>
-	<string id="3249">Spróbuj ponownie po zakończeniu aktualizacji oprogramowania</string>
+	<string id="3249">Spróbuj ponownie po zakończeniu aktualizacji%n oprogramowania</string>
 	<string id="3250">Osiągnięto maksymalną ilość%s nagrań realizowanych jednocześnie</string>
 	<string id="3251">Ustawienia anteny i satelitów</string>
 	<string id="3252">Jeśli wybrany 'Oddzielny', tuner 2 odbiera sygnał ze swojego wejścia</string>
@@ -750,7 +750,7 @@
 	<string id="3280">Usuń listę ulubionych</string>
 	<string id="3281">Czy na pewno chcesz usunąć%s%s?</string>
 	<string id="3282">Skipping all channels is not allowed</string>
-	<string id="3283">Czy na pewno chcesz usunąć kanały%s wliczając aktualnie nagrywane lub z rezerwacją?</string>
+	<string id="3283">Czy na pewno chcesz usunąć kanały wliczając%s aktualnie nagrywane lub z rezerwacją?</string>
 	<string id="3284">Usuń kanały</string>
 	<string id="3285">Add channels to this group</string>
 	<string id="3286">Delete this favorite group</string>
@@ -914,7 +914,7 @@
 	<string id="3444">Powtórz kod PIN</string>
 	<string id="3445">Zmień kod PIN</string>
 	<string id="3446">Kod PIN został poprawnie zmieniony</string>
-	<string id="3447">Wszystkie ustawienia zostaną przywrócone do stanu fabrycznego</string>
+	<string id="3447">Wszystkie ustawienia zostaną przywrócone%n do stanu fabrycznego</string>
 	<string id="3448">Wykonać reset do ustawień fabrycznych?</string>
 	<string id="3449">Trwa przywracanie…</string>
 	<string id="3450">Wymagany restart</string>
@@ -1028,7 +1028,7 @@
 	<string id="3558">Błędne dane</string>
 	<string id="3559">Brak informacji o czasie przy wskazanym kanale</string>
 	<string id="3560">Kopia zapasowa danych?</string>
-	<string id="3561">Aby wykonać kopię zapasową danych użytkownika i dodatków XBMC,%s podłącz pamięć flash USB</string>
+	<string id="3561">Aby wykonać kopię zapasową danych użytkownika%s i dodatków XBMC, podłącz pamięć flash USB</string>
 	<string id="3562">Nie znaleziono kopii zapasowej</string>
 	<string id="3563">Formatowania dysku twardego nie można cofnąć!</string>
 	<string id="3564">Rozpocząć formatowanie bez wykonywania kopii zapasowej?</string>
@@ -1049,7 +1049,7 @@
 	<string id="3579">Należy się upewnić co do poprawnego ustawienia anteny</string>
 	<string id="3580">Przejść do konfiguracji anteny?</string>
 	<string id="3581">Aby poprawnie odebrać silny sygnał z satelity,%s dodaj satelity i ustaw poprawne parametry LNB</string>
-	<string id="3582">Przynajmniej jeden transponder musi istnieć dla każdego satelity</string>
+	<string id="3582">Przynajmniej jeden transponder musi istnieć%n dla każdego satelity</string>
 	<string id="3583">Nie znaleziono transponderów dla tego satelity</string>
 	<string id="3584">Wybierz satelitę, na którym jest transponder, który chcesz przeszukać</string>
 	<string id="3585">Typ wyszukiwania</string>
@@ -1205,7 +1205,7 @@
 	<string id="3735">Konfiguracja transponderów</string>
 	<string id="3736">Lista zaprogramowanych zdarzeń</string>
 	<string id="3737">Zarządzaj dodatkami XBMC</string>
-	<string id="3738">Spróbuj ponownie po zatrzymaniu odtwarzania, nagrywania%s i timeshiftu</string>
+	<string id="3738">Spróbuj ponownie po zatrzymaniu odtwarzania,%s nagrywania i timeshiftu</string>
 	<string id="3739">Dostęp do ulubionych w wygodny sposób</string>
 	<string id="3740">Kasuj, zmieniaj nazwy i blokuj kanały</string>
 	<string id="3741">Uzyskaj szybki dostęp do ulubionych kanałów</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Zakończ</string>
 	<string id="3802">Przejdź do konfiguracji wyszukiwania kanałów</string>
 	<string id="3803">Channel is changed by view timer</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>

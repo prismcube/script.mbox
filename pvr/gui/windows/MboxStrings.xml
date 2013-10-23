@@ -1275,4 +1275,16 @@
 	<string id="3801">Finish</string>
 	<string id="3802">Go to the channel search setup page</string>
 	<string id="3803">Channel is changed by view timer</string>
+	<string id="3804">PIP Channel</string>
+	<string id="3805">PIP Window</string>
+	<string id="3806">Can not show PIP, Channel is empty</string>
+	<string id="3807">Can not switch PIP, Current mode Radio</string>
+	<string id="3808">Can not open PIP, Tunable not found</string>
+	<string id="3809">Set move to PIP</string>
+	<string id="3810">Set size to PIP</string>
+	<string id="3811">Active screen to PIP</string>
+	<string id="3812">Load to Default</string>
+	<string id="3813">Stop PIP</string>
+	<string id="3814">Can not enable audio, Channel is locked</string>
+	<string id="3815">Can not enable audio, Check main audio</string>
 </strings>

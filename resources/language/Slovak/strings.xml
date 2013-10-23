@@ -490,10 +490,10 @@
 	<string id="3020">Sila</string>
 	<string id="3021">Kvalita</string>
 	<string id="3022">Aktualizácia kanálov</string>
-	<string id="3023">Nové kanály boli načítané z PVR manažéra%s. Stlačením tlačidla OK pokračujte v aktualizácii zoznamu kanálov</string>
+	<string id="3023">Nové kanály boli načítané z PVR manažéra. Stlačením%s tlačidla OK pokračujte v aktualizácii zoznamu kanálov</string>
 	<string id="3024">Skúste to znova po ukončení nahrávania</string>
 	<string id="3025">Skúste to znova po odstránení časovača</string>
-	<string id="3026">Nahrávanie sa zastavilo kvôli nedostatku miesta na disku</string>
+	<string id="3026">Nahrávanie sa zastavilo kvôli nedostatku%n miesta na disku</string>
 	<string id="3027">Opätovné načítanie zoznamu kanálov</string>
 	<string id="3028">Zadajte PIN kód</string>
 	<string id="3029">CAM inicializovaný</string>
@@ -585,7 +585,7 @@
 	<string id="3115">Obnoviť z</string>
 	<string id="3116">Zmazať všetko</string>
 	<string id="3117">Viacnásobný - výber</string>
-	<string id="3118">Ste si istí , že chcete odstrániť%s všetky vaše záložky?</string>
+	<string id="3118">Ste si istí, že chcete odstrániť%s všetky vaše záložky?</string>
 	<string id="3119">Odstrániť všetky záložky</string>
 	<string id="3120">Žiadny kanál</string>
 	<string id="3121">Výber konfiguračných dát</string>
@@ -717,7 +717,7 @@
 	<string id="3247">Inštalácia a spustenie XBMC add-ons%s nemôže riadne fungovať bez interného HDD</string>
 	<string id="3248">Žiadne kanály niesú k dispozícii pre zvolený režim</string>
 	<string id="3249">Skúste to znovu po dokončení aktualizácie firmvéru</string>
-	<string id="3250">Dosiahli ste maximálny počet %s povolených nahrávok</string>
+	<string id="3250">Dosiahli ste maximálny počet%s povolených nahrávok</string>
 	<string id="3251">Nastavenie Antény a Satelitu</string>
 	<string id="3252">Pri nastavení voľby 'oddelený', tuner 2 prijíma svoj ​​vlastný signál</string>
 	<string id="3253">Pri nastavení voľby 'loop-through' je možné sledovať signál len z tunera 1</string>
@@ -877,7 +877,7 @@
 	<string id="3407">Hrať od začiatku</string>
 	<string id="3408">Naozaj chcete odstrániť tento súbor?</string>
 	<string id="3409">Odstrániť súbor</string>
-	<string id="3410">Naozaj chcete odstrániť%s všetky vaše nahrané súbory?</string>
+	<string id="3410">Naozaj chcete odstrániť všetky%s vaše nahrané súbory?</string>
 	<string id="3411">Odstrániť všetky súbory</string>
 	<string id="3412">Zadajte nový názov</string>
 	<string id="3413">Názov súboru musí obsahovať minimálne %d znakov</string>
@@ -918,7 +918,7 @@
 	<string id="3448">Vykonať výrobné nastavenie?</string>
 	<string id="3449">Obnovovanie</string>
 	<string id="3450">Vyžaduje sa reštartovanie</string>
-	<string id="3451">Pre kompletné vykonanie výrobných nastavení je nutný reštart%s systému</string>
+	<string id="3451">Pre kompletné vykonanie výrobných nastavení je nutný%s reštart systému</string>
 	<string id="3452">Skúste to znova po ukončení prehrávania</string>
 	<string id="3453">Formátovanie partície média%s sa nedá vrátiť späť!</string>
 	<string id="3454">UPOZORNENIE</string>
@@ -1091,7 +1091,7 @@
 	<string id="3621">Aktualizovaný na najnovšiu verziu</string>
 	<string id="3622">Súbor je poškodený, skúste prevziať znova</string>
 	<string id="3623">Prosím, vložte USB flash pamäť a stlačte tlačidlo OK</string>
-	<string id="3624">Overenie súboru %s sa nepodarilo, Skúste stiahnuť znova</string>
+	<string id="3624">Overenie súboru sa nepodarilo,%s Skúste stiahnuť znova</string>
 	<string id="3625">Sieť je odpojená</string>
 	<string id="3626">Dostatok miesta na disku</string>
 	<string id="3627">Nedostatočný priestor na HDD</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Dokončiť</string>
 	<string id="3802">Prejsť na stránku nastavenia vyhľadávania kanálov</string>
 	<string id="3803">Channel is changed by view timer</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>

@@ -491,9 +491,9 @@
 	<string id="3021">Qualität</string>
 	<string id="3022">Sender aktualisieren</string>
 	<string id="3023">Neue Kanäle wurden vom PVR Manager gefunden%s Drücke OK um die Kanalliste zu Aktualisieren</string>
-	<string id="3024">Bitte versuchen Sie es erneut nach Beendigung der Aufnahmen</string>
-	<string id="3025">Bitte versuchen Sie es erneut nach dem Löschen von gesetzten Timern</string>
-	<string id="3026">Aufnahme gestoppt aufgrund unzureichendem Speicherplatz</string>
+	<string id="3024">Bitte versuchen Sie es erneut nach Beendigung%n der Aufnahmen</string>
+	<string id="3025">Bitte versuchen Sie es erneut nach dem Löschen%n von gesetzten Timern</string>
+	<string id="3026">Aufnahme gestoppt aufgrund unzureichendem%n Speicherplatz</string>
 	<string id="3027">Nachladen Kanalliste</string>
 	<string id="3028">PIN Code Eingabe</string>
 	<string id="3029">CAM initialisiert</string>
@@ -677,7 +677,7 @@
 	<string id="3207">Video Format</string>
 	<string id="3208">Tonspur</string>
 	<string id="3209">Satelliten Konfiguration</string>
-	<string id="3210">Sind Sie sicher dass Sie die erstinstallation verlassen wollen?</string>
+	<string id="3210">Sind Sie sicher dass Sie die erstinstallation%n verlassen wollen?</string>
 	<string id="3211">Installation verlassen</string>
 	<string id="3212"> Satellit auswählen</string>
 	<string id="3213">Dieser Satellitenname existiert bereits</string>
@@ -711,12 +711,12 @@
 	<string id="3241">Neuen Satellitennamen eingeben</string>
 	<string id="3242">Transponder kann nicht hinzugefügt werden</string>
 	<string id="3243">Transponder kann nicht bearbeitet werden</string>
-	<string id="3244">Wollen Sie wirklich%s diesen Transponder entfernen?</string>
+	<string id="3244">Wollen Sie wirklich diesen Transponder entfernen?%s</string>
 	<string id="3245">Transponder loschen</string>
 	<string id="3246">Der Transponder kann nicht gelöscht werden</string>
 	<string id="3247">Die Installation und Auaführung von XBMC add-ons%s wird ohne interne HDD nicht funktionieren</string>
 	<string id="3248">Keine Kanäle verfügbar für den ausgewählten Modus</string>
-	<string id="3249">Versuchen Sie es erneut, wenn das Firmware Update beendet ist.</string>
+	<string id="3249">Versuchen Sie es erneut, wenn das%n Firmware Update beendet ist.</string>
 	<string id="3250">Sie haben die maximale Anzahl von%s Aufnahmen erreicht</string>
 	<string id="3251">Antennen und Satelliten Setup</string>
 	<string id="3252">Wenn auf 'Separat' gestellt, empfängt der Tuner 2 ein eigenes Antennensignal</string>
@@ -737,7 +737,7 @@
 	<string id="3267">Wenn Sie einen Werkreset durchführen,%s werden alle Werte zurückgesetzt</string>
 	<string id="3268">Wollen Sie vor dem Verlassen die Änderungen speichern?</string>
 	<string id="3269">Konfiguration speichern</string>
-	<string id="3270">Versuchen Sie es noch einmal, wenn Sie alle Aufnahmen beendet haben</string>
+	<string id="3270">Versuchen Sie es noch einmal,%n wenn Sie alle Aufnahmen beendet haben</string>
 	<string id="3271">Alle Kanäle löschen</string>
 	<string id="3272">Sind Sie sicher dass Sie alle%s Fernseh und Radiokanäle löschen wollen?</string>
 	<string id="3273">Sind Sie sicher dass Sie alle%s Kanäle aus der Favoritengruppe löschen wollen?</string>
@@ -919,7 +919,7 @@
 	<string id="3449">Jetzt erfolgt Zurückstellung</string>
 	<string id="3450">Restart erforderlich</string>
 	<string id="3451">Ihr System muss restarted werdenum den%s Werkreset zu vervollständigen</string>
-	<string id="3452">Versuchen Sie es erneut nachdem Sie playback gestoppt haben</string>
+	<string id="3452">Versuchen Sie es erneut nachdem%n Sie playback gestoppt haben</string>
 	<string id="3453">Formatieren der Media Partition%s kann nicht rückgängig gemacht werden!</string>
 	<string id="3454">WARNUNG</string>
 	<string id="3455">HDD Formatieren</string>
@@ -1030,12 +1030,12 @@
 	<string id="3560">Daten Backup?</string>
 	<string id="3561">Um die Userdaten und XBMC add-ons zu sichern,%s stecken Sie einen USB Stick an</string>
 	<string id="3562">Kann keine Backupdaten finden</string>
-	<string id="3563">Festplattenformatierung kann nicht rückgängig gemacht werden!</string>
+	<string id="3563">Festplattenformatierung kann nicht%n rückgängig gemacht werden!</string>
 	<string id="3564">Formatierung beginnen ohne ein Backup zu machen?</string>
 	<string id="3565">Nicht genug Platz auf dem USB Stick</string>
 	<string id="3566">Bitte stecken Sie einen USB Stick an</string>
 	<string id="3567">Backup der Userdaten wird durchgeführt</string>
-	<string id="3568">Drücken Sie jetzt die OK Taste um die Festplatte zu formatieren</string>
+	<string id="3568">Drücken Sie jetzt die OK Taste um die%n Festplatte zu formatieren</string>
 	<string id="3569">HDD Formatierung jetzt starten?</string>
 	<string id="3570">Datenbackup fehlgeschlagen</string>
 	<string id="3571">Eingabe der Media Partition Größe in GB</string>
@@ -1048,8 +1048,8 @@
 	<string id="3578">Automatischer Suchlauf</string>
 	<string id="3579">Stellen Sie sicher, dass ihre Antenne richtig eingestellt ist</string>
 	<string id="3580">Jetzt zur Antennen Setup Seite gehen?</string>
-	<string id="3581">Um ein starkes Satellitensignal,%s zu empfangen Satellit hinzufügenund LNB Parameter korrekt eingeben</string>
-	<string id="3582">Mindestens ein Transponder muss bei jedem Satelliten existieren</string>
+	<string id="3581">Um ein starkes Satellitensignal, zu empfangen%s Satellit hinzufügenund LNB Parameter korrekt eingeben</string>
+	<string id="3582">Mindestens ein Transponder muss bei%n jedem Satelliten existieren</string>
 	<string id="3583">Keinen Transponder gefunden bei diesem Satelliten</string>
 	<string id="3584">Auswahl des Satelliten auf dem sich der Transponder befindet auf dem der Suchlauf gemacht werden soll</string>
 	<string id="3585">Suchlaufart</string>
@@ -1090,7 +1090,7 @@
 	<string id="3620">Keine Verbindung zum Server möglich</string>
 	<string id="3621">Sie verfügen bereits über die aktuelle Version</string>
 	<string id="3622">Datei defekt, wiederholen sie den Download</string>
-	<string id="3623">Stecken Sie einen USB-Stick an und drücken Sie die OK Taste</string>
+	<string id="3623">Stecken Sie einen USB-Stick%n an und drücken Sie die OK Taste</string>
 	<string id="3624">Dateiüberprüfung fehlgeschlagen%s Versuchen Sie erneut einen Download</string>
 	<string id="3625">Netzwerk ist nicht verbunden</string>
 	<string id="3626">Nicht genügend Speicherplatz</string>
@@ -1098,7 +1098,7 @@
 	<string id="3628">Nicht genügend Platz auf dem USB Stick</string>
 	<string id="3629">Update fehlgeschlagen</string>
 	<string id="3630">Kann keine vorherigen Versionen finden</string>
-	<string id="3631">Konnte letzte Firmware nicht finden %s Bitte erneut versuchen</string>
+	<string id="3631">Konnte letzte Firmware nicht finden%s Bitte erneut versuchen</string>
 	<string id="3632">Keine freigebene Firmware verfügbar</string>
 	<string id="3633">Downloading</string>
 	<string id="3634">Überprüfen Sie ihre HDD</string>
@@ -1161,7 +1161,7 @@
 	<string id="3691">Kanallisten Datei auswählen</string>
 	<string id="3692">Datei nicht gefunden</string>
 	<string id="3693">Ihre Kanalliste wird jetzt aktualisiert</string>
-	<string id="3694">Kein script zum exportieren der Konfiguration in USB gefunden</string>
+	<string id="3694">Kein script zum exportieren der Konfiguration%n in USB gefunden</string>
 	<string id="3695">Export fertig</string>
 	<string id="3696">Ihre Einstellungen wurden erfolgreich exportiert</string>
 	<string id="3697">Tuner %s Konfig : Motorisiert, Usals</string>
@@ -1237,7 +1237,7 @@
 	<string id="3767">Gehen Sie zurück zur Video und Audio Setup Seite</string>
 	<string id="3768">Gehen Sie zur Satellitenkonfigurations Seite</string>
 	<string id="3769">Kanalsuche Setup</string>
-	<string id="3770">Möchten Sie einen Kanalsuchlauf in der Erstinstallation durchführen?</string>
+	<string id="3770">Möchten Sie einen Kanalsuchlauf%n in der Erstinstallation durchführen?</string>
 	<string id="3771">Aktivieren / Deaktivieren Manuellen Suchlauf</string>
 	<string id="3772">Manuel Setup</string>
 	<string id="3773">Wählen oder geben Sie die Transponder-Frequenz für den gewählten Satelliten</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Ende</string>
 	<string id="3802">Gehen Sie zur Kanalsuchlauf Setup Seite</string>
 	<string id="3803">Kanal wurde umgeschaltet durch den View Timer</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>

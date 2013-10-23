@@ -111,7 +111,7 @@
 	<string id="1111">Suivez les instructions suivantes pour rendre votre PRISMCUBE RUBY prêt à l'utilisation</string>
 	<string id="1112">Choisir le type de connexion par câble dans votre STB et configurer l'installation du DiSEqC</string>
 	<string id="1113">Faire une recherche automatique rapide et facile des chaînes ou une recherche manuelle des chaînes</string>
-	<string id="1114">Ajouter,supprimer ou renommer satellites </string>
+	<string id="1114">Ajouter, supprimer ou renommer satellites </string>
 	<string id="1115">Ajouter de nouveaux transpondeurs ou configurer les transpondeurs déjà existants</string>
 	<string id="1116">Configurer les paramètres généraux de votre récepteur satellite numérique</string>
 	<string id="1117">Installation de la carte ou la configuration du module d'interface commune pour regarder les chaînes payantes</string>
@@ -492,8 +492,8 @@
 	<string id="3022">Mettre à jour les chaînes </string>
 	<string id="3023">De nouvelles chaînes ont été chargées du gestionnaire PVR%s Appuyer sur OK pour continuer à mettre à jour votre liste des chaînes</string>
 	<string id="3024">Veuillez réessayer après arrêt de l'enregistrement</string>
-	<string id="3025">Veuillez réessayer après suppression de vos minuteurs d'abord </string>
-	<string id="3026">L'enregistrement s'est arrêté pour insuffisance de mémoire</string>
+	<string id="3025">Veuillez réessayer après suppression de vos%n minuteurs d'abord </string>
+	<string id="3026">L'enregistrement s'est arrêté pour insuffisance%n de mémoire</string>
 	<string id="3027">Rechargement de la liste des chaînes</string>
 	<string id="3028">Entrez votre code PIN</string>
 	<string id="3029">CAM initialisée</string>
@@ -641,7 +641,7 @@
 	<string id="3171">Renommage réussi</string>
 	<string id="3172">Supprimer groupe favori</string>
 	<string id="3173">Suppression réussie</string>
-	<string id="3174">Etes vous sur de vouloir arrêter le scan des chaînes?</string>
+	<string id="3174">Etes vous sur de vouloir arrêter le%n scan des chaînes?</string>
 	<string id="3175">Quitter la recherche des chaînes</string>
 	<string id="3176">Chaînes TV : %d %sChaînes radio : %d</string>
 	<string id="3177">Résultat de la recherche des chaînes</string>
@@ -716,7 +716,7 @@
 	<string id="3246">Impossible de supprimer le transpondeur</string>
 	<string id="3247">L'installation et l'exécution des extensions XBMC%s peuvent ne pas fonctionner correctement sans HDD interne</string>
 	<string id="3248">Aucune chaîne disponible pour le mode choisi</string>
-	<string id="3249">Essayer à nouveau après avoir terminé la mise à jour du firmware</string>
+	<string id="3249">Essayer à nouveau après avoir terminé la mise%n à jour du firmware</string>
 	<string id="3250">Vous avez atteint le nombre maximum de%s d'enregistrements autorisés</string>
 	<string id="3251">Configuration de l'antenne et du satellite</string>
 	<string id="3252">Quand vous choisissez Séparés, le tuner 2 reçoit sa propre entrée de signal</string>
@@ -727,7 +727,7 @@
 	<string id="3257">Choisissez une méthode de contrôle pour le Tuner 1</string>
 	<string id="3258">Contrôle Tuner 1</string>
 	<string id="3259"> - Configuration Tuner 1</string>
-	<string id="3260">Vous pouvez ajouter,supprimer ou configurer les satellites ici</string>
+	<string id="3260">Vous pouvez ajouter, supprimer ou configurer les satellites ici</string>
 	<string id="3261">Choisissez une méthode de contrôle pour le Tuner 2</string>
 	<string id="3262">Contrôle Tuner 2</string>
 	<string id="3263"> - Configuration Tuner 2</string>
@@ -748,7 +748,7 @@
 	<string id="3278">Enregistrer résultats</string>
 	<string id="3279">Favoris</string>
 	<string id="3280">Supprimer un groupe favoris</string>
-	<string id="3281">Etes vous sur de vouloir supprimer%s %s?</string>
+	<string id="3281">Etes vous sur de vouloir supprimer%s%s?</string>
 	<string id="3282">Skipping all channels is not allowed</string>
 	<string id="3283">Etes vous sur de vouloir supprimer les chaînes%s incluant ceux en cours d'enregistrement ou réservées?</string>
 	<string id="3284">Supprimer les chaînes</string>
@@ -914,11 +914,11 @@
 	<string id="3444">Confirmez votre code PIN</string>
 	<string id="3445">Changer code PIN </string>
 	<string id="3446">Votre code PIN a été changé avec succès</string>
-	<string id="3447">Tous les paramètres vont être restaurés au paramètres usine par défaut</string>
+	<string id="3447">Tous les paramètres vont être restaurés%n au paramètres usine par défaut</string>
 	<string id="3448">Faire un </string>
 	<string id="3449">Restauration en cours</string>
 	<string id="3450">Redémarrage requis</string>
-	<string id="3451">Votre système doit redémarrer%s pour compléter la réinitialisation aux paramètres usine</string>
+	<string id="3451">Votre système doit redémarrer pour compléter%s la réinitialisation aux paramètres usine</string>
 	<string id="3452">Réessayer après avoir stoppé votre playback</string>
 	<string id="3453">Formatage de partition média%s ne peut pas être annulé</string>
 	<string id="3454">Avertissement</string>
@@ -1026,16 +1026,16 @@
 	<string id="3556">Entrez votre temps local</string>
 	<string id="3557">Configuration de l'heure</string>
 	<string id="3558">Entrée invalide</string>
-	<string id="3559">Aucune information concernant le temps n'est donnée par la chaîne </string>
+	<string id="3559">Aucune information concernant le temps%n n'est donnée par la chaîne </string>
 	<string id="3560">Données supplémentaires?</string>
 	<string id="3561">Pour compléter vos données d'utilisateurs et les </string>
 	<string id="3562">Données de sauvegarde non trouvées</string>
 	<string id="3563">Le formatage du disque dur ne peut pas être annulé!</string>
 	<string id="3564">Commencer à formater sans sauvegarder?</string>
-	<string id="3565">Espace mémoire mémoire insuffisant dans le flash disque USB</string>
+	<string id="3565">Espace mémoire mémoire insuffisant%n dans le flash disque USB</string>
 	<string id="3566">Veuillez insérer un flash disque USB</string>
 	<string id="3567">Sauvegarde de vos données d'utilisateurs en cours</string>
-	<string id="3568">Appuyer sur le bouton OK pour formater votre disque dur maintenant</string>
+	<string id="3568">Appuyer sur le bouton OK pour formater%n votre disque dur maintenant</string>
 	<string id="3569">Commencer à formater le disque dur?</string>
 	<string id="3570">Sauvegarde de données échouée</string>
 	<string id="3571">Entrez la taille de la partition média en Go</string>
@@ -1048,7 +1048,7 @@
 	<string id="3578">Scan automatique</string>
 	<string id="3579">Vérifier que votre antenne est correctement installée</string>
 	<string id="3580">Aller à la page de l'installation de l'antenne maintenant?</string>
-	<string id="3581">Pour recevoir un signal satellite fort,%s ajoutez des satellites et définire les paramètres LNB correctement</string>
+	<string id="3581">Pour recevoir un signal satellite fort, ajoutez des%s satellites et définire les paramètres LNB correctement</string>
 	<string id="3582">At least one transponder must be exist in each satellite</string>
 	<string id="3583">No transponder found in that satellite</string>
 	<string id="3584">Choisir le satellite dans lequel le transpondeur que vous voulez scanner est localisé</string>
@@ -1271,4 +1271,16 @@
 	<string id="3801">Terminer</string>
 	<string id="3802">Aller à la page de configuration de recherche de canal</string>
 	<string id="3803">Channel is changed by view timer</string>
+	<string id="3804"></string>
+	<string id="3805"></string>
+	<string id="3806"></string>
+	<string id="3807"></string>
+	<string id="3808"></string>
+	<string id="3809"></string>
+	<string id="3810"></string>
+	<string id="3811"></string>
+	<string id="3812"></string>
+	<string id="3813"></string>
+	<string id="3814"></string>
+	<string id="3815"></string>
 </strings>
