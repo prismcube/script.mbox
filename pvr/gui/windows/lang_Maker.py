@@ -23,6 +23,8 @@ E_FILE_MBOX_STRING  = 'MboxStrings.xml'
 E_FILE_MBOX_STRING_ID = 'MboxStringsID.py'
 
 E_DEBUG_NONE_STRING_WRITE = False
+E_DEBUG_EMPTY_STRING_WRITE = True
+
 
 def EucToUtf( aSource ) :
 	if aSource == None :
@@ -314,7 +316,10 @@ def makeLanguage(inFile):
 								if E_DEBUG_NONE_STRING_WRITE :
 									debugString = '%s_'% wFileList[j][:3]
 
-								ret[i+1] = debugString + ret[0]
+								if E_DEBUG_EMPTY_STRING_WRITE :
+									ret[i+1] = debugString
+								else :
+									ret[i+1] = debugString + ret[0]
 								#print '----------[%s]'% rets[i+1]
 
 				# str id
@@ -350,7 +355,10 @@ def makeLanguage(inFile):
 					if E_DEBUG_NONE_STRING_WRITE :
 						debugString = '%s_'% wFileList[j][:3]
 
-					csvret[i+1] = debugString + inStr[0]
+					if E_DEBUG_EMPTY_STRING_WRITE :
+						csvret[i+1] = debugString
+					else :
+						csvret[i+1] = debugString + inStr[0]
 					#print '----------[%s]'% csvret[i+1]
 
 
@@ -781,7 +789,10 @@ def Make_NewCSV( ) :
 
 			eleStr = unicode(element.string).encode('utf-8')
 			try :
-				if len(eleStr) > 3 and eleStr[3] == '_' :
+				if element.string == None :
+					eleStr = ''
+
+				elif len(eleStr) > 3 and eleStr[3] == '_' :
 					eleStr = ''
 
 				elif len(eleStr) > 3 and eleStr[len(eleStr) - 2 :] == '\r\n' :

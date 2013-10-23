@@ -378,6 +378,8 @@ E_PARENTLOCK_INIT       = 0
 E_PARENTLOCK_EIT        = 1
 E_CHECK_PARENTLOCK		= 1
 
+E_PIP_STOP				= 1
+
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'
@@ -470,6 +472,8 @@ E_V1_2_UPDATE_FIRMWARE_SCENARIO_3RD = True
 E_V1_2_APPLY_PRESENTATION_NUMBER = True
 E_V1_2_APPLY_VIEW_TIMER = True
 E_V1_2_APPLY_TEXTWIDTH_LABEL = True
+
+E_V1_2_APPLY_PIP = False
 
 ############################ Global Function For GUI ############################
 

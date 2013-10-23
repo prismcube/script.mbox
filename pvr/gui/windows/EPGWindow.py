@@ -678,7 +678,9 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'NO EPG' )
 			return
 
-		LOG_ERR( 'self.mEPGList COUNT=%d' %len(self.mEPGList ) )
+		LOG_ERR( 'self.mEPGList COUNT[%d]'% len( self.mEPGList ) )
+		#LOG_ERR( 'channel no[%s] name[%s] sid[%s] tsid[%s] onid[%s]'% ( self.mSelectChannel.mNumber, self.mSelectChannel.mName, self.mSelectChannel.mSid, self.mSelectChannel.mTsid, self.mSelectChannel.mOnid ) )
+		#LOG_ERR( 'self.mEPGList COUNT[%d] sid[%s] tsid[%s] onid[%s]'% ( len(self.mEPGList ), self.mEPGList[0].mSid, self.mEPGList[0].mTsid, self.mEPGList[0].mOnid ) )
 
 		for epg in self.mEPGList :
 			self.mEPGHashTable[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg

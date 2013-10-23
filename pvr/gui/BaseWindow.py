@@ -16,6 +16,7 @@ if sys.version_info < (2, 7):
 else:
     import json as simplejson
 
+
 class Action(object) :
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
@@ -189,7 +190,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mIsActivate = False
 		self.mRelayAction = None
 		self.setProperty( 'IsCustomWindow', 'True' )
-	
+
 
 	@classmethod
 	def GetName( cls ):
@@ -313,6 +314,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 		self.setProperty( 'TVRadio', radio )
 		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
+
 		return radio
 
 
@@ -407,6 +409,26 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mCommander.Player_SetVolume( volume )
 
 
+	def GetAudioStatus( self ) :
+		mute, volume = ( False, 0 )
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------GetAudioStatus avblank' )
+			mute = True
+
+		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) >= self.mPlatform.GetFrodoVersion( ) :
+				if not mute :
+					mute = XBMC_GetMute( )
+				volume =  XBMC_GetVolume( )
+
+		else :
+			if not mute :
+				mute = self.mCommander.Player_GetMute( )
+			volume = self.mCommander.Player_GetVolume( )
+
+		return mute, volume
+
+
 	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
 		startTime = time.time()
 		loopTime = 0.0
@@ -444,6 +466,9 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
+
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 
 	def CheckMediaCenter( self ) :

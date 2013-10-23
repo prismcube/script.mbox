@@ -472,6 +472,17 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.DialogPopupOK( actionId )
 
+		elif actionId == Action.ACTION_MOVE_UP :
+			if E_V1_2_APPLY_PIP :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -879,7 +890,7 @@ class NullWindow( BaseWindow ) :
 				self.mCommander.AppHBBTV_Ready( 0 )
 				self.mHBBTVReady = False 
 				LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
-			
+
 
 	def ForceSetCurrent( self ) :
 		pass
