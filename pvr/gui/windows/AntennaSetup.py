@@ -45,8 +45,6 @@ class AntennaSetup( SettingWindow ) :
 		self.InitControl( )
 		self.DisableControl( )
 		self.mInitialized = True
-		self.SetDefaultControl( )
-
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
@@ -70,6 +68,8 @@ class AntennaSetup( SettingWindow ) :
 				self.mTunerMgr.LoadOriginalTunerConfig( )
 				self.mTunerMgr.Load( )
 				self.mTunerMgr.SetNeedLoad( False )
+
+		self.SetDefaultControl( )
 
 
 	def onAction( self, aAction ) :
