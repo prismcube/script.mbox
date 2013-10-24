@@ -3136,7 +3136,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ShowHotkeys( self ) :
-		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )
