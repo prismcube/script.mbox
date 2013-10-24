@@ -3096,7 +3096,7 @@ class ChannelListWindow( BaseWindow ) :
 				idxSub = self.mUserSlidePos.mSub
 				if self.mListSatellite and len( self.mListSatellite ) > idxSub :
 					item = self.mListSatellite[idxSub]
-					lblLine = '%s - %s'% ( lblLine, item.mName )
+					lblLine = '%s %s'% ( lblLine, item.mName )
 
 			elif self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )

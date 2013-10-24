@@ -351,7 +351,7 @@ class EditTransponder( SettingWindow ) :
 
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( True )
 
-		if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) :
+		if self.IsConfiguredSatellite( self.mLongitude, self.mBand ) and self.mTransponderList and self.mTransponderList[0].mError == 0 :
 			if self.mIsStartedScanHelper == False :
 				ScanHelper.GetInstance( ).ScanHelper_Start( self )
 				self.mIsStartedScanHelper = True

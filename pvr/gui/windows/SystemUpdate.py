@@ -2381,7 +2381,6 @@ class SystemUpdate( SettingWindow ) :
 		else :
 			self.CloseProgress( )
 			return False
-		
 
 
 	def DownloadxmlFile( self, aKey ) :

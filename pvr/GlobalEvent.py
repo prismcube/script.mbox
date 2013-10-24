@@ -65,15 +65,15 @@ class GlobalEvent( object ) :
 		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
 			self.CamInsertRemove( aEvent.mInserted )
 
-		if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
+		elif aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :
 			thread = threading.Timer( 0.3, self.ShowEventDialog, [ aEvent ] )
 			thread.start( )
 
-		if aEvent.getName( ) == ElisEventCIMMIShowEnq.getName( ) :
+		elif aEvent.getName( ) == ElisEventCIMMIShowEnq.getName( ) :
 			thread = threading.Timer( 0.3, self.ShowParentalDialog, [ aEvent ] )
 			thread.start( )
 
-		if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+		elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 			LOG_TRACE( '----------received ElisEventCurrentEITReceived' )
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if not channel or channel.mError != 0 :
@@ -93,7 +93,7 @@ class GlobalEvent( object ) :
 				#aEvent.printdebug( )
 				self.mDataCache.SetCurrentPMTEvent( aEvent )
 
-		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
+		elif aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
 
 		elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
