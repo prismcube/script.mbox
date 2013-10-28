@@ -13,7 +13,7 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, GetSelectedLongitudeString, MR_LANG, AsyncShowStatus, SetSetting
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 else :
@@ -876,17 +876,18 @@ class DataCacheMgr( object ) :
 		if zappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			mName = zappingMode.mFavoriteGroup.mGroupName
 
-		elif self.mZappingMode.mMode == ElisEnum.E_MODE_SATELLITE :
-			mName = zappingMode.mSatelliteInfo.mName
+		elif zappingMode.mMode == ElisEnum.E_MODE_SATELLITE :
+			#mName = zappingMode.mSatelliteInfo.mName
+			mName = self.GetSatelliteName( zappingMode.mSatelliteInfo.mLongitude, zappingMode.mSatelliteInfo.mBand )
 
-		elif self.mZappingMode.mMode == ElisEnum.E_MODE_CAS :
+		elif zappingMode.mMode == ElisEnum.E_MODE_CAS :
 			mName = zappingMode.mCasInfo.mName
 
 		else :
 			if aChannel and aChannel.mError == 0 :
 				satellite = self.Satellite_GetByChannelNumber( aChannel.mNumber )
 				if satellite :
-					mName = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+					mName = self.GetFormattedSatelliteName( satellite.mLongitude, satellite.mBand )
 
 		LOG_TRACE( '--------------mname[%s]'% mName )
 		return mName

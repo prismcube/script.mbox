@@ -210,23 +210,6 @@ def UpdatePropertyByAgeRating( self, aEPG ) :
 	self.setProperty( 'HasAgeRating', hasAgeRating )
 
 
-def GetSelectedLongitudeString( aLongitude, aName ) :
-	ret = ''
-
-	if aLongitude < 1800 :
-		log1 = aLongitude / 10
-		log2 = aLongitude - (log1 * 10)
-		ret = str( '%d.%d E %s'% (log1, log2, aName ) )
-
-	else:
-		aLongitude = 3600 - aLongitude
-		log1 = aLongitude / 10
-		log2 = aLongitude - (log1 * 10)
-		ret = str( '%d.%d W %s' %( log1, log2, aName) )
-
-	return ret
-
-
 def EnumToString( aType, aValue ) :
 	from elisinterface.ElisEnum import ElisEnum
 	ret = ''

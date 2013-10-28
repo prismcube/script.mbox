@@ -179,6 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastChannel = None
 		self.mLastChannelList = []
 		self.mLastChannelListHash = {}
+		self.mZappingChange = False
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -542,18 +543,29 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.UpdateChannelList( )
 
-		#initialize get epg event
-		#self.Epgevent_GetCurrent( )
-		try :
-			iEPG = None
-			#iEPG = self.mDataCache.Epgevent_GetPresent( )
-			iEPG = self.mDataCache.GetEpgeventCurrent( )
-			if iEPG and iEPG.mError == 0:
-				self.mNavEpg = iEPG
-				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+		#init navChannel by focus
+		self.mNavEpg = None
+		self.mNavChannel = None
+		if self.mListItems and self.mChannelList and len( self.mChannelList ) > 0 :
+			focusIdx = self.mCtrlListCHList.getSelectedPosition( )
+			if focusIdx < len( self.mChannelList ) :
+				self.mNavChannel = self.mChannelList[focusIdx]
+				self.mCurrentChannel = self.mNavChannel.mNumber
+				#LOG_TRACE( '---------focus len[%s] idx[%s] ch[%s %s]'% ( len( self.mChannelList ), focusIdx, self.mNavChannel.mNumber, self.mNavChannel.mName ) )
 
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+				#initialize get epg event
+				try :
+					#iEPG = self.mDataCache.Epgevent_GetPresent( )
+					iEPG = self.mDataCache.GetEpgeventCurrent( )
+
+					if iEPG and iEPG.mSid == self.mNavChannel.mSid and iEPG.mTsid == self.mNavChannel.mTsid and iEPG.mOnid == self.mNavChannel.mOnid :
+						self.mNavEpg = iEPG
+						self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+
+				except Exception, e :
+					LOG_TRACE( 'Error exception[%s]'% e )
+
+				#LOG_TRACE( '------------epg[%s]'% self.mNavEpg )
 
 		self.UpdateChannelAndEPG( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
@@ -951,23 +963,29 @@ class ChannelListWindow( BaseWindow ) :
 			self.mIsPVR = False
 			self.mDataCache.Player_Stop( )
 
-		currentChannel = self.mDataCache.Channel_GetCurrent( )
+		currentChannel = self.mDataCache.Channel_GetCurrent( True )
 
 		isSameChannel = False
 		if currentChannel and currentChannel.mServiceType == iChannel.mServiceType and \
+		   ( not self.mZappingChange ) and currentChannel.mNumber == iChannel.mNumber and \
 		   currentChannel.mSid == iChannel.mSid and currentChannel.mTsid == iChannel.mTsid and \
-		   currentChannel.mOnid == iChannel.mOnid and currentChannel.mNumber == iChannel.mNumber :
+		   currentChannel.mOnid == iChannel.mOnid :
 			isSameChannel = True
 
+		#LOG_TRACE( 'issame[%s] modeChange[%s]'% ( isSameChannel, self.mZappingChange ) )
+		self.mZappingChange = False
 		ret = False
 		if isSameChannel :
 			ret = True
 		else :
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
+
 			ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
 
 		if ret :
-			if ( not isSameChannel ) and (  not self.mDataCache.Get_Player_AVBlank( )  ):
-				self.mDataCache.Player_AVBlank( True )
+			#if ( not isSameChannel ) and ( not self.mDataCache.Get_Player_AVBlank( ) ):
+			#	self.mDataCache.Player_AVBlank( True )
 
 			if isSameChannel :
 				ret = self.SaveSlideMenuHeader( )
@@ -1015,7 +1033,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMenuIndex == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
 					for itemClass in self.mListSatellite:
-						ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
+						ret = self.mDataCache.GetFormattedSatelliteName( itemClass.mLongitude, itemClass.mBand )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
@@ -1091,7 +1109,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
 					item = self.mListSatellite[idxSub]
-					zappingName = item.mName
+					zappingName = self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand )
 					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '' )
 					#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
@@ -1128,6 +1146,21 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.reset( )
 
 			self.UpdateChannelList( )
+			self.RestartAsyncEPG( )
+
+			#init select tune by if exist current channel
+			self.mZappingChange = True
+			try :
+				if self.mNavChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+					iChannel = self.mChannelList[self.mCtrlListCHList.getSelectedPosition( )]
+					if self.mNavChannel.mServiceType == iChannel.mServiceType and \
+					   self.mNavChannel.mNumber == iChannel.mNumber and \
+					   self.mNavChannel.mSid == iChannel.mSid and self.mNavChannel.mTsid == iChannel.mTsid and \
+					   self.mNavChannel.mOnid == iChannel.mOnid :
+						self.mZappingChange = False
+						#LOG_TRACE( '----------------------mZappingChange true -> false' )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
 
 			#path tree, Mainmenu/Submanu
 			self.mUserSlidePos.mMain = idxMain
@@ -1144,7 +1177,8 @@ class ChannelListWindow( BaseWindow ) :
 
 			#current zapping backup
 			#self.mDataCache.Channel_Backup( )
-			LOG_TRACE( 'mode: user[%s,%s %s] prev[%s,%s %s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )		
+			LOG_TRACE( 'mode: user[%s,%s %s] prev[%s,%s %s]'% ( self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )
+
 
 	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ) :
 		ret = True
@@ -1204,10 +1238,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif zInfo_mode == ElisEnum.E_MODE_SATELLITE :
 				idx1 = 1
-				zInfo_name = self.mUserMode.mSatelliteInfo.mName
+				#ToDO : is matched by longitude,band ?
+				#zInfo_name = self.mUserMode.mSatelliteInfo.mName
+				zInfo_name = self.mDataCache.GetSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
 
 				for item in self.mListSatellite :
-					if zInfo_name == item.mName :
+					if zInfo_name == self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand ) :
 						break
 					idx2 += 1
 
@@ -1326,12 +1362,14 @@ class ChannelListWindow( BaseWindow ) :
 
 					if self.mUserSlidePos.mMain == 1 :
 						groupInfo = self.mListSatellite[self.mUserSlidePos.mSub]
+						if groupInfo :
+							groupInfo.mName = self.mDataCache.GetSatelliteName( groupInfo.mLongitude, groupInfo.mBand )
 						self.mLoadMode.mSatelliteInfo = groupInfo
-						
+
 					elif self.mUserSlidePos.mMain == 2 :
 						groupInfo = self.mListCasList[self.mUserSlidePos.mSub]
 						self.mLoadMode.mCasInfo = groupInfo
-					
+
 					elif self.mUserSlidePos.mMain == 3 :
 						groupInfo = self.mListFavorite[self.mUserSlidePos.mSub]
 						self.mLoadMode.mFavoriteGroup = groupInfo
@@ -1645,8 +1683,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
 				for item in self.mListSatellite:
-					ret = GetSelectedLongitudeString( item.mLongitude, item.mName )
-					testlistItems.append(xbmcgui.ListItem( ret ) )
+					ret = self.mDataCache.GetFormattedSatelliteName( item.mLongitude, item.mBand )
+					testlistItems.append( xbmcgui.ListItem( ret ) )
 
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_CAS :
 			if self.mListCasList :
@@ -2044,7 +2082,7 @@ class ChannelListWindow( BaseWindow ) :
 				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 
 			if satellite :
-				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+				label = self.mDataCache.GetFormattedSatelliteName( satellite.mLongitude, satellite.mBand )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 			else :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
@@ -3096,7 +3134,8 @@ class ChannelListWindow( BaseWindow ) :
 				idxSub = self.mUserSlidePos.mSub
 				if self.mListSatellite and len( self.mListSatellite ) > idxSub :
 					item = self.mListSatellite[idxSub]
-					lblLine = '%s %s'% ( lblLine, item.mName )
+					satelliteName = self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand )
+					lblLine = '%s %s'% ( lblLine, satelliteName )
 
 			elif self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )
