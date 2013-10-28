@@ -387,7 +387,9 @@ class DataCacheMgr( object ) :
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.mConfiguredSatelliteList = self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			channelDB = ElisChannelDB( )
+			self.mConfiguredSatelliteList = channelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			channelDB.Close( )
 		else :
 			self.mConfiguredSatelliteList = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 
@@ -399,7 +401,9 @@ class DataCacheMgr( object ) :
 
 		self.mConfiguredSatelliteListTuner1 = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.mConfiguredSatelliteListTuner1 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_1 )
+			channelDB = ElisChannelDB( )
+			self.mConfiguredSatelliteListTuner1 = channelDB.Satelliteconfig_GetList( E_TUNER_1 )
+			channelDB.Close( )
 		else :
 			self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 
@@ -411,7 +415,9 @@ class DataCacheMgr( object ) :
 
 		self.mConfiguredSatelliteListTuner2 = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.mConfiguredSatelliteListTuner2 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_2 )
+			channelDB = ElisChannelDB( )
+			self.mConfiguredSatelliteListTuner2 = channelDB.Satelliteconfig_GetList( E_TUNER_2 )
+			channelDB.Close( )
 		else :
 			self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
@@ -496,7 +502,9 @@ class DataCacheMgr( object ) :
 			return self.mConfiguredSatelliteList
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				return self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+				channelDB = ElisChannelDB( )
+				return channelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+				channelDB.Close( )
 			else :
 				return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 			
