@@ -1214,7 +1214,7 @@ class DataCacheMgr( object ) :
 			# retry find first channel
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				last = len( self.mChannelList ) - 1
-				return self.Channel_GetNext( self.mChannelList[last] )
+				return self.Channel_GetNext( self.mChannelList[last], True )
 
 			return None
 
@@ -1227,7 +1227,7 @@ class DataCacheMgr( object ) :
 		return channel.mChannel
 
 
-	def Channel_GetNext( self, aChannel ) :
+	def Channel_GetNext( self, aChannel, aLast = False ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
 
@@ -1238,10 +1238,14 @@ class DataCacheMgr( object ) :
 				cacheChannel = self.mChannelListHash.get( self.mChannelList[0].mNumber, None )
 				if cacheChannel == None :
 					return None
-				prevKey = cacheChannel.mPrevKey
-				channel = self.mChannelListHash.get( prevKey, None )
-				if channel == None :
-					return None
+
+				channel = cacheChannel
+				if aLast :
+					prevKey = cacheChannel.mPrevKey
+					channel = self.mChannelListHash.get( prevKey, None )
+					if channel == None :
+						return None
+
 				return channel.mChannel
 
 			return None
