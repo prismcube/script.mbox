@@ -2088,8 +2088,6 @@ class SystemUpdate( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
 					dialog.doModal( )
 
-					self.mDataCache.LoadConfiguredSatellite( )
-					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.System_Reboot( )
 				else :
 					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
