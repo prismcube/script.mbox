@@ -1111,7 +1111,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ShowHotkeys( self ) :
-		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDPlayNF.png', 'OSDOK.png', MR_LANG( 'Playback' ) ), ( 'OSDPauseNF.png', '', MR_LANG( 'Pause' ) ) , ( 'OSDStopNF.png', '', MR_LANG( 'Stop' ) ) , ( 'OSDTVRadio.png', '', MR_LANG( 'TV/Radio' ) ) , ( 'OSDBack.png', 'OSDMenu.png', MR_LANG( 'Go Back' ) ) ]
+		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDPlayNF.png', 'OSDOK.png', MR_LANG( 'Playback' ) ), ( 'OSDPauseNF.png', '', MR_LANG( 'Pause' ) ) , ( 'OSDStopNF.png', '', MR_LANG( 'Stop' ) ) , ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ) , ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )
