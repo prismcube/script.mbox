@@ -71,7 +71,9 @@ class PIPWindow( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mPIPStart = False
 		self.mCurrentChannel = ElisIChannel( )
-		self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
+		self.mCurrentChannel.mNumber = self.mDataCache.Channel_GetCurrent( )
+		if E_V1_2_APPLY_PIP :
+			self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
 		self.mCurrentChannel.mError = -1
 
 
