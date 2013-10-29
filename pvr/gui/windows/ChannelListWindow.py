@@ -179,6 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastChannel = None
 		self.mLastChannelList = []
 		self.mLastChannelListHash = {}
+		self.mTPListByChannelHash = {}
 		self.mZappingChange = False
 
 		#edit mode
@@ -451,6 +452,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelListHash = {}
 		self.mChannelListHashIDs = {}
 		self.mChannelListForMove = []
+		self.mTPListByChannelHash = {}
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			for iChannel in self.mChannelList :
 				chNumber = iChannel.mNumber
@@ -459,6 +461,9 @@ class ChannelListWindow( BaseWindow ) :
 
 				channelKey = '%d:%d:%d:%d'% ( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 				self.mChannelListHashIDs[channelKey] = iChannel
+
+				self.mTPListByChannelHash[iChannel.mNumber] = self.mDataCache.GetTunerIndexBySatellite( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mCarrier.mDVBS.mSatelliteBand )
+				#LOG_TRACE( '---------------ch[%s %s] tpNum[%s]'% ( iChannel.mNumber, iChannel.mName, self.mTPListByChannelHash.get( iChannel.mNumber, None ) ) )
 
 		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
 
@@ -1821,8 +1826,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
 
-
-				mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+				mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
 				if mTPnum == E_CONFIGURED_TUNER_1 :
 					listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
 				elif mTPnum == E_CONFIGURED_TUNER_2 :

@@ -631,11 +631,13 @@ class DataCacheMgr( object ) :
 			for satellite in self.mConfiguredSatelliteListTuner1 :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
 					tunerEx = tunerEx + E_CONFIGURED_TUNER_1
+					break
 
 		if self.mConfiguredSatelliteListTuner2 :
 			for satellite in self.mConfiguredSatelliteListTuner2 :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
 					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
+					break
 
 		return tunerEx
 
