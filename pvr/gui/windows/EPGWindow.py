@@ -472,12 +472,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE( 'record start/stop event' )
 				self.StopEPGUpdateTimer( )
 
-				self.mChannelList = self.mDataCache.Channel_GetList( )
-				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-				self.UpdateAllEPGList( )
-				self.UpdateCurrentChannel( )
-
-				#self.UpdateListUpdateOnly( )
+				self.UpdateListUpdateOnly( )
 				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
@@ -504,6 +499,13 @@ class EPGWindow( BaseWindow ) :
 		#self.mCtrlList.reset( )
 		#self.mCtrlBigList.reset( )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
+
+	def UpdateByAvailableListChanged( self ) :
+		self.mChannelList = self.mDataCache.Channel_GetList( )
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		self.UpdateAllEPGList( )
+		self.UpdateCurrentChannel( )
 
 
 	def InitControl( self ) :

@@ -159,6 +159,7 @@ class DataCacheMgr( object ) :
 		self.mTimerList							= self.Timer_GetTimerList( )
 		self.mChannelListPIP					= []
 		self.mChannelListHashPIP				= {}
+		self.mZappingListChange					= False
 
 		self.mRootWindowId						= 0
 		self.mRootWindow						= None
@@ -1682,9 +1683,18 @@ class DataCacheMgr( object ) :
 			else :
 				LOG_TRACE( 'skip getzapping list' )
 				return
- 
+
+			self.Channel_SetZappingListStatus( True )
 			self.Frontdisplay_SetIcon( ElisEnum.E_ICON_REC, recCount )
 			return self.mCommander.Channel_GetZappingList( aSync )
+
+
+	def Channel_GetZappingListStatus( self ) :
+		return self.mZappingListChange
+
+
+	def Channel_SetZappingListStatus( self, aChange = False ) :
+		self.mZappingListChange = aChange
 
 
 	def GetChannelByTimer( self, aSid, aTsid, aOnid ) :

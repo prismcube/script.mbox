@@ -107,6 +107,11 @@ class GlobalEvent( object ) :
 				else :
 					LOG_TRACE( 'Already opened, hddfull' )
 
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_EPG_WINDOW :
+				if self.mDataCache.Channel_GetZappingListStatus( ) :
+					self.mDataCache.Channel_SetZappingListStatus( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).UpdateByAvailableListChanged( )
+
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 			if aEvent.mType == ElisEnum.E_EOF_START :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_TIMESHIFT_PLATE :
