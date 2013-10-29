@@ -673,6 +673,7 @@ class DataCacheMgr( object ) :
 
 		self.Channel_GetZappingList( )
 		self.LoadChannelList( FLAG_ZAPPING_LOAD )
+		self.Channel_GetCurrentSync( )
 
 
 	def RefreshCacheByChannelList( self, aChannelList ) :
@@ -1024,6 +1025,10 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetCurrent( )
 
 		return self.mCurrentChannel
+
+
+	def Channel_GetCurrentSync( self ) :
+		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
 
 
 	def Channel_SetOldChannel( self, aChannelNumber, aServiceType ) :

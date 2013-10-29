@@ -204,7 +204,7 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		#self.mChannelList = self.mDataCache.Channel_GetList( )
 		#self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
-		self.mChannelList = self.mDataCache.Channel_GetList( )		
+		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.UpdateFootor( )
 
 		if self.mChannelList == None :
@@ -471,7 +471,13 @@ class EPGWindow( BaseWindow ) :
 				#if self.mIsUpdateEnable == True	:
 				LOG_TRACE( 'record start/stop event' )
 				self.StopEPGUpdateTimer( )
-				self.UpdateListUpdateOnly( )
+
+				self.mChannelList = self.mDataCache.Channel_GetList( )
+				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+				self.UpdateAllEPGList( )
+				self.UpdateCurrentChannel( )
+
+				#self.UpdateListUpdateOnly( )
 				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
