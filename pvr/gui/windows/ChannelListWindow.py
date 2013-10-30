@@ -2237,7 +2237,7 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mIsHD and E_V1_1_HD_ICON_USE :
 				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
 
-			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+			mTPnum = self.mTPListByChannelHash.get( iChannel.mNumber, -1 )
 			if mTPnum == E_CONFIGURED_TUNER_1 :
 				listItem.setProperty( E_XML_PROPERTY_TUNER1,  E_TAG_TRUE )
 			elif mTPnum == E_CONFIGURED_TUNER_2 :

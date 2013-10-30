@@ -107,6 +107,8 @@ class DataCacheMgr( object ) :
 		self.mConfiguredSatelliteList			= None
 		self.mConfiguredSatelliteListTuner1		= None
 		self.mConfiguredSatelliteListTuner2		= None
+		self.mConfiguredTuner1Hash				= {}
+		self.mConfiguredTuner2Hash				= {}
 		self.mTransponderLists					= None
 		self.mEPGList							= None
 		self.mCurrentEvent						= None
@@ -120,7 +122,6 @@ class DataCacheMgr( object ) :
 		self.mChannelListHash					= {}
 		self.mChannelListHashForTimer			= {}
 		self.mAllChannelListHash				= {}
-		self.mTPListByChannelHash				= {}
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
@@ -400,6 +401,7 @@ class DataCacheMgr( object ) :
 			LOG_WARN('Has no Configured Satellite')
 
 
+		self.mConfiguredTuner1Hash = {}
 		self.mConfiguredSatelliteListTuner1 = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
@@ -409,11 +411,14 @@ class DataCacheMgr( object ) :
 			self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 
 		if self.mConfiguredSatelliteListTuner1 and self.mConfiguredSatelliteListTuner1[0].mError == 0 :
-			pass
+			for satellite in self.mConfiguredSatelliteListTuner1 :
+				satelliteKey = '%d:%d'% ( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mConfiguredTuner1Hash[satelliteKey] = E_CONFIGURED_TUNER_1
 		else :
 			LOG_WARN('Has no Configured Satellite Tuner 1')
 
 
+		self.mConfiguredTuner2Hash = {}
 		self.mConfiguredSatelliteListTuner2 = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
@@ -423,7 +428,9 @@ class DataCacheMgr( object ) :
 			self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		if self.mConfiguredSatelliteListTuner2 and self.mConfiguredSatelliteListTuner2[0].mError == 0 :
-			pass
+			for satellite in self.mConfiguredSatelliteListTuner2 :
+				satelliteKey = '%d:%d'% ( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mConfiguredTuner2Hash[satelliteKey] = E_CONFIGURED_TUNER_2
 		else :
 			LOG_WARN('Has no Configured Satellite Tuner 2')
 
@@ -627,6 +634,10 @@ class DataCacheMgr( object ) :
 
 	def GetTunerIndexBySatellite( self, aLongitude, aBand ) :
 		tunerEx = 0
+		tunerEx += self.mConfiguredTuner1Hash.get( '%d:%d'% ( aLongitude, aBand ), 0 )
+		tunerEx += self.mConfiguredTuner2Hash.get( '%d:%d'% ( aLongitude, aBand ), 0 )
+
+		"""
 		if self.mConfiguredSatelliteListTuner1 :
 			for satellite in self.mConfiguredSatelliteListTuner1 :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
@@ -638,12 +649,9 @@ class DataCacheMgr( object ) :
 				if satellite.mSatelliteLongitude == aLongitude and satellite.mBandType == aBand :
 					tunerEx = tunerEx + E_CONFIGURED_TUNER_2
 					break
+		"""
 
 		return tunerEx
-
-
-	def GetTunerIndexByChannel( self, aNumber ) :
-		return self.mTPListByChannelHash.get( aNumber, -1 )
 
 
 	def GetChangeDBTableChannel( self ) :
@@ -684,7 +692,6 @@ class DataCacheMgr( object ) :
 		nextChannel = None
 		self.mChannelListHash = {}
 		self.mChannelListHashForTimer = {}
-		self.mTPListByChannelHash = {}
 		self.mChannelList = aChannelList
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
 			LOG_TRACE( 'ChannelList None' )
@@ -715,8 +722,6 @@ class DataCacheMgr( object ) :
 			prevChannel = channel
 
 			if channel and channel.mError == 0 :
-				self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
-
 				channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
 				self.mChannelListHashForTimer[channelKey] = channel
 
@@ -817,10 +822,7 @@ class DataCacheMgr( object ) :
 				
 				prevChannel = channel
 
-
 				if channel and channel.mError == 0 :
-					self.mTPListByChannelHash[channel.mNumber] = self.GetTunerIndexBySatellite( channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mCarrier.mDVBS.mSatelliteBand )
-
 					channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
 					self.mChannelListHashForTimer[channelKey] = channel
 

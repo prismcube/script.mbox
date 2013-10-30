@@ -180,7 +180,7 @@ class DialogTestCode( BaseDialog ) :
 				listItem.setIconImage( 'IconHD.png' )
 				LOG_TRACE( '---------------- posx[%s] len[%s]'% ( posx, len( iChannel.mName ) ) )
 
-			mTPnum = self.mDataCache.GetTunerIndexByChannel( iChannel.mNumber )
+			mTPnum = self.mDataCache.GetTunerIndexBySatellite( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mCarrier.mDVBS.mSatelliteBand )
 			if mTPnum == E_CONFIGURED_TUNER_1 :
 				listItem.setProperty( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
 			elif mTPnum == E_CONFIGURED_TUNER_2 :
