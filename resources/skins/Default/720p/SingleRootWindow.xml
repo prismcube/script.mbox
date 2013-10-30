@@ -3561,12 +3561,25 @@ Search for window name
 							<!--<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>-->
 						</control>
 						<control type="label">
+							<visible>Control.HasFocus(1709000)</visible>
 							<posx>10</posx>
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
 							<font>font13</font>
 							<textcolor>white</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<control type="label">
+							<visible>!Control.HasFocus(1709000)</visible>
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>680</width>
+							<height>40</height>
+							<font>font13</font>
+							<textcolor>grey2</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>
