@@ -160,19 +160,24 @@ class NullWindow( BaseWindow ) :
 	def XBMCFirstProcess( self ) :
 		xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Corrupted Database' ), MR_LANG( 'Do you want to repair database?' ) )
-			dialog.doModal( )
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				databaseName = None
+			databaseName = None
+			try :
 				inputFile = open( '/mtmp/XbmcDbBroken', 'r' )
 				inputline = inputFile.readlines( )
 				inputFile.close( )
-				for line in inputline :
-					databaseName = line.strip( )
-					break
+				if inputline :
+					for line in inputline :
+						databaseName = line.strip( )
+						break
+			except Exception, e :
+				databaseName = None
+				LOG_ERR( 'Error exception[%s]' % e )
 
-				if databaseName :
+			if databaseName :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Corrupted Database' ), MR_LANG( 'Do you want to repair database? (%s)' ) % databaseName )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					userDatabasePath = pvr.Platform.GetPlatform( ).GetUserDataDir( )
 					userDatabasePath = userDatabasePath + 'Database/'
 					databaseName = userDatabasePath + databaseName + '.db'
