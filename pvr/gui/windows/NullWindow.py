@@ -161,7 +161,7 @@ class NullWindow( BaseWindow ) :
 		xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'DB Broken' ), MR_LANG( 'Do you want repair?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Corrupted Database' ), MR_LANG( 'Do you want to repair database?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				databaseName = None
