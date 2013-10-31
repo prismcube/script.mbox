@@ -2236,7 +2236,7 @@ Search for window name
 					</control>
 
 					<!-- color key -->
-					<control type="group">
+					<control type="group" id="1400509">
 						<control type="grouplist">
 							<posx>210r</posx>
 							<posy>-35</posy>
@@ -2797,7 +2797,7 @@ Search for window name
 				</control>
 
 			<!-- color key -->
-				<control type="group">
+				<control type="group" id="2900509">
 					<control type="grouplist">
 						<posx>210r</posx>
 						<posy>565</posy>
