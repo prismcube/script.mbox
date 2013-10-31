@@ -122,7 +122,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'EPG Setting' ),
 		MR_LANG( 'HDD Format' ),
-		MR_LANG( 'Factory Reset' ),
+		MR_LANG( 'STB Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
 
 		self.mGroupItems = []
@@ -139,7 +139,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
 		MR_LANG( 'Delete everything off your hard drive' ),
-		MR_LANG( 'Restore your system to factory settings' ),
+		MR_LANG( 'Restore your system' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
 		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
@@ -484,6 +484,9 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
 	 			dialog.doModal( )
 				self.mDataCache.System_Reboot( )
+
+		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
+			print 'dhkim test delete .xbmc data'
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :
@@ -865,12 +868,13 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to first installation after restoring system to the factory default' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Start xbmc Reset'), '', MR_LANG( 'Delete all addons and xbmc settings data' ) )
 
-			visibleControlIds = [ E_Input01 ]
+			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
