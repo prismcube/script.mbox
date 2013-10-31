@@ -456,9 +456,11 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 		visible = E_TAG_FALSE
-		hasLinkageService = self.mDataCache.GetLinkageService( )
-		if hasLinkageService :
-			visible = E_TAG_TRUE
+		chList = self.mDataCache.Channel_GetList( )
+		if chList and len( chList ) > 0 :
+			hasLinkageService = self.mDataCache.GetLinkageService( )
+			if hasLinkageService :
+				visible = E_TAG_TRUE
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  visible )		
 
 
