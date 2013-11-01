@@ -600,8 +600,8 @@
 	<string id="3130">Timer kann nicht bearbeitet werden</string>
 	<string id="3131">Die eingegebene Zeit  liegt in der Vergangenheit</string>
 	<string id="3132">Es gibt keinen gültigen Timer</string>
-	<string id="3133">%s Pause</string>
-	<string id="3134">%s Fertig</string>
+	<string id="3133">%s pause</string>
+	<string id="3134">%s fertig</string>
 	<string id="3135">Hauptmenü</string>
 	<string id="3136">Keine Beschreibung</string>
 	<string id="3137">Anwenden</string>

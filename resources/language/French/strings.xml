@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string id="1001">Toutes les chaînes</string>
-	<string id="1002">Satellite</string>
+	<string id="1001">TOUTES LES CHAÎNES</string>
+	<string id="1002">SATELLITE</string>
 	<string id="1003">FTA/CAS</string>
-	<string id="1004">Groupes favoris</string>
-	<string id="1005">Mode</string>
+	<string id="1004">GROUPES FAVORIS</string>
+	<string id="1005">MODE</string>
 	<string id="1006">TV</string>
 	<string id="1007">Radio</string>
 	<string id="1008">Cacher les regardés</string>
@@ -18,7 +18,7 @@
 	<string id="1016">Aucune information EPG</string>
 	<string id="1017">Chercher résultats</string>
 	<string id="1018">Chaînes TV</string>
-	<string id="1019">Chaînes radio</string>
+	<string id="1019">Chaînes Radio</string>
 	<string id="1020">Informations du transpondeur</string>
 	<string id="1021">Retour</string>
 	<string id="1022">OK</string>
@@ -120,13 +120,13 @@
 	<string id="1120">Liste</string>
 	<string id="1121">Gestionnaire des extensions</string>
 	<string id="1122">Plus</string>
-	<string id="1123">Playback</string>
+	<string id="1123">PLAYBACK</string>
 	<string id="1124">Audio</string>
 	<string id="1125">Edit</string>
 	<string id="1126">Run Custom Script</string>
 	<string id="2001">Dernier type servie</string>
 	<string id="2002">Résolution Vout actuelle</string>
-	<string id="2003">108p</string>
+	<string id="2003">1080p</string>
 	<string id="2004">Normal</string>
 	<string id="2005">Premier</string>
 	<string id="2006">Serial kbd</string>
@@ -145,8 +145,8 @@
 	<string id="2019">Format HDMI</string>
 	<string id="2020">Automatique</string>
 	<string id="2021">Programme 4:3</string>
-	<string id="2022">Normal (encadrement horizontal)</string>
-	<string id="2023">Etirée (plein écran)</string>
+	<string id="2022">Normal (Encadrement horizontal)</string>
+	<string id="2023">Etirée (Plein écran)</string>
 	<string id="2024">Agrandir</string>
 	<string id="2025">Audio HDMI</string>
 	<string id="2026">MIC décodé</string>
@@ -159,7 +159,7 @@
 	<string id="2033">Toujours 16:9</string>
 	<string id="2034">Audio Dolby</string>
 	<string id="2035">Système TV</string>
-	<string id="2036">Langage audio</string>
+	<string id="2036">Langage Audio</string>
 	<string id="2037">Allemand</string>
 	<string id="2038">Anglais</string>
 	<string id="2039">Français</string>
@@ -203,7 +203,7 @@
 	<string id="2077">Addr2</string>
 	<string id="2078">Addr3</string>
 	<string id="2079">Addr4 </string>
-	<string id="2080">test FPGA</string>
+	<string id="2080">Test FPGA</string>
 	<string id="2081">Mode de test FPGA</string>
 	<string id="2082">Nombre</string>
 	<string id="2083">Mode de changement de chaîne</string>
@@ -643,7 +643,7 @@
 	<string id="3173">Suppression réussie</string>
 	<string id="3174">Etes vous sur de vouloir arrêter le%n scan des chaînes?</string>
 	<string id="3175">Quitter la recherche des chaînes</string>
-	<string id="3176">Chaînes TV : %d %sChaînes radio : %d</string>
+	<string id="3176">Chaînes TV : %d %sChaînes Radio : %d</string>
 	<string id="3177">Résultat de la recherche des chaînes</string>
 	<string id="3178">Limite EST</string>
 	<string id="3179">Un pas vers l'EST</string>

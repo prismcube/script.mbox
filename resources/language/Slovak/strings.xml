@@ -251,7 +251,7 @@
 	<string id="2125">Nízky</string>
 	<string id="2126">Trvanie info banera</string>
 	<string id="2127">Trvanie banera prehrávania</string>
-	<string id="2128">zobrazenie hlasitosti</string>
+	<string id="2128">Zobrazenie hlasitosti</string>
 	<string id="2129">Jas predného displeja</string>
 	<string id="2130">Jasný</string>
 	<string id="2131">Tmavý</string>
@@ -272,15 +272,15 @@
 	<string id="2146">3 min</string>
 	<string id="2147">4 min</string>
 	<string id="2148">Post-Nahr. Čas</string>
-	<string id="2149">automatický Timeshift</string>
+	<string id="2149">Automatický Timeshift</string>
 	<string id="2150">Timeshift Veľkosť vyrovnávacej pamäte</string>
 	<string id="2151">Predvolená dĺžka nahr.</string>
 	<string id="2152">DHCP</string>
 	<string id="2153">Typ LNB</string>
 	<string id="2154">univerzálny</string>
-	<string id="2155">single</string>
+	<string id="2155">Single</string>
 	<string id="2156">Zadané Užívateľom</string>
-	<string id="2157">režim času</string>
+	<string id="2157">Režim času</string>
 	<string id="2158">Čas Inštalácia</string>
 	<string id="2159">Typ OneCable</string>
 	<string id="2160">Zastavte na signál</string>
@@ -1235,7 +1235,7 @@
 	<string id="3765">Verzia</string>
 	<string id="3766">Bootloader verzia</string>
 	<string id="3767">Model</string>
-	<string id="3768">Teplota : zaneprázdnený</string>
+	<string id="3768">Teplota : Zaneprázdnený</string>
 	<string id="3769">Využité miesto pre médiá</string>
 	<string id="3770">Využité miesto pre Program</string>
 	<string id="3771">Využité miesto pre nahrávky</string>
