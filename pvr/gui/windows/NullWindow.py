@@ -144,7 +144,8 @@ class NullWindow( BaseWindow ) :
 			thread = threading.Timer( 5, self.FirmwareNotify )
 			thread.start( )
 
-		self.XBMCFirstProcess( )
+		if self.XBMCFirstProcess( ) :
+			return
 
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
@@ -170,8 +171,8 @@ class NullWindow( BaseWindow ) :
 						databaseName = line.strip( )
 						break
 			except Exception, e :
-				databaseName = None
 				LOG_ERR( 'Error exception[%s]' % e )
+				return False
 
 			if databaseName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -185,6 +186,9 @@ class NullWindow( BaseWindow ) :
 					os.system( 'rm %s' % '/mtmp/XbmcDbBroken' )
 					pvr.ElisMgr.GetInstance( ).Shutdown( )
 					xbmc.executebuiltin( 'RestartApp' )
+					return True
+
+		return False
 
 
 	def onAction( self, aAction ) :
