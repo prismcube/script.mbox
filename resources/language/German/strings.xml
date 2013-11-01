@@ -13,7 +13,7 @@
 	<string id="1011">Auswahl Reihenfolge</string>
 	<string id="1012">Reihenfolge : Absteigend</string>
 	<string id="1013">Reihenfolge : Aufsteigend</string>
-	<string id="1014">eingerastet</string>
+	<string id="1014">Eingerastet</string>
 	<string id="1015">Auswahl Kanalliste</string>
 	<string id="1016">Keine EPG Informationen</string>
 	<string id="1017">Suchergebnis</string>
@@ -102,7 +102,7 @@
 	<string id="1101">Drücken Sie die i-Taste auf der Fernbedienung, um den Bearbeitungsmodus Menü zu öffnen</string>
 	<string id="1103">Update</string>
 	<string id="1104">Kein Signal</string>
-	<string id="1105">verschlüsselt</string>
+	<string id="1105">Verschlüsselt</string>
 	<string id="1106">Objekte</string>
 	<string id="1107">Seite</string>
 	<string id="1108">Position Bewegen</string>
@@ -1285,6 +1285,4 @@
 	<string id="3815">Ende</string>
 	<string id="3816">Gehen Sie zur Kanalsuchlauf Setup Seite</string>
 	<string id="3817">Kanal wurde umgeschaltet durch den View Timer</string>
-	<string id="3818"></string>
-	<string id="3819"></string>
 </strings>

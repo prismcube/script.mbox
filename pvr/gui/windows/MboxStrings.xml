@@ -801,8 +801,8 @@
 	<string id="3327">Select a frequency for tuner 2</string>
 	<string id="3328"> - Tuner 2 PIN Code</string>
 	<string id="3329">Enter a PIN code for tuner 2</string>
-	<string id="3330">DB Broken</string>
-	<string id="3331">Do you want repair?</string>
+	<string id="3330">Corrupted Database</string>
+	<string id="3331">Do you want to repair database? (%s)</string>
 	<string id="3332">The PIN code must be 4-digit long</string>
 	<string id="3333">Sorry, that PIN code does not match</string>
 	<string id="3334">EPG None</string>
@@ -1289,6 +1289,4 @@
 	<string id="3815">Finish</string>
 	<string id="3816">Go to the channel search setup page</string>
 	<string id="3817">Channel is changed by view timer</string>
-	<string id="3818">Corrupted Database</string>
-	<string id="3819">Do you want to repair database? (%s)</string>
 </strings>

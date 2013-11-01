@@ -797,8 +797,8 @@
 	<string id="3327">Vyberte frekvenciu tunera 2</string>
 	<string id="3328"> - Tuner 2 PIN kód</string>
 	<string id="3329">Zadajte PIN kód pre tuner 2</string>
-	<string id="3330"></string>
-	<string id="3331"></string>
+	<string id="3330">Poškodená Databáza</string>
+	<string id="3331">Opraviť databázu? (%s)</string>
 	<string id="3332">PIN kód musí byť 4-miestny</string>
 	<string id="3333">Prepáčte, PIN kód nezodpovedá</string>
 	<string id="3334">Žiadne EPG</string>
@@ -1285,6 +1285,4 @@
 	<string id="3815">Dokončiť</string>
 	<string id="3816">Prejsť na stránku nastavenia vyhľadávania kanálov</string>
 	<string id="3817">Program je zmenený časovačom zobrazenia </string>
-	<string id="3818"></string>
-	<string id="3819"></string>
 </strings>
