@@ -139,7 +139,7 @@
 	<include name="DefaultFakeButton">
 		<control type="button" id="1000999">
 			<description>empty button</description>
-			<posx>0</posx>
+			<posx>-1000</posx>
 			<posy>0</posy>
 			<width>1</width>
 			<height>1</height>
