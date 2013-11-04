@@ -24,6 +24,7 @@ E_CONTROL_ID_LABEL_EPG_STARTTIME		= E_LIVE_PLATE_BASE_ID + 704
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= E_LIVE_PLATE_BASE_ID + 705
 E_CONTROL_ID_PROGRESS_EPG 				= E_LIVE_PLATE_BASE_ID + 707
 
+E_CONTROL_ID_HOTKEY_GROUP 				= E_LIVE_PLATE_BASE_ID + 509
 E_CONTROL_ID_HOTKEY_RED_IMAGE 			= E_LIVE_PLATE_BASE_ID + 511
 E_CONTROL_ID_HOTKEY_RED_LABEL 			= E_LIVE_PLATE_BASE_ID + 512
 E_CONTROL_ID_HOTKEY_GREEN_IMAGE 		= E_LIVE_PLATE_BASE_ID + 521
@@ -364,6 +365,13 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE and self.mDataCache.GetLinkageService(  ) :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowLinkageChannels( )
+
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			self.StopAutomaticHide( )
 			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
@@ -426,13 +434,34 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
-			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			ctrlGreen  = self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL )
+			ctrlYellow = self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL )
+			ctrlBlue   = self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL )
+			lblGreen   = ctrlGreen.getLabel( )
+			lblYellow  = ctrlYellow.getLabel( )
+			lblBlue    = ctrlBlue.getLabel( )
+
+			ResizeImageWidthByTextSize( ctrlGreen, self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Multi-Feed' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )		
+			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			if lblGreen and len( lblGreen ) > 9 or \
+			   lblYellow and len( lblYellow ) > 9 or \
+			   lblBlue and len( lblBlue ) > 9 :
+				self.getControl( E_CONTROL_ID_HOTKEY_GROUP ).setPosition( -20, 0 )
+				#LOG_TRACE( '-----------------------------------rePosition, [%s] [%s] [%s]'% (lblGreen,lblYellow,lblBlue) )
+
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+
+		visible = E_TAG_FALSE
+		chList = self.mDataCache.Channel_GetList( )
+		if chList and len( chList ) > 0 :
+			hasLinkageService = self.mDataCache.GetLinkageService( )
+			if hasLinkageService :
+				visible = E_TAG_TRUE
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  visible )		
 
 
 	def onEvent(self, aEvent):
@@ -517,6 +546,10 @@ class LivePlate( LivePlateWindow ) :
 			isTune = True
 			tuneCh = prevChannel
 
+			if self.mDataCache.GetLinkageService() :
+				self.mDataCache.SetLinkageService( False )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
+			
 		elif aDir == NEXT_CHANNEL :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
 			if nextChannel == None or nextChannel.mError != 0 :
@@ -524,6 +557,10 @@ class LivePlate( LivePlateWindow ) :
 
 			isTune = True
 			tuneCh = nextChannel
+
+			if self.mDataCache.GetLinkageService() :
+				self.mDataCache.SetLinkageService( False )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
 
 		elif aDir == CURR_CHANNEL :
 			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
@@ -1720,4 +1757,17 @@ class LivePlate( LivePlateWindow ) :
 	def GetBlinkingProperty( self ) :
 		rootWinow = xbmcgui.Window( 10000 )
 		return rootWinow.getProperty( 'RecordBlinkingIcon' )
-	
+
+
+	def UpdateLinkageService( self, aForceHide=False ) :
+		status = self.mDataCache.Player_GetStatus( )
+
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			self.setProperty( 'HasLinkageService', 'False' )
+		else :
+			hasLinkageService = self.mDataCache.GetLinkageService(  )
+			if hasLinkageService :
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_TRUE )			
+			else :
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  E_TAG_FALSE )
+

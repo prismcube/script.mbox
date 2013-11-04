@@ -197,7 +197,7 @@ class NullWindow( BaseWindow ) :
 
 				if self.mDataCache.GetLinkageService(  ) : #hide linkage service icon
 					self.StopLinkageServiceTimer()
-					return
+					#return
 
 				if ( time.time( ) - self.mOnTimeDelay ) < 1.5 :
 					LOG_TRACE( '------blocking Time back key' )
@@ -1248,7 +1248,12 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'Force hide linkage service' )
 			self.setProperty( 'HasLinkageService', 'False' )
 			return
-				
+
+		chList = self.mDataCache.Channel_GetList( )
+		if not chList or len( chList ) < 1 :
+			LOG_TRACE( 'Delete all or not channel' )
+			return
+
 		status = self.mDataCache.Player_GetStatus( )
 
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -1271,13 +1276,13 @@ class NullWindow( BaseWindow ) :
 		linkageChannelList = self.mCommander.EPGEvent_GetLinkageChannel( )
 		#self.mSid, self.mTsid, self.mOnid, self.mEventId, self.mChannelName
 
-		if linkageChannelList==None or len ( linkageChannelList ) <= 0 :
+		if linkageChannelList == None or len( linkageChannelList ) <= 0 :
 			LOG_WARN( "Has no linkage channel")
 			return
 
 		LOG_TRACE('--------------- Linkage Channel List ----------------------')
 		for linkageChannel in linkageChannelList :
-			linkageChannel.printdebug( )
+			#linkageChannel.printdebug( )
 			channelNameList.append( linkageChannel.mChannelName )
 
 		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
