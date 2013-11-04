@@ -122,7 +122,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'EPG Setting' ),
 		MR_LANG( 'HDD Format' ),
-		MR_LANG( 'STB Reset' ),
+		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Miscellaneous' ) ]
 
 		self.mGroupItems = []
@@ -139,7 +139,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
 		MR_LANG( 'Delete everything off your hard drive' ),
-		MR_LANG( 'Restore your system' ),
+		MR_LANG( 'Restore your STB to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
 		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
@@ -450,7 +450,7 @@ class Configure( SettingWindow ) :
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a factory reset?' ), MR_LANG( 'All settings will be restored to factory default' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a system reset?' ), MR_LANG( 'All channels and configuration settings%s including antenna will be lost' ) % NEW_LINE )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -483,18 +483,18 @@ class Configure( SettingWindow ) :
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' ) % NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the system reset' ) % NEW_LINE )
 	 			dialog.doModal( )
 				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a xbmc reset?' ), MR_LANG( 'All addons and xbmc settings will be restored%s to factory default' ) % NEW_LINE )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a XBMC reset?' ), MR_LANG( 'All your XBMC addons and userdata will be lost' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the xbmc reset' ) % NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the XBMC reset' ) % NEW_LINE )
 	 			dialog.doModal( )
 	 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( ElisEnum.E_ENGLISH )
 	 			os.system( 'touch /config/resetXBMC' )
@@ -879,8 +879,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to first installation after restoring system to the factory default' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Start xbmc Reset'), '', MR_LANG( 'Delete all addons and xbmc settings data' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'System Restore'), '', MR_LANG( 'Reset all settings and data to factory default (excluding XBMC)' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'XBMC Restore'), '', MR_LANG( 'Delete all your XBMC addons and settings' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
