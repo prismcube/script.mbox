@@ -481,12 +481,21 @@ class Configure( SettingWindow ) :
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' )% NEW_LINE )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the factory reset' ) % NEW_LINE )
 	 			dialog.doModal( )
 				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
-			print 'dhkim test delete .xbmc data'
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a xbmc reset?' ), MR_LANG( 'All addons and xbmc settings will be restored%s to factory default' ) % NEW_LINE )
+			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				os.system( 'touch /config/resetXBMC' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the xbmc reset' ) % NEW_LINE )
+	 			dialog.doModal( )
+	 			self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :
