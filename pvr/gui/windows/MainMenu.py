@@ -7,6 +7,7 @@ MAIN_GROUP_ID					= E_MAIN_MENU_BASE_ID + 9100
 LIST_ID_FAV_ADDON				= E_MAIN_MENU_BASE_ID + 9050
 LABEL_ID_SUB_DESCRIPTION		= E_MAIN_MENU_BASE_ID + 100
 BUTTON_ID_FAVORITE_EXTRA		= E_MAIN_MENU_BASE_ID + 101
+BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 102
 
 BUTTON_ID_INSTALLATION			= E_MAIN_MENU_BASE_ID + 90100
 BUTTON_ID_ARCHIVE				= E_MAIN_MENU_BASE_ID + 90200
@@ -201,6 +202,31 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_EDIT :
 			self.GoToEditChannelList( )
+
+		elif aControlId == BUTTON_ID_POWER :
+			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+			if isDownload :
+				msg = MR_LANG( 'Try again after completing firmware update' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+				return
+
+			context = []
+			context.append( ContextItem( 'Restart XBMC', 0 ) )
+			context.append( ContextItem( 'Power Off', 1 ) )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+			dialog.doModal( )
+			contextAction = dialog.GetSelectedAction( )
+
+			if contextAction == 0 :
+				pvr.ElisMgr.GetInstance().Shutdown( )
+				xbmc.executebuiltin( 'RestartApp' )
+			elif contextAction == 1 :
+				self.mDataCache.System_Shutdown( )
+
 
 		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )

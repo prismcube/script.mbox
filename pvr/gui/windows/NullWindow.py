@@ -82,26 +82,8 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			unpackPath = self.mDataCache.USB_GetMountPath( )
-			if unpackPath :
-				self.mDataCache.SetUSBAttached( True )
-
-			if E_V1_1_UPDATE_NOTIFY :
-				thread = threading.Timer( 5, self.FirmwareNotify )
-				thread.start( )
-
-			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-				return
-			else :
-				self.mCommander.AppHBBTV_Ready( 1 )
-				self.mHBBTVReady = True
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-				#labelMode = GetStatusModeLabel( status.mMode )
-				#thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
-				#thread.start( )
-				return
+			self.MboxFirstProcess( )
+			return
 
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
@@ -152,6 +134,61 @@ class NullWindow( BaseWindow ) :
 		lblTest  = '%02d:%s'% ( (lastTime - startTime)/3600, time.strftime('%M:%S', time.gmtime(lastTime - startTime) ) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 		"""
+
+	def MboxFirstProcess( self ) :
+		unpackPath = self.mDataCache.USB_GetMountPath( )
+		if unpackPath :
+			self.mDataCache.SetUSBAttached( True )
+
+		if E_V1_1_UPDATE_NOTIFY :
+			thread = threading.Timer( 5, self.FirmwareNotify )
+			thread.start( )
+
+		if self.XBMCFirstProcess( ) :
+			return
+
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+			return
+		else :
+			self.mCommander.AppHBBTV_Ready( 1 )
+			self.mHBBTVReady = True
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+			return
+
+
+	def XBMCFirstProcess( self ) :
+		xbmc.executebuiltin( 'Settings.SetMboxOpen' )
+		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
+			databaseName = None
+			try :
+				inputFile = open( '/mtmp/XbmcDbBroken', 'r' )
+				inputline = inputFile.readlines( )
+				inputFile.close( )
+				if inputline :
+					for line in inputline :
+						databaseName = line.strip( )
+						break
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
+				return False
+
+			if databaseName :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Corrupted Database' ), MR_LANG( 'Do you want to repair database? (%s)' ) % databaseName )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					userDatabasePath = pvr.Platform.GetPlatform( ).GetUserDataDir( )
+					userDatabasePath = userDatabasePath + 'Database/'
+					databaseName = userDatabasePath + databaseName + '.db'
+					os.system( 'rm %s' % databaseName )
+					os.system( 'rm %s' % '/mtmp/XbmcDbBroken' )
+					pvr.ElisMgr.GetInstance( ).Shutdown( )
+					xbmc.executebuiltin( 'RestartApp' )
+					return True
+
+		return False
 
 
 	def onAction( self, aAction ) :

@@ -129,7 +129,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.mDataCache.SetMediaCenter( False )
 		else :
 			os.system( 'touch /mtmp/isrunning' )
-			xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 
 
 	def LoadTimeShiftControl( self ) :
