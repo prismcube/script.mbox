@@ -119,6 +119,11 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 
+	def SetMaxChannelNumber( self, aMaxChannelNum = E_INPUT_MAX ) :
+		if aMaxChannelNum > E_INPUT_MAX :
+			self.mMaxChannelNum = aMaxChannelNum
+
+
 	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX, aZappingMode = 0 ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
