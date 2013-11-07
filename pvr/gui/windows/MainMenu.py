@@ -213,8 +213,8 @@ class MainMenu( BaseWindow ) :
 				return
 
 			context = []
-			context.append( ContextItem( 'Restart XBMC', 0 ) )
-			context.append( ContextItem( 'Power Off', 1 ) )
+			context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
+			context.append( ContextItem( MR_LANG( 'Power Off' ), 1 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
