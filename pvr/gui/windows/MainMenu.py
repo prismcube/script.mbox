@@ -313,7 +313,7 @@ class MainMenu( BaseWindow ) :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorites in a convenient way' ) )
 
 		elif aControlId == BUTTON_ID_POWER :
-			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Restart XBMC or power off STB' ) )
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Restart XBMC or turn your STB off' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display a list of your TV/radio channels' ) )
