@@ -318,13 +318,21 @@ class ChannelListWindow( BaseWindow ) :
 			elif self.mFocusId == E_CONTROL_ID_BUTTON_MAINMENU :
 				self.setFocusId( E_CONTROL_ID_BUTTON_SORTING )
 
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_SORTING :
+				mSort = self.mUserMode.mSortingMode
+				if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+					mSort = ElisEnum.E_SORT_BY_NUMBER
+					LOG_TRACE( 'fixed sort by number in Favorite Group' )
+
+				lblSort = EnumToString( 'sort', mSort )
+				lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, lblButtonSort )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_SCROLLBAR_CHANNEL or self.mFocusId == E_CONTROL_ID_SCROLLBAR_SUBMENU :
 				return
 			self.ShowContextMenu( )
-
 
 		elif actionId == Action.ACTION_STOP :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -405,6 +413,14 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif aControlId == E_CONTROL_ID_BUTTON_SORTING :
+			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				LOG_TRACE( 'can not sort in Favorite Group' )
+
+				lblSort = EnumToString( 'sort', ElisEnum.E_SORT_BY_NUMBER )
+				label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+				return
+
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True )
 
 
@@ -1031,6 +1047,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aAction == E_SLIDE_ACTION_MAIN:
 			testlistItems = []
+			mSort = self.mUserMode.mSortingMode
 
 			if aMenuIndex == E_SLIDE_MENU_ALLCHANNEL :
 				testlistItems.append( xbmcgui.ListItem( '' ) )
@@ -1057,6 +1074,13 @@ class ChannelListWindow( BaseWindow ) :
 						testlistItems.append( xbmcgui.ListItem( itemClass.mGroupName ) )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
+
+				mSort = ElisEnum.E_SORT_BY_NUMBER
+				LOG_TRACE( 'fixed sort by number in Favorite Group' )
+
+			lblSort = EnumToString( 'sort', mSort )
+			lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, lblButtonSort )
 
 			if testlistItems != [] :
 				#submenu update
@@ -1104,7 +1128,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
-
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
@@ -1171,11 +1194,16 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = idxMain
 			self.mUserSlidePos.mSub  = idxSub
 
+			mSort = self.mUserMode.mSortingMode
+			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				mSort = ElisEnum.E_SORT_BY_NUMBER
+				LOG_TRACE( 'fixed sort by number in Favorite Group' )
+
 			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 			if zappingName :
 				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-			lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
+			lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', mSort )
 
 			self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
 			self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
@@ -1710,11 +1738,16 @@ class ChannelListWindow( BaseWindow ) :
 		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		#path tree, Mainmenu/Submenu
+		mSort = self.mUserMode.mSortingMode
+		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			mSort = ElisEnum.E_SORT_BY_NUMBER
+			LOG_TRACE( 'fixed sort by number in Favorite Group' )
+
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
+		lblSort = EnumToString( 'sort', mSort )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
 		lblButtonSort = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
 
