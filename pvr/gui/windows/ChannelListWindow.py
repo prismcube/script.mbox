@@ -2261,6 +2261,21 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 
+	def GetMoveNumber( self, aOldNumber = '' ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		dialog.SetDialogProperty( MR_LANG( 'Enter Move Number' ), aOldNumber, 5, False )
+		dialog.doModal( )
+		ret = 0
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			tempval = dialog.GetString( )
+			if len( tempval ) < 1 or int( tempval ) > 99999 :
+				ret = 0
+			else :
+				ret = int( tempval )
+
+		return ret
+
+
 	def SetMoveMode( self, aMode, aMove = None ) :
 		if aMode == FLAG_OPT_MOVE :
 			self.OpenBusyDialog( )
@@ -2326,8 +2341,6 @@ class ChannelListWindow( BaseWindow ) :
 		elif aMode == FLAG_OPT_MOVE_OK :
 			self.OpenBusyDialog( )
 			try :
-				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
-
 				idxFirst = self.mMarkList[0]
 
 				makeNumber = idxFirst + 1
@@ -2352,8 +2365,16 @@ class ChannelListWindow( BaseWindow ) :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
 						favType = self.GetServiceTypeByFavoriteGroup( groupName )
+						if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+							oldNumber = '%s'% moveList[0].mPresentationNumber
+							makeFavidx = self.GetMoveNumber( oldNumber )
+							LOG_TRACE( '------------------fastScan move Number[%s]'% makeFavidx )
+							if not makeFavidx :
+								LOG_TRACE( '--------input fail' )
+								self.CloseBusyDialog( )
+								return
 						isMoved = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, favType, moveList )
-						LOG_TRACE( '==========group========[%s] type[%s]'% ( groupName, favType ) )
+						LOG_TRACE( '==========group[%s] type[%s]'% ( groupName, favType ) )
 				else :
 					isMoved = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
 
@@ -2362,6 +2383,8 @@ class ChannelListWindow( BaseWindow ) :
 				if isMoved :
 					ret = self.mDataCache.Channel_Save( )
 					#LOG_TRACE( 'save[%s]'% ret )
+
+				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
 				self.mMarkList = []
 				self.mMoveList = []
