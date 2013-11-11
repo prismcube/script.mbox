@@ -54,7 +54,6 @@ WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
 WIN_ID_TIMER_WINDOW					= 30
 WIN_ID_INFO_PLATE					= 31
-#WIN_ID_FAVORITE_ADDONS				= 32
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
@@ -384,10 +383,6 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
-				"""
-				from pvr.gui.windows.FavoriteAddons import FavoriteAddons
-				self.mWindows[WIN_ID_FAVORITE_ADDONS]=FavoriteAddons( 'FavoriteAddons.xml', self.mScriptDir )
-				"""
 				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 				#self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGSearchWindow.xml', self.mScriptDir  )
