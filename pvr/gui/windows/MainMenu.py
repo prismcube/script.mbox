@@ -4,7 +4,6 @@ import xbmcgui
 E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 MAIN_GROUP_ID					= E_MAIN_MENU_BASE_ID + 9100
-LIST_ID_FAV_ADDON				= E_MAIN_MENU_BASE_ID + 9050
 LABEL_ID_SUB_DESCRIPTION		= E_MAIN_MENU_BASE_ID + 100
 BUTTON_ID_FAVORITE_EXTRA		= E_MAIN_MENU_BASE_ID + 101
 BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 102
@@ -56,7 +55,6 @@ else:
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		#self.mCtrlFavAddonList = None
 		
 
 	def onInit( self ) :
@@ -214,7 +212,9 @@ class MainMenu( BaseWindow ) :
 
 			context = []
 			context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
-			context.append( ContextItem( MR_LANG( 'Power Off' ), 1 ) )
+			#context.append( ContextItem( MR_LANG( 'Power Off' ), 1 ) )
+			context.append( ContextItem( MR_LANG( 'Active stand by' ), 1 ) )
+			context.append( ContextItem( MR_LANG( 'Deep stand by' ), 2 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -225,8 +225,11 @@ class MainMenu( BaseWindow ) :
 				pvr.ElisMgr.GetInstance().Shutdown( )
 				xbmc.executebuiltin( 'RestartApp' )
 			elif contextAction == 1 :
-				self.mDataCache.System_Shutdown( )
-
+				self.mCommander.System_StandbyMode( 1 )
+			elif contextAction == 2 :
+				self.mCommander.System_StandbyMode( 0 )
+			#elif contextAction == 1 :
+				#self.mDataCache.System_Shutdown( )
 
 		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
@@ -283,16 +286,8 @@ class MainMenu( BaseWindow ) :
 			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
 				
-
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
-
-		elif aControlId == LIST_ID_FAV_ADDON :
-			position = -1
-			position = self.mCtrlFavAddonList.getSelectedPosition( )
-			if position != -1 :
-				self.SetMediaCenter( )
-				XBMC_RunAddon( self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
 
 		elif aControlId == BUTTON_ID_HELP :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HELP )
@@ -323,26 +318,6 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
-
-
-	def GetFavAddons( self ) :
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			currentSkinName = XBMC_GetCurrentSkinName( )
-			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
-				favoriteList = XBMC_GetFavAddons( )
-				LOG_TRACE( 'lael98 #1 favoriteList=%s' %favoriteList )
-				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
-				self.mCtrlFavAddonList.reset( )
-				LOG_TRACE( 'lael98' )
-				if len( favoriteList ) > 0 :
-					self.mFavAddonsList = []
-					LOG_TRACE( 'lael98' )
-					for i in range( len( favoriteList ) ) :
-						LOG_TRACE( 'lael98 name=%s' %xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )					
-						item = xbmcgui.ListItem(  xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )
-						item.setProperty( 'AddonId', favoriteList[i] )
-						self.mFavAddonsList.append( item )
-					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
 
 
 	def SetVisibleRss( self ) :
