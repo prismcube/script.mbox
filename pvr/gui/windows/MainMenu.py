@@ -212,9 +212,8 @@ class MainMenu( BaseWindow ) :
 
 			context = []
 			context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
-			#context.append( ContextItem( MR_LANG( 'Power Off' ), 1 ) )
-			context.append( ContextItem( MR_LANG( 'Active stand by' ), 1 ) )
-			context.append( ContextItem( MR_LANG( 'Deep stand by' ), 2 ) )
+			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
+			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -228,8 +227,6 @@ class MainMenu( BaseWindow ) :
 				self.mCommander.System_StandbyMode( 1 )
 			elif contextAction == 2 :
 				self.mCommander.System_StandbyMode( 0 )
-			#elif contextAction == 1 :
-				#self.mDataCache.System_Shutdown( )
 
 		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
