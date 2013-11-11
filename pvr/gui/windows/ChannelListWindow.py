@@ -2350,9 +2350,9 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
-						favType = self.GetServiceTypeByFavoriteGroup( aGroupName )
+						favType = self.GetServiceTypeByFavoriteGroup( groupName )
 						isMoved = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, favType, moveList )
-						LOG_TRACE( '==========group========[%s]'% groupName )
+						LOG_TRACE( '==========group========[%s] type[%s]'% ( groupName, favType ) )
 				else :
 					isMoved = self.mDataCache.Channel_Move( self.mUserMode.mServiceType, makeNumber, moveList )
 
