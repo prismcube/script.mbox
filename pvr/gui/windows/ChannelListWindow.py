@@ -1055,10 +1055,11 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMenuIndex == E_SLIDE_MENU_FAVORITE :
 				if self.mListFavorite :
 					for itemClass in self.mListFavorite :
-						lblGroup = '%s'% itemClass.mGroupName
+						listItem = xbmcgui.ListItem( '%s'% itemClass.mGroupName )
 						if itemClass.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
-							lblGroup = '%s%s%s'% ( E_TAG_COLOR_BLUE, itemClass.mGroupName, E_TAG_COLOR_END )
-						testlistItems.append( xbmcgui.ListItem( lblGroup ) )
+							listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+
+						testlistItems.append( listItem )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
@@ -1704,11 +1705,11 @@ class ChannelListWindow( BaseWindow ) :
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			if self.mListFavorite :
 				for item in self.mListFavorite :
-					lblGroup = '%s'% item.mGroupName
+					listItem = xbmcgui.ListItem( '%s'% item.mGroupName )
 					if item.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
-						lblGroup = '%s%s%s'% ( E_TAG_COLOR_BLUE, item.mGroupName, E_TAG_COLOR_END )
+						listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
 
-					testlistItems.append( xbmcgui.ListItem( lblGroup ) )
+					testlistItems.append( listItem )
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
 
@@ -2988,7 +2989,8 @@ class ChannelListWindow( BaseWindow ) :
 		if aMode == FLAG_OPT_LIST :
 			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+				if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+					context.append( ContextItem( MR_LANG( 'Move' ), CONTEXT_ACTION_MOVE ) )
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 				if self.mFavoriteGroupList :
