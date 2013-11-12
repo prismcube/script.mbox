@@ -2308,9 +2308,13 @@ class DataCacheMgr( object ) :
 		pause= 0	#off
 		if aIcon :
 			status = self.Player_GetStatus( )
-			if status.mSpeed == 0 :
+			if status.mMode == ElisEnum.E_MODE_LIVE :
 				play = 0
-				pause= 1
+				pause= 0
+			else :
+				if status.mSpeed == 0 :
+					play = 0
+					pause= 1
 		else :
 			play = 0
 			pause= 0

@@ -1484,14 +1484,19 @@ class TimeShiftPlate( BaseWindow ) :
 		repeatPending = 0
 		while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
+				#LOG_TRACE( '-------------pending' )
 				repeatPending += 1
 				if repeatPending > E_PENDING_REPEAT_LIMIT :
+					self.mDataCache.Frontdisplay_PlayPause( )
+					LOG_TRACE( '-------------E_PENDING_REPEAT_LIMIT' )
 					break
 
 				waitTime = 0
 				self.OpenBusyDialog( )
 				while waitTime < 5 :
 					if not self.mIsTimeshiftPending :
+						self.mDataCache.Frontdisplay_PlayPause( )
+						LOG_TRACE( '-------------E_PENDING_Release, play normal' )
 						break
 					time.sleep( 1 )
 					waitTime += 1

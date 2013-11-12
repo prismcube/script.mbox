@@ -351,6 +351,7 @@ class NullWindow( BaseWindow ) :
 
 				#buyer issue, hide
 				elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					self.mDataCache.Frontdisplay_PlayPause( False )
 					labelMode = MR_LANG( 'LIVE' )
 					thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
 					thread.start( )
