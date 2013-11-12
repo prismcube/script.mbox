@@ -2261,9 +2261,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 
-	def GetMoveNumber( self, aOldNumber = '' ) :
+	def GetMoveNumber( self, aMoveNumber = '' ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter Move Number' ), aOldNumber, 5, False )
+		dialog.SetDialogProperty( MR_LANG( 'Enter Move Number' ), aMoveNumber, 5, False )
 		dialog.doModal( )
 		ret = 0
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -2366,9 +2366,16 @@ class ChannelListWindow( BaseWindow ) :
 					if groupName :
 						favType = self.GetServiceTypeByFavoriteGroup( groupName )
 						if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
-							oldNumber = '%s'% moveList[0].mPresentationNumber
-							makeFavidx = self.GetMoveNumber( oldNumber )
-							LOG_TRACE( '------------------fastScan move Number[%s]'% makeFavidx )
+							moveNum = '%s'% moveList[0].mPresentationNumber
+							if idxFirst > 0 :
+								#iChannel = self.mDataCache.Channel_GetByNumber( self.mNewChannelList[idxFirst], True )
+								iChannel = self.mChannelListHash.get( self.mNewChannelList[idxFirst - 1], None )
+								if iChannel :
+									moveNum = '%s'% ( iChannel.mPresentationNumber + 1 )
+							else :
+								moveNum = '1'
+							makeFavidx = self.GetMoveNumber( moveNum )
+							LOG_TRACE( '------------------fastScan move inputNum[%s]'% makeFavidx )
 							if not makeFavidx :
 								LOG_TRACE( '--------input fail' )
 								self.CloseBusyDialog( )
