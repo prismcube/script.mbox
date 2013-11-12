@@ -142,12 +142,16 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def LoadNoSignalState( self ) :
-		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
+			self.setProperty( 'Signal', 'True' )
+		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 			self.setProperty( 'Signal', 'Scramble' )
 		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 			self.setProperty( 'Signal', 'False' )
+		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
+			self.setProperty( 'Signal', 'NoService' )
 		else :
-			self.setProperty( 'Signal', 'True' )
+			LOG_ERR( 'LoadNoSignalState : Unknown channel status' )
 
 
 	def CheckLanguage( self ) :
