@@ -829,7 +829,7 @@
 	<string id="3357">You can only have 1 satellite for Simple LNB</string>
 	<string id="3358">No configured satellite available</string>
 	<string id="3359">Delete Satellite</string>
-	<string id="3360">Press the Next button to setup satellites</string>
+	<string id="3360">Press Next button to setup satellites</string>
 	<string id="3361">Go to the Channel Search page</string>
 	<string id="3362">Press OK button to setup %s</string>
 	<string id="3363">Add a new satellite to your satellite list</string>
