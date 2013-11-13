@@ -150,7 +150,7 @@ class GlobalEvent( object ) :
 
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'NoService' )
-				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
+				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )

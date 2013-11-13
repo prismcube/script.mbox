@@ -93,11 +93,9 @@ class NullWindow( BaseWindow ) :
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL or \
-				self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
 					self.mCommander.AppHBBTV_Ready( 0 )
 					self.mHBBTVReady = False
-			
 				elif self.mHBBTVReady == False :
 					LOG_TRACE('----------HBB Tv Ready')
 					self.mCommander.AppHBBTV_Ready( 1 )
@@ -437,9 +435,10 @@ class NullWindow( BaseWindow ) :
 				return
 
 			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode != ElisEnum.E_MODE_PVR and \
-			   self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				return -1
+			if status.mMode != ElisEnum.E_MODE_PVR :
+				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL or \
+			       self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
+					return -1
 
 			if actionId == Action.ACTION_MOVE_RIGHT and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
@@ -1021,6 +1020,9 @@ class NullWindow( BaseWindow ) :
 				msg = MR_LANG( 'No Signal' )
 				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 					msg = MR_LANG( 'Scrambled' )
+				elif status == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
+					msg = MR_LANG( 'No Service' )
+				
 
 		elif aAction == Action.ACTION_MBOX_TVRADIO :
 			head = MR_LANG( 'Error' )

@@ -142,8 +142,8 @@ class SingleWindow( object ) :
 	def setFocusId( self, aControlId ) :
 		self.mRootWindow.setFocusId( aControlId )	
 
-	def getFocusId( self  ) :
-		return self.mRootWindow.getFocusId(  )	
+	def getFocusId( self ) :
+		return self.mRootWindow.getFocusId( )	
 
 	def addControl( self, aControl ) :
 		return self.mRootWindow.addControl( aControl )
@@ -980,9 +980,6 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingPip', 'False' )
 				for i in range( E_CTRL_BTN_INFO_MAX ) :
 					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
-
-			elif aWindowId == WinMgr.WIN_ID_FAVORITES * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'DafultBackgroundImage', 'True' )
 
 			else :
 				self.setProperty( 'SettingBackground', 'False' )
