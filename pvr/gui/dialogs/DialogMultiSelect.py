@@ -3,11 +3,13 @@ import time
 
 E_MODE_DEFAULT_LIST = 0
 E_MODE_CHANNEL_LIST = 1
+E_MODE_FAVORITE_GROUP = 2
 
 E_SELECT_ONLY  = 0
 E_SELECT_MULTI = 1
 
 E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3950
+E_CONTROL_ID_LIST2 = E_BASE_WINDOW_ID + 3960
 
 DIALOG_BUTTON_CLOSE_ID = 3901
 DIALOG_HEADER_LABEL_ID = 3902
@@ -27,22 +29,31 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mIsMulti = E_SELECT_MULTI
 		self.mPreviousBlocking = False
 		self.mAsyncTimer = None
+		self.mDefaultFocus = 0
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
+		self.mShowListID = E_CONTROL_ID_LIST
+
+		value  = E_TAG_FALSE
+		if self.mMode == E_MODE_FAVORITE_GROUP :
+			value  = E_TAG_TRUE
+			self.mShowListID = E_CONTROL_ID_LIST2
+
+		self.setProperty( 'iFavGroup', value )
 
 		self.mMarkList = []
 		self.mLastSelected = -1
-		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
+		self.mCtrlList = self.getControl( self.mShowListID )
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
 
 		self.InitList( )
 		self.mEventBus.Register( self )
-		self.SetFocusList( E_CONTROL_ID_LIST )
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
+		self.SetFocusList( self.mShowListID )
 		self.RestartAsyncBlockTimer( )
 
 
@@ -58,12 +69,21 @@ class DialogMultiSelect( BaseDialog ) :
 				return
 
 			self.Close( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
+		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			self.GetFocusId( )
+			if self.mMode == E_MODE_FAVORITE_GROUP and self.mFocusId == E_CONTROL_ID_LIST :
+				self.SetFocusList( self.mShowListID )
+
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			self.GetFocusId( )
+			if self.mMode == E_MODE_FAVORITE_GROUP and self.mFocusId == E_CONTROL_ID_LIST :
+				self.SetFocusList( self.mShowListID )
+
 			idx = self.mCtrlList.getSelectedPosition( )
 			self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
 
@@ -86,7 +106,7 @@ class DialogMultiSelect( BaseDialog ) :
 			self.mMarkList = []
 			self.Close( )
 
-		elif aControlId == E_CONTROL_ID_LIST :
+		elif aControlId == self.mShowListID :
 			self.SetMarkupGUI( )
 			if self.mIsMulti == E_SELECT_ONLY :
 				self.Close( )
@@ -124,12 +144,24 @@ class DialogMultiSelect( BaseDialog ) :
 
 		if self.mMode == E_MODE_CHANNEL_LIST :
 			self.ChannelItems( )
+		elif self.mMode == E_MODE_FAVORITE_GROUP :
+			self.GroupItems( )
 		else :
 			self.ListItems( )
 
 		self.mCtrlList.addItems( self.mListItems )
+		self.mCtrlList.selectItem( self.mDefaultFocus )
 		idx = self.mCtrlList.getSelectedPosition( )
 		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
+
+
+	def GroupItems( self ) :
+		for item in self.mDefaultList :
+			listItem = xbmcgui.ListItem( '%s'% item.mGroupName )
+			if item.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
+				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+
+			self.mListItems.append( listItem )
 
 
 	def ListItems( self ) :
@@ -210,11 +242,12 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mPreviousBlocking = aPreviousBlocking
 
 
-	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST, aIsMulti = E_SELECT_MULTI ) :
+	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST, aIsMulti = E_SELECT_MULTI, aDefaultFocus = 0 ) :
 		self.mTitle = aTitle
 		self.mDefaultList = aList
 		self.mMode = aMode
 		self.mIsMulti = aIsMulti
+		self.mDefaultFocus = aDefaultFocus
 
 
 	def GetSelectedList( self ) :

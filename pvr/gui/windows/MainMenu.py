@@ -368,19 +368,31 @@ class MainMenu( BaseWindow ) :
 			dialog.doModal( )
 			return
 
-		favoriteList = [MR_LANG( 'All Channels' )]
+		#favoriteList = [MR_LANG( 'All Channels' )]
+		iFavGroup = ElisIFavoriteGroup( )
+		iFavGroup.mGroupName = MR_LANG( 'All Channels' )
+		iFavGroup.mServiceType = zappingmode.mServiceType
+		favoriteList = [ iFavGroup ]
 		for item in favoriteGroup :
-			favoriteList.append( item.mGroupName )
+			#favoriteList.append( item.mGroupName )
+			favoriteList.append( item )
 
 		currentIdx = 0
 		if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE :
 			favName = zappingmode.mFavoriteGroup.mGroupName
 			for idx in range( 1, len( favoriteList ) ) :
-				if favName == favoriteList[idx] :
+				if favName == favoriteList[idx].mGroupName :
 					currentIdx = idx
 					break
 
-		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite group' ), favoriteList, False, currentIdx )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+		dialog.SetPreviousBlocking( False )
+		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, 2, 0, currentIdx )
+		dialog.doModal( )
+
+		isSelect = dialog.GetSelectedList( )
+
+		#isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite group' ), favoriteList, False, currentIdx )
 		LOG_TRACE('---------------select[%s]'% isSelect )
 		if isSelect < 0 or isSelect == currentIdx :
 			LOG_TRACE( 'back, cancel or same' )
@@ -417,15 +429,19 @@ class MainMenu( BaseWindow ) :
 
 
 		#set change
-		self.mDataCache.Channel_Save( )
 		ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
 		if ret :
+			self.OpenBusyDialog( )
+			self.mDataCache.Channel_Save( )
+
 			#data cache re-load
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
 			self.mDataCache.SetChannelReloadStatus( True )
 			self.mDataCache.Channel_ResetOldChannelList( )
+
+			self.CloseBusyDialog( )
 
 			# channel tune, default 1'st
 			iChannelList = self.mDataCache.Channel_GetList( )
