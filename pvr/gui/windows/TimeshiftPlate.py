@@ -2168,7 +2168,10 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
 
-		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
+		asyncDelay = 0.5
+		if aStartOnLeft :
+			asyncDelay = 0
+		self.mAsyncShiftTimer = threading.Timer( asyncDelay, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
 
@@ -2185,10 +2188,12 @@ class TimeShiftPlate( BaseWindow ) :
 		try :
 			if self.mFlagUserMove :
 				if aStartOnLeft :
+					#LOG_TRACE( '--------------------------Player_JumpTo startOn Left move[%s] mode[%s]'% ( self.mAsyncMove, self.mMode ) )
 					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
 				else :
 					if self.mSpeed != 100 :
 						self.mDataCache.Player_Resume( )
+					#LOG_TRACE( '--------------------------Player_JumpToIFrame async Left move[%s] mode[%s]'% ( self.mAsyncMove, self.mMode ) )
 					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
 				#LOG_TRACE('2============aStartOnLeft[%s] accelator[%s] MoveSec[%s] userMove[%s] ret[%s]'% ( aStartOnLeft, self.mAccelator, self.mAsyncMove, ( self.mUserMoveTime / 10000 ), ret ) )
 				self.InitTimeShift( )
