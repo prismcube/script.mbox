@@ -615,10 +615,10 @@ Search for window name
 				</control>
 				<control type="rss">
 					<description>RSS feed</description>
-					<posx>135</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<height>30</height>
-					<width>1110</width>
+					<width>1155</width>
 					<font>font12</font>
 					<urlset>1</urlset>
 					<textcolor>blue</textcolor>
@@ -637,42 +637,12 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Favorite addons -->
+			<!-- power off -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>55r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200101">
-					<description>Favourites push button</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>45</width>
-					<height>45</height>
-					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-					<texturenofocus border="5">floor_button.png</texturenofocus>
-					<onleft>1200102</onleft>
-					<onright>1200102</onright>
-					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
-					<ondown>1209000</ondown>
-				</control>
-				<control type="image">
-					<description>Favourites Icon</description>
-					<posx>5</posx>
-					<posy>5</posy>
-					<width>35</width>
-					<height>35</height>
-					<aspectratio>keep</aspectratio>
-					<texture>icon_favourites.png</texture>
-				</control>
-			</control>
-
-			<!-- power off -->
-			<control type="group">
-				<posx>75</posx>
-				<posy>55r</posy>
-				<include>DefaultWindowOpenCloseAnimation</include>
-				<control type="button" id="1200102">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>45</width>
