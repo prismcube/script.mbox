@@ -52,7 +52,7 @@ CONTEXT_ADD_VIEW_TIMER			= 9
 MININUM_KEYWORD_SIZE			= 3
 
 E_USE_FIXED_INTERVAL			= False
-E_SEVEN_DAYS_EPG_TIME 			= 24 * 3600 * 7
+E_MAX_EPG_DAYS 			= 24 * 3600 * 14
 
 E_GRID_MAX_CACHE_SIZE			= 100
 
@@ -663,7 +663,7 @@ class EPGWindow( BaseWindow ) :
 	def LoadByChannel( self ) :
 	
 		gmtFrom = self.mDataCache.Datetime_GetGMTTime( )
-		gmtUntil = gmtFrom + E_SEVEN_DAYS_EPG_TIME
+		gmtUntil = gmtFrom + E_MAX_EPG_DAYS
 
 		LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 		LOG_ERR( 'START : localoffset=%d' %self.mLocalOffset )
@@ -671,7 +671,7 @@ class EPGWindow( BaseWindow ) :
 		LOG_ERR( 'START : %d : %d %d' % ( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
 		
 		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid, gmtFrom, gmtUntil, 256 )		
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid, gmtFrom, gmtUntil, 1000 )		
 			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid )
 
 		except Exception, ex :
@@ -2820,7 +2820,7 @@ class EPGWindow( BaseWindow ) :
 			self.mLock.release( )			
 			self.GridSetFocus( )
 		else :
-			if ( self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) < E_SEVEN_DAYS_EPG_TIME :
+			if ( self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT ) < E_MAX_EPG_DAYS :
 				self.mLock.acquire( )
 				self.mVisibleFocusCol = 0
 				self.mShowingOffset += self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
