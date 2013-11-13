@@ -6117,9 +6117,9 @@
 	<include name="DefaultSelectList">
 		<control type="list" id="1003960">
 			<posx>20</posx>
-			<posy>60</posy>
+			<posy>67</posy>
 			<width>580</width>
-			<height>521</height>
+			<height>506</height>
 			<onleft>3904</onleft>
 			<onright>1003961</onright>
 			<onup>1003960</onup>
@@ -6199,9 +6199,9 @@
 		</control>
 		<control type="scrollbar" id="1003961">
 			<posx>595</posx>
-			<posy>80</posy>
+			<posy>65</posy>
 			<width>25</width>
-			<height>521</height>
+			<height>510</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
@@ -6218,7 +6218,7 @@
 		</control>
 		<control type="list" id="1003950">
 			<posx>20</posx>
-			<posy>60</posy>
+			<posy>67</posy>
 			<width>570</width>
 			<height>521</height>
 			<onleft>3904</onleft>
@@ -6436,7 +6436,7 @@
 		</control>
 		<control type="scrollbar" id="1003951">
 			<posx>590</posx>
-			<posy>80</posy>
+			<posy>65</posy>
 			<width>25</width>
 			<height>521</height>
 			<include>DefaultWindowFade</include>
