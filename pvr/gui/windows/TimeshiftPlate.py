@@ -171,6 +171,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mIsPlay = FLAG_PLAY
 		self.mOldPlayTime = 0
 		self.mOldStartTime = 0
+		self.mIsLeftOnTimeshift = False
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -231,7 +232,12 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
-				self.RestartAsyncMove( )
+
+				if self.mLeftOnTimeshift :
+					self.StopAsyncMove( )
+					self.StartAsyncMoveByTime( True )
+				else :
+					self.RestartAsyncMove( )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -620,6 +626,8 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StartAsyncMoveByTime( True )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
+
+				self.mLeftOnTimeshift = True
 
 				self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
 				#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
@@ -2169,8 +2177,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		asyncDelay = 0.5
-		if aStartOnLeft :
-			asyncDelay = 0
+		#if aStartOnLeft :
+		#	asyncDelay = 0
 		self.mAsyncShiftTimer = threading.Timer( asyncDelay, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
@@ -2190,6 +2198,7 @@ class TimeShiftPlate( BaseWindow ) :
 				if aStartOnLeft :
 					#LOG_TRACE( '--------------------------Player_JumpTo startOn Left move[%s] mode[%s]'% ( self.mAsyncMove, self.mMode ) )
 					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
+					self.mLeftOnTimeshift = False
 				else :
 					if self.mSpeed != 100 :
 						self.mDataCache.Player_Resume( )
