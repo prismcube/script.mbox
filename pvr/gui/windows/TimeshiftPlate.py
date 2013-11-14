@@ -233,7 +233,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
 
-				if self.mLeftOnTimeshift :
+				if self.mIsLeftOnTimeshift :
 					self.StopAsyncMove( )
 					self.StartAsyncMoveByTime( True )
 				else :
@@ -627,7 +627,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
 
-				self.mLeftOnTimeshift = True
+				self.mIsLeftOnTimeshift = True
 
 				self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
 				#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
@@ -2175,11 +2175,7 @@ class TimeShiftPlate( BaseWindow ) :
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
-
-		asyncDelay = 0.5
-		#if aStartOnLeft :
-		#	asyncDelay = 0
-		self.mAsyncShiftTimer = threading.Timer( asyncDelay, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
+		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
 
@@ -2196,15 +2192,15 @@ class TimeShiftPlate( BaseWindow ) :
 		try :
 			if self.mFlagUserMove :
 				if aStartOnLeft :
-					#LOG_TRACE( '--------------------------Player_JumpTo startOn Left move[%s] mode[%s]'% ( self.mAsyncMove, self.mMode ) )
 					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
-					self.mLeftOnTimeshift = False
+					self.mIsLeftOnTimeshift = False
+
 				else :
 					if self.mSpeed != 100 :
 						self.mDataCache.Player_Resume( )
-					#LOG_TRACE( '--------------------------Player_JumpToIFrame async Left move[%s] mode[%s]'% ( self.mAsyncMove, self.mMode ) )
+
 					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
-				#LOG_TRACE('2============aStartOnLeft[%s] accelator[%s] MoveSec[%s] userMove[%s] ret[%s]'% ( aStartOnLeft, self.mAccelator, self.mAsyncMove, ( self.mUserMoveTime / 10000 ), ret ) )
+
 				self.InitTimeShift( )
 				self.mFlagUserMove = False
 				self.mAccelator = 0
