@@ -210,7 +210,7 @@ class MainMenu( BaseWindow ) :
 				return
 
 			context = []
-			#context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
+			context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
 			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
 			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
 
@@ -221,7 +221,10 @@ class MainMenu( BaseWindow ) :
 
 			if contextAction == 0 :
 				pvr.ElisMgr.GetInstance().Shutdown( )
-				xbmc.executebuiltin( 'RestartApp' )
+				#xbmc.executebuiltin( 'RestartApp' )
+				xbmc.executebuiltin( 'Settings.Save' )
+				os.system( 'sync' )
+				os.system( 'killall -9 xbmc.bin' )
 			elif contextAction == 1 :
 				self.mCommander.System_StandbyMode( 1 )
 			elif contextAction == 2 :

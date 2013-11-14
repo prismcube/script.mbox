@@ -142,18 +142,16 @@ class NullWindow( BaseWindow ) :
 			thread = threading.Timer( 5, self.FirmwareNotify )
 			thread.start( )
 
-		if self.XBMCFirstProcess( ) :
-			return
-
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-			return
+			
 		else :
 			self.mCommander.AppHBBTV_Ready( 1 )
 			self.mHBBTVReady = True
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			return
+			
+		self.XBMCFirstProcess( )
 
 
 	def XBMCFirstProcess( self ) :
@@ -170,7 +168,7 @@ class NullWindow( BaseWindow ) :
 						break
 			except Exception, e :
 				LOG_ERR( 'Error exception[%s]' % e )
-				return False
+				return
 
 			if databaseName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -185,8 +183,6 @@ class NullWindow( BaseWindow ) :
 					pvr.ElisMgr.GetInstance( ).Shutdown( )
 					xbmc.executebuiltin( 'RestartApp' )
 					return True
-
-		return False
 
 
 	def onAction( self, aAction ) :
