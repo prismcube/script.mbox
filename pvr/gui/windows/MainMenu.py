@@ -210,7 +210,7 @@ class MainMenu( BaseWindow ) :
 				return
 
 			context = []
-			context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
+			#context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
 			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
 			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
 
