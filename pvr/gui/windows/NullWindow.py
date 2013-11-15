@@ -150,8 +150,9 @@ class NullWindow( BaseWindow ) :
 			self.mHBBTVReady = True
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			
-		self.XBMCFirstProcess( )
+
+		thread = threading.Timer( 3, self.XBMCFirstProcess )
+		thread.start( )
 
 
 	def XBMCFirstProcess( self ) :
