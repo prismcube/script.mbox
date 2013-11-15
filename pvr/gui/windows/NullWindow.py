@@ -1316,19 +1316,38 @@ class NullWindow( BaseWindow ) :
 			LOG_WARN( "Has no linkage channel")
 			return
 
+		#runningTimer tp
+		runningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+		if runningTimerList :
+			for timer in runningTimerList :
+				LOG_TRACE( 'runningTimer ch[%s] eid[%s] tsid[%s] onid[%s] sid[%s]' %( timer.mChannelNo, timer.mName, timer.mTsid, timer.mOnid, timer.mSid ) )
+
 		LOG_TRACE('--------------- Linkage Channel List ----------------------')
 		for linkageChannel in linkageChannelList :
 			#linkageChannel.printdebug( )
-			channelNameList.append( linkageChannel.mChannelName )
+			LOG_TRACE( 'Linkage subChannel ch[%s] eid[%s] tsid[%s] onid[%s] sid[%s]' %( linkageChannel.mChannelName, linkageChannel.mEventId, linkageChannel.mTsid, linkageChannel.mOnid, linkageChannel.mSid ) )
 
-		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+			isAvailable = True
+			if runningTimerList :
+				isAvailable = False
+				for timer in runningTimerList :
+					iChannel = self.mDataCache.Channel_GetByAvailTransponder( timer.mServiceType, timer.mChannelNo, timer.mTsid, timer.mOnid, timer.mSid, linkageChannel.mTsid, linkageChannel.mOnid )
+					if iChannel :
+						isAvailable = True
+						LOG_TRACE( '-------------------------avail linkage ch[%s]'% linkageChannel.mChannelName )
+						break
 
-		if ret >= 0 :
-			linkageChannel = linkageChannelList[ ret ]
+			if isAvailable :
+				channelNameList.append( linkageChannel.mChannelName )
+
+		isSelect = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+
+		if isSelect >= 0 :
+			linkageChannel = linkageChannelList[ isSelect ]
 			if linkageChannel :
 				currentChannel = self.mDataCache.Channel_GetCurrent( )
-				LOG_TRACE( 'TUNE LinkageService %s, %s, %s, %s, %s, %s' %( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True) )
-				self.mCommander.Channel_SetCurrentLinkageChannel( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True)
+				ret = self.mCommander.Channel_SetCurrentLinkageChannel( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True)
+				LOG_TRACE( 'TUNE LinkageService ret[%s] %s, %s, %s, %s, %s, %s' %( ret, currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True) )
 
 
 

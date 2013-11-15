@@ -1303,6 +1303,17 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
+	def Channel_GetByAvailTransponder( self, aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB( )
+			channel = channelDB.Channel_GetByAvailTransponder( aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid )
+			channelDB.Close( )
+			return channel
+
+		return None
+
+
+	@DataLock
 	def Datetime_GetLocalOffset( self ) :
 		return self.mLocalOffset
 
