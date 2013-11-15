@@ -1139,7 +1139,7 @@ class DataCacheMgr( object ) :
 					ret = True
 
 		if ret == True : #Reset LinkageService
-			self.mHasLinkageService = False
+			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
@@ -1164,6 +1164,9 @@ class DataCacheMgr( object ) :
 			if cacheChannel :		
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
+
+		if ret == True : #Reset LinkageService
+			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
@@ -1306,7 +1309,9 @@ class DataCacheMgr( object ) :
 	def Channel_GetByAvailTransponder( self, aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
+			channelDB.SetListUse( 3 )
 			channel = channelDB.Channel_GetByAvailTransponder( aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid )
+			channelDB.SetListUse( False )
 			channelDB.Close( )
 			return channel
 

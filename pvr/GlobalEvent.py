@@ -688,9 +688,10 @@ class GlobalEvent( object ) :
 		epg = self.mDataCache.GetEpgeventCurrent( )
 		if epg :
 			#epg.printdebug()		
-			hasLinkageService = self.mDataCache.GetLinkageService(  )
+			#hasLinkageService = self.mDataCache.GetLinkageService(  )
 
-			if hasLinkageService !=  epg.mHasLinkageService : #if linkage service changed
+			#if hasLinkageService !=  epg.mHasLinkageService : #if linkage service changed
+			if epg.mHasLinkageService : #if linkage service changed
 				self.mDataCache.SetLinkageService( epg.mHasLinkageService )
 				LOG_TRACE('LAEL98 TEST')
 
