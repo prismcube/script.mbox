@@ -2328,7 +2328,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def GetMoveNumber( self, aMoveNumber = '' ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter Move Number' ), aMoveNumber, 5, False )
+		dialog.SetDialogProperty( MR_LANG( 'Enter a number to insert after' ), aMoveNumber, 5, False )
 		dialog.doModal( )
 		ret = 0
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
