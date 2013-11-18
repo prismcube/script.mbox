@@ -1682,7 +1682,7 @@ Search for window name
 						</content>
 					</control>
 
-					<!-- sub main -->
+					<!-- sub main (fav) -->
 					<control type="group" id="1309001">
 						<posx>-240</posx>
 						<posy>0</posy>
@@ -1710,10 +1710,19 @@ Search for window name
 									<width>230</width>
 									<height>41</height>
 								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>200</width>
+									<width>190</width>
 									<height>40</height>
 									<font>font12_title</font>
 									<textcolor>grey3</textcolor>
@@ -1739,14 +1748,24 @@ Search for window name
 									<texture border="0,2,0,2">MenuItemFO.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>200</width>
+									<width>190</width>
 									<height>40</height>
 									<font>font12_title</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
+									<shadowcolor>ff000000</shadowcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -1754,7 +1773,7 @@ Search for window name
 							</focusedlayout>
 						</control>
 
-						<!-- sub main 2 -->
+						<!-- sub main 2 (mode) -->
 						<control type="grouplist" id="1309002">
 							<posx>10</posx>
 							<posy>150</posy>

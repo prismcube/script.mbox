@@ -6115,9 +6115,110 @@
 	</include>
 
 	<include name="DefaultSelectList">
+		<control type="list" id="1003960">
+			<posx>20</posx>
+			<posy>67</posy>
+			<width>580</width>
+			<height>506</height>
+			<onleft>3904</onleft>
+			<onright>1003961</onright>
+			<onup>1003960</onup>
+			<ondown>1003960</ondown>
+			<pagecontrol>1003961</pagecontrol>
+			<scrolltime>200</scrolltime>
+			<focusposition>0</focusposition>
+			<movement>2</movement>
+			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
+			<visible>true</visible>
+			<itemlayout height="46" width="580">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>580</width>
+					<height>40</height>
+					<texture border="5">button-nofocus.png</texture>
+				</control>
+				<!-- is fastScan? -->
+				<control type="image">
+					<posx>540</posx>
+					<posy>12</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>IconFastScan.png</texture>
+					<visible>substring(ListItem.Property(iFastScan),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout height="46" width="580">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>580</width>
+					<height>40</height>
+					<texture border="5">button-nofocus.png</texture>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>580</width>
+					<height>40</height>
+					<texture border="5">button-focus2.png</texture>
+				</control>
+				<!-- is fastScan? -->
+				<control type="image">
+					<posx>540</posx>
+					<posy>12</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>IconFastScan.png</texture>
+					<visible>substring(ListItem.Property(iFastScan),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+			</focusedlayout>
+		</control>
+		<control type="scrollbar" id="1003961">
+			<posx>595</posx>
+			<posy>65</posy>
+			<width>25</width>
+			<height>510</height>
+			<include>DefaultWindowFade</include>
+			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+			<onleft>1003960</onleft>
+			<onright>1003960</onright>
+			<ondown></ondown>
+			<onup></onup>
+			<showonepage>false</showonepage>
+			<orientation>vertical</orientation>
+			<visible>substring(Window.Property(iFavGroup),true)</visible>
+		</control>
 		<control type="list" id="1003950">
 			<posx>20</posx>
-			<posy>60</posy>
+			<posy>67</posy>
 			<width>570</width>
 			<height>521</height>
 			<onleft>3904</onleft>
@@ -6335,7 +6436,7 @@
 		</control>
 		<control type="scrollbar" id="1003951">
 			<posx>590</posx>
-			<posy>80</posy>
+			<posy>65</posy>
 			<width>25</width>
 			<height>521</height>
 			<include>DefaultWindowFade</include>
@@ -6350,6 +6451,7 @@
 			<onup></onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
+			<visible>!Control.IsVisible(1003961)</visible>
 		</control>
 	</include>
 
