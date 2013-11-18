@@ -29,6 +29,10 @@ else:
 
 print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
+E_ENUM_OBJECT_REUSE_ZAPPING = 0
+E_ENUM_OBJECT_REUSE_ALLCHANNEL = 1
+E_ENUM_OBJECT_INSTANCE = 3
+
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB
 SUPPORT_TIMER_DATABASE   = gFlagUseDB
@@ -1005,9 +1009,9 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'Reload AllChannels' )
 
 			channelDB = ElisChannelDB( )
-			channelDB.SetListUse( True )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ALLCHANNEL )
 			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
-			channelDB.SetListUse( False )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			#return self.mAllChannelList
 
@@ -1313,9 +1317,22 @@ class DataCacheMgr( object ) :
 	def Channel_GetByAvailTransponder( self, aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			channelDB.SetListUse( 3 )
+			channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 			channel = channelDB.Channel_GetByAvailTransponder( aServiceType, aNumber, aTsid, aOnid, aSid, aSubTsid, aSubOnid )
-			channelDB.SetListUse( False )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
+			channelDB.Close( )
+			return channel
+
+		return None
+
+
+	@DataLock
+	def Channel_GetListByIDs( self, aServiceType, aTsid, aOnid, aSid, aLongitude = -1, aBand = -1, aSymbolRate = -1, aPolarization = -1 ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB( )
+			channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			channel = channelDB.Channel_GetListByIDs( aServiceType, aTsid, aOnid, aSid, self.mChannelListDBTable, aLongitude, aBand, aSymbolRate, aPolarization )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			return channel
 
@@ -2974,9 +2991,9 @@ class DataCacheMgr( object ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
-				channelDB.SetListUse( 3 )
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				channel = channelDB.Channel_GetNumber( aNumber )
-				channelDB.SetListUse( False )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
 
