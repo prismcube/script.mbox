@@ -197,6 +197,7 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventShutdown.getName( ) :
 			#LOG_TRACE('-----------shutdown[%s] blank[%s]'% ( aEvent.mType, self.mDataCache.Channel_GetInitialBlank( ) ) )
+			self.mDataCache.SetStanbyStatus( aEvent.mType )
 			if aEvent.mType == ElisEnum.E_STANDBY_POWER_ON :
 				thread = threading.Timer( 1, self.AsyncStandbyPowerON )
 				thread.start( )
@@ -569,13 +570,16 @@ class GlobalEvent( object ) :
 			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType.mServiceType, False )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetRadioScreen( )
 
-		self.mDataCache.Player_AVBlank( True )
-		self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
-		if WinMgr.GetInstance( ).GetLastWindowID( ) in PARENTLOCK_CHECKWINDOW :
-			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType, None, True )
-		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-		#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
+		self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
+		if self.mDataCache.GetStanbyStatus( ) == ElisEnum.E_STANDBY_POWER_ON :
+			self.mDataCache.Player_AVBlank( True )
+			self.CheckParentLock( E_PARENTLOCK_INIT, None, True )
+			#if WinMgr.GetInstance( ).GetLastWindowID( ) in PARENTLOCK_CHECKWINDOW :
+			#	self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
+			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+			#self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
+
 		LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
 

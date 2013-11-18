@@ -153,6 +153,7 @@ class DataCacheMgr( object ) :
 		self.mPlayingChannel					= False
 
 		self.mStandByClose						= False
+		self.mStandByStatus						= ElisEnum.E_STANDBY_POWER_ON
 		self.mSearchNewChannel					= False
 		self.mUSBAttatched						= False
 		self.mChangedByViewTimer				= False
@@ -1206,6 +1207,9 @@ class DataCacheMgr( object ) :
 			if cacheChannel :
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
+
+		if ret == True : #Reset LinkageService
+			self.SetLinkageService( False )
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
@@ -2631,6 +2635,14 @@ class DataCacheMgr( object ) :
 
 	def GetStanbyClosing( self ) :
 		return self.mStandByClose
+
+
+	def SetStanbyStatus( self, aFlag ) :
+		self.mStandByStatus = aFlag
+
+
+	def GetStanbyStatus( self ) :
+		return self.mStandByStatus
 
 
 	def SetDefaultByFactoryReset( self ) :
