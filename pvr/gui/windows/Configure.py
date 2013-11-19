@@ -139,7 +139,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Configure EPG grabber settings' ),
 		MR_LANG( 'Delete everything off your hard drive' ),
-		MR_LANG( 'Restore your STB to factory settings' ),
+		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
 		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
@@ -879,8 +879,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'System Restore'), '', MR_LANG( 'Reset all settings and data to factory default (excluding XBMC)' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'XBMC Restore'), '', MR_LANG( 'Delete all your XBMC addons and settings' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Reset System Configuration'), '', MR_LANG( 'Restore all settings and data to factory default (excluding XBMC)' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Reset XBMC Settings'), '', MR_LANG( 'Delete all your XBMC addons and settings' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
