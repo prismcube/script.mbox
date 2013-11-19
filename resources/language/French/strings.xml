@@ -199,7 +199,7 @@
 	<string id="2071">Désactiver</string>
 	<string id="2072">Langage secondaire des sous-titres </string>
 	<string id="2073">Malentendant</string>
-	<string id="2074">Veille prolongée</string>
+	<string id="2074">Veille profonde</string>
 	<string id="2075">Addr distant</string>
 	<string id="2076">Addr1</string>
 	<string id="2077">Addr2</string>
@@ -1216,8 +1216,8 @@
 	<string id="3744">Liste des minuteurs</string>
 	<string id="3745">Gérer les extentions XBMC</string>
 	<string id="3746">Réessayer après avoir stoppé les playback,%s enregistrement et timeshift</string>
-	<string id="3747"></string>
-	<string id="3748"></string>
+	<string id="3747">Veille active</string>
+	<string id="3748">Redémarrez XBMC ou basculez votre appareil en mode veille</string>
 	<string id="3749">Supprimer, renommer et verrouiller vos chaînes</string>
 	<string id="3750">Obtenir un accès rapide à vos chaînes favorites</string>
 	<string id="3751">Groupe favoris</string>
