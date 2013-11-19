@@ -135,7 +135,7 @@ class FirstInstallation( FTIWindow ) :
 					dialog = xbmcgui.Dialog( )
 					currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
 					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
-					if ret >= 0 :
+					if ret >= 0 and ret != currentindex :
 						if not self.mPlatform.IsPrismCube( ) :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
