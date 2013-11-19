@@ -1303,3 +1303,37 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
+def GetXBMCLanguageToProp( aLanguage ) :
+	if aLanguage == 'English' or aLanguage == 'English (US)' :
+		return ElisEnum.E_ENGLISH
+
+	elif aLanguage == 'German':
+		return ElisEnum.E_DEUTSCH
+
+	elif aLanguage == 'French':
+		return ElisEnum.E_FRENCH
+
+	elif aLanguage == 'Italian':
+		return ElisEnum.E_ITALIAN
+
+	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+		return ElisEnum.E_SPANISH
+
+	elif aLanguage == 'Czech':
+		return ElisEnum.E_CZECH
+
+	elif aLanguage == 'Dutch':
+		return ElisEnum.E_DUTCH
+
+	elif aLanguage == 'Polish':
+		return ElisEnum.E_POLISH
+
+	elif aLanguage == 'Turkish':
+		return ElisEnum.E_TURKISH
+
+	elif aLanguage == 'Russian':
+		return ElisEnum.E_RUSSIAN
+
+	else :
+		return ElisEnum.E_ENGLISH
+
