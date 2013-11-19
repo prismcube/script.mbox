@@ -922,7 +922,7 @@
 	<string id="3450"></string>
 	<string id="3451"></string>
 	<string id="3452">Now restoring</string>
-	<string id="3453"></string>
+	<string id="3453">Your system must be restarted%s in order to complete the factory reset</string>
 	<string id="3454">Restart Required</string>
 	<string id="3455"></string>
 	<string id="3456"></string>
