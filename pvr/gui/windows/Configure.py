@@ -1539,15 +1539,21 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 			return -1
 
-		favoriteList = []
-		favoriteList.append( MR_LANG( 'All' ) )
+		iFavGroup = ElisIFavoriteGroup( )
+		iFavGroup.mGroupName = MR_LANG( 'All' )
+		iFavGroup.mServiceType = zappingmode.mServiceType
+		favoriteList = [ iFavGroup ]
 		for item in favoriteGroup :
-			favoriteList.append( item.mGroupName )
+			favoriteList.append( item )
 
-		dialog = xbmcgui.Dialog( )
-		ret = dialog.select( MR_LANG( 'Select Favorite Group' ), favoriteList, False, self.mEpgFavGroup + 1 )
-		if ret >= 0 :
-			return ret
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+		dialog.SetPreviousBlocking( False )
+		dialog.SetDefaultProperty( MR_LANG( 'Select Favorite Group' ), favoriteList, E_MODE_FAVORITE_GROUP, E_SELECT_ONLY, self.mEpgFavGroup + 1 )
+		dialog.doModal( )
+
+		isSelect = dialog.GetSelectedList( )
+		if isSelect >= 0 :
+			return isSelect
 		else :
 			return -1
 

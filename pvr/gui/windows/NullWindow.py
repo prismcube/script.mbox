@@ -1184,7 +1184,7 @@ class NullWindow( BaseWindow ) :
 		self.CloseSubTitle( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 		dialog.SetPreviousBlocking( True )
-		dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
+		dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, E_MODE_CHANNEL_LIST, E_SELECT_ONLY  )
 		dialog.doModal( )
 		isSelect = dialog.GetSelectedList( )
 		self.CheckSubTitle( )

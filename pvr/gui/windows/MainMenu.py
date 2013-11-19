@@ -359,7 +359,7 @@ class MainMenu( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 		dialog.SetPreviousBlocking( False )
-		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, 2, 0, currentIdx )
+		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, E_MODE_FAVORITE_GROUP, E_SELECT_ONLY, currentIdx )
 		dialog.doModal( )
 
 		isSelect = dialog.GetSelectedList( )
