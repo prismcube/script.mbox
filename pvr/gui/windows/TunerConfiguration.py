@@ -145,7 +145,7 @@ class TunerConfiguration( FTIWindow ) :
 			else :
 				if self.GetFirstInstallation( ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'Press the Next button to setup satellites' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'Press Next button to setup satellites' ) )
 		 			dialog.doModal( )
 				else :
 					config = self.mTunerMgr.GetConfiguredSatelliteList( )[ position ]
@@ -207,7 +207,7 @@ class TunerConfiguration( FTIWindow ) :
 					satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
 
 					if self.GetFirstInstallation( ) :
-						description = MR_LANG( 'Press the Next button to setup satellites' )
+						description = MR_LANG( 'Press Next button to setup satellites' )
 					else :
 						description = MR_LANG( 'Press OK button to setup %s' ) % satelliteName
 

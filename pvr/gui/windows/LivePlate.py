@@ -319,7 +319,8 @@ class LivePlate( LivePlateWindow ) :
 				self.DialogPopup( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL \
+			   or self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
 				return -1
 
 			if HasAvailableRecordingHDD( ) == False :

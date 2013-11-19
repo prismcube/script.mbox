@@ -171,6 +171,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mIsPlay = FLAG_PLAY
 		self.mOldPlayTime = 0
 		self.mOldStartTime = 0
+		self.mIsLeftOnTimeshift = False
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
@@ -231,7 +232,12 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mUserMoveTime = -1
 				self.mFlagUserMove = True
 				self.StopAutomaticHide( )
-				self.RestartAsyncMove( )
+
+				if self.mIsLeftOnTimeshift :
+					self.StopAsyncMove( )
+					self.StartAsyncMoveByTime( True )
+				else :
+					self.RestartAsyncMove( )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == E_CONTROL_ID_LIST_SHOW_BOOKMARK :
@@ -620,6 +626,8 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StartAsyncMoveByTime( True )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, 1 )
 				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, 0 )
+
+				self.mIsLeftOnTimeshift = True
 
 				self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
 				#self.UpdateSetFocus( E_CONTROL_ID_BUTTON_CURRENT, 5 )
@@ -1484,14 +1492,19 @@ class TimeShiftPlate( BaseWindow ) :
 		repeatPending = 0
 		while self.mEnableLocalThread :
 			if self.mIsTimeshiftPending :
+				#LOG_TRACE( '-------------pending' )
 				repeatPending += 1
 				if repeatPending > E_PENDING_REPEAT_LIMIT :
+					self.mDataCache.Frontdisplay_PlayPause( )
+					LOG_TRACE( '-------------E_PENDING_REPEAT_LIMIT' )
 					break
 
 				waitTime = 0
 				self.OpenBusyDialog( )
 				while waitTime < 5 :
 					if not self.mIsTimeshiftPending :
+						self.mDataCache.Frontdisplay_PlayPause( )
+						LOG_TRACE( '-------------E_PENDING_Release, play normal' )
 						break
 					time.sleep( 1 )
 					waitTime += 1
@@ -2162,7 +2175,6 @@ class TimeShiftPlate( BaseWindow ) :
 		lbl_timeP = TimeToString( lblCurrentTime, timeFormat )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_TAG_LABEL )
 
-
 		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove, [aStartOnLeft] )
 		self.mAsyncShiftTimer.start( )
 
@@ -2181,11 +2193,14 @@ class TimeShiftPlate( BaseWindow ) :
 			if self.mFlagUserMove :
 				if aStartOnLeft :
 					ret = self.mDataCache.Player_JumpTo( self.mAsyncMove )
+					self.mIsLeftOnTimeshift = False
+
 				else :
 					if self.mSpeed != 100 :
 						self.mDataCache.Player_Resume( )
+
 					ret = self.mDataCache.Player_JumpToIFrame( self.mAsyncMove )
-				#LOG_TRACE('2============aStartOnLeft[%s] accelator[%s] MoveSec[%s] userMove[%s] ret[%s]'% ( aStartOnLeft, self.mAccelator, self.mAsyncMove, ( self.mUserMoveTime / 10000 ), ret ) )
+
 				self.InitTimeShift( )
 				self.mFlagUserMove = False
 				self.mAccelator = 0

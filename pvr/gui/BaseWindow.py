@@ -142,8 +142,8 @@ class SingleWindow( object ) :
 	def setFocusId( self, aControlId ) :
 		self.mRootWindow.setFocusId( aControlId )	
 
-	def getFocusId( self  ) :
-		return self.mRootWindow.getFocusId(  )	
+	def getFocusId( self ) :
+		return self.mRootWindow.getFocusId( )	
 
 	def addControl( self, aControl ) :
 		return self.mRootWindow.addControl( aControl )
@@ -556,12 +556,6 @@ class BaseWindow( BaseObjectWindow ) :
 			self.setProperty( 'NotAvail', 'False' )
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
-	"""
-	def SetPipLabel( self ) :
-		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
-		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
-	"""
-
 
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
@@ -571,6 +565,7 @@ class BaseWindow( BaseObjectWindow ) :
 			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )
 			nosignalLabel = self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL )
 			scrambleLabel = self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED )
+			noServiceLabel = self.getControl( E_SETTING_LABEL_NO_SERVICE )
 			settingControlGroup = self.getControl( E_SETTING_CONTROL_GROUPID )
 			
 			if aWindowId == WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
@@ -596,6 +591,7 @@ class BaseWindow( BaseObjectWindow ) :
 				
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 			
@@ -636,6 +632,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -725,6 +722,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -790,6 +788,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -816,6 +815,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -842,6 +842,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -868,6 +869,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 930, 250 )
 				scrambleLabel.setPosition( 930, 250 )
+				noServiceLabel.setPosition( 930, 250 )
 
 				settingControlGroup.setPosition( 80, 120 )
 
@@ -889,6 +891,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 645, 313 )
 				scrambleLabel.setPosition( 645, 313 )
+				noServiceLabel.setPosition( 645, 313 )
 
 			elif aWindowId == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
@@ -904,6 +907,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 908, 197 )
 				scrambleLabel.setPosition( 908, 197 )
+				noServiceLabel.setPosition( 908, 197 )
 
 			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				if self.getProperty( 'ViewMode' ) == 'common' :
@@ -919,6 +923,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 					nosignalLabel.setPosition( 925, 205 )
 					scrambleLabel.setPosition( 925, 205 )
+					noServiceLabel.setPosition( 925, 205 )
 				else :
 					self.setProperty( 'SettingPip', 'False' )
 
@@ -941,6 +946,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 					nosignalLabel.setPosition( 922, 203 )
 					scrambleLabel.setPosition( 922, 203 )
+					noServiceLabel.setPosition( 922, 203 )
 
 			elif aWindowId == WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingPip', 'True' )
@@ -956,6 +962,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 				nosignalLabel.setPosition( 922, 203 )
 				scrambleLabel.setPosition( 922, 203 )
+				noServiceLabel.setPosition( 922, 203 )
 			
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_INFO * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'DafultBackgroundImage', 'True' )
@@ -973,9 +980,6 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingPip', 'False' )
 				for i in range( E_CTRL_BTN_INFO_MAX ) :
 					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
-
-			elif aWindowId == WinMgr.WIN_ID_FAVORITES * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'DafultBackgroundImage', 'True' )
 
 			else :
 				self.setProperty( 'SettingBackground', 'False' )

@@ -148,6 +148,15 @@ Search for window name
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
 			<control type="image">
 				<posx>30r</posx>
 				<posy>0</posy>
@@ -182,6 +191,15 @@ Search for window name
 				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="image">
 				<posx>-13</posx>
@@ -597,10 +615,10 @@ Search for window name
 				</control>
 				<control type="rss">
 					<description>RSS feed</description>
-					<posx>135</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<height>30</height>
-					<width>1110</width>
+					<width>1155</width>
 					<font>font12</font>
 					<urlset>1</urlset>
 					<textcolor>blue</textcolor>
@@ -619,42 +637,12 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Favorite addons -->
+			<!-- power off -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>55r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200101">
-					<description>Favourites push button</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>45</width>
-					<height>45</height>
-					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-					<texturenofocus border="5">floor_button.png</texturenofocus>
-					<onleft>1200102</onleft>
-					<onright>1200102</onright>
-					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
-					<ondown>1209000</ondown>
-				</control>
-				<control type="image">
-					<description>Favourites Icon</description>
-					<posx>5</posx>
-					<posy>5</posy>
-					<width>35</width>
-					<height>35</height>
-					<aspectratio>keep</aspectratio>
-					<texture>icon_favourites.png</texture>
-				</control>
-			</control>
-
-			<!-- power off -->
-			<control type="group">
-				<posx>75</posx>
-				<posy>55r</posy>
-				<include>DefaultWindowOpenCloseAnimation</include>
-				<control type="button" id="1200102">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>45</width>
@@ -1745,7 +1733,7 @@ Search for window name
 						</content>
 					</control>
 
-					<!-- sub main -->
+					<!-- sub main (fav) -->
 					<control type="group" id="1309001">
 						<posx>-240</posx>
 						<posy>0</posy>
@@ -1773,10 +1761,19 @@ Search for window name
 									<width>230</width>
 									<height>41</height>
 								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>200</width>
+									<width>190</width>
 									<height>40</height>
 									<font>font12_title</font>
 									<textcolor>grey3</textcolor>
@@ -1802,14 +1799,24 @@ Search for window name
 									<texture border="0,2,0,2">MenuItemFO.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>200</width>
+									<width>190</width>
 									<height>40</height>
 									<font>font12_title</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
+									<shadowcolor>ff000000</shadowcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -1817,7 +1824,7 @@ Search for window name
 							</focusedlayout>
 						</control>
 
-						<!-- sub main 2 -->
+						<!-- sub main 2 (mode) -->
 						<control type="grouplist" id="1309002">
 							<posx>10</posx>
 							<posy>150</posy>
@@ -2650,6 +2657,15 @@ Search for window name
 				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 		</control>
 
@@ -6383,6 +6399,15 @@ Search for window name
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>330</posy>
+				<width>500</width>
+				<font>font35_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
 			<control type="image">
 				<posx>30r</posx>
 				<posy>0</posy>
@@ -7100,7 +7125,18 @@ Search for window name
 					<textcolor>grey2</textcolor>
 					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),Scramble)</visible>
 				</control>
-
+				<control type="label" id="1002007">
+					<posx>10</posx>
+					<posy>-30</posy>
+					<width>425</width>
+					<height>30</height>
+					<font>font12</font>
+					<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>grey2</textcolor>
+					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),NoService)</visible>
+				</control>
 			</control>
 		</control>
 
@@ -7134,6 +7170,18 @@ Search for window name
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble)</visible>
+			</control>
+			<control type="label" id="1001022">
+				<posx>930</posx>
+				<posy>250</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),NoService)</visible>
 			</control>
 		</control>
 

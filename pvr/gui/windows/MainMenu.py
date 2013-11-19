@@ -4,10 +4,8 @@ import xbmcgui
 E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
 MAIN_GROUP_ID					= E_MAIN_MENU_BASE_ID + 9100
-LIST_ID_FAV_ADDON				= E_MAIN_MENU_BASE_ID + 9050
 LABEL_ID_SUB_DESCRIPTION		= E_MAIN_MENU_BASE_ID + 100
-BUTTON_ID_FAVORITE_EXTRA		= E_MAIN_MENU_BASE_ID + 101
-BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 102
+BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 101
 
 BUTTON_ID_INSTALLATION			= E_MAIN_MENU_BASE_ID + 90100
 BUTTON_ID_ARCHIVE				= E_MAIN_MENU_BASE_ID + 90200
@@ -56,7 +54,6 @@ else:
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		#self.mCtrlFavAddonList = None
 		
 
 	def onInit( self ) :
@@ -213,8 +210,9 @@ class MainMenu( BaseWindow ) :
 				return
 
 			context = []
-			context.append( ContextItem( 'Restart XBMC', 0 ) )
-			context.append( ContextItem( 'Power Off', 1 ) )
+			#context.append( ContextItem( MR_LANG( 'Restart XBMC' ), 0 ) )
+			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
+			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -223,12 +221,16 @@ class MainMenu( BaseWindow ) :
 
 			if contextAction == 0 :
 				pvr.ElisMgr.GetInstance().Shutdown( )
-				xbmc.executebuiltin( 'RestartApp' )
+				#xbmc.executebuiltin( 'RestartApp' )
+				xbmc.executebuiltin( 'Settings.Save' )
+				os.system( 'sync' )
+				os.system( 'killall -9 xbmc.bin' )
 			elif contextAction == 1 :
-				self.mDataCache.System_Shutdown( )
+				self.mCommander.System_StandbyMode( 1 )
+			elif contextAction == 2 :
+				self.mCommander.System_StandbyMode( 0 )
 
-
-		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
+		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
@@ -280,19 +282,9 @@ class MainMenu( BaseWindow ) :
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
-			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
 				
-
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
-
-		elif aControlId == LIST_ID_FAV_ADDON :
-			position = -1
-			position = self.mCtrlFavAddonList.getSelectedPosition( )
-			if position != -1 :
-				self.SetMediaCenter( )
-				XBMC_RunAddon( self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
 
 		elif aControlId == BUTTON_ID_HELP :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HELP )
@@ -309,8 +301,8 @@ class MainMenu( BaseWindow ) :
 		elif aControlId >= BUTTON_ID_MEDIA_WEATHER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionMedia[ aControlId - 1 - BUTTON_ID_MEDIA_CENTER ] )			
 
-		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
-			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorites in a convenient way' ) )
+		elif aControlId == BUTTON_ID_POWER :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Restart XBMC or switch STB to standby mode' ) )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_LIST :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display a list of your TV/radio channels' ) )
@@ -320,26 +312,6 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
-
-
-	def GetFavAddons( self ) :
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			currentSkinName = XBMC_GetCurrentSkinName( )
-			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
-				favoriteList = XBMC_GetFavAddons( )
-				LOG_TRACE( 'lael98 #1 favoriteList=%s' %favoriteList )
-				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
-				self.mCtrlFavAddonList.reset( )
-				LOG_TRACE( 'lael98' )
-				if len( favoriteList ) > 0 :
-					self.mFavAddonsList = []
-					LOG_TRACE( 'lael98' )
-					for i in range( len( favoriteList ) ) :
-						LOG_TRACE( 'lael98 name=%s' %xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )					
-						item = xbmcgui.ListItem(  xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )
-						item.setProperty( 'AddonId', favoriteList[i] )
-						self.mFavAddonsList.append( item )
-					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
 
 
 	def SetVisibleRss( self ) :
@@ -368,19 +340,31 @@ class MainMenu( BaseWindow ) :
 			dialog.doModal( )
 			return
 
-		favoriteList = [MR_LANG( 'All Channels' )]
+		#favoriteList = [MR_LANG( 'All Channels' )]
+		iFavGroup = ElisIFavoriteGroup( )
+		iFavGroup.mGroupName = MR_LANG( 'All Channels' )
+		iFavGroup.mServiceType = zappingmode.mServiceType
+		favoriteList = [ iFavGroup ]
 		for item in favoriteGroup :
-			favoriteList.append( item.mGroupName )
+			#favoriteList.append( item.mGroupName )
+			favoriteList.append( item )
 
 		currentIdx = 0
 		if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE :
 			favName = zappingmode.mFavoriteGroup.mGroupName
 			for idx in range( 1, len( favoriteList ) ) :
-				if favName == favoriteList[idx] :
+				if favName == favoriteList[idx].mGroupName :
 					currentIdx = idx
 					break
 
-		isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite group' ), favoriteList, False, currentIdx )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+		dialog.SetPreviousBlocking( False )
+		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, 2, 0, currentIdx )
+		dialog.doModal( )
+
+		isSelect = dialog.GetSelectedList( )
+
+		#isSelect = xbmcgui.Dialog( ).select( MR_LANG( 'Favorite group' ), favoriteList, False, currentIdx )
 		LOG_TRACE('---------------select[%s]'% isSelect )
 		if isSelect < 0 or isSelect == currentIdx :
 			LOG_TRACE( 'back, cancel or same' )
@@ -417,15 +401,19 @@ class MainMenu( BaseWindow ) :
 
 
 		#set change
-		self.mDataCache.Channel_Save( )
 		ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
 		if ret :
+			self.OpenBusyDialog( )
+			self.mDataCache.Channel_Save( )
+
 			#data cache re-load
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
 			self.mDataCache.SetChannelReloadStatus( True )
 			self.mDataCache.Channel_ResetOldChannelList( )
+
+			self.CloseBusyDialog( )
 
 			# channel tune, default 1'st
 			iChannelList = self.mDataCache.Channel_GetList( )

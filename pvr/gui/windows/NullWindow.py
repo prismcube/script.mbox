@@ -93,11 +93,9 @@ class NullWindow( BaseWindow ) :
 		if E_SUPPROT_HBBTV == True :
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL or \
-				self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				if self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_SUCCESS :
 					self.mCommander.AppHBBTV_Ready( 0 )
 					self.mHBBTVReady = False
-			
 				elif self.mHBBTVReady == False :
 					LOG_TRACE('----------HBB Tv Ready')
 					self.mCommander.AppHBBTV_Ready( 1 )
@@ -144,18 +142,17 @@ class NullWindow( BaseWindow ) :
 			thread = threading.Timer( 5, self.FirmwareNotify )
 			thread.start( )
 
-		if self.XBMCFirstProcess( ) :
-			return
-
 		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) != 0 :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-			return
+			
 		else :
 			self.mCommander.AppHBBTV_Ready( 1 )
 			self.mHBBTVReady = True
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			return
+
+		thread = threading.Timer( 3, self.XBMCFirstProcess )
+		thread.start( )
 
 
 	def XBMCFirstProcess( self ) :
@@ -172,7 +169,7 @@ class NullWindow( BaseWindow ) :
 						break
 			except Exception, e :
 				LOG_ERR( 'Error exception[%s]' % e )
-				return False
+				return
 
 			if databaseName :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -187,8 +184,6 @@ class NullWindow( BaseWindow ) :
 					pvr.ElisMgr.GetInstance( ).Shutdown( )
 					xbmc.executebuiltin( 'RestartApp' )
 					return True
-
-		return False
 
 
 	def onAction( self, aAction ) :
@@ -351,6 +346,7 @@ class NullWindow( BaseWindow ) :
 
 				#buyer issue, hide
 				elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					self.mDataCache.Frontdisplay_PlayPause( False )
 					labelMode = MR_LANG( 'LIVE' )
 					thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
 					thread.start( )
@@ -436,9 +432,10 @@ class NullWindow( BaseWindow ) :
 				return
 
 			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode != ElisEnum.E_MODE_PVR and \
-			   self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-				return -1
+			if status.mMode != ElisEnum.E_MODE_PVR :
+				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL or \
+			       self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
+					return -1
 
 			if actionId == Action.ACTION_MOVE_RIGHT and status.mMode == ElisEnum.E_MODE_LIVE :
 				return -1
@@ -1020,6 +1017,9 @@ class NullWindow( BaseWindow ) :
 				msg = MR_LANG( 'No Signal' )
 				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 					msg = MR_LANG( 'Scrambled' )
+				elif status == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
+					msg = MR_LANG( 'No Service' )
+				
 
 		elif aAction == Action.ACTION_MBOX_TVRADIO :
 			head = MR_LANG( 'Error' )
@@ -1061,11 +1061,11 @@ class NullWindow( BaseWindow ) :
 					self.mIsShowDialog = False
 					return
 			else : #Show Linkage Service
-				if self.mDataCache.GetLinkageService(  ) :
+				if self.mDataCache.GetLinkageService( ) :
 					self.CloseSubTitle( )				
 					self.ShowLinkageChannels( )
 					self.CheckSubTitle( )
-					self.mIsShowDialog = False					
+					self.mIsShowDialog = False
 				else :
 					self.mIsShowDialog = False
 				return
@@ -1296,7 +1296,7 @@ class NullWindow( BaseWindow ) :
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			self.setProperty( 'HasLinkageService', 'False' )
 		else :
-			hasLinkageService = self.mDataCache.GetLinkageService(  )
+			hasLinkageService = self.mDataCache.GetLinkageService( )
 			if hasLinkageService :
 				self.setProperty( 'HasLinkageService', 'True' )
 				self.StartLinkageServiceTimer()
@@ -1317,19 +1317,32 @@ class NullWindow( BaseWindow ) :
 			LOG_WARN( "Has no linkage channel")
 			return
 
+		#runningTimer tp
+		runningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+
 		LOG_TRACE('--------------- Linkage Channel List ----------------------')
 		for linkageChannel in linkageChannelList :
 			#linkageChannel.printdebug( )
-			channelNameList.append( linkageChannel.mChannelName )
+			isAvailable = True
+			if runningTimerList :
+				isAvailable = False
+				for timer in runningTimerList :
+					iChannel = self.mDataCache.Channel_GetByAvailTransponder( timer.mServiceType, timer.mChannelNo, timer.mTsid, timer.mOnid, timer.mSid, linkageChannel.mTsid, linkageChannel.mOnid )
+					if iChannel :
+						isAvailable = True
+						break
 
-		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+			if isAvailable :
+				channelNameList.append( linkageChannel.mChannelName )
 
-		if ret >= 0 :
-			linkageChannel = linkageChannelList[ ret ]
+		isSelect = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+
+		if isSelect >= 0 :
+			linkageChannel = linkageChannelList[ isSelect ]
 			if linkageChannel :
 				currentChannel = self.mDataCache.Channel_GetCurrent( )
-				LOG_TRACE( 'TUNE LinkageService %s, %s, %s, %s, %s, %s' %( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True) )
-				self.mCommander.Channel_SetCurrentLinkageChannel( currentChannel.mNumber,  currentChannel.mServiceType,  linkageChannel.mTsid,  linkageChannel.mOnid,  linkageChannel.mSid,  True)
+				ret = self.mCommander.Channel_SetCurrentLinkageChannel( currentChannel.mNumber, currentChannel.mServiceType, linkageChannel.mTsid, linkageChannel.mOnid, linkageChannel.mSid, True )
+				LOG_TRACE( 'TUNE LinkageService ret[%s] %s, %s, %s, %s, %s, %s' %( ret, currentChannel.mNumber, currentChannel.mServiceType, linkageChannel.mTsid, linkageChannel.mOnid, linkageChannel.mSid, True ) )
 
 
 
