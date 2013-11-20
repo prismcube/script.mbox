@@ -54,7 +54,7 @@ WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
 WIN_ID_TIMER_WINDOW					= 30
 WIN_ID_INFO_PLATE					= 31
-#WIN_ID_FAVORITES					= 32
+WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
 WIN_ID_ZOOM							= 35
@@ -296,7 +296,7 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			from pvr.gui.windows.InfoPlate import InfoPlate
-			#from pvr.gui.windows.Favorites import Favorites
+			from pvr.gui.windows.Favorites import Favorites
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
 			from pvr.gui.windows.Zoom import Zoom
@@ -338,7 +338,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow )
 				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow )
 				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow )
-				#self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
+				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
 				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
@@ -383,7 +383,7 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
-				#self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
+				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
 				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
 				#self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGSearchWindow.xml', self.mScriptDir  )
 				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )

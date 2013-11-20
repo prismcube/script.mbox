@@ -5,7 +5,8 @@ E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_W
 
 MAIN_GROUP_ID					= E_MAIN_MENU_BASE_ID + 9100
 LABEL_ID_SUB_DESCRIPTION		= E_MAIN_MENU_BASE_ID + 100
-BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 101
+BUTTON_ID_FAVORITE_EXTRA		= E_MAIN_MENU_BASE_ID + 101
+BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 102
 
 BUTTON_ID_INSTALLATION			= E_MAIN_MENU_BASE_ID + 90100
 BUTTON_ID_ARCHIVE				= E_MAIN_MENU_BASE_ID + 90200
@@ -230,7 +231,7 @@ class MainMenu( BaseWindow ) :
 			elif contextAction == 2 :
 				self.mCommander.System_StandbyMode( 0 )
 
-		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
+		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
@@ -282,6 +283,8 @@ class MainMenu( BaseWindow ) :
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
+			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
 				
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
@@ -300,6 +303,9 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId >= BUTTON_ID_MEDIA_WEATHER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionMedia[ aControlId - 1 - BUTTON_ID_MEDIA_CENTER ] )			
+
+		elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Access your favorites in a convenient way' ) )
 
 		elif aControlId == BUTTON_ID_POWER :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Restart XBMC or switch STB to standby mode' ) )
@@ -359,7 +365,7 @@ class MainMenu( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 		dialog.SetPreviousBlocking( False )
-		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, 2, 0, currentIdx )
+		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, E_MODE_FAVORITE_GROUP, E_SELECT_ONLY, currentIdx )
 		dialog.doModal( )
 
 		isSelect = dialog.GetSelectedList( )

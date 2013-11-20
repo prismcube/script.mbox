@@ -151,7 +151,7 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
-		thread = threading.Timer( 3, self.XBMCFirstProcess )
+		thread = threading.Timer( 6, self.XBMCFirstProcess )
 		thread.start( )
 
 
@@ -1184,7 +1184,7 @@ class NullWindow( BaseWindow ) :
 		self.CloseSubTitle( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 		dialog.SetPreviousBlocking( True )
-		dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, True, False  )
+		dialog.SetDefaultProperty( MR_LANG( 'Recent channels' ), channelList, E_MODE_CHANNEL_LIST, E_SELECT_ONLY  )
 		dialog.doModal( )
 		isSelect = dialog.GetSelectedList( )
 		self.CheckSubTitle( )
