@@ -953,7 +953,7 @@ Search for window name
 						<!-- is Align < 10,000 ? -->
 						<control type="label">
 							<description>Channel Name</description>
-							<posx>90</posx>
+							<posx>95</posx>
 							<posy>0</posy>
 							<width>350</width>
 							<height>40</height>
@@ -968,7 +968,7 @@ Search for window name
 						<!-- is Align > 10,000 ? -->
 						<control type="label">
 							<description>Channel Name</description>
-							<posx>100</posx>
+							<posx>105</posx>
 							<posy>0</posy>
 							<width>350</width>
 							<height>40</height>
@@ -1118,7 +1118,7 @@ Search for window name
 							<!-- is Align < 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>90</posx>
+								<posx>95</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
@@ -1134,7 +1134,7 @@ Search for window name
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>100</posx>
+								<posx>105</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
@@ -1222,7 +1222,7 @@ Search for window name
 							<!-- is Align < 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>90</posx>
+								<posx>95</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
@@ -1236,7 +1236,7 @@ Search for window name
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>100</posx>
+								<posx>105</posx>
 								<posy>0</posy>
 								<width>350</width>
 								<height>40</height>
