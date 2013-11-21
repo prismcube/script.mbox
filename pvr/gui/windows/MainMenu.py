@@ -213,7 +213,7 @@ class MainMenu( BaseWindow ) :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
 			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
-			#context.append( ContextItem( MR_LANG( 'Restart GUI' ), 0 ) )
+			context.append( ContextItem( MR_LANG( 'Restart GUI' ), 0 ) )
 			context.append( ContextItem( MR_LANG( 'Restart System' ), 3 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -223,9 +223,7 @@ class MainMenu( BaseWindow ) :
 
 			if contextAction == 0 :
 				pvr.ElisMgr.GetInstance().Shutdown( )
-				#xbmc.executebuiltin( 'RestartApp' )
 				xbmc.executebuiltin( 'Settings.Save' )
-				os.system( 'sync' )
 				os.system( 'killall -9 xbmc.bin' )
 			elif contextAction == 1 :
 				self.mCommander.System_StandbyMode( 1 )
