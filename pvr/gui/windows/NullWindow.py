@@ -182,8 +182,8 @@ class NullWindow( BaseWindow ) :
 					os.system( 'rm %s' % databaseName )
 					os.system( 'rm %s' % '/mtmp/XbmcDbBroken' )
 					pvr.ElisMgr.GetInstance( ).Shutdown( )
-					xbmc.executebuiltin( 'RestartApp' )
-					return True
+					xbmc.executebuiltin( 'Settings.Save' )
+					os.system( 'killall -9 xbmc.bin' )
 
 
 	def onAction( self, aAction ) :
