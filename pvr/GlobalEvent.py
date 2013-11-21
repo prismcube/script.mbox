@@ -223,9 +223,9 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventPVRManagerUpdate.getName( ) :
 			#msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
-			msgHead = MR_LANG( 'Update Channels' )
-			msgLine = MR_LANG( 'Loading new channels...' )
 			if aEvent.mResult == ElisEnum.E_UPDATE_START :
+				msgHead = MR_LANG( 'Update Channels' )
+				msgLine = MR_LANG( 'Loading new channels...' )
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( msgHead, msgLine ) )
 				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 				self.IsStartChannelLoad = True
