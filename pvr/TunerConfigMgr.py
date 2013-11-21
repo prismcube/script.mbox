@@ -435,6 +435,7 @@ class TunerConfigMgr( object ) :
 		if self.mDataCache.GetStanbyClosing( ) :
 			return
 		channelSatelliteList = self.mDataCache.Satellite_GetListByChannel( )
+		print 'dhkim test channelSatelliteList = %s' % channelSatelliteList
 		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
 
 		if channelSatelliteList :
@@ -454,12 +455,12 @@ class TunerConfigMgr( object ) :
 					self.mDataCache.Player_AVBlank( True )
 					return
 
-		self.mDataCache.Channel_DeleteAll( )
-		self.mDataCache.Channel_Save( )
-		self.mDataCache.Channel_ReLoad( False )
-		#self.mDataCache.Channel_InvalidateCurrent( )
-		if not self.mDataCache.Get_Player_AVBlank( ) :
-			self.mDataCache.Player_AVBlank( True )
+			self.mDataCache.Channel_DeleteAll( )
+			self.mDataCache.Channel_Save( )
+			self.mDataCache.Channel_ReLoad( False )
+			#self.mDataCache.Channel_InvalidateCurrent( )
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
 
 
 	def CompareCurrentConfiguredState( self ) :

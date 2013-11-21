@@ -44,7 +44,8 @@ class GlobalEvent( object ) :
 		self.mIsDialogOpend	= False
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
-		self.mIsChannelUpdateEvent = False
+		self.IsStartChannelLoad		= False
+		#self.mIsChannelUpdateEvent = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mTunerMgr	= pvr.TunerConfigMgr.GetInstance( )
 		self.SendLocalOffsetToXBMC( )
@@ -221,20 +222,34 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '----------ElisEventTTXClosed' )
 
 		elif aEvent.getName( ) == ElisEventPVRManagerUpdate.getName( ) :
+			#msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
 			msgHead = MR_LANG( 'Update Channels' )
-			msgLine = MR_LANG( 'New channels have been loaded from PVR manager%s Press OK to continue updating your channel list' )% NEW_LINE
-			if aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
-				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				#dialog.SetDialogProperty( msgHead, msgLine )
-				#dialog.doModal( )
-				self.mDataCache.LoadConfiguredSatellite( )
-				self.mTunerMgr.SyncChannelBySatellite( )
-				self.mDataCache.SetStanbyClosing( True )
-				self.mIsChannelUpdateEvent = True
-				thread = threading.Timer( 1, self.StanByClose )
+			msgLine = MR_LANG( 'Loading new channels...' )
+			if aEvent.mResult == ElisEnum.E_UPDATE_START :
+				print 'dhkim test E_UPDATE_START'
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( msgHead, msgLine ) )
+				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+				self.IsStartChannelLoad = True
+				thread = threading.Timer( 180, self.StopLoading )
 				thread.start( )
 
+			elif aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
+				print 'dhkim test E_UPDATE_SUCCESS'
+				self.IsStartChannelLoad = False
+				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+				#self.mDataCache.LoadConfiguredSatellite( )
+				#self.mTunerMgr.SyncChannelBySatellite( )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
+				dialog.doModal( )
+
+				self.mDataCache.System_Reboot( )
+
 			else :
+				print 'dhkim test E_UPDATE_FAILED_BY_RECORD or E_UPDATE_FAILED_BY_TIMER'
+				self.IsStartChannelLoad = False
+				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
 					msgLine = MR_LANG( 'Please try again after stopping the recordings' )
 				elif aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_TIMER :
@@ -258,6 +273,19 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '-----------------------event name[%s]'% aEvent.getName( ) )
 			thread = threading.Timer( 0.1, self.ChannelChangedByRecord, [aEvent] )
 			thread.start( )
+
+
+	@RunThread
+	def ChannelUpdateProgress( self, aString, aTime ) :
+		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mProgress.SetDialogProperty( aTime, aString )
+		self.mProgress.doModal( )
+
+
+	def StopLoading( self ) :
+		if self.IsStartChannelLoad :
+			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+			self.IsStartChannelLoad = False
 
 
 	def AsyncHddFull( self ) :
@@ -661,24 +689,6 @@ class GlobalEvent( object ) :
 			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
-
-		if self.mIsChannelUpdateEvent :
-			"""
-			xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
-			self.mDataCache.LoadAllSatellite( )
-			self.mDataCache.LoadAllTransponder( )
-			import pvr.TunerConfigMgr
-			pvr.TunerConfigMgr.GetInstance( ).SyncChannelBySatellite( )
-			self.mDataCache.Channel_ReLoad( )
-			self.mDataCache.Player_AVBlank( False )
-			xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
-			"""
-			self.mIsChannelUpdateEvent = False
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
-			dialog.doModal( )
-
-			self.mDataCache.System_Reboot( )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
