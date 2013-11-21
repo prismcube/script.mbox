@@ -226,7 +226,6 @@ class GlobalEvent( object ) :
 			msgHead = MR_LANG( 'Update Channels' )
 			msgLine = MR_LANG( 'Loading new channels...' )
 			if aEvent.mResult == ElisEnum.E_UPDATE_START :
-				print 'dhkim test E_UPDATE_START'
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( msgHead, msgLine ) )
 				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 				self.IsStartChannelLoad = True
@@ -234,12 +233,8 @@ class GlobalEvent( object ) :
 				thread.start( )
 
 			elif aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
-				print 'dhkim test E_UPDATE_SUCCESS'
 				self.IsStartChannelLoad = False
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
-				#self.mDataCache.LoadConfiguredSatellite( )
-				#self.mTunerMgr.SyncChannelBySatellite( )
-
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
 				dialog.doModal( )
@@ -247,7 +242,6 @@ class GlobalEvent( object ) :
 				self.mDataCache.System_Reboot( )
 
 			else :
-				print 'dhkim test E_UPDATE_FAILED_BY_RECORD or E_UPDATE_FAILED_BY_TIMER'
 				self.IsStartChannelLoad = False
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 				if aEvent.mResult == ElisEnum.E_UPDATE_FAILED_BY_RECORD :
@@ -273,13 +267,6 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '-----------------------event name[%s]'% aEvent.getName( ) )
 			thread = threading.Timer( 0.1, self.ChannelChangedByRecord, [aEvent] )
 			thread.start( )
-
-
-	@RunThread
-	def ChannelUpdateProgress( self, aString, aTime ) :
-		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-		self.mProgress.SetDialogProperty( aTime, aString )
-		self.mProgress.doModal( )
 
 
 	def StopLoading( self ) :
