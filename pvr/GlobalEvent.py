@@ -136,7 +136,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
-			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+			#LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
