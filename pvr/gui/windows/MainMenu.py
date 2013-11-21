@@ -232,6 +232,11 @@ class MainMenu( BaseWindow ) :
 			elif contextAction == 2 :
 				self.mCommander.System_StandbyMode( 0 )
 			elif contextAction == 3 :
+				if self.GetStatusFromFirmware( ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+					dialog.doModal( )
+					return
 				self.mDataCache.System_Reboot( )
 
 		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
