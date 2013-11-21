@@ -151,7 +151,7 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
-		thread = threading.Timer( 3, self.XBMCFirstProcess )
+		thread = threading.Timer( 6, self.XBMCFirstProcess )
 		thread.start( )
 
 
