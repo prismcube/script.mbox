@@ -5,7 +5,7 @@ E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211
 E_EPG_NAME_ID		= 212
 E_PROGRESS_ID		= 213
-E_DEFAULT_CLOSE_TIME = 1.2
+E_DEFAULT_CLOSE_TIME = 2
 
 
 class DialogChannelJump( BaseDialog ) :
@@ -119,11 +119,6 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 
-	def SetMaxChannelNumber( self, aMaxChannelNum = E_INPUT_MAX ) :
-		if aMaxChannelNum > E_INPUT_MAX :
-			self.mMaxChannelNum = aMaxChannelNum
-
-
 	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX, aZappingMode = 0 ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
@@ -132,7 +127,12 @@ class DialogChannelJump( BaseDialog ) :
 		self.mChannelListMode = aZappingMode
 		self.mInputString = '%s'% aChannelFirstNum
 
+		if not aIsChannelListWindow :
+			self.mMaxChannelNum = self.mDataCache.Channel_GetMaxNumber( )
+		LOG_TRACE( '-------------------------maxNumber[%s]'% self.mMaxChannelNum )
+
 		self.InitHashToPresentNumber( )
+
 
 	def SetLabelChannelNumber( self ) :
 		self.mFlagFind = False

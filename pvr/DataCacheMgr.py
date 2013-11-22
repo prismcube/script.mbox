@@ -131,6 +131,7 @@ class DataCacheMgr( object ) :
 		self.mEPGListHash						= {}
 		self.mEPGList 							= None
 		self.mEPGData							= None
+		self.mMaxChannelNum 					= E_INPUT_MAX
 
 		self.mChannelListDBTable				= E_TABLE_ALLCHANNEL
 		self.mEpgDB 							= None
@@ -698,6 +699,8 @@ class DataCacheMgr( object ) :
 		self.mChannelListHash = {}
 		self.mChannelListHashForTimer = {}
 		self.mChannelList = aChannelList
+		self.mMaxChannelNum = E_INPUT_MAX
+
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
 			LOG_TRACE( 'ChannelList None' )
 			return
@@ -729,6 +732,13 @@ class DataCacheMgr( object ) :
 			if channel and channel.mError == 0 :
 				channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
 				self.mChannelListHashForTimer[channelKey] = channel
+
+				chNumber = channel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					chNumber = self.CheckPresentationNumber( channel )
+
+				if chNumber > self.mMaxChannelNum :
+					self.mMaxChannelNum = chNumber
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
@@ -783,6 +793,7 @@ class DataCacheMgr( object ) :
 		nextChannel = None
 		self.mChannelListHash = {}
 		self.mChannelListHashForTimer = {}
+		self.mMaxChannelNum = E_INPUT_MAX
 
 		if newCount < 1 :
 			LOG_TRACE('---------newCount-------------count[%d]'% newCount)
@@ -830,6 +841,13 @@ class DataCacheMgr( object ) :
 				if channel and channel.mError == 0 :
 					channelKey = '%d:%d:%d'% ( channel.mSid, channel.mTsid, channel.mOnid )
 					self.mChannelListHashForTimer[channelKey] = channel
+
+					chNumber = channel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						chNumber = self.CheckPresentationNumber( channel )
+
+					if chNumber > self.mMaxChannelNum :
+						self.mMaxChannelNum = chNumber
 
 
 		#reload tunableList for PIP
@@ -1337,6 +1355,10 @@ class DataCacheMgr( object ) :
 			return channel
 
 		return None
+
+
+	def Channel_GetMaxNumber( self ) :
+		return self.mMaxChannelNum
 
 
 	@DataLock

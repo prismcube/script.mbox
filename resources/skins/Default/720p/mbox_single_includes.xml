@@ -6307,7 +6307,7 @@
 				</control>
 				<!-- is Align < 10,000 ? -->
 				<control type="label">
-					<posx>85</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
@@ -6320,7 +6320,7 @@
 				</control>
 				<!-- is Align > 10,000 ? -->
 				<control type="label">
-					<posx>95</posx>
+					<posx>100</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
@@ -6426,7 +6426,7 @@
 				</control>
 				<!-- is Align < 10,000 ? -->
 				<control type="label">
-					<posx>85</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
@@ -6440,7 +6440,7 @@
 				</control>
 				<!-- is Align < 10,000 ? -->
 				<control type="label">
-					<posx>95</posx>
+					<posx>100</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
