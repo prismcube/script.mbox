@@ -168,6 +168,9 @@ class GlobalEvent( object ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
 
+			if aEvent.mStatus != ElisEnum.E_CC_SUCCESS :
+				return
+
 			selectedSubtitle = self.mDataCache.Subtitle_GetSelected( )
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_SUCCESS :
 				if selectedSubtitle and selectedSubtitle.mError == 0 and selectedSubtitle.mPid :
