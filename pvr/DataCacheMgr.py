@@ -464,8 +464,8 @@ class DataCacheMgr( object ) :
 			#Live EPG
 			gmtFrom  = self.Datetime_GetLocalTime( )
 			#gmtFrom  = self.mTimeshift_curTime
-			gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
-			maxCount = 100
+			gmtUntil = gmtFrom + E_MAX_EPG_DAYS
+			maxCount = 1000
 			#LOG_TRACE('ch.mNumber[%s] sid[%s] tsid[%s] onid[%s]'% ( self.mCurrentChannel.mNumber, self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid ) )
 			if self.mCurrentChannel == None or self.mCurrentChannel.mError != 0 :
 				return None

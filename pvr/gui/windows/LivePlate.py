@@ -738,8 +738,9 @@ class LivePlate( LivePlateWindow ) :
 
 				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
 				gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
-				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
-				maxCount = 100
+				gmtUntil = gmtFrom + E_MAX_EPG_DAYS
+
+				maxCount = 1000
 				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
 				self.mEPGList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
 				#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
