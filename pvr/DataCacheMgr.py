@@ -1179,6 +1179,10 @@ class DataCacheMgr( object ) :
 		ret = False
 		self.mCurrentEvent = None
 
+		if self.GetStanbyStatus( ) != ElisEnum.E_STANDBY_POWER_ON :
+			ret = self.Channel_SetCurrentByUpdateSync( aChannelNumber, aServiceType )
+			return ret
+
 		self.Channel_SetOldChannel( aChannelNumber, aServiceType )
 		self.Channel_SetOldChannelList( aServiceType )
 
