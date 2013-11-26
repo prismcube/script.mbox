@@ -1393,7 +1393,7 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
 		eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
-		if eventList :
+		if eventList and len( eventList ) > 0 :
 			eventList = eventList[0]
 
 		return eventList
