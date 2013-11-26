@@ -1138,8 +1138,8 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
 				dialog.doModal( )
-				self.mIsShowDialog = False
 				"""
+				self.mIsShowDialog = False
 				self.RestartAutomaticHide( )
 				return
 
