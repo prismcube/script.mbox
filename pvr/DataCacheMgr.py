@@ -1617,9 +1617,9 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_DeleteAll( )
 
 
-	def Channel_DeleteBySatellite( self, aLongitude, aBand ) :
+	def Channel_DeleteBySatellite( self, aLongitude, aBand, aChannelSave = True ) :
 		ret = self.mCommander.Channel_DeleteBySatellite( aLongitude, aBand )
-		if ret :
+		if ret and aChannelSave :
 			self.Channel_Save( )
 
 		return ret
