@@ -237,7 +237,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
 				self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
-			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' % ( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			strTransponderInfo = '%s - %d MHz - %s - %d KS/s ' % ( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
