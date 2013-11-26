@@ -261,15 +261,16 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def LoadChannelSearchedData( self ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
-		self.mDataCache.Channel_Save( )
-		self.mDataCache.LoadZappingList( )
-		self.mDataCache.LoadChannelList( )
-		iZapping = self.mDataCache.Zappingmode_GetCurrent( )
-		if iZapping and iZapping.mError == 0 :
-			self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
-		self.mDataCache.SetChannelReloadStatus( True )
-		iChannel = self.mDataCache.Channel_GetCurrent( True )
-		self.mDataCache.mCurrentChannel = iChannel
+		if len( self.mStoreTVChannel ) > 0 or len( self.mStoreRadioChannel ) > 0 :
+			self.mDataCache.Channel_Save( )
+			self.mDataCache.LoadZappingList( )
+			self.mDataCache.LoadChannelList( )
+			iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+			if iZapping and iZapping.mError == 0 :
+				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
+			self.mDataCache.SetChannelReloadStatus( True )
+			iChannel = self.mDataCache.Channel_GetCurrent( True )
+			self.mDataCache.mCurrentChannel = iChannel
 
 		if self.mScanMode == E_SCAN_TRANSPONDER :
 			self.mCommander.ScanHelper_Start( )
