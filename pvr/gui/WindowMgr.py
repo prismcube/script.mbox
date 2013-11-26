@@ -133,7 +133,7 @@ class WindowMgr( object ) :
 
 
 	def GetWindow( self, aWindowId ) :
-		LOG_TRACE( 'GetWindow ID=%d' % aWindowId )
+		#LOG_TRACE( 'GetWindow ID=%d' % aWindowId )
 		try :
 			return weakref.proxy( self.mWindows[aWindowId] )
 		except Exception, ex :
