@@ -2560,6 +2560,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mViewFirst =  self.mViewFirst + updown
 
 				elif aMove == Action.ACTION_CONTEXT_MENU :
+					#All Channel only
 					if not self.mMoveList or len( self.mMoveList ) < 1 :
 						LOG_TRACE( 'None move list' )
 						return
@@ -2568,9 +2569,29 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE( 'None move channel' )
 						return
 
-					updown = self.GetMoveNumber( ( '%s'% item.mNumber ) )
-					LOG_TRACE( '-------------input[%s] viewFirst[%s]'% ( updown, self.mViewFirst ) )
-					self.mViewFirst = updown
+					inputNum = self.GetMoveNumber( ( '%s'% item.mNumber ) )
+					if inputNum < 1 or ( inputNum / maxShowCount ) < 1 :
+						return
+					
+					updown = topPos - inputNum
+					LOG_TRACE( '-------------input[%s] updown[%s] viewFirst[%s]'% ( topPos, updown, self.mViewFirst ) )
+
+					if topPos > inputNum :
+						#up
+						if topPos - inputNum < 0 :
+							updown = -topPos
+						else :
+							updown = -(topPos - inputNum)
+
+					else :
+						if topPos + markCount + inputNum > channelCount :
+							updown = channelCount - ( topPos + markCount  )
+							#updown = topPos + maxShowCount + markCount - ( channelCount + markCount )
+						else :
+							updown = inputNum - topPos
+
+					
+					self.mViewFirst = self.mViewFirst + updown
 
 
 
