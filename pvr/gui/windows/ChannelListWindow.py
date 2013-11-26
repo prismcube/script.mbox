@@ -2558,6 +2558,22 @@ class ChannelListWindow( BaseWindow ) :
 						updown = maxShowCount
 
 					self.mViewFirst =  self.mViewFirst + updown
+
+				elif aMove == Action.ACTION_CONTEXT_MENU :
+					if not self.mMoveList or len( self.mMoveList ) < 1 :
+						LOG_TRACE( 'None move list' )
+						return
+					item = self.mChannelListHash.get( self.mMoveList[0], None )
+					if not item :
+						LOG_TRACE( 'None move channel' )
+						return
+
+					updown = self.GetMoveNumber( ( '%s'% item.mNumber ) )
+					LOG_TRACE( '-------------input[%s] viewFirst[%s]'% ( updown, self.mViewFirst ) )
+					self.mViewFirst = updown
+
+
+
  			except :
 				import traceback
 				LOG_TRACE( 'traceback=%s' %traceback.format_exc() )
@@ -3048,7 +3064,18 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowEditContextMenu( self, aMode, aMove = None ) :
 		#try:
 		if self.mMoveFlag :
-			self.SetMoveMode( FLAG_OPT_MOVE_OK )
+			context = []
+			context.append( ContextItem( MR_LANG( 'Insert Number' ), CONTEXT_ACTION_INSERT_NUMBER ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+	 		dialog.doModal( )
+
+			selectedAction = dialog.GetSelectedAction( )
+			if selectedAction == -1 :
+				#LOG_TRACE( 'CANCEL by context dialog' )
+				return
+
+			self.SetMoveMode( FLAG_OPT_MOVE_UPDOWN, Action.ACTION_CONTEXT_MENU )
 			return
 
 		self.LoadFavoriteGroupList( )
