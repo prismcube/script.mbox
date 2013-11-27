@@ -2,8 +2,14 @@ from pvr.gui.WindowImport import *
 from pvr.gui.FTIWindow import FTIWindow
 from pvr.XBMCInterface import XBMC_SetSkinZoom
 import pvr.ScanHelper as ScanHelper
+from elementtree import ElementTree
 
-E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
+E_FIRST_INSTALLATION_BASE_ID = WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+FILE_PROVIDER	= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/Provider.xml'
+
+E_SEARCH_AUTO		=	0
+E_SEARCH_MANUAL		=	1
+E_SEARCH_FAST		=	2
 
 
 class FirstInstallation( FTIWindow ) :
@@ -27,13 +33,16 @@ class FirstInstallation( FTIWindow ) :
 		self.mBusyVideoSetting			= False
 		self.mReloadSkinPosition		= False
 
-		self.mIsManualSetup				= 0
+		self.mChannelSearchMode			= E_SEARCH_AUTO
 		self.mSatelliteIndex			= 0
 		self.mTransponderList			= []
 		self.mTransponderIndex			= 0
 		self.mConfigTransponder			= None
 		self.mIsManualTp				= 0
 		self.mIsReloadChannelSearchStep = False
+		self.mOPDescr					= 'None'
+		self.mUseHDList					= 0
+		self.mProviderStruct			= ElisFastScanProviderInfo( )
 
 		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
 			self.mTunerConnection		= E_TUNER_ONECABLE
@@ -218,6 +227,9 @@ class FirstInstallation( FTIWindow ) :
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.ChannelSearchConfig( groupId )
 
+		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_FAST :
+			self.ChannelSearchConfigFast( groupId )
+
 		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			self.TimeSetting( groupId )
 
@@ -362,7 +374,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetConfigTransponder( )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Channel Search' ), USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )			
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Manual Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable Manual scan' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ), MR_LANG( 'Fast Scan' ) ], self.mChannelSearchMode, MR_LANG( 'daniel --- Select channel scan mode' ) )
 			description = MR_LANG( 'Select or enter the transponder frequency for the selected satellite' )
 			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, description, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
 			self.AddEnumControl( E_SpinEx03, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
@@ -383,7 +395,7 @@ class FirstInstallation( FTIWindow ) :
 			networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 			self.AddEnumControl( E_SpinEx06, 'Network Search', None, networkSearchDescription )
 			self.AddEnumControl( E_SpinEx07, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'daniel --- Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -397,6 +409,24 @@ class FirstInstallation( FTIWindow ) :
 			self.DisableControl( )
 			if aSetFocus :
 				self.SetDefaultControl( )
+
+		elif aStep == E_STEP_CHANNEL_SEARCH_CONFIG_FAST :
+			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Provider' ), self.mOPDescr, MR_LANG( 'Select a provider you want to scan channels from' ) )
+			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'HD List' ), USER_ENUM_LIST_YES_NO, self.mUseHDList, MR_LANG( 'Enable/Disable HD List option' ) )
+			self.AddPrevNextButton( MR_LANG( 'daniel --- Go to the time and date setup page' ), MR_LANG( 'daniel --- Go back to the channel search setup page' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_Input01 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			self.SetVisibleControls( hideControlIds, False )
+			
+			self.InitControl( )
+			time.sleep( 0.2 )
+			self.DisableControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
@@ -515,21 +545,23 @@ class FirstInstallation( FTIWindow ) :
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
-				self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
-				self.mIsManualSetup = 0
+				#self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+				#self.mIsManualSetup = 0
 				self.SetEnableControls( visibleControlIds, False )
+				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+				return
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 
 			if self.mSatelliteIndex == 0 :
-				visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
-				self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
-				self.mIsManualSetup = 0
+				visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
+				#self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+				#self.mIsManualSetup = 0
+				#self.mChannelSearchMode = E_SEARCH_AUTO
 				self.SetEnableControls( visibleControlIds, False )
-				return
 
 			visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
-			if self.mIsManualSetup == 0 :
+			if self.mChannelSearchMode != E_SEARCH_MANUAL :
 				self.SetEnableControls( visibleControlIds, False )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			else :
@@ -687,6 +719,12 @@ class FirstInstallation( FTIWindow ) :
 		if aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
 			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
+			if self.mChannelSearchMode == E_SEARCH_MANUAL and select == 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( ' - daniel - ' ) )
+				dialog.doModal( )
+				return
+
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex	= select
 				self.mTransponderIndex	= 0
@@ -734,7 +772,7 @@ class FirstInstallation( FTIWindow ) :
 			self.DisableControl( )
 
 		elif aControlId == E_SpinEx02 :
-			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx02 )
+			self.mChannelSearchMode = self.GetSelectedIndex( E_SpinEx02 )
 			self.DisableControl( )
 
 		elif aControlId == E_SpinEx03 :
@@ -765,8 +803,8 @@ class FirstInstallation( FTIWindow ) :
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			self.CloseBusyDialog( )
 			if self.mIsChannelSearch == True :
-				if self.mConfiguredSatelliteList :
-					if self.mIsManualSetup == 0 :
+				if self.mConfiguredSatelliteList or self.mHasTansponder == False :
+					if self.mChannelSearchMode == E_SEARCH_AUTO :
 						channelList = self.mDataCache.Channel_GetList( )
 						if channelList and channelList[0].mError == 0 :
 							ret = self.mDataCache.Channel_DeleteAll( )
@@ -776,7 +814,6 @@ class FirstInstallation( FTIWindow ) :
 								if not self.mDataCache.Get_Player_AVBlank( ) :
 									self.mDataCache.Player_AVBlank( True )
 								self.mDataCache.Channel_InvalidateCurrent( )
-								#self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 
 						if self.mSatelliteIndex == 0 :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
@@ -793,7 +830,8 @@ class FirstInstallation( FTIWindow ) :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 							dialog.SetConfiguredSatellite( configuredSatelliteList )				
 							dialog.doModal( )
-					else :
+
+					elif self.mChannelSearchMode == E_SEARCH_MANUAL :
 						transponderList = []
 			 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
 						transponderList.append( self.mConfigTransponder )
@@ -801,15 +839,186 @@ class FirstInstallation( FTIWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList, self.mIsManualTp )
 						dialog.doModal( )
+
+					elif self.mChannelSearchMode == E_SEARCH_FAST :
+						self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG_FAST )
+						return
 						
 				else :
+					#Todo description
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'daniel --- No configured satellite available' ) )
 					dialog.doModal( )
 
 				self.SetListControl( E_STEP_DATE_TIME )
 			else :
 				self.SetListControl( E_STEP_DATE_TIME )
+
+
+	def ChannelSearchConfigFast( self, aControlId ) :
+		if aControlId == E_Input01 :
+			providerList = self.GetProviderList( )
+			if providerList :
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Provider' ), providerList, False, StringToListIndex( providerList, self.mOPDescr ) )
+				if ret >= 0 :
+					if self.SetProviderInfo( ret ) :
+						#self.SetControlLabel2String( E_Input02, self.mOPDescr )
+						self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG_FAST, False )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No provider file found' ) )
+				dialog.doModal( )
+
+		elif aControlId == E_SpinEx01 :
+			self.mUseHDList = self.GetSelectedIndex( E_SpinEx01 )
+
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+			if self.mProviderStruct and self.mOPDescr != 'None' :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				providerlist = []
+				temp = deepcopy( self.mProviderStruct )
+				temp.mHasHDList = self.mUseHDList
+				providerlist.append( temp )
+				dialog.SetProvider( self.GetTunerIndex( self.mProviderStruct.mLongitude, self.mProviderStruct.mBand ), 0, 0, providerlist )
+				dialog.doModal( )
+				self.SetListControl( E_STEP_DATE_TIME )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please select a provider first' ) )
+				dialog.doModal( )
+
+
+	def GetTunerIndex( self, aSatellite, aBand ) :
+		if self.mDataCache.GetTunerIndexBySatellite( aSatellite, aBand ) == E_CONFIGURED_TUNER_2 :
+			return E_TUNER_2
+		else :
+			return E_TUNER_1
+
+
+	def GetProviderList( self ) :
+		if not os.path.exists( FILE_PROVIDER ) :
+			return None
+
+		try :
+			tree = ElementTree.parse( FILE_PROVIDER )
+			root = tree.getroot( )
+			nameList = []
+
+			for provider in root.findall( 'Provider' ) :
+				for name in provider.findall( 'OPDescription' ) :
+					nameList.append( name.text.encode( 'utf-8' ) )
+
+			if len( nameList ) > 0 :
+				return nameList
+			else :
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
+	def SetProviderInfo( self, aIndex ) :
+		if not os.path.exists( FILE_PROVIDER ) :
+			return False
+
+		try :
+			tree = ElementTree.parse( FILE_PROVIDER )
+			root = tree.getroot( )
+
+			provider = root.getchildren( )[ aIndex ]
+
+			self.mOPDescr = provider.find( 'OPDescription' ).text.encode( 'utf-8' )
+			self.mUseHDList = self.GetHDListEnum( provider.find( 'HDList' ).text.encode( 'utf-8' ) )
+
+			struct = ElisFastScanProviderInfo( )
+			struct.reset( )
+			struct.mName			= provider.find( 'SatelliteName' ).text.encode( 'utf-8' )
+			struct.mLongitude		= int( provider.find( 'SatelliteLongitude' ).text.encode( 'utf-8' ) )
+			struct.mBand			= self.GetBandEnum( provider.find( 'SatelliteBand' ).text.encode( 'utf-8' ) )
+			struct.mTransponderId	= int( provider.find( 'TransponderId' ).text.encode( 'utf-8' ) )
+			struct.mFrequency		= int( provider.find( 'Frequency' ).text.encode( 'utf-8' ) )
+			struct.mSymbolRate		= int( provider.find( 'Symbolrate' ).text.encode( 'utf-8' ) )
+			struct.mPolarization	= self.GetPolEnum( provider.find( 'Polarization' ).text.encode( 'utf-8' ) )
+			struct.mFEC				= self.GetFECEnum( provider.find( 'FECMode' ).text.encode( 'utf-8' ) )
+			struct.mPid				= int( provider.find( 'Pid' ).text.encode( 'utf-8' ) )
+			struct.mPidDescr		= provider.find( 'PidDescription' ).text.encode( 'utf-8' )
+			struct.mOPIndetifier	= int( provider.find( 'OPIndetifier' ).text.encode( 'utf-8' ) )
+			struct.mOPDescr			= provider.find( 'OPDescription' ).text.encode( 'utf-8' )
+			struct.mHasHDList		= self.GetHDListEnum( provider.find( 'HDList' ).text.encode( 'utf-8' ) )
+
+			self.mProviderStruct = struct
+			self.mProviderStruct.printdebug( )
+			return True
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
+
+
+	def GetBandEnum( self, aBand ) :
+		if aBand == 'BAND_KU' :
+			return ElisEnum.E_BAND_KU
+		elif aBand == 'BAND_C' :
+			return ElisEnum.E_BAND_C
+		else :
+			return ElisEnum.E_BAND_UNDEFINED
+
+
+	def GetPolEnum( self, aPol ) :
+		if aPol == 'LNB_HORIZONTAL' :
+			return ElisEnum.E_LNB_HORIZONTAL
+		else :
+			return ElisEnum.E_LNB_VERTICAL
+
+
+	def GetFECEnum( self, aFEC ) :
+		if aFEC == 'DVBS_1_2' :
+			return ElisEnum.E_DVBS_1_2
+		elif aFEC == 'DVBS_2_3' :
+			return ElisEnum.E_DVBS_2_3
+		elif aFEC == 'DVBS_3_4' :
+			return ElisEnum.E_DVBS_3_4
+		elif aFEC == 'DVBS_5_6' :
+			return ElisEnum.E_DVBS_5_6
+		elif aFEC == 'DVBS_7_8' :
+			return ElisEnum.E_DVBS_7_8
+		elif aFEC == 'DVBS2_QPSK_1_2' :
+			return ElisEnum.E_DVBS2_QPSK_1_2
+		elif aFEC == 'DVBS2_QPSK_3_5' :
+			return ElisEnum.E_DVBS2_QPSK_3_5
+		elif aFEC == 'DVBS2_QPSK_2_3' :
+			return ElisEnum.E_DVBS2_QPSK_2_3
+		elif aFEC == 'DVBS2_QPSK_3_4' :
+			return ElisEnum.E_DVBS2_QPSK_3_4
+		elif aFEC == 'DVBS2_QPSK_4_5' :
+			return ElisEnum.E_DVBS2_QPSK_4_5
+		elif aFEC == 'DVBS2_QPSK_5_6' :
+			return ElisEnum.E_DVBS2_QPSK_5_6
+		elif aFEC == 'DVBS2_QPSK_8_9' :
+			return ElisEnum.E_DVBS2_QPSK_8_9
+		elif aFEC == 'DVBS2_QPSK_9_10' :
+			return ElisEnum.E_DVBS2_QPSK_9_10
+		elif aFEC == 'DVBS2_8PSK_3_5' :
+			return ElisEnum.E_DVBS2_8PSK_3_5
+		elif aFEC == 'DVBS2_8PSK_2_3' :
+			return ElisEnum.E_DVBS2_8PSK_2_3
+		elif aFEC == 'DVBS2_8PSK_3_4' :
+			return ElisEnum.E_DVBS2_8PSK_3_4
+		elif aFEC == 'DVBS2_8PSK_5_6' :
+			return ElisEnum.E_DVBS2_8PSK_5_6
+		elif aFEC == 'DVBS2_8PSK_8_9' :
+			return ElisEnum.E_DVBS2_8PSK_8_9
+		elif aFEC == 'DVBS2_8PSK_9_10' :
+			return ElisEnum.E_DVBS2_8PSK_9_10
+
+
+	def GetHDListEnum( self, aHDList ) :
+		if aHDList == 'true' :
+			return 1
+		else :
+			return 0
 
 
 	def CallballInputNumber( self, aGroupId, aString ) :

@@ -81,7 +81,7 @@ class FastScan( SettingWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Provider' ), providerList, False, StringToListIndex( providerList, self.mOPDescr ) )
 				if ret >= 0 :
 					if self.SetProviderInfo( ret ) :
-						self.SetControlLabel2String( E_Input02, self.mOPDescr )
+						#self.SetControlLabel2String( E_Input02, self.mOPDescr )
 						self.InitConfig( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -91,7 +91,7 @@ class FastScan( SettingWindow ) :
 
 		# Start Scan
 		if groupId == E_Input03 :
-			if self.mProviderStruct :
+			if self.mProviderStruct and self.mOPDescr != 'None' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				providerlist = []
 				temp = deepcopy( self.mProviderStruct )
@@ -124,7 +124,7 @@ class FastScan( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-		self.GetTunerNumToString( self.mTunerIndex )
+		#self.GetTunerNumToString( self.mTunerIndex )
 		self.AddInputControl( E_Input01, MR_LANG( 'Tuner' ), self.GetTunerNumToString( self.mTunerIndex ), MR_LANG( 'Select a tuner you want to search' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'Provider' ), self.mOPDescr, MR_LANG( 'Select a provider you want to scan channels from' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'HD List' ), USER_ENUM_LIST_YES_NO, self.mUseHDList, MR_LANG( 'Enable/Disable HD List option' ) )
