@@ -279,6 +279,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
 				self.mDataCache.Channel_ReTune( )
 			else :
+				iChannel = self.mDataCache.Channel_GetCurrent( True )
 				self.mDataCache.Channel_TuneDefault( False, iChannel )
 		self.NewTransponderAdd( )
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
