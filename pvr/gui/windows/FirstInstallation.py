@@ -830,7 +830,7 @@ class FirstInstallation( FTIWindow ) :
 					elif self.mChannelSearchMode == E_SEARCH_MANUAL :
 						if self.mSatelliteIndex == 0 :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'daniel --- ' ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Scanning multiple satellites at the same time%s cannot be done in manual channel search' ) % NEW_LINE )
 							dialog.doModal( )
 							return
 						else :
@@ -847,7 +847,6 @@ class FirstInstallation( FTIWindow ) :
 						return
 						
 				else :
-					#Todo description
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite or transponder available' ) )
 					dialog.doModal( )
