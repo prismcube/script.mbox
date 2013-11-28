@@ -374,7 +374,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetConfigTransponder( )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Channel Search' ), USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite on which the transponder you wish to scan is located' ) )			
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ), MR_LANG( 'Fast Scan' ) ], self.mChannelSearchMode, MR_LANG( 'daniel --- Select channel scan mode' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ), MR_LANG( 'Fast Scan' ) ], self.mChannelSearchMode, MR_LANG( 'Select channel scan mode' ) )
 			description = MR_LANG( 'Select or enter the transponder frequency for the selected satellite' )
 			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, description, aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 13000 )
 			self.AddEnumControl( E_SpinEx03, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
@@ -395,7 +395,7 @@ class FirstInstallation( FTIWindow ) :
 			networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 			self.AddEnumControl( E_SpinEx06, 'Network Search', None, networkSearchDescription )
 			self.AddEnumControl( E_SpinEx07, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
-			self.AddPrevNextButton( MR_LANG( 'daniel --- Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -415,7 +415,7 @@ class FirstInstallation( FTIWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Provider' ), self.mOPDescr, MR_LANG( 'Select a provider you want to scan channels from' ) )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'HD List' ), USER_ENUM_LIST_YES_NO, self.mUseHDList, MR_LANG( 'Enable/Disable HD List option' ) )
-			self.AddPrevNextButton( MR_LANG( 'daniel --- Go to the time and date setup page' ), MR_LANG( 'daniel --- Go back to the channel search setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the channel search setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -721,7 +721,7 @@ class FirstInstallation( FTIWindow ) :
 			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
 			if self.mChannelSearchMode == E_SEARCH_MANUAL and select == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( ' - daniel - ' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Scanning multiple satellites at the same time%s cannot be done in manual channel search' )% NEW_LINE )
 				dialog.doModal( )
 				return
 
@@ -847,7 +847,7 @@ class FirstInstallation( FTIWindow ) :
 				else :
 					#Todo description
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'daniel --- No configured satellite available' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite or transponder available' ) )
 					dialog.doModal( )
 
 				self.SetListControl( E_STEP_DATE_TIME )
