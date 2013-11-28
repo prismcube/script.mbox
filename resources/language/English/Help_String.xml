@@ -88,8 +88,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="5" title="Remote Control - QWERTY Keyboard" location="">
+		<content name="help/remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>210</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+			<type>textbox</type>
+			<posx>205</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="5" title="Connecting Your STB - Antenna Connection" location="">
+	<page number="6" title="Connecting Your STB - Antenna Connection" location="">
 		<content name="help/connect_STB.png">
 			<type>image</type>
 			<posx>245</posx>
@@ -106,7 +123,7 @@
 		</content>
 	</page>
 	
-	<page number="6" title="Info Plate" location="">
+	<page number="7" title="Info Plate" location="">
 		<content name="help/info_plate.png">
 			<type>image</type>
 			<posx>225</posx>
@@ -123,7 +140,7 @@
 		</content>
 	</page>
 	
-	<page number="7" title="First Installation" location="(INSTALLATION > FIRST INSTALLATION)">
+	<page number="8" title="First Installation" location="(INSTALLATION > FIRST INSTALLATION)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -140,7 +157,7 @@
 		</content>
 	</page>
 	
-	<page number="8" title="Antenna and Satellite Setup" location="(INSTALLATION > ANTENNA SETUP)">
+	<page number="9" title="Antenna and Satellite Setup" location="(INSTALLATION > ANTENNA SETUP)">
 		<content name="help/antenna_setup.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -157,7 +174,7 @@
 		</content>
 	</page>
 	
-	<page number="9" title="Channel Search" location="(INSTALLATION > CHANNEL SEARCH)">
+	<page number="10" title="Channel Search" location="(INSTALLATION > CHANNEL SEARCH)">
 		<content name="help/channel_search.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -174,7 +191,7 @@
 		</content>
 	</page>
 		
-	<page number="10" title="Channel List - Edit Channels" location="(CHANNEL LIST > CONTEXT MENU > EDIT CHANNELS)">
+	<page number="11" title="Channel List - Edit Channels" location="(CHANNEL LIST > CONTEXT MENU > EDIT CHANNELS)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -191,7 +208,7 @@
 		</content>
 	</page>
 		
-	<page number="11" title="Creating New Favorite Group" location="(EDIT CHANNELS > CREATE NEW FAVORITE GROUP)">
+	<page number="12" title="Creating New Favorite Group" location="(EDIT CHANNELS > CREATE NEW FAVORITE GROUP)">
 		<content name="help/create_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -208,7 +225,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Adding Channels to a Favorite Group" location="(EDIT CHANNELS > ADD TO FAVORITE GROUP)">
+	<page number="13" title="Adding Channels to a Favorite Group" location="(EDIT CHANNELS > ADD TO FAVORITE GROUP)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -225,7 +242,7 @@
 		</content>
 	</page>
 	
-	<page number="13" title="Removing Channels from a Favorite Group" location="(SLIDE MENU > SELECT FAVORITE GROUP > DELETE)">
+	<page number="14" title="Removing Channels from a Favorite Group" location="(SLIDE MENU > SELECT FAVORITE GROUP > DELETE)">
 		<content name="help/remove_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -242,7 +259,7 @@
 		</content>
 	</page>
 	
-	<page number="14" title="Renaming a Favorite Group" location="(EDIT CHANNELS > RENAME FAVORITE GROUP)">
+	<page number="15" title="Renaming a Favorite Group" location="(EDIT CHANNELS > RENAME FAVORITE GROUP)">
 		<content name="help/rename_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -259,7 +276,7 @@
 		</content>
 	</page>
 	
-	<page number="15" title="Deleting a Favorite Group" location="(EDIT CHANNELS > DELETE FAVORITE GROUP)">
+	<page number="16" title="Deleting a Favorite Group" location="(EDIT CHANNELS > DELETE FAVORITE GROUP)">
 		<content name="help/delete_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -276,7 +293,7 @@
 		</content>
 	</page>
 
-	<page number="16" title="Media Center" location="(MEDIA or PRESS XBMC BUTTON)">
+	<page number="17" title="Media Center" location="(MEDIA or PRESS XBMC BUTTON)">
 		<content name="help/xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -293,7 +310,7 @@
 		</content>
 	</page>
 	
-	<page number="17" title="Installing Add-ons" location="(MEDIA > ADD-ON MANAGER > GET ADD-ONS)">
+	<page number="18" title="Installing Add-ons" location="(MEDIA > ADD-ON MANAGER > GET ADD-ONS)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -310,7 +327,7 @@
 		</content>
 	</page>
 	
-	<page number="18" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
+	<page number="19" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -327,7 +344,7 @@
 		</content>
 	</page>
 
-	<page number="19" title="Getting Further Help" location="">
+	<page number="20" title="Getting Further Help" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>

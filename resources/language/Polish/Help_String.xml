@@ -88,8 +88,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="5" title="Remote Control - QWERTY Keyboard" location="">
+		<content name="help/remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>210</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+			<type>textbox</type>
+			<posx>205</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="5" title="Instalacja STB - Podłączenie anteny" location="">
+	<page number="6" title="Instalacja STB - Podłączenie anteny" location="">
 		<content name="help/connect_STB.png">
 			<type>image</type>
 			<posx>245</posx>
@@ -106,7 +123,7 @@
 		</content>
 	</page>
 
-	<page number="6" title="Baner informacyjny" location="">
+	<page number="7" title="Baner informacyjny" location="">
 		<content name="help/info_plate.png">
 			<type>image</type>
 			<posx>225</posx>
@@ -123,7 +140,7 @@
 		</content>
 	</page>
 	
-	<page number="7" title="Pierwsza instalacja" location="(INSTALACJA > PIERWSZA INSTALACJA)">
+	<page number="8" title="Pierwsza instalacja" location="(INSTALACJA > PIERWSZA INSTALACJA)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -140,7 +157,7 @@
 		</content>
 	</page>
 	
-	<page number="8" title="Ustawienia anteny i satelitów" location="(INSTALACJA > USTAWIENIA ANTENY)">
+	<page number="9" title="Ustawienia anteny i satelitów" location="(INSTALACJA > USTAWIENIA ANTENY)">
 		<content name="help/antenna_setup.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -157,7 +174,7 @@
 		</content>
 	</page>
 	
-	<page number="9" title="Wyszukanie kanałów" location="(INSTALACJA > WYSZUKIWANIE KANAŁÓW)">
+	<page number="10" title="Wyszukanie kanałów" location="(INSTALACJA > WYSZUKIWANIE KANAŁÓW)">
 		<content name="help/channel_search.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -174,7 +191,7 @@
 		</content>
 	</page>
 		
-	<page number="10" title="Lista kanałów - Edytuj kanały" location="(LISTA KANAŁÓW > MENU EDYCJI (i) > EDYTUJ KANAŁY)">
+	<page number="11" title="Lista kanałów - Edytuj kanały" location="(LISTA KANAŁÓW > MENU EDYCJI (i) > EDYTUJ KANAŁY)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -191,7 +208,7 @@
 		</content>
 	</page>
 		
-	<page number="11" title="Tworzenie nowej grupy ulubionych" location="(EDYTUJ KANAŁY > UTWÓRZ GRUPĘ)">
+	<page number="12" title="Tworzenie nowej grupy ulubionych" location="(EDYTUJ KANAŁY > UTWÓRZ GRUPĘ)">
 		<content name="help/create_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -208,7 +225,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Dodawanie kanałów do grupy ulubionych" location="(EDYTUJ KANAŁY > DODAJ DO ULUBIONYCH)">
+	<page number="13" title="Dodawanie kanałów do grupy ulubionych" location="(EDYTUJ KANAŁY > DODAJ DO ULUBIONYCH)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -225,7 +242,7 @@
 		</content>
 	</page>
 	
-	<page number="13" title="Usuwanie kanałów z grupy ulubionych" location="(WYSUWANE MENU > WYBIERZ GRUPĘ ULUBIONYCH > USUŃ)">
+	<page number="14" title="Usuwanie kanałów z grupy ulubionych" location="(WYSUWANE MENU > WYBIERZ GRUPĘ ULUBIONYCH > USUŃ)">
 		<content name="help/remove_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -242,7 +259,7 @@
 		</content>
 	</page>
 	
-	<page number="14" title="Zmiana nazwy grupy ulubionych" location="(EDYTUJ KANAŁY > ZMIEŃ NAZWĘ GRUPY)">
+	<page number="15" title="Zmiana nazwy grupy ulubionych" location="(EDYTUJ KANAŁY > ZMIEŃ NAZWĘ GRUPY)">
 		<content name="help/rename_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -259,7 +276,7 @@
 		</content>
 	</page>
 	
-	<page number="15" title="Usuwanie grupy ulubionych" location="(EDYTUJ KANAŁY > USUŃ GRUPĘ)">
+	<page number="16" title="Usuwanie grupy ulubionych" location="(EDYTUJ KANAŁY > USUŃ GRUPĘ)">
 		<content name="help/delete_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -276,7 +293,7 @@
 		</content>
 	</page>
 
-	<page number="16" title="Media Center" location="(MEDIA lub WCIŚNIJ PRZYCISK XBMC)">
+	<page number="17" title="Media Center" location="(MEDIA lub WCIŚNIJ PRZYCISK XBMC)">
 		<content name="help/xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -293,7 +310,7 @@
 		</content>
 	</page>
 	
-	<page number="17" title="Instalacja dodatków" location="(MEDIA > MENEDŻER PLIKÓW > DODAJ ŹRÓDŁO)">
+	<page number="18" title="Instalacja dodatków" location="(MEDIA > MENEDŻER PLIKÓW > DODAJ ŹRÓDŁO)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -310,7 +327,7 @@
 		</content>
 	</page>
 	
-	<page number="18" title="Uruchamienie dodatków" location="(MEDIA > ZDJĘCIA, MUZYKA, WIDEO lub PROGRAMY)">
+	<page number="19" title="Uruchamienie dodatków" location="(MEDIA > ZDJĘCIA, MUZYKA, WIDEO lub PROGRAMY)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -327,7 +344,7 @@
 		</content>
 	</page>
 
-	<page number="19" title="Uzyskiwanie pomocy" location="">
+	<page number="20" title="Uzyskiwanie pomocy" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>

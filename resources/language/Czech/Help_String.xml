@@ -88,8 +88,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="5" title="Remote Control - QWERTY Keyboard" location="">
+		<content name="help/remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>210</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+			<type>textbox</type>
+			<posx>205</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="5" title="Připojení STB - Připojení antény" location="">
+	<page number="6" title="Připojení STB - Připojení antény" location="">
 		<content name="help/connect_STB.png">
 			<type>image</type>
 			<posx>245</posx>
@@ -106,7 +123,7 @@
 		</content>
 	</page>
 	
-	<page number="6" title="Info Plate" location="">
+	<page number="7" title="Info Plate" location="">
 		<content name="help/info_plate.png">
 			<type>image</type>
 			<posx>225</posx>
@@ -123,7 +140,7 @@
 		</content>
 	</page>
 	
-	<page number="7" title="Prvotní Instalace" location="(INSTALACE > PRVOTNÍ INSTALACE)">
+	<page number="8" title="Prvotní Instalace" location="(INSTALACE > PRVOTNÍ INSTALACE)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -140,7 +157,7 @@
 		</content>
 	</page>
 	
-	<page number="8" title="Nastavení Antény a Satelitů" location="(INSTALACE > NASTAVENÍ ANTÉNY)">
+	<page number="9" title="Nastavení Antény a Satelitů" location="(INSTALACE > NASTAVENÍ ANTÉNY)">
 		<content name="help/antenna_setup.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -157,7 +174,7 @@
 		</content>
 	</page>
 	
-	<page number="9" title="Vyhledávání Kanálů" location="(INSTALACE > VYHLEDÁVÁNÍ KANÁLŮ)">
+	<page number="10" title="Vyhledávání Kanálů" location="(INSTALACE > VYHLEDÁVÁNÍ KANÁLŮ)">
 		<content name="help/channel_search.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -174,7 +191,7 @@
 		</content>
 	</page>
 		
-	<page number="10" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
+	<page number="11" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -191,7 +208,7 @@
 		</content>
 	</page>
 		
-	<page number="11" title="Vytvoření nové oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > VYTVOŘIT NOVOU OBLÍBENOU SKUPINU)">
+	<page number="12" title="Vytvoření nové oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > VYTVOŘIT NOVOU OBLÍBENOU SKUPINU)">
 		<content name="help/create_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -208,7 +225,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
+	<page number="13" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -225,7 +242,7 @@
 		</content>
 	</page>
 	
-	<page number="13" title="Odstranění kanálů ze skupiny oblíbených" location="(SLIDE MENU > VYBRAT OBLÍBENOU SKUPINU > SMAZAT)">
+	<page number="14" title="Odstranění kanálů ze skupiny oblíbených" location="(SLIDE MENU > VYBRAT OBLÍBENOU SKUPINU > SMAZAT)">
 		<content name="help/remove_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -242,7 +259,7 @@
 		</content>
 	</page>
 	
-	<page number="14" title="Přejmenování oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘEJMENOVAT OBLÍBENÉ SKUPINY)">
+	<page number="15" title="Přejmenování oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘEJMENOVAT OBLÍBENÉ SKUPINY)">
 		<content name="help/rename_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -259,7 +276,7 @@
 		</content>
 	</page>
 	
-	<page number="15" title="Odstranění oblíbených skupin" location="(ÚPRAVA KANÁLŮ > ODSTRANĚNÍ OBLÍBENÝCH SKUPIN)">
+	<page number="16" title="Odstranění oblíbených skupin" location="(ÚPRAVA KANÁLŮ > ODSTRANĚNÍ OBLÍBENÝCH SKUPIN)">
 		<content name="help/delete_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -276,7 +293,7 @@
 		</content>
 	</page>
 
-	<page number="16" title="Media Center" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
+	<page number="17" title="Media Center" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
 		<content name="help/xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -293,7 +310,7 @@
 		</content>
 	</page>
 	
-	<page number="17" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
+	<page number="18" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -310,7 +327,7 @@
 		</content>
 	</page>
 	
-	<page number="18" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
+	<page number="19" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -327,7 +344,7 @@
 		</content>
 	</page>
 
-	<page number="19" title="Získání další nápovědy" location="">
+	<page number="20" title="Získání další nápovědy" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>
