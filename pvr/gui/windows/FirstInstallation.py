@@ -240,7 +240,7 @@ class FirstInstallation( FTIWindow ) :
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.mEventBus.Deregister( self )
 			self.OpenBusyDialog( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			self.StopScanHelper( )
 			self.CloseBusyDialog( )
 			self.SetListControl( self.mPrevStepNum )
 
@@ -285,7 +285,7 @@ class FirstInstallation( FTIWindow ) :
 			self.mDataCache.Channel_TuneDefault( )
 
 		self.mEventBus.Deregister( self )
-		ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+		self.StopScanHelper( )
 		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
@@ -545,30 +545,20 @@ class FirstInstallation( FTIWindow ) :
 		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG :
 			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03 ]
 			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
-				#self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
-				#self.mIsManualSetup = 0
 				self.SetEnableControls( visibleControlIds, False )
-				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+				self.StopScanHelper( )
 				return
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 
-			if self.mSatelliteIndex == 0 :
-				visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
-				#self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
-				#self.mIsManualSetup = 0
-				#self.mChannelSearchMode = E_SEARCH_AUTO
-				self.SetEnableControls( visibleControlIds, False )
-
 			visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03 ]
 			if self.mChannelSearchMode != E_SEARCH_MANUAL :
 				self.SetEnableControls( visibleControlIds, False )
-				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+				self.StopScanHelper( )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 				self.mEventBus.Register( self )
-				ScanHelper.GetInstance( ).ScanHelper_Start( self )
-				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				self.StartScanHelper( )
 
 				if self.mConfigTransponder.mFECMode == 0 :
 					self.getControl( E_SpinEx04 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
@@ -578,6 +568,12 @@ class FirstInstallation( FTIWindow ) :
 					self.SetProp( E_SpinEx04, 0 )
 					self.getControl( E_SpinEx04 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
 					self.SetEnableControl( E_SpinEx04, True )
+
+		elif self.GetFTIStep( ) == E_STEP_CHANNEL_SEARCH_CONFIG_FAST :
+			if self.mProviderStruct.mHasHDList == 0 :
+				self.SetEnableControl( E_SpinEx01, False )
+			else :
+				self.SetEnableControl( E_SpinEx01, True )
 
 		elif self.GetFTIStep( ) == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
@@ -729,7 +725,8 @@ class FirstInstallation( FTIWindow ) :
 				self.mSatelliteIndex	= select
 				self.mTransponderIndex	= 0
 				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG, False )
-			#self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
+				if self.mChannelSearchMode == E_SEARCH_MANUAL :
+					self.StartScanHelper( )
 
 		elif aControlId == E_Input02 :
 			formattedTransponderList = []
@@ -744,9 +741,8 @@ class FirstInstallation( FTIWindow ) :
 
 			if select >=0 :
 				self.mTransponderIndex = select
-				#self.SetConfigTransponder( )
 				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG, False )
-				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				self.StartScanHelper( )
 
 		elif aControlId == E_Input03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -762,7 +758,7 @@ class FirstInstallation( FTIWindow ) :
 					self.mConfigTransponder.mSymbolRate = int( tempval )
 
 				self.SetControlLabel2String( E_Input03, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
-				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				self.StartScanHelper( )
 
 		elif aControlId == E_SpinEx01 :
 			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
@@ -782,17 +778,17 @@ class FirstInstallation( FTIWindow ) :
 				self.mConfigTransponder.mFECMode = ElisEnum.E_DVBS2_QPSK_1_2
 	
 			self.DisableControl( )
-			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+			self.StartScanHelper( )
 
 		elif aControlId == E_SpinEx04 :
 			self.ControlSelect( )
 			property = ElisPropertyEnum( 'FEC', self.mCommander )
 			self.mConfigTransponder.mFECMode = property.GetProp( )
-			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+			self.StartScanHelper( )
 
 		elif aControlId == E_SpinEx05 :
 			self.mConfigTransponder.mPolarization = self.GetSelectedIndex( E_SpinEx05 )
-			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+			self.StartScanHelper( )
 
 		elif aControlId == E_SpinEx06 or aControlId == E_SpinEx07 :
 			self.ControlSelect( )
@@ -800,7 +796,7 @@ class FirstInstallation( FTIWindow ) :
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			self.mEventBus.Deregister( self )
 			self.OpenBusyDialog( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self )
+			self.StopScanHelper( )
 			self.CloseBusyDialog( )
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList or self.mHasTansponder == False :
@@ -832,13 +828,19 @@ class FirstInstallation( FTIWindow ) :
 							dialog.doModal( )
 
 					elif self.mChannelSearchMode == E_SEARCH_MANUAL :
-						transponderList = []
-			 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
-						transponderList.append( self.mConfigTransponder )
+						if self.mSatelliteIndex == 0 :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'daniel --- ' ) )
+							dialog.doModal( )
+							return
+						else :
+							transponderList = []
+				 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
+							transponderList.append( self.mConfigTransponder )
 
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-						dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList, self.mIsManualTp )
-						dialog.doModal( )
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+							dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList, self.mIsManualTp )
+							dialog.doModal( )
 
 					elif self.mChannelSearchMode == E_SEARCH_FAST :
 						self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG_FAST )
@@ -863,7 +865,6 @@ class FirstInstallation( FTIWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Provider' ), providerList, False, StringToListIndex( providerList, self.mOPDescr ) )
 				if ret >= 0 :
 					if self.SetProviderInfo( ret ) :
-						#self.SetControlLabel2String( E_Input02, self.mOPDescr )
 						self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG_FAST, False )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -887,6 +888,22 @@ class FirstInstallation( FTIWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please select a provider first' ) )
 				dialog.doModal( )
+
+
+	def StartScanHelper( self ) :
+		if self.mSatelliteIndex != 0 :
+			if self.mIsScanHelperStart == False :
+				ScanHelper.GetInstance( ).ScanHelper_Start( self )
+				self.mIsScanHelperStart = True
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+
+		else :
+			self.StopScanHelper( )
+
+
+	def StopScanHelper( self ) :
+		self.mIsScanHelperStart = False
+		ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 
 
 	def GetTunerIndex( self, aSatellite, aBand ) :
@@ -1029,13 +1046,13 @@ class FirstInstallation( FTIWindow ) :
 				self.mConfigTransponder.mFrequency = int( aString )
 				self.SetControlLabel2String( aGroupId, aString + ' MHz' )
 				if self.mConfigTransponder.mFrequency >= 3000 :
-					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+					self.StartScanHelper( )
 
 			elif aGroupId == E_Input03 :
 				self.mConfigTransponder.mSymbolRate = int( aString )
 				self.SetControlLabel2String( aGroupId, aString + ' KS/s' )
 				if self.mConfigTransponder.mSymbolRate >= 1000 :
-					ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+					self.StartScanHelper( )
 
 
 	def FocusChangedAction( self, aGroupId ) :
@@ -1043,12 +1060,12 @@ class FirstInstallation( FTIWindow ) :
 			if aGroupId == E_Input02 and self.mConfigTransponder.mFrequency < 3000 :
 				self.mConfigTransponder.mFrequency = 3000
 				self.SetControlLabel2String( E_Input02, '%s MHz' % self.mConfigTransponder.mFrequency )
-				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				self.StartScanHelper( )
 				
 			elif aGroupId == E_Input03 and self.mConfigTransponder.mSymbolRate < 1000 :
 				self.mConfigTransponder.mSymbolRate = 1000
 				self.SetControlLabel2String( E_Input03, '%s KS/s' % self.mConfigTransponder.mSymbolRate )
-				ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ], self.mConfigTransponder )
+				self.StartScanHelper( )
 
 
 	def TimeSetting( self, aControlId ) :
