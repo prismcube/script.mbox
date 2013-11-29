@@ -117,6 +117,7 @@ class NullWindow( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = time.time( )
 
 		self.UpdateLinkageService( )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( )
 
 		"""
 		currentStack = inspect.stack( )
