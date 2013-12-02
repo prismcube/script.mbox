@@ -461,14 +461,14 @@ class BaseWindow( BaseObjectWindow ) :
 
 
 	def SetMediaCenter( self ) :
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
-
-		import pvr.gui.WindowMgr as WinMgr
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 
 	def CheckMediaCenter( self ) :

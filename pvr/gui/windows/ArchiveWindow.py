@@ -125,7 +125,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.SetDefaultHideWatched( False )
 				self.mCtrlHideWatched.setSelected( False )
 
-
 			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
 			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
 			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
