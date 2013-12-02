@@ -785,12 +785,13 @@ class PIPWindow( BaseWindow ) :
 				self.mCurrentChannel = aChannel
 				self.ChannelTuneToPIP( -1 )
 
+			self.mPIPStart = True
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 			LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
 			if ret :
-				self.mPIPStart = True
+				#self.mPIPStart = True
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
 					self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )
