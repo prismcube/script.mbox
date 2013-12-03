@@ -81,7 +81,7 @@ class NullWindow( BaseWindow ) :
 			self.setProperty( 'PvrPlay', 'True' )
 
 		if self.mInitialized == False :
-			self.getControl( E_LABEL_ID_GUI_RESTART ).setLabel( MR_LANG( 'Restart GUI' ) )
+			self.getControl( E_LABEL_ID_GUI_RESTART ).setLabel( '[I]' +  MR_LANG( 'Restart GUI' )  +  '[/I]')
 			self.mInitialized = True
 			self.MboxFirstProcess( )
 			return
