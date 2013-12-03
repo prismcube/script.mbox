@@ -5,7 +5,7 @@ import xbmc, xbmcgui, gc
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 E_BUTTON_ID_FAKE      = E_NULL_WINDOW_BASE_ID + 9000
-
+E_LABEL_ID_GUI_RESTART      = E_NULL_WINDOW_BASE_ID + 100
 E_NOMAL_BLINKING_TIME = 0.2
 E_MAX_BLINKING_COUNT  =  10
 
@@ -81,6 +81,7 @@ class NullWindow( BaseWindow ) :
 			self.setProperty( 'PvrPlay', 'True' )
 
 		if self.mInitialized == False :
+			self.getControl( E_LABEL_ID_GUI_RESTART ).setLabel( MR_LANG( 'Restart GUI' ) )
 			self.mInitialized = True
 			self.MboxFirstProcess( )
 			return
