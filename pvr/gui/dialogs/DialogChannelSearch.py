@@ -237,7 +237,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
 				self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
-			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' % ( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			strTransponderInfo = '%s - %d MHz - %s - %d KS/s ' % ( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
@@ -261,15 +261,16 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def LoadChannelSearchedData( self ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
-		self.mDataCache.Channel_Save( )
-		self.mDataCache.LoadZappingList( )
-		self.mDataCache.LoadChannelList( )
-		iZapping = self.mDataCache.Zappingmode_GetCurrent( )
-		if iZapping and iZapping.mError == 0 :
-			self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
-		self.mDataCache.SetChannelReloadStatus( True )
-		iChannel = self.mDataCache.Channel_GetCurrent( True )
-		self.mDataCache.mCurrentChannel = iChannel
+		if len( self.mStoreTVChannel ) > 0 or len( self.mStoreRadioChannel ) > 0 :
+			self.mDataCache.Channel_Save( )
+			self.mDataCache.LoadZappingList( )
+			self.mDataCache.LoadChannelList( )
+			iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+			if iZapping and iZapping.mError == 0 :
+				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
+			self.mDataCache.SetChannelReloadStatus( True )
+			iChannel = self.mDataCache.Channel_GetCurrent( True )
+			self.mDataCache.mCurrentChannel = iChannel
 
 		if self.mScanMode == E_SCAN_TRANSPONDER :
 			self.mCommander.ScanHelper_Start( )
@@ -278,6 +279,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
 				self.mDataCache.Channel_ReTune( )
 			else :
+				iChannel = self.mDataCache.Channel_GetCurrent( True )
 				self.mDataCache.Channel_TuneDefault( False, iChannel )
 		self.NewTransponderAdd( )
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )

@@ -52,7 +52,6 @@ CONTEXT_ADD_VIEW_TIMER			= 9
 MININUM_KEYWORD_SIZE			= 3
 
 E_USE_FIXED_INTERVAL			= False
-E_MAX_EPG_DAYS 			= 24 * 3600 * 14
 
 E_GRID_MAX_CACHE_SIZE			= 100
 
@@ -2532,22 +2531,18 @@ class EPGWindow( BaseWindow ) :
 		if count <= 0 :
 			return
 
-		index = self.mSelectChannel.mNumber
-
-		LOG_TRACE( 'Select Channel count=%d' %count )
-		
-		if index < 0 or index >= count : 
-			index = 0
-
-		LOG_TRACE( 'Select Channel index=%d' %index )
+		idxCh = self.mChannelList.index( self.mSelectChannel )
+		idxNext = idxCh + 1
+		if idxNext >= count :
+			idxNext = count - 1
 		
 		self.mEventBus.Deregister( self )
 		self.StopEPGUpdateTimer( )
 
 		nextChannel = None
 
-		try :			
-			nextChannel = self.mChannelList[ index ]
+		try :
+			nextChannel = self.mChannelList[ idxNext ]
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 			nextChannel = self.mChannelList[ 0 ]
@@ -2577,22 +2572,18 @@ class EPGWindow( BaseWindow ) :
 		if count <= 0 :
 			return
 
-		index = self.mSelectChannel.mNumber - 2
+		idxCh = self.mChannelList.index( self.mSelectChannel ) 
+		idxPrev = idxCh - 1
+		if idxPrev < 0 :
+			idxPrev = 0
 
-		LOG_TRACE( 'Select Channel count=%d' %count )
-		
-		if index < 0 or index >= count : 
-			index = count - 1 
-
-		LOG_TRACE( 'Select Channel index=%d' %index )
-		
 		self.mEventBus.Deregister( self )
 		self.StopEPGUpdateTimer( )
 
 		prevChannel = None
 
 		try :			
-			prevChannel = self.mChannelList[ index ]
+			prevChannel = self.mChannelList[ idxPrev ]
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 			prevChannel = self.mChannelList[ 0 ]

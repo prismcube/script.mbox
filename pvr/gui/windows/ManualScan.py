@@ -110,7 +110,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  self.mTransponderIndex )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  self.mSatelliteIndex )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select

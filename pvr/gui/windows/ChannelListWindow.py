@@ -179,6 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastChannelListHash = {}
 		self.mTPListByChannelHash = {}
 		self.mZappingChange = False
+		self.mMaxChannelNum = E_INPUT_MAX
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -216,7 +217,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mUserMode  = deepcopy( self.mLoadMode )
 		self.mLastMode  = deepcopy( self.mLoadMode )
 		self.mPrevMode  = deepcopy( self.mLoadMode )
-		
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
@@ -227,6 +227,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mPlayProgressThread = self.EPGProgressThread( )
 
 		self.mAsyncTuneTimer = None
+		self.mAsyncSortTimer = None
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 
@@ -419,7 +420,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 				return
 
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True )
+			self.UpdateSort( )
 
 
 		elif aControlId == E_CONTROL_ID_BUTTON_MAINMENU or aControlId == E_CONTROL_ID_LIST_MAINMENU :
@@ -467,6 +468,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelListHashIDs = {}
 		self.mChannelListForMove = []
 		self.mTPListByChannelHash = {}
+		self.mMaxChannelNum = E_INPUT_MAX
+
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			for iChannel in self.mChannelList :
 				chNumber = iChannel.mNumber
@@ -479,7 +482,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mTPListByChannelHash[iChannel.mNumber] = self.mDataCache.GetTunerIndexBySatellite( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mCarrier.mDVBS.mSatelliteBand )
 				#LOG_TRACE( '---------------ch[%s %s] tpNum[%s]'% ( iChannel.mNumber, iChannel.mName, self.mTPListByChannelHash.get( iChannel.mNumber, None ) ) )
 
-		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					chNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+
+				if chNumber > self.mMaxChannelNum :
+					self.mMaxChannelNum = chNumber
+		LOG_TRACE( '-------------channel hash len[%s] maxNum[%s]'% ( len( self.mChannelListHash ), self.mMaxChannelNum ) )
 
 		self.mTimerListHash = {}
 		timerList = self.mDataCache.Timer_GetTimerList( )
@@ -1114,24 +1122,9 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'already selected!!!' )
 					return
 
+
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
-				nextSort = ElisEnum.E_SORT_BY_NUMBER
-				if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
-					nextSort = ElisEnum.E_SORT_BY_ALPHABET
-				elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-					nextSort = ElisEnum.E_SORT_BY_HD
-					if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-						nextSort = ElisEnum.E_SORT_BY_NUMBER
-
-				idxMain = self.mUserSlidePos.mMain
-				idxSub  = self.mUserSlidePos.mSub
-
-				lblSort = EnumToString( 'sort', nextSort )
-				self.mUserMode.mSortingMode = nextSort
-				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
-
-				label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+				pass
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
@@ -1874,6 +1867,11 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setLabel2( '%s'% iChannel.mName )
 					listItem.setProperty( 'iHDLabel', hdLabel )
 
+				iAlign = E_TAG_FALSE
+				if iChNumber > 9999 :
+					iAlign = E_TAG_TRUE
+				listItem.setProperty( 'iAlign', iAlign )
+
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 				if iChannel.mIsCA : 
@@ -2302,6 +2300,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			if not isFind :
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+
+			iAlign = E_TAG_FALSE
+			if iChNumber > 9999 :
+				iAlign = E_TAG_TRUE
+			listItem.setProperty( 'iAlign', iAlign )
+
 			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', hdLabel )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
@@ -3310,6 +3314,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mPlayProgressThread.join( )
 
 		self.StopAsyncEPG( )
+		self.StopAsyncSort( )
 		self.SetVideoRestore( )
 		#WinMgr.GetInstance( ).CloseWindow( )
 
@@ -3363,7 +3368,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True, E_INPUT_MAX, self.mUserMode.mMode )
+		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True, self.mMaxChannelNum, self.mUserMode.mMode )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )
@@ -3503,5 +3508,42 @@ class ChannelListWindow( BaseWindow ) :
 		subIdx  = self.mUserSlidePos.mSub
 		self.RefreshSlideMenu( mainIdx, subIdx, True )
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
+
+
+	def UpdateSort( self ) :
+		nextSort = ElisEnum.E_SORT_BY_NUMBER
+		if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
+			nextSort = ElisEnum.E_SORT_BY_ALPHABET
+		elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
+			nextSort = ElisEnum.E_SORT_BY_HD
+			if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+				nextSort = ElisEnum.E_SORT_BY_NUMBER
+
+		self.mUserMode.mSortingMode = nextSort
+		#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
+
+		lblSort = EnumToString( 'sort', nextSort )
+		label = '%s : %s'% ( MR_LANG( 'Sort' ), lblSort )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+
+		self.RestartAsyncSort( )
+
+
+	def RestartAsyncSort( self ) :
+		self.StopAsyncSort( )
+		self.StartAsyncSort( )
+
+
+	def StartAsyncSort( self ) :
+		self.mAsyncSortTimer = threading.Timer( 1, self.SubMenuAction, [E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True] )
+		self.mAsyncSortTimer.start( )
+
+
+	def StopAsyncSort( self ) :
+		if self.mAsyncSortTimer	and self.mAsyncSortTimer.isAlive( ) :
+			self.mAsyncSortTimer.cancel( )
+			del self.mAsyncSortTimer
+
+		self.mAsyncSortTimer  = None
 
 

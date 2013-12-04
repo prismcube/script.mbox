@@ -436,6 +436,7 @@ class TunerConfigMgr( object ) :
 			return
 		channelSatelliteList = self.mDataCache.Satellite_GetListByChannel( )
 		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+		channelSave = False
 
 		if channelSatelliteList :
 			if configuredSatelliteList :
@@ -446,7 +447,11 @@ class TunerConfigMgr( object ) :
 							findSatellite = True
 							break
 					if findSatellite == False :
-						self.mDataCache.Channel_DeleteBySatellite( channelSatellite.mLongitude, channelSatellite.mBand )
+						channelSave = True
+						self.mDataCache.Channel_DeleteBySatellite( channelSatellite.mLongitude, channelSatellite.mBand, False )
+
+				if channelSave :
+					self.mDataCache.Channel_Save( )
 
 				if self.mDataCache.Channel_GetList( ) :
 					return
