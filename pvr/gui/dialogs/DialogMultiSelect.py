@@ -182,6 +182,11 @@ class DialogMultiSelect( BaseDialog ) :
 				listItem.setLabel2( '%s'% iChannel.mName )
 				listItem.setProperty( 'iHDLabel', E_TAG_COLOR_HD_LABEL )
 
+			iAlign = E_TAG_FALSE
+			if iChNumber > 9999 :
+				iAlign = E_TAG_TRUE
+			listItem.setProperty( 'iAlign', iAlign )
+
 			if iChannel.mLocked : 
 				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA : 
