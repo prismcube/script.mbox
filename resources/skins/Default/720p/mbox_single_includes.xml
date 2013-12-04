@@ -6305,8 +6305,9 @@
 					<label>$INFO[ListItem.Label]</label>
 					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 				</control>
+				<!-- is Align < 10,000 ? -->
 				<control type="label">
-					<posx>85</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
@@ -6315,6 +6316,20 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),false)</visible>
+				</control>
+				<!-- is Align > 10,000 ? -->
+				<control type="label">
+					<posx>100</posx>
+					<posy>0</posy>
+					<width>350</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),true)</visible>
 				</control>
 				<control type="label">
 					<posx>440</posx>
@@ -6409,8 +6424,9 @@
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
+				<!-- is Align < 10,000 ? -->
 				<control type="label">
-					<posx>85</posx>
+					<posx>90</posx>
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
@@ -6420,6 +6436,21 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),false)</visible>
+				</control>
+				<!-- is Align < 10,000 ? -->
+				<control type="label">
+					<posx>100</posx>
+					<posy>0</posy>
+					<width>350</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),true)</visible>
 				</control>
 				<control type="label">
 					<posx>440</posx>

@@ -179,6 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastChannelListHash = {}
 		self.mTPListByChannelHash = {}
 		self.mZappingChange = False
+		self.mMaxChannelNum = E_INPUT_MAX
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -467,6 +468,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelListHashIDs = {}
 		self.mChannelListForMove = []
 		self.mTPListByChannelHash = {}
+		self.mMaxChannelNum = E_INPUT_MAX
+
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			for iChannel in self.mChannelList :
 				chNumber = iChannel.mNumber
@@ -479,7 +482,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mTPListByChannelHash[iChannel.mNumber] = self.mDataCache.GetTunerIndexBySatellite( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mCarrier.mDVBS.mSatelliteBand )
 				#LOG_TRACE( '---------------ch[%s %s] tpNum[%s]'% ( iChannel.mNumber, iChannel.mName, self.mTPListByChannelHash.get( iChannel.mNumber, None ) ) )
 
-		LOG_TRACE( '-------------channel hash len[%s]'% len( self.mChannelListHash ) )
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					chNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+
+				if chNumber > self.mMaxChannelNum :
+					self.mMaxChannelNum = chNumber
+		LOG_TRACE( '-------------channel hash len[%s] maxNum[%s]'% ( len( self.mChannelListHash ), self.mMaxChannelNum ) )
 
 		self.mTimerListHash = {}
 		timerList = self.mDataCache.Timer_GetTimerList( )
@@ -1859,6 +1867,11 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setLabel2( '%s'% iChannel.mName )
 					listItem.setProperty( 'iHDLabel', hdLabel )
 
+				iAlign = E_TAG_FALSE
+				if iChNumber > 9999 :
+					iAlign = E_TAG_TRUE
+				listItem.setProperty( 'iAlign', iAlign )
+
 				if iChannel.mLocked : 
 					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 				if iChannel.mIsCA : 
@@ -2287,6 +2300,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			if not isFind :
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( iChannel.mName, hdLabel ) )
+
+			iAlign = E_TAG_FALSE
+			if iChNumber > 9999 :
+				iAlign = E_TAG_TRUE
+			listItem.setProperty( 'iAlign', iAlign )
+
 			if len( iChannel.mName ) > 30 : listItem.setProperty( 'iHDLabel', hdLabel )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
@@ -3349,7 +3368,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True, E_INPUT_MAX, self.mUserMode.mMode )
+		dialog.SetDialogProperty( str( aKey ), self.mChannelListHash, True, self.mMaxChannelNum, self.mUserMode.mMode )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )
