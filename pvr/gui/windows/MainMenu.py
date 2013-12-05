@@ -202,13 +202,6 @@ class MainMenu( BaseWindow ) :
 			self.GoToEditChannelList( )
 
 		elif aControlId == BUTTON_ID_POWER :
-			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
-			if isDownload :
-				msg = MR_LANG( 'Try again after completing firmware update' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
-				return
 
 			context = []
 			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
@@ -222,6 +215,9 @@ class MainMenu( BaseWindow ) :
 			contextAction = dialog.GetSelectedAction( )
 
 			if contextAction == 0 :
+				self.setProperty( 'RestartGUI', 'true' )
+				#self.mCommander.Player_SetMute( True )				
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW)
 				pvr.ElisMgr.GetInstance().Shutdown( )
 				xbmc.executebuiltin( 'Settings.Save' )
 				os.system( 'killall -9 xbmc.bin' )
@@ -232,10 +228,12 @@ class MainMenu( BaseWindow ) :
 			elif contextAction == 3 :
 				isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 				if isDownload :
+					msg = MR_LANG( 'Try again after completing firmware update' )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 					dialog.doModal( )
 					return
+
 				self.mDataCache.System_Reboot( )
 
 		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
