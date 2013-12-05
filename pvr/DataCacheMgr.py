@@ -3031,3 +3031,8 @@ class DataCacheMgr( object ) :
 			channel = cacheChannel.mChannel
 			return channel
 
+
+	def Splash_StartAndStop( self, aStartStop ) :
+		return self.mCommander.Splash_StartAndStop( aStartStop )
+
+
