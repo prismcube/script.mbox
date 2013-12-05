@@ -175,7 +175,7 @@ Search for window name
 				<visible>substring(Window.Property(RestartGUI),true)</visible>
 			</control>
 			<control type="label" id="1100100">
-				<posx>520</posx>
+				<posx>480</posx>
 				<posy>330</posy>
 				<width>500</width>
 				<font>font50caps_title</font>
