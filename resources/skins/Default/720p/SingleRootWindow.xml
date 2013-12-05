@@ -6715,7 +6715,7 @@ Search for window name
 							<texture border="5">StackFO_white2.png</texture>
 						</control>
 					</control>
-					<control type="group" id="4801100">
+					<!--control type="group" id="4801100">
 						<posx>0</posx>
 						<posy>0</posy>
 						<animation effect="fade" time="300">VisibleChange</animation>
@@ -6726,7 +6726,7 @@ Search for window name
 							<width>370</width>
 							<height>50</height>
 							<texture>black-back_noAlpha.png</texture>
-							<colordiffuse>DFFFFFFF</colordiffuse>
+							<colordiffuse>Window.Property(PIPColorDiffuseInput)</colordiffuse>
 						</control>
 						<control type="label" id="4801102">
 							<posx>0</posx>
@@ -6752,7 +6752,7 @@ Search for window name
 							<aligny>center</aligny>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
-					</control>
+					</control-->
 					<control type="group" id="4802000">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -7035,7 +7035,7 @@ Search for window name
 				</control>
 			</control>
 
-			<control type="image">
+			<!--control type="image">
 				<posx>770</posx>
 				<posy>53r</posy>
 				<width>520</width>
@@ -7054,7 +7054,7 @@ Search for window name
 				<align>left</align>
 				<aligny>center</aligny>
 				<label>PIP Window - Channel : $INFO[Window.Property(ShowPIPChannelNumber)]</label>
-			</control>
+			</control-->
 
 		</control>
 
@@ -7063,10 +7063,10 @@ Search for window name
 		<include>DefaultCommonDate</include>
 		<include>DefaultCommonLiveStatus</include>
 
-		<!-- PIP Image & Radio Image -->
+		<!-- PIG Image & Radio Image -->
 		<control type="group">
 			<control type="image" id="1008800">
-				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)+ !substring(Window.Property(CurrentWindow),4800000)</visible>
+				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)+ !substring(Window.Property(CurrentWindow),4800000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -7080,7 +7080,7 @@ Search for window name
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPip),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4800000)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4800000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -7127,70 +7127,114 @@ Search for window name
 					<label>$INFO[Control.GetLabel]</label>
 					<visible>substring(Window.Property(ShowNamePIP),true)</visible>
 				</control>
-
-				<control type="image" id="1002003">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>OverlayLocked.png</texture>
-					<visible>substring(Window.Property(iLockPIP),true)</visible>
+				<control type="group">
+					<visible>!substring(Window.Property(InputNumber),true)</visible>
+					<control type="image" id="1002003">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OverlayLocked.png</texture>
+						<visible>substring(Window.Property(iLockPIP),true)</visible>
+					</control>
+					<control type="label" id="1002004">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<scroll>false</scroll>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
+						<visible>Control.IsVisible(1002003)</visible>
+					</control>
+					<control type="label" id="1002005">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),False)</visible>
+					</control>
+					<control type="label" id="1002006">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),Scramble)</visible>
+					</control>
+					<control type="label" id="1002007">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),NoService)</visible>
+					</control>
 				</control>
-				<control type="label" id="1002004">
-					<posx>10</posx>
-					<posy>-30</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<textcolor>grey2</textcolor>
-					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
-					<visible>Control.IsVisible(1002003)</visible>
-				</control>
-				<control type="label" id="1002005">
-					<posx>10</posx>
-					<posy>-30</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
-					<align>center</align>
-					<aligny>center</aligny>
-					<textcolor>grey2</textcolor>
-					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),False)</visible>
-				</control>
-				<control type="label" id="1002006">
-					<posx>10</posx>
-					<posy>-30</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
-					<align>center</align>
-					<aligny>center</aligny>
-					<textcolor>grey2</textcolor>
-					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),Scramble)</visible>
-				</control>
-				<control type="label" id="1002007">
-					<posx>10</posx>
-					<posy>-30</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
-					<align>center</align>
-					<aligny>center</aligny>
-					<textcolor>grey2</textcolor>
-					<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),NoService)</visible>
+				<control type="group">
+					<posx>-5</posx>
+					<posy>-5</posy>
+					<control type="group" id="4801100">
+						<posx>0</posx>
+						<posy>0</posy>
+						<animation effect="fade" time="300">VisibleChange</animation>
+						<visible>substring(Window.Property(InputNumber),true)</visible>
+						<control type="image" id="4801101">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>370</width>
+							<height>50</height>
+							<texture>black-back_noAlpha.png</texture>
+							<colordiffuse>DFFFFFFF</colordiffuse>
+						</control>
+						<control type="label" id="4801102">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>425</width>
+							<height>30</height>
+							<font>font14</font>
+							<textcolor>grey</textcolor>
+							<scroll>false</scroll>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+						<control type="label" id="4801103">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>425</width>
+							<height>30</height>
+							<font>font12</font>
+							<textcolor>grey</textcolor>
+							<scroll>false</scroll>
+							<align>center</align>
+							<aligny>center</aligny>
+							<label>$INFO[Control.GetLabel]</label>
+						</control>
+					</control>
 				</control>
 			</control>
 		</control>
 
 		<!-- No Signal Label -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingPip),True) + substring(Window.Property(PvrPlay),False) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000)</visible>
+			<visible>substring(Window.Property(SettingPIG),True) + substring(Window.Property(PvrPlay),False) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000)</visible>
 			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="300">Hidden</animation>
 			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(1000999)" type="conditional">Conditional</animation>

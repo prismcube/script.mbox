@@ -485,7 +485,7 @@ E_V1_2_APPLY_PRESENTATION_NUMBER = True
 E_V1_2_APPLY_VIEW_TIMER = True
 E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
-E_V1_2_APPLY_PIP = False
+E_V1_2_APPLY_PIP = True
 
 ############################ Global Function For GUI ############################
 

@@ -38,6 +38,7 @@ CTRL_ID_IMAGE_NFOCUSED		= E_BASE_WINDOW_ID + 2002
 CTRL_ID_LABEL_LOCK			= E_BASE_WINDOW_ID + 2004
 CTRL_ID_LABEL_SCRAMBLE		= E_BASE_WINDOW_ID + 2005
 CTRL_ID_LABEL_NOSIGNAL		= E_BASE_WINDOW_ID + 2006
+CTRL_ID_LABEL_NOSERVICE		= E_BASE_WINDOW_ID + 2007
 
 E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
 CONTEXT_ACTION_DONE_PIP		= 0
@@ -62,7 +63,8 @@ PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
-	WinMgr.WIN_ID_LIVE_PLATE
+	WinMgr.WIN_ID_LIVE_PLATE,
+	WinMgr.WIN_ID_PIP_WINDOW
 ]
 
 
@@ -100,6 +102,7 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
 		self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
 		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
+		self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 		self.mCtrlGroupInput       = self.getControl( CTRL_ID_GROUP_INPUT )
 		self.mCtrlImageInputBG     = self.getControl( CTRL_ID_IMAGE_INPUTBG )
 		self.mCtrlLabelInputCH     = self.getControl( CTRL_ID_LABEL_INPUTCH )
@@ -253,7 +256,7 @@ class PIPWindow( BaseWindow ) :
 		#self.mEventBus.Deregister( self )
 
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
-		self.UpdatePropertyGUI( 'ShowFocusPIP', E_TAG_FALSE )
+		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_FALSE )
 
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
@@ -298,8 +301,8 @@ class PIPWindow( BaseWindow ) :
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			self.UpdatePropertyGUI( 'OpenPIP', '%s'% isShow )
-			self.UpdatePropertyGUI( 'ShowNamePIP', '%s'% ( not isShow ) )
-			LOG_TRACE( 'GetLastWindowID[%s] PIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
+			#self.UpdatePropertyGUI( 'ShowNamePIP', '%s'% isShow )
+			LOG_TRACE( 'GetLastWindowID[%s] isPIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
 
 		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mPIPStart, self.getProperty( 'OpenPIP' ) ) )
 
@@ -309,8 +312,6 @@ class PIPWindow( BaseWindow ) :
 
 
 	def Load( self ) :
-		self.ResetLabel( )
-
 		"""
 		self.mIndexLimit = 1
 		numList = self.mDataCache.PIP_GetTunableList( )
@@ -318,6 +319,7 @@ class PIPWindow( BaseWindow ) :
 			self.mIndexLimit = len( numList )
 		"""
 
+		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
 			self.LoadPositionPIP( )
@@ -388,10 +390,11 @@ class PIPWindow( BaseWindow ) :
 			#2. tunable : find channel by tunableList of pip
 			if not pChNumber :
 				channelList = self.mDataCache.PIP_GetTunableList( )
+				LOG_TRACE('------------PIP_GetTunableList len[%s]'% len( channelList ) )
 				if channelList and len( channelList ) > 0 :
 					for chNumber in channelList :
-						if self.mDataCache.PIP_IsPIPAvailable( chNumber ) :
-							pChNumber = chNumber
+						if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
+							pChNumber = chNumber.mNumber
 							LOG_TRACE( '2. tunable : find channel by tunableList of pip, [%s]'% pChNumber )
 							break
 
@@ -421,7 +424,7 @@ class PIPWindow( BaseWindow ) :
 
 	def ChannelTuneToPIP( self, aDir ) :
 		fakeChannel = self.mCurrentChannel
-		if aDir != INPUT_CHANNEL_PIP :
+		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP :
 			self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
@@ -480,7 +483,7 @@ class PIPWindow( BaseWindow ) :
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mPIPStart :
 				LOG_TRACE( '--------Already started PIP' )
-				self.mDataCache.PIP_AVBlank( False )
+				#self.mDataCache.PIP_AVBlank( False )
 
 				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) and \
 				   self.getProperty( 'PIPSignal' ) == E_TAG_TRUE :
@@ -488,8 +491,10 @@ class PIPWindow( BaseWindow ) :
 
 				return True
 
+			self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
 			if not fakeChannel :
 				self.Close( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				lblTitle = MR_LANG( 'Attention' )
 				lblMsg = MR_LANG( 'Can not open PIP, Tunable not found' )
 				dialog.SetDialogProperty( lblTitle, lblMsg )
@@ -499,14 +504,13 @@ class PIPWindow( BaseWindow ) :
 		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s %s]'% ( aDir, fakeChannel, self.mCurrentChannel.mNumber, self.mCurrentChannel.mName ) )
 		if fakeChannel :
 			LOG_TRACE('----------fakeChannel[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
-			label = 'PIP - %s'% fakeChannel.mName
-			self.mCtrlLabelChannel.setLabel( label )
-
 			pChNumber = fakeChannel.mNumber
 			if E_V1_2_APPLY_PRESENTATION_NUMBER :
 				pChNumber = self.mDataCache.CheckPresentationNumber( fakeChannel )
 
-			self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
+			label = '%s - %s'% ( pChNumber, fakeChannel.mName )
+			self.mCtrlLabelChannel.setLabel( label )
+			#self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
 			self.mFakeChannel = fakeChannel
 			self.RestartAsyncTune( )
@@ -515,6 +519,11 @@ class PIPWindow( BaseWindow ) :
 
 
 	def SetLabelInputNumber( self ) :
+		imagePng = 'black-back_noAlpha.png'
+		if self.getProperty( 'PIPSignal' ) != E_TAG_TRUE :
+			imagePng = 'button-focus2.png'
+
+		self.mCtrlImageInputBG.setImage( imagePng )
 		self.UpdatePropertyGUI( 'InputNumber', E_TAG_TRUE )
 		self.mCtrlLabelInputCH.setLabel( self.mInputString )
 
@@ -675,7 +684,8 @@ class PIPWindow( BaseWindow ) :
 		self.mCtrlLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 		self.mCtrlLabelNoSignal.setWidth( bw )
 		self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-
+		self.mCtrlLabelNoService.setWidth( bw )
+		self.mCtrlLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 		self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
 
 		self.mCtrlImageFocusNF.setWidth( bw )
@@ -780,12 +790,13 @@ class PIPWindow( BaseWindow ) :
 				self.mCurrentChannel = aChannel
 				self.ChannelTuneToPIP( -1 )
 
+			self.mPIPStart = True
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
-			LOG_TRACE( '---------pip start ret[%s] ch[%s]'% ( ret, self.mFakeChannel ) )
+			LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
 			if ret :
-				self.mPIPStart = True
+				#self.mPIPStart = True
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
 					self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )
