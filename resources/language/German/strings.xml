@@ -750,7 +750,7 @@
 	<string id="3278">Sortiert nach %s</string>
 	<string id="3279">Ergebnis speichern</string>
 	<string id="3280">FAVORITEN</string>
-	<string id="3281"></string>
+	<string id="3281">Gebe eine Nummer ein zum hinzufügen</string>
 	<string id="3282">Favorittengruppe löschen</string>
 	<string id="3283">Sind Sie sicher dass Sie%s%s löschen wollen?</string>
 	<string id="3284">Überspringen aller Kanäle ist nicht erlaubt</string>
@@ -1219,11 +1219,11 @@
 	<string id="3747">Timer Liste</string>
 	<string id="3748">XBMC add-ons verwalten</string>
 	<string id="3749">Versuchen Sie es erneut nach dem Anhalten von%s Playback, Aufnahmen und Timeshift</string>
-	<string id="3750"></string>
-	<string id="3751"></string>
-	<string id="3752"></string>
+	<string id="3750">Standby</string>
+	<string id="3751">Gui neu starten</string>
+	<string id="3752">Neu starten</string>
 	<string id="3753">Greifen Sie auf einfachem Weg auf Ihre Favoriten zu</string>
-	<string id="3754"></string>
+	<string id="3754">XBMC neu starten oder Receiver in Standby wechseln</string>
 	<string id="3755">Löschen, Umbenennen und  speichern sie Ihre Kanäle</string>
 	<string id="3756">Bekommen Sie einen schnellen Zugriff auf ihre Lieblingssender</string>
 	<string id="3757">Favoritengruppe</string>
