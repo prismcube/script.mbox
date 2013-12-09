@@ -81,7 +81,6 @@ class FastScan( SettingWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Provider' ), providerList, False, StringToListIndex( providerList, self.mOPDescr ) )
 				if ret >= 0 :
 					if self.SetProviderInfo( ret ) :
-						self.SetControlLabel2String( E_Input02, self.mOPDescr )
 						self.InitConfig( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -91,7 +90,7 @@ class FastScan( SettingWindow ) :
 
 		# Start Scan
 		if groupId == E_Input03 :
-			if self.mProviderStruct :
+			if self.mProviderStruct and self.mOPDescr != 'None' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				providerlist = []
 				temp = deepcopy( self.mProviderStruct )
@@ -107,12 +106,6 @@ class FastScan( SettingWindow ) :
 		elif groupId == E_SpinEx01 :
 			self.mUseHDList = self.GetSelectedIndex( E_SpinEx01 )
 
-		#elif groupId == E_SpinEx02 :
-		#	self.mUseNumbering = self.GetSelectedIndex( E_SpinEx02 )
-
-		#elif groupId == E_SpinEx03 :
-		#	self.mUseNaming = self.GetSelectedIndex( E_SpinEx03 )
-
 
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -124,12 +117,9 @@ class FastScan( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-		self.GetTunerNumToString( self.mTunerIndex )
 		self.AddInputControl( E_Input01, MR_LANG( 'Tuner' ), self.GetTunerNumToString( self.mTunerIndex ), MR_LANG( 'Select a tuner you want to search' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'Provider' ), self.mOPDescr, MR_LANG( 'Select a provider you want to scan channels from' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'HD List' ), USER_ENUM_LIST_YES_NO, self.mUseHDList, MR_LANG( 'Enable/Disable HD List option' ) )
-		#self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Use fastscan channel numbering' ), USER_ENUM_LIST_YES_NO, self.mUseNumbering, MR_LANG( 'Use fastscan channel numbering?' ) )
-		#self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Use fastscan channel names' ), USER_ENUM_LIST_YES_NO, self.mUseNaming, MR_LANG( 'Use fastscan channel names?' ) )
 		self.AddInputControl( E_Input03, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 		self.InitControl( )
 		self.DisableControl( )
