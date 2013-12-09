@@ -166,22 +166,28 @@ Search for window name
 				<visible>substring(Window.Property(NotAvail),true)</visible>
 			</control>
 			<!-- Restart GUI -->
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>black-back_noAlpha.png</texture>
+			<control type="group">
+				<posx>400</posx>
+				<posy>245</posy>
 				<visible>substring(Window.Property(RestartGUI),true)</visible>
-			</control>
-			<control type="label" id="1100100">
-				<posx>480</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>font50caps_title</font>
-				<label>$INFO[Control.GetLabel]</label>
-				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(RestartGUI),true)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>480</width>
+					<height>230</height>
+					<texture>black-back_noAlpha.png</texture>
+				</control>
+				<control type="label" id="1100100">
+					<posx>0</posx>
+					<posy>105</posy>
+					<width>480</width>
+					<height>30</height>
+					<font>font35_title</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>grey2</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
 			</control>
 		</control>
 
