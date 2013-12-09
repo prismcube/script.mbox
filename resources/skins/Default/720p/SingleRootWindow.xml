@@ -6880,7 +6880,7 @@ Search for window name
 									<font>font12_title</font>
 									<textcolor>grey</textcolor>
 									<scroll>false</scroll>
-									<label>Press 'OK' done</label>
+									<label>SCRIPT1010</label>
 								</control>
 							</control>
 
@@ -6894,7 +6894,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Next Channel</label>
+									<label>SCRIPT1011</label>
 									<visible>Control.HasFocus(4808001)</visible>
 								</control>
 								<control type="label">
@@ -6905,7 +6905,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Previous Channel</label>
+									<label>SCRIPT1012</label>
 									<visible>Control.HasFocus(4808002)</visible>
 								</control>
 								<control type="label">
@@ -6916,7 +6916,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Audio On / Off</label>
+									<label>SCRIPT1013</label>
 									<visible>Control.HasFocus(4808003)</visible>
 								</control>
 								<control type="label">
@@ -6927,7 +6927,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Switch full screen to PIP</label>
+									<label>SCRIPT1015</label>
 									<visible>Control.HasFocus(4808004)</visible>
 								</control>
 								<control type="label">
@@ -6938,7 +6938,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Set move to PIP</label>
+									<label>SCRIPT1023</label>
 									<visible>Control.HasFocus(4808005)</visible>
 								</control>
 								<control type="label">
@@ -6949,7 +6949,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Set size to PIP</label>
+									<label>SCRIPT1025</label>
 									<visible>Control.HasFocus(4808006)</visible>
 								</control>
 								<control type="label">
@@ -6960,7 +6960,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Reset to default</label>
+									<label>SCRIPT1042</label>
 									<visible>Control.HasFocus(4808007)</visible>
 								</control>
 								<control type="label">
@@ -6971,7 +6971,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Go to full screen</label>
+									<label>SCRIPT1046</label>
 									<visible>Control.HasFocus(4808008)</visible>
 								</control>
 								<control type="label">
@@ -6982,7 +6982,7 @@ Search for window name
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>Stop PIP</label>
+									<label>SCRIPT1077</label>
 									<visible>Control.HasFocus(4808009)</visible>
 								</control>
 							</control>
