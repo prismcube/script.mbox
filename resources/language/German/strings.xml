@@ -492,7 +492,7 @@
 	<string id="3020">Stärke</string>
 	<string id="3021">Qualität</string>
 	<string id="3022">Sender aktualisieren</string>
-	<string id="3023">Lade neue Sender...</string>
+	<string id="3023">Lade neue Sender... </string>
 	<string id="3024">Ihr System muss neu gestartet werden%s um die Aktualisierung abzuschließen</string>
 	<string id="3025">Bitte versuchen Sie es erneut nach Beendigung%n der Aufnahmen</string>
 	<string id="3026">Bitte versuchen Sie es erneut nach dem Löschen%n von gesetzten Timern</string>
@@ -750,7 +750,7 @@
 	<string id="3278">Sortiert nach %s</string>
 	<string id="3279">Ergebnis speichern</string>
 	<string id="3280">FAVORITEN</string>
-	<string id="3281">Gebe eine Nummer ein zum hinzufügen </string>
+	<string id="3281">Gebe eine Nummer ein zum hinzufügen</string>
 	<string id="3282">Favorittengruppe löschen</string>
 	<string id="3283">Sind Sie sicher dass Sie%s%s löschen wollen?</string>
 	<string id="3284">Überspringen aller Kanäle ist nicht erlaubt</string>
