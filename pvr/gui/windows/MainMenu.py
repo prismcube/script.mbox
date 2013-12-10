@@ -216,9 +216,8 @@ class MainMenu( BaseWindow ) :
 
 			if contextAction == 0 :
 				self.setProperty( 'RestartGUI', 'true' )
-				time.sleep( 5 )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-				self.mDataCache.Splash_StartAndStop( 1 )
+				#self.mDataCache.Splash_StartAndStop( 1 )
 				#self.mCommander.Player_SetMute( True )
 				pvr.ElisMgr.GetInstance().Shutdown( )
 				xbmc.executebuiltin( 'Settings.Save' )
