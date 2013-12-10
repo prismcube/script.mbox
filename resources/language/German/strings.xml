@@ -700,8 +700,8 @@
 	<string id="3228">Wenn auf 'EIN', werden die DiSEqC  Befehle wiederholt</string>
 	<string id="3229">Stellen Sie einen vordefenierten Transponder die richtige Frequenz und Symbolrate ein, um zu erkennen ob Ihre Satantenne den Satelliten empfangen kann</string>
 	<string id="3230">Transponder</string>
-	<string id="3231">Wenn auf 'EIN' gestellt, können eingetragene Transponder und neu hinzugekommene Transponder gefunden werden bem Kanalsuchlauf</string>
-	<string id="3232">Wenn auf 'AUS' gestellt, werden nur die werkseitig eingetragenen Transponder beim Kanalsuchlauf berücksichtigt.</string>
+	<string id="3231">Wenn auf 'EIN' gestellt, können eingetragene Transponder und neu hinzugekommene Transponder gefunden werden bem Sendersuchlauf</string>
+	<string id="3232">Wenn auf 'AUS' gestellt, werden nur die werkseitig eingetragenen Transponder beim Sendersuchlauf berücksichtigt.</string>
 	<string id="3233">Suchbereich</string>
 	<string id="3234">Wählen Sie den Transponderfrequenzbereich für den Sendersuchlauf aus</string>
 	<string id="3235">Drücken Sie auf OK um den Sendersuchlauf zu starten</string>
