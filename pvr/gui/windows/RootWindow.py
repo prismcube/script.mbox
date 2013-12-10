@@ -30,7 +30,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
-						self.mDataCache.Splash_StartAndStop( 0 )
+						#self.mDataCache.Splash_StartAndStop( 0 )
 					self.mInitialized = True
 					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
