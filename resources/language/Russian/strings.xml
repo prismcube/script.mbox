@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string id="1001">ВСЕ КАНАЛЫ</string>
-	<string id="1002">СПУТНИК</string>
-	<string id="1003">FTA/CAS</string>
-	<string id="1004">ГРУППЫ ЛЮБИМЫЕ</string>
-	<string id="1005">РЕЖИМ</string>
+	<string id="1001">Пульт дистанционного управления - QWERTY-клавиатура</string>
+	<string id="1002">Пульт дистанционного управления PRISMCUBE RUBY имеет полную клавиатуру QWERTY для ввода на ней текста.</string>
+	<string id="1003">1. Держите пульт дистанционного управления горизонтально, как показано на картинке.</string>
+	<string id="1004">2. Включите QWERTY клавиатуру, нажав клавишу Num Lock.</string>
+	<string id="1005">3. Вводите текст быстрее и эффективнее с помощью клавиатуры.</string>
 	<string id="1006">ТВ</string>
 	<string id="1007">Радио</string>
 	<string id="1008">Скрыть Просмотренное</string>
