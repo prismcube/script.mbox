@@ -458,7 +458,7 @@ class FirstInstallation( FTIWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to and from summer and winter time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press OK button to save time settings' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the summary of first installation page' ), MR_LANG( 'Go back to the channel search setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the summary page of first installation' ), MR_LANG( 'Go back to the channel search setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
