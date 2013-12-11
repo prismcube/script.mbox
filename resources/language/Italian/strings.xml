@@ -494,7 +494,7 @@
 	<string id="3022">Aggiornamento Canali</string>
 	<string id="3023"></string>
 	<string id="3024">Il sistema deve essere riavviato%s al fine di completare l'aggiornamento</string>
-	<string id="3025">Sind Sie sicher dass Sie die erstinstallation verlassen wollen?</string>
+	<string id="3025">Riprova dopo aver interrotto le registrazioni</string>
 	<string id="3026">Riprova dopo l'eliminazione dei tuoi%n timer precedenti</string>
 	<string id="3027">Spazio su disco insufficiente%n Registrazione interrotta</string>
 	<string id="3028">Ricarica lista canali</string>
@@ -1078,7 +1078,7 @@
 	<string id="3606">Eliminare satellite configurato</string>
 	<string id="3607">Impossibile rimuovere il satellite dalla lista</string>
 	<string id="3608">Selezionare un satellite che si desidera modificare le impostazioni</string>
-	<string id="3609">-Sind Sie sicher dass Sie die erstinstallation verlassen wollen?</string>
+	<string id="3609">Longitudine</string>
 	<string id="3610">Cambiare il nome del satellite selezionato</string>
 	<string id="3611">Aggiungere un nuovo satellite alla lista</string>
 	<string id="3612">Eliminare un satellite dalla lista</string>
