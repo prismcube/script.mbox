@@ -492,7 +492,7 @@
 	<string id="3020">Sila</string>
 	<string id="3021">Kvalita</string>
 	<string id="3022">Aktualizácia kanálov</string>
-	<string id="3023">Načítavanie nových kanálov... </string>
+	<string id="3023">Načítavanie nových kanálov...</string>
 	<string id="3024">Váš systém sa musí reštartovať o%s na dokončenie aktualizácie</string>
 	<string id="3025">Skúste to znova po ukončení nahrávania</string>
 	<string id="3026">Skúste to znova po odstránení časovača</string>
@@ -574,8 +574,8 @@
 	<string id="3102">Dní</string>
 	<string id="3103">Raz</string>
 	<string id="3104">Týždenne</string>
-	<string id="3105">Pridať zobrazený časovač</string>
-	<string id="3106">Upraviť zobrazený časovač</string>
+	<string id="3105">Pridať časovač zobrazenia</string>
+	<string id="3106">Upraviť časovač zobrazenia</string>
 	<string id="3107">Názov</string>
 	<string id="3108">Názov záznamu</string>
 	<string id="3109">Dátum začatia</string>
@@ -1168,8 +1168,8 @@
 	<string id="3696">Žiadny skript na exportovanie nastavenia nenájdený na USB </string>
 	<string id="3697">Export dokončený</string>
 	<string id="3698">Vaše nastavenie bolo exportované úspešne</string>
-	<string id="3699">PIP kanál</string>
-	<string id="3700">PIP okno</string>
+	<string id="3699">PIP Kanál</string>
+	<string id="3700">PIP Okno</string>
 	<string id="3701">Pre spustenie PIP prepnite prosim z radio modu do TV modu</string>
 	<string id="3702">Kanál nemožno naladiť do PIP</string>
 	<string id="3703">Pohyb PIP okna</string>
@@ -1228,7 +1228,7 @@
 	<string id="3756">Získajte rýchly prístup k vašim obľúbeným kanálom</string>
 	<string id="3757">Obľúbené skupiny</string>
 	<string id="3758">Nepodarilo sa zmeniť obľúbenú skupinu</string>
-	<string id="3759">Systém </string>
+	<string id="3759">Systém</string>
 	<string id="3760">HDD</string>
 	<string id="3761">STB informácie</string>
 	<string id="3762">Názov produktu</string>
