@@ -7096,7 +7096,7 @@ Search for window name
 					<texture>black-back_noAlpha.png</texture>
 					<visible>substring(Window.Property(BlankPIP),true)</visible>
 				</control>
-				<control type="label" id="4802001">
+				<!--control type="label" id="4802001">
 					<posx>10</posx>
 					<posy>-30</posy>
 					<width>425</width>
@@ -7108,7 +7108,7 @@ Search for window name
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel]</label>
 					<visible>substring(Window.Property(ShowNamePIP),true)</visible>
-				</control>
+				</control-->
 				<control type="group">
 					<visible>!substring(Window.Property(InputNumber),true)</visible>
 					<control type="image" id="1002003">
@@ -7169,7 +7169,7 @@ Search for window name
 						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),NoService)</visible>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<posx>-5</posx>
 					<posy>-5</posy>
 					<control type="group" id="4801100">
@@ -7210,7 +7210,7 @@ Search for window name
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
 					</control>
-				</control>
+				</control-->
 			</control>
 		</control>
 

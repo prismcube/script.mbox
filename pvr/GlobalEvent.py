@@ -17,8 +17,8 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_EPG_WINDOW,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
-	WinMgr.WIN_ID_INFO_PLATE,
-	WinMgr.WIN_ID_PIP_WINDOW
+	WinMgr.WIN_ID_INFO_PLATE
+	#WinMgr.WIN_ID_PIP_WINDOW
 	#WinMgr.WIN_ID_FAVORITE_ADDONS,
 	#WinMgr.WIN_ID_SYSTEM_UPDATE,
 	#WinMgr.WIN_ID_HELP
@@ -136,7 +136,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
-			#LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
@@ -682,7 +682,7 @@ class GlobalEvent( object ) :
 			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
