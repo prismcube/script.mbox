@@ -1016,8 +1016,8 @@
 	<string id="3544">Nastavte délku zobrazení info banneru při přehrávání</string>
 	<string id="3545">Zapnout informační kanál RSS v hlavním menu</string>
 	<string id="3546">RSS kanál</string>
-	<string id="3547"></string>
-	<string id="3548"></string>
+	<string id="3547">Mód uspání HDD</string>
+	<string id="3548">Pokud je nastaveno 'Zap', harddisk se uspí po vypnutí systému do aktivního standby režimu</string>
 	<string id="3549">Upravit frekvenci pro aktualizaci firmwaru</string>
 	<string id="3550">Aktualizace upozornění</string>
 	<string id="3551">Připojování</string>
@@ -1168,8 +1168,8 @@
 	<string id="3696">Žádný skript na export nastavení nenalezen na USB </string>
 	<string id="3697">Export dokončen</string>
 	<string id="3698">Vaše nastavení bylo exportováno úspěšně</string>
-	<string id="3699">PIP kanál</string>
-	<string id="3700">PIP okno</string>
+	<string id="3699">PIP Kanál</string>
+	<string id="3700">PIP Okno</string>
 	<string id="3701">Pro spuštění PIP přepněte prosim z radio modu do TV modu</string>
 	<string id="3702">Kanál nelze naladit do PIP</string>
 	<string id="3703">Pohyb PIP okna</string>
@@ -1228,7 +1228,7 @@
 	<string id="3756">Získejte rychlý přístup k vašim oblíbeným kanálům</string>
 	<string id="3757">Oblíbené skupiny</string>
 	<string id="3758">Nepodařilo se změnit oblíbenou skupinu</string>
-	<string id="3759">Systém </string>
+	<string id="3759">Systém</string>
 	<string id="3760">HDD</string>
 	<string id="3761">STB informace</string>
 	<string id="3762">Název produktu</string>
@@ -1255,8 +1255,8 @@
 	<string id="3783">Přejděte na stránku konfigurace satelitu</string>
 	<string id="3784">Nastavení vyhledávání programů</string>
 	<string id="3785">Chcete provést vyhledávání kanálů v prvotní instalaci?</string>
-	<string id="3786"></string>
-	<string id="3787"></string>
+	<string id="3786">Mód vyhledávání</string>
+	<string id="3787">Zvol mód vyhledávání kanálů</string>
 	<string id="3788">Vyber nebo vlož frekvenci transpondéru pro zvolený satelit</string>
 	<string id="3789">Přejít zpět na stránku nastavení antény a satelitu</string>
 	<string id="3790">Přejděte na stránku Nastavení času a data</string>
@@ -1270,8 +1270,8 @@
 	<string id="3798">Počet Rádio programů</string>
 	<string id="3799">Ukončení prvotní instalace</string>
 	<string id="3800">Přejděte zpět na stránku Nastavení času a data</string>
-	<string id="3801"></string>
-	<string id="3802"></string>
+	<string id="3801">Vyhledávání více satelitů současn%s není možné v manuálním vyhledávání</string>
+	<string id="3802">Žádný nastavený satelit nebo transpondér</string>
 	<string id="3803">Vyberte požadovanou LNB frekvenci</string>
 	<string id="3804">Statické</string>
 	<string id="3805">Analogové</string>

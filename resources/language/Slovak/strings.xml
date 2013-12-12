@@ -492,7 +492,7 @@
 	<string id="3020">Sila</string>
 	<string id="3021">Kvalita</string>
 	<string id="3022">Aktualizácia kanálov</string>
-	<string id="3023">Načítavanie nových kanálov... </string>
+	<string id="3023">Načítavanie nových kanálov...</string>
 	<string id="3024">Váš systém sa musí reštartovať o%s na dokončenie aktualizácie</string>
 	<string id="3025">Skúste to znova po ukončení nahrávania</string>
 	<string id="3026">Skúste to znova po odstránení časovača</string>
@@ -801,7 +801,7 @@
 	<string id="3329">Vyberte frekvenciu tunera 2</string>
 	<string id="3330"> - Tuner 2 PIN kód</string>
 	<string id="3331">Zadajte PIN kód pre tuner 2</string>
-	<string id="3332"></string>
+	<string id="3332">Reštart GUI</string>
 	<string id="3333">Poškodená Databáza</string>
 	<string id="3334">Opraviť databázu? (%s)</string>
 	<string id="3335">PIN kód musí byť 4-miestny</string>
@@ -1016,8 +1016,8 @@
 	<string id="3544">Nastavte dĺžku zobrazenia info bannera pri prehrávaní</string>
 	<string id="3545">Zapnúť informačný kanál RSS v hlavnom menu</string>
 	<string id="3546">RSS kanál</string>
-	<string id="3547"></string>
-	<string id="3548"></string>
+	<string id="3547">Mód uspania HDD</string>
+	<string id="3548">Ak je nastavené 'Zap', harddisk sa uspí po vypnutí systému do aktívneho standby režimu</string>
 	<string id="3549">Upraviť frekvenciu pre aktualizáciu firmvéru</string>
 	<string id="3550">Aktualizácia upozornenia</string>
 	<string id="3551">Pripájanie</string>
@@ -1168,8 +1168,8 @@
 	<string id="3696">Žiadny skript na exportovanie nastavenia nenájdený na USB </string>
 	<string id="3697">Export dokončený</string>
 	<string id="3698">Vaše nastavenie bolo exportované úspešne</string>
-	<string id="3699">PIP kanál</string>
-	<string id="3700">PIP okno</string>
+	<string id="3699">PIP Kanál</string>
+	<string id="3700">PIP Okno</string>
 	<string id="3701">Pre spustenie PIP prepnite prosim z radio modu do TV modu</string>
 	<string id="3702">Kanál nemožno naladiť do PIP</string>
 	<string id="3703">Pohyb PIP okna</string>
@@ -1228,7 +1228,7 @@
 	<string id="3756">Získajte rýchly prístup k vašim obľúbeným kanálom</string>
 	<string id="3757">Obľúbené skupiny</string>
 	<string id="3758">Nepodarilo sa zmeniť obľúbenú skupinu</string>
-	<string id="3759">Systém </string>
+	<string id="3759">Systém</string>
 	<string id="3760">HDD</string>
 	<string id="3761">STB informácie</string>
 	<string id="3762">Názov produktu</string>
@@ -1255,8 +1255,8 @@
 	<string id="3783">Prejdite na stránku konfigurácia satelitu</string>
 	<string id="3784">Nastavenie vyhľadávania programov</string>
 	<string id="3785">Chcete vykonať vyhľadávanie kanálov v prvotnej inštalácii?</string>
-	<string id="3786"></string>
-	<string id="3787"></string>
+	<string id="3786">Mód vyhľadávania</string>
+	<string id="3787">Zvoľ mód vyhľadávania kanálov</string>
 	<string id="3788">Vyber alebo vlož frekvenciu transpondéra pre zvolený satelit</string>
 	<string id="3789">Prejsť späť na stránku nastavenia antény a satelitu</string>
 	<string id="3790">Prejdite na stránku Nastavenia času a dátumu</string>
@@ -1270,8 +1270,8 @@
 	<string id="3798">Počet Rádio programov</string>
 	<string id="3799">Ukončenie prvotnej inštalácie</string>
 	<string id="3800">Prejdite späť na stránku Nastavenia času a dátumu</string>
-	<string id="3801"></string>
-	<string id="3802"></string>
+	<string id="3801">Vyhľadávanie viacerých satelitov súčasn%s nie je možné v manuálnom vyhľadávaní</string>
+	<string id="3802">Žiadny nastavený satelit alebo transpondér</string>
 	<string id="3803">Vyberte požadovanú LNB frekvenciu</string>
 	<string id="3804">Statické</string>
 	<string id="3805">Analógové</string>
