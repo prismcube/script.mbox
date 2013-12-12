@@ -754,7 +754,7 @@
 	<string id="3282">Видалити Групу Улюблені</string>
 	<string id="3283">Впевнені що хочете видалити%s%s?</string>
 	<string id="3284">Skipping all channels is not allowed</string>
-	<string id="3285">Впевнені що хочете видалити канали включаючи%s поточні записи і таймери?</string>
+	<string id="3285">Впевнені що хочете видалити канали%s включаючи поточні записи і таймери?</string>
 	<string id="3286">Видалити Канали</string>
 	<string id="3287">Додати до групи улюблених</string>
 	<string id="3288">Delete this favorite group</string>

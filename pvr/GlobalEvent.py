@@ -244,6 +244,7 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
+				dialog.SetAutoCloseTime( 10 )
 				dialog.doModal( )
 
 				self.mDataCache.System_Reboot( )
