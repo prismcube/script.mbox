@@ -61,6 +61,7 @@ E_CONTROL_ID_LABEL_PERCENT  = 52 + E_SYSTEM_UPDATE_BASE_ID
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_LOAD_OLD_VERSION     = 2
+CONTEXT_ACTION_LOAD_LOCAL_VERSION   = 3
 
 E_UPDATE_STEP_HOME        = 0
 E_UPDATE_STEP_READY       = 1
@@ -238,7 +239,10 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )				
+			if self.mStepPage == E_UPDATE_STEP_READY :
+				self.DoContextAction( CONTEXT_ACTION_LOAD_LOCAL_VERSION )
+			else :
+				self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -839,6 +843,9 @@ class SystemUpdate( SettingWindow ) :
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
+		if not self.GetStatusFromFirmware( ) :
+			context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
@@ -897,6 +904,66 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
 			self.ShowOldVersion( )
+
+		elif aContextAction == CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+			self.ShowLocalVersion( )
+
+
+	def ShowLocalVersion( self ) :
+		zipFile = xbmcgui.Dialog( ).browsepath( MR_LANG( 'Update from local directory' ), '*.zip' )
+		#LOG_TRACE( '----------zip[%s]'% zipFile )
+		if not zipFile or zipFile == 'None' :
+			LOG_TRACE( 'not selected zip' )
+			return
+
+		if not CheckDirectory( zipFile ) :
+			LOG_TRACE( 'not found zip[%s]'% zipFile )
+			return
+
+		#1. check hdd mount
+		if not CheckHdd( ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
+			return
+
+		#2. check space
+		if GetFileSize( zipFile ) > GetDeviceSize( E_DEFAULT_PATH_HDD ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD_SPACE )
+			return
+
+		#3. run shell
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), E_DEFAULT_PATH_DOWNLOAD, zipFile, False, 1 )
+		dialog.doModal( )
+
+		shell = dialog.GetResult( )
+		if shell < E_RESULT_UPDATE_DONE :
+			mTitle = E_STRING_ERROR
+			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if shell == E_RESULT_ERROR_FAIL :
+				errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			elif shell == E_RESULT_ERROR_CANCEL :
+				return
+
+			elif shell == E_RESULT_ERROR_CHECKSUME :
+				errmsg = E_STRING_CHECK_CORRUPT
+				self.mStepPage = E_UPDATE_STEP_READY
+				self.mIsDownload = False
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				self.ShowDescription( E_Input02 )
+				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
+
+			self.DialogPopup( mTitle, errmsg )
+			return
+
+		#4. backup files and reboot
+		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+
+		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
 	def ShowOldVersion( self ) :
