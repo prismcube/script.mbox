@@ -1063,7 +1063,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from Local Storage' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from zip file' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
 
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
