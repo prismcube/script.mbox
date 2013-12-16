@@ -89,7 +89,7 @@
 		</content>
 	</page>
 
-	<page number="5" title="Remote Control - QWERTY Keyboard" location="">
+	<page number="5" title="Pilot - klawiatura QWERTY" location="">
 		<content name="help/remote3.png">
 			<type>image</type>
 			<posx>380</posx>
@@ -97,9 +97,9 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+		<content name="Pilot Prismcube Ruby posiada pełną klawiaturę QWERTY na spodniej części.[CR][CR]1. Obróć pilot poziomo jak na grafice powyżej.[CR]2. Włącz klawiaturę QWERTY za pomocą przyciśnięcia klawisza Num Lock.[CR]3. Klawiatura QWERTY jest aktywna, pozwalając na szybsze wprowadzanie tekstu.">
 			<type>textbox</type>
-			<posx>205</posx>
+			<posx>180</posx>
 			<posy>565</posy>
 			<width>940</width>
 			<height>160</height>
