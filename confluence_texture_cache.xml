@@ -4,16 +4,19 @@
 	<!-- background -->
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
+	<!-- channel logo -->
+	<texture>Logo_Background.png</texture>
 	<!-- main menu -->
 	<texture>Prismcube_Logo.png</texture>
 	<texture>floor.png</texture>
 	<texture>HomeBack.png</texture>
 	<texture>HomeOverlay1.png</texture>
-	<texture>HomeSeparator.png</texture>
+	<texture>HomeSeperator.png</texture>
 	<texture>SideFade.png</texture>
 	<texture>icon-rss.png</texture>
 	<texture>icon_favourites.png</texture>
 	<texture>HomeSubEnd.png</texture>
+	<texture>icon_power.png</texture>
 	<!-- installation -->
 	<texture>icon_system.png</texture>
 	<texture>DialogBack.png</texture>
@@ -28,9 +31,11 @@
 	<texture>Arrow-left.png</texture>
 	<texture>Arrow-right-focus.png</texture>
 	<texture>Arrow-right.png</texture>
-	<!--texture>CalibrateBottomRight.png</texture>
+	<texture>CalibrateTopLeft.png</texture>
+	<texture>CalibrateBottomRight.png</texture>
+	<texture>CalibrateSubtitles.png</texture>
 	<texture>CalibratePixelRatio.png</texture>
-	<texture>CalibrateTopLeft.png</texture-->
+	<texture>black-back.png</texture>
 	<texture>OverlayDialogBackground.png</texture>
 	<texture>busy.png</texture>
 	<texture>DialogCloseButton-focus.png</texture>
@@ -51,10 +56,32 @@
 	<texture>RecIconSample.png</texture>
 	<texture>folder-focus.png</texture>
 	<!-- epg -->
+	<texture>D1.png</texture>
+	<texture>D2.png</texture>
+	<texture>D3.png</texture>
+	<texture>D4.png</texture>
+	<texture>D5.png</texture>
+	<texture>D6.png</texture>
+	<texture>D7.png</texture>
+	<texture>D8.png</texture>
+	<texture>D9.png</texture>
+	<texture>D10.png</texture>
+	<texture>D11.png</texture>
+	<texture>A1.png</texture>
+	<texture>A2.png</texture>
+	<texture>A3.png</texture>
+	<texture>A4.png</texture>
+	<texture>A5.png</texture>
+	<texture>A6.png</texture>
+	<texture>A7.png</texture>
+	<texture>A8.png</texture>
+	<texture>A9.png</texture>
+	<texture>A10.png</texture>
+	<texture>A11.png</texture>
 	<texture>icon_tv3.png</texture>
 	<texture>icon_radio3.png</texture>
 	<texture>ContentPanel_New.png</texture>
-	<texture>HomeSeparatorRed.png</texture>
+	<texture>HomeSeperatorRed.png</texture>
 	<texture>TSIconRewind.png</texture>
 	<texture>TSIconFastForward.png</texture>
 	<texture>IconTeletext.png</texture>
@@ -63,16 +90,30 @@
 	<texture>dolbydigitalplus.png</texture>
 	<texture>OverlayHD.png</texture>
 	<texture>IconTimer.png</texture>
-	<texture>StackFO_white2.png</texture>
-	<texture>StackNF.png</texture>
+	<texture>IconTimerV.png</texture>
+	<texture>OSDProgressMid1.png</texture>
 	<!-- channel list-->
-	<texture>OverlayLocked.png</texture>
-	<texture>IconT1w.png</texture>
-	<texture>IconT2w.png</texture>
-	<texture>IconT12w.png</texture>
+	<texture>IconCas1g.png</texture>
+	<texture>IconHD1g.png</texture>
+	<texture>IconT1g.png</texture>
+	<texture>IconT2g.png</texture>
+	<texture>IconT12g.png</texture>
+	<texture>IconFastScan.png</texture>
+	<texture>IconCas1w.png</texture>
+	<texture>IconHD1w.png</texture>
+	<texture>IconT1w_new.png</texture>
+	<texture>IconT2w_new.png</texture>
+	<texture>IconT12w_new.png</texture>
 	<texture>IconPlateRec.png</texture>
+	<texture>OverlayLocked.png</texture>
+	<texture>ContentPanelRED.png</texture>
+	<texture>MenuItemFO_edit.png</texture>
+	<texture>DI_Move.png</texture>
+	<texture>DI_Skip1g.png</texture>
 	<!-- live plate -->
-	<!--texture>MediaInfoBackLower.png</texture-->
+	<texture>MediaInfoBackLower.png</texture>
+	<texture>header.png</texture>
+	<texture>i_record.png</texture>
 	<texture>tv.png</texture>
 	<texture>icon_radio2.png</texture>
 	<texture>OSDIconInfo.png</texture>
@@ -83,15 +124,22 @@
 	<texture>OSDSubtitlesNF.png</texture>
 	<texture>OSDPresetSettingsFO.png</texture>
 	<texture>OSDPresetSettingsNF.png</texture>
-	<texture>IconT1.png</texture>
-	<texture>IconT2.png</texture>
-	<texture>IconCas.png</texture>
-	<texture>i_record.png</texture>
-	<texture>header.png</texture>
-	<!--texture>settings-button-nofocus-yellow.png</texture>
+	<texture>t1.png</texture>
+	<texture>t2.png</texture>
+	<texture>dolbydigital1.png</texture>
+	<texture>dolbydigitalplus1.png</texture>
+	<texture>settings-button-nofocus-yellow.png</texture>
 	<texture>settings-button-nofocus-green.png</texture>
 	<texture>settings-button-nofocus-red.png</texture>
-	<texture>settings-button-nofocus.png</texture-->
+	<texture>settings-button-nofocus.png</texture>
+	<texture>DialogContextTop.png</texture>
+	<texture>DialogContextMiddle.png</texture>
+	<texture>DialogContextBottom.png</texture>
+	<texture>OverlayWatched.png</texture>
+	<texture>scroll-left-focus.png</texture>
+	<texture>scroll-left.png</texture>
+	<texture>scroll-right-focus.png</texture>
+	<texture>scroll-right.png</texture>
 	<!-- timeshift plate -->
 	<texture>osd_slider_nibNF.png</texture>
 	<texture>OSDLeft.png</texture>
@@ -115,9 +163,23 @@
 	<texture>OSDNextTrackNF.png</texture>
 	<texture>OSDBookmarksFO.png</texture>
 	<texture>OSDBookmarksNF.png</texture>
-	<!--texture>DialogContextTop.png</texture>
-	<texture>DialogContextMiddle.png</texture>
-	<texture>DialogContextBottom.png</texture-->
+	<!-- pip -->
+	<texture>StackFO_white2.png</texture>
+	<texture>StackNF.png</texture>
+	<texture>OSDAudioFO.png</texture>
+	<texture>OSDAudioNF.png</texture>
+	<texture>OSDRepeatFO.png</texture>
+	<texture>OSDRepeatNF.png</texture>
+	<texture>OSDMoveFO.png</texture>
+	<texture>OSDMoveNF.png</texture>
+	<texture>OSDSizeFO.png</texture>
+	<texture>OSDSizeNF.png</texture>
+	<texture>OSDDefaultFO.png</texture>
+	<texture>OSDDefaultNF.png</texture>
+	<texture>OSDBackFO.png</texture>
+	<texture>OSDBackNF.png</texture>
+	<texture>OSDPowerFO.png</texture>
+	<texture>OSDPowerNF.png</texture>
 	<!-- volume bar -->
 	<texture>InfoMessagePanel.png</texture>
 	<texture>VolumeIcon.png</texture>
@@ -158,13 +220,8 @@
 	<texture>icon_addons.png</texture>
 	<texture>icon_music.png</texture>
 	<texture>icon_pictures.png</texture>
-	<texture>black-back.png</texture>
 	<texture>button-focus.png</texture>
 	<texture>button-nofocus.png</texture>
-	<texture>scroll-left-focus.png</texture>
-	<texture>scroll-left.png</texture>
-	<texture>scroll-right-focus.png</texture>
-	<texture>scroll-right.png</texture>
 	<texture>scroll-up-2.png</texture>
 	<texture>scroll-up-focus-2.png</texture>
 	<texture>scroll-down-2.png</texture>
@@ -180,4 +237,18 @@
 	<texture>MediaBladeSub.png</texture>
 	<texture>separator.png</texture>
 	<texture>HomeNowPlayingBack.png</texture>
+	<texture>rating0.png</texture>
+	<texture>DefaultFolderBack.png</texture>
+	<!-- info icons -->
+	<texture>USB.png</texture>
+	<texture>DefaultIconInfo.png</texture>
+	<texture>IconNotAvailable.png</texture>
+	<!-- keypad -->
+	<texture>KeyboardCornerTop.png</texture>
+	<texture>KeyboardCornerTopNF.png</texture>
+	<texture>KeyboardKey.png</texture>
+	<texture>KeyboardKeyNF.png</texture>
+	<texture>KeyboardCornerBottom.png</texture>
+	<texture>KeyboardCornerBottomNF.png</texture>
+	<texture>KeyboardEditArea.png</texture>
 </textures>
