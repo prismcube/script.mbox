@@ -200,6 +200,7 @@ class SystemUpdate( SettingWindow ) :
 		#parse settings.xml
 		#self.mPVSData = None
 		#self.mCurrData = None
+		self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 		self.mIndexLastVersion = 0
 		self.mShowProgressThread = None
 		self.mUSBAttached = self.mDataCache.GetUSBAttached( )
@@ -239,10 +240,7 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			if self.mStepPage == E_UPDATE_STEP_READY :
-				self.DoContextAction( CONTEXT_ACTION_LOAD_LOCAL_VERSION )
-			else :
-				self.ControlRight( )
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -269,17 +267,14 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
 			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
+			self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 			self.LoadInit( )
 
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				if self.mDataCache.Satellite_GetConfiguredList( ) :
-					self.UpdateChannelsByInternet( )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
-					dialog.doModal( )
+				self.mUpdateMode = CONTEXT_ACTION_LOAD_LOCAL_VERSION
+				self.DoContextAction( CONTEXT_ACTION_LOAD_LOCAL_VERSION )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -298,6 +293,14 @@ class SystemUpdate( SettingWindow ) :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
 		elif groupId == E_Input03 :
+			if self.mDataCache.Satellite_GetConfiguredList( ) :
+				self.UpdateChannelsByInternet( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
+				dialog.doModal( )
+
+		elif groupId == E_Input04 :
 			LOG_TRACE( 'Import Settings from USB' )
 			if self.GetStatusFromFirmware( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -307,7 +310,7 @@ class SystemUpdate( SettingWindow ) :
 
 			self.ImportSettingsFromUSB( )
 
-		elif groupId == E_Input04 :
+		elif groupId == E_Input05 :
 			LOG_TRACE( 'Export Settings to USB' )		
 			self.ExportSettingsToUSB( )
 
@@ -843,8 +846,8 @@ class SystemUpdate( SettingWindow ) :
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
-		if not self.GetStatusFromFirmware( ) :
-			context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
+		#if not self.GetStatusFromFirmware( ) :
+		#	context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -910,6 +913,12 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ShowLocalVersion( self ) :
+		if self.GetStatusFromFirmware( ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+			dialog.doModal( )
+			return
+
 		zipFile = xbmcgui.Dialog( ).browsepath( MR_LANG( 'Update from local directory' ), '*.zip' )
 		#LOG_TRACE( '----------zip[%s]'% zipFile )
 		if not zipFile or zipFile == 'None' :
@@ -950,11 +959,11 @@ class SystemUpdate( SettingWindow ) :
 
 			elif shell == E_RESULT_ERROR_CHECKSUME :
 				errmsg = E_STRING_CHECK_CORRUPT
-				self.mStepPage = E_UPDATE_STEP_READY
+				self.mStepPage = E_UPDATE_STEP_HOME
 				self.mIsDownload = False
-				self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
-				self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
-				self.ShowDescription( E_Input02 )
+				#self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				#self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				#self.ShowDescription( E_Input02 )
 				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
 
 			self.DialogPopup( mTitle, errmsg )
@@ -1053,19 +1062,22 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_HOME :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from zip file' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
+			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
-
 			self.SetEnableControl( E_Input03, True )
 			self.SetEnableControl( E_Input04, True )
+			self.SetEnableControl( E_Input05, True )
+
 			self.SetVisibleControl( E_Input03, True )
 			self.SetVisibleControl( E_Input04, True )
+			self.SetVisibleControl( E_Input05, True )
 
 			self.InitControl( )
 			#self.SetFocusControl( E_Input01 )
@@ -1098,8 +1110,10 @@ class SystemUpdate( SettingWindow ) :
 
 			self.SetEnableControl( E_Input03, False )
 			self.SetEnableControl( E_Input04, False )
+			self.SetEnableControl( E_Input05, False )
 			self.SetVisibleControl( E_Input03, False )
 			self.SetVisibleControl( E_Input04, False )
+			self.SetVisibleControl( E_Input05, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1275,9 +1289,10 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
-			self.ShowDescription( E_Input02 )
+			if self.mUpdateMode != CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
+				self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
+				self.ShowDescription( E_Input02 )
 
 			self.CheckItems( )
 
