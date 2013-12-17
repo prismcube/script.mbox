@@ -479,14 +479,14 @@ Search for window name
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeparator.png</texture>
+							<texture>HomeSeperator.png</texture>
 						</control>
 						<control type="image">
 							<posx>299</posx>
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeparator.png</texture>
+							<texture>HomeSeperator.png</texture>
 						</control>
 						<control type="label">
 							<posx>150</posx>
@@ -506,14 +506,14 @@ Search for window name
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeparator.png</texture>
+							<texture>HomeSeperator.png</texture>
 						</control>
 						<control type="image">
 							<posx>299</posx>
 							<posy>4</posy>
 							<width>1</width>
 							<height>52</height>
-							<texture>HomeSeparator.png</texture>
+							<texture>HomeSeperator.png</texture>
 						</control>
 						<control type="label">
 							<posx>150</posx>
@@ -5641,7 +5641,7 @@ Search for window name
 						<posy>0</posy>
 						<width>1</width>
 						<height>498</height>
-						<texture>HomeSeparatorRed.png</texture>
+						<texture>HomeSeperatorRed.png</texture>
 						<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
 					</control>
 				</control>
