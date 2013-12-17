@@ -94,7 +94,7 @@ class DataCacheMgr( object ) :
 	def __init__( self ) :
 		self.mShutdowning = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-
+		self.mTunerList 						= []
 		self.mZappingMode						= None
 		self.mLastZappingMode					= ElisIZappingMode( )
 		self.mChannelList						= None
@@ -240,6 +240,8 @@ class DataCacheMgr( object ) :
 		self.mRootWindow	= aRootWindow
 
 	def Load( self ) :
+
+		self.LoadDVBTunerList()#
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
 		#self.Frontdisplay_ResolutionByIdentified( )
@@ -3035,4 +3037,95 @@ class DataCacheMgr( object ) :
 	def Splash_StartAndStop( self, aStartStop ) :
 		return self.mCommander.Splash_StartAndStop( aStartStop )
 
+
+	def LoadDVBTunerList( self ) : 
+		#Test code
+		self.mTunerList = []
+		testCase  = 3
+
+		if testCase == 0 : #DVBS(2)
+			tuner = ElisIDVBTuner( 0, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+			tuner = ElisIDVBTuner( 1, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+		elif testCase == 1 : #DVBT(1)
+			tuner = ElisIDVBTuner( 0, ElisEnum.E_DVB_TUNER_DVBT)
+			self.mTunerList.append ( tuner )
+		elif testCase == 2 : #DVBTC(1)
+			tuner = ElisIDVBTuner( 0, ElisEnum.E_DVB_TUNER_DVBC)
+			self.mTunerList.append ( tuner )
+		elif testCase == 3 : #DVBS(2) +  DVBTC(1)
+			tuner = ElisIDVBTuner( 0, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+			tuner = ElisIDVBTuner( 1, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+			tuner = ElisIDVBTuner( 2, ElisEnum.E_DVB_TUNER_DVBTC)
+			self.mTunerList.append ( tuner )
+		else:		
+			tuner = ElisIDVBTuner( 0, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+			tuner = ElisIDVBTuner( 1, ElisEnum.E_DVB_TUNER_DVBS)
+			self.mTunerList.append ( tuner )
+
+		LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER self.mTunerList=%s' %self.mTunerList )
+
+
+	def GetDVBTunerList( self ) : 
+		LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER self.mTunerList=%s' %self.mTunerList )	
+		return self.mTunerList
+
+
+	def GetDVBTunerTypeList( self ) : 
+		LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER self.mTunerList=%s' %self.mTunerList )	
+		hasDVBS = False
+		hasDVBTC = False
+		hasDVBT = False
+		hasDVBC = False
+		dvbTypeList = []
+		for tuner in self.mTunerList :
+			if tuner.mTunerType == ElisEnum.E_DVB_TUNER_DVBS and hasDVBS == False :
+				dvbTypeList.append( tuner )
+				hasDVBS = True
+			elif tuner.mTunerType == ElisEnum.E_DVB_TUNER_DVBT and hasDVBT == False :
+				dvbTypeList.append( tuner )
+				hasDVBT = True
+			elif tuner.mTunerType == ElisEnum.E_DVB_TUNER_DVBC and hasDVBC == False :
+				dvbTypeList.append( tuner )
+				hasDVBC = True
+			elif tuner.mTunerType == ElisEnum.E_DVB_TUNER_DVBTC and hasDVBTC == False :
+				hasDVBTC = True			
+				dvbTypeList.append( tuner )
+
+		return dvbTypeList
+
+
+	def GetDVBTunerByType( self, aType ) : 
+		tunerList  = []
+		for tuner in self.mTunerList :
+			if aType == ElisEnum.E_DVB_TUNER_DVBS:
+				tunerList.append( tuner )
+			elif aType == ElisEnum.E_DVB_TUNER_DVBT :
+				tunerList.append( tuner )
+			elif aType == ElisEnum.E_DVB_TUNER_DVBC :
+				tunerList.append( tuner )
+			elif aType == ElisEnum.E_DVB_TUNER_DVBTC :
+				tunerList.append( tuner )
+
+		return tunerList
+	
+
+	def IsOneTunerType( self ) :
+		tunerType = ElisEnum.E_DVB_TUNER_INVALID
+		count = 0
+		for tuner in self.mTunerList :
+			if count == 0 :
+				tunerType = tuner.mTunerType
+			else:
+				if tunerType != tuner.mTunerType :
+					LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER OneTunerType=False' )							
+					return False
+			count += 1
+
+		LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER OneTunerType=True' )			
+		return True
 
