@@ -241,7 +241,7 @@ class DataCacheMgr( object ) :
 
 	def Load( self ) :
 
-		self.LoadDVBTunerList()#
+		#self.LoadDVBTunerList()#
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
 		#self.Frontdisplay_ResolutionByIdentified( )

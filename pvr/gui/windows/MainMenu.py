@@ -151,16 +151,18 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
+					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
-					if self.mDataCache.IsOneTunerType() == True:
-						tunerList = self.mDataCache.GetDVBTunerList()
-						if tunerList[0].mTunerType == ElisEnum.E_DVB_TUNER_DVBS :
-							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
-						else :
-							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )						
-					else :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
+					#if self.mDataCache.IsOneTunerType() == True:
+					#	tunerList = self.mDataCache.GetDVBTunerList()
+					#	if tunerList[0].mTunerType == ElisEnum.E_DVB_TUNER_DVBS :
+					#		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+					#	else :
+					#		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )						
+					#else :
+					#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
 				elif aControlId == BUTTON_ID_EDIT_SATELLITE :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
 				elif aControlId == BUTTON_ID_EDIT_TRANSPONDER :
