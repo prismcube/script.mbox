@@ -13,7 +13,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mIsOk					= False
 		self.mSelectIdx				= 0
 		self.mSelectName			= ''
-		self.mDialogTitle			= ''
 		self.mAudioTrack			= []
 		self.mMode					= CONTEXT_ACTION_VIDEO_SETTING
 
@@ -29,8 +28,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.setProperty( 'DialogDrawFinished', 'False' )
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
 
-		self.InitProperty( )
-		self.SetHeaderLabel( self.mDialogTitle )
+		self.SetHeaderLabel( MR_LANG( 'Audio & Video - Settings' ) )
 		self.DrawItem( )
 		self.mIsOk = False
 		self.mEventBus.Register( self )
@@ -105,6 +103,9 @@ class DialogSetAudioVideo( SettingDialog ) :
 				self.mAsyncVideoSetThread = threading.Timer( 3, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
 
+			elif groupId == E_DialogInput01 :
+				self.ShowAudioTrack( )
+
 			else :
 				self.ControlSelect( )
 
@@ -126,8 +127,19 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def DrawItem( self ) :
 		self.ResetAllControl( )
+		defaultFocus = E_DialogInput01
 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
+			trackList, selectIdx = self.GetAudioTrack( )
+			lblSelect = MR_LANG( 'None' )
+			if selectIdx != -1 and selectIdx < len( trackList ) :
+				lblSelect = trackList[selectIdx].mDescription
+
+			self.AddInputControl( E_DialogInput01, MR_LANG( 'Audio Track' ), lblSelect )
+			if len( trackList ) < 1 :
+				self.SetEnableControl( E_DialogInput01, False )
+				defaultFocus = E_DialogSpinEx01
+
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			if self.mVideoOutput == E_VIDEO_HDMI :
 				self.AddEnumControl( E_DialogSpinEx02, 'HDMI Format', MR_LANG( ' - HDMI Format' ) )
@@ -152,6 +164,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 				hideControlIds = [ E_DialogSpinEx04 ]
 				self.SetVisibleControls( hideControlIds, False )
 
+		#deprecated
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Audio HDMI' ), self.mAudioTrack, 0 )
 
@@ -165,6 +178,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.SetAutoHeight( True )
 		self.InitControl( )
 		self.UpdateLocation( )
+		self.SetFocus( defaultFocus )
 
 
 	def AsyncVideoSetting( self ) :
@@ -205,6 +219,68 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mBusyVideoSetting = False
 
 
+	def GetAudioTrack( self ) :
+		getCount = self.mDataCache.Audiotrack_GetCount( )
+		selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
+
+		trackList = []
+		trackIndex = 0
+		for idx in range(getCount) :
+			idxTrack = None
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+				if mPlayingRecord :
+					idxTrack = self.mDataCache.Audiotrack_GetForRecord( mPlayingRecord.mRecordKey, idx )
+
+			else :
+				idxTrack = self.mDataCache.Audiotrack_Get( idx )
+
+			if idxTrack == None :
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				#dialog.SetProperty( trackList )
+				#dialog.doModal( )
+				selectIdx = -1
+				break
+
+			#idxTrack = self.mDataCache.Audiotrack_Get( idx )
+			LOG_TRACE('getTrack name[%s] lang[%s]'% ( idxTrack.mName, idxTrack.mLang ) )
+			label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
+			if idxTrack.mName == '' :
+				label = '%s' % idxTrack.mLang
+			elif idxTrack.mLang == '' :
+				label = '%s' % idxTrack.mName
+			elif idxTrack.mName == '' and idxTrack.mLang == '' :
+				label = MR_LANG( 'Unknown' )
+
+			trackList.append( ContextItem( label, trackIndex ) )
+			trackIndex += 1
+
+		return trackList, selectIdx
+
+
+	def ShowAudioTrack( self ) :
+		trackList, selectIdx = self.GetAudioTrack( )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( trackList, selectIdx )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction < 0 :
+			return
+
+		if self.mCommander.Player_GetMute( ) :
+			self.mCommander.Player_SetMute( False )
+			xbmc.executebuiltin( 'Mute( )' )
+
+		self.mDataCache.Audiotrack_select( selectAction )
+		#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectAction) )
+
+		if selectAction < len( trackList ) :
+			self.SetControlLabel2String( E_DialogInput01, trackList[selectAction].mDescription )
+
+
 	def GetCloseStatus( self ) :
 		return self.mIsOk
 
@@ -214,40 +290,13 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def SetValue( self, aMode ) :
+		return
 		self.mMode = aMode
 
 
 	def SetProperty( self ) : 
-		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
-			self.ControlSelect( )
-			#if self.mSelectIdx == E_DialogSpinEx01 :
-			#	self.mDataCache.Frontdisplay_Resolution( )
-
-		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
-			idx = self.GetSelectedIndex( E_DialogSpinEx01 )
-			#LOG_TRACE('idx[%s] track[%s]'% ( idx, self.mAudioTrack) )
-			self.mSelectName = self.mAudioTrack[idx]
-			self.mDataCache.Audiotrack_select( idx )
-
-
-	def InitProperty( self ) :
-		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
-			self.mDialogTitle = MR_LANG( 'Video Format' )
-
-		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
-			self.mDialogTitle = MR_LANG( 'Audio Setting' )
-
-			getCount = self.mDataCache.Audiotrack_GetCount( )
-			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-			#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
-
-			self.mAudioTrack = []
-			for i in range( getCount ) :
-				iTrack = self.mDataCache.Audiotrack_Get( i )
-				#LOG_TRACE('getTrack: name[%s] lang[%s]'% (iTrack.mName, iTrack.mLang) )
-				if iTrack :
-					label = '%s-%s'% (iTrack.mName, iTrack.mLang)
-					self.mAudioTrack.append( label )
+		return
+		self.ControlSelect( )
 
 
 	def Close( self ) :

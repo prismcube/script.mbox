@@ -438,14 +438,11 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowLinkageChannels( )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-			self.RestartAutomaticHide( )
+			self.ShowDialog( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.RestartAutomaticHide( )
+			pass
+			#ToDO : pip
 
 
 	def onClick( self, aControlId ):
@@ -552,8 +549,8 @@ class TimeShiftPlate( BaseWindow ) :
 				txtGreen = MR_LANG( 'Multi-Feed' )
 
 			ResizeImageWidthByTextSize( ctrlGreen, self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), txtGreen, self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Settings' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'PIP' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
 			if lblGreen and len( lblGreen ) > 9 or \
 			   lblYellow and len( lblYellow ) > 9 or \
 			   lblBlue and len( lblBlue ) > 9 :
@@ -1545,6 +1542,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
+		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
+			thread = threading.Timer( 0.1, self.DoContextAction, [CONTEXT_ACTION_VIDEO_SETTING] )
+			thread.start( )
+			return
+
 		thread = threading.Timer( 0.1, self.BookMarkContext, [aFocusId] )
 		thread.start( )
 		#self.RestartAutomaticHide( )
@@ -1626,11 +1628,10 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.DoResumeFromBookmark( )
 
-		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-
 		elif aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
+			self.StopAutomaticHide( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
+			self.RestartAutomaticHide( )
 
 
 	def DoDeleteBookmarkBySelect( self ) :

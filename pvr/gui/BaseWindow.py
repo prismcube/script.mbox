@@ -557,6 +557,18 @@ class BaseWindow( BaseObjectWindow ) :
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
 
+	def ShowPIP( self ) :
+		if E_V1_2_APPLY_PIP :
+			import pvr.gui.WindowMgr as WinMgr
+
+			pipWin = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			if pipWin.GetPIPStatus( ) :
+				pipWin.PIP_Check( E_PIP_STOP )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+
+
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
