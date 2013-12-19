@@ -247,7 +247,8 @@ class ChannelScanDVBT( SettingWindow ) :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBT
 		else :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBC
-		temp = self.mDVBT
+		temp = deepcopy( self.mDVBT )
 		temp.mBand = temp.mBand + 6
 		ICarrier.mDVBT = temp
+		temp.printdebug( )
 		return ICarrier
