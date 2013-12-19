@@ -85,7 +85,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		# Frequency		
 		if groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mDVBT.mFrequency, 10 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mDVBT.mFrequency, 7 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				#tempval = dialog.GetString( )
@@ -96,7 +96,7 @@ class ChannelScanDVBT( SettingWindow ) :
 				#else :
 				#	self.mConfigTransponder.mFrequency = int( tempval )
 				self.mDVBT.mFrequency = int( dialog.GetString( ) )
-				self.SetControlLabel2String( E_Input01, '%d MHz' % self.mDVBT.mFrequency )
+				self.SetControlLabel2String( E_Input01, '%d KHz' % self.mDVBT.mFrequency )
 			else :
 				return
 
@@ -185,7 +185,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
-		self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d MHz' % self.mDVBT.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999999 )
+		self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
 		self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT.mBand, MR_LANG( 'Select bandwidth' ) )
 		self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 255 )
@@ -200,13 +200,13 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def DisableControl( self, aGroupId = None ) :
-		if aGroupId == None or aGroupId == E_SpinEx01 :
+		if aGroupId == None or aGroupId == E_SpinEx03 :
 			if self.mDVBT.mIsDVBT2 == E_TUNER_T2 :
 				self.SetEnableControl( E_Input02, True )
 			else :
 				self.SetEnableControl( E_Input02, False )
 
-		elif aGroupId == None or aGroupId == E_SpinEx01 :
+		if aGroupId == None or aGroupId == E_SpinEx01 :
 			disablecontrols = [ E_Input01, E_Input02, E_SpinEx02, E_SpinEx03 ]
 			if self.mIsManualSetup == 0 :
 				self.SetEnableControls( disablecontrols, False )
@@ -220,7 +220,7 @@ class ChannelScanDVBT( SettingWindow ) :
 	def CallballInputNumber( self, aGroupId, aString ) :
 		if aGroupId == E_Input01 :
 			self.mDVBT.mFrequency = int( aString )
-			self.SetControlLabel2String( aGroupId, aString + ' MHz' )
+			self.SetControlLabel2String( aGroupId, aString + ' KHz' )
 			#if self.mDVBT.mFrequency >= 9999999999 :
 			#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 		elif aGroupId == E_Input02 :

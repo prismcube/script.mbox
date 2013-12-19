@@ -1,4 +1,4 @@
-2from pvr.gui.WindowImport import *
+from pvr.gui.WindowImport import *
 
 
 # Control IDs
