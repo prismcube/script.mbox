@@ -248,6 +248,6 @@ class ChannelScanDVBT( SettingWindow ) :
 		else :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBC
 		temp = self.mDVBT
-		temp.mBand = tem.mBand + 6
+		temp.mBand = temp.mBand + 6
 		ICarrier.mDVBT = temp
 		return ICarrier
