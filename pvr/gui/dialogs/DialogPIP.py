@@ -71,7 +71,6 @@ PIP_CHECKWINDOW = [
 class DialogPIP( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mPIPStart = False
 		self.mCurrentChannel = ElisIChannel( )
 		self.mCurrentChannel.mNumber = self.mDataCache.Channel_GetCurrent( )
 		if E_V1_2_APPLY_PIP :
@@ -193,6 +192,9 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.Close( True )
+
 		else :
 			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
@@ -283,14 +285,11 @@ class DialogPIP( BaseDialog ) :
 		ret = self.mDataCache.PIP_Stop( )
 		LOG_TRACE( '---------PIP_Stop ret[%s]'% ret )
 		if ret :
-			self.mPIPStart = False
-			#self.UpdatePropertyGUI( 'OpenPIP', E_TAG_FALSE )
-			#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
-			#self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
+			self.mDataCache.PIP_SetStatus( False )
 
-			self.mLastWindow.setProperty( 'OpenPIP', E_TAG_FALSE )
 			self.mLastWindow.setProperty( 'iLockPIP', E_TAG_FALSE )
 			self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
 
 
 	def PIP_Check( self, aStop = False ) :
@@ -301,21 +300,17 @@ class DialogPIP( BaseDialog ) :
 			self.PIP_Stop( )
 			return
 
-		if self.GetPIPStatus( ) :
-			isShow = False
+		isShow = False
+		if self.mDataCache.PIP_GetStatus( ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
 				isShow = True
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
-			#self.UpdatePropertyGUI( 'OpenPIP', '%s'% isShow )
-			self.mLastWindow.setProperty( 'OpenPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
 			LOG_TRACE( 'GetLastWindowID[%s] isPIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
 
-		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mPIPStart, self.mLastWindow.getProperty( 'OpenPIP' ) ) )
-
-
-	def GetPIPStatus( self ) :
-		return self.mPIPStart
+		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mDataCache.PIP_GetStatus( ), xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' ) ) )
+		return isShow
 
 
 	def Load( self ) :
@@ -330,8 +325,7 @@ class DialogPIP( BaseDialog ) :
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
 			self.LoadPositionPIP( )
-			#self.UpdatePropertyGUI( 'OpenPIP', E_TAG_TRUE )
-			self.mLastWindow.setProperty( 'OpenPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
 
 
 	def LoadPositionPIP( self ) :
@@ -373,7 +367,7 @@ class DialogPIP( BaseDialog ) :
 
 
 	def Channel_GetCurrentByPIP( self ) :
-		LOG_TRACE( 'is PIPStarted[%s]'% self.mPIPStart )
+		LOG_TRACE( 'is PIPStarted[%s]'% self.mDataCache.PIP_GetStatus( ) )
 
 		#1. tunable : last channel by pip
 		pChNumber = self.mDataCache.PIP_GetCurrent( )
@@ -490,7 +484,7 @@ class DialogPIP( BaseDialog ) :
 				fakeChannel = iChannel
 
 		elif aDir == CURR_CHANNEL_PIP :
-			if self.mPIPStart :
+			if self.mDataCache.PIP_GetStatus( ) :
 				LOG_TRACE( '--------Already started PIP' )
 				#self.mDataCache.PIP_AVBlank( False )
 
@@ -799,13 +793,12 @@ class DialogPIP( BaseDialog ) :
 				self.mCurrentChannel = aChannel
 				self.ChannelTuneToPIP( -1 )
 
-			self.mPIPStart = True
+			self.mDataCache.PIP_SetStatus( True )
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 			LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
 			if ret :
-				#self.mPIPStart = True
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
 					#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )

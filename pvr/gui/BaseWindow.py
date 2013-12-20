@@ -559,14 +559,11 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def ShowPIP( self ) :
 		if E_V1_2_APPLY_PIP :
-			import pvr.gui.WindowMgr as WinMgr
+			import pvr.gui.DialogMgr as DiaMgr
+			pipDlg = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
 
-			pipWin = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW )
-			if pipWin.GetPIPStatus( ) :
-				pipWin.PIP_Check( E_PIP_STOP )
-			else :
-				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			if not pipDlg.PIP_Check( ) :
+				pipDlg.doModal( )
 
 
 	def SetSingleWindowPosition( self, aWindowId ) :

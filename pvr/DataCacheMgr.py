@@ -172,6 +172,8 @@ class DataCacheMgr( object ) :
 		self.mRootWindow						= None
 		self.mHasLinkageService					= False
 
+		self.mPIPStart							= False
+
 		self.mVideoOutput						= E_VIDEO_HDMI
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
@@ -2850,6 +2852,14 @@ class DataCacheMgr( object ) :
 
 	def PIP_Stop( self ) :
 		return self.mCommander.PIP_Stop( )
+
+
+	def PIP_GetStatus( self ) :
+		return self.mPIPStart
+
+
+	def PIP_SetStatus( self, isStart = False ) :
+		self.mPIPStart = isStart
 
 
 	def PIP_SetDimension( self, aPosX, aPosY, aWidth, aHeight ) :

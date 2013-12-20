@@ -505,10 +505,7 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			#self.DialogPopupOK( actionId )
-			#self.ShowPIP( )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
-			dialog.doModal( )
+			self.ShowPIP( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
