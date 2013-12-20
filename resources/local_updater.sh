@@ -116,7 +116,7 @@ check_file()
 	LOG "Process check md5sum"
 	cd $1
 	#echo 'cd $1 '$1
-	for FILE in `ls`; do
+	for FILE in `ls -l | grep "^-" | awk '{print $9}'`; do
 		check_stop
 		#echo 'file '$FILE
 		if [ "$(strstr "$FILE" ".md5")" == "FALSE" ]; then
