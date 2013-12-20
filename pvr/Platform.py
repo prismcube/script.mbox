@@ -37,6 +37,8 @@ def GetPlatform( ) :
 			gPlatform = LinuxPlatform( )
 		elif 'NXP BL-STB' == gPlatformName :
 			gPlatform = PrismCubePlatform( )
+		elif 'Entropic STB' == gPlatformName :
+			gPlatform = PrismCubePlatform( )
 		elif 'darwin' == gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
