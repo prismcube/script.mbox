@@ -188,7 +188,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
 		self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT.mBand, MR_LANG( 'Select bandwidth' ) )
 		self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
-		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 255 )
+		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddEnumControl( E_SpinEx04, 'Network Search', None, networkSearchDescription )
 		self.AddEnumControl( E_SpinEx05, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
@@ -221,22 +221,23 @@ class ChannelScanDVBT( SettingWindow ) :
 		if aGroupId == E_Input01 :
 			self.mDVBT.mFrequency = int( aString )
 			self.SetControlLabel2String( aGroupId, aString + ' KHz' )
-			#if self.mDVBT.mFrequency >= 9999999999 :
-			#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			if self.mDVBT.mFrequency < 10000000 :
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 		elif aGroupId == E_Input02 :
 			self.mDVBT.mPLPId = int( aString )
-			self.SetControlLabel2String( aGroupId, '%03d' % int( aString ) )
+			self.SetControlLabel2String( aGroupId, '%s' % self.mDVBT.mPLPId )
+			if self.mDVBT.mPLPId < 1000 :
+				ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 
 
 	def FocusChangedAction( self, aGroupId ) :
-		pass
 		#if aGroupId == E_Input01 and self.mDVBT.mFrequency < 9999999999 :
 		#	self.mDVBT.mFrequency = 3000
 		#	self.SetControlLabel2String( E_Input02, '%s MHz' % self.mConfigTransponder.mFrequency )
 		#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			
-		#if aGroupId == E_Input02 and self.mPlpId < 255 :
-		#	self.mConfigTransponder.mSymbolRate = 1000
+		if aGroupId == E_Input02 :
+			self.SetControlLabel2String( aGroupId, '%03d' % self.mDVBT.mPLPId )
 		#	self.SetControlLabel2String( E_Input03, '%s KS/s' % self.mConfigTransponder.mSymbolRate )
 		#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
