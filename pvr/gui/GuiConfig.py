@@ -486,6 +486,7 @@ E_V1_2_APPLY_VIEW_TIMER = True
 E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 E_V1_2_APPLY_PIP = True
+E_V1_2_APPLY_PIP_BY_MEDIACENTER = False
 
 ############################ Global Function For GUI ############################
 

@@ -377,8 +377,7 @@ class LivePlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.ShowPIP( )
-
+			pass
 			#ToDO : show pip
 
 

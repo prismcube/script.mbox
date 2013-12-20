@@ -63,8 +63,7 @@ PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
-	WinMgr.WIN_ID_LIVE_PLATE,
-	WinMgr.WIN_ID_PIP_WINDOW
+	WinMgr.WIN_ID_LIVE_PLATE
 ]
 
 
@@ -84,7 +83,7 @@ class DialogPIP( BaseDialog ) :
 
 		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
 		#self.SetRadioScreen( )
-		self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
+		self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
 		self.mCtrlImageFocusNF     = self.mLastWindow.getControl( CTRL_ID_IMAGE_NFOCUSED )
 		self.mCtrlGroupBasePIP     = self.mLastWindow.getControl( CTRL_ID_GROUP_BASE_PIP )
 		self.mCtrlImageBasePIP     = self.mLastWindow.getControl( CTRL_ID_IMAGE_BASE_PIP )
@@ -287,8 +286,8 @@ class DialogPIP( BaseDialog ) :
 		if ret :
 			self.mDataCache.PIP_SetStatus( False )
 
-			self.mLastWindow.setProperty( 'iLockPIP', E_TAG_FALSE )
-			self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
 
 
@@ -296,21 +295,31 @@ class DialogPIP( BaseDialog ) :
 		if not E_V1_2_APPLY_PIP :
 			return
 
-		if aStop or self.mDataCache.GetMediaCenter( ) :
-			self.PIP_Stop( )
-			return
+		if not E_V1_2_APPLY_PIP_BY_MEDIACENTER :
+			if aStop or self.mDataCache.GetMediaCenter( ) :
+				self.PIP_Stop( )
+				return
 
 		isShow = False
 		if self.mDataCache.PIP_GetStatus( ) :
+			#1. show/hide auto
 			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
 				isShow = True
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
-			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% isShow )
 			LOG_TRACE( 'GetLastWindowID[%s] isPIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
 
 		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mDataCache.PIP_GetStatus( ), xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' ) ) )
 		return isShow
+
+
+	def PIP_Available( self ) :
+		isAvailable = False
+		if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
+			isAvailable = True
+
+		return isAvailable
 
 
 	def Load( self ) :
@@ -325,7 +334,7 @@ class DialogPIP( BaseDialog ) :
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
 			self.LoadPositionPIP( )
-			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
 
 
 	def LoadPositionPIP( self ) :
@@ -428,7 +437,7 @@ class DialogPIP( BaseDialog ) :
 		fakeChannel = self.mCurrentChannel
 		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP :
 			#self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
-			self.mLastWindow.setProperty( 'BlankPIP', E_TAG_TRUE )
+			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
 			chNumber = self.Channel_GetCurrentByPIP( )
@@ -468,7 +477,7 @@ class DialogPIP( BaseDialog ) :
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) :
-					self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 				return
 
 			iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -477,8 +486,8 @@ class DialogPIP( BaseDialog ) :
 				if not ret :
 					LOG_TRACE( 'Fail to switch' )
 					if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) and \
-					   self.mLastWindow.getProperty( 'PIPSignal' ) == E_TAG_TRUE :
-						self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
+					   xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
+						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 					return
 
 				fakeChannel = iChannel
@@ -489,12 +498,12 @@ class DialogPIP( BaseDialog ) :
 				#self.mDataCache.PIP_AVBlank( False )
 
 				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) and \
-				   self.mLastWindow.getProperty( 'PIPSignal' ) == E_TAG_TRUE :
-					self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
+				   xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 
 				return True
 
-			self.mLastWindow.setProperty( 'BlankPIP', E_TAG_TRUE )
+			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 			if not fakeChannel :
 				self.Close( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -523,11 +532,11 @@ class DialogPIP( BaseDialog ) :
 
 	def SetLabelInputNumber( self ) :
 		imagePng = 'black-back_noAlpha.png'
-		if self.mLastWindow.getProperty( 'PIPSignal' ) != E_TAG_TRUE :
+		if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
 			imagePng = 'button-focus2.png'
 
 		self.mCtrlImageInputBG.setImage( imagePng )
-		self.UpdatePropertyGUI( 'InputNumber', E_TAG_TRUE )
+		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_TRUE )
 		self.mCtrlLabelInputCH.setLabel( self.mInputString )
 
 	def SetLabelInputName( self, aChannelName = MR_LANG( 'No Channel' ) ) :
@@ -539,7 +548,7 @@ class DialogPIP( BaseDialog ) :
 		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'ShowOSDStatus', E_TAG_TRUE )
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_TRUE )
-		self.UpdatePropertyGUI( 'InputNumber', E_TAG_FALSE )
+		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_FALSE )
 
 		time.sleep( 0.2 )
 		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
@@ -802,21 +811,21 @@ class DialogPIP( BaseDialog ) :
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
 					#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )
-					self.mLastWindow.setProperty( 'iLockPIP', E_TAG_FALSE )
+					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_TRUE )
 				else :
 					#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
 					#self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
 					#self.UpdatePropertyGUI( 'PIPSignal', E_TAG_TRUE )
-					self.mLastWindow.setProperty( 'iLockPIP', E_TAG_FALSE )
-					self.mLastWindow.setProperty( 'BlankPIP', E_TAG_FALSE )
-					self.mLastWindow.setProperty( 'PIPSignal', E_TAG_TRUE )
+					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
 
 			else :
 				LOG_ERR('Tune failed')
 				#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
 				#self.UpdatePropertyGUI( 'PIPSignal', E_TAG_FALSE )
-				self.mLastWindow.setProperty( 'iLockPIP', E_TAG_FALSE )
-				self.mLastWindow.setProperty( 'PIPSignal', E_TAG_FALSE )
+				xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_FALSE )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -842,6 +851,6 @@ class DialogPIP( BaseDialog ) :
 
 	def ResetHideInput( self ) :
 		self.mInputString = ''
-		self.UpdatePropertyGUI( 'InputNumber', E_TAG_FALSE )
+		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_FALSE )
 
 

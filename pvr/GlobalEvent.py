@@ -154,20 +154,28 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'Scramble' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'Scramble' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'NoService' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'NoService' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'False' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'False' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'False' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'True' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'False' )
+				#WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'False' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return

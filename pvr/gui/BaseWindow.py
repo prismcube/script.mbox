@@ -284,6 +284,12 @@ class BaseWindow( BaseObjectWindow ) :
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True
 
+		elif aActionId == Action.ACTION_COLOR_BLUE :
+			thread = threading.Timer( 0, self.ShowPIP )
+			thread.start( )
+			mExecute = True
+
+
 		return mExecute
 
 
@@ -462,7 +468,8 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetMediaCenter( self ) :
 		import pvr.gui.WindowMgr as WinMgr
-		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+		import pvr.gui.DialogMgr as DiaMgr
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
 
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
@@ -562,13 +569,15 @@ class BaseWindow( BaseObjectWindow ) :
 			import pvr.gui.DialogMgr as DiaMgr
 			pipDlg = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
 
-			if not pipDlg.PIP_Check( ) :
+			if pipDlg.PIP_Available( ) :
 				pipDlg.doModal( )
 
 
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 			overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )

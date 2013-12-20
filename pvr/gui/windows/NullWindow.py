@@ -117,7 +117,7 @@ class NullWindow( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = time.time( )
 
 		self.UpdateLinkageService( )
-		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( )
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 		"""
 		currentStack = inspect.stack( )
@@ -505,13 +505,19 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.ShowPIP( )
+			pass
+			#self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			pass
+			a=xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' )
+			b=xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' )
+			c=xbmcgui.Window( 10000 ).getProperty( 'BlankPIP' )
+			d=xbmcgui.Window( 10000 ).getProperty( 'iLockPIP' )
+			e=xbmcgui.Window( 10000 ).getProperty( 'InputNumber' )
+			LOG_TRACE( '-----------pipProperty signal[%s] open[%s] blank[%s] lock[%s] input[%s]'% ( a,b,c,d,e ) )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -1033,7 +1039,7 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_COLOR_BLUE :
 			self.CloseSubTitle( )
-			#ToDO : pip
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
