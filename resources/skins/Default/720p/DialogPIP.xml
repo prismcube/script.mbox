@@ -5,9 +5,8 @@
 	<controls>
 		<include>DefaultDialogCloseEffect</include>
 		<control type="group" id="4800000">
-			<!--visible>substring(Window.Property(CurrentWindow),4800000)</visible>
 			<defaultcontrol always="true">4808000</defaultcontrol>
-			<control type="image">
+			<!--control type="image">
 				<posx>-13</posx>
 				<posy>-7</posy>
 				<width>1306</width>
@@ -15,6 +14,7 @@
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true)</visible>
 			</control-->
+			<visible>substring(Window.Property(OpenPIP),true)</visible>
 			<control type="group">
 				<posx>-5</posx>
 				<posy>-5</posy>
@@ -36,7 +36,7 @@
 							<posx>0</posx>
 							<posy>0</posy>
 							<animation effect="fade" time="300">VisibleChange</animation>
-							<visible>substring(Window.Property(InputNumber),true)</visible>
+							<visible>substring(Window(10000).Property(InputNumber),true)</visible>
 							<control type="image" id="4801101">
 								<posx>0</posx>
 								<posy>0</posy>

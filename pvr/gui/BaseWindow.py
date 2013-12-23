@@ -284,12 +284,6 @@ class BaseWindow( BaseObjectWindow ) :
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True
 
-		elif aActionId == Action.ACTION_COLOR_BLUE :
-			thread = threading.Timer( 0, self.ShowPIP )
-			thread.start( )
-			mExecute = True
-
-
 		return mExecute
 
 

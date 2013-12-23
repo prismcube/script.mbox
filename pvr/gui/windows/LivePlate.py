@@ -377,8 +377,7 @@ class LivePlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			pass
-			#ToDO : show pip
+			self.DialogPopup( E_CONTROL_ID_BUTTON_PIP )
 
 
 	def onClick( self, aControlId ) :
@@ -1172,6 +1171,8 @@ class LivePlate( LivePlateWindow ) :
 
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
 
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 
 		elif aFocusId == ( Action.ACTION_MBOX_XBMC + 1000 ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

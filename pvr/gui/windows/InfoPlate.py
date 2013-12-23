@@ -212,8 +212,7 @@ class InfoPlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			pass
-			#ToDO : pip
+			self.DialogPopup( E_CONTROL_ID_BUTTON_PIP )
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
@@ -566,6 +565,9 @@ class InfoPlate( LivePlateWindow ) :
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
  			#self.EventReceivedDialog( dialog )
 			#self.mEventBus.Register( self )
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 
 		self.RestartAutomaticHide( )
 		self.mIsShowDialog = False

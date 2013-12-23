@@ -441,8 +441,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			pass
-			#ToDO : pip
+			self.ShowDialog( E_CONTROL_ID_BUTTON_PIP )
 
 
 	def onClick( self, aControlId ):
@@ -1542,14 +1541,26 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
-		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			thread = threading.Timer( 0.1, self.DoContextAction, [CONTEXT_ACTION_VIDEO_SETTING] )
+		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT or aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			thread = threading.Timer( 0.1, self.DoActionHotkeys, [aFocusId] )
 			thread.start( )
 			return
 
 		thread = threading.Timer( 0.1, self.BookMarkContext, [aFocusId] )
 		thread.start( )
 		#self.RestartAutomaticHide( )
+
+
+	def DoActionHotkeys( self, aFocusId ) :
+		self.StopAutomaticHide( )
+
+		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+
+		self.RestartAutomaticHide( )
 
 
 	def BookMarkContext( self, aFocusId ) :
@@ -1627,11 +1638,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.DoResumeFromBookmark( )
-
-		elif aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			self.StopAutomaticHide( )
-			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
-			self.RestartAutomaticHide( )
 
 
 	def DoDeleteBookmarkBySelect( self ) :

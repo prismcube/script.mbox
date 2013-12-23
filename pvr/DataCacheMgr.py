@@ -166,6 +166,7 @@ class DataCacheMgr( object ) :
 		self.mTimerList							= self.Timer_GetTimerList( )
 		self.mChannelListPIP					= []
 		self.mChannelListHashPIP				= {}
+		self.mPresentNumberHashPIP				= {}
 		self.mZappingListChange					= False
 
 		self.mRootWindowId						= 0
@@ -741,6 +742,9 @@ class DataCacheMgr( object ) :
 
 				if chNumber > self.mMaxChannelNum :
 					self.mMaxChannelNum = chNumber
+
+		if E_V1_2_APPLY_PIP :
+			self.PIP_SetTunableList( )
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
@@ -2937,6 +2941,7 @@ class DataCacheMgr( object ) :
 			try :
 				cacheChannel = CacheChannelPIP( channel, prevChannel.mNumber, nextChannel.mNumber )
 				self.mChannelListHashPIP[channel.mNumber] = cacheChannel
+				self.mPresentNumberHashPIP[channel.mPresentationNumber] = cacheChannel
 
 				#cacheChannel.mChannel.printdebug( )
 				#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
@@ -2982,7 +2987,7 @@ class DataCacheMgr( object ) :
 			# retry find first channel
 			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
 				last = len( self.mChannelListPIP ) - 1
-				return self.PIP_GetNext( self.mChannelListPIP[last] )
+				return self.PIP_GetNext( self.mChannelListPIP[last], True )
 
 			return None
 
@@ -2995,7 +3000,7 @@ class DataCacheMgr( object ) :
 		return channel.mChannel
 
 
-	def PIP_GetNext( self, aChannel ) :
+	def PIP_GetNext( self, aChannel, aLast = False ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
 
@@ -3006,10 +3011,13 @@ class DataCacheMgr( object ) :
 				cacheChannel = self.mChannelListHashPIP.get( self.mChannelListPIP[0].mNumber, None )
 				if cacheChannel == None :
 					return None
-				prevKey = cacheChannel.mPrevKey
-				channel = self.mChannelListHashPIP.get( prevKey, None )
-				if channel == None :
-					return None
+
+				channel = cacheChannel
+				if aLast :
+					prevKey = cacheChannel.mPrevKey
+					channel = self.mChannelListHashPIP.get( prevKey, None )
+					if channel == None :
+						return None
 				return channel.mChannel
 
 			return None
@@ -3024,11 +3032,15 @@ class DataCacheMgr( object ) :
 
 
 	def PIP_GetByNumber( self, aNumber, aUseDB = False ) :
+		favGroup = ''
+		currentMode = self.Zappingmode_GetCurrent( )
+		if currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			favGroup = currentMode.mFavoriteGroup.mGroupName
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				channel = channelDB.Channel_GetNumber( aNumber )
+				channel = channelDB.Channel_GetNumber( aNumber, favGroup )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
@@ -3040,4 +3052,13 @@ class DataCacheMgr( object ) :
 
 			channel = cacheChannel.mChannel
 			return channel
+
+
+	def PIP_GetTunableListHash( self ) :
+		hashPIP = self.mChannelListHashPIP
+		currentMode = self.Zappingmode_GetCurrent( )
+		if currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			hashPIP = self.mPresentNumberHashPIP
+
+		return hashPIP
 

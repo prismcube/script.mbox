@@ -505,19 +505,13 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			pass
-			#self.DialogPopupOK( actionId )
+			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			a=xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' )
-			b=xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' )
-			c=xbmcgui.Window( 10000 ).getProperty( 'BlankPIP' )
-			d=xbmcgui.Window( 10000 ).getProperty( 'iLockPIP' )
-			e=xbmcgui.Window( 10000 ).getProperty( 'InputNumber' )
-			LOG_TRACE( '-----------pipProperty signal[%s] open[%s] blank[%s] lock[%s] input[%s]'% ( a,b,c,d,e ) )
+			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -1038,10 +1032,10 @@ class NullWindow( BaseWindow ) :
 			return
 
 		elif aAction == Action.ACTION_COLOR_BLUE :
-			self.CloseSubTitle( )
-			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
-			self.CheckSubTitle( )
 			self.mIsShowDialog = False
+			self.CloseSubTitle( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+			self.CheckSubTitle( )
 			return
 
 		elif aAction == Action.ACTION_COLOR_GREEN :
