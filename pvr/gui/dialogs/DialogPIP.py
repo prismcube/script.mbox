@@ -302,7 +302,7 @@ class DialogPIP( BaseDialog ) :
 		if not E_V1_2_APPLY_PIP :
 			return
 
-		if not E_V1_2_APPLY_PIP_BY_MEDIACENTER :
+		if not E_V1_2_APPLY_PIP_SUPPORT_XBMC :
 			if aStop or self.mDataCache.GetMediaCenter( ) :
 				self.PIP_Stop( )
 				return
