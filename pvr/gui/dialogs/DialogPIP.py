@@ -5,7 +5,6 @@ E_PIP_WINDOW_BASE_ID		=  WinMgr.WIN_ID_PIP_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_
 CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
 
 CTRL_ID_GROUP_PIP			= E_PIP_WINDOW_BASE_ID + 1000
-#CTRL_ID_IMAGE_NFOCUSED		= E_PIP_WINDOW_BASE_ID + 1001
 CTRL_ID_IMAGE_FOCUSED		= E_PIP_WINDOW_BASE_ID + 1002
 CTRL_ID_GROUP_INPUT			= E_PIP_WINDOW_BASE_ID + 1100
 CTRL_ID_IMAGE_INPUTBG		= E_PIP_WINDOW_BASE_ID + 1101
@@ -32,21 +31,28 @@ CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
 CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
 CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
 
-CTRL_ID_GROUP_BASE_PIP		= E_BASE_WINDOW_ID + 8899
-CTRL_ID_IMAGE_BASE_PIP		= E_BASE_WINDOW_ID + 2001
-CTRL_ID_IMAGE_NFOCUSED		= E_BASE_WINDOW_ID + 2002
-CTRL_ID_LABEL_LOCK			= E_BASE_WINDOW_ID + 2004
-CTRL_ID_LABEL_SCRAMBLE		= E_BASE_WINDOW_ID + 2005
-CTRL_ID_LABEL_NOSIGNAL		= E_BASE_WINDOW_ID + 2006
-CTRL_ID_LABEL_NOSERVICE		= E_BASE_WINDOW_ID + 2007
+CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
+CTRL_ID_IMAGE_LOCK			= E_PIP_WINDOW_BASE_ID + 1004
+CTRL_ID_LABEL_LOCK			= E_PIP_WINDOW_BASE_ID + 1005
+CTRL_ID_LABEL_SCRAMBLE		= E_PIP_WINDOW_BASE_ID + 1006
+CTRL_ID_LABEL_NOSIGNAL		= E_PIP_WINDOW_BASE_ID + 1007
+CTRL_ID_LABEL_NOSERVICE		= E_PIP_WINDOW_BASE_ID + 1008
 
-E_DEFAULT_POSITION_PIP		= [827,125,352,188]#[857,170,352,198] 
-CONTEXT_ACTION_DONE_PIP		= 0
-CONTEXT_ACTION_MOVE_PIP		= 1
-CONTEXT_ACTION_SIZE_PIP		= 2
-CONTEXT_ACTION_SWITCH_PIP	= 3
-CONTEXT_ACTION_DEFAULT_PIP 	= 4
-CONTEXT_ACTION_STOP_PIP	= 5
+CTRL_ID_BASE_GROUP_PIP		 = E_BASE_WINDOW_ID + 8899
+CTRL_ID_BASE_IMAGE_OVERLAY	 = E_BASE_WINDOW_ID + 2001
+CTRL_ID_BASE_IMAGE_BLANK	 = E_BASE_WINDOW_ID + 2002
+CTRL_ID_BASE_LABEL_LOCK		 = E_BASE_WINDOW_ID + 2004
+CTRL_ID_BASE_LABEL_SCRAMBLE	 = E_BASE_WINDOW_ID + 2005
+CTRL_ID_BASE_LABEL_NOSIGNAL	 = E_BASE_WINDOW_ID + 2006
+CTRL_ID_BASE_LABEL_NOSERVICE = E_BASE_WINDOW_ID + 2007
+
+E_DEFAULT_POSITION_PIP     = [827,125,352,188]#[857,170,352,198] 
+CONTEXT_ACTION_DONE_PIP    = 0
+CONTEXT_ACTION_MOVE_PIP    = 1
+CONTEXT_ACTION_SIZE_PIP    = 2
+CONTEXT_ACTION_SWITCH_PIP  = 3
+CONTEXT_ACTION_DEFAULT_PIP = 4
+CONTEXT_ACTION_STOP_PIP    = 5
 
 E_POSX_ABILITY   = 10
 E_POSY_ABILITY   = 5
@@ -84,17 +90,22 @@ class DialogPIP( BaseDialog ) :
 		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
 		#self.SetRadioScreen( )
 		self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
-		self.mCtrlImageFocusNF     = self.mLastWindow.getControl( CTRL_ID_IMAGE_NFOCUSED )
-		self.mCtrlGroupBasePIP     = self.mLastWindow.getControl( CTRL_ID_GROUP_BASE_PIP )
-		self.mCtrlImageBasePIP     = self.mLastWindow.getControl( CTRL_ID_IMAGE_BASE_PIP )
-		self.mCtrlLabelLock        = self.mLastWindow.getControl( CTRL_ID_LABEL_LOCK )
-		self.mCtrlLabelScramble    = self.mLastWindow.getControl( CTRL_ID_LABEL_SCRAMBLE )
-		self.mCtrlLabelNoSignal    = self.mLastWindow.getControl( CTRL_ID_LABEL_NOSIGNAL )
-		self.mCtrlLabelNoService   = self.mLastWindow.getControl( CTRL_ID_LABEL_NOSERVICE )
+		self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
+		self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
+		self.mCtrlBasePIPImageOverlay   = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_OVERLAY )
+		self.mCtrlBasePIPLabelLock      = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_LOCK )
+		self.mCtrlBasePIPLabelScramble  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_SCRAMBLE )
+		self.mCtrlBasePIPLabelNoSignal  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSIGNAL )
+		self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
+
+		self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
+		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
+		self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
+		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
+		self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 
 		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
 		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
-		#self.mCtrlImageFocusNF     = self.getControl( CTRL_ID_IMAGE_NFOCUSED )
 		self.mCtrlImageFocusFO     = self.getControl( CTRL_ID_IMAGE_FOCUSED )
 		self.mCtrlImageArrowLeft   = self.getControl( CTRL_ID_IMAGE_ARROW_LEFT )
 		self.mCtrlImageArrowRight  = self.getControl( CTRL_ID_IMAGE_ARROW_RIGHT )
@@ -102,12 +113,6 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageArrowBottom = self.getControl( CTRL_ID_IMAGE_ARROW_BOTTOM )
 		self.mCtrlGroupOsdStatus   = self.getControl( CTRL_ID_GROUP_OSD_STATUS )
 		self.mCtrlImageOsdStatus   = self.getControl( CTRL_ID_IMAGE_OSD_STATUS )
-		#self.mCtrlGroupBasePIP     = self.getControl( CTRL_ID_GROUP_BASE_PIP )
-		#self.mCtrlImageBasePIP     = self.getControl( CTRL_ID_IMAGE_BASE_PIP )
-		#self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
-		#self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
-		#self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
-		#self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 		self.mCtrlGroupInput       = self.getControl( CTRL_ID_GROUP_INPUT )
 		self.mCtrlImageInputBG     = self.getControl( CTRL_ID_IMAGE_INPUTBG )
 		self.mCtrlLabelInputCH     = self.getControl( CTRL_ID_LABEL_INPUTCH )
@@ -248,7 +253,14 @@ class DialogPIP( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			LOG_TRACE( '--------------------PIP onEvent[%s]'% aEvent.getName( ) )
-			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
+
+			if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
+				LOG_TRACE( '-------------------eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
+				if aEvent.mKeyCode == 9 :
+					thread = threading.Timer( 0, self.Close, [True] )
+					thread.start( )
+
+			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 			   aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				#if self.mIsUpdateEnable == True	:
 				LOG_TRACE( 'record start/stop event' )
@@ -260,7 +272,26 @@ class DialogPIP( BaseDialog ) :
 					LOG_TRACE( 'EventRecv EOF_END' )
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
+			"""
+			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
+				LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 
+				if aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
+
+				elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
+
+				elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
+
+				elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'False' )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
+			"""
 
 	def Close( self, aStopPIP = True ) :
 		LOG_TRACE( 'PIP Window close')
@@ -336,6 +367,9 @@ class DialogPIP( BaseDialog ) :
 		if numList and len( numList ) > 0 :
 			self.mIndexLimit = len( numList )
 		"""
+
+		if self.mDataCache.GetMediaCenter( ) :
+			self.setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
@@ -718,21 +752,34 @@ class DialogPIP( BaseDialog ) :
 		#base overlay for radio mode
 		bh = h - 10
 		bw = w - 10
-		self.mCtrlGroupBasePIP.setPosition( x, y )
-		self.mCtrlImageBasePIP.setWidth( bw )
-		self.mCtrlImageBasePIP.setHeight( bh )
-		self.mCtrlLabelLock.setWidth( bw )
-		self.mCtrlLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlLabelScramble.setWidth( bw )
-		self.mCtrlLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlLabelNoSignal.setWidth( bw )
-		self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
-		self.mCtrlLabelNoService.setWidth( bw )
-		self.mCtrlLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlBasePIPGroup.setPosition( x, y )
+		self.mCtrlBasePIPImageOverlay.setWidth( bw )
+		self.mCtrlBasePIPImageOverlay.setHeight( bh )
+		self.mCtrlBasePIPLabelLock.setWidth( bw )
+		self.mCtrlBasePIPLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelScramble.setWidth( bw )
+		self.mCtrlBasePIPLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelNoSignal.setWidth( bw )
+		self.mCtrlBasePIPLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		self.mCtrlBasePIPLabelNoService.setWidth( bw )
+		self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 		#self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
 
-		self.mCtrlImageFocusNF.setWidth( bw )
-		self.mCtrlImageFocusNF.setHeight( bh )
+		self.mCtrlBasePIPImageBlank.setWidth( bw )
+		self.mCtrlBasePIPImageBlank.setHeight( bh )
+
+		if self.mDataCache.GetMediaCenter( ) :
+			#dialog control
+			self.mCtrlImageBlank.setWidth( bw )
+			self.mCtrlImageBlank.setHeight( bh )
+			self.mCtrlLabelLock.setWidth( bw )
+			self.mCtrlLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlLabelScramble.setWidth( bw )
+			self.mCtrlLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlLabelNoSignal.setWidth( bw )
+			self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlLabelNoService.setWidth( bw )
+			self.mCtrlLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 
 		#input ch
 		self.mCtrlGroupInput.setPosition( 5, int( ( bh - 10 ) / 2 ) )
