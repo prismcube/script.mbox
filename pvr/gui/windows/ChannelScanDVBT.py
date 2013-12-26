@@ -9,12 +9,18 @@ E_TUNER_T	= 0
 E_TUNER_T2	= 1
 E_TUNER_C	= 2
 
+FILE_TERRESTRIA = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/terrestria.xml'
+
 
 class ChannelScanDVBT( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mIsManualSetup = 0
-		self.mDVBT = ElisIDVBTCarrier( )
+		self.mDVBT_Manual = ElisIDVBTCarrier( )
+		self.mDVBT_Auto = []
+		self.mTerrestria = 'None'
+		#self.mTerrestrial = ''
+		
 		#self.mTunerType = E_TUNER_T
 		#self.mPlpId = 0
 		#self.mHideControl = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
@@ -82,10 +88,26 @@ class ChannelScanDVBT( SettingWindow ) :
 			self.DisableControl( E_SpinEx01 )
 			return
 
+		# Terrestria list
+		if groupId == E_Input04 :
+			terrestriaList = self.GetTerrestriaList( )
+			if terrestriaList :
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Terrestria' ), terrestriaList, False, StringToListIndex( terrestriaList, self.mTerrestria ) )
+				if ret >= 0 :
+					if self.SetTerrestriaInfo( ret ) :
+						self.SetControlLabel2String( E_Input04, self.mTerrestria )
+						#self.InitConfig( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'list not found' ) )
+				dialog.doModal( )
+			return
+
 		# Frequency		
 		if groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mDVBT.mFrequency, 7 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mDVBT_Manual.mFrequency, 7 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				#tempval = dialog.GetString( )
@@ -95,15 +117,15 @@ class ChannelScanDVBT( SettingWindow ) :
 				#	self.mConfigTransponder.mFrequency = 3000
 				#else :
 				#	self.mConfigTransponder.mFrequency = int( tempval )
-				self.mDVBT.mFrequency = int( dialog.GetString( ) )
-				self.SetControlLabel2String( E_Input01, '%d KHz' % self.mDVBT.mFrequency )
+				self.mDVBT_Manual.mFrequency = int( dialog.GetString( ) )
+				self.SetControlLabel2String( E_Input01, '%d KHz' % self.mDVBT_Manual.mFrequency )
 			else :
 				return
 
 		# plp id		
 		if groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter PLP ID' ), '%d' % self.mDVBT.mPLPId, 3 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter PLP ID' ), '%d' % self.mDVBT_Manual.mPLPId, 3 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				#tempval = dialog.GetString( )
@@ -113,18 +135,18 @@ class ChannelScanDVBT( SettingWindow ) :
 				#	self.mConfigTransponder.mFrequency = 3000
 				#else :
 				#	self.mConfigTransponder.mFrequency = int( tempval )
-				self.mDVBT.mPLPId = int( dialog.GetString( ) )
-				self.SetControlLabel2String( E_Input02, '%03d' % self.mDVBT.mPLPId )
+				self.mDVBT_Manual.mPLPId = int( dialog.GetString( ) )
+				self.SetControlLabel2String( E_Input02, '%03d' % self.mDVBT_Manual.mPLPId )
 			else :
 				return
 
 		# Bandwidth
 		elif groupId == E_SpinEx02 :
-			self.mDVBT.mBand = self.GetSelectedIndex( E_SpinEx02 )
+			self.mDVBT_Manual.mBand = self.GetSelectedIndex( E_SpinEx02 )
 
 		# Tuner type
 		elif groupId == E_SpinEx03 :
-			self.mDVBT.mIsDVBT2 = self.GetSelectedIndex( E_SpinEx03 )
+			self.mDVBT_Manual.mIsDVBT2 = self.GetSelectedIndex( E_SpinEx03 )
 			self.DisableControl( E_SpinEx03 )
 
 		elif groupId == E_SpinEx04 or groupId == E_SpinEx05 :
@@ -133,23 +155,41 @@ class ChannelScanDVBT( SettingWindow ) :
 
 		# Start Search
 		elif groupId == E_Input03 :
-			if self.mDVBT.mIsDVBT2 == E_TUNER_C :
+			if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_C :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support' ) )
 				dialog.doModal( )
 				return
+
 			else :
 				self.OpenBusyDialog( )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
-				
-				carrierList = []
-				carrierList.append( self.GetElisICarrier( ) )
 
-				self.CloseBusyDialog( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-				dialog.SetCarrier( carrierList )
-				dialog.doModal( )
-				self.setProperty( 'ViewProgress', 'True' )
+				if self.mIsManualSetup == 1 :
+					print 'dhkim test manual search'
+					carrierList = []
+					carrierList.append( self.GetElisICarrier( ) )
+
+					self.CloseBusyDialog( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+					dialog.SetCarrier( carrierList )
+					dialog.doModal( )
+					self.setProperty( 'ViewProgress', 'True' )
+
+				elif self.mIsManualSetup == 0 :
+					print 'dhkim test auto search'
+					if self.mTerrestria == 'None' :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestria first' ) )
+						dialog.doModal( )
+						self.CloseBusyDialog( )
+						return
+					
+					self.CloseBusyDialog( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+					dialog.SetCarrier( self.mDVBT_Auto )
+					dialog.doModal( )
+					return
 
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 
@@ -170,7 +210,7 @@ class ChannelScanDVBT( SettingWindow ) :
 
 	def UpdateStatus( self, aEvent ) :
 		print 'dhkim test aEvent.mFrequency = %s' % aEvent.mFrequency
-		if aEvent.mFrequency == self.mDVBT.mFrequency :
+		if aEvent.mFrequency == self.mDVBT_Manual.mFrequency :
 			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 			if aEvent.mIsLocked :
 				if self.mDataCache.Get_Player_AVBlank( ) :
@@ -185,10 +225,11 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Search Mode' ), [ MR_LANG( 'Automatic Scan' ), MR_LANG( 'Manual Scan' ) ], self.mIsManualSetup, MR_LANG( 'Select channel search mode' ) )
-		self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
-		self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT.mBand, MR_LANG( 'Select bandwidth' ) )
-		self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
-		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
+		self.AddInputControl( E_Input04, MR_LANG( 'Terrestrial frequency list' ), self.mTerrestria, MR_LANG( 'Select Terrerstria' ) )		
+		self.AddInputControl( E_Input01, MR_LANG( 'Frequency' ), '%d KHz' % self.mDVBT_Manual.mFrequency, MR_LANG( 'Input frequency' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 9999999 )
+		self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )
+		self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT_Manual.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
+		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddEnumControl( E_SpinEx04, 'Network Search', None, networkSearchDescription )
 		self.AddEnumControl( E_SpinEx05, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
@@ -201,7 +242,7 @@ class ChannelScanDVBT( SettingWindow ) :
 
 	def DisableControl( self, aGroupId = None ) :
 		if aGroupId == None or aGroupId == E_SpinEx03 :
-			if self.mDVBT.mIsDVBT2 == E_TUNER_T2 :
+			if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T2 :
 				self.SetEnableControl( E_Input02, True )
 			else :
 				self.SetEnableControl( E_Input02, False )
@@ -210,46 +251,104 @@ class ChannelScanDVBT( SettingWindow ) :
 			disablecontrols = [ E_Input01, E_Input02, E_SpinEx02, E_SpinEx03 ]
 			if self.mIsManualSetup == 0 :
 				self.SetEnableControls( disablecontrols, False )
+				self.SetEnableControl( E_Input04, True )
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self )
 			else :
 				ScanHelper.GetInstance( ).ScanHelper_Start( self )
 				ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 				self.SetEnableControls( disablecontrols, True )
+				self.SetEnableControl( E_Input04, False )
 
 
 	def CallballInputNumber( self, aGroupId, aString ) :
 		if aGroupId == E_Input01 :
-			self.mDVBT.mFrequency = int( aString )
+			self.mDVBT_Manual.mFrequency = int( aString )
 			self.SetControlLabel2String( aGroupId, aString + ' KHz' )
-			if self.mDVBT.mFrequency < 10000000 :
+			if self.mDVBT_Manual.mFrequency < 10000000 :
 				ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 		elif aGroupId == E_Input02 :
-			self.mDVBT.mPLPId = int( aString )
-			self.SetControlLabel2String( aGroupId, '%s' % self.mDVBT.mPLPId )
-			if self.mDVBT.mPLPId < 1000 :
+			self.mDVBT_Manual.mPLPId = int( aString )
+			self.SetControlLabel2String( aGroupId, '%s' % self.mDVBT_Manual.mPLPId )
+			if self.mDVBT_Manual.mPLPId < 1000 :
 				ScanHelper.GetInstance( ).ScanHelper_ChangeContextByCarrier( self, self.GetElisICarrier( ) )
 
 
 	def FocusChangedAction( self, aGroupId ) :
-		#if aGroupId == E_Input01 and self.mDVBT.mFrequency < 9999999999 :
-		#	self.mDVBT.mFrequency = 3000
+		#if aGroupId == E_Input01 and self.mDVBT_Manual.mFrequency < 9999999999 :
+		#	self.mDVBT_Manual.mFrequency = 3000
 		#	self.SetControlLabel2String( E_Input02, '%s MHz' % self.mConfigTransponder.mFrequency )
 		#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			
 		if aGroupId == E_Input02 :
-			self.SetControlLabel2String( aGroupId, '%03d' % self.mDVBT.mPLPId )
+			self.SetControlLabel2String( aGroupId, '%03d' % self.mDVBT_Manual.mPLPId )
 		#	self.SetControlLabel2String( E_Input03, '%s KS/s' % self.mConfigTransponder.mSymbolRate )
 		#	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 
 	def GetElisICarrier( self ) :
 		ICarrier = ElisICarrier( )
-		if self.mDVBT.mIsDVBT2 == E_TUNER_T or self.mDVBT.mIsDVBT2 == E_TUNER_T2 :
+		if self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T or self.mDVBT_Manual.mIsDVBT2 == E_TUNER_T2 :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBT
 		else :
 			ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBC
-		temp = deepcopy( self.mDVBT )
+		temp = deepcopy( self.mDVBT_Manual )
 		temp.mBand = temp.mBand + 6
 		ICarrier.mDVBT = temp
 		temp.printdebug( )
 		return ICarrier
+
+
+	def SetTerrestriaInfo( self, aIndex ) :
+		if not os.path.exists( FILE_TERRESTRIA ) :
+			return False
+
+		try :
+			self.mDVBT_Auto = []
+			tree = ElementTree.parse( FILE_TERRESTRIA )
+			root = tree.getroot( )
+
+			terrestria = root.getchildren( )[ aIndex ]
+			self.mTerrestria = terrestria.get( 'name' ).encode( 'utf-8' )
+
+			for terrestria in terrestria.findall( 'transponder' ) :
+				ICarrier = ElisICarrier( )
+				ICarrier.mCarrierType = ElisEnum.E_CARRIER_TYPE_DVBT
+				IDVBTCarrier = ElisIDVBTCarrier( )
+				IDVBTCarrier.mFrequency = int( float( terrestria.get( 'centre_frequency' ) ) / float( 1000 ) )
+				IDVBTCarrier.mBand = 8 - int( terrestria.get( 'bandwidth' ) )
+				IDVBTCarrier.printdebug()
+				ICarrier.mDVBT = IDVBTCarrier
+				self.mDVBT_Auto.append( ICarrier )
+
+			return True
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
+
+
+	def GetTerrestriaList( self ) :
+		if not os.path.exists( FILE_TERRESTRIA ) :
+			print 'dhkim test os.path.exists( FILE_TERRESTRIA )'
+			return None
+
+		try :
+			tree = ElementTree.parse( FILE_TERRESTRIA )
+			root = tree.getroot( )
+			nameList = []
+
+			for terrestria in root.findall( 'terrestrial' ) :
+				print 'dhkim test terrestria = %s' % terrestria
+				#for name in provider.findall( 'terrestrial' ) :
+				print 'dhkim test terrestria = %s' % terrestria
+				print 'dhkim test terrestria.get( name ) = %s' % terrestria.get( 'name' )
+				if terrestria.get( 'name' ) != None :
+					nameList.append( terrestria.get( 'name' ).encode( 'utf-8' ) )
+
+			if len( nameList ) > 0 :
+				return nameList
+			else :
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None

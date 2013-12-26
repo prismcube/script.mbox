@@ -251,7 +251,8 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
-			pass
+			strTransponderInfo = 'Frequency %d KHz - Band - %d MHz ' % ( aEvent.mCarrier.mDVBT.mFrequency, aEvent.mCarrier.mDVBT.mBand )
+			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
 			pass

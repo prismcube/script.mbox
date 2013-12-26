@@ -85,7 +85,8 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
