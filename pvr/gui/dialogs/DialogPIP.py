@@ -89,14 +89,10 @@ class DialogPIP( BaseDialog ) :
 
 		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
 		#self.SetRadioScreen( )
-		self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
-		self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
-		self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
-		self.mCtrlBasePIPImageOverlay   = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_OVERLAY )
-		self.mCtrlBasePIPLabelLock      = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_LOCK )
-		self.mCtrlBasePIPLabelScramble  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_SCRAMBLE )
-		self.mCtrlBasePIPLabelNoSignal  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSIGNAL )
-		self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
+
+		if not self.PIP_LoadToBaseControlIDs( ) :
+			self.CloseDialog( )
+			return
 
 		self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
 		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
@@ -131,11 +127,11 @@ class DialogPIP( BaseDialog ) :
 		self.mIndexAvail      = 0
 		self.mFakeChannel     = self.mCurrentChannel
 		self.mInputString     = ''
-	
+		self.mInitialized     = True
+
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
-		self.mInitialized = True
 		self.mEventBus.Register( self )
-		
+
 		self.Load( )
 
 		#labelMode = MR_LANG( 'PIP Window' )
@@ -358,6 +354,71 @@ class DialogPIP( BaseDialog ) :
 			isAvailable = True
 
 		return isAvailable
+
+
+	def PIP_SetPositionSync( self ) :
+		if not self.PIP_LoadToBaseControlIDs( ) :
+			return
+
+		try :
+			posGet = GetSetting( 'PIP_POSITION' )
+			LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
+
+			posNotify = re.split( '\|', posGet )
+			if not posNotify or len( posNotify ) != 4 :
+				raise ValueError, "load fault pip position '%s'" % posGet
+
+			for i in range( len( posNotify ) ) :
+				posNotify[i] = int( posNotify[i] )
+
+			x = posNotify[0]
+			y = posNotify[1]
+			w = posNotify[2]# + 10
+			h = posNotify[3]# + 10
+
+			#base overlay for radio mode
+			bh = h - 10
+			bw = w - 10
+			self.mCtrlBasePIPGroup.setPosition( x, y )
+			self.mCtrlBasePIPImageOverlay.setWidth( bw )
+			self.mCtrlBasePIPImageOverlay.setHeight( bh )
+			self.mCtrlBasePIPLabelLock.setWidth( bw )
+			self.mCtrlBasePIPLabelLock.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlBasePIPLabelScramble.setWidth( bw )
+			self.mCtrlBasePIPLabelScramble.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlBasePIPLabelNoSignal.setWidth( bw )
+			self.mCtrlBasePIPLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			self.mCtrlBasePIPLabelNoService.setWidth( bw )
+			self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+			#self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			return
+
+		LOG_TRACE( 'success sync to pip controls position' )
+
+
+	def PIP_LoadToBaseControlIDs( self ) :
+		ret = True
+		try :
+			self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
+			if self.mDataCache.GetMediaCenter( ) :
+				self.mLastWindow = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+				LOG_TRACE( '------------------------current window[%s]'% xbmcgui.getCurrentWindowId() )
+			self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
+			self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
+			self.mCtrlBasePIPImageOverlay   = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_OVERLAY )
+			self.mCtrlBasePIPLabelLock      = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_LOCK )
+			self.mCtrlBasePIPLabelScramble  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_SCRAMBLE )
+			self.mCtrlBasePIPLabelNoSignal  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSIGNAL )
+			self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( 'PIP', 'Show window only' ) )
+			ret = False
+
+		return ret
 
 
 	def Load( self ) :

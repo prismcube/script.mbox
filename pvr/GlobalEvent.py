@@ -570,6 +570,7 @@ class GlobalEvent( object ) :
 
 	def ShowPIPDialog( self ) :
 		self.mIsShowPIPDialog = True
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( )
 		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 		self.mIsShowPIPDialog = False
 
