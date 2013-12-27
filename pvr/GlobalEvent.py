@@ -18,7 +18,6 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
 	WinMgr.WIN_ID_INFO_PLATE
-	#WinMgr.WIN_ID_PIP_WINDOW
 	#WinMgr.WIN_ID_FAVORITE_ADDONS,
 	#WinMgr.WIN_ID_SYSTEM_UPDATE,
 	#WinMgr.WIN_ID_HELP
@@ -69,7 +68,6 @@ class GlobalEvent( object ) :
 			if aEvent.mKeyCode == 9 and ( not self.mIsShowPIPDialog ) :
 				thread = threading.Timer( 0, self.ShowPIPDialog )
 				thread.start( )
-
 			return
 
 		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
@@ -698,7 +696,7 @@ class GlobalEvent( object ) :
 			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
-		#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Stop( True )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :

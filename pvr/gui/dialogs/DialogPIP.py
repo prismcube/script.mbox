@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-import traceback
 
 E_PIP_WINDOW_BASE_ID		=  WinMgr.WIN_ID_PIP_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
@@ -87,9 +86,6 @@ class DialogPIP( BaseDialog ) :
 		#self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		#self.SetSingleWindowPosition( E_PIP_WINDOW_BASE_ID )
-		#self.SetRadioScreen( )
-
 		if not self.PIP_LoadToBaseControlIDs( ) :
 			self.CloseDialog( )
 			return
@@ -133,21 +129,16 @@ class DialogPIP( BaseDialog ) :
 		self.mEventBus.Register( self )
 
 		self.Load( )
-
-		#labelMode = MR_LANG( 'PIP Window' )
-		#thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
-		#thread.start( )
-
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		if self.GlobalAction( actionId ) :
-			return
+		#LOG_TRACE('onAction[%d] pipStatus[%s]'% ( actionId, self.mViewMode ) )
 
-		#self.GetFocusId( )
-		#LOG_TRACE('onAction[%d] viewMode[%s] focus[%s]'% ( actionId, self.mViewMode, self.mFocusId ) )
+		if not self.mDataCache.GetMediaCenter( ) :
+			if self.GlobalAction( actionId ) :
+				return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
@@ -160,15 +151,14 @@ class DialogPIP( BaseDialog ) :
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
 
 			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
-			LOG_TRACE( '------inputTot[%s] input[%s]'% ( self.mInputString, inputString ) )
+			#LOG_TRACE( '------inputTot[%s] input[%s]'% ( self.mInputString, inputString ) )
 			self.mInputString += inputString
 			self.mInputString = '%d' % int( self.mInputString )
 			if int( self.mInputString ) > E_INPUT_MAX :
 				self.mInputString = inputString
-			LOG_TRACE( '---------inputNum[%s]'% ( self.mInputString ) )
+			#LOG_TRACE( '---------inputNum[%s]'% ( self.mInputString ) )
 
 			self.ChannelTuneToPIP( INPUT_CHANNEL_PIP )
-
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.DoSettingToPIP( actionId )
@@ -299,25 +289,21 @@ class DialogPIP( BaseDialog ) :
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
 
-		if aStopPIP :
+		if aStopPIP or \
+		   ( self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) != 12005 ) :
 			self.PIP_Stop( )
 
 		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
 
-		#status = self.mDataCache.Player_GetStatus( )
-		#labelMode = GetStatusModeLabel( status.mMode )
-		#thread = threading.Timer( 0.1, AsyncShowStatus, [labelMode] )
-		#thread.start( )
-
 		self.CloseDialog( )
 
 
-	def PIP_Stop( self ) :
+	def PIP_Stop( self, aForce = False ) :
 		ret = self.mDataCache.PIP_Stop( )
 		LOG_TRACE( '---------PIP_Stop ret[%s]'% ret )
-		if ret :
+		if ret or aForce :
 			self.mDataCache.PIP_SetStatus( False )
 
 			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
@@ -329,10 +315,9 @@ class DialogPIP( BaseDialog ) :
 		if not E_V1_2_APPLY_PIP :
 			return
 
-		if not E_V1_2_APPLY_PIP_SUPPORT_XBMC :
-			if aStop or self.mDataCache.GetMediaCenter( ) :
-				self.PIP_Stop( )
-				return
+		if aStop or self.mDataCache.GetMediaCenter( ) :
+			self.PIP_Stop( )
+			return
 
 		isShow = False
 		if self.mDataCache.PIP_GetStatus( ) :
@@ -421,16 +406,17 @@ class DialogPIP( BaseDialog ) :
 		return ret
 
 
-	def Load( self ) :
-		"""
-		self.mIndexLimit = 1
-		numList = self.mDataCache.PIP_GetTunableList( )
-		if numList and len( numList ) > 0 :
-			self.mIndexLimit = len( numList )
-		"""
+	def SetButtonExtended( self, aEnable = True ) :
+		ctrlMute = self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( aEnable )
+		ctrlFull = self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( aEnable )
+		#ctrlMove = self.getControl( CTRL_ID_BUTTON_MOVE_PIP ).setVisible( aEnable )
+		#ctrlSize = self.getControl( CTRL_ID_BUTTON_SIZE_PIP ).setVisible( aEnable )
 
+
+	def Load( self ) :
 		if self.mDataCache.GetMediaCenter( ) :
-			self.setProperty( 'BlankPIP', E_TAG_TRUE )
+			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
+			self.SetButtonExtended( False )
 
 		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
@@ -443,20 +429,21 @@ class DialogPIP( BaseDialog ) :
 
 	def LoadPositionPIP( self ) :
 		posNotify = E_DEFAULT_POSITION_PIP
-		try :
-			posGet = GetSetting( 'PIP_POSITION' )
-			LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
+		if not self.mDataCache.GetMediaCenter( ) :
+			try :
+				posGet = GetSetting( 'PIP_POSITION' )
+				LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
 
-			posNotify = re.split( '\|', posGet )
-			if not posNotify or len( posNotify ) != 4 :
+				posNotify = re.split( '\|', posGet )
+				if not posNotify or len( posNotify ) != 4 :
+					posNotify = E_DEFAULT_POSITION_PIP
+
+				for i in range( len( posNotify ) ) :
+					posNotify[i] = int( posNotify[i] )
+
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
 				posNotify = E_DEFAULT_POSITION_PIP
-
-			for i in range( len( posNotify ) ) :
-				posNotify[i] = int( posNotify[i] )
-
-		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
-			posNotify = E_DEFAULT_POSITION_PIP
 
 		self.SetPositionPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
 
@@ -551,13 +538,9 @@ class DialogPIP( BaseDialog ) :
 
 		if aDir == PREV_CHANNEL_PIP :
 			fakeChannel = self.mDataCache.PIP_GetPrev( fakeChannel )
-			#self.mIndexAvail += 1
-			#fakeChannel = self.mDataCache.PIP_GetPrevAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
 
 		elif aDir == NEXT_CHANNEL_PIP :
 			fakeChannel = self.mDataCache.PIP_GetNext( fakeChannel )
-			#self.mIndexAvail += 1
-			#fakeChannel = self.mDataCache.PIP_GetNextAvailable( ( self.mIndexAvail % self.mIndexLimit ) )
 
 		elif aDir == INPUT_CHANNEL_PIP :
 			self.StopAsyncTune( )
