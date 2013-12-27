@@ -14,24 +14,22 @@
 	transmission_mode: 0 = 2K, 1 = 8K, 2 = Auto (default)
 	hierarchy_information: 0 = None, 1 = 1, 2 = 2, 3 = 4, 4 = Auto (default)
 	inversion: 0 = Off, 1 = On, 2 = Auto (default)
+
+	new add
+	type : 0 = DVB-T, 1 = DVB-T2, 2 : DVB-C
+	PLP_ID : int 0 ~ 999
 -->
 <!--
 	Please report missing frequencies and pointers to regional
 	standards to http://www.dream-multimedia-tv.de/board/
 -->
 <locations>
-	<terrestrial name="Russia: DVB-T Frequencies" flags="5">
-		<transponder centre_frequency="550500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="557500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="564500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="571500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="578500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="585500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="592500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="184500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="191500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="198500000" bandwidth="1" constellation="3"/>
-		<transponder centre_frequency="804000000" bandwidth="0" constellation="3"/>
+	<terrestrial name="Russia: DVB-T/T2 Frequencies" flags="5">
+		<transponder centre_frequency="550500000" bandwidth="1" type="0" plp_id="0" constellation="3"/>
+		<transponder centre_frequency="804000000" bandwidth="0" type="0" plp_id="0" constellation="3"/>
+		<transponder centre_frequency="564500000" bandwidth="1" type="0" plp_id="0" constellation="3"/>
+		<transponder centre_frequency="482000000" bandwidth="0" type="1" plp_id="0" constellation="3"/>
+		<transponder centre_frequency="578500000" bandwidth="1" type="0" plp_id="0" constellation="3"/>
 	</terrestrial>
 	<terrestrial name="Australia: DVB-T Frequencies" flags="5">
 		<transponder centre_frequency="177500000" bandwidth="1" constellation="3"/>

@@ -89,7 +89,7 @@ class ChannelScanDVBT( SettingWindow ) :
 			return
 
 		# Terrestria list
-		if groupId == E_Input04 :
+		elif groupId == E_Input04 :
 			terrestriaList = self.GetTerrestriaList( )
 			if terrestriaList :
 				dialog = xbmcgui.Dialog( )
@@ -105,7 +105,7 @@ class ChannelScanDVBT( SettingWindow ) :
 			return
 
 		# Frequency		
-		if groupId == E_Input01 :
+		elif groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mDVBT_Manual.mFrequency, 7 )
 			dialog.doModal( )
@@ -123,7 +123,7 @@ class ChannelScanDVBT( SettingWindow ) :
 				return
 
 		# plp id		
-		if groupId == E_Input02 :
+		elif groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter PLP ID' ), '%d' % self.mDVBT_Manual.mPLPId, 3 )
 			dialog.doModal( )
@@ -166,7 +166,6 @@ class ChannelScanDVBT( SettingWindow ) :
 				ScanHelper.GetInstance( ).ScanHelper_Stop( self, False )
 
 				if self.mIsManualSetup == 1 :
-					print 'dhkim test manual search'
 					carrierList = []
 					carrierList.append( self.GetElisICarrier( ) )
 
@@ -177,8 +176,7 @@ class ChannelScanDVBT( SettingWindow ) :
 					self.setProperty( 'ViewProgress', 'True' )
 
 				elif self.mIsManualSetup == 0 :
-					print 'dhkim test auto search'
-					if self.mTerrestria == 'None' :
+					if self.mTerrestria == 'None' or len( self.mDVBT_Auto ) == 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select terrestria first' ) )
 						dialog.doModal( )
@@ -205,11 +203,11 @@ class ChannelScanDVBT( SettingWindow ) :
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
 			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+				aEvent.printdebug()
 				self.UpdateStatus( aEvent )
 
 
 	def UpdateStatus( self, aEvent ) :
-		print 'dhkim test aEvent.mFrequency = %s' % aEvent.mFrequency
 		if aEvent.mFrequency == self.mDVBT_Manual.mFrequency :
 			ScanHelper.GetInstance( ).ScanHerper_Progress( self, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 			if aEvent.mIsLocked :
@@ -316,6 +314,12 @@ class ChannelScanDVBT( SettingWindow ) :
 				IDVBTCarrier = ElisIDVBTCarrier( )
 				IDVBTCarrier.mFrequency = int( float( terrestria.get( 'centre_frequency' ) ) / float( 1000 ) )
 				IDVBTCarrier.mBand = 8 - int( terrestria.get( 'bandwidth' ) )
+				try :
+					IDVBTCarrier.mIsDVBT2 = int( terrestria.get( 'type' ) )
+				except :
+					IDVBTCarrier.mIsDVBT2 = 0
+				if IDVBTCarrier.mIsDVBT2 == E_TUNER_T2 :
+					IDVBTCarrier.mPLPId = int( terrestria.get( 'plp_id' ) )
 				IDVBTCarrier.printdebug()
 				ICarrier.mDVBT = IDVBTCarrier
 				self.mDVBT_Auto.append( ICarrier )
@@ -323,6 +327,7 @@ class ChannelScanDVBT( SettingWindow ) :
 			return True
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
+			self.mDVBT_Auto = []
 			return False
 
 
