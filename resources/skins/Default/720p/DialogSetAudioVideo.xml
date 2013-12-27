@@ -2,7 +2,6 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
-	<onload>SetProperty(TestMode,1)</onload>
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -30,17 +29,6 @@
 					<posx>0</posx>
 					<posy>20</posy>
 					<include>DialogInput02</include>
-				</control>
-				<control type="label">
-					<posx>320</posx>
-					<posy>175</posy>
-					<width>50</width>
-					<height>40</height>
-					<font>font10</font>
-					<textcolor>white</textcolor>
-					<aligny>center</aligny>
-					<label>wait</label>
-					<visible>substring(Window.Property(WaitHdmi),true)</visible>
 				</control>
 				<control type="group">
 					<posx>0</posx>
