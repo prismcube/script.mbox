@@ -2,6 +2,7 @@ from pvr.gui.WindowImport import *
 
 
 MAIN_GROUP_ID = 8000
+E_SET_INTERVAL = 3
 
 
 class DialogSetAudioVideo( SettingDialog ) :
@@ -20,6 +21,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mAnalogAscpect			= E_16_9
 		self.mAsyncVideoSetThread 	= None
 		self.mBusyVideoSetting		= False
+		self.mAsyncBlinkThread		= None
 
 
 	def onInit( self ) :
@@ -34,6 +36,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mEventBus.Register( self )
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
@@ -69,6 +72,9 @@ class DialogSetAudioVideo( SettingDialog ) :
 		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
 			self.Close( )
 
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.Close( )
+
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -96,15 +102,20 @@ class DialogSetAudioVideo( SettingDialog ) :
 			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_DialogSpinEx02 :
 				if self.mBusyVideoSetting :
 					return
+
 				if self.mAsyncVideoSetThread :
 					self.mAsyncVideoSetThread.cancel( )
 					self.mAsyncVideoSetThread = None
 
-				self.mAsyncVideoSetThread = threading.Timer( 3, self.AsyncVideoSetting )
+				self.mAsyncVideoSetThread = threading.Timer( E_SET_INTERVAL, self.AsyncVideoSetting )
 				self.mAsyncVideoSetThread.start( )
+
 
 			elif groupId == E_DialogInput01 :
 				self.ShowAudioTrack( )
+
+			elif groupId == E_DialogInput02 :
+				self.ShowHdmiFormat( )
 
 			else :
 				self.ControlSelect( )
@@ -128,6 +139,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 		defaultFocus = E_DialogInput01
+		if self.mInitialized :
+			defaultFocus = E_DialogSpinEx01
 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
 			trackList, selectIdx = self.GetAudioTrack( )
@@ -142,11 +155,15 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			if self.mVideoOutput == E_VIDEO_HDMI :
-				self.AddEnumControl( E_DialogSpinEx02, 'HDMI Format', MR_LANG( ' - HDMI Format' ) )
+				#visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+
+				lblSelect = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+				self.AddInputControl( E_DialogInput02, MR_LANG( 'HDMI Format' ), lblSelect )
 				self.AddEnumControl( E_DialogSpinEx03, 'Show 4:3', MR_LANG( ' - TV Screen Format' ) )
 				self.AddEnumControl( E_DialogSpinEx04, 'HDMI Color Space', MR_LANG( ' - HDMI Color Space' ) )
-			
-				visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+
+				visibleControlIds = [ E_DialogSpinEx01, E_DialogInput02, E_DialogSpinEx03, E_DialogSpinEx04 ]
+				self.SetVisibleControl( E_DialogSpinEx02, False )
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
@@ -161,7 +178,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_DialogSpinEx04 ]
+				hideControlIds = [ E_DialogSpinEx04, E_DialogInput02 ]
 				self.SetVisibleControls( hideControlIds, False )
 
 		#deprecated
@@ -181,42 +198,24 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.SetFocus( defaultFocus )
 
 
-	def AsyncVideoSetting( self ) :
-		self.mBusyVideoSetting = True
-		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
-		self.ControlSelect( )
-		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
-			self.VideoRestore( restoreValue )
-		else :
-			self.mBusyVideoSetting = False
+	def ShowHdmiFormat( self ) :
+		hdmiList = []
+		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
+		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )
+		for i in range( propCount ) :
+			propName = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropStringByIndex( i )
+			hdmiList.append( ContextItem( propName, i ) )
 
-
-	def VideoRestore( self, aRestoreValue ) :
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( hdmiList, selectIdx )
 		dialog.doModal( )
 
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				self.mBusyVideoSetting = False
-				return
-			iconIndex = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '1080p' :
-				iconIndex = ElisEnum.E_ICON_1080p
-			#elif hdmiFormat == '1080p-25' :
-			#	iconIndex = ElisEnum.E_ICON_1080p
-			elif hdmiFormat == '720p' :
-				iconIndex = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				iconIndex = -1
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
-		else :
-			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetProp( aRestoreValue )
-			prop = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
-			control = self.getControl( E_DialogSpinEx02 + 3 )
-			control.selectItem( prop )
+		selectAction = dialog.GetSelectedAction( )
+		LOG_TRACE( '------select hdmi[%s]'% selectAction )
 
-		self.mBusyVideoSetting = False
+		if selectAction > -1 :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
+			self.SetControlLabel2String( E_DialogInput02, hdmiList[selectAction].mDescription )
 
 
 	def GetAudioTrack( self ) :
@@ -302,6 +301,9 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def Close( self ) :
 		if self.mAsyncVideoSetThread :
 			self.mAsyncVideoSetThread.cancel( )
+		if self.mAsyncBlinkThread :
+			self.mAsyncBlinkThread.cancel( )
+
 		self.mEventBus.Deregister( self )
 		self.ResetAllControl( )
 		self.CloseDialog( )

@@ -28,6 +28,11 @@
 				<control type="group">
 					<posx>0</posx>
 					<posy>20</posy>
+					<include>DialogInput02</include>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
 					<include>DialogSpinEx01</include>
 					<include>DialogSpinEx02</include>
 					<include>DialogSpinEx03</include>
