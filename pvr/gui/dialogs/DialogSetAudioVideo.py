@@ -99,23 +99,11 @@ class DialogSetAudioVideo( SettingDialog ) :
 				time.sleep( 0.02 )
 				self.DrawItem( )
 
-			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_DialogSpinEx02 :
-				if self.mBusyVideoSetting :
-					return
-
-				if self.mAsyncVideoSetThread :
-					self.mAsyncVideoSetThread.cancel( )
-					self.mAsyncVideoSetThread = None
-
-				self.mAsyncVideoSetThread = threading.Timer( E_SET_INTERVAL, self.AsyncVideoSetting )
-				self.mAsyncVideoSetThread.start( )
-
+			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_DialogInput02 :
+				self.ShowHdmiFormat( )
 
 			elif groupId == E_DialogInput01 :
 				self.ShowAudioTrack( )
-
-			elif groupId == E_DialogInput02 :
-				self.ShowHdmiFormat( )
 
 			else :
 				self.ControlSelect( )
@@ -155,8 +143,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			if self.mVideoOutput == E_VIDEO_HDMI :
-				#visibleControlIds = [ E_DialogSpinEx01, E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
-
 				lblSelect = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 				self.AddInputControl( E_DialogInput02, MR_LANG( 'HDMI Format' ), lblSelect )
 				self.AddEnumControl( E_DialogSpinEx03, 'Show 4:3', MR_LANG( ' - TV Screen Format' ) )
@@ -211,7 +197,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		dialog.doModal( )
 
 		selectAction = dialog.GetSelectedAction( )
-		LOG_TRACE( '------select hdmi[%s]'% selectAction )
+		#LOG_TRACE( '------select hdmi[%s]'% selectAction )
 
 		if selectAction > -1 :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )

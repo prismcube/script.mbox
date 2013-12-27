@@ -573,14 +573,13 @@ class FirstInstallation( FTIWindow ) :
 		for i in range( propCount ) :
 			propName = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropStringByIndex( i )
 			hdmiList.append( ContextItem( propName, i ) )
-			LOG_TRACE( '------------prop[%s %s]'% ( propName, i ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( hdmiList, selectIdx )
 		dialog.doModal( )
 
 		selectAction = dialog.GetSelectedAction( )
-		LOG_TRACE( '------select hdmi[%s] name[%s]'% ( selectAction, hdmiList[selectAction].mDescription ) )
+		#LOG_TRACE( '------select hdmi[%s] name[%s]'% ( selectAction, hdmiList[selectAction].mDescription ) )
 
 		if selectAction > -1 :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
