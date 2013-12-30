@@ -307,8 +307,9 @@ class EPGSearchWindow( BaseWindow ) :
 
 				if E_USE_CHANNEL_LOGO == True :
 					if channel :
-						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-						listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mCurrentMode.mServiceType ) )
+						#logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+						#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mCurrentMode.mServiceType ) )
+						listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel ) )					
 					else :
 						listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetDefaultLogo(  self.mCurrentMode.mServiceType )  )					
 

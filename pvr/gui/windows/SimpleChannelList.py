@@ -264,8 +264,9 @@ class SimpleChannelList( BaseWindow ) :
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					#logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel ) )
 				
 
 			except Exception, ex :

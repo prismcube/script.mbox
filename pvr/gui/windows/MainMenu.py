@@ -80,6 +80,13 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Manage your XBMC add-ons' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
+		if self.mDataCache.HasDVBSTuner() :
+			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( True )
+			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( True )
+		else :
+			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( False )
+			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( False )
+		
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
@@ -154,15 +161,13 @@ class MainMenu( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
-					#if self.mDataCache.IsOneTunerType() == True:
-					#	tunerList = self.mDataCache.GetDVBTunerList()
-					#	if tunerList[0].mTunerType == ElisEnum.E_DVB_TUNER_DVBS :
-					#		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
-					#	else :
-					#		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )						
-					#else :
-					#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
+					if self.mDataCache.HasMultiTuner() :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
+					elif self.mDataCache.HasDVBTTuner() or self.mDataCache.HasDVBCTuner() :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )	
+					else :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+
 				elif aControlId == BUTTON_ID_EDIT_SATELLITE :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
 				elif aControlId == BUTTON_ID_EDIT_TRANSPONDER :

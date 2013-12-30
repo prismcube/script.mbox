@@ -3129,3 +3129,18 @@ class DataCacheMgr( object ) :
 		LOG_TRACE( 'E_SUPPORT_FLEXIBLE_TUNER OneTunerType=True' )			
 		return True
 
+
+	def HasMultiTuner( self ) :
+		return False
+
+
+	def HasDVBSTuner( self ) :
+		return False
+
+
+	def HasDVBTTuner( self ) :
+		return True
+
+
+	def HasDVBCTuner( self ) :
+		return False

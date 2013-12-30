@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Logolist>
+	<!--DVB T -->
+	<logo id= "DVB_4164_1_9018">bbc_one.png</logo>
+	<logo id= "DVB_4228_2_9018">bbc_two.png</logo>
+	<logo id= "DVB_4351_3_9018">bbc_choice.png</logo>
+	<logo id= "DVB_4900_1007_1">anixe_hd.png</logo>	
+	<logo id= "DVB_4901_1007_1">astra_hd+.png</logo>	
 	<!-- ASTRA 23.5 SKYLINK TV CHANNELS -->
 	<logo id= "235_5078">duck.png</logo>
 	<logo id= "235_5034">history_hd.png</logo>

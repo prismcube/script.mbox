@@ -798,11 +798,12 @@ class LivePlate( LivePlateWindow ) :
 
 		logo = '%s_%s' %( aChannel.mCarrier.mDVBS.mSatelliteLongitude, aChannel.mSid )
 		LOG_TRACE( 'logo=%s' %logo )
-		LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-		chImage = self.mChannelLogo.GetLogo( logo, aChannel.mServiceType )
+		#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+		#chImage = self.mChannelLogo.GetLogo( logo, aChannel.mServiceType )
 		#if chImage == self.mChannelLogo.mDefaultLogo or chImage == self.mChannelLogo.mDefaultLogoRadio :
 		#	chImage = ''
-		self.UpdatePropertyGUI( 'iChannelLogo', '%s'% chImage )
+		#self.UpdatePropertyGUI( 'iChannelLogo', '%s'% chImage )
+		self.UpdatePropertyGUI( 'iChannelLogo', self.mChannelLogo.GetChannelLogo( aChannel ) )
 
 
 	def UpdateChannelGUI( self ) :
@@ -845,11 +846,16 @@ class LivePlate( LivePlateWindow ) :
 				#if ch.mIsCA :
 				UpdateCasInfo( self, ch )
 
-				mTPnum = self.mDataCache.Channel_GetViewingTuner( )
-				if mTPnum == 0 :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
-				elif mTPnum == 1 :
-					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
+				if ch.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :  #dvb-t
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER_T, E_TAG_TRUE )				
+				elif ch.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER_T, E_TAG_TRUE )#toDO dvb-c
+				else :
+					mTPnum = self.mDataCache.Channel_GetViewingTuner( )
+					if mTPnum == 0 :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1, E_TAG_TRUE )
+					elif mTPnum == 1 :
+						self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -986,6 +992,7 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER1,   E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER2,   E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TUNER_T,   E_TAG_FALSE ) #dvb-t
 		self.UpdatePropertyGUI( 'iCasInfo', '' )
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
 		self.UpdatePropertyGUI( 'HasAgeRating', 'None' )

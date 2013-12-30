@@ -968,10 +968,11 @@ class EPGWindow( BaseWindow ) :
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					#logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
 					#LOG_TRACE( 'logo=%s' %logo )
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel ) )
 
 				if  i== E_GRID_MAX_ROW_COUNT:
 					xbmc.executebuiltin( 'container.refresh' )
@@ -1258,10 +1259,11 @@ class EPGWindow( BaseWindow ) :
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					#logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
 					#LOG_TRACE( 'logo=%s' %logo )
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel ) )										
 
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
@@ -1372,10 +1374,12 @@ class EPGWindow( BaseWindow ) :
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					#logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
 					#LOG_TRACE( 'logo=%s' %logo )
 					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
+					#listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel )
+					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetChannelLogo( channel ) )
 
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )

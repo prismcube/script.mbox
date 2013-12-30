@@ -70,6 +70,24 @@ class ChannelLogoMgr( object ) :
 		return logo
 
 
+	def GetChannelLogo( self, aChannel ) :
+		if E_USE_CHANNEL_LOGO == False or aChannel == None:
+			return None
+		if aChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS : 
+			logo_key = '%s_%s' %(aChannel.mCarrier.mDVBS.mSatelliteLongitude, aChannel.mSid )
+		else :
+			logo_key = 'DVB_%s_%s_%s' %(aChannel.mSid, aChannel.mTsid, aChannel.mOnid )
+		print 'lael98 test logo_key=%s' %logo_key
+		logo = self.mLogoHash.get( logo_key, None )
+		if logo == None :
+			if aChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV:
+				return self.mDefaultLogo
+			else :
+				return self.mDefaultLogoRadio						
+
+		return logo
+
+
 	def GetDefaultLogo( self, aServiceType=ElisEnum.E_SERVICE_TYPE_TV  ) :
 		if E_USE_CHANNEL_LOGO == False :
 			return None
