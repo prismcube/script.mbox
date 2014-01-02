@@ -297,6 +297,7 @@ class DialogPIP( BaseDialog ) :
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
 
+		#self.PIP_PositionBackup( self.mPosCurrent )
 		self.CloseDialog( )
 
 
@@ -317,6 +318,7 @@ class DialogPIP( BaseDialog ) :
 
 		if aStop or self.mDataCache.GetMediaCenter( ) :
 			self.PIP_Stop( )
+			#self.PIP_PositionBackup( )
 			return
 
 		isShow = False
@@ -341,20 +343,25 @@ class DialogPIP( BaseDialog ) :
 		return isAvailable
 
 
+	def PIP_PositionBackup( self, aPos = None ) :
+		try :
+			posNotify = aPos
+			if not posNotify :
+				posNotify = self.LoadPositionPIP( )
+			posStr = '%s|%s|%s|%s'% ( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+			df = open( '/mtmp/pipPos', 'w', 0644 )
+			df.writelines( posStr )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+
 	def PIP_SetPositionSync( self ) :
 		if not self.PIP_LoadToBaseControlIDs( ) :
 			return
 
 		try :
-			posGet = GetSetting( 'PIP_POSITION' )
-			LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
-
-			posNotify = re.split( '\|', posGet )
-			if not posNotify or len( posNotify ) != 4 :
-				raise ValueError, "load fault pip position '%s'" % posGet
-
-			for i in range( len( posNotify ) ) :
-				posNotify[i] = int( posNotify[i] )
+			posNotify = self.LoadPositionPIP( )
 
 			x = posNotify[0]
 			y = posNotify[1]
@@ -421,31 +428,33 @@ class DialogPIP( BaseDialog ) :
 		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
-			self.LoadPositionPIP( )
+			posNotify = E_DEFAULT_POSITION_PIP
+			if not self.mDataCache.GetMediaCenter( ) :
+				posNotify = self.LoadPositionPIP( )
+
+			self.SetPositionPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
 
 		self.setProperty( 'OpenPIP', E_TAG_TRUE )
 
 
 	def LoadPositionPIP( self ) :
-		posNotify = E_DEFAULT_POSITION_PIP
-		if not self.mDataCache.GetMediaCenter( ) :
-			try :
-				posGet = GetSetting( 'PIP_POSITION' )
-				LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
+		try :
+			posGet = GetSetting( 'PIP_POSITION' )
+			LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
 
-				posNotify = re.split( '\|', posGet )
-				if not posNotify or len( posNotify ) != 4 :
-					posNotify = E_DEFAULT_POSITION_PIP
-
-				for i in range( len( posNotify ) ) :
-					posNotify[i] = int( posNotify[i] )
-
-			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
+			posNotify = re.split( '\|', posGet )
+			if not posNotify or len( posNotify ) != 4 :
 				posNotify = E_DEFAULT_POSITION_PIP
 
-		self.SetPositionPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+			for i in range( len( posNotify ) ) :
+				posNotify[i] = int( posNotify[i] )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			posNotify = E_DEFAULT_POSITION_PIP
+
+		return posNotify
 
 
 	def SetPositionPIP( self, aPosX = 827, aPosY = 125, aWidth = 352, aHeight = 188 ) :
