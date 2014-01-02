@@ -14,8 +14,6 @@ MENU_ID_UPDATE					= 7
 
 MAIN_LIST_ID					= E_INSTALLATION_BASE_ID + 9000
 
-E_INSTALLATION_DEFAULT_FOCUS_ID	=  MAIN_LIST_ID
-
 
 class Installation( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -24,25 +22,43 @@ class Installation( BaseWindow ) :
 
 
 	def onInit( self ) :
-		self.mLeftGroupItems = [
-		MR_LANG( 'First Installation' ),
-		MR_LANG( 'Antenna Setup' ),
-		MR_LANG( 'Channel Search' ),
-		MR_LANG( 'Edit Satellite' ),
-		MR_LANG( 'Edit Transponder' ),
-		MR_LANG( 'Configuration' ),
-		MR_LANG( 'CAS' ),
-		MR_LANG( 'Update' ) ]
+		if self.mDataCache.HasDVBSTuner() :
+			self.mLeftGroupItems = [
+			MR_LANG( 'First Installation' ),
+			MR_LANG( 'Antenna Setup' ),
+			MR_LANG( 'Channel Search' ),
+			MR_LANG( 'Edit Satellite' ),
+			MR_LANG( 'Edit Transponder' ),
+			MR_LANG( 'Configuration' ),
+			MR_LANG( 'CAS' ),
+			MR_LANG( 'Update' ) ]
 
-		self.mDescriptionList = [
-		MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
-		MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ),
-		MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
-		MR_LANG( 'Add, delete or rename satellites' ),
-		MR_LANG( 'Add new transponders or edit the transponders already exist' ),
-		MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
-		MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
-		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+			self.mDescriptionList = [
+			MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
+			MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ),
+			MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
+			MR_LANG( 'Add, delete or rename satellites' ),
+			MR_LANG( 'Add new transponders or edit the transponders already exist' ),
+			MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
+			MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
+			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+		else :
+			self.mLeftGroupItems = [
+			MR_LANG( 'First Installation' ),
+			MR_LANG( 'Antenna Setup' ),
+			MR_LANG( 'Channel Search' ),
+			MR_LANG( 'Configuration' ),
+			MR_LANG( 'CAS' ),
+			MR_LANG( 'Update' ) ]
+
+			self.mDescriptionList = [
+			MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
+			MR_LANG( 'Select the cable connection type on your STB and configure DiSEqC setup' ),
+			MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
+			MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
+			MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
+			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+
 
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
@@ -77,12 +93,16 @@ class Installation( BaseWindow ) :
 			return
 	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
+		if not self.mDataCache.HasDVBSTuner() :
+			if selectedId > MENU_ID_CHANNEL_SEARCH :
+				selectedId = selectedId + 2
 
 		if selectedId == MENU_ID_FIRSTINSTALLATION :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
 			if self.mDataCache.HasMultiTuner() :
@@ -112,8 +132,8 @@ class Installation( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 				dialog.doModal( )
 
+
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-
 
