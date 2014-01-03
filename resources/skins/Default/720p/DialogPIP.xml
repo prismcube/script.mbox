@@ -375,8 +375,8 @@
 					</control>
 
 					<control type="group" id="4803000">
-						<posx>-35</posx>
-						<posy>-20</posy>
+						<posx>-25</posx>
+						<posy>-5</posy>
 						<visible>substring(Window.Property(SettingPIP),true)</visible>
 						<control type="group">
 							<posx>0</posx>
@@ -384,9 +384,9 @@
 							<control type="image" id="4803001">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-left-focus.png</texture>
+								<width>30</width>
+								<height>40</height>
+								<texture>Arrow2_left.png</texture>
 							</control>
 						</control>
 						<control type="group">
@@ -395,31 +395,31 @@
 							<control type="image" id="4803002">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-right-focus.png</texture>
+								<width>30</width>
+								<height>40</height>
+								<texture>Arrow2_right.png</texture>
 							</control>
 						</control>
 						<control type="group">
-							<posx>10</posx>
+							<posx>0</posx>
 							<posy>-20</posy>
 							<control type="image" id="4803003">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-top-focus.png</texture>
+								<width>40</width>
+								<height>30</height>
+								<texture>Arrow2_up.png</texture>
 							</control>
 						</control>
 						<control type="group">
-							<posx>10</posx>
-							<posy>5</posy>
+							<posx>0</posx>
+							<posy>0</posy>
 							<control type="image" id="4803004">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-bottom-focus.png</texture>
+								<width>40</width>
+								<height>30</height>
+								<texture>Arrow2_down.png</texture>
 							</control>
 						</control>
 					</control>
