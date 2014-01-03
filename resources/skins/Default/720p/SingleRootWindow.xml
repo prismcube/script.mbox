@@ -2953,7 +2953,7 @@ Search for window name
 							<posy>0</posy>
 							<font>font10</font>
 							<textcolor>grey</textcolor>
-							<label>Show bookmark</label>
+							<label>SCRIPT1129</label>
 							<visible>substring(Window.Property(BookMarkShow),true)</visible>
 						</control>
 					</control>
