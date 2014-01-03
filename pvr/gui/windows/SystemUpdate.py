@@ -941,6 +941,9 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD_SPACE )
 			return
 
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
 		#3. run shell
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
 		dialog.SetDialogProperty( MR_LANG( 'System Update' ), E_DEFAULT_PATH_DOWNLOAD, zipFile, False, 1 )
