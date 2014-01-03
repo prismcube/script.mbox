@@ -19,6 +19,7 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.mDVBT_Manual = ElisIDVBTCarrier( )
 		self.mDVBT_Auto = []
 		self.mTerrestria = 'None'
+		self.SetTerrestriaInfo( 0 )
 		#self.mTerrestrial = ''
 		
 		#self.mTunerType = E_TUNER_T
@@ -328,12 +329,12 @@ class ChannelScanDVBT( SettingWindow ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			self.mDVBT_Auto = []
+			self.mTerrestria = 'None'
 			return False
 
 
 	def GetTerrestriaList( self ) :
 		if not os.path.exists( FILE_TERRESTRIA ) :
-			print 'dhkim test os.path.exists( FILE_TERRESTRIA )'
 			return None
 
 		try :
@@ -342,10 +343,6 @@ class ChannelScanDVBT( SettingWindow ) :
 			nameList = []
 
 			for terrestria in root.findall( 'terrestrial' ) :
-				print 'dhkim test terrestria = %s' % terrestria
-				#for name in provider.findall( 'terrestrial' ) :
-				print 'dhkim test terrestria = %s' % terrestria
-				print 'dhkim test terrestria.get( name ) = %s' % terrestria.get( 'name' )
 				if terrestria.get( 'name' ) != None :
 					nameList.append( terrestria.get( 'name' ).encode( 'utf-8' ) )
 

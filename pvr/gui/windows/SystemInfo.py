@@ -358,10 +358,9 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetPartitionSize( self, aName ) :
-		defaultSize = MR_LANG( 'Unknown' )
-		total_size = defaultSize
-		used_size = defaultSize
-		percent = defaultSize
+		total_size = MR_LANG( 'Unknown' )
+		used_size = MR_LANG( 'Unknown' )
+		percent = 0
 		try :
 			cmd = "df -h | awk '/%s/ {print $2}'" % aName
 			if sys.version_info < ( 2, 7 ) :
@@ -404,14 +403,13 @@ class SystemInfo( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
-			return defaultSize, defaultSize, defaultSize
+			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), 0
 
 
 	def GetRecordFreeSize( self ) :
-		defaultSize = MR_LANG( 'Unknown' )
-		total_size = defaultSize
-		used_size = defaultSize
-		percent = defaultSize
+		total_size = MR_LANG( 'Unknown' )
+		used_size = MR_LANG( 'Unknown' )
+		percent = 0
 		try :
 			if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
 				total_size	= self.mCommander.Record_GetPartitionSize( )
@@ -432,7 +430,7 @@ class SystemInfo( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
-			return defaultSize, defaultSize, defaultSize
+			return MR_LANG( 'Unknown' ), MR_LANG( 'Unknown' ), 0
 
 
 	def GetHDDName( self ) :
