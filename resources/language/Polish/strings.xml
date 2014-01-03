@@ -1016,7 +1016,7 @@
 	<string id="3544">Ustaw czas, przez który wyświetlany będzie banner informacyjny przy odtwarzaniu multimediów</string>
 	<string id="3545">Włącz kanał RSS w menu głównym</string>
 	<string id="3546">Kanał RSS</string>
-	<string id="3547">Tryb uśpienia dysku</string>
+	<string id="3547">Tryb usypiania HDD</string>
 	<string id="3548">Po ustawieniu na 'On', dysk twardy zostanie wyłączony po przejściu systemu w tryb czuwania aktywnego</string>
 	<string id="3549">Dostosuj częstotliwość powiadamiania o dostępności nowej wersji oprogramowania</string>
 	<string id="3550">Powiadomienie o aktualizacji</string>
@@ -1227,7 +1227,7 @@
 	<string id="3755">Restartuj GUI</string>
 	<string id="3756">Restartuj System</string>
 	<string id="3757">Dostęp do ulubionych w wygodny sposób</string>
-	<string id="3758">Restartuj xbmc, lub przełącz odbiornik w tryb czuwania</string>
+	<string id="3758">Restartuj XBMC, lub przełącz odbiornik w tryb czuwania</string>
 	<string id="3759">Kasuj, zmieniaj nazwy i blokuj kanały</string>
 	<string id="3760">Uzyskaj szybki dostęp do ulubionych kanałów</string>
 	<string id="3761">Listy ulubionych</string>
