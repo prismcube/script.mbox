@@ -516,8 +516,8 @@ class DialogPIP( BaseDialog ) :
 
 		if not pChNumber :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			lblTitle = MR_LANG( 'Attention' )
-			lblMsg = MR_LANG( 'Can not show PIP, Channel is empty' )
+			lblTitle = MR_LANG( 'Error' )
+			lblMsg = MR_LANG( 'Your channel list is empty' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
 
@@ -572,8 +572,8 @@ class DialogPIP( BaseDialog ) :
 			   self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
 				isFail = True
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				lblTitle = MR_LANG( 'Attention' )
-				lblMsg = MR_LANG( 'Can not switch PIP, Current mode Radio' )
+				lblTitle = MR_LANG( 'Error' )
+				lblMsg = MR_LANG( 'To watch PIP, please switch from radio mode to TV mode' )
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 
@@ -595,7 +595,7 @@ class DialogPIP( BaseDialog ) :
 
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mDataCache.PIP_GetStatus( ) :
-				LOG_TRACE( '--------Already started PIP' )
+				LOG_TRACE( '-------- PIP already started' )
 				#self.mDataCache.PIP_AVBlank( False )
 
 				if fakeChannel :
@@ -609,8 +609,8 @@ class DialogPIP( BaseDialog ) :
 			if not fakeChannel :
 				self.Close( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				lblTitle = MR_LANG( 'Attention' )
-				lblMsg = MR_LANG( 'Can not open PIP, Tunable not found' )
+				lblTitle = MR_LANG( 'Error' )
+				lblMsg = MR_LANG( 'Unable to tune the channel on PIP' )
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 				return False
@@ -672,9 +672,9 @@ class DialogPIP( BaseDialog ) :
 		if aPropertyID == 'SettingPIP' and aValue == E_TAG_TRUE :
 			lbltxt = ''
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
-				lbltxt = MR_LANG( 'Set move to PIP' )
+				lbltxt = MR_LANG( 'Move PIP window' )
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
-				lbltxt = MR_LANG( 'Set size to PIP' )
+				lbltxt = MR_LANG( 'Resize PIP window' )
 
 			self.setProperty( 'ShowOSDStatus', E_TAG_FALSE )
 			self.setProperty( 'SetContextAction', lbltxt )
@@ -683,11 +683,11 @@ class DialogPIP( BaseDialog ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Set move to PIP' ), CONTEXT_ACTION_MOVE_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Set size to PIP' ), CONTEXT_ACTION_SIZE_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Active screen to PIP' ), CONTEXT_ACTION_SWITCH_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Load to Default' ), CONTEXT_ACTION_DEFAULT_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Stop PIP' ), CONTEXT_ACTION_STOP_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Position' ), CONTEXT_ACTION_MOVE_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Size' ), CONTEXT_ACTION_SIZE_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Full Screen' ), CONTEXT_ACTION_SWITCH_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Reset' ), CONTEXT_ACTION_DEFAULT_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Close' ), CONTEXT_ACTION_STOP_PIP ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -872,18 +872,18 @@ class DialogPIP( BaseDialog ) :
 
 		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
 			isAudioBlock = True
-			lblMsg = MR_LANG( 'Can not enable audio, Channel is locked' )
+			lblMsg = MR_LANG( 'The channel is locked' )
 
 		#1. check audio in main
 		mute, volume = self.GetAudioStatus( )
 
 		if mute or volume < 1 :
 			isAudioBlock = True
-			lblMsg = MR_LANG( 'Can not enable audio, Check main audio' )
+			lblMsg = MR_LANG( 'Audio is muted' )
 
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			lblTitle = MR_LANG( 'Attention' )
+			lblTitle = MR_LANG( 'No Audio' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
 			return
