@@ -16,10 +16,6 @@ E_TUNER_T	= 0
 E_TUNER_T2	= 1
 E_TUNER_C	= 2
 
-DVB_S = 0
-DVB_T = 1
-
-DVB_MODE = DVB_T
 
 class FirstInstallation( FTIWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -57,6 +53,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mDVBT_Manual = ElisIDVBTCarrier( )
 		self.mDVBT_Auto = []
 		self.mTerrestria = 'None'
+		self.SetTerrestriaInfo( 0 )
 
 		if ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) == E_ONE_CABLE :
 			self.mTunerConnection		= E_TUNER_ONECABLE
@@ -195,7 +192,7 @@ class FirstInstallation( FTIWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 				self.mReloadSkinPosition = True
-				if DVB_MODE == DVB_S :
+				if self.mDataCache.HasDVBSTuner( ) :
 					self.SetFTIStep( E_STEP_ANTENNA )
 				else :
 					self.SetFTIStep( E_STEP_CHANNEL_SEARCH_CONFIG_DVBT )
@@ -474,7 +471,7 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
-			if DVB_MODE == DVB_S :
+			if self.mDataCache.HasDVBSTuner( ) :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
 			else :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG_DVBT
@@ -866,7 +863,7 @@ class FirstInstallation( FTIWindow ) :
 			self.StopScanHelper( )
 			self.CloseBusyDialog( )
 			if self.mIsChannelSearch == True :
-				if self.mConfiguredSatelliteList or self.mHasTansponder == False :
+				if len( self.mConfiguredSatelliteList ) > 0 and self.mHasTansponder == True :
 					if self.mChannelSearchMode == E_SEARCH_AUTO :
 						channelList = self.mDataCache.Channel_GetList( )
 						if channelList and channelList[0].mError == 0 :
@@ -1262,12 +1259,13 @@ class FirstInstallation( FTIWindow ) :
 			return True
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
+			self.mDVBT_Auto = []
+			self.mTerrestria = 'None'
 			return False
 
 
 	def GetTerrestriaList( self ) :
 		if not os.path.exists( FILE_TERRESTRIA ) :
-			print 'dhkim test os.path.exists( FILE_TERRESTRIA )'
 			return None
 
 		try :
@@ -1276,10 +1274,6 @@ class FirstInstallation( FTIWindow ) :
 			nameList = []
 
 			for terrestria in root.findall( 'terrestrial' ) :
-				print 'dhkim test terrestria = %s' % terrestria
-				#for name in provider.findall( 'terrestrial' ) :
-				print 'dhkim test terrestria = %s' % terrestria
-				print 'dhkim test terrestria.get( name ) = %s' % terrestria.get( 'name' )
 				if terrestria.get( 'name' ) != None :
 					nameList.append( terrestria.get( 'name' ).encode( 'utf-8' ) )
 

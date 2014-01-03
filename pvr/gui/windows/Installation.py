@@ -93,7 +93,7 @@ class Installation( BaseWindow ) :
 			return
 	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		if not self.mDataCache.HasDVBSTuner() :
+		if not self.mDataCache.HasDVBSTuner( ) :
 			if selectedId > MENU_ID_CHANNEL_SEARCH :
 				selectedId = selectedId + 2
 
@@ -101,13 +101,17 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+			if self.mDataCache.HasMultiTuner( ) :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
+			elif self.mDataCache.HasDVBTTuner( ) or self.mDataCache.HasDVBCTuner() :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
-			if self.mDataCache.HasMultiTuner() :
+			if self.mDataCache.HasMultiTuner( ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
-			elif self.mDataCache.HasDVBTTuner() or self.mDataCache.HasDVBCTuner() :
+			elif self.mDataCache.HasDVBTTuner( ) or self.mDataCache.HasDVBCTuner() :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )	
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )

@@ -1,3 +1,6 @@
+# TEST FLAG
+USE_TUNER_DVBT = False
+
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy
 from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR

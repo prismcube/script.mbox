@@ -20,11 +20,6 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.mDVBT_Auto = []
 		self.mTerrestria = 'None'
 		self.SetTerrestriaInfo( 0 )
-		#self.mTerrestrial = ''
-		
-		#self.mTunerType = E_TUNER_T
-		#self.mPlpId = 0
-		#self.mHideControl = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 
 
 	def onInit( self ) :

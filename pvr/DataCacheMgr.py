@@ -3135,11 +3135,17 @@ class DataCacheMgr( object ) :
 
 
 	def HasDVBSTuner( self ) :
-		return False
+		if USE_TUNER_DVBT :
+			return False
+		else :
+			return True
 
 
 	def HasDVBTTuner( self ) :
-		return True
+		if USE_TUNER_DVBT :
+			return True
+		else :
+			return False
 
 
 	def HasDVBCTuner( self ) :
