@@ -458,7 +458,7 @@ class PIPWindow( BaseWindow ) :
 			if self.mCurrentMode and self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				lblTitle = MR_LANG( 'Error' )
-				lblMsg = MR_LANG( 'To watch PIP, please switch from radio mode to tv mode' )
+				lblMsg = MR_LANG( 'To watch PIP, please switch from radio mode to TV mode' )
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 				if self.mCurrentChannel and ( not self.mCurrentChannel.mLocked ) :
