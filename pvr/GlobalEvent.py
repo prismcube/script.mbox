@@ -65,6 +65,10 @@ class GlobalEvent( object ) :
 
 		if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
 			LOG_TRACE( '-------------------eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
+			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
+				if xbmcgui.Window(xbmcgui.getCurrentWindowId()) != 12005 :
+					return
+
 			if aEvent.mKeyCode == 9 and ( not self.mIsShowPIPDialog ) :
 				thread = threading.Timer( 0, self.ShowPIPDialog )
 				thread.start( )

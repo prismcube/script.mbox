@@ -487,6 +487,7 @@ E_V1_2_APPLY_VIEW_TIMER = True
 E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 E_V1_2_APPLY_PIP = True
+E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 
 ############################ Global Function For GUI ############################
 
