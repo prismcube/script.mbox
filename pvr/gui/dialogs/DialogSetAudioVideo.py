@@ -30,7 +30,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.setProperty( 'DialogDrawFinished', 'False' )
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
 
-		self.SetHeaderLabel( MR_LANG( 'Audio & Video - Settings' ) )
+		lblTitle = '%s & %s'% ( MR_LANG( 'Audio' ), MR_LANG( 'Video' ) )
+		self.SetHeaderLabel( lblTitle )
 		self.DrawItem( )
 		self.mIsOk = False
 		self.mEventBus.Register( self )

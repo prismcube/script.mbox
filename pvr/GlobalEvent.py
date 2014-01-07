@@ -67,6 +67,7 @@ class GlobalEvent( object ) :
 			LOG_TRACE( '-------------------eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
 			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
 				if xbmcgui.getCurrentWindowId() != 12005 :
+					xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'PIP' ), MR_LANG( 'Show full screen only' ) ) )
 					return
 
 			if aEvent.mKeyCode == 9 and ( not self.mIsShowPIPDialog ) :

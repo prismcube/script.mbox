@@ -407,7 +407,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( 'PIP', 'Show window only' ) )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( MR_LANG( 'PIP' ), MR_LANG( 'Show window only' ) ) )
 			ret = False
 
 		return ret
