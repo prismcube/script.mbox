@@ -1715,7 +1715,7 @@ class TimeShiftPlate( BaseWindow ) :
 		restoreCurrent = self.mTimeshift_playTime
 
 		section = mediaTime / count
-		#LOG_TRACE( 'mediaTime[%s] section[%s] count[%s]'% ( mediaTime, section, splits ) )
+		#LOG_TRACE( 'mediaTime[%s] section[%s] count[%s]'% ( mediaTime, section, count ) )
 		partition = 0
 		isFull = False
 		#self.mFlagUserMove = True
@@ -1728,11 +1728,20 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_TRACE( '-------------no create bookmark barrier( not available end point )!! idx[%s] offsetMs[%s] mediaSize[%s]'% ( i, partition, mediaTime ) )
 				break
 
-
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
-			ret = self.mDataCache.Player_JumpToIFrame( partition )
-			LOG_TRACE('-------------Player_JumpToIFrame ret[%s]'% ret )
+
+			ret = False
+			retry = 0
+			while retry < 3 :
+				ret = self.mDataCache.Player_JumpToIFrame( partition )
+				#LOG_TRACE('-------------Player_JumpToIFrame ret[%s] no[%s] retry[%s]'% ( ret, i, retry ) )
+				if ret :
+					break
+				else :
+					retry += 1
+					time.sleep( 3 )
+
 			if ret :
 				mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecordInfo.mRecordKey )
 				if mBookmarkList and len( mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
@@ -1740,7 +1749,7 @@ class TimeShiftPlate( BaseWindow ) :
 					break
 
 				ret = self.mDataCache.Player_CreateBookmark( )
-				#LOG_TRACE('-----------add bookmark[%s] markTime[%s]'% ( ret, partition ) )
+				#LOG_TRACE('-----------add bookmark ret[%s] no[%s] markTime[%s]'% ( ret, i, partition ) )
 
 			time.sleep( 1 )
 
