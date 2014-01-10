@@ -1713,9 +1713,15 @@ class SystemUpdate( SettingWindow ) :
 			self.mWorkingDownloader.abort( True )
 			#self.mStepPage = E_UPDATE_STEP_READY
 
-
 		self.mDialogProgress.close( )
 		self.mDialogProgress = None
+
+		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
+		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
+			self.mIsDownload = True
+			os.system( 'sync' )
+			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
+
 
 
 	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
