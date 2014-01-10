@@ -90,8 +90,8 @@
 						<control type="button" id="4708004">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDRepeatFO.png</texturefocus>
-							<texturenofocus>OSDRepeatNF.png</texturenofocus>
+							<texturefocus>OSDFullScreenFO.png</texturefocus>
+							<texturenofocus>OSDFullScreenNF.png</texturenofocus>
 						</control>
 						<control type="button" id="4708005">
 							<width>35</width>
@@ -102,14 +102,14 @@
 						<control type="button" id="4708006">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDSizeFO.png</texturefocus>
-							<texturenofocus>OSDSizeNF.png</texturenofocus>
+							<texturefocus>OSDResizeFO.png</texturefocus>
+							<texturenofocus>OSDResizeNF.png</texturenofocus>
 						</control>
 						<control type="button" id="4708007">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDDefaultFO.png</texturefocus>
-							<texturenofocus>OSDDefaultNF.png</texturenofocus>
+							<texturefocus>OSDResetFO.png</texturefocus>
+							<texturenofocus>OSDResetNF.png</texturenofocus>
 						</control>
 						<control type="button" id="4708008">
 							<width>35</width>
@@ -120,8 +120,8 @@
 						<control type="button" id="4708009">
 							<width>35</width>
 							<height>35</height>
-							<texturefocus>OSDPowerFO.png</texturefocus>
-							<texturenofocus>OSDPowerNF.png</texturenofocus>
+							<texturefocus>OSDExitFO.png</texturefocus>
+							<texturenofocus>OSDExitNF.png</texturenofocus>
 						</control>
 					</control>
 

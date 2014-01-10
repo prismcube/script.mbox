@@ -118,7 +118,7 @@ class NullWindow( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = time.time( )
 
 		self.UpdateLinkageService( )
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( )
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 		"""
 		currentStack = inspect.stack( )
@@ -509,12 +509,10 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if E_V1_2_APPLY_PIP :
-				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -1029,16 +1027,16 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_COLOR_YELLOW :
 			self.CloseSubTitle( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
 
 		elif aAction == Action.ACTION_COLOR_BLUE :
-			self.CloseSubTitle( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.CheckSubTitle( )
 			self.mIsShowDialog = False
+			self.CloseSubTitle( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+			self.CheckSubTitle( )
 			return
 
 		elif aAction == Action.ACTION_COLOR_GREEN :

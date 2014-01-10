@@ -6712,378 +6712,6 @@ Search for window name
 			</control>
 		</control>
 
-		<!-- *********** E_PIPWindow  *********** -->
-		<control type="group" id="4800000">
-			<visible>substring(Window.Property(CurrentWindow),4800000)</visible>
-			<defaultcontrol always="true">4808000</defaultcontrol>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
-				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
-				<visible>substring(Window.Property(TVRadio),true)</visible>
-			</control>
-			<control type="group">
-				<posx>-5</posx>
-				<posy>-5</posy>
-				<control type="group" id="4801000">
-					<posx>835</posx>
-					<posy>131</posy>
-					<visible>substring(Window.Property(OpenPIP),true)</visible>
-					<control type="group">
-						<control type="image" id="4801002">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>265</height>
-							<texture border="5">StackFO_white2.png</texture>
-						</control>
-					</control>
-					<!--control type="group" id="4801100">
-						<posx>0</posx>
-						<posy>0</posy>
-						<animation effect="fade" time="300">VisibleChange</animation>
-						<visible>substring(Window.Property(InputNumber),true)</visible>
-						<control type="image" id="4801101">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>370</width>
-							<height>50</height>
-							<texture>black-back_noAlpha.png</texture>
-							<colordiffuse>Window.Property(PIPColorDiffuseInput)</colordiffuse>
-						</control>
-						<control type="label" id="4801102">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font14</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-						<control type="label" id="4801103">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font12</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-					</control-->
-					<control type="group" id="4802000">
-						<posx>0</posx>
-						<posy>0</posy>
-						<!--control type="label" id="4802001">
-							<posx>10</posx>
-							<posy>-30</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font12</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[Control.GetLabel]</label>
-						</control-->
-						<control type="image" id="4802002">
-							<posx>0</posx>
-							<posy>-1</posy>
-							<width>370</width>
-							<height>65</height>
-							<texture>black-back_noAlpha.png</texture>
-							<colordiffuse>DFFFFFFF</colordiffuse>
-						</control>
-						<control type="grouplist" id="4808000">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>370</width>
-							<height>50</height>
-							<itemgap>0</itemgap>
-							<pagecontrol></pagecontrol>
-							<scrolltime tween="sine" easing="out">200</scrolltime>
-							<orientation>horizontal</orientation>
-							<usecontrolcoords>false</usecontrolcoords>
-							<onup></onup>
-							<ondown></ondown>
-							<onleft></onleft>
-							<onright></onright>
-							<!--visible>!Control.IsVisible(4803000)</visible-->
-							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
-							<defaultcontrol always="true">4808001</defaultcontrol>
-							<control type="button" id="4808001">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDChannelUPFO.png</texturefocus>
-								<texturenofocus>OSDChannelUPNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808002">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDChannelDownFO.png</texturefocus>
-								<texturenofocus>OSDChannelDownNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808003">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDAudioFO.png</texturefocus>
-								<texturenofocus>OSDAudioNF.png</texturenofocus>
-								<!--onclick>Mute</onclick-->
-							</control>
-							<control type="button" id="4808004">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDRepeatFO.png</texturefocus>
-								<texturenofocus>OSDRepeatNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808005">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDMoveFO.png</texturefocus>
-								<texturenofocus>OSDMoveNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808006">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDSizeFO.png</texturefocus>
-								<texturenofocus>OSDSizeNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808007">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDDefaultFO.png</texturefocus>
-								<texturenofocus>OSDDefaultNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808008">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDBackFO.png</texturefocus>
-								<texturenofocus>OSDBackNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808009">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDPowerFO.png</texturefocus>
-								<texturenofocus>OSDPowerNF.png</texturenofocus>
-							</control>
-						</control>
-
-						<!-- info section -->
-						<control type="group">
-							<posx>10</posx>
-							<posy>40</posy>
-							<control type="group">
-								<visible>Control.IsVisible(4803000)</visible>
-								<control type="label">
-									<posx>0</posx>
-									<posy>-30</posy>
-									<width>400</width>
-									<height>50</height>
-									<font>font12_title</font>
-									<textcolor>grey</textcolor>
-									<scroll>false</scroll>
-									<label>$INFO[Window.Property(SetContextAction)]</label>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>50</height>
-									<font>font12_title</font>
-									<textcolor>grey</textcolor>
-									<scroll>false</scroll>
-									<label>SCRIPT1010</label>
-								</control>
-							</control>
-
-							<control type="group">
-								<visible>!Control.IsVisible(4803000)</visible>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1011</label>
-									<visible>Control.HasFocus(4808001)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1012</label>
-									<visible>Control.HasFocus(4808002)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1013</label>
-									<visible>Control.HasFocus(4808003)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1015</label>
-									<visible>Control.HasFocus(4808004)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1023</label>
-									<visible>Control.HasFocus(4808005)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1025</label>
-									<visible>Control.HasFocus(4808006)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1042</label>
-									<visible>Control.HasFocus(4808007)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1046</label>
-									<visible>Control.HasFocus(4808008)</visible>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>400</width>
-									<height>28</height>
-									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
-									<label>SCRIPT1077</label>
-									<visible>Control.HasFocus(4808009)</visible>
-								</control>
-							</control>
-						</control>
-					</control>
-
-					<control type="group" id="4803000">
-						<posx>-35</posx>
-						<posy>-20</posy>
-						<visible>substring(Window.Property(SettingPIP),true)</visible>
-						<control type="group">
-							<posx>0</posx>
-							<posy>0</posy>
-							<control type="image" id="4803001">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-left-focus.png</texture>
-							</control>
-						</control>
-						<control type="group">
-							<posx>20</posx>
-							<posy>0</posy>
-							<control type="image" id="4803002">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-right-focus.png</texture>
-							</control>
-						</control>
-						<control type="group">
-							<posx>10</posx>
-							<posy>-20</posy>
-							<control type="image" id="4803003">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-top-focus.png</texture>
-							</control>
-						</control>
-						<control type="group">
-							<posx>10</posx>
-							<posy>5</posy>
-							<control type="image" id="4803004">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>50</width>
-								<height>50</height>
-								<texture>Arrow-bottom-focus.png</texture>
-							</control>
-						</control>
-					</control>
-				</control>
-			</control>
-
-			<!--control type="image">
-				<posx>770</posx>
-				<posy>53r</posy>
-				<width>520</width>
-				<height>53</height>
-				<texture>black-back_noAlpha.png</texture>
-				<colordiffuse>DFFFFFFF</colordiffuse>
-			</control>
-			<control type="label">
-				<posx>780</posx>
-				<posy>53r</posy>
-				<width>500</width>
-				<height>50</height>
-				<font>font35_title</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>PIP Window - Channel : $INFO[Window.Property(ShowPIPChannelNumber)]</label>
-			</control-->
-
-		</control>
-
 		<!-- Time & Date -->
 		<include>DefaultCommonTime</include>
 		<include>DefaultCommonDate</include>
@@ -7092,7 +6720,7 @@ Search for window name
 		<!-- PIG Image & Radio Image -->
 		<control type="group">
 			<control type="image" id="1008800">
-				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)+ !substring(Window.Property(CurrentWindow),4800000)</visible>
+				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -7106,7 +6734,7 @@ Search for window name
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4800000)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -7122,7 +6750,7 @@ Search for window name
 			<control type="group" id="1008899">
 				<posx>744</posx>
 				<posy>136</posy>
-				<visible>substring(Window.Property(OpenPIP),true)</visible>
+				<visible>substring(Window(10000).Property(OpenPIP),true)</visible>
 				<control type="image" id="1002001">
 					<visible>substring(Window.Property(TVRadio),true)</visible>
 					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4800000)]</visible-->
@@ -7138,30 +6766,17 @@ Search for window name
 					<width>328</width>
 					<height>170</height>
 					<texture>black-back_noAlpha.png</texture>
-					<visible>substring(Window.Property(BlankPIP),true)</visible>
-				</control>
-				<control type="label" id="4802001">
-					<posx>10</posx>
-					<posy>-30</posy>
-					<width>425</width>
-					<height>30</height>
-					<font>font12</font>
-					<textcolor>grey</textcolor>
-					<scroll>false</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[Control.GetLabel]</label>
-					<visible>substring(Window.Property(ShowNamePIP),true)</visible>
+					<visible>substring(Window(10000).Property(BlankPIP),true)</visible>
 				</control>
 				<control type="group">
-					<visible>!substring(Window.Property(InputNumber),true)</visible>
+					<visible>!substring(Window(10000).Property(InputNumber),true)</visible>
 					<control type="image" id="1002003">
 						<posx>0</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
 						<texture>OverlayLocked.png</texture>
-						<visible>substring(Window.Property(iLockPIP),true)</visible>
+						<visible>substring(Window(10000).Property(iLockPIP),true)</visible>
 					</control>
 					<control type="label" id="1002004">
 						<posx>10</posx>
@@ -7186,7 +6801,7 @@ Search for window name
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),False)</visible>
+						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),False)</visible>
 					</control>
 					<control type="label" id="1002006">
 						<posx>10</posx>
@@ -7198,7 +6813,7 @@ Search for window name
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),Scramble)</visible>
+						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>
 					</control>
 					<control type="label" id="1002007">
 						<posx>10</posx>
@@ -7210,10 +6825,10 @@ Search for window name
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<visible>!Control.IsVisible(1002003) + substring(Window.Property(PIPSignal),NoService)</visible>
+						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),NoService)</visible>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<posx>-5</posx>
 					<posy>-5</posy>
 					<control type="group" id="4801100">
@@ -7254,7 +6869,7 @@ Search for window name
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
 					</control>
-				</control>
+				</control-->
 			</control>
 		</control>
 

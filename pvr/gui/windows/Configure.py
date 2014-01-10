@@ -313,15 +313,8 @@ class Configure( SettingWindow ) :
 				self.mAnalogAscpect = self.GetSelectedIndex( E_SpinEx02 )
 				self.SetListControl( ) 
 
-			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_SpinEx02 :
-				if self.mBusyVideoSetting :
-					return
-				if self.mAsyncVideoSetThread :
-					self.mAsyncVideoSetThread.cancel( )
-					self.mAsyncVideoSetThread = None
-
-				self.mAsyncVideoSetThread = threading.Timer( 3, self.AsyncVideoSetting )
-				self.mAsyncVideoSetThread.start( )
+			elif self.mVideoOutput == E_VIDEO_HDMI and groupId == E_Input01 :
+				self.ShowHdmiFormat( )
 
 			else :
 				self.ControlSelect( )
@@ -567,42 +560,24 @@ class Configure( SettingWindow ) :
 			self.ShowDescription( aControlId, E_CONFIGURE_SETTING_DESCRIPTION )
 
 
-	def AsyncVideoSetting( self ) :
-		self.mBusyVideoSetting = True
-		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
-		self.ControlSelect( )
-		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
-			self.VideoRestore( restoreValue )
-		else :
-			self.mBusyVideoSetting = False
+	def ShowHdmiFormat( self ) :
+		hdmiList = []
+		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
+		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )
+		for i in range( propCount ) :
+			propName = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropStringByIndex( i )
+			hdmiList.append( ContextItem( propName, i ) )
 
-
-	def VideoRestore( self, aRestoreValue ) :
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( hdmiList, selectIdx )
 		dialog.doModal( )
 
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				self.mBusyVideoSetting = False
-				return
-			iconIndex = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '1080p' :
-				iconIndex = ElisEnum.E_ICON_1080p
-			#elif hdmiFormat == '1080p-25' :
-			#	iconIndex = ElisEnum.E_ICON_1080p
-			elif hdmiFormat == '720p' :
-				iconIndex = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				iconIndex = -1
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
-		else :
-			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetProp( aRestoreValue )
-			prop = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
-			control = self.getControl( E_SpinEx02 + 3 )
-			control.selectItem( prop )
+		selectAction = dialog.GetSelectedAction( )
+		#LOG_TRACE( '------select hdmi[%s] name[%s]'% ( selectAction, hdmiList[selectAction].mDescription ) )
 
-		self.mBusyVideoSetting = False
+		if selectAction > -1 :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
+			self.SetControlLabel2String( E_Input01, hdmiList[selectAction].mDescription )
 
 
 	def SetListControl( self ) :
@@ -685,18 +660,19 @@ class Configure( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Video Output' ), USER_ENUM_LIST_VIDEO_OUTPUT, self.mVideoOutput, MR_LANG( 'Select HDMI or Analog for your video output' ) )
 			
 			if self.mVideoOutput == E_VIDEO_HDMI :
-				self.AddEnumControl( E_SpinEx02, 'HDMI Format', MR_LANG( ' - HDMI Format' ), MR_LANG( 'Set the display\'s HDMI resolution' ) )
+				lblSelect = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+				self.AddInputControl( E_Input01, 'HDMI Format', lblSelect, MR_LANG( 'Set the display\'s HDMI resolution' ) )
 				self.AddEnumControl( E_SpinEx03, 'Show 4:3', MR_LANG( ' - TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 				self.AddEnumControl( E_SpinEx04, 'HDMI Color Space', MR_LANG( ' - HDMI Color Space' ), MR_LANG( 'Set RGB or YUV for HDMI color space' ) )
-				
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+
+				visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx03, E_SpinEx04 ]
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx02, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
-
 				self.InitControl( )
+
 			else :
 				self.AddEnumControl( E_SpinEx02, 'TV Aspect', MR_LANG( ' - TV Aspect Ratio' ), MR_LANG( 'Set aspect ratio of your TV' ) )
 				if self.mAnalogAscpect == E_16_9 :

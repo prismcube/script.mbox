@@ -462,7 +462,8 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetMediaCenter( self ) :
 		import pvr.gui.WindowMgr as WinMgr
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+		import pvr.gui.DialogMgr as DiaMgr
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
 
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
@@ -557,9 +558,20 @@ class BaseWindow( BaseObjectWindow ) :
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
 
+	def ShowPIP( self ) :
+		if E_V1_2_APPLY_PIP :
+			import pvr.gui.DialogMgr as DiaMgr
+			pipDlg = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
+
+			if pipDlg.PIP_Available( ) :
+				pipDlg.doModal( )
+
+
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 			overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )

@@ -17,8 +17,7 @@ PARENTLOCK_CHECKWINDOW = [
 	WinMgr.WIN_ID_EPG_WINDOW,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
-	WinMgr.WIN_ID_INFO_PLATE,
-	WinMgr.WIN_ID_PIP_WINDOW
+	WinMgr.WIN_ID_INFO_PLATE
 	#WinMgr.WIN_ID_FAVORITE_ADDONS,
 	#WinMgr.WIN_ID_SYSTEM_UPDATE,
 	#WinMgr.WIN_ID_HELP
@@ -42,6 +41,7 @@ class GlobalEvent( object ) :
 	def __init__( self ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mIsDialogOpend	= False
+		self.mIsShowPIPDialog = False
 		self.mIsHddFullDialogOpened = False
 		self.mEventId = None
 		self.IsStartChannelLoad		= False
@@ -61,6 +61,18 @@ class GlobalEvent( object ) :
 
 	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
+			return
+
+		if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
+			LOG_TRACE( '-------------------eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
+			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
+				if xbmcgui.getCurrentWindowId() != 12005 :
+					xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'PIP' ), MR_LANG( 'Show full screen only' ) ) )
+					return
+
+			if aEvent.mKeyCode == 9 and ( not self.mIsShowPIPDialog ) :
+				thread = threading.Timer( 0, self.ShowPIPDialog )
+				thread.start( )
 			return
 
 		if aEvent.getName( ) == ElisEventCAMInsertRemove.getName( ) :
@@ -136,7 +148,7 @@ class GlobalEvent( object ) :
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
-			#LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
@@ -154,20 +166,20 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'Scramble' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'NoService' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'True' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'False' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'BlankPIP', 'False' )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'PIPSignal', 'True' )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'False' )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
@@ -560,6 +572,13 @@ class GlobalEvent( object ) :
 			self.mCommander.Cicam_SendEnqAnswer( aEvent.mSlotNo, 0, 'None', 4 )
 
 
+	def ShowPIPDialog( self ) :
+		self.mIsShowPIPDialog = True
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( )
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+		self.mIsShowPIPDialog = False
+
+
 	def ChannelChangedByRecord( self, aEvent ) :
 		if not aEvent :
 			LOG_TRACE('no event data')
@@ -683,7 +702,7 @@ class GlobalEvent( object ) :
 			time.sleep( 0.3 )
 
 		self.mDataCache.SetStanbyClosing( False )
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Stop( True )
 
 
 	def GetCurrentWindowIdForStanByClose( self ) :
