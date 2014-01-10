@@ -941,6 +941,11 @@ class SystemUpdate( SettingWindow ) :
 				LOG_TRACE( 'no download' )
 				return
 
+		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
+			lblLine = '%s %s'% ( MR_LANG( 'No support' ), urlType )
+			self.DialogPopup( E_STRING_ATTENTION, lblLine )
+			return
+
 		if not CheckDirectory( zipFile ) :
 			LOG_TRACE( 'not found zip[%s]'% zipFile )
 			self.DialogPopup( E_STRING_ERROR, MR_LANG( 'File not found' ) )
