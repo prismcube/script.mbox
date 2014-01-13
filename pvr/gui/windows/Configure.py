@@ -579,6 +579,18 @@ class Configure( SettingWindow ) :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
 			self.SetControlLabel2String( E_Input01, hdmiList[selectAction].mDescription )
 
+			time.sleep(1)
+			self.VideoRestore( selectIdx, hdmiList[selectIdx].mDescription )
+
+
+	def VideoRestore( self, aRestoreIdx, aRestoreValue ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+		dialog.doModal( )
+
+		if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( aRestoreIdx )
+			self.SetControlLabel2String( E_Input01, aRestoreValue )
+
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
