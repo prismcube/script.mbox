@@ -71,6 +71,8 @@ PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_LIVE_PLATE
 ]
 
+WINDOW_ID_FULLSCREEN_VIDEO = 12005
+
 
 class DialogPIP( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -124,6 +126,8 @@ class DialogPIP( BaseDialog ) :
 		self.mFakeChannel     = self.mCurrentChannel
 		self.mInputString     = ''
 		self.mInitialized     = True
+		self.mCheckMediaPlay  = False
+		self.mCheckMediaPlayThread = None
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mEventBus.Register( self )
@@ -290,15 +294,34 @@ class DialogPIP( BaseDialog ) :
 			self.mDataCache.PIP_EnableAudio( False )
 
 		if aStopPIP or \
-		   ( self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) != 12005 ) :
+		   ( self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) != WINDOW_ID_FULLSCREEN_VIDEO ) :
 			self.PIP_Stop( )
 
 		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
 
+		self.mCheckMediaPlay = False
+		if self.mCheckMediaPlayThread and self.mCheckMediaPlayThread.isAlive( ) :
+			self.mCheckMediaPlay = False
+			self.mCheckMediaPlayThread.cancel( )
+			del self.mCheckMediaPlayThread
+		self.mCheckMediaPlayThread = None
+
 		#self.PIP_PositionBackup( self.mPosCurrent )
 		self.CloseDialog( )
+
+
+	def CloseByMediaPlayStop( self ) :
+		isClose = False
+		while self.mCheckMediaPlay :
+			time.sleep( 1 )
+			if xbmcgui.getCurrentWindowId() != WINDOW_ID_FULLSCREEN_VIDEO :
+				isClose = True
+				break
+
+		if isClose :
+			self.Close( True )
 
 
 	def PIP_Stop( self, aForce = False ) :
@@ -424,6 +447,10 @@ class DialogPIP( BaseDialog ) :
 		if self.mDataCache.GetMediaCenter( ) :
 			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
 			self.SetButtonExtended( False )
+
+			self.mCheckMediaPlay = True
+			self.mCheckMediaPlayThread = threading.Timer( 0, self.CloseByMediaPlayStop )
+			self.mCheckMediaPlayThread.start( )
 
 		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
