@@ -89,7 +89,7 @@
 		</content>
 	</page>
 
-	<page number="5" title="Remote Control - QWERTY Keyboard" location="">
+	<page number="5" title="Diaľkové ovládanie - QWERTY klávesnica" location="">
 		<content name="help/remote3.png">
 			<type>image</type>
 			<posx>380</posx>
@@ -97,7 +97,7 @@
 			<width>500</width>
 			<height>226</height>
 		</content>
-		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+		<content name="Ďiaľkové ovládanie boxu PRISMCUBE RUBY má funkciu plnej QWERTY klávesnice na zadnej strane.[CR][CR]1. Držte ovládanie horizontálne ako na obrázku hore.[CR]2. Zapnite QWERTY klávesnicu stlačením Num Lock tlačidla.[CR]3. Píšte text cez klávesnicu rýchlejšie a efektívnejšie.">
 			<type>textbox</type>
 			<posx>205</posx>
 			<posy>565</posy>
