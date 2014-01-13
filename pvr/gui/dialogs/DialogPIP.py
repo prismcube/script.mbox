@@ -447,6 +447,10 @@ class DialogPIP( BaseDialog ) :
 		if self.mDataCache.GetMediaCenter( ) :
 			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
 			self.SetButtonExtended( False )
+			if self.mDataCache.PIP_GetStatus( ) :
+				ret = self.mDataCache.PIP_Stop( )
+				if ret :
+					self.mDataCache.PIP_SetStatus( False )
 
 			self.mCheckMediaPlay = True
 			self.mCheckMediaPlayThread = threading.Timer( 0, self.CloseByMediaPlayStop )
