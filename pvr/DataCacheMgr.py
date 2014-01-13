@@ -1522,11 +1522,14 @@ class DataCacheMgr( object ) :
 			channelDB = ElisChannelDB( )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
 			channelDB.Close( )
+			"""
 			if recCount > 0 :
 				channelDB2 = ElisChannelDB( )				
+				channelDB2.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				favoriteList = channelDB2.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, E_TABLE_ALLCHANNEL )
+				channelDB2.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB2.Close( )
-				"""
+
 				favoriteHash =  {}
 				for  channel in favoriteList :
 					favoriteHash['%s' %channel.mNumber]= channel
@@ -1535,7 +1538,7 @@ class DataCacheMgr( object ) :
 					refChannel = favoriteHash.get( '%d' %(channel.mNumber ), None )
 					if refChannel :
 						channel.mPresentationNumber = refChannel.mPresentationNumber
-				"""
+			"""
 
 			return channelList
 

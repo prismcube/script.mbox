@@ -252,7 +252,7 @@ class Configure( SettingWindow ) :
 				if ret >= 0 and ret != currentindex:
 					if not self.mPlatform.IsPrismCube( ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 						dialog.doModal( )
 						return
 

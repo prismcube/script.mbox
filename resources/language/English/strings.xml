@@ -126,6 +126,7 @@
 	<string id="1126">Run Custom Script</string>
 	<string id="1127">No Service</string>
 	<string id="1128">Fast Scan</string>
+	<string id="1129">Show bookmarks</string>
 	<string id="2001">Last ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>
@@ -666,7 +667,7 @@
 	<string id="3194">Try again after stopping playback</string>
 	<string id="3195">Multi-Feed</string>
 	<string id="3196">Timeshift not ready%s Please try again</string>
-	<string id="3197">No support %s</string>
+	<string id="3197">No %s support</string>
 	<string id="3198">Add a bookmark</string>
 	<string id="3199">Start auto-chaptering</string>
 	<string id="3200">Show all bookmarks</string>
@@ -1170,7 +1171,7 @@
 	<string id="3698">Your settings have been exported successfully</string>
 	<string id="3699">PIP Channel</string>
 	<string id="3700">PIP Window</string>
-	<string id="3701">To watch PIP, please switch from radio mode to tv mode</string>
+	<string id="3701">To watch PIP, please switch from radio mode to TV mode</string>
 	<string id="3702">Unable to tune the channel on PIP</string>
 	<string id="3703">Move PIP window</string>
 	<string id="3704">Resize PIP window</string>
