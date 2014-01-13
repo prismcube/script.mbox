@@ -209,21 +209,17 @@ class InfoPlate( LivePlateWindow ) :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-			self.RestartAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.RestartAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_PIP )
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if ( time.time( ) - self.mOnBlockTimer_GreenKey ) <= 1 :
 				return
 
 			self.mOnBlockTimer_GreenKey = time.time( )
-			self.DoContextAction( CONTEXT_ACTION_ADD_TO_BOOKMARK )
+			self.AddToBookmark( )
 
 
 	def onClick( self, aControlId ) :
@@ -259,8 +255,8 @@ class InfoPlate( LivePlateWindow ) :
 
 		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
 			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Bookmark' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'A / V' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL ), self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'PIP' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
 		else :
 			iRussian = E_TAG_FALSE
 			if XBMC_GetCurrentLanguage( ) == 'Russian' :
@@ -518,7 +514,7 @@ class InfoPlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.mIsShowDialog = False
 				self.RestartAutomaticHide( )
@@ -537,7 +533,7 @@ class InfoPlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.mIsShowDialog = False
 				self.RestartAutomaticHide( )
@@ -565,99 +561,36 @@ class InfoPlate( LivePlateWindow ) :
 			self.ShowEPGDescription( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.mEventBus.Deregister( self )
-			self.AudioVideoContext( )
-			self.mEventBus.Register( self )
+			#self.mEventBus.Deregister( self )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
+ 			#self.EventReceivedDialog( dialog )
+			#self.mEventBus.Register( self )
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 
 		self.RestartAutomaticHide( )
 		self.mIsShowDialog = False
 
 
-	def AudioVideoContext( self ) :
-		context = []
-		context.append( ContextItem( MR_LANG( 'Video format' ), CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( MR_LANG( 'Audio track' ),  CONTEXT_ACTION_AUDIO_SETTING ) )
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-		dialog.SetProperty( context )
-		dialog.doModal( )
-
-		self.EventReceivedDialog( dialog )
-
-		selectAction = dialog.GetSelectedAction( )
-		if selectAction == -1 :
+	def AddToBookmark( self, aSelectAction ) :
+		if not self.mPlayingRecord :
 			return
 
-		self.DoContextAction( selectAction )
-
-
-	def DoContextAction( self, aSelectAction ) :
-		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
-			dialog.SetValue( aSelectAction )
- 			dialog.doModal( )
-
- 			self.EventReceivedDialog( dialog )
-
-		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
-			getCount = self.mDataCache.Audiotrack_GetCount( )
-			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-
-			context = []
-			iSelectAction = 0
-			for idx in range(getCount) :
-				idxTrack = None
-				if self.mPlayingRecord :
-					idxTrack = self.mDataCache.Audiotrack_GetForRecord( self.mPlayingRecord.mRecordKey, idx )
-
-				if idxTrack == None :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-					dialog.SetProperty( context )
-					dialog.doModal( )
-					return
-
-				#idxTrack = self.mDataCache.Audiotrack_Get( idx )
-				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-				label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
-
-				context.append( ContextItem( label, iSelectAction ) )
-				iSelectAction += 1
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context, selectIdx )
+		bookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecord.mRecordKey )
+		if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
+			head = MR_LANG( 'Error' )
+			msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( head, msg )
 			dialog.doModal( )
+			return
 
-			self.EventReceivedDialog( dialog )
+		else :
+			if self.mSpeed != 100 :
+				self.mDataCache.Player_Resume( )
 
-			selectIdx2 = dialog.GetSelectedAction( )
-			if selectIdx2 < 0 :
-				return
-
-			if self.mCommander.Player_GetMute( ) :
-				self.mCommander.Player_SetMute( False )
-				xbmc.executebuiltin( 'Mute( )' )
-
-			self.mDataCache.Audiotrack_select( selectIdx2 )
-			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
-
-		elif aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
-			if not self.mPlayingRecord :
-				return
-
-			bookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecord.mRecordKey )
-			if bookmarkList and len( bookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
-				head = MR_LANG( 'Error' )
-				msg = MR_LANG( 'You have reached the maximum number of%s bookmarks allowed' )% NEW_LINE
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( head, msg )
-				dialog.doModal( )
-				return
-
-			else :
-				if self.mSpeed != 100 :
-					self.mDataCache.Player_Resume( )
-
-				self.mDataCache.Player_CreateBookmark( )
+			self.mDataCache.Player_CreateBookmark( )
 
 
 	def ShowEPGDescription( self ) :

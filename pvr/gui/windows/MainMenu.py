@@ -129,6 +129,9 @@ class MainMenu( BaseWindow ) :
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :

@@ -55,7 +55,7 @@ class BackupSettings( object ) :
 
 	def SetNetwork( self ) :
 		if not self.mPlatform.IsPrismCube( ) :
-			LOG_TRACE( 'No support platform' )
+			LOG_TRACE( 'No platform support' )
 			return
 
 		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) >= pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :

@@ -374,14 +374,10 @@ class LivePlate( LivePlateWindow ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowLinkageChannels( )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-			self.RestartAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.RestartAutomaticHide( )
+			self.DialogPopup( E_CONTROL_ID_BUTTON_PIP )
 
 
 	def onClick( self, aControlId ) :
@@ -443,8 +439,8 @@ class LivePlate( LivePlateWindow ) :
 			lblBlue    = ctrlBlue.getLabel( )
 
 			ResizeImageWidthByTextSize( ctrlGreen, self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Multi-Feed' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )		
-			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'A / V' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'PIP' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
 			if lblGreen and len( lblGreen ) > 9 or \
 			   lblYellow and len( lblYellow ) > 9 or \
 			   lblBlue and len( lblBlue ) > 9 :
@@ -788,7 +784,7 @@ class LivePlate( LivePlateWindow ) :
 
 	def UpdateChannelLogo( self, aChannel = None ) :
 		if not E_USE_CHANNEL_LOGO :
-			LOG_TRACE( 'No support Channel Logo' )
+			LOG_TRACE( 'No channellogo support' )
 			return
 
 		if not aChannel or aChannel.mError != 0 :
@@ -1062,7 +1058,7 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.mIsShowDialog = False
 				self.RestartAutomaticHide( )
@@ -1086,7 +1082,7 @@ class LivePlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
 				self.mIsShowDialog = False
@@ -1161,7 +1157,22 @@ class LivePlate( LivePlateWindow ) :
 			self.ShowRecordingStopDialog( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.ShowAudioVideoContext( )
+			"""
+			status = self.mDataCache.GetLockedState( )
+			if status != ElisEnum.E_CC_SUCCESS and self.getProperty( 'PvrPlay' ) != E_TAG_TRUE :
+				statusSignal = MR_LANG( 'No Signal' )
+				if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+					statusSignal = MR_LANG( 'Scrambled' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
+				dialog.doModal( )
+				return
+			"""
+
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
 
 		elif aFocusId == ( Action.ACTION_MBOX_XBMC + 1000 ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -1365,92 +1376,6 @@ class LivePlate( LivePlateWindow ) :
 
 		if isOK :
 			self.mDataCache.SetChannelReloadStatus( True )
-
-
-	def ShowAudioVideoContext( self ) :
-		context = []
-		context.append( ContextItem( MR_LANG( 'Video format' ), CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( MR_LANG( 'Audio track' ),  CONTEXT_ACTION_AUDIO_SETTING ) )
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-		dialog.SetProperty( context )
-		dialog.doModal( )
-
-		selectAction = dialog.GetSelectedAction( )
-		if selectAction == -1 :
-			return
-
-		self.DoContextAction( selectAction )
-
-
-	def DoContextAction( self, aSelectAction ) :
-		"""
-		status = self.mDataCache.GetLockedState( )
-		if status != ElisEnum.E_CC_SUCCESS and self.getProperty( 'PvrPlay' ) != E_TAG_TRUE :
-			statusSignal = MR_LANG( 'No Signal' )
-			if status == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-				statusSignal = MR_LANG( 'Scrambled' )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), statusSignal )
-			dialog.doModal( )
-			return
-		"""
-
-
-		if aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
-			dialog.SetValue( aSelectAction )
- 			dialog.doModal( )
-
-		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
-			getCount = self.mDataCache.Audiotrack_GetCount( )
-			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-
-			context = []
-			iSelectAction = 0
-			for idx in range(getCount) :
-				idxTrack = None
-				status = self.mDataCache.Player_GetStatus( )
-				if status.mMode == ElisEnum.E_MODE_PVR :
-					mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-					if mPlayingRecord :
-						idxTrack = self.mDataCache.Audiotrack_GetForRecord( mPlayingRecord.mRecordKey, idx )
-
-				else :
-					idxTrack = self.mDataCache.Audiotrack_Get( idx )
-
-				if idxTrack == None :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-					dialog.SetProperty( context )
-					dialog.doModal( )
-					return
-
-				#idxTrack = self.mDataCache.Audiotrack_Get( idx )
-				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-				if idxTrack.mName == '' :
-					label = '%s' % idxTrack.mLang
-				elif idxTrack.mLang == '' :
-					label = '%s' % idxTrack.mName
-				else :
-					label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
-
-				context.append( ContextItem( label, iSelectAction ) )
-				iSelectAction += 1
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context, selectIdx )
-			dialog.doModal( )
-
-			selectIdx2 = dialog.GetSelectedAction( )
-			if selectIdx2 < 0 :
-				return
-
-			if self.mCommander.Player_GetMute( ) :
-				self.mCommander.Player_SetMute( False )
-				xbmc.executebuiltin( 'Mute( )' )
-
-			self.mDataCache.Audiotrack_select( selectIdx2 )
-			#LOG_TRACE('Select[%s --> %s]'% (aSelectAction, selectIdx2) )
 
 
  	def ShowRecordingInfo( self ) :

@@ -8,7 +8,7 @@ try :
 except Exception, e :
 	from elementtree import ElementTree
 
-import urllib
+import urlparse, urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
@@ -896,6 +896,119 @@ def SetDefaultSettingInXML( ) :
 	return ret
 
 
+def GetParseUrl( reqUrl = '', isGetSize = False ) :
+	urlPort = '21'
+	urlSize = 0
+
+	parseObj = urlparse.urlparse( reqUrl )
+
+	urlType = parseObj.scheme	#type : 'ftp', 'sftp', 'zeroconf', 'smb',...  ''(null) is local path
+	urlHost = parseObj.hostname
+	urlPort = parseObj.port
+	urlUser = parseObj.username
+	urlPass = parseObj.password
+	bPath = os.path.basename( parseObj.path )
+	gPath = parseObj.path.replace( bPath, '' )
+	urlPath = urllib.unquote( gPath )
+	urlFile = urllib.unquote( os.path.basename( reqUrl ) )
+	#LOG_TRACE( 'bPath[%s] gPath[%s]'% ( bPath, gPath ) )
+	LOG_TRACE( 'host[%s] port[%s] user[%s] pass[%s] path[%s] file[%s]'% ( urlHost, urlPort, urlUser, urlPass, urlPath, urlFile ) )
+
+	if isGetSize and urlType == 'ftp' :
+		urlPath = re.sub( '^/', '', urlPath )
+		if urlHost and urlPort and urlUser and os.path.join( urlPath, urlFile ) :
+			urlSize = GetFileSizeFromFTP( '', urlHost, urlPort, urlUser, urlPass, urlPath, urlFile )
+
+	return urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize
+
+
+def GetParseUrl_FTP( reqUrl = '', isGetSize = False ) :
+	ftpUser = ''
+	ftpPass = ''
+	ftpHost = ''
+	ftpPort = '21'
+	ftpPath = ''
+	ftpFile = ''
+	ftpSize = 0
+	#pattern = '^ftp:\/\/(.*):(.*)@(.*)'
+	#sample = 'ftp://youn:@192.168.101.89:21/repository.bluecop.xbmc-plugins.zip'
+
+	ftp_pattern = '^ftp:\/\/(.*)'
+	p = re.search( ftp_pattern, reqUrl, re.IGNORECASE )
+	if not bool( p ) :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	ret = re.findall( ftp_pattern, p.group() )
+	if not ret or len( ret ) < 1 :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	url = ret[0]
+	ret = re.split( '/', url )
+	if not ret or len( ret ) < 2 :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	idline = ret[0]
+	for i in range( 1, len( ret ) ) :
+		ftpPath = os.path.join( ftpPath, ret[i] )
+
+	ftpFile = os.path.basename( ftpPath )
+	ftpPath = os.path.dirname( ftpPath )
+	#LOG_TRACE( 'path[%s] file[%s]'% ( ftpPath, ftpFile ) )
+
+	#ret[0]?, id:pass@url:port
+	id_pattern = '(.*):(.*)@(.*)'
+	p = re.search( id_pattern, idline, re.IGNORECASE )
+	if bool( p ) :
+		ret = re.findall( id_pattern, p.group() )
+		if ret :
+			ftpUser = ret[0][0]
+			ftpPass = ret[0][1]
+			ftpHost = ret[0][2]
+	else :
+		ftpHost = line
+	#LOG_TRACE( 'id[%s] pw[%s] url[%s]'% ( ftpUser, ftpPass, ftpHost ) )
+
+	#ftpHost?, url:port
+	port_pattern = '(.*):(\d+)'
+	p = re.search( port_pattern, ftpHost, re.IGNORECASE )
+	if bool( p ) :
+		ret = re.findall( port_pattern, p.group() )
+		if ret :
+			ftpHost = ret[0][0]
+			ftpPort = ret[0][1]
+
+	#LOG_TRACE( 'url[%s] port[%s]'% ( ftpHost, ftpPort ) )
+
+	if isGetSize :
+		if ftpHost and ftpPort and ftpUser and os.path.join( ftpPath, ftpFile ) :
+			ftpSize = GetFileSizeFromFTP( '', ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile )
+
+	LOG_TRACE( 'host[%s] port[%s] user[%s] pass[%s] path[%s] file[%s] size[%s]'% ( ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize ) )
+	return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+
+def GetFileSizeFromFTP( aFilePath = '', ftpHost='', ftpPort='', ftpUser='', ftpPass='', ftpPath='', ftpFile='' ) :
+	from ftplib import FTP
+
+	if not aFilePath :
+		aFilePath = os.path.join( ftpPath, ftpFile )
+
+	if not aFilePath :
+		return 0
+
+	size = 0
+	ftp = FTP()
+	try :
+		ftp.connect( ftpHost, ftpPort )
+		ftp.login( ftpUser, ftpPass )
+		size = ftp.size( aFilePath )
+		ftp.close()
+	except Exception, e :
+		print 'except[%s]'% e
+
+	return size
+
+
 def ReadToCmdBlock( ) :
 	cmdBlock = ''
 	try :
@@ -1251,7 +1364,7 @@ def GetStatusModeLabel( aMode ) :
 
 def AsyncShowStatus( aStatus ) :
 	import pvr.gui.WindowMgr as WinMgr
-	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU, WinMgr.WIN_ID_PIP_WINDOW ]
+	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU ]
 
 	rootWinow = xbmcgui.Window( 10000 )
 	rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )

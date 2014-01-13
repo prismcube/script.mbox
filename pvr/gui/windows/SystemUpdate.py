@@ -8,6 +8,7 @@ import shutil
 import time
 import os
 import glob
+import urlparse
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
 else :
@@ -415,8 +416,8 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( '-------ntfs[%s]'% isNtfs )
 
 		if isNtfs :
-			msg1 = MR_LANG( 'No support %s' ) % 'NTFS'
-			self.DialogPopup( E_STRING_ATTENTION, msg1 )
+			msg1 = MR_LANG( 'No %s support' ) % 'NTFS'
+			self.DialogPopup( E_STRING_ERROR, msg1 )
 
 		return isNtfs
 
@@ -920,13 +921,34 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		zipFile = xbmcgui.Dialog( ).browsepath( MR_LANG( 'Update from local directory' ), '*.zip' )
-		#LOG_TRACE( '----------zip[%s]'% zipFile )
+		LOG_TRACE( '----------zip[%s]'% zipFile )
 		if not zipFile or zipFile == 'None' :
 			LOG_TRACE( 'not selected zip' )
 			return
 
+		urlType = urlparse.urlparse( zipFile ).scheme
+		if urlType == 'ftp' :
+			zipFile = self.GetDownloadByInstant( zipFile )
+			if zipFile == -1 :
+				self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
+				return
+
+			elif zipFile == False :
+				LOG_TRACE( 'cancel or aborted' )
+				return
+
+			if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
+				LOG_TRACE( 'no download' )
+				return
+
+		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
+			lblLine = MR_LANG( 'No %s support' )% urlType
+			self.DialogPopup( E_STRING_ERROR, lblLine )
+			return
+
 		if not CheckDirectory( zipFile ) :
 			LOG_TRACE( 'not found zip[%s]'% zipFile )
+			self.DialogPopup( E_STRING_ERROR, MR_LANG( 'File not found' ) )
 			return
 
 		#1. check hdd mount
@@ -940,6 +962,9 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( 'hdd not found' )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD_SPACE )
 			return
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 
 		#3. run shell
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
@@ -1504,6 +1529,84 @@ class SystemUpdate( SettingWindow ) :
 			return sizeCheck
 
 
+	def GetDownloadByInstant( self, reqFile = None ) :
+		if not reqFile :
+			return -1
+
+		ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize = GetParseUrl( reqFile, True )
+		downloadFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, ftpFile )
+
+		if not ftpSize or ftpSize < 1 :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+			return False
+
+		iPVS = PVSClass( )
+		iPVS.mName = MR_LANG( 'Download via FTP' )
+		iPVS.mFileName = os.path.basename( ftpFile )
+		iPVS.mSize = ftpSize
+		self.mWorkingItem = deepcopy( iPVS )
+		self.mWorkingDownloader = None
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		isResume = False
+		self.mIsDownload = False
+		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, iPVS.mFileName )
+		if CheckDirectory( tempFile ) :
+			isDownloadAgain = False
+			lblTitle = MR_LANG( 'Resume Downloading' )
+			lblLine = MR_LANG( 'Continue interrupted downloads?' )
+			if os.stat( tempFile )[stat.ST_SIZE] == iPVS.mSize :
+				LOG_TRACE( '------------------already download' )
+				isDownloadAgain = True
+				lblTitle = MR_LANG( 'File Already Exists' )
+				lblLine = MR_LANG( 'Do you want to download it again?' )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( lblTitle, lblLine )
+			dialog.doModal( )
+
+			ret = dialog.IsOK( )
+			if ret == E_DIALOG_STATE_CANCEL :
+				return False
+
+			elif ret == E_DIALOG_STATE_YES :
+				isResume = True
+				if isDownloadAgain :
+					isResume = False
+			else :
+				if isDownloadAgain :
+					return downloadFile
+
+
+		self.mEnableLocalThread = True
+		self.mStepPage = E_UPDATE_STEP_DOWNLOAD
+		checkEthernet = self.CheckEthernetThread( )
+
+		self.ProgressDialog( isResume, reqFile, tempFile )
+
+		if self.mEnableLocalThread and checkEthernet :
+			self.mEnableLocalThread = False
+			checkEthernet.join( )
+
+		self.mEnableLocalThread = False
+		self.mStepPage = E_UPDATE_STEP_HOME
+		self.mWorkingItem = None
+		self.mWorkingDownloader = None
+		time.sleep( 0.3 )
+
+		ret = False
+		if self.mIsDownload :
+			ret = downloadFile
+			LOG_TRACE( '------------------download success' )
+
+		self.mIsDownload = False
+
+		return ret
+
+
+
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		#shellscript download
@@ -1597,9 +1700,9 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProgressDialog( self, aIsResume, aRemoteFile, aDestFile ) :
 		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( self.mWorkingItem.mName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
+		self.mDialogProgress.create( self.mWorkingItem.mName, self.mWorkingItem.mFileName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
 
-		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+		LOG_TRACE( '--------------isResume[%s] reqFile[%s]'% ( aIsResume, aRemoteFile ) )
 
 		try :
 			self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
@@ -1612,10 +1715,18 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 			self.mIsCancel = False
 			self.mIsDownload = False
-			self.mStepPage = E_UPDATE_STEP_READY
+			self.mWorkingDownloader.abort( True )
+			#self.mStepPage = E_UPDATE_STEP_READY
 
 		self.mDialogProgress.close( )
 		self.mDialogProgress = None
+
+		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
+		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
+			self.mIsDownload = True
+			os.system( 'sync' )
+			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
+
 
 
 	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
@@ -1712,14 +1823,14 @@ class SystemUpdate( SettingWindow ) :
 		if self.mDialogProgress and self.mWorkingItem.mSize :
 			#per = 1.0 * cursize / self.mWorkingItem.mSize * 100
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
-			self.mDialogProgress.update( 1.0 * cursize / self.mWorkingItem.mSize * 100 )
+			self.mDialogProgress.update( int( 1.0 * cursize / self.mWorkingItem.mSize * 100 ) )
 
-			if self.mWorkingDownloader and self.mDialogProgress.iscanceled( ) or \
-			   self.mWorkingDownloader and self.mLinkStatus != True :
-				self.mWorkingDownloader.abort( True )
-				self.mIsDownload = False
-				self.mStepPage = E_UPDATE_STEP_READY
-				LOG_TRACE( '--------------abort' )
+			if self.mWorkingDownloader :
+				if self.mDialogProgress.iscanceled( ) or self.mLinkStatus != True :
+					self.mWorkingDownloader.abort( True )
+					self.mIsDownload = False
+					#self.mStepPage = E_UPDATE_STEP_READY
+					LOG_TRACE( '--------------abort' )
 
 
 	def ShowProgress2( self, cursize = 0 ) :
