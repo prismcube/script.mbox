@@ -416,8 +416,8 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( '-------ntfs[%s]'% isNtfs )
 
 		if isNtfs :
-			msg1 = MR_LANG( 'No support %s' ) % 'NTFS'
-			self.DialogPopup( E_STRING_ATTENTION, msg1 )
+			msg1 = MR_LANG( 'No %s support' ) % 'NTFS'
+			self.DialogPopup( E_STRING_ERROR, msg1 )
 
 		return isNtfs
 
@@ -942,7 +942,7 @@ class SystemUpdate( SettingWindow ) :
 				return
 
 		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
-			lblLine = '%s %s'% ( MR_LANG( 'No support' ), urlType )
+			lblLine = MR_LANG( 'No %s support' )% urlType
 			self.DialogPopup( E_STRING_ERROR, lblLine )
 			return
 

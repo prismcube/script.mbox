@@ -784,7 +784,7 @@ class LivePlate( LivePlateWindow ) :
 
 	def UpdateChannelLogo( self, aChannel = None ) :
 		if not E_USE_CHANNEL_LOGO :
-			LOG_TRACE( 'No support Channel Logo' )
+			LOG_TRACE( 'No channellogo support' )
 			return
 
 		if not aChannel or aChannel.mError != 0 :
@@ -1058,7 +1058,7 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.mIsShowDialog = False
 				self.RestartAutomaticHide( )
@@ -1082,7 +1082,7 @@ class LivePlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
 				self.mIsShowDialog = False
