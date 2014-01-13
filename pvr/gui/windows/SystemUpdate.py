@@ -930,7 +930,7 @@ class SystemUpdate( SettingWindow ) :
 		if urlType == 'ftp' :
 			zipFile = self.GetDownloadByInstant( zipFile )
 			if zipFile == -1 :
-				self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Fail to download, try again' ) )
+				self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
 				return
 
 			elif zipFile == False :
@@ -1541,7 +1541,7 @@ class SystemUpdate( SettingWindow ) :
 			return False
 
 		iPVS = PVSClass( )
-		iPVS.mName = MR_LANG( 'FTP Download' )
+		iPVS.mName = MR_LANG( 'Download via FTP' )
 		iPVS.mFileName = os.path.basename( ftpFile )
 		iPVS.mSize = ftpSize
 		self.mWorkingItem = deepcopy( iPVS )
@@ -1560,8 +1560,8 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] == iPVS.mSize :
 				LOG_TRACE( '------------------already download' )
 				isDownloadAgain = True
-				lblTitle = MR_LANG( 'Arleady Downloaded' )
-				lblLine = MR_LANG( 'Do you want download again?' )
+				lblTitle = MR_LANG( 'File Already Exists' )
+				lblLine = MR_LANG( 'Do you want to download it again?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( lblTitle, lblLine )

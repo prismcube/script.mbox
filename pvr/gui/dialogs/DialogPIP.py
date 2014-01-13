@@ -430,7 +430,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
-			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( MR_LANG( 'PIP' ), MR_LANG( 'Show full screen only' ) ) )
+			xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Watching PIP' ), MR_LANG( 'only available when Video plays in fullscreen' ) ) )
 			ret = False
 
 		return ret
