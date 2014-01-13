@@ -943,7 +943,7 @@ class SystemUpdate( SettingWindow ) :
 
 		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
 			lblLine = '%s %s'% ( MR_LANG( 'No support' ), urlType )
-			self.DialogPopup( E_STRING_ATTENTION, lblLine )
+			self.DialogPopup( E_STRING_ERROR, lblLine )
 			return
 
 		if not CheckDirectory( zipFile ) :
