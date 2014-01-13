@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
-import xbmc, xbmcgui, gc
+import xbmc, xbmcgui
+#import xbmc, xbmcgui, gc
 
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
@@ -45,7 +46,7 @@ class NullWindow( BaseWindow ) :
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
-		collected = gc.collect( )
+		#collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		#LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
