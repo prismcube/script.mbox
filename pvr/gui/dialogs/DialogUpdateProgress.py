@@ -19,6 +19,11 @@ E_RESULT_ERROR_FAIL      = -1
 E_RESULT_ERROR_CANCEL    = -2
 E_RESULT_ERROR_CHECKSUME = -3
 
+E_UPDATE_MODE_NETWORK = 0
+E_UPDATE_MODE_LOCAL   = 1
+
+E_FILE_SHELL_LOCAL = 'local_updater.sh'
+
 
 class DialogUpdateProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -38,6 +43,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mUSBmode           = False
 		self.mUSBThread         = False
 		self.mCheckSumError     = False
+		self.mUpdateMode        = E_UPDATE_MODE_NETWORK
 
 
 	def onInit( self ) :
@@ -95,7 +101,7 @@ class DialogUpdateProgress( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aTitle, aBaseDir, aPVSData, aUsbmode = False ) :
+	def SetDialogProperty( self, aTitle, aBaseDir, aPVSData, aUsbmode = False, aUpdateMode = E_UPDATE_MODE_NETWORK ) :
 		self.mBaseDirectory = aBaseDir
 		self.mTitle         = aTitle
 		self.mPVSData       = aPVSData
@@ -107,6 +113,8 @@ class DialogUpdateProgress( BaseDialog ) :
 		self.mCheckSumError = False
 		if self.mUSBmode :
 			self.mUSBAttached = self.mDataCache.GetUSBAttached( )
+
+		self.mUpdateMode = aUpdateMode
 
 
 	def TimeoutProgress( self, aLimitTime, aTitle, aOutPuts = '', aDefaultPer = 0 ) :
@@ -151,6 +159,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			LOG_TRACE( '----------USBThread join end' )
 
 		self.mEnd = True
+		self.mUpdateMode = E_UPDATE_MODE_NETWORK
 		time.sleep( 1 )
 		self.CloseDialog( )
 
@@ -160,11 +169,17 @@ class DialogUpdateProgress( BaseDialog ) :
 
 
 	def DoUpdateHandler( self ) :
-		if self.mUSBmode :
-			self.mUSBThread = self.CheckUSBThread( )
-
-		if self.DoPreviousAction( ) and self.CheckFirmware( ) :
+		if self.mUpdateMode == E_UPDATE_MODE_LOCAL :
+			self.DoCommandRunLocal( )
 			self.DoCommandRunShell( )
+
+		else :
+
+			if self.mUSBmode :
+				self.mUSBThread = self.CheckUSBThread( )
+
+			if self.DoPreviousAction( ) and self.CheckFirmware( ) :
+				self.DoCommandRunShell( )
 
 		while not self.mStatusCancel and self.mCheckSumError :
 			time.sleep( 0.5 )
@@ -173,6 +188,31 @@ class DialogUpdateProgress( BaseDialog ) :
 			self.mFinish = E_RESULT_ERROR_CHECKSUME
 
 		self.Close( )
+
+
+	def DoCommandRunLocal( self ) :
+		LOG_TRACE( 'Local update...' )
+		#LOG_TRACE( 'checksum[%s] baseDir[%s] localZip[%s] cancel[%s]'% ( self.mCheckSumError, self.mBaseDirectory, self.mPVSData, self.mStatusCancel ) )
+
+		from pvr.gui.windows.SystemUpdate import PVSClass
+		iPVS = PVSClass( )
+		iPVS.mFileName = self.mPVSData
+		iPVS.mShellScript.mScriptFileName = E_FILE_SHELL_LOCAL
+
+		self.mPVSData = iPVS
+		#self.mPVSData.printdebug( )
+		#LOG_TRACE( '-------------localSh[%s]'% self.mPVSData.mShellScript.mScriptFileName )
+
+		scriptShell = '%s/%s'% ( self.mBaseDirectory, self.mPVSData.mShellScript.mScriptFileName )
+		for i in range( 3 ) :
+			localsh = os.path.join( self.mPlatform.GetScriptDir( ), 'resources', E_FILE_SHELL_LOCAL )
+			CopyToFile( localsh, scriptShell )
+
+			if CheckDirectory( scriptShell ) :
+				os.chmod( scriptShell, 0755 )
+				break
+
+			time.sleep( 1 )
 
 
 	@RunThread

@@ -20,12 +20,14 @@ XBMC_WINDOW_DIALOG_PROGRESS			= 10101
 XBMC_WINDOW_DIALOG_BUSY				= 10138
 XBMC_WINDOW_DIALOG_YES_NO			= 10100
 XBMC_WINDOW_DIALOG_OK				= 12002
+XBMC_WINDOW_DIALOG_FILE_BROWSER		= 10126
 
 XBMC_WINDOW_DIALOGS = [
 	XBMC_WINDOW_DIALOG_KEYBOARD,
 	XBMC_WINDOW_DIALOG_NUMERIC,
 	XBMC_WINDOW_DIALOG_SELECT,
 	XBMC_WINDOW_DIALOG_PROGRESS,
+	XBMC_WINDOW_DIALOG_FILE_BROWSER,
 	XBMC_WINDOW_DIALOG_BUSY ]
 
 DIALOG_ID_LNB_FREQUENCY				= 1
@@ -61,6 +63,7 @@ DIALOG_ID_UPDATE_PROGRESS			= 30
 DIALOG_ID_IMPORT_EXPORT_SETTINGS	= 31
 DIALOG_ID_CUSTOM_SCRIPT_PROGRESS	= 32
 DIALOG_ID_VIEW_TIMER				= 33
+DIALOG_ID_PIP						= 34
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -231,6 +234,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_VIEW_TIMER :
 				from pvr.gui.dialogs.DialogViewTimer import DialogViewTimer
 				return DialogViewTimer( 'DialogViewTimer.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_PIP :
+				from pvr.gui.dialogs.DialogPIP import DialogPIP
+				return DialogPIP( 'DialogPIP.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode

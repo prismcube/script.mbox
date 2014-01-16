@@ -461,14 +461,15 @@ class BaseWindow( BaseObjectWindow ) :
 
 
 	def SetMediaCenter( self ) :
+		import pvr.gui.WindowMgr as WinMgr
+		import pvr.gui.DialogMgr as DiaMgr
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
-
-		import pvr.gui.WindowMgr as WinMgr
-		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
 
 
 	def CheckMediaCenter( self ) :
@@ -557,9 +558,20 @@ class BaseWindow( BaseObjectWindow ) :
 			LOG_TRACE( '-------confirm again : setProperty False' )
 
 
+	def ShowPIP( self ) :
+		if E_V1_2_APPLY_PIP :
+			import pvr.gui.DialogMgr as DiaMgr
+			pipDlg = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
+
+			if pipDlg.PIP_Available( ) :
+				pipDlg.doModal( )
+
+
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 			overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )
@@ -571,7 +583,7 @@ class BaseWindow( BaseObjectWindow ) :
 			if aWindowId == WinMgr.WIN_ID_FIRST_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -598,7 +610,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_CONFIGURE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingPIG', 'False' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -612,7 +624,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_ANTENNA_SETUP * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -640,7 +652,7 @@ class BaseWindow( BaseObjectWindow ) :
 				aWindowId == WinMgr.WIN_ID_CONFIG_DISEQC_11 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
 				aWindowId == WinMgr.WIN_ID_CONFIG_MOTORIZED_12 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID or \
 				aWindowId == WinMgr.WIN_ID_CONFIG_SIMPLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'SettingBackground', 'True' )
 				
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
@@ -653,7 +665,7 @@ class BaseWindow( BaseObjectWindow ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
 			elif aWindowId == WinMgr.WIN_ID_TUNER_CONFIGURATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'SettingBackground', 'True' )
 
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
@@ -661,7 +673,7 @@ class BaseWindow( BaseObjectWindow ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
 			elif aWindowId == WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'SettingBackground', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -674,7 +686,7 @@ class BaseWindow( BaseObjectWindow ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
 			elif aWindowId == WinMgr.WIN_ID_CONFIG_ONECABLE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'SettingBackground', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03 ]
@@ -687,7 +699,7 @@ class BaseWindow( BaseObjectWindow ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
 
 			elif aWindowId == WinMgr.WIN_ID_CONFIG_ONECABLE_2 * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'SettingBackground', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -702,7 +714,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_CHANNEL_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -728,7 +740,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 			elif aWindowId == WinMgr.WIN_ID_AUTOMATIC_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02 ]
 				for i in range( len( visibleControlIds ) ) :
@@ -741,7 +753,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 			elif aWindowId == WinMgr.WIN_ID_MANUAL_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03, E_Input04 ]
 				for i in range( len( visibleControlIds ) ) :
@@ -754,7 +766,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 			elif aWindowId == WinMgr.WIN_ID_FAST_SCAN * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 
 				visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03 ]
 				for i in range( len( visibleControlIds ) ) :
@@ -768,7 +780,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_EDIT_SATELLITE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -795,7 +807,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_EDIT_TRANSPONDER * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -822,7 +834,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_CONDITIONAL_ACCESS * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_Input01, E_Input02, E_SpinEx01 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -849,7 +861,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_SYSTEM_UPDATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 				for i in range( len( visibleControlIds ) ) :
 					self.getControl( visibleControlIds[i] ).setVisible( True )
@@ -876,7 +888,7 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_INSTALLATION * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )
@@ -894,7 +906,7 @@ class BaseWindow( BaseObjectWindow ) :
 				noServiceLabel.setPosition( 645, 313 )
 
 			elif aWindowId == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 
 				overlayImage.setPosition( 835, 113 )
@@ -911,7 +923,7 @@ class BaseWindow( BaseObjectWindow ) :
 
 			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				if self.getProperty( 'ViewMode' ) == 'common' :
-					self.setProperty( 'SettingPip', 'True' )
+					self.setProperty( 'SettingPIG', 'True' )
 
 					overlayImage.setPosition( 850, 118 )
 					overlayImage.setWidth( 352 )
@@ -925,15 +937,15 @@ class BaseWindow( BaseObjectWindow ) :
 					scrambleLabel.setPosition( 925, 205 )
 					noServiceLabel.setPosition( 925, 205 )
 				else :
-					self.setProperty( 'SettingPip', 'False' )
+					self.setProperty( 'SettingPIG', 'False' )
 
 			elif ( aWindowId == WinMgr.WIN_ID_EPG_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) or \
 				( aWindowId == WinMgr.WIN_ID_EPG_SEARCH * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) :
 				if self.getProperty( 'EPGMode' ) == 'grid' :
-					self.setProperty( 'SettingPip', 'False' )
+					self.setProperty( 'SettingPIG', 'False' )
 					self.setProperty( 'DafultBackgroundImage', 'False' )
 				else :
-					self.setProperty( 'SettingPip', 'True' )
+					self.setProperty( 'SettingPIG', 'True' )
 					self.setProperty( 'DafultBackgroundImage', 'True' )
 													
 					overlayImage.setPosition( 849, 118 )
@@ -949,7 +961,7 @@ class BaseWindow( BaseObjectWindow ) :
 					noServiceLabel.setPosition( 922, 203 )
 
 			elif aWindowId == WinMgr.WIN_ID_TIMER_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
-				self.setProperty( 'SettingPip', 'True' )
+				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 												
 				overlayImage.setPosition( 849, 118 )
@@ -970,21 +982,21 @@ class BaseWindow( BaseObjectWindow ) :
 			elif aWindowId == WinMgr.WIN_ID_LIVE_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'False' )
 				self.setProperty( 'DafultBackgroundImage', 'False' )
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingPIG', 'False' )
 				for i in range( E_CTRL_BTN_INFO_MAX ) :
 					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
 
 			elif aWindowId == WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'False' )
 				self.setProperty( 'DafultBackgroundImage', 'False' )
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingPIG', 'False' )
 				for i in range( E_CTRL_BTN_INFO_MAX ) :
 					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
 
 			else :
 				self.setProperty( 'SettingBackground', 'False' )
 				self.setProperty( 'DafultBackgroundImage', 'False' )
-				self.setProperty( 'SettingPip', 'False' )
+				self.setProperty( 'SettingPIG', 'False' )
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_Input08 ]
 				for i in range( len( hideControlIds ) ) :
 					self.getControl( hideControlIds[i] ).setVisible( False )

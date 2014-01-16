@@ -89,7 +89,7 @@
 		</content>
 	</page>
 
-	<page number="5" title="Dálkové Ovládání - QWERTY klávesnice" location="">
+	<page number="5" title="Dálkové ovládání - QWERTY klávesnice" location="">
 		<content name="help/remote3.png">
 			<type>image</type>
 			<posx>380</posx>

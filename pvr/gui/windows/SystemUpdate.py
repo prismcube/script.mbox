@@ -8,6 +8,7 @@ import shutil
 import time
 import os
 import glob
+import urlparse
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
 else :
@@ -61,6 +62,7 @@ E_CONTROL_ID_LABEL_PERCENT  = 52 + E_SYSTEM_UPDATE_BASE_ID
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_LOAD_OLD_VERSION     = 2
+CONTEXT_ACTION_LOAD_LOCAL_VERSION   = 3
 
 E_UPDATE_STEP_HOME        = 0
 E_UPDATE_STEP_READY       = 1
@@ -199,6 +201,7 @@ class SystemUpdate( SettingWindow ) :
 		#parse settings.xml
 		#self.mPVSData = None
 		#self.mCurrData = None
+		self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 		self.mIndexLastVersion = 0
 		self.mShowProgressThread = None
 		self.mUSBAttached = self.mDataCache.GetUSBAttached( )
@@ -238,7 +241,7 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )				
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -265,17 +268,14 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
 			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
+			self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 			self.LoadInit( )
 
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				if self.mDataCache.Satellite_GetConfiguredList( ) :
-					self.UpdateChannelsByInternet( )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
-					dialog.doModal( )
+				self.mUpdateMode = CONTEXT_ACTION_LOAD_LOCAL_VERSION
+				self.DoContextAction( CONTEXT_ACTION_LOAD_LOCAL_VERSION )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -294,6 +294,14 @@ class SystemUpdate( SettingWindow ) :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
 		elif groupId == E_Input03 :
+			if self.mDataCache.Satellite_GetConfiguredList( ) :
+				self.UpdateChannelsByInternet( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
+				dialog.doModal( )
+
+		elif groupId == E_Input04 :
 			LOG_TRACE( 'Import Settings from USB' )
 			if self.GetStatusFromFirmware( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -303,7 +311,7 @@ class SystemUpdate( SettingWindow ) :
 
 			self.ImportSettingsFromUSB( )
 
-		elif groupId == E_Input04 :
+		elif groupId == E_Input05 :
 			LOG_TRACE( 'Export Settings to USB' )		
 			self.ExportSettingsToUSB( )
 
@@ -839,6 +847,9 @@ class SystemUpdate( SettingWindow ) :
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
+		#if not self.GetStatusFromFirmware( ) :
+		#	context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
@@ -897,6 +908,96 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
 			self.ShowOldVersion( )
+
+		elif aContextAction == CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+			self.ShowLocalVersion( )
+
+
+	def ShowLocalVersion( self ) :
+		if self.GetStatusFromFirmware( ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+			dialog.doModal( )
+			return
+
+		zipFile = xbmcgui.Dialog( ).browsepath( MR_LANG( 'Update from local directory' ), '*.zip' )
+		LOG_TRACE( '----------zip[%s]'% zipFile )
+		if not zipFile or zipFile == 'None' :
+			LOG_TRACE( 'not selected zip' )
+			return
+
+		urlType = urlparse.urlparse( zipFile ).scheme
+		if urlType == 'ftp' :
+			zipFile = self.GetDownloadByInstant( zipFile )
+			if zipFile == -1 :
+				self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
+				return
+
+			elif zipFile == False :
+				LOG_TRACE( 'cancel or aborted' )
+				return
+
+			if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
+				LOG_TRACE( 'no download' )
+				return
+
+		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
+			lblLine = MR_LANG( 'No %s support' )% urlType
+			self.DialogPopup( E_STRING_ERROR, lblLine )
+			return
+
+		if not CheckDirectory( zipFile ) :
+			LOG_TRACE( 'not found zip[%s]'% zipFile )
+			self.DialogPopup( E_STRING_ERROR, MR_LANG( 'File not found' ) )
+			return
+
+		#1. check hdd mount
+		if not CheckHdd( ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
+			return
+
+		#2. check space
+		if GetFileSize( zipFile ) > GetDeviceSize( E_DEFAULT_PATH_HDD ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD_SPACE )
+			return
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		#3. run shell
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), E_DEFAULT_PATH_DOWNLOAD, zipFile, False, 1 )
+		dialog.doModal( )
+
+		shell = dialog.GetResult( )
+		if shell < E_RESULT_UPDATE_DONE :
+			mTitle = E_STRING_ERROR
+			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if shell == E_RESULT_ERROR_FAIL :
+				errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			elif shell == E_RESULT_ERROR_CANCEL :
+				return
+
+			elif shell == E_RESULT_ERROR_CHECKSUME :
+				errmsg = E_STRING_CHECK_CORRUPT
+				self.mStepPage = E_UPDATE_STEP_HOME
+				self.mIsDownload = False
+				#self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				#self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				#self.ShowDescription( E_Input02 )
+				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
+
+			self.DialogPopup( mTitle, errmsg )
+			return
+
+		#4. backup files and reboot
+		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+
+		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
 	def ShowOldVersion( self ) :
@@ -986,19 +1087,22 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_HOME :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from zip file' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
+			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
-
 			self.SetEnableControl( E_Input03, True )
 			self.SetEnableControl( E_Input04, True )
+			self.SetEnableControl( E_Input05, True )
+
 			self.SetVisibleControl( E_Input03, True )
 			self.SetVisibleControl( E_Input04, True )
+			self.SetVisibleControl( E_Input05, True )
 
 			self.InitControl( )
 			#self.SetFocusControl( E_Input01 )
@@ -1031,8 +1135,10 @@ class SystemUpdate( SettingWindow ) :
 
 			self.SetEnableControl( E_Input03, False )
 			self.SetEnableControl( E_Input04, False )
+			self.SetEnableControl( E_Input05, False )
 			self.SetVisibleControl( E_Input03, False )
 			self.SetVisibleControl( E_Input04, False )
+			self.SetVisibleControl( E_Input05, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1208,9 +1314,10 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
-			self.ShowDescription( E_Input02 )
+			if self.mUpdateMode != CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
+				self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
+				self.ShowDescription( E_Input02 )
 
 			self.CheckItems( )
 
@@ -1422,6 +1529,84 @@ class SystemUpdate( SettingWindow ) :
 			return sizeCheck
 
 
+	def GetDownloadByInstant( self, reqFile = None ) :
+		if not reqFile :
+			return -1
+
+		ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize = GetParseUrl( reqFile, True )
+		downloadFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, ftpFile )
+
+		if not ftpSize or ftpSize < 1 :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+			return False
+
+		iPVS = PVSClass( )
+		iPVS.mName = MR_LANG( 'Download via FTP' )
+		iPVS.mFileName = os.path.basename( ftpFile )
+		iPVS.mSize = ftpSize
+		self.mWorkingItem = deepcopy( iPVS )
+		self.mWorkingDownloader = None
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		isResume = False
+		self.mIsDownload = False
+		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, iPVS.mFileName )
+		if CheckDirectory( tempFile ) :
+			isDownloadAgain = False
+			lblTitle = MR_LANG( 'Resume Downloading' )
+			lblLine = MR_LANG( 'Continue interrupted downloads?' )
+			if os.stat( tempFile )[stat.ST_SIZE] == iPVS.mSize :
+				LOG_TRACE( '------------------already download' )
+				isDownloadAgain = True
+				lblTitle = MR_LANG( 'File Already Exists' )
+				lblLine = MR_LANG( 'Do you want to download it again?' )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( lblTitle, lblLine )
+			dialog.doModal( )
+
+			ret = dialog.IsOK( )
+			if ret == E_DIALOG_STATE_CANCEL :
+				return False
+
+			elif ret == E_DIALOG_STATE_YES :
+				isResume = True
+				if isDownloadAgain :
+					isResume = False
+			else :
+				if isDownloadAgain :
+					return downloadFile
+
+
+		self.mEnableLocalThread = True
+		self.mStepPage = E_UPDATE_STEP_DOWNLOAD
+		checkEthernet = self.CheckEthernetThread( )
+
+		self.ProgressDialog( isResume, reqFile, tempFile )
+
+		if self.mEnableLocalThread and checkEthernet :
+			self.mEnableLocalThread = False
+			checkEthernet.join( )
+
+		self.mEnableLocalThread = False
+		self.mStepPage = E_UPDATE_STEP_HOME
+		self.mWorkingItem = None
+		self.mWorkingDownloader = None
+		time.sleep( 0.3 )
+
+		ret = False
+		if self.mIsDownload :
+			ret = downloadFile
+			LOG_TRACE( '------------------download success' )
+
+		self.mIsDownload = False
+
+		return ret
+
+
+
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		#shellscript download
@@ -1515,9 +1700,9 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProgressDialog( self, aIsResume, aRemoteFile, aDestFile ) :
 		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( self.mWorkingItem.mName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
+		self.mDialogProgress.create( self.mWorkingItem.mName, self.mWorkingItem.mFileName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
 
-		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+		LOG_TRACE( '--------------isResume[%s] reqFile[%s]'% ( aIsResume, aRemoteFile ) )
 
 		try :
 			self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
@@ -1530,10 +1715,18 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 			self.mIsCancel = False
 			self.mIsDownload = False
-			self.mStepPage = E_UPDATE_STEP_READY
+			self.mWorkingDownloader.abort( True )
+			#self.mStepPage = E_UPDATE_STEP_READY
 
 		self.mDialogProgress.close( )
 		self.mDialogProgress = None
+
+		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
+		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
+			self.mIsDownload = True
+			os.system( 'sync' )
+			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
+
 
 
 	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
@@ -1630,14 +1823,14 @@ class SystemUpdate( SettingWindow ) :
 		if self.mDialogProgress and self.mWorkingItem.mSize :
 			#per = 1.0 * cursize / self.mWorkingItem.mSize * 100
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
-			self.mDialogProgress.update( 1.0 * cursize / self.mWorkingItem.mSize * 100 )
+			self.mDialogProgress.update( int( 1.0 * cursize / self.mWorkingItem.mSize * 100 ) )
 
-			if self.mWorkingDownloader and self.mDialogProgress.iscanceled( ) or \
-			   self.mWorkingDownloader and self.mLinkStatus != True :
-				self.mWorkingDownloader.abort( True )
-				self.mIsDownload = False
-				self.mStepPage = E_UPDATE_STEP_READY
-				LOG_TRACE( '--------------abort' )
+			if self.mWorkingDownloader :
+				if self.mDialogProgress.iscanceled( ) or self.mLinkStatus != True :
+					self.mWorkingDownloader.abort( True )
+					self.mIsDownload = False
+					#self.mStepPage = E_UPDATE_STEP_READY
+					LOG_TRACE( '--------------abort' )
 
 
 	def ShowProgress2( self, cursize = 0 ) :

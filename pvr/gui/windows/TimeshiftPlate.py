@@ -438,14 +438,10 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).ShowLinkageChannels( )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-			self.RestartAutomaticHide( )
+			self.ShowDialog( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
-			self.StopAutomaticHide( )
-			self.DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.RestartAutomaticHide( )
+			self.ShowDialog( E_CONTROL_ID_BUTTON_PIP )
 
 
 	def onClick( self, aControlId ):
@@ -552,8 +548,8 @@ class TimeShiftPlate( BaseWindow ) :
 				txtGreen = MR_LANG( 'Multi-Feed' )
 
 			ResizeImageWidthByTextSize( ctrlGreen, self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), txtGreen, self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'Audio' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
-			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'Video' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'A / V' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
+			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'PIP' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
 			if lblGreen and len( lblGreen ) > 9 or \
 			   lblYellow and len( lblYellow ) > 9 or \
 			   lblBlue and len( lblBlue ) > 9 :
@@ -1545,9 +1541,26 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
+		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT or aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			thread = threading.Timer( 0.1, self.DoActionHotkeys, [aFocusId] )
+			thread.start( )
+			return
+
 		thread = threading.Timer( 0.1, self.BookMarkContext, [aFocusId] )
 		thread.start( )
 		#self.RestartAutomaticHide( )
+
+
+	def DoActionHotkeys( self, aFocusId ) :
+		self.StopAutomaticHide( )
+
+		if aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+
+		self.RestartAutomaticHide( )
 
 
 	def BookMarkContext( self, aFocusId ) :
@@ -1625,12 +1638,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.DoResumeFromBookmark( )
-
-		elif aSelectAction == CONTEXT_ACTION_AUDIO_SETTING :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
-
-		elif aSelectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
 
 
 	def DoDeleteBookmarkBySelect( self ) :
@@ -1715,7 +1722,7 @@ class TimeShiftPlate( BaseWindow ) :
 		restoreCurrent = self.mTimeshift_playTime
 
 		section = mediaTime / count
-		#LOG_TRACE( 'mediaTime[%s] section[%s] count[%s]'% ( mediaTime, section, splits ) )
+		#LOG_TRACE( 'mediaTime[%s] section[%s] count[%s]'% ( mediaTime, section, count ) )
 		partition = 0
 		isFull = False
 		#self.mFlagUserMove = True
@@ -1728,11 +1735,20 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_TRACE( '-------------no create bookmark barrier( not available end point )!! idx[%s] offsetMs[%s] mediaSize[%s]'% ( i, partition, mediaTime ) )
 				break
 
-
 			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
 			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
-			ret = self.mDataCache.Player_JumpToIFrame( partition )
-			LOG_TRACE('-------------Player_JumpToIFrame ret[%s]'% ret )
+
+			ret = False
+			retry = 0
+			while retry < 3 :
+				ret = self.mDataCache.Player_JumpToIFrame( partition )
+				#LOG_TRACE('-------------Player_JumpToIFrame ret[%s] no[%s] retry[%s]'% ( ret, i, retry ) )
+				if ret :
+					break
+				else :
+					retry += 1
+					time.sleep( 3 )
+
 			if ret :
 				mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mPlayingRecordInfo.mRecordKey )
 				if mBookmarkList and len( mBookmarkList ) >= E_DEFAULT_BOOKMARK_LIMIT :
@@ -1740,7 +1756,7 @@ class TimeShiftPlate( BaseWindow ) :
 					break
 
 				ret = self.mDataCache.Player_CreateBookmark( )
-				#LOG_TRACE('-----------add bookmark[%s] markTime[%s]'% ( ret, partition ) )
+				#LOG_TRACE('-----------add bookmark ret[%s] no[%s] markTime[%s]'% ( ret, i, partition ) )
 
 			time.sleep( 1 )
 

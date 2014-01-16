@@ -129,6 +129,9 @@ class MainMenu( BaseWindow ) :
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -217,8 +220,7 @@ class MainMenu( BaseWindow ) :
 			if contextAction == 0 :
 				self.setProperty( 'RestartGUI', 'true' )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-				time.sleep( 5 )
-				self.mDataCache.Splash_StartAndStop( 1 )
+				#self.mDataCache.Splash_StartAndStop( 1 )
 				#self.mCommander.Player_SetMute( True )
 				pvr.ElisMgr.GetInstance().Shutdown( )
 				xbmc.executebuiltin( 'Settings.Save' )
