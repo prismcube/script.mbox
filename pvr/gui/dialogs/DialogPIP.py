@@ -459,9 +459,7 @@ class DialogPIP( BaseDialog ) :
 		self.ResetLabel( )
 		ret = self.ChannelTuneToPIP( CURR_CHANNEL_PIP )
 		if ret :
-			posNotify = E_DEFAULT_POSITION_PIP
-			if not self.mDataCache.GetMediaCenter( ) :
-				posNotify = self.LoadPositionPIP( )
+			posNotify = self.LoadPositionPIP( )
 
 			self.SetPositionPIP( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
