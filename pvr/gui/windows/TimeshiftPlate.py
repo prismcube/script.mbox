@@ -213,6 +213,12 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.GetFocusId( )
+			if self.mFocusId != E_CONTROL_ID_BUTTON_CURRENT :
+				self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+				self.RestartAutomaticHide( )
+				return
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 

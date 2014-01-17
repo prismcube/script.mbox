@@ -173,7 +173,7 @@ class DataCacheMgr( object ) :
 		self.mRootWindow						= None
 		self.mHasLinkageService					= False
 
-		self.mPIPStart							= False
+		self.mPIPStart							= self.PIP_IsStarted( )
 
 		self.mVideoOutput						= E_VIDEO_HDMI
 
@@ -2971,6 +2971,10 @@ class DataCacheMgr( object ) :
 
 	def PIP_EnableAudio( self, aEnable = True ) :
 		return self.mCommander.PIP_EnableAudio( aEnable )
+
+
+	def PIP_IsStarted( self ) :
+		return self.mCommander.PIP_IsStarted( )
 
 
 	def PIP_StopIfStarted( self ) :

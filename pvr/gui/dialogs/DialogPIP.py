@@ -68,6 +68,7 @@ PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
+	WinMgr.WIN_ID_INFO_PLATE,
 	WinMgr.WIN_ID_LIVE_PLATE
 ]
 
@@ -262,6 +263,12 @@ class DialogPIP( BaseDialog ) :
 					LOG_TRACE( 'EventRecv EOF_END' )
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
+
+			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
+				thread = threading.Timer( 1, self.SetButtonExtended )
+				thread.start( )
+
+
 			"""
 			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 				LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
@@ -436,17 +443,36 @@ class DialogPIP( BaseDialog ) :
 		return ret
 
 
-	def SetButtonExtended( self, aEnable = True ) :
-		ctrlMute = self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( aEnable )
-		ctrlFull = self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( aEnable )
-		#ctrlMove = self.getControl( CTRL_ID_BUTTON_MOVE_PIP ).setVisible( aEnable )
-		#ctrlSize = self.getControl( CTRL_ID_BUTTON_SIZE_PIP ).setVisible( aEnable )
+	def SetButtonExtended( self ) :
+		mute = True
+		full = True
+		move = True
+		size = True
+
+		if self.mDataCache.GetMediaCenter( ) :
+			mute = False
+			full = False
+			#move = False
+			#size = False
+			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
+
+		else :
+			enable = True
+			status = self.mDataCache.Player_GetStatus( )
+			if status and status.mMode != ElisEnum.E_MODE_LIVE :
+				enable = False
+
+			self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
+
+		self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( mute )
+		self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( full )
+		self.getControl( CTRL_ID_BUTTON_MOVE_PIP ).setVisible( move )
+		self.getControl( CTRL_ID_BUTTON_SIZE_PIP ).setVisible( size )
 
 
 	def Load( self ) :
+		self.SetButtonExtended( )
 		if self.mDataCache.GetMediaCenter( ) :
-			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
-			self.SetButtonExtended( False )
 			if self.mDataCache.PIP_GetStatus( ) :
 				ret = self.mDataCache.PIP_Stop( )
 				if ret :
