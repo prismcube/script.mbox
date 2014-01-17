@@ -64,6 +64,7 @@ DIALOG_ID_IMPORT_EXPORT_SETTINGS	= 31
 DIALOG_ID_CUSTOM_SCRIPT_PROGRESS	= 32
 DIALOG_ID_VIEW_TIMER				= 33
 DIALOG_ID_PIP						= 34
+DIALOG_ID_BACKUP_SETTINGS			= 35
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -238,6 +239,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_PIP :
 				from pvr.gui.dialogs.DialogPIP import DialogPIP
 				return DialogPIP( 'DialogPIP.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_BACKUP_SETTINGS :
+				from pvr.gui.dialogs.DialogBackupSettings import DialogBackupSettings
+				return DialogBackupSettings( 'DialogBackupSettings.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode
