@@ -1416,7 +1416,7 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
-def GetXBMCLanguageToProp( aLanguage ) :
+def GetXBMCLanguageToPropLanguage( aLanguage ) :
 	if aLanguage == 'English' or aLanguage == 'English (US)' :
 		return ElisEnum.E_ENGLISH
 
@@ -1446,6 +1446,142 @@ def GetXBMCLanguageToProp( aLanguage ) :
 
 	elif aLanguage == 'Russian':
 		return ElisEnum.E_RUSSIAN
+
+	else :
+		return ElisEnum.E_ENGLISH
+
+
+def GetPropLanguageToXBMCLanguage( aProp ) :
+	if aProp == ElisEnum.E_ENGLISH :
+		return 'English'
+
+	elif aProp == ElisEnum.E_DEUTSCH :
+		return 'German'
+
+	elif aProp == ElisEnum.E_FRENCH :
+		return 'French'
+
+	elif aProp == ElisEnum.E_ITALIAN :
+		return 'Italian'
+
+	elif aProp == ElisEnum.E_SPANISH :
+		return 'Spanish'
+
+	elif aProp == ElisEnum.E_CZECH :
+		return 'Czech'
+
+	elif aProp == ElisEnum.E_DUTCH :
+		return 'Dutch'
+
+	elif aProp == ElisEnum.E_POLISH :
+		return 'Polish'
+
+	elif aProp == ElisEnum.E_TURKISH :
+		return 'Turkish'
+
+	elif aProp == ElisEnum.E_RUSSIAN :
+		return 'Russian'
+
+	else :
+		return 'German'
+
+
+def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
+	if aLanguage == 'Dutch':
+		return ElisEnum.E_DUTCH
+
+	elif aLanguage == 'German':
+		return ElisEnum.E_DEUTSCH
+
+	elif aLanguage == 'English' or aLanguage == 'English (US)' :
+		return ElisEnum.E_ENGLISH
+
+	elif aLanguage == 'French':
+		return ElisEnum.E_FRENCH
+
+	elif aLanguage == 'Italian':
+		return ElisEnum.E_ITALIAN
+
+	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+		return ElisEnum.E_SPANISH
+
+	elif aLanguage == 'Czech':
+		return ElisEnum.E_CZECH
+
+	elif aLanguage == 'Polish':
+		return ElisEnum.E_POLISH
+
+	elif aLanguage == 'Turkish':
+		return ElisEnum.E_TURKISH
+
+	elif aLanguage == 'Russian':
+		return ElisEnum.E_RUSSIAN
+
+	elif aLanguage == 'Arabic':
+		return ElisEnum.E_ARABIC
+
+	elif aLanguage == 'Greek':
+		return ElisEnum.E_GREEK
+
+	elif aLanguage == 'Danish':
+		return ElisEnum.E_DANISH
+
+	elif aLanguage == 'Swedish':
+		return ElisEnum.E_SWEDISH
+
+	elif aLanguage == 'Norwegian':
+		return ElisEnum.E_NORWEGIAN
+
+	elif aLanguage == 'Korean':
+		return ElisEnum.E_KOREAN
+
+	elif aLanguage == 'Finnish':
+		return ElisEnum.E_FINNISH
+
+	elif aLanguage == 'Portuguese' or aLanguage == 'Portuguese (Brazil)':
+		return ElisEnum.E_PORTUGUESE
+
+	elif aLanguage == 'Basque':
+		return ElisEnum.E_BASQUE
+
+	elif aLanguage == 'Bulgarian':
+		return ElisEnum.E_BULGARIAN
+
+	elif aLanguage == 'Croatian':
+		return ElisEnum.E_CROATIAN
+
+	elif aLanguage == 'Estonian':
+		return ElisEnum.E_ESTONIAN
+
+	elif aLanguage == 'Hebrew':
+		return ElisEnum.E_HEBREW
+
+	elif aLanguage == 'Hungarian':
+		return ElisEnum.E_HUNGARIAN
+
+	elif aLanguage == 'Latvian':
+		return ElisEnum.E_LATVIAN
+
+	elif aLanguage == 'Lithuanian':
+		return ElisEnum.E_LITHUANIAN
+
+	elif aLanguage == 'Persian (Iran)':
+		return ElisEnum.E_PERSIAN
+
+	elif aLanguage == 'Romanian':
+		return ElisEnum.E_ROMANIAN
+
+	elif aLanguage == 'Serbian' or aLanguage == 'Serbian (Cyrillic)':
+		return ElisEnum.E_SERBIAN
+
+	elif aLanguage == 'Slovak':
+		return ElisEnum.E_SLOVAK
+
+	elif aLanguage == 'Slovenian':
+		return ElisEnum.E_SLOVENIAN
+
+	elif aLanguage == 'Thai':
+		return ElisEnum.E_TAI
 
 	else :
 		return ElisEnum.E_ENGLISH

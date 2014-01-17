@@ -163,8 +163,10 @@ class FirstInstallation( FTIWindow ) :
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-							prop = GetXBMCLanguageToProp( menuLanguageList[ ret ] )
+							prop = GetXBMCLanguageToPropLanguage( menuLanguageList[ ret ] )
 							ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+							prop = GetXBMCLanguageToPropAudioLanguage( menuLanguageList[ ret ] )
+							ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 							self.mInitialized = False
 							time.sleep( 0.5 )
 							XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
@@ -784,7 +786,7 @@ class FirstInstallation( FTIWindow ) :
 			self.StopScanHelper( )
 			self.CloseBusyDialog( )
 			if self.mIsChannelSearch == True :
-				if self.mConfiguredSatelliteList or self.mHasTansponder == False :
+				if len( self.mConfiguredSatelliteList ) > 0 and self.mHasTansponder == True :
 					if self.mChannelSearchMode == E_SEARCH_AUTO :
 						channelList = self.mDataCache.Channel_GetList( )
 						if channelList and channelList[0].mError == 0 :

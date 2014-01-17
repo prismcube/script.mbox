@@ -268,8 +268,10 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						prop = GetXBMCLanguageToProp( menuLanguageList[ ret ] )
+						prop = GetXBMCLanguageToPropLanguage( menuLanguageList[ ret ] )
 						ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+						prop = GetXBMCLanguageToPropAudioLanguage( menuLanguageList[ ret ] )
+						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
 						time.sleep( 0.5 )
@@ -478,6 +480,7 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the system reset' ) % NEW_LINE )
 	 			dialog.doModal( )
+	 			xbmc.executebuiltin( "Custom.SetLanguage(%s,onlyxml)" % GetPropLanguageToXBMCLanguage( ElisPropertyEnum( 'Language', self.mCommander ).GetProp( ) ) )
 				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
