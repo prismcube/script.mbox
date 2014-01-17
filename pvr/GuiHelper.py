@@ -1417,34 +1417,35 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 
 
 def GetXBMCLanguageToPropLanguage( aLanguage ) :
-	if aLanguage == 'English' or aLanguage == 'English (US)' :
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
 		return ElisEnum.E_ENGLISH
 
-	elif aLanguage == 'German':
+	elif aLanguage == 'German'.lower( ) :
 		return ElisEnum.E_DEUTSCH
 
-	elif aLanguage == 'French':
+	elif aLanguage == 'French'.lower( ) :
 		return ElisEnum.E_FRENCH
 
-	elif aLanguage == 'Italian':
+	elif aLanguage == 'Italian'.lower( ) :
 		return ElisEnum.E_ITALIAN
 
-	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
 		return ElisEnum.E_SPANISH
 
-	elif aLanguage == 'Czech':
+	elif aLanguage == 'Czech'.lower( ) :
 		return ElisEnum.E_CZECH
 
-	elif aLanguage == 'Dutch':
+	elif aLanguage == 'Dutch'.lower( ) :
 		return ElisEnum.E_DUTCH
 
-	elif aLanguage == 'Polish':
+	elif aLanguage == 'Polish'.lower( ) :
 		return ElisEnum.E_POLISH
 
-	elif aLanguage == 'Turkish':
+	elif aLanguage == 'Turkish'.lower( ) :
 		return ElisEnum.E_TURKISH
 
-	elif aLanguage == 'Russian':
+	elif aLanguage == 'Russian'.lower( ) :
 		return ElisEnum.E_RUSSIAN
 
 	else :
@@ -1487,100 +1488,101 @@ def GetPropLanguageToXBMCLanguage( aProp ) :
 
 
 def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
-	if aLanguage == 'Dutch':
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'Dutch'.lower( ) :
 		return ElisEnum.E_DUTCH
 
-	elif aLanguage == 'German':
+	elif aLanguage == 'German'.lower( ) :
 		return ElisEnum.E_DEUTSCH
 
-	elif aLanguage == 'English' or aLanguage == 'English (US)' :
+	elif aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
 		return ElisEnum.E_ENGLISH
 
-	elif aLanguage == 'French':
+	elif aLanguage == 'French'.lower( ) :
 		return ElisEnum.E_FRENCH
 
-	elif aLanguage == 'Italian':
+	elif aLanguage == 'Italian'.lower( ) :
 		return ElisEnum.E_ITALIAN
 
-	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
 		return ElisEnum.E_SPANISH
 
-	elif aLanguage == 'Czech':
+	elif aLanguage == 'Czech'.lower( ) :
 		return ElisEnum.E_CZECH
 
-	elif aLanguage == 'Polish':
+	elif aLanguage == 'Polish'.lower( ) :
 		return ElisEnum.E_POLISH
 
-	elif aLanguage == 'Turkish':
+	elif aLanguage == 'Turkish'.lower( ) :
 		return ElisEnum.E_TURKISH
 
-	elif aLanguage == 'Russian':
+	elif aLanguage == 'Russian'.lower( ) :
 		return ElisEnum.E_RUSSIAN
 
-	elif aLanguage == 'Arabic':
+	elif aLanguage == 'Arabic'.lower( ) :
 		return ElisEnum.E_ARABIC
 
-	elif aLanguage == 'Greek':
+	elif aLanguage == 'Greek'.lower( ) :
 		return ElisEnum.E_GREEK
 
-	elif aLanguage == 'Danish':
+	elif aLanguage == 'Danish'.lower( ) :
 		return ElisEnum.E_DANISH
 
-	elif aLanguage == 'Swedish':
+	elif aLanguage == 'Swedish'.lower( ) :
 		return ElisEnum.E_SWEDISH
 
-	elif aLanguage == 'Norwegian':
+	elif aLanguage == 'Norwegian'.lower( ) :
 		return ElisEnum.E_NORWEGIAN
 
-	elif aLanguage == 'Korean':
+	elif aLanguage == 'Korean'.lower( ) :
 		return ElisEnum.E_KOREAN
 
-	elif aLanguage == 'Finnish':
+	elif aLanguage == 'Finnish'.lower( ) :
 		return ElisEnum.E_FINNISH
 
-	elif aLanguage == 'Portuguese' or aLanguage == 'Portuguese (Brazil)':
+	elif aLanguage == 'Portuguese'.lower( ) or aLanguage == 'Portuguese (Brazil)'.lower( ) :
 		return ElisEnum.E_PORTUGUESE
 
-	elif aLanguage == 'Basque':
+	elif aLanguage == 'Basque'.lower( ) :
 		return ElisEnum.E_BASQUE
 
-	elif aLanguage == 'Bulgarian':
+	elif aLanguage == 'Bulgarian'.lower( ) :
 		return ElisEnum.E_BULGARIAN
 
-	elif aLanguage == 'Croatian':
+	elif aLanguage == 'Croatian'.lower( ) :
 		return ElisEnum.E_CROATIAN
 
-	elif aLanguage == 'Estonian':
+	elif aLanguage == 'Estonian'.lower( ) :
 		return ElisEnum.E_ESTONIAN
 
-	elif aLanguage == 'Hebrew':
+	elif aLanguage == 'Hebrew'.lower( ) :
 		return ElisEnum.E_HEBREW
 
-	elif aLanguage == 'Hungarian':
+	elif aLanguage == 'Hungarian'.lower( ) :
 		return ElisEnum.E_HUNGARIAN
 
-	elif aLanguage == 'Latvian':
+	elif aLanguage == 'Latvian'.lower( ) :
 		return ElisEnum.E_LATVIAN
 
-	elif aLanguage == 'Lithuanian':
+	elif aLanguage == 'Lithuanian'.lower( ) :
 		return ElisEnum.E_LITHUANIAN
 
-	elif aLanguage == 'Persian (Iran)':
+	elif aLanguage == 'Persian (Iran)'.lower( ) :
 		return ElisEnum.E_PERSIAN
 
-	elif aLanguage == 'Romanian':
+	elif aLanguage == 'Romanian'.lower( ) :
 		return ElisEnum.E_ROMANIAN
 
-	elif aLanguage == 'Serbian' or aLanguage == 'Serbian (Cyrillic)':
+	elif aLanguage == 'Serbian'.lower( ) or aLanguage == 'Serbian (Cyrillic)'.lower( ) :
 		return ElisEnum.E_SERBIAN
 
-	elif aLanguage == 'Slovak':
+	elif aLanguage == 'Slovak'.lower( ) :
 		return ElisEnum.E_SLOVAK
 
-	elif aLanguage == 'Slovenian':
+	elif aLanguage == 'Slovenian'.lower( ) :
 		return ElisEnum.E_SLOVENIAN
 
-	elif aLanguage == 'Thai':
+	elif aLanguage == 'Thai'.lower( ) :
 		return ElisEnum.E_TAI
 
 	else :

@@ -4,7 +4,7 @@ import pvr.ChannelLogoMgr
 from elisinterface.ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.Platform
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_GetMute
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolume, XBMC_GetMute, XBMC_GetCurrentLanguage
 from pvr.Util import SetLock, SetLock2
 
 import sys
@@ -507,6 +507,7 @@ class BaseWindow( BaseObjectWindow ) :
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 			InitTranslateByEnumList( )
+			self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 
 			if self.mDataCache.GetAlarmByViewTimer( ) :
 				self.mDataCache.SetAlarmByViewTimer( False )
