@@ -551,7 +551,11 @@ class DialogPIP( BaseDialog ) :
 						pChNumber = None
 
 					else :
-						LOG_TRACE( '3. tunable : current channel by main(tv only), [%s]'% pChNumber )
+						#exist check
+						if self.mDataCache.PIP_GetByNumber( pChNumber ) :
+							LOG_TRACE( '3. tunable : current channel by main(tv only), [%s]'% pChNumber )
+						else :
+							pChNumber = None
 
 			#2. tunable : find channel by tunableList of pip
 			if not pChNumber :
@@ -591,14 +595,14 @@ class DialogPIP( BaseDialog ) :
 	def ChannelTuneToPIP( self, aDir ) :
 		fakeChannel = self.mCurrentChannel
 		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP :
-			#self.UpdatePropertyGUI( 'BlankPIP', E_TAG_TRUE )
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
 			chNumber = self.Channel_GetCurrentByPIP( )
 			fakeChannel = self.mDataCache.PIP_GetByNumber( chNumber )
-			if fakeChannel :
-				LOG_TRACE( '---load------Channel_GetCurrentByPIP[%s(%s) %s]'% ( fakeChannel.mNumber, fakeChannel.mPresentationNumber, fakeChannel.mName ) )
+			if not fakeChannel :
+				fakeChannel = self.mDataCache.Channel_GetCurrent( )
+				#LOG_TRACE( '---load to default------Channel_GetCurrentByPIP[%s(%s) %s]'% ( fakeChannel.mNumber, fakeChannel.mPresentationNumber, fakeChannel.mName ) )
 
 		if aDir == PREV_CHANNEL_PIP :
 			fakeChannel = self.mDataCache.PIP_GetPrev( fakeChannel )
@@ -641,6 +645,9 @@ class DialogPIP( BaseDialog ) :
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 
+			if self.mDataCache.PIP_IsStarted( ) :
+				self.mDataCache.PIP_Stop( )
+
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if ( not isFail ) and fakeChannel and iChannel :
 				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
@@ -662,9 +669,25 @@ class DialogPIP( BaseDialog ) :
 				LOG_TRACE( '-------- PIP already started' )
 				#self.mDataCache.PIP_AVBlank( False )
 
+				"""
 				if fakeChannel :
 					if not fakeChannel.mLocked and xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
 						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+					self.SetLabelChannel( fakeChannel )
+				"""
+				if fakeChannel :
+					if fakeChannel.mLocked :
+						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
+						xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_TRUE )
+						xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
+
+					else:
+						xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
+							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+						else :
+							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
+
 					self.SetLabelChannel( fakeChannel )
 
 				return True
@@ -989,6 +1012,7 @@ class DialogPIP( BaseDialog ) :
 				self.ChannelTuneToPIP( -1 )
 
 			self.mDataCache.PIP_SetStatus( True )
+			self.mDataCache.PIP_SetCurrentChannel( self.mFakeChannel )
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
@@ -996,25 +1020,47 @@ class DialogPIP( BaseDialog ) :
 			if ret :
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
-					#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_TRUE )
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_TRUE )
+
 				else :
-					#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
-					#self.UpdatePropertyGUI( 'BlankPIP', E_TAG_FALSE )
-					#self.UpdatePropertyGUI( 'PIPSignal', E_TAG_TRUE )
-					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
 					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
 					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
 
 			else :
 				LOG_ERR('Tune failed')
-				#self.UpdatePropertyGUI( 'iLockPIP', E_TAG_FALSE )
-				#self.UpdatePropertyGUI( 'PIPSignal', E_TAG_FALSE )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 				xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_FALSE )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	def TuneChannelByExternal( self, aChannel = None ) :
+		if not aChannel :
+			return
+
+		self.mDataCache.PIP_SetStatus( True )
+		self.mDataCache.PIP_SetCurrentChannel( aChannel )
+		ret = self.mDataCache.PIP_Start( aChannel.mNumber )
+		LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, aChannel.mNumber, aChannel.mName ) )
+		if ret :
+			if aChannel.mLocked :
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
+				xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_TRUE )
+
+			else :
+				xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
+
+		else :
+			LOG_ERR('Tune failed')
+			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
+			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+			xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_FALSE )
 
 
 	def RestartAsyncHideInput( self ) :
