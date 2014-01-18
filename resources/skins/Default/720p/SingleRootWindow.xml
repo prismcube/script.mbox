@@ -402,6 +402,93 @@ Search for window name
 						</control>
 					</control>
 
+					<!-- EPG Sub -->
+					<control type="grouplist" id="1209012">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1280</width>
+						<height>35</height>
+						<align>center</align>
+						<onup>1209000</onup>
+						<ondown>1200101</ondown>
+						<itemgap>0</itemgap>
+						<orientation>Horizontal</orientation>
+						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
+						<onleft>1209010</onleft>
+						<onright>1209010</onright>
+						<visible>Container(1209000).HasFocus(3)</visible>
+						<control type="image" id="1290311">
+							<width>35</width>
+							<height>35</height>
+							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+						</control>
+						<control type="button" id="1290312">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Grid</label>
+							<!--label>SCRIPTxxxx ToDO</label-->							
+						</control>
+						<control type="button" id="1290313">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Channel</label>
+							<!--label>SCRIPTxxxx ToDO</label-->
+						</control>
+						<control type="button" id="1290314">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Current</label>							
+							<!--label>SCRIPTxxxx ToDO</label-->
+						</control>
+						<control type="button" id="1290315">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Following</label>							
+							<!--label>SCRIPTxxxx ToDO</label-->
+						</control>
+						<control type="image" id="1290316">
+							<width>35</width>
+							<height>35</height>
+							<texture border="0,0,0,3">HomeSubEnd.png</texture>
+						</control>
+					</control>
+
+					<!-- Timer Sub -->
+					<control type="grouplist" id="1209013">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>1280</width>
+						<height>35</height>
+						<align>center</align>
+						<onup>1209000</onup>
+						<ondown>1200101</ondown>
+						<itemgap>0</itemgap>
+						<orientation>Horizontal</orientation>
+						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
+						<onleft>1209010</onleft>
+						<onright>1209010</onright>
+						<visible>Container(1209000).HasFocus(9)</visible>
+						<control type="image" id="1290911">
+							<width>35</width>
+							<height>35</height>
+							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+						</control>
+						<control type="button" id="1290912">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Add Manual Timer</label>
+							<!--label>SCRIPTxxxx ToDO</label-->							
+						</control>
+						<control type="button" id="1290913">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Delete Timer</label>
+							<!--label>SCRIPTxxxx ToDO</label-->
+						</control>
+						<control type="image" id="1290914">
+							<width>35</width>
+							<height>35</height>
+							<texture border="0,0,0,3">HomeSubEnd.png</texture>
+						</control>
+					</control>
+					
+
 					<!-- Channel List Sub -->
 					<control type="grouplist" id="1209011">
 						<posx>0</posx>
@@ -557,6 +644,14 @@ Search for window name
 							<label>SCRIPT1044</label>
 							<label2>SCRIPT1068</label2>
 							<onclick>SendClick(1290300)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="9">
+							<!--label>SCRIPTxxxx ToDO</label-->
+							<label>Timer</label>
+							<!--label>SCRIPTxxxx ToDO</label-->							
+							<label2>Timer Description</label2>
+							<onclick>SendClick(1290900)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
@@ -732,6 +827,11 @@ Search for window name
 				<visible>false</visible>
 			</control>
 			<control type="button" id="1290300">
+				<label>EPG</label>
+				<onclick>-</onclick>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="1290900">
 				<label>EPG</label>
 				<onclick>-</onclick>
 				<visible>false</visible>

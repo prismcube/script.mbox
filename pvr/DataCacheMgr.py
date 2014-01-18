@@ -1371,6 +1371,12 @@ class DataCacheMgr( object ) :
 		return self.mMaxChannelNum
 
 
+	def Channel_GetChannelByTimer( self, aTimer ) :
+		channelKey = '%d:%d:%d'% ( aTimer.mSid, aTimer.mTsid, aTimer.mOnid )
+		channel = self.mAllChannelListHash.get( channelKey, None )
+		return channel
+
+
 	@DataLock
 	def Datetime_GetLocalOffset( self ) :
 		return self.mLocalOffset
