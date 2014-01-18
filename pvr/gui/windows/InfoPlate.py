@@ -633,7 +633,7 @@ class InfoPlate( LivePlateWindow ) :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				timer = isRunningTimerList[0]
 
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber
@@ -646,7 +646,7 @@ class InfoPlate( LivePlateWindow ) :
 				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				timer = isRunningTimerList[0]
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber
@@ -656,7 +656,7 @@ class InfoPlate( LivePlateWindow ) :
 
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				timer = isRunningTimerList[1]
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber

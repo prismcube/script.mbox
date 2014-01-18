@@ -238,7 +238,7 @@ class TimerWindow( BaseWindow ) :
 					weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
 					#channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
-					channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+					channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 					#channel.printdebug()
 
 					iChName   = timer.mName
@@ -280,7 +280,7 @@ class TimerWindow( BaseWindow ) :
 					timer = self.mTimerList[i]
 
 					#channel = self.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
-					channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+					channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 					#channel.printdebug()
 
 					iChName   = timer.mName

@@ -1411,7 +1411,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			iChNumber = recInfo.mChannelNo
 			if channel :
 				iChNumber = channel.mNumber
@@ -1434,7 +1434,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			if channel :
 				iChNumber = channel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
@@ -1453,7 +1453,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			iChNumber = recInfo.mChannelNo
 			if channel :
 				iChNumber = channel.mNumber

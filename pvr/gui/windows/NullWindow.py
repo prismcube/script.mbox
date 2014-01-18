@@ -85,6 +85,7 @@ class NullWindow( BaseWindow ) :
 			self.getControl( E_LABEL_ID_GUI_RESTART ).setLabel( '[I]' +  MR_LANG( 'Restarting GUI' )  +  '[/I]' )
 			self.mInitialized = True
 			self.MboxFirstProcess( )
+			self.mDataCache.LoadPIPStatus( )
 			return
 
 		self.mEventBus.Register( self )
