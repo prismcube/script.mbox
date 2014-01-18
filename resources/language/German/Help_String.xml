@@ -148,7 +148,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP as follow.[CR][CR]- Engage the PIP feature by pressing BLUE color button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP by pressing number keys on the remote after turning Num Lock on.[CR]- Audio only comes from the main viewing screen.[CR]- You can also access and use PIP while you are watching video in XBMC.">
+		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP as follow.[CR][CR]- Engage the PIP feature by pressing BLUE color button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP window by pressing number keys on the remote after turning Num Lock on.[CR]- Audio only comes from the main viewing screen.[CR]- You can also access and use the PIP while you are watching video in XBMC.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
