@@ -139,8 +139,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="8" title="PIP" location="(PRESS BLUE COLOR BUTTON)">
+		<content name="help/pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP as follow.[CR][CR]- Engage the PIP feature by pressing BLUE color button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP by pressing number keys on the remote after turning Num Lock on.[CR]- Audio only comes from the main viewing screen.[CR]- You can also access and use PIP while you are watching video in XBMC.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="8" title="Erstinstallation" location="(INSTALLATION > ERSTINSTALLATION)">
+	<page number="9" title="Erstinstallation" location="(INSTALLATION > ERSTINSTALLATION)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -157,7 +174,7 @@
 		</content>
 	</page>
 	
-	<page number="9" title="Antennen und Satelliten Einstellung" location="(INSTALLATION > ANTENNEN EINSTELLUNG)">
+	<page number="10" title="Antennen und Satelliten Einstellung" location="(INSTALLATION > ANTENNEN EINSTELLUNG)">
 		<content name="help/antenna_setup.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -174,7 +191,7 @@
 		</content>
 	</page>
 	
-	<page number="10" title="Kanalsuchlauf" location="(INSTALLATION > KANALSUCHLAUF)">
+	<page number="11" title="Kanalsuchlauf" location="(INSTALLATION > KANALSUCHLAUF)">
 		<content name="help/channel_search.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -191,7 +208,7 @@
 		</content>
 	</page>
 		
-	<page number="11" title="Kanalliste – Sender bearbeiten" location="(KANALLISTE > KONTEXTMENÜ > SENDER BEARBEITEN)">
+	<page number="12" title="Kanalliste – Sender bearbeiten" location="(KANALLISTE > KONTEXTMENÜ > SENDER BEARBEITEN)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -208,7 +225,7 @@
 		</content>
 	</page>
 		
-	<page number="12" title="Erstellen einer neuen Favoritengruppe" location="(SENDER BEARBEITEN>ERSTELLEN EINER NEUEN FAVORITENGRUPPE)">
+	<page number="13" title="Erstellen einer neuen Favoritengruppe" location="(SENDER BEARBEITEN>ERSTELLEN EINER NEUEN FAVORITENGRUPPE)">
 		<content name="help/create_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -225,7 +242,7 @@
 		</content>
 	</page>
 
-	<page number="13" title="Sender zu einer Favoritengruppe hinzufügen" location="(SENDER BEARBEITEN > ZUR FAVORITENGRUPPE HINZUFÜGEN)">
+	<page number="14" title="Sender zu einer Favoritengruppe hinzufügen" location="(SENDER BEARBEITEN > ZUR FAVORITENGRUPPE HINZUFÜGEN)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -242,7 +259,7 @@
 		</content>
 	</page>
 	
-	<page number="14" title="Sender von einer Favoritengruppe entfernen" location="(VERSCHIEBENMENÜ > FAVORITENGRUPPE AUSWÄHLEN)">
+	<page number="15" title="Sender von einer Favoritengruppe entfernen" location="(VERSCHIEBENMENÜ > FAVORITENGRUPPE AUSWÄHLEN)">
 		<content name="help/remove_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -259,7 +276,7 @@
 		</content>
 	</page>
 	
-	<page number="15" title="Umbenennen einer Favoritengruppe" location="(SENDER BEARBEITEN > FAVORITENGRUPPE UMBENENNEN)">
+	<page number="16" title="Umbenennen einer Favoritengruppe" location="(SENDER BEARBEITEN > FAVORITENGRUPPE UMBENENNEN)">
 		<content name="help/rename_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -276,7 +293,7 @@
 		</content>
 	</page>
 	
-	<page number="16" title="Favoritengruppe löschen" location="(SENDER BEARBEITEN > FAVORITENGRUPPE LÖSCHEN)">
+	<page number="17" title="Favoritengruppe löschen" location="(SENDER BEARBEITEN > FAVORITENGRUPPE LÖSCHEN)">
 		<content name="help/delete_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -293,7 +310,7 @@
 		</content>
 	</page>
 
-	<page number="17" title="Media Center" location="(MEDIA oder DRÜCKE XBMC TASTE)">
+	<page number="18" title="Media Center" location="(MEDIA oder DRÜCKE XBMC TASTE)">
 		<content name="help/xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -310,7 +327,7 @@
 		</content>
 	</page>
 	
-	<page number="18" title="Add-ons installieren" location="(MEDIEN > ADD-ON MANAGER > ADD-ONS LADEN)">
+	<page number="19" title="Add-ons installieren" location="(MEDIEN > ADD-ON MANAGER > ADD-ONS LADEN)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -327,7 +344,7 @@
 		</content>
 	</page>
 	
-	<page number="19" title="Add-ons ausführen" location="(MEDIEN > BILDER, MUSIK, VIDEO oder PROGRAMME)">
+	<page number="20" title="Add-ons ausführen" location="(MEDIEN > BILDER, MUSIK, VIDEO oder PROGRAMME)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -344,7 +361,7 @@
 		</content>
 	</page>
 
-	<page number="20" title="Erhalten Sie mehr Hilfe" location="">
+	<page number="21" title="Erhalten Sie mehr Hilfe" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>

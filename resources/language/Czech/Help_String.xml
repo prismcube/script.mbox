@@ -139,8 +139,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="8" title="PIP" location="(PRESS BLUE COLOR BUTTON)">
+		<content name="help/pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP as follow.[CR][CR]- Engage the PIP feature by pressing BLUE color button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP by pressing number keys on the remote after turning Num Lock on.[CR]- Audio only comes from the main viewing screen.[CR]- You can also access and use PIP while you are watching video in XBMC.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="8" title="Prvotní Instalace" location="(INSTALACE > PRVOTNÍ INSTALACE)">
+	<page number="9" title="Prvotní Instalace" location="(INSTALACE > PRVOTNÍ INSTALACE)">
 		<content name="help/first_installation.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -157,7 +174,7 @@
 		</content>
 	</page>
 	
-	<page number="9" title="Nastavení Antény a Satelitů" location="(INSTALACE > NASTAVENÍ ANTÉNY)">
+	<page number="10" title="Nastavení Antény a Satelitů" location="(INSTALACE > NASTAVENÍ ANTÉNY)">
 		<content name="help/antenna_setup.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -174,7 +191,7 @@
 		</content>
 	</page>
 	
-	<page number="10" title="Vyhledávání Kanálů" location="(INSTALACE > VYHLEDÁVÁNÍ KANÁLŮ)">
+	<page number="11" title="Vyhledávání Kanálů" location="(INSTALACE > VYHLEDÁVÁNÍ KANÁLŮ)">
 		<content name="help/channel_search.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -191,7 +208,7 @@
 		</content>
 	</page>
 		
-	<page number="11" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
+	<page number="12" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
 		<content name="help/delete_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -208,7 +225,7 @@
 		</content>
 	</page>
 		
-	<page number="12" title="Vytvoření nové oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > VYTVOŘIT NOVOU OBLÍBENOU SKUPINU)">
+	<page number="13" title="Vytvoření nové oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > VYTVOŘIT NOVOU OBLÍBENOU SKUPINU)">
 		<content name="help/create_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -225,7 +242,7 @@
 		</content>
 	</page>
 
-	<page number="13" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
+	<page number="14" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
 		<content name="help/add_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -242,7 +259,7 @@
 		</content>
 	</page>
 	
-	<page number="14" title="Odstranění kanálů ze skupiny oblíbených" location="(SLIDE MENU > VYBRAT OBLÍBENOU SKUPINU > SMAZAT)">
+	<page number="15" title="Odstranění kanálů ze skupiny oblíbených" location="(SLIDE MENU > VYBRAT OBLÍBENOU SKUPINU > SMAZAT)">
 		<content name="help/remove_channels.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -259,7 +276,7 @@
 		</content>
 	</page>
 	
-	<page number="15" title="Přejmenování oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘEJMENOVAT OBLÍBENÉ SKUPINY)">
+	<page number="16" title="Přejmenování oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘEJMENOVAT OBLÍBENÉ SKUPINY)">
 		<content name="help/rename_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -276,7 +293,7 @@
 		</content>
 	</page>
 	
-	<page number="16" title="Odstranění oblíbených skupin" location="(ÚPRAVA KANÁLŮ > ODSTRANĚNÍ OBLÍBENÝCH SKUPIN)">
+	<page number="17" title="Odstranění oblíbených skupin" location="(ÚPRAVA KANÁLŮ > ODSTRANĚNÍ OBLÍBENÝCH SKUPIN)">
 		<content name="help/delete_fav.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -293,7 +310,7 @@
 		</content>
 	</page>
 
-	<page number="17" title="Media Center" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
+	<page number="18" title="Media Center" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
 		<content name="help/xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -310,7 +327,7 @@
 		</content>
 	</page>
 	
-	<page number="18" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
+	<page number="19" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
 		<content name="help/install_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -327,7 +344,7 @@
 		</content>
 	</page>
 	
-	<page number="19" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
+	<page number="20" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -344,7 +361,7 @@
 		</content>
 	</page>
 
-	<page number="20" title="Získání další nápovědy" location="">
+	<page number="21" title="Získání další nápovědy" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>
