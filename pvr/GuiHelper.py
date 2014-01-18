@@ -897,12 +897,18 @@ def SetDefaultSettingInXML( ) :
 
 
 def GetParseUrl( reqUrl = '', isGetSize = False ) :
-	urlPort = '21'
+	urlPort = ''
 	urlSize = 0
 
 	parseObj = urlparse.urlparse( reqUrl )
-
 	urlType = parseObj.scheme	#type : 'ftp', 'sftp', 'zeroconf', 'smb',...  ''(null) is local path
+
+	#init default port
+	if urlType == 'ftp' :
+		urlPort = '21'
+	#elif urlType == 'smb' :
+	#	urlPort = '139'
+
 	urlHost = parseObj.hostname
 	urlPort = parseObj.port
 	urlUser = parseObj.username
@@ -911,6 +917,7 @@ def GetParseUrl( reqUrl = '', isGetSize = False ) :
 	gPath = parseObj.path.replace( bPath, '' )
 	urlPath = urllib.unquote( gPath )
 	urlFile = urllib.unquote( os.path.basename( reqUrl ) )
+
 	#LOG_TRACE( 'bPath[%s] gPath[%s]'% ( bPath, gPath ) )
 	LOG_TRACE( 'host[%s] port[%s] user[%s] pass[%s] path[%s] file[%s]'% ( urlHost, urlPort, urlUser, urlPass, urlPath, urlFile ) )
 
@@ -1173,6 +1180,90 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 		isNTFS = False
 
 	return isNTFS
+
+
+def ExecuteShell( cmd = '' ) :
+	if not cmd :
+		return ''
+
+	if sys.version_info < ( 2, 7 ) :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		ret = p.stdout.read( ).strip( )
+		p.stdout.close( )
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		( ret, err ) = p.communicate( )
+		ret = ret.strip( )
+
+		#LOG_TRACE( 'ExecuteShell ret[%s] err[%s]'% ( ret, err ) )
+		if err :
+			ret = False
+
+	return ret
+
+
+def IsIPv4( address ) :
+	# check if string is valid ipv4 address
+	if address.replace( '.', '' ).strip( '1234567890' ) :
+		return False
+
+	octets = address.split( '.' )
+	if len(octets) != 4 :
+		return False
+
+	for octet in octets :
+		try :
+			int( octet )
+		except :
+			return False
+
+		if int( octet ) > 255 :
+			return False
+
+	return True
+
+
+def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
+	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
+	zipFile = ''
+	hostip = urlHost
+
+	if not IsIPv4( urlHost ) :
+		hostip = ExecuteShell( 'net lookup %s'% urlHost )
+		if not hostip :
+			#LOG_TRACE( 'lookup fail' )
+			return zipFile
+
+		if not IsIPv4( hostip ) :
+			return zipFile
+
+	smbPath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
+	#LOG_TRACE( 'smbPath[%s]'% smbPath )
+
+	mntHistory = ExecuteShell( 'mount' )
+	if not mntHistory :
+		return zipFile
+
+	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	if bool( ret ) :
+		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
+		os.system( '/bin/umount %s'% aSmbPath )
+		os.system( 'sync' )
+
+	CreateDirectory( aSmbPath )
+
+	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, smbPath, aSmbPath )
+	if ExecuteShell( cmd ) :
+		# result something? maybe error
+		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
+		return zipFile
+
+	zipFile = '%s/%s'% ( aSmbPath, urlFile )
+	if not CheckDirectory( zipFile ) :
+		LOG_TRACE( 'file not found zipPath[%s]'% zipFile )
+		zipFile = ''
+
+	return zipFile
 
 
 class GuiSkinPosition( object ) :
