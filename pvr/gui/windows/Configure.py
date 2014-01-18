@@ -475,9 +475,13 @@ class Configure( SettingWindow ) :
 				NetMgr.GetInstance( ).SetIsConfigureWindow( False )
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 				ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the system reset' ) % NEW_LINE )
-	 			dialog.doModal( )
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the system reset' ) % NEW_LINE )
+				#dialog.doModal( )
+				mHead = MR_LANG( 'Please wait' )
+				mLine = MR_LANG( 'System is restarting' ) + '...'
+				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+				time.sleep( 2 )
 				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
@@ -493,9 +497,13 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 					return
 
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the XBMC reset' ) % NEW_LINE )
-	 			dialog.doModal( )
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the XBMC reset' ) % NEW_LINE )
+				#dialog.doModal( )
+				mHead = MR_LANG( 'Please wait' )
+				mLine = MR_LANG( 'System is restarting' ) + '...'
+				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+				time.sleep( 1.5 )
 	 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( ElisEnum.E_ENGLISH )
 	 			os.system( 'touch /config/resetXBMC' )
 	 			self.mDataCache.System_Reboot( )

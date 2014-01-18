@@ -254,11 +254,14 @@ class GlobalEvent( object ) :
 			elif aEvent.mResult == ElisEnum.E_UPDATE_SUCCESS :
 				self.IsStartChannelLoad = False
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
-				dialog.SetAutoCloseTime( 10 )
-				dialog.doModal( )
-
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( MR_LANG( 'Update Channels' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' )% NEW_LINE )
+				#dialog.SetAutoCloseTime( 10 )
+				#dialog.doModal( )
+				mHead = MR_LANG( 'Please wait' )
+				mLine = MR_LANG( 'System is restarting' ) + '...'
+				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
+				time.sleep( 2 )
 				self.mDataCache.System_Reboot( )
 
 			else :
