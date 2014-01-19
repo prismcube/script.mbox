@@ -346,7 +346,8 @@ class DialogPIP( BaseDialog ) :
 		if not E_V1_2_APPLY_PIP :
 			return
 
-		if aStop or self.mDataCache.GetMediaCenter( ) :
+		if aStop == E_PIP_STOP or ( aStop != E_PIP_CHECK_FORCE and self.mDataCache.GetMediaCenter( ) ) :
+		#if aStop == E_PIP_STOP or self.mDataCache.GetMediaCenter( ) :
 			self.PIP_Stop( )
 			#self.PIP_PositionBackup( )
 			return

@@ -177,14 +177,18 @@ class GlobalEvent( object ) :
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
+				self.CheckTunablePIP( aEvent )
+
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :#4
 				blank = 'False'
 				pChannel = self.mDataCache.PIP_GetCurrentChannel( )
 				if pChannel and pChannel.mLocked :
 					blank = 'True'
-				self.mDataCache.PIP_AVBlank( False )
+				#self.mDataCache.PIP_AVBlank( False )
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', blank )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_CHECK_FORCE )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
@@ -735,9 +739,14 @@ class GlobalEvent( object ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
 
 
-	def CheckTunablePIP( self ) :
+	def CheckTunablePIP( self, aEvent = None ) :
 		# 1. isStart PIP ?
 		if not self.mDataCache.PIP_GetStatus( ) :
+			return
+
+		if aEvent and aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( iChannel )
 			return
 
 		# 2. isRecording ?

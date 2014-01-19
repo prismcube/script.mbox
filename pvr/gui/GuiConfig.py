@@ -392,6 +392,7 @@ E_PARENTLOCK_EIT        = 1
 E_CHECK_PARENTLOCK		= 1
 
 E_PIP_STOP				= 1
+E_PIP_CHECK_FORCE		= 2
 
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
