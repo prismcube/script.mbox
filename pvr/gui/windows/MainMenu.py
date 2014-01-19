@@ -556,7 +556,7 @@ class MainMenu( BaseWindow ) :
 		if len( timers  ) < 1:
 			msg = MR_LANG( 'There is no valid timer' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Info' ), msg )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
 			return
 			

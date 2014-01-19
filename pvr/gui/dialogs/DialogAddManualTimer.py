@@ -321,7 +321,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.ResetAllControl( )
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_RECORDING_MODE, self.mRecordingMode )
 			if self.mEnableSelectChannel == True :
-				self.AddInputControl( E_DialogInput01, MR_LANG( 'Select channel' ),  MR_LANG( 'Record Name' ) )
+				self.AddInputControl( E_DialogInput01, MR_LANG( 'Select Channel' ),  MR_LANG( 'Record Name' ) )
 			else :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
 				
@@ -329,7 +329,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			#self.AddInputControl(  E_DialogSpinEx02, 'Date', 'Date' )
 			self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
 			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )
-			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of week' ) )
+			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of Week' ) )
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
 			self.AddOkCanelButton( )

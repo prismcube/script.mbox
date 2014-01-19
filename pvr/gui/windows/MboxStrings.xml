@@ -127,6 +127,9 @@
 	<string id="1127">No Service</string>
 	<string id="1128">Fast Scan</string>
 	<string id="1129">Show bookmarks</string>
+	<string id="1130">SQL error or broken database</string>
+	<string id="1131">If the problem continues, force repository refresh</string>
+	<string id="1132">( SYSTEM > Add-ons > Get Add-ons > Press i button > Force refresh )</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
