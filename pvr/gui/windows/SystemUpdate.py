@@ -117,6 +117,11 @@ UPDATE_NETWORK_INTERFACES_CONFIG	= '/config/interfaces'
 UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
 UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
 
+# RootFs Backup Script
+FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/local_rootfs_backup.sh'
+FILE_ROOTFS_BACKUP_LOG				= '/tmp/BackupSuite.log'
+FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/local_Installation.sh'
+
 class SCRIPTClass( object ) :
 	def __init__( self ) :
 		self.mScriptKey				= None
@@ -328,7 +333,22 @@ class SystemUpdate( SettingWindow ) :
 					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 					return
 				else :
-					self.OpenBackupDialog( )
+					context = []
+					context.append( ContextItem( MR_LANG( 'Backup to usb' ), 0 ) )
+					context.append( ContextItem( MR_LANG( 'Restore from usb' ), 1 ) )
+
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
+					contextAction = dialog.GetSelectedAction( )
+
+					if contextAction == 0 :
+						self.OpenBackupDialog( )
+					elif contextAction == 1 :
+						if self.RestoreBackup( ) == False :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data restore failed' ) )
+							dialog.doModal( )
 
 
 	def onFocus( self, aControlId ) :
@@ -1108,7 +1128,7 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
-			self.AddInputControl( E_Input06, MR_LANG( 'Backup Settings' ), '',  MR_LANG( 'Backup Settings' ) )			
+			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore' ), '',  MR_LANG( 'Backup and Restore' ) )			
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -2376,7 +2396,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ImportChannelsFromUSB( self, aUsbPath ) :
-		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml')  )
+		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml') )
 
 		LOG_TRACE( 'XML file countd=%d' %len(xmlFullPathList ) )
 
@@ -2638,109 +2658,227 @@ class SystemUpdate( SettingWindow ) :
 
 		isSelectedXBMC			= dialog.GetSelectXBMC( )
 		isSelectedConfig 		= dialog.GetSelectConfig( )
-		isSelectedRoot			= dialog.GetSelectRoot( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			if isSelectedXBMC :
-				self.BackupXBMC( isSelectedConfig, isSelectedRoot )
-			if isSelectedConfig :
-				self.BackupConfig( isSelectedRoot )
-			if isSelectedRoot :
-				self.BackupRoot( )
-
-
-	def BackupXBMC( self, aIsSelectedConfig, aIsSelectedRoot ) :
-		if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
-			usbpath = self.mDataCache.USB_GetMountPath( )
-			if usbpath :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'This may take some time' ) )
-				dialog.doModal( )
-				self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Backup xbmc' ), 30 )
-				size_addons = GetDirectorySize( '/mnt/hdd0/program/.xbmc/addons' )
-				size_udata = GetDirectorySize( '/mnt/hdd0/program/.xbmc/userdata' )
-				usbfreesize = GetDeviceSize( usbpath )
-				print 'dhkim test size_addons = %s, size_udata = %s, usbfreesize = %s' % ( size_addons, size_udata, usbfreesize )
-				if ( size_addons + size_udata ) > usbfreesize :
-					self.CloseProgress( )
+			if self.CheckUsbSize( isSelectedXBMC, isSelectedConfig ) :
+				if self.BackupData( isSelectedXBMC, isSelectedConfig ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup filed' ) )
 					dialog.doModal( )
 				else :
-					if CheckDirectory( usbpath + '/XBMCBackup/' ) :
-						RemoveDirectory( usbpath + '/XBMCBackup/' )
-					
-					ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', usbpath + '/XBMCBackup/userdata' )
-					ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', usbpath + '/XBMCBackup/addons' )
-					if ret_udata and ret_addons :
-						if aIsSelectedConfig or aIsSelectedRoot :
-							self.CloseProgress( )
-						else :
-							self.CloseProgress( )
-							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
-							dialog.doModal( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed Data backup' ) )
+					dialog.doModal( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				dialog.doModal( )
 
-							#self.mDataCache.System_Reboot( )
-							os.system( 'sync' )
-					else :
-						self.CloseProgress( )
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
-						dialog.doModal( )
 
+	def CheckUsbSize( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		self.OpenBusyDialog( )
+		sumSize = 500 * 1024 * 1024
+		if aIsSelectedXBMC :
+			sumSize = sumSize + GetDirectorySize( '/mnt/hdd0/program/.xbmc' )
+		if aIsSelectedConfig :
+			sumSize = sumSize + GetDirectorySize( '/config' )
+
+		if GetDeviceSize( self.mDataCache.USB_GetMountPath( ) ) < sumSize :
+			self.CloseBusyDialog( )
+			return False
 		else :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find backup data' ) )
+			self.CloseBusyDialog( )
+			return True
+
+
+	def BackupData( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		now = time.localtime( )
+		date = '%04d_%02d_%02d_%02d-%02d' % ( now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min )
+		directoryName = '/update_ruby_backup_%s' % date
+		progressDialog = None
+		if os.path.exists( usbpath + directoryName ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'The filename file already exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				RemoveDirectory( usbpath + directoryName )
+			else :
+				return False
+		try :
+			os.makedirs( usbpath + directoryName )
+			shutil.copy( FILE_ROOTFS_LOCAL_SCRIPT, usbpath + directoryName + '/Installation.sh' )
+			# Backup Config Data
+			if aIsSelectedConfig :
+				self.OpenBusyDialog( )
+				ret_config = CopyToDirectory( '/config', usbpath + directoryName + '/config_data' )
+				if ret_config :
+					RemoveDirectory( usbpath + directoryName + '/config_data/serial' )
+					RemoveDirectory( usbpath + directoryName + '/config_data/macinfo' )
+					self.CloseBusyDialog( )
+				else :
+					RemoveDirectory( usbpath + directoryName )
+					os.system( 'sync' )
+					self.CloseBusyDialog( )
+					return False
+
+			# Backup XBMC Data
+			if aIsSelectedXBMC :
+				progressDialog = xbmcgui.DialogProgress( )
+				progressDialog.create( MR_LANG( 'Backup xbmc data' ), MR_LANG( 'Initializing copy...' ) )
+				progressDialog.update( 0, MR_LANG( 'Copy data...' ) )
+
+				pathlist = GetDirectoryAllFilePathList( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
+				count = 1
+				for path in pathlist :
+					percent = int( 1.0 * count / len(pathlist) * 100 )
+
+					if progressDialog.iscanceled( ) :
+						progressDialog.update( percent, MR_LANG( 'Backup Cancelling...' ) )
+						self.OpenBusyDialog( )
+						RemoveDirectory( usbpath + directoryName )
+						os.system( 'sync' )
+						self.CloseBusyDialog( )
+						progressDialog.update( 0, '' )
+						progressDialog.close( )
+						return False
+
+					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path[ len('/mnt/hdd0/program/.xbmc') :] )							
+					destPath = usbpath + directoryName + '/xbmc_data'+ path[ len('/mnt/hdd0/program/.xbmc') :]
+					if not os.path.exists( os.path.dirname( destPath ) ) :
+						os.makedirs( os.path.dirname( destPath ) )
+
+					shutil.copy( path, destPath )
+					count = count + 1
+
+				progressDialog.update( 100, MR_LANG( 'Backup completed' ), MR_LANG( 'Finished' ) )
+				time.sleep( 1 )
+				progressDialog.update( 0, '' )
+				progressDialog.close( )
+
+			# Backup RootFs
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ROOTFS_BACKUP )
+			dialog.SetDialogProperty( MR_LANG( 'File system backup' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, usbpath + directoryName )
 			dialog.doModal( )
 
-
-	def BackupConfig( self, aIsSelectedRoot ) :
-		usbpath = self.mDataCache.USB_GetMountPath( )
-		if usbpath :
-			self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Backup Config' ), 30 )
-			size_config = GetDirectorySize( '/config' )
-			usbfreesize = GetDeviceSize( usbpath )
-			if size_config > usbfreesize :
-				self.CloseProgress( )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
-				dialog.doModal( )
+			if dialog.GetResultStatus( ) :
+				self.OpenBusyDialog( )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return True
 			else :
-				if CheckDirectory( usbpath + '/RubyConfig/' ) :
-					RemoveDirectory( usbpath + '/RubyConfig/' )
+				self.OpenBusyDialog( )
+				RemoveDirectory( usbpath + directoryName )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return False
 
-				ret_config = CopyToDirectory( '/config', usbpath + '/RubyConfig/config' )
-				if ret_config :
-					RemoveDirectory( usbpath + '/RubyConfig/config/serial' )
-					RemoveDirectory( usbpath + '/RubyConfig/config/macinfo' )
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( usbpath + directoryName )
+			os.system( 'sync' )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
 
-					if aIsSelectedRoot :
-						self.CloseProgress( )
-					else :
-						self.CloseProgress( )
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Your system must be restarted%s in order to complete the update' ) % NEW_LINE )
-						dialog.doModal( )
 
-						#self.mDataCache.System_Reboot( )
-						os.system( 'sync' )
+	def RestoreBackup( self ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		restoreList = glob.glob( os.path.join( usbpath, 'update_ruby_backup_*') )
+		if len( restoreList ) <= 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No restore data in directory' ) )
+			dialog.doModal( )
+			return False
+
+		makelist = []
+		for i in range( len( restoreList ) ) :
+			makelist.append( os.path.basename( restoreList[i] ) )
+
+		dialog = xbmcgui.Dialog( )
+		select = dialog.select( MR_LANG( 'Select Restore File' ), makelist, False )
+		if select >= 0 :
+			ret = self.ProcessRestore( restoreList[ select ] )
+			self.OpenBusyDialog( )
+			os.system( 'sync' )
+			self.CloseBusyDialog( )
+
+			if ret == False :
+				return False
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed restore data to usb' ) )
+				dialog.doModal( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'restore now?' ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mDataCache.System_Reboot( )
+				return True
+		else :
+			return True
+
+
+	def ProcessRestore( self, aPath ) :
+		self.OpenBusyDialog( )
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+			dialog.doModal( )
+			self.CloseBusyDialog( )
+			return False
+
+		destPath = usbpath + '/update_ruby'
+		if os.path.exists( destPath ) :
+			RemoveDirectory( destPath )
+		pathlist = GetDirectoryAllFilePathList( [ aPath ] )
+		self.CloseBusyDialog( )
+		progressDialog = None
+		try :
+			progressDialog = xbmcgui.DialogProgress( )
+			progressDialog.create( MR_LANG( 'Copy restore data' ), MR_LANG( 'Initializing copy...' ) )
+			progressDialog.update( 0, MR_LANG( 'Copy data...' ) )
+
+			count = 1
+			for path in pathlist :
+				percent = int( 1.0 * count / len( pathlist ) * 100 )
+
+				if progressDialog.iscanceled( ) :
+					progressDialog.update( percent, MR_LANG( 'Cancelling...' ) )
+					self.OpenBusyDialog( )
+					RemoveDirectory( destPath )
+					os.system( 'sync' )
+					self.CloseBusyDialog( )
+					progressDialog.update( 0, '', '' )
+					progressDialog.close( )
+					return False
+
+				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' :
+					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, MR_LANG( 'Please be patient, ... will take about 1-2 minutes' ) )
 				else :
-					self.CloseProgress( )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
-					dialog.doModal( )
+					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, '' )
 
+				destPathCopy = destPath + path[ len( aPath ) : ]
+				if not os.path.exists( os.path.dirname( destPathCopy ) ) :
+					os.makedirs( os.path.dirname( destPathCopy ) )
 
-	def BackupRoot( self ) :
-		# mush sync after copy
-		usbpath = self.mDataCache.USB_GetMountPath( )
-		if usbpath :
-			usbfreesize = GetDeviceSize( usbpath )
-			if 500 * 1024 * 1024 > usbfreesize :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
-				dialog.doModal( )
-			else :
-				pass
+				shutil.copy( path, destPathCopy )
+				count = count + 1
+
+			os.system( 'touch %s' % destPath + '/force.update' )
+			progressDialog.update( 100, MR_LANG( 'Data copy completed' ), MR_LANG( 'Finishing...' ) )
+			time.sleep( 1 )
+			progressDialog.update( 0, '', '' )
+			progressDialog.close( )
+			return True
+
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( destPath )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
 

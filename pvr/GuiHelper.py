@@ -787,7 +787,21 @@ def GetDirectorySize( aPath ) :
 			filename = os.path.join( path, file )
 			dir_size += os.path.getsize( filename )
 
-	return dir_size 
+	return dir_size
+
+
+def GetDirectoryAllFilePathList( aPathList ) :
+	path_ret = []
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				for file in files :
+					filename = os.path.join( path, file )
+					path_ret.append( filename )
+
+	return path_ret
 
 
 def GetURLpage( aUrl, aWriteFileName = None ) :
