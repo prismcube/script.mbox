@@ -6753,7 +6753,6 @@ Search for window name
 				<visible>substring(Window(10000).Property(OpenPIP),true)</visible>
 				<control type="image" id="1002001">
 					<visible>substring(Window.Property(TVRadio),true)</visible>
-					<!--visible>substring(Window.Property(TVRadio),true) + [substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),4800000)]</visible-->
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>328</width>
@@ -6828,48 +6827,6 @@ Search for window name
 						<visible>!Control.IsVisible(1002003) + substring(Window(10000).Property(PIPSignal),NoService)</visible>
 					</control>
 				</control>
-				<!--control type="group">
-					<posx>-5</posx>
-					<posy>-5</posy>
-					<control type="group" id="4801100">
-						<posx>0</posx>
-						<posy>0</posy>
-						<animation effect="fade" time="300">VisibleChange</animation>
-						<visible>substring(Window.Property(InputNumber),true)</visible>
-						<control type="image" id="4801101">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>370</width>
-							<height>50</height>
-							<texture>black-back_noAlpha.png</texture>
-							<colordiffuse>DFFFFFFF</colordiffuse>
-						</control>
-						<control type="label" id="4801102">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font14</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-						<control type="label" id="4801103">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>425</width>
-							<height>30</height>
-							<font>font12</font>
-							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
-							<align>center</align>
-							<aligny>center</aligny>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-					</control>
-				</control-->
 			</control>
 		</control>
 

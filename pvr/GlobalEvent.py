@@ -165,23 +165,24 @@ class GlobalEvent( object ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'NoService' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :#6
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :#7
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :#5
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :#4
 				blank = 'False'
 				pChannel = self.mDataCache.PIP_GetCurrentChannel( )
 				if pChannel and pChannel.mLocked :
 					blank = 'True'
+				self.mDataCache.PIP_AVBlank( False )
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', blank )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
 
