@@ -360,6 +360,24 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
 
+		elif aControlId == BUTTON_ID_TIMER_ADD_MANUAL :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Schedule a particular recording by specifying date, time and channel without using the EPG' ) )
+
+		elif aControlId == BUTTON_ID_TIMER_DELETE :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Delete the specified timer from the timer list' ) )
+
+		elif aControlId == BUTTON_ID_EPG_GRID :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the EPG of each channel according to timeline' ) )
+
+		elif aControlId == BUTTON_ID_EPG_CHANNEL :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display current and future scheduled events on each channel' ) )
+
+		elif aControlId == BUTTON_ID_EPG_CURRENT :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events currently on air' ) )
+
+		elif aControlId == BUTTON_ID_EPG_FOLLOWING :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events next on schedule' ) )
+
 
 	def SetVisibleRss( self ) :
 		if int( GetSetting( 'RSS_FEED' ) ) == 1 :

@@ -473,13 +473,11 @@ Search for window name
 						</control>
 						<control type="button" id="1290912">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Add Manual Timer</label>
-							<!--label>SCRIPTxxxx ToDO</label-->							
+							<label>SCRIPT1135</label>
 						</control>
 						<control type="button" id="1290913">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Delete Timer</label>
-							<!--label>SCRIPTxxxx ToDO</label-->
+							<label>SCRIPT1136</label>
 						</control>
 						<control type="image" id="1290914">
 							<width>35</width>
@@ -647,10 +645,8 @@ Search for window name
 							<visible>true</visible>
 						</item>
 						<item id="9">
-							<!--label>SCRIPTxxxx ToDO</label-->
-							<label>Timer</label>
-							<!--label>SCRIPTxxxx ToDO</label-->							
-							<label2>Timer Description</label2>
+							<label>SCRIPT1133</label>
+							<label2>SCRIPT1134</label2>
 							<onclick>SendClick(1290900)</onclick>
 							<visible>true</visible>
 						</item>
