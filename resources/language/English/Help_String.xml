@@ -343,8 +343,25 @@
 			<height>160</height>
 		</content>
 	</page>
+
+	<page number="20" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+		<content name="help/update_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>880</width>
+			<height>470</height>
+		</content>
+		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
 	
-	<page number="20" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
+	<page number="21" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -361,7 +378,7 @@
 		</content>
 	</page>
 
-	<page number="21" title="Getting Further Help" location="">
+	<page number="22" title="Getting Further Help" location="">
 		<content name="help/website.png">
 			<type>image</type>
 			<posx>210</posx>
