@@ -507,7 +507,7 @@ class Configure( SettingWindow ) :
 				mLine = MR_LANG( 'System is restarting' ) + '...'
 				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
 				time.sleep( 1.5 )
-	 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( ElisEnum.E_ENGLISH )
+				#ElisPropertyEnum( 'Language', self.mCommander ).SetProp( ElisEnum.E_ENGLISH )
 	 			os.system( 'touch /config/resetXBMC' )
 	 			self.mDataCache.System_Reboot( )
 
