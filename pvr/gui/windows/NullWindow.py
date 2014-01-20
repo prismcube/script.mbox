@@ -159,7 +159,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def XBMCFirstProcess( self ) :
-		xbmc.executebuiltin( 'Settings.SetMboxOpen' )
+		#xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
 			databaseName = None
 			try :

@@ -784,10 +784,41 @@ def GetDirectorySize( aPath ) :
 	dir_size = 0
 	for ( path, dirs, files ) in os.walk( aPath ) :
 		for file in files :
-			filename = os.path.join( path, file )
-			dir_size += os.path.getsize( filename )
+			try :
+				filename = os.path.join( path, file )
+				dir_size += os.path.getsize( filename )
+			except Exception, e :
+				LOG_ERR( 'except file get size error filename = %s' % filename )
 
-	return dir_size 
+	return dir_size
+
+
+def GetDirectoryAllFilePathList( aPathList ) :
+	path_ret = []
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				for file in files :
+					filename = os.path.join( path, file )
+					path_ret.append( filename )
+
+	return path_ret
+
+
+def GetDirectoryAllFileCount( aPathList ) :
+	count = 0
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				count = count + 1
+				for file in files :
+					count = count + 1
+
+	return count
 
 
 def GetURLpage( aUrl, aWriteFileName = None ) :
@@ -1416,36 +1447,194 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
-def GetXBMCLanguageToProp( aLanguage ) :
-	if aLanguage == 'English' or aLanguage == 'English (US)' :
+def KillScript( aId ) :
+	pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
+
+	for pid in pids :
+		if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
+			try :
+				f = open( os.path.join( '/proc', pid, 'stat' ), 'rb' )
+				data = f.readlines( )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
+
+			data = str( data[0] )
+			data = data.strip( )
+			data = data.split( )
+			if data[3] == str( aId ) :
+				KillScript( int( data[0] ) )
+
+	os.system( 'kill -9 %s' % aId )
+
+
+def GetXBMCLanguageToPropLanguage( aLanguage ) :
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
 		return ElisEnum.E_ENGLISH
 
-	elif aLanguage == 'German':
+	elif aLanguage == 'German'.lower( ) :
 		return ElisEnum.E_DEUTSCH
 
-	elif aLanguage == 'French':
+	elif aLanguage == 'French'.lower( ) :
 		return ElisEnum.E_FRENCH
 
-	elif aLanguage == 'Italian':
+	elif aLanguage == 'Italian'.lower( ) :
 		return ElisEnum.E_ITALIAN
 
-	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
 		return ElisEnum.E_SPANISH
 
-	elif aLanguage == 'Czech':
+	elif aLanguage == 'Czech'.lower( ) :
 		return ElisEnum.E_CZECH
 
-	elif aLanguage == 'Dutch':
+	elif aLanguage == 'Dutch'.lower( ) :
 		return ElisEnum.E_DUTCH
 
-	elif aLanguage == 'Polish':
+	elif aLanguage == 'Polish'.lower( ) :
 		return ElisEnum.E_POLISH
 
-	elif aLanguage == 'Turkish':
+	elif aLanguage == 'Turkish'.lower( ) :
 		return ElisEnum.E_TURKISH
 
-	elif aLanguage == 'Russian':
+	elif aLanguage == 'Russian'.lower( ) :
 		return ElisEnum.E_RUSSIAN
+
+	else :
+		return ElisEnum.E_ENGLISH
+
+
+def GetPropLanguageToXBMCLanguage( aProp ) :
+	if aProp == ElisEnum.E_ENGLISH :
+		return 'English'
+
+	elif aProp == ElisEnum.E_DEUTSCH :
+		return 'German'
+
+	elif aProp == ElisEnum.E_FRENCH :
+		return 'French'
+
+	elif aProp == ElisEnum.E_ITALIAN :
+		return 'Italian'
+
+	elif aProp == ElisEnum.E_SPANISH :
+		return 'Spanish'
+
+	elif aProp == ElisEnum.E_CZECH :
+		return 'Czech'
+
+	elif aProp == ElisEnum.E_DUTCH :
+		return 'Dutch'
+
+	elif aProp == ElisEnum.E_POLISH :
+		return 'Polish'
+
+	elif aProp == ElisEnum.E_TURKISH :
+		return 'Turkish'
+
+	elif aProp == ElisEnum.E_RUSSIAN :
+		return 'Russian'
+
+	else :
+		return 'German'
+
+
+def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'Dutch'.lower( ) :
+		return ElisEnum.E_DUTCH
+
+	elif aLanguage == 'German'.lower( ) :
+		return ElisEnum.E_DEUTSCH
+
+	elif aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
+		return ElisEnum.E_ENGLISH
+
+	elif aLanguage == 'French'.lower( ) :
+		return ElisEnum.E_FRENCH
+
+	elif aLanguage == 'Italian'.lower( ) :
+		return ElisEnum.E_ITALIAN
+
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
+		return ElisEnum.E_SPANISH
+
+	elif aLanguage == 'Czech'.lower( ) :
+		return ElisEnum.E_CZECH
+
+	elif aLanguage == 'Polish'.lower( ) :
+		return ElisEnum.E_POLISH
+
+	elif aLanguage == 'Turkish'.lower( ) :
+		return ElisEnum.E_TURKISH
+
+	elif aLanguage == 'Russian'.lower( ) :
+		return ElisEnum.E_RUSSIAN
+
+	elif aLanguage == 'Arabic'.lower( ) :
+		return ElisEnum.E_ARABIC
+
+	elif aLanguage == 'Greek'.lower( ) :
+		return ElisEnum.E_GREEK
+
+	elif aLanguage == 'Danish'.lower( ) :
+		return ElisEnum.E_DANISH
+
+	elif aLanguage == 'Swedish'.lower( ) :
+		return ElisEnum.E_SWEDISH
+
+	elif aLanguage == 'Norwegian'.lower( ) :
+		return ElisEnum.E_NORWEGIAN
+
+	elif aLanguage == 'Korean'.lower( ) :
+		return ElisEnum.E_KOREAN
+
+	elif aLanguage == 'Finnish'.lower( ) :
+		return ElisEnum.E_FINNISH
+
+	elif aLanguage == 'Portuguese'.lower( ) or aLanguage == 'Portuguese (Brazil)'.lower( ) :
+		return ElisEnum.E_PORTUGUESE
+
+	elif aLanguage == 'Basque'.lower( ) :
+		return ElisEnum.E_BASQUE
+
+	elif aLanguage == 'Bulgarian'.lower( ) :
+		return ElisEnum.E_BULGARIAN
+
+	elif aLanguage == 'Croatian'.lower( ) :
+		return ElisEnum.E_CROATIAN
+
+	elif aLanguage == 'Estonian'.lower( ) :
+		return ElisEnum.E_ESTONIAN
+
+	elif aLanguage == 'Hebrew'.lower( ) :
+		return ElisEnum.E_HEBREW
+
+	elif aLanguage == 'Hungarian'.lower( ) :
+		return ElisEnum.E_HUNGARIAN
+
+	elif aLanguage == 'Latvian'.lower( ) :
+		return ElisEnum.E_LATVIAN
+
+	elif aLanguage == 'Lithuanian'.lower( ) :
+		return ElisEnum.E_LITHUANIAN
+
+	elif aLanguage == 'Persian (Iran)'.lower( ) :
+		return ElisEnum.E_PERSIAN
+
+	elif aLanguage == 'Romanian'.lower( ) :
+		return ElisEnum.E_ROMANIAN
+
+	elif aLanguage == 'Serbian'.lower( ) or aLanguage == 'Serbian (Cyrillic)'.lower( ) :
+		return ElisEnum.E_SERBIAN
+
+	elif aLanguage == 'Slovak'.lower( ) :
+		return ElisEnum.E_SLOVAK
+
+	elif aLanguage == 'Slovenian'.lower( ) :
+		return ElisEnum.E_SLOVENIAN
+
+	elif aLanguage == 'Thai'.lower( ) :
+		return ElisEnum.E_TAI
 
 	else :
 		return ElisEnum.E_ENGLISH

@@ -117,6 +117,13 @@ UPDATE_NETWORK_INTERFACES_CONFIG	= '/config/interfaces'
 UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
 UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
 
+# RootFs Backup Script
+FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_rootfs_backup.sh'
+FILE_BACKUP_EXCLUDE					= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/backup_exclude'
+FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_Installation.sh'
+FILE_ROOTFS_BACKUP_LOG				= '/tmp/BackupSuite.log'
+
+
 class SCRIPTClass( object ) :
 	def __init__( self ) :
 		self.mScriptKey				= None
@@ -312,8 +319,38 @@ class SystemUpdate( SettingWindow ) :
 			self.ImportSettingsFromUSB( )
 
 		elif groupId == E_Input05 :
-			LOG_TRACE( 'Export Settings to USB' )		
+			LOG_TRACE( 'Export Settings to USB' )
 			self.ExportSettingsToUSB( )
+
+		elif groupId == E_Input06 :	
+			if self.GetStatusFromFirmware( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+				dialog.doModal( )
+				return
+			else :
+				usbPath = self.mDataCache.USB_GetMountPath( )
+				if not usbPath :
+					LOG_TRACE( 'Not Exist USB' )
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+					return
+				else :
+					context = []
+					context.append( ContextItem( MR_LANG( 'Backup to usb' ), 0 ) )
+					context.append( ContextItem( MR_LANG( 'Restore from usb' ), 1 ) )
+
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
+					contextAction = dialog.GetSelectedAction( )
+
+					if contextAction == 0 :
+						self.OpenBackupDialog( )
+					elif contextAction == 1 :
+						if self.RestoreBackup( ) == False :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data restore failed' ) )
+							dialog.doModal( )
 
 
 	def onFocus( self, aControlId ) :
@@ -1093,16 +1130,19 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
+			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore' ), '',  MR_LANG( 'Backup and Restore' ) )			
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
 			self.SetEnableControl( E_Input03, True )
 			self.SetEnableControl( E_Input04, True )
 			self.SetEnableControl( E_Input05, True )
+			self.SetEnableControl( E_Input06, True )
 
 			self.SetVisibleControl( E_Input03, True )
 			self.SetVisibleControl( E_Input04, True )
 			self.SetVisibleControl( E_Input05, True )
+			self.SetVisibleControl( E_Input06, True )
 
 			self.InitControl( )
 			#self.SetFocusControl( E_Input01 )
@@ -1136,9 +1176,11 @@ class SystemUpdate( SettingWindow ) :
 			self.SetEnableControl( E_Input03, False )
 			self.SetEnableControl( E_Input04, False )
 			self.SetEnableControl( E_Input05, False )
+			self.SetEnableControl( E_Input06, False )
 			self.SetVisibleControl( E_Input03, False )
 			self.SetVisibleControl( E_Input04, False )
 			self.SetVisibleControl( E_Input05, False )
+			self.SetVisibleControl( E_Input06, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -2356,7 +2398,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ImportChannelsFromUSB( self, aUsbPath ) :
-		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml')  )
+		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml') )
 
 		LOG_TRACE( 'XML file countd=%d' %len(xmlFullPathList ) )
 
@@ -2610,4 +2652,247 @@ class SystemUpdate( SettingWindow ) :
 	def CloseProgress( self ) :
 		self.mProgress.SetResult( True )
 		self.mChannelUpdateProgress.join( )
+
+
+	def OpenBackupDialog( self ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BACKUP_SETTINGS )
+		dialog.doModal( )
+
+		isSelectedXBMC			= dialog.GetSelectXBMC( )
+		isSelectedConfig 		= dialog.GetSelectConfig( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if self.CheckUsbSize( isSelectedXBMC, isSelectedConfig ) :
+				if self.BackupData( isSelectedXBMC, isSelectedConfig ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup filed' ) )
+					dialog.doModal( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed Data backup' ) )
+					dialog.doModal( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				dialog.doModal( )
+
+
+	def CheckUsbSize( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		self.OpenBusyDialog( )
+		sumSize = 500 * 1024 * 1024
+		if aIsSelectedXBMC :
+			sumSize = sumSize + GetDirectorySize( '/mnt/hdd0/program/.xbmc' )
+		if aIsSelectedConfig :
+			sumSize = sumSize + GetDirectorySize( '/config' )
+
+		if GetDeviceSize( self.mDataCache.USB_GetMountPath( ) ) < sumSize :
+			self.CloseBusyDialog( )
+			return False
+		else :
+			self.CloseBusyDialog( )
+			return True
+
+
+	def BackupData( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		now = time.localtime( )
+		date = '%04d_%02d_%02d_%02d-%02d' % ( now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min )
+		destPath = usbpath + '/update_ruby_backup_%s' % date
+
+		progressDialog = None
+		if os.path.exists( destPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'The filename file already exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				RemoveDirectory( destPath )
+			else :
+				return False
+		try :
+			os.makedirs( destPath )
+			shutil.copy( FILE_ROOTFS_LOCAL_SCRIPT, destPath + '/Installation.sh' )
+
+			# Backup Config Data
+			if aIsSelectedConfig :
+				self.OpenBusyDialog( )
+				ret_config = os.system( 'tar cvf %s/config_backup.tar /config -X %s' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				if ret_config == 0 :
+					self.CloseBusyDialog( )
+				else :
+					RemoveDirectory( destPath )
+					os.system( 'sync' )
+					self.CloseBusyDialog( )
+					return False
+
+			# Backup XBMC Data
+			if aIsSelectedXBMC :
+				progressDialog = xbmcgui.DialogProgress( )
+				progressDialog.create( MR_LANG( 'XBMC data backup' ), MR_LANG( 'Initializing copy...' ) )
+				progressDialog.update( 0, MR_LANG( 'Ready...' ) )
+
+				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
+				os.system( 'echo cd /mnt/hdd0/program > /tmp/xbmc_backup.sh' )
+				os.system( 'echo tar cvf %s/xbmc_backup.tar .xbmc/* -X %s >> /tmp/xbmc_backup.sh' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				os.system( 'chmod 777 /tmp/xbmc_backup.sh' )
+				pipe = Popen( '/tmp/xbmc_backup.sh', shell=True, stdout=PIPE )
+				count = 1
+				while pipe.poll( ) == None :
+					if progressDialog.iscanceled( ) :
+						progressDialog.update( percent, MR_LANG( 'Backup cancelling...' ) )
+						self.OpenBusyDialog( )
+						pipe.kill( )
+						RemoveDirectory( destPath )
+						os.system( 'sync' )
+						self.CloseBusyDialog( )
+						progressDialog.update( 0, '' )
+						progressDialog.close( )
+						return False
+
+					line = pipe.stdout.readline( )
+					if line != '' :
+						percent = int( 1.0 * count / fileCount * 100 )
+						if percent > 99 :
+							percent = 99
+						progressDialog.update( percent, MR_LANG( 'Copying data...' ), '%s' % line.strip( ) )
+						count = count + 1
+
+				progressDialog.update( 100, MR_LANG( 'XBMC data Backup completed' ), MR_LANG( 'Finished' ) )
+				time.sleep( 1 )
+				progressDialog.update( 0, '' )
+				progressDialog.close( )
+
+			# Backup RootFs
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ROOTFS_BACKUP )
+			dialog.SetDialogProperty( MR_LANG( 'Backup File system' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, destPath )
+			dialog.doModal( )
+
+			if dialog.GetResultStatus( ) :
+				self.OpenBusyDialog( )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return True
+			else :
+				self.OpenBusyDialog( )
+				RemoveDirectory( destPath )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return False
+
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( destPath )
+			os.system( 'sync' )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
+
+
+	def RestoreBackup( self ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		restoreList = glob.glob( os.path.join( usbpath, 'update_ruby_backup_*') )
+		if len( restoreList ) <= 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No restore data in directory' ) )
+			dialog.doModal( )
+			return False
+
+		makelist = []
+		for i in range( len( restoreList ) ) :
+			makelist.append( os.path.basename( restoreList[i] ) )
+
+		dialog = xbmcgui.Dialog( )
+		select = dialog.select( MR_LANG( 'Select Restore File' ), makelist, False )
+		if select >= 0 :
+			ret = self.ProcessRestore( restoreList[ select ] )
+			self.OpenBusyDialog( )
+			os.system( 'sync' )
+			self.CloseBusyDialog( )
+
+			if ret == False :
+				return False
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed restore data to usb' ) )
+				dialog.doModal( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'restore now?' ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mDataCache.System_Reboot( )
+				return True
+		else :
+			return True
+
+
+	def ProcessRestore( self, aPath ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Delete file' ), MR_LANG( 'Delete this restore data after update?' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			removeUpdate = True
+		else :
+			removeUpdate = False
+
+		self.OpenBusyDialog( )
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+			dialog.doModal( )
+			self.CloseBusyDialog( )
+			return False
+
+		destPath = usbpath + '/update_ruby'
+		if os.path.exists( destPath ) :
+			RemoveDirectory( destPath )
+		pathlist = GetDirectoryAllFilePathList( [ aPath ] )
+		self.CloseBusyDialog( )
+		progressDialog = None
+		try :
+			progressDialog = xbmcgui.DialogProgress( )
+			progressDialog.create( MR_LANG( 'Copy restore data' ), MR_LANG( 'Initializing copy...' ) )
+			progressDialog.update( 0, MR_LANG( 'Copy data...' ) )
+
+			count = 1
+			for path in pathlist :
+				percent = int( 1.0 * count / len( pathlist ) * 100 )
+
+				if progressDialog.iscanceled( ) :
+					progressDialog.update( percent, MR_LANG( 'Cancelling...' ) )
+					self.OpenBusyDialog( )
+					RemoveDirectory( destPath )
+					self.CloseBusyDialog( )
+					progressDialog.update( 0, '', '' )
+					progressDialog.close( )
+					return False
+
+				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' or path[ len( aPath ) : ] == '/xbmc_backup.tar' :
+					progressDialog.update( percent, MR_LANG( 'Copy data... big file!' ), '%s' % path, MR_LANG( 'Please be patient, ... this may take a few minutes' ) )
+				else :
+					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, ' ' )
+
+				destPathCopy = destPath + path[ len( aPath ) : ]
+				if not os.path.exists( os.path.dirname( destPathCopy ) ) :
+					os.makedirs( os.path.dirname( destPathCopy ) )
+
+				shutil.copy( path, destPathCopy )
+				count = count + 1
+
+			os.system( 'touch %s' % destPath + '/force.update' )
+			if removeUpdate :
+				os.system( 'touch %s' % destPath + '/rm.updatefiles' )
+			progressDialog.update( 100, MR_LANG( 'Data copy completed' ), MR_LANG( 'Finishing...' ) )
+			time.sleep( 1 )
+			progressDialog.update( 0, '', '' )
+			progressDialog.close( )
+			return True
+
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( destPath )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
 

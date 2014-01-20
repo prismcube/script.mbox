@@ -130,10 +130,11 @@
 	<string id="1130">SQL error or broken database</string>
 	<string id="1131">If the problem continues, force repository refresh</string>
 	<string id="1132">( SYSTEM > Add-ons > Get Add-ons > Press i button > Force refresh )</string>
-	<string id="1133">Timer</string>
+	<string id="1133">Installing unverified addons may slow your box down.</string>
 	<string id="1134">The Timer displays the list of all your timer recordings</string>
 	<string id="1135">Add Manual Timer</string>
 	<string id="1136">Delete Timer</string>
+	<string id="1137">Installing unverified addons may slow your box down.</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

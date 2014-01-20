@@ -4,7 +4,7 @@ from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute, XBMC_GetCurrentLanguage
 from pvr.gui.GuiConfig import *
 from pvr.Util import TimeToString, TimeFormatEnum
 
@@ -13,7 +13,7 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 else :
@@ -245,6 +245,7 @@ class DataCacheMgr( object ) :
 	def Load( self ) :
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
+		self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
@@ -3075,4 +3076,12 @@ class DataCacheMgr( object ) :
 	def Splash_StartAndStop( self, aStartStop ) :
 		return self.mCommander.Splash_StartAndStop( aStartStop )
 
+
+	def SyncLanguagePropFromXBMC( self, aLangauge ) :
+		currentLanguageProp = ElisPropertyEnum( 'Language', self.mCommander ).GetProp( )
+		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp :
+			prop = GetXBMCLanguageToPropLanguage( aLangauge )
+			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
+			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 

@@ -268,8 +268,10 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						prop = GetXBMCLanguageToProp( menuLanguageList[ ret ] )
+						prop = GetXBMCLanguageToPropLanguage( menuLanguageList[ ret ] )
 						ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+						prop = GetXBMCLanguageToPropAudioLanguage( menuLanguageList[ ret ] )
+						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 						self.mInitialized = False
 						self.StopCheckNetworkTimer( )
 						time.sleep( 0.5 )
@@ -482,6 +484,7 @@ class Configure( SettingWindow ) :
 				mLine = MR_LANG( 'System is restarting' ) + '...'
 				xbmc.executebuiltin( 'Notification( %s, %s, 3000, DefaultIconInfo.png )'% ( mHead, mLine ) )
 				time.sleep( 2 )
+	 			xbmc.executebuiltin( "Custom.SetLanguage(%s,onlyxml)" % GetPropLanguageToXBMCLanguage( ElisPropertyEnum( 'Language', self.mCommander ).GetProp( ) ) )
 				self.mDataCache.System_Reboot( )
 
 		elif selectedId == E_FACTORY_RESET and groupId == E_Input02 :
