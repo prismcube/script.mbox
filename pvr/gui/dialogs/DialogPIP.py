@@ -654,17 +654,23 @@ class DialogPIP( BaseDialog ) :
 				dialog.SetDialogProperty( lblTitle, lblMsg )
 				dialog.doModal( )
 
-			if self.mDataCache.PIP_IsStarted( ) :
-				self.mDataCache.PIP_Stop( )
-
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if ( not isFail ) and fakeChannel and iChannel :
-				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
-				if not ret :
+				if iChannel.mSid == fakeChannel.mSid and iChannel.mTsid == fakeChannel.mTsid and iChannel.mOnid == fakeChannel.mOnid :
+					LOG_TRACE( '[PIP] Can not switch PIP, Same channel' )
 					isFail = True
-					LOG_TRACE( '[PIP] Fail to switch' )
 
-				fakeChannel = iChannel
+				else :
+					if self.mDataCache.PIP_IsStarted( ) :
+						self.mDataCache.PIP_Stop( )
+
+					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
+					if ret :
+						fakeChannel = iChannel
+
+					else :
+						isFail = True
+						LOG_TRACE( '[PIP] Fail to switch, Tune fail full screen' )
 
 			if isFail :
 				if fakeChannel and ( not fakeChannel.mLocked ) and \
