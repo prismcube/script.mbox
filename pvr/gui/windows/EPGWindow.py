@@ -1733,7 +1733,7 @@ class EPGWindow( BaseWindow ) :
 		mTitle = MR_LANG( 'Select Timer' )
 		lblTitle = '%s'% mTitle
 
-		channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+		channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 		if channel :
 			if E_V1_2_APPLY_PRESENTATION_NUMBER :
 				channelNo = self.mDataCache.CheckPresentationNumber( channel )

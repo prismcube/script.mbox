@@ -592,6 +592,7 @@ class Configure( SettingWindow ) :
 
 			time.sleep(1)
 			self.VideoRestore( selectIdx, hdmiList[selectIdx].mDescription )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
 
 	def VideoRestore( self, aRestoreIdx, aRestoreValue ) :

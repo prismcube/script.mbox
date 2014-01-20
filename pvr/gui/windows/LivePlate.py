@@ -1408,7 +1408,7 @@ class LivePlate( LivePlateWindow ) :
 					iChName   = recInfo.mChannelName
 					iChNumber = recInfo.mChannelNo
 
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber
@@ -1431,7 +1431,7 @@ class LivePlate( LivePlateWindow ) :
 					iChName   = recInfo.mChannelName
 					iChNumber = recInfo.mChannelNo
 
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber
@@ -1451,7 +1451,7 @@ class LivePlate( LivePlateWindow ) :
 					iChName   = recInfo.mChannelName
 					iChNumber = recInfo.mChannelNo
 
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = recInfo.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber

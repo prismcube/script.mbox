@@ -392,6 +392,7 @@ E_PARENTLOCK_EIT        = 1
 E_CHECK_PARENTLOCK		= 1
 
 E_PIP_STOP				= 1
+E_PIP_CHECK_FORCE		= 2
 
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
@@ -473,6 +474,7 @@ E_DEFAULT_ACTION_CLICK_EVENT	= 1000
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
+E_VOLITILE_PIP_STATUS_PATH = '/mtmp/PIPStatus'
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False

@@ -13,7 +13,8 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory
+
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 else :
@@ -173,7 +174,9 @@ class DataCacheMgr( object ) :
 		self.mRootWindow						= None
 		self.mHasLinkageService					= False
 
-		self.mPIPStart							= False
+		self.mPIPStart							= self.PIP_IsStarted( )
+		self.mCurrentChannelPIP					= None
+		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
 
@@ -1325,16 +1328,21 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
-	def Channel_GetByNumber( self, aNumber, aUseDB = False ) :
+	def Channel_GetByNumber( self, aNumber, aUseDB = False, aTable = E_TABLE_ZAPPING ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
 
 		else :
 			cacheChannel = self.mChannelListHash.get( aNumber, None )
+			if aTable == E_TABLE_ALLCHANNEL :
+				cacheChannel = self.mAllChannelListHash.get( aNumber, None )
+
 			if cacheChannel == None :
 				return None
 
@@ -1780,7 +1788,7 @@ class DataCacheMgr( object ) :
 		self.mZappingListChange = aChange
 
 
-	def GetChannelByTimer( self, aSid, aTsid, aOnid ) :
+	def GetChannelByIDs( self, aSid, aTsid, aOnid ) :
 		if self.mChannelListHashForTimer == None or len( self.mChannelListHashForTimer ) <= 0 :
 			return None
 		return self.mChannelListHashForTimer.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
@@ -2381,6 +2389,12 @@ class DataCacheMgr( object ) :
 
 				self.Frontdisplay_Resolution( iconIndex )
 
+				if self.mOldHdmiFormatIndex != iconIndex and self.PIP_GetStatus( ) :
+					import pvr.gui.DialogMgr as DiaMgr
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
+
+				self.mOldHdmiFormatIndex = iconIndex
+
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
 		play = 1	#on
@@ -2931,6 +2945,7 @@ class DataCacheMgr( object ) :
 
 
 	def PIP_SetTunableList( self ) :
+		self.PIP_StopByDeleteChannel( )
 		self.mChannelListPIP = self.PIP_InitChannel( )
 		self.mChannelListHashPIP = {}
 
@@ -2978,6 +2993,10 @@ class DataCacheMgr( object ) :
 
 	def PIP_EnableAudio( self, aEnable = True ) :
 		return self.mCommander.PIP_EnableAudio( aEnable )
+
+
+	def PIP_IsStarted( self ) :
+		return self.mCommander.PIP_IsStarted( )
 
 
 	def PIP_StopIfStarted( self ) :
@@ -3071,6 +3090,112 @@ class DataCacheMgr( object ) :
 			hashPIP = self.mPresentNumberHashPIP
 
 		return hashPIP
+
+
+	def LoadPIPStatus( self ) :
+		if CheckDirectory( E_VOLITILE_PIP_STATUS_PATH ) :
+			try :
+				fd = open( E_VOLITILE_PIP_STATUS_PATH, 'r' )
+				lines = fd.readlines( )
+				fd.close( )
+				RemoveDirectory( E_VOLITILE_PIP_STATUS_PATH )
+				#LOG_TRACE( '---------------pipStatus\n%s'% lines )
+
+				isStart   = 'False'
+				pipLock   = 'False'
+				pipBlank  = 'False'
+				pipSignal = 'True'
+
+				for line in lines :
+					value = ParseStringInPattern( '=', line )
+
+					if not value or len( value ) < 2 :
+						continue
+
+					if not value[0] :
+						continue
+
+					LOG_TRACE( '%s=%s\n'% ( value[0], value[1] ) )
+					if value[0] == 'PIPStart' :
+						isStart = value[1]
+					elif value[0] == 'PIPSignal' :
+						pipSignal = value[1]
+					elif value[0] == 'BlankPIP' :
+						pipBlank = value[1]
+					elif value[0] == 'PIPLock' :
+						pipLock = value[1]
+
+				#LOG_TRACE( '---------------pipStatus start[%s] blank[%s] signal[%s]'% ( isStart, pipBlank, pipSignal ) )
+				if isStart == 'True' :
+					import pvr.gui.DialogMgr as DiaMgr
+					self.PIP_SetStatus( True )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( )
+					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', pipLock )
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', pipBlank )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', pipSignal )
+					#LOG_TRACE( '-----------------------------setProperty blank[%s] signal[%s]'% ( pipBlank, pipSignal ) )
+
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+
+
+	def SavePIPStatus( self ) :
+		isSave = True
+		if self.PIP_GetStatus( ) :
+			try :
+				fd = open( E_VOLITILE_PIP_STATUS_PATH, 'w', 0644 )
+				fd.writelines( 'PIPStart=True\n' )
+				fd.writelines( 'BlankPIP=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'BlankPIP' ) )
+				fd.writelines( 'PIPSignal=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) )
+				fd.writelines( 'PIPLock=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'iLockPIP' ) )
+
+				fd.close( )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+				isSave = False
+
+		return isSave
+
+
+	def PIP_GetCurrentChannel( self ) :
+		return self.mCurrentChannelPIP
+
+
+	def PIP_SetCurrentChannel( self, aChannel = None ) :
+		if aChannel :
+			self.mCurrentChannelPIP = deepcopy( aChannel )
+
+
+	def PIP_StopByDeleteChannel( self ) :
+		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s]'% self.PIP_GetStatus( ) )
+
+		#1. check pip start?
+		if not self.PIP_GetStatus( ) :
+			return
+
+		#2. exist current pip?
+		pChannel = self.PIP_GetCurrentChannel( )
+		if not pChannel :
+			return
+		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s] pChannel[%s %s] lock[%s]'% ( self.PIP_GetStatus( ),pChannel.mNumber,pChannel.mName,pChannel.mLocked ) )
+
+		#3. isMove? find change channel
+		reTunePIP = False
+		fChannel = self.GetChannelByIDs( pChannel.mSid, pChannel.mTsid, pChannel.mOnid )
+		if not fChannel or fChannel.mSkipped :
+			reTunePIP = True
+			fChannel = self.Channel_GetCurrent( )
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			LOG_TRACE( 'deleted channel, reTune current pip' )
+
+		else :
+			if not fChannel.mLocked :
+				reTunePIP = True
+				LOG_TRACE( 'edit channel, reTune pip' )
+
+		if reTunePIP :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( fChannel )
 
 
 	def Splash_StartAndStop( self, aStartStop ) :

@@ -140,15 +140,15 @@ class GlobalEvent( object ) :
 					if mPlayingRecord :
 						#isArchive and recordKey == EOF Key
 						if mPlayingRecord.mRecordKey == aEvent.mKey :
-							LOG_TRACE('--------------------------global stop' )
+							LOG_TRACE('global stop ------ Player_Stop' )
 							self.mDataCache.Player_Stop( )
 					else :
 						#isTimeshift
-						LOG_TRACE('--------------------------global stop' )
+						LOG_TRACE('global stop ------ Player_Stop' )
 						self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
-			LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+			#LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
@@ -165,21 +165,30 @@ class GlobalEvent( object ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'NoService' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :#6
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :#7
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :#5
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
-			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :
-				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'False' )
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
+				self.CheckTunablePIP( ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE )
+
+			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :#4
+				blank = 'False'
+				pChannel = self.mDataCache.PIP_GetCurrentChannel( )
+				if pChannel and pChannel.mLocked :
+					blank = 'True'
+				#self.mDataCache.PIP_AVBlank( False )
+				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', blank )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_CHECK_FORCE )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
@@ -200,6 +209,7 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelChangeResult( ).getName( ) :
 			self.CheckParentLock( E_PARENTLOCK_INIT )
+			self.CheckTunablePIP( )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			self.mDataCache.Frontdisplay_ResolutionByIdentified( aEvent )
@@ -595,6 +605,7 @@ class GlobalEvent( object ) :
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
+				self.CheckTunablePIP( -1, True )
 			else :
 				LOG_TRACE( 'Alarm view timer' )
 				return
@@ -645,7 +656,7 @@ class GlobalEvent( object ) :
 				tempDuration = '%s'% TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM )
 				mDate = '[%s %s]'% ( tempDate, tempDuration )
 
-				channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 				iChNumber = timer.mChannelNo
 				if channel :
 					iChNumber = channel.mNumber
@@ -730,4 +741,37 @@ class GlobalEvent( object ) :
 					WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					LOG_TRACE('LAEL98 TEST')				
 					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
-					
+
+
+	def CheckTunablePIP( self, aEvent = None, aForce = False ) :
+		# 1. isStart PIP ?
+		if not self.mDataCache.PIP_GetStatus( ) :
+			return
+
+		if aEvent == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( iChannel )
+			return
+
+		# 2. isRecording ?
+		if not aForce and self.mDataCache.GetChangeDBTableChannel( ) != E_TABLE_ZAPPING :
+			return
+
+		oldCh = self.mDataCache.Channel_GetOldChannel( )
+		curCh = self.mDataCache.Channel_GetCurrent( )
+
+		if not oldCh or ( not curCh ) :
+			return
+
+		#LOG_TRACE( 'zappingResult--old[%s %s] cur[%s %s]'% ( oldCh.mNumber, oldCh.mName, curCh.mNumber, curCh.mName ) )
+
+		# 3. different tp zapping ?
+		if oldCh.mCarrier.mDVBS.mSatelliteLongitude != curCh.mCarrier.mDVBS.mSatelliteLongitude or \
+		   oldCh.mCarrier.mDVBS.mSatelliteBand != curCh.mCarrier.mDVBS.mSatelliteBand or \
+		   oldCh.mCarrier.mDVBS.mFrequency != curCh.mCarrier.mDVBS.mFrequency or \
+		   oldCh.mCarrier.mDVBS.mSymbolRate != curCh.mCarrier.mDVBS.mSymbolRate or \
+		   oldCh.mCarrier.mDVBS.mPolarization != curCh.mCarrier.mDVBS.mPolarization :
+			self.mDataCache.PIP_SetTunableList( )
+			LOG_TRACE( 'different TP zapping, refresh TunableList' )
+
+

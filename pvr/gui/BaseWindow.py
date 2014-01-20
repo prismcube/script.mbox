@@ -571,8 +571,8 @@ class BaseWindow( BaseObjectWindow ) :
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr
-			import pvr.gui.DialogMgr as DiaMgr
-			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+			#import pvr.gui.DialogMgr as DiaMgr
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 
 			overlayImage = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 			radioImage = self.getControl( E_SETTING_PIP_RADIO_IMAGE )

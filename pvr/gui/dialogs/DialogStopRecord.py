@@ -259,7 +259,7 @@ class DialogStopRecord( BaseDialog ) :
 			#channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
 
 			iChNumber = timer.mChannelNo
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( i )
 			if recInfo :
 				iChNumber = recInfo.mChannelNo

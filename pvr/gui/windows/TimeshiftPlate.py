@@ -213,6 +213,12 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.GetFocusId( )
+			if self.mFocusId != E_CONTROL_ID_BUTTON_CURRENT :
+				self.setFocusId( E_CONTROL_ID_BUTTON_CURRENT )
+				self.RestartAutomaticHide( )
+				return
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
@@ -525,6 +531,11 @@ class TimeShiftPlate( BaseWindow ) :
 				#self.ShowBookmark( )
 				LOG_TRACE('--------------------------onEvent[%s]'% aEvent.getName() )
 				self.UpdateBookmarkByThumbnail( aEvent.mRecordKey, aEvent.mTimeMS )
+
+			elif aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
+				if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
+					thread = threading.Timer( 0.1, self.TimeshiftAction, [E_CONTROL_ID_BUTTON_STOP] )
+					thread.start( )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -1405,7 +1416,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			iChNumber = recInfo.mChannelNo
 			if channel :
 				iChNumber = channel.mNumber
@@ -1428,7 +1439,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			if channel :
 				iChNumber = channel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
@@ -1447,7 +1458,7 @@ class TimeShiftPlate( BaseWindow ) :
 				iChName   = recInfo.mChannelName
 				iChNumber = recInfo.mChannelNo
 
-			channel = self.mDataCache.GetChannelByTimer( timer.mSid, timer.mTsid, timer.mOnid )
+			channel = self.mDataCache.GetChannelByIDs( timer.mSid, timer.mTsid, timer.mOnid )
 			iChNumber = recInfo.mChannelNo
 			if channel :
 				iChNumber = channel.mNumber

@@ -28,6 +28,7 @@ E_DOWNLOAD_PATH_SHURL     = '/mtmp/shUrl'
 E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
+E_DEFAULT_PATH_SAMBA      = '/media/smb'
 #E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 
 if E_UPDATE_TEST_TESTBED :
@@ -272,7 +273,7 @@ class SystemUpdate( SettingWindow ) :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
-		LOG_TRACE( '-----------click id[%s]'% groupId )
+		#LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
 			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
 			self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
@@ -389,10 +390,10 @@ class SystemUpdate( SettingWindow ) :
 				return
 
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
-			LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
+			#LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
 		if self.mPVSData and self.mPVSData.mError == 0 :
-			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
+			#LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 			if self.mGetDownloadThread :
@@ -964,24 +965,30 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		urlType = urlparse.urlparse( zipFile ).scheme
-		if urlType == 'ftp' :
-			zipFile = self.GetDownloadByInstant( zipFile )
-			if zipFile == -1 :
-				self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
-				return
+		if urlType :
+			if urlType == 'ftp' :
+				zipFile = self.GetDownloadByInstant( zipFile )
+				if zipFile == -1 :
+					self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
+					return
 
-			elif zipFile == False :
-				LOG_TRACE( 'cancel or aborted' )
-				return
+				elif zipFile == False :
+					LOG_TRACE( 'cancel or aborted' )
+					return
 
-			if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
-				LOG_TRACE( 'no download' )
-				return
+				if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
+					LOG_TRACE( 'no download' )
+					return
 
-		elif urlType == 'upnp' or urlType == 'zeroconf' or urlType == 'smb' or urlType == 'daap' :
-			lblLine = MR_LANG( 'No %s support' )% urlType
-			self.DialogPopup( E_STRING_ERROR, lblLine )
-			return
+			elif urlType == 'smb' :
+				zipFile = MountToSMB( zipFile, E_DEFAULT_PATH_SAMBA )
+				LOG_TRACE( '-----------------------smb zipFile[%s]'% zipFile )
+
+			else :
+				# upnp, zeroconf, daap, ...
+				lblLine = MR_LANG( 'No %s support' )% urlType
+				self.DialogPopup( E_STRING_ERROR, lblLine )
+				return
 
 		if not CheckDirectory( zipFile ) :
 			LOG_TRACE( 'not found zip[%s]'% zipFile )
@@ -1012,6 +1019,9 @@ class SystemUpdate( SettingWindow ) :
 		if shell < E_RESULT_UPDATE_DONE :
 			mTitle = E_STRING_ERROR
 			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if urlType == 'smb' :
+				ExecuteShell( 'umount %s'% E_DEFAULT_PATH_SAMBA )
 
 			if shell == E_RESULT_ERROR_FAIL :
 				errmsg = E_STRING_CHECK_CHANNEL_FAIL

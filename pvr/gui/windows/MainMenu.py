@@ -250,6 +250,10 @@ class MainMenu( BaseWindow ) :
 			contextAction = dialog.GetSelectedAction( )
 
 			if contextAction == 0 :
+				if not self.mDataCache.SavePIPStatus( ) :
+					RemoveDirectory( E_VOLITILE_PIP_STATUS_PATH )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+
 				self.setProperty( 'RestartGUI', 'true' )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				#self.mDataCache.Splash_StartAndStop( 1 )

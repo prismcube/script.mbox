@@ -181,6 +181,7 @@ class WindowMgr( object ) :
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 					self.mWindows[aWindowId].onInit( )
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
@@ -220,6 +221,7 @@ class WindowMgr( object ) :
 							self.mWindows[parentId].PreAction( )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
+						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 						self.mWindows[parentId].onInit( )									
 					else :
 						self.mWindows[currentId].close( )
