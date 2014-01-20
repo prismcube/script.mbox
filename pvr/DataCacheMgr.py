@@ -3169,7 +3169,7 @@ class DataCacheMgr( object ) :
 		fChannel = self.GetChannelByIDs( pChannel.mSid, pChannel.mTsid, pChannel.mOnid )
 		if not fChannel or fChannel.mSkipped :
 			reTunePIP = True
-			fChannel = self.mDataCache.Channel_GetCurrent( )
+			fChannel = self.Channel_GetCurrent( )
 			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
 			LOG_TRACE( 'deleted channel, reTune current pip' )
 
