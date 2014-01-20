@@ -532,6 +532,11 @@ class TimeShiftPlate( BaseWindow ) :
 				LOG_TRACE('--------------------------onEvent[%s]'% aEvent.getName() )
 				self.UpdateBookmarkByThumbnail( aEvent.mRecordKey, aEvent.mTimeMS )
 
+			elif aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
+				if aEvent.mResult == ElisEnum.E_VIEWTIMER_SUCCESS :
+					thread = threading.Timer( 0.1, self.TimeshiftAction, [E_CONTROL_ID_BUTTON_STOP] )
+					thread.start( )
+
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 

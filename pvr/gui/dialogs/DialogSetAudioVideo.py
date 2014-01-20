@@ -203,6 +203,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		if selectAction > -1 :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
 			self.SetControlLabel2String( E_DialogInput02, hdmiList[selectAction].mDescription )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
 			time.sleep(1)
 			self.VideoRestore( selectIdx, hdmiList[selectIdx].mDescription )
@@ -215,6 +216,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		if dialog.IsOK( ) != E_DIALOG_STATE_YES :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( aRestoreIdx )
 			self.SetControlLabel2String( E_DialogInput02, aRestoreValue )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
 
 	def GetAudioTrack( self ) :

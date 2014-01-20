@@ -178,7 +178,7 @@ class GlobalEvent( object ) :
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
-				self.CheckTunablePIP( aEvent )
+				self.CheckTunablePIP( ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_SUCCESS :#4
 				blank = 'False'
@@ -602,6 +602,7 @@ class GlobalEvent( object ) :
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrentByUpdateSync( aEvent.mChannelNo, aEvent.mServiceType )
+				self.CheckTunablePIP( -1, True )
 			else :
 				LOG_TRACE( 'Alarm view timer' )
 				return
@@ -739,18 +740,18 @@ class GlobalEvent( object ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
 
 
-	def CheckTunablePIP( self, aEvent = None ) :
+	def CheckTunablePIP( self, aEvent = None, aForce = False ) :
 		# 1. isStart PIP ?
 		if not self.mDataCache.PIP_GetStatus( ) :
 			return
 
-		if aEvent and aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
+		if aEvent == ElisEnum.E_CC_PIP_FAILED_TUNE_NOT_AVAILABLE :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( iChannel )
 			return
 
 		# 2. isRecording ?
-		if self.mDataCache.GetChangeDBTableChannel( ) != E_TABLE_ZAPPING :
+		if not aForce and self.mDataCache.GetChangeDBTableChannel( ) != E_TABLE_ZAPPING :
 			return
 
 		oldCh = self.mDataCache.Channel_GetOldChannel( )

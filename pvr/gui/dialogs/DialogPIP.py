@@ -388,7 +388,7 @@ class DialogPIP( BaseDialog ) :
 			LOG_ERR( '[PIP] except[%s]'% e )
 
 
-	def PIP_SetPositionSync( self ) :
+	def PIP_SetPositionSync( self, aSetPosition = False ) :
 		if not self.PIP_LoadToBaseControlIDs( ) :
 			return
 
@@ -421,6 +421,13 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		LOG_TRACE( '[PIP] success sync to pip controls position' )
+
+		if aSetPosition and self.mDataCache.PIP_GetStatus( ) :
+			from pvr.GuiHelper import GetInstanceSkinPosition
+			skinPos = GetInstanceSkinPosition( )
+			x, y, w, h = skinPos.GetPipPosition2( x, y, w, h )
+
+			self.mDataCache.PIP_SetDimension( x, y, w, h )
 
 
 	def PIP_LoadToBaseControlIDs( self ) :
