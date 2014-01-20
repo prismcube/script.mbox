@@ -71,7 +71,8 @@ class DialogRootfsBackup( BaseDialog ) :
 			if self.mCheckStatusRunning == False :
 				break
 
-			self.mCtrlLabelString.setLabel( MR_LANG( 'Processing - %s%%' ) % i )
+			strProcess = MR_LANG( 'Processing' ) + ' - %s%%'
+			self.mCtrlLabelString.setLabel( strProcess % i )
 			self.mCtrlProgress.setPercent( i )
 
 		self.mCheckStatusSecond = None
@@ -164,7 +165,10 @@ class DialogRootfsBackup( BaseDialog ) :
 	def Close( self ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		if self.mReturnShell == False :
-			self.mCtrlLabelString.setLabel( MR_LANG( 'Processing - Cancelling...' ) )
+			strProcess = MR_LANG( 'Processing' )
+			strCancel = MR_LANG( 'Canceling' )
+			strClose = strProcess + ' - ' + strCancel + '...'
+			self.mCtrlLabelString.setLabel( strClose )
 			KillScript( self.mProcessId )
 		if self.mCheckStatusFileThread :
 			self.mCheckStatusRunning = False

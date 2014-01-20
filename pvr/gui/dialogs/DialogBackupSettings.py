@@ -28,10 +28,10 @@ class DialogBackupSettings( SettingDialog ) :
 		self.mCtrlRadioXBMC.setSelected( False )
 		self.mCtrlRadioConfig.setSelected( False )
 
-		self.mCtrlRadioXBMC.setLabel( MR_LANG( 'XBMC data' ) )
-		self.mCtrlRadioConfig.setLabel( MR_LANG( 'STB Configuration data' ) )
+		self.mCtrlRadioXBMC.setLabel( MR_LANG( 'XBMC Addons and Userdata' ) )
+		self.mCtrlRadioConfig.setLabel( MR_LANG( 'STB Configuration' ) )
 		
-		self.SetHeaderLabel( MR_LANG( 'Select additional backup data' ) )
+		self.SetHeaderLabel( MR_LANG( 'Select Data To Be Backup ( Optional )' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Start' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.mIsOk = E_DIALOG_STATE_NO

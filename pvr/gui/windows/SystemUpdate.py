@@ -332,13 +332,13 @@ class SystemUpdate( SettingWindow ) :
 			else :
 				usbPath = self.mDataCache.USB_GetMountPath( )
 				if not usbPath :
-					LOG_TRACE( 'Not Exist USB' )
+					LOG_TRACE( 'No USB connected' )
 					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 					return
 				else :
 					context = []
-					context.append( ContextItem( MR_LANG( 'Backup to usb' ), 0 ) )
-					context.append( ContextItem( MR_LANG( 'Restore from usb' ), 1 ) )
+					context.append( ContextItem( MR_LANG( 'Backup system image to USB' ), 0 ) )
+					context.append( ContextItem( MR_LANG( 'Restore backup from USB' ), 1 ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 					dialog.SetProperty( context )
@@ -350,7 +350,7 @@ class SystemUpdate( SettingWindow ) :
 					elif contextAction == 1 :
 						if self.RestoreBackup( ) == False :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data restore failed' ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Restore backup failed' ) )
 							dialog.doModal( )
 
 
@@ -1140,7 +1140,7 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
-			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore' ), '',  MR_LANG( 'Backup and Restore' ) )			
+			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore System' ), '',  MR_LANG( 'Backup whole system image to USB or restore it from USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -1558,13 +1558,13 @@ class SystemUpdate( SettingWindow ) :
 			return sizeCheck
 
 		else :
-			LOG_TRACE( 'Not Exist HDD' )
+			LOG_TRACE( 'No HDD exist' )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
 			E_UPDATE_FIRMWARE_USE_USB = True
 
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if not usbPath :
-				LOG_TRACE( 'Not Exist USB' )
+				LOG_TRACE( 'No USB connected' )
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 				return False
 
@@ -2231,7 +2231,7 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
 
 		if isExist == False :
-			LOG_TRACE( '----------------download fail, shell none' )
+			LOG_TRACE( '----------------download failed, shell none' )
 			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE] )
 			thread.start( )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
@@ -2244,7 +2244,7 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 
 		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
-			LOG_TRACE( '----------------verify fail, shell err' )
+			LOG_TRACE( '----------------verification failed, shell err' )
 			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_VERIFY] )
 			thread.start( )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
@@ -2679,7 +2679,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed Data backup' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Data Backup' ), MR_LANG( 'Complete' ) )
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2712,7 +2712,7 @@ class SystemUpdate( SettingWindow ) :
 		progressDialog = None
 		if os.path.exists( destPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'The filename file already exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'The Filename Already Exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				RemoveDirectory( destPath )
@@ -2736,9 +2736,11 @@ class SystemUpdate( SettingWindow ) :
 
 			# Backup XBMC Data
 			if aIsSelectedXBMC :
+				strInit = MR_LANG( 'Initializing process' ) + '...'
+				strReady = MR_LANG( 'Ready to start' ) + '...'
 				progressDialog = xbmcgui.DialogProgress( )
-				progressDialog.create( MR_LANG( 'XBMC data backup' ), MR_LANG( 'Initializing copy...' ) )
-				progressDialog.update( 0, MR_LANG( 'Ready...' ) )
+				progressDialog.create( MR_LANG( 'XBMC Data Backup' ), strInit )
+				progressDialog.update( 0, strReady )
 
 				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
 				os.system( 'echo cd /mnt/hdd0/program > /tmp/xbmc_backup.sh' )
@@ -2748,7 +2750,8 @@ class SystemUpdate( SettingWindow ) :
 				count = 1
 				while pipe.poll( ) == None :
 					if progressDialog.iscanceled( ) :
-						progressDialog.update( percent, MR_LANG( 'Backup cancelling...' ) )
+						strCancel = MR_LANG( 'Canceling' ) + '...'
+						progressDialog.update( percent, strCancel )
 						self.OpenBusyDialog( )
 						pipe.kill( )
 						RemoveDirectory( destPath )
@@ -2763,17 +2766,18 @@ class SystemUpdate( SettingWindow ) :
 						percent = int( 1.0 * count / fileCount * 100 )
 						if percent > 99 :
 							percent = 99
-						progressDialog.update( percent, MR_LANG( 'Copying data...' ), '%s' % line.strip( ) )
+						strCopy = MR_LANG( 'Copying data' ) + '...'
+						progressDialog.update( percent, strCopy, '%s' % line.strip( ) )
 						count = count + 1
 
-				progressDialog.update( 100, MR_LANG( 'XBMC data Backup completed' ), MR_LANG( 'Finished' ) )
+				progressDialog.update( 100, MR_LANG( 'XBMC Data Backup' ), MR_LANG( 'Complete' ) )
 				time.sleep( 1 )
 				progressDialog.update( 0, '' )
 				progressDialog.close( )
 
-			# Backup RootFs
+			# Backup RootFS
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ROOTFS_BACKUP )
-			dialog.SetDialogProperty( MR_LANG( 'Backup File system' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, destPath )
+			dialog.SetDialogProperty( MR_LANG( 'File System Backup' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, destPath )
 			dialog.doModal( )
 
 			if dialog.GetResultStatus( ) :
@@ -2803,7 +2807,7 @@ class SystemUpdate( SettingWindow ) :
 		restoreList = glob.glob( os.path.join( usbpath, 'update_ruby_backup_*') )
 		if len( restoreList ) <= 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No restore data in directory' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No backup data found' ) )
 			dialog.doModal( )
 			return False
 
@@ -2812,7 +2816,7 @@ class SystemUpdate( SettingWindow ) :
 			makelist.append( os.path.basename( restoreList[i] ) )
 
 		dialog = xbmcgui.Dialog( )
-		select = dialog.select( MR_LANG( 'Select Restore File' ), makelist, False )
+		select = dialog.select( MR_LANG( 'Select Backup File' ), makelist, False )
 		if select >= 0 :
 			ret = self.ProcessRestore( restoreList[ select ] )
 			self.OpenBusyDialog( )
@@ -2823,10 +2827,10 @@ class SystemUpdate( SettingWindow ) :
 				return False
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Completed' ), MR_LANG( 'Completed restore data to usb' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Backup Data Copy to USB' ), MR_LANG( 'Complete' ) )
 				dialog.doModal( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'restore now?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Do you want to restore your system now?' ) )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.mDataCache.System_Reboot( )
@@ -2837,7 +2841,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProcessRestore( self, aPath ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete file' ), MR_LANG( 'Delete this restore data after update?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete File' ), MR_LANG( 'Do you want to delete the backup file after restoring system?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			removeUpdate = True
@@ -2860,16 +2864,19 @@ class SystemUpdate( SettingWindow ) :
 		self.CloseBusyDialog( )
 		progressDialog = None
 		try :
+			strInit = MR_LANG( 'Initializing process' ) + '...'
+			strReady = MR_LANG( 'Ready to start' ) + '...'
 			progressDialog = xbmcgui.DialogProgress( )
-			progressDialog.create( MR_LANG( 'Copy restore data' ), MR_LANG( 'Initializing copy...' ) )
-			progressDialog.update( 0, MR_LANG( 'Copy data...' ) )
+			progressDialog.create( MR_LANG( 'Backup Data Copy' ), strInit )
+			progressDialog.update( 0, strReady )
 
 			count = 1
 			for path in pathlist :
 				percent = int( 1.0 * count / len( pathlist ) * 100 )
 
 				if progressDialog.iscanceled( ) :
-					progressDialog.update( percent, MR_LANG( 'Cancelling...' ) )
+					strCancel = MR_LANG( 'Canceling' ) + '...'
+					progressDialog.update( percent, strCancel )
 					self.OpenBusyDialog( )
 					RemoveDirectory( destPath )
 					self.CloseBusyDialog( )
@@ -2878,9 +2885,14 @@ class SystemUpdate( SettingWindow ) :
 					return False
 
 				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' or path[ len( aPath ) : ] == '/xbmc_backup.tar' :
-					progressDialog.update( percent, MR_LANG( 'Copy data... big file!' ), '%s' % path, MR_LANG( 'Please be patient, ... this may take a few minutes' ) )
+					strBigData = MR_LANG( 'Copying big data' ) + '...'
+					strWait1 = MR_LANG( 'Please wait' ) + '... '
+					strWait2 = MR_LANG( 'This may take a while' )
+					strWait = strWait1 + strWait2
+					progressDialog.update( percent, strBigData, '%s' % path, strWait )
 				else :
-					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, ' ' )
+					strData = MR_LANG( 'Copying data' ) + '...'
+					progressDialog.update( percent, strData, '%s' % path, ' ' )
 
 				destPathCopy = destPath + path[ len( aPath ) : ]
 				if not os.path.exists( os.path.dirname( destPathCopy ) ) :
@@ -2892,7 +2904,7 @@ class SystemUpdate( SettingWindow ) :
 			os.system( 'touch %s' % destPath + '/force.update' )
 			if removeUpdate :
 				os.system( 'touch %s' % destPath + '/rm.updatefiles' )
-			progressDialog.update( 100, MR_LANG( 'Data copy completed' ), MR_LANG( 'Finishing...' ) )
+			progressDialog.update( 100, MR_LANG( 'Backup Data Copy' ), MR_LANG( 'Complete' ) )
 			time.sleep( 1 )
 			progressDialog.update( 0, '', '' )
 			progressDialog.close( )

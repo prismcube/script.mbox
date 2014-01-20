@@ -72,7 +72,7 @@ class DialogUpdateProgress( BaseDialog ) :
 			return
 
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : cancelling' )
+			LOG_TRACE( '------------blocking key : canceling' )
 			if not self.mShowBlink :
 				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
@@ -84,7 +84,7 @@ class DialogUpdateProgress( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if self.mStatusCancel :
-			LOG_TRACE( '------------blocking key : cancelling' )
+			LOG_TRACE( '------------blocking key : canceling' )
 			if not self.mShowBlink :
 				label = '%s%s'% ( MR_LANG( 'Please wait' ), ING )
 				self.AsyncShowAlarm( label )
