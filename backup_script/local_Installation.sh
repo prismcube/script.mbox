@@ -51,17 +51,17 @@ init_path()
 
 	if [ $HDD == true ]; then
 		TOP=$(get_mount_path "media/sdb")
-		XBMC_SOURCE=$(get_mount_path "media/sdb")/update_ruby/xbmc_data
-		XBMC_TARGET=$(get_mount_path "/media/sda3")/.xbmc
-		CONFIG_SOURCE=$(get_mount_path "media/sdb")/update_ruby/config_data
-		CONFIG_TARGET=/root/config/
+		XBMC_SOURCE=$(get_mount_path "media/sdb")/update_ruby/xbmc_backup.tar
+		XBMC_TARGET=$(get_mount_path "/media/sda3")
+		CONFIG_SOURCE=$(get_mount_path "media/sdb")/update_ruby/config_backup.tar
+		CONFIG_TARGET=/root/
 
 	else
 		TOP=$(get_mount_path "media/sda")
-		XBMC_SOURCE=$(get_mount_path "media/sda")/update_ruby/xbmc_data
-		XBMC_TARGET=/root/mnt/hdd0/program/.xbmc/addons
-		CONFIG_SOURCE=$(get_mount_path "media/sda")/update_ruby/config_data
-		CONFIG_TARGET=/root/config/
+		XBMC_SOURCE=$(get_mount_path "media/sda")/update_ruby/xbmc_backup.tar
+		XBMC_TARGET=/root/mnt/hdd0/program/
+		CONFIG_SOURCE=$(get_mount_path "media/sda")/update_ruby/config_backup.tar
+		CONFIG_TARGET=/root/
 	fi
 
 	echo "xbmc source $XBMC_SOURCE"
@@ -87,17 +87,26 @@ restore()
 {
 
 # check restort shell
-	if [ -d $XBMC_SOURCE ]; then
+	if [ -f $XBMC_SOURCE ]; then
 		echo "xbmc backup data found. start restore"
-		cp $XBMC_SOURCE/* $XBMC_TARGET/ -a
+		cd $XBMC_TARGET
+		rm -rf $XBMC_TARGET/.xbmc
+		tar xvf $XBMC_SOURCE
 	fi
-	if [ -d $CONFIG_SOURCE ]; then
+	if [ -f $CONFIG_SOURCE ]; then
 		echo "config backup data found. start restore"
-		cp $CONFIG_SOURCE/* $CONFIG_SOURCE/ -a
+		cd $CONFIG_TARGET
+		tar xvf $CONFIG_SOURCE
 	fi
 }
 
-
+check_delete()
+{
+#fi exists delete flag
+	if [ -f $TOP/update_ruby/rm.updatefiles ]; the
+		rm -rf $TOP/update_ruby
+	fi
+}
 # function : void do_start()
 # - return : 
 do_start()
@@ -107,6 +116,7 @@ do_start()
 	mount_ubifs
 	echo "config, rootfs mount done"
 	restore
+	check_delete
 	sync
 }
 

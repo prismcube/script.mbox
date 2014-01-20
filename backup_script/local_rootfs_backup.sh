@@ -132,7 +132,7 @@ echo "--------------------------" >> /tmp/BackupSuite.log
 
 #############################  MAKING ROOT.UBI(FS) ############################
 echo "Create: rootfs.rootfs.ubi"
-echo "Please be patient, ... will take about 10-15 minutes" >> /tmp/BackupSuite.log
+echo "Please be patient, ... will take about several minutes" >> /tmp/BackupSuite.log
 
 $MKFS -r /tmp/bi/root -o "$WORKDIR/root.ubi" $MKUBIFS_ARGS
 if [ -f "$WORKDIR/root.ubi" ] ; then
@@ -177,8 +177,14 @@ if [ -f $WORKDIR/rootfs.rootfs.ubi ]; then
 		md5sum $WORKDIR/rootfs.rootfs.ubi > $WORKDIR/rootfs.rootfs.ubi.md5
 fi
 
+#Success backup, so umount and remove directories.
+umount /tmp/bi/root > /dev/null 2>&1
+rmdir /tmp/bi/root > /dev/null 2>&1
+rmdir /tmp/bi > /dev/null 2>&1
+
 echo "Making md5sum complete." >> /tmp/BackupSuite.log
 echo "Backup data all completed." >> /tmp/BackupSuite.log
+echo "Backup File system completed." >> /tmp/BackupSuite.log
 echo "Done" >> /tmp/BackupSuite.log
 sleep 3
 exit 0

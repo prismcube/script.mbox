@@ -130,6 +130,7 @@
 	<string id="1130">SQL error or broken database</string>
 	<string id="1131">If the problem continues, force repository refresh</string>
 	<string id="1132">( SYSTEM > Add-ons > Get Add-ons > Press i button > Force refresh )</string>
+	<string id="1133">Installing unverified addons may slow your box down.</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

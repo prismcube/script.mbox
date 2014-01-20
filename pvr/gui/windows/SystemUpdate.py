@@ -118,9 +118,11 @@ UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
 UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
 
 # RootFs Backup Script
-FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/local_rootfs_backup.sh'
+FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_rootfs_backup.sh'
+FILE_BACKUP_EXCLUDE					= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/backup_exclude'
+FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_Installation.sh'
 FILE_ROOTFS_BACKUP_LOG				= '/tmp/BackupSuite.log'
-FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/local_Installation.sh'
+
 
 class SCRIPTClass( object ) :
 	def __init__( self ) :
@@ -2695,29 +2697,29 @@ class SystemUpdate( SettingWindow ) :
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		now = time.localtime( )
 		date = '%04d_%02d_%02d_%02d-%02d' % ( now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min )
-		directoryName = '/update_ruby_backup_%s' % date
+		destPath = usbpath + '/update_ruby_backup_%s' % date
+
 		progressDialog = None
-		if os.path.exists( usbpath + directoryName ) :
+		if os.path.exists( destPath ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'The filename file already exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				RemoveDirectory( usbpath + directoryName )
+				RemoveDirectory( destPath )
 			else :
 				return False
 		try :
-			os.makedirs( usbpath + directoryName )
-			shutil.copy( FILE_ROOTFS_LOCAL_SCRIPT, usbpath + directoryName + '/Installation.sh' )
+			os.makedirs( destPath )
+			shutil.copy( FILE_ROOTFS_LOCAL_SCRIPT, destPath + '/Installation.sh' )
+
 			# Backup Config Data
 			if aIsSelectedConfig :
 				self.OpenBusyDialog( )
-				ret_config = CopyToDirectory( '/config', usbpath + directoryName + '/config_data' )
-				if ret_config :
-					RemoveDirectory( usbpath + directoryName + '/config_data/serial' )
-					RemoveDirectory( usbpath + directoryName + '/config_data/macinfo' )
+				ret_config = os.system( 'tar cvf %s/config_backup.tar /config -X %s' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				if ret_config == 0 :
 					self.CloseBusyDialog( )
 				else :
-					RemoveDirectory( usbpath + directoryName )
+					RemoveDirectory( destPath )
 					os.system( 'sync' )
 					self.CloseBusyDialog( )
 					return False
@@ -2725,40 +2727,40 @@ class SystemUpdate( SettingWindow ) :
 			# Backup XBMC Data
 			if aIsSelectedXBMC :
 				progressDialog = xbmcgui.DialogProgress( )
-				progressDialog.create( MR_LANG( 'Backup xbmc data' ), MR_LANG( 'Initializing copy...' ) )
-				progressDialog.update( 0, MR_LANG( 'Copy data...' ) )
+				progressDialog.create( MR_LANG( 'XBMC data backup' ), MR_LANG( 'Initializing copy...' ) )
+				progressDialog.update( 0, MR_LANG( 'Ready...' ) )
 
-				pathlist = GetDirectoryAllFilePathList( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
+				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
+				pipe = Popen( 'tar cvf %s/xbmc_backup.tar /mnt/hdd0/program/.xbmc/* -X %s' % ( destPath, FILE_BACKUP_EXCLUDE ), shell=True, stdout=PIPE )
 				count = 1
-				for path in pathlist :
-					percent = int( 1.0 * count / len(pathlist) * 100 )
-
+				while pipe.poll( ) == None :
 					if progressDialog.iscanceled( ) :
-						progressDialog.update( percent, MR_LANG( 'Backup Cancelling...' ) )
+						progressDialog.update( percent, MR_LANG( 'Backup cancelling...' ) )
 						self.OpenBusyDialog( )
-						RemoveDirectory( usbpath + directoryName )
+						pipe.kill( )
+						RemoveDirectory( destPath )
 						os.system( 'sync' )
 						self.CloseBusyDialog( )
 						progressDialog.update( 0, '' )
 						progressDialog.close( )
 						return False
 
-					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path[ len('/mnt/hdd0/program/.xbmc') :] )							
-					destPath = usbpath + directoryName + '/xbmc_data'+ path[ len('/mnt/hdd0/program/.xbmc') :]
-					if not os.path.exists( os.path.dirname( destPath ) ) :
-						os.makedirs( os.path.dirname( destPath ) )
+					line = pipe.stdout.readline( )
+					if line != '' :
+						percent = int( 1.0 * count / fileCount * 100 )
+						if percent > 99 :
+							percent = 99
+						progressDialog.update( percent, MR_LANG( 'Copying data...' ), '%s' % line.strip( ) )
+						count = count + 1
 
-					shutil.copy( path, destPath )
-					count = count + 1
-
-				progressDialog.update( 100, MR_LANG( 'Backup completed' ), MR_LANG( 'Finished' ) )
+				progressDialog.update( 100, MR_LANG( 'XBMC data Backup completed' ), MR_LANG( 'Finished' ) )
 				time.sleep( 1 )
 				progressDialog.update( 0, '' )
 				progressDialog.close( )
 
 			# Backup RootFs
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ROOTFS_BACKUP )
-			dialog.SetDialogProperty( MR_LANG( 'File system backup' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, usbpath + directoryName )
+			dialog.SetDialogProperty( MR_LANG( 'Backup File system' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, destPath )
 			dialog.doModal( )
 
 			if dialog.GetResultStatus( ) :
@@ -2768,14 +2770,14 @@ class SystemUpdate( SettingWindow ) :
 				return True
 			else :
 				self.OpenBusyDialog( )
-				RemoveDirectory( usbpath + directoryName )
+				RemoveDirectory( destPath )
 				os.system( 'sync' )
 				self.CloseBusyDialog( )
 				return False
 
 		except Exception, e :
 			LOG_ERR( 'except BackupXBMC [%s]' % e )
-			RemoveDirectory( usbpath + directoryName )
+			RemoveDirectory( destPath )
 			os.system( 'sync' )
 			if progressDialog :
 				progressDialog.close( )
@@ -2821,6 +2823,14 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ProcessRestore( self, aPath ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Delete file' ), MR_LANG( 'Delete this restore data after update?' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			removeUpdate = True
+		else :
+			removeUpdate = False
+
 		self.OpenBusyDialog( )
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
@@ -2849,16 +2859,15 @@ class SystemUpdate( SettingWindow ) :
 					progressDialog.update( percent, MR_LANG( 'Cancelling...' ) )
 					self.OpenBusyDialog( )
 					RemoveDirectory( destPath )
-					os.system( 'sync' )
 					self.CloseBusyDialog( )
 					progressDialog.update( 0, '', '' )
 					progressDialog.close( )
 					return False
 
-				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' :
-					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, MR_LANG( 'Please be patient, ... will take about 1-2 minutes' ) )
+				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' or path[ len( aPath ) : ] == '/xbmc_backup.tar' :
+					progressDialog.update( percent, MR_LANG( 'Copy data... big file!' ), '%s' % path, MR_LANG( 'Please be patient, ... this may take a few minutes' ) )
 				else :
-					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, '' )
+					progressDialog.update( percent, MR_LANG( 'Copy data...' ), '%s' % path, ' ' )
 
 				destPathCopy = destPath + path[ len( aPath ) : ]
 				if not os.path.exists( os.path.dirname( destPathCopy ) ) :
@@ -2868,6 +2877,8 @@ class SystemUpdate( SettingWindow ) :
 				count = count + 1
 
 			os.system( 'touch %s' % destPath + '/force.update' )
+			if removeUpdate :
+				os.system( 'touch %s' % destPath + '/rm.updatefiles' )
 			progressDialog.update( 100, MR_LANG( 'Data copy completed' ), MR_LANG( 'Finishing...' ) )
 			time.sleep( 1 )
 			progressDialog.update( 0, '', '' )

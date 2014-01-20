@@ -784,8 +784,11 @@ def GetDirectorySize( aPath ) :
 	dir_size = 0
 	for ( path, dirs, files ) in os.walk( aPath ) :
 		for file in files :
-			filename = os.path.join( path, file )
-			dir_size += os.path.getsize( filename )
+			try :
+				filename = os.path.join( path, file )
+				dir_size += os.path.getsize( filename )
+			except Exception, e :
+				LOG_ERR( 'except file get size error filename = %s' % filename )
 
 	return dir_size
 
@@ -802,6 +805,20 @@ def GetDirectoryAllFilePathList( aPathList ) :
 					path_ret.append( filename )
 
 	return path_ret
+
+
+def GetDirectoryAllFileCount( aPathList ) :
+	count = 0
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				count = count + 1
+				for file in files :
+					count = count + 1
+
+	return count
 
 
 def GetURLpage( aUrl, aWriteFileName = None ) :
@@ -1428,6 +1445,26 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 			aControlIdGroup.setWidth( int( mWidth ) + 7 )
 			#LOG_TRACE( '-------group width' )
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
+
+
+def KillScript( aId ) :
+	pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
+
+	for pid in pids :
+		if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
+			try :
+				f = open( os.path.join( '/proc', pid, 'stat' ), 'rb' )
+				data = f.readlines( )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
+
+			data = str( data[0] )
+			data = data.strip( )
+			data = data.split( )
+			if data[3] == str( aId ) :
+				KillScript( int( data[0] ) )
+
+	os.system( 'kill -9 %s' % aId )
 
 
 def GetXBMCLanguageToPropLanguage( aLanguage ) :

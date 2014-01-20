@@ -165,7 +165,7 @@ class DialogRootfsBackup( BaseDialog ) :
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		if self.mReturnShell == False :
 			self.mCtrlLabelString.setLabel( MR_LANG( 'Processing - Cancelling...' ) )
-			self.KillScript( self.mProcessId )
+			KillScript( self.mProcessId )
 		if self.mCheckStatusFileThread :
 			self.mCheckStatusRunning = False
 			self.mCheckStatusFileThread.join( )
@@ -179,24 +179,4 @@ class DialogRootfsBackup( BaseDialog ) :
 
 	def GetResultStatus( self ) :
 		return self.mReturnShell
-
-
-	def KillScript( self, aId ) :
-		pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
-
-		for pid in pids :
-			if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
-				try :
-					f = open( os.path.join( '/proc', pid, 'stat' ), 'rb' )
-					data = f.readlines( )
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
-
-				data = str( data[0] )
-				data = data.strip( )
-				data = data.split( )
-				if data[3] == str( aId ) :
-					self.KillScript( int( data[0] ) )
-
-		os.system( 'kill -9 %s' % aId )
 
