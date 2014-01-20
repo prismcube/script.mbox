@@ -2731,7 +2731,10 @@ class SystemUpdate( SettingWindow ) :
 				progressDialog.update( 0, MR_LANG( 'Ready...' ) )
 
 				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
-				pipe = Popen( 'tar cvf %s/xbmc_backup.tar /mnt/hdd0/program/.xbmc/* -X %s' % ( destPath, FILE_BACKUP_EXCLUDE ), shell=True, stdout=PIPE )
+				os.system( 'echo cd /mnt/hdd0/program > /tmp/xbmc_backup.sh' )
+				os.system( 'echo tar cvf %s/xbmc_backup.tar .xbmc/* -X %s >> /tmp/xbmc_backup.sh' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				os.system( 'chmod 777 /tmp/xbmc_backup.sh' )
+				pipe = Popen( '/tmp/xbmc_backup.sh', shell=True, stdout=PIPE )
 				count = 1
 				while pipe.poll( ) == None :
 					if progressDialog.iscanceled( ) :

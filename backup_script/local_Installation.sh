@@ -103,7 +103,7 @@ restore()
 check_delete()
 {
 #fi exists delete flag
-	if [ -f $TOP/update_ruby/rm.updatefiles ]; the
+	if [ -f $TOP/update_ruby/rm.updatefiles ]; then
 		rm -rf $TOP/update_ruby
 	fi
 }
