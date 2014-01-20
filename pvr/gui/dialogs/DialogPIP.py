@@ -129,6 +129,7 @@ class DialogPIP( BaseDialog ) :
 		self.mInitialized     = True
 		self.mCheckMediaPlay  = False
 		self.mCheckMediaPlayThread = None
+		self.mLastNumber      = self.mDataCache.PIP_GetCurrent( )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mEventBus.Register( self )
@@ -156,12 +157,12 @@ class DialogPIP( BaseDialog ) :
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
 
 			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
-			#LOG_TRACE( '------inputTot[%s] input[%s]'% ( self.mInputString, inputString ) )
+			#LOG_TRACE( '[PIP] inputTot[%s] input[%s]'% ( self.mInputString, inputString ) )
 			self.mInputString += inputString
 			self.mInputString = '%d' % int( self.mInputString )
 			if int( self.mInputString ) > E_INPUT_MAX :
 				self.mInputString = inputString
-			#LOG_TRACE( '---------inputNum[%s]'% ( self.mInputString ) )
+			#LOG_TRACE( '[PIP] inputNum[%s]'% ( self.mInputString ) )
 
 			self.ChannelTuneToPIP( INPUT_CHANNEL_PIP )
 
@@ -181,7 +182,7 @@ class DialogPIP( BaseDialog ) :
 			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
-			LOG_TRACE( 'Not supported Radio' )
+			LOG_TRACE( '[PIP] Not supported Radio' )
 			return
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -191,7 +192,7 @@ class DialogPIP( BaseDialog ) :
 			self.Close( True )
 
 		else :
-			LOG_TRACE( 'unknown key[%s]'% actionId )
+			LOG_TRACE( '[PIP] unknown key[%s]'% actionId )
 
 #		elif actionId == Action.ACTION_CONTEXT_MENU :
 #			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
@@ -199,7 +200,7 @@ class DialogPIP( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		LOG_TRACE( 'onClick[%s]'% aControlId )
+		#LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
 
 		if aControlId  == CTRL_ID_BUTTON_PREV_PIP :
 			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
@@ -243,10 +244,10 @@ class DialogPIP( BaseDialog ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
-			LOG_TRACE( '--------------------PIP onEvent[%s]'% aEvent.getName( ) )
+			LOG_TRACE( '[PIP] onEvent[%s]'% aEvent.getName( ) )
 
 			if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
-				LOG_TRACE( '-------------------eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
+				LOG_TRACE( '[PIP] eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
 				if aEvent.mKeyCode == 9 :
 					thread = threading.Timer( 0, self.Close, [True] )
 					thread.start( )
@@ -254,13 +255,13 @@ class DialogPIP( BaseDialog ) :
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 			   aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				#if self.mIsUpdateEnable == True	:
-				LOG_TRACE( 'record start/stop event' )
+				LOG_TRACE( '[PIP] record start/stop event' )
 				#ToDO
 
 			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
-				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
+				LOG_TRACE( '[PIP] ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 				if aEvent.mType == ElisEnum.E_EOF_END :
-					LOG_TRACE( 'EventRecv EOF_END' )
+					LOG_TRACE( '[PIP] EventRecv EOF_END' )
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
 
@@ -271,7 +272,7 @@ class DialogPIP( BaseDialog ) :
 
 			"""
 			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
-				LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+				LOG_TRACE( '[PIP] ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
 
 				if aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :
 					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
@@ -291,7 +292,7 @@ class DialogPIP( BaseDialog ) :
 			"""
 
 	def Close( self, aStopPIP = True ) :
-		LOG_TRACE( 'PIP Window close')
+		LOG_TRACE( '[PIP] Window close')
 		self.mEventBus.Deregister( self )
 
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
@@ -333,7 +334,7 @@ class DialogPIP( BaseDialog ) :
 
 	def PIP_Stop( self, aForce = False ) :
 		ret = self.mDataCache.PIP_Stop( )
-		LOG_TRACE( '---------PIP_Stop ret[%s]'% ret )
+		LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
 		if ret or aForce :
 			self.mDataCache.PIP_SetStatus( False )
 
@@ -360,9 +361,9 @@ class DialogPIP( BaseDialog ) :
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% isShow )
-			LOG_TRACE( 'GetLastWindowID[%s] isPIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
+			LOG_TRACE( '[PIP] GetLastWindowID[%s] isPIPShow[%s]'% ( WinMgr.GetInstance( ).GetLastWindowID( ), isShow ) )
 
-		LOG_TRACE( 'mPIPStart[%s] OpenPIP[%s]'% ( self.mDataCache.PIP_GetStatus( ), xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' ) ) )
+		LOG_TRACE( '[PIP] mPIPStart[%s] OpenPIP[%s]'% ( self.mDataCache.PIP_GetStatus( ), xbmcgui.Window( 10000 ).getProperty( 'OpenPIP' ) ) )
 		return isShow
 
 
@@ -384,7 +385,7 @@ class DialogPIP( BaseDialog ) :
 			df.writelines( posStr )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( '[PIP] except[%s]'% e )
 
 
 	def PIP_SetPositionSync( self ) :
@@ -419,7 +420,7 @@ class DialogPIP( BaseDialog ) :
 			LOG_ERR( 'except[%s]'% e )
 			return
 
-		LOG_TRACE( 'success sync to pip controls position' )
+		LOG_TRACE( '[PIP] success sync to pip controls position' )
 
 
 	def PIP_LoadToBaseControlIDs( self ) :
@@ -428,7 +429,7 @@ class DialogPIP( BaseDialog ) :
 			self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
 			if self.mDataCache.GetMediaCenter( ) :
 				self.mLastWindow = xbmcgui.Window(xbmcgui.getCurrentWindowId())
-				LOG_TRACE( '------------------------current window[%s]'% xbmcgui.getCurrentWindowId() )
+				LOG_TRACE( '[PIP] check, current window[%s]'% xbmcgui.getCurrentWindowId() )
 			self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
 			self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
 			self.mCtrlBasePIPImageOverlay   = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_OVERLAY )
@@ -437,7 +438,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlBasePIPLabelNoSignal  = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSIGNAL )
 			self.mCtrlBasePIPLabelNoService = self.mLastWindow.getControl( CTRL_ID_BASE_LABEL_NOSERVICE )
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( '[PIP] except[%s]'% e )
 			xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Watching PIP' ), MR_LANG( 'only available when Video plays in fullscreen' ) ) )
 			ret = False
 
@@ -497,7 +498,7 @@ class DialogPIP( BaseDialog ) :
 	def LoadPositionPIP( self ) :
 		try :
 			posGet = GetSetting( 'PIP_POSITION' )
-			LOG_TRACE( '----------------GetSetting posNotify[%s]'% posGet )
+			LOG_TRACE( '[PIP] GetSetting posNotify[%s]'% posGet )
 
 			posNotify = re.split( '\|', posGet )
 			if not posNotify or len( posNotify ) != 4 :
@@ -507,7 +508,7 @@ class DialogPIP( BaseDialog ) :
 				posNotify[i] = int( posNotify[i] )
 
 		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
+			LOG_ERR( '[PIP] except[%s]'% e )
 			posNotify = E_DEFAULT_POSITION_PIP
 
 		return posNotify
@@ -532,11 +533,11 @@ class DialogPIP( BaseDialog ) :
 
 
 	def Channel_GetCurrentByPIP( self ) :
-		LOG_TRACE( 'is PIPStarted[%s]'% self.mDataCache.PIP_GetStatus( ) )
+		LOG_TRACE( '[PIP] is PIPStarted[%s]'% self.mDataCache.PIP_GetStatus( ) )
 
 		#1. tunable : last channel by pip
 		pChNumber = self.mDataCache.PIP_GetCurrent( )
-		LOG_TRACE( '1. tunable : last channel by pip, [%s]'% pChNumber )
+		LOG_TRACE( '[PIP] 1. tunable : last channel by pip, [%s]'% pChNumber )
 		if not pChNumber or ( not self.mDataCache.PIP_IsPIPAvailable( pChNumber ) ) :
 			pChNumber = None
 
@@ -554,19 +555,19 @@ class DialogPIP( BaseDialog ) :
 					else :
 						#exist check
 						if self.mDataCache.PIP_GetByNumber( pChNumber ) :
-							LOG_TRACE( '3. tunable : current channel by main(tv only), [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 3. tunable : current channel by main(tv only), [%s]'% pChNumber )
 						else :
 							pChNumber = None
 
 			#2. tunable : find channel by tunableList of pip
 			if not pChNumber :
 				channelList = self.mDataCache.PIP_GetTunableList( )
-				LOG_TRACE('------------PIP_GetTunableList len[%s]'% len( channelList ) )
+				LOG_TRACE('[PIP] PIP_GetTunableList len[%s]'% len( channelList ) )
 				if channelList and len( channelList ) > 0 :
 					for chNumber in channelList :
 						if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
 							pChNumber = chNumber.mNumber
-							LOG_TRACE( '2. tunable : find channel by tunableList of pip, [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 2. tunable : find channel by tunableList of pip, [%s]'% pChNumber )
 							break
 
 			#4. tunable : find channel by channelList of main(tv only)
@@ -580,7 +581,7 @@ class DialogPIP( BaseDialog ) :
 						if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV and \
 						   self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) :
 							pChNumber = iChannel.mNumber
-							LOG_TRACE( '4. tunable : find channel by channelList of main(tv only), [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 4. tunable : find channel by channelList of main(tv only), [%s]'% pChNumber )
 							break
 
 		if not pChNumber :
@@ -635,7 +636,7 @@ class DialogPIP( BaseDialog ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				isFail = True
-				LOG_TRACE( 'Can not switch PIP, Live is not' )
+				LOG_TRACE( '[PIP] Can not switch PIP, Live is not' )
 
 			if ( not isFail ) and self.mCurrentMode and \
 			   self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -654,7 +655,7 @@ class DialogPIP( BaseDialog ) :
 				ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 				if not ret :
 					isFail = True
-					LOG_TRACE( 'Fail to switch' )
+					LOG_TRACE( '[PIP] Fail to switch' )
 
 				fakeChannel = iChannel
 
@@ -667,15 +668,9 @@ class DialogPIP( BaseDialog ) :
 
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mDataCache.PIP_GetStatus( ) :
-				LOG_TRACE( '-------- PIP already started' )
+				LOG_TRACE( '[PIP] already started' )
 				#self.mDataCache.PIP_AVBlank( False )
 
-				"""
-				if fakeChannel :
-					if not fakeChannel.mLocked and xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
-						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
-					self.SetLabelChannel( fakeChannel )
-				"""
 				if fakeChannel :
 					if fakeChannel.mLocked :
 						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
@@ -688,6 +683,17 @@ class DialogPIP( BaseDialog ) :
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 						else :
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
+
+					#check sync info, showChannel and PIPcurrent, reasen by TuneChannelByExternal() ?
+					pipCurrent = self.mDataCache.Channel_GetByNumber( self.mLastNumber, True )
+					LOG_TRACE( '[PIP] fakeChannel[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
+					if pipCurrent :
+						LOG_TRACE( '[PIP] pipCurrent[%s %s]'% ( pipCurrent.mNumber, pipCurrent.mName ) )
+						if pipCurrent.mSid != fakeChannel.mSid or \
+						   pipCurrent.mTsid != fakeChannel.mTsid or \
+						   pipCurrent.mOnid != fakeChannel.mOnid :
+							fakeChannel = pipCurrent
+							#self.mCurrentChannel = pipCurrent
 
 					self.SetLabelChannel( fakeChannel )
 
@@ -703,9 +709,15 @@ class DialogPIP( BaseDialog ) :
 				dialog.doModal( )
 				return False
 
-		LOG_TRACE( '---------up/down[%s] fakeChannel[%s] current[%s %s]'% ( aDir, fakeChannel, self.mCurrentChannel.mNumber, self.mCurrentChannel.mName ) )
+		LOG_TRACE( '[PIP] up/down[%s] fakeChannel[%s] current[%s %s]'% ( aDir, fakeChannel, self.mCurrentChannel.mNumber, self.mCurrentChannel.mName ) )
+
+		if not fakeChannel :
+			#have not tune
+			fakeChannel = self.mDataCache.Channel_GetCurrent( )
+			LOG_TRACE( '[PIP] have no Channel, Restore default current Channel' )
+
 		if fakeChannel :
-			LOG_TRACE('----------fakeChannel[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
+			LOG_TRACE('[PIP] fakeChannel[%s %s]'% ( fakeChannel.mNumber, fakeChannel.mName ) )
 			self.SetLabelChannel( fakeChannel )
 			self.mFakeChannel = fakeChannel
 			self.RestartAsyncTune( )
@@ -849,14 +861,14 @@ class DialogPIP( BaseDialog ) :
 		posy  = self.mPosCurrent[1] + pipY
 		width = self.mPosCurrent[2] + pipW
 		height= self.mPosCurrent[3] + pipH
-		LOG_TRACE( 'set posX[%s] posY[%s] width[%s] height[%s]'% ( posx, posy, width, height ) )
+		LOG_TRACE( '[PIP] set posX[%s] posY[%s] width[%s] height[%s]'% ( posx, posy, width, height ) )
 
 		#limit
 		if posx < 0 or ( posx + width ) > 1280 or \
 		   posy < 0 or ( posy + height) > 600 or \
 		   width < ( E_DEFAULT_POSITION_PIP[2] / 2 ) or width > 1280 or \
 		   height < ( E_DEFAULT_POSITION_PIP[3] / 2 ) or height > 600 :
-			LOG_TRACE( '----------limit False' )
+			LOG_TRACE( '[PIP] limit False' )
 			return ret
 
 		self.SetPositionPIP( posx, posy, width, height )
@@ -935,7 +947,7 @@ class DialogPIP( BaseDialog ) :
 		y = self.mPosCurrent[1]
 		w = self.mPosCurrent[2]
 		h = self.mPosCurrent[3]
-		#LOG_TRACE( '------------x[%s] y[%s] w[%s] h[%s] w/2[%s] h/2[%s]'% ( x,y, w, h, w/2, h/2 ) )
+		#LOG_TRACE( '[PIP] guiArrow x[%s] y[%s] w[%s] h[%s] w/2[%s] h/2[%s]'% ( x,y, w, h, w/2, h/2 ) )
 
 		if not aInit and self.mViewMode != CONTEXT_ACTION_SIZE_PIP : 
 			return
@@ -1017,7 +1029,7 @@ class DialogPIP( BaseDialog ) :
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
-			LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
+			LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
 			if ret :
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
@@ -1046,7 +1058,7 @@ class DialogPIP( BaseDialog ) :
 		self.mDataCache.PIP_SetStatus( True )
 		self.mDataCache.PIP_SetCurrentChannel( aChannel )
 		ret = self.mDataCache.PIP_Start( aChannel.mNumber )
-		LOG_TRACE( '---------pip start ret[%s] ch[%s %s]'% ( ret, aChannel.mNumber, aChannel.mName ) )
+		LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, aChannel.mNumber, aChannel.mName ) )
 		if ret :
 			if aChannel.mLocked :
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )

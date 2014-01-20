@@ -1325,16 +1325,21 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
-	def Channel_GetByNumber( self, aNumber, aUseDB = False ) :
+	def Channel_GetByNumber( self, aNumber, aUseDB = False, aTable = E_TABLE_ZAPPING ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
 
 		else :
 			cacheChannel = self.mChannelListHash.get( aNumber, None )
+			if aTable == E_TABLE_ALLCHANNEL :
+				cacheChannel = self.mAllChannelListHash.get( aNumber, None )
+
 			if cacheChannel == None :
 				return None
 
@@ -3159,18 +3164,23 @@ class DataCacheMgr( object ) :
 			return
 		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s] pChannel[%s %s] lock[%s]'% ( self.PIP_GetStatus( ),pChannel.mNumber,pChannel.mName,pChannel.mLocked ) )
 
-		#3. isMove? find exactly channel
+		#3. isMove? find change channel
+		reTunePIP = False
 		fChannel = self.GetChannelByIDs( pChannel.mSid, pChannel.mTsid, pChannel.mOnid )
 		if not fChannel or fChannel.mSkipped :
-			import pvr.gui.DialogMgr as DiaMgr
-			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
-			LOG_TRACE( 'deleted channel, stop pip' )
+			reTunePIP = True
+			fChannel = self.mDataCache.Channel_GetCurrent( )
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			LOG_TRACE( 'deleted channel, reTune current pip' )
 
 		else :
 			if not fChannel.mLocked :
-				import pvr.gui.DialogMgr as DiaMgr
-				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( fChannel )
+				reTunePIP = True
 				LOG_TRACE( 'edit channel, reTune pip' )
+
+		if reTunePIP :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( fChannel )
 
 
 	def Splash_StartAndStop( self, aStartStop ) :
