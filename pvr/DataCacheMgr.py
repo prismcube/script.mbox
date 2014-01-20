@@ -175,6 +175,7 @@ class DataCacheMgr( object ) :
 
 		self.mPIPStart							= self.PIP_IsStarted( )
 		self.mCurrentChannelPIP					= None
+		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
 
@@ -2379,6 +2380,12 @@ class DataCacheMgr( object ) :
 					iconIndex = ElisEnum.E_ICON_720p
 
 				self.Frontdisplay_Resolution( iconIndex )
+
+				if self.mOldHdmiFormatIndex != iconIndex and self.PIP_GetStatus( ) :
+					import pvr.gui.DialogMgr as DiaMgr
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
+
+				self.mOldHdmiFormatIndex = iconIndex
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
