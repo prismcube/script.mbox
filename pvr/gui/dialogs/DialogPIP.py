@@ -30,6 +30,10 @@ CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
 CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
 CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
 
+CTRL_ID_GROUP_LIST_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8100
+CTRL_ID_BUTTON_MOVE_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8110
+CTRL_ID_BUTTON_SIZE_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8111
+
 CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
 CTRL_ID_IMAGE_LOCK			= E_PIP_WINDOW_BASE_ID + 1004
 CTRL_ID_LABEL_LOCK			= E_PIP_WINDOW_BASE_ID + 1005
@@ -53,8 +57,8 @@ CONTEXT_ACTION_SWITCH_PIP  = 3
 CONTEXT_ACTION_DEFAULT_PIP = 4
 CONTEXT_ACTION_STOP_PIP    = 5
 
-E_POSX_ABILITY   = 10
-E_POSY_ABILITY   = 5
+E_POSX_ABILITY   = 20
+E_POSY_ABILITY   = 10
 E_WIDTH_ABILITY  = 20
 E_HEIGHT_ABILITY = 10
 
@@ -66,6 +70,7 @@ INPUT_CHANNEL_PIP  = 4
 
 PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
+	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_INFO_PLATE,
@@ -112,6 +117,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageInputBG     = self.getControl( CTRL_ID_IMAGE_INPUTBG )
 		self.mCtrlLabelInputCH     = self.getControl( CTRL_ID_LABEL_INPUTCH )
 		self.mCtrlLabelInputName   = self.getControl( CTRL_ID_LABEL_INPUTNAME )
+		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 
@@ -188,6 +194,12 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
+		elif actionId == Action.ACTION_CONTEXT_MENU :
+			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
+				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
+			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
+				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
+
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.Close( True )
 
@@ -214,14 +226,14 @@ class DialogPIP( BaseDialog ) :
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
 			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
 
-		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP :
+		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP or aControlId  == CTRL_ID_BUTTON_MOVE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
 
-		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP :
+		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP or aControlId  == CTRL_ID_BUTTON_SIZE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
 			else :
@@ -818,9 +830,13 @@ class DialogPIP( BaseDialog ) :
 		self.mViewMode = aAction
 		if aAction == CONTEXT_ACTION_MOVE_PIP :
 			self.UpdatePropertyGUI( 'SettingPIP', E_TAG_TRUE ) 
+			self.setFocusId( CTRL_ID_BUTTON_MOVE_PIP )
+			self.setFocusId( CTRL_ID_BUTTON_MOVE_2ND_PIP )
 
 		elif aAction == CONTEXT_ACTION_SIZE_PIP :
 			self.UpdatePropertyGUI( 'SettingPIP', E_TAG_TRUE ) 
+			self.setFocusId( CTRL_ID_BUTTON_SIZE_PIP )
+			self.setFocusId( CTRL_ID_BUTTON_SIZE_2ND_PIP )
 
 		elif aAction == CONTEXT_ACTION_SWITCH_PIP :
 			pass
@@ -844,6 +860,8 @@ class DialogPIP( BaseDialog ) :
 			#ToDO
 			return ret
 
+		self.setFocusId( CTRL_ID_GROUP_LIST_2ND_PIP )
+
 		ret = True
 		pipX, pipY, pipW, pipH = ( 0, 0, 0, 0 )
 		if aAction == Action.ACTION_MOVE_LEFT :
@@ -851,23 +869,27 @@ class DialogPIP( BaseDialog ) :
 				pipX -= E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
 				pipW -= E_WIDTH_ABILITY
+				pipH -= E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_RIGHT :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipX += E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
 				pipW += E_WIDTH_ABILITY
+				pipH += E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_UP :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipY -= E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
+				pipW -= E_WIDTH_ABILITY
 				pipH -= E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_DOWN :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipY += E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
+				pipW += E_WIDTH_ABILITY
 				pipH += E_HEIGHT_ABILITY
 
 		posx  = self.mPosCurrent[0] + pipX
@@ -950,6 +972,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
 		if w > 330 :
 			self.mCtrlImageOsdStatus.setWidth( w )
+			self.mCtrlGroupList2ndPIP.setPosition( w, 0 )
 
 		self.SetGUIArrow( )
 
