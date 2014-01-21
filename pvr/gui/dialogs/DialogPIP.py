@@ -603,13 +603,14 @@ class DialogPIP( BaseDialog ) :
 							LOG_TRACE( '[PIP] 4. tunable : find channel by channelList of main(tv only), [%s]'% pChNumber )
 							break
 
+		"""
 		if not pChNumber :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			lblTitle = MR_LANG( 'Error' )
 			lblMsg = MR_LANG( 'Your channel list is empty' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
-
+		"""
 		return pChNumber
 
 
@@ -707,6 +708,7 @@ class DialogPIP( BaseDialog ) :
 						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 						else :
+							#ToDO: one more, check PIP_IsStarted( )? or PIP_GetAVBlank( ) ?
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 					#check sync info, showChannel and PIPcurrent, reasen by TuneChannelByExternal() ?
@@ -900,7 +902,7 @@ class DialogPIP( BaseDialog ) :
 
 		#limit
 		if posx < 0 or ( posx + width ) > 1280 or \
-		   posy < 0 or ( posy + height) > 600 or \
+		   posy < 0 or ( posy + height) > 670 or \
 		   width < ( E_DEFAULT_POSITION_PIP[2] / 2 ) or width > 1280 or \
 		   height < ( E_DEFAULT_POSITION_PIP[3] / 2 ) or height > 600 :
 			LOG_TRACE( '[PIP] limit False' )
@@ -1087,8 +1089,21 @@ class DialogPIP( BaseDialog ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def TuneChannelByExternal( self, aChannel = None ) :
+	def TuneChannelByExternal( self, aChannel = None, aRetune = False ) :
+		if aRetune :
+			if self.mDataCache.PIP_GetStatus( ) :
+				self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+				chNumber = self.Channel_GetCurrentByPIP( )
+				aChannel = self.mDataCache.PIP_GetByNumber( chNumber )
+				if not aChannel :
+					aChannel = self.mDataCache.Channel_GetCurrent( )
+
+			else :
+				LOG_TRACE( '[PIP] reject retune, not started PIP_GetStatus false' )
+				return
+
 		if not aChannel :
+			LOG_TRACE( '[PIP] can not tune by external, channel None' )
 			return
 
 		self.mDataCache.PIP_SetStatus( True )
