@@ -428,10 +428,10 @@ class DialogUpdateProgress( BaseDialog ) :
 		if self.mReturnShell < E_RESULT_UPDATE_DONE :
 			percent = 0
 			if self.mReturnShell == E_RESULT_ERROR_FAIL :
-				LOG_TRACE( '--------shell fail' )
+				LOG_TRACE( '--------shell failed' )
 				statusLabel = MR_LANG( 'Failed' )
 			elif self.mReturnShell == E_RESULT_ERROR_CANCEL :
-				LOG_TRACE( '--------shell cancel' )
+				LOG_TRACE( '--------shell cancelled' )
 				statusLabel = MR_LANG( 'Aborted' )
 			else :
 				LOG_TRACE( '--------unknown fail' )

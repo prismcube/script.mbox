@@ -2679,7 +2679,7 @@ class SystemUpdate( SettingWindow ) :
 					dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Data Backup' ), MR_LANG( 'Complete' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Data Backup' ), MR_LANG( 'Data backup completed successfully' ) )
 					dialog.doModal( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2807,7 +2807,7 @@ class SystemUpdate( SettingWindow ) :
 		restoreList = glob.glob( os.path.join( usbpath, 'update_ruby_backup_*') )
 		if len( restoreList ) <= 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No backup data found' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Backup data not found' ) )
 			dialog.doModal( )
 			return False
 
@@ -2887,7 +2887,7 @@ class SystemUpdate( SettingWindow ) :
 				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' or path[ len( aPath ) : ] == '/xbmc_backup.tar' :
 					strBigData = MR_LANG( 'Copying big data' ) + '...'
 					strWait1 = MR_LANG( 'Please wait' ) + '... '
-					strWait2 = MR_LANG( 'This may take a while' )
+					strWait2 = MR_LANG( 'This will take a while' )
 					strWait = strWait1 + strWait2
 					progressDialog.update( percent, strBigData, '%s' % path, strWait )
 				else :

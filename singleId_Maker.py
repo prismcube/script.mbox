@@ -250,7 +250,7 @@ def AutoMakeSingleIDs( ) :
 	ParseSource( '%s/mbox_includes.xml'% confluenceDir  )
 	FindallSource( confluenceDir, '[a-zA-Z0-9]\w*.xml' )
 	print '\nChangeAll *.xml files[%s]'% gCount
-	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed..')
+	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed')
 
 
 

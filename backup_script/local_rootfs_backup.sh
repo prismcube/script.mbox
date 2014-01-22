@@ -38,16 +38,16 @@ big_fail()
 
 
 ################### START THE LOGFILE /tmp/BackupSuite.log ####################
-echo "Backup stick Found." > /tmp/BackupSuite.log
-echo "Backup process starting." >> /tmp/BackupSuite.log
-echo "Back-up date_time  = $DATE" >> /tmp/BackupSuite.log
+echo "Backup stick found." > /tmp/BackupSuite.log
+echo "Starting backup process." >> /tmp/BackupSuite.log
+echo "Backup date_time  = $DATE" >> /tmp/BackupSuite.log
 echo "Working directory  = $WORKDIR" >> /tmp/BackupSuite.log
 
-######################### TESTING FOR UBIFS OR JFFS2 ##########################
+######################### TESTING FOR UBIFS AND JFFS2 ##########################
 if grep rootfs /proc/mounts | grep ubifs > /dev/null; then	
 	ROOTFSTYPE=ubifs
 else
-	echo "UBIFS, THEN JFFS2 BUT NOT SUPPORTED ANYMORE"
+	echo "JFFS2 NOT SUPPORTED ANYMORE"
 	big_fail
 fi
 
@@ -77,10 +77,10 @@ MKUBIFS_ARGS="-m 2048 -e 126976 -c 4000"
 
 ############# START TO SHOW SOME INFORMATION ABOUT BRAND & MODEL ##############
 
-echo "BACK-UP TOOL FOR MAKING A COMPLETE BACK-UP "
+echo "BACKUP TOOL FOR MAKING A COMPLETE BACKUP"
 echo
 echo
-echo "Please be patient, ... will take about 7-10 minutes "
+echo "Please wait... This will take a while"
 echo " "
 
 #exit 0  #USE FOR DEBUGGING/TESTING
@@ -90,9 +90,9 @@ echo " "
 #rm -rf "$WORKDIR"		# GETTING RID OF THE OLD REMAINS IF ANY
 #echo "Remove directory   = $WORKDIR" >> /tmp/BackupSuite.log
 mkdir -p "$WORKDIR"		# MAKING THE WORKING FOLDER WHERE EVERYTHING HAPPENS
-echo "Recreate directory = $WORKDIR" >> /tmp/BackupSuite.log
+echo "Recreated directory = $WORKDIR" >> /tmp/BackupSuite.log
 mkdir -p /tmp/bi/root
-echo "Create directory   = /tmp/bi/root" >> /tmp/BackupSuite.log
+echo "Created directory   = /tmp/bi/root" >> /tmp/BackupSuite.log
 sync
 mount --bind / /tmp/bi/root
 
@@ -100,12 +100,12 @@ mount --bind / /tmp/bi/root
 
 
 #backup loader, u-boot, kernel, checkusb.img file
-echo "loader, kernel bakcup strting" >> /tmp/BackupSuite.log
+echo "Starting loader and kernel bakcup" >> /tmp/BackupSuite.log
 BOOT_DIR=/boot
 if [ -f $BOOT_DIR/uldr.bin ] && [ -f $BOOT_DIR/u-boot.bin ] && [ -f $BOOT_DIR/kernel.uImage ] && [ -f $BOOT_DIR/checkusb.img ] ; then
 	cp $BOOT_DIR/* $WORKDIR/
 else
-	echo "Can not found backup files" >> /tmp/BackupSuite.log
+	echo "Backup files not found" >> /tmp/BackupSuite.log
 	big_fail
 fi
 
@@ -131,8 +131,8 @@ chmod 644 "$WORKDIR/root.ubi"
 echo "--------------------------" >> /tmp/BackupSuite.log
 
 #############################  MAKING ROOT.UBI(FS) ############################
-echo "Create: rootfs.rootfs.ubi"
-echo "Please be patient, ... will take about several minutes" >> /tmp/BackupSuite.log
+echo "Creating rootfs.rootfs.ubi"
+echo "Please wait... This will take a while" >> /tmp/BackupSuite.log
 
 $MKFS -r /tmp/bi/root -o "$WORKDIR/root.ubi" $MKUBIFS_ARGS
 if [ -f "$WORKDIR/root.ubi" ] ; then
@@ -157,7 +157,7 @@ else
 	big_fail
 fi
 
-echo "Making md5sum." >> /tmp/BackupSuite.log
+echo "Making md5sum..." >> /tmp/BackupSuite.log
 if [ -f $WORKDIR/checkusb.img ]; then
 		md5sum $WORKDIR/checkusb.img > $WORKDIR/checkusb.img.md5
 fi
@@ -182,9 +182,9 @@ umount /tmp/bi/root > /dev/null 2>&1
 rmdir /tmp/bi/root > /dev/null 2>&1
 rmdir /tmp/bi > /dev/null 2>&1
 
-echo "Making md5sum complete." >> /tmp/BackupSuite.log
-echo "Backup data all completed." >> /tmp/BackupSuite.log
-echo "Backup File system completed." >> /tmp/BackupSuite.log
+echo "Making md5sum done." >> /tmp/BackupSuite.log
+echo "Userdata backup done." >> /tmp/BackupSuite.log
+echo "File system backup done." >> /tmp/BackupSuite.log
 echo "Done" >> /tmp/BackupSuite.log
 sleep 3
 exit 0
