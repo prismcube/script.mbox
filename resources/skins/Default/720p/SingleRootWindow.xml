@@ -940,6 +940,29 @@ Search for window name
 				</control>
 			</control>
 
+			<control type="group">
+				<posx>300</posx>
+				<posy>669</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
+				<control type="image">
+					<posx>35</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>73</posx>
+					<posy>5</posy>
+					<width>550</width>
+					<height>20</height>
+					<font>font10</font>
+					<label>SCRIPT1139</label>
+				</control>
+			</control>
+
 			<!-- middle left -->
 			<control type="group" id="1300049">
 				<posx>75</posx>
@@ -3977,6 +4000,29 @@ Search for window name
 				</control>
 			</control>
 
+			<control type="group">
+				<posx>300</posx>
+				<posy>669</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(ArchiveFootor),True) + [substring(Window.Property(CurrentWindow),3300000) + [substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)] + substring(Window.Property(PvrPlay),False)]</visible>
+				<control type="image">
+					<posx>35</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>73</posx>
+					<posy>5</posy>
+					<width>550</width>
+					<height>20</height>
+					<font>font10</font>
+					<label>SCRIPT1139</label>
+				</control>
+			</control>
+
 			<control type="group" id="3309003">
 				<include>DefaultWindowFade</include>
 				<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
@@ -4915,6 +4961,29 @@ Search for window name
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>300</posx>
+				<posy>669</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(EPGFootor),True) + [substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)]</visible>
+				<control type="image">
+					<posx>35</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>73</posx>
+					<posy>5</posy>
+					<width>550</width>
+					<height>20</height>
+					<font>font10</font>
+					<label>SCRIPT1139</label>
 				</control>
 			</control>
 
@@ -6203,6 +6272,29 @@ Search for window name
 					<height>20</height>
 					<font>font10</font>
 					<label>SCRIPT1101</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>300</posx>
+				<posy>669</posy>
+				<width>440</width>
+				<height>32</height>
+				<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
+				<control type="image">
+					<posx>35</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>73</posx>
+					<posy>5</posy>
+					<width>550</width>
+					<height>20</height>
+					<font>font10</font>
+					<label>SCRIPT1139</label>
 				</control>
 			</control>
 

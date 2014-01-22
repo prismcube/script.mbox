@@ -99,7 +99,7 @@
 	<string id="1098">Saut arrière</string>
 	<string id="1099">Saut avant</string>
 	<string id="1100">Sauter</string>
-	<string id="1101">Appuyer sur le bouton i de la télécommande pour ouvrir le menu éditer</string>
+	<string id="1101"></string>
 	<string id="1103">Mise à jour</string>
 	<string id="1104">Pas de signal</string>
 	<string id="1105">Cryptée</string>
@@ -136,6 +136,7 @@
 	<string id="1136">Supprimer un minuteur</string>
 	<string id="1137"></string>
 	<string id="1138"></string>
+	<string id="1139"></string>
 	<string id="2001">Dernier type de service</string>
 	<string id="2002">Résolution Vout actuelle</string>
 	<string id="2003">1080p</string>

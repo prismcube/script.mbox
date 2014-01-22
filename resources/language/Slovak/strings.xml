@@ -99,7 +99,7 @@
 	<string id="1098">Skok vzad</string>
 	<string id="1099">Skok dopredu</string>
 	<string id="1100">Skok</string>
-	<string id="1101">Stlačením tlačidla i na diaľkovom ovládaní otvoríte editačné menu</string>
+	<string id="1101"></string>
 	<string id="1103">Aktualizovať</string>
 	<string id="1104">Žiadny signál</string>
 	<string id="1105">Kódovaný</string>
@@ -136,6 +136,7 @@
 	<string id="1136">Vymazať časovač</string>
 	<string id="1137"></string>
 	<string id="1138"></string>
+	<string id="1139"></string>
 	<string id="2001">Posledný ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>

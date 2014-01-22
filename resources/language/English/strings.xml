@@ -99,7 +99,7 @@
 	<string id="1098">Jump Rewind</string>
 	<string id="1099">Jump Forward</string>
 	<string id="1100">Jump</string>
-	<string id="1101">Press the i button on the remote to open menu</string>
+	<string id="1101">Context Menu</string>
 	<string id="1103">Update</string>
 	<string id="1104">No Signal</string>
 	<string id="1105">Scrambled</string>
@@ -135,7 +135,8 @@
 	<string id="1135">Add Manual Timer</string>
 	<string id="1136">Delete Timer</string>
 	<string id="1137">Installing unverified addons may slow your box down</string>
-	<string id="1138">Press left button on the remote to set focus to OK / Cancel</string>
+	<string id="1138">Press the left button on the remote to set focus to OK / Cancel</string>
+	<string id="1139">Extra Options</string>
 	<string id="2001">Last ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>

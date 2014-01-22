@@ -98,7 +98,7 @@
 "Jump Rewind";"Zurück Springen";"Saut arrière";"Salto indietro";"Saltar atrás";"Skok vzad";"Jump Rewind";"Skok do tyłu";"Jump Rewind";"Прыг Назад";"Jump Rewind";"Jump Rewind";"Skok vzad";"Стрибок Назад";1098
 "Jump Forward";"Vor Springen";"Saut avant";"Salto avanti";"Saltar adelante";"Skok vpřed";"Jump Forward";"Skok do przodu";"Jump Forward";"Прыг Вперед";"Jump Forward";"Jump Forward";"Skok dopredu";"Стрибок Вперед";1099
 "Jump";"Springen";"Sauter";"Salto";"Saltar";"Skok";"Jump";"Skok";"Jump";"Прыжок";"Jump";"Jump";"Skok";"Стрибок";1100
-"Press the i button on the remote to open menu";"Drücken Sie die i-Taste auf der Fernbedienung um den Bearbeitungsmodus Menü zu öffnen";"Appuyer sur le bouton i de la télécommande pour ouvrir le menu éditer";"Premere il pulsante ( i ) per editare";"Presiona el boton i del mando para abrir el menú editar";"Stisknutím tlačítka i na dálkovém ovládání otevřete editační menu";"Press the i button on the remote to open edit menus";"Wciśnij klawisz i na pilocie, aby otworzyć menu edycji";"Press the i button on the remote to open edit menus";"Нажмите кнопку i для дополнительных функций";"Press the i button on the remote to open edit menus";"Press the i button on the remote to open edit menus";"Stlačením tlačidla i na diaľkovom ovládaní otvoríte editačné menu";"Натисніть кнопку i для додаткових функцій";1101
+"Context Menu";;;;;;;;;;;;;;1101
 "Update";"Update";"Mise à jour";"Aggiorna";"Actualizar";"Aktualizovat";"Update";"Aktualizacja";"Update";"Обновления";"Update";"Update";"Aktualizovať";"Оновлення";1103
 "No Signal";"Kein Signal";"Pas de signal";"Nessun Segnale";"Sin señal";"Žádný signál";"No Signal";"Brak sygnału";"No Signal";"Нет Сигнала";"No Signal";"No Signal";"Žiadny signál";"Немає Сигналу";1104
 "Scrambled";"Verschlüsselt";"Cryptée";"Codificato";"Codificado";"Kódovaný";"Scrambled";"Przekaz kodowany";"Scrambled";"Закодировано";"Scrambled";"Scrambled";"Kódovaný";"Закодовано";1105
@@ -134,7 +134,8 @@
 "Add Manual Timer";"Manuellen Timer hinzufügen";"Ajouter un minuteur manuel";"Aggiungi Timer";"Añadir temporizador manual";"Přidat časovač ručně";"Add Manual Timer";"Dodaj zdarzenie ręcznie";"Add Manual Timer";"Добавить Таймер Вручную";"Add Manual Timer";"Add Manual Timer";"Pridať časovač ručne";"Додати Таймер Вручну";1135
 "Delete Timer";"Timer löschen";"Supprimer un minuteur";"Elimina Timer";"Borrar temporizador";"Vymazat časovač";"Delete Timer";"Usuń timer";"Delete Timer";"Удалить Таймер";"Delete Timer";"Delete Timer";"Vymazať časovač";"Видалити Таймер";1136
 "Installing unverified addons may slow your box down";;;;;;;;;;;;;;1137
-"Press left button on the remote to set focus to OK / Cancel";;;;;;;;;;;;;;1138
+"Press the left button on the remote to set focus to OK / Cancel";;;;;;;;;;;;;;1138
+"Extra Options";;;;;;;;;;;;;;1139
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003

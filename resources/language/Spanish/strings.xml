@@ -99,7 +99,7 @@
 	<string id="1098">Saltar atrás</string>
 	<string id="1099">Saltar adelante</string>
 	<string id="1100">Saltar</string>
-	<string id="1101">Presiona el boton i del mando para abrir el menú editar</string>
+	<string id="1101"></string>
 	<string id="1103">Actualizar</string>
 	<string id="1104">Sin señal</string>
 	<string id="1105">Codificado</string>
@@ -136,6 +136,7 @@
 	<string id="1136">Borrar temporizador</string>
 	<string id="1137"></string>
 	<string id="1138"></string>
+	<string id="1139"></string>
 	<string id="2001">Ultimo ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>

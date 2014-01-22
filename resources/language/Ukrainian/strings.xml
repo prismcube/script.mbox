@@ -99,7 +99,7 @@
 	<string id="1098">Стрибок Назад</string>
 	<string id="1099">Стрибок Вперед</string>
 	<string id="1100">Стрибок</string>
-	<string id="1101">Натисніть кнопку i для додаткових функцій</string>
+	<string id="1101"></string>
 	<string id="1103">Оновлення</string>
 	<string id="1104">Немає Сигналу</string>
 	<string id="1105">Закодовано</string>
@@ -136,6 +136,7 @@
 	<string id="1136">Видалити Таймер</string>
 	<string id="1137"></string>
 	<string id="1138"></string>
+	<string id="1139"></string>
 	<string id="2001">Тип Останнього Сервісу</string>
 	<string id="2002">Поточне розширення</string>
 	<string id="2003">1080p</string>
