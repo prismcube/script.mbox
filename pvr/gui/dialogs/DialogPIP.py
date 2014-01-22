@@ -1077,6 +1077,9 @@ class DialogPIP( BaseDialog ) :
 		if aChannel :
 			tuneTime = 3
 
+		if self.mFakeChannel :
+			self.mCurrentChannel = self.mFakeChannel
+
 		self.mAsyncTuneTimer = threading.Timer( tuneTime, self.TuneChannel, [aChannel] )
 		self.mAsyncTuneTimer.start( )
 
