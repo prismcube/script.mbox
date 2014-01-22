@@ -3007,6 +3007,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_AVBlank( aBlank )
 
 
+	def PIP_GetAVBlank( self ) :
+		return self.mCommander.PIP_GetAVBlank( )
+
+
 	def PIP_GetPrev( self, aChannel ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None

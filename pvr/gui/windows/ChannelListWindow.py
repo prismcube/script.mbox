@@ -805,6 +805,9 @@ class ChannelListWindow( BaseWindow ) :
 						self.mDataCache.Player_AVBlank( True )
 
 				self.Close( )
+				#2626 qm issue, can not show pip on blank(main channel avblank, scramble, ...), m/w problem
+				#if TuneAndFastExit :
+				#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
 
 				if aGoToWindow :
 					WinMgr.GetInstance( ).ShowWindow( aGoToWindow, WinMgr.WIN_ID_NULLWINDOW )
@@ -1007,8 +1010,9 @@ class ChannelListWindow( BaseWindow ) :
 		if isSameChannel :
 			ret = True
 		else :
-			if not self.mDataCache.Get_Player_AVBlank( ) :
-				self.mDataCache.Player_AVBlank( True )
+			if iChannel.mLocked or iChannel.mIsCA :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 
 			ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
 
@@ -1020,6 +1024,8 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.Close( )
+					#if TuneAndFastExit :
+					#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return

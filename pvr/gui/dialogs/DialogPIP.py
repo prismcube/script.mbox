@@ -30,6 +30,10 @@ CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
 CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
 CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
 
+CTRL_ID_GROUP_LIST_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8100
+CTRL_ID_BUTTON_MOVE_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8110
+CTRL_ID_BUTTON_SIZE_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8111
+
 CTRL_ID_IMAGE_BLANK			= E_PIP_WINDOW_BASE_ID + 1003
 CTRL_ID_IMAGE_LOCK			= E_PIP_WINDOW_BASE_ID + 1004
 CTRL_ID_LABEL_LOCK			= E_PIP_WINDOW_BASE_ID + 1005
@@ -53,8 +57,8 @@ CONTEXT_ACTION_SWITCH_PIP  = 3
 CONTEXT_ACTION_DEFAULT_PIP = 4
 CONTEXT_ACTION_STOP_PIP    = 5
 
-E_POSX_ABILITY   = 10
-E_POSY_ABILITY   = 5
+E_POSX_ABILITY   = 20
+E_POSY_ABILITY   = 10
 E_WIDTH_ABILITY  = 20
 E_HEIGHT_ABILITY = 10
 
@@ -66,6 +70,7 @@ INPUT_CHANNEL_PIP  = 4
 
 PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
+	WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST,
 	WinMgr.WIN_ID_MAINMENU,
 	WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	WinMgr.WIN_ID_INFO_PLATE,
@@ -112,6 +117,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageInputBG     = self.getControl( CTRL_ID_IMAGE_INPUTBG )
 		self.mCtrlLabelInputCH     = self.getControl( CTRL_ID_LABEL_INPUTCH )
 		self.mCtrlLabelInputName   = self.getControl( CTRL_ID_LABEL_INPUTNAME )
+		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 
@@ -198,6 +204,12 @@ class DialogPIP( BaseDialog ) :
 #			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 #				self.ShowContextMenu( )
 
+#		elif actionId == Action.ACTION_CONTEXT_MENU :
+#			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
+#				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
+#			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
+#				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
+
 
 	def onClick( self, aControlId ) :
 		#LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
@@ -214,14 +226,14 @@ class DialogPIP( BaseDialog ) :
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
 			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
 
-		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP :
+		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP or aControlId  == CTRL_ID_BUTTON_MOVE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
 
-		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP :
+		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP or aControlId  == CTRL_ID_BUTTON_SIZE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
 			else :
@@ -591,13 +603,14 @@ class DialogPIP( BaseDialog ) :
 							LOG_TRACE( '[PIP] 4. tunable : find channel by channelList of main(tv only), [%s]'% pChNumber )
 							break
 
+		"""
 		if not pChNumber :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			lblTitle = MR_LANG( 'Error' )
 			lblMsg = MR_LANG( 'Your channel list is empty' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
-
+		"""
 		return pChNumber
 
 
@@ -695,6 +708,7 @@ class DialogPIP( BaseDialog ) :
 						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == E_TAG_TRUE :
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 						else :
+							#ToDO: one more, check PIP_IsStarted( )? or PIP_GetAVBlank( ) ?
 							xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 					#check sync info, showChannel and PIPcurrent, reasen by TuneChannelByExternal() ?
@@ -818,9 +832,13 @@ class DialogPIP( BaseDialog ) :
 		self.mViewMode = aAction
 		if aAction == CONTEXT_ACTION_MOVE_PIP :
 			self.UpdatePropertyGUI( 'SettingPIP', E_TAG_TRUE ) 
+			self.setFocusId( CTRL_ID_BUTTON_MOVE_PIP )
+			self.setFocusId( CTRL_ID_BUTTON_MOVE_2ND_PIP )
 
 		elif aAction == CONTEXT_ACTION_SIZE_PIP :
 			self.UpdatePropertyGUI( 'SettingPIP', E_TAG_TRUE ) 
+			self.setFocusId( CTRL_ID_BUTTON_SIZE_PIP )
+			self.setFocusId( CTRL_ID_BUTTON_SIZE_2ND_PIP )
 
 		elif aAction == CONTEXT_ACTION_SWITCH_PIP :
 			pass
@@ -844,6 +862,8 @@ class DialogPIP( BaseDialog ) :
 			#ToDO
 			return ret
 
+		#self.setFocusId( CTRL_ID_GROUP_LIST_2ND_PIP )
+
 		ret = True
 		pipX, pipY, pipW, pipH = ( 0, 0, 0, 0 )
 		if aAction == Action.ACTION_MOVE_LEFT :
@@ -851,23 +871,27 @@ class DialogPIP( BaseDialog ) :
 				pipX -= E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
 				pipW -= E_WIDTH_ABILITY
+				pipH -= E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_RIGHT :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipX += E_POSX_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
 				pipW += E_WIDTH_ABILITY
+				pipH += E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_UP :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipY -= E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
+				pipW -= E_WIDTH_ABILITY
 				pipH -= E_HEIGHT_ABILITY
 
 		elif aAction == Action.ACTION_MOVE_DOWN :
 			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP : 
 				pipY += E_POSY_ABILITY
 			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP : 
+				pipW += E_WIDTH_ABILITY
 				pipH += E_HEIGHT_ABILITY
 
 		posx  = self.mPosCurrent[0] + pipX
@@ -878,7 +902,7 @@ class DialogPIP( BaseDialog ) :
 
 		#limit
 		if posx < 0 or ( posx + width ) > 1280 or \
-		   posy < 0 or ( posy + height) > 600 or \
+		   posy < 0 or ( posy + height) > 670 or \
 		   width < ( E_DEFAULT_POSITION_PIP[2] / 2 ) or width > 1280 or \
 		   height < ( E_DEFAULT_POSITION_PIP[3] / 2 ) or height > 600 :
 			LOG_TRACE( '[PIP] limit False' )
@@ -950,6 +974,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
 		if w > 330 :
 			self.mCtrlImageOsdStatus.setWidth( w )
+			self.mCtrlGroupList2ndPIP.setPosition( w, 0 )
 
 		self.SetGUIArrow( )
 
@@ -1064,8 +1089,21 @@ class DialogPIP( BaseDialog ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def TuneChannelByExternal( self, aChannel = None ) :
+	def TuneChannelByExternal( self, aChannel = None, aRetune = False ) :
+		if aRetune :
+			if self.mDataCache.PIP_GetStatus( ) :
+				self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+				chNumber = self.Channel_GetCurrentByPIP( )
+				aChannel = self.mDataCache.PIP_GetByNumber( chNumber )
+				if not aChannel :
+					aChannel = self.mDataCache.Channel_GetCurrent( )
+
+			else :
+				LOG_TRACE( '[PIP] reject retune, not started PIP_GetStatus false' )
+				return
+
 		if not aChannel :
+			LOG_TRACE( '[PIP] can not tune by external, channel None' )
 			return
 
 		self.mDataCache.PIP_SetStatus( True )
