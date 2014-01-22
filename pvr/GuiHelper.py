@@ -1539,23 +1539,22 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 
 
 def KillScript( aId ) :
-	pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
-
-	for pid in pids :
-		if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
-			try :
+	try :
+		pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
+		for pid in pids :
+			if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
 				f = open( os.path.join( '/proc', pid, 'stat' ), 'rb' )
 				data = f.readlines( )
-			except Exception, e :
-				LOG_ERR( 'Error exception[%s]' % e )
 
-			data = str( data[0] )
-			data = data.strip( )
-			data = data.split( )
-			if data[3] == str( aId ) :
-				KillScript( int( data[0] ) )
+				data = str( data[0] )
+				data = data.strip( )
+				data = data.split( )
+				if data[3] == str( aId ) :
+					KillScript( int( data[0] ) )
 
-	os.system( 'kill -9 %s' % aId )
+		os.system( 'kill -9 %s' % aId )
+	except Exception, e :
+		LOG_ERR( 'Error exception[%s]' % e )
 
 
 def GetXBMCLanguageToPropLanguage( aLanguage ) :
