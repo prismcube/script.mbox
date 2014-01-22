@@ -194,12 +194,6 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
-		elif actionId == Action.ACTION_CONTEXT_MENU :
-			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
-				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
-			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
-				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
-
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.Close( True )
 
@@ -209,6 +203,12 @@ class DialogPIP( BaseDialog ) :
 #		elif actionId == Action.ACTION_CONTEXT_MENU :
 #			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
 #				self.ShowContextMenu( )
+
+#		elif actionId == Action.ACTION_CONTEXT_MENU :
+#			if self.mViewMode == CONTEXT_ACTION_MOVE_PIP :
+#				self.DoContextAction( CONTEXT_ACTION_SIZE_PIP )
+#			elif self.mViewMode == CONTEXT_ACTION_SIZE_PIP :
+#				self.DoContextAction( CONTEXT_ACTION_MOVE_PIP )
 
 
 	def onClick( self, aControlId ) :
@@ -862,7 +862,7 @@ class DialogPIP( BaseDialog ) :
 			#ToDO
 			return ret
 
-		self.setFocusId( CTRL_ID_GROUP_LIST_2ND_PIP )
+		#self.setFocusId( CTRL_ID_GROUP_LIST_2ND_PIP )
 
 		ret = True
 		pipX, pipY, pipW, pipH = ( 0, 0, 0, 0 )

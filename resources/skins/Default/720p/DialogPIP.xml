@@ -240,9 +240,11 @@
 								<texturenofocus>OSDExitNF.png</texturenofocus>
 							</control>
 						</control>
+						<!-- resize, move toggle -->
 						<control type="group">
 							<posx>-70</posx>
 							<posy>0</posy>
+							<visible>false</visible>
 							<control type="group" id="4808100">
 								<posx>0</posx>
 								<posy>0</posy>
