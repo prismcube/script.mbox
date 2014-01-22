@@ -2827,7 +2827,7 @@ class SystemUpdate( SettingWindow ) :
 				return False
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Backup Data Copy to USB' ), MR_LANG( 'Complete' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Backup Data Copy to USB' ), MR_LANG( 'Backup data copy to USB completed' ) )
 				dialog.doModal( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Do you want to restore your system now?' ) )

@@ -38,8 +38,8 @@ big_fail()
 
 
 ################### START THE LOGFILE /tmp/BackupSuite.log ####################
-echo "Backup stick found." > /tmp/BackupSuite.log
-echo "Starting backup process." >> /tmp/BackupSuite.log
+echo "Backup stick found" > /tmp/BackupSuite.log
+echo "Starting backup process" >> /tmp/BackupSuite.log
 echo "Backup date_time  = $DATE" >> /tmp/BackupSuite.log
 echo "Working directory  = $WORKDIR" >> /tmp/BackupSuite.log
 
@@ -182,9 +182,9 @@ umount /tmp/bi/root > /dev/null 2>&1
 rmdir /tmp/bi/root > /dev/null 2>&1
 rmdir /tmp/bi > /dev/null 2>&1
 
-echo "Making md5sum done." >> /tmp/BackupSuite.log
-echo "Userdata backup done." >> /tmp/BackupSuite.log
-echo "File system backup done." >> /tmp/BackupSuite.log
+echo "Making md5sum done" >> /tmp/BackupSuite.log
+echo "Userdata backup done" >> /tmp/BackupSuite.log
+echo "File system backup done" >> /tmp/BackupSuite.log
 echo "Done" >> /tmp/BackupSuite.log
 sleep 3
 exit 0
