@@ -23,7 +23,8 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
-		self.IsStandByClose( )
+		self.mClosedFlag = False
+		#self.IsStandByClose( )
 
 		if self.mAutoCloseFlag :
 			thread = threading.Timer( 0.3, self.AutoClose )
@@ -40,9 +41,7 @@ class DialogYesNoCancel( BaseDialog ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mAutoCloseFlag = False
-			self.CloseDialog( )
-
-		self.mAutoCloseFlag = False
+			self.Close( )
 
 
 	def onClick( self, aControlId ) :
@@ -53,7 +52,7 @@ class DialogYesNoCancel( BaseDialog ) :
 		elif aControlId == E_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 		self.mAutoCloseFlag = False
-		self.CloseDialog( )
+		self.Close( )
 
 
 	def IsOK( self ) :
@@ -62,6 +61,11 @@ class DialogYesNoCancel( BaseDialog ) :
 
 	def onFocus( self, aControlId ) :
 		pass
+
+
+	def Close( self ) :
+		self.mClosedFlag = True
+		self.CloseDialog( )
 
 
 	def SetDialogProperty( self, aTitle = '', aLabel = '', aDefaultClose = False ) :
@@ -78,33 +82,37 @@ class DialogYesNoCancel( BaseDialog ) :
 			else :
 				self.mIsOk = E_DIALOG_STATE_NO
 			self.mAutoCloseFlag = False
-			self.CloseDialog( )
+			self.Close( )
 
 
 	def SetAutoCloseProperty( self, aFlag = False, aTime = 0, aIsYes = False ) :
 		self.mAutoCloseFlag = aFlag
 		self.mAutoCloseTime = aTime
 		self.mDefaultFocusYes = aIsYes
+		if aIsYes :
+			self.mIsOk = E_DIALOG_STATE_YES
 
 
 	def AutoClose( self ) :
-		if not self.mAutoCloseFlag or self.mDataCache.GetStanbyClosing( ) :
+		if not self.mAutoCloseFlag :
 			LOG_TRACE( 'mAutoCloseFlag[%s] GetStanbyClosing[%s]'% ( self.mAutoCloseFlag, self.mDataCache.GetStanbyClosing( ) ) )
 			return
 
 		loopCount = self.mAutoCloseTime * 10
 		while loopCount > 0 :
 			if not self.mAutoCloseFlag :
-				LOG_TRACE( 'selected, break auto close' )
+				LOG_TRACE( '[AutoClose] selected, break auto close' )
+				loopCount = -1
 				break
 
-			if loopCount % 10 == 0 :
-				LOG_TRACE( 'Auto Close %s second'% ( loopCount / 10 ) )
+			if ( loopCount % 10 ) == 0 :
+				LOG_TRACE( '[AutoClose] %s second'% ( loopCount / 10 ) )
 
 			loopCount -= 2
 			time.sleep( 0.2 )
 
-		if self.mAutoCloseFlag :
-			self.CloseDialog( )
+		LOG_TRACE( '[AutoClose] Closed' )
+		if not self.mClosedFlag :
+			self.Close( )
 
 

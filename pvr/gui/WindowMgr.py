@@ -222,7 +222,7 @@ class WindowMgr( object ) :
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
-						self.mWindows[parentId].onInit( )									
+						self.mWindows[parentId].onInit( )
 					else :
 						self.mWindows[currentId].close( )
 						self.mWindows[currentId].SetActivate( False )
@@ -236,7 +236,8 @@ class WindowMgr( object ) :
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mWindows[aWindowId].onInit( )									
+						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+						self.mWindows[aWindowId].onInit( )
 					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
