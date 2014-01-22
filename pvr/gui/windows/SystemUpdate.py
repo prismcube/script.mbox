@@ -2787,6 +2787,7 @@ class SystemUpdate( SettingWindow ) :
 				return True
 			else :
 				self.OpenBusyDialog( )
+				os.system( 'umount -l /tmp/bi/root' )
 				RemoveDirectory( destPath )
 				os.system( 'sync' )
 				self.CloseBusyDialog( )

@@ -32,6 +32,8 @@ class DialogRootfsBackup( BaseDialog ) :
 		self.mPipe						= None
 		self.mReturnShell 				= False
 
+		self.Isbusy						= False
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -146,11 +148,17 @@ class DialogRootfsBackup( BaseDialog ) :
 		if self.GlobalAction( actionId ) :
 			return
 
+		if self.Isbusy :
+			return
+
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 
 
 	def onClick( self, aControlId ) :
+		if self.Isbusy :
+			return
+		
 		if aControlId == CONTROL_ID_BUTTON_CLOSE :
 			self.Close( )
 
@@ -163,12 +171,17 @@ class DialogRootfsBackup( BaseDialog ) :
 
 
 	def Close( self ) :
+		self.Isbusy = True
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		if self.mReturnShell == False :
 			strProcess = MR_LANG( 'Processing' )
 			strCancel = MR_LANG( 'Canceling' )
 			strClose = strProcess + ' - ' + strCancel + '...'
 			self.mCtrlLabelString.setLabel( strClose )
+			try :
+				self.mPipe.kill( )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
 			KillScript( self.mProcessId )
 		if self.mCheckStatusFileThread :
 			self.mCheckStatusRunning = False
