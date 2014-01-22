@@ -114,6 +114,7 @@ class EPGWindow( BaseWindow ) :
 		self.mListItems = []
 		self.mTimerList = []
 		self.mUpdateEPGInfomationTimer = None
+		self.mUpdateSelcetedPositionTimer = None
 		self.mResetListItems = False
 		
 
@@ -228,6 +229,7 @@ class EPGWindow( BaseWindow ) :
 		self.StartEPGUpdateTimer( )
 
 		self.SetFocusList( self.mEPGMode )
+
 		self.mInitialized = True
 
 
@@ -290,9 +292,14 @@ class EPGWindow( BaseWindow ) :
 						self.GridControlUp( )
 					else :
 						self.GridControlDown( )
-		
+
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
-				self.UpdateEPGInfomation( )
+				#self.UpdateEPGInfomation( )
+				if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
+					self.mUpdateEPGInfomationTimer.cancel( )
+
+				self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
+				self.mUpdateEPGInfomationTimer.start( )
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
 			if self.mEPGMode == E_VIEW_GRID	:
@@ -304,7 +311,12 @@ class EPGWindow( BaseWindow ) :
 						self.GridControlPageDown( )
 
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
-				self.UpdateEPGInfomation( )
+				#self.UpdateEPGInfomation( )
+				if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
+					self.mUpdateEPGInfomationTimer.cancel( )
+
+				self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
+				self.mUpdateEPGInfomationTimer.start( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			if self.mChannelList == None or len( self.mChannelList ) <= 0 :
@@ -373,9 +385,17 @@ class EPGWindow( BaseWindow ) :
 				self.GridGoToCurrent( )
 			else:
 				self.SelectPrevChannel( )
+				self.RestartEPGUpdateTimer( 0.5 )
+				self.UpdateSelectedChannel( )
+
+				#self.SelectPrevChannel( )
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
-			self.SelectNextChannel( )			
+			self.SelectNextChannel( )
+			self.RestartEPGUpdateTimer( 0.5 )
+			self.UpdateSelectedChannel( )
+
+			#self.SelectNextChannel( )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowSearchDialog( )
@@ -761,17 +781,17 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			self.mCtrlList.selectItem( 0 )
 		else :
-			fucusIndex = 0
+			focusIndex = 0
 			if self.mCurrentChannel and self.mCurrentChannel.mError == 0 :
 				for channel in self.mChannelList:
 					if channel.mNumber == self.mCurrentChannel.mNumber :
 						break
-					fucusIndex += 1
+					focusIndex += 1
 
 			if self.mEPGMode == E_VIEW_GRID :
-				self.mCtrlGridChannelList.selectItem( fucusIndex )		
+				self.mCtrlGridChannelList.selectItem( focusIndex )
 			else :
-				self.mCtrlBigList.selectItem( fucusIndex )
+				self.mCtrlBigList.selectItem( focusIndex )
 
 
 	def UpdateSelectedChannel( self ) :
@@ -2531,6 +2551,19 @@ class EPGWindow( BaseWindow ) :
 		if count <= 0 :
 			return
 
+		channelIndex = self.mChannelList.index( self.mSelectChannel )
+
+		if channelIndex >= count -1 :
+			self.mSelectChannel = self.mChannelList[0]
+		else :
+			self.mSelectChannel = self.mChannelList[channelIndex+1]
+
+		self.mEventBus.Register( self )
+
+		"""
+		if count <= 0 :
+			return
+
 		idxCh = self.mChannelList.index( self.mSelectChannel )
 		idxNext = idxCh + 1
 		if idxNext >= count :
@@ -2556,6 +2589,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )
+		"""
 
 
 	def SelectPrevChannel( self ) :
@@ -2569,6 +2603,19 @@ class EPGWindow( BaseWindow ) :
 
 		count = len( self.mChannelList )
 
+		if count <= 0 :
+			return
+
+		channelIndex = self.mChannelList.index( self.mSelectChannel )
+
+		if channelIndex <= 0 :
+			self.mSelectChannel = self.mChannelList[count -1]
+		else :
+			self.mSelectChannel = self.mChannelList[channelIndex-1]
+
+		self.mEventBus.Register( self )
+
+		"""
 		if count <= 0 :
 			return
 
@@ -2597,6 +2644,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )
+		"""
 
 
 	def UpdateAllEPGList( self ) :
@@ -2620,6 +2668,9 @@ class EPGWindow( BaseWindow ) :
 			self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
 			self.mUpdateEPGInfomationTimer.start( )
 			return
+
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			self.GetSelectChannel( )
 
 		self.Load( )
 		self.UpdateList( )
@@ -3143,4 +3194,13 @@ class EPGWindow( BaseWindow ) :
 			self.setProperty( 'EPGFootor', 'False' )
 		else:
 			self.setProperty( 'EPGFootor', 'True' )
-		
+
+
+	def GetSelectChannel( self ) :
+		channelIndex = 0
+		if self.mCurrentChannel and self.mCurrentChannel.mError == 0 :
+			for channel in self.mChannelList :
+				if channel.mNumber == self.mSelectChannel.mNumber :
+					self.mSelectChannel = self.mChannelList[channelIndex]
+					break
+				channelIndex += 1
