@@ -97,6 +97,9 @@ class DialogBigSelect( BaseDialog ) :
 
 
 	def TimerItems( self ) :
+		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+		if runningTimers == None :
+			return False
 
 		for timer in self.mDefaultList :
 			channelNumber = timer.mChannelNo
@@ -107,7 +110,20 @@ class DialogBigSelect( BaseDialog ) :
 					channelNumber = self.mDataCache.CheckPresentationNumber( channel )
 				channelName = channel.mName
 
-			item = xbmcgui.ListItem( '%04d %s'%(channelNumber, channelName), '%s'%  timer.mName )
+			isRunningTimer = False
+			if len( runningTimers ) > 0 :
+				for runningTimer in runningTimers :
+					if timer.mTimerId == runningTimer.mTimerId :
+						isRunningTimer = True
+						break
+
+			if isRunningTimer == True :
+				item = xbmcgui.ListItem( '[COLOR=red]%04d %s[/COLOR]'%(channelNumber, channelName), '%s'%  timer.mName )
+			elif timer.mTimerType == ElisEnum.E_ITIMER_VIEW:
+				item = xbmcgui.ListItem( '[COLOR=green]%04d %s[/COLOR]'%(channelNumber, channelName), '%s'%  timer.mName )
+			else :
+				item = xbmcgui.ListItem( '%04d %s'%(channelNumber, channelName), '%s'%  timer.mName )
+
 			item.setProperty( 'StartTime', TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY )  )
 			item.setProperty( 'Duration', '%s~%s' %( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 			self.mListItems.append( item )
