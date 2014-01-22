@@ -2675,7 +2675,7 @@ class SystemUpdate( SettingWindow ) :
 			if self.CheckUsbSize( isSelectedXBMC, isSelectedConfig ) :
 				if self.BackupData( isSelectedXBMC, isSelectedConfig ) == False :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup filed' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
 					dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -2841,7 +2841,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProcessRestore( self, aPath ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete File' ), MR_LANG( 'Do you want to delete the backup file after restoring system?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete File' ), MR_LANG( 'Do you want to delete the backup file%s after restoring system?' )% NEW_LINE )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			removeUpdate = True
