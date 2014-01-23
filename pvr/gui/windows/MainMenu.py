@@ -329,8 +329,9 @@ class MainMenu( BaseWindow ) :
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
-			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
+			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
+				xbmc.executebuiltin( "ActivateWindow(favourites)" )			
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
 				
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
