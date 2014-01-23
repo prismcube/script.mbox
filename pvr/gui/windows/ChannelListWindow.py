@@ -3477,27 +3477,27 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = None
 
 			if aOldRecInfo1 :
-				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo1.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( aOldRecInfo1.mServiceId )
 				LOG_TRACE('num[%s] name[%s]'% (iChannel.mNumber, iChannel.mName) )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
 			if aOldRecInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo2.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( aOldRecInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
 			if self.mRecordInfo1  :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo1.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( self.mRecordInfo1.mServiceId )
 				if iChannel : 
-					LOG_TRACE('num[%s] name[%s] lenList[%s]'% (iChannel.mNumber, iChannel.mName, len(self.mChannelList) ) )
+					LOG_TRACE('num[%s] name[%s] lenList[%s]'% ( iChannel.mNumber, iChannel.mName, len(self.mChannelList) ) )
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 
 			if self.mRecordInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo2.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( self.mRecordInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )

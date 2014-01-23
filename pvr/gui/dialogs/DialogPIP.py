@@ -120,7 +120,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
-		self.mCurrentChannel = self.GetChannel_StartOnFirst( )
+		self.mCurrentChannel = self.Channel_GetCurrentByStartOnFirst( )
 
 		self.mChannelList     = []
 		self.mChannelListHash = {}
@@ -143,37 +143,6 @@ class DialogPIP( BaseDialog ) :
 
 		self.Load( )
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
-
-
-	def GetChannel_StartOnFirst( self ) :
-		if self.mDataCache.PIP_GetStatus( ) :
-			return None
-
-		#1. fixed No.50 : after start PIP, actual channel should be in small window
-		iChannel = self.mDataCache.Channel_GetCurrent( )
-		if iChannel and iChannel.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-			pChNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
-			iChannel = self.mDataCache.Channel_GetByNumber( pChNumber, True )
-
-			if iChannel and ( not self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) ) :
-				LOG_TRACE( '[PIP] fail : can not tune current channel, not available, [%s]'% pChNumber )
-				iChannel = None
-
-		if not iChannel :
-			channelList = self.mDataCache.PIP_GetTunableList( )
-			LOG_TRACE('[PIP] PIP_GetTunableList len[%s]'% len( channelList ) )
-			if channelList and len( channelList ) > 0 :
-				for chNumber in channelList :
-					if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
-						LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of pip, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
-						break
-
-		if iChannel :
-			LOG_TRACE( '[PIP] start on channel[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
-		else :
-			LOG_TRACE( '[PIP] start on channel Fail[%s]'% iChannel )
-
-		return iChannel
 
 
 	def onAction( self, aAction ) :
@@ -581,6 +550,37 @@ class DialogPIP( BaseDialog ) :
 		SetSetting( 'PIP_POSITION', posNotify )
 
 		self.SetGUIToPIP( )
+
+
+	def Channel_GetCurrentByStartOnFirst( self ) :
+		if self.mDataCache.PIP_GetStatus( ) :
+			return None
+
+		#1. fixed No.50 : after start PIP, actual channel should be in small window
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		if iChannel and iChannel.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
+			pChNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
+			iChannel = self.mDataCache.Channel_GetByNumber( pChNumber, True )
+
+			if iChannel and ( not self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) ) :
+				LOG_TRACE( '[PIP] fail : can not tune current channel, not available, [%s]'% pChNumber )
+				iChannel = None
+
+		if not iChannel :
+			channelList = self.mDataCache.PIP_GetTunableList( )
+			LOG_TRACE('[PIP] PIP_GetTunableList len[%s]'% len( channelList ) )
+			if channelList and len( channelList ) > 0 :
+				for chNumber in channelList :
+					if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
+						LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of pip, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
+						break
+
+		if iChannel :
+			LOG_TRACE( '[PIP] start on channel[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+		else :
+			LOG_TRACE( '[PIP] start on channel Fail[%s]'% iChannel )
+
+		return iChannel
 
 
 	def Channel_GetCurrentByPIP( self ) :
@@ -1076,6 +1076,9 @@ class DialogPIP( BaseDialog ) :
 		tuneTime = 0.5
 		if aChannel :
 			tuneTime = 3
+
+		if self.mFakeChannel :
+			self.mCurrentChannel = self.mFakeChannel
 
 		self.mAsyncTuneTimer = threading.Timer( tuneTime, self.TuneChannel, [aChannel] )
 		self.mAsyncTuneTimer.start( )
