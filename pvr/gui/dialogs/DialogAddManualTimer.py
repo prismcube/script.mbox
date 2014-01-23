@@ -1011,7 +1011,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, channelIndex )
 
 		if ret >= 0 :
-			self.mChannel = self.mChannelList[ ret ]
+			self.mChannel = channelList[ ret ]
 			self.mRecordName = self.mChannel.mName
 			self.SetControlLabel2String( E_DialogInput01, self.mRecordName )			
 
