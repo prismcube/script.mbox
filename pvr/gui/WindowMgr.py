@@ -303,7 +303,6 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SelectTuner import SelectTuner
 			from pvr.gui.windows.ChannelScanDVBT import ChannelScanDVBT
 			from pvr.gui.windows.DVBTTunerSetup import DVBTTunerSetup
-			from pvr.gui.windows.PIPWindow import PIPWindow
 			#from pvr.gui.windows.PIPWindow import PIPWindow
 
 

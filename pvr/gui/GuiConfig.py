@@ -1,5 +1,5 @@
 # TEST FLAG
-USE_TUNER_DVBT = False
+USE_TUNER_DVBT = True
 
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy
