@@ -91,6 +91,7 @@ class Action(object) :
 
 
 	ACTION_MBOX_RESERVED21		= 431
+	ACTION_MBOX_RESERVED22		= 432	
 
 	# re defined for another platform
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
@@ -460,14 +461,15 @@ class BaseWindow( BaseObjectWindow ) :
 		return ret
 
 
-	def SetMediaCenter( self ) :
+	def SetMediaCenter( self, aNowPlay=False ) :
 		import pvr.gui.WindowMgr as WinMgr
 		import pvr.gui.DialogMgr as DiaMgr
 		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
 
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
-		self.mCommander.AppMediaPlayer_Control( 1 )
+		if aNowPlay == True :
+			self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
 
