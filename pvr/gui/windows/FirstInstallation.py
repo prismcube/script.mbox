@@ -159,7 +159,7 @@ class FirstInstallation( FTIWindow ) :
 					if ret >= 0 and ret != currentindex :
 						if not self.mPlatform.IsPrismCube( ) :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No %s support' ) % self.mPlatform.GetName( ) )
 							dialog.doModal( )
 							return
 
@@ -175,8 +175,10 @@ class FirstInstallation( FTIWindow ) :
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-							prop = GetXBMCLanguageToProp( menuLanguageList[ ret ] )
+							prop = GetXBMCLanguageToPropLanguage( menuLanguageList[ ret ] )
 							ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+							prop = GetXBMCLanguageToPropAudioLanguage( menuLanguageList[ ret ] )
+							ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
 							self.mInitialized = False
 							time.sleep( 0.5 )
 							XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
@@ -198,18 +200,8 @@ class FirstInstallation( FTIWindow ) :
 					self.SetFTIStep( E_STEP_CHANNEL_SEARCH_CONFIG_DVBT )
 				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
-			elif groupId == E_SpinEx03 :
-				if self.mBusyVideoSetting :
-					return
-				if self.mAsyncVideoSetThread :
-					self.mAsyncVideoSetThread.cancel( )
-					self.mAsyncVideoSetThread = None
-
-				self.mAsyncVideoSetThread = threading.Timer( 3, self.AsyncVideoSetting )
-				self.mAsyncVideoSetThread.start( )
-
-			elif groupId == E_SpinEx01 or groupId == E_SpinEx02 :
-				self.ControlSelect( )
+			elif groupId == E_Input01 :
+				self.ShowHdmiFormat( )
 
 		elif self.GetFTIStep( ) == E_STEP_ANTENNA :
 			if groupId == E_SpinEx01 :
@@ -341,14 +333,15 @@ class FirstInstallation( FTIWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
+			lblSelect = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			self.AddInputControl( E_Input01, 'HDMI Format', lblSelect, MR_LANG( 'Set the display\'s HDMI resolution' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -372,7 +365,7 @@ class FirstInstallation( FTIWindow ) :
 
 			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
-			
+
 			self.InitControl( )
 			time.sleep( 0.2 )
 			self.DisableControl( )
@@ -667,42 +660,37 @@ class FirstInstallation( FTIWindow ) :
 					self.SetEnableControl( E_SpinEx03, False )
 
 
-	def AsyncVideoSetting( self ) :
-		self.mBusyVideoSetting = True
-		restoreValue = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( )
-		self.ControlSelect( )
-		if restoreValue != ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetProp( ) :
-			self.VideoRestore( restoreValue )
-		else :
-			self.mBusyVideoSetting = False
+	def ShowHdmiFormat( self ) :
+		hdmiList = []
+		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
+		propCount = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetIndexCount( )
+		for i in range( propCount ) :
+			propName = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropStringByIndex( i )
+			hdmiList.append( ContextItem( propName, i ) )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( hdmiList, selectIdx )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		#LOG_TRACE( '------select hdmi[%s] name[%s]'% ( selectAction, hdmiList[selectAction].mDescription ) )
+
+		if selectAction > -1 :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( selectAction )
+			self.SetControlLabel2String( E_Input01, hdmiList[selectAction].mDescription )
+
+			time.sleep(1)
+			self.VideoRestore( selectIdx, hdmiList[selectIdx].mDescription )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
 
-	def VideoRestore( self, aRestoreValue ) :
+	def VideoRestore( self, aRestoreIdx, aRestoreValue ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
 		dialog.doModal( )
 
-		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				self.mBusyVideoSetting = False
-				return
-			iconIndex = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '1080p' :
-				iconIndex = ElisEnum.E_ICON_1080p
-			#elif hdmiFormat == '1080p-25' :
-			#	iconIndex = ElisEnum.E_ICON_1080p
-			elif hdmiFormat == '720p' :
-				iconIndex = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				iconIndex = -1
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
-		else :
-			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetProp( aRestoreValue )
-			prop = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
-			control = self.getControl( E_SpinEx03 + 3 )
-			control.selectItem( prop )
-
-		self.mBusyVideoSetting = False
+		if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( aRestoreIdx )
+			self.SetControlLabel2String( E_Input01, aRestoreValue )
 
 
 	def LoadFormattedSatelliteNameList( self ) :

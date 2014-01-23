@@ -175,7 +175,8 @@ class WindowMgr( object ) :
 						self.mWindows[aWindowId].PreAction( )
 						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-					self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
+					#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
 					self.mWindows[aWindowId].onInit( )
 				else :
 					self.mWindows[self.mLastId].ClearRelayAction( )
@@ -215,7 +216,8 @@ class WindowMgr( object ) :
 							self.mWindows[parentId].PreAction( )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
-						self.mWindows[parentId].onInit( )									
+						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+						self.mWindows[parentId].onInit( )
 					else :
 						self.mWindows[currentId].close( )
 						self.mWindows[currentId].SetActivate( False )
@@ -229,7 +231,8 @@ class WindowMgr( object ) :
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mWindows[aWindowId].onInit( )									
+						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+						self.mWindows[aWindowId].onInit( )
 					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
@@ -301,6 +304,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.ChannelScanDVBT import ChannelScanDVBT
 			from pvr.gui.windows.DVBTTunerSetup import DVBTTunerSetup
 			from pvr.gui.windows.PIPWindow import PIPWindow
+			#from pvr.gui.windows.PIPWindow import PIPWindow
+
 
 			from pvr.HiddenTest import HiddenTest
 
@@ -342,10 +347,11 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
 				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
 				self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
-				self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )	
 				self.mWindows[WIN_ID_SELECT_TUNER] = SelectTuner( self.mRootWindow )
 				self.mWindows[WIN_ID_CHANNEL_SCAN_DVBT] = ChannelScanDVBT( self.mRootWindow )
 				self.mWindows[WIN_ID_DVBT_TUNER_SETUP] = DVBTTunerSetup( self.mRootWindow )
+				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )				
+
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
 
 			else :

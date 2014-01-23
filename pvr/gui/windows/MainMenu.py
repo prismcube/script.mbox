@@ -1,5 +1,6 @@
 from pvr.gui.WindowImport import *
 import xbmcgui
+import EPGWindow
 
 E_MAIN_MENU_BASE_ID				=  WinMgr.WIN_ID_MAINMENU * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 
@@ -11,6 +12,7 @@ BUTTON_ID_POWER					= E_MAIN_MENU_BASE_ID + 102
 BUTTON_ID_INSTALLATION			= E_MAIN_MENU_BASE_ID + 90100
 BUTTON_ID_ARCHIVE				= E_MAIN_MENU_BASE_ID + 90200
 BUTTON_ID_EPG					= E_MAIN_MENU_BASE_ID + 90300
+BUTTON_ID_TIMER					= E_MAIN_MENU_BASE_ID + 90900
 BUTTON_ID_CHANNEL_LIST			= E_MAIN_MENU_BASE_ID + 90400
 BUTTON_ID_FAVORITE_ADDONS		= E_MAIN_MENU_BASE_ID + 90500
 BUTTON_ID_MEDIA_CENTER			= E_MAIN_MENU_BASE_ID + 90600
@@ -36,6 +38,14 @@ BUTTON_ID_EDIT_TRANSPONDER		= E_MAIN_MENU_BASE_ID + 90105
 BUTTON_ID_CONFIGURE				= E_MAIN_MENU_BASE_ID + 90106
 BUTTON_ID_CAS					= E_MAIN_MENU_BASE_ID + 90107
 BUTTON_ID_UPDATE				= E_MAIN_MENU_BASE_ID + 90108
+
+BUTTON_ID_EPG_GRID			= E_MAIN_MENU_BASE_ID + 90312
+BUTTON_ID_EPG_CHANNEL		= E_MAIN_MENU_BASE_ID + 90313
+BUTTON_ID_EPG_CURRENT		= E_MAIN_MENU_BASE_ID + 90314
+BUTTON_ID_EPG_FOLLOWING		= E_MAIN_MENU_BASE_ID + 90315
+
+BUTTON_ID_TIMER_ADD_MANUAL	= E_MAIN_MENU_BASE_ID + 90912
+BUTTON_ID_TIMER_DELETE		= E_MAIN_MENU_BASE_ID + 90913
 
 BUTTON_ID_CHANNEL_LIST_FAVORITE = E_MAIN_MENU_BASE_ID + 90412
 BUTTON_ID_CHANNEL_LIST_LIST		= E_MAIN_MENU_BASE_ID + 90413
@@ -136,6 +146,9 @@ class MainMenu( BaseWindow ) :
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+
 
 	def onClick( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -199,14 +212,36 @@ class MainMenu( BaseWindow ) :
 				return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif aControlId == BUTTON_ID_EPG :
+		elif aControlId == BUTTON_ID_EPG or ( aControlId >= BUTTON_ID_EPG_GRID and aControlId <= BUTTON_ID_EPG_FOLLOWING ):
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping playback' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
 			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+				if aControlId == BUTTON_ID_EPG_GRID :
+					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_GRID )
+				elif aControlId == BUTTON_ID_EPG_CHANNEL :
+					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_CHANNEL )
+				elif aControlId == BUTTON_ID_EPG_CURRENT :
+					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_CURRENT )
+				elif aControlId == BUTTON_ID_EPG_FOLLOWING :
+					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_FOLLOWING )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )				
+
+		elif aControlId == BUTTON_ID_TIMER or ( aControlId >= BUTTON_ID_TIMER_ADD_MANUAL and aControlId <= BUTTON_ID_TIMER_DELETE ):
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				msg = MR_LANG( 'Try again after stopping playback' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+			else :
+				if aControlId == BUTTON_ID_TIMER :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMER_WINDOW )				
+				elif aControlId == BUTTON_ID_TIMER_ADD_MANUAL :
+					self.ShowAddTimerDialog()				
+				elif aControlId == BUTTON_ID_TIMER_DELETE :
+					self.ShowDeleteTimerDialog()
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -225,7 +260,7 @@ class MainMenu( BaseWindow ) :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Active Standby' ), 1 ) )
 			context.append( ContextItem( MR_LANG( 'Deep Standby' ), 2 ) )
-			context.append( ContextItem( MR_LANG( 'Restart GUI' ), 0 ) )
+			#context.append( ContextItem( MR_LANG( 'Restart GUI' ), 0 ) )
 			context.append( ContextItem( MR_LANG( 'Restart System' ), 3 ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -234,10 +269,13 @@ class MainMenu( BaseWindow ) :
 			contextAction = dialog.GetSelectedAction( )
 
 			if contextAction == 0 :
+				if not self.mDataCache.SavePIPStatus( ) :
+					RemoveDirectory( E_VOLITILE_PIP_STATUS_PATH )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+
 				self.setProperty( 'RestartGUI', 'true' )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-				time.sleep( 5 )
-				self.mDataCache.Splash_StartAndStop( 1 )
+				#self.mDataCache.Splash_StartAndStop( 1 )
 				#self.mCommander.Player_SetMute( True )
 				pvr.ElisMgr.GetInstance().Shutdown( )
 				xbmc.executebuiltin( 'Settings.Save' )
@@ -344,6 +382,24 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST_FAVORITE :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Get fast access to your favorite channels' ) )
+
+		elif aControlId == BUTTON_ID_TIMER_ADD_MANUAL :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Schedule a particular recording by specifying date, time and channel without using the EPG' ) )
+
+		elif aControlId == BUTTON_ID_TIMER_DELETE :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Delete the specified timer from the timer list' ) )
+
+		elif aControlId == BUTTON_ID_EPG_GRID :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the EPG of each channel according to timeline' ) )
+
+		elif aControlId == BUTTON_ID_EPG_CHANNEL :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display current and future scheduled events on each channel' ) )
+
+		elif aControlId == BUTTON_ID_EPG_CURRENT :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events currently on air' ) )
+
+		elif aControlId == BUTTON_ID_EPG_FOLLOWING :
+			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events next on schedule' ) )
 
 
 	def SetVisibleRss( self ) :
@@ -493,5 +549,68 @@ class MainMenu( BaseWindow ) :
 
 		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW ).SetEditMode( True )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
+
+	def ShowAddTimerDialog( self ) :
+		"""
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		isOK = False
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+		dialog.SetManualMode( True )
+		dialog.doModal( )
+
+		isOK = dialog.IsOK( )
+		if isOK == E_DIALOG_STATE_YES :
+			isOK = True
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+			RecordConflict( dialog.GetConflictTimer( ) )
+		"""
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+		dialog.EnableSelectChannel( True )
+
+		dialog.SetEPG( None  )
+			
+		channel =  self.mDataCache.Channel_GetCurrent( )
+		dialog.SetChannel( channel )			
+
+		dialog.doModal( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
+			if dialog.GetConflictTimer( ) == None :
+				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
+				infoDialog.doModal( )
+			else :
+				RecordConflict( dialog.GetConflictTimer( ) )
+
+
+	def ShowDeleteTimerDialog( self ) :
+		timers = 	self.mDataCache.Timer_GetTimerList( )
+		if len( timers  ) < 1:
+			msg = MR_LANG( 'There is no valid timer' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
+			dialog.doModal( )
+			return
+			
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BIG_SELECT )
+		dialog.SetDefaultProperty( MR_LANG( 'Delete Timer' ), timers )		
+		dialog.doModal( )
+		selectedList  = dialog.GetSelectedList()
+		print 'LAEL98 TEST selectedList=%s' %selectedList
+		for timerIndex  in selectedList :
+			timer =  timers[timerIndex]
+			if timer :
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+		
 
 

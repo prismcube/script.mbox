@@ -805,6 +805,9 @@ class ChannelListWindow( BaseWindow ) :
 						self.mDataCache.Player_AVBlank( True )
 
 				self.Close( )
+				#2626 qm issue, can not show pip on blank(main channel avblank, scramble, ...), m/w problem
+				#if TuneAndFastExit :
+				#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
 
 				if aGoToWindow :
 					WinMgr.GetInstance( ).ShowWindow( aGoToWindow, WinMgr.WIN_ID_NULLWINDOW )
@@ -1007,8 +1010,9 @@ class ChannelListWindow( BaseWindow ) :
 		if isSameChannel :
 			ret = True
 		else :
-			if not self.mDataCache.Get_Player_AVBlank( ) :
-				self.mDataCache.Player_AVBlank( True )
+			if iChannel.mLocked or iChannel.mIsCA :
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 
 			ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )		
 
@@ -1020,6 +1024,8 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.Close( )
+					#if TuneAndFastExit :
+					#	DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( None,True )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
@@ -3475,27 +3481,27 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = None
 
 			if aOldRecInfo1 :
-				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo1.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( aOldRecInfo1.mServiceId )
 				LOG_TRACE('num[%s] name[%s]'% (iChannel.mNumber, iChannel.mName) )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
 			if aOldRecInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo2.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( aOldRecInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
 			if self.mRecordInfo1  :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo1.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( self.mRecordInfo1.mServiceId )
 				if iChannel : 
-					LOG_TRACE('num[%s] name[%s] lenList[%s]'% (iChannel.mNumber, iChannel.mName, len(self.mChannelList) ) )
+					LOG_TRACE('num[%s] name[%s] lenList[%s]'% ( iChannel.mNumber, iChannel.mName, len(self.mChannelList) ) )
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 
 			if self.mRecordInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo2.mServiceId )
+				iChannel = self.mDataCache.Channel_GetByOneForRecording( self.mRecordInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )

@@ -18,6 +18,9 @@
 			<control type="group" id="9000">
 				<posx>40</posx>
 
+				<!-- Timer Mode -->
+				<include>DialogSpinEx03</include>
+
 				<!-- Recording Type -->
 				<include>DialogSpinEx01</include>
 				

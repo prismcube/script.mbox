@@ -125,7 +125,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.SetDefaultHideWatched( False )
 				self.mCtrlHideWatched.setSelected( False )
 
-
 			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
 			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
 			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
@@ -1366,7 +1365,7 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mPlayPerent < 1 :
 				self.mPlayPerent = 1
 
-		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
+		#LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
 		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )

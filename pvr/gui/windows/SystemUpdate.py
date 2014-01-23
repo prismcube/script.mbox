@@ -8,6 +8,7 @@ import shutil
 import time
 import os
 import glob
+import urlparse
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
 else :
@@ -27,6 +28,7 @@ E_DOWNLOAD_PATH_SHURL     = '/mtmp/shUrl'
 E_DOWNLOAD_PATH_UNZIPFILES ='/mtmp/unziplist'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
+E_DEFAULT_PATH_SAMBA      = '/media/smb'
 #E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 
 if E_UPDATE_TEST_TESTBED :
@@ -61,6 +63,7 @@ E_CONTROL_ID_LABEL_PERCENT  = 52 + E_SYSTEM_UPDATE_BASE_ID
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_LOAD_OLD_VERSION     = 2
+CONTEXT_ACTION_LOAD_LOCAL_VERSION   = 3
 
 E_UPDATE_STEP_HOME        = 0
 E_UPDATE_STEP_READY       = 1
@@ -114,6 +117,13 @@ UPDATE_NETWORK_INTERFACES			= '/etc/network/interfaces'
 UPDATE_NETWORK_INTERFACES_CONFIG	= '/config/interfaces'
 UPDATE_NETWORK_WPASUPPLICANT		= '/etc/wpa_supplicant/wpa_supplicant.conf'
 UPDATE_NETWORK_WPASUPPLICANT_CONFIG	= '/config/wpa_supplicant.conf'
+
+# RootFs Backup Script
+FILE_ROOTFS_BACKUP_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_rootfs_backup.sh'
+FILE_BACKUP_EXCLUDE					= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/backup_exclude'
+FILE_ROOTFS_LOCAL_SCRIPT			= xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/backup_script/local_Installation.sh'
+FILE_ROOTFS_BACKUP_LOG				= '/tmp/BackupSuite.log'
+
 
 class SCRIPTClass( object ) :
 	def __init__( self ) :
@@ -199,6 +209,7 @@ class SystemUpdate( SettingWindow ) :
 		#parse settings.xml
 		#self.mPVSData = None
 		#self.mCurrData = None
+		self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 		self.mIndexLastVersion = 0
 		self.mShowProgressThread = None
 		self.mUSBAttached = self.mDataCache.GetUSBAttached( )
@@ -238,7 +249,7 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )				
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -262,20 +273,17 @@ class SystemUpdate( SettingWindow ) :
 			return
 	
 		groupId = self.GetGroupId( aControlId )
-		LOG_TRACE( '-----------click id[%s]'% groupId )
+		#LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
 			#LOG_TRACE('-----------pvslist[%s] pvsData[%s] downThread[%s] isDownload[%s]'% (len( self.mPVSList ), self.mPVSData, self.mGetDownloadThread, self.mIsDownload ) )
+			self.mUpdateMode = CONTEXT_ACTION_REFRESH_CONNECT
 			self.LoadInit( )
 
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				if self.mDataCache.Satellite_GetConfiguredList( ) :
-					self.UpdateChannelsByInternet( )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
-					dialog.doModal( )
+				self.mUpdateMode = CONTEXT_ACTION_LOAD_LOCAL_VERSION
+				self.DoContextAction( CONTEXT_ACTION_LOAD_LOCAL_VERSION )
 
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -294,6 +302,14 @@ class SystemUpdate( SettingWindow ) :
 						self.mGetDownloadThread = self.GetDownloadThread( )
 
 		elif groupId == E_Input03 :
+			if self.mDataCache.Satellite_GetConfiguredList( ) :
+				self.UpdateChannelsByInternet( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
+				dialog.doModal( )
+
+		elif groupId == E_Input04 :
 			LOG_TRACE( 'Import Settings from USB' )
 			if self.GetStatusFromFirmware( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -303,9 +319,39 @@ class SystemUpdate( SettingWindow ) :
 
 			self.ImportSettingsFromUSB( )
 
-		elif groupId == E_Input04 :
-			LOG_TRACE( 'Export Settings to USB' )		
+		elif groupId == E_Input05 :
+			LOG_TRACE( 'Export Settings to USB' )
 			self.ExportSettingsToUSB( )
+
+		elif groupId == E_Input06 :	
+			if self.GetStatusFromFirmware( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+				dialog.doModal( )
+				return
+			else :
+				usbPath = self.mDataCache.USB_GetMountPath( )
+				if not usbPath :
+					LOG_TRACE( 'No USB connected' )
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+					return
+				else :
+					context = []
+					context.append( ContextItem( MR_LANG( 'Backup system image to USB' ), 0 ) )
+					context.append( ContextItem( MR_LANG( 'Restore backup from USB' ), 1 ) )
+
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
+					contextAction = dialog.GetSelectedAction( )
+
+					if contextAction == 0 :
+						self.OpenBackupDialog( )
+					elif contextAction == 1 :
+						if self.RestoreBackup( ) == False :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Restore backup failed' ) )
+							dialog.doModal( )
 
 
 	def onFocus( self, aControlId ) :
@@ -344,10 +390,10 @@ class SystemUpdate( SettingWindow ) :
 				return
 
 			E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
-			LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
+			#LOG_TRACE('-------------------------usbpath[%s] re_define[%s]'% ( usbPath, E_DEFAULT_PATH_DOWNLOAD ) )
 
 		if self.mPVSData and self.mPVSData.mError == 0 :
-			LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
+			#LOG_TRACE('------------PVSData ver[%s] size[%s] file[%s]'% (self.mPVSData.mVersion, self.mPVSData.mSize, self.mPVSData.mFileName) )
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 			if self.mGetDownloadThread :
@@ -408,8 +454,8 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( '-------ntfs[%s]'% isNtfs )
 
 		if isNtfs :
-			msg1 = MR_LANG( 'No support %s' ) % 'NTFS'
-			self.DialogPopup( E_STRING_ATTENTION, msg1 )
+			msg1 = MR_LANG( 'No %s support' ) % 'NTFS'
+			self.DialogPopup( E_STRING_ERROR, msg1 )
 
 		return isNtfs
 
@@ -839,6 +885,9 @@ class SystemUpdate( SettingWindow ) :
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
+		#if not self.GetStatusFromFirmware( ) :
+		#	context.append( ContextItem( MR_LANG( 'Update from local directory' ), CONTEXT_ACTION_LOAD_LOCAL_VERSION ) )
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
@@ -897,6 +946,105 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
 			self.ShowOldVersion( )
+
+		elif aContextAction == CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+			self.ShowLocalVersion( )
+
+
+	def ShowLocalVersion( self ) :
+		if self.GetStatusFromFirmware( ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
+			dialog.doModal( )
+			return
+
+		zipFile = xbmcgui.Dialog( ).browsepath( MR_LANG( 'Update from local directory' ), '*.zip' )
+		LOG_TRACE( '----------zip[%s]'% zipFile )
+		if not zipFile or zipFile == 'None' :
+			LOG_TRACE( 'not selected zip' )
+			return
+
+		urlType = urlparse.urlparse( zipFile ).scheme
+		if urlType :
+			if urlType == 'ftp' :
+				zipFile = self.GetDownloadByInstant( zipFile )
+				if zipFile == -1 :
+					self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
+					return
+
+				elif zipFile == False :
+					LOG_TRACE( 'cancel or aborted' )
+					return
+
+				if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
+					LOG_TRACE( 'no download' )
+					return
+
+			elif urlType == 'smb' :
+				zipFile = MountToSMB( zipFile, E_DEFAULT_PATH_SAMBA )
+				LOG_TRACE( '-----------------------smb zipFile[%s]'% zipFile )
+
+			else :
+				# upnp, zeroconf, daap, ...
+				lblLine = MR_LANG( 'No %s support' )% urlType
+				self.DialogPopup( E_STRING_ERROR, lblLine )
+				return
+
+		if not CheckDirectory( zipFile ) :
+			LOG_TRACE( 'not found zip[%s]'% zipFile )
+			self.DialogPopup( E_STRING_ERROR, MR_LANG( 'File not found' ) )
+			return
+
+		#1. check hdd mount
+		if not CheckHdd( ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
+			return
+
+		#2. check space
+		if GetFileSize( zipFile ) > GetDeviceSize( E_DEFAULT_PATH_HDD ) :
+			LOG_TRACE( 'hdd not found' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD_SPACE )
+			return
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		#3. run shell
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
+		dialog.SetDialogProperty( MR_LANG( 'System Update' ), E_DEFAULT_PATH_DOWNLOAD, zipFile, False, 1 )
+		dialog.doModal( )
+
+		shell = dialog.GetResult( )
+		if shell < E_RESULT_UPDATE_DONE :
+			mTitle = E_STRING_ERROR
+			errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			if urlType == 'smb' :
+				ExecuteShell( 'umount %s'% E_DEFAULT_PATH_SAMBA )
+
+			if shell == E_RESULT_ERROR_FAIL :
+				errmsg = E_STRING_CHECK_CHANNEL_FAIL
+
+			elif shell == E_RESULT_ERROR_CANCEL :
+				return
+
+			elif shell == E_RESULT_ERROR_CHECKSUME :
+				errmsg = E_STRING_CHECK_CORRUPT
+				self.mStepPage = E_UPDATE_STEP_HOME
+				self.mIsDownload = False
+				#self.SetControlLabel2String( E_Input02, MR_LANG( 'Download') )
+				#self.EditDescription( E_Input02, MR_LANG( 'Press OK button to download the firmware shown below' ) )
+				#self.ShowDescription( E_Input02 )
+				#LOG_TRACE('----------downThread[%s] isDownload[%s]'% ( self.mGetDownloadThread, self.mIsDownload ) )
+
+			self.DialogPopup( mTitle, errmsg )
+			return
+
+		#4. backup files and reboot
+		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+
+		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
 	def ShowOldVersion( self ) :
@@ -986,19 +1134,25 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_HOME :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware via Internet' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Firmware from zip file' ), '',  MR_LANG( 'Update firmware by browsing to the directory where the firmware zip file is located and install it' ) )
 
-			self.AddInputControl( E_Input03, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
+			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
+			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore System' ), '',  MR_LANG( 'Backup whole system image to USB or restore it from USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
-
 			self.SetEnableControl( E_Input03, True )
 			self.SetEnableControl( E_Input04, True )
+			self.SetEnableControl( E_Input05, True )
+			self.SetEnableControl( E_Input06, True )
+
 			self.SetVisibleControl( E_Input03, True )
 			self.SetVisibleControl( E_Input04, True )
+			self.SetVisibleControl( E_Input05, True )
+			self.SetVisibleControl( E_Input06, True )
 
 			self.InitControl( )
 			#self.SetFocusControl( E_Input01 )
@@ -1031,8 +1185,12 @@ class SystemUpdate( SettingWindow ) :
 
 			self.SetEnableControl( E_Input03, False )
 			self.SetEnableControl( E_Input04, False )
+			self.SetEnableControl( E_Input05, False )
+			self.SetEnableControl( E_Input06, False )
 			self.SetVisibleControl( E_Input03, False )
 			self.SetVisibleControl( E_Input04, False )
+			self.SetVisibleControl( E_Input05, False )
+			self.SetVisibleControl( E_Input06, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -1208,9 +1366,10 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
-			self.ShowDescription( E_Input02 )
+			if self.mUpdateMode != CONTEXT_ACTION_LOAD_LOCAL_VERSION :
+				self.SetControlLabel2String( E_Input02, MR_LANG( 'Reboot' ) )
+				self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the firmware installation process' ) )
+				self.ShowDescription( E_Input02 )
 
 			self.CheckItems( )
 
@@ -1399,13 +1558,13 @@ class SystemUpdate( SettingWindow ) :
 			return sizeCheck
 
 		else :
-			LOG_TRACE( 'Not Exist HDD' )
+			LOG_TRACE( 'No HDD exist' )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HDD )
 			E_UPDATE_FIRMWARE_USE_USB = True
 
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if not usbPath :
-				LOG_TRACE( 'Not Exist USB' )
+				LOG_TRACE( 'No USB connected' )
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
 				return False
 
@@ -1420,6 +1579,84 @@ class SystemUpdate( SettingWindow ) :
 
 			LOG_TRACE( 'usbSize[%s] downSize[%s] unzip[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, self.mPVSData.mUnpackSize, usbPath ) )
 			return sizeCheck
+
+
+	def GetDownloadByInstant( self, reqFile = None ) :
+		if not reqFile :
+			return -1
+
+		ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize = GetParseUrl( reqFile, True )
+		downloadFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, ftpFile )
+
+		if not ftpSize or ftpSize < 1 :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
+			return False
+
+		iPVS = PVSClass( )
+		iPVS.mName = MR_LANG( 'Download via FTP' )
+		iPVS.mFileName = os.path.basename( ftpFile )
+		iPVS.mSize = ftpSize
+		self.mWorkingItem = deepcopy( iPVS )
+		self.mWorkingDownloader = None
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		isResume = False
+		self.mIsDownload = False
+		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, iPVS.mFileName )
+		if CheckDirectory( tempFile ) :
+			isDownloadAgain = False
+			lblTitle = MR_LANG( 'Resume Downloading' )
+			lblLine = MR_LANG( 'Continue interrupted downloads?' )
+			if os.stat( tempFile )[stat.ST_SIZE] == iPVS.mSize :
+				LOG_TRACE( '------------------already download' )
+				isDownloadAgain = True
+				lblTitle = MR_LANG( 'File Already Exists' )
+				lblLine = MR_LANG( 'Do you want to download it again?' )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( lblTitle, lblLine )
+			dialog.doModal( )
+
+			ret = dialog.IsOK( )
+			if ret == E_DIALOG_STATE_CANCEL :
+				return False
+
+			elif ret == E_DIALOG_STATE_YES :
+				isResume = True
+				if isDownloadAgain :
+					isResume = False
+			else :
+				if isDownloadAgain :
+					return downloadFile
+
+
+		self.mEnableLocalThread = True
+		self.mStepPage = E_UPDATE_STEP_DOWNLOAD
+		checkEthernet = self.CheckEthernetThread( )
+
+		self.ProgressDialog( isResume, reqFile, tempFile )
+
+		if self.mEnableLocalThread and checkEthernet :
+			self.mEnableLocalThread = False
+			checkEthernet.join( )
+
+		self.mEnableLocalThread = False
+		self.mStepPage = E_UPDATE_STEP_HOME
+		self.mWorkingItem = None
+		self.mWorkingDownloader = None
+		time.sleep( 0.3 )
+
+		ret = False
+		if self.mIsDownload :
+			ret = downloadFile
+			LOG_TRACE( '------------------download success' )
+
+		self.mIsDownload = False
+
+		return ret
+
 
 
 	#make tempDir, write local file
@@ -1515,9 +1752,9 @@ class SystemUpdate( SettingWindow ) :
 
 	def ProgressDialog( self, aIsResume, aRemoteFile, aDestFile ) :
 		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( self.mWorkingItem.mName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
+		self.mDialogProgress.create( self.mWorkingItem.mName, self.mWorkingItem.mFileName, '%s%s'% ( MR_LANG( 'Waiting' ), ING ) )
 
-		LOG_TRACE( '--------------reqFile[%s]'% aRemoteFile )
+		LOG_TRACE( '--------------isResume[%s] reqFile[%s]'% ( aIsResume, aRemoteFile ) )
 
 		try :
 			self.mWorkingDownloader = DownloadFile( aRemoteFile, aDestFile )
@@ -1530,10 +1767,18 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 			self.mIsCancel = False
 			self.mIsDownload = False
-			self.mStepPage = E_UPDATE_STEP_READY
+			self.mWorkingDownloader.abort( True )
+			#self.mStepPage = E_UPDATE_STEP_READY
 
 		self.mDialogProgress.close( )
 		self.mDialogProgress = None
+
+		if CheckDirectory( aDestFile ) and self.mWorkingItem and \
+		   os.stat( aDestFile )[stat.ST_SIZE] == self.mWorkingItem.mSize :
+			self.mIsDownload = True
+			os.system( 'sync' )
+			LOG_TRACE('-------------------------Isdownload[%s] size[%s] down[%s]'% ( self.mIsDownload, os.stat( aDestFile )[stat.ST_SIZE], self.mWorkingItem.mSize ) )
+
 
 
 	def ProgressNoDialog( self, aIsResume, aRemoteFile, aDestFile ) :
@@ -1630,14 +1875,14 @@ class SystemUpdate( SettingWindow ) :
 		if self.mDialogProgress and self.mWorkingItem.mSize :
 			#per = 1.0 * cursize / self.mWorkingItem.mSize * 100
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
-			self.mDialogProgress.update( 1.0 * cursize / self.mWorkingItem.mSize * 100 )
+			self.mDialogProgress.update( int( 1.0 * cursize / self.mWorkingItem.mSize * 100 ) )
 
-			if self.mWorkingDownloader and self.mDialogProgress.iscanceled( ) or \
-			   self.mWorkingDownloader and self.mLinkStatus != True :
-				self.mWorkingDownloader.abort( True )
-				self.mIsDownload = False
-				self.mStepPage = E_UPDATE_STEP_READY
-				LOG_TRACE( '--------------abort' )
+			if self.mWorkingDownloader :
+				if self.mDialogProgress.iscanceled( ) or self.mLinkStatus != True :
+					self.mWorkingDownloader.abort( True )
+					self.mIsDownload = False
+					#self.mStepPage = E_UPDATE_STEP_READY
+					LOG_TRACE( '--------------abort' )
 
 
 	def ShowProgress2( self, cursize = 0 ) :
@@ -1986,7 +2231,7 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE('-------------req shell[%s] ret[%s]'% ( request, isExist ) )
 
 		if isExist == False :
-			LOG_TRACE( '----------------download fail, shell none' )
+			LOG_TRACE( '----------------download failed, shell none' )
 			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE] )
 			thread.start( )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
@@ -1999,7 +2244,7 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 
 		if not aPVSScript.mScriptMd5 or ( not CheckMD5Sum( mShell, aPVSScript.mScriptMd5 ) ) :
-			LOG_TRACE( '----------------verify fail, shell err' )
+			LOG_TRACE( '----------------verification failed, shell err' )
 			thread = threading.Timer( 0.1, self.DialogPopup, [E_STRING_ERROR, E_STRING_CHECK_VERIFY] )
 			thread.start( )
 			#self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
@@ -2163,7 +2408,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ImportChannelsFromUSB( self, aUsbPath ) :
-		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml')  )
+		xmlFullPathList = glob.glob( os.path.join( aUsbPath, 'updatechannel', '*.xml') )
 
 		LOG_TRACE( 'XML file countd=%d' %len(xmlFullPathList ) )
 
@@ -2417,4 +2662,260 @@ class SystemUpdate( SettingWindow ) :
 	def CloseProgress( self ) :
 		self.mProgress.SetResult( True )
 		self.mChannelUpdateProgress.join( )
+
+
+	def OpenBackupDialog( self ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BACKUP_SETTINGS )
+		dialog.doModal( )
+
+		isSelectedXBMC			= dialog.GetSelectXBMC( )
+		isSelectedConfig 		= dialog.GetSelectConfig( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if self.CheckUsbSize( isSelectedXBMC, isSelectedConfig ) :
+				if self.BackupData( isSelectedXBMC, isSelectedConfig ) == False :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
+					dialog.doModal( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Data Backup' ), MR_LANG( 'Data backup completed successfully' ) )
+					dialog.doModal( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+				dialog.doModal( )
+
+
+	def CheckUsbSize( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		self.OpenBusyDialog( )
+		sumSize = 500 * 1024 * 1024
+		if aIsSelectedXBMC :
+			sumSize = sumSize + GetDirectorySize( '/mnt/hdd0/program/.xbmc' )
+		if aIsSelectedConfig :
+			sumSize = sumSize + GetDirectorySize( '/config' )
+
+		if GetDeviceSize( self.mDataCache.USB_GetMountPath( ) ) < sumSize :
+			self.CloseBusyDialog( )
+			return False
+		else :
+			self.CloseBusyDialog( )
+			return True
+
+
+	def BackupData( self, aIsSelectedXBMC, aIsSelectedConfig ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		now = time.localtime( )
+		date = '%04d_%02d_%02d_%02d-%02d' % ( now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min )
+		destPath = usbpath + '/update_ruby_backup_%s' % date
+
+		progressDialog = None
+		if os.path.exists( destPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'The Filename Already Exists' ), MR_LANG( 'Do you want to overwrite it?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				RemoveDirectory( destPath )
+			else :
+				return False
+		try :
+			os.makedirs( destPath )
+			shutil.copy( FILE_ROOTFS_LOCAL_SCRIPT, destPath + '/Installation.sh' )
+
+			# Backup Config Data
+			if aIsSelectedConfig :
+				self.OpenBusyDialog( )
+				ret_config = os.system( 'tar cvf %s/config_backup.tar /config -X %s' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				if ret_config == 0 :
+					self.CloseBusyDialog( )
+				else :
+					RemoveDirectory( destPath )
+					os.system( 'sync' )
+					self.CloseBusyDialog( )
+					return False
+
+			# Backup XBMC Data
+			if aIsSelectedXBMC :
+				strInit = MR_LANG( 'Initializing process' ) + '...'
+				strReady = MR_LANG( 'Ready to start' ) + '...'
+				progressDialog = xbmcgui.DialogProgress( )
+				progressDialog.create( MR_LANG( 'XBMC Data Backup' ), strInit )
+				progressDialog.update( 0, strReady )
+
+				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
+				os.system( 'echo cd /mnt/hdd0/program > /tmp/xbmc_backup.sh' )
+				os.system( 'echo tar cvf %s/xbmc_backup.tar .xbmc/* -X %s >> /tmp/xbmc_backup.sh' % ( destPath, FILE_BACKUP_EXCLUDE ) )
+				os.system( 'chmod 777 /tmp/xbmc_backup.sh' )
+				pipe = Popen( '/tmp/xbmc_backup.sh', shell=True, stdout=PIPE )
+				count = 1
+				while pipe.poll( ) == None :
+					if progressDialog.iscanceled( ) :
+						strCancel = MR_LANG( 'Canceling' ) + '...'
+						progressDialog.update( percent, strCancel )
+						self.OpenBusyDialog( )
+						pipe.kill( )
+						RemoveDirectory( destPath )
+						os.system( 'sync' )
+						self.CloseBusyDialog( )
+						progressDialog.update( 0, '' )
+						progressDialog.close( )
+						return False
+
+					line = pipe.stdout.readline( )
+					if line != '' :
+						percent = int( 1.0 * count / fileCount * 100 )
+						if percent > 99 :
+							percent = 99
+						strCopy = MR_LANG( 'Copying data' ) + '...'
+						progressDialog.update( percent, strCopy, '%s' % line.strip( ) )
+						count = count + 1
+
+				progressDialog.update( 100, MR_LANG( 'XBMC Data Backup' ), MR_LANG( 'Complete' ) )
+				time.sleep( 1 )
+				progressDialog.update( 0, '' )
+				progressDialog.close( )
+
+			# Backup RootFS
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ROOTFS_BACKUP )
+			dialog.SetDialogProperty( MR_LANG( 'File System Backup' ), FILE_ROOTFS_BACKUP_SCRIPT, FILE_ROOTFS_BACKUP_LOG, destPath )
+			dialog.doModal( )
+
+			if dialog.GetResultStatus( ) :
+				self.OpenBusyDialog( )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return True
+			else :
+				self.OpenBusyDialog( )
+				os.system( 'umount -l /tmp/bi/root' )
+				RemoveDirectory( destPath )
+				os.system( 'sync' )
+				self.CloseBusyDialog( )
+				return False
+
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( destPath )
+			os.system( 'sync' )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
+
+
+	def RestoreBackup( self ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		restoreList = glob.glob( os.path.join( usbpath, 'update_ruby_backup_*') )
+		if len( restoreList ) <= 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Backup data not found' ) )
+			dialog.doModal( )
+			return False
+
+		makelist = []
+		for i in range( len( restoreList ) ) :
+			makelist.append( os.path.basename( restoreList[i] ) )
+
+		dialog = xbmcgui.Dialog( )
+		select = dialog.select( MR_LANG( 'Select Backup File' ), makelist, False )
+		if select >= 0 :
+			ret = self.ProcessRestore( restoreList[ select ] )
+			self.OpenBusyDialog( )
+			os.system( 'sync' )
+			self.CloseBusyDialog( )
+
+			if ret == False :
+				return False
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Backup Data Copy to USB' ), MR_LANG( 'Backup data copy to USB completed' ) )
+				dialog.doModal( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Do you want to restore your system now?' ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mDataCache.System_Reboot( )
+				return True
+		else :
+			return True
+
+
+	def ProcessRestore( self, aPath ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Delete File' ), MR_LANG( 'Do you want to delete the backup file%s after restoring system?' )% NEW_LINE )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			removeUpdate = True
+		else :
+			removeUpdate = False
+
+		self.OpenBusyDialog( )
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		if GetDeviceSize( usbpath ) < GetDirectorySize( aPath ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash memory' ) )
+			dialog.doModal( )
+			self.CloseBusyDialog( )
+			return False
+
+		destPath = usbpath + '/update_ruby'
+		if os.path.exists( destPath ) :
+			RemoveDirectory( destPath )
+		pathlist = GetDirectoryAllFilePathList( [ aPath ] )
+		self.CloseBusyDialog( )
+		progressDialog = None
+		try :
+			strInit = MR_LANG( 'Initializing process' ) + '...'
+			strReady = MR_LANG( 'Ready to start' ) + '...'
+			progressDialog = xbmcgui.DialogProgress( )
+			progressDialog.create( MR_LANG( 'Backup Data Copy' ), strInit )
+			progressDialog.update( 0, strReady )
+
+			count = 1
+			for path in pathlist :
+				percent = int( 1.0 * count / len( pathlist ) * 100 )
+
+				if progressDialog.iscanceled( ) :
+					strCancel = MR_LANG( 'Canceling' ) + '...'
+					progressDialog.update( percent, strCancel )
+					self.OpenBusyDialog( )
+					RemoveDirectory( destPath )
+					self.CloseBusyDialog( )
+					progressDialog.update( 0, '', '' )
+					progressDialog.close( )
+					return False
+
+				if path[ len( aPath ) : ] == '/rootfs.rootfs.ubi' or path[ len( aPath ) : ] == '/xbmc_backup.tar' :
+					strBigData = MR_LANG( 'Copying big data' ) + '...'
+					strWait1 = MR_LANG( 'Please wait' ) + '... '
+					strWait2 = MR_LANG( 'This will take a while' )
+					strWait = strWait1 + strWait2
+					progressDialog.update( percent, strBigData, '%s' % path, strWait )
+				else :
+					strData = MR_LANG( 'Copying data' ) + '...'
+					progressDialog.update( percent, strData, '%s' % path, ' ' )
+
+				destPathCopy = destPath + path[ len( aPath ) : ]
+				if not os.path.exists( os.path.dirname( destPathCopy ) ) :
+					os.makedirs( os.path.dirname( destPathCopy ) )
+
+				shutil.copy( path, destPathCopy )
+				count = count + 1
+
+			os.system( 'touch %s' % destPath + '/force.update' )
+			if removeUpdate :
+				os.system( 'touch %s' % destPath + '/rm.updatefiles' )
+			progressDialog.update( 100, MR_LANG( 'Backup Data Copy' ), MR_LANG( 'Complete' ) )
+			time.sleep( 1 )
+			progressDialog.update( 0, '', '' )
+			progressDialog.close( )
+			return True
+
+		except Exception, e :
+			LOG_ERR( 'except BackupXBMC [%s]' % e )
+			RemoveDirectory( destPath )
+			if progressDialog :
+				progressDialog.close( )
+			self.CloseBusyDialog( )
+			return False
 

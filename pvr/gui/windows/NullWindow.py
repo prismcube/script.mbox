@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
-import xbmc, xbmcgui, gc
+import xbmc, xbmcgui
+#import xbmc, xbmcgui, gc
 
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
@@ -45,7 +46,7 @@ class NullWindow( BaseWindow ) :
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
-		collected = gc.collect( )
+		#collected = gc.collect( )
 		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		#LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
@@ -84,6 +85,7 @@ class NullWindow( BaseWindow ) :
 			self.getControl( E_LABEL_ID_GUI_RESTART ).setLabel( '[I]' +  MR_LANG( 'Restarting GUI' )  +  '[/I]' )
 			self.mInitialized = True
 			self.MboxFirstProcess( )
+			self.mDataCache.LoadPIPStatus( )
 			return
 
 		self.mEventBus.Register( self )
@@ -157,7 +159,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def XBMCFirstProcess( self ) :
-		xbmc.executebuiltin( 'Settings.SetMboxOpen' )
+		#xbmc.executebuiltin( 'Settings.SetMboxOpen' )
 		if os.path.exists( '/mtmp/XbmcDbBroken' ) :
 			databaseName = None
 			try :
@@ -508,12 +510,10 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if E_V1_2_APPLY_PIP :
-				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_PIP_WINDOW )
+			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_PIP_WINDOW ).PIP_Check( E_PIP_STOP )
+			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -1028,16 +1028,16 @@ class NullWindow( BaseWindow ) :
 
 		elif aAction == Action.ACTION_COLOR_YELLOW :
 			self.CloseSubTitle( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_AUDIO_SETTING )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO ).doModal( )
 			self.CheckSubTitle( )
 			self.mIsShowDialog = False
 			return
 
 		elif aAction == Action.ACTION_COLOR_BLUE :
-			self.CloseSubTitle( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).DoContextAction( CONTEXT_ACTION_VIDEO_SETTING )
-			self.CheckSubTitle( )
 			self.mIsShowDialog = False
+			self.CloseSubTitle( )
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+			self.CheckSubTitle( )
 			return
 
 		elif aAction == Action.ACTION_COLOR_GREEN :

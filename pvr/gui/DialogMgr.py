@@ -20,12 +20,14 @@ XBMC_WINDOW_DIALOG_PROGRESS			= 10101
 XBMC_WINDOW_DIALOG_BUSY				= 10138
 XBMC_WINDOW_DIALOG_YES_NO			= 10100
 XBMC_WINDOW_DIALOG_OK				= 12002
+XBMC_WINDOW_DIALOG_FILE_BROWSER		= 10126
 
 XBMC_WINDOW_DIALOGS = [
 	XBMC_WINDOW_DIALOG_KEYBOARD,
 	XBMC_WINDOW_DIALOG_NUMERIC,
 	XBMC_WINDOW_DIALOG_SELECT,
 	XBMC_WINDOW_DIALOG_PROGRESS,
+	XBMC_WINDOW_DIALOG_FILE_BROWSER,
 	XBMC_WINDOW_DIALOG_BUSY ]
 
 DIALOG_ID_LNB_FREQUENCY				= 1
@@ -61,6 +63,10 @@ DIALOG_ID_UPDATE_PROGRESS			= 30
 DIALOG_ID_IMPORT_EXPORT_SETTINGS	= 31
 DIALOG_ID_CUSTOM_SCRIPT_PROGRESS	= 32
 DIALOG_ID_VIEW_TIMER				= 33
+DIALOG_ID_PIP						= 34
+DIALOG_ID_BIG_SELECT				= 35
+DIALOG_ID_BACKUP_SETTINGS			= 36
+DIALOG_ID_ROOTFS_BACKUP				= 37
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -231,6 +237,22 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_VIEW_TIMER :
 				from pvr.gui.dialogs.DialogViewTimer import DialogViewTimer
 				return DialogViewTimer( 'DialogViewTimer.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_PIP :
+				from pvr.gui.dialogs.DialogPIP import DialogPIP
+				return DialogPIP( 'DialogPIP.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_BIG_SELECT :
+				from pvr.gui.dialogs.DialogBigSelect import DialogBigSelect
+				return DialogBigSelect( 'DialogBigSelect.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_BACKUP_SETTINGS :
+				from pvr.gui.dialogs.DialogBackupSettings import DialogBackupSettings
+				return DialogBackupSettings( 'DialogBackupSettings.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_ROOTFS_BACKUP :
+				from pvr.gui.dialogs.DialogRootfsBackup import DialogRootfsBackup
+				return DialogRootfsBackup( 'DialogRootfsBackup.xml', self.scriptDir )
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode

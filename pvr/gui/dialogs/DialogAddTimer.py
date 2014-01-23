@@ -123,7 +123,7 @@ class DialogAddTimer( BaseDialog ) :
 							break;
 				"""
 
-				channel = self.mDataCache.GetChannelByTimer( self.mEPG.mSid, self.mEPG.mTsid, self.mEPG.mOnid )
+				channel = self.mDataCache.GetChannelByIDs( self.mEPG.mSid, self.mEPG.mTsid, self.mEPG.mOnid )
 				if channel :
 					iChNumber = channel.mNumber
 					if E_V1_2_APPLY_PRESENTATION_NUMBER :

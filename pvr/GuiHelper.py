@@ -8,7 +8,7 @@ try :
 except Exception, e :
 	from elementtree import ElementTree
 
-import urllib
+import urlparse, urllib
 from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
@@ -784,10 +784,41 @@ def GetDirectorySize( aPath ) :
 	dir_size = 0
 	for ( path, dirs, files ) in os.walk( aPath ) :
 		for file in files :
-			filename = os.path.join( path, file )
-			dir_size += os.path.getsize( filename )
+			try :
+				filename = os.path.join( path, file )
+				dir_size += os.path.getsize( filename )
+			except Exception, e :
+				LOG_ERR( 'except file get size error filename = %s' % filename )
 
-	return dir_size 
+	return dir_size
+
+
+def GetDirectoryAllFilePathList( aPathList ) :
+	path_ret = []
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				for file in files :
+					filename = os.path.join( path, file )
+					path_ret.append( filename )
+
+	return path_ret
+
+
+def GetDirectoryAllFileCount( aPathList ) :
+	count = 0
+	for pathlist in aPathList :
+		if not os.path.exists( pathlist ) :
+			LOG_ERR( 'path not exists = %s' % pathlist )
+		else :
+			for ( path, dirs, files ) in os.walk( pathlist ) :
+				count = count + 1
+				for file in files :
+					count = count + 1
+
+	return count
 
 
 def GetURLpage( aUrl, aWriteFileName = None ) :
@@ -894,6 +925,126 @@ def SetDefaultSettingInXML( ) :
 				ret = True
 
 	return ret
+
+
+def GetParseUrl( reqUrl = '', isGetSize = False ) :
+	urlPort = ''
+	urlSize = 0
+
+	parseObj = urlparse.urlparse( reqUrl )
+	urlType = parseObj.scheme	#type : 'ftp', 'sftp', 'zeroconf', 'smb',...  ''(null) is local path
+
+	#init default port
+	if urlType == 'ftp' :
+		urlPort = '21'
+	#elif urlType == 'smb' :
+	#	urlPort = '139'
+
+	urlHost = parseObj.hostname
+	urlPort = parseObj.port
+	urlUser = parseObj.username
+	urlPass = parseObj.password
+	bPath = os.path.basename( parseObj.path )
+	gPath = parseObj.path.replace( bPath, '' )
+	urlPath = urllib.unquote( gPath )
+	urlFile = urllib.unquote( os.path.basename( reqUrl ) )
+
+	#LOG_TRACE( 'bPath[%s] gPath[%s]'% ( bPath, gPath ) )
+	LOG_TRACE( 'host[%s] port[%s] user[%s] pass[%s] path[%s] file[%s]'% ( urlHost, urlPort, urlUser, urlPass, urlPath, urlFile ) )
+
+	if isGetSize and urlType == 'ftp' :
+		urlPath = re.sub( '^/', '', urlPath )
+		if urlHost and urlPort and urlUser and os.path.join( urlPath, urlFile ) :
+			urlSize = GetFileSizeFromFTP( '', urlHost, urlPort, urlUser, urlPass, urlPath, urlFile )
+
+	return urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize
+
+
+def GetParseUrl_FTP( reqUrl = '', isGetSize = False ) :
+	ftpUser = ''
+	ftpPass = ''
+	ftpHost = ''
+	ftpPort = '21'
+	ftpPath = ''
+	ftpFile = ''
+	ftpSize = 0
+	#pattern = '^ftp:\/\/(.*):(.*)@(.*)'
+	#sample = 'ftp://youn:@192.168.101.89:21/repository.bluecop.xbmc-plugins.zip'
+
+	ftp_pattern = '^ftp:\/\/(.*)'
+	p = re.search( ftp_pattern, reqUrl, re.IGNORECASE )
+	if not bool( p ) :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	ret = re.findall( ftp_pattern, p.group() )
+	if not ret or len( ret ) < 1 :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	url = ret[0]
+	ret = re.split( '/', url )
+	if not ret or len( ret ) < 2 :
+		return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+	idline = ret[0]
+	for i in range( 1, len( ret ) ) :
+		ftpPath = os.path.join( ftpPath, ret[i] )
+
+	ftpFile = os.path.basename( ftpPath )
+	ftpPath = os.path.dirname( ftpPath )
+	#LOG_TRACE( 'path[%s] file[%s]'% ( ftpPath, ftpFile ) )
+
+	#ret[0]?, id:pass@url:port
+	id_pattern = '(.*):(.*)@(.*)'
+	p = re.search( id_pattern, idline, re.IGNORECASE )
+	if bool( p ) :
+		ret = re.findall( id_pattern, p.group() )
+		if ret :
+			ftpUser = ret[0][0]
+			ftpPass = ret[0][1]
+			ftpHost = ret[0][2]
+	else :
+		ftpHost = line
+	#LOG_TRACE( 'id[%s] pw[%s] url[%s]'% ( ftpUser, ftpPass, ftpHost ) )
+
+	#ftpHost?, url:port
+	port_pattern = '(.*):(\d+)'
+	p = re.search( port_pattern, ftpHost, re.IGNORECASE )
+	if bool( p ) :
+		ret = re.findall( port_pattern, p.group() )
+		if ret :
+			ftpHost = ret[0][0]
+			ftpPort = ret[0][1]
+
+	#LOG_TRACE( 'url[%s] port[%s]'% ( ftpHost, ftpPort ) )
+
+	if isGetSize :
+		if ftpHost and ftpPort and ftpUser and os.path.join( ftpPath, ftpFile ) :
+			ftpSize = GetFileSizeFromFTP( '', ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile )
+
+	LOG_TRACE( 'host[%s] port[%s] user[%s] pass[%s] path[%s] file[%s] size[%s]'% ( ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize ) )
+	return ftpHost, ftpPort, ftpUser, ftpPass, ftpPath, ftpFile, ftpSize
+
+
+def GetFileSizeFromFTP( aFilePath = '', ftpHost='', ftpPort='', ftpUser='', ftpPass='', ftpPath='', ftpFile='' ) :
+	from ftplib import FTP
+
+	if not aFilePath :
+		aFilePath = os.path.join( ftpPath, ftpFile )
+
+	if not aFilePath :
+		return 0
+
+	size = 0
+	ftp = FTP()
+	try :
+		ftp.connect( ftpHost, ftpPort )
+		ftp.login( ftpUser, ftpPass )
+		size = ftp.size( aFilePath )
+		ftp.close()
+	except Exception, e :
+		print 'except[%s]'% e
+
+	return size
 
 
 def ReadToCmdBlock( ) :
@@ -1060,6 +1211,90 @@ def CheckUSBTypeNTFS( aMountPath, aToken ) :
 		isNTFS = False
 
 	return isNTFS
+
+
+def ExecuteShell( cmd = '' ) :
+	if not cmd :
+		return ''
+
+	if sys.version_info < ( 2, 7 ) :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		ret = p.stdout.read( ).strip( )
+		p.stdout.close( )
+	else :
+		p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+		( ret, err ) = p.communicate( )
+		ret = ret.strip( )
+
+		#LOG_TRACE( 'ExecuteShell ret[%s] err[%s]'% ( ret, err ) )
+		if err :
+			ret = False
+
+	return ret
+
+
+def IsIPv4( address ) :
+	# check if string is valid ipv4 address
+	if address.replace( '.', '' ).strip( '1234567890' ) :
+		return False
+
+	octets = address.split( '.' )
+	if len(octets) != 4 :
+		return False
+
+	for octet in octets :
+		try :
+			int( octet )
+		except :
+			return False
+
+		if int( octet ) > 255 :
+			return False
+
+	return True
+
+
+def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
+	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
+	zipFile = ''
+	hostip = urlHost
+
+	if not IsIPv4( urlHost ) :
+		hostip = ExecuteShell( 'net lookup %s'% urlHost )
+		if not hostip :
+			#LOG_TRACE( 'lookup fail' )
+			return zipFile
+
+		if not IsIPv4( hostip ) :
+			return zipFile
+
+	smbPath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
+	#LOG_TRACE( 'smbPath[%s]'% smbPath )
+
+	mntHistory = ExecuteShell( 'mount' )
+	if not mntHistory :
+		return zipFile
+
+	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	if bool( ret ) :
+		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
+		os.system( '/bin/umount %s'% aSmbPath )
+		os.system( 'sync' )
+
+	CreateDirectory( aSmbPath )
+
+	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, smbPath, aSmbPath )
+	if ExecuteShell( cmd ) :
+		# result something? maybe error
+		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
+		return zipFile
+
+	zipFile = '%s/%s'% ( aSmbPath, urlFile )
+	if not CheckDirectory( zipFile ) :
+		LOG_TRACE( 'file not found zipPath[%s]'% zipFile )
+		zipFile = ''
+
+	return zipFile
 
 
 class GuiSkinPosition( object ) :
@@ -1251,7 +1486,7 @@ def GetStatusModeLabel( aMode ) :
 
 def AsyncShowStatus( aStatus ) :
 	import pvr.gui.WindowMgr as WinMgr
-	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU, WinMgr.WIN_ID_PIP_WINDOW ]
+	showStatusWindow = [ WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_MAINMENU ]
 
 	rootWinow = xbmcgui.Window( 10000 )
 	rootWinow.setProperty( 'PlayStatusLabel', '%s'% aStatus )
@@ -1303,36 +1538,193 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
-def GetXBMCLanguageToProp( aLanguage ) :
-	if aLanguage == 'English' or aLanguage == 'English (US)' :
+def KillScript( aId ) :
+	try :
+		pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
+		for pid in pids :
+			if ( os.path.exists( '/proc/%s/stat' % pid ) ) :
+				f = open( os.path.join( '/proc', pid, 'stat' ), 'rb' )
+				data = f.readlines( )
+
+				data = str( data[0] )
+				data = data.strip( )
+				data = data.split( )
+				if data[3] == str( aId ) :
+					KillScript( int( data[0] ) )
+
+		os.system( 'kill -9 %s' % aId )
+	except Exception, e :
+		LOG_ERR( 'Error exception[%s]' % e )
+
+
+def GetXBMCLanguageToPropLanguage( aLanguage ) :
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
 		return ElisEnum.E_ENGLISH
 
-	elif aLanguage == 'German':
+	elif aLanguage == 'German'.lower( ) :
 		return ElisEnum.E_DEUTSCH
 
-	elif aLanguage == 'French':
+	elif aLanguage == 'French'.lower( ) :
 		return ElisEnum.E_FRENCH
 
-	elif aLanguage == 'Italian':
+	elif aLanguage == 'Italian'.lower( ) :
 		return ElisEnum.E_ITALIAN
 
-	elif aLanguage == 'Spanish' or aLanguage == 'Spanish (Argentina)' or aLanguage == 'Spanish (Mexico)' :
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
 		return ElisEnum.E_SPANISH
 
-	elif aLanguage == 'Czech':
+	elif aLanguage == 'Czech'.lower( ) :
 		return ElisEnum.E_CZECH
 
-	elif aLanguage == 'Dutch':
+	elif aLanguage == 'Dutch'.lower( ) :
 		return ElisEnum.E_DUTCH
 
-	elif aLanguage == 'Polish':
+	elif aLanguage == 'Polish'.lower( ) :
 		return ElisEnum.E_POLISH
 
-	elif aLanguage == 'Turkish':
+	elif aLanguage == 'Turkish'.lower( ) :
 		return ElisEnum.E_TURKISH
 
-	elif aLanguage == 'Russian':
+	elif aLanguage == 'Russian'.lower( ) :
 		return ElisEnum.E_RUSSIAN
+
+	else :
+		return ElisEnum.E_ENGLISH
+
+
+def GetPropLanguageToXBMCLanguage( aProp ) :
+	if aProp == ElisEnum.E_ENGLISH :
+		return 'English'
+
+	elif aProp == ElisEnum.E_DEUTSCH :
+		return 'German'
+
+	elif aProp == ElisEnum.E_FRENCH :
+		return 'French'
+
+	elif aProp == ElisEnum.E_ITALIAN :
+		return 'Italian'
+
+	elif aProp == ElisEnum.E_SPANISH :
+		return 'Spanish'
+
+	elif aProp == ElisEnum.E_CZECH :
+		return 'Czech'
+
+	elif aProp == ElisEnum.E_DUTCH :
+		return 'Dutch'
+
+	elif aProp == ElisEnum.E_POLISH :
+		return 'Polish'
+
+	elif aProp == ElisEnum.E_TURKISH :
+		return 'Turkish'
+
+	elif aProp == ElisEnum.E_RUSSIAN :
+		return 'Russian'
+
+	else :
+		return 'German'
+
+
+def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
+	aLanguage = aLanguage.lower( )
+	if aLanguage == 'Dutch'.lower( ) :
+		return ElisEnum.E_DUTCH
+
+	elif aLanguage == 'German'.lower( ) :
+		return ElisEnum.E_DEUTSCH
+
+	elif aLanguage == 'English'.lower( ) or aLanguage == 'English (US)'.lower( ) :
+		return ElisEnum.E_ENGLISH
+
+	elif aLanguage == 'French'.lower( ) :
+		return ElisEnum.E_FRENCH
+
+	elif aLanguage == 'Italian'.lower( ) :
+		return ElisEnum.E_ITALIAN
+
+	elif aLanguage == 'Spanish'.lower( ) or aLanguage == 'Spanish (Argentina)'.lower( ) or aLanguage == 'Spanish (Mexico)'.lower( ) :
+		return ElisEnum.E_SPANISH
+
+	elif aLanguage == 'Czech'.lower( ) :
+		return ElisEnum.E_CZECH
+
+	elif aLanguage == 'Polish'.lower( ) :
+		return ElisEnum.E_POLISH
+
+	elif aLanguage == 'Turkish'.lower( ) :
+		return ElisEnum.E_TURKISH
+
+	elif aLanguage == 'Russian'.lower( ) :
+		return ElisEnum.E_RUSSIAN
+
+	elif aLanguage == 'Arabic'.lower( ) :
+		return ElisEnum.E_ARABIC
+
+	elif aLanguage == 'Greek'.lower( ) :
+		return ElisEnum.E_GREEK
+
+	elif aLanguage == 'Danish'.lower( ) :
+		return ElisEnum.E_DANISH
+
+	elif aLanguage == 'Swedish'.lower( ) :
+		return ElisEnum.E_SWEDISH
+
+	elif aLanguage == 'Norwegian'.lower( ) :
+		return ElisEnum.E_NORWEGIAN
+
+	elif aLanguage == 'Korean'.lower( ) :
+		return ElisEnum.E_KOREAN
+
+	elif aLanguage == 'Finnish'.lower( ) :
+		return ElisEnum.E_FINNISH
+
+	elif aLanguage == 'Portuguese'.lower( ) or aLanguage == 'Portuguese (Brazil)'.lower( ) :
+		return ElisEnum.E_PORTUGUESE
+
+	elif aLanguage == 'Basque'.lower( ) :
+		return ElisEnum.E_BASQUE
+
+	elif aLanguage == 'Bulgarian'.lower( ) :
+		return ElisEnum.E_BULGARIAN
+
+	elif aLanguage == 'Croatian'.lower( ) :
+		return ElisEnum.E_CROATIAN
+
+	elif aLanguage == 'Estonian'.lower( ) :
+		return ElisEnum.E_ESTONIAN
+
+	elif aLanguage == 'Hebrew'.lower( ) :
+		return ElisEnum.E_HEBREW
+
+	elif aLanguage == 'Hungarian'.lower( ) :
+		return ElisEnum.E_HUNGARIAN
+
+	elif aLanguage == 'Latvian'.lower( ) :
+		return ElisEnum.E_LATVIAN
+
+	elif aLanguage == 'Lithuanian'.lower( ) :
+		return ElisEnum.E_LITHUANIAN
+
+	elif aLanguage == 'Persian (Iran)'.lower( ) :
+		return ElisEnum.E_PERSIAN
+
+	elif aLanguage == 'Romanian'.lower( ) :
+		return ElisEnum.E_ROMANIAN
+
+	elif aLanguage == 'Serbian'.lower( ) or aLanguage == 'Serbian (Cyrillic)'.lower( ) :
+		return ElisEnum.E_SERBIAN
+
+	elif aLanguage == 'Slovak'.lower( ) :
+		return ElisEnum.E_SLOVAK
+
+	elif aLanguage == 'Slovenian'.lower( ) :
+		return ElisEnum.E_SLOVENIAN
+
+	elif aLanguage == 'Thai'.lower( ) :
+		return ElisEnum.E_TAI
 
 	else :
 		return ElisEnum.E_ENGLISH

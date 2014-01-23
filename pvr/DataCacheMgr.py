@@ -4,7 +4,7 @@ from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
-from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute
+from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute, XBMC_GetCurrentLanguage
 from pvr.gui.GuiConfig import *
 from pvr.Util import TimeToString, TimeFormatEnum
 
@@ -13,7 +13,8 @@ if E_USE_OLD_NETWORK :
 else :
 	import pvr.NetworkMgr as NetMgr
 
-from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting
+from pvr.GuiHelper import AgeLimit, SetDefaultSettingInXML, MR_LANG, AsyncShowStatus, SetSetting, GetXBMCLanguageToPropLanguage, GetXBMCLanguageToPropAudioLanguage, CheckDirectory, ParseStringInPattern, RemoveDirectory
+
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 else :
@@ -166,11 +167,16 @@ class DataCacheMgr( object ) :
 		self.mTimerList							= self.Timer_GetTimerList( )
 		self.mChannelListPIP					= []
 		self.mChannelListHashPIP				= {}
+		self.mPresentNumberHashPIP				= {}
 		self.mZappingListChange					= False
 
 		self.mRootWindowId						= 0
 		self.mRootWindow						= None
 		self.mHasLinkageService					= False
+
+		self.mPIPStart							= self.PIP_IsStarted( )
+		self.mCurrentChannelPIP					= None
+		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
 
@@ -244,6 +250,7 @@ class DataCacheMgr( object ) :
 		#self.LoadDVBTunerList()#
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
+		self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
@@ -741,6 +748,9 @@ class DataCacheMgr( object ) :
 
 				if chNumber > self.mMaxChannelNum :
 					self.mMaxChannelNum = chNumber
+
+		if E_V1_2_APPLY_PIP :
+			self.PIP_SetTunableList( )
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
@@ -1320,16 +1330,21 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
-	def Channel_GetByNumber( self, aNumber, aUseDB = False ) :
+	def Channel_GetByNumber( self, aNumber, aUseDB = False, aTable = E_TABLE_ZAPPING ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				channel = channelDB.Channel_GetNumber( aNumber )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
 
 		else :
 			cacheChannel = self.mChannelListHash.get( aNumber, None )
+			if aTable == E_TABLE_ALLCHANNEL :
+				cacheChannel = self.mAllChannelListHash.get( aNumber, None )
+
 			if cacheChannel == None :
 				return None
 
@@ -1365,6 +1380,12 @@ class DataCacheMgr( object ) :
 
 	def Channel_GetMaxNumber( self ) :
 		return self.mMaxChannelNum
+
+
+	def Channel_GetChannelByTimer( self, aTimer ) :
+		channelKey = '%d:%d:%d'% ( aTimer.mSid, aTimer.mTsid, aTimer.mOnid )
+		channel = self.mAllChannelListHash.get( channelKey, None )
+		return channel
 
 
 	@DataLock
@@ -1524,11 +1545,14 @@ class DataCacheMgr( object ) :
 			channelDB = ElisChannelDB( )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
 			channelDB.Close( )
+			"""
 			if recCount > 0 :
 				channelDB2 = ElisChannelDB( )				
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 				favoriteList = channelDB2.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, E_TABLE_ALLCHANNEL )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB2.Close( )
-				"""
+
 				favoriteHash =  {}
 				for  channel in favoriteList :
 					favoriteHash['%s' %channel.mNumber]= channel
@@ -1537,7 +1561,7 @@ class DataCacheMgr( object ) :
 					refChannel = favoriteHash.get( '%d' %(channel.mNumber ), None )
 					if refChannel :
 						channel.mPresentationNumber = refChannel.mPresentationNumber
-				"""
+			"""
 
 			return channelList
 
@@ -1545,10 +1569,12 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 
-	def Channel_GetByOne( self, aSid ) :
+	def Channel_GetByOneForRecording( self, aSid ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			iChannel = channelDB.Channel_GetByOne( aSid )
+			channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			iChannel = channelDB.Channel_GetByOneForRecording( aSid )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			return iChannel
 
@@ -1766,10 +1792,15 @@ class DataCacheMgr( object ) :
 		self.mZappingListChange = aChange
 
 
-	def GetChannelByTimer( self, aSid, aTsid, aOnid ) :
-		if self.mChannelListHashForTimer == None or len( self.mChannelListHashForTimer ) <= 0 :
+	def GetChannelByIDs( self, aSid, aTsid, aOnid, aAllChannel = False ) :
+		findHash = self.mChannelListHashForTimer
+		if aAllChannel :
+			findHash = self.mAllChannelListHash
+
+		if findHash == None or len( findHash ) <= 0 :
 			return None
-		return self.mChannelListHashForTimer.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+
+		return findHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
 	def GetChannelReloadStatus( self ) :
@@ -2367,6 +2398,12 @@ class DataCacheMgr( object ) :
 
 				self.Frontdisplay_Resolution( iconIndex )
 
+				if self.mOldHdmiFormatIndex != iconIndex and self.PIP_GetStatus( ) :
+					import pvr.gui.DialogMgr as DiaMgr
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
+
+				self.mOldHdmiFormatIndex = iconIndex
+
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
 		play = 1	#on
@@ -2854,6 +2891,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_Stop( )
 
 
+	def PIP_GetStatus( self ) :
+		return self.mPIPStart
+
+
+	def PIP_SetStatus( self, isStart = False ) :
+		self.mPIPStart = isStart
+
+
 	def PIP_SetDimension( self, aPosX, aPosY, aWidth, aHeight ) :
 		return self.mCommander.PIP_SetDimension( aPosX, aPosY, aWidth, aHeight )
 
@@ -2909,6 +2954,7 @@ class DataCacheMgr( object ) :
 
 
 	def PIP_SetTunableList( self ) :
+		self.PIP_StopByDeleteChannel( )
 		self.mChannelListPIP = self.PIP_InitChannel( )
 		self.mChannelListHashPIP = {}
 
@@ -2929,6 +2975,7 @@ class DataCacheMgr( object ) :
 			try :
 				cacheChannel = CacheChannelPIP( channel, prevChannel.mNumber, nextChannel.mNumber )
 				self.mChannelListHashPIP[channel.mNumber] = cacheChannel
+				self.mPresentNumberHashPIP[channel.mPresentationNumber] = cacheChannel
 
 				#cacheChannel.mChannel.printdebug( )
 				#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
@@ -2957,12 +3004,20 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_EnableAudio( aEnable )
 
 
+	def PIP_IsStarted( self ) :
+		return self.mCommander.PIP_IsStarted( )
+
+
 	def PIP_StopIfStarted( self ) :
 		return self.mCommander.PIP_StopIfStarted( )
 
 
 	def PIP_AVBlank( self, aBlank ) :
 		return self.mCommander.PIP_AVBlank( aBlank )
+
+
+	def PIP_GetAVBlank( self ) :
+		return self.mCommander.PIP_GetAVBlank( )
 
 
 	def PIP_GetPrev( self, aChannel ) :
@@ -2974,7 +3029,7 @@ class DataCacheMgr( object ) :
 			# retry find first channel
 			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
 				last = len( self.mChannelListPIP ) - 1
-				return self.PIP_GetNext( self.mChannelListPIP[last] )
+				return self.PIP_GetNext( self.mChannelListPIP[last], True )
 
 			return None
 
@@ -2987,7 +3042,7 @@ class DataCacheMgr( object ) :
 		return channel.mChannel
 
 
-	def PIP_GetNext( self, aChannel ) :
+	def PIP_GetNext( self, aChannel, aLast = False ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
 
@@ -2998,10 +3053,13 @@ class DataCacheMgr( object ) :
 				cacheChannel = self.mChannelListHashPIP.get( self.mChannelListPIP[0].mNumber, None )
 				if cacheChannel == None :
 					return None
-				prevKey = cacheChannel.mPrevKey
-				channel = self.mChannelListHashPIP.get( prevKey, None )
-				if channel == None :
-					return None
+
+				channel = cacheChannel
+				if aLast :
+					prevKey = cacheChannel.mPrevKey
+					channel = self.mChannelListHashPIP.get( prevKey, None )
+					if channel == None :
+						return None
 				return channel.mChannel
 
 			return None
@@ -3015,12 +3073,17 @@ class DataCacheMgr( object ) :
 		return channel.mChannel
 
 
-	def PIP_GetByNumber( self, aNumber, aUseDB = False ) :
+	def PIP_GetByNumber( self, aNumber, aUseDB = False, aAllChannel = False ) :
+		favGroup = ''
+		currentMode = self.Zappingmode_GetCurrent( )
+		if not aAllChannel and currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			favGroup = currentMode.mFavoriteGroup.mGroupName
+
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				channel = channelDB.Channel_GetNumber( aNumber )
+				channel = channelDB.Channel_GetNumber( aNumber, favGroup )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
@@ -3032,6 +3095,136 @@ class DataCacheMgr( object ) :
 
 			channel = cacheChannel.mChannel
 			return channel
+
+
+	def PIP_GetTunableListHash( self ) :
+		hashPIP = self.mChannelListHashPIP
+		currentMode = self.Zappingmode_GetCurrent( )
+		if currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			hashPIP = self.mPresentNumberHashPIP
+
+		return hashPIP
+
+
+	def LoadPIPStatus( self ) :
+		if CheckDirectory( E_VOLITILE_PIP_STATUS_PATH ) :
+			try :
+				fd = open( E_VOLITILE_PIP_STATUS_PATH, 'r' )
+				lines = fd.readlines( )
+				fd.close( )
+				RemoveDirectory( E_VOLITILE_PIP_STATUS_PATH )
+				#LOG_TRACE( '---------------pipStatus\n%s'% lines )
+
+				isStart   = 'False'
+				pipLock   = 'False'
+				pipBlank  = 'False'
+				pipSignal = 'True'
+
+				for line in lines :
+					value = ParseStringInPattern( '=', line )
+
+					if not value or len( value ) < 2 :
+						continue
+
+					if not value[0] :
+						continue
+
+					LOG_TRACE( '%s=%s\n'% ( value[0], value[1] ) )
+					if value[0] == 'PIPStart' :
+						isStart = value[1]
+					elif value[0] == 'PIPSignal' :
+						pipSignal = value[1]
+					elif value[0] == 'BlankPIP' :
+						pipBlank = value[1]
+					elif value[0] == 'PIPLock' :
+						pipLock = value[1]
+
+				#LOG_TRACE( '---------------pipStatus start[%s] blank[%s] signal[%s]'% ( isStart, pipBlank, pipSignal ) )
+				if isStart == 'True' :
+					import pvr.gui.DialogMgr as DiaMgr
+					self.PIP_SetStatus( True )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( )
+					xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', pipLock )
+					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', pipBlank )
+					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', pipSignal )
+					#LOG_TRACE( '-----------------------------setProperty blank[%s] signal[%s]'% ( pipBlank, pipSignal ) )
+
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+
+
+	def SavePIPStatus( self ) :
+		isSave = True
+		if self.PIP_GetStatus( ) :
+			try :
+				fd = open( E_VOLITILE_PIP_STATUS_PATH, 'w', 0644 )
+				fd.writelines( 'PIPStart=True\n' )
+				fd.writelines( 'BlankPIP=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'BlankPIP' ) )
+				fd.writelines( 'PIPSignal=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) )
+				fd.writelines( 'PIPLock=%s\n'% xbmcgui.Window( 10000 ).getProperty( 'iLockPIP' ) )
+
+				fd.close( )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+				isSave = False
+
+		return isSave
+
+
+	def PIP_GetCurrentChannel( self ) :
+		return self.mCurrentChannelPIP
+
+
+	def PIP_SetCurrentChannel( self, aChannel = None ) :
+		if aChannel :
+			self.mCurrentChannelPIP = deepcopy( aChannel )
+
+
+	def PIP_StopByDeleteChannel( self ) :
+		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s]'% self.PIP_GetStatus( ) )
+
+		#1. check pip start?
+		if not self.PIP_GetStatus( ) :
+			return
+
+		#2. exist current pip?
+		pChannel = self.PIP_GetCurrentChannel( )
+		if not pChannel :
+			return
+		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s] pChannel[%s %s] lock[%s]'% ( self.PIP_GetStatus( ),pChannel.mNumber,pChannel.mName,pChannel.mLocked ) )
+
+		#3. edited pipCurrent?(move,skipped,delete), find change channel
+		#   buyer issue 62 : show stay last channel on pip if tunable check, when changed mode
+		fChannel = None
+		reTunePIP = False
+		channelList = self.Channel_GetListByIDs( ElisEnum.E_SERVICE_TYPE_TV, pChannel.mTsid, pChannel.mOnid, pChannel.mSid )
+		if channelList and len( channelList ) > 0 :
+			for iChannel in channelList :
+				iChannel.printdebug( )
+				#LOG_TRACE( '--------------------Channel_GetListByIDs[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+				if iChannel.mCarrier.mDVBS.mSatelliteLongitude == pChannel.mCarrier.mDVBS.mSatelliteLongitude and \
+				   iChannel.mCarrier.mDVBS.mFrequency == pChannel.mCarrier.mDVBS.mFrequency and \
+				   iChannel.mCarrier.mDVBS.mSymbolRate == pChannel.mCarrier.mDVBS.mSymbolRate and \
+				   iChannel.mCarrier.mDVBS.mSatelliteBand == pChannel.mCarrier.mDVBS.mSatelliteBand and \
+				   iChannel.mCarrier.mDVBS.mPolarization == pChannel.mCarrier.mDVBS.mPolarization :
+					LOG_TRACE( '[PIP] changed Number : pChannel[%s %s] --> iChannel[%s %s]'% ( pChannel.mNumber, pChannel.mName, iChannel.mNumber, iChannel.mName ) )
+					fChannel = iChannel
+					break
+
+		if not fChannel or fChannel.mSkipped :
+			reTunePIP = True
+			fChannel = self.Channel_GetCurrent( )
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			LOG_TRACE( 'deleted channel, reTune current pip' )
+
+		else :
+			if not fChannel.mLocked :
+				reTunePIP = True
+				LOG_TRACE( 'edit channel, reTune pip' )
+
+		if reTunePIP :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).TuneChannelByExternal( fChannel )
 
 
 	def Splash_StartAndStop( self, aStartStop ) :
@@ -3150,3 +3343,14 @@ class DataCacheMgr( object ) :
 
 	def HasDVBCTuner( self ) :
 		return False
+
+
+	def SyncLanguagePropFromXBMC( self, aLangauge ) :
+		currentLanguageProp = ElisPropertyEnum( 'Language', self.mCommander ).GetProp( )
+		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp :
+			prop = GetXBMCLanguageToPropLanguage( aLangauge )
+			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
+			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
+			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+
+

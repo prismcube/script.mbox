@@ -18,7 +18,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
-		self.CheckLanguage( )
 		self.mDataCache.SetRootWindowId( xbmcgui.getCurrentWindowId( ) )
 
 		try :
@@ -30,7 +29,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					if E_SUPPROT_HBBTV == True :
 						self.mCommander.AppHBBTV_Ready( 0 )
-						self.mDataCache.Splash_StartAndStop( 0 )
+						#self.mDataCache.Splash_StartAndStop( 0 )
 					self.mInitialized = True
 					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -153,40 +152,4 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.setProperty( 'Signal', 'NoService' )
 		else :
 			LOG_ERR( 'LoadNoSignalState : Unknown channel status' )
-
-
-	def CheckLanguage( self ) :
-		languageProp	= ElisPropertyEnum( 'Language', self.mCommander )
-
-		#LOG_TRACE( "current MW Lanauge=%d" %languageProp.GetProp() )
-		xbmcLanguage = XBMC_GetCurrentLanguage( )
-		#LOG_TRACE( "current XBMC Lanauge=%s" %xbmcLanguage )
-
-		newLanguage = languageProp.GetProp( )
-		if xbmcLanguage ==  'German' :
-			newLanguage = ElisEnum.E_DEUTSCH
-		elif xbmcLanguage ==  'French' :
-			newLanguage = ElisEnum.E_FRENCH
-		elif xbmcLanguage ==  'Italian' :
-			newLanguage = ElisEnum.E_ITALIAN
-		elif xbmcLanguage ==  'Spanish' or xbmcLanguage ==  'Spanish (Argentina)' or xbmcLanguage ==  'Spanish (Mexico)':
-			newLanguage = ElisEnum.E_SPANISH
-		elif xbmcLanguage ==  'Czech' :
-			newLanguage = ElisEnum.E_CZECH
-		elif xbmcLanguage ==  'Dutch' :
-			newLanguage = ElisEnum.E_DUTCH
-		elif xbmcLanguage ==  'Polish' :
-			newLanguage = ElisEnum.E_POLISH
-		elif xbmcLanguage ==  'Turkish' :
-			newLanguage = ElisEnum.E_TURKISH
-		elif xbmcLanguage ==  'Russian' :
-			newLanguage = ElisEnum.E_RUSSIAN
-		else :
-			newLanguage = ElisEnum.E_ENGLISH
-
-		#LOG_TRACE( "new M/W Lanauge=%d %s" %(newLanguage, languageProp.GetPropString() ) )
-
-		if newLanguage != languageProp.GetProp() :
-			languageProp.SetProp( newLanguage  )		
-			#LOG_TRACE( "changed MW Lanauge=%s" %ElisPropertyEnum( 'Language', self.mCommander ).GetPropString( )  )
 

@@ -12,6 +12,8 @@ E_ONCE						= 0
 E_WEEKLY					= 1
 E_DAILY						= 2
 
+E_RECORD_MODE				= 0
+E_VIEW_MODE				= 1
 
 
 WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
@@ -29,6 +31,7 @@ class UsedWeeklyTimer( ElisIWeeklyTimer ) :
 	def __init__( self ) :
 		ElisIWeeklyTimer.__init__( self )
 		self.mUsed = False
+		self.mEnableSelectChannel = False
 
 
 class DialogAddManualTimer( SettingDialog ) :
@@ -36,6 +39,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mEPG = None
 		self.mRecordingMode = E_ONCE
+		self.mTimerMode = E_RECORD_MODE
 		self.mChanne = None
 		self.mTimer = None
 		self.mUsedWeeklyList = None
@@ -46,6 +50,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mWekklyEnd = 0
 		self.mConflictTimer = None
 		self.mIsRunningTimer = False
+		self.mEnableSelectChannel = False		
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
@@ -75,6 +80,8 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.Reload( )
 		self.DrawItem( )
 
+		self.SetFocus( E_DialogSpinEx03 )		
+
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -96,7 +103,10 @@ class DialogAddManualTimer( SettingDialog ) :
 			groupId = self.GetGroupId( focusId )
 
 			if groupId == E_DialogInput01 :
-				self.ShowRecordName( )
+				if self.mEnableSelectChannel :
+					self.ShowSelectChannel( )
+				else :
+					self.ShowRecordName( )
 			
 			elif groupId == E_DialogSpinEx01 :
 				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
@@ -110,6 +120,17 @@ class DialogAddManualTimer( SettingDialog ) :
 					self.ChangeStartDay( True )
 				else :
 					self.ChangeStartDay( False )
+
+			elif groupId == E_DialogSpinEx03 :
+				self.mTimerMode = self.GetSelectedIndex( E_DialogSpinEx03 )			
+				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
+				if self.mRecordingMode != E_ONCE :
+					self.mRecordingMode = E_ONCE
+					self.Reload( )
+					self.ChangeRecordMode( )
+					self.UpdateLocation( )
+			
+				self.ChangeTimerMode()
 
 			elif groupId == E_DialogSpinDay :
 				if self.mRecordingMode == E_WEEKLY  and self.mIsRunningTimer == True:
@@ -314,13 +335,21 @@ class DialogAddManualTimer( SettingDialog ) :
 		try :
 
 			self.ResetAllControl( )
+			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), [ MR_LANG( 'Record' ),  MR_LANG( 'View' ) ], 0 )
+			if self.mTimer :
+				self.SetEnableControl( E_DialogSpinEx03, False )					
+				
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_RECORDING_MODE, self.mRecordingMode )
-			self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
+			if self.mEnableSelectChannel == True :
+				self.AddInputControl( E_DialogInput01, MR_LANG( 'Select Channel' ),  MR_LANG( 'Record Name' ) )
+			else :
+				self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
+				
 			self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Start Date' ), [ MR_LANG( 'Date' ) ], 0 )			
 			#self.AddInputControl(  E_DialogSpinEx02, 'Date', 'Date' )
 			self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
 			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )
-			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of week' ) )
+			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of Week' ) )
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
 			self.AddOkCanelButton( )
@@ -333,7 +362,18 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-		
+
+
+	def ChangeTimerMode( self ) :
+		if self.mTimerMode == E_RECORD_MODE: 
+			self.SetEnableControl( E_DialogSpinEx01, True )
+			self.SetEnableControl( E_DialogInput03, True )
+		else :
+			self.SetEnableControl( E_DialogSpinEx01, False )
+			self.SetEnableControl( E_DialogInput03, False )
+
+		self.SetFocus( E_DialogSpinEx03 )
+
 
 	def ChangeRecordMode( self ) :
 		try :
@@ -474,8 +514,11 @@ class DialogAddManualTimer( SettingDialog ) :
 					else :
 						self.SetEnableControl( E_DialogInput02, True )
 						self.SetEnableControl( E_DialogInput03, True )
-						
-				self.SetFocus( E_DialogSpinEx01 )
+
+				if self.mTimerMode == E_VIEW_MODE :
+					self.SetFocus( E_DialogSpinEx03 )
+				else :
+					self.SetFocus( E_DialogSpinEx01 )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )		
@@ -707,7 +750,13 @@ class DialogAddManualTimer( SettingDialog ) :
 					self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
 					return False
 
-				ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, True )
+				if self.mTimerMode == E_VIEW_MODE :
+					if  startTime  < self.mDataCache.Datetime_GetLocalTime( ) :
+						self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
+						return False
+					ret = self.mDataCache.Timer_AddViewTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mRecordName )
+				else :			
+					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, True )
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.mConflictTimer = ret
@@ -935,3 +984,35 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		return None
 
+
+	def EnableSelectChannel( self, aEnable ) :
+		self.mEnableSelectChannel = aEnable
+
+
+	def ShowSelectChannel( self ) :
+		dialog = xbmcgui.Dialog( )
+		channelNameList = []
+		channelList = self.mDataCache.Channel_GetList( )
+		channelIndex = 0
+		count = 0
+		for channel in channelList :
+			iChNumber = channel.mNumber
+			if iChNumber == self.mChannel.mNumber :
+				channelIndex = count
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
+			channelNameList.append( '%04d %s' %( iChNumber, channel.mName ) )
+			count += 1
+
+		iChNumber = self.mChannel.mNumber
+		if E_V1_2_APPLY_PRESENTATION_NUMBER :
+			iChNumber = self.mDataCache.CheckPresentationNumber( self.mChannel )
+
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, channelIndex )
+
+		if ret >= 0 :
+			self.mChannel = channelList[ ret ]
+			self.mRecordName = self.mChannel.mName
+			self.SetControlLabel2String( E_DialogInput01, self.mRecordName )			
+
+	
