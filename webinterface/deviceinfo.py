@@ -12,7 +12,7 @@ class ElmoDeviceInfo( Webinterface ) :
 
 		xmlStr = '<?xml version="1.0" encoding="UTF-8"?>'
 		xmlStr += '		<e2deviceinfo>'
-		xmlStr += '		<e2enigmaversion>PrismCube Angal</e2enigmaversion>'
+		xmlStr += '		<e2enigmaversion>PrismCube Anga</e2enigmaversion>'
 		xmlStr += '		<e2imageversion>0.01</e2imageversion>'
 		xmlStr += '		<e2webifversion>0.01</e2webifversion>'
 		xmlStr += '		<e2fpversion>0</e2fpversion>'

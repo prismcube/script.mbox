@@ -9,6 +9,7 @@ class ElmoEpgBouquet( Webinterface ) :
 		super(ElmoEpgBouquet, self).__init__(urlPath)
 		self.currenttime = self.mCommander.Datetime_GetLocalTime()
 
+		"""
 		self.conn = dbopen.DbOpen('epg.db').getConnection()		
 		sql = 'select eventId, startTime, duration, eventName, eventDescription, sid, tsid, onid '
 		sql += ' from tblEpg where startTime <= ' + self.params['time'] + ' and startTime + duration >= ' + self.params['time']
@@ -17,6 +18,7 @@ class ElmoEpgBouquet( Webinterface ) :
 
 		self.c = self.conn.cursor()
 		self.c.execute(sql)
+		"""
 
 	def xmlResult(self) :
 
@@ -24,6 +26,7 @@ class ElmoEpgBouquet( Webinterface ) :
 		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
 		xmlStr += '<e2eventlist> '
 
+		"""
 		for row in self.c :
 
 			conn = dbopen.DbOpen('channel.db').getConnection()
@@ -65,7 +68,8 @@ class ElmoEpgBouquet( Webinterface ) :
 			xmlStr += '</e2event> '
 
 			conn.close()
-
+		"""
+		
 		xmlStr += '</e2eventlist> '
 		return xmlStr
 		

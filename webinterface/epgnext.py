@@ -78,9 +78,8 @@ class ElmoEpgNext( Webinterface ) :
 
 						self.services.append(temp)
 						
-		
-				print self.services
-				print len(self.services)
+				#print self.services
+				#print len(self.services)
 
 
 	def xmlResult(self) :

@@ -1,0 +1,65 @@
+<html>
+<head>
+	<title>PrismCube Web UI</title>
+	<link href="uiStyle.css" type="text/css" rel="stylesheet">
+	<script>
+		function Go(cmd) {
+			document.myForm.command.value = cmd;
+			document.myForm.submit();
+		}
+	</script>
+<body>
+<div id="wrapper">
+
+	<div id="top">
+		<p>PrismCube Web UI</p>
+	</div>
+	<div id="menu">
+		<p>
+			<a href="uiChannel.html">Channel</a> 	<br>
+			<a href="/stream/stream.m3u">Stream</a> 		<br>
+			>> Remote Control <br>
+		</p>
+	</div>
+	<div id="main">
+		<p class="title">Remote Controller</p>
+
+		<br>
+
+		<table width="400" border="0" cellpadding="5" align="center" cellspacing="5">
+		<tr>
+			<td align="center"><a href="javascript:Go(115);">Volume Up</a></td>
+			<td align="center"><a href="javascript:Go(114)">Volume Down</a></td>
+		</tr>
+		<tr>
+			<td align="center"><a href="javascript:Go(402)">Channel Up</a></td>
+			<td align="center"><a href="javascript:Go(403)">Channel Down</a></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><a href="javascript:Go(103)">UP</a></td>
+		</tr>
+		<tr>
+			<td align="center"><a href="javascript:Go(105)">LEFT</a></td>
+			<td align="center"><a href="javascript:Go(106)">RIGHT</a></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center"><a href="javascript:Go(108)">DOWN</a></td>
+		</tr>
+		<tr>
+			<td align="center"><a href="javascript:Go(352)">OK</a></td>
+			<td align="center"><a href="javascript:Go(174)">EXIT</a></td>
+		</tr>
+		</table>
+	</div>
+
+	<div id="hiddenFrame">
+		<iframe name="control"></iframe>
+	</div>
+
+	<form name="myForm" action="RemoteControl" method="get" target="control">
+		<input type="hidden" name="command">
+	</form>
+
+</div>
+</body>
+</html>

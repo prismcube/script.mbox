@@ -3,6 +3,8 @@ from webinterface import Webinterface
 import dbopen
 
 """
+IEPGEvent structure
+
 Integer	mEventId	EPG Event ID 
 String	mEventName	EPG Event NAme
 String	mEventDescription	EPG Event Description
@@ -34,110 +36,105 @@ class ElmoEpgNow( Webinterface ) :
 
 		super(ElmoEpgNow, self).__init__(urlPath)
 		self.currenttime = self.mCommander.Datetime_GetLocalTime()
-		self.services = []
-
-		if 'bRef' in self.params: 
-			
-			ref = self.unMakeRef( self.params['bRef'] ); 
-			if ref :
-
-				self.connFav = dbopen.DbOpen('channel.db').getConnection()	
-				
-				# get services in the bouquet 
-				condition = ref['comment'].split('_')
-				sql = "select GroupName, sid, tsid, nid, onid from " + condition[0] + " where  " + condition[1] + " = '" + condition[2] + "'"
-				
-				self.cFav = self.connFav.cursor()
-				self.cFav.execute(sql)
-				stations = self.cFav.fetchall()
-				
-				for station in stations :
-				
-					connEpg = dbopen.DbOpen('epg.db').getConnection()
-					c = connEpg.cursor()
-					
-					sql = "select eventid, starttime, duration, eventName, eventDescription from tblEpg where sid=" + str( station[1] ) + " and tsid=" + str( station[2] ) + " and onid=" + str( station[4] )
-					sql += " and starttime <= " + str( self.currenttime ) + " and starttime + duration >" + str( self.currenttime )
-
-					print sql
-			
-					c.execute(sql)		
-					epg = c.fetchone()
-
-					if epg :
-						temp = {}
-						temp['eventid'] = epg[0]
-						temp['starttime'] = epg[1]
-						temp['duration'] = epg[2]
-						temp['eventName'] = epg[3]
-						temp['eventDescription'] = epg[4]
-
-						temp['sid'] = station[1]
-						temp['tsid'] = station[2]
-						temp['onid'] = station[4]
-
-						self.services.append(temp)
-						
+		self.noResult = False; 
 		
-				print self.services
-				print len(self.services)
+		if 'bRef' in self.params: 
+			self.ref = self.unMakeRef( self.params['bRef'] ); 
 
+			if self.ref['comment'] != '' :
+			
+				# get services in the bouquet 
+				# datebaseName_columnName_value 
+				# condition[0] ==> database name
+				# condition[1] ==> column name
+				# condition[2] ==> value 
+				self.conn = dbopen.DbOpen('channel.db').getConnection()
+				self.c = self.conn.cursor()
 
+				condition = self.ref['comment'].split('_')
+				sql = "select sid, tsid, nid, onid, name from " + condition[0] + " where " + condition[1] + " = '" + condition[2] + "'"
+				print sql
+				
+				self.c.execute(sql) 
+				self.services = self.c.fetchall()
+
+		else :
+			self.noResult = True;
+					
 	def xmlResult(self) :
 
 		xmlStr = ''
 		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
 		xmlStr += '<e2eventlist> '
 
-		for row in self.services :
+		if self.noResult == True :
+			xmlStr += '</e2eventlist>'
+			return xmlStr
 
-			conn = dbopen.DbOpen('channel.db').getConnection()
-			c = conn.cursor()
+		try :
 
-			sql = "select name from tblChannel where sid=" + str( row['sid'] )  + " and tsid=" + str( row['tsid'] ) + " and onid=" + str( row['onid'] )
-			c.execute(sql)
+			for service in self.services :
 
-			print sql
-
-			result = c.fetchone()
-			if result == None :
-				serviceName = 'Unknown'
-			else :
-				serviceName = result[0]
+				# def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
 				
-			xmlStr += '<e2event> '
-			xmlStr += '<e2eventid> '
-			xmlStr += 	str( row['eventid'] )
-			xmlStr += '</e2eventid> '
-			xmlStr += '<e2eventstart> '
-			xmlStr += 	str( row['starttime'] )
-			xmlStr += '</e2eventstart> '
-			xmlStr += '<e2eventduration> '
-			xmlStr += 	str( row['duration'] )
-			xmlStr += '</e2eventduration> '
-			xmlStr += '<e2eventcurrenttime> '
-			xmlStr += 	str( self.currenttime )
-			xmlStr += '</e2eventcurrenttime> '
-			xmlStr += '<e2eventtitle> '
-			xmlStr += 	row['eventName']
-			xmlStr += '</e2eventtitle> '
-			xmlStr += '<e2eventdescription> '
-			xmlStr += 	row['eventDescription']
-			# xmlStr += 	row[4]
-			xmlStr += '</e2eventdescription> '
-			xmlStr += '<e2eventdescriptionextended> '
-			xmlStr += 	'' 
-			xmlStr += '</e2eventdescriptionextended> '
-			xmlStr += '<e2eventservicereference> '
-			xmlStr += 	 self.makeRef( row['sid'], row['tsid'], row['onid'] )  	# def makeRef(self, sid, tsid, onid) :
-			xmlStr += '</e2eventservicereference> '
-			xmlStr += '<e2eventservicename> '
-			xmlStr += 	serviceName
-			xmlStr += '</e2eventservicename> '
-			xmlStr += '</e2event> '
+				sid = 	service[0]
+				tsid = 	service[1]
+				onid =	service[3]
+				name =	service[4]
+
+				print sid, tsid, onid
+				
+				info = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+
+				if info == None :  # no EPG infomation 
+					xmlStr += '<e2event> '
+					xmlStr += '<e2eventid>None</e2eventid>'
+					xmlStr += '<e2eventstart>None</e2eventstart>'
+					xmlStr += '<e2eventduration>None</e2eventduration>'
+					xmlStr += '<e2eventcurrenttime>' + str(self.currenttime) + '</e2eventcurrenttime>'
+					xmlStr += '<e2eventtitle>None</e2eventtitle> '
+					xmlStr += '<e2eventdescription>None</e2eventdescription> '
+					xmlStr += '<e2eventdescriptionextended>None</e2eventdescriptionextended> '
+					xmlStr += '<e2eventservicereference>' + self.makeRef( sid, tsid, onid ) + '</e2eventservicereference>'  	# def makeRef(self, sid, tsid, onid) :
+					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename>'
+					xmlStr += '</e2event> '
+				else : 
+					xmlStr += '<e2event> '
+					xmlStr += '<e2eventid> '
+					xmlStr += 	info.mEventIdEPG
+					xmlStr += '</e2eventid> '
+					xmlStr += '<e2eventstart> '
+					xmlStr += 	''
+					xmlStr += '</e2eventstart> '
+					xmlStr += '<e2eventduration> '
+					xmlStr += 	''
+					xmlStr += '</e2eventduration> '
+					xmlStr += '<e2eventcurrenttime> '
+					xmlStr += 	''
+					xmlStr += '</e2eventcurrenttime> '
+					xmlStr += '<e2eventtitle> '
+					xmlStr += 	''
+					xmlStr += '</e2eventtitle> '
+					xmlStr += '<e2eventdescription> '
+					xmlStr += 	''
+					xmlStr += '</e2eventdescription> '
+					xmlStr += '<e2eventdescriptionextended> '
+					xmlStr += 	'' 
+					xmlStr += '</e2eventdescriptionextended> '
+					xmlStr += '<e2eventservicereference> '
+					xmlStr += 	 self.makeRef( sid, tsid, onid )  	# def makeRef(self, sid, tsid, onid) :
+					xmlStr += '</e2eventservicereference> '
+					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename> '
+					xmlStr += '</e2event> '
+					
+				
+			xmlStr += '</e2eventlist> '
+			return xmlStr
+				
+		except Exception, e :
+
+			xmlStr += '</e2eventlist>'
+			print str(e)
 			
-			conn.close()
-	
-		xmlStr += '</e2eventlist> '
-		return xmlStr
+			return xmlStr
 		

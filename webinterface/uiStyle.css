@@ -1,0 +1,99 @@
+
+	#wrapper {
+		width: 90%;
+		padding: 10px;
+		margin: auto;
+	}
+
+	body {
+		margin: auto;
+		overflow-y: scroll
+	}
+
+	p {
+		font-family: consolas;
+		font-size: 0.9em;
+	}
+	
+	#top {
+		border: 1px solid blue;
+		margin-bottom: 10px;
+		text-align: center;
+	}
+
+	#menu {
+		float: left;
+		border: 1px solid blue;
+		width: 200px;
+		padding-left: 20px;
+	}
+
+	#menu p {
+		line-height: 2.0em;
+	}
+
+
+	#main {
+		margin-left: 230px;
+		border: 1px solid blue;
+	}
+
+	#main td {
+		font-family: Tahoma;
+		font-size: 1.0em;
+	}
+
+	.title {
+		text-align: center;
+		font-weight: bold;
+	}
+
+	#hiddenFrame {
+		display: none;
+	}
+	
+	.submenu {
+		list-style-type: none;
+		text-align: center;
+	}
+	
+	.submenu li {
+		display: inline;
+	}
+	
+	.submenu a {
+		margin: 0 10px;
+		font-family: consolas;
+		font-size: 1.2em;
+	}
+
+	#content {
+		margin-left: 230px;
+		margin-top: 10px;
+		border: 1px solid green;
+		font-family: Tahoma;
+		font-size: 0.9em;
+		padding: 20px;
+	}
+
+	#epgContent {
+		border: 1px solid blue;
+		margin-bottom: 10px;
+	}
+	
+	#content table {
+		
+	}
+
+	.epg {
+		font-size: 0.8em;
+	}
+
+	.noEpg {
+		margin: 50px auto;
+		font-family: consolas;
+		font-size: 1.2em;
+		font-weight: bold;
+		text-align: center;
+	}
+

@@ -1,6 +1,7 @@
+
 from datetime import datetime
 from webinterface import Webinterface
-from elisinterface.ElisClass import *
+# from ElisClass import *
 
 class ElmoGetCurrent( Webinterface ) :
 
@@ -61,19 +62,24 @@ class ElmoGetCurrent( Webinterface ) :
 		self.currentUnixTimestamp = self.mCommander.Datetime_GetLocalTime()
 		# self.currenttime = datetime.fromtimestamp( self.currentUnixTimestamp )
 		self.currentChannel = self.mDataCache.Channel_GetCurrent()
-		self.currentEpg = self.mDataCache.Epgevent_GetPresent()
+		
+		# self.currentEpg = self.mDataCache.Epgevent_GetPresent()
+		self.currentEpg = self.mCommander.Epgevent_GetPresent()
 		self.followingEpg = self.mCommander.Epgevent_GetFollowing() 
 
+		"""
 		if self.currentEpg == None :
 			self.currentEpg =  ElisIEPGEvent()
 		if self.followingEpg == None :
 			self.followingEpg =  ElisIEPGEvent()		
-
+		"""
+		
 		print 'current time'
 		print self.mCommander.Datetime_GetLocalTime()
 		
-		self.ref = self.makeRef(self.currentChannel.mSid, self.currentChannel.mTsid, self.currentChannel.mOnid) 
-
+		# self.ref = self.makeRef(self.currentChannel.mSid, self.currentChannel.mTsid, self.currentChannel.mOnid, self.currentChannel.mNumber) 
+		self.ref = self.makeRef(self.currentChannel.mSid, self.currentChannel.mTsid, self.currentChannel.mOnid, self.currentChannel.mNumber) 
+		
 	def xmlResult(self) :
 	
 		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>'
@@ -87,7 +93,7 @@ class ElmoGetCurrent( Webinterface ) :
 		xmlstr +=			self.currentChannel.mName
 		xmlstr += '      </e2servicename>'
 		xmlstr += '      <e2providername>'
-		xmlstr += '         {e2:convert type=ServiceName}Provider{/e2:convert} '
+		xmlstr += 			self.currentChannel.mName
 		xmlstr += '      </e2providername>'
 		xmlstr += '      <e2videowidth>'
 		xmlstr += '         {e2:convert type=ServiceInfo}VideoWidth{/e2:convert} '
@@ -126,87 +132,95 @@ class ElmoGetCurrent( Webinterface ) :
 		xmlstr += 			str(self.currentChannel.mSid)
 		xmlstr += '      </e2sid>'
 		xmlstr += '   </e2service>'
-		
-		xmlstr += '   <e2eventlist>'
-		xmlstr += '      <e2event>'
-		xmlstr += '         <e2eventservicereference>'
-		xmlstr += 			self.ref
-		xmlstr += '         </e2eventservicereference>'
-		xmlstr += '         <e2eventservicename>'
-		xmlstr += 				self.currentEpg.mEventName
-		xmlstr += '         </e2eventservicename>'
-		xmlstr += '         <e2eventprovidername>'
-		xmlstr += '            {e2:convert type=ServiceName}Provider{/e2:convert} '
-		xmlstr += '         </e2eventprovidername>'
-		xmlstr += '         <e2eventid>'
-		xmlstr += 				str(self.currentEpg.mEventId)
-		xmlstr += '         </e2eventid>'
-		xmlstr += '         <e2eventname>'
-		xmlstr += 				self.currentEpg.mEventName
-		xmlstr += '         </e2eventname>'
-		xmlstr += '         <e2eventtitle>'
-		xmlstr += 				self.currentEpg.mEventName
-		xmlstr += '         </e2eventtitle>'
-		xmlstr += '         <e2eventdescription>'
-		xmlstr += 				self.currentEpg.mEventDescription
-		xmlstr += '         </e2eventdescription>'
-		xmlstr += '         <e2eventstart>'
-		xmlstr += 				str( self.currentEpg.mStartTime )
-		xmlstr += '         </e2eventstart>'
-		xmlstr += '         <e2eventduration>'
-		xmlstr += 				str( self.currentEpg.mDuration )
-		xmlstr += '         </e2eventduration>'
-		xmlstr += '         <e2eventremaining>'
 
-		endTime = self.currentEpg.mStartTime + self.currentEpg.mDuration
-		remainTime = endTime - self.currentUnixTimestamp
-		
-		xmlstr += 		str( remainTime )
-		xmlstr += '         </e2eventremaining>'
-		xmlstr += '         <e2eventcurrenttime>'
-		xmlstr +=				str( self.currentUnixTimestamp )
-		xmlstr += '         </e2eventcurrenttime>'
-		xmlstr += '         <e2eventdescriptionextended>'
-		xmlstr += '         </e2eventdescriptionextended>'
-		xmlstr += '      </e2event>'
-		
-		xmlstr += '      <e2event>'
-		xmlstr += '         <e2eventservicereference>'
-		xmlstr += 			self.ref
-		xmlstr += '         </e2eventservicereference>'
-		xmlstr += '         <e2eventservicename>'
-		xmlstr += 				self.followingEpg.mEventName 
-		xmlstr += '         </e2eventservicename>'
-		xmlstr += '         <e2eventprovidername>'
-		xmlstr += '            {e2:convert type=ServiceName}Provider{/e2:convert} '
-		xmlstr += '         </e2eventprovidername>'
-		xmlstr += '         <e2eventid>'
-		xmlstr += 				str( self.followingEpg.mEventName )
-		xmlstr += '         </e2eventid>'
-		xmlstr += '         <e2eventname>'
-		xmlstr += 				str( self.followingEpg.mEventName )
-		xmlstr += '         </e2eventname>'
-		xmlstr += '         <e2eventtitle>'
-		xmlstr += 				str( self.followingEpg.mEventName )
-		xmlstr += '         </e2eventtitle>'
-		xmlstr += '         <e2eventdescription>'
-		xmlstr += 				str( self.followingEpg.mEventDescription )
-		xmlstr += '         </e2eventdescription>'
-		xmlstr += '         <e2eventstart>'
-		xmlstr += 				str( self.followingEpg.mStartTime )
-		xmlstr += '         </e2eventstart>'
-		xmlstr += '         <e2eventduration>'
-		xmlstr += 				str( self.followingEpg.mDuration )
-		xmlstr += '         </e2eventduration>'
-		xmlstr += '         <e2eventremaining>'
-		xmlstr +=			str( self.followingEpg.mDuration )
-		xmlstr += '         </e2eventremaining>'
-		xmlstr += '         <e2eventcurrenttime>'
-		xmlstr +=				str( self.currentUnixTimestamp )
-		xmlstr += '         </e2eventcurrenttime>'
-		xmlstr += '         <e2eventdescriptionextended>'
-		xmlstr += '         </e2eventdescriptionextended>'
-		xmlstr += '      </e2event>'
+		xmlstr += '   <e2eventlist>'
+
+		if self.currentEpg == None :
+			pass
+		else :
+			xmlstr += '      <e2event>'
+			xmlstr += '         <e2eventservicereference>'
+			xmlstr += 			self.ref
+			xmlstr += '         </e2eventservicereference>'
+			xmlstr += '         <e2eventservicename>'
+			xmlstr += 				self.currentEpg.mEventName
+			xmlstr += '         </e2eventservicename>'
+			xmlstr += '         <e2eventprovidername>'
+			xmlstr +=           			self.currentChannel.mName
+			xmlstr += '         </e2eventprovidername>'
+			xmlstr += '         <e2eventid>'
+			xmlstr += 				str(self.currentEpg.mEventId)
+			xmlstr += '         </e2eventid>'
+			xmlstr += '         <e2eventname>'
+			xmlstr += 				self.currentEpg.mEventName
+			xmlstr += '         </e2eventname>'
+			xmlstr += '         <e2eventtitle>'
+			xmlstr += 				self.currentEpg.mEventName
+			xmlstr += '         </e2eventtitle>'
+			xmlstr += '         <e2eventdescription>'
+			xmlstr += 				self.currentEpg.mEventDescription
+			xmlstr += '         </e2eventdescription>'
+			xmlstr += '         <e2eventstart>'
+			xmlstr += 				str( self.currentEpg.mStartTime )
+			xmlstr += '         </e2eventstart>'
+			xmlstr += '         <e2eventduration>'
+			xmlstr += 				str( self.currentEpg.mDuration )
+			xmlstr += '         </e2eventduration>'
+			xmlstr += '         <e2eventremaining>'
+
+			endTime = self.currentEpg.mStartTime + self.currentEpg.mDuration
+			remainTime = endTime - self.currentUnixTimestamp
+			
+			xmlstr += 		str( remainTime )
+			xmlstr += '         </e2eventremaining>'
+			xmlstr += '         <e2eventcurrenttime>'
+			xmlstr +=				str( self.currentUnixTimestamp )
+			xmlstr += '         </e2eventcurrenttime>'
+			xmlstr += '         <e2eventdescriptionextended>'
+			xmlstr += '         </e2eventdescriptionextended>'
+			xmlstr += '      </e2event>'
+
+		if self.followingEpg == None :
+			pass
+		else :
+			xmlstr += '      <e2event>'
+			xmlstr += '         <e2eventservicereference>'
+			xmlstr += 			self.ref
+			xmlstr += '         </e2eventservicereference>'
+			xmlstr += '         <e2eventservicename>'
+			xmlstr += 				self.followingEpg.mEventName 
+			xmlstr += '         </e2eventservicename>'
+			xmlstr += '         <e2eventprovidername>'
+			xmlstr += 				self.currentChannel.mName
+			xmlstr += '         </e2eventprovidername>'
+			xmlstr += '         <e2eventid>'
+			xmlstr += 				str( self.followingEpg.mEventName )
+			xmlstr += '         </e2eventid>'
+			xmlstr += '         <e2eventname>'
+			xmlstr += 				str( self.followingEpg.mEventName )
+			xmlstr += '         </e2eventname>'
+			xmlstr += '         <e2eventtitle>'
+			xmlstr += 				str( self.followingEpg.mEventName )
+			xmlstr += '         </e2eventtitle>'
+			xmlstr += '         <e2eventdescription>'
+			xmlstr += 				str( self.followingEpg.mEventDescription )
+			xmlstr += '         </e2eventdescription>'
+			xmlstr += '         <e2eventstart>'
+			xmlstr += 				str( self.followingEpg.mStartTime )
+			xmlstr += '         </e2eventstart>'
+			xmlstr += '         <e2eventduration>'
+			xmlstr += 				str( self.followingEpg.mDuration )
+			xmlstr += '         </e2eventduration>'
+			xmlstr += '         <e2eventremaining>'
+			xmlstr +=			str( self.followingEpg.mDuration )
+			xmlstr += '         </e2eventremaining>'
+			xmlstr += '         <e2eventcurrenttime>'
+			xmlstr +=				str( self.currentUnixTimestamp )
+			xmlstr += '         </e2eventcurrenttime>'
+			xmlstr += '         <e2eventdescriptionextended>'
+			xmlstr += '         </e2eventdescriptionextended>'
+			xmlstr += '      </e2event>'
+			
 		xmlstr += '   </e2eventlist>'
 				
 		"""	

@@ -7,7 +7,7 @@ class ElmoMovieList( Webinterface ) :
 		super(ElmoMovieList, self).__init__(urlPath)
 		self.conn = dbopen.DbOpen('recordinfo.db').getConnection()
 
-		sql = "select ChannelName, RecordName, StartTime, duration  from tblRecordInfo"
+		sql = "select ChannelName, RecordName, StartTime, duration, RecordKey  from tblRecordInfo"
 		self.c = self.conn.cursor()
 		self.c.execute(sql)
 
@@ -21,18 +21,18 @@ class ElmoMovieList( Webinterface ) :
 
 		for row in self.results :
 			xmlstr += '  <e2movie>'
-			xmlstr += '      <e2servicereference>1:0:0:0</e2servicereference>'
+			xmlstr += '      <e2servicereference>1:0:0:0:0:0:0:0:0:0:/Archive/' + str(row[4]) +'</e2servicereference>'
 			xmlstr += '      <e2title>'+row[1]+'</e2title>'
 
 			xmlstr += '      <e2description/>'
 			xmlstr += '      <e2descriptionextended/>'
-			# xmlstr += '      <e2servicename>'+row[0]+'</e2servicename>'
-			xmlstr += '      <e2servicename>ElmoStation</e2servicename>'
+			xmlstr += '      <e2servicename>'+row[0]+'</e2servicename>'
+			# xmlstr += '      <e2servicename>ElmoStation</e2servicename>'
 			xmlstr += '      <e2time>'+str( row[2] )+'</e2time>'
 			xmlstr += '      <e2length>'+self.DurationInHMS( row[3] )+'</e2length>'
 			xmlstr += '      <e2tags></e2tags>'
-			xmlstr += '      <e2filename>FileFormat.ts</e2filename>'
-			xmlstr += '      <e2filesize>1000</e2filesize>'
+			xmlstr += '      <e2filename>' + str(row[4]) + '</e2filename>'
+			xmlstr += '      <e2filesize>0</e2filesize>'
 			xmlstr += '   </e2movie>'
 		
 		xmlstr += '</e2movielist>'
