@@ -1567,10 +1567,12 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 
-	def Channel_GetByOne( self, aSid ) :
+	def Channel_GetByOneForRecording( self, aSid ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			iChannel = channelDB.Channel_GetByOne( aSid )
+			channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			iChannel = channelDB.Channel_GetByOneForRecording( aSid )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			return iChannel
 
@@ -1788,10 +1790,15 @@ class DataCacheMgr( object ) :
 		self.mZappingListChange = aChange
 
 
-	def GetChannelByIDs( self, aSid, aTsid, aOnid ) :
-		if self.mChannelListHashForTimer == None or len( self.mChannelListHashForTimer ) <= 0 :
+	def GetChannelByIDs( self, aSid, aTsid, aOnid, aAllChannel = False ) :
+		findHash = self.mChannelListHashForTimer
+		if aAllChannel :
+			findHash = self.mAllChannelListHash
+
+		if findHash == None or len( findHash ) <= 0 :
 			return None
-		return self.mChannelListHashForTimer.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+
+		return findHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
 	def GetChannelReloadStatus( self ) :
@@ -3064,11 +3071,12 @@ class DataCacheMgr( object ) :
 		return channel.mChannel
 
 
-	def PIP_GetByNumber( self, aNumber, aUseDB = False ) :
+	def PIP_GetByNumber( self, aNumber, aUseDB = False, aAllChannel = False ) :
 		favGroup = ''
 		currentMode = self.Zappingmode_GetCurrent( )
-		if currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+		if not aAllChannel and currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			favGroup = currentMode.mFavoriteGroup.mGroupName
+
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
@@ -3183,9 +3191,24 @@ class DataCacheMgr( object ) :
 			return
 		#LOG_TRACE( 'PIP_StopByDeleteChannel status[%s] pChannel[%s %s] lock[%s]'% ( self.PIP_GetStatus( ),pChannel.mNumber,pChannel.mName,pChannel.mLocked ) )
 
-		#3. isMove? find change channel
+		#3. edited pipCurrent?(move,skipped,delete), find change channel
+		#   buyer issue 62 : show stay last channel on pip if tunable check, when changed mode
+		fChannel = None
 		reTunePIP = False
-		fChannel = self.GetChannelByIDs( pChannel.mSid, pChannel.mTsid, pChannel.mOnid )
+		channelList = self.Channel_GetListByIDs( ElisEnum.E_SERVICE_TYPE_TV, pChannel.mTsid, pChannel.mOnid, pChannel.mSid )
+		if channelList and len( channelList ) > 0 :
+			for iChannel in channelList :
+				iChannel.printdebug( )
+				#LOG_TRACE( '--------------------Channel_GetListByIDs[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+				if iChannel.mCarrier.mDVBS.mSatelliteLongitude == pChannel.mCarrier.mDVBS.mSatelliteLongitude and \
+				   iChannel.mCarrier.mDVBS.mFrequency == pChannel.mCarrier.mDVBS.mFrequency and \
+				   iChannel.mCarrier.mDVBS.mSymbolRate == pChannel.mCarrier.mDVBS.mSymbolRate and \
+				   iChannel.mCarrier.mDVBS.mSatelliteBand == pChannel.mCarrier.mDVBS.mSatelliteBand and \
+				   iChannel.mCarrier.mDVBS.mPolarization == pChannel.mCarrier.mDVBS.mPolarization :
+					LOG_TRACE( '[PIP] changed Number : pChannel[%s %s] --> iChannel[%s %s]'% ( pChannel.mNumber, pChannel.mName, iChannel.mNumber, iChannel.mName ) )
+					fChannel = iChannel
+					break
+
 		if not fChannel or fChannel.mSkipped :
 			reTunePIP = True
 			fChannel = self.Channel_GetCurrent( )
