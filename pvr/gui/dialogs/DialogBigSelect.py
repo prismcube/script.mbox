@@ -91,6 +91,7 @@ class DialogBigSelect( BaseDialog ) :
 		self.setProperty( 'SelectedPosition', '0' )		
 
 		if not self.mDefaultList or len( self.mDefaultList ) < 1 :
+			LOG_TRACE( 'timerlist none' )
 			return
 		if self.mMode == E_MODE_TIMER_LIST :
 			self.TimerItems()
@@ -98,8 +99,8 @@ class DialogBigSelect( BaseDialog ) :
 
 	def TimerItems( self ) :
 		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
-		if runningTimers == None :
-			return False
+		#if runningTimers == None :
+		#	return False
 
 		for timer in self.mDefaultList :
 			channelNumber = timer.mChannelNo
@@ -111,7 +112,7 @@ class DialogBigSelect( BaseDialog ) :
 				channelName = channel.mName
 
 			isRunningTimer = False
-			if len( runningTimers ) > 0 :
+			if runningTimers and len( runningTimers ) > 0 :
 				for runningTimer in runningTimers :
 					if timer.mTimerId == runningTimer.mTimerId :
 						isRunningTimer = True
