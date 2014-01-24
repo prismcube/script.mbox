@@ -331,6 +331,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_SCROLLBAR_CHANNEL or self.mFocusId == E_CONTROL_ID_SCROLLBAR_SUBMENU :
 				return
+
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_STOP :
@@ -947,6 +948,9 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_TELETEXT )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
+
+			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+				self.UpdateChannelByDBUpdateEvent( aEvent )
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -1822,6 +1826,51 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
 		"""
+
+	def UpdateChannelByDBUpdateEvent( self, aEvent = None ) :
+		if not aEvent :
+			LOG_TRACE( 'aEvent is none' )
+			return
+
+		if aEvent.mUpdateType == 0 :
+			#ToDO : All updated db, reload channelList
+			pass
+			return
+
+		#updated info by current channel
+		if self.mChannelList == None or self.mListItems == None :
+			LOG_TRACE( 'Can not update channel info, channellist is None' )
+			return
+
+		iChannel = self.mDataCache.Channel_GetByNumber( aEvent.mChannelNo, True, E_TABLE_ALLCHANNEL, aEvent.mServiceType )
+		if not iChannel or iChannel.mError != 0 :
+			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aEvent.mChannelNo, aEvent.mServiceType ) )
+			return
+
+		if iChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+			#find array index
+			try :
+				#update iChannel
+				iChannelIdx = self.mCtrlListCHList.getSelectedPosition( )
+				if self.mChannelList[iChannelIdx].mNumber == iChannel.mNumber :
+					#iChannelIdx = self.mChannelList.index( self.mNavChannel )
+					self.mChannelList[iChannelIdx] = iChannel
+					self.mChannelListHash[aEvent.mChannelNo] = iChannel
+
+					isCas = E_TAG_FALSE
+					if iChannel.mIsCA :
+						isCas = E_TAG_TRUE
+
+					#update listItem
+					listItem = self.mCtrlListCHList.getListItem( iChannelIdx )
+					listItem.setProperty( E_XML_PROPERTY_CAS, isCas )
+					#LOG_TRACE( 'ElisEventChannelDBUpdate success, ch[%s %s] cas[%s] idx[%s]'% ( iChannel.mNumber, iChannel.mName, iChannel.mIsCA, iChannelIdx ) )
+
+					#update info,
+					UpdateCasInfo( self, iChannel )
+
+			except Exception, e :
+				LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
 
 
 	def UpdateChannelList( self ) :

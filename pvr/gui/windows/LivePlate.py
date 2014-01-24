@@ -522,6 +522,18 @@ class LivePlate( LivePlateWindow ) :
 				self.ChannelTune( CURR_CHANNEL )
 				LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
+			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+				if aEvent.mUpdateType == 0 :
+					#ToDO : All updated db, reload channelList
+					pass
+
+				elif aEvent.mUpdateType == 1 : #cas update only
+					iChannel = self.mDataCache.Channel_GetByNumber( aEvent.mChannelNo )
+					if iChannel :
+						self.mCurrentChannel = iChannel
+						UpdateCasInfo( self, iChannel )
+
+
 			#elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
 			#	LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
 			#			aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )

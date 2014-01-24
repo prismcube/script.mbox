@@ -1328,21 +1328,18 @@ class DataCacheMgr( object ) :
 
 
 	@DataLock
-	def Channel_GetByNumber( self, aNumber, aUseDB = False, aTable = E_TABLE_ZAPPING ) :
+	def Channel_GetByNumber( self, aNumber, aUseDB = False, aTable = E_TABLE_ZAPPING, aType = ElisEnum.E_SERVICE_TYPE_TV ) :
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				channel = channelDB.Channel_GetNumber( aNumber )
+				channel = channelDB.Channel_GetNumber( aNumber, '', aType )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
 
 		else :
 			cacheChannel = self.mChannelListHash.get( aNumber, None )
-			if aTable == E_TABLE_ALLCHANNEL :
-				cacheChannel = self.mAllChannelListHash.get( aNumber, None )
-
 			if cacheChannel == None :
 				return None
 
@@ -1749,6 +1746,54 @@ class DataCacheMgr( object ) :
 		if mEditTimerList and len( mEditTimerList ) > 0 :
 			ret = self.Timer_ChangeChannel( mEditTimerList )
 			#LOG_TRACE( '------------UpdateTimerChannelByChangeNumber ret[%s] len[%s] newNumber[%s], timerHashLen[%s] oldNumber[%s]'% ( ret, len( newNumber ), newNumber, len( timerList ), oldNumber ) )
+
+
+	def UpdateChannelByDBUpdate( self, aNumber, aType ) :
+		#updated info by current channel
+		ret = False
+		if self.mChannelList == None or len( self.mChannelList ) < 1 :
+			LOG_TRACE( 'Can not update channel info, channellist is None' )
+			return ret
+
+		iChannel = self.Channel_GetByNumber( aNumber, True, E_TABLE_ALLCHANNEL, aType )
+		if not iChannel or iChannel.mError != 0 :
+			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
+			return ret
+
+		#find array index
+		try :
+			#update iChannel
+			cacheChannel = None
+			iChannelIdx = 0
+			for channel in self.mChannelList :
+				if channel.mNumber == iChannel.mNumber :
+					cacheChannel = self.mChannelListHash.get( iChannel.mNumber, -1 )
+					if cacheChannel == -1 :
+						LOG_TRACE( 'can not find channelList ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+						return ret
+					fChannel = cacheChannel.mChannel
+					break
+
+				iChannelIdx += 1
+
+			self.mChannelList[iChannelIdx] = iChannel
+			updateCacheChannel = CacheChannel( iChannel, cacheChannel.mPrevKey, cacheChannel.mNextKey )
+			self.mChannelListHash[fChannel.mNumber] = updateCacheChannel
+
+			if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
+				self.mCurrentChannel = iChannel
+				LOG_TRACE( 'update mCurrentChannel by ElisEventChannelDBUpdate' )
+
+			#LOG_TRACE( '-----updated channelList: idx[%s] new[%s %s]ca[%s]  old[%s %s]ca[%s]'% ( iChannelIdx, iChannel.mNumber, iChannel.mName, iChannel.mIsCA, fChannel.mNumber, fChannel.mName, fChannel.mIsCA ) )
+			self.SetChannelReloadStatus( True )
+
+			ret = True
+			LOG_TRACE( 'success channelList update by ElisEventChannelDBUpdate ch[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
+
+		return ret
 
 
 	def Channel_ChangeChannelName( self, aChannelNumber, aServiceType, aNewName ) :
