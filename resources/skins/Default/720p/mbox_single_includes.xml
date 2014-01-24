@@ -6218,7 +6218,7 @@
 		</control>
 		<control type="list" id="1003950">
 			<posx>20</posx>
-			<posy>67</posy>
+			<posy>57</posy>
 			<width>570</width>
 			<height>521</height>
 			<onleft>3904</onleft>

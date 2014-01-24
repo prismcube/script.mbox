@@ -12,7 +12,7 @@
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>630</width>
-				<height>650</height>
+				<height>660</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
@@ -57,8 +57,8 @@
 			</control>
 			<control type="group">
 				<control type="label">
-					<posx>580</posx>
-					<posy>592</posy>
+					<posx>600</posx>
+					<posy>577</posy>
 					<width>300</width>
 					<height>35</height>
 					<font>font12</font>
@@ -70,8 +70,8 @@
 					<visible>!substring(Window.Property(iFavGroup),true)</visible>
 				</control>
 				<control type="label">
-					<posx>580</posx>
-					<posy>592</posy>
+					<posx>600</posx>
+					<posy>602</posy>
 					<width>300</width>
 					<height>35</height>
 					<font>font12</font>
@@ -85,9 +85,9 @@
 			</control>
 			<control type="button" id="3904">
 				<posx>20</posx>
-				<posy>590</posy>
+				<posy>585</posy>
 				<width>200</width>
-				<height>40</height>
+				<height>35</height>
 				<label>SCRIPT1022</label>
 				<font>font12_title</font>
 				<textcolor>white</textcolor>
@@ -100,6 +100,31 @@
 				<onup>1003950</onup>
 				<ondown>3901</ondown>
 				<visible>!substring(Window.Property(iFavGroup),true)</visible>
+			</control>
+			<!-- left key comment -->
+			<control type="group">
+				<posx>20</posx>
+				<posy>620</posy>
+				<visible>!substring(Window.Property(iFavGroup),true)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>20</posx>
+					<posy>0</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>font10</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>grey3</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>SCRIPT1138</label>
+				</control>
 			</control>
 			<include>DefaultSelectList</include>
 		</control>
