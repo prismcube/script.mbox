@@ -461,7 +461,7 @@ class BaseWindow( BaseObjectWindow ) :
 		return ret
 
 
-	def SetMediaCenter( self, aNowPlay=False ) :
+	def SetMediaCenter( self, aNowPlay=True ) :
 		import pvr.gui.WindowMgr as WinMgr
 		import pvr.gui.DialogMgr as DiaMgr
 		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
