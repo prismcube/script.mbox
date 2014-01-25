@@ -906,7 +906,7 @@ def SetDefaultSettingInXML( ) :
 	mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
 	xmlFile = '%s/resources/settings.xml' % mboxDir
 	#LOG_TRACE('-----dir[%s] file[%s]'% (mboxDir, xmlFile ) )
-	tagNames = [ 'VIEW_MODE', 'SORT_MODE', 'EPG_MODE', 'ADDON_VIEW_MODE', 'Addons_Sort', 'RSS_FEED' ]
+	tagNames = [ 'VIEW_MODE', 'SORT_MODE', 'EPG_MODE', 'ADDON_VIEW_MODE', 'Addons_Sort', 'RSS_FEED', 'AUTO_CONFIRM_CHANNEL', 'DISPLAY_CLOCK_NULL', 'DISPLAY_CLOCK_VFD', 'DISPLAY_EVENT_LIVE', 'DISPLAY_EXTEND' ]
 
 	if not CheckDirectory( xmlFile ) :
 		LOG_TRACE( 'error, file not found settings.xml[%s]'% xmlFile )

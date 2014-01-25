@@ -2746,8 +2746,12 @@ class DataCacheMgr( object ) :
 
 		#5. epg, archive
 		self.SetDefaultHideWatched( True )
-		ret = SetDefaultSettingInXML( )
-		LOG_TRACE( '>>>>>>>> Default init : epg,archive ret[%s] <<<<<<<<'% ret )
+
+		#delete setting file
+		settingsDir = xbmc.translatePath( "special://profile/addon_data/script.mbox/settings.xml" )
+		os.system( 'rm %s' % settingsDir )
+		#ret = SetDefaultSettingInXML( )
+		#LOG_TRACE( '>>>>>>>> Default init : epg,archive ret[%s] <<<<<<<<'% ret )
 
 		#6. ageRating
 		LOG_TRACE( '>>>>>>>> Default init : AgeLimit <<<<<<<<' )
@@ -2763,9 +2767,6 @@ class DataCacheMgr( object ) :
 		self.Zappingmode_SetCurrent( zappingmode )
 		#self.Channel_Save( )
 		self.Channel_ReLoad( )
-
-		#8. Settings Property
-		SetSetting( 'RSS_FEED', '1' )
 
 		#pvr.gui.WindowMgr.GetInstance( ).GetWindow( pvr.gui.WindowMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 		#xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )

@@ -266,7 +266,7 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mSortMode >= E_SORT_END :
 				self.mSortMode = 0 
 
-			SetSetting( 'SORT_MODE', '%d' % self.mSortMode ) 								
+			SetSetting( 'SORT_MODE', '%d' % self.mSortMode )
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )

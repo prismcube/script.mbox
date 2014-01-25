@@ -137,6 +137,13 @@
 	<string id="1137">Installing unverified addons may slow your box down</string>
 	<string id="1138">Press the left button on the remote to set focus to OK / Cancel</string>
 	<string id="1139">Extra Options</string>
+	<string id="1140">Display RSS in Main Menu</string>
+	<string id="1141">Automatic Confirm Channel Tune</string>
+	<string id="1142">Display Clock Tv Screen</string>
+	<string id="1143">Display Clock Front Panel</string>
+	<string id="1144">Automatic Display Information Plate</string>
+	<string id="1145">Display Extend Information</string>
+	<string id="1146">Appearance</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

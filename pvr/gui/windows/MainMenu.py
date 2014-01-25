@@ -93,7 +93,7 @@ class MainMenu( BaseWindow ) :
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
-		self.SetVisibleRss( )
+		self.setProperty( 'RssShow', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'RSS_FEED' ) )
 		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -381,13 +381,6 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_EPG_FOLLOWING :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events next on schedule' ) )
-
-
-	def SetVisibleRss( self ) :
-		if int( GetSetting( 'RSS_FEED' ) ) == 1 :
-			self.setProperty( 'RssShow', 'True' )
-		else :
-			self.setProperty( 'RssShow', 'False' )
 
 
 	def ShowFavoriteGroup( self ) :

@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+	<category label="General">
+		<!-- Archive -->
+		<setting id="VIEW_MODE" type="enum" label="ViewMode" values="0|1|2|3" default="0" />
+		<setting id="SORT_MODE" type="enum" label="SortMode" values="0|1|2|3" default="0" />
 
-	<!-- Archive -->
-	<setting id="VIEW_MODE" type="enum" label="ViewMode" values="0|1|2|3" default="0" />
-	<setting id="SORT_MODE" type="enum" label="SortMode" values="0|1|2|3" default="0" />
+		<!-- EPG -->
+		<setting id="EPG_MODE" type="enum" label="EPGMode" values="0|1|2|3" default="0" />
 
-	<!-- EPG -->
-	<setting id="EPG_MODE" type="enum" label="EPGMode" values="0|1|2|3" default="0" />
+		<!-- Favorite Addons -->
+		<setting id="ADDON_VIEW_MODE" type="enum" label="ViewMode" values="0|1" default="1" />
+		<setting id="Addons_Sort" type="enum" label="SortMode" values="0|1" default="1" />
 
-	<!-- Favorite Addons -->
-	<setting id="ADDON_VIEW_MODE" type="enum" label="ViewMode" values="0|1" default="1" />
-	<setting id="Addons_Sort" type="enum" label="SortMode" values="0|1" default="1" />
+		<!-- Firmware update notify -->
+		<setting id="UPDATE_NOTIFY" type="enum" label="UpdateNotify" values="0|1|2" default="1" />
+		<setting id="UPDATE_NOTIFY_COUNT" type="enum" label="UpdateNotifyCount" values="0|1|2|3|4|5" default="0" />
 
-	<!-- Main Menu Rss Feed -->
-	<setting id="RSS_FEED" type="enum" label="Rssfeed" values="0|1" default="1" />
-
-	<!-- Firmware update notify -->
-	<setting id="UPDATE_NOTIFY" type="enum" label="UpdateNotify" values="0|1|2" default="1" />
-	<setting id="UPDATE_NOTIFY_COUNT" type="enum" label="UpdateNotifyCount" values="0|1|2|3|4|5" default="0" />
-
-	<!-- PIP position -->
-	<setting id="PIP_POSITION" type="text" label="PIPPostion" values="857|170|352|198" default="857|170|352|198" />
-
-	<!--
-	<setting id="Username" type="text" label="config" default="default" />
-	<setting id="testbool" type="bool" label="config" default="true" />
-	<setting id="testenum" type="enum" label="config" values="25|75" default="1" />
-	-->
+		<!-- PIP position -->
+		<setting id="PIP_POSITION" type="text" label="PIPPostion" values="857|170|352|198" default="857|170|352|198" />
+	</category>
+	<category label="1146">
+		<setting id="RSS_FEED" type="bool" label="1140" default="true" />
+		<setting id="AUTO_CONFIRM_CHANNEL" type="bool" label="1141" default="false" />
+		<setting id="DISPLAY_CLOCK_NULLWINDOW" type="bool" label="1142" default="false" />
+		<setting id="DISPLAY_CLOCK_VFD" type="bool" label="1143"  default="false" />
+		<setting id="DISPLAY_EVENT_LIVE" type="bool" label="1144" default="false" />
+		<setting id="DISPLAY_EXTEND_INFO" type="bool" label="1145" default="false" />
+	</category>
 </settings>

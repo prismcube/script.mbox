@@ -739,7 +739,7 @@ Search for window name
 					<textcolor>blue</textcolor>
 					<titlecolor>blue</titlecolor>
 					<headlinecolor>white</headlinecolor>
-					<visible>substring(Window.Property(RssShow),True)</visible>
+					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 				<control type="image">
 					<description>RSS background</description>
@@ -748,7 +748,7 @@ Search for window name
 					<width>24</width>
 					<height>24</height>
 					<texture>icon-rss.png</texture>
-					<visible>substring(Window.Property(RssShow),True)</visible>
+					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 			</control>
 
@@ -6901,6 +6901,7 @@ Search for window name
 		</control>
 
 		<!-- Time & Date -->
+		<include>NullWindowDataTime</include>
 		<include>DefaultCommonTime</include>
 		<include>DefaultCommonDate</include>
 		<include>DefaultCommonLiveStatus</include>
