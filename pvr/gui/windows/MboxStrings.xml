@@ -144,6 +144,7 @@
 	<string id="1144">Automatic Display Information Plate</string>
 	<string id="1145">Display Extend Information</string>
 	<string id="1146">Appearance</string>
+	<string id="1147">To fix an empty repository or any other problems, try Force refresh in the context menu</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

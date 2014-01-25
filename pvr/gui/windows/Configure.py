@@ -86,7 +86,6 @@ class Configure( SettingWindow ) :
 		self.mVideoOutput			= E_VIDEO_HDMI
 
 		self.mAnalogAscpect			= E_16_9
-		#self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
 		self.mUpdateNotify 			= int( GetSetting( 'UPDATE_NOTIFY' ) )
 
 		self.mUseUsbBackup			= False
