@@ -5123,19 +5123,34 @@ Search for window name
 								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
-							<!-- Channel Name -->
+							<!-- Channel Number -->
 							<control type="label">
 								<posx>85</posx>
 								<posy>5</posy>
 								<width>185</width>
-								<height>50</height>
-								<font>font13_title</font>
+								<height>30</height>
+								<font>font24_title</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>35</posy>
+								<width>185</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+								<scroll>false</scroll>
+								<scrollspeed>150</scrollspeed>
 							</control>
 						</itemlayout>
 						<focusedlayout height="63" width="270">
@@ -5160,18 +5175,32 @@ Search for window name
 								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
-							<!-- Channel Name -->
+							<!-- Channel Number -->
 							<control type="label">
 								<posx>85</posx>
 								<posy>5</posy>
 								<width>185</width>
-								<height>50</height>
-								<font>font13_title</font>
+								<height>30</height>
+								<font>font24_title</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>35</posy>
+								<width>185</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
 								<scroll>false</scroll>
 							</control>
 						</focusedlayout>

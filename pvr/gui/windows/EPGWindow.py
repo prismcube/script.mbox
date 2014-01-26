@@ -97,6 +97,7 @@ class GridMeta( object ) :
 		self.mCol = aCol
 		self.mEPG = aEPG
 		self.mChannelIndex = aChannelIndex
+		self.mLastCAS = 0
 
 	
 class EPGWindow( BaseWindow ) :
@@ -217,6 +218,9 @@ class EPGWindow( BaseWindow ) :
 
 		LOG_TRACE( 'CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ) )
 
+		self.mLastCAS = self.mCurrentChannel.mIsCA
+		self.setProperty( E_XML_PROPERTY_CAS, 'True' )		
+		UpdateCasInfo( self, self.mCurrentChannel )		
 
 		if self.mEPGMode == E_VIEW_GRID :
 			self.SetVideoRestore( )
@@ -293,6 +297,8 @@ class EPGWindow( BaseWindow ) :
 					else :
 						self.GridControlDown( )
 
+					self.AsyncUpdateSelcetedPosition( )
+
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				#self.UpdateEPGInfomation( )
 				if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
@@ -309,6 +315,8 @@ class EPGWindow( BaseWindow ) :
 						self.GridControlPageUp( )
 					else :
 						self.GridControlPageDown( )
+
+					self.AsyncUpdateSelcetedPosition( )						
 
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				#self.UpdateEPGInfomation( )
@@ -746,6 +754,13 @@ class EPGWindow( BaseWindow ) :
 			self.mEPGHashTable[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
 
 
+	def AsyncUpdateSelcetedPosition( self ) :
+		if self.mUpdateSelcetedPositionTimer and self.mUpdateSelcetedPositionTimer.isAlive( ) :
+			self.mUpdateSelcetedPositionTimer.cancel( )
+		self.mUpdateSelcetedPositionTimer = threading.Timer( 0.5, self.UpdateSelcetedPosition )
+		self.mUpdateSelcetedPositionTimer.start( )
+
+
 	def UpdateSelcetedPosition( self ) :
 	
 		if self.mChannelList == None or len(self.mChannelList) <= 0:
@@ -767,9 +782,10 @@ class EPGWindow( BaseWindow ) :
 				channel = self.mChannelList[selectedPos]
 
 		if channel :
-			UpdateCasInfo( self, channel )
-		else :
-			self.setProperty( E_XML_PROPERTY_CAS, 'False' )
+			LOG_TRACE( 'LAEL98 TEST mIsCAS=%s:%s' %(self.mLastCAS, channel.mIsCA) )
+			if self.mLastCAS != channel.mIsCA :
+				UpdateCasInfo( self, channel )
+				self.mLastCAS = channel.mIsCA
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
@@ -981,10 +997,9 @@ class EPGWindow( BaseWindow ) :
 				iChNumber = channel.mNumber
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
-				tempChannelName = '%04d %s' %( iChNumber, channel.mName )
-
 				listItem = self.mListItems[i]
-				listItem.setLabel( tempChannelName )
+				listItem.setLabel( '%04d' %iChNumber )
+				listItem.setLabel2( '%s' %channel.mName )				
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
@@ -3054,7 +3069,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			self.mCtrlGridCas.setImage( '' )
 		"""
-		self.UpdateSelcetedPosition( )
+		#self.UpdateSelcetedPosition( )
 		
 		"""
 		#index

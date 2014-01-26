@@ -28,6 +28,7 @@ class NullWindow( BaseWindow ) :
 		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
 		self.mOnBlockTimer_GreenKey = 0
 		self.mIsShowDialog = False
+		self.mEventId  = 0
 		
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
@@ -43,6 +44,7 @@ class NullWindow( BaseWindow ) :
 		self.mLoopCount = 0
 		self.mPreviousBlockTime = 1.0
 		self.mEnableBlickingTimer = False
+		self.mNewEPGAlarm = time.time()
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
@@ -87,6 +89,11 @@ class NullWindow( BaseWindow ) :
 			self.MboxFirstProcess( )
 			self.mDataCache.LoadPIPStatus( )
 			return
+
+		iEPG = self.mDataCache.Epgevent_GetPresent( )
+		if iEPG and iEPG.mError == 0 :
+			self.mEventId = iEPG.mEventId
+
 
 		self.mEventBus.Register( self )
 		self.CheckNochannel( )
@@ -621,6 +628,23 @@ class NullWindow( BaseWindow ) :
 					LOG_TRACE( 'LAEL98 CHECK PINCODE' )				
 					CheckPincode( )
 				"""
+
+			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				if iEPG == None or iEPG.mError != 0 :
+					return -1
+				if iEPG.mEventId != self.mEventId :
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mMode == ElisEnum.E_MODE_LIVE :
+							
+						iChannel = self.mDataCache.Channel_GetCurrent( )
+						if iChannel.mSid == iEPG.mSid and iChannel.mTsid == iEPG.mTsid  and iChannel.mOnid == iEPG.mOnid  :
+							self.mEventId = iEPG.mEventId 
+							if time.time() - self.mNewEPGAlarm  < 5:#5sec
+								LOG_ERR('Ignore event change')
+							else :
+								xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+							self.mNewEPGAlarm  = time.time()
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
