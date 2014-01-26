@@ -45,6 +45,10 @@ class NullWindow( BaseWindow ) :
 		self.mPreviousBlockTime = 1.0
 		self.mEnableBlickingTimer = False
 		self.mNewEPGAlarm = time.time()
+		self.mNewEPGAlarmEnabled = False
+		if xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_EVENT_LIVE' ).lower() == 'true'.lower() :
+			self.mNewEPGAlarmEnabled = True
+		LOG_TRACE('self.mNewEPGAlarmEnabled=%s' %self.mNewEPGAlarmEnabled )
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
@@ -631,21 +635,22 @@ class NullWindow( BaseWindow ) :
 				"""
 
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-				iEPG = self.mDataCache.Epgevent_GetPresent( )
-				if iEPG == None or iEPG.mError != 0 :
-					return -1
-				if iEPG.mEventId != self.mEventId :
-					status = self.mDataCache.Player_GetStatus( )
-					if status.mMode == ElisEnum.E_MODE_LIVE :
-							
-						iChannel = self.mDataCache.Channel_GetCurrent( )
-						if iChannel.mSid == iEPG.mSid and iChannel.mTsid == iEPG.mTsid  and iChannel.mOnid == iEPG.mOnid  :
-							self.mEventId = iEPG.mEventId 
-							if time.time() - self.mNewEPGAlarm  < 5:#5sec
-								LOG_ERR('Ignore event change')
-							else :
-								xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-							self.mNewEPGAlarm  = time.time()
+				if self.mNewEPGAlarmEnabled == True :
+					iEPG = self.mDataCache.Epgevent_GetPresent( )
+					if iEPG == None or iEPG.mError != 0 :
+						return -1
+					if iEPG.mEventId != self.mEventId :
+						status = self.mDataCache.Player_GetStatus( )
+						if status.mMode == ElisEnum.E_MODE_LIVE :
+								
+							iChannel = self.mDataCache.Channel_GetCurrent( )
+							if iChannel.mSid == iEPG.mSid and iChannel.mTsid == iEPG.mTsid  and iChannel.mOnid == iEPG.mOnid  :
+								self.mEventId = iEPG.mEventId 
+								if time.time() - self.mNewEPGAlarm  < 5:#5sec
+									LOG_ERR('Ignore event change')
+								else :
+									xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+								self.mNewEPGAlarm  = time.time()
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
