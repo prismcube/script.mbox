@@ -515,6 +515,21 @@ class EPGWindow( BaseWindow ) :
 					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
 				#self.DoCurrentEITReceived( aEvent )
 
+			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+				if aEvent.mUpdateType == 0 :
+					#ToDO : All updated db, reload channelList
+					pass
+
+				elif aEvent.mUpdateType == 1 : #cas update only
+					iChannel = self.mDataCache.Channel_GetByNumber( aEvent.mChannelNo )
+					if iChannel :
+						self.mChannelList = self.mDataCache.Channel_GetList( )
+						if self.mSelectChannel and self.mSelectChannel.mNumber == iChannel.mNumber :
+							self.mSelectChannel = iChannel
+						if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
+							self.mCurrentChannel = iChannel
+						UpdateCasInfo( self, iChannel )
+
 
 	def Close( self ) :
 		self.mEnableAysncTimer = False
