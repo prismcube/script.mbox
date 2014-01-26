@@ -485,6 +485,7 @@ class DialogPIP( BaseDialog ) :
 				enable = False
 
 			self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
+			self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
 
 		self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( mute )
 		self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( full )
@@ -1053,6 +1054,7 @@ class DialogPIP( BaseDialog ) :
 		if mute or volume < 1 :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'Audio is muted' )
+
 
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
