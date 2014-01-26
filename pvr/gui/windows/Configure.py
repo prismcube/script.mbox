@@ -86,17 +86,7 @@ class Configure( SettingWindow ) :
 		self.mVideoOutput			= E_VIDEO_HDMI
 
 		self.mAnalogAscpect			= E_16_9
-		self.mRssfeed				= int( GetSetting( 'RSS_FEED' ) )
-		self.mUpdateNotify			= 0
-		try :
-			self.mUpdateNotify = int( GetSetting( 'UPDATE_NOTIFY' ) )
-
-		except Exception, e :
-			LOG_ERR( 'except[%s]'% e )
-			self.mUpdateNotify = 0
-			SetSetting( 'UPDATE_NOTIFY', '0' )
-			SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
-			LOG_TRACE( '-------------add cached UPDATE_NOTIFY=0 UPDATE_NOTIFY_COUNT=0' )
+		self.mUpdateNotify 			= int( GetSetting( 'UPDATE_NOTIFY' ) )
 
 		self.mUseUsbBackup			= False
 		self.mAsyncVideoSetThread	= None
@@ -622,7 +612,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -640,7 +630,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -659,7 +649,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -674,7 +664,7 @@ class Configure( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, True )
 			self.SetVisibleControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -693,7 +683,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx02, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx02, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 				self.InitControl( )
 
@@ -708,7 +698,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 
 				self.InitControl( )
@@ -731,7 +721,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08 ]
+					hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
@@ -753,7 +743,7 @@ class Configure( SettingWindow ) :
 					self.SetVisibleControls( visibleControlIds, True )
 					self.SetEnableControls( visibleControlIds, True )
 
-					hideControlIds = [ E_Input06, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07, E_SpinEx08 ]
+					hideControlIds = [ E_Input06, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx06, E_SpinEx07 ]
 					self.SetVisibleControls( hideControlIds, False )
 					
 					self.InitControl( )
@@ -767,7 +757,7 @@ class Configure( SettingWindow ) :
 				#self.CloseBusyDialog( )
 
 			else :
-				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, False )
 				self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Not Supported' ) )
 				self.InitControl( )
@@ -803,7 +793,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -858,7 +848,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -879,7 +869,7 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -893,7 +883,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -905,24 +895,20 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
-			self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'RSS Feed' ), USER_ENUM_LIST_ON_OFF, self.mRssfeed, MR_LANG( 'Enable RSS feed in the main menu' ) )
-			self.AddEnumControl( E_SpinEx08, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx08 ]
+			self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Optional Appearance Setting'), '', MR_LANG( 'Set the appearnce pvr user interface' ) )
 
 			if E_V1_1_UPDATE_NOTIFY :
 				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
-				visibleControlIds.append( E_SpinEx07 )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01 ]
+				hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			else :
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01 ]
+				hideControlIds = [ E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07, E_SpinEx07 ]
-
-			if E_V1_1_UPDATE_NOTIFY :
-				idx = hideControlIds.remove( E_SpinEx07 )
-
 			self.SetVisibleControls( hideControlIds, False )
-
 			self.InitControl( )
 
 		else :
@@ -1507,15 +1493,15 @@ class Configure( SettingWindow ) :
 			propertyBanner = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander ).GetProp( )
 			self.mDataCache.SetPropertyPlaybackBannerTime( propertyBanner )
 
-		elif aGroupId == E_SpinEx06 :
-			self.mRssfeed = self.GetSelectedIndex( E_SpinEx06 )
-			SetSetting( 'RSS_FEED', '%d' % self.mRssfeed )
-
 		elif aGroupId == E_SpinEx07 :
 			self.mUpdateNotify = self.GetSelectedIndex( E_SpinEx07 )
 			SetSetting( 'UPDATE_NOTIFY', '%d' % self.mUpdateNotify )
 			if self.mUpdateNotify == 1 :
 				SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
+
+		elif aGroupId == E_Input01 :
+			settings = xbmcaddon.Addon( 'script.mbox' )
+			settings.openSettings(True,1)
 
 		else :
 			self.ControlSelect( )

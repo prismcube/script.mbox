@@ -127,6 +127,7 @@ class NullWindow( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = time.time( )
 
 		self.UpdateLinkageService( )
+		self.setProperty( 'ShowClock', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 
 		"""
 		currentStack = inspect.stack( )
@@ -1387,5 +1388,4 @@ class NullWindow( BaseWindow ) :
 			del self.mLinkageServiceTimer
 			
 		self.mLinkageServiceTimer = None
-
 
