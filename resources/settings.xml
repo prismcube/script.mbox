@@ -21,7 +21,7 @@
 	</category>
 	<category label="1146">
 		<setting id="RSS_FEED_MAIN_MENU" type="bool" label="1140" default="true" />
-		<setting id="AUTO_CONFIRM_CHANNEL" type="bool" label="1141" default="false" />
+		<!--setting id="AUTO_CONFIRM_CHANNEL" type="bool" label="1141" default="false" /-->
 		<setting id="DISPLAY_CLOCK_NULLWINDOW" type="bool" label="1142" default="false" />
 		<setting id="DISPLAY_CLOCK_VFD" type="bool" label="1143"  default="false" />
 		<setting id="DISPLAY_EVENT_LIVE" type="bool" label="1144" default="false" />
