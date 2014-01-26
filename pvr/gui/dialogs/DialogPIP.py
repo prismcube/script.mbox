@@ -189,7 +189,7 @@ class DialogPIP( BaseDialog ) :
 			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
-			LOG_TRACE( '[PIP] Not supported Radio' )
+			LOG_TRACE( '[PIP] No Radio support' )
 			return
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -199,7 +199,7 @@ class DialogPIP( BaseDialog ) :
 			self.Close( True )
 
 		else :
-			LOG_TRACE( '[PIP] unknown key[%s]'% actionId )
+			LOG_TRACE( '[PIP] Unknown key[%s]'% actionId )
 
 #		elif actionId == Action.ACTION_CONTEXT_MENU :
 #			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
@@ -433,7 +433,7 @@ class DialogPIP( BaseDialog ) :
 			LOG_ERR( 'except[%s]'% e )
 			return
 
-		LOG_TRACE( '[PIP] success sync to pip controls position' )
+		LOG_TRACE( '[PIP] PIP controls position sync' )
 
 		if aSetPosition and self.mDataCache.PIP_GetStatus( ) :
 			from pvr.GuiHelper import GetInstanceSkinPosition
@@ -449,7 +449,7 @@ class DialogPIP( BaseDialog ) :
 			self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
 			if self.mDataCache.GetMediaCenter( ) :
 				self.mLastWindow = xbmcgui.Window(xbmcgui.getCurrentWindowId())
-				LOG_TRACE( '[PIP] check, current window[%s]'% xbmcgui.getCurrentWindowId() )
+				LOG_TRACE( '[PIP] Check current window[%s]'% xbmcgui.getCurrentWindowId() )
 			self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
 			self.mCtrlBasePIPImageBlank     = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_BLANK )
 			self.mCtrlBasePIPImageOverlay   = self.mLastWindow.getControl( CTRL_ID_BASE_IMAGE_OVERLAY )
@@ -564,7 +564,7 @@ class DialogPIP( BaseDialog ) :
 			iChannel = self.mDataCache.Channel_GetByNumber( pChNumber, True )
 
 			if iChannel and ( not self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) ) :
-				LOG_TRACE( '[PIP] fail : can not tune current channel, not available, [%s]'% pChNumber )
+				LOG_TRACE( '[PIP] failed : could not tune current channel, [%s] not available'% pChNumber )
 				iChannel = None
 
 		if not iChannel :
@@ -573,13 +573,13 @@ class DialogPIP( BaseDialog ) :
 			if channelList and len( channelList ) > 0 :
 				for chNumber in channelList :
 					if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
-						LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of pip, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
+						LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of PIP, [%s %s]'% ( chNumber.mNumber, chNumber.mName ) )
 						break
 
 		if iChannel :
-			LOG_TRACE( '[PIP] start on channel[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
+			LOG_TRACE( '[PIP] Start on channel[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 		else :
-			LOG_TRACE( '[PIP] start on channel Fail[%s]'% iChannel )
+			LOG_TRACE( '[PIP] Start on channel failed[%s]'% iChannel )
 
 		return iChannel
 
@@ -589,7 +589,7 @@ class DialogPIP( BaseDialog ) :
 
 		#1. tunable : last channel by pip
 		pChNumber = self.mDataCache.PIP_GetCurrent( )
-		LOG_TRACE( '[PIP] 1. tunable : last channel by pip, [%s]'% pChNumber )
+		LOG_TRACE( '[PIP] 1. tunable : last PIP channel. [%s]'% pChNumber )
 		if not pChNumber or ( not self.mDataCache.PIP_IsPIPAvailable( pChNumber ) ) :
 			pChNumber = None
 
@@ -602,15 +602,15 @@ class DialogPIP( BaseDialog ) :
 						pChNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
 
 					if not self.mDataCache.PIP_IsPIPAvailable( pChNumber ) :
-						LOG_TRACE( '[PIP] fail : can not tune current channel, not available, [%s]'% pChNumber )
+						LOG_TRACE( '[PIP] failed : could not tune current channel. [%s] not available'% pChNumber )
 						pChNumber = None
 
 					else :
 						#exist check
 						if self.mDataCache.PIP_GetByNumber( pChNumber ) :
-							LOG_TRACE( '[PIP] 2. tunable : current channel by main(tv only), [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 2. tunable : current main sceen channel(tv only). [%s]'% pChNumber )
 						else :
-							LOG_TRACE( '[PIP] fail : current channel is not tunable list, [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] failed : current channel is not tunable list. [%s]'% pChNumber )
 							pChNumber = None
 
 			#3. tunable : find channel by tunableList of pip
@@ -621,7 +621,7 @@ class DialogPIP( BaseDialog ) :
 					for chNumber in channelList :
 						if self.mDataCache.PIP_IsPIPAvailable( chNumber.mNumber ) :
 							pChNumber = chNumber.mNumber
-							LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of pip, [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 3. tunable : find channel by tunableList of PIP. [%s]'% pChNumber )
 							break
 
 			#4. tunable : find channel by channelList of main(tv only)
@@ -635,7 +635,7 @@ class DialogPIP( BaseDialog ) :
 						if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV and \
 						   self.mDataCache.PIP_IsPIPAvailable( iChannel.mNumber ) :
 							pChNumber = iChannel.mNumber
-							LOG_TRACE( '[PIP] 4. tunable : find channel by channelList of main(tv only), [%s]'% pChNumber )
+							LOG_TRACE( '[PIP] 4. tunable : find channel by channelList of main(tv only). [%s]'% pChNumber )
 							break
 
 		"""
@@ -691,7 +691,7 @@ class DialogPIP( BaseDialog ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				isFail = True
-				LOG_TRACE( '[PIP] Can not switch PIP, Live is not' )
+				LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
 
 			if ( not isFail ) and self.mCurrentMode and \
 			   self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -705,7 +705,7 @@ class DialogPIP( BaseDialog ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if ( not isFail ) and fakeChannel and iChannel :
 				if iChannel.mSid == fakeChannel.mSid and iChannel.mTsid == fakeChannel.mTsid and iChannel.mOnid == fakeChannel.mOnid :
-					LOG_TRACE( '[PIP] Can not switch PIP, Same channel' )
+					LOG_TRACE( '[PIP] Cannot switch PIP. Same channel' )
 					isFail = True
 
 				else :
@@ -718,7 +718,7 @@ class DialogPIP( BaseDialog ) :
 
 					else :
 						isFail = True
-						LOG_TRACE( '[PIP] Fail to switch, Tune fail full screen' )
+						LOG_TRACE( '[PIP] Failed to switch, Full screen' )
 
 			if isFail :
 				if fakeChannel and ( not fakeChannel.mLocked ) and \
@@ -774,7 +774,7 @@ class DialogPIP( BaseDialog ) :
 		if not fakeChannel :
 			#have not tune
 			fakeChannel = self.mDataCache.Channel_GetCurrent( )
-			LOG_TRACE( '[PIP] have no Channel, Restore default current Channel' )
+			LOG_TRACE( '[PIP] have no channel. Restore default current channel' )
 
 		if fakeChannel :
 			self.SetLabelChannel( fakeChannel )
@@ -803,7 +803,7 @@ class DialogPIP( BaseDialog ) :
 
 	def SetLabelChannel( self, aChannel = None ) :
 		if not aChannel :
-			LOG_TRACE( 'no channel label' )
+			LOG_TRACE( 'No channel label' )
 			return
 
 		pChNumber = aChannel.mNumber
@@ -848,7 +848,7 @@ class DialogPIP( BaseDialog ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Position' ), CONTEXT_ACTION_MOVE_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Size' ), CONTEXT_ACTION_SIZE_PIP ) )
-		context.append( ContextItem( MR_LANG( 'Full Screen' ), CONTEXT_ACTION_SWITCH_PIP ) )
+		context.append( ContextItem( MR_LANG( 'Swap Screen' ), CONTEXT_ACTION_SWITCH_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Reset' ), CONTEXT_ACTION_DEFAULT_PIP ) )
 		context.append( ContextItem( MR_LANG( 'Close' ), CONTEXT_ACTION_STOP_PIP ) )
 
@@ -1143,7 +1143,7 @@ class DialogPIP( BaseDialog ) :
 				return
 
 		if not aChannel :
-			LOG_TRACE( '[PIP] can not tune by external, channel None' )
+			LOG_TRACE( '[PIP] could not tune by external. None channel' )
 			return
 
 		self.mDataCache.PIP_SetStatus( True )
