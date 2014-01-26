@@ -1442,7 +1442,7 @@ class ChannelListWindow( BaseWindow ) :
 							self.mLastChannel = None
 
 					#rule : public
-					if self.mChannelList == None or len( self.mChannelList ) < 1 :
+					if ( not self.mFlag_DeleteAll ) and ( self.mChannelList == None or len( self.mChannelList ) < 1 ) :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
@@ -1472,6 +1472,7 @@ class ChannelListWindow( BaseWindow ) :
 								if not ret :
 									if self.mChannelList and len( self.mChannelList ) > 0 :
 										self.mDataCache.Channel_SetCurrent( 1, self.mUserMode.mServiceType )
+
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
@@ -3149,15 +3150,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aMode == FLAG_OPT_GROUP :
 			context.append( ContextItem( '%s'% MR_LANG( 'Add channels to this group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > 1 :
-				context.append( ContextItem( '%s'% MR_LANG( 'Add channels to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 
-		else :
+		if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > 0 :
 			context.append( ContextItem( '%s'% MR_LANG( 'Add channels to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
-		if self.mFavoriteGroupList :
+		if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > 0 :
 			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 			context.append( ContextItem( '%s'% MR_LANG( 'Delete favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
 
@@ -3194,6 +3193,12 @@ class ChannelListWindow( BaseWindow ) :
 		mMarkList = deepcopy( self.mMarkList )
 		channelList = self.mChannelList
 
+		if aMode == FLAG_OPT_LIST and self.mChannelList :
+			#1.no mark : set current position item
+			if not mMarkList :
+				lastPos = self.mCtrlListCHList.getSelectedPosition( )
+				mMarkList.append( lastPos )
+
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL or \
 		   ( aMode == FLAG_OPT_GROUP and selectedAction == CONTEXT_ACTION_ADD_TO_FAV ) :
 			channelList = self.AddFavoriteChannels( )
@@ -3219,8 +3224,8 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
- 			title = ''
- 			groupList = deepcopy( self.mFavoriteGroupList )
+			title = ''
+			groupList = deepcopy( self.mFavoriteGroupList )
 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add Channels to Favorite Group' )
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Favorite Group' )
 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : 
@@ -3236,13 +3241,13 @@ class ChannelListWindow( BaseWindow ) :
 							continue
 						groupList.append( favGroup )
 
- 			grpIdx = xbmcgui.Dialog( ).select( title, groupList )
- 			groupName = groupList[grpIdx]
- 			#LOG_TRACE( '[Edit] grpIdx[%s] fav[%s]'% ( grpIdx,groupName ) )
-
+			grpIdx = xbmcgui.Dialog( ).select( title, groupList )
 			if grpIdx == -1 :
 				LOG_TRACE( '[Edit] Close dialog by CANCEL' )
 				return
+
+			groupName = groupList[grpIdx]
+			#LOG_TRACE( '[Edit] grpIdx[%s] fav[%s]'% ( grpIdx,groupName ) )
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
