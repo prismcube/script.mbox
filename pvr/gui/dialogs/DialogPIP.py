@@ -374,7 +374,7 @@ class DialogPIP( BaseDialog ) :
 			chList = self.mDataCache.Channel_GetList( )
 			if not chList or ( chList and len( chList ) < 1 ) :
 				if self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_TV, True ) < 1 :
-					xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Close PIP' ), MR_LANG( 'Close by delete all' ) ) )
+					#xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Close PIP' ), MR_LANG( 'Close by delete all' ) ) )
 					self.PIP_Stop( )
 					return
 
