@@ -148,7 +148,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="PIP (Bild im Bild) ist eine Funktion, mit der Sie zwei Programme gleichzeitig sehen können.[CR]Einige Tipps bei der Verwendung von PIP zu erinnern, sind wie folgt :[CR][CR]- Aktivieren Sie den PIP-Funktion, indem Sie die BLAUE Taste auf der Fernbedienung drücken. Eine kleine Box sollte in einer Ecke des Bildschirms angezeigt werden.[CR]- Ändern Sie die Sender im PIP-Fenster durch drücken der Zifferntasten auf der Fernbedienung nach Einschalten des Num Lock.[CR]- Audio Ton kommt nur vom Hauptsender.[CR]- Sie können auch PIP während Sie der Wiedergabe eines Videos in XBMC nutzen.">
+		<content name="PIP (Bild im Bild) ist eine Funktion, mit der Sie zwei Programme gleichzeitig sehen können.[CR]Einige Tipps bei der Verwendung von PIP zu erinnern, sind wie folgt :[CR][CR]- Aktivieren Sie den PIP-Funktion, indem Sie die BLAUE Taste auf der Fernbedienung drücken. Eine kleine Box sollte in einer Ecke des Bildschirms angezeigt werden.[CR]- Ändern Sie die Sender im PIP-Fenster durch drücken der Zifferntasten auf der Fernbedienung nach Einschalten des Num Lock.[CR]- Audio Ton kommt nur vom Hauptsender. Sie können auch PIP während Sie der Wiedergabe eines Videos in XBMC nutzen.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
