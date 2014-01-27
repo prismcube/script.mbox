@@ -64,10 +64,45 @@
 		</control>
 	</include>
 
+	<include name="NullWindowDataTime">
+		<control type="group">
+			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true)</visible>
+			<control type="label">
+				<description>time label</description>
+				<posx>695</posx>
+				<posy>5</posy>
+				<width>200</width>
+				<height>30</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>font28_title</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>$INFO[System.Time]</label>
+				<include>DefaultWindowOpenCloseAnimation</include>
+				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+			</control>
+			<control type="label">
+				<posx>695</posx>
+				<posy>35</posy>
+				<width>600</width>
+				<height>15</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>font10</font>
+				<textcolor>grey</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>$INFO[System.Date]</label>
+				<include>DefaultWindowOpenCloseAnimation</include>
+				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+			</control>
+		</control>
+	</include>
+
 	<include name="DefaultCommonTime">
 		<control type="label">
 			<description>time label</description>
-			<visible>!substring(Window.Property(CurrentWindow),1100000)</visible>
+			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>5</posy>
 			<width>200</width>
@@ -85,7 +120,7 @@
 
 	<include name="DefaultCommonDate">
 		<control type="label">
-			<visible>!substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)</visible>
+			<visible>[ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),3300000 + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)+ substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>35</posy>
 			<width>600</width>
@@ -4368,6 +4403,8 @@
 				<onup>1003400</onup>
 				<ondown>1003400</ondown>
 				<pagecontrol>1003401</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<preloaditems>2</preloaditems>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5074,7 +5111,7 @@
 				<ondown>1003500</ondown>
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003501</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>0</scrolltime>
 				<itemlayout height="40" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5298,7 +5335,7 @@
 				<ondown>1003510</ondown>
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003511</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>0</scrolltime>
 				<itemlayout height="70" width="635">
 					<control type="image">
 						<posx>0</posx>
@@ -6218,7 +6255,7 @@
 		</control>
 		<control type="list" id="1003950">
 			<posx>20</posx>
-			<posy>67</posy>
+			<posy>57</posy>
 			<width>570</width>
 			<height>521</height>
 			<onleft>3904</onleft>

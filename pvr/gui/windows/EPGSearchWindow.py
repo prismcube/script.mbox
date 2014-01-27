@@ -160,6 +160,10 @@ class EPGSearchWindow( BaseWindow ) :
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_SUBTITLE )
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
+			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+				pass
+				#self.UpdateChannelByDBUpdateEvent( aEvent )
+
 
 	def SetText( self, aText=None ) :
 		self.mText = aText
@@ -175,6 +179,38 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mEPGList = []
 		
 		WinMgr.GetInstance( ).CloseWindow( )
+
+
+	def UpdateChannelByDBUpdateEvent( self, aEvent = None ) :
+		if not aEvent :
+			LOG_TRACE( 'aEvent is none' )
+			return
+
+		if aEvent.mUpdateType == 0 :
+			#ToDO : All updated db, reload channelList
+			pass
+			return
+
+		try :
+			if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+				return
+			if self.mChannelList == None or len ( self.mChannelList ) <= 0 :
+				return
+
+			channel = None
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[selectedPos]
+
+			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+			if channel and self.mCurrentChannel and channel.mNumber == self.mCurrentChannel.mNumber :
+				UpdateCasInfo( self, self.mCurrentChannel )
+				hashkey = '%s:%s:%s'% ( self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid )
+				self.mChannelList[selectedPos] = self.mCurrentChannel
+				self.mChannelListHash[hashkey] = self.mCurrentChannel
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
 
 
 	def UpdateViewMode( self ) :
@@ -337,6 +373,7 @@ class EPGSearchWindow( BaseWindow ) :
 
 		self.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
 
+		channel = None
 		if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
 			channel = self.mChannelList[selectedPos]
 

@@ -107,18 +107,80 @@ def HasCasInfoByChannel( aChannel ) :
 def UpdateCasInfo( self, aChannel ) :
 	from pvr.gui.GuiConfig import E_XML_PROPERTY_CAS
 
-	self.setProperty( 'iCasB', '' )
-	self.setProperty( 'iCasI', '' )
-	self.setProperty( 'iCasS', '' )
-	self.setProperty( 'iCasV', '' )
-	self.setProperty( 'iCasN', '' )
-	self.setProperty( 'iCasCW', '' )
-	self.setProperty( 'iCasND', '' )
-	self.setProperty( 'iCasCO', '' )
-	self.setProperty( 'iCasDC', '' )
-	self.setProperty( 'iCasVM', '' )
-	self.setProperty( 'iCasO', '' )
+	if not aChannel or aChannel.mError != 0 :
+		self.setProperty( 'iCasB', '' )
+		self.setProperty( 'iCasI', '' )
+		self.setProperty( 'iCasS', '' )
+		self.setProperty( 'iCasV', '' )
+		self.setProperty( 'iCasN', '' )
+		self.setProperty( 'iCasCW', '' )
+		self.setProperty( 'iCasND', '' )
+		self.setProperty( 'iCasCO', '' )
+		self.setProperty( 'iCasDC', '' )
+		self.setProperty( 'iCasVM', '' )
+		self.setProperty( 'iCasO', '' )
+		return
 
+	if aChannel.mIsCA > 0 :
+		self.setProperty( E_XML_PROPERTY_CAS, 'True' )	
+
+	if aChannel.mIsCA & ElisEnum.E_MEDIAGUARD :
+		self.setProperty( 'iCasS', 'S' )		
+	else :
+		self.setProperty( 'iCasS', '' )	
+
+	if aChannel.mIsCA & ElisEnum.E_VIACCESS :
+		self.setProperty( 'iCasV', 'V' )
+	else :
+		self.setProperty( 'iCasV', '' )		
+
+	if aChannel.mIsCA & ElisEnum.E_NAGRA :
+		self.setProperty( 'iCasN', 'N' )	
+	else :
+		self.setProperty( 'iCasN', '' )	
+	
+	if aChannel.mIsCA & ElisEnum.E_IRDETO :
+		self.setProperty( 'iCasI', 'I' )	
+	else :
+		self.setProperty( 'iCasI', '' )
+
+	if aChannel.mIsCA & ElisEnum.E_CONAX :
+		self.setProperty( 'iCasCO', 'CO' )	
+	else :
+		self.setProperty( 'iCasCO', '' )	
+
+	if aChannel.mIsCA & ElisEnum.E_CRYPTOWORKS :
+		self.setProperty( 'iCasCW', 'CW' )	
+	else :
+		self.setProperty( 'iCasCW', '' )	
+	
+	if aChannel.mIsCA & ElisEnum.E_NDS :
+		self.setProperty( 'iCasND', 'ND' )	
+	else :
+		self.setProperty( 'iCasND', '' )	
+
+	if aChannel.mIsCA & ElisEnum.E_BETADIGITAL :
+		self.setProperty( 'iCasB', 'B' )	
+	else :
+		self.setProperty( 'iCasB', '' )	
+
+	if aChannel.mIsCA & ElisEnum.E_DRECRYPT :
+		self.setProperty( 'iCasDC', 'DC' )	
+	else :
+		self.setProperty( 'iCasDC', '' )	
+
+	if aChannel.mIsCA & ElisEnum.E_VERIMATRIX :
+		self.setProperty( 'iCasVM', 'VM' )	
+	else :
+		self.setProperty( 'iCasVM', '' )	
+	
+	if aChannel.mIsCA & ElisEnum.E_OTHERS :
+		self.setProperty( 'iCasO', 'O' )	
+	else :
+		self.setProperty( 'iCasO', '' )	
+	
+	"""
+	casInfo = []	
 	casInfo = HasCasInfoByChannel( aChannel )
 	self.setProperty( E_XML_PROPERTY_CAS, 'True' )
 	if casInfo :
@@ -127,6 +189,7 @@ def UpdateCasInfo( self, aChannel ) :
 			self.setProperty( aPropertyID, casName )
 	else :
 		return
+	"""
 
 
 def HasEPGComponent( aEPG, aFlag ) :
@@ -906,7 +969,7 @@ def SetDefaultSettingInXML( ) :
 	mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
 	xmlFile = '%s/resources/settings.xml' % mboxDir
 	#LOG_TRACE('-----dir[%s] file[%s]'% (mboxDir, xmlFile ) )
-	tagNames = [ 'VIEW_MODE', 'SORT_MODE', 'EPG_MODE', 'ADDON_VIEW_MODE', 'Addons_Sort', 'RSS_FEED' ]
+	tagNames = [ 'VIEW_MODE', 'SORT_MODE', 'EPG_MODE', 'ADDON_VIEW_MODE', 'Addons_Sort', 'RSS_FEED', 'AUTO_CONFIRM_CHANNEL', 'DISPLAY_CLOCK_NULL', 'DISPLAY_CLOCK_VFD', 'DISPLAY_EVENT_LIVE', 'DISPLAY_EXTEND' ]
 
 	if not CheckDirectory( xmlFile ) :
 		LOG_TRACE( 'error, file not found settings.xml[%s]'% xmlFile )

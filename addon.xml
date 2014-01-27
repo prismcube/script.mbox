@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.mbox" name="MBox" version="1.0.0" provider-name="www.marusys.com">
+<addon id="script.mbox" name="Prismcube" version="1.0.0" provider-name="www.marusys.com">
     <requires>
         <import addon="xbmc.python" version="1.0" />
         <import addon="script.module.beautifulsoup"/>

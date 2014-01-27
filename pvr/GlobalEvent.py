@@ -301,6 +301,15 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.1, self.ChannelChangedByRecord, [aEvent] )
 			thread.start( )
 
+		elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
+			if aEvent.mUpdateType == 0 :
+				#ToDO : All updated db, reload channelList
+				pass
+
+			elif aEvent.mUpdateType == 1 :
+				self.mDataCache.UpdateChannelByDBUpdate( aEvent.mChannelNo, aEvent.mServiceType )
+
+
 
 	def StopLoading( self ) :
 		if self.IsStartChannelLoad :

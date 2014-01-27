@@ -739,7 +739,7 @@ Search for window name
 					<textcolor>blue</textcolor>
 					<titlecolor>blue</titlecolor>
 					<headlinecolor>white</headlinecolor>
-					<visible>substring(Window.Property(RssShow),True)</visible>
+					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 				<control type="image">
 					<description>RSS background</description>
@@ -748,7 +748,7 @@ Search for window name
 					<width>24</width>
 					<height>24</height>
 					<texture>icon-rss.png</texture>
-					<visible>substring(Window.Property(RssShow),True)</visible>
+					<visible>substring(Window.Property(RssShow),true)</visible>
 				</control>
 			</control>
 
@@ -978,7 +978,7 @@ Search for window name
 					<onup>1300050</onup>
 					<ondown>1300050</ondown>
 					<pagecontrol>1300061</pagecontrol>
-					<scrolltime>200</scrolltime>
+					<scrolltime>0</scrolltime>
 					<focusposition>0</focusposition>
 					<movement>2</movement>
 					<visible>true</visible>
@@ -5123,19 +5123,34 @@ Search for window name
 								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
-							<!-- Channel Name -->
+							<!-- Channel Number -->
 							<control type="label">
 								<posx>85</posx>
 								<posy>5</posy>
 								<width>185</width>
-								<height>50</height>
-								<font>font13_title</font>
+								<height>30</height>
+								<font>font24_title</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>35</posy>
+								<width>185</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+								<scroll>false</scroll>
+								<scrollspeed>150</scrollspeed>
 							</control>
 						</itemlayout>
 						<focusedlayout height="63" width="270">
@@ -5160,18 +5175,32 @@ Search for window name
 								<height>50</height>
 								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 							</control>
-							<!-- Channel Name -->
+							<!-- Channel Number -->
 							<control type="label">
 								<posx>85</posx>
 								<posy>5</posy>
 								<width>185</width>
-								<height>50</height>
-								<font>font13_title</font>
+								<height>30</height>
+								<font>font24_title</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>85</posx>
+								<posy>35</posy>
+								<width>185</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
 								<scroll>false</scroll>
 							</control>
 						</focusedlayout>
@@ -6901,6 +6930,7 @@ Search for window name
 		</control>
 
 		<!-- Time & Date -->
+		<include>NullWindowDataTime</include>
 		<include>DefaultCommonTime</include>
 		<include>DefaultCommonDate</include>
 		<include>DefaultCommonLiveStatus</include>
