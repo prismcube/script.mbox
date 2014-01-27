@@ -1502,6 +1502,7 @@ class Configure( SettingWindow ) :
 		elif aGroupId == E_Input01 :
 			settings = xbmcaddon.Addon( 'script.mbox' )
 			settings.openSettings(True,1)
+			self.setProperty( 'ShowClock', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 			self.ShowClockOnVFD( )
 
 		else :
