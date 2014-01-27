@@ -2827,13 +2827,13 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( '[Edit] Favoritegroup_AddChannelByNumber[%s]'% ret )
 
 			isReload = False
-			if aMode == FLAG_OPT_LIST :
-				isReload = True
+			#if aMode == FLAG_OPT_LIST :
+			#	isReload = True
 
-			else :
-				if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub and \
-				   self.mFavoriteGroupList[self.mUserSlidePos.mSub] == aGroupName :
-					isReload = True
+			#else :
+			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub and \
+			   self.mFavoriteGroupList[self.mUserSlidePos.mSub] == aGroupName :
+				isReload = True
 
 			if isReload :
 				self.mMarkList = []
@@ -3193,21 +3193,19 @@ class ChannelListWindow( BaseWindow ) :
 		mMarkList = deepcopy( self.mMarkList )
 		channelList = self.mChannelList
 
-		if aMode == FLAG_OPT_LIST and self.mChannelList :
-			#1.no mark : set current position item
-			if not mMarkList :
-				lastPos = self.mCtrlListCHList.getSelectedPosition( )
-				mMarkList.append( lastPos )
+		#if aMode == FLAG_OPT_LIST and self.mChannelList :
+		#1.no mark : set current position item
+		if not mMarkList :
+			lastPos = self.mCtrlListCHList.getSelectedPosition( )
+			mMarkList.append( lastPos )
 
-		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL or \
-		   ( aMode == FLAG_OPT_GROUP and selectedAction == CONTEXT_ACTION_ADD_TO_FAV ) :
-			lblTitle = MR_LANG( 'Add Channels to This Favorite Group' )
-			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :
-				lblTitle = MR_LANG( 'Add Channels to Favorite Group' )
+		#if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL or \
+		#   ( aMode == FLAG_OPT_GROUP and selectedAction == CONTEXT_ACTION_ADD_TO_FAV ) :
+		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			channelList = self.AddFavoriteChannels( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 			dialog.SetPreviousBlocking( False )
-			dialog.SetDefaultProperty( lblTitle, channelList, E_MODE_CHANNEL_LIST )
+			dialog.SetDefaultProperty( MR_LANG( 'Add Channels to This Favorite Group' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 
