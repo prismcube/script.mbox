@@ -3414,6 +3414,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
 			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG( 'Search channels' ), CONTEXT_ACTION_MENU_CHANNEL_SEARCH ) )
 			lblLine = MR_LANG( 'Delete all' )
 			if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 				idxSub = self.mUserSlidePos.mSub
@@ -3442,10 +3443,34 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( '[ChannelList] Close dialog by CANCEL' )
 				return
 
+			if selectedAction == CONTEXT_ACTION_MENU_CHANNEL_SEARCH :
+				self.ShowSearchDialog( )
+				return
+
 			self.DoContextAction( mode, selectedAction )
 
 		else :
 			self.ShowEditContextMenu( mode )
+
+
+	def ShowSearchDialog( self ) :
+		kb = xbmc.Keyboard( '', MR_LANG( 'Enter Search Keywords' ), False )
+		kb.doModal( )
+		if kb.isConfirmed( ) :
+			keyword = kb.getText( )
+			LOG_TRACE( 'keyword len=%d' %len( keyword ) )
+			if len( keyword ) < MININUM_KEYWORD_SIZE :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
+				dialog.doModal( )
+				return
+
+			#self.mEventBus.Deregister( self )
+			#self.StopEPGUpdateTimer( )
+
+			#self.mResetListItems = True
+			#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
 
 
 	def Close( self ):
