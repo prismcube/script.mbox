@@ -8,7 +8,7 @@
 			<width>785</width>
 			<height>243</height>
 		</content>
-		<content name="1. STANDBY LED TLAČÍTKO : Přepínání mezi zapnutím a pohotovostním režimem.[CR][CR]2. PŘEDNÍ DISPLEJ : Zobrazuje název kanálu v provozním režimu a zobrazuje aktuální čas v pohotovostním režimu.[CR][CR]3. ČTEČKA SMART KARET : Otevřete dvířka a vložte smart kartu do předního otvoru pro sledování placených služeb.">
+		<content name="1. STANDBY LED TLAČÍTKO : Stiskněte na 1 ~ 2 sec. k přepnutí mezi operačním a standby módem.[CR][CR]2. PŘEDNÍ DISPLEJ : Zobrazuje název kanálu v provozním režimu a zobrazuje aktuální čas v pohotovostním režimu.[CR][CR]3. ČTEČKA SMART KARET : Otevřete dvířka a vložte smart kartu do předního otvoru pro sledování placených služeb.">
 			<type>textbox</type>
 			<posx>205</posx>
 			<posy>565</posy>
@@ -140,7 +140,7 @@
 		</content>
 	</page>
 
-	<page number="8" title="PIP" location="(PRESS BLUE COLOR BUTTON)">
+	<page number="8" title="PIP" location="(STISKNĚTE MODRÉ TLAČÍTKO)">
 		<content name="help/pip.png">
 			<type>image</type>
 			<posx>180</posx>
@@ -148,7 +148,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP are as follow.[CR][CR]- Engage the PIP feature by pressing BLUE button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP window by pressing number keys on the remote after turning Num Lock on.[CR]- Audio only comes from the main viewing screen.[CR]- You can also access and use the PIP while you are watching video in XBMC.">
+		<content name="PIP (Obraz v obraze) umožňuje sledovat dva programy nezávisle. Nějaké typy na zapamatování při pouzívání PIP funkce.[CR][CR]- Zapnutí / vypnutí PIP funkce stiskem MODRÉHO tlačítka na dálkovém ovladači; malé okno se zobrazí v jednom rohu obrazovky.[CR]- Přepnutí kanálu v malém PIP okně stiskem čísla na dálkovém ovladači po stisknutí tlačítka Num Lock.[CR]- Audio funguje na velkém PIP okně.[CR]- PIP lze zapnout a používat během přehrávání videa v XBMC části.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -344,7 +344,7 @@
 		</content>
 	</page>
 
-	<page number="20" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+	<page number="20" title="Aktualizace doplňků" location="(MÉDIA> MANAŽER DOPLŇKŮ> STISKNĚTE ŠIPKU VLEVO nebo DOPRAVA)">
 		<content name="help/update_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -352,7 +352,7 @@
 			<width>880</width>
 			<height>470</height>
 		</content>
-		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
+		<content name="Všechny nainstalované doplňky budou automaticky aktualizovány, pokud jsou v repozitářích dostupné nové verze.[CR]Pokud je automatická aktualizace vypnutá, měli byste v Manažeři doplňků vidět adresář.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
