@@ -1502,9 +1502,19 @@ class Configure( SettingWindow ) :
 		elif aGroupId == E_Input01 :
 			settings = xbmcaddon.Addon( 'script.mbox' )
 			settings.openSettings(True,1)
+			self.ShowClockOnVFD( )
 
 		else :
 			self.ControlSelect( )
+
+
+	def ShowClockOnVFD( self ) :
+		VFDClock = xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_CLOCK_VFD' )
+		if VFDClock == 'true' :
+			ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 1 )
+		else :
+			ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 0 )
+			self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 
 
 	def ShowFavoriteGroup( self ) :
