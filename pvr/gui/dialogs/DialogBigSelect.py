@@ -165,8 +165,9 @@ class DialogBigSelect( BaseDialog ) :
 		self.mCtrlList.selectItem( aPos + 1 )
 		time.sleep( 0.05 )
 
-		aPos = self.mCtrlList.getSelectedPosition( )
-		self.setProperty( 'SelectedPosition',  '%s'% ( aPos + 1 )  )		
+		#aPos = self.mCtrlList.getSelectedPosition( )
+		#self.setProperty( 'SelectedPosition',  '%s'% ( aPos + 1 )  )
+		self.setProperty( 'SelectedPosition',  '%s'% len( self.mMarkList ) )
 
 
 	def GetSelectedList( self ) :

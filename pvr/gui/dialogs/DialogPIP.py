@@ -355,6 +355,8 @@ class DialogPIP( BaseDialog ) :
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
 
+		return ret
+
 
 	def PIP_Check( self, aStop = False ) :
 		if not E_V1_2_APPLY_PIP :
@@ -368,6 +370,14 @@ class DialogPIP( BaseDialog ) :
 
 		isShow = False
 		if self.mDataCache.PIP_GetStatus( ) :
+			#0. force stop by empty db
+			chList = self.mDataCache.Channel_GetList( )
+			if not chList or ( chList and len( chList ) < 1 ) :
+				if self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_TV, True ) < 1 :
+					#xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)'% ( MR_LANG( 'Close PIP' ), MR_LANG( 'Close by delete all' ) ) )
+					self.PIP_Stop( )
+					return
+
 			#1. show/hide auto
 			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
 				isShow = True
@@ -493,7 +503,22 @@ class DialogPIP( BaseDialog ) :
 		self.getControl( CTRL_ID_BUTTON_SIZE_PIP ).setVisible( size )
 
 
+	def DialogPopup( self, aTitle = '', aMsg = '' ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( aTitle, aMsg )
+		dialog.doModal( )
+
+
 	def Load( self ) :
+		if self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_TV, True ) < 1 :
+			self.PIP_Stop( True )
+			self.Close( )
+			lblTitle = MR_LANG( 'Error' )
+			lblMsg = MR_LANG( 'Your channel list is empty' )
+			thread = threading.Timer( 0, self.DialogPopup, [lblTitle, lblMsg] )
+			thread.start( )
+			return
+
 		self.SetButtonExtended( )
 		if self.mDataCache.GetMediaCenter( ) :
 			if self.mDataCache.PIP_GetStatus( ) :

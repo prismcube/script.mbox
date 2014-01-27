@@ -3145,7 +3145,7 @@ class ChannelListWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Skip' ),   CONTEXT_ACTION_SKIP ) )
 			context.append( ContextItem( MR_LANG( 'Unskip' ), CONTEXT_ACTION_UNSKIP  ) )
 			context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-			context.append( ContextItem( MR_LANG( 'Move' ), CONTEXT_ACTION_MOVE ) )
+			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
 			context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 		if aMode == FLAG_OPT_GROUP :
@@ -3201,10 +3201,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL or \
 		   ( aMode == FLAG_OPT_GROUP and selectedAction == CONTEXT_ACTION_ADD_TO_FAV ) :
+			lblTitle = MR_LANG( 'Add Channels to This Favorite Group' )
+			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :
+				lblTitle = MR_LANG( 'Add Channels to Favorite Group' )
 			channelList = self.AddFavoriteChannels( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
 			dialog.SetPreviousBlocking( False )
-			dialog.SetDefaultProperty( MR_LANG( 'Add Channels to This Favorite Group' ), channelList, E_MODE_CHANNEL_LIST )
+			dialog.SetDefaultProperty( lblTitle, channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 
