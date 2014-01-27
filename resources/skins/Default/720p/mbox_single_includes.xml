@@ -4403,6 +4403,8 @@
 				<onup>1003400</onup>
 				<ondown>1003400</ondown>
 				<pagecontrol>1003401</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<preloaditems>2</preloaditems>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5109,7 +5111,7 @@
 				<ondown>1003500</ondown>
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003501</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>0</scrolltime>
 				<itemlayout height="40" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5333,7 +5335,7 @@
 				<ondown>1003510</ondown>
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003511</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>0</scrolltime>
 				<itemlayout height="70" width="635">
 					<control type="image">
 						<posx>0</posx>

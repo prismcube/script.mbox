@@ -978,7 +978,7 @@ Search for window name
 					<onup>1300050</onup>
 					<ondown>1300050</ondown>
 					<pagecontrol>1300061</pagecontrol>
-					<scrolltime>200</scrolltime>
+					<scrolltime>0</scrolltime>
 					<focusposition>0</focusposition>
 					<movement>2</movement>
 					<visible>true</visible>
