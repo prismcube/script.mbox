@@ -2376,9 +2376,21 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 
-	def GetMoveNumber( self, aMoveNumber = '' ) :
+	def GetInputNumber( self, aDefaultNo = '', aFlag = -1 ) :
+		if aFlag == FLAG_OPT_MOVE :
+			moveNum = 1
+			idxFirst = self.mMarkList[0]
+			if self.mMarkList[0] > 0 :
+				iChannel = self.mChannelListHash.get( self.mNewChannelList[idxFirst - 1], None )
+				if iChannel :
+					moveNum = iChannel.mNumber
+					if E_V1_2_APPLY_PRESENTATION_NUMBER :
+						moveNum = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
+
+			aDefaultNo = '%s'% moveNum
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter a number to insert after' ), aMoveNumber, 5, False )
+		dialog.SetDialogProperty( MR_LANG( 'Enter a number to insert after' ), aDefaultNo, 5, False )
 		dialog.doModal( )
 		ret = 0
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -2489,12 +2501,14 @@ class ChannelListWindow( BaseWindow ) :
 									moveNum = '%s'% ( iChannel.mPresentationNumber + 1 )
 							else :
 								moveNum = '1'
-							makeFavidx = self.GetMoveNumber( moveNum )
+
+							makeFavidx = self.GetInputNumber( '1', FLAG_OPT_MOVE )
 							LOG_TRACE( '[Edit] fastScan move inputNum[%s]'% makeFavidx )
 							if not makeFavidx :
 								LOG_TRACE( '[Edit] input fail' )
 								self.CloseBusyDialog( )
 								return
+
 						isMoved = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, favType, moveList )
 						#LOG_TRACE( '[Edit] group[%s] type[%s]'% ( groupName, favType ) )
 				else :
@@ -2625,6 +2639,44 @@ class ChannelListWindow( BaseWindow ) :
 						updown = maxShowCount
 
 					self.mViewFirst =  self.mViewFirst + updown
+
+				elif aMove == Action.ACTION_CONTEXT_MENU :
+					if not self.mMoveList or len( self.mMoveList ) < 1 :
+						LOG_TRACE( 'None move list' )
+						return
+
+					inputNum = self.GetInputNumber( '1', FLAG_OPT_MOVE )
+					if inputNum < 1 or inputNum == topPos :
+						LOG_TRACE( 'same position or Input wrong' )
+						return
+
+					if topPos > inputNum :
+						#up
+						if topPos == 0 :
+							LOG_TRACE( 'limit move position top over' )
+							return
+
+						if topPos - inputNum - markCount < markCount :
+							updown = -topPos + ( inputNum - 1 )
+						else :
+							updown = -( topPos - inputNum + markCount )
+
+					else :
+						if markCount + inputNum > channelCount :
+							updown = channelCount - ( topPos + markCount )
+						else :
+							updown = inputNum - ( topPos + markCount )
+
+					LOG_TRACE( 'move input[%s] topPos[%s] updown[%s] viewFirst[%s]'% ( inputNum, topPos, updown, self.mViewFirst ) )
+					if updown == 0 :
+						LOG_TRACE( 'no move same position' )
+					if topPos + updown < 0 :
+						LOG_TRACE( 'limit move position top over' )
+						updown = -topPos + 1
+
+					self.mViewFirst = self.mViewFirst + updown
+
+				LOG_TRACE( 'topPos[%s] updown[%s] viewFirst[%s]'% ( topPos, updown, self.mViewFirst ) )
 
  			except Exception, e :
  				LOG_ERR( '[Edit] except[%s]'% e )
@@ -3131,7 +3183,27 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowEditContextMenu( self, aMode, aMove = None ) :
 		#try:
 		if self.mMoveFlag :
-			self.SetMoveMode( FLAG_OPT_MOVE_OK )
+			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+				if groupName :
+					favType = self.GetServiceTypeByFavoriteGroup( groupName )
+					if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+						LOG_TRACE( 'FastScanGroup is press OK after insert LCN number' )
+						return
+
+			#All Channel, normalGroup only
+			context = []
+			context.append( ContextItem( MR_LANG( 'Insert number' ), CONTEXT_ACTION_INSERT_NUMBER ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+	 		dialog.doModal( )
+
+			selectedAction = dialog.GetSelectedAction( )
+			if selectedAction == -1 :
+				#LOG_TRACE( 'CANCEL by context dialog' )
+				return
+
+			self.SetMoveMode( FLAG_OPT_MOVE_UPDOWN, Action.ACTION_CONTEXT_MENU )
 			return
 
 		self.LoadFavoriteGroupList( )
