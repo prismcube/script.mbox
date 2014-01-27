@@ -1001,10 +1001,13 @@ class DataCacheMgr( object ) :
 			return self.mChannelList
 
 
-	def Channel_GetCount( self, aType = ElisEnum.E_SERVICE_TYPE_TV ) :
+	def Channel_GetCount( self, aType = ElisEnum.E_SERVICE_TYPE_TV, aDBTableAll = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
+			dbTable = self.mChannelListDBTable
+			if aDBTableAll :
+				dbTable = E_TABLE_ALLCHANNEL
 			channelDB = ElisChannelDB( )
-			chCount = channelDB.Channel_GetCount( aType, self.mChannelListDBTable )
+			chCount = channelDB.Channel_GetCount( aType, dbTable )
 			channelDB.Close( )
 			return chCount
 
