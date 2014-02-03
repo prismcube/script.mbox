@@ -1898,6 +1898,11 @@ Search for window name
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
+							<!--item id="6">
+								<label>Search Result</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item-->
 							<item id="5">
 								<label>SCRIPT1005</label>
 								<onclick>right</onclick>

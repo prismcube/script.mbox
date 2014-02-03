@@ -961,7 +961,7 @@ class DataCacheMgr( object ) :
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aKeyword = '' ) :
 		"""
 		#Extention Extension TEST
 		import elis
@@ -990,8 +990,12 @@ class DataCacheMgr( object ) :
 		
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
+				E_MODE_SEARCH_RESULT = 5
 				channelDB = ElisChannelDB( )
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
+				if aMode == E_MODE_SEARCH_RESULT :
+					channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable, aKeyword )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return chList
 			else :

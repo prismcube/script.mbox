@@ -57,6 +57,7 @@ E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_MODE       = 4
+E_SLIDE_MENU_SEARCH_RESULT = 5
 
 E_CONTROL_FOCUSED       = E_CHANNEL_LIST_BASE_ID + 9991
 E_SLIDE_CLOSE           = E_CHANNEL_LIST_BASE_ID + 9999
@@ -179,6 +180,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mTPListByChannelHash = {}
 		self.mZappingChange = False
 		self.mMaxChannelNum = E_INPUT_MAX
+		self.mSearchList = []
+		self.mSearchKeyword = ''
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -791,6 +794,13 @@ class ChannelListWindow( BaseWindow ) :
 
 	def GoToPreviousWindow( self, aGoToWindow = None ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			if self.mSearchList and len( self.mSearchList ) > 0 :
+				self.mSearchList = []
+				#self.mChannelList = self.mInstanceBackup
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+				LOG_TRACE( '[ChannelList] Restore channel from search' )
+				return
+
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
@@ -1107,6 +1117,8 @@ class ChannelListWindow( BaseWindow ) :
 				if aMenuIndex == self.mUserSlidePos.mMain :
 					self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
 
+			return
+
 
 		elif aAction == E_SLIDE_ACTION_SUB :
 			#LOG_TRACE( '[ChannelList] mode: user[%s,%s %s] prev[%s,%s %s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )		
@@ -1128,6 +1140,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
 				pass
+
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
@@ -1159,61 +1172,86 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
 
-			if retPass == False :
-				return
+		elif aAction == E_SLIDE_MENU_SEARCH_RESULT :
+			idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
+			idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
+			#idxMain = E_SLIDE_MENU_SEARCH_RESULT - 1
+			#idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
+			#self.mCtrlListMainmenu.selectItem( idxMain )
 
-			if self.mMoveFlag :
-				#do not refresh UI
-				return
+			zappingName = '%s \'%s\''% ( MR_LANG( 'Search' ), self.mSearchKeyword )
+			retPass = self.GetChannelList( self.mUserMode.mServiceType, E_SLIDE_MENU_SEARCH_RESULT, ElisEnum.E_MODE_ALL, 0, 0, 0, '' )
+			if self.mSearchList and len( self.mSearchList ) > 0 :
+				self.mChannelList = self.mSearchList
+				self.LoadChannelListHash( )
 
-			#channel list update
-			self.mMarkList = []
-			self.mListItems = None
-			self.mSetMarkCount = 0
-			self.mDataCache.Channel_ResetOldChannelList( )
-			self.mCtrlListCHList.reset( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Search result' ), MR_LANG( 'No matched result found' ) )
+				dialog.doModal( )
 
-			self.UpdateChannelList( )
-			self.RestartAsyncEPG( )
-
-			#init select tune by if exist current channel
-			self.mZappingChange = True
-			try :
-				if self.mNavChannel and self.mChannelList and len( self.mChannelList ) > 0 :
-					iChannel = self.mChannelList[self.mCtrlListCHList.getSelectedPosition( )]
-					if self.mNavChannel.mServiceType == iChannel.mServiceType and \
-					   self.mNavChannel.mNumber == iChannel.mNumber and \
-					   self.mNavChannel.mSid == iChannel.mSid and self.mNavChannel.mTsid == iChannel.mTsid and \
-					   self.mNavChannel.mOnid == iChannel.mOnid :
-						self.mZappingChange = False
-						#LOG_TRACE( '[ChannelList] mZappingChange true -> false' )
-			except Exception, e :
-				LOG_ERR( 'except[%s]'% e )
-
-			#path tree, Mainmenu/Submanu
-			self.mUserSlidePos.mMain = idxMain
-			self.mUserSlidePos.mSub  = idxSub
-
-			mSort = self.mUserMode.mSortingMode
-			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
-				mSort = ElisEnum.E_SORT_BY_NUMBER
-				LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
-
-			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
-			if zappingName :
-				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-
-			lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', mSort )
-
-			self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
-			self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
-
-			#current zapping backup
-			#self.mDataCache.Channel_Backup( )
-			#LOG_TRACE( '[ChannelList] mode: user[%s,%s %s] prev[%s,%s %s]'% ( self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )
+			LOG_TRACE('[ChannelList] Channel Search ret[%s]'% retPass )
 
 
-	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ) :
+		if retPass == False :
+			return
+
+		if self.mMoveFlag :
+			#do not refresh UI
+			return
+
+		#channel list update
+		self.mMarkList = []
+		self.mListItems = None
+		self.mSetMarkCount = 0
+		self.mDataCache.Channel_ResetOldChannelList( )
+		self.mCtrlListCHList.reset( )
+
+		self.UpdateChannelList( )
+		self.RestartAsyncEPG( )
+
+		#init select tune by if exist current channel
+		self.mZappingChange = True
+		try :
+			if self.mNavChannel and self.mChannelList and len( self.mChannelList ) > 0 :
+				iChannel = self.mChannelList[self.mCtrlListCHList.getSelectedPosition( )]
+				if self.mNavChannel.mServiceType == iChannel.mServiceType and \
+				   self.mNavChannel.mNumber == iChannel.mNumber and \
+				   self.mNavChannel.mSid == iChannel.mSid and self.mNavChannel.mTsid == iChannel.mTsid and \
+				   self.mNavChannel.mOnid == iChannel.mOnid :
+					self.mZappingChange = False
+					#LOG_TRACE( '[ChannelList] mZappingChange true -> false' )
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+		#path tree, Mainmenu/Submanu
+		self.mUserSlidePos.mMain = idxMain
+		self.mUserSlidePos.mSub  = idxSub
+
+		sortEnable = True
+		mSort = self.mUserMode.mSortingMode
+		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE or aAction == E_SLIDE_MENU_SEARCH_RESULT :
+			sortEnable = False
+			mSort = ElisEnum.E_SORT_BY_NUMBER
+			LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
+
+		self.mCtrlButtonSorting.setEnabled( sortEnable )
+
+		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
+		if zappingName :
+			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
+
+		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', mSort )
+
+		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
+		self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
+
+		#current zapping backup
+		#self.mDataCache.Channel_Backup( )
+		#LOG_TRACE( '[ChannelList] mode: user[%s,%s %s] prev[%s,%s %s]'% ( self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )
+
+
+	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName, aKeyword = '' ) :
 		ret = True
 		self.OpenBusyDialog( )
 		try :
@@ -1232,7 +1270,12 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
-			self.LoadChannelListHash( )
+			elif aMode == E_SLIDE_MENU_SEARCH_RESULT :
+				LOG_TRACE( '[ChannelList] search keyword[%s]'% self.mSearchKeyword )
+				self.mSearchList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, self.mSearchKeyword )
+
+			if aMode != E_SLIDE_MENU_SEARCH_RESULT :
+				self.LoadChannelListHash( )
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
@@ -3454,23 +3497,34 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ShowSearchDialog( self ) :
-		kb = xbmc.Keyboard( '', MR_LANG( 'Enter Search Keywords' ), False )
+		kb = xbmc.Keyboard( self.mSearchKeyword, MR_LANG( 'Enter Search Keywords' ), False )
 		kb.doModal( )
-		if kb.isConfirmed( ) :
-			keyword = kb.getText( )
-			LOG_TRACE( 'keyword len=%d' %len( keyword ) )
-			if len( keyword ) < MININUM_KEYWORD_SIZE :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
-				dialog.doModal( )
-				return
 
-			#self.mEventBus.Deregister( self )
-			#self.StopEPGUpdateTimer( )
+		if not kb.isConfirmed( ) :
+			LOG_TRACE( '[ChannelList] Fail to search channel, keyword none' )
+			return
 
-			#self.mResetListItems = True
-			#WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
+		keyword = kb.getText( )
+		LOG_TRACE( 'keyword len=%d' %len( keyword ) )
+		if len( keyword ) < MININUM_KEYWORD_SIZE :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
+			dialog.doModal( )
+			return
+
+		symbolPattern = '\'|\"|\%|\^|\&|\*|\`'
+		if bool( re.search( symbolPattern, keyword, re.IGNORECASE ) ) :
+			#LOG_TRACE( '[Edit] invalid characters : %s'% symbolPattern )
+			LOG_TRACE( '[Edit] invalid characters' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name contains invalid characters' ) )
+			dialog.doModal( )
+			return
+
+		LOG_TRACE( '[ChannelList] search keyword[%s]'% keyword )
+		self.mSearchKeyword = keyword
+		self.SubMenuAction( E_SLIDE_MENU_SEARCH_RESULT )
+
 
 
 	def Close( self ):
