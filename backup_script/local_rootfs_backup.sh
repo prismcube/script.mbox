@@ -29,9 +29,6 @@ big_fail()
 {
 	clean_up
 	echo "big_fail()"
-
-	end
-
 	exit 0
 }
 ##### I QUIT #####
