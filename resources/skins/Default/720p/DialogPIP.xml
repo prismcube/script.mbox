@@ -184,6 +184,7 @@
 							<!--visible>!Control.IsVisible(4803000)</visible-->
 							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
 							<defaultcontrol always="true">4808001</defaultcontrol>
+
 							<control type="button" id="4808001">
 								<width>35</width>
 								<height>35</height>
@@ -195,19 +196,6 @@
 								<height>35</height>
 								<texturefocus>OSDChannelDownFO.png</texturefocus>
 								<texturenofocus>OSDChannelDownNF.png</texturenofocus>
-							</control>
-							<control type="button" id="4808003">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDAudioFO.png</texturefocus>
-								<texturenofocus>OSDAudioNF.png</texturenofocus>
-								<!--onclick>Mute</onclick-->
-							</control>
-							<control type="button" id="4808004">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDFullScreenFO.png</texturefocus>
-								<texturenofocus>OSDFullScreenNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808005">
 								<width>35</width>
@@ -227,11 +215,31 @@
 								<texturefocus>OSDResetFO.png</texturefocus>
 								<texturenofocus>OSDResetNF.png</texturenofocus>
 							</control>
+							<control type="button" id="4808020">
+								<width>15</width>
+								<height>35</height>
+								<texturefocus></texturefocus>
+								<texturenofocus></texturenofocus>
+								<enable>false</enable>
+							</control>
 							<control type="button" id="4808008">
 								<width>35</width>
 								<height>35</height>
 								<texturefocus>OSDBackFO.png</texturefocus>
 								<texturenofocus>OSDBackNF.png</texturenofocus>
+							</control>
+							<control type="button" id="4808004">
+								<width>35</width>
+								<height>35</height>
+								<texturefocus>OSDFullScreenFO.png</texturefocus>
+								<texturenofocus>OSDFullScreenNF.png</texturenofocus>
+							</control>
+							<control type="button" id="4808003">
+								<width>35</width>
+								<height>35</height>
+								<texturefocus>OSDAudioFO.png</texturefocus>
+								<texturenofocus>OSDAudioNF.png</texturenofocus>
+								<!--onclick>Mute</onclick-->
 							</control>
 							<control type="button" id="4808009">
 								<width>35</width>
