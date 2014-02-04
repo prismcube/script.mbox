@@ -146,6 +146,8 @@
 	<string id="1146">Appearance</string>
 	<string id="1147">To fix an empty repository or any other problems, try Force refresh in the context menu</string>
 	<string id="1148">Show Logical Channel Number</string>
+	<string id="1149">Delete from approved repository</string>
+	<string id="1150">Add to approved repository</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
