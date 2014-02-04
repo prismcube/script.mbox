@@ -1775,7 +1775,7 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
 			return ret
 
-	
+
 		#find array index
 		try :
 			#update iChannel

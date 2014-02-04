@@ -1893,6 +1893,10 @@ class ChannelListWindow( BaseWindow ) :
 			pass
 			return
 
+		if not self.mChannelList or ( not self.mListItems ) :
+			LOG_TRACE( 'Can not update channel info, channellist is None' )
+			return
+
 		selected = self.mCtrlListCHList.getSelectedPosition( )
 		count = len( self.mChannelList )
 		
