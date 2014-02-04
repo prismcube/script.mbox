@@ -66,31 +66,31 @@
 
 	<include name="NullWindowDataTime">
 		<control type="group">
-			<visible>substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),true)</visible>
+			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true)</visible>
 			<control type="label">
 				<description>time label</description>
-				<posx>20r</posx>
+				<posx>695</posx>
 				<posy>5</posy>
 				<width>200</width>
 				<height>30</height>
 				<align>right</align>
 				<aligny>center</aligny>
 				<font>font28_title</font>
-				<textcolor>white</textcolor>
+				<textcolor>grey</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>$INFO[System.Time]</label>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
 			</control>
 			<control type="label">
-				<posx>20r</posx>
+				<posx>695</posx>
 				<posy>35</posy>
 				<width>600</width>
 				<height>15</height>
 				<align>right</align>
 				<aligny>center</aligny>
 				<font>font10</font>
-				<textcolor>white</textcolor>
+				<textcolor>grey</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>$INFO[System.Date]</label>
 				<include>DefaultWindowOpenCloseAnimation</include>
@@ -102,7 +102,7 @@
 	<include name="DefaultCommonTime">
 		<control type="label">
 			<description>time label</description>
-			<visible>!substring(Window.Property(CurrentWindow),1100000)</visible>
+			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>5</posy>
 			<width>200</width>
@@ -120,7 +120,7 @@
 
 	<include name="DefaultCommonDate">
 		<control type="label">
-			<visible>!substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)</visible>
+			<visible>[ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),3300000 + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)+ substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>35</posy>
 			<width>600</width>

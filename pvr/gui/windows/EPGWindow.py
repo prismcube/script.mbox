@@ -518,6 +518,16 @@ class EPGWindow( BaseWindow ) :
 					pass
 
 				elif aEvent.mUpdateType == 1 : #cas update only
+					self.UpdateSelcetedPosition()
+					"""
+					if self.mEPGMode == E_VIEW_GRID :	
+						if self.mCurrentChannel and self.mCurrentChannel.mNumber == aEvent.mChannelNo:
+							UpdateCasInfo( self, self.mCurrentChannel )		
+					else :
+						self.UpdateList( True )
+					"""
+				
+					"""
 					iChannel = self.mDataCache.Channel_GetByNumber( aEvent.mChannelNo )
 					if iChannel :
 						self.mChannelList = self.mDataCache.Channel_GetList( )
@@ -526,6 +536,7 @@ class EPGWindow( BaseWindow ) :
 						if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
 							self.mCurrentChannel = iChannel
 						UpdateCasInfo( self, iChannel )
+					"""
 
 
 	def Close( self ) :

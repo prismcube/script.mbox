@@ -159,7 +159,8 @@ class EPGSearchWindow( BaseWindow ) :
 				self.UpdatePropertyByCacheData( E_XML_PROPERTY_DOLBYPLUS )
 
 			elif aEvent.getName( ) == ElisEventChannelDBUpdate.getName( ) :
-				self.UpdateChannelByDBUpdateEvent( aEvent )
+				pass
+				#self.UpdateChannelByDBUpdateEvent( aEvent )
 
 
 	def SetText( self, aText=None ) :

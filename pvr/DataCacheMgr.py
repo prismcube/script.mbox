@@ -1775,6 +1775,33 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
 			return ret
 
+	
+		#find array index
+		try :
+			#update iChannel
+			cacheChannel = None
+			iChannelIdx = 0
+			for channel in self.mChannelList :
+				if channel.mNumber == iChannel.mNumber :			
+					#channel.mPresentationNumber= iChannel.mPresentationNumber
+					channel.mName= iChannel.mName
+					channel.mServiceType= iChannel.mServiceType
+					channel.mLocked= iChannel.mLocked
+					channel.mIsCA= iChannel.mIsCA
+					channel.mIsHD= iChannel.mIsHD
+					channel.mNid= iChannel.mNid
+					channel.mSid= iChannel.mSid
+					channel.mTsid= iChannel.mTsid
+					channel.mOnid= iChannel.mOnid
+					channel.mCarrierType= iChannel.mCarrierType
+					channel.mSkipped= iChannel.mSkipped
+					channel.mIsBlank= iChannel.mIsBlank
+					break
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
+
+		"""
 		#find array index
 		try :
 			#update iChannel
@@ -1807,7 +1834,7 @@ class DataCacheMgr( object ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]update fail, ElisEventChannelDBUpdate'% e )
-
+		"""
 		return ret
 
 
