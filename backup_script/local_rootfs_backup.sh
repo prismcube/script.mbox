@@ -99,7 +99,8 @@ mount --bind / /tmp/bi/root
 #backup loader, u-boot, kernel, checkusb.img file
 echo "Starting loader and kernel bakcup" >> /tmp/BackupSuite.log
 BOOT_DIR=/boot
-if [ -f $BOOT_DIR/uldr.bin ] && [ -f $BOOT_DIR/u-boot.bin ] && [ -f $BOOT_DIR/kernel.uImage ] && [ -f $BOOT_DIR/checkusb.img ] ; then
+#if [ -f $BOOT_DIR/uldr.bin ] && [ -f $BOOT_DIR/u-boot.bin ] && [ -f $BOOT_DIR/kernel.uImage ] && [ -f $BOOT_DIR/checkusb.img ] ; then
+if [ -f $BOOT_DIR/uldr.bin ] && [ -f $BOOT_DIR/u-boot.bin ] && [ -f $BOOT_DIR/kernel.uImage ] && [ -f $BOOT_DIR/checkusb.img ] && [ -f $BOOT_DIR/ramdisk_update_script.sh] ; then
 	cp $BOOT_DIR/* $WORKDIR/
 else
 	echo "Backup files not found" >> /tmp/BackupSuite.log
