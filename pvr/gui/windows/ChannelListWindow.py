@@ -57,7 +57,6 @@ E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_MODE       = 4
-E_SLIDE_MENU_SEARCH_RESULT = 5
 
 E_CONTROL_FOCUSED       = E_CHANNEL_LIST_BASE_ID + 9991
 E_SLIDE_CLOSE           = E_CHANNEL_LIST_BASE_ID + 9999
@@ -830,6 +829,13 @@ class ChannelListWindow( BaseWindow ) :
 				self.mMarkList = []
 
 			else :
+				if self.mSearchList and len( self.mSearchList ) > 0 :
+					self.mSearchList = []
+					#self.mChannelList = self.mInstanceBackup
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					LOG_TRACE( '[ChannelList] Restore channel from search' )
+					return
+
 				ret = False
 				ret = self.SaveEditList( )
 				if ret != E_DIALOG_STATE_CANCEL :
@@ -1062,7 +1068,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, aForce )
 
 
-	def SubMenuAction( self, aAction = E_SLIDE_ACTION_MAIN, aMenuIndex = 0, aForce = None ) :
+	def SubMenuAction( self, aAction = E_SLIDE_ACTION_MAIN, aMenuIndex = 0, aForce = None, aKeyword = '' ) :
 		#if self.mFlag_DeleteAll :
 		#	return
 
@@ -1144,7 +1150,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
-				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
+				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', aKeyword )
 				#LOG_TRACE('[ChannelList] All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
@@ -1152,7 +1158,7 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListSatellite[idxSub]
 					zappingName = self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand )
 					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '' )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
@@ -1160,7 +1166,7 @@ class ChannelListWindow( BaseWindow ) :
 					zappingName = self.mListCasList[idxSub].mName
 					caid = self.mListCasList[idxSub].mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '' )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
 			elif idxMain == E_SLIDE_MENU_FAVORITE :
@@ -1168,29 +1174,29 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListFavorite[idxSub]
 					zappingName = item.mGroupName
 					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
 
-		elif aAction == E_SLIDE_MENU_SEARCH_RESULT :
-			idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
-			idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
-			#idxMain = E_SLIDE_MENU_SEARCH_RESULT - 1
-			#idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
-			#self.mCtrlListMainmenu.selectItem( idxMain )
-
-			zappingName = '%s \'%s\''% ( MR_LANG( 'Search' ), self.mSearchKeyword )
-			retPass = self.GetChannelList( self.mUserMode.mServiceType, E_SLIDE_MENU_SEARCH_RESULT, ElisEnum.E_MODE_ALL, 0, 0, 0, '' )
+		if aKeyword :
+			nameColumn = ' > '
+			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
+				nameColumn = ''
+			zappingName += '%s%s \'%s\''% ( nameColumn, MR_LANG( 'Search' ), aKeyword )
 			if self.mSearchList and len( self.mSearchList ) > 0 :
 				self.mChannelList = self.mSearchList
 				self.LoadChannelListHash( )
 
 			else :
+				retPass = False
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Search result' ), MR_LANG( 'No matched result found' ) )
 				dialog.doModal( )
 
 			LOG_TRACE('[ChannelList] Channel Search ret[%s]'% retPass )
+
+		else :
+			self.mSearchList = []
 
 
 		if retPass == False :
@@ -1230,7 +1236,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		sortEnable = True
 		mSort = self.mUserMode.mSortingMode
-		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE or aAction == E_SLIDE_MENU_SEARCH_RESULT :
+		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE or self.mSearchList :
 			sortEnable = False
 			mSort = ElisEnum.E_SORT_BY_NUMBER
 			LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
@@ -1255,27 +1261,39 @@ class ChannelListWindow( BaseWindow ) :
 		ret = True
 		self.OpenBusyDialog( )
 		try :
+			instanceList = []
+			LOG_TRACE( '[ChannelList] search keyword[%s]'% aKeyword )
+
 			if aMode == ElisEnum.E_MODE_ALL :
-				self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort )
+				instanceList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, aKeyword )
 
 			elif aMode == ElisEnum.E_MODE_SATELLITE :
-				self.mChannelList = self.mDataCache.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
+				instanceList = self.mDataCache.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand, aKeyword )
 
 			elif aMode == ElisEnum.E_MODE_CAS :
-				self.mChannelList = self.mDataCache.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
+				instanceList = self.mDataCache.Channel_GetListByFTACas( aType, aMode, aSort, aCAid, aKeyword )
 				
 			elif aMode == ElisEnum.E_MODE_FAVORITE :
-				self.mChannelList = self.mDataCache.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
+				instanceList = self.mDataCache.Channel_GetListByFavorite( aType, aMode, aSort, aFavName, aKeyword )
 
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
-			elif aMode == E_SLIDE_MENU_SEARCH_RESULT :
-				LOG_TRACE( '[ChannelList] search keyword[%s]'% self.mSearchKeyword )
-				self.mSearchList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, self.mSearchKeyword )
+			#elif aMode == E_SLIDE_MENU_SEARCH_RESULT :
+			#	LOG_TRACE( '[ChannelList] search keyword[%s]'% self.mSearchKeyword )
+			#	self.mSearchList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, self.mSearchKeyword )
 
-			if aMode != E_SLIDE_MENU_SEARCH_RESULT :
+			#if aMode != E_SLIDE_MENU_SEARCH_RESULT :
+			#	self.LoadChannelListHash( )
+
+			if aKeyword :
+				self.mSearchList = instanceList
+
+			else :
+				self.mChannelList = instanceList
 				self.LoadChannelListHash( )
+				
+
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
@@ -2930,6 +2948,10 @@ class ChannelListWindow( BaseWindow ) :
 				   self.mFavoriteGroupList[self.mUserSlidePos.mSub] == aGroupName :
 					isReload = True
 
+			if self.mSearchList :
+				isReload = False
+
+
 			if isReload :
 				self.mMarkList = []
 				self.mListItems = None
@@ -3263,6 +3285,10 @@ class ChannelListWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
 			context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
+		if not self.mMarkList :
+		#if ( self.mChannelList and len( self.mChannelList ) > 0 ) or E_SEARCH_ALL :
+			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_ACTION_CHANNEL_SEARCH ) )
+
 		if aMode == FLAG_OPT_GROUP :
 			context.append( ContextItem( '%s'% MR_LANG( 'Add channels to this group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 
@@ -3301,6 +3327,11 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_SAVE_EXIT :
 			self.GoToPreviousWindow( )
 			return
+
+		elif selectedAction == CONTEXT_ACTION_CHANNEL_SEARCH :
+			self.ShowSearchDialog( )
+			return
+
 
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
@@ -3456,8 +3487,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
-			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG( 'Search channels' ), CONTEXT_ACTION_MENU_CHANNEL_SEARCH ) )
+			context.append( ContextItem( MR_LANG( 'Edit' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_ACTION_CHANNEL_SEARCH ) )
 			lblLine = MR_LANG( 'Delete all' )
 			if self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 				idxSub = self.mUserSlidePos.mSub
@@ -3486,7 +3517,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( '[ChannelList] Close dialog by CANCEL' )
 				return
 
-			if selectedAction == CONTEXT_ACTION_MENU_CHANNEL_SEARCH :
+			if selectedAction == CONTEXT_ACTION_CHANNEL_SEARCH :
 				self.ShowSearchDialog( )
 				return
 
@@ -3523,7 +3554,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( '[ChannelList] search keyword[%s]'% keyword )
 		self.mSearchKeyword = keyword
-		self.SubMenuAction( E_SLIDE_MENU_SEARCH_RESULT )
+		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True, keyword )
 
 
 
