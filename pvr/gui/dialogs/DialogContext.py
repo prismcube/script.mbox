@@ -11,7 +11,7 @@ DIALOG_LIST_ID				= 102
 DIALOG_BUTTON_CLOSE_ID		= 103
 
 
-MAX_ITEM					= 13
+MAX_ITEM					= 14
 
 
 class DialogContext( BaseDialog ) :
