@@ -1043,7 +1043,7 @@ class DialogPIP( BaseDialog ) :
 
 		#osd panel
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
-		if w > 330 :
+		if w > 350 :
 			self.mCtrlImageOsdStatus.setWidth( w )
 			self.mCtrlGroupList2ndPIP.setPosition( w, 0 )
 
