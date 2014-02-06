@@ -2150,7 +2150,7 @@ Search for window name
 									<include>DefaultButtonMediaSubCommonValues</include>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>Skip zapping confirm</label>
+									<label>SCRIPT1151</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
 									<onup>1300122</onup>
