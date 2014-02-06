@@ -404,7 +404,8 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.SetMediaCenter( True )			
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
-			xbmc.executebuiltin( 'ActivateWindow(Home)' )
+			if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+				xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
