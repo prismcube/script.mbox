@@ -66,7 +66,7 @@
 
 	<include name="NullWindowDataTime">
 		<control type="group">
-			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true)</visible>
+			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) | substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true)</visible>
 			<control type="label">
 				<description>time label</description>
 				<posx>695</posx>
@@ -102,7 +102,7 @@
 	<include name="DefaultCommonTime">
 		<control type="label">
 			<description>time label</description>
-			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
+			<visible>[ [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>5</posy>
 			<width>200</width>
@@ -120,7 +120,7 @@
 
 	<include name="DefaultCommonDate">
 		<control type="label">
-			<visible>[ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),3300000 + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000)+ substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),4000000) + substring(Window.Property(ShowClock),false) ]</visible>
+			<visible>[ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1200000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),1400000) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),3300000 + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),4000000) + !substring(Window.Property(CurrentWindow),4600000) + substring(Window.Property(ShowClock),true) ] | [ !substring(Window.Property(CurrentWindow),1100000) + !substring(Window.Property(CurrentWindow),1300000) + !substring(Window.Property(CurrentWindow),3300000) + !substring(Window.Property(CurrentWindow),3700000) + !substring(Window.Property(CurrentWindow),4000000) + !substring(Window.Property(CurrentWindow),4400000) + substring(Window.Property(ShowClock),false) ]</visible>
 			<posx>20r</posx>
 			<posy>35</posy>
 			<width>600</width>

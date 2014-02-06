@@ -93,7 +93,7 @@ class MainMenu( BaseWindow ) :
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
-		self.setProperty( 'RssShow', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'RSS_FEED_MAIN_MENU' ) )
+		self.setProperty( 'RssShow', GetSetting( 'RSS_FEED_MAIN_MENU' ) )
 		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
