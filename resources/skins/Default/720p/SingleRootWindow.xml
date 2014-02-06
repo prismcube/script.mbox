@@ -1766,8 +1766,8 @@ Search for window name
 	                    <width>500</width>
 	                    <height>720</height>
 	                    <texture>black-back_noAlpha.png</texture>
-	                    <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | Control.HasFocus(1300103)">Conditional</animation>
-						<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103)">Conditional</animation>
+	                    <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | Control.HasFocus(1300103) | ControlGroup(1300200).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
 	                <control type="image">
 	                    <posx>-12</posx>
@@ -1775,8 +1775,8 @@ Search for window name
 	                    <width>12</width>
 	                    <height>720</height>
 	                    <texture>MediaBladeSub_Part2.png</texture>
-	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus">Conditional</animation>
-						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103)">Conditional</animation>
+	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
 				</control>
 				<control type="button" id="1300101">
@@ -1820,7 +1820,7 @@ Search for window name
 						<pulseonselect>false</pulseonselect>
 						<onleft>1300049</onleft>
 						<onright>1300049</onright>
-						<onup>Control.SetFocus(1300102,4)</onup>
+						<onup>1300202</onup>
 						<ondown>Control.SetFocus(1300102,0)</ondown>
 					</control>
 					<control type="list" id="1300102">
@@ -1831,7 +1831,7 @@ Search for window name
 						<onleft>1300049</onleft>
 						<onright>1309001</onright>
 						<onup>1300103</onup>
-						<ondown>1300103</ondown>
+						<ondown>1300200</ondown>
 						<scrolltime>300</scrolltime>
 						<textcolor>grey3</textcolor>
 						<movement>10</movement>
@@ -1874,7 +1874,7 @@ Search for window name
 								<width>18</width>
 								<height>18</height>
 								<texture>HomeHasSub.png</texture>
-								<visible>Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5)</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
@@ -1898,6 +1898,11 @@ Search for window name
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
+							<!--item id="6">
+								<label>Search Result</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item-->
 							<item id="5">
 								<label>SCRIPT1005</label>
 								<onclick>right</onclick>
@@ -1906,11 +1911,87 @@ Search for window name
 						</content>
 					</control>
 
+					<control type="grouplist" id="1300200">
+						<posx>0</posx>
+						<posy>400</posy>
+						<width>250</width>
+						<height>90</height>
+						<align>center</align>
+						<onleft>1300049</onleft>
+						<onright>1300049</onright>
+						<onup>Control.SetFocus(1300102,4)</onup>
+						<ondown>1300103</ondown>
+						<focusposition>113</focusposition>
+						<animation effect="fade" start="0" end="100" time="500">Visible</animation>
+						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
+						<control type="group">
+							<height>40</height>
+							<width>250</width>
+							<control type="button" id="1300201">
+								<posx>0</posx>
+								<posy>0</posy>
+								<height>40</height>
+								<width>250</width>
+								<textoffsetx>10</textoffsetx>
+								<textwidth>215</textwidth>
+								<aligny>center</aligny>
+								<font>font13caps</font>
+								<texturefocus border="5">button-focus.png</texturefocus>
+								<texturenofocus>-</texturenofocus>
+								<label>SCRIPT1029</label>
+								<pulseonselect>false</pulseonselect>
+								<onleft>1300049</onleft>
+								<onright>1300049</onright>
+								<onup>Control.SetFocus(1300102,4)</onup>
+								<ondown>1300202</ondown>
+							</control>
+							<!--control type="image">
+								<posx>220</posx>
+								<posy>11</posy>
+								<width>18</width>
+								<height>18</height>
+								<texture>HomeHasSub.png</texture>
+								<visible>Control.HasFocus(1300201)</visible>
+							</control-->
+						</control>
+						<control type="group">
+							<height>40</height>
+							<width>250</width>
+							<control type="button" id="1300202">
+								<posx>0</posx>
+								<posy>0</posy>
+								<height>40</height>
+								<width>250</width>
+								<textoffsetx>10</textoffsetx>
+								<textwidth>215</textwidth>
+								<aligny>center</aligny>
+								<font>font13caps</font>
+								<texturefocus border="5">button-focus.png</texturefocus>
+								<texturenofocus>-</texturenofocus>
+								<label>SCRIPT1009</label>
+								<pulseonselect>false</pulseonselect>
+								<onleft>1300049</onleft>
+								<onright>1309002</onright>
+								<onup>1300201</onup>
+								<ondown>1300103</ondown>
+							</control>
+							<control type="image">
+								<posx>220</posx>
+								<posy>11</posy>
+								<width>18</width>
+								<height>18</height>
+								<texture>HomeHasSub.png</texture>
+								<visible>Control.HasFocus(1300202) | ControlGroup(1300120).HasFocus</visible>
+							</control>
+						</control>
+					</control>
+
+
 					<!-- sub main (fav) -->
 					<control type="group" id="1309001">
 						<posx>-240</posx>
 						<posy>0</posy>
-						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus">conditional</animation>
+						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus">conditional</animation>
 						<animation effect="slide" start="0,0" end="-500,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus">Conditional</animation>
 						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 						<control type="list" id="1300112">
@@ -1923,9 +2004,9 @@ Search for window name
 							<onright>1300049</onright>
 							<onup>1300112</onup>
 							<ondown>1300112</ondown>
-							<pagecontrol>1300203</pagecontrol>
+							<pagecontrol>1300503</pagecontrol>
 							<scrolltime>200</scrolltime>
-							<visible>![Container(1300102).HasFocus(1) | Container(1300102).HasFocus(5)]</visible>
+							<visible>![Container(1300102).HasFocus(1) | Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<itemlayout height="40" width="230">
 								<control type="image">
@@ -2000,7 +2081,7 @@ Search for window name
 						<!-- sub main 2 (mode) -->
 						<control type="grouplist" id="1309002">
 							<posx>10</posx>
-							<posy>150</posy>
+							<posy>90</posy>
 							<width>230</width>
 							<height>430</height>
 							<align>center</align>
@@ -2009,10 +2090,11 @@ Search for window name
 							<onup>1309002</onup>
 							<ondown>1309002</ondown>
 							<focusposition>113</focusposition>
-							<visible>Container(1300102).HasFocus(5) + !Control.HasFocus(1300103)</visible>
+							<visible>!Control.HasFocus(1300103)</visible>
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 							<control type="group">
+								<visible>Container(1300102).HasFocus(5) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
 								<control type="image">
 									<posx>190</posx>
 									<posy>0</posy>
@@ -2049,14 +2131,55 @@ Search for window name
 									<ondown>1300113</ondown>
 								</control>
 							</control>
+							<control type="group" id="1300120">
+								<posx>0</posx>
+								<posy>85</posy>
+								<visible>Control.HasFocus(1300202) | Control.HasFocus(1300121) | Control.HasFocus(1300122)</visible>
+								<control type="image">
+									<posx>190</posx>
+									<posy>0</posy>
+									<width>40</width>
+									<height>40</height>
+									<texture>MediaSubSet.png</texture>
+								</control>
+								<control type="radiobutton" id="1300121">
+									<posx>0</posx>
+									<posy>50</posy>
+									<width>230</width>
+									<height>40</height>
+									<include>DefaultButtonMediaSubCommonValues</include>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>SCRIPT1151</label>
+									<onleft>1300202</onleft>
+									<onright>1300049</onright>
+									<onup>1300122</onup>
+									<ondown>1300122</ondown>
+								</control>
+								<control type="radiobutton" id="1300122">
+									<posx>0</posx>
+									<posy>90</posy>
+									<width>230</width>
+									<height>40</height>
+									<include>DefaultButtonMediaSubCommonValues</include>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>Search by AllChannels</label>
+									<onleft>1300202</onleft>
+									<onright>1300049</onright>
+									<onup>1300121</onup>
+									<ondown>1300121</ondown>
+									<visible>false</visible>
+								</control>
+							</control>
 						</control>
 						<!-- Scrollbar -->
-						<control type="scrollbar" id="1300203">
+						<control type="scrollbar" id="1300503">
 							<posx>220</posx>
 							<posy>170</posy>
 							<width>20</width>
 							<height>401</height>
-							<visible>!Container(1300102).HasFocus(5)</visible>
+							<visible>![Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
 							<include>DefaultWindowFade</include>
 							<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 							<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
@@ -2067,8 +2190,8 @@ Search for window name
 							<orientation>vertical</orientation>
 							<onleft>1300112</onleft>
 							<onright></onright>
-							<ondown>1300203</ondown>
-							<onup>1300203</onup>
+							<ondown>1300503</ondown>
+							<onup>1300503</onup>
 						</control>
 					</control>
 				</control>

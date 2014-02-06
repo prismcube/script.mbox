@@ -961,7 +961,7 @@ class DataCacheMgr( object ) :
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aKeyword = '' ) :
 		"""
 		#Extention Extension TEST
 		import elis
@@ -991,7 +991,10 @@ class DataCacheMgr( object ) :
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
+				if aKeyword :
+					channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable, aKeyword )
+				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return chList
 			else :
@@ -1509,27 +1512,33 @@ class DataCacheMgr( object ) :
 		return self.mEPGData
 
 
-	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
+	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand, aKeyword = '' ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			channelList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable )
+			if aKeyword :
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable, aKeyword )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			return channelList
 		else :
 			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
 
-	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid ) :
+	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid, aKeyword = '' ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable )
+			if aKeyword :
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable, aKeyword )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			return channelList
 		else :
 			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 
 
-	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName ) :
+	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName, aKeyword = '' ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			tunerTP = None
 			recCount = self.Record_GetRunningRecorderCount( )
@@ -1541,7 +1550,10 @@ class DataCacheMgr( object ) :
 				else :
 					tunerTP = 2
 			channelDB = ElisChannelDB( )
-			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
+			if aKeyword :
+				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, self.mSkip, self.mChannelListDBTable, aKeyword )
+			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 			channelDB.Close( )
 			"""
 			if recCount > 0 :
@@ -1763,7 +1775,7 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( 'can not query none, Channel_GetByNumber chNo[%s] type[%s]'% ( aNumber, aType ) )
 			return ret
 
-	
+
 		#find array index
 		try :
 			#update iChannel
@@ -3274,7 +3286,7 @@ class DataCacheMgr( object ) :
 		channelList = self.Channel_GetListByIDs( ElisEnum.E_SERVICE_TYPE_TV, pChannel.mTsid, pChannel.mOnid, pChannel.mSid )
 		if channelList and len( channelList ) > 0 :
 			for iChannel in channelList :
-				iChannel.printdebug( )
+				#iChannel.printdebug( )
 				#LOG_TRACE( '--------------------Channel_GetListByIDs[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 				if iChannel.mCarrier.mDVBS.mSatelliteLongitude == pChannel.mCarrier.mDVBS.mSatelliteLongitude and \
 				   iChannel.mCarrier.mDVBS.mFrequency == pChannel.mCarrier.mDVBS.mFrequency and \

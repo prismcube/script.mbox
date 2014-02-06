@@ -195,6 +195,15 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
+		elif actionId == Action.ACTION_COLOR_RED :
+			self.Close( False )
+
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.SetAudioPIP( )
+
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			self.Close( True )
 
@@ -282,7 +291,6 @@ class DialogPIP( BaseDialog ) :
 				thread = threading.Timer( 1, self.SetButtonExtended )
 				thread.start( )
 
-
 			"""
 			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 				LOG_TRACE( '[PIP] ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
@@ -303,6 +311,7 @@ class DialogPIP( BaseDialog ) :
 					xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'False' )
 					xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
 			"""
+
 
 	def Close( self, aStopPIP = True ) :
 		LOG_TRACE( '[PIP] Window close')
@@ -735,6 +744,7 @@ class DialogPIP( BaseDialog ) :
 
 				else :
 					if self.mDataCache.PIP_IsStarted( ) :
+						self.mPIP_EnableAudio = False
 						self.mDataCache.PIP_Stop( )
 
 					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
@@ -1033,7 +1043,7 @@ class DialogPIP( BaseDialog ) :
 
 		#osd panel
 		self.mCtrlGroupOsdStatus.setPosition( 0, h )
-		if w > 330 :
+		if w > 350 :
 			self.mCtrlImageOsdStatus.setWidth( w )
 			self.mCtrlGroupList2ndPIP.setPosition( w, 0 )
 
