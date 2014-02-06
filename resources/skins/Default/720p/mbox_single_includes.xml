@@ -5919,7 +5919,15 @@
 			<ondown>1400702</ondown>
 			<onleft></onleft>
 			<onright></onright>
-			<defaultcontrol always="true">1003621</defaultcontrol>
+			<defaultcontrol always="true">1003630</defaultcontrol>
+			<control type="button" id="1003630">
+				<align>left</align>
+				<width>45</width>
+				<height>35</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>OSDChannelFO.png</texturefocus>
+				<texturenofocus>OSDChannelNF.png</texturenofocus>
+			</control>
 			<control type="button" id="1003621">
 				<align>left</align>
 				<width>45</width>

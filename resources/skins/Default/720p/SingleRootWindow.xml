@@ -2088,7 +2088,7 @@ Search for window name
 			<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
 			<!--<animation effect="fade" start="100" end="0" time="200">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),4100000)</visible>
-			<defaultcontrol always="true">1003621</defaultcontrol>
+			<defaultcontrol always="true">1003630</defaultcontrol>
 			<control type="image">
 				<include>DefaultWindowFade</include>
 				<posx>-13</posx>
@@ -2299,6 +2299,18 @@ Search for window name
 							<width>220</width>
 							<height>35</height>
 							<texture border="0,0,32,0">header.png</texture>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1045</label>
+							<visible>Control.HasFocus(1003630)</visible>
 						</control>
 						<control type="label">
 							<posx>30</posx>

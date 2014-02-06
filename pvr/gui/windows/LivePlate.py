@@ -34,7 +34,7 @@ E_CONTROL_ID_HOTKEY_YELLOW_LABEL 		= E_LIVE_PLATE_BASE_ID + 532
 E_CONTROL_ID_HOTKEY_BLUE_IMAGE 			= E_LIVE_PLATE_BASE_ID + 541
 E_CONTROL_ID_HOTKEY_BLUE_LABEL 			= E_LIVE_PLATE_BASE_ID + 542
 
-E_LIVE_PLATE_DEFAULT_FOCUS_ID			=  E_BASE_WINDOW_ID + 3621
+E_LIVE_PLATE_DEFAULT_FOCUS_ID			= E_BASE_WINDOW_ID + 3630
 
 
 E_CONTROL_DEFAULT_HIDE = [ 
@@ -387,6 +387,11 @@ class LivePlate( LivePlateWindow ) :
 		self.StopAutomaticHide( )
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE  )
+
+		elif aControlId == E_LIVE_PLATE_DEFAULT_FOCUS_ID :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
 		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
