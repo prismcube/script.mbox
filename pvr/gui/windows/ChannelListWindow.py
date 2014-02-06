@@ -1233,7 +1233,7 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				retPass = False
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Search result' ), MR_LANG( 'No matched result found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'No results found' ), MR_LANG( 'Could not find any results for that search' ) )
 				dialog.doModal( )
 
 			LOG_TRACE('[ChannelList] Channel Search ret[%s]'% retPass )
@@ -3329,7 +3329,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#All Channel, normalGroup only
 			context = []
-			context.append( ContextItem( MR_LANG( 'Insert number' ), CONTEXT_ACTION_INSERT_NUMBER ) )
+			context.append( ContextItem( MR_LANG( 'Insert' ), CONTEXT_ACTION_INSERT_NUMBER ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
 	 		dialog.doModal( )
