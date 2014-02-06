@@ -1,0 +1,5 @@
+2014.2.5
+ - Lower CPU usage when streaming live channel 
+ - WebUI image partially applied 
+
+ 

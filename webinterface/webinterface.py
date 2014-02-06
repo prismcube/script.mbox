@@ -3,7 +3,7 @@ import pvr.DataCacheMgr
 import pvr.ElisMgr
 import pvr.NetConfig as NetConfig
 import sys
-import urllib
+import urllib2 as urllib
 from os import curdir, sep
 import xbmcaddon
 import dbopen
@@ -252,13 +252,14 @@ class MyHandler( BaseHTTPRequestHandler ):
 					i = 0 
 					j = 0
 
+					print '[Stream Handler] Ready to stream recorded file'
 					while True :
-						
+						"""
 						j = j + 1
 						if j == 2000 :
 							j = 0 
 							print '[WEBUI] I am looping'
-						
+						"""
 						try :
 							s = self.streamResult.read( 1024 )
 							# print len(s)
@@ -384,11 +385,11 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			self.send_header( 'Content-Type', 'application/text' )
 			self.end_headers()
 
-			print '[Stream Hander] webserver ==> read'
+			print '[Stream Hander on 8001] webserver ==> read'
 			print self.target
 			
-			print '[Stream Handler] webserver ==> Live Stream about to read'
-			self.streamResult = urllib.urlopen(self.target)
+			print '[Stream Handler on 8001] webserver ==> Live Stream about to read'
+			self.streamResult = urllib.urlopen(self.target, timeout=10.0)
 			print self.target
 
 			i = 0 
@@ -396,20 +397,23 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 
 			# throw away unready streams at first
 			for i in range(1000) :
-				s = self.streamResult.read( 1024 * 2 )
+				s = self.streamResult.read( 1024 )
 
 			print '[Stream Handler] Ready to stream'
 			
 			while True :
 
 				try :
-					s = self.streamResult.read( 1024 )
-		
+					s = self.streamResult.read( 1024 * 100 * 5 )
+					#for i in range(5) :
+					#	s += self.streamResult.read(1024 * 100)
+					
 					if len(s) == 0 :
-						print '[Stream Handler] Packet lenght is 0'
+						print '[Stream Handler on 8001] Packet lenght is 0'
 						break
 						
 					else :
+						# print '[Stream Handler on 8001] Writing Stream size of ' + str(len(s)) 
 						self.wfile.write( s )
 						# time.sleep(0.001) 
 												
@@ -431,6 +435,8 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 		
 			self.send_response( 404 )
 			self.end_headers()
+
+			self.streamResult.close()
 
 			print '[webserver]'
 			print str(err)

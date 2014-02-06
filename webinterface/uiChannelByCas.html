@@ -2,50 +2,77 @@
 <head>
 	<title>PrismCube Web UI</title>
 	<link href="uiStyle.css" type="text/css" rel="stylesheet">
+	<script>
+	
+		function showIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "visible";
+		}
+		
+		function hideIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "hidden";
+		}
+
+		function showColor( target, name ) {
+			var icon = "icon" + target;
+			var img = "./uiImg/" + name + ".png";
+			document.getElementById(icon).src = img;
+		}
+
+		function hideColor( target, name ) {
+			var icon = "icon" + target;
+			var img = "./uiImg/" + name + "_bw.png";
+			document.getElementById(icon).src = img;
+		}
+	
+	</script>
 <body>
 <div id="wrapper">
 
 	<div id="top">
-		<p>PrismCube Web UI</p>
+		<div id="logo"><img src="./uiImg/prismcube_logo.png"></div>		
+		<div id="title">
+			PrismCube Web UI
+		</div>
 	</div>
-	<div id="menu">
-		<p>
-			>> Channel</a> 	<br>
-			Stream 		<br>
-			<a href="uiRemote.html">Remote Control</a> <br>
-		</p>
-	</div>
-	<div id="main">
 	
-		<p class="title">
-			Welcome to PrismCube Web UI
-		</p>
-		
-		<p>
-			<ul class="submenu">
-				<li><a href="Channel?all">All Channels</a></li>
-				<li><a href="Channel?satellite">Satellite</a></li>
-				<li><a href="uiChannelByCas.html">FTA/CAS</a></li>
-				<li><a href="Channel?favorite">Favorite Groups</a></li>
-				<li><a href="Channel?mode">Mode</a></li>
-			</ul>
-		</p>
+	<div id="menu">
+		<p><img src="./uiImg/sub_menu.png"></p>
+		<p><img src="./uiImg/mark.png" id="img02" style="visibility: hidden;"> <a href="/stream/stream.m3u" onmouseover="javacript:showIcon(2);" onmouseout="javascript:hideIcon(2);">Stream</a></p>
+		<p><img src="./uiImg/mark.png" id="img03" style="visibility: hidden;"> <a href="uiRemote.html" onmouseover="javacript:showIcon(3);" onmouseout="javascript:hideIcon(3);">Remote Control</a></p>
+		<p><img src="./uiImg/mark.png" id="img04" style="visibility: hidden;"> <a href="uiMovie.html" onmouseover="javacript:showIcon(4);" onmouseout="javascript:hideIcon(4);">Recordings</a></p>
 	</div>
-	<div id="content">
-		<table border="0" cellpadding="5">
-			<tr><td width="200"><a href="ChannelByCas?FTA">FTA</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?MEDIAGUARD">MEDIAGUARD</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?VIACCESS">VIACCESS</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?NAGRA">NAGRA</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?IRDETO">IRDETO</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?CONAX">CONAX</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?CRYPTOWORKS">CRYPTOWORKS</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?BETADIGITAL">BETADIGITAL</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?NDS">NDS</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?DRECRYPT">DRECRYPT</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?VERIMATRIX">VERIMATRIX</a></td></tr>
-			<tr><td width="200"><a href="ChannelByCas?OTHERS">OTHERS</a></td></tr>
-		</table>
+	
+	<div id="main">
+		<div class="submenu">
+			<table align="center">
+			<tr>
+				<td><a href="Channel?all" onmouseover="javascript:showColor(1, 'channels');" onmouseout="javascript:hideColor(1, 'channels');"><img id="icon1" src="./uiImg/channels_bw.png" border="0"></a></td>
+				<td><a href="Channel?satellite" onmouseover="javascript:showColor(2, 'satellite');" onmouseout="javascript:hideColor(2, 'satellite');"><img id="icon2" src="./uiImg/satellite_bw.png" border="0"></a></td>
+				<td><img id="icon3" src="./uiImg/cas.png" border="0"></td>
+				<td><a href="Channel?favorite" onmouseover="javascript:showColor(4, 'favorite');" onmouseout="javascript:hideColor(4, 'favorite');"><img id="icon4" src="./uiImg/favorite_bw.png" border="0"></a></td>
+				<td><a href="Channel?mode" onmouseover="javascript:showColor(5, 'mode');" onmouseout="javascript:hideColor(5, 'mode');"><img id="icon5" src="./uiImg/mode_bw.png" border="0"></a></td>
+			</tr>
+			</table>
+		</div>
+	
+		<div id="content">
+			<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?FTA">FTA</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?MEDIAGUARD">MEDIAGUARD</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?VIACCESS">VIACCESS</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?NAGRA">NAGRA</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?IRDETO">IRDETO</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?CONAX">CONAX</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?CRYPTOWORKS">CRYPTOWORKS</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?BETADIGITAL">BETADIGITAL</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?NDS">NDS</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?DRECRYPT">DRECRYPT</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?VERIMATRIX">VERIMATRIX</a></p></td></tr>
+				<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?OTHERS">OTHERS</a></p></td></tr>
+			</table></td></tr></table>
+		</div>
 	</div>
 
 </div>

@@ -12,8 +12,8 @@ def GetHTMLClass( className, *param ) :
 	for cls in htmlClass :
 		if className == cls.__name__ :
 			return cls( param ) 
-
-	return SimpleHTMLFile( className ) 
+	else :
+		return SimpleHTMLFile( className ) 
 
 def GetStream(targetIP) :
 
@@ -75,48 +75,69 @@ class Channel( WebPage ) :
 		super(Channel, self).__init__()
 
 		if command[0] == 'all' :
+			self.command = 'all'
 			self.content = self.allChannelContent()
 		elif command[0] == 'satellite' :
+			self.command = 'satellite'
 			self.content = self.satelliteChannelContent()
 		elif command[0] == 'cas' :
+			self.command = 'cas'
 			self.content = self.casChannelContent()
 		elif command[0] == 'favorite' :
+			self.command = 'favorite'
 			self.content = self.favoriteChannelContent()
 		elif command[0] == 'mode' :
+			self.command = 'mode'
 			self.content = self.modeContent()
 		else :
 			pass  # do nothing 
+			self.command = None
 		
 
 	def allChannelContent( self ) :
 
 		# def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) 
 		self.allChannel = self.mDataCache.Channel_GetList( aTemporaryReload=1, aType= self.mZappingMode.mServiceType, aMode=ElisEnum.E_MODE_ALL)
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
 		for cls in self.allChannel : 
+			"""
 			content += '<tr><td width="100">' + str(cls.mNumber) + '</td>'
 			content += '<td width="300">' + cls.mName + '</a></td>'
 			content += '<td class="epg">[<a href="Zapping?' + str(cls.mNumber) +'" target="zapper">Zap</a>]</td>'
 			content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')">EPG</a>]</td>'
 			# content += '<td class="epg">[<a href="/epg?sid='+ str(cls.mSid) + '&tsid=' + str(cls.mTsid) + '&onid=' + str(cls.mOnid) + '">EPG</a>]</td>'
 			content += '</tr>'
-		content += '</table>'
+			"""
+			
+			content += '<tr>'
+			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mNumber) + '</p></td>'
+			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
+			content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+			content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+			content += '</tr>'
+			
+		content += '</table></td></tr></table>'
 
 		self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
-	
 		return self.getChannelContent(content)
 
 	def satelliteChannelContent( self ) :
 
 		self.satelliteList = self.mDataCache.Satellite_GetConfiguredList()
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
 		for cls in self.satelliteList : 
+			"""
 			content += '<tr><td width="100">' + str(cls.mLongitude) + '</td><td width="200">'
 			content += '<a href="ChannelBySatellite?' + str(cls.mName) + '">' + str(cls.mName) +'</a></td></tr>'
-		content += '</table>'
+			"""
+			content += '<tr>'
+			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
+			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
+			content += '</tr>'
 
+		content += '</td></tr></table>'
 		return self.getChannelContent(content)
 
 	def casChannelContent( self ) :
@@ -149,59 +170,113 @@ class Channel( WebPage ) :
 	def getChannelContent( self, content ) :
 
 		self.channelContent  = """
-
+		
 			<html>
 			<head>
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<script>
+				
+					function showIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'visible';
+					}
+					
+					function hideIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'hidden';
+					}
+
+					function showColor( target, name ) {
+						var icon = 'icon' + target;
+						var img = './uiImg/' + name + '.png';
+						document.getElementById(icon).src = img;
+					}
+
+					function hideColor( target, name ) {
+						var icon = 'icon' + target;
+						var img = './uiImg/' + name + '_bw.png';
+						document.getElementById(icon).src = img;
+					}
+
 					function JumpToEpg( sid, tsid, onid ) {
 						var target = '/Epg?sid=' + sid + '&tsid=' + tsid + '&onid=' + onid;		
 						window.open( target, 'epg', 'width=500, height=500');
 					}
+
 				</script>
 			<body>
 			<div id='wrapper'>
 
 				<div id='top'>
-					<p>PrismCube Web UI</p>
+					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
+					<div id='title'>
+						PrismCube Web UI
+					</div>
 				</div>
-				<div id='menu'>
-					<p>
-						>> Channel</a> 	<br>
-						<a href='/stream/stream.m3u'>Stream</a> 		<br>
-						<a href='uiRemote.html'>Remote Control</a> <br>
-					</p>
-				</div>
-				<div id='main'>
 				
-					<p class='title'>
-						Welcome to PrismCube Web UI
-					</p>
-					
-					<p>
-						<ul class='submenu'>
-							<li><a href='Channel?all'>All Channels</a></li>
-							<li><a href='Channel?satellite'>Satellite</a></li>
-							<li><a href='uiChannelByCas.html'>FTA/CAS</a></li>
-							<li><a href='Channel?favorite'>Favorite Groups</a></li>
-							<li><a href='Channel?mode'>Mode</a></li>
-						</ul>
-					</p>
+				<div id='menu'>
+					<p><img src='./uiImg/sub_menu.png'></p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Stream</a></p>
+					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='uiMovie.html' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
 				</div>
+				
+				<div id='main'>
 
-				<div id='content'>
+					<div class='submenu'>
+						<table align='center'>
+						<tr>
+							%s
+						</tr>
+						</table>
+					</div>
+
+					<div id='content'>
 					%s
 					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
+					</div>
+					
 				</div>
 
 			</div>
-
 			</body>
 			</html>
 			
-		""" % content
+		""" % ( self.getSubMenu(), content )
 		return self.channelContent
+
+	def getSubMenu( self ) :
+
+		submenu = ""
+		if self.command == "all" :
+			submenu += """<td><img id='icon1' src='./uiImg/channels.png' border='0'></td>"""
+		else :
+			submenu += """<td><a href='Channel?all' onmouseover="javascript:showColor(1, 'channels');" onmouseout="javascript:hideColor(1, 'channels');"><img id='icon1' src='./uiImg/channels_bw.png' border='0'></a></td>"""
+
+		if self.command == "satellite" :
+			submenu += """<td><img id='icon2' src='./uiImg/satellite.png' border='0'></td>"""
+		else :
+			submenu += """<td><a href='Channel?satellite' onmouseover="javascript:showColor(2, 'satellite');" onmouseout="javascript:hideColor(2, 'satellite');"><img id='icon2' src='./uiImg/satellite_bw.png' border='0'></a></td>"""
+
+		if self.command == "cas" :
+			submenu += """<td><img id='icon3' src='./uiImg/fta_cas.png' border='0'></td>"""
+		else :
+			submenu += """<td><a href='uiChannelByCas.html' onmouseover="javascript:showColor(3, 'cas');" onmouseout="javascript:hideColor(3, 'cas');"><img id='icon3' src='./uiImg/cas_bw.png' border='0'></a></td>"""
+
+		if self.command == "favorite" :
+			submenu += """<td><img id='icon4' src='./uiImg/favorite.png' border='0'></td>"""
+		else :
+			submenu += """<td><a href='Channel?favorite' onmouseover="javascript:showColor(4, 'favorite');" onmouseout="javascript:hideColor(4, 'favorite');"><img id='icon4' src='./uiImg/favorite_bw.png' border='0'></a></td>"""
+
+		if self.command == "mode" :
+			submenu += """<td><img id='icon5' src='./uiImg/mode.png' border='0'></td>"""
+		else :
+			submenu += """<td><a href='Channel?mode' onmouseover="javascript:showColor(5, 'mode');" onmouseout="javascript:hideColor(5, 'mode');"><img id='icon5' src='./uiImg/mode_bw.png' border='0'></a></td>"""
+
+		print submenu
+
+		return submenu
 
 class RemoteControl(WebPage):
 
@@ -305,34 +380,38 @@ class ChannelBySatellite( Channel ) :
 				self.band = cls.mBand
 
 		channelList = self.mDataCache.Channel_GetListBySatellite( self.mZappingMode.mServiceType, ElisEnum.E_MODE_SATELLITE, self.mZappingMode.mSortingMode, str(self.longitude), str(self.band ) )
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%" border="0">"""
 		indexer = 0
 
 		satEnd = False
 		chEnd = False
-		
+
 		while True :
 
 			try : 
-				content += '<tr><td width="100">' + str(satelliteList[indexer].mLongitude) + '</td>'
+				content += '<tr>'
+				content += '<td align="center" width="50"><p class="channelContent">' + str(satelliteList[indexer].mLongitude) + '</p></td>'
 				if satelliteList[indexer].mName == satelliteName :
-					content += '<td width="200" bgcolor="#dfdfdf">' + str(satelliteList[indexer].mName) + '</td>'
+					content += '<td width="200" bgcolor="#dfdfdf">&nbsp;&nbsp;&nbsp;&nbsp;' + str(satelliteList[indexer].mName) + '</td>'
 				else :
-					content += '<td width="200"><a href="ChannelBySatellite?' + str(satelliteList[indexer].mName) + '">' + str(satelliteList[indexer].mName) + '</a></td>'
+					# content += '<td width="200"><a href="ChannelBySatellite?' + str(satelliteList[indexer].mName) + '">' + str(satelliteList[indexer].mName) + '</a></td>'
+					content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(satelliteList[indexer].mName) + '">' + str(satelliteList[indexer].mName) + '</a></p></td>'
+
 			except IndexError :
 				content += '<tr><td>&nbsp;</td><td>&nbsp;</td>'
 				satEnd = True
 		
 			try :
-				content += '<td>' + str( channelList[indexer].mNumber ) + '</td>'
-				content += '<td>' + channelList[indexer].mName + '</td>'
-				content += '<td class="epg">[<a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper">Zap</a>]</td>'
-				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')">EPG</a>]</td></tr>'
+				content += '<td align="center"><p class="channelContent">' + str( channelList[indexer].mNumber ) + '</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName + '</p></td>'
+				content += '<td align="center"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+				content += '<td align="center"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td></tr>'
 				
 			except IndexError :
 				content += '<td>&nbsp;</td><td>&nbsp;</td>'
 				content += '<td>&nbsp;</td><td>&nbsp;</td></tr>'
 				chEnd = True
+
 			except TypeError :
 				content += '<td>&nbsp;</td><td>&nbsp;</td>'
 				content += '<td>&nbsp;</td><td>&nbsp;</td></tr>'
@@ -343,10 +422,12 @@ class ChannelBySatellite( Channel ) :
 				
 			indexer += 1
 
-		content += '</table>'
+		content += '</table></td></tr></table>'
+		
+		self.command = "satellite"
+		print "self.command=" + self.command
 
 		self.ResetChannelListOnChannelWindow( channelList, ElisEnum.E_MODE_SATELLITE ) 
-
 		return self.getChannelContent( content )
 
 class ChannelByCas( Channel ) :
@@ -389,7 +470,7 @@ class ChannelByCas( Channel ) :
 		print command[0]
 			
 		channelList = self.mDataCache.Channel_GetListByFTACas( self.mZappingMode.mServiceType, ElisEnum.E_MODE_CAS, self.mZappingMode.mSortingMode, caid )
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 		indexer = 0
 
 		casEnd = False
@@ -412,6 +493,7 @@ class ChannelByCas( Channel ) :
 				content += '<td class="epg"><a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper">[Zap]</a></td>'
 				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')">EPG</a>]</td>'
 				content += "</tr>"
+
 			except IndexError :
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
