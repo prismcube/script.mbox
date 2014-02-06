@@ -29,7 +29,7 @@ class NullWindow( BaseWindow ) :
 		self.mOnBlockTimer_GreenKey = 0
 		self.mIsShowDialog = False
 		self.mEventId  = 0
-		
+
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
@@ -46,14 +46,14 @@ class NullWindow( BaseWindow ) :
 		self.mEnableBlickingTimer = False
 		self.mNewEPGAlarm = time.time()
 		self.mNewEPGAlarmEnabled = False
-		if xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_EVENT_LIVE' ).lower() == 'true'.lower() :
+		if GetSetting( 'DISPLAY_EVENT_LIVE' ).lower( ) == 'true'.lower( ) :
 			self.mNewEPGAlarmEnabled = True
+		if GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) == 'true' :
+			self.setProperty( 'ShowClock', 'true' )
 		LOG_TRACE('self.mNewEPGAlarmEnabled=%s' %self.mNewEPGAlarmEnabled )
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
-		#collected = gc.collect( )
-		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		#LOG_TRACE('---------------playingrecord[%s]'% playingRecord )
 		try :
