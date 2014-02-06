@@ -3286,7 +3286,7 @@ class DataCacheMgr( object ) :
 		channelList = self.Channel_GetListByIDs( ElisEnum.E_SERVICE_TYPE_TV, pChannel.mTsid, pChannel.mOnid, pChannel.mSid )
 		if channelList and len( channelList ) > 0 :
 			for iChannel in channelList :
-				iChannel.printdebug( )
+				#iChannel.printdebug( )
 				#LOG_TRACE( '--------------------Channel_GetListByIDs[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 				if iChannel.mCarrier.mDVBS.mSatelliteLongitude == pChannel.mCarrier.mDVBS.mSatelliteLongitude and \
 				   iChannel.mCarrier.mDVBS.mFrequency == pChannel.mCarrier.mDVBS.mFrequency and \

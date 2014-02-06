@@ -6,7 +6,7 @@ E_CHANNEL_LIST_BASE_ID					=  WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= E_CHANNEL_LIST_BASE_ID + 21
 E_CONTROL_ID_LABEL_CHANNEL_SORT			= E_CHANNEL_LIST_BASE_ID + 22
 E_CONTROL_ID_SCROLLBAR_CHANNEL			= E_CHANNEL_LIST_BASE_ID + 61
-E_CONTROL_ID_SCROLLBAR_SUBMENU			= E_CHANNEL_LIST_BASE_ID + 203
+E_CONTROL_ID_SCROLLBAR_SUBMENU			= E_CHANNEL_LIST_BASE_ID + 503
 E_CONTROL_ID_GROUP_MAINMENU 			= E_CHANNEL_LIST_BASE_ID + 100
 E_CONTROL_ID_BUTTON_MAINMENU 			= E_CHANNEL_LIST_BASE_ID + 101
 E_CONTROL_ID_LIST_MAINMENU				= E_CHANNEL_LIST_BASE_ID + 102
@@ -26,6 +26,11 @@ E_CONTROL_ID_LABEL_CAREER_INFO			= E_CHANNEL_LIST_BASE_ID + 308
 E_CONTROL_ID_GROUP_LOCKED_INFO			= E_CHANNEL_LIST_BASE_ID + 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= E_CHANNEL_LIST_BASE_ID + 401
 E_CONTROL_ID_GROUP_HELPBOX				= E_CHANNEL_LIST_BASE_ID + 600
+
+#misc option
+E_CONTROL_ID_BUTTON_SEARCH				= E_CHANNEL_LIST_BASE_ID + 201
+E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM	= E_CHANNEL_LIST_BASE_ID + 121
+E_CONTROL_ID_RADIOBUTTON_SEARCH_ALL		= E_CHANNEL_LIST_BASE_ID + 122
 
 E_BUTTON_ID_FAKE_ALLCHANNELS			= E_CHANNEL_LIST_BASE_ID + 700
 
@@ -144,6 +149,11 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 		#self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
 
+		#misc option
+		self.mCtrlButtonSearch           = self.getControl( E_CONTROL_ID_BUTTON_SEARCH )
+		self.mCtrlRadioButtonAutoConfirm = self.getControl( E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM )
+		#self.mCtrlRadioButtonSearchAll   = self.getControl( E_CONTROL_ID_RADIOBUTTON_SEARCH_ALL )
+
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
@@ -181,6 +191,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMaxChannelNum = E_INPUT_MAX
 		self.mSearchList = []
 		self.mSearchKeyword = ''
+		self.mAutoConfirm = False
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -299,6 +310,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
+
+			elif self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
+				self.mCtrlListMainmenu.selectItem( self.mUserSlidePos.mMain )
+				self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
@@ -451,6 +466,17 @@ class ChannelListWindow( BaseWindow ) :
 			self.SubMenuAction( E_SLIDE_ACTION_SUB )
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 
+		elif aControlId == E_CONTROL_ID_BUTTON_SEARCH :
+			self.UpdateControlGUI( E_SLIDE_CLOSE )
+			self.mCtrlListMainmenu.selectItem( self.mUserSlidePos.mMain )
+			self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
+			self.ShowSearchDialog( )
+
+		elif aControlId == E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM :
+			self.mAutoConfirm = self.mCtrlRadioButtonAutoConfirm.isSelected( )
+			#LOG_TRACE( '--------------------------autoConfirm[%s]'% self.mAutoConfirm )
+			SetSetting( 'AUTO_CONFIRM_CHANNEL', '%s'% int( self.mAutoConfirm ) )
+
 
 	def onFocus(self, controlId):
 		#LOG_TRACE( '[ChannelList] control %d' % controlId )
@@ -595,6 +621,20 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.UpdateChannelAndEPG( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+
+		try :
+			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+			self.mAutoConfirm = False
+			SetSetting( 'AUTO_CONFIRM_CHANNEL', '0' )
+
+		searchEnable = True
+		if not self.mChannelList :
+			searchEnable = False
+
+		self.mCtrlButtonSearch.setEnabled( searchEnable )
+		self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM, self.mAutoConfirm )
 
 
 	def DoDeleteAll( self ) :
@@ -1035,6 +1075,9 @@ class ChannelListWindow( BaseWindow ) :
 			#if ( not isSameChannel ) and ( not self.mDataCache.Get_Player_AVBlank( ) ):
 			#	self.mDataCache.Player_AVBlank( True )
 
+			if self.mAutoConfirm :
+				isSameChannel = True
+
 			if isSameChannel :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
@@ -1234,14 +1277,19 @@ class ChannelListWindow( BaseWindow ) :
 		self.mUserSlidePos.mMain = idxMain
 		self.mUserSlidePos.mSub  = idxSub
 
-		sortEnable = True
+		sortEnable   = True
+		searchEnable = True
 		mSort = self.mUserMode.mSortingMode
 		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE or self.mSearchList :
 			sortEnable = False
 			mSort = ElisEnum.E_SORT_BY_NUMBER
 			LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
 
+		if not self.mChannelList :
+			searchEnable = False
+
 		self.mCtrlButtonSorting.setEnabled( sortEnable )
+		self.mCtrlButtonSearch.setEnabled( searchEnable )
 
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
@@ -2224,6 +2272,9 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRadioButtonRadio.setSelected( aValue )
 			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlRadioButtonRadio.setEnabled( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_RADIOBUTTON_AUTOCONFIRM :
+			self.mCtrlRadioButtonAutoConfirm.setSelected( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_SELECT_NUMBER :
 			self.mCtrlLabelSelectItem.setLabel( aValue )
