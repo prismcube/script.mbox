@@ -629,23 +629,20 @@
 		</control>
 
 
-			<!-- Slide Main Menu -->
+			<!-- Main Menu -->
 			<control type="group" id="1300100">
 				<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1300110).HasFocus | ControlGroup(1309001).HasFocus">Conditional</animation>
-				<!--animation effect="slide" start="0,0" end="10,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus">Conditional</animation-->
 				<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<include>DefaultWindowFade</include>
 				<control type="group">
-					<!--animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation-->
-
 					<control type="image">
 	                    <posx>-500</posx>
 	                    <posy>0</posy>
 	                    <width>500</width>
 	                    <height>720</height>
 	                    <texture>black-back_noAlpha.png</texture>
-	                    <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | Control.HasFocus(1300103) | ControlGroup(1300200).HasFocus | Control.HasFocus(1300202)">Conditional</animation>
-						<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
+	                    <animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
 	                <control type="image">
 	                    <posx>-12</posx>
@@ -653,8 +650,8 @@
 	                    <width>12</width>
 	                    <height>720</height>
 	                    <texture>MediaBladeSub_Part2.png</texture>
-	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus | Control.HasFocus(1300202)">Conditional</animation>
-						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Container(1300102).HasFocus(1) | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
+	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
 				</control>
 				<control type="button" id="1300101">
@@ -705,7 +702,7 @@
 						<posx>0</posx>
 						<posy>150</posy>
 						<width>250</width>
-						<height>600</height>
+						<height>300</height>
 						<onleft>1300049</onleft>
 						<onright>1309001</onright>
 						<onup>1300103</onup>
@@ -758,7 +755,8 @@
 						<content>
 							<item id="1">
 								<label>SCRIPT1001</label>
-								<onclick>SendClick(1300700)</onclick>
+								<!--onclick>SendClick(1300700)</onclick-->
+								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
@@ -776,11 +774,6 @@
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
-							<!--item id="6">
-								<label>Search Result</label>
-								<onclick>right</onclick>
-								<visible>true</visible>
-							</item-->
 							<item id="5">
 								<label>SCRIPT1005</label>
 								<onclick>right</onclick>
@@ -794,7 +787,7 @@
 						<posx>0</posx>
 						<posy>400</posy>
 						<width>250</width>
-						<height>90</height>
+						<height>130</height>
 						<align>center</align>
 						<onleft>1300049</onleft>
 						<onright>1300049</onright>
@@ -825,14 +818,6 @@
 								<ondown>1300202</ondown>
 								<onclick>1300049</onclick>
 							</control>
-							<!--control type="image">
-								<posx>220</posx>
-								<posy>11</posy>
-								<width>18</width>
-								<height>18</height>
-								<texture>HomeHasSub.png</texture>
-								<visible>Control.HasFocus(1300201)</visible>
-							</control-->
 						</control>
 						<control type="group">
 							<height>40</height>
@@ -854,6 +839,7 @@
 								<onright>1309002</onright>
 								<onup>1300201</onup>
 								<ondown>1300103</ondown>
+								<onclick>right</onclick>
 							</control>
 							<control type="image">
 								<posx>220</posx>
@@ -872,7 +858,7 @@
 					<control type="group" id="1309001">
 						<posx>-240</posx>
 						<posy>0</posy>
-						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus">conditional</animation>
+						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus|Control.HasFocus(1300202)">conditional</animation>
 						<animation effect="slide" start="0,0" end="-500,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus">Conditional</animation>
 						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 						<control type="list" id="1300112">
@@ -985,10 +971,16 @@
 								</control>
 								<control type="radiobutton" id="1300113">
 									<posx>0</posx>
-									<posy>50</posy>
+									<posy>51</posy>
 									<width>230</width>
 									<height>40</height>
-									<include>DefaultButtonMediaSubCommonValues</include>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1006</label>
@@ -1002,7 +994,13 @@
 									<posy>90</posy>
 									<width>230</width>
 									<height>40</height>
-									<include>DefaultButtonMediaSubCommonValues</include>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1007</label>
@@ -1025,10 +1023,16 @@
 								</control>
 								<control type="radiobutton" id="1300121">
 									<posx>0</posx>
-									<posy>50</posy>
+									<posy>51</posy>
 									<width>230</width>
 									<height>40</height>
-									<include>DefaultButtonMediaSubCommonValues</include>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>Skip zapping confirm</label>
@@ -1042,7 +1046,13 @@
 									<posy>90</posy>
 									<width>230</width>
 									<height>40</height>
-									<include>DefaultButtonMediaSubCommonValues</include>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>Search by AllChannels</label>

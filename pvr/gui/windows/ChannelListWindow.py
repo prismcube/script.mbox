@@ -302,6 +302,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_MAINMENU )
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 
+			elif self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
+				position = self.mCtrlListMainmenu.getSelectedPosition( )
+				if position == E_SLIDE_MENU_MODE :
+					self.mCtrlListMainmenu.selectItem( self.mUserSlidePos.mMain )
+					self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
+
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mMoveFlag :
@@ -310,10 +316,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == 49 :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
-
-			elif self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
-				self.mCtrlListMainmenu.selectItem( self.mUserSlidePos.mMain )
-				self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
