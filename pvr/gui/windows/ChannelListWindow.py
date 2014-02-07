@@ -2990,7 +2990,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def AddFavoriteChannels( self, aChannelList = None, aGroupName = '', aSelectList = [], aMode = FLAG_OPT_LIST ) :
 		if aChannelList == None or len( aChannelList ) < 1 :
-			return self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType, ElisEnum.E_MODE_ALL, self.mUserMode.mSortingMode )
+			return self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType, ElisEnum.E_MODE_ALL, self.mUserMode.mSortingMode, '', True )
 
 		else :
 			if aGroupName == None or aGroupName == '' :
@@ -3098,6 +3098,9 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > self.mUserSlidePos.mSub :
 				lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 				zappingName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+				if self.mSearchList and len( self.mSearchList ) > 0 :
+					zappingName += '> %s\'%s\''% ( MR_LANG( 'Search' ), self.mSearchKeyword )
+
 				if zappingName :
 					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 					self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
