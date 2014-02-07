@@ -1358,4 +1358,12 @@
 	<string id="3855">Finish</string>
 	<string id="3856">Go to the channel search setup page</string>
 	<string id="3857">Channel is changed by view timer</string>
+	<string id="3858">VIDEO PID</string>
+	<string id="3859">AUDIO PID</string>
+	<string id="3860">PCR PID</string>
+	<string id="3861">TSID</string>
+	<string id="3862">ONID</string>
+	<string id="3863">SID</string>
+	<string id="3864">STRENTH</string>
+	<string id="3865">QUALITY</string>
 </strings>

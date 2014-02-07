@@ -1357,3 +1357,11 @@
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3855
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3856
 "Channel is changed by view timer";"Sender wurde umgeschaltet durch den View Timer";"Changez de chaîne par l'affichage de la minuterie";"Ulteriore assistenza";"Canales esta cambiando por view timer";"Program je změněn časovačem zobrazení ";"Channel is changed by view timer";"Kanał będzie przełączany według wskazań timera";"Channel is changed by view timer";"Канал изменен просмотром таймера";"Channel is changed by view timer";"Channel is changed by view timer";"Program je zmenený časovačom zobrazenia ";"Channel is changed by view timer";3857
+"VIDEO PID";;;;;;;;;;;;;;3858
+"AUDIO PID";;;;;;;;;;;;;;3859
+"PCR PID";;;;;;;;;;;;;;3860
+"TSID";;;;;;;;;;;;;;3861
+"ONID";;;;;;;;;;;;;;3862
+"SID";;;;;;;;;;;;;;3863
+"STRENTH";;;;;;;;;;;;;;3864
+"QUALITY";;;;;;;;;;;;;;3865
