@@ -5907,7 +5907,7 @@
 		<control type="grouplist" id="1003620">
 			<posx>335</posx>
 			<posy>-35</posy>
-			<width>370</width>
+			<width>380</width>
 			<height>40</height>
 			<itemgap>0</itemgap>
 			<pagecontrol></pagecontrol>
@@ -5922,7 +5922,7 @@
 			<defaultcontrol always="true">1003630</defaultcontrol>
 			<control type="button" id="1003630">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDChannelFO.png</texturefocus>
@@ -5930,7 +5930,7 @@
 			</control>
 			<control type="button" id="1003621">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDIconWarning.png</texturefocus>
@@ -5938,7 +5938,7 @@
 			</control>
 			<control type="button" id="1003622">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDTeletextFO.png</texturefocus>
@@ -5946,7 +5946,7 @@
 			</control>
 			<control type="button" id="1003623">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDSubtitlesFO.png</texturefocus>
@@ -5954,7 +5954,7 @@
 			</control>
 			<control type="button" id="1003628">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDBookmarksFO.png</texturefocus>
@@ -5963,7 +5963,7 @@
 
 			<control type="button" id="1003624">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDRecord2.png</texturefocus>
@@ -5971,14 +5971,14 @@
 			</control>
 			<control type="button" id="1003625">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDStopFO.png</texturefocus>
 				<texturenofocus>OSDStopNF.png</texturenofocus>
 			</control>
 			<control type="button" id="1003626">
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDVolumeMuteFO.png</texturefocus>
@@ -5987,11 +5987,19 @@
 			</control>
 			<control type="button" id="1003627">
 				<align>left</align>
-				<width>45</width>
+				<width>42</width>
 				<height>35</height>
 				<textcolor>grey3</textcolor>
 				<texturefocus>OSDPresetSettingsFO.png</texturefocus>
 				<texturenofocus>OSDPresetSettingsNF.png</texturenofocus>
+			</control>
+			<control type="button" id="1003631">
+				<align>left</align>
+				<width>42</width>
+				<height>35</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>OSDserviceFO.png</texturefocus>
+				<texturenofocus>OSDserviceNF.png</texturenofocus>
 			</control>
 		</control>
 	</include>
