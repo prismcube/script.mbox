@@ -492,6 +492,8 @@ E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 E_V1_2_APPLY_PIP = True
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 
+E_V1_4_MOUNT_MANAGER = True
+
 ############################ Global Function For GUI ############################
 
 
