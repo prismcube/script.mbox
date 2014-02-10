@@ -980,7 +980,7 @@ class DataCacheMgr( object ) :
 				channelDB = ElisChannelDB( )
 				if aKeyword or aInstanceLoad :
 					channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable, aKeyword )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', '', self.mSkip, self.mChannelListDBTable, aKeyword )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return chList

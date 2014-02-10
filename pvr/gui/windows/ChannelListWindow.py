@@ -1204,7 +1204,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
-				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', aKeyword )
+				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', '', aKeyword )
 				#LOG_TRACE('[ChannelList] All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
@@ -1212,7 +1212,7 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListSatellite[idxSub]
 					zappingName = self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand )
 					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '', aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '', '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
@@ -1220,7 +1220,7 @@ class ChannelListWindow( BaseWindow ) :
 					zappingName = self.mListCasList[idxSub].mName
 					caid = self.mListCasList[idxSub].mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '', aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '', '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
 			elif idxMain == E_SLIDE_MENU_FAVORITE :
@@ -1228,7 +1228,7 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListFavorite[idxSub]
 					zappingName = item.mGroupName
 					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
 			"""
