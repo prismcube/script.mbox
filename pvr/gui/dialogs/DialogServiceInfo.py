@@ -46,7 +46,7 @@ class DialogServiceInfo( BaseDialog ) :
 		self.getControl( CONTROL_ID_LABEL_TSID ).setLabel( '%s :' % MR_LANG( 'TSID' ) )
 		self.getControl( CONTROL_ID_LABEL_ONID ).setLabel( '%s :' % MR_LANG( 'ONID' ) )
 		self.getControl( CONTROL_ID_LABEL_SID ).setLabel( '%s :' % MR_LANG( 'SID' ) )
-		self.getControl( CONTROL_ID_LABEL_STRENTH ).setLabel( '%s :' % MR_LANG( 'STRENTH' ) )
+		self.getControl( CONTROL_ID_LABEL_STRENTH ).setLabel( '%s :' % MR_LANG( 'STRENGTH' ) )
 		self.getControl( CONTROL_ID_LABEL_QUALITY ).setLabel( '%s :' % MR_LANG( 'QUALITY' ) )
 
 		#value

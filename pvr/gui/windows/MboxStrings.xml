@@ -149,6 +149,7 @@
 	<string id="1149">Delete from approved repository</string>
 	<string id="1150">Add to approved repository</string>
 	<string id="1151">Skip zapping confirm</string>
+	<string id="1152">PROVIDER</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
