@@ -48,9 +48,7 @@ class NullWindow( BaseWindow ) :
 		self.mNewEPGAlarmEnabled = False
 		if GetSetting( 'DISPLAY_EVENT_LIVE' ).lower( ) == 'true'.lower( ) :
 			self.mNewEPGAlarmEnabled = True
-		if GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) == 'true' :
-			self.setProperty( 'ShowClock', 'true' )
-		LOG_TRACE('self.mNewEPGAlarmEnabled=%s' %self.mNewEPGAlarmEnabled )
+		self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
