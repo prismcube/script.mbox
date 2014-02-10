@@ -786,7 +786,9 @@ class DataCacheMgr( object ) :
 
 			elif mMode == ElisEnum.E_MODE_PROVIDER :
 				mProvider = self.mZappingMode.mProviderInfo.mProviderName
+				LOG_TRACE( '-----------------------------------1' )
 				tmpChannelList = self.Channel_GetListByProvider( mType, mMode, mSort, mProvider )
+				LOG_TRACE( '-----------------------------------2' )
 
 		else:
 			tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
@@ -945,7 +947,7 @@ class DataCacheMgr( object ) :
 				if satellite :
 					mName = self.GetFormattedSatelliteName( satellite.mLongitude, satellite.mBand )
 
-		LOG_TRACE( '--------------mname[%s]'% mName )
+		#LOG_TRACE( '--------------mname[%s]'% mName )
 		return mName
 
 
@@ -1333,7 +1335,7 @@ class DataCacheMgr( object ) :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				channel = channelDB.Channel_GetNumber( aNumber, '', aType )
+				channel = channelDB.Channel_GetNumber( aNumber, '', '', aType )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel
@@ -3139,7 +3141,7 @@ class DataCacheMgr( object ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
 
-		cacheChannel = self.mChannelListHashPIP.get(aChannel.mNumber, None)
+		cacheChannel = self.mChannelListHashPIP.get( aChannel.mNumber, None )
 		if cacheChannel == None :
 			# retry find end channel
 			if self.mChannelListPIP and len( self.mChannelListPIP ) > 0 :
@@ -3168,15 +3170,20 @@ class DataCacheMgr( object ) :
 
 	def PIP_GetByNumber( self, aNumber, aUseDB = False, aAllChannel = False ) :
 		favGroup = ''
+		provider = ''
 		currentMode = self.Zappingmode_GetCurrent( )
-		if not aAllChannel and currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
-			favGroup = currentMode.mFavoriteGroup.mGroupName
+		if not aAllChannel :
+			if currentMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				favGroup = currentMode.mFavoriteGroup.mGroupName
+			#elif currentMode.mMode == ElisEnum.E_MODE_PROVIDER :
+			#	provider = currentMode.mProviderInfo.mProviderName
+			#	LOG_TRACE( '------------------------------provider pip[%s %s]'% ( provider, aNumber ) )
 
 		if aUseDB :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB( )
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
-				channel = channelDB.Channel_GetNumber( aNumber, favGroup )
+				channel = channelDB.Channel_GetNumber( aNumber, favGroup, provider )
 				channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
 				channelDB.Close( )
 				return channel

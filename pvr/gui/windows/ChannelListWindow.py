@@ -1146,8 +1146,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aMenuIndex == E_SLIDE_MENU_PROVIDER :
 				if self.mListProvider :
-					for providerName in self.mListProvider :
-						testlistItems.append( xbmcgui.ListItem( '%s'% providerName ) )
+					for itemClass in self.mListProvider :
+						listItem = xbmcgui.ListItem( '%s'% itemClass.mProviderName )
+						testlistItems.append( listItem )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
@@ -1233,9 +1234,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif idxMain == E_SLIDE_MENU_PROVIDER :
 				if self.mListProvider :
-					zappingName = self.mListProvider[idxSub]
+					item = self.mListProvider[idxSub]
+					zappingName = item.mProviderName
 					self.mUserMode.mMode = ElisEnum.E_MODE_PROVIDER
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', zappingName, aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', item.mProviderName, aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByProvider] idx_Provider[%s] list_Provider[%s]'% ( idxSub, zappingName ) )
 
 
@@ -1424,10 +1426,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif zInfo_mode == ElisEnum.E_MODE_PROVIDER :
 				idx1 = E_SLIDE_MENU_PROVIDER
-				zInfo_name = self.mUserMode.mGroupName
+				zInfo_name = self.mUserMode.mProviderInfo.mProviderName
 				if self.mListProvider :
-					for providerName in self.mListProvider :
-						if zInfo_name == providerName :
+					for item in self.mListProvider :
+						if zInfo_name == item.mProviderName :
 							break
 						idx2 += 1
 
@@ -1543,7 +1545,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					elif self.mUserSlidePos.mMain == E_SLIDE_MENU_PROVIDER :
 						groupInfo = self.mListProvider[self.mUserSlidePos.mSub]
-						self.mLoadMode.mProviderInfo.mProviderName = groupInfo
+						self.mLoadMode.mProviderInfo = groupInfo
 						LOG_TRACE( '-------------------------------------save provider[%s]'% groupInfo )
 
 
@@ -1914,8 +1916,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
 			if self.mListProvider :
-				for providerName in self.mListProvider :
-					testlistItems.append( xbmcgui.ListItem( '%s'% providerName ) )
+				for item in self.mListProvider :
+					listItem = xbmcgui.ListItem( '%s'% item.mProviderName )
+					testlistItems.append( listItem )
 
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
