@@ -24,7 +24,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		self.SetActivate( True )
 		
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
+		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : UniCable' ) % ( tunerIndex + 1 ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
 			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
@@ -217,7 +217,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 		
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your UniCable system allows the transmission frequency to be protected by entering a PIN code' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddInputControl( E_Input01, MR_LANG( ' - Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), '%d' % self.mTempTunerFreq[self.mTunerIndex], MR_LANG( 'Select a frequency for tuner %d' ) % ( self.mTunerIndex + 1 ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 99999 )
 			self.AddInputControl( E_Input02, MR_LANG( ' - Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter a PIN code for tuner %d' ) % ( self.mTunerIndex + 1 ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
@@ -229,7 +229,7 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 			self.SetEnableControls( disableControls, False )
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your UniCable system allows the transmission frequency to be protected by entering a PIN code' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 1' ) )
 			self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Frequency' ), '%d' % self.mTempTunerFreq[0], MR_LANG( 'Select a frequency for tuner 1' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 99999 )
 			self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter a PIN code for tuner 1' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
