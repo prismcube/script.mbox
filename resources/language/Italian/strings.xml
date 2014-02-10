@@ -835,7 +835,7 @@
 	<string id="3326">Menu scorrevole</string>
 	<string id="3327">TV/Radio</string>
 	<string id="3328">Tune In</string>
-	<string id="3329">Tuner %d Config : OneCable</string>
+	<string id="3329">Tuner %d Config : Unicable</string>
 	<string id="3330">Tuner %d Codice PIN</string>
 	<string id="3331">Tuner 1 Codice PIN</string>
 	<string id="3332">Tuner 2 Codice PIN</string>
@@ -843,7 +843,7 @@
 	<string id="3334">Selezionare Frequenza del Tuner 1</string>
 	<string id="3335">Selezionare Frequenza del Tuner 2</string>
 	<string id="3336">Si prega di impostare un valore diverso per ogni sintonizzatore</string>
-	<string id="3337">Quando è impostato su 'On', il sistema OneCable consente la frequenza di trasmissione  protetta da PIN</string>
+	<string id="3337">Quando è impostato su 'On', il sistema UniCable consente la frequenza di trasmissione protetta da PIN</string>
 	<string id="3338">Selezionare un canale di trasmissione disponibile da SCR 0 a SCR 7 per sintonizzatore %d</string>
 	<string id="3339">Tuner %d SCR</string>
 	<string id="3340"> - Tuner %d Frequenza</string>
@@ -1120,10 +1120,10 @@
 	<string id="3611">Selezionare il satellite e transponder che si desidera eseguire la scansione</string>
 	<string id="3612">Ricerca tipo</string>
 	<string id="3613">Selezionare se si desidera eseguire la scansione liberi e codificati, solo liberi o criptati solo</string>
-	<string id="3614">Configurare le impostazioni iniziali per OneCable</string>
+	<string id="3614">Configurare le impostazioni iniziali per Unicable</string>
 	<string id="3615">Configurazione iniziale</string>
 	<string id="3616">Numero di satelliti</string>
-	<string id="3617">Selezionare il numero di satelliti per OneCable</string>
+	<string id="3617">Selezionare il numero di satelliti per UniCable</string>
 	<string id="3618">Premere il tasto OK per impostare</string>
 	<string id="3619">Selezionare il nome di satellite per satellite 1 prima</string>
 	<string id="3620">Impossibile modificare il nome del satellite</string>
@@ -1365,11 +1365,12 @@
 	<string id="3856">Sempre</string>
 	<string id="3857">Impostare limite est</string>
 	<string id="3858">Impostare limite ovest</string>
-	<string id="3859">Est</string>
-	<string id="3860">Ovest</string>
-	<string id="3861">Nord</string>
-	<string id="3862">Sud</string>
-	<string id="3863">Terminare</string>
-	<string id="3864">Vai alla pagina di configurazione ricerca canali</string>
-	<string id="3865">Ulteriore assistenza</string>
+	<string id="3859">UniCable</string>
+	<string id="3860">Est</string>
+	<string id="3861">Ovest</string>
+	<string id="3862">Nord</string>
+	<string id="3863">Sud</string>
+	<string id="3864">Terminare</string>
+	<string id="3865">Vai alla pagina di configurazione ricerca canali</string>
+	<string id="3866">Ulteriore assistenza</string>
 </strings>

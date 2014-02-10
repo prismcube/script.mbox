@@ -835,7 +835,7 @@
 	<string id="3326">Posunúť Menu</string>
 	<string id="3327">TV/Rádio</string>
 	<string id="3328">Naladiť</string>
-	<string id="3329">Tuner %d Config : OneCable</string>
+	<string id="3329">Tuner %d Config : Unicable</string>
 	<string id="3330">Tuner %d PIN kód</string>
 	<string id="3331">Tuner 1 PIN kód</string>
 	<string id="3332">Tuner 2 PIN kód</string>
@@ -843,7 +843,7 @@
 	<string id="3334">Vyberte frekvenciu pre tuner 1</string>
 	<string id="3335">Vyberte frekvenciu Tuner 2</string>
 	<string id="3336">Prosím nastavte inú hodnotu pre každý tuner</string>
-	<string id="3337">Ak zvolíte voľbu 'Zap' systém 'OneCable' umožnúje chrániť prenos frekvencie zadaním PIN kódu</string>
+	<string id="3337">Ak zvolíte voľbu 'Zap' systém 'UniCable' umožnúje chrániť prenos frekvencie zadaním PIN kódu</string>
 	<string id="3338">Vyberte dostupný prenosový kanál z SCR 0 po SCR 7 pre tuner %d</string>
 	<string id="3339">Tuner %d SCR</string>
 	<string id="3340"> - Tuner %d frekvencie</string>
@@ -1120,10 +1120,10 @@
 	<string id="3611">Vyberte satelit na ktorom TP chcete skenovať</string>
 	<string id="3612">Typ vyhľadávania</string>
 	<string id="3613">Vyberte, či chcete skenovať voľné a kódované alebo len voľné a len kódované</string>
-	<string id="3614">Počiatočné nastavenie pre OneCable</string>
+	<string id="3614">Počiatočné nastavenie pre Unicable</string>
 	<string id="3615">Počiatočné nastavenie</string>
 	<string id="3616">Počet satelitov</string>
-	<string id="3617">Vyberte počet satelitov pre OneCable</string>
+	<string id="3617">Vyberte počet satelitov pre UniCable</string>
 	<string id="3618">Stlačte OK tlačidlo pre nastavenie</string>
 	<string id="3619">Najskôr vyberte názov satelitu pre satelit 1</string>
 	<string id="3620">Nemôže zmeniť názov satelitu</string>
@@ -1365,11 +1365,12 @@
 	<string id="3856">Vždy</string>
 	<string id="3857">Nastavenie východného limitu</string>
 	<string id="3858">Nastavenie západného limitu</string>
-	<string id="3859">Západ</string>
-	<string id="3860">Východ</string>
-	<string id="3861">Sever</string>
-	<string id="3862">Juh</string>
-	<string id="3863">Dokončiť</string>
-	<string id="3864">Prejsť na stránku nastavenia vyhľadávania kanálov</string>
-	<string id="3865">Program je zmenený časovačom zobrazenia </string>
+	<string id="3859">Unicable</string>
+	<string id="3860">Západ</string>
+	<string id="3861">Východ</string>
+	<string id="3862">Sever</string>
+	<string id="3863">Juh</string>
+	<string id="3864">Dokončiť</string>
+	<string id="3865">Prejsť na stránku nastavenia vyhľadávania kanálov</string>
+	<string id="3866">Program je zmenený časovačom zobrazenia </string>
 </strings>

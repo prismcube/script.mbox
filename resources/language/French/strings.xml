@@ -835,7 +835,7 @@
 	<string id="3326">Menu coulissant</string>
 	<string id="3327">TV/Radio</string>
 	<string id="3328">Tune In</string>
-	<string id="3329">Configuration %d Tuner : OneCable</string>
+	<string id="3329">Configuration %d Tuner : Unicable</string>
 	<string id="3330">Code PIN Tuner %d</string>
 	<string id="3331">Code PIN Tuner 1</string>
 	<string id="3332">Code PIN Tuner 2</string>
@@ -843,7 +843,7 @@
 	<string id="3334">Choisissez une fréquence pour le Tuner 1</string>
 	<string id="3335">Choisissez une fréquence pour le Tuner 2</string>
 	<string id="3336">Veuillez définir une différente valeur pour chaque Tuner</string>
-	<string id="3337">When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code</string>
+	<string id="3337">When set to 'On', your UniCable system allows the transmission frequency to be protected by entering a PIN code</string>
 	<string id="3338">Choisissez an canal de transmission disponible de SCR 0 à SCR 7 pour le Tuner %d</string>
 	<string id="3339">Tuner %d SCR</string>
 	<string id="3340"> - Fréquence Tuner %d</string>
@@ -1120,10 +1120,10 @@
 	<string id="3611">Choisir le satellite dans lequel le transpondeur que vous voulez scanner est localisé</string>
 	<string id="3612">Type de recherche</string>
 	<string id="3613">Choisissez si vous voulez scanner les chaînes gratuites et cryptées, gratuites seulement ou cryptées seulement</string>
-	<string id="3614">Configurer les paramètres initiaux pour OneCable</string>
+	<string id="3614">Configurer les paramètres initiaux pour Unicable</string>
 	<string id="3615">Installation initiale</string>
 	<string id="3616">Nombre de satellites</string>
-	<string id="3617">Choisissez le nombre de satellites pour OneCable</string>
+	<string id="3617">Choisissez le nombre de satellites pour UniCable</string>
 	<string id="3618">Appuyez sur le bouton OK pour installer</string>
 	<string id="3619">Choisissez un nom de satellite pour le satellite 1 d'abord</string>
 	<string id="3620">Impossible de renommer le satellite</string>
@@ -1365,11 +1365,12 @@
 	<string id="3856">Toujours</string>
 	<string id="3857">Définir limite Est</string>
 	<string id="3858">Définir limite Ouest</string>
-	<string id="3859">Est</string>
-	<string id="3860">Ouest</string>
-	<string id="3861">Nord</string>
-	<string id="3862">Sud</string>
-	<string id="3863">Terminer</string>
-	<string id="3864">Aller à la page de configuration de recherche de canal</string>
-	<string id="3865">Changez de chaîne par l'affichage de la minuterie</string>
+	<string id="3859">UniCable</string>
+	<string id="3860">Est</string>
+	<string id="3861">Ouest</string>
+	<string id="3862">Nord</string>
+	<string id="3863">Sud</string>
+	<string id="3864">Terminer</string>
+	<string id="3865">Aller à la page de configuration de recherche de canal</string>
+	<string id="3866">Changez de chaîne par l'affichage de la minuterie</string>
 </strings>

@@ -1365,11 +1365,12 @@
 	<string id="3856">Zawsze</string>
 	<string id="3857">Ustaw limit wschodni</string>
 	<string id="3858">Ustaw limit zachodni</string>
-	<string id="3859">Wschód</string>
-	<string id="3860">Zachód</string>
-	<string id="3861">Północ</string>
-	<string id="3862">Południe</string>
-	<string id="3863">Zakończ</string>
-	<string id="3864">Przejdź do konfiguracji wyszukiwania kanałów</string>
-	<string id="3865">Kanał będzie przełączany według wskazań timera</string>
+	<string id="3859">Jeden kabel</string>
+	<string id="3860">Wschód</string>
+	<string id="3861">Zachód</string>
+	<string id="3862">Północ</string>
+	<string id="3863">Południe</string>
+	<string id="3864">Zakończ</string>
+	<string id="3865">Przejdź do konfiguracji wyszukiwania kanałów</string>
+	<string id="3866">Kanał będzie przełączany według wskazań timera</string>
 </strings>
