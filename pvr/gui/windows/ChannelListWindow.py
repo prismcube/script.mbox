@@ -1383,7 +1383,7 @@ class ChannelListWindow( BaseWindow ) :
 			zInfo_type = self.mUserMode.mServiceType
 
 			if zInfo_mode == ElisEnum.E_MODE_ALL :
-				idx1 = 0
+				idx1 = E_SLIDE_MENU_ALLCHANNEL
 				if zInfo_sort == ElisEnum.E_SORT_BY_NUMBER :
 					idx2 = 0
 				elif zInfo_sort == ElisEnum.E_SORT_BY_ALPHABET :
@@ -1394,7 +1394,7 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 = 0
 
 			elif zInfo_mode == ElisEnum.E_MODE_SATELLITE :
-				idx1 = 1
+				idx1 = E_SLIDE_MENU_SATELLITE
 				#ToDO : is matched by longitude,band ?
 				#zInfo_name = self.mUserMode.mSatelliteInfo.mName
 				zInfo_name = self.mDataCache.GetSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
@@ -1405,7 +1405,7 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_CAS :
-				idx1 = 2
+				idx1 = E_SLIDE_MENU_FTACAS
 				zInfo_name = self.mUserMode.mCasInfo.mName
 
 				for item in self.mListCasList :
@@ -1414,13 +1414,23 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_FAVORITE :
-				idx1 = 3
+				idx1 = E_SLIDE_MENU_FAVORITE
 				zInfo_name = self.mUserMode.mFavoriteGroup.mGroupName
 				if self.mListFavorite :
 					for item in self.mListFavorite :
 						if zInfo_name == item.mGroupName :
 							break
 						idx2 += 1
+
+			elif zInfo_mode == ElisEnum.E_MODE_PROVIDER :
+				idx1 = E_SLIDE_MENU_PROVIDER
+				zInfo_name = self.mUserMode.mGroupName
+				if self.mListProvider :
+					for providerName in self.mListProvider :
+						if zInfo_name == providerName :
+							break
+						idx2 += 1
+
 
 			self.mUserSlidePos.mMain = idx1
 			self.mUserSlidePos.mSub  = idx2
@@ -1531,9 +1541,11 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mUserSlidePos.mSub]
 						self.mLoadMode.mFavoriteGroup = groupInfo
 
-					#elif self.mUserSlidePos.mMain == E_SLIDE_MENU_PROVIDER :
-					#	groupInfo = self.mListFavorite[self.mUserSlidePos.mSub]
-					#	self.mLoadMode.mProviderGroup = groupInfo
+					elif self.mUserSlidePos.mMain == E_SLIDE_MENU_PROVIDER :
+						groupInfo = self.mListProvider[self.mUserSlidePos.mSub]
+						self.mLoadMode.mProviderInfo.mProviderName = groupInfo
+						LOG_TRACE( '-------------------------------------save provider[%s]'% groupInfo )
+
 
 					"""
 					LOG_TRACE( '[ChannelList] 1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \

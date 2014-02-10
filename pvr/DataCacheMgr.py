@@ -784,6 +784,10 @@ class DataCacheMgr( object ) :
 			elif mMode == ElisEnum.E_MODE_NETWORK :
 				return None
 
+			elif mMode == ElisEnum.E_MODE_PROVIDER :
+				mProvider = self.mZappingMode.mProviderInfo.mProviderName
+				tmpChannelList = self.Channel_GetListByProvider( mType, mMode, mSort, mProvider )
+
 		else:
 			tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
@@ -931,6 +935,9 @@ class DataCacheMgr( object ) :
 
 		elif zappingMode.mMode == ElisEnum.E_MODE_CAS :
 			mName = zappingMode.mCasInfo.mName
+
+		elif zappingMode.mMode == ElisEnum.E_MODE_PROVIDER :
+			mName = zappingMode.mProviderInfo.mProviderName
 
 		else :
 			if aChannel and aChannel.mError == 0 :
