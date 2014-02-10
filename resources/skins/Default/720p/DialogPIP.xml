@@ -168,7 +168,7 @@
 							<colordiffuse>DFFFFFFF</colordiffuse>
 						</control>
 						<control type="grouplist" id="4808000">
-							<posx>0</posx>
+							<posx>5</posx>
 							<posy>0</posy>
 							<width>370</width>
 							<height>50</height>
@@ -184,60 +184,68 @@
 							<!--visible>!Control.IsVisible(4803000)</visible-->
 							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
 							<defaultcontrol always="true">4808001</defaultcontrol>
+
 							<control type="button" id="4808001">
-								<width>35</width>
-								<height>35</height>
+								<width>36</width>
+								<height>36</height>
 								<texturefocus>OSDChannelUPFO.png</texturefocus>
 								<texturenofocus>OSDChannelUPNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808002">
-								<width>35</width>
-								<height>35</height>
+								<width>37</width>
+								<height>37</height>
 								<texturefocus>OSDChannelDownFO.png</texturefocus>
 								<texturenofocus>OSDChannelDownNF.png</texturenofocus>
 							</control>
-							<control type="button" id="4808003">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDAudioFO.png</texturefocus>
-								<texturenofocus>OSDAudioNF.png</texturenofocus>
-								<!--onclick>Mute</onclick-->
-							</control>
-							<control type="button" id="4808004">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDFullScreenFO.png</texturefocus>
-								<texturenofocus>OSDFullScreenNF.png</texturenofocus>
-							</control>
 							<control type="button" id="4808005">
-								<width>35</width>
-								<height>35</height>
+								<width>37</width>
+								<height>37</height>
 								<texturefocus>OSDMoveFO.png</texturefocus>
 								<texturenofocus>OSDMoveNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808006">
-								<width>35</width>
-								<height>35</height>
+								<width>37</width>
+								<height>37</height>
 								<texturefocus>OSDResizeFO.png</texturefocus>
 								<texturenofocus>OSDResizeNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808007">
-								<width>35</width>
-								<height>35</height>
+								<width>37</width>
+								<height>37</height>
 								<texturefocus>OSDResetFO.png</texturefocus>
 								<texturenofocus>OSDResetNF.png</texturenofocus>
 							</control>
+							<control type="button" id="4808020">
+								<width>10</width>
+								<height>10</height>
+								<texturefocus></texturefocus>
+								<texturenofocus></texturenofocus>
+								<enable>false</enable>
+							</control>
 							<control type="button" id="4808008">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDBackFO.png</texturefocus>
-								<texturenofocus>OSDBackNF.png</texturenofocus>
+								<width>37</width>
+								<height>37</height>
+								<texturefocus>OSDBackFO_R.png</texturefocus>
+								<texturenofocus>OSDBackNF_R.png</texturenofocus>
+							</control>
+							<control type="button" id="4808004">
+								<width>37</width>
+								<height>37</height>
+								<texturefocus>OSDFullScreenFO_G.png</texturefocus>
+								<texturenofocus>OSDFullScreenNF_G.png</texturenofocus>
+							</control>
+							<control type="button" id="4808003">
+								<width>37</width>
+								<height>37</height>
+								<texturefocus>OSDAudioFO_Y.png</texturefocus>
+								<texturenofocus>OSDAudioNF_Y.png</texturenofocus>
+								<!--onclick>Mute</onclick-->
 							</control>
 							<control type="button" id="4808009">
-								<width>35</width>
-								<height>35</height>
-								<texturefocus>OSDExitFO.png</texturefocus>
-								<texturenofocus>OSDExitNF.png</texturenofocus>
+								<width>37</width>
+								<height>37</height>
+								<texturefocus>OSDExitFO_B.png</texturefocus>
+								<texturenofocus>OSDExitNF_B.png</texturenofocus>
 							</control>
 						</control>
 						<!-- resize, move toggle -->

@@ -20,7 +20,6 @@ WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
 LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
 
 
-MININUM_KEYWORD_SIZE  		= 3
 ONE_DAY_SECONDS				= 3600*24
 
 

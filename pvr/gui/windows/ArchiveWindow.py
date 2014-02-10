@@ -50,8 +50,6 @@ CONTEXT_RENAME					= 6
 CONTEXT_START_MARK				= 7
 CONTEXT_CLEAR_MARK				= 8
 
-MININUM_KEYWORD_SIZE			= 3
-
 
 class ArchiveWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :

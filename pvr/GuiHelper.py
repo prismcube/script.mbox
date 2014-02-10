@@ -11,18 +11,20 @@ except Exception, e :
 import urlparse, urllib
 from subprocess import *
 
-gSettings = xbmcaddon.Addon( id="script.mbox" )
+#gSettings = xbmcaddon.Addon( id="script.mbox" )
 gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean', 'Slovak', 'Ukrainian' ]
 
 
 def GetSetting( aID ) :
-	global gSettings
-	return gSettings.getSetting( aID )
+	#global gSettings
+	#return gSettings.getSetting( aID )
+	return xbmcaddon.Addon( 'script.mbox' ).getSetting( aID )
 
 
 def SetSetting( aID, aValue ) :
-	global gSettings	
-	gSettings.setSetting( aID, aValue )
+	#global gSettings
+	#gSettings.setSetting( aID, aValue )
+	xbmcaddon.Addon( 'script.mbox' ).setSetting( aID, aValue )
 
 
 def RecordConflict( aInfo ) :

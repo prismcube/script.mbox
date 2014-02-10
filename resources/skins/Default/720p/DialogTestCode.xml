@@ -442,7 +442,7 @@
 					<posy>40</posy>
 					<width>780</width>
 					<height>521</height>
-					<onleft></onleft>
+					<onleft>1300102</onleft>
 					<onright></onright>
 					<onup>3050</onup>
 					<ondown>3050</ondown>
@@ -627,6 +627,473 @@
 			<height>720</height>
 			<texture>backgrounds/$INFO[Window.Property(RadioSCR)]</texture>
 		</control>
+
+
+			<!-- Main Menu -->
+			<control type="group" id="1300100">
+				<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1300110).HasFocus | ControlGroup(1309001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<include>DefaultWindowFade</include>
+				<control type="group">
+					<control type="image">
+	                    <posx>-500</posx>
+	                    <posy>0</posy>
+	                    <width>500</width>
+	                    <height>720</height>
+	                    <texture>black-back_noAlpha.png</texture>
+	                    <animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
+	                </control>
+	                <control type="image">
+	                    <posx>-12</posx>
+	                    <posy>0</posy>
+	                    <width>12</width>
+	                    <height>720</height>
+	                    <texture>MediaBladeSub_Part2.png</texture>
+	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
+	                </control>
+				</control>
+				<control type="button" id="1300101">
+					<description>Fake button for mouse control</description>
+					<posx>-250</posx>
+					<posy>0</posy>
+					<width>265</width>
+					<height>720</height>
+					<label>-</label>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<onclick>1300112</onclick>
+					<visible>true</visible>
+				</control>
+				<include>DefaultSideBladeLeft</include>
+				<control type="group" id="1300110">
+					<posx>-250</posx>
+					<posy>0</posy>
+					<control type="image">
+						<description>LOGO</description>
+						<posx>20</posx>
+						<posy>50</posy>
+						<width>220</width>
+						<height>80</height>
+						<aspectratio>keep</aspectratio>
+						<texture>Confluence_Logo.png</texture>
+					</control>
+					<control type="button" id="1300103">
+						<description>Sort by button</description>
+						<posx>0</posx>
+						<posy>115</posy>
+						<height>40</height>
+						<width>250</width>
+						<textoffsetx>10</textoffsetx>
+						<textwidth>215</textwidth>
+						<aligny>center</aligny>
+						<font>font13caps</font>
+						<texturefocus border="5">button-focus.png</texturefocus>
+						<texturenofocus>-</texturenofocus>
+						<pulseonselect>false</pulseonselect>
+						<onleft>1300049</onleft>
+						<onright>1300049</onright>
+						<onup>1300202</onup>
+						<ondown>Control.SetFocus(1300102,0)</ondown>
+					</control>
+					<control type="list" id="1300102">
+						<posx>0</posx>
+						<posy>150</posy>
+						<width>250</width>
+						<height>300</height>
+						<onleft>1300049</onleft>
+						<onright>1309001</onright>
+						<onup>1300103</onup>
+						<ondown>1300201</ondown>
+						<scrolltime>300</scrolltime>
+						<textcolor>grey3</textcolor>
+						<movement>10</movement>
+						<itemlayout height="40" width="255">
+							<control type="label">
+								<posx>10</posx>
+								<posy>21</posy>
+								<width>250</width>
+								<height>40</height>
+								<font>font13caps</font>
+								<textcolor>white</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout height="40" width="255">
+							<control type="image">
+								<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Control.HasFocus(1300102)]">conditional</animation>
+								<posx>0</posx>
+								<posy>21</posy>
+								<width>250</width>
+								<height>40</height>
+								<texture>button-focus.png</texture>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>21</posy>
+								<width>250</width>
+								<height>40</height>
+								<font>font13caps</font>
+								<align>left</align>
+								<aligny>center</aligny>
+								<textcolor>white</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="image">
+								<posx>30r</posx>
+								<posy>32</posy>
+								<width>18</width>
+								<height>18</height>
+								<texture>HomeHasSub.png</texture>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5)]</visible>
+							</control>
+						</focusedlayout>
+						<content>
+							<item id="1">
+								<label>SCRIPT1001</label>
+								<!--onclick>SendClick(1300700)</onclick-->
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+							<item id="2">
+								<label>SCRIPT1002</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+							<item id="3">
+								<label>SCRIPT1003</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+							<item id="4">
+								<label>SCRIPT1004</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+							<item id="5">
+								<label>SCRIPT1005</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+						</content>
+					</control>
+
+
+					<control type="grouplist" id="1300200">
+						<posx>0</posx>
+						<posy>400</posy>
+						<width>250</width>
+						<height>130</height>
+						<align>center</align>
+						<onleft>1300049</onleft>
+						<onright>1300049</onright>
+						<onup>Control.SetFocus(1300102,4)</onup>
+						<ondown>1300103</ondown>
+						<focusposition>113</focusposition>
+						<animation effect="fade" start="0" end="100" time="500">Visible</animation>
+						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
+						<control type="group">
+							<height>40</height>
+							<width>250</width>
+							<control type="button" id="1300201">
+								<posx>0</posx>
+								<posy>0</posy>
+								<height>40</height>
+								<width>250</width>
+								<textoffsetx>10</textoffsetx>
+								<textwidth>215</textwidth>
+								<aligny>center</aligny>
+								<font>font13caps</font>
+								<texturefocus border="5">button-focus.png</texturefocus>
+								<texturenofocus>-</texturenofocus>
+								<label>SCRIPT1029</label>
+								<pulseonselect>false</pulseonselect>
+								<onleft>1300049</onleft>
+								<onright>1300049</onright>
+								<onup>Control.SetFocus(1300102,4)</onup>
+								<ondown>1300202</ondown>
+								<onclick>1300049</onclick>
+							</control>
+						</control>
+						<control type="group">
+							<height>40</height>
+							<width>250</width>
+							<control type="button" id="1300202">
+								<posx>0</posx>
+								<posy>0</posy>
+								<height>40</height>
+								<width>250</width>
+								<textoffsetx>10</textoffsetx>
+								<textwidth>215</textwidth>
+								<aligny>center</aligny>
+								<font>font13caps</font>
+								<texturefocus border="5">button-focus.png</texturefocus>
+								<texturenofocus>-</texturenofocus>
+								<label>SCRIPT1009</label>
+								<pulseonselect>false</pulseonselect>
+								<onleft>1300049</onleft>
+								<onright>1309002</onright>
+								<onup>1300201</onup>
+								<ondown>1300103</ondown>
+								<onclick>right</onclick>
+							</control>
+							<control type="image">
+								<posx>220</posx>
+								<posy>11</posy>
+								<width>18</width>
+								<height>18</height>
+								<texture>HomeHasSub.png</texture>
+								<visible>Control.HasFocus(1300202) | ControlGroup(1300120).HasFocus</visible>
+							</control>
+						</control>
+					</control>
+
+
+
+					<!-- sub main (fav) -->
+					<control type="group" id="1309001">
+						<posx>-240</posx>
+						<posy>0</posy>
+						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus|Control.HasFocus(1300202)">conditional</animation>
+						<animation effect="slide" start="0,0" end="-500,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus">Conditional</animation>
+						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
+						<control type="list" id="1300112">
+							<posx>10</posx>
+							<posy>170</posy>
+							<width>230</width>
+							<height>430</height>
+							<align>center</align>
+							<onleft>1300102</onleft>
+							<onright>1300049</onright>
+							<onup>1300112</onup>
+							<ondown>1300112</ondown>
+							<pagecontrol>1300503</pagecontrol>
+							<scrolltime>200</scrolltime>
+							<visible>![Container(1300102).HasFocus(1) | Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
+							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
+							<itemlayout height="40" width="230">
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>230</width>
+									<height>41</height>
+								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
+								<control type="label">
+									<posx>10</posx>
+									<posy>0</posy>
+									<width>190</width>
+									<height>40</height>
+									<font>font12_title</font>
+									<textcolor>grey3</textcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+							</itemlayout>
+							<focusedlayout height="40" width="230">
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>230</width>
+									<height>41</height>
+									<texture border="0,2,0,2">MenuItemNF.png</texture>
+									<visible>!Control.HasFocus(1300112)</visible>
+								</control>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>230</width>
+									<height>41</height>
+									<texture border="0,2,0,2">MenuItemFO.png</texture>
+									<visible>Control.HasFocus(1300112)</visible>
+								</control>
+								<!-- is FastScan -->
+								<control type="image">
+									<posx>200</posx>
+									<posy>12</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+									<texture>IconFastScan.png</texture>
+								</control>
+								<control type="label">
+									<posx>10</posx>
+									<posy>0</posy>
+									<width>190</width>
+									<height>40</height>
+									<font>font12_title</font>
+									<textcolor>white</textcolor>
+									<selectedcolor>selected</selectedcolor>
+									<shadowcolor>ff000000</shadowcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+							</focusedlayout>
+						</control>
+
+						<!-- sub main 2 (mode) -->
+						<control type="grouplist" id="1309002">
+							<posx>10</posx>
+							<posy>90</posy>
+							<width>230</width>
+							<height>430</height>
+							<align>center</align>
+							<onleft>1300102</onleft>
+							<onright>1300049</onright>
+							<onup>1309002</onup>
+							<ondown>1309002</ondown>
+							<focusposition>113</focusposition>
+							<visible>!Control.HasFocus(1300103)</visible>
+							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
+							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
+							<control type="group">
+								<visible>Container(1300102).HasFocus(5) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
+								<control type="image">
+									<posx>190</posx>
+									<posy>0</posy>
+									<width>40</width>
+									<height>40</height>
+									<texture>MediaSubSet.png</texture>
+								</control>
+								<control type="radiobutton" id="1300113">
+									<posx>0</posx>
+									<posy>51</posy>
+									<width>230</width>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>SCRIPT1006</label>
+									<onleft>1300102</onleft>
+									<onright>1300049</onright>
+									<onup>1300114</onup>
+									<ondown>1300114</ondown>
+								</control>
+								<control type="radiobutton" id="1300114">
+									<posx>0</posx>
+									<posy>90</posy>
+									<width>230</width>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>SCRIPT1007</label>
+									<onleft>1300102</onleft>
+									<onright>1300049</onright>
+									<onup>1300113</onup>
+									<ondown>1300113</ondown>
+								</control>
+							</control>
+							<control type="group" id="1300120">
+								<posx>0</posx>
+								<posy>85</posy>
+								<visible>Control.HasFocus(1300202) | Control.HasFocus(1300121) | Control.HasFocus(1300122)</visible>
+								<control type="image">
+									<posx>190</posx>
+									<posy>0</posy>
+									<width>40</width>
+									<height>40</height>
+									<texture>MediaSubSet.png</texture>
+								</control>
+								<control type="radiobutton" id="1300121">
+									<posx>0</posx>
+									<posy>51</posy>
+									<width>230</width>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>Skip zapping confirm</label>
+									<onleft>1300202</onleft>
+									<onright>1300049</onright>
+									<onup>1300122</onup>
+									<ondown>1300122</ondown>
+								</control>
+								<control type="radiobutton" id="1300122">
+									<posx>0</posx>
+									<posy>90</posy>
+									<width>230</width>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>Search by AllChannels</label>
+									<onleft>1300202</onleft>
+									<onright>1300049</onright>
+									<onup>1300121</onup>
+									<ondown>1300121</ondown>
+									<visible>false</visible>
+								</control>
+							</control>
+						</control>
+						<!-- Scrollbar -->
+						<control type="scrollbar" id="1300503">
+							<posx>220</posx>
+							<posy>170</posy>
+							<width>20</width>
+							<height>401</height>
+							<visible>![Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
+							<include>DefaultWindowFade</include>
+							<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+							<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+							<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+							<textureslidernib>ScrollBarNib.png</textureslidernib>
+							<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+							<showonepage>false</showonepage>
+							<orientation>vertical</orientation>
+							<onleft>1300112</onleft>
+							<onright></onright>
+							<ondown>1300503</ondown>
+							<onup>1300503</onup>
+						</control>
+					</control>
+				</control>
+			</control>
+
+			<!-- fake button -->
+			<control type="button" id="1300700">
+				<label>EPG</label>
+				<onclick>-</onclick>
+				<visible>false</visible>
+			</control>
 
 	</controls>
 </window>

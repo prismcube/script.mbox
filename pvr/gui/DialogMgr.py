@@ -67,6 +67,7 @@ DIALOG_ID_PIP						= 34
 DIALOG_ID_BIG_SELECT				= 35
 DIALOG_ID_BACKUP_SETTINGS			= 36
 DIALOG_ID_ROOTFS_BACKUP				= 37
+DIALOG_ID_SERVICE_INFO				= 38
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -253,6 +254,11 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_ROOTFS_BACKUP :
 				from pvr.gui.dialogs.DialogRootfsBackup import DialogRootfsBackup
 				return DialogRootfsBackup( 'DialogRootfsBackup.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_SERVICE_INFO :
+				from pvr.gui.dialogs.DialogServiceInfo import DialogServiceInfo
+				return DialogServiceInfo( 'DialogServiceInfo.xml', self.scriptDir )
+
 
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode
