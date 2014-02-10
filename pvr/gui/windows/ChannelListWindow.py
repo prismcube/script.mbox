@@ -1231,14 +1231,13 @@ class ChannelListWindow( BaseWindow ) :
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
-			"""
 			elif idxMain == E_SLIDE_MENU_PROVIDER :
 				if self.mListProvider :
 					zappingName = self.mListProvider[idxSub]
 					self.mUserMode.mMode = ElisEnum.E_MODE_PROVIDER
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', zappingName, aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByProvider] idx_Provider[%s] list_Provider[%s]'% ( idxSub, zappingName ) )
-			"""
+
 
 		if aKeyword :
 			nameColumn = ' > '
@@ -1346,8 +1345,8 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
-			#elif aMode == ElisEnum.E_MODE_PROVIDER :
-			#	instanceList = self.mDataCache.Channel_GetListByProvider( aType, aMode, aSort, aProvider, aKeyword )
+			elif aMode == ElisEnum.E_MODE_PROVIDER :
+				instanceList = self.mDataCache.Channel_GetListByProvider( aType, aMode, aSort, aProvider, aKeyword )
 
 
 			if aKeyword :
@@ -1900,12 +1899,12 @@ class ChannelListWindow( BaseWindow ) :
 						listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
 
 					testlistItems.append( listItem )
-		"""
+
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
 			if self.mListProvider :
 				for providerName in self.mListProvider :
 					testlistItems.append( xbmcgui.ListItem( '%s'% providerName ) )
-		"""
+
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
 
