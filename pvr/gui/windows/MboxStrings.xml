@@ -148,6 +148,11 @@
 	<string id="1148">Show Logical Channel Number</string>
 	<string id="1149">Delete from approved repository</string>
 	<string id="1150">Add to approved repository</string>
+	<string id="1151">Otherwise it will restore after few seconds</string>
+	<string id="1152">Please select other OSD language to type different characters</string>
+	<string id="1152">Please press %s button to change keyboard language</string>
+	<string id="1152">Removable Device(%s)</string>
+	<string id="1153">Service Info</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
@@ -1361,4 +1366,12 @@
 	<string id="3855">Finish</string>
 	<string id="3856">Go to the channel search setup page</string>
 	<string id="3857">Channel is changed by view timer</string>
+	<string id="3858">VIDEO PID</string>
+	<string id="3859">AUDIO PID</string>
+	<string id="3860">PCR PID</string>
+	<string id="3861">TSID</string>
+	<string id="3862">ONID</string>
+	<string id="3863">SID</string>
+	<string id="3864">STRENTH</string>
+	<string id="3865">QUALITY</string>
 </strings>
