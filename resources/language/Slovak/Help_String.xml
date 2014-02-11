@@ -352,7 +352,7 @@
 			<width>880</width>
 			<height>470</height>
 		</content>
-		<content name="Všetky nainštalované doplnky budú automaticky aktualizované, ak sú v repozitároch dostupné nové verzie.[CR]Ak je automatická aktualizácia vypnutá, mali by ste v Manažéri doplnkov vidieť adresár.">
+		<content name="Všetky nainštalované doplnky budú automaticky aktualizované, ak sú v repozitároch dostupné nové verzie.[CR]Ak je automatická aktualizácia vypnutá, mali by ste v Manažéri doplnkov vidieť adresár 'Dostupné aktualizácie', v ktorom je možné aktualizovať doplnky jednotlivo.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
