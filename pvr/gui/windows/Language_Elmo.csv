@@ -13,7 +13,7 @@
 "Previous Channel";"Vorheriger Kanal";"Chaîne précédente";"Canale precedente";"Anterior canal";"Předchozí program";"Previous Channel";"Poprzedni kanał";"Previous Channel";"Предыдущий Канал";"Previous Channel";"Previous Channel";"Predchádzajúci program";"Попередній Канал";1012
 "Audio Selection";"Audio Auswahl ";"Sélection audio";;;"Výběr audia";;"Ścieżka dźwiękowa";;"Выбор Звука";;;"Výber audia";;1013
 "Locked";"Eingerastet";"Verrouillée";"Blocco";"Bloqueado";"Zamčený";"Locked";"Zablokowane";"Locked";"Заблокирован";"Locked";"Locked";"Zamknutý";"Заблокований";1014
-"Swap Screen";"Bildschirm wechseln ";;;;"Vymeniť obraz ";;;;;;;"Vymeniť obraz ";;1015
+"Swap Screen";"Bildschirm wechseln ";;;;"Vymeniť obraz ";;"Zamień obraz ";;;;;"Vymeniť obraz ";;1015
 "No EPG Information";"Keine EPG Informationen";"Aucune information EPG";"Nessuna informazione EPG";"No informacion EPG";"Žádné EPG informace";"No EPG Information";"Brak danych EPG";"No EPG Information";"Нет Данных ТВ Гида";"No EPG Information";"No EPG Information";"Žiadne EPG informácie";"Немає Даних ТВ Гіда";1016
 "Search Results";"Suchergebnis";"Chercher résultats";"Risultato della ricerca";"Resultados busqueda";"Výsledky vyhledávání";"Search Results";"Wyniki wyszukiwania";"Search Results";"Результаты Поиска";"Search Results";"Search Results";"Výsledky vyhľadávania";"Результати Пошуку";1017
 "TV Channels";"TV Kanäle";"Chaînes TV";"Canali TV";"Canales TV";"TV kanály";"TV Channels";"Kanały TV";"TV Channels";"ТВ Каналы";"TV Channels";"TV 채널";"TV kanály";"ТВ Канали";1018
@@ -98,7 +98,7 @@
 "Jump Rewind";"Zurück Springen";"Saut arrière";"Salto indietro";"Saltar atrás";"Skok vzad";"Jump Rewind";"Skok do tyłu";"Jump Rewind";"Прыг Назад";"Jump Rewind";"Jump Rewind";"Skok vzad";"Стрибок Назад";1098
 "Jump Forward";"Vor Springen";"Saut avant";"Salto avanti";"Saltar adelante";"Skok vpřed";"Jump Forward";"Skok do przodu";"Jump Forward";"Прыг Вперед";"Jump Forward";"Jump Forward";"Skok dopredu";"Стрибок Вперед";1099
 "Jump";"Springen";"Sauter";"Salto";"Saltar";"Skok";"Jump";"Skok";"Jump";"Прыжок";"Jump";"Jump";"Skok";"Стрибок";1100
-"Context Menu";"Kontextmenü ";;;;"Skryté menu ";;;;;;;"Skryté menu ";;1101
+"Context Menu";"Kontextmenü ";;;;"Skryté menu ";;"Menu kontekstowe ";;;;;"Skryté menu ";;1101
 "Update";"Update";"Mise à jour";"Aggiorna";"Actualizar";"Aktualizovat";"Update";"Aktualizacja";"Update";"Обновления";"Update";"Update";"Aktualizovať";"Оновлення";1103
 "No Signal";"Kein Signal";"Pas de signal";"Nessun Segnale";"Sin señal";"Žádný signál";"No Signal";"Brak sygnału";"No Signal";"Нет Сигнала";"No Signal";"No Signal";"Žiadny signál";"Немає Сигналу";1104
 "Scrambled";"Verschlüsselt";"Cryptée";"Codificato";"Codificado";"Kódovaný";"Scrambled";"Przekaz kodowany";"Scrambled";"Закодировано";"Scrambled";"Scrambled";"Kódovaný";"Закодовано";1105
@@ -136,24 +136,24 @@
 "Installing unverified addons may slow your box down";"Installation ungeprüfter Addons können Ihre Box verlangsamen";;;;"Instalace neověřených doplňků může zpomalit váš box ";;"Instalacja niezweryfikanych dodatków może spowolić pracę twojego odbiornika";;;;;"Inštalácia neoverených doplnkov môže spomaliť váš box";;1137
 "Press the left button on the remote to set focus to OK / Cancel";"Drücken Sie die Pfeil Taste nach Links auf der Fernbedienung, um auf OK / Abbrechen zu gelangen";;;;"Stiskněte šipku doleva na dálkovém ovladači pro potvrzení OK / Zrušit ";;"Naciśnij lewy przycisk na pilocie, aby ustawić fokus OK / Anuluj";;;;;"Stlačte šípku doľava na diaľkovom ovládači pre potvrdenie OK / Zrušiť";;1138
 "Extra Options";"Extra Optionen";;;;"Extra možnosti ";;"Dodatkowe opcje";;;;;"Extra možnosti";;1139
-"Show RSS on Main Menu";"RSS im Hauptmenü anzeigen";;;;"Ukázat RSS v hlavním menu ";;;;;;;"Ukázať RSS v Hlavnom menu";;1140
-"Apply Instant Zapping in Channel List";"Übernehmen der Aktuellen Zapping Kanalliste";;;;"Rychlé přepnutí v seznamu programů ";;;;;;;"Rýchle prepnutie v zozname programov";;1141
-"Show Clock on Live Screen";"Uhrzeit auf dem Live-Bildschirm anzeigen";;;;"Zobrazit hodiny na obrazovce ";;;;;;;"Zobraziť hodiny na obrazovke";;1142
-"Show Clock on Front Panel Display";"Uhrzeit auf Frontdisplay anzeigen";;;;"Zobrazit hodiny na předním panelu ";;;;;;;"Zobraziť hodiny na prednom panely";;1143
-"Show Next EPG Notification";"nächste EPG Benachrichtigung anzeigen";;;;"Zobrazit infobar při změně EPG události ";;;;;;;"Zobraziť infobar pri zmene EPG udalosti";;1144
-"Show Extend EPG in Channel List";"EPG Übersicht erweitern in der Kanalliste";;;;"Zobrazit rozšířené EPG v seznamu programů ";;;;;;;"Zobraziť rozšírené EPG v zozname programov";;1145
-"Appearance";"Aussehen";;;;"Vzhled ";;;;;;;"Vzhľad";;1146
-"To fix an empty repository or any other problems, try Force refresh in the context menu";"Um eine leere Repository oder andere Probleme zu beheben, erzwingen Sie eine aktualisieren im Kontextmenü";;;;"Pokud je repozitář prázdný, nebo jiný problém, vyzkoušejte vynutit obnovu ve skrytém menu ";;;;;;;"Ak je repozitár prázdny, alebo iný problém, vyskúšajte vynútiť obnovu v skrytom menu";;1147
-"Show Logical Channel Number";"Logische Sendernummern Anzeigen";;;;"Zapnout logické číslování (LCN)";;;;;;;"Zapnúť logické číslovanie (LCN)";;1148
-"Delete from approved repository";;;;;;;;;;;;;;1149
-"Add to approved repository";;;;;;;;;;;;;;1150
-"Skip zapping confirm";;;;;;;;;;;;;;1151
-"PROVIDER";;;;;;;;;;;;;;1152
-"Service Info";;;;;;;;;;;;;;1153
-"Otherwise it will restore after few seconds";;;;;;;;;;;;;;1154
-"Please select other OSD language to type different characters";;;;;;;;;;;;;;1155
-"Please press %s button to change keyboard language";;;;;;;;;;;;;;1156
-"Removable Device(%s)";;;;;;;;;;;;;;1157
+"Show RSS on Main Menu";"RSS im Hauptmenü anzeigen";;;;"Ukázat RSS v hlavním menu ";;"Pokaż RSS w menu głównym";;;;;"Ukázať RSS v Hlavnom menu";;1140
+"Apply Instant Zapping in Channel List";"Übernehmen der Aktuellen Zapping Kanalliste";;;;"Rychlé přepnutí v seznamu programů ";;"Zastosuj szybkie przełączanie listy kanałów";;;;;"Rýchle prepnutie v zozname programov";;1141
+"Show Clock on Live Screen";"Uhrzeit auf dem Live-Bildschirm anzeigen";;;;"Zobrazit hodiny na obrazovce ";;"Pokaż zegar w trybie oglądania";;;;;"Zobraziť hodiny na obrazovke";;1142
+"Show Clock on Front Panel Display";"Uhrzeit auf Frontdisplay anzeigen";;;;"Zobrazit hodiny na předním panelu ";;"Pokaż zegar na wyświetlaczu odbiornika";;;;;"Zobraziť hodiny na prednom panely";;1143
+"Show Next EPG Notification";"nächste EPG Benachrichtigung anzeigen";;;;"Zobrazit infobar při změně EPG události ";;"Pokaż infobar podczas zmiany programów";;;;;"Zobraziť infobar pri zmene EPG udalosti";;1144
+"Show Extend EPG in Channel List";"EPG Übersicht erweitern in der Kanalliste";;;;"Zobrazit rozšířené EPG v seznamu programů ";;"Pokaż rozszerzone EPG w liście kanałów";;;;;"Zobraziť rozšírené EPG v zozname programov";;1145
+"Appearance";"Aussehen";;;;"Vzhled ";;"Wygląd";;;;;"Vzhľad";;1146
+"To fix an empty repository or any other problems, try Force refresh in the context menu";"Um eine leere Repository oder andere Probleme zu beheben, erzwingen Sie eine aktualisieren im Kontextmenü";;;;"Pokud je repozitář prázdný, nebo jiný problém, vyzkoušejte vynutit obnovu ve skrytém menu ";;"Aby naprawić puste repozytorium, lub w przypadku wystąpienia innych problemów, odśwież wtyczkę w menu kontekstowym";;;;;"Ak je repozitár prázdny, alebo iný problém, vyskúšajte vynútiť obnovu v skrytom menu";;1147
+"Show Logical Channel Number";"Logische Sendernummern Anzeigen";;;;"Zapnout logické číslování (LCN)";;"Pokaż LCN (logiczną numerację kanałów)";;;;;"Zapnúť logické číslovanie (LCN)";;1148
+"Delete from approved repository";;;;;;;"Usuń z zatwierdzonego repozytorium";;;;;;;1149
+"Add to approved repository";;;;;;;"Dodaj do zatwierdzonego repozytorium";;;;;;;1150
+"Skip zapping confirm";;;;;;;"Pomiń potwierdzanie podczas zappingu";;;;;;;1151
+"PROVIDER";;;;;;;"OPERATOR";;;;;;;1152
+"Service Info";;;;;;;"Informacje serwisowe";;;;;;;1153
+"Otherwise it will restore after few seconds";;;;;;;"W przeciwnym razie zostanie przywrócony po kilku sekundach";;;;;;;1154
+"Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;;;1155
+"Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;;;1156
+"Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;;;1157
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -640,8 +640,8 @@
 "High Frequency";"LNB-High-Frequenz";"Haute fréquence";"Frequenza Alta";"Frecuencia LNB Alta";"Vysoká frekvence";"Hoge frequentie van LNB";"Pasmo górne";"LNB-High frekansı";"Высокая частота";"High Frequency";"High Frequency";"Vysoká frekvencia";"Висока частота";3132
 "Switch Frequency";"LNB-Grenzfrequenz";"Changer la fréquence";"Frequenza Switch";"Límite Frecuencia LNB";"Frekvence přepínání";"Grensfrequentie van LNB";"Częstotliwość przełączania";"LNB sınır frekansı";"Частота переключения";"Switch Frequency";"Switch Frequency";"Frekvencia prepínania";"Частота перемикання";3133
 "Edit Timer";"Timer bearbeiten";"Editer le minuteur";"Edita Timer";"Editar temporizador";"Upravit časovač";"Edit Timer";"Edytuj timer";"Edit Timer";"Редактировать Таймер";"Edit Timer";"Edit Timer";"Upraviť časovač";"Редагувати Таймер";3134
-"Record";"Aufnehmen";;;;"Nahrát ";;;;;;;"Nahrať";;3135
-"Timer Mode";"Timer Modus";;;;"Mód časovače";;;;;;;"Mód časovača";;3136
+"Record";"Aufnehmen";;;;"Nahrát ";;"Nagrywanie";;;;;"Nahrať";;3135
+"Timer Mode";"Timer Modus";;;;"Mód časovače";;"Tryb timera";;;;;"Mód časovača";;3136
 "View";"Sehen";"Visualiser";"Visualizza";"Ver";"Zobrazit";"View";"Widok";"View";"Просмотр";"View";"View";"Zobraziť";"Перегляд";3137
 "Recording";"Aufnahme";"Enregistrement en cours";"Registrazione";"Grabando";"Nahrávání";"Recording";"Nagrywanie";"Recording";"Запись";"Recording";"Recording";"Nahrávanie";"Запис";3138
 "Select Channel";"Sender Wählen";"Choisir une chaîne";"Selezionare Il Canale";"Seleccionar canal";"Vyberte kanál";"Select Channel";"Wybierz kanał";"Select Channel";"Выбор Канала";"Select Channel";"Select Channel";"Vyberte kanál";"Вибір Каналу";3139
@@ -656,14 +656,14 @@
 "Apply";"Anwenden";"Appliquer";"Applica";"Aplicar";"Aplikovat";"Apply";"Zastosuj";"Apply";"Применить";"Apply";"Apply";"Aplikovať";"Застосувати";3148
 "Switch to East";"Nach Osten wechseln";"Changer à Est";"Muovi a East";"Cambiar al Este";"Přepnout na východ";"Switch to East";"Przełącz na wschód";"Switch to East";"Направление Восток";"Switch to East";"Switch to East";"Prepnúť na východ";"Напрямок Схід";3149
 "Switch to West";"Nach Westen wechseln";"Changer à Ouest";"Muovi a Ovest";"Cambiar al Oeste";"Přepnout na západ";"Switch to West";"Przełącz na zachód";"Switch to West";"Направление Запад";"Switch to West";"Switch to West";"Prepnúť na západ";"Напрямок Захід";3150
-"VIDEO PID";;;;;;;;;;;;;;3151
-"AUDIO PID";;;;;;;;;;;;;;3152
-"PCR PID";;;;;;;;;;;;;;3153
-"TSID";;;;;;;;;;;;;;3154
-"ONID";;;;;;;;;;;;;;3155
-"SID";;;;;;;;;;;;;;3156
-"STRENGTH";;;;;;;;;;;;;;3157
-"QUALITY";;;;;;;;;;;;;;3158
+"VIDEO PID";;;;;;;"VIDEO PID";;;;;;;3151
+"AUDIO PID";;;;;;;"AUDIO PID";;;;;;;3152
+"PCR PID";;;;;;;"PCR PID";;;;;;;3153
+"TSID";;;;;;;"TSID";;;;;;;3154
+"ONID";;;;;;;"ONID";;;;;;;3155
+"SID";;;;;;;"SID";;;;;;;3156
+"STRENGTH";;;;;;;"SIŁA SYGNAŁU";;;;;;;3157
+"QUALITY";;;;;;;"JAKOŚĆ";;;;;;;3158
 "XBMC Addons and Userdata";"XBMC Addons und Benutzerdaten";;;;"XBMC doplňky a uživatelská data ";;"Dodatki XBMC i dane użytkownika";;;;;"XBMC doplnky a užívateľské dáta";;3159
 "STB Configuration";"STB Konfiguration";;;;"Nastavení boxu ";;"Ustawienia odbiornika";;;;;"Nastavenie boxu";;3160
 "Select Data To Be Backup ( Optional )";"Wählen Sie die Daten aus für ein Backup (optional)";;;;"Vybrat data do zálohy (volitelné)";;"Wybierz dane przeznaczone do wykonania kopii zapasowej";;;;;"Vybrať dáta do zálohy (voliteľné)";;3161
@@ -817,7 +817,7 @@
 "Skipping all channels is not allowed";"Überspringen aller Kanäle ist nicht erlaubt";"Sauter tous les canaux n'est pas autorisé";"Skipping all channels is not allowed";"Omitir todos los canales que no están permitidos";"Přeskočení všech kanálů není povoleno";"Skipping all channels is not allowed";"Pomijanie wszystkich kanałów nie%n jest dozwolone";"Skipping all channels is not allowed";"Пропуск всех каналов не допускается";"Skipping all channels is not allowed";"Skipping all channels is not allowed";"Preskočenie všetkých kanálov nie je povolené";"Skipping all channels is not allowed";3309
 "Are you sure you want to delete the channels%s including currently recording or reserved?";"Sind Sie sicher dass Sie den Sender%s inkl. laufender Aufnahmen oder Timer löschen wollen?";"Etes vous sur de vouloir supprimer les chaînes%s incluant ceux en cours d'enregistrement ou réservées?";"Sei sicuro di voler eliminare il canale%s tra cui in fase di registrazione o riservati?";"¿Está seguro que desea eliminar los canales%s incluidos los que actualmente grabando o los reservados?";"Jste si jisti, že chcete smazat programy%s, včetně aktuální nahrávky nebo rezervace?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Czy na pewno chcesz usunąć kanały wliczając%s aktualnie nagrywane lub z rezerwacją?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Уверены что хотите удалить каналы%s включая текущие записи и таймеры?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Ste si istí, že chcete zmazať programy%s, vrátane aktuálnej nahrávky alebo rezervácie?";"Впевнені що хочете видалити канали%s включаючи поточні записи і таймери?";3310
 "Delete Channels";"Kanäle löschen";"Supprimer les chaînes";"Elimina Canali";"Borrar canales";"Odstranění kanálů";"Delete Channels";"Usuń kanały";"Delete Channels";"Удалить Каналы";"Delete Channels";"Delete Channels";"Odstránenie kanálov";"Видалити Канали";3311
-"Insert";;;;;;;;;;;;;;3312
+"Insert";;;;;;;"Wstaw ";;;;;;;3312
 "Add channels to this group";"Kanäle zu dieser Gruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo";"Přidat k této oblíbené skupině";"Add channels to this group";"Dodaj kanały do tej grupy";"Add channels to this group";"Добавить в Эту Группу Любимых";"Add channels to this group";"Add channels to this group";"Pridať k tejto obľúbenej skupine";"Додати до групи улюблених";3313
 "Save and exit";"Sichern und verlassen";"Enregistrer et quitter";"Salvare e uscire";"Salvar y salir";"Uložit a opustit";"Save and exit";"Zapisz i wyjdź";"Save and exit";"Сохранить и выйти";"Save and exit";"Save and exit";"Uložiť a opustiť";"Зберегти і вийти";3314
 "Add Channels to This Favorite Group";"Kanäle zu dieser Favoritengruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo favorito";"Přidat kanály do této favoritní skupiny";"Add Channels to This Favorite Group";"Dodaj kanały do tej grupy ulubionych";"Add Channels to This Favorite Group";"Добавить в Эту Группу Любимых";"Add Channels to This Favorite Group";"Add Channels to This Favorite Group";"Pridať kanály do tejto favoritnej skupiny";"Add Channels to This Favorite Group";3315
@@ -1070,8 +1070,8 @@
 "Playback Banner Time";"Wiedergabeinfo Banner Zeit";"Temps de lecture bannière";"Tempo Playback Banner";"Tiempo del banner reproducción";"Čas zobrazení Přehrávání";"Playback Banner Time";"Czas wyświetlania bannera informacyjnego przy odtwarzaniu";"Playback Banner Time";"Время Показа Инфопанели Воспроизведения";"Playback Banner Time";"Playback Banner Time";"Čas Bannera Prehrávania";"Час Показу інфопанелі Відтворення";3562
 "Set the time for the playback info to be displayed on the screen";"Stellen Sie die Zeit für das Wiedergabeinfo Banner ein, die auf dem Bildschirm angezeigt werden soll";"Définir l'heure des informations du playback qui seront affichées sur l'écran";"Impostare il tempo per la riproduzione da visualizzare sullo schermo";"Establezca el tiempo para que la información de reproducción que se mostrará en la pantalla";"Nastavte délku zobrazení info banneru při přehrávání";"Set the time for the playback info to be displayed on the screen";"Ustaw czas, przez który wyświetlany będzie banner informacyjny przy odtwarzaniu multimediów";"Set the time for the playback info to be displayed on the screen";"Задать время отображения инфопанели после начала воспроизведения";"Set the time for the playback info to be displayed on the screen";"Set the time for the playback info to be displayed on the screen";"Nastavte dĺžku zobrazenia info bannera pri prehrávaní";"Задати час відображення інфопанелі після початку відтворення";3563
 "When set to 'On', the hard drive is turned off when the system goes into active standby mode";"Wenn auf 'On' gesetzt ist, wird die Festplatte ausgeschaltet, wenn das System in den aktiven Standby-Modus wechselt";"Lorsque la valeur est sur 'On', le disque dur est désactivé quand le système passe en mode de veille active";;;"Pokud je nastaveno 'Zap', harddisk se uspí po vypnutí systému do aktivního standby režimu";;"Po ustawieniu na 'On', dysk twardy zostanie wyłączony po przejściu systemu w tryb czuwania aktywnego";;"При установке в 'Вкл', жесткий диск будет отключаться при переходе системы в режим ожидания";;;"Ak je nastavené 'Zap', harddisk sa uspí po vypnutí systému do aktívneho standby režimu";;3564
-"Advanced Options";"Erweiterte Optionen";;;;"Rozšířené možnosti ";;;;;;;"Rozšírené možnosti";;3565
-"Set the advanced preferences that can customize the box to your specific needs";"Erweiterte Optionen einstellen um Ihren Receiver Ihren bedürfnissen anzupassen";;;;"Nastavit rozšířené přednosti, které přizpůsobí box dle vašich potřeb";;;;;;;"Nastaviť rozšírené prednosti, ktoré prispôsobia box podľa vašich potrieb";;3566
+"Advanced Options";"Erweiterte Optionen";;;;"Rozšířené možnosti ";;"Opcje zaawansowane";;;;;"Rozšírené možnosti";;3565
+"Set the advanced preferences that can customize the box to your specific needs";"Erweiterte Optionen einstellen um Ihren Receiver Ihren bedürfnissen anzupassen";;;;"Nastavit rozšířené přednosti, které přizpůsobí box dle vašich potřeb";;"Wybierz opcje zaawansowane, aby ustawić odbiornik według własnych potrzeb";;;;;"Nastaviť rozšírené prednosti, ktoré prispôsobia box podľa vašich potrieb";;3566
 "Adjust notification frequency for firmware update";"Stellen Sie die Benachrichtigungshäufigkeit der Firmware-Updates ein";"Régler la fréquence de notification de mise à jour firmware";"Regolare la frequenza di notifica per l'aggiornamento del firmware";"Ajustar la frecuencia con que se notifica actualizaciones del firmware";"Upravit frekvenci pro aktualizaci firmwaru";"Adjust notification frequency for firmware update";"Dostosuj częstotliwość powiadamiania o dostępności nowej wersji oprogramowania";"Adjust notification frequency for firmware update";"Настройте частоту уведомления об обновлении софта";"Adjust notification frequency for firmware update";"Adjust notification frequency for firmware update";"Upraviť frekvenciu pre aktualizáciu firmvéru";"Налаштуйте частоту повідомлення про оновлення софта";3567
 "Update Notification";"Update-Benachrichtigung";"Notification de mise à jour";"Notifica aggiornamento";"Notificación de actualizacion";"Aktualizace upozornění";"Update Notification";"Powiadomienie o aktualizacji";"Update Notification";"Уведомление об обновлении";"Update Notification";"Update Notification";"Aktualizácia upozornenia";"Повідомлення про оновлення";3568
 "Now connecting";"Jetzt verbinden";"Connexion en cours";"Connesso";"Conectando ahora";"Připojování";"Now connecting";"Trwa łączenie…";"Now connecting";"Сейчас подключение";"Now connecting";"Now connecting";"Pripájanie";"Зараз підключення";3569
