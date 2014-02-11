@@ -2570,6 +2570,18 @@ Search for window name
 							<label>SCRIPT1041</label>
 							<visible>Control.HasFocus(1400706)</visible>
 						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<width>400</width>
+							<height>28</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>SCRIPT1153</label>
+							<visible>Control.HasFocus(1003631)</visible>
+						</control>
 					</control>
 
 		<!-- button control -->

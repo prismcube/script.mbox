@@ -19,7 +19,7 @@
 				<posx>25</posx>
 				<posy>15</posy>
 				<control type="label" id="400">
-					<description>Video pid</description>
+					<description>Video PID</description>
 					<posx>30</posx>
 					<posy>30</posy>
 					<font>font13</font>
@@ -28,7 +28,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="401">
-					<description>Audio pid</description>
+					<description>Audio PID</description>
 					<posx>30</posx>
 					<posy>60</posy>
 					<font>font13</font>
@@ -37,7 +37,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="402">
-					<description>pcr pid</description>
+					<description>PCR PID</description>
 					<posx>30</posx>
 					<posy>90</posy>
 					<font>font13</font>
@@ -73,7 +73,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="500">
-					<description>strenth</description>
+					<description>Strength</description>
 					<posx>30</posx>
 					<posy>210</posy>
 					<font>font13</font>
@@ -82,7 +82,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="501">
-					<description>quality</description>
+					<description>Quality</description>
 					<posx>30</posx>
 					<posy>240</posy>
 					<font>font13</font>
@@ -96,7 +96,7 @@
 				<posx>400</posx>
 				<posy>15</posy>
 				<control type="label" id="4000">
-					<description>Video pid</description>
+					<description>Video PID</description>
 					<posx>30</posx>
 					<posy>30</posy>
 					<font>font13</font>
@@ -105,7 +105,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="4001">
-					<description>Audio pid</description>
+					<description>Audio PID</description>
 					<posx>30</posx>
 					<posy>60</posy>
 					<font>font13</font>
@@ -114,7 +114,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="4002">
-					<description>pcr pid</description>
+					<description>PCR PID</description>
 					<posx>30</posx>
 					<posy>90</posy>
 					<font>font13</font>
@@ -150,7 +150,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="5000">
-					<description>strenth</description>
+					<description>Strength</description>
 					<posx>30</posx>
 					<posy>210</posy>
 					<font>font13</font>
@@ -159,7 +159,7 @@
 					<aligny>center</aligny>
 				</control>
 				<control type="label" id="5001">
-					<description>quality</description>
+					<description>Quality</description>
 					<posx>30</posx>
 					<posy>240</posy>
 					<font>font13</font>
