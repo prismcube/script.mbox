@@ -1892,7 +1892,7 @@ Search for window name
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>PROVIDER</label>
+								<label>SCRIPT1152</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
