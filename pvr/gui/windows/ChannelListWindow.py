@@ -2696,7 +2696,7 @@ class ChannelListWindow( BaseWindow ) :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
 						favType = self.GetServiceTypeByFavoriteGroup( groupName )
-						if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+						if favType > ElisEnum.E_SERVICE_TYPE_RADIO and self.mDataCache.Favorite_GetLCN( groupName ) :
 							moveNum = '%s'% moveList[0].mPresentationNumber
 							if idxFirst > 0 :
 								#iChannel = self.mDataCache.Channel_GetByNumber( self.mNewChannelList[idxFirst], True )
@@ -3398,7 +3398,7 @@ class ChannelListWindow( BaseWindow ) :
 				groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				if groupName :
 					favType = self.GetServiceTypeByFavoriteGroup( groupName )
-					if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+					if favType > ElisEnum.E_SERVICE_TYPE_RADIO and self.mDataCache.Favorite_GetLCN( groupName ) :
 						LOG_TRACE( 'FastScanGroup is press OK after insert LCN number' )
 						return
 

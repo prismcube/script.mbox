@@ -972,6 +972,22 @@ class DataCacheMgr( object ) :
 			return self.mListFavorite
 
 
+	def Favorite_GetLCN( self, aFavGroup = '' ) :
+		if not aFavGroup :
+			return None
+
+		useLCN = False
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB( )
+			isLCN = channelDB.Favorite_GetLCN( aFavGroup )
+			channelDB.Close( )
+
+			if isLCN and isLCN[0] == 1 :
+				useLCN = True
+
+		return useLCN
+
+
 	def Provider_GetList( self, aTemporaryReload = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
