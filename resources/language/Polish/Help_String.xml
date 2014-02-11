@@ -148,7 +148,7 @@
 			<width>888</width>
 			<height>470</height>
 		</content>
-		<content name="PIP (obraz w obrazie) jest funkcj?, ktora pozwala na ogl?danie dwoch programow jednocze?nie.[CR]Kilka porad, o ktorych nale?y pami?ta? podczas korzystania z PIP.[CR][CR]- W┅?cz funkcj? PIP, wciskaj?c przycisk niebieski na pilocie; powinno pojawi? si? ma┅e okno w rogu ekranu.[CR]- Zmie? kana┅ w oknie PIP, naciskaj?c przyciski numeryczne na pilocie, po wcze?niejszym w┅?czeniu Num Lock.[CR]- D?wi?k jest dost?pny tylko z g┅ownego ekranu podgl?du.[CR]- Dost?p do PIP mo?na rownie? uzyska? podczas ogl?dania wideo w XBMC.">
+		<content name="PIP (obraz w obrazie) jest funkcj膮, kt贸ra pozwala na ogl膮danie dw贸ch program贸w jednocze艣nie.[CR]Kilka porad, o kt贸rych nale偶y pami臋ta膰 podczas korzystania z PIP.[CR][CR]- W艂膮cz funkcj臋 PIP, wciskaj膮c przycisk niebieski na pilocie; powinno pojawi膰 si臋 ma艂e okno w rogu ekranu.[CR]- Zmie艅 kana艂 w oknie PIP, naciskaj膮c przyciski numeryczne na pilocie, po wcze艣niejszym w艂膮czeniu Num Lock.[CR]- D藕wi臋k jest dost臋pny tylko z g艂贸wnego ekranu podgl膮du.[CR]- Dost臋p do PIP mo偶na r贸wnie偶 uzyska膰 podczas ogl膮dania wideo w XBMC.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
@@ -344,7 +344,7 @@
 		</content>
 	</page>
 
-	<page number="20" title="Aktualizacja dodatkow" location="(MEDIA > MENAD?ER DODATKOW > WCI?NIJ LEWY LUB PRAWY PRZYCISK)">
+	<page number="20" title="Aktualizacja dodatk贸w" location="(MEDIA > MENAD呕ER DODATK脫W > WCI艢NIJ LEWY LUB PRAWY PRZYCISK)">
 		<content name="help/update_addons.png">
 			<type>image</type>
 			<posx>210</posx>
@@ -352,7 +352,7 @@
 			<width>880</width>
 			<height>470</height>
 		</content>
-		<content name="Wszystkie zainstalowane dodatki b?d? automatycznie aktualizowane w przypadku pojawienia sie nowych wersji.[CR]Je?eli Automatyczna aktualizacja jest wy┅?czona, zobacz w menad?erze dodatkow czy dost?pne s? aktualizacje. Je?eli tak, to zainstaluj je r?cznie.">
+		<content name="Wszystkie zainstalowane dodatki b臋d膮 automatycznie aktualizowane w przypadku pojawienia sie nowych wersji.[CR]Je偶eli Automatyczna aktualizacja jest wy艂膮czona, zobacz w menad偶erze dodatk贸w czy dost臋pne s膮 aktualizacje. Je偶eli tak, to zainstaluj je r臋cznie.">
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
