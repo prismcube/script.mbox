@@ -1365,11 +1365,12 @@
 	<string id="3856">Всегда</string>
 	<string id="3857">Установить Позицию как Восточный Лимит</string>
 	<string id="3858">Установить Позицию как Западный Лимит</string>
-	<string id="3859">Восток</string>
-	<string id="3860">Запад</string>
-	<string id="3861">Север</string>
-	<string id="3862">Юг</string>
-	<string id="3863">Окончание</string>
-	<string id="3864">Перейти к поиску каналов</string>
-	<string id="3865">Канал изменен просмотром таймера</string>
+	<string id="3859">Unicable</string>
+	<string id="3860">Восток</string>
+	<string id="3861">Запад</string>
+	<string id="3862">Север</string>
+	<string id="3863">Юг</string>
+	<string id="3864">Окончание</string>
+	<string id="3865">Перейти к поиску каналов</string>
+	<string id="3866">Канал изменен просмотром таймера</string>
 </strings>
