@@ -839,7 +839,7 @@
 	<string id="3326">Slide Menu</string>
 	<string id="3327">TV/Radio</string>
 	<string id="3328">Tune In</string>
-	<string id="3329">Tuner %d Config : OneCable</string>
+	<string id="3329">Tuner %d Config : UniCable</string>
 	<string id="3330">Tuner %d PIN code</string>
 	<string id="3331">Tuner 1 PIN code</string>
 	<string id="3332">Tuner 2 PIN code</string>
@@ -847,7 +847,7 @@
 	<string id="3334">Select Frequency for Tuner 1</string>
 	<string id="3335">Select Frequency for Tuner 2</string>
 	<string id="3336">Please set a different value for each tuner</string>
-	<string id="3337">When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code</string>
+	<string id="3337">When set to 'On', your UniCable system allows the transmission frequency to be protected by entering a PIN code</string>
 	<string id="3338">Select an available transmission channel from SCR 0 to SCR 7 for tuner %d</string>
 	<string id="3339">Tuner %d SCR</string>
 	<string id="3340"> - Tuner %d Frequency</string>
@@ -1124,10 +1124,10 @@
 	<string id="3611">Select the satellite on which the transponder you wish to scan is located</string>
 	<string id="3612">Search Type</string>
 	<string id="3613">Select whether you wish to scan free and scrambled, free only or scrambled only</string>
-	<string id="3614">Configure the initial settings for OneCable</string>
+	<string id="3614">Configure the initial settings for UniCable</string>
 	<string id="3615">Initial Setup</string>
 	<string id="3616">Number of Satellites</string>
-	<string id="3617">Select number of satellites for OneCable</string>
+	<string id="3617">Select number of satellites for UniCable</string>
 	<string id="3618">Press OK button to setup</string>
 	<string id="3619">Select a satellite name for satellite 1 first</string>
 	<string id="3620">Unable to change satellite name</string>
@@ -1369,11 +1369,12 @@
 	<string id="3856">Always</string>
 	<string id="3857">Set East Limit</string>
 	<string id="3858">Set West Limit</string>
-	<string id="3859">East</string>
-	<string id="3860">West</string>
-	<string id="3861">North</string>
-	<string id="3862">South</string>
-	<string id="3863">Finish</string>
-	<string id="3864">Go to the channel search setup page</string>
-	<string id="3865">Channel is changed by view timer</string>
+	<string id="3859">UniCable</string>
+	<string id="3860">East</string>
+	<string id="3861">West</string>
+	<string id="3862">North</string>
+	<string id="3863">South</string>
+	<string id="3864">Finish</string>
+	<string id="3865">Go to the channel search setup page</string>
+	<string id="3866">Channel is changed by view timer</string>
 </strings>

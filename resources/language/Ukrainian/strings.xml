@@ -1365,11 +1365,12 @@
 	<string id="3856">Завжди</string>
 	<string id="3857">Встановити Позицію як Східний Ліміт</string>
 	<string id="3858">Встановити Позицію як Західний Ліміт</string>
-	<string id="3859">Схід</string>
-	<string id="3860">Захід</string>
-	<string id="3861">Північ</string>
-	<string id="3862">Південь</string>
-	<string id="3863">Закінчення</string>
-	<string id="3864">Перейти до пошуку каналів</string>
-	<string id="3865">Channel is changed by view timer</string>
+	<string id="3859">Unicable</string>
+	<string id="3860">Схід</string>
+	<string id="3861">Захід</string>
+	<string id="3862">Північ</string>
+	<string id="3863">Південь</string>
+	<string id="3864">Закінчення</string>
+	<string id="3865">Перейти до пошуку каналів</string>
+	<string id="3866">Channel is changed by view timer</string>
 </strings>

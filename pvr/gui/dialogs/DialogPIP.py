@@ -747,7 +747,7 @@ class DialogPIP( BaseDialog ) :
 						self.mPIP_EnableAudio = False
 						self.mDataCache.PIP_Stop( )
 
-					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV )
+					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV, True )
 					if ret :
 						fakeChannel = iChannel
 

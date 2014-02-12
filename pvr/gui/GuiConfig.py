@@ -293,7 +293,7 @@ E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '18
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6', '-4', '-2', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
 
-E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'OneCable' ) ]
+E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) ]
 E_LIST_TUNER2_SIGNAL				= [ MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) ]
 E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
 
@@ -320,7 +320,7 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
 	InitializedByVariableList( USER_ENUM_LIST_UPDATE_NOTIFY, MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Always' ) )
-	InitializedByVariableList( E_LIST_TUNER_CONNECTION, MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'OneCable' ) )
+	InitializedByVariableList( E_LIST_TUNER_CONNECTION, MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) )
 	InitializedByVariableList( E_LIST_TUNER2_SIGNAL, MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) )
 	InitializedByVariableList( E_LIST_TUNER_CONTROL, MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) )
 	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )

@@ -60,8 +60,9 @@ E_SLIDE_ACTION_SORT     = 99
 E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
-E_SLIDE_MENU_FAVORITE   = 3
-E_SLIDE_MENU_MODE       = 4
+E_SLIDE_MENU_PROVIDER   = 3
+E_SLIDE_MENU_FAVORITE   = 4
+E_SLIDE_MENU_MODE       = 5
 
 E_CONTROL_FOCUSED       = E_CHANNEL_LIST_BASE_ID + 9991
 E_SLIDE_CLOSE           = E_CHANNEL_LIST_BASE_ID + 9999
@@ -91,6 +92,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListSatellite = []
 		self.mListCasList   = []
 		self.mListFavorite  = []
+		self.mListProvider  = []
 		self.mLoadMode = None
 		self.mLoadSlidePos = SlidePosition( )
 		self.mCurrentPosition = 0
@@ -662,22 +664,26 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 				self.LoadFavoriteGroupList( )
 				idxSub = self.mUserSlidePos.mSub
-				favName = self.mFavoriteGroupList[idxSub]
-				LOG_TRACE( '[ChannelList] delete favName[%s]'% favName )
-				if favName :
-					iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
-					if iChannelList and len( iChannelList ) > 0 :
-						numList = []
-						for iChannel in iChannelList :
-							chNum = ElisEInteger( )
-							chNum.mParam = iChannel.mNumber
-							numList.append( chNum )
+				if self.mFavoriteGroupList and len( self.mFavoriteGroupList ) > idxSub :
+					favName = self.mFavoriteGroupList[idxSub]
+					LOG_TRACE( '[ChannelList] delete favName[%s]'% favName )
+					if favName :
+						iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
+						if iChannelList and len( iChannelList ) > 0 :
+							numList = []
+							for iChannel in iChannelList :
+								chNum = ElisEInteger( )
+								chNum.mParam = iChannel.mNumber
+								numList.append( chNum )
 
-						self.mFlag_DeleteAll_Fav = True
-						favType = self.GetServiceTypeByFavoriteGroup( favName )
-						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, favType, numList )
+							self.mFlag_DeleteAll_Fav = True
+							favType = self.GetServiceTypeByFavoriteGroup( favName )
+							self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, favType, numList )
+					else :
+						LOG_TRACE( '[ChannelList] except, no favName idx[%s] favList[%s]'% ( idxSub, self.mFavoriteGroupList ) )
+
 				else :
-					LOG_TRACE( '[ChannelList] except, no favName idx[%s] favList[%s]'% ( idxSub, self.mFavoriteGroupList ) )
+					LOG_TRACE( '[ChannelList] except, no favGroups idx[%s] favList[%s]'% ( idxSub, self.mFavoriteGroupList ) )
 
 
 			elif self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
@@ -685,13 +691,34 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mUserMode and self.mListSatellite and len( self.mListSatellite ) > idxSub :
 					item = self.mListSatellite[idxSub]
 					isDelete = self.mDataCache.Channel_DeleteBySatellite( item.mLongitude, item.mBand )
-					LOG_TRACE( '[ChannelList] Channel_DeleteBySatellite ret[%s] longitude[%s] band[%s]'% ( isDelete, item.mLongitude, item.mBand ) )
+					#LOG_TRACE( '[ChannelList] Channel_DeleteBySatellite ret[%s] longitude[%s] band[%s]'% ( isDelete, item.mLongitude, item.mBand ) )
 
 					if isDelete :
 						self.mFlag_DeleteAll_Fav = True
 
 				else :
 					LOG_TRACE( '[ChannelList] except, no satellite idx[%s] satelliteList[%s]'% ( idxSub, self.mListSatellite ) )
+
+			elif self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
+				idxSub = self.mUserSlidePos.mSub
+				if self.mUserMode and self.mListProvider and len( self.mListProvider ) > idxSub :
+					iProvider = self.mListProvider[idxSub]
+					LOG_TRACE( '[ChannelList] delete provider[%s]'% iProvider.mProviderName )
+					iChannelList = self.mDataCache.Channel_GetListByProvider( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, iProvider.mProviderName )
+					if iChannelList and len( iChannelList ) > 0 :
+						numList = []
+						for iChannel in iChannelList :
+							chNum = ElisEInteger( )
+							chNum.mParam = iChannel.mNumber
+							numList.append( chNum )
+
+						isDelete = self.mDataCache.Channel_DeleteByNumber( self.mUserMode.mServiceType, 1, numList )
+						#LOG_TRACE( '[ChannelList] Channel_DeleteByProvider ret[%s] mProviderName[%s] mType[%s] chLen[%s]'% ( isDelete, iProvider.mProviderName, iProvider.mServiceType, len( numList ) ) )
+						if isDelete :
+							self.mFlag_DeleteAll_Fav = True
+
+				else :
+					LOG_TRACE( '[ChannelList] except, no provider idx[%s] providerList[%s]'% ( idxSub, self.mListProvider ) )
 
 			else :
 				isDelete = self.mDataCache.Channel_DeleteAll( False )
@@ -1128,7 +1155,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aMenuIndex == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
-					for itemClass in self.mListSatellite:
+					for itemClass in self.mListSatellite :
 						ret = self.mDataCache.GetFormattedSatelliteName( itemClass.mLongitude, itemClass.mBand )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
 				else :
@@ -1136,9 +1163,17 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aMenuIndex == E_SLIDE_MENU_FTACAS :
 				if self.mListCasList :
-					for itemClass in self.mListCasList:
+					for itemClass in self.mListCasList :
 						ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
+				else :
+					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
+
+			elif aMenuIndex == E_SLIDE_MENU_PROVIDER :
+				if self.mListProvider :
+					for itemClass in self.mListProvider :
+						listItem = xbmcgui.ListItem( '%s'% itemClass.mProviderName )
+						testlistItems.append( listItem )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
@@ -1195,7 +1230,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
-				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', aKeyword )
+				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', '', aKeyword )
 				#LOG_TRACE('[ChannelList] All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
@@ -1203,7 +1238,7 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListSatellite[idxSub]
 					zappingName = self.mDataCache.GetSatelliteName( item.mLongitude, item.mBand )
 					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '', aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, item.mLongitude, item.mBand, 0, '', '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idxSub, item.mLongitude, item.mBand ) )
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
@@ -1211,7 +1246,7 @@ class ChannelListWindow( BaseWindow ) :
 					zappingName = self.mListCasList[idxSub].mName
 					caid = self.mListCasList[idxSub].mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '', aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, caid, '', '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxSub )
 
 			elif idxMain == E_SLIDE_MENU_FAVORITE :
@@ -1219,8 +1254,16 @@ class ChannelListWindow( BaseWindow ) :
 					item = self.mListFavorite[idxSub]
 					zappingName = item.mGroupName
 					self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
-					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, aKeyword )
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName, '', aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
+
+			elif idxMain == E_SLIDE_MENU_PROVIDER :
+				if self.mListProvider and len( self.mListProvider ) > idxSub :
+					item = self.mListProvider[idxSub]
+					zappingName = item.mProviderName
+					self.mUserMode.mMode = ElisEnum.E_MODE_PROVIDER
+					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', item.mProviderName, aKeyword )
+					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByProvider] idx_Provider[%s] list_Provider[%s]'% ( idxSub, zappingName ) )
 
 
 		if aKeyword :
@@ -1307,7 +1350,7 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( '[ChannelList] mode: user[%s,%s %s] prev[%s,%s %s]'% ( self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mUserMode.mMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode, self.mPrevMode.mMode ) )
 
 
-	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName, aKeyword = '' ) :
+	def GetChannelList( self, aType, aMode, aSort, aLongitude=0, aBand=0, aCAid=0, aFavName='', aProvider='', aKeyword = '' ) :
 		ret = True
 		self.OpenBusyDialog( )
 		try :
@@ -1329,12 +1372,9 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
-			#elif aMode == E_SLIDE_MENU_SEARCH_RESULT :
-			#	LOG_TRACE( '[ChannelList] search keyword[%s]'% self.mSearchKeyword )
-			#	self.mSearchList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, self.mSearchKeyword )
+			elif aMode == ElisEnum.E_MODE_PROVIDER :
+				instanceList = self.mDataCache.Channel_GetListByProvider( aType, aMode, aSort, aProvider, aKeyword )
 
-			#if aMode != E_SLIDE_MENU_SEARCH_RESULT :
-			#	self.LoadChannelListHash( )
 
 			if aKeyword :
 				self.mSearchList = instanceList
@@ -1370,7 +1410,7 @@ class ChannelListWindow( BaseWindow ) :
 			zInfo_type = self.mUserMode.mServiceType
 
 			if zInfo_mode == ElisEnum.E_MODE_ALL :
-				idx1 = 0
+				idx1 = E_SLIDE_MENU_ALLCHANNEL
 				if zInfo_sort == ElisEnum.E_SORT_BY_NUMBER :
 					idx2 = 0
 				elif zInfo_sort == ElisEnum.E_SORT_BY_ALPHABET :
@@ -1381,7 +1421,7 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 = 0
 
 			elif zInfo_mode == ElisEnum.E_MODE_SATELLITE :
-				idx1 = 1
+				idx1 = E_SLIDE_MENU_SATELLITE
 				#ToDO : is matched by longitude,band ?
 				#zInfo_name = self.mUserMode.mSatelliteInfo.mName
 				zInfo_name = self.mDataCache.GetSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
@@ -1392,7 +1432,7 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_CAS :
-				idx1 = 2
+				idx1 = E_SLIDE_MENU_FTACAS
 				zInfo_name = self.mUserMode.mCasInfo.mName
 
 				for item in self.mListCasList :
@@ -1401,13 +1441,23 @@ class ChannelListWindow( BaseWindow ) :
 					idx2 += 1
 
 			elif zInfo_mode == ElisEnum.E_MODE_FAVORITE :
-				idx1 = 3
+				idx1 = E_SLIDE_MENU_FAVORITE
 				zInfo_name = self.mUserMode.mFavoriteGroup.mGroupName
 				if self.mListFavorite :
 					for item in self.mListFavorite :
 						if zInfo_name == item.mGroupName :
 							break
 						idx2 += 1
+
+			elif zInfo_mode == ElisEnum.E_MODE_PROVIDER :
+				idx1 = E_SLIDE_MENU_PROVIDER
+				zInfo_name = self.mUserMode.mProviderInfo.mProviderName
+				if self.mListProvider :
+					for item in self.mListProvider :
+						if zInfo_name == item.mProviderName :
+							break
+						idx2 += 1
+
 
 			self.mUserSlidePos.mMain = idx1
 			self.mUserSlidePos.mSub  = idx2
@@ -1501,22 +1551,29 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mFlag_DeleteAll_Fav :
 						self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
 						self.mLoadMode.mMode = ElisEnum.E_MODE_ALL
-						self.GetChannelList( self.mLoadMode.mServiceType, self.mLoadMode.mMode, self.mLoadMode.mSortingMode, 0, 0, 0, '' )
-						#LOG_TRACE( '[ChannelList] deleteBySatellite reload len[%s]'% len ( self.mChannelList ) )
+						self.GetChannelList( self.mLoadMode.mServiceType, self.mLoadMode.mMode, self.mLoadMode.mSortingMode )
+						#if self.mChannelList :
+						#	LOG_TRACE( '[ChannelList] deleteBy[Groups] reload len[%s]'% len ( self.mChannelList ) )
 
-					if self.mUserSlidePos.mMain == 1 :
+					if self.mUserSlidePos.mMain == E_SLIDE_MENU_SATELLITE :
 						groupInfo = self.mListSatellite[self.mUserSlidePos.mSub]
 						if groupInfo :
 							groupInfo.mName = self.mDataCache.GetSatelliteName( groupInfo.mLongitude, groupInfo.mBand )
 						self.mLoadMode.mSatelliteInfo = groupInfo
 
-					elif self.mUserSlidePos.mMain == 2 :
+					elif self.mUserSlidePos.mMain == E_SLIDE_MENU_FTACAS :
 						groupInfo = self.mListCasList[self.mUserSlidePos.mSub]
 						self.mLoadMode.mCasInfo = groupInfo
 
-					elif self.mUserSlidePos.mMain == 3 :
+					elif self.mUserSlidePos.mMain == E_SLIDE_MENU_FAVORITE :
 						groupInfo = self.mListFavorite[self.mUserSlidePos.mSub]
 						self.mLoadMode.mFavoriteGroup = groupInfo
+
+					elif self.mUserSlidePos.mMain == E_SLIDE_MENU_PROVIDER :
+						groupInfo = self.mListProvider[self.mUserSlidePos.mSub]
+						self.mLoadMode.mProviderInfo = groupInfo
+						#LOG_TRACE( '[ChannelList] save provider[%s]'% groupInfo )
+
 
 					"""
 					LOG_TRACE( '[ChannelList] 1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
@@ -1534,13 +1591,14 @@ class ChannelListWindow( BaseWindow ) :
 					   self.mFlag_DeleteAll or self.mFlag_DeleteAll_Fav :
 						self.mDataCache.Channel_Save( )
 						self.mDataCache.Channel_GetAllChannels( self.mUserMode.mServiceType, False )
-						#LOG_TRACE( '[ChannelList] save and reload all Channels' )
+						self.mDataCache.SetChannelReloadStatus( True )
+						LOG_TRACE( '[ChannelList] save and reload all Channels' )
 
 					#rule : fav or satellite
 					if self.mFlag_DeleteAll_Fav :
-						if self.mChannelList == None or len( self.mChannelList ) < 1 :
+						if not self.mChannelList or len( self.mChannelList ) < 1 :
 							self.mFlag_DeleteAll = True
-							LOG_TRACE( '[ChannelList] deleteBySatellite ch list None, avblank' )
+							LOG_TRACE( '[ChannelList] deleteBy[Groups] ch list None, avblank' )
 
 						else :
 							currIdx = 0
@@ -1549,7 +1607,7 @@ class ChannelListWindow( BaseWindow ) :
 
 							self.mLastChannel = self.mChannelList[currIdx]
 							self.UpdateLastChannel( True )
-							#LOG_TRACE( '[ChannelList] deleteBySatellite----last[%s] reTune[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
+							#LOG_TRACE( '[ChannelList] deleteBy[Groups]----last[%s] reTune[%s %s]'% ( self.mCurrentChannel, self.mLastChannel.mNumber, self.mLastChannel.mName ) )
 							self.mLastChannel = None
 
 					#rule : public
@@ -1579,7 +1637,7 @@ class ChannelListWindow( BaseWindow ) :
 								lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
 								ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mUserMode.mServiceType )
 
-								LOG_TRACE( '[ChannelList] last Channel[%s]'% lastChannelNumber )
+								#LOG_TRACE( '[ChannelList] last Channel[%s]'% lastChannelNumber )
 								if not ret :
 									if self.mChannelList and len( self.mChannelList ) > 0 :
 										self.mDataCache.Channel_SetCurrent( 1, self.mUserMode.mServiceType )
@@ -1622,7 +1680,7 @@ class ChannelListWindow( BaseWindow ) :
 						
 
 			except Exception, e :
-				LOG_ERR( '[ChannelList] excep[%s]'% e )
+				LOG_ERR( '[ChannelList] except[%s]'% e )
 
 
 		return answer
@@ -1820,6 +1878,7 @@ class ChannelListWindow( BaseWindow ) :
 		list_Mainmenu.append( MR_LANG( 'All CHANNELS' ) )
 		list_Mainmenu.append( MR_LANG( 'SATELLITE' )    )
 		list_Mainmenu.append( MR_LANG( 'FTA/CAS' )      )
+		list_Mainmenu.append( MR_LANG( 'PROVIDER' )    )
 		list_Mainmenu.append( MR_LANG( 'FAVORITES' )    )
 		list_Mainmenu.append( MR_LANG( 'MODE' ) )
 		#list_Mainmenu.append( MR_LANG( 'Back' ) )
@@ -1841,10 +1900,14 @@ class ChannelListWindow( BaseWindow ) :
 				#Favorite list
 				self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType )
 
+				#Provider list
+				self.mListProvider = self.mDataCache.Provider_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType )
+
 			else :
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
 				self.mListCasList = self.mDataCache.Fta_cas_GetList( )
 				self.mListFavorite = self.mDataCache.Favorite_GetList( )
+				self.mListProvider = self.mDataCache.Provider_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType )
 
 		except Exception, e :
 			LOG_ERR( '[ChannelList] except[%s]'% e )
@@ -1867,7 +1930,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mListCasList :
 				for item in self.mListCasList :
 					ret = '%s(%s)'% ( item.mName, item.mChannelCount )
-					testlistItems.append(xbmcgui.ListItem( ret ) )
+					testlistItems.append( xbmcgui.ListItem( ret ) )
 
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			if self.mListFavorite :
@@ -1877,6 +1940,13 @@ class ChannelListWindow( BaseWindow ) :
 						listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
 
 					testlistItems.append( listItem )
+
+		elif self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
+			if self.mListProvider :
+				for item in self.mListProvider :
+					listItem = xbmcgui.ListItem( '%s'% item.mProviderName )
+					testlistItems.append( listItem )
+
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
 
@@ -2626,7 +2696,7 @@ class ChannelListWindow( BaseWindow ) :
 					groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 					if groupName :
 						favType = self.GetServiceTypeByFavoriteGroup( groupName )
-						if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+						if favType > ElisEnum.E_SERVICE_TYPE_RADIO and self.mDataCache.Favorite_GetLCN( groupName ) :
 							moveNum = '%s'% moveList[0].mPresentationNumber
 							if idxFirst > 0 :
 								#iChannel = self.mDataCache.Channel_GetByNumber( self.mNewChannelList[idxFirst], True )
@@ -3328,7 +3398,7 @@ class ChannelListWindow( BaseWindow ) :
 				groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 				if groupName :
 					favType = self.GetServiceTypeByFavoriteGroup( groupName )
-					if favType > ElisEnum.E_SERVICE_TYPE_RADIO :
+					if favType > ElisEnum.E_SERVICE_TYPE_RADIO and self.mDataCache.Favorite_GetLCN( groupName ) :
 						LOG_TRACE( 'FastScanGroup is press OK after insert LCN number' )
 						return
 
@@ -3358,7 +3428,8 @@ class ChannelListWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Skip' ),   CONTEXT_ACTION_SKIP ) )
 			context.append( ContextItem( MR_LANG( 'Unskip' ), CONTEXT_ACTION_UNSKIP  ) )
 			context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+			if self.mUserMode.mMode == ElisEnum.E_MODE_ALL or self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
 			context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_ACTION_CHANGE_NAME ) )
 
 		if not self.mMarkList :
@@ -3581,6 +3652,13 @@ class ChannelListWindow( BaseWindow ) :
 					favName = self.mFavoriteGroupList[idxSub]
 					if favName :
 						lblLine = '%s %s'% ( lblLine, favName )
+
+			elif self.mUserMode and self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
+				idxSub = self.mUserSlidePos.mSub
+				if self.mListProvider and len( self.mListProvider ) > idxSub :
+					iProvider = self.mListProvider[idxSub]
+					if iProvider :
+						lblLine = '%s %s'% ( lblLine, iProvider.mProviderName )
 
 			context.append( ContextItem( lblLine, CONTEXT_ACTION_MENU_DELETEALL ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
