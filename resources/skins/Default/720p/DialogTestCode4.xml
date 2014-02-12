@@ -252,6 +252,21 @@
 								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 								<!--visible>substring(ListItem.Property(iAlign),false)</visible-->
 							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>95</posx>
+								<posy>23</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+								<!--visible>substring(ListItem.Property(iAlign),false)</visible-->
+							</control>
+
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
@@ -267,6 +282,21 @@
 								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 								<visible>substring(ListItem.Property(iAlign),true)</visible>
 							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>105</posx>
+								<posy>23</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+								<visible>substring(ListItem.Property(iAlign),true)</visible>
+							</control>
+
 							<control type="label">
 								<description>Channel HD</description>
 								<posx>440</posx>
@@ -328,11 +358,11 @@
 						<!-- is recording? -->
 						<control type="image">
 							<posx>0</posx>
-							<posy>5</posy>
+							<posy>10</posy>
 							<width>30</width>
 							<height>30</height>
 							<texture>IconPlateRec.png</texture>
-							<visible>substring(ListItem.Property(iRec),true)</visible>
+							<!--visible>substring(ListItem.Property(iRec),true)</visible-->
 						</control>
 						<!-- is skip? -->
 						<control type="image">
@@ -352,7 +382,7 @@
 								<width>24</width>
 								<height>18</height>
 								<texture>IconHD1w.png</texture>
-								<visible>substring(ListItem.Property(iHD),true)</visible>
+								<!--visible>substring(ListItem.Property(iHD),true)</visible-->
 							</control>
 							<!-- is cas? -->
 							<control type="image">
@@ -361,7 +391,7 @@
 								<width>26</width>
 								<height>18</height>
 								<texture>IconCas1w.png</texture>
-								<visible>substring(ListItem.Property(iCas),true)</visible>
+								<!--visible>substring(ListItem.Property(iCas),true)</visible-->
 							</control>
 							<!-- is Tuner1 -->
 							<control type="image">
@@ -419,6 +449,21 @@
 								<label>$INFO[ListItem.Label2]</label>
 								<!--visible>substring(ListItem.Property(iAlign),false)</visible-->
 							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>95</posx>
+								<posy>18</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+								<!--visible>substring(ListItem.Property(iAlign),false)</visible-->
+							</control>
+
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
@@ -433,6 +478,20 @@
 								<aligny>center</aligny>
 								<scroll>true</scroll>
 								<label>$INFO[ListItem.Label2]</label>
+								<visible>substring(ListItem.Property(iAlign),true)</visible>
+							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>105</posx>
+								<posy>18</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 								<visible>substring(ListItem.Property(iAlign),true)</visible>
 							</control>
 							<control type="label">
@@ -521,6 +580,21 @@
 								<label>$INFO[ListItem.Label2]</label>
 								<visible>substring(ListItem.Property(iAlign),false)</visible>
 							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>95</posx>
+								<posy>18</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+								<visible>substring(ListItem.Property(iAlign),false)</visible>
+							</control>
+
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
@@ -533,6 +607,20 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
+								<visible>substring(ListItem.Property(iAlign),true)</visible>
+							</control>
+							<control type="label">
+								<description>EPG Name</description>
+								<posx>105</posx>
+								<posy>18</posy>
+								<width>350</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey3</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>No EPG $INFO[ListItem.Property(EPGNameTitle)]</label>
+								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 								<visible>substring(ListItem.Property(iAlign),true)</visible>
 							</control>
 							<control type="label">
