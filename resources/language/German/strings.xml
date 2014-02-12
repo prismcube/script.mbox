@@ -843,7 +843,7 @@
 	<string id="3334">Frequenzwahl für Tuner 1</string>
 	<string id="3335">Frequenzwahl für Tuner 2</string>
 	<string id="3336">Bitte verwenden Sie unterschiedliche Werte pro Tuner</string>
-	<string id="3337">Wenn Sie auf  'An' stellen, kann Ihr Unicable System durch Eingabe eines PIN Codes die Übetrgungsfrequenz sichern</string>
+	<string id="3337">Wenn Sie auf 'An' stellen, kann Ihr Unicable System durch Eingabe eines PIN Codes die Übetrgungsfrequenz sichern</string>
 	<string id="3338">Wählen Sie einen freien Übertragungskanal von SCR 0 bis SCR 7 für Tuner %d</string>
 	<string id="3339">Tuner %d SCR</string>
 	<string id="3340"> - Tuner %d Frequenz</string>
@@ -1365,11 +1365,12 @@
 	<string id="3856">Immer</string>
 	<string id="3857">Setzte Ost Grenze</string>
 	<string id="3858">Setze West Grenze</string>
-	<string id="3859">Ost</string>
-	<string id="3860">West</string>
-	<string id="3861">Nord</string>
-	<string id="3862">Süd</string>
-	<string id="3863">Ende</string>
-	<string id="3864">Gehen Sie zur Sendersuchlauf Setup Seite </string>
-	<string id="3865">Sender wurde umgeschaltet durch den View Timer</string>
+	<string id="3859">Unikabel</string>
+	<string id="3860">Ost</string>
+	<string id="3861">West</string>
+	<string id="3862">Nord</string>
+	<string id="3863">Süd</string>
+	<string id="3864">Ende</string>
+	<string id="3865">Gehen Sie zur Sendersuchlauf Setup Seite </string>
+	<string id="3866">Sender wurde umgeschaltet durch den View Timer</string>
 </strings>
