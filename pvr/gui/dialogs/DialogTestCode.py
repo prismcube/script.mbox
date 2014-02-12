@@ -41,7 +41,7 @@ class DialogTestCode( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mLimit = False
-		self.TestList( )
+		#self.TestList( )
 
 
 	def onAction( self, aAction ) :
@@ -59,6 +59,7 @@ class DialogTestCode( BaseDialog ) :
 		elif aAction == Action.ACTION_STOP :
 			self.CloseDialog( )
 
+		"""
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			self.TestScreen( )
 
@@ -85,7 +86,7 @@ class DialogTestCode( BaseDialog ) :
 			self.setProperty( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 			self.setProperty( 'iHotkeys', E_TAG_TRUE )
 
-		"""
+
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			#self.CloseDialog( )
 			#self.setProperty( 'iPlayerRewind', E_TAG_FALSE )

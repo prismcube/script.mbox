@@ -522,6 +522,8 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_WORK )
+			dialog.doModal( )
 			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
