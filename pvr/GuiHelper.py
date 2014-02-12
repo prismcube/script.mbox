@@ -1319,7 +1319,7 @@ def IsIPv4( address ) :
 	return True
 
 
-def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
+def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1353,6 +1353,10 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
 		return zipFile
+
+	if aReserved :
+		os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+		os.system( 'sync' )
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
 	if not CheckDirectory( zipFile ) :

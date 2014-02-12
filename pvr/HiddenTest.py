@@ -601,7 +601,7 @@ class HiddenTest( BaseWindow ) :
 			"""
 
 			if urlType == 'smb' :
-				zipFile = MountToSMB( zipFile, smbPoint )
+				zipFile = MountToSMB( zipFile, smbPoint, True )
 				LOG_TRACE( '-----------------------smb zipFile[%s]'% zipFile )
 
 			else :
