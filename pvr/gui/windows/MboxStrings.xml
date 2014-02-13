@@ -155,6 +155,10 @@
 	<string id="1155">Please select other OSD language to type different characters</string>
 	<string id="1156">Please press %s button to change keyboard language</string>
 	<string id="1157">Removable Device(%s)</string>
+	<string id="1158">Video output format</string>
+	<string id="1159">Next calibration step</string>
+	<string id="1160">Exit calibration</string>
+	<string id="1161">Loading new language...</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
