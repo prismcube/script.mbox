@@ -19,7 +19,7 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
+		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : UniCable' ) % ( tunerIndex + 1 ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
 			self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'First Installation' ) ) )
 		else :
@@ -29,13 +29,13 @@ class SatelliteConfigOnecable( FTIWindow ) :
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 
 		self.SetSingleWindowPosition( E_CONFIG_ONECABLE_BASE_ID )
-		self.AddInputControl( E_Input01, MR_LANG( 'Initial Setup' ), '', MR_LANG( 'Configure the initial settings for OneCable' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Initial Setup' ), '', MR_LANG( 'Configure the initial settings for UniCable' ) )
 		
 		listitem = []
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellites' ), listitem, 0, MR_LANG( 'Select number of satellites for OneCable' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellites' ), listitem, 0, MR_LANG( 'Select number of satellites for UniCable' ) )
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :

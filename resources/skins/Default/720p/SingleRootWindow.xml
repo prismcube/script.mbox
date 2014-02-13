@@ -1872,7 +1872,7 @@ Search for window name
 								<width>18</width>
 								<height>18</height>
 								<texture>HomeHasSub.png</texture>
-								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5)]</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
@@ -1892,11 +1892,16 @@ Search for window name
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>SCRIPT1004</label>
+								<label>SCRIPT1152</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="5">
+								<label>SCRIPT1004</label>
+								<onclick>right</onclick>
+								<visible>true</visible>
+							</item>
+							<item id="6">
 								<label>SCRIPT1005</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
@@ -1906,13 +1911,13 @@ Search for window name
 
 					<control type="grouplist" id="1300200">
 						<posx>0</posx>
-						<posy>400</posy>
+						<posy>450</posy>
 						<width>250</width>
 						<height>90</height>
 						<align>center</align>
 						<onleft>1300049</onleft>
 						<onright>1300049</onright>
-						<onup>Control.SetFocus(1300102,4)</onup>
+						<onup>Control.SetFocus(1300102,6)</onup>
 						<ondown>1300103</ondown>
 						<focusposition>113</focusposition>
 						<animation effect="fade" start="0" end="100" time="500">Visible</animation>
@@ -1935,7 +1940,7 @@ Search for window name
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1300049</onright>
-								<onup>Control.SetFocus(1300102,4)</onup>
+								<onup>Control.SetFocus(1300102,6)</onup>
 								<ondown>1300202</ondown>
 							</control>
 						</control>
@@ -1992,7 +1997,7 @@ Search for window name
 							<ondown>1300112</ondown>
 							<pagecontrol>1300503</pagecontrol>
 							<scrolltime>200</scrolltime>
-							<visible>![Container(1300102).HasFocus(1) | Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
+							<visible>![Container(1300102).HasFocus(1) | Container(1300102).HasFocus(6) | ControlGroup(1300200).HasFocus]</visible>
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<itemlayout height="40" width="230">
 								<control type="image">
@@ -2080,7 +2085,7 @@ Search for window name
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 							<control type="group">
-								<visible>Container(1300102).HasFocus(5) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
+								<visible>Container(1300102).HasFocus(6) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
 								<control type="image">
 									<posx>190</posx>
 									<posy>0</posy>
@@ -2189,7 +2194,7 @@ Search for window name
 							<posy>170</posy>
 							<width>20</width>
 							<height>401</height>
-							<visible>![Container(1300102).HasFocus(5) | ControlGroup(1300200).HasFocus]</visible>
+							<visible>![Container(1300102).HasFocus(6) | ControlGroup(1300200).HasFocus]</visible>
 							<include>DefaultWindowFade</include>
 							<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 							<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

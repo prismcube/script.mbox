@@ -301,9 +301,28 @@
 			<control type="progress" id="200">
 				<description>Progressbar</description>
 				<posx>55</posx>
-				<posy>560</posy>
+				<posy>550</posy>
 				<width>1090</width>
 				<height>30</height>
+			</control>
+			<control type="label" id="405">
+				<description>TransponderInfo</description>
+				<posx>90</posx>
+				<posy>583</posy>
+				<width>1000</width>
+				<height>40</height>
+				<font>font10</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="image">
+				<posx>55</posx>
+				<posy>588</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture>OSDBackNF.png</texture>
 			</control>
 		</control>
 	</controls>
