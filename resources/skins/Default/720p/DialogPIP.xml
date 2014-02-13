@@ -165,7 +165,7 @@
 							<width>370</width>
 							<height>65</height>
 							<texture>black-back_noAlpha.png</texture>
-							<colordiffuse>DFFFFFFF</colordiffuse>
+							<colordiffuse>EFFFFFFF</colordiffuse>
 						</control>
 						<control type="grouplist" id="4808000">
 							<posx>5</posx>
