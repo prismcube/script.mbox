@@ -507,6 +507,7 @@
 	<string id="2350">Ethernet</string>
 	<string id="2351">Wireless</string>
 	<string id="2352">HDD Sleep Mode</string>
+	<string id="2353">LCN Search</string>
 	<string id="3001">No EPG information available</string>
 	<string id="3002">That recording conflicts with</string>
 	<string id="3003">Error</string>
