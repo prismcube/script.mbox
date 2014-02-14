@@ -368,7 +368,7 @@ class NullWindow( BaseWindow ) :
 				#	WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_MBOX_XBMC  or actionId == Action.ACTION_MBOX_RESERVED22:
+		elif actionId == Action.ACTION_MBOX_XBMC or actionId == Action.ACTION_MBOX_RESERVED22 :
 			if actionId == Action.ACTION_MBOX_XBMC :
 				if self.GetBlinkingProperty( ) != 'None' :
 					LOG_TRACE( '----------------try recording' )
