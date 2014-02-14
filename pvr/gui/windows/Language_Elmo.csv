@@ -154,6 +154,10 @@
 "Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;;;1155
 "Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;;;1156
 "Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;;;1157
+"Video output format";;;;;;;;;;;;;;1158
+"Next calibration step";;;;;;;;;;;;;;1159
+"Exit calibration";;;;;;;;;;;;;;1160
+"Loading new language...";;;;;;;;;;;;;;1161
 "Live Streaming";;;;;;;;;;;;;;1200
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
@@ -507,6 +511,7 @@
 "Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";2350
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2351
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2352
+"LCN Search";;;;;;;;;;;;;;2353
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -1376,3 +1381,14 @@
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3867
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3868
 "Channel is changed by view timer";"Sender wurde umgeschaltet durch den View Timer";"Changez de chaîne par l'affichage de la minuterie";"Ulteriore assistenza";"Canales esta cambiando por view timer";"Program je změněn časovačem zobrazení ";"Channel is changed by view timer";"Kanał będzie przełączany według wskazań timera";"Channel is changed by view timer";"Канал изменен просмотром таймера";"Channel is changed by view timer";"Channel is changed by view timer";"Program je zmenený časovačom zobrazenia ";"Channel is changed by view timer";3869
+"Experimental";;;;;;;;;;;;;;3870
+"You can customise the appearance of PRISMCUBE RUBY";;;;;;;;;;;;;;3871
+"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;;;;;;;;3872
+"Advanced";;;;;;;;;;;;;;3873
+"Receive information from the RSS server as soon as it is updated";;;;;;;;;;;;;;3874
+"Allows you to display clock on the top middle of live screen";;;;;;;;;;;;;;3875
+"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;;;;;;;;3876
+"Allows you to display next EPG notification on live screen";;;;;;;;;;;;;;3877
+"Watch live stream of TV channels from PC or mobile devices";;;;;;;;;;;;;;3878
+"Open web interface";;;;;;;;;;;;;;3879
+"Web Interface";;;;;;;;;;;;;;3880

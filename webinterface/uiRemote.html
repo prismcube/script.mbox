@@ -12,21 +12,22 @@
 <div id="wrapper">
 
 	<div id="top">
-		<p>PrismCube Web UI</p>
+		<div id="logo"><img src="./uiImg/prismcube_logo.png"></div>		
+		<div id="title">
+			PrismCube Web UI
+		</div>
 	</div>
+	
 	<div id="menu">
-		<p>
-			<a href="uiChannel.html">Channel</a> 	<br>
-			<a href="/stream/stream.m3u">Stream</a> 		<br>
-			>> Remote Control <br>
-		</p>
+		<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> <a href="uiChannel.html" onmouseover="javacript:showIcon(1);" onmouseout="javascript:hideIcon(1);">Channel</a></p>
+		<p><img src="./uiImg/mark.png" id="img02" style="visibility: hidden;"> <a href="/stream/stream.m3u" onmouseover="javacript:showIcon(2);" onmouseout="javascript:hideIcon(2);">Live Stream</a></p>
+		<p><img src="./uiImg/mark.png" id="img03" style="visibility: hidden;"> <a href="uiRemote.html" onmouseover="javacript:showIcon(3);" onmouseout="javascript:hideIcon(3);">Remote Control</a></p>
+		<p><img src="./uiImg/mark.png" id="img04" style="visibility: hidden;"> <a href="Recordings" onmouseover="javacript:showIcon(4);" onmouseout="javascript:hideIcon(4);">Recordings</a></p>
 	</div>
+	
 	<div id="main">
-		<p class="title">Remote Controller</p>
-
-		<br>
-
-		<table width="400" border="0" cellpadding="5" align="center" cellspacing="5">
+		
+		<table border="1" width="400" border="0" cellpadding="5" cellspacing="5" style="margin-left:170px;">
 		<tr>
 			<td align="center"><a href="javascript:Go(115);">Volume Up</a></td>
 			<td align="center"><a href="javascript:Go(114)">Volume Down</a></td>

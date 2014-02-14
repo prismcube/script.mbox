@@ -9,9 +9,9 @@ class ElmoCurrentTime( Webinterface ) :
 
 	def xmlResult(self) :
 		xml = ''
-		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>';
-		xmlstr += '<e2currenttime>';
+		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n';
+		xmlstr += '<e2currenttime>\n';
 		xmlstr += 	str(self.currenttime.hour) + ':' + str(self.currenttime.minute) + ':' + str(self.currenttime.second);
-		xmlstr += '</e2currenttime>';
+		xmlstr += '</e2currenttime>\n';
 	
 		return xmlstr

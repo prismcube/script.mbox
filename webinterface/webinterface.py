@@ -3,7 +3,7 @@ import pvr.DataCacheMgr
 import pvr.ElisMgr
 import pvr.NetConfig as NetConfig
 import sys
-import urllib
+import urllib2 as urllib
 from os import curdir, sep
 import xbmcaddon
 import dbopen
@@ -153,10 +153,24 @@ class MyHandler( BaseHTTPRequestHandler ):
 				self.send_header( 'Content-Disposition', 'attachment; filename="stream.m3u"' )
 				self.end_headers()
 
-				print '[WebUI] About to download Stream.m3u file'
+				print '[WebUI] About to download Stream.m3u file for live stream'
 
 				print HTMLProcess.GetStream(getMyIp())
 				self.wfile.write( HTMLProcess.GetStream(getMyIp()) )
+
+				return
+
+			if self.urlPath[0] == '/recording/stream.m3u' :
+
+				self.send_response(200)
+				self.send_header( 'Content-type', 'audio/x-mpegrul' )
+				self.send_header( 'Content-Disposition', 'attachment; filename="stream.m3u"' )
+				self.end_headers()
+
+				print '[WebUI] About to download Stream.m3u file for Recordings'
+
+				content = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % self.urlPath[1]
+				self.wfile.write( content )
 
 				return
 				
@@ -196,6 +210,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from movielist import ElmoMovieList as Content
 				elif self.urlPath[0] == '/web/remotecontrol' :
 					from remotecontrol import ElmoRemoteControl as Content
+				elif self.urlPath[0] == '/web/powerstate' : 
+					from powerstatus import ElmoPowerStatus as Content 
 
 				############# Live TV ####################################
 				
@@ -252,15 +268,16 @@ class MyHandler( BaseHTTPRequestHandler ):
 					i = 0 
 					j = 0
 
+					print '[Stream Handler] Ready to stream recorded file'
 					while True :
-						
+						"""
 						j = j + 1
 						if j == 2000 :
 							j = 0 
 							print '[WEBUI] I am looping'
-						
+						"""
 						try :
-							s = self.streamResult.read( 1024 )
+							s = self.streamResult.read( 1024 * 1000 * 5 )
 							# print len(s)
 
 							if len(s) == 0 :
@@ -325,7 +342,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 				except :
 					pass
 
-				self.send_header('Content-type', 'text/html')
+				# self.send_header('Content-type', 'text/html')
+				self.send_header('Content-type', 'text/xml')
 				self.end_headers()
 				
 				# webContent.xmlResult()
@@ -384,11 +402,11 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			self.send_header( 'Content-Type', 'application/text' )
 			self.end_headers()
 
-			print '[Stream Hander] webserver ==> read'
+			print '[Stream Hander on 8001] webserver ==> read'
 			print self.target
 			
-			print '[Stream Handler] webserver ==> Live Stream about to read'
-			self.streamResult = urllib.urlopen(self.target)
+			print '[Stream Handler on 8001] webserver ==> Live Stream about to read'
+			self.streamResult = urllib.urlopen(self.target, timeout=10.0)
 			print self.target
 
 			i = 0 
@@ -396,20 +414,23 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 
 			# throw away unready streams at first
 			for i in range(1000) :
-				s = self.streamResult.read( 1024 * 2 )
+				s = self.streamResult.read( 1024 )
 
 			print '[Stream Handler] Ready to stream'
 			
 			while True :
 
 				try :
-					s = self.streamResult.read( 1024 )
-		
+					s = self.streamResult.read( 1024 * 1000 * 5 )
+					#for i in range(5) :
+					#	s += self.streamResult.read(1024 * 100)
+					
 					if len(s) == 0 :
-						print '[Stream Handler] Packet lenght is 0'
+						print '[Stream Handler on 8001] Packet lenght is 0'
 						break
 						
 					else :
+						# print '[Stream Handler on 8001] Writing Stream size of ' + str(len(s)) 
 						self.wfile.write( s )
 						# time.sleep(0.001) 
 												
@@ -435,7 +456,7 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			print '[webserver]'
 			print str(err)
 
-		
+			self.streamResult.close()
 
 	def do_POST( self ) :
 	

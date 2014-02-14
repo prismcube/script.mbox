@@ -31,8 +31,8 @@ class ElmoEpgServiceNow( Webinterface ) :
 	def xmlResult(self) :
 		
 		xmlStr = ''
-		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
-		xmlStr += '<e2eventlist> '
+		xmlStr += '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlStr += '<e2eventlist>\n'
 
 		for row in self.c :
 
@@ -44,41 +44,41 @@ class ElmoEpgServiceNow( Webinterface ) :
 
 			result = c.fetchone()
 			
-			xmlStr += '<e2event>'
-			xmlStr += '<e2eventid>'
+			xmlStr += '<e2event>\n'
+			xmlStr += '<e2eventid>\n'
 			xmlStr += 	str( row[0] )
-			xmlStr += '</e2eventid>'
-			xmlStr += '<e2eventstart>'
+			xmlStr += '</e2eventid>\n'
+			xmlStr += '<e2eventstart>\n'
 			xmlStr += 	str( row[1] )
-			xmlStr += '</e2eventstart>'
-			xmlStr += '<e2eventduration>'
+			xmlStr += '</e2eventstart>\n'
+			xmlStr += '<e2eventduration>\n'
 			xmlStr += 	str( row[2] )
-			xmlStr += '</e2eventduration>'
-			xmlStr += '<e2eventcurrenttime>'
+			xmlStr += '</e2eventduration>\n'
+			xmlStr += '<e2eventcurrenttime>\n'
 			xmlStr += 	str( self.currenttime )
-			xmlStr += '</e2eventcurrenttime>'
-			xmlStr += '<e2eventtitle>'
+			xmlStr += '</e2eventcurrenttime>\n'
+			xmlStr += '<e2eventtitle>\n'
 			xmlStr += 	row[3]
-			xmlStr += '</e2eventtitle>'
-			xmlStr += '<e2eventdescription>'
+			xmlStr += '</e2eventtitle>\n'
+			xmlStr += '<e2eventdescription>\n'
 			# xmlStr += 	row[4].encode('ascii', 'ignore')
 			xmlStr += 	row[3]
-			xmlStr += '</e2eventdescription>'
-			xmlStr += '<e2eventdescriptionextended>'
+			xmlStr += '</e2eventdescription>\n'
+			xmlStr += '<e2eventdescriptionextended>\n'
 			xmlStr += 	row[4]
-			xmlStr += '</e2eventdescriptionextended>'
-			xmlStr += '<e2eventservicereference>'
+			xmlStr += '</e2eventdescriptionextended>\n'
+			xmlStr += '<e2eventservicereference>\n'
 			xmlStr += 	self.makeRef( row[5], row[6], row[7] )  	# def makeRef(self, sid, tsid, onid) :
-			xmlStr += '</e2eventservicereference>'
-			xmlStr += '<e2eventservicename>'
+			xmlStr += '</e2eventservicereference>\n'
+			xmlStr += '<e2eventservicename>\n'
 			# xmlStr += 	result[0]
 			xmlStr += 'na'
-			xmlStr += '</e2eventservicename>'
-			xmlStr += '</e2event>'
+			xmlStr += '</e2eventservicename>\n'
+			xmlStr += '</e2event>\n'
 			
 			conn.close()
 		
-		xmlStr += '</e2eventlist>'
+		xmlStr += '</e2eventlist>\n'
 		
 		"""
 

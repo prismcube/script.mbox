@@ -16,26 +16,26 @@ class ElmoMovieList( Webinterface ) :
 		
 	def xmlResult(self) :
 	
-		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>'
-		xmlstr += '<e2movielist>'
+		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlstr += '<e2movielist>\n'
 
 		for row in self.results :
-			xmlstr += '  <e2movie>'
-			xmlstr += '      <e2servicereference>1:0:0:0:0:0:0:0:0:0:/Archive/' + str(row[4]) +'</e2servicereference>'
-			xmlstr += '      <e2title>'+row[1]+'</e2title>'
+			xmlstr += '  <e2movie>\n'
+			xmlstr += '      <e2servicereference>1:0:0:0:0:0:0:0:0:0:/Archive/' + str(row[4]) +'</e2servicereference>\n'
+			xmlstr += '      <e2title>'+row[1]+'</e2title>\n'
 
-			xmlstr += '      <e2description/>'
-			xmlstr += '      <e2descriptionextended/>'
-			xmlstr += '      <e2servicename>'+row[0]+'</e2servicename>'
+			xmlstr += '      <e2description/>\n'
+			xmlstr += '      <e2descriptionextended/>\n'
+			xmlstr += '      <e2servicename>'+row[0]+'</e2servicename>\n'
 			# xmlstr += '      <e2servicename>ElmoStation</e2servicename>'
-			xmlstr += '      <e2time>'+str( row[2] )+'</e2time>'
-			xmlstr += '      <e2length>'+self.DurationInHMS( row[3] )+'</e2length>'
-			xmlstr += '      <e2tags></e2tags>'
-			xmlstr += '      <e2filename>' + str(row[4]) + '</e2filename>'
-			xmlstr += '      <e2filesize>0</e2filesize>'
-			xmlstr += '   </e2movie>'
+			xmlstr += '      <e2time>'+str( row[2] )+'</e2time>\n'
+			xmlstr += '      <e2length>'+self.DurationInHMS( row[3] )+'</e2length>\n'
+			xmlstr += '      <e2tags></e2tags>\n'
+			xmlstr += '      <e2filename>' + str(row[4]) + '</e2filename>\n'
+			xmlstr += '      <e2filesize>0</e2filesize>\n'
+			xmlstr += '   </e2movie>\n'
 		
-		xmlstr += '</e2movielist>'
+		xmlstr += '</e2movielist>\n'
 
 		return xmlstr
 

@@ -16,7 +16,7 @@ import pvr.DataCacheMgr
 import pvr.GlobalEvent
 import pvr.gui.GuiConfig as GuiConfig
 
-#import webinterface
+import webinterface
 import thread
 
 gLauncher = None
@@ -41,8 +41,8 @@ class Launcher( object ):
 				self.InitElisMgr( )
 				self.DoElisTest( )
 				self.InitCacheMgr( )
-				#if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
-				#self.StartWebInterface( )
+				if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+					self.StartWebInterface( )
 
 				self.InitWindowMgr( )
 				self.WaitShutdown( )
@@ -51,6 +51,8 @@ class Launcher( object ):
 				#dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
 				#dialog.doModal( )
 				print 'Error exception[%s]'% ex
+				import traceback
+				LOG_ERR( 'traceback=%s' %traceback.format_exc() )
 
 				self.mLoadCount += 1
 				LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
