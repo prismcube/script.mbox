@@ -713,21 +713,23 @@ class Recordings( WebPage ) :
 			recDuration =  int( rec.mDuration / 60 )
 			if ( rec.mDuration % 60 ) != 0 :
 				recDuration += 1
-				
-			content += "<tr>"
-			content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
-			content += '	<td>'
-			content += '	<table width="100%" border="0" cellpadding="5">'
-			content += '	<tr>'
-			content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
-			content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
-			content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a></td>' % str(rec.mRecordKey)
-			content += '	</tr>'
-			content += '	<tr>'
-			content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
-			content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
-			content += '	</tr>'
-			content += '</table>'
+			try :				
+				content += "<tr>"
+				content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+				content += '	<td>'
+				content += '	<table width="100%" border="0" cellpadding="5">'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
+				content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
+				content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a></td>' % str(rec.mRecordKey)
+				content += '	</tr>'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
+				content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
+				content += '	</tr>'
+				content += '</table>'
+			except :
+				print 'error cache record thumbnai'
 
 		content += '</td></tr></table>'
 		return self.getBasicTemplate( content ) 
