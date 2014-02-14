@@ -3,6 +3,7 @@ from pvr.gui.WindowImport import *
 
 # Control IDs
 LABEL_ID_TRANSPONDER_INFO		= 404
+LABEL_ID_EXIT_INFO				= 405
 PROGRESS_ID_SCAN				= 200
 LIST_ID_TV						= 400
 LIST_ID_RADIO					= 402
@@ -61,6 +62,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		self.getControl( LIST_ID_TV ).reset( )
 		self.getControl( LIST_ID_RADIO ).reset( )
+		self.getControl( LABEL_ID_EXIT_INFO ).setLabel( MR_LANG( 'Press [BACK] on the remote to close channel search dialog' ) )
 
 		self.mCtrlProgress = self.getControl( PROGRESS_ID_SCAN )
 		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		

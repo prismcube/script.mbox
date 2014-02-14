@@ -18,6 +18,9 @@
 
 		<!-- PIP position -->
 		<setting id="PIP_POSITION" type="text" label="PIPPostion" values="857|170|352|198" default="857|170|352|198" />
+
+		<setting id="AUTO_CONFIRM_CHANNEL" type="enum" label="1141" values="0" default="0" />
+
 	</category>
 	<category label="1146">
 		<setting id="RSS_FEED_MAIN_MENU" type="bool" label="1140" default="false" />
@@ -27,5 +30,7 @@
 		<setting id="DISPLAY_EVENT_LIVE" type="bool" label="1144" default="false" />
 		<!--setting id="DISPLAY_EXTEND_INFO" type="bool" label="1145" default="false" /-->
 		<!--setting id="DISPLAY_CHANNEL_NUMBER" type="bool" label="1148" default="true" /-->
+		<setting id="LIVE_STREAM" type="bool" label="1144" default="false" />
+		<setting id="WEB_INTERFACE" type="bool" label="1144" default="false" />
 	</category>
 </settings>

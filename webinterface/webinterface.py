@@ -153,10 +153,24 @@ class MyHandler( BaseHTTPRequestHandler ):
 				self.send_header( 'Content-Disposition', 'attachment; filename="stream.m3u"' )
 				self.end_headers()
 
-				print '[WebUI] About to download Stream.m3u file'
+				print '[WebUI] About to download Stream.m3u file for live stream'
 
 				print HTMLProcess.GetStream(getMyIp())
 				self.wfile.write( HTMLProcess.GetStream(getMyIp()) )
+
+				return
+
+			if self.urlPath[0] == '/recording/stream.m3u' :
+
+				self.send_response(200)
+				self.send_header( 'Content-type', 'audio/x-mpegrul' )
+				self.send_header( 'Content-Disposition', 'attachment; filename="stream.m3u"' )
+				self.end_headers()
+
+				print '[WebUI] About to download Stream.m3u file for Recordings'
+
+				content = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % self.urlPath[1]
+				self.wfile.write( content )
 
 				return
 				
@@ -196,6 +210,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from movielist import ElmoMovieList as Content
 				elif self.urlPath[0] == '/web/remotecontrol' :
 					from remotecontrol import ElmoRemoteControl as Content
+				elif self.urlPath[0] == '/web/powerstate' : 
+					from powerstatus import ElmoPowerStatus as Content 
 
 				############# Live TV ####################################
 				
@@ -261,7 +277,7 @@ class MyHandler( BaseHTTPRequestHandler ):
 							print '[WEBUI] I am looping'
 						"""
 						try :
-							s = self.streamResult.read( 1024 )
+							s = self.streamResult.read( 1024 * 1000 * 5 )
 							# print len(s)
 
 							if len(s) == 0 :
@@ -326,7 +342,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 				except :
 					pass
 
-				self.send_header('Content-type', 'text/html')
+				# self.send_header('Content-type', 'text/html')
+				self.send_header('Content-type', 'text/xml')
 				self.end_headers()
 				
 				# webContent.xmlResult()
@@ -404,7 +421,7 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			while True :
 
 				try :
-					s = self.streamResult.read( 1024 * 100 * 5 )
+					s = self.streamResult.read( 1024 * 1000 * 5 )
 					#for i in range(5) :
 					#	s += self.streamResult.read(1024 * 100)
 					
@@ -436,12 +453,10 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			self.send_response( 404 )
 			self.end_headers()
 
-			self.streamResult.close()
-
 			print '[webserver]'
 			print str(err)
 
-		
+			self.streamResult.close()
 
 	def do_POST( self ) :
 	

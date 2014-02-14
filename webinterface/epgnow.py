@@ -64,11 +64,11 @@ class ElmoEpgNow( Webinterface ) :
 	def xmlResult(self) :
 
 		xmlStr = ''
-		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
-		xmlStr += '<e2eventlist> '
+		xmlStr += '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlStr += '<e2eventlist>\n'
 
 		if self.noResult == True :
-			xmlStr += '</e2eventlist>'
+			xmlStr += '</e2eventlist>\n'
 			return xmlStr
 
 		try :
@@ -87,48 +87,48 @@ class ElmoEpgNow( Webinterface ) :
 				info = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 
 				if info == None :  # no EPG infomation 
-					xmlStr += '<e2event> '
-					xmlStr += '<e2eventid>None</e2eventid>'
-					xmlStr += '<e2eventstart>None</e2eventstart>'
-					xmlStr += '<e2eventduration>None</e2eventduration>'
-					xmlStr += '<e2eventcurrenttime>' + str(self.currenttime) + '</e2eventcurrenttime>'
-					xmlStr += '<e2eventtitle>None</e2eventtitle> '
-					xmlStr += '<e2eventdescription>None</e2eventdescription> '
-					xmlStr += '<e2eventdescriptionextended>None</e2eventdescriptionextended> '
-					xmlStr += '<e2eventservicereference>' + self.makeRef( sid, tsid, onid ) + '</e2eventservicereference>'  	# def makeRef(self, sid, tsid, onid) :
-					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename>'
-					xmlStr += '</e2event> '
+					xmlStr += '<e2event>\n'
+					xmlStr += '<e2eventid>None</e2eventid>\n'
+					xmlStr += '<e2eventstart>None</e2eventstart>\n'
+					xmlStr += '<e2eventduration>None</e2eventduration>\n'
+					xmlStr += '<e2eventcurrenttime>' + str(self.currenttime) + '</e2eventcurrenttime>\n'
+					xmlStr += '<e2eventtitle>None</e2eventtitle>\n'
+					xmlStr += '<e2eventdescription>None</e2eventdescription>\n'
+					xmlStr += '<e2eventdescriptionextended>None</e2eventdescriptionextended>\n'
+					xmlStr += '<e2eventservicereference>' + self.makeRef( sid, tsid, onid ) + '</e2eventservicereference>\n'  	# def makeRef(self, sid, tsid, onid) :
+					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename>\n'
+					xmlStr += '</e2event>\n'
 				else : 
-					xmlStr += '<e2event> '
-					xmlStr += '<e2eventid> '
+					xmlStr += '<e2event>\n'
+					xmlStr += '<e2eventid>\n'
 					xmlStr += 	info.mEventIdEPG
-					xmlStr += '</e2eventid> '
-					xmlStr += '<e2eventstart> '
+					xmlStr += '</e2eventid>\n'
+					xmlStr += '<e2eventstart>\n'
 					xmlStr += 	''
-					xmlStr += '</e2eventstart> '
-					xmlStr += '<e2eventduration> '
+					xmlStr += '</e2eventstart>\n'
+					xmlStr += '<e2eventduration>\n'
 					xmlStr += 	''
-					xmlStr += '</e2eventduration> '
-					xmlStr += '<e2eventcurrenttime> '
+					xmlStr += '</e2eventduration>\n'
+					xmlStr += '<e2eventcurrenttime>\n'
 					xmlStr += 	''
-					xmlStr += '</e2eventcurrenttime> '
-					xmlStr += '<e2eventtitle> '
+					xmlStr += '</e2eventcurrenttime>\n'
+					xmlStr += '<e2eventtitle>\n'
 					xmlStr += 	''
-					xmlStr += '</e2eventtitle> '
-					xmlStr += '<e2eventdescription> '
+					xmlStr += '</e2eventtitle>\n'
+					xmlStr += '<e2eventdescription>\n'
 					xmlStr += 	''
-					xmlStr += '</e2eventdescription> '
-					xmlStr += '<e2eventdescriptionextended> '
+					xmlStr += '</e2eventdescription>\n'
+					xmlStr += '<e2eventdescriptionextended>\n'
 					xmlStr += 	'' 
-					xmlStr += '</e2eventdescriptionextended> '
-					xmlStr += '<e2eventservicereference> '
+					xmlStr += '</e2eventdescriptionextended>\n'
+					xmlStr += '<e2eventservicereference>\n'
 					xmlStr += 	 self.makeRef( sid, tsid, onid )  	# def makeRef(self, sid, tsid, onid) :
-					xmlStr += '</e2eventservicereference> '
-					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename> '
-					xmlStr += '</e2event> '
+					xmlStr += '</e2eventservicereference>\n'
+					xmlStr += '<e2eventservicename>' + name + '</e2eventservicename>\n'
+					xmlStr += '</e2event>\n'
 					
 				
-			xmlStr += '</e2eventlist> '
+			xmlStr += '</e2eventlist>\n'
 			return xmlStr
 				
 		except Exception, e :

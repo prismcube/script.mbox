@@ -34,8 +34,6 @@ E_CONTROL_ID_HOTKEY_YELLOW_LABEL 		= E_LIVE_PLATE_BASE_ID + 532
 E_CONTROL_ID_HOTKEY_BLUE_IMAGE 			= E_LIVE_PLATE_BASE_ID + 541
 E_CONTROL_ID_HOTKEY_BLUE_LABEL 			= E_LIVE_PLATE_BASE_ID + 542
 
-E_LIVE_PLATE_DEFAULT_FOCUS_ID			=  E_BASE_WINDOW_ID + 3621
-
 
 E_CONTROL_DEFAULT_HIDE = [ 
 
@@ -88,7 +86,7 @@ class LivePlate( LivePlateWindow ) :
 
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
-		self.setFocusId( E_LIVE_PLATE_DEFAULT_FOCUS_ID )
+		self.setFocusId( E_CONTROL_ID_BUTTON_CHANNEL_LIST )
 		self.SetActivate( True )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
@@ -387,6 +385,11 @@ class LivePlate( LivePlateWindow ) :
 		self.StopAutomaticHide( )
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE  )
+
+		elif aControlId == E_CONTROL_ID_BUTTON_CHANNEL_LIST :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
 		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
@@ -1136,6 +1139,12 @@ class LivePlate( LivePlateWindow ) :
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 					return
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_SERVICE_INFO :
+			if self.mCurrentChannel and ( self.mDataCache.GetLockedState( ) != ElisEnum.E_CC_FAILED_NO_SIGNAL ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SERVICE_INFO )
+				dialog.SetChannel( self.mCurrentChannel )
+				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			status = self.mDataCache.GetLockedState( )

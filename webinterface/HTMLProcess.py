@@ -2,12 +2,12 @@ import pvr.DataCacheMgr
 import pvr.ElisMgr
 from pvr.gui.WindowImport import *
 import xbmc
-from urllib import unquote
+from urllib import unquote, quote
 
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
-	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg]
+	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings]
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -31,11 +31,18 @@ class SimpleHTMLFile :
 		try :
 			self.uiPath = '/usr/share/xbmc/addons/script.mbox/webinterface/'
 
-			f = open(self.uiPath + fileName, "r")
+			print '[SimpleHTML] : ' + fileName
+
+			if fileName.find("record_thumbnail") != -1 : 
+				f = open("/" + fileName, "r")
+			else :
+				f = open(self.uiPath + fileName, "r")
+				
 			self.content = f.read()
 			f.close()
 			
 		except :
+			print "HTML Not Found"
 			self.content = "File Not Found"
 
 	def GetContent(self) :
@@ -74,6 +81,9 @@ class Channel( WebPage ) :
 
 		super(Channel, self).__init__()
 
+		# For CAS-FTA channels
+		self.casList = ['FTA', 'MEDIAGUARD', 'VIACCESS', 'NAGRA', 'IRDETO', 'CONAX', 'CRYPTOWORKS', 'BETADIGITAL', 'NDS', 'DRECRYPT', 'VERIMATRIX', 'OTHERS']
+
 		if command[0] == 'all' :
 			self.command = 'all'
 			self.content = self.allChannelContent()
@@ -92,7 +102,7 @@ class Channel( WebPage ) :
 		else :
 			pass  # do nothing 
 			self.command = None
-		
+
 
 	def allChannelContent( self ) :
 
@@ -128,10 +138,6 @@ class Channel( WebPage ) :
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
 		for cls in self.satelliteList : 
-			"""
-			content += '<tr><td width="100">' + str(cls.mLongitude) + '</td><td width="200">'
-			content += '<a href="ChannelBySatellite?' + str(cls.mName) + '">' + str(cls.mName) +'</a></td></tr>'
-			"""
 			content += '<tr>'
 			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
 			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
@@ -142,28 +148,43 @@ class Channel( WebPage ) :
 
 	def casChannelContent( self ) :
 
-		return self.getChannelContent('FTA-CAS') 
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
+
+		for cls in self.casList :
+			caid = self.getCasCaid( cls ) 
+			channelList = self.mDataCache.Channel_GetListByFTACas( self.mZappingMode.mServiceType, ElisEnum.E_MODE_CAS, self.mZappingMode.mSortingMode, caid )
+			if channelList :
+				content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?'+cls+'">' + cls + '</a></p></td></tr>'
+
+		content += '</table></td></tr></table>'
+
+		return self.getChannelContent( content )
 
 	def favoriteChannelContent( self ) :
 
 		self.allChannel = self.mDataCache.Favorite_GetList(0, self.mZappingMode.mServiceType)
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
 		for cls in self.allChannel : 
-			content += '<tr><td width="300"><a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></td></tr>'
+			content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></p></td></tr>'
 
-		content += '</table>'
+		content += '</table></td></tr></table>'
 
 		return self.getChannelContent( content )
 
 	def modeContent( self ) :
 
+		content = content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
+		
 		if self.mZappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-			content = "TV MODE"
+			content += '<tr><td align="center"><p class="channelContent"><br><br>TV Mode</p></td></tr>'
+			
 		elif self.mZappingMode.mServiceType == ElisEnum.E_TYPE_RADIO :
-			content = "RADIO MODE"
+			content += '<tr><td align="center"><p class="channelContent"><br><br>Radio Mode</p></td></tr>'
 		else :
-			content = "Unkown"
+			content += '<tr><td align="center"><p class="channelContent"><br><br>Mode Error</p></td></tr>'
+
+		content += '</table></td></tr></table>'
 
 		return self.getChannelContent( content )
 
@@ -216,10 +237,10 @@ class Channel( WebPage ) :
 				</div>
 				
 				<div id='menu'>
-					<p><img src='./uiImg/sub_menu.png'></p>
-					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Stream</a></p>
+					<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
-					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='uiMovie.html' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
+					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
 				</div>
 				
 				<div id='main'>
@@ -248,6 +269,9 @@ class Channel( WebPage ) :
 
 	def getSubMenu( self ) :
 
+		print '[Sub Menu]' 
+		print self.command
+
 		submenu = ""
 		if self.command == "all" :
 			submenu += """<td><img id='icon1' src='./uiImg/channels.png' border='0'></td>"""
@@ -260,10 +284,11 @@ class Channel( WebPage ) :
 			submenu += """<td><a href='Channel?satellite' onmouseover="javascript:showColor(2, 'satellite');" onmouseout="javascript:hideColor(2, 'satellite');"><img id='icon2' src='./uiImg/satellite_bw.png' border='0'></a></td>"""
 
 		if self.command == "cas" :
-			submenu += """<td><img id='icon3' src='./uiImg/fta_cas.png' border='0'></td>"""
+			submenu += """<td><img id='icon3' src='./uiImg/cas.png' border='0'></td>"""
 		else :
-			submenu += """<td><a href='uiChannelByCas.html' onmouseover="javascript:showColor(3, 'cas');" onmouseout="javascript:hideColor(3, 'cas');"><img id='icon3' src='./uiImg/cas_bw.png' border='0'></a></td>"""
-
+			# submenu += """<td><a href='uiChannelByCas.html' onmouseover="javascript:showColor(3, 'cas');" onmouseout="javascript:hideColor(3, 'cas');"><img id='icon3' src='./uiImg/cas_bw.png' border='0'></a></td>"""
+			submenu += """<td><a href='Channel?cas' onmouseover="javascript:showColor(3, 'cas');" onmouseout="javascript:hideColor(3, 'cas');"><img id='icon3' src='./uiImg/cas_bw.png' border='0'></a></td>"""
+			
 		if self.command == "favorite" :
 			submenu += """<td><img id='icon4' src='./uiImg/favorite.png' border='0'></td>"""
 		else :
@@ -277,6 +302,35 @@ class Channel( WebPage ) :
 		print submenu
 
 		return submenu
+
+	def getCasCaid(self, name) :
+
+		if name == self.casList[0] :
+			caid = ElisEnum.E_FTA_CHANNEL
+		elif name == self.casList[1] :
+			caid = ElisEnum.E_MEDIAGUARD
+		elif name == self.casList[2] :
+			caid = ElisEnum.E_VIACCESS
+		elif name == self.casList[3] :
+			caid = ElisEnum.E_NAGRA
+		elif name == self.casList[4] :
+			caid = ElisEnum.E_IRDETO
+		elif name == self.casList[5] :
+			caid = ElisEnum.E_CONAX
+		elif name == self.casList[6] :
+			caid = ElisEnum.E_CRYPTOWORKS
+		elif name == self.casList[7] :
+			caid = ElisEnum.E_BETADIGITAL
+		elif name == self.casList[8] :
+			caid = ElisEnum.E_NDS
+		elif name == self.casList[9] :
+			caid = ElisEnum.E_DRECRYPT	
+		elif name == self.casList[10] :
+			caid = ElisEnum.E_VERIMATRIX
+		else :
+			caid = ElisEnum.E_OTHERS
+
+		return caid
 
 class RemoteControl(WebPage):
 
@@ -435,36 +489,13 @@ class ChannelByCas( Channel ) :
 	def __init__( self, command ) :
 
 		super(ChannelByCas, self).__init__(command)
+
+		self.validList = self.getValidList()
 		self.content = self.channelByCasContent(command) 
 
 	def channelByCasContent( self, command ) :
 
-		casList = ['FTA', 'MEDIAGUARD', 'VIACCESS', 'NAGRA', 'IRDETO', 'CONAX', 'CRYPTOWORKS', 'BETADIGITAL', 'NDS', 'DRECRYPT', 'VERIMATRIX', 'OTHERS']
-		
-		if command[0] == casList[0] :
-			caid = ElisEnum.E_FTA_CHANNEL
-		elif command[0] == casList[1] :
-			caid = ElisEnum.E_MEDIAGUARD
-		elif command[0] == casList[2] :
-			caid = ElisEnum.E_VIACCESS
-		elif command[0] == casList[3] :
-			caid = ElisEnum.E_NAGRA
-		elif command[0] == casList[4] :
-			caid = ElisEnum.E_IRDETO
-		elif command[0] == casList[5] :
-			caid = ElisEnum.E_CONAX
-		elif command[0] == casList[6] :
-			caid = ElisEnum.E_CRYPTOWORKS
-		elif command[0] == casList[7] :
-			caid = ElisEnum.E_BETADIGITAL
-		elif command[0] == casList[8] :
-			caid = ElisEnum.E_NDS
-		elif command[0] == casList[9] :
-			caid = ElisEnum.E_DRECRYPT	
-		elif command[0] == casList[10] :
-			caid = ElisEnum.E_VERIMATRIX
-		else :
-			caid = ElisEnum.E_OTHERS
+		caid = self.getCasCaid( command[0] ) 
 
 		print '[WEBUI:caid]' + str(caid)
 		print command[0]
@@ -475,23 +506,25 @@ class ChannelByCas( Channel ) :
 
 		casEnd = False
 		chEnd = False
-		
+
 		while True :
 
 			try :
-				if casList[indexer] == command[0] :
-					content += '<tr><td width="200" bgcolor="#dfdfdf">' + casList[indexer] + '</td>'
+				if self.validList[indexer] == command[0] :
+					content += '<tr><td width="200" bgcolor="#dfdfdf"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + self.validList[indexer] + '</p></td>'
 				else :
-					content += '<tr><td width="200"><a href="ChannelByCas?' + casList[indexer] + '">' + casList[indexer] + '</a></td>'
+					content += '<tr><td width="200"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByCas?' + self.validList[indexer] + '">' + self.validList[indexer] + '</a></p></td>'
 			except IndexError :
 				content += '<tr><td>&nbsp;</td>'
 				casEnd = True
 
 			try :
-				content += "<td>" + str(channelList[indexer].mNumber) +"</td>"
-				content += '<td width="200">' + channelList[indexer].mName +"</td>"
-				content += '<td class="epg"><a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper">[Zap]</a></td>'
-				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')">EPG</a>]</td>'
+				content += '<td width="50" align="center"><p class="channelContent">' + str(channelList[indexer].mNumber) +'</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName +"</a></td>"
+				
+				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+
 				content += "</tr>"
 
 			except IndexError :
@@ -508,9 +541,22 @@ class ChannelByCas( Channel ) :
 
 		content += "</table>"
 
-		self.ResetChannelListOnChannelWindow( channelList, ElisEnum.E_MODE_CAS ) 
+		self.command = "cas"
 
+		self.ResetChannelListOnChannelWindow( channelList, ElisEnum.E_MODE_CAS ) 
 		return self.getChannelContent( content )
+
+	def getValidList(self) :
+
+		validList = []
+
+		for name in self.casList :
+			caid = self.getCasCaid( name )
+			channelList = self.mDataCache.Channel_GetListByFTACas( self.mZappingMode.mServiceType, ElisEnum.E_MODE_CAS, self.mZappingMode.mSortingMode, caid )
+			if channelList :
+				validList.append( name )
+
+		return validList
 
 class ChannelByFavorite( Channel ) :
 
@@ -526,7 +572,7 @@ class ChannelByFavorite( Channel ) :
 		folderList = self.mDataCache.Favorite_GetList(0, self.mZappingMode.mServiceType)
 		channelList = self.mDataCache.Channel_GetListByFavorite( self.mZappingMode.mServiceType, ElisEnum.E_MODE_FAVORITE, self.mZappingMode.mSortingMode, favName )
 		
-		content = '<table border="0" cellpadding="5">'
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%" border="0">"""
 		indexer = 0
 
 		favEnd = False
@@ -536,18 +582,20 @@ class ChannelByFavorite( Channel ) :
 
 			try :
 				if folderList[indexer].mGroupName == favName :
-					content += '<tr><td width="300" bgcolor="#dfdfdf">' + folderList[indexer].mGroupName + '</td>'
+					content += '<tr>'
+					content += '<td width="300" bgcolor="#dfdfdf"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + folderList[indexer].mGroupName + '</p></td>'
 				else :
-					content += '<tr><td width="300"><a href="ChannelByFavorite?' + folderList[indexer].mGroupName + '">' + folderList[indexer].mGroupName + '</a></td>'
+					content += '<tr>'
+					content += '<td width="300"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + folderList[indexer].mGroupName + '">' +  folderList[indexer].mGroupName + '</a></p></td>'
 			except IndexError :
 				content += '<tr><td>&nbsp;</td>'
 				favEnd = True
 
 			try :
-				content += "<td>" + str(channelList[indexer].mPresentationNumber) + "</td>"
-				content += '<td width="200">' + channelList[indexer].mName + '</td>'
-				content += '<td class="epg">[<a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper">Zap</a>]</td>'
-				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')">EPG</a>]</td>'
+				content += '<td width="50" align="center"><p class="channelContent">' + str(channelList[indexer].mPresentationNumber) + '</p></td>'
+				content += '<td width="200"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName + '</p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
 				content += "</tr>"
 			except IndexError :
 				content += "<td>&nbsp;</td>"
@@ -567,10 +615,11 @@ class ChannelByFavorite( Channel ) :
 			if chEnd and favEnd : break
 			indexer += 1
 
-		content += "</table>"
+		content += "</table></td></tr></table>"
+
+		self.command = "favorite"
 
 		self.ResetChannelListOnChannelWindow( channelList, ElisEnum.E_MODE_FAVORITE ) 
-
 		return self.getChannelContent( content )
 
 class Zapping( WebPage ) :
@@ -640,5 +689,93 @@ class Epg( WebPage ) :
 		""" % content
 
 		return content 
+
+class Recordings( WebPage ) :
+
+	def __init__( self, command ) :
+		super(Recordings, self).__init__()
+		self.content = self.recordingsContent(command) 
+
+	def recordingsContent( self, command ) :
+	
+		recordingList = self.mDataCache.Record_GetList(1)
+		thumbnailImg = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail*.jpg')  )
+		thumbnailList = {}
+		
+		for img in thumbnailImg :
+			keyVal = img.split("_")[2]
+			thumbnailList[keyVal] =  img
+
+		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		
+		for rec in recordingList :
+
+			recDuration =  int( rec.mDuration / 60 )
+			if ( rec.mDuration % 60 ) != 0 :
+				recDuration += 1
+			try :				
+				content += "<tr>"
+				content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+				content += '	<td>'
+				content += '	<table width="100%" border="0" cellpadding="5">'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
+				content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
+				content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a></td>' % str(rec.mRecordKey)
+				content += '	</tr>'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
+				content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
+				content += '	</tr>'
+				content += '</table>'
+			except :
+				print 'error cache record thumbnai'
+
+		content += '</td></tr></table>'
+		return self.getBasicTemplate( content ) 
 			
+	def getBasicTemplate( self, mainContent ) :
+
+		content  = """
+		
+			<html>
+			<head>
+				<title>PrismCube Web UI</title>
+				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+			<body>
+			<div id='wrapper'>
+
+				<div id='top'>
+					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
+					<div id='title'>
+						PrismCube Web UI
+					</div>
+				</div>
+				
+				<div id='menu'>
+					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
+				</div>
+				
+				<div id='main'>
+
+					<div id='content'>
+					%s
+					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
+					</div>
+					
+				</div>
+
+			</div>
+			</body>
+			</html>
+		""" % mainContent 
+
+		return content
+
+		
+
+		
 		

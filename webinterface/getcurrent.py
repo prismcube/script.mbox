@@ -82,163 +82,70 @@ class ElmoGetCurrent( Webinterface ) :
 		
 	def xmlResult(self) :
 	
-		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>'
+		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
 		
-		xmlstr += '<e2currentserviceinformation>'
-		xmlstr += '   <e2service>'
-		xmlstr += '      <e2servicereference>'
-		xmlstr += 			self.ref
-		xmlstr += '      </e2servicereference>'
-		xmlstr += '      <e2servicename>'
-		xmlstr +=			self.currentChannel.mName
-		xmlstr += '      </e2servicename>'
-		xmlstr += '      <e2providername>'
-		xmlstr += 			self.currentChannel.mName
-		xmlstr += '      </e2providername>'
-		xmlstr += '      <e2videowidth>'
-		xmlstr += '         {e2:convert type=ServiceInfo}VideoWidth{/e2:convert} '
-		xmlstr += '      </e2videowidth>'
-		xmlstr += '      <e2videoheight>'
-		xmlstr += '         {e2:convert type=ServiceInfo}VideoHeight{/e2:convert} '
-		xmlstr += '      </e2videoheight>'
-		xmlstr += '      <e2servicevideosize>'
-		xmlstr += '         {e2:convert type=ServiceInfo}VideoWidth{/e2:convert} x{e2:convert type=ServiceInfo}VideoHeight{/e2:convert} '
-		xmlstr += '      </e2servicevideosize>'
-		xmlstr += '      <e2iswidescreen>'
-		xmlstr += '         {e2:convert type=ServiceInfo}IsWidescreen{/e2:convert} '
-		xmlstr += '      </e2iswidescreen>'
-		xmlstr += '      <e2apid>'
-		xmlstr += '         {e2:convert type=ServiceInfo}AudioPid{/e2:convert} '
-		xmlstr += '      </e2apid>'
-		xmlstr += '      <e2vpid>'
-		xmlstr += '         {e2:convert type=ServiceInfo}VideoPid{/e2:convert} '
-		xmlstr += '      </e2vpid>'
-		xmlstr += '      <e2pcrpid>'
-		xmlstr += '         {e2:convert type=ServiceInfo}PcrPid{/e2:convert} '
-		xmlstr += '      </e2pcrpid>'
-		xmlstr += '      <e2pmtpid>'
-		xmlstr += '         {e2:convert type=ServiceInfo}PmtPid{/e2:convert} '
-		xmlstr += '      </e2pmtpid>'
-		xmlstr += '      <e2txtpid>'
-		xmlstr += '         {e2:convert type=ServiceInfo}TxtPid{/e2:convert} '
-		xmlstr += '      </e2txtpid>'
-		xmlstr += '      <e2tsid>'
-		xmlstr +=			str(self.currentChannel.mSid)
-		xmlstr += '      </e2tsid>'
-		xmlstr += '      <e2onid>'
-		xmlstr +=			str(self.currentChannel.mOnid)
-		xmlstr += '      </e2onid>'
-		xmlstr += '      <e2sid>'
-		xmlstr += 			str(self.currentChannel.mSid)
-		xmlstr += '      </e2sid>'
-		xmlstr += '   </e2service>'
+		xmlstr += '<e2currentserviceinformation>\n'
+		xmlstr += '   <e2service>\n'
+		xmlstr += '      <e2servicereference>'+self.ref.strip()+'</e2servicereference>\n'
+		xmlstr += '      <e2servicename>' + self.currentChannel.mName + '</e2servicename>\n'
+		xmlstr += '      <e2providername>' + self.currentChannel.mName + '</e2providername>\n'
+		xmlstr += '      <e2videowidth>{e2:convert type=ServiceInfo}VideoWidth{/e2:convert}</e2videowidth>\n'
+		xmlstr += '      <e2videoheight>{e2:convert type=ServiceInfo}VideoHeight{/e2:convert}</e2videoheight>\n'
+		xmlstr += '      <e2servicevideosize>{e2:convert type=ServiceInfo}VideoWidth{/e2:convert} x{e2:convert type=ServiceInfo}VideoHeight{/e2:convert}</e2servicevideosize>\n'
+		xmlstr += '      <e2iswidescreen>{e2:convert type=ServiceInfo}IsWidescreen{/e2:convert}</e2iswidescreen>\n'
+		xmlstr += '      <e2apid>{e2:convert type=ServiceInfo}AudioPid{/e2:convert}</e2apid>\n'
+		xmlstr += '      <e2vpid>{e2:convert type=ServiceInfo}VideoPid{/e2:convert}</e2vpid>\n'
+		xmlstr += '      <e2pcrpid>{e2:convert type=ServiceInfo}PcrPid{/e2:convert}</e2pcrpid>\n'
+		xmlstr += '      <e2pmtpid>{e2:convert type=ServiceInfo}PmtPid{/e2:convert}</e2pmtpid>\n'
+		xmlstr += '      <e2txtpid>{e2:convert type=ServiceInfo}TxtPid{/e2:convert}</e2txtpid>\n'
+		xmlstr += '      <e2tsid>' + str(self.currentChannel.mSid) + '</e2tsid>\n'
+		xmlstr += '      <e2onid>' + str(self.currentChannel.mOnid) + '</e2onid>\n'
+		xmlstr += '      <e2sid>' + str(self.currentChannel.mSid) + '</e2sid>\n'
+		xmlstr += '   </e2service>\n'
 
-		xmlstr += '   <e2eventlist>'
+		xmlstr += '   <e2eventlist>\n'
 
 		if self.currentEpg == None :
 			pass
 		else :
-			xmlstr += '      <e2event>'
-			xmlstr += '         <e2eventservicereference>'
-			xmlstr += 			self.ref
-			xmlstr += '         </e2eventservicereference>'
-			xmlstr += '         <e2eventservicename>'
-			xmlstr += 				self.currentEpg.mEventName
-			xmlstr += '         </e2eventservicename>'
-			xmlstr += '         <e2eventprovidername>'
-			xmlstr +=           			self.currentChannel.mName
-			xmlstr += '         </e2eventprovidername>'
-			xmlstr += '         <e2eventid>'
-			xmlstr += 				str(self.currentEpg.mEventId)
-			xmlstr += '         </e2eventid>'
-			xmlstr += '         <e2eventname>'
-			xmlstr += 				self.currentEpg.mEventName
-			xmlstr += '         </e2eventname>'
-			xmlstr += '         <e2eventtitle>'
-			xmlstr += 				self.currentEpg.mEventName
-			xmlstr += '         </e2eventtitle>'
-			xmlstr += '         <e2eventdescription>'
-			xmlstr += 				self.currentEpg.mEventDescription
-			xmlstr += '         </e2eventdescription>'
-			xmlstr += '         <e2eventstart>'
-			xmlstr += 				str( self.currentEpg.mStartTime )
-			xmlstr += '         </e2eventstart>'
-			xmlstr += '         <e2eventduration>'
-			xmlstr += 				str( self.currentEpg.mDuration )
-			xmlstr += '         </e2eventduration>'
-			xmlstr += '         <e2eventremaining>'
-
+			xmlstr += '      <e2event>\n'
+			xmlstr += '         <e2eventservicereference>' + self.ref + '</e2eventservicereference>\n'
+			xmlstr += '         <e2eventservicename>' + self.currentEpg.mEventName + '</e2eventservicename>\n'
+			xmlstr += '         <e2eventprovidername>' + self.currentChannel.mName + '</e2eventprovidername>\n'
+			xmlstr += '         <e2eventid>' + str(self.currentEpg.mEventId) + '</e2eventid>\n'
+			xmlstr += '         <e2eventname>' + self.currentEpg.mEventName + '</e2eventname>\n'
+			xmlstr += '         <e2eventtitle>' + self.currentEpg.mEventName + '</e2eventtitle>\n'
+			xmlstr += '         <e2eventdescription>' + self.currentEpg.mEventDescription + '</e2eventdescription>\n'
+			xmlstr += '         <e2eventstart>' + str( self.currentEpg.mStartTime ) + '</e2eventstart>\n'
+			xmlstr += '         <e2eventduration>' + str( self.currentEpg.mDuration ) + '</e2eventduration>\n'
+			
 			endTime = self.currentEpg.mStartTime + self.currentEpg.mDuration
 			remainTime = endTime - self.currentUnixTimestamp
 			
-			xmlstr += 		str( remainTime )
-			xmlstr += '         </e2eventremaining>'
-			xmlstr += '         <e2eventcurrenttime>'
-			xmlstr +=				str( self.currentUnixTimestamp )
-			xmlstr += '         </e2eventcurrenttime>'
-			xmlstr += '         <e2eventdescriptionextended>'
-			xmlstr += '         </e2eventdescriptionextended>'
-			xmlstr += '      </e2event>'
+			xmlstr += '         <e2eventremaining>' + str( remainTime ) + '</e2eventremaining>\n'
+			xmlstr += '         <e2eventcurrenttime>' + str( self.currentUnixTimestamp ) + '</e2eventcurrenttime>\n'
+			xmlstr += '         <e2eventdescriptionextended></e2eventdescriptionextended>\n'
+			xmlstr += '      </e2event>\n'
 
 		if self.followingEpg == None :
 			pass
 		else :
-			xmlstr += '      <e2event>'
-			xmlstr += '         <e2eventservicereference>'
-			xmlstr += 			self.ref
-			xmlstr += '         </e2eventservicereference>'
-			xmlstr += '         <e2eventservicename>'
-			xmlstr += 				self.followingEpg.mEventName 
-			xmlstr += '         </e2eventservicename>'
-			xmlstr += '         <e2eventprovidername>'
-			xmlstr += 				self.currentChannel.mName
-			xmlstr += '         </e2eventprovidername>'
-			xmlstr += '         <e2eventid>'
-			xmlstr += 				str( self.followingEpg.mEventName )
-			xmlstr += '         </e2eventid>'
-			xmlstr += '         <e2eventname>'
-			xmlstr += 				str( self.followingEpg.mEventName )
-			xmlstr += '         </e2eventname>'
-			xmlstr += '         <e2eventtitle>'
-			xmlstr += 				str( self.followingEpg.mEventName )
-			xmlstr += '         </e2eventtitle>'
-			xmlstr += '         <e2eventdescription>'
-			xmlstr += 				str( self.followingEpg.mEventDescription )
-			xmlstr += '         </e2eventdescription>'
-			xmlstr += '         <e2eventstart>'
-			xmlstr += 				str( self.followingEpg.mStartTime )
-			xmlstr += '         </e2eventstart>'
-			xmlstr += '         <e2eventduration>'
-			xmlstr += 				str( self.followingEpg.mDuration )
-			xmlstr += '         </e2eventduration>'
-			xmlstr += '         <e2eventremaining>'
-			xmlstr +=			str( self.followingEpg.mDuration )
-			xmlstr += '         </e2eventremaining>'
-			xmlstr += '         <e2eventcurrenttime>'
-			xmlstr +=				str( self.currentUnixTimestamp )
-			xmlstr += '         </e2eventcurrenttime>'
-			xmlstr += '         <e2eventdescriptionextended>'
-			xmlstr += '         </e2eventdescriptionextended>'
-			xmlstr += '      </e2event>'
+			xmlstr += '      <e2event>\n'
+			xmlstr += '         <e2eventservicereference>' + self.ref + '</e2eventservicereference>\n'
+			xmlstr += '         <e2eventservicename>' + self.followingEpg.mEventName + '</e2eventservicename>\n'
+			xmlstr += '         <e2eventprovidername>' + self.currentChannel.mName + '</e2eventprovidername>\n'
+			xmlstr += '         <e2eventid>' + str( self.followingEpg.mEventName ) + '</e2eventid>\n'
+			xmlstr += '         <e2eventname>' + str( self.followingEpg.mEventName ) + '</e2eventname>\n'
+			xmlstr += '         <e2eventtitle>' + str( self.followingEpg.mEventName ) + '</e2eventtitle>\n'
+			xmlstr += '         <e2eventdescription>' + str( self.followingEpg.mEventDescription ) + '</e2eventdescription>\n'
+			xmlstr += '         <e2eventstart>' + str( self.followingEpg.mStartTime ) + '</e2eventstart>\n'
+			xmlstr += '         <e2eventduration>' + str( self.followingEpg.mDuration ) + '</e2eventduration>\n'
+			xmlstr += '         <e2eventremaining>' + str( self.followingEpg.mDuration ) + '</e2eventremaining>\n'
+			xmlstr += '         <e2eventcurrenttime>' + str( self.currentUnixTimestamp ) + '</e2eventcurrenttime>\n'
+			xmlstr += '         <e2eventdescriptionextended></e2eventdescriptionextended>\n'
+			xmlstr += '      </e2event>\n'
 			
-		xmlstr += '   </e2eventlist>'
-				
-		"""	
-		xmlstr += '   <e2volume>'
-		xmlstr += '      <e2result>'
-		xmlstr += '         {e2:convert type=VolumeInfo}Result{/e2:convert} '
-		xmlstr += '      </e2result>'
-		xmlstr += '      <e2resulttext>'
-		xmlstr += '         {e2:convert type=VolumeInfo}ResultText{/e2:convert} '
-		xmlstr += '      </e2resulttext>'
-		xmlstr += '      <e2current>'
-		xmlstr += '         {e2:convert type=VolumeInfo}Volume{/e2:convert} '
-		xmlstr += '      </e2current>'
-		xmlstr += '      <e2ismuted>'
-		xmlstr += '         {e2:convert type=VolumeInfo}IsMuted{/e2:convert} '
-		xmlstr += '      </e2ismuted>'
-		xmlstr += '   </e2volume>'
-		"""
-		
-		xmlstr += '</e2currentserviceinformation>'
+		xmlstr += '   </e2eventlist>\n'
+		xmlstr += '</e2currentserviceinformation>\n'
+
 		return xmlstr

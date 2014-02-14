@@ -1,4 +1,4 @@
-﻿
+
 	#wrapper {
 		width: 1200px;
 		padding: 10px;
@@ -56,9 +56,19 @@
 		font-weight: bold;
 	}
 	
-	#menu p a {
+	#menu p a:link {
 		text-decoration: none;
+		color: #525252;
 	}
+
+	#menu p a:visited {
+		color: #525252;
+	}
+
+	#menu p a:hover {
+		color: #ff6c00;
+	}
+
 	
 	/* Side Menu */
 	/* ======================================================== */
@@ -112,7 +122,22 @@
 
 	/* Channel List */
 	/* ======================================================== */	
-	
+
+	/* Remote Control */
+	/* ======================================================== */	
+
+	#hiddenFrame {
+		visibility: hidden;
+	}
+
+	.recContent {
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: bold;
+	}
+
+	/* Remote Control */
+	/* ======================================================== */	
 	
 	
 	

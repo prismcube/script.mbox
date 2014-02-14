@@ -2,6 +2,7 @@ from datetime import datetime
 from webinterface import Webinterface
 import dbopen
 import urllib
+from xml.sax.saxutils import escape, unescape
 
 class ElmoGetServices( Webinterface ) :
 
@@ -19,6 +20,9 @@ class ElmoGetServices( Webinterface ) :
 
 		self.conn = dbopen.DbOpen('channel.db').getConnection()		
 		self.c = self.conn.cursor()
+
+		# defilne custom characters
+		self.space = "]][["
 		
 	def xmlResult(self) :
 
@@ -33,7 +37,7 @@ class ElmoGetServices( Webinterface ) :
 				conditions = sRefParams['comment'].split('_')
 
 				if len(conditions) == 3 : 
-					sql = "select name, sid, tsid, onid  from " + conditions[0] + " where " + conditions[1] + " = '" + conditions[2] + "'"
+					sql = "select name, sid, tsid, onid  from " + conditions[0] + " where " + conditions[1] + " = '" + self.escapeMinus( conditions[2] ) + "'"
 					self.makeChannelListXML( sql )
 					
 				elif "bouquets.radio" in self.params['sRef'] : 
@@ -51,7 +55,8 @@ class ElmoGetServices( Webinterface ) :
 					sql = "select name, sid, tsid, onid from tblChannel where serviceType=1 or serviceType=3 order by name"
 					self.makeChannelListXML( sql )
 
-			except :
+			except Exception, e:
+				print str(e)
 				self.noResult()
 					
 		else :
@@ -63,47 +68,61 @@ class ElmoGetServices( Webinterface ) :
 
 	def makeFavoriteFolderXML(self, sql) :
 
-		print sql
+		print '[getservices - folder]' + sql
+		
 		self.c.execute(sql)
 		result = self.c.fetchall()
 			
-		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>'
-		self.xmlStr += '<e2servicelist>'
+		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		self.xmlStr += '<e2servicelist>\n'
 
 		for row in result :
 		
-			self.xmlStr += '<e2service>'
-			self.xmlStr += '<e2servicereference>1:7:1:0:0:0:0:0:0:0:' + 'tblFavoriteChannel_GroupName_' + urllib.quote( row[0] ) + '</e2servicereference>'
-			self.xmlStr += '<e2servicename>' + row[0] + '</e2servicename>'
-			self.xmlStr += '</e2service>'
+			self.xmlStr += '<e2service>\n'
+			# self.xmlStr += '<e2servicereference>1:7:1:0:0:0:0:0:0:0:' + 'tblFavoriteChannel_GroupName_' + urllib.quote( row[0] ) + '</e2servicereference>\n'
+			self.xmlStr += '<e2servicereference>1:7:1:0:0:0:0:0:0:0:' + 'tblFavoriteChannel_GroupName_' + self.escapePlus( row[0] ) + '</e2servicereference>\n'
+			self.xmlStr += '<e2servicename>' + escape(row[0]) + '</e2servicename>\n'
+			self.xmlStr += '</e2service>\n'
 	
-		self.xmlStr +='</e2servicelist>'
+		self.xmlStr +='</e2servicelist>\n'
 
 	def makeChannelListXML(self, sql) :
 
-		print sql
+		print '[getservices - list]' + sql
+		
 		self.c.execute(sql)
 		result = self.c.fetchall()
+
+		print result
 			
-		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>'
-		self.xmlStr += '<e2servicelist>'
+		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		self.xmlStr += '<e2servicelist>\n'
 
 		for row in result :
 		
-			self.xmlStr += '<e2service>'
-			self.xmlStr += '	<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) + '</e2servicereference>'
-			self.xmlStr += '	<e2servicename>' + row[0] + '</e2servicename>'
-			self.xmlStr += '</e2service>'	
+			self.xmlStr += '<e2service>\n'
+			self.xmlStr += '	<e2servicereference>' + self.makeRef( row[1], row[2],  row[3] ) + '</e2servicereference>\n'
+			self.xmlStr += '	<e2servicename>' + escape(row[0]) + '</e2servicename>\n'
+			self.xmlStr += '</e2service>\n'	
 	
-		self.xmlStr +='</e2servicelist>'
+		self.xmlStr +='</e2servicelist>\n'
 
 	def noResult(self) :
 
-		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>'
-		self.xmlStr += '<e2servicelist>'
+		self.xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		self.xmlStr += '<e2servicelist>\n'
 
-		self.xmlStr += '<e2service>'
-		self.xmlStr += '</e2service>'
+		self.xmlStr += '<e2service></e2service>\n'
 	
-		self.xmlStr +='</e2servicelist>'
+		self.xmlStr +='</e2servicelist>\n'
+
+	def escapePlus(self, name) :
+
+		tempName = escape(name)
+		return tempName.replace(" ", self.space)
+
+	def escapeMinus(self, name) : #aka unEscapePlus()
+
+		tempName = name.replace(self.space, " ")
+		return unescape(tempName)
 		

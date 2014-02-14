@@ -1,0 +1,173 @@
+<window>
+	<defaultcontrol always="true">300</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="300">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<include>DefaultDialogCloseEffect</include>
+			<posx>365</posx>
+			<posy>150</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>305</height>
+				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="group">
+				<posx>25</posx>
+				<posy>15</posy>
+				<control type="label" id="400">
+					<description>Video PID</description>
+					<posx>30</posx>
+					<posy>30</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="401">
+					<description>Audio PID</description>
+					<posx>30</posx>
+					<posy>60</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="402">
+					<description>PCR PID</description>
+					<posx>30</posx>
+					<posy>90</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="403">
+					<description>TSID</description>
+					<posx>30</posx>
+					<posy>120</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="404">
+					<description>ONID</description>
+					<posx>30</posx>
+					<posy>150</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="405">
+					<description>SID</description>
+					<posx>30</posx>
+					<posy>180</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="500">
+					<description>Strength</description>
+					<posx>30</posx>
+					<posy>210</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="501">
+					<description>Quality</description>
+					<posx>30</posx>
+					<posy>240</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>400</posx>
+				<posy>15</posy>
+				<control type="label" id="4000">
+					<description>Video PID</description>
+					<posx>30</posx>
+					<posy>30</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="4001">
+					<description>Audio PID</description>
+					<posx>30</posx>
+					<posy>60</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="4002">
+					<description>PCR PID</description>
+					<posx>30</posx>
+					<posy>90</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="4003">
+					<description>TSID</description>
+					<posx>30</posx>
+					<posy>120</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="4004">
+					<description>ONID</description>
+					<posx>30</posx>
+					<posy>150</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="4005">
+					<description>SID</description>
+					<posx>30</posx>
+					<posy>180</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="5000">
+					<description>Strength</description>
+					<posx>30</posx>
+					<posy>210</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				<control type="label" id="5001">
+					<description>Quality</description>
+					<posx>30</posx>
+					<posy>240</posy>
+					<font>font13</font>
+					<label></label>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

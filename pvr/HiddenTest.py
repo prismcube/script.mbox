@@ -61,9 +61,13 @@ class HiddenTest( BaseWindow ) :
 		self.mRoot = tree.getroot( )
 		
 		context = []
+		if E_V1_4_MOUNT_MANAGER :
+			context.append( ContextItem( 'Mount Test', 7777 ) )
+
 		context.append( ContextItem( 'TBR BASIC TEST', 9995 ) )
 		context.append( ContextItem( 'TBR FM TEST', 9996 ) )
 		context.append( ContextItem( 'PROPERTY CHECK', 9999 ) )
+
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			context.append( ContextItem( 'ALL Navigation', 8888 ) )
 		menuCount = 0
@@ -106,6 +110,10 @@ class HiddenTest( BaseWindow ) :
 				LOG_TRACE( 'Socket connect error' )
 
 			#WinMgr.GetInstance( ).CloseWindow( )
+
+		elif aContextAction == 7777 :
+			self.SetInstanceMount( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		else :
 			scenario = TestScenario( 'scenario', 'scenario' )
@@ -562,5 +570,59 @@ class HiddenTest( BaseWindow ) :
 				dialog.doModal( )
 				return False
 
-			
+
+	def SetInstanceMount( self ) :
+		lblTitle = 'Success'
+		lblLine = ''
+		isFail = False
+		smbPoint = '/media/smb'
+		zipFile = xbmcgui.Dialog( ).browsepath( 'Instance Mount', '' )
+		LOG_TRACE( '----------zip[%s]'% zipFile )
+		if not zipFile or zipFile == 'None' :
+			LOG_TRACE( 'not selected zip' )
+			return
+
+		urlType = urlparse.urlparse( zipFile ).scheme
+		if urlType :
+			"""
+			if urlType == 'ftp' :
+				zipFile = self.GetDownloadByInstant( zipFile )
+				if zipFile == -1 :
+					self.DialogPopup( E_STRING_ERROR, MR_LANG( 'Failed to download file' ) )
+					return
+
+				elif zipFile == False :
+					LOG_TRACE( 'cancel or aborted' )
+					return
+
+				if type( zipFile ) != str or ( not bool( re.search( E_DEFAULT_PATH_DOWNLOAD, zipFile, re.IGNORECASE ) ) ) :
+					LOG_TRACE( 'no download' )
+					return
+			"""
+
+			if urlType == 'smb' :
+				zipFile = MountToSMB( zipFile, smbPoint, True )
+				LOG_TRACE( '-----------------------smb zipFile[%s]'% zipFile )
+
+			else :
+				# upnp, zeroconf, daap, ...
+				isFail = True
+				lblLine = 'No %s support'% urlType
+
+		if not CheckDirectory( zipFile ) :
+			isFail = True
+			lblLine = 'File not found'
+			LOG_TRACE( 'not found zip[%s]'% zipFile )
+
+		if isFail :
+			lblTitle = 'Error'
+
+		else :
+			lblLine = '[%s] %s'% ( urlType, zipFile )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( lblTitle, lblLine )
+		dialog.doModal( )
+
+		LOG_TRACE( 'mount[%s]'% lblLine )
 			

@@ -113,6 +113,8 @@ E_CONTROL_ID_BUTTON_STOP_RECORDING 		= E_BASE_WINDOW_ID + 3625
 E_CONTROL_ID_BUTTON_MUTE 				= E_BASE_WINDOW_ID + 3626
 E_CONTROL_ID_BUTTON_SETTING_FORMAT 		= E_BASE_WINDOW_ID + 3627
 E_CONTROL_ID_BUTTON_PIP					= E_BASE_WINDOW_ID + 3629
+E_CONTROL_ID_BUTTON_CHANNEL_LIST		= E_BASE_WINDOW_ID + 3630
+E_CONTROL_ID_BUTTON_SERVICE_INFO		= E_BASE_WINDOW_ID + 3631
 
 E_CONTROL_ID_GROUP_PVR_BUTTONS 			= E_BASE_WINDOW_ID + 3750
 
@@ -291,7 +293,7 @@ E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '18
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6', '-4', '-2', '0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20' ] 
 
-E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'OneCable' ) ]
+E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) ]
 E_LIST_TUNER2_SIGNAL				= [ MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) ]
 E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
 
@@ -318,7 +320,7 @@ def InitTranslateByEnumList( ) :
 	InitializedByVariableList( E_LIST_MY_LONGITUDE, MR_LANG( 'East' ), MR_LANG( 'West' ) )
 	InitializedByVariableList( E_LIST_MY_LATITUDE, MR_LANG( 'North' ), MR_LANG( 'South' ) )
 	InitializedByVariableList( USER_ENUM_LIST_UPDATE_NOTIFY, MR_LANG( 'None' ), MR_LANG( '5 times' ), MR_LANG( 'Always' ) )
-	InitializedByVariableList( E_LIST_TUNER_CONNECTION, MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'OneCable' ) )
+	InitializedByVariableList( E_LIST_TUNER_CONNECTION, MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) )
 	InitializedByVariableList( E_LIST_TUNER2_SIGNAL, MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) )
 	InitializedByVariableList( E_LIST_TUNER_CONTROL, MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) )
 	LOG_TRACE('----------------------InitTranslateByEnumList [%s][%s]'% ( xbmc.getLanguage(), USER_ENUM_LIST_ON_OFF ) )
@@ -380,6 +382,9 @@ E_INPUT_KEYBOARD_TYPE_NO_HIDE	= False
 E_INPUT_KEYBOARD_TYPE_HIDE		= True
 E_INPUT_MAX						= 9999
 E_INDEX_JUMP_MAX				= 100
+
+# Search Type
+MININUM_KEYWORD_SIZE = 3
 
 # Dialog Status
 E_DIALOG_STATE_YES		= 1
@@ -469,6 +474,8 @@ CONTEXT_ACTION_SHOW_BOOKMARK	= 36
 CONTEXT_ACTION_VIDEO_SETTING 	= 41 
 CONTEXT_ACTION_AUDIO_SETTING 	= 42
 CONTEXT_ACTION_HOTKEYS	 		= 43
+CONTEXT_ACTION_INSERT_NUMBER	= 45
+CONTEXT_ACTION_CHANNEL_SEARCH   = 46
 
 E_DEFAULT_ACTION_CLICK_EVENT	= 1000
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
@@ -491,6 +498,8 @@ E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 
 E_V1_2_APPLY_PIP = True
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
+
+E_V1_4_MOUNT_MANAGER = True
 
 ############################ Global Function For GUI ############################
 

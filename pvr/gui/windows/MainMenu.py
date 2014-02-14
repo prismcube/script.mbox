@@ -38,6 +38,7 @@ BUTTON_ID_EDIT_TRANSPONDER		= E_MAIN_MENU_BASE_ID + 90105
 BUTTON_ID_CONFIGURE				= E_MAIN_MENU_BASE_ID + 90106
 BUTTON_ID_CAS					= E_MAIN_MENU_BASE_ID + 90107
 BUTTON_ID_UPDATE				= E_MAIN_MENU_BASE_ID + 90108
+BUTTON_ID_ADVANCED				= E_MAIN_MENU_BASE_ID + 90109
 
 BUTTON_ID_EPG_GRID			= E_MAIN_MENU_BASE_ID + 90312
 BUTTON_ID_EPG_CHANNEL		= E_MAIN_MENU_BASE_ID + 90313
@@ -76,7 +77,8 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Add new transponders or edit the transponders already exist' ),
 			MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
 			MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
-			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+			MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ),
+			MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) ]
 
 		self.mSubDescriptionMedia = [
 			MR_LANG( 'Get current weather and weather forecast for thousands of cities around the world' ),
@@ -93,7 +95,7 @@ class MainMenu( BaseWindow ) :
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
-		self.setProperty( 'RssShow', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'RSS_FEED_MAIN_MENU' ) )
+		self.setProperty( 'RssShow', GetSetting( 'RSS_FEED_MAIN_MENU' ) )
 		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -148,7 +150,7 @@ class MainMenu( BaseWindow ) :
 			return
 
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
-		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
+		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_ADVANCED :
 			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
 					self.getControl( MAIN_GROUP_ID ).setVisible( False )
@@ -186,7 +188,8 @@ class MainMenu( BaseWindow ) :
 						dialog.doModal( )
 						if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetPlatform( ).GetFrodoVersion( ) :
 							self.getControl( MAIN_GROUP_ID ).setVisible( True )
-
+				elif aControlId == BUTTON_ID_ADVANCED :
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ADVANCED )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
@@ -345,7 +348,7 @@ class MainMenu( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			return
 
-		if aControlId >= BUTTON_ID_FIRSTINSTALLATION and aControlId <= BUTTON_ID_UPDATE :
+		if aControlId >= BUTTON_ID_FIRSTINSTALLATION and aControlId <= BUTTON_ID_ADVANCED :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionInstall[ aControlId - 1 - BUTTON_ID_INSTALLATION ] )
 
 		elif aControlId >= BUTTON_ID_MEDIA_WEATHER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :

@@ -896,15 +896,15 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 			self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Advanced Options'), '', MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) )
+			#self.AddInputControl( E_Input01, MR_LANG( 'Advanced Options'), '', MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) )
 
 			if E_V1_1_UPDATE_NOTIFY :
 				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01 ]
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
 				hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			else :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01 ]
-				hideControlIds = [ E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds = [ E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
@@ -1502,7 +1502,7 @@ class Configure( SettingWindow ) :
 		elif aGroupId == E_Input01 :
 			settings = xbmcaddon.Addon( 'script.mbox' )
 			settings.openSettings(True,1)
-			self.setProperty( 'ShowClock', xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
+			self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 			self.ShowClockOnVFD( )
 
 		else :
@@ -1510,7 +1510,7 @@ class Configure( SettingWindow ) :
 
 
 	def ShowClockOnVFD( self ) :
-		VFDClock = xbmcaddon.Addon( 'script.mbox' ).getSetting( 'DISPLAY_CLOCK_VFD' )
+		VFDClock = GetSetting( 'DISPLAY_CLOCK_VFD' )
 		if VFDClock == 'true' :
 			ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 1 )
 		else :

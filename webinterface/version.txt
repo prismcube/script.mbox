@@ -1,3 +1,19 @@
+2014.2.13
+  - Web UI, Recording Page Done
+  - Web UI, Channel Page Done
+ 
+2014.2.11
+ - Active Standby, Deep Standby, Restart Gui, Reboot 
+ - Favorite Folder, Channel List not showing bug fixed
+ 
+2014.2.10
+ - fixed the bug that won't list channels when special characters are included in the 
+ name
+
+2014.2.7
+ - Added newline(\n) for each XML output lines
+ - HTTP header changed for browsers to recognize XML files
+
 2014.2.5
  - Lower CPU usage when streaming live channel 
  - WebUI image partially applied 

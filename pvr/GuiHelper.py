@@ -11,18 +11,20 @@ except Exception, e :
 import urlparse, urllib
 from subprocess import *
 
-gSettings = xbmcaddon.Addon( id="script.mbox" )
+#gSettings = xbmcaddon.Addon( id="script.mbox" )
 gSupportLanguage = [ 'Czech', 'Dutch', 'French', 'German', 'Italian', 'Polish', 'Russian', 'Spanish', 'Turkish', 'Arabic', 'Korean', 'Slovak', 'Ukrainian' ]
 
 
 def GetSetting( aID ) :
-	global gSettings
-	return gSettings.getSetting( aID )
+	#global gSettings
+	#return gSettings.getSetting( aID )
+	return xbmcaddon.Addon( 'script.mbox' ).getSetting( aID )
 
 
 def SetSetting( aID, aValue ) :
-	global gSettings	
-	gSettings.setSetting( aID, aValue )
+	#global gSettings
+	#gSettings.setSetting( aID, aValue )
+	xbmcaddon.Addon( 'script.mbox' ).setSetting( aID, aValue )
 
 
 def RecordConflict( aInfo ) :
@@ -297,6 +299,8 @@ def EnumToString( aType, aValue ) :
 			ret = MR_LANG( 'Satellite' )
 		elif aValue == ElisEnum.E_MODE_CAS :
 			ret = MR_LANG( 'FTA/CAS' )
+		elif aValue == ElisEnum.E_MODE_PROVIDER :
+			ret = MR_LANG( 'Provider' )
 
 	elif aType == 'sort' :
 		if aValue == ElisEnum.E_SORT_BY_DEFAULT :
@@ -1317,7 +1321,7 @@ def IsIPv4( address ) :
 	return True
 
 
-def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
+def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1351,6 +1355,10 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
 		return zipFile
+
+	if aReserved :
+		os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+		os.system( 'sync' )
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
 	if not CheckDirectory( zipFile ) :

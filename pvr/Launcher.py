@@ -51,6 +51,8 @@ class Launcher( object ):
 				#dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
 				#dialog.doModal( )
 				print 'Error exception[%s]'% ex
+				import traceback
+				LOG_ERR( 'traceback=%s' %traceback.format_exc() )
 
 				self.mLoadCount += 1
 				LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)

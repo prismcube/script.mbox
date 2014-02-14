@@ -67,6 +67,7 @@ DIALOG_ID_PIP						= 34
 DIALOG_ID_BIG_SELECT				= 35
 DIALOG_ID_BACKUP_SETTINGS			= 36
 DIALOG_ID_ROOTFS_BACKUP				= 37
+DIALOG_ID_SERVICE_INFO				= 38
 
 
 DIALOG_ID_TEST_WORK			= 99
@@ -254,6 +255,11 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogRootfsBackup import DialogRootfsBackup
 				return DialogRootfsBackup( 'DialogRootfsBackup.xml', self.scriptDir )
 
+			elif aDialogId == DIALOG_ID_SERVICE_INFO :
+				from pvr.gui.dialogs.DialogServiceInfo import DialogServiceInfo
+				return DialogServiceInfo( 'DialogServiceInfo.xml', self.scriptDir )
+
+
 			#elif aDialogId == DIALOG_ID_TEST_WORK :
 			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode
 			#	#return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
@@ -276,7 +282,10 @@ class DialogMgr( object ) :
 					LOG_TRACE( 'Volume check TEST : currentID=%d' %currentID )
 					if self.mDataCache.GetMediaCenter( ) == False :
 						LOG_TRACE( 'Volume check TEST : Update Volume ' )
-						self.UpdateVolume( )
+						if xbmcgui.Window( 10000 ).getProperty( 'VolumeChanged') == 'true' :
+							self.UpdateVolume( )
+							xbmcgui.Window( 10000 ).setProperty( 'VolumeChanged', 'false')
+
 			time.sleep(0.5)
 
 

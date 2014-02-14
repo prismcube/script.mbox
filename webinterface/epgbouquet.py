@@ -23,8 +23,8 @@ class ElmoEpgBouquet( Webinterface ) :
 	def xmlResult(self) :
 
 		xmlStr = ''
-		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
-		xmlStr += '<e2eventlist> '
+		xmlStr += '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlStr += '<e2eventlist>\n'
 
 		"""
 		for row in self.c :
@@ -70,6 +70,6 @@ class ElmoEpgBouquet( Webinterface ) :
 			conn.close()
 		"""
 		
-		xmlStr += '</e2eventlist> '
+		xmlStr += '</e2eventlist>\n'
 		return xmlStr
 		
