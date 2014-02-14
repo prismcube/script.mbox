@@ -252,7 +252,7 @@
 	<string id="2091">Auto</string>
 	<string id="2092">Typ pripojenia Tuner2</string>
 	<string id="2093">Oddelený</string>
-	<string id="2094">Loop-through</string>
+	<string id="2094">Prepojený s Tuner 1</string>
 	<string id="2095">Konfig.signálu Tuner2</string>
 	<string id="2096">Rovnako ako tuner 1</string>
 	<string id="2097">Iný ako tuner 1</string>
@@ -374,7 +374,7 @@
 	<string id="2213">Názov</string>
 	<string id="2214">Anténa 5V</string>
 	<string id="2215">Režim EPG</string>
-	<string id="2216">Sieť</string>
+	<string id="2216">Mriežka</string>
 	<string id="2217">Automatické dekódovanie v StandBy</string>
 	<string id="2218">Použitie WLAN</string>
 	<string id="2219">FTP transakcie</string>
