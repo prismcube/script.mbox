@@ -306,7 +306,8 @@ class MainMenu( BaseWindow ) :
 				dialog.doModal( )
 
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-			self.SetMediaCenter( )
+			if aControlId != BUTTON_ID_MEDIA_CENTER and aControlId != BUTTON_ID_FAVORITE_EXTRA :
+				self.SetMediaCenter( )
 			#self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )			
