@@ -132,7 +132,7 @@ class Advanced( SettingWindow ) :
 
 		elif selectedId == E_LIVESTREAM :
 			if groupId == E_SpinEx01 :
-				self.SetSettingFromNumber( 'LIVE_STREAM', self.GetSelectedIndex( E_SpinEx01 ) )
+				self.ControlSelect( )
 			elif groupId == E_SpinEx02 :
 				self.SetSettingFromNumber( 'WEB_INTERFACE', self.GetSelectedIndex( E_SpinEx02 ) )
 
@@ -179,8 +179,8 @@ class Advanced( SettingWindow ) :
 			
 		elif selectedId == E_LIVESTREAM :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Live Streaming' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'LIVE_STREAM' ) ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
 			self.SetVisibleControls( visibleControlIds, True )
