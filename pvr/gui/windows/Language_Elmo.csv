@@ -154,6 +154,7 @@
 "Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;;;1155
 "Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;;;1156
 "Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;;;1157
+"Live Streaming";;;;;;;;;;;;;;1200
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -506,7 +507,6 @@
 "Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";2350
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2351
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2352
-"LCN Search";;;;;;;;;;;;;;2353
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
