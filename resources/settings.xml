@@ -20,6 +20,7 @@
 		<setting id="PIP_POSITION" type="text" label="PIPPostion" values="857|170|352|198" default="857|170|352|198" />
 
 		<setting id="AUTO_CONFIRM_CHANNEL" type="enum" label="1141" values="0" default="0" />
+		<setting id="SHOW_EPGINFO_CHANNEL" type="enum" label="ShowEPGInfo" values="0" default="0" />
 
 	</category>
 	<category label="1146">

@@ -43,9 +43,13 @@ class DialogTestCode( BaseDialog ) :
 		self.mLimit = False
 		#self.TestList( )
 
+		self.TestLogo( )
+		self.TestChannelList( )
+
 
 	def onAction( self, aAction ) :
 		if aAction == Action.ACTION_PREVIOUS_MENU or aAction == Action.ACTION_PARENT_DIR :
+			self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 			self.CloseDialog( )
 
 		elif aAction == Action.ACTION_SELECT_ITEM :
@@ -58,6 +62,12 @@ class DialogTestCode( BaseDialog ) :
 
 		elif aAction == Action.ACTION_STOP :
 			self.CloseDialog( )
+
+		elif aAction == Action.ACTION_MBOX_REWIND :
+			self.setProperty( 'ShowExtendInfo', E_TAG_FALSE )
+
+		elif aAction == Action.ACTION_MBOX_FF :
+			self.setProperty( 'ShowExtendInfo', E_TAG_TRUE )
 
 		"""
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
@@ -135,6 +145,39 @@ class DialogTestCode( BaseDialog ) :
 
 	def onFocus( self, aControlId ):
 		pass
+
+
+	def TestChannelList( self ) :
+		self.getControl( E_DEFAULT_HEADER_TITLE ).setLabel( 'Channel List' )
+		from pvr.GuiHelper import GetInstanceSkinPosition
+		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
+		h = ctrlImgVideoPos.getHeight( )
+		w = ctrlImgVideoPos.getWidth( )
+		x, y = list( ctrlImgVideoPos.getPosition( ) )
+		
+		x, y, w, h = pvr.GuiHelper.GetInstanceSkinPosition( ).GetPipPosition( x, y, w, h )
+
+		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2 )
+
+		self.setProperty( 'iCas', E_TAG_TRUE )
+		self.setProperty( 'iCasV', 'V' )
+
+
+	def TestLogo( self ) :
+		chLogoB = E_TAG_FALSE
+		chImage = ''
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		if iChannel :
+			chLogoB = E_TAG_TRUE
+			mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
+			logo = '%s_%s'% ( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mSid )
+			LOG_TRACE( 'logo=%s'% logo )
+			LOG_TRACE( 'logo path=%s'% mChannelLogo.GetLogo( logo ) )
+			chImage = mChannelLogo.GetLogo( logo, iChannel.mServiceType )
+
+		self.setProperty( 'iChannelLogo', '%s'% chImage )
+		self.setProperty( 'iChannelLogoBack', chLogoB )
 
 
 	def TestScreen( self ) :

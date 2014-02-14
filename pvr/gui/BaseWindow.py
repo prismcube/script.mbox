@@ -910,17 +910,17 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingPIG', 'True' )
 				self.setProperty( 'DafultBackgroundImage', 'True' )
 
-				overlayImage.setPosition( 835, 113 )
+				overlayImage.setPosition( 850, 113 )
 				overlayImage.setWidth( 352 )
 				overlayImage.setHeight( 198 )
 
-				radioImage.setPosition( 835, 113 )
+				radioImage.setPosition( 850, 113 )
 				radioImage.setWidth( 352 )
 				radioImage.setHeight( 198 )
 
-				nosignalLabel.setPosition( 908, 197 )
-				scrambleLabel.setPosition( 908, 197 )
-				noServiceLabel.setPosition( 908, 197 )
+				nosignalLabel.setPosition( 925, 197 )
+				scrambleLabel.setPosition( 925, 197 )
+				noServiceLabel.setPosition( 925, 197 )
 
 			elif aWindowId == WinMgr.WIN_ID_ARCHIVE_WINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				if self.getProperty( 'ViewMode' ) == 'common' :
