@@ -9,9 +9,9 @@ class ElmoGetLocations( Webinterface ) :
 		
 	def xmlResult( self ) :
 	
-		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>'
-		xmlstr += '<e2locations>'
-   		xmlstr += '	<e2location>Archive</e2location>'
-		xmlstr += '</e2locations>'
+		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlstr += '<e2locations>\n'
+   		xmlstr += '	<e2location>Archive</e2location>\n'
+		xmlstr += '</e2locations>\n'
 
 		return xmlstr

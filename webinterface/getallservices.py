@@ -21,28 +21,28 @@ class ElmoGetAllServices( Webinterface ) :
 		
 	def xmlResult(self) :
 
-		serviceList = '<e2servicelist>'
+		serviceList = '<e2servicelist>\n'
 		for row in self.resultSub :
-			serviceList += '<e2service>'
-			serviceList += '<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) +'</e2servicereference>'
-			serviceList += '<e2servicename>' + row[0] + '</e2servicename>'
-			serviceList += '</e2service>'
-		serviceList += '</e2servicelist>' 
+			serviceList += '<e2service>\n'
+			serviceList += '<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) +'</e2servicereference>\n'
+			serviceList += '<e2servicename>' + row[0] + '</e2servicename>\n'
+			serviceList += '</e2service>\n'
+		serviceList += '</e2servicelist>'\n 
 
 		xmlStr = ''
-		xmlStr += '<?xml version="1.0" encoding="UTF-8"?> '
-		xmlStr += '<e2servicelistrecursive>'
+		xmlStr += '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlStr += '<e2servicelistrecursive>\n'
 
 		for row in self.result :
 		# def makeRef( self, sid, tsid, onid ) :
 
-			xmlStr += '<e2bouquet>'
-			xmlStr += '	<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) + '</e2servicereference>'
-			xmlStr += '	<e2servicename>' + row[0] + '</e2servicename>'
+			xmlStr += '<e2bouquet>\n'
+			xmlStr += '	<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) + '</e2servicereference>\n'
+			xmlStr += '	<e2servicename>' + row[0] + '</e2servicename>\n'
 			xmlStr += serviceList
-			xmlStr += '</e2bouquet>'	
+			xmlStr += '</e2bouquet>\n'	
 
-		xmlStr += '</e2servicelistrecursive>'
+		xmlStr += '</e2servicelistrecursive>\n'
 		
 		return xmlStr
 		
