@@ -792,7 +792,7 @@
 	<string id="3277">Dosiahli ste maximálny počet%s povolených nahrávok</string>
 	<string id="3278">Nastavenie Antény a Satelitu</string>
 	<string id="3279">Pri nastavení voľby 'oddelený', tuner 2 prijíma svoj ​​vlastný signál</string>
-	<string id="3280">Pri nastavení voľby 'loop-through' je možné sledovať signál len z tunera 1</string>
+	<string id="3280">Pri nastavení voľby 'prepojený s Tuner 1' je možné sledovať signál len z tunera 1</string>
 	<string id="3281">Pripojenie tunera</string>
 	<string id="3282">Tuner 2 Signál</string>
 	<string id="3283">Pri nastavení voľby 'Rovnaké ako tuner 1', sú oba tunery pripojené na rovnaký zdroj signálu</string>
