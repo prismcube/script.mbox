@@ -288,8 +288,9 @@ class DialogPIP( BaseDialog ) :
 					thread.start( )
 
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
-				thread = threading.Timer( 1, self.SetButtonExtended )
-				thread.start( )
+				if not E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+					thread = threading.Timer( 1, self.SetButtonExtended )
+					thread.start( )
 
 			"""
 			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
@@ -528,7 +529,9 @@ class DialogPIP( BaseDialog ) :
 			thread.start( )
 			return
 
-		self.SetButtonExtended( )
+		if not E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+			self.SetButtonExtended( )
+
 		if self.mDataCache.GetMediaCenter( ) :
 			if self.mDataCache.PIP_GetStatus( ) :
 				ret = self.mDataCache.PIP_Stop( )
@@ -1083,13 +1086,15 @@ class DialogPIP( BaseDialog ) :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'The channel is locked' )
 
-		#1. check audio in main
-		mute, volume = self.GetAudioStatus( )
 
-		if mute or volume < 1 :
-			isAudioBlock = True
-			lblMsg = MR_LANG( 'Audio is muted' )
+		if not self.mDataCache.GetMediaCenter( ) :
+			#check dvb only
+			#1. check audio in main
+			mute, volume = self.GetAudioStatus( )
 
+			if mute or volume < 1 :
+				isAudioBlock = True
+				lblMsg = MR_LANG( 'Audio is muted' )
 
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -1099,9 +1104,23 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		isEnable = not self.mPIP_EnableAudio
-		ret = self.mDataCache.PIP_EnableAudio( isEnable )
-		if ret :
-			self.mPIP_EnableAudio = isEnable
+		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+			if isEnable :
+				xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ) )
+				ret = self.mDataCache.PIP_EnableAudio( isEnable )
+			else :
+				ret = self.mDataCache.PIP_EnableAudio( isEnable )
+				xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ) )
+
+			if ret :
+				self.mPIP_EnableAudio = isEnable
+			else :
+				xbmc.executebuiltin( 'Audio.Enable(%s)'% isEnable )
+
+		else :
+			ret = self.mDataCache.PIP_EnableAudio( isEnable )
+			if ret :
+				self.mPIP_EnableAudio = isEnable
 
 
 	def RestartAsyncTune( self, aChannel = None ) :
