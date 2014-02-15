@@ -72,13 +72,13 @@
 							<width>35</width>
 							<height>35</height>
 							<texturefocus>OSDChannelUPFO.png</texturefocus>
-							<texturenofocus>OSDChannelUPNF.png</texturenofocus>
+							<texturenofocus>OSDChannelUPNF_new.png</texturenofocus>
 						</control>
 						<control type="button" id="4708002">
 							<width>35</width>
 							<height>35</height>
 							<texturefocus>OSDChannelDownFO.png</texturefocus>
-							<texturenofocus>OSDChannelDownNF.png</texturenofocus>
+							<texturenofocus>OSDChannelDownNF_new.png</texturenofocus>
 						</control>
 						<control type="button" id="4708003">
 							<width>35</width>
