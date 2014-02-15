@@ -398,10 +398,10 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		if aStop == E_PIP_STOP or ( aStop != E_PIP_CHECK_FORCE and self.mDataCache.GetMediaCenter( ) ) :
-			aStop = False
+			aStop = True
 			if xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
 				LOG_TRACE( '------------------------------1-----------check pip' )
-				aStop = True
+				aStop = False
 				if self.mDataCache.PIP_IsStarted( ) :
 					self.mDataCache.PIP_AVBlank( False )
 					xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
@@ -1107,6 +1107,7 @@ class DialogPIP( BaseDialog ) :
 
 	def SetAudioXBMC( self, aEnable = False ) :
 		xbmc.executebuiltin( 'Audio.Enable(%s)'% aEnable, True )
+		return
 
 		loopTime = 0
 		limitTime = 5
