@@ -10,7 +10,7 @@
 		</content>
 		<content name="1. STANDBY LED TLAČÍTKO : Stiskněte na 1 ~ 2 sec. k přepnutí mezi operačním a standby módem.[CR][CR]2. PŘEDNÍ DISPLEJ : Zobrazuje název kanálu v provozním režimu a zobrazuje aktuální čas v pohotovostním režimu.[CR][CR]3. ČTEČKA SMART KARET : Otevřete dvířka a vložte smart kartu do předního otvoru pro sledování placených služeb.">
 			<type>textbox</type>
-			<posx>205</posx>
+			<posx>180</posx>
 			<posy>565</posy>
 			<width>870</width>
 			<height>160</height>
@@ -152,7 +152,7 @@
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
-			<width>940</width>
+			<width>980</width>
 			<height>160</height>
 		</content>
 	</page>
