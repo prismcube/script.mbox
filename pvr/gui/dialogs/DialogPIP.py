@@ -78,6 +78,14 @@ PIP_CHECKWINDOW = [
 ]
 
 WINDOW_ID_FULLSCREEN_VIDEO = 12005
+WINDOW_ID_FULLSCREEN_AUDIO = 12006
+
+XBMC_WINDOW_DIALOG_BUSY    = 10138
+
+XBMC_CHECKWINDOW = [
+	WINDOW_ID_FULLSCREEN_VIDEO,
+	WINDOW_ID_FULLSCREEN_AUDIO
+]
 
 
 class DialogPIP( BaseDialog ) :
@@ -182,6 +190,15 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			self.DoSettingToPIP( actionId )
 
+			#test
+			isShow = True
+			if actionId == Action.ACTION_MOVE_UP :
+				isShow = False
+
+			ret = self.mDataCache.PIP_AVBlank( isShow )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% ( not isShow ) )
+
+
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
 
@@ -191,6 +208,10 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			LOG_TRACE( '[PIP] No Radio support' )
 			return
+
+		elif actionId == Action.ACTION_STOP :
+			if self.mDataCache.GetMediaCenter( ) and ( xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW ) :
+				self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -222,7 +243,7 @@ class DialogPIP( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		#LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
+		LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
 
 		if aControlId  == CTRL_ID_BUTTON_PREV_PIP :
 			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
@@ -321,11 +342,15 @@ class DialogPIP( BaseDialog ) :
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_FALSE )
 
+		winId = xbmcgui.getCurrentWindowId( )
+
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
+			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH and self.mDataCache.GetMediaCenter( ) :
+				if winId in XBMC_CHECKWINDOW :
+					xbmc.executebuiltin( 'Audio.Enable(false)' )
 
-		if aStopPIP or \
-		   ( self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) != WINDOW_ID_FULLSCREEN_VIDEO ) :
+		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
 			self.PIP_Stop( )
 
 		self.StopAsyncHideInput( )
@@ -347,7 +372,7 @@ class DialogPIP( BaseDialog ) :
 		isClose = False
 		while self.mCheckMediaPlay :
 			time.sleep( 1 )
-			if xbmcgui.getCurrentWindowId() != WINDOW_ID_FULLSCREEN_VIDEO :
+			if xbmcgui.getCurrentWindowId() not in XBMC_CHECKWINDOW :
 				isClose = True
 				break
 
@@ -373,9 +398,18 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		if aStop == E_PIP_STOP or ( aStop != E_PIP_CHECK_FORCE and self.mDataCache.GetMediaCenter( ) ) :
-		#if aStop == E_PIP_STOP or self.mDataCache.GetMediaCenter( ) :
-			self.PIP_Stop( )
-			#self.PIP_PositionBackup( )
+			aStop = False
+			if xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
+				LOG_TRACE( '------------------------------1-----------check pip' )
+				aStop = True
+				if self.mDataCache.PIP_IsStarted( ) :
+					self.mDataCache.PIP_AVBlank( False )
+					xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
+
+			if aStop :
+				self.PIP_Stop( )
+				LOG_TRACE( '----------------------------------2-------check pip' )
+
 			return
 
 		isShow = False
@@ -1071,6 +1105,19 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageArrowBottom.setPosition( int( w / 2 ), h )
 
 
+	def SetAudioXBMC( self, aEnable = False ) :
+		xbmc.executebuiltin( 'Audio.Enable(%s)'% aEnable, True )
+
+		loopTime = 0
+		limitTime = 5
+		while loopTime < limitTime :
+			if xbmcgui.getCurrentWindowDialogId( ) != XBMC_WINDOW_DIALOG_BUSY :
+				break
+
+			time.sleep( 0.2 )
+			loopTime += 0.2
+
+
 	def SetAudioPIP( self, aForce = False, aEnable = False ) :
 		if aForce :
 			ret = self.mDataCache.PIP_EnableAudio( aEnable )
@@ -1105,22 +1152,39 @@ class DialogPIP( BaseDialog ) :
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+			ret = False
 			if isEnable :
-				xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ) )
+				LOG_TRACE( '---------------------------------------1' )
+				self.SetAudioXBMC( not isEnable )
+				#xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ), True )
+				LOG_TRACE( '---------------------------------------2' )
 				ret = self.mDataCache.PIP_EnableAudio( isEnable )
+				LOG_TRACE( '---------------------------------------3' )
 			else :
+				LOG_TRACE( '---------------------------------------4' )
 				ret = self.mDataCache.PIP_EnableAudio( isEnable )
-				xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ) )
+				LOG_TRACE( '---------------------------------------5' )
+				self.SetAudioXBMC( not isEnable )
+				#xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ), True )
+				LOG_TRACE( '---------------------------------------6' )
 
 			if ret :
 				self.mPIP_EnableAudio = isEnable
 			else :
-				xbmc.executebuiltin( 'Audio.Enable(%s)'% isEnable )
+				self.SetAudioXBMC( isEnable )
+				#xbmc.executebuiltin( 'Audio.Enable(%s)'% isEnable, True )
+				LOG_TRACE( '---------------------------------------7' )
+
+			#self.mDataCache.PIP_AVBlank( False )
+			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
+
+			LOG_TRACE( '[PIP] MediaCenter audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
 		else :
 			ret = self.mDataCache.PIP_EnableAudio( isEnable )
 			if ret :
 				self.mPIP_EnableAudio = isEnable
+			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
 
 	def RestartAsyncTune( self, aChannel = None ) :
