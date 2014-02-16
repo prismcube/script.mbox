@@ -191,12 +191,11 @@ class DialogPIP( BaseDialog ) :
 			self.DoSettingToPIP( actionId )
 
 			#test
-			isShow = True
+			isEnable = True
 			if actionId == Action.ACTION_MOVE_UP :
-				isShow = False
+				isEnable = False
 
-			ret = self.mDataCache.PIP_AVBlank( isShow )
-			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% ( not isShow ) )
+			self.mDataCache.PIP_EnableAudio( isEnable )
 
 
 		elif actionId == Action.ACTION_PAGE_UP :
@@ -1153,33 +1152,26 @@ class DialogPIP( BaseDialog ) :
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
-			ret = False
-			if isEnable :
+
+			#self.mDataCache.PIP_EnableAudio( False )
+			ret = self.mDataCache.PIP_Stop( )
+			LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
+			if ret :
+				self.mDataCache.PIP_SetStatus( False )
+				#self.mPIP_EnableAudio = False
+
 				LOG_TRACE( '---------------------------------------1' )
 				self.SetAudioXBMC( not isEnable )
-				#xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ), True )
 				LOG_TRACE( '---------------------------------------2' )
-				ret = self.mDataCache.PIP_EnableAudio( isEnable )
-				LOG_TRACE( '---------------------------------------3' )
-			else :
-				LOG_TRACE( '---------------------------------------4' )
-				ret = self.mDataCache.PIP_EnableAudio( isEnable )
-				LOG_TRACE( '---------------------------------------5' )
-				self.SetAudioXBMC( not isEnable )
-				#xbmc.executebuiltin( 'Audio.Enable(%s)'% ( not isEnable ), True )
-				LOG_TRACE( '---------------------------------------6' )
+				ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
+				LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
+				if ret :
+					self.mDataCache.PIP_SetStatus( True )
+					ret = self.mDataCache.PIP_EnableAudio( isEnable )
+					LOG_TRACE( '---------------------------------------3' )
 
-			if ret :
-				self.mPIP_EnableAudio = isEnable
-			else :
-				self.SetAudioXBMC( isEnable )
-				#xbmc.executebuiltin( 'Audio.Enable(%s)'% isEnable, True )
-				LOG_TRACE( '---------------------------------------7' )
+			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
-			#self.mDataCache.PIP_AVBlank( False )
-			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
-
-			LOG_TRACE( '[PIP] MediaCenter audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
 		else :
 			ret = self.mDataCache.PIP_EnableAudio( isEnable )
