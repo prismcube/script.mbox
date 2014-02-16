@@ -190,14 +190,6 @@ class DialogPIP( BaseDialog ) :
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			self.DoSettingToPIP( actionId )
 
-			#test
-			isEnable = True
-			if actionId == Action.ACTION_MOVE_UP :
-				isEnable = False
-
-			self.mDataCache.PIP_EnableAudio( isEnable )
-
-
 		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
 
@@ -399,7 +391,6 @@ class DialogPIP( BaseDialog ) :
 		if aStop == E_PIP_STOP or ( aStop != E_PIP_CHECK_FORCE and self.mDataCache.GetMediaCenter( ) ) :
 			aStop = True
 			if xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
-				LOG_TRACE( '------------------------------1-----------check pip' )
 				aStop = False
 				if self.mDataCache.PIP_IsStarted( ) :
 					self.mDataCache.PIP_AVBlank( False )
@@ -407,7 +398,6 @@ class DialogPIP( BaseDialog ) :
 
 			if aStop :
 				self.PIP_Stop( )
-				LOG_TRACE( '----------------------------------2-------check pip' )
 
 			return
 
@@ -1152,23 +1142,19 @@ class DialogPIP( BaseDialog ) :
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+			if self.mPIP_EnableAudio :
+				self.mDataCache.PIP_EnableAudio( False )
 
-			#self.mDataCache.PIP_EnableAudio( False )
 			ret = self.mDataCache.PIP_Stop( )
-			LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
 			if ret :
 				self.mDataCache.PIP_SetStatus( False )
-				#self.mPIP_EnableAudio = False
-
-				LOG_TRACE( '---------------------------------------1' )
 				self.SetAudioXBMC( not isEnable )
-				LOG_TRACE( '---------------------------------------2' )
 				ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
-				LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
+				#LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
 				if ret :
 					self.mDataCache.PIP_SetStatus( True )
 					ret = self.mDataCache.PIP_EnableAudio( isEnable )
-					LOG_TRACE( '---------------------------------------3' )
+					self.mPIP_EnableAudio = isEnable
 
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
