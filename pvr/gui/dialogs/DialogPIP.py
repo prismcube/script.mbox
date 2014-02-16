@@ -337,9 +337,6 @@ class DialogPIP( BaseDialog ) :
 
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
-			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH and self.mDataCache.GetMediaCenter( ) :
-				if winId in XBMC_CHECKWINDOW :
-					xbmc.executebuiltin( 'Audio.Enable(false)' )
 
 		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
 			self.PIP_Stop( )
@@ -372,11 +369,19 @@ class DialogPIP( BaseDialog ) :
 
 
 	def PIP_Stop( self, aForce = False ) :
+		winId = xbmcgui.getCurrentWindowId( )
+
+		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
+			self.mDataCache.PIP_EnableAudio( False )
+
 		ret = self.mDataCache.PIP_Stop( )
 		LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
 		if ret or aForce :
-			self.mDataCache.PIP_SetStatus( False )
+			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH and self.mDataCache.GetMediaCenter( ) :
+				if winId in XBMC_CHECKWINDOW :
+					xbmc.executebuiltin( 'Audio.Enable(false)', True )
 
+			self.mDataCache.PIP_SetStatus( False )
 			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
@@ -770,6 +775,11 @@ class DialogPIP( BaseDialog ) :
 
 				else :
 					if self.mDataCache.PIP_IsStarted( ) :
+
+						if self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
+							if self.mPIP_EnableAudio :
+								self.mDataCache.PIP_SetStatus( False )
+
 						self.mPIP_EnableAudio = False
 						self.mDataCache.PIP_Stop( )
 
