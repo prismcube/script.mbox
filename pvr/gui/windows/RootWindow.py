@@ -84,12 +84,13 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 : 
 				LOG_TRACE( 'XBMCPLAY_TEST -----------START ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
-				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				#if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 				LOG_TRACE( 'XBMCPLAY_TEST -----------START2 ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
-				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )				
+				#WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).onAction( aAction )
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 			else :
 				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
