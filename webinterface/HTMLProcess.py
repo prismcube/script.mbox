@@ -377,10 +377,11 @@ class RemoteControl(WebPage):
 			self.mCommander.System_StandbyMode( 0 )
 
 		if int(control) == 1 :
-			self.mDataCache.Splash_StartAndStop( 1 )
-			pvr.ElisMgr.GetInstance().Shutdown( )
-			xbmc.executebuiltin( 'Settings.Save' )
-			os.system( 'killall -9 xbmc.bin' )
+			return
+			#self.mDataCache.Splash_StartAndStop( 1 )
+			#pvr.ElisMgr.GetInstance().Shutdown( )
+			#xbmc.executebuiltin( 'Settings.Save' )
+			#os.system( 'killall -9 xbmc.bin' )
 			
 		if int(control) == 0 :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
