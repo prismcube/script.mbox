@@ -339,9 +339,14 @@ class DialogPIP( BaseDialog ) :
 
 		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
 			ret = self.PIP_Stop( )
-			if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
-				if self.mPIP_EnableAudio and winId in XBMC_CHECKWINDOW :
-					xbmc.executebuiltin( 'Audio.Enable(true)' )
+
+		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
+			if self.mPIP_EnableAudio and winId in XBMC_CHECKWINDOW :
+				self.SetAudioXBMC( True )
+
+				# back? stay pip
+				if not aStopPIP :
+					self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 
 		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
