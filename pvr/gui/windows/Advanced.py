@@ -125,8 +125,14 @@ class Advanced( SettingWindow ) :
 				self.SetSettingFromNumber( 'RSS_FEED_MAIN_MENU', self.GetSelectedIndex( E_SpinEx01 ) )
 			elif groupId == E_SpinEx02 :
 				self.SetSettingFromNumber( 'DISPLAY_CLOCK_NULLWINDOW', self.GetSelectedIndex( E_SpinEx02 ) )
+				self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 			elif groupId == E_SpinEx03 :
 				self.SetSettingFromNumber( 'DISPLAY_CLOCK_VFD', self.GetSelectedIndex( E_SpinEx03 ) )
+				if self.GetSelectedIndex( E_SpinEx03 ) == 1 :
+					ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 1 )
+				else :
+					ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 0 )
+					self.SetFrontdisplayMessage( MR_LANG('Advanced') )
 			elif groupId == E_SpinEx04 :
 				self.SetSettingFromNumber( 'DISPLAY_EVENT_LIVE', self.GetSelectedIndex( E_SpinEx04 ) )
 
@@ -180,7 +186,7 @@ class Advanced( SettingWindow ) :
 		elif selectedId == E_LIVESTREAM :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
 			self.SetVisibleControls( visibleControlIds, True )
