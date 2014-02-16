@@ -300,9 +300,8 @@ class DialogPIP( BaseDialog ) :
 					thread.start( )
 
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
-				if not E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
-					thread = threading.Timer( 1, self.SetButtonExtended )
-					thread.start( )
+				thread = threading.Timer( 1, self.SetButtonExtended )
+				thread.start( )
 
 			"""
 			elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
@@ -377,9 +376,9 @@ class DialogPIP( BaseDialog ) :
 		ret = self.mDataCache.PIP_Stop( )
 		LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
 		if ret or aForce :
-			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH and self.mDataCache.GetMediaCenter( ) :
-				if winId in XBMC_CHECKWINDOW :
-					xbmc.executebuiltin( 'Audio.Enable(false)', True )
+			#if E_SUPPORT_MEDIA_PLAY_AV_SWITCH and self.mDataCache.GetMediaCenter( ) :
+			#	if winId in XBMC_CHECKWINDOW :
+			#		xbmc.executebuiltin( 'Audio.Enable(false)', True )
 
 			self.mDataCache.PIP_SetStatus( False )
 			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
@@ -522,18 +521,21 @@ class DialogPIP( BaseDialog ) :
 		if self.mDataCache.GetMediaCenter( ) :
 			mute = False
 			full = False
-			#move = False
-			#size = False
-			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
+			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+				mute = True
 
 		else :
 			enable = True
 			status = self.mDataCache.Player_GetStatus( )
 			if status and status.mMode != ElisEnum.E_MODE_LIVE :
+				mute = False
+				full = False
 				enable = False
+				if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+					mute = True
 
-			self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
-			self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
+			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
+			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
 
 		self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( mute )
 		self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( full )
@@ -557,8 +559,7 @@ class DialogPIP( BaseDialog ) :
 			thread.start( )
 			return
 
-		if not E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
-			self.SetButtonExtended( )
+		self.SetButtonExtended( )
 
 		if self.mDataCache.GetMediaCenter( ) :
 			if self.mDataCache.PIP_GetStatus( ) :
