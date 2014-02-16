@@ -118,13 +118,16 @@ class MyHandler( BaseHTTPRequestHandler ):
 		self.end_headers()
 
 	def do_GET(self):
-		self.urlPath = self.path.split('?')
+		try :
+			self.urlPath = self.path.split('?')
 		
-		print 'request path '
-		print self.path
+			print 'request path '
+			print self.path
 
-		self.__addon__ = xbmcaddon.Addon( id='script.mbox' )
-		self.fullPath = self.__addon__.getAddonInfo( 'path' )
+			self.__addon__ = xbmcaddon.Addon( id='script.mbox' )
+			self.fullPath = self.__addon__.getAddonInfo( 'path' )
+		except Exception, err :
+			print str(err)
 
 		self.serving()
 
