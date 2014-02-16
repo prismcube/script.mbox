@@ -276,15 +276,11 @@ class DialogMgr( object ) :
 	def AsyncCheckVolume( self ) :
 		currentID = -1
 		while( 1 ) :
-			if not self.mDataCache.GetMediaCenter( ) :		
-				currentID = xbmcgui.getCurrentWindowDialogId( )
-				if currentID in XBMC_WINDOW_DIALOGS :
-					LOG_TRACE( 'Volume check TEST : currentID=%d' %currentID )
-					if self.mDataCache.GetMediaCenter( ) == False :
-						LOG_TRACE( 'Volume check TEST : Update Volume ' )
-						if xbmcgui.Window( 10000 ).getProperty( 'VolumeChanged') == 'true' :
-							self.UpdateVolume( )
-							xbmcgui.Window( 10000 ).setProperty( 'VolumeChanged', 'false')
+			if not self.mDataCache.GetMediaCenter( ) :
+				if xbmcgui.Window( 10000 ).getProperty( 'VolumeChanged') == 'true' :
+					LOG_TRACE( 'Volume check TEST : Update Volume ' )				
+					self.UpdateVolume( )
+					xbmcgui.Window( 10000 ).setProperty( 'VolumeChanged', 'false')
 
 			time.sleep(0.5)
 
