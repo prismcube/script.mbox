@@ -1063,7 +1063,9 @@ class NullWindow( BaseWindow ) :
 		elif aAction == Action.ACTION_COLOR_BLUE :
 			self.mIsShowDialog = False
 			self.CloseSubTitle( )
-			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+			pipDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
+			pipDialog.doModal( )
+			self.EventReceivedDialog( pipDialog )
 			self.CheckSubTitle( )
 			return
 

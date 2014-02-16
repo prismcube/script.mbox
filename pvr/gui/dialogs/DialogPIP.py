@@ -85,6 +85,7 @@ class DialogPIP( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mCurrentChannel = ElisIChannel( )
 		self.mCurrentChannel.mNumber = self.mDataCache.Channel_GetCurrent( )
+		self.mIsOk = None
 		if E_V1_2_APPLY_PIP :
 			self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
 		self.mCurrentChannel.mError = -1
@@ -147,6 +148,7 @@ class DialogPIP( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.mIsOk = actionId
 		#LOG_TRACE('onAction[%d] pipStatus[%s]'% ( actionId, self.mViewMode ) )
 
 		if not self.mDataCache.GetMediaCenter( ) :
@@ -264,6 +266,10 @@ class DialogPIP( BaseDialog ) :
 		pass
 
 
+	def GetCloseStatus( self ) :
+		return self.mIsOk
+
+
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			LOG_TRACE( '[PIP] onEvent[%s]'% aEvent.getName( ) )
@@ -277,6 +283,12 @@ class DialogPIP( BaseDialog ) :
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 			   aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				#if self.mIsUpdateEnable == True	:
+				status = self.mDataCache.Player_GetStatus( )
+				if status and status.mMode != ElisEnum.E_MODE_LIVE :
+					#self.mDataCache.Player_Stop( )
+					self.mIsOk = Action.ACTION_STOP
+					self.Close( )
+
 				LOG_TRACE( '[PIP] record start/stop event' )
 				#ToDO
 
@@ -284,6 +296,8 @@ class DialogPIP( BaseDialog ) :
 				LOG_TRACE( '[PIP] ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( '[PIP] EventRecv EOF_END' )
+					#self.mDataCache.Player_Stop( )
+					self.mIsOk = Action.ACTION_STOP
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
 
