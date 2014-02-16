@@ -1129,6 +1129,7 @@ class DialogPIP( BaseDialog ) :
 			if ret :
 				self.mPIP_EnableAudio = aEnable
 
+			self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
 			return
 
 		lblMsg = ''
@@ -1179,6 +1180,8 @@ class DialogPIP( BaseDialog ) :
 			if ret :
 				self.mPIP_EnableAudio = isEnable
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
+
+		self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
 
 
 	def RestartAsyncTune( self, aChannel = None ) :
