@@ -41,7 +41,8 @@ class SimpleHTMLFile :
 			self.content = f.read()
 			f.close()
 			
-		except :
+		except Exception, erro:
+			print str(erro)
 			print "HTML Not Found"
 			self.content = "File Not Found"
 
@@ -209,12 +210,16 @@ class Channel( WebPage ) :
 					}
 
 					function showColor( target, name ) {
+						return; // to prevent too much exception caused by this process
+						
 						var icon = 'icon' + target;
 						var img = './uiImg/' + name + '.png';
 						document.getElementById(icon).src = img;
 					}
 
 					function hideColor( target, name ) {
+						return; // to prevent too much exception caused by this process
+						
 						var icon = 'icon' + target;
 						var img = './uiImg/' + name + '_bw.png';
 						document.getElementById(icon).src = img;
@@ -357,6 +362,32 @@ class RemoteControl(WebPage):
 		if int(cmds[1]) in [402, 403] :
 			self.ChannelControl( cmds[1] ) 
 			self.content = "Channel Control"
+
+		if int( cmds[1] ) in [ 0, 1, 2, 3 ] :
+			self.PowerControl( cmds[1] )
+			self.content = "Power Control"
+
+	def PowerControl( self, control ) :
+
+		if int(control) == 3 :
+			#Active Standby
+			self.mCommander.System_StandbyMode( 1 )
+
+		if int(control) == 2 :
+			self.mCommander.System_StandbyMode( 0 )
+
+		if int(control) == 1 :
+			self.mDataCache.Splash_StartAndStop( 1 )
+			pvr.ElisMgr.GetInstance().Shutdown( )
+			xbmc.executebuiltin( 'Settings.Save' )
+			os.system( 'killall -9 xbmc.bin' )
+			
+		if int(control) == 0 :
+			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+			if isDownload :
+				pass
+			else :
+				self.mDataCache.System_Reboot( )			
 
 	def ChannelControl( self, control ) :
 		status = self.mDataCache.Player_GetStatus( )
