@@ -1,3 +1,4 @@
+	
 
 	#wrapper {
 		width: 1200px;
@@ -81,6 +82,12 @@
 		margin-top: 20px;
 		margin-left: 230px;
 		border: 1px solid blue;
+	}
+
+	#remotecontroller {
+		margin-left: 400px;
+		padding-top: 30px;
+		zoom: 1;
 	}
 
 	/* Main Screen */
