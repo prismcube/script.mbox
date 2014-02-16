@@ -15,12 +15,16 @@
 		}
 
 		function showColor( target, name ) {
+			return; // to preven too much traffice
+			
 			var icon = "icon" + target;
 			var img = "./uiImg/" + name + ".png";
 			document.getElementById(icon).src = img;
 		}
 
 		function hideColor( target, name ) {
+			return; // to prevent too much traffic
+			
 			var icon = "icon" + target;
 			var img = "./uiImg/" + name + "_bw.png";
 			document.getElementById(icon).src = img;
