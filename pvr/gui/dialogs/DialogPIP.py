@@ -165,6 +165,7 @@ class DialogPIP( BaseDialog ) :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( ) 
+				self.SavePipPosition( )
 				return
 
 			self.Close( False )
@@ -217,6 +218,10 @@ class DialogPIP( BaseDialog ) :
 			self.SetAudioPIP( )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
+			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
+				self.mViewMode = CONTEXT_ACTION_DONE_PIP
+				self.SavePipPosition( )
+
 			self.Close( True )
 
 		else :
@@ -254,6 +259,7 @@ class DialogPIP( BaseDialog ) :
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
+				self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP or aControlId  == CTRL_ID_BUTTON_SIZE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
@@ -261,9 +267,11 @@ class DialogPIP( BaseDialog ) :
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
+				self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_DEFAULT_PIP :
 			self.DoContextAction( CONTEXT_ACTION_DEFAULT_PIP )
+			self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_EXIT_PIP :
 			self.Close( False )
@@ -605,6 +613,11 @@ class DialogPIP( BaseDialog ) :
 		return posNotify
 
 
+	def SavePipPosition( self ) :
+		posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
+		SetSetting( 'PIP_POSITION', posNotify )
+
+
 	def SetPositionPIP( self, aPosX = 827, aPosY = 125, aWidth = 352, aHeight = 188 ) :
 		self.mPosCurrent[0] = aPosX
 		self.mPosCurrent[1] = aPosY
@@ -617,8 +630,8 @@ class DialogPIP( BaseDialog ) :
 
 		self.mDataCache.PIP_SetDimension( x, y, w, h )
 
-		posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
-		SetSetting( 'PIP_POSITION', posNotify )
+		#posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
+		#SetSetting( 'PIP_POSITION', posNotify )
 
 		self.SetGUIToPIP( )
 
