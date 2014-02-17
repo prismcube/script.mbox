@@ -145,6 +145,35 @@
 
 	/* Remote Control */
 	/* ======================================================== */	
+
+	/* EPG Page */
+	/* ======================================================== */	
+
+	#epgWrapper {
+		margin: auto;
+		padding: 10px;
+	}
+
+	#epgTop {
+		height: 90px;
+		background-color: #525252;
+		font-family: arial;
+		font-size: 2.0em;
+		text-align: center;
+		font-weight: bold;
+		color: white;
+	}
+
+	.epgContent {
+		padding: 10px;
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: bold;
+		border-bottom: 1px dotted #dfdfdf;
+	}
+
+	/* EPG Page */
+	/* ======================================================== */	
 	
 	
 	

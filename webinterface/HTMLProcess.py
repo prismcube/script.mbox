@@ -227,7 +227,7 @@ class Channel( WebPage ) :
 
 					function JumpToEpg( sid, tsid, onid ) {
 						var target = '/Epg?sid=' + sid + '&tsid=' + tsid + '&onid=' + onid;		
-						window.open( target, 'epg', 'width=500, height=500');
+						window.open( target, 'epg', 'width=500, height=500, scrollbars=1');
 					}
 
 				</script>
@@ -681,7 +681,7 @@ class Epg( WebPage ) :
 
 		gmtFrom = self.mDataCache.Datetime_GetLocalTime()
 		gmtUntil = gmtFrom + (3600 * 24 * 7 )
-		maxCount = 10
+		maxCount = 100
 
 		self.mEPGList = self.mCommander.Epgevent_GetList( int(param['sid']), int(param['tsid']), int(param['onid']), gmtFrom, gmtUntil, maxCount ) 
 		content = ""
@@ -690,10 +690,14 @@ class Epg( WebPage ) :
 			content += '<p class="noEpg">No EPG Data Found</p>'			
 		else :
 			for info in self.mEPGList :
+				content += '<div class="epgContent">'
 				content += str( info.mEventId ) + "<br>"
 				content += info.mEventName + "<br>"
-				content += str( info.mStartTime ) + "<br>"
-
+				content += TimeToString( info.mStartTime )
+				content += " : "
+				content += TimeToString( info.mStartTime, 1)
+				content += '</div>'
+	
 		return self.epgTemplate( content )
 
 	def epgTemplate( self, content ) :
@@ -705,15 +709,14 @@ class Epg( WebPage ) :
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 			<body>
-			<div id='wrapper'>
+			<div id='epgWrapper'>
 
-				<div id='top'>
+				<div id='epgTop'>
 					<p>PrismCube Web UI</p>
 				</div>
-				<div id='epgContent'>
-					%s
-				</div>
 
+				%s
+				
 			</div>
 			</body>
 			</html>
