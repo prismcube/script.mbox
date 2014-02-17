@@ -567,7 +567,14 @@ class InfoPlate( LivePlateWindow ) :
 			#self.mEventBus.Register( self )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PIP :
-			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).doModal( )
+			pipDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP )
+			pipDialog.doModal( )
+			if pipDialog.GetCloseStatus( ) == Action.ACTION_STOP :
+				self.mIsShowDialog = False
+				LOG_TRACE( '[InfoPlate] no automaticHide by pvr/timeshift stop on PIP' )
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				return
 
 		self.RestartAutomaticHide( )
 		self.mIsShowDialog = False

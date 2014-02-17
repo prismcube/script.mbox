@@ -1108,6 +1108,13 @@ class ChannelListWindow( BaseWindow ) :
 				isSameChannel = True
 
 			if isSameChannel :
+				if self.mSearchList and len( self.mSearchList ) > 0 :
+					self.mSearchList = []
+					#self.mChannelList = self.mInstanceBackup
+					#self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					self.mDataCache.SetChannelReloadStatus( True )
+					LOG_TRACE( '[ChannelList] Restore channel from search' )
+
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.Close( )
