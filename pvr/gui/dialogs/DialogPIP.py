@@ -78,6 +78,14 @@ PIP_CHECKWINDOW = [
 ]
 
 WINDOW_ID_FULLSCREEN_VIDEO = 12005
+WINDOW_ID_FULLSCREEN_AUDIO = 12006
+
+XBMC_WINDOW_DIALOG_BUSY    = 10138
+
+XBMC_CHECKWINDOW = [
+	WINDOW_ID_FULLSCREEN_VIDEO,
+	WINDOW_ID_FULLSCREEN_AUDIO
+]
 
 
 class DialogPIP( BaseDialog ) :
@@ -159,6 +167,7 @@ class DialogPIP( BaseDialog ) :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( ) 
+				self.SavePipPosition( )
 				return
 
 			self.Close( False )
@@ -194,6 +203,10 @@ class DialogPIP( BaseDialog ) :
 			LOG_TRACE( '[PIP] No Radio support' )
 			return
 
+		elif actionId == Action.ACTION_STOP :
+			if self.mDataCache.GetMediaCenter( ) and ( xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW ) :
+				self.Close( )
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
@@ -207,6 +220,10 @@ class DialogPIP( BaseDialog ) :
 			self.SetAudioPIP( )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
+			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
+				self.mViewMode = CONTEXT_ACTION_DONE_PIP
+				self.SavePipPosition( )
+
 			self.Close( True )
 
 		else :
@@ -224,7 +241,7 @@ class DialogPIP( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		#LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
+		LOG_TRACE( '[PIP] onClick[%s]'% aControlId )
 
 		if aControlId  == CTRL_ID_BUTTON_PREV_PIP :
 			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
@@ -244,6 +261,7 @@ class DialogPIP( BaseDialog ) :
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
+				self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_SIZE_PIP or aControlId  == CTRL_ID_BUTTON_SIZE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
@@ -251,9 +269,11 @@ class DialogPIP( BaseDialog ) :
 			else :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
 				self.ResetLabel( )
+				self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_DEFAULT_PIP :
 			self.DoContextAction( CONTEXT_ACTION_DEFAULT_PIP )
+			self.SavePipPosition( )
 
 		elif aControlId  == CTRL_ID_BUTTON_EXIT_PIP :
 			self.Close( False )
@@ -334,12 +354,21 @@ class DialogPIP( BaseDialog ) :
 		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_FALSE )
 
+		winId = xbmcgui.getCurrentWindowId( )
+
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
 
-		if aStopPIP or \
-		   ( self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) != WINDOW_ID_FULLSCREEN_VIDEO ) :
-			self.PIP_Stop( )
+		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
+			ret = self.PIP_Stop( )
+
+		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
+			if self.mPIP_EnableAudio and winId in XBMC_CHECKWINDOW :
+				self.SetAudioXBMC( True )
+
+				# back? stay pip
+				if not aStopPIP :
+					self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 
 		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
@@ -360,7 +389,7 @@ class DialogPIP( BaseDialog ) :
 		isClose = False
 		while self.mCheckMediaPlay :
 			time.sleep( 1 )
-			if xbmcgui.getCurrentWindowId() != WINDOW_ID_FULLSCREEN_VIDEO :
+			if xbmcgui.getCurrentWindowId() not in XBMC_CHECKWINDOW :
 				isClose = True
 				break
 
@@ -369,11 +398,15 @@ class DialogPIP( BaseDialog ) :
 
 
 	def PIP_Stop( self, aForce = False ) :
+		winId = xbmcgui.getCurrentWindowId( )
+
+		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
+			self.mDataCache.PIP_EnableAudio( False )
+
 		ret = self.mDataCache.PIP_Stop( )
 		LOG_TRACE( '[PIP] PIP_Stop ret[%s]'% ret )
 		if ret or aForce :
 			self.mDataCache.PIP_SetStatus( False )
-
 			xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_FALSE )
@@ -386,9 +419,16 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		if aStop == E_PIP_STOP or ( aStop != E_PIP_CHECK_FORCE and self.mDataCache.GetMediaCenter( ) ) :
-		#if aStop == E_PIP_STOP or self.mDataCache.GetMediaCenter( ) :
-			self.PIP_Stop( )
-			#self.PIP_PositionBackup( )
+			aStop = True
+			if xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
+				aStop = False
+				if self.mDataCache.PIP_IsStarted( ) :
+					self.mDataCache.PIP_AVBlank( False )
+					xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', E_TAG_TRUE )
+
+			if aStop :
+				self.PIP_Stop( )
+
 			return
 
 		isShow = False
@@ -507,18 +547,21 @@ class DialogPIP( BaseDialog ) :
 		if self.mDataCache.GetMediaCenter( ) :
 			mute = False
 			full = False
-			#move = False
-			#size = False
-			#self.setProperty( 'BlankPIP', E_TAG_TRUE )
+			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+				mute = True
 
 		else :
 			enable = True
 			status = self.mDataCache.Player_GetStatus( )
 			if status and status.mMode != ElisEnum.E_MODE_LIVE :
+				mute = False
+				full = False
 				enable = False
+				if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+					mute = True
 
-			self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
-			self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
+			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
+			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
 
 		self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( mute )
 		self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( full )
@@ -543,6 +586,7 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		self.SetButtonExtended( )
+
 		if self.mDataCache.GetMediaCenter( ) :
 			if self.mDataCache.PIP_GetStatus( ) :
 				ret = self.mDataCache.PIP_Stop( )
@@ -583,6 +627,11 @@ class DialogPIP( BaseDialog ) :
 		return posNotify
 
 
+	def SavePipPosition( self ) :
+		posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
+		SetSetting( 'PIP_POSITION', posNotify )
+
+
 	def SetPositionPIP( self, aPosX = 827, aPosY = 125, aWidth = 352, aHeight = 188 ) :
 		self.mPosCurrent[0] = aPosX
 		self.mPosCurrent[1] = aPosY
@@ -595,8 +644,8 @@ class DialogPIP( BaseDialog ) :
 
 		self.mDataCache.PIP_SetDimension( x, y, w, h )
 
-		posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
-		SetSetting( 'PIP_POSITION', posNotify )
+		#posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
+		#SetSetting( 'PIP_POSITION', posNotify )
 
 		self.SetGUIToPIP( )
 
@@ -758,6 +807,11 @@ class DialogPIP( BaseDialog ) :
 
 				else :
 					if self.mDataCache.PIP_IsStarted( ) :
+
+						if self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
+							if self.mPIP_EnableAudio :
+								self.mDataCache.PIP_SetStatus( False )
+
 						self.mPIP_EnableAudio = False
 						self.mDataCache.PIP_Stop( )
 
@@ -1082,12 +1136,27 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageArrowBottom.setPosition( int( w / 2 ), h )
 
 
+	def SetAudioXBMC( self, aEnable = False ) :
+		xbmc.executebuiltin( 'Audio.Enable(%s)'% aEnable, True )
+		return
+
+		loopTime = 0
+		limitTime = 5
+		while loopTime < limitTime :
+			if xbmcgui.getCurrentWindowDialogId( ) != XBMC_WINDOW_DIALOG_BUSY :
+				break
+
+			time.sleep( 0.2 )
+			loopTime += 0.2
+
+
 	def SetAudioPIP( self, aForce = False, aEnable = False ) :
 		if aForce :
 			ret = self.mDataCache.PIP_EnableAudio( aEnable )
 			if ret :
 				self.mPIP_EnableAudio = aEnable
 
+			self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
 			return
 
 		lblMsg = ''
@@ -1097,13 +1166,15 @@ class DialogPIP( BaseDialog ) :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'The channel is locked' )
 
-		#1. check audio in main
-		mute, volume = self.GetAudioStatus( )
 
-		if mute or volume < 1 :
-			isAudioBlock = True
-			lblMsg = MR_LANG( 'Audio is muted' )
+		if not self.mDataCache.GetMediaCenter( ) :
+			#check dvb only
+			#1. check audio in main
+			mute, volume = self.GetAudioStatus( )
 
+			if mute or volume < 1 :
+				isAudioBlock = True
+				lblMsg = MR_LANG( 'Audio is muted' )
 
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -1113,9 +1184,31 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		isEnable = not self.mPIP_EnableAudio
-		ret = self.mDataCache.PIP_EnableAudio( isEnable )
-		if ret :
-			self.mPIP_EnableAudio = isEnable
+		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
+			if self.mPIP_EnableAudio :
+				self.mDataCache.PIP_EnableAudio( False )
+
+			ret = self.mDataCache.PIP_Stop( )
+			if ret :
+				self.mDataCache.PIP_SetStatus( False )
+				self.SetAudioXBMC( not isEnable )
+				ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
+				#LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
+				if ret :
+					self.mDataCache.PIP_SetStatus( True )
+					ret = self.mDataCache.PIP_EnableAudio( isEnable )
+					self.mPIP_EnableAudio = isEnable
+
+			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
+
+
+		else :
+			ret = self.mDataCache.PIP_EnableAudio( isEnable )
+			if ret :
+				self.mPIP_EnableAudio = isEnable
+			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
+
+		self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
 
 
 	def RestartAsyncTune( self, aChannel = None ) :
