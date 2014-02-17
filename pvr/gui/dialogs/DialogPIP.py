@@ -817,10 +817,11 @@ class DialogPIP( BaseDialog ) :
 
 						if self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
 							if self.mPIP_EnableAudio :
-								self.mDataCache.PIP_SetStatus( False )
+								self.mDataCache.PIP_EnableAudio( False )
 
 						self.mPIP_EnableAudio = False
 						self.mDataCache.PIP_Stop( )
+						self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
 
 					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV, True )
 					if ret :
