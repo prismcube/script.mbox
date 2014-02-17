@@ -147,6 +147,9 @@ class DialogPIP( BaseDialog ) :
 		self.mCheckMediaPlayThread = None
 		self.mLastNumber      = self.mDataCache.PIP_GetCurrent( )
 
+		self.mHotKeyAvailableGreen = True
+		self.mHotKeyAvailableYellow= True
+
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mEventBus.Register( self )
 
@@ -214,10 +217,12 @@ class DialogPIP( BaseDialog ) :
 			self.Close( False )
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
-			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+			if self.mHotKeyAvailableGreen :
+				self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
-			self.SetAudioPIP( )
+			if self.mHotKeyAvailableYellow :
+				self.SetAudioPIP( )
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
@@ -563,6 +568,8 @@ class DialogPIP( BaseDialog ) :
 			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
 			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
 
+		self.mHotKeyAvailableGreen = full
+		self.mHotKeyAvailableYellow= mute
 		self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setVisible( mute )
 		self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setVisible( full )
 		self.getControl( CTRL_ID_BUTTON_MOVE_PIP ).setVisible( move )
