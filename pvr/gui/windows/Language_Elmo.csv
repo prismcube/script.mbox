@@ -664,14 +664,14 @@
 "Apply";"Anwenden";"Appliquer";"Applica";"Aplicar";"Aplikovat";"Apply";"Zastosuj";"Apply";"Применить";"Apply";"Apply";"Aplikovať";"Застосувати";3149
 "Switch to East";"Nach Osten wechseln";"Changer à Est";"Muovi a East";"Cambiar al Este";"Přepnout na východ";"Switch to East";"Przełącz na wschód";"Switch to East";"Направление Восток";"Switch to East";"Switch to East";"Prepnúť na východ";"Напрямок Схід";3150
 "Switch to West";"Nach Westen wechseln";"Changer à Ouest";"Muovi a Ovest";"Cambiar al Oeste";"Přepnout na západ";"Switch to West";"Przełącz na zachód";"Switch to West";"Направление Запад";"Switch to West";"Switch to West";"Prepnúť na západ";"Напрямок Захід";3151
-"VIDEO PID";;;;;;;"VIDEO PID";;;;;;;3152
-"AUDIO PID";;;;;;;"AUDIO PID";;;;;;;3153
-"PCR PID";;;;;;;"PCR PID";;;;;;;3154
-"TSID";;;;;;;"TSID";;;;;;;3155
-"ONID";;;;;;;"ONID";;;;;;;3156
-"SID";;;;;;;"SID";;;;;;;3157
-"STRENGTH";;;;;;;"SIŁA SYGNAŁU";;;;;;;3158
-"QUALITY";;;;;;;"JAKOŚĆ";;;;;;;3159
+"VIDEO PID";;;;;;;"VIDEO PID";;;;;"VIDEO PID";;3152
+"AUDIO PID";;;;;;;"AUDIO PID";;;;;"AUDIO PID";;3153
+"PCR PID";;;;;;;"PCR PID";;;;;"PCR PID";;3154
+"TSID";;;;;;;"TSID";;;;;"TSID";;3155
+"ONID";;;;;;;"ONID";;;;;"ONID";;3156
+"SID";;;;;;;"SID";;;;;"SID";;3157
+"STRENGTH";;;;;;;"SIŁA SYGNAŁU";;;;;"SILA";;3158
+"QUALITY";;;;;;;"JAKOŚĆ";;;;;"KVALITA";;3159
 "XBMC Addons and Userdata";"XBMC Addons und Benutzerdaten";;;;"XBMC doplňky a uživatelská data ";;"Dodatki XBMC i dane użytkownika";;;;;"XBMC doplnky a užívateľské dáta";;3160
 "STB Configuration";"STB Konfiguration";;;;"Nastavení boxu ";;"Ustawienia odbiornika";;;;;"Nastavenie boxu";;3161
 "Select Data To Be Backup ( Optional )";"Wählen Sie die Daten aus für ein Backup (optional)";;;;"Vybrat data do zálohy (volitelné)";;"Wybierz dane przeznaczone do wykonania kopii zapasowej";;;;;"Vybrať dáta do zálohy (voliteľné)";;3162
