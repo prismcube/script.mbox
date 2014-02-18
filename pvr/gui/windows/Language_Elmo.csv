@@ -145,19 +145,19 @@
 "Appearance";"Aussehen";;;;"Vzhled ";;"Wygląd";;;;;"Vzhľad";;1146
 "To fix an empty repository or any other problems, try Force refresh in the context menu";"Um eine leere Repository oder andere Probleme zu beheben, erzwingen Sie eine aktualisieren im Kontextmenü";;;;"Pokud je repozitář prázdný, nebo jiný problém, vyzkoušejte vynutit obnovu ve skrytém menu ";;"Aby naprawić puste repozytorium, lub w przypadku wystąpienia innych problemów, odśwież wtyczkę w menu kontekstowym";;;;;"Ak je repozitár prázdny, alebo iný problém, vyskúšajte vynútiť obnovu v skrytom menu";;1147
 "Show Logical Channel Number";"Logische Sendernummern Anzeigen";;;;"Zapnout logické číslování (LCN)";;"Pokaż LCN (logiczną numerację kanałów)";;;;;"Zapnúť logické číslovanie (LCN)";;1148
-"Delete from approved repository";;;;;;;"Usuń z zatwierdzonego repozytorium";;;;;;;1149
-"Add to approved repository";;;;;;;"Dodaj do zatwierdzonego repozytorium";;;;;;;1150
-"Skip zapping confirm";;;;;;;"Pomiń potwierdzanie podczas zappingu";;;;;;;1151
-"PROVIDER";;;;;;;"OPERATOR";;;;;;;1152
-"Service Info";;;;;;;"Informacje serwisowe";;;;;;;1153
-"Otherwise it will restore after few seconds";;;;;;;"W przeciwnym razie zostanie przywrócony po kilku sekundach";;;;;;;1154
-"Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;;;1155
-"Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;;;1156
-"Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;;;1157
-"Video output format";;;;;;;"Format wyjścia wideo";;;;;;;1158
-"Next calibration step";;;;;;;"Następny krok kalibracji";;;;;;;1159
-"Exit calibration";;;;;;;"Opuść kalibrację";;;;;;;1160
-"Loading new language...";;;;;;;"Instalacja nowego języka...";;;;;;;1161
+"Delete from approved repository";;;;;;;"Usuń z zatwierdzonego repozytorium";;;;;"Zmazať zo schváleného repozitára";;1149
+"Add to approved repository";;;;;;;"Dodaj do zatwierdzonego repozytorium";;;;;"Pridať do schváleného repozitára";;1150
+"Skip zapping confirm";;;;;;;"Pomiń potwierdzanie podczas zappingu";;;;;"Automatický výstup zo zonamu kanálov";;1151
+"PROVIDER";;;;;;;"OPERATOR";;;;;"Provajder";;1152
+"Service Info";;;;;;;"Informacje serwisowe";;;;;"Info o kanály";;1153
+"Otherwise it will restore after few seconds";;;;;;;"W przeciwnym razie zostanie przywrócony po kilku sekundach";;;;;"Alebo bude obnovená po pár sekundách";;1154
+"Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;"Pre možnosť písania ďaľších znakov zvoľte prosím iný OSD jazyk ";;1155
+"Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;"Prosím stlačte %s tlačidlo na zmenu jazyka klávesnice ";;1156
+"Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;"Vymeniteľné zariadenie(%s)";;1157
+"Video output format";;;;;;;"Format wyjścia wideo";;;;;"Formát video výstupu";;1158
+"Next calibration step";;;;;;;"Następny krok kalibracji";;;;;"Ďalší krok kalibrácie obrazu";;1159
+"Exit calibration";;;;;;;"Opuść kalibrację";;;;;"Ukončiť kallibráciu obrazu";;1160
+"Loading new language...";;;;;;;"Instalacja nowego języka...";;;;;"Načítavanie nového jazyka...";;1161
 "Grid";"Gitter";"Grille";"Griglia";"Parrilla";"Mřížka";"Grid";"Siatka";"Grid";"Сетка";"Grid";"Grid";"Mriežka";"Сітка";1162
 "Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Aktualnie trwa";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
 "Following";"Folgen";"Suivant";"Seguito";"Siguiente";"Následující";"Following";"Później";"Following";"Следующий";"Following";"Following";"Nasledujúca";"Наступний";1164
