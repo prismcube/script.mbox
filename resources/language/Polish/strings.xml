@@ -130,7 +130,7 @@
 	<string id="1130">Błąd SQL, lub uszkodzona baza danych</string>
 	<string id="1131">W przypadku powtarzających się problemów odśwież repozytorium</string>
 	<string id="1132">( Ustawienia > Wtyczki > Pobierz wtyczki > Zaznacz wtyczkę, wciśnij klawisz i > Wymuś ponowne wczytanie )</string>
-	<string id="1133">Programator zdarzeń</string>
+	<string id="1133">Timer</string>
 	<string id="1134">Wyświetl listę zaprogramowanych zdarzeń </string>
 	<string id="1135">Dodaj zdarzenie ręcznie</string>
 	<string id="1136">Usuń timer</string>
@@ -155,10 +155,10 @@
 	<string id="1155">Wybierz inny język OSD, aby wpisać odmienne znaki</string>
 	<string id="1156">Wciśnij przycisk %s, aby zmienić język klawiatury</string>
 	<string id="1157">Usuwane urządzenie(%s)</string>
-	<string id="1158"></string>
-	<string id="1159"></string>
-	<string id="1160"></string>
-	<string id="1161"></string>
+	<string id="1158">Format wyjścia wideo</string>
+	<string id="1159">Następny krok kalibracji</string>
+	<string id="1160">Opuść kalibrację</string>
+	<string id="1161">Instalacja nowego języka...</string>
 	<string id="1162">Siatka</string>
 	<string id="1163">Aktualnie trwa</string>
 	<string id="1164">Później</string>
@@ -236,7 +236,7 @@
 	<string id="2072">Drugi język napisów ekranowych</string>
 	<string id="2073">Napisy dla niedosłyszących</string>
 	<string id="2074">Głębokie czuwanie</string>
-	<string id="2075">Adresacja pilota</string>
+	<string id="2075">Remote Addr</string>
 	<string id="2076">Addr1</string>
 	<string id="2077">Addr2</string>
 	<string id="2078">Addr3</string>
@@ -512,6 +512,7 @@
 	<string id="2348">Ethernet</string>
 	<string id="2349">Bezprzewodowa</string>
 	<string id="2350">Tryb usypiania HDD</string>
+	<string id="2351"></string>
 	<string id="3001">Brak dostępnych informacji EPG</string>
 	<string id="3002">Nagranie w konflikcie z</string>
 	<string id="3003">Błąd</string>
@@ -534,8 +535,8 @@
 	<string id="3020">Brak kanałów</string>
 	<string id="3021">Siła</string>
 	<string id="3022">Jakość</string>
-	<string id="3023">Watching PIP</string>
-	<string id="3024">only available when Video plays in fullscreen</string>
+	<string id="3023">Oglądaj PIP</string>
+	<string id="3024">Dostępny tylko na pełnym ekranie</string>
 	<string id="3025">Zaktualizuj kanały</string>
 	<string id="3026">Ładowanie nowych kanałów...</string>
 	<string id="3027">Proszę czekać…</string>
@@ -707,7 +708,7 @@
 	<string id="3193">Zmiana nazwy OK</string>
 	<string id="3194">Usuń grupę</string>
 	<string id="3195">Kasowanie OK</string>
-	<string id="3196"></string>
+	<string id="3196">Naciśnij [BACK] na pilocie, aby zamknąć menu wyszukiwania kanałów</string>
 	<string id="3197">Czy na pewno chcesz przerwać wyszukiwanie kanałów?</string>
 	<string id="3198">Przerwij wyszukiwanie kanałów</string>
 	<string id="3199">Kanały TV : %d %sStacje radiowe: %d</string>
@@ -891,8 +892,8 @@
 	<string id="3377">Wybierz operatora, którego kanały chcesz wyszukać</string>
 	<string id="3378">Włącz / Wyłącz opcję Lista HD</string>
 	<string id="3379">Lista HD</string>
-	<string id="3380"></string>
-	<string id="3381"></string>
+	<string id="3380">Wyświetl numery usług w znanej postaci, lub sekwencyjnie</string>
+	<string id="3381">Logiczne sortowanie kanałów (LCN)</string>
 	<string id="3382">Start wyszukiwania</string>
 	<string id="3383">Przełącznik DiSEqC 1.0</string>
 	<string id="3384">Wybierz przełącznik DiSEqC wykorzystywany w instalacji antenowej</string>
