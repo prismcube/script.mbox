@@ -166,20 +166,20 @@
 	<!-- pip -->
 	<texture>StackFO_white2.png</texture>
 	<texture>StackNF.png</texture>
-	<texture>OSDAudioFO.png</texture>
-	<texture>OSDAudioNF.png</texture>
-	<texture>OSDRepeatFO.png</texture>
-	<texture>OSDRepeatNF.png</texture>
 	<texture>OSDMoveFO.png</texture>
 	<texture>OSDMoveNF.png</texture>
-	<texture>OSDSizeFO.png</texture>
-	<texture>OSDSizeNF.png</texture>
-	<texture>OSDDefaultFO.png</texture>
-	<texture>OSDDefaultNF.png</texture>
-	<texture>OSDBackFO.png</texture>
-	<texture>OSDBackNF.png</texture>
-	<texture>OSDPowerFO.png</texture>
-	<texture>OSDPowerNF.png</texture>
+	<texture>OSDResizeFO.png</texture>
+	<texture>OSDResizeNF.png</texture>
+	<texture>OSDResetFO.png</texture>
+	<texture>OSDResetNF.png</texture>
+	<texture>OSDBackFO_R.png</texture>
+	<texture>OSDBackNF_R.png</texture>
+	<texture>OSDFullScreenFO_G.png</texture>
+	<texture>OSDFullScreenNF_G.png</texture>
+	<texture>OSDAudioFO_Y.png</texture>
+	<texture>OSDAudioNF_Y.png</texture>
+	<texture>OSDExitFO_B.png</texture>
+	<texture>OSDExitNF_B.png</texture>
 	<!-- volume bar -->
 	<texture>InfoMessagePanel.png</texture>
 	<texture>VolumeIcon.png</texture>

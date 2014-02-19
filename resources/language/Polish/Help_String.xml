@@ -10,9 +10,9 @@
 		</content>
 		<content name="1. WYŁĄCZNIK CZUWANIA LED : Przełącza pomiędzy trybami pracy i czuwania.[CR][CR]2. WYŚWIETLACZ : Wyświetla nazwę kanału w trybie pracy i aktualny czas w trybie czuwania.[CR][CR]3. CZYTNIK SMARTCARD : Aby oglądać kanały kodowane, otwórz pokrywę i włóż kartę do przedniego gniazda chipem do dołu.">
 			<type>textbox</type>
-			<posx>205</posx>
+			<posx>180</posx>
 			<posy>565</posy>
-			<width>870</width>
+			<width>950</width>
 			<height>160</height>
 		</content>
 	</page>
@@ -186,7 +186,7 @@
 			<type>textbox</type>
 			<posx>180</posx>
 			<posy>565</posy>
-			<width>940</width>
+			<width>980</width>
 			<height>160</height>
 		</content>
 	</page>

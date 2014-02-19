@@ -1,0 +1,180 @@
+	
+
+	#wrapper {
+		width: 1200px;
+		padding: 10px;
+		margin-left: 20px;
+	}
+
+	body {
+		margin: auto;
+		overflow-y: scroll
+	}
+	
+	/* ======================================================== */
+	/* Top Menu */
+	
+	#top {
+		height: 90px;
+		background-color: #525252;
+		
+	}
+	
+	#title {
+		text-align: center;
+		padding-top: 25px;
+		color: white;
+		font-family: arial;
+		font-weight: bold;
+		font-size: 1.8em;
+		padding-right: 227px;
+	}
+	
+	#logo {
+		margin-left: 10px;
+		float: left;
+	}
+
+	/* Top Menu */
+	/* ======================================================== */
+	
+	
+	/* ======================================================== */
+	/* Side Menu */
+	
+	#menu {
+		margin-top: 30px;
+		clear: both;
+		float: left;
+		width: 200px;
+		padding-left: 20px;
+		float: left;
+	}
+
+	#menu p {
+		line-height: 1.0em;
+		font-family: arial;
+		font-weight: bold;
+	}
+	
+	#menu p a:link {
+		text-decoration: none;
+		color: #525252;
+	}
+
+	#menu p a:visited {
+		color: #525252;
+	}
+
+	#menu p a:hover {
+		color: #ff6c00;
+	}
+
+	
+	/* Side Menu */
+	/* ======================================================== */
+	
+	
+	/* ======================================================== */
+	/* Main Screen */
+	
+	#main {
+		margin-top: 20px;
+		margin-left: 230px;
+		border: 1px solid blue;
+	}
+
+	#remotecontroller {
+		margin-left: 400px;
+		padding-top: 30px;
+		zoom: 1;
+	}
+
+	/* Main Screen */
+	/* ======================================================== */	
+
+
+	/* ======================================================== */
+	/* Channel List */
+
+	#channels {
+		border-collapse: collapse;
+		border: 1px solid black;
+	}
+	
+	#channels td {
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: normal;
+		padding: 7px;
+		border-left: 7px solid #dfdfdf;
+	}
+	
+	#channels tr:first-child td {
+		border-top: 7px solid #dfdfdf;
+	}
+	
+	#channels tr:last-child td {
+		border-bottom: 7px solid #dfdfdf;
+	}
+	
+	#channels tr td:last-child {
+		border-right: 7px solid #dfdfdf;
+	}
+	
+	.channelContent {
+		padding: 3px;
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	/* Channel List */
+	/* ======================================================== */	
+
+	/* Remote Control */
+	/* ======================================================== */	
+
+	#hiddenFrame {
+		visibility: hidden;
+	}
+
+	.recContent {
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: bold;
+	}
+
+	/* Remote Control */
+	/* ======================================================== */	
+
+	/* EPG Page */
+	/* ======================================================== */	
+
+	#epgWrapper {
+		margin: auto;
+		padding: 10px;
+	}
+
+	#epgTop {
+		height: 90px;
+		background-color: #525252;
+		font-family: arial;
+		font-size: 2.0em;
+		text-align: center;
+		font-weight: bold;
+		color: white;
+	}
+
+	.epgContent {
+		padding: 10px;
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: bold;
+		border-bottom: 1px dotted #dfdfdf;
+	}
+
+	/* EPG Page */
+	/* ======================================================== */	
+	
+	
+	
+	

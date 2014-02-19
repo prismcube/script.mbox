@@ -299,6 +299,8 @@ def EnumToString( aType, aValue ) :
 			ret = MR_LANG( 'Satellite' )
 		elif aValue == ElisEnum.E_MODE_CAS :
 			ret = MR_LANG( 'FTA/CAS' )
+		elif aValue == ElisEnum.E_MODE_PROVIDER :
+			ret = MR_LANG( 'Provider' )
 
 	elif aType == 'sort' :
 		if aValue == ElisEnum.E_SORT_BY_DEFAULT :

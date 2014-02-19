@@ -10,7 +10,7 @@ if __name__ == '__main__' :
 	scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
 	#sys.path.append( os.path.join( scriptDir, 'pvr' ) )
 	#sys.path.append( os.path.join( scriptDir, 'resources' ) )
-	#sys.path.append( os.path.join( scriptDir, 'webinterface' ) )		
+	sys.path.append( os.path.join( scriptDir, 'webinterface' ) )		
 
 	#elisDir = xbmcaddon.Addon( 'script.module.elisinterface' ).getAddonInfo( 'path' )
 	#sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )

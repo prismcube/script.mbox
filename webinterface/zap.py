@@ -1,6 +1,7 @@
 from datetime import datetime
 from webinterface import Webinterface
 import dbopen
+import time
 
 class ElmoZap( Webinterface ) :
 
@@ -31,7 +32,10 @@ class ElmoZap( Webinterface ) :
 		xmlStr += '<e2simplexmlresult>'
 		
 		if self.result : 
-			if self.mDataCache.Channel_SetCurrent( self.result[0], 1 ) :
+			#def Channel_SetCurrentSync( self, aChannelNumber, aServiceType, aFrontMessage = False ) :
+			#if self.mDataCache.Channel_SetCurrent( self.result[0], 1 ) :
+			
+			if self.mDataCache.Channel_SetCurrentSync( self.result[0], 1, True ) :
 				print 'channel zap to ' + str( self.result[0] )
 				
 				xmlStr += '<e2state>True</e2state>'

@@ -1,0 +1,67 @@
+<html>
+<head>
+	<title>PrismCube Web UI</title>
+	<link href="uiStyle.css" type="text/css" rel="stylesheet">
+	<script>
+	
+		function showIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "visible";
+		}
+		
+		function hideIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "hidden";
+		}
+
+		function showColor( target, name ) {
+			return; // to preven too much traffice
+			
+			var icon = "icon" + target;
+			var img = "./uiImg/" + name + ".png";
+			document.getElementById(icon).src = img;
+		}
+
+		function hideColor( target, name ) {
+			return; // to prevent too much traffic
+			
+			var icon = "icon" + target;
+			var img = "./uiImg/" + name + "_bw.png";
+			document.getElementById(icon).src = img;
+		}
+	
+	</script>
+<body>
+<div id="wrapper">
+
+	<div id="top">
+		<div id="logo"><img src="./uiImg/prismcube_logo.png"></div>		
+		<div id="title">
+			PrismCube Web UI
+		</div>
+	</div>
+	
+	<div id="menu">
+		<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
+		<p><img src="./uiImg/mark.png" id="img02" style="visibility: hidden;"> <a href="/stream/stream.m3u" onmouseover="javacript:showIcon(2);" onmouseout="javascript:hideIcon(2);">Live Stream</a></p>
+		<p><img src="./uiImg/mark.png" id="img03" style="visibility: hidden;"> <a href="uiRemote.html" onmouseover="javacript:showIcon(3);" onmouseout="javascript:hideIcon(3);">Remote Control</a></p>
+		<p><img src="./uiImg/mark.png" id="img04" style="visibility: hidden;"> <a href="Recordings" onmouseover="javacript:showIcon(4);" onmouseout="javascript:hideIcon(4);">Recordings</a></p>
+	</div>
+	
+	<div id="main">
+		<div class="submenu">
+			<table align="center">
+			<tr>
+				<td><a href="Channel?all" onmouseover="javascript:showColor(1, 'channels');" onmouseout="javascript:hideColor(1, 'channels');"><img id="icon1" src="./uiImg/channels_bw.png" border="0"></a></td>
+				<td><a href="Channel?satellite" onmouseover="javascript:showColor(2, 'satellite');" onmouseout="javascript:hideColor(2, 'satellite');"><img id="icon2" src="./uiImg/satellite_bw.png" border="0"></a></td>
+				<td><a href="uiChannelByCas.html" onmouseover="javascript:showColor(3, 'cas');" onmouseout="javascript:hideColor(3, 'cas');"><img id="icon3" src="./uiImg/cas_bw.png" border="0"></a></td>
+				<td><a href="Channel?favorite" onmouseover="javascript:showColor(4, 'favorite');" onmouseout="javascript:hideColor(4, 'favorite');"><img id="icon4" src="./uiImg/favorite_bw.png" border="0"></a></td>
+				<td><a href="Channel?mode" onmouseover="javascript:showColor(5, 'mode');" onmouseout="javascript:hideColor(5, 'mode');"><img id="icon5" src="./uiImg/mode_bw.png" border="0"></a></td>
+			</tr>
+			</table>
+		</div>
+	</div>
+
+</div>
+</body>
+</html>
