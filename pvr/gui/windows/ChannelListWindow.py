@@ -109,6 +109,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mEPGList = []
 		self.mEPGHashTable = {}
+		self.mOffsetTopIndex = 0
+		self.mLock = thread.allocate_lock( )
 
 
 	def onInit(self):
@@ -148,7 +150,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlProgress               = self.getControl( E_CONTROL_ID_PROGRESS_EPG )
 		self.mCtrlLabelLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
 		self.mCtrlLabelCareerInfo        = self.getControl( E_CONTROL_ID_LABEL_CAREER_INFO )
-		self.mCtrlLabelLockedInfo        = self.getControl( E_CONTROL_ID_GROUP_LOCKED_INFO )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 		#self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
@@ -487,11 +488,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aControlId == E_CONTROL_ID_RADIOBUTTON_SHOW_EPGINFO :
 			self.mShowEPGInfo = self.mCtrlRadioButtonShowEPGInfo.isSelected( )
-			SetSetting( 'SHOW_EPGINFO_CHANNEL', '%s'% int( self.mShowEPGInfo ) )
-			showEPGInfo = E_TAG_FALSE
+			showEPGInfo = False
 			if self.mShowEPGInfo :
-				showEPGInfo = E_TAG_TRUE
-			self.UpdatePropertyGUI( 'ShowExtendInfo', showEPGInfo )
+				showEPGInfo = True
+			self.UpdatePropertyGUI( 'ShowExtendInfo', '%s'% showEPGInfo )
+			self.UpdateChannelNameWithEPG( )
+			self.UpdateControlGUI( E_SLIDE_CLOSE )
+			SetSetting( 'SHOW_EPGINFO_CHANNEL', '%s'% int( self.mShowEPGInfo ) )
 
 
 	def onFocus(self, controlId):
@@ -541,8 +544,46 @@ class ChannelListWindow( BaseWindow ) :
 				self.mTimerListHash[timerKey] = timer
 				#LOG_TRACE( '[ChannelList] timerKey[%s] tch[%s] tName[%s]'% ( timerKey, timer.mChannelNo, timer.mName ) )
 
-		self.LoadByCurrent( )
 		LOG_TRACE( '[ChannelList] timer hash len[%s]'% len( self.mTimerListHash ) )
+
+
+	def LoadByCurrentEPG( self, aUpdateView = False ) :
+		if not self.mShowEPGInfo or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			LOG_TRACE( '[ChannelList] passed, edit mode or not EPGInfo' )
+			return
+
+		isUpdate = True
+		epgList = []
+		startTime = time.time()
+
+		self.OpenBusyDialog( )
+		self.mLock.acquire( )
+
+		try :
+			epgList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mUserMode.mServiceType )
+
+		except Exception, e :
+			isUpdate = False
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+
+		if not epgList or len( epgList ) < 1 :
+			isUpdate = False
+			LOG_TRACE( '[ChannelList] get epglist None' )
+
+		LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
+
+		if isUpdate :
+			self.mEPGList = epgList
+			self.mEPGHashTable = {}
+			for iEPG in self.mEPGList :
+				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
+
+		self.mLock.release( )
+		self.CloseBusyDialog( )
+		LOG_TRACE( '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime ) )
+
+		if aUpdateView :
+			self.UpdateChannelNameWithEPG( False )
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
@@ -557,6 +598,10 @@ class ChannelListWindow( BaseWindow ) :
 		return self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
+	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
+		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+
+
 	def Initialize( self ):
 		self.mDataCache.LoadTimerList( )
 		self.LoadRecordingInfo( )
@@ -565,6 +610,12 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.LoadChannelListHash( )
 		label = ''
+
+		if not self.mInitialized or ( not self.mEPGHashTable ) :
+			self.mInitialized = True
+			thread = threading.Timer( 0, self.LoadByCurrentEPG )
+			thread.start( )
+
 		try :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -611,6 +662,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.GoToEditWindow( )
 		else :
 			self.UpdateChannelList( )
+			self.mOffsetTopIndex = self.GetOffsetPosition( )
 
 		#init navChannel by focus
 		self.mNavEpg = None
@@ -663,6 +715,7 @@ class ChannelListWindow( BaseWindow ) :
 		showEPGInfo = E_TAG_FALSE
 		if self.mShowEPGInfo :
 			showEPGInfo = E_TAG_TRUE
+			self.UpdateChannelNameWithEPG( False )
 		self.UpdatePropertyGUI( 'ShowExtendInfo', showEPGInfo )
 
 
@@ -771,6 +824,10 @@ class ChannelListWindow( BaseWindow ) :
 			self.mFlag_ModeChanged = False
 			self.mDataCache.Channel_ResetOldChannelList( )
 
+			thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
+			thread.start( )
+			LOG_TRACE( '[ChannelList] epgList hash len[%s]'% len( self.mEPGHashTable ) )
+
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
@@ -841,6 +898,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
 				self.UpdateControlGUI( E_SLIDE_CLOSE )
+
+				#default channelView
+				if self.mShowEPGInfo :
+					self.UpdatePropertyGUI( 'ShowExtendInfo', E_TAG_FALSE )
 
 				#clear label
 				self.ResetLabel( )
@@ -953,6 +1014,10 @@ class ChannelListWindow( BaseWindow ) :
 					self.mIsTune = False
 					self.Epgevent_GetCurrent( )
 
+					#restore epgView
+					if self.mShowEPGInfo :
+						self.UpdatePropertyGUI( 'ShowExtendInfo', E_TAG_TRUE )
+
 					#clear label
 					self.ResetLabel( )
 					self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
@@ -998,6 +1063,7 @@ class ChannelListWindow( BaseWindow ) :
 							#LOG_TRACE( '[ChannelList] epg different' )
 							self.mNavEpg = iEPG
 							self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
+							self.mEPGHashTable[ '%d:%d:%d' %( iEPG.mSid, iEPG.mTsid, iEPG.mOnid) ] = iEPG
 
 							#update label
 							self.ResetLabel( )
@@ -1831,6 +1897,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, True, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
+			self.mCtrlRadioButtonShowEPGInfo.setEnabled( True )
 
 		else :
 			#opt btn visible
@@ -1838,6 +1905,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
+			self.mCtrlRadioButtonShowEPGInfo.setEnabled( False )
 
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset( )
@@ -1992,29 +2060,6 @@ class ChannelListWindow( BaseWindow ) :
 				break
 
 
-	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
-		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
-
-	def LoadByCurrent( self, aReload = False ) :
-
-		if not aReload and self.mEPGList :
-			return
-
-		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mUserMode.mServiceType )
-
-		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
-
-		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
-			return
-
-		LOG_TRACE( 'self.mEPGList COUNT=%d' %len( self.mEPGList ) )
-
-		for epg in self.mEPGList :
-			self.mEPGHashTable[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
-
-
 	def UpdateChannelList( self ) :
 		#starttime = time.time( )
 		#print '==================== TEST TIME[LIST] START[%s]'% starttime
@@ -2059,8 +2104,9 @@ class ChannelListWindow( BaseWindow ) :
 				if E_V1_2_APPLY_PRESENTATION_NUMBER :
 					iChNumber = self.mDataCache.CheckPresentationNumber( iChannel, self.mUserMode )
 
+				epgEvent = None
 				channelName = '%s'% iChannel.mName
-				if self.mShowEPGInfo :
+				if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 					epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 					if epgEvent :
 						channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
@@ -2106,6 +2152,10 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setProperty( E_XML_PROPERTY_TUNER2, E_TAG_TRUE )
 				elif mTPnum == E_CONFIGURED_TUNER_1_2 :
 					listItem.setProperty( E_XML_PROPERTY_TUNER1_2, E_TAG_TRUE )
+
+				if epgEvent :
+					listItem.setProperty( 'percent', '%s'% self.GetEPGDurationProgress( epgEvent.mStartTime, epgEvent.mDuration ) )
+					listItem.setProperty( 'iPos', E_TAG_TRUE )
 
 				self.mListItems.append( listItem )
 
@@ -2192,7 +2242,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelEPGTime.setLabel( '' )
 		self.mCtrlLabelLongitudeInfo.setLabel( '' )
 		self.mCtrlLabelCareerInfo.setLabel( '' )
-		self.mCtrlLabelLockedInfo.setVisible(False)
 		self.UpdatePropertyGUI( 'EPGDescription', '' )
 		self.UpdatePropertyGUI( 'EPGDuration', '' )
 		self.UpdatePropertyGUI( 'EPGAgeRating', '' )
@@ -2204,6 +2253,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,      E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_IMOVE,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,     E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'iHDLabel', '' )
 		if E_V1_1_HD_ICON_USE :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_IHD,  E_TAG_FALSE )
@@ -2277,9 +2327,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_TIME :
 			self.mCtrlLabelEPGTime.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_LOCKED_INFO :
-			self.mCtrlLabelLockedInfo.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_PATH :
 			self.mCtrlLabelChannelPath.setLabel( aValue )
@@ -2376,7 +2423,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_LOCKED_INFO, True )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 
 
 			#update career info
@@ -2431,35 +2478,50 @@ class ChannelListWindow( BaseWindow ) :
 
 				desc = MR_LANG( 'No description' )
 				if self.mNavEpg.mEventDescription and self.mNavEpg.mEventDescription != '(null)' :
-					desc = self.mNavEpg.mEventDescription
+					desc = '%s\n\n%s'% ( self.mNavEpg.mEventName, self.mNavEpg.mEventDescription )
 
 				self.UpdatePropertyGUI( 'EPGDescription', desc )
 				self.UpdatePropertyGUI( 'EPGDuration', '%sm'% ( self.mNavEpg.mDuration / 60 ) )
 
-				if self.mShowEPGInfo :
-					if self.mNavChannel :
+			if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+				newOffsetTopIndex = self.GetOffsetPosition( )
+				LOG_TRACE( '----------------------------topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
+				if self.mOffsetTopIndex == newOffsetTopIndex :
+					if self.mNavEpg and self.mNavChannel :
 						channelName = '%s'% self.mNavChannel.mName
 						epgEvent = self.GetEPGByIds( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
 						if epgEvent :
 							channelName = '%s %s(%s)%s'% ( self.mNavChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
 
-					iChNumber = self.mNavChannel.mNumber
-					if E_V1_2_APPLY_PRESENTATION_NUMBER :
-						iChNumber = self.mDataCache.CheckPresentationNumber( self.mNavChannel, self.mUserMode )
+						iChNumber = self.mNavChannel.mNumber
+						if E_V1_2_APPLY_PRESENTATION_NUMBER :
+							iChNumber = self.mDataCache.CheckPresentationNumber( self.mNavChannel, self.mUserMode )
 
-					chIndex = iChNumber - 1
-					if iChNumber - 1 < len( self.mChannelList ) :
-						hdLabel = ''
-						if self.mNavChannel.mIsHD :
-							hdLabel = E_TAG_COLOR_HD_LABEL
+						chIndex = iChNumber - 1
+						if chIndex < len( self.mChannelList ) :
+							hdLabel = ''
+							if self.mNavChannel.mIsHD :
+								hdLabel = E_TAG_COLOR_HD_LABEL
 
-						listItem = self.mCtrlListCHList.getListItem( chIndex )
-						listItem.setLabel2( '%s %s'% ( channelName, hdLabel ) )
+							listItem = self.mCtrlListCHList.getListItem( chIndex )
+							listItem.setLabel2( '%s %s'% ( channelName, hdLabel ) )
 
-						if len( self.mNavChannel.mName ) > 30 :
-							listItem.setLabel2( '%s'% self.mNavChannel.mName )
-							listItem.setProperty( 'iHDLabel', hdLabel )
+							if len( self.mNavChannel.mName ) > 30 :
+								listItem.setLabel2( '%s'% self.mNavChannel.mName )
+								listItem.setProperty( 'iHDLabel', hdLabel )
 
+							if epgEvent :
+								listItem.setProperty( 'percent', '%s'% self.GetEPGDurationProgress( epgEvent.mStartTime, epgEvent.mDuration ) )
+								listItem.setProperty( 'iPos', E_TAG_TRUE )
+							else :
+								listItem.setProperty( 'iPos', E_TAG_FALSE )
+
+						LOG_TRACE( '[ChannelList] update epg, more info mode, navChannel[%s %s]'% ( iChNumber, channelName ) )
+
+				else :
+					self.UpdateChannelNameWithEPG( False )
+
+				self.mOffsetTopIndex = newOffsetTopIndex
 
 
 			else :
@@ -2469,15 +2531,101 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_ERR( '[ChannelList] except[%s]'% e )
 
 
+	def GetOffsetPosition( self ) :
+		pos = self.mCtrlListCHList.getOffsetPosition( )
+		if pos < 0 :
+			pos = 0
+		return pos
+
+
+	def GetEPGDurationProgress( self, aEPGStartTime = 0, aEPGDuration = 0 ) :
+		percent      = 0
+		startTime    = aEPGStartTime + self.mLocalOffset
+		endTime      = startTime + aEPGDuration
+		pastDuration = endTime - self.mLocalTime
+
+		if aEPGDuration > 0 :
+			percent = 100 - ( abs( pastDuration ) * 100.0 / aEPGDuration )
+
+		if self.mLocalTime > endTime : #Already past
+			percent = 100
+
+		elif self.mLocalTime < startTime :
+			percent = 0
+
+		if pastDuration < 0 :
+			pastDuration = 0
+
+		return percent
+
+
+	def UpdateChannelNameWithEPG( self, aUpdateAll = True ) :
+		if not self.mListItems or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			LOG_TRACE( '[ChannelList] passed, channelList None or not updateMode' )
+			return
+
+		startTime = time.time()
+		listHeight = self.mCtrlListCHList.getHeight( )
+		mItemCount = listHeight / self.mItemHeight
+
+		updateStart = 0
+		updateEnd = len( self.mListItems ) - 1
+		if not aUpdateAll :
+			updateStart = self.GetOffsetPosition( )
+			updateEnd = ( updateStart + mItemCount ) - 1
+
+		LOG_TRACE( '[ChannelList] offsetTop[%s] updateStart[%s] updateEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, listHeight, mItemCount ) )
+
+		self.OpenBusyDialog( )
+		try :
+			idx = -1
+			updateCount = 0
+			for listItem in self.mListItems :
+				idx += 1
+
+				if idx < updateStart :
+					continue
+
+				if idx > updateEnd :
+					break
+
+				if idx < len( self.mChannelList ) :
+					iChannel = self.mChannelList[idx]
+
+					channelName = '%s'% iChannel.mName
+					if self.mShowEPGInfo :
+						epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+						if epgEvent :
+							channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
+							listItem.setProperty( 'percent', '%s'% self.GetEPGDurationProgress( epgEvent.mStartTime, epgEvent.mDuration ) )
+							listItem.setProperty( 'iPos', E_TAG_TRUE )
+						else :
+							listItem.setProperty( 'iPos', E_TAG_FALSE )
+
+					listItem.setLabel2( channelName )
+					updateCount += 1
+
+			LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG [%s]counts'% updateCount )
+
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+
+		self.CloseBusyDialog( )
+		LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime ) )
+
+
 	@RunThread
 	def EPGProgressThread( self ) :
 		loop = 0
 		while self.mEnableProgressThread :
 			#LOG_TRACE( '[ChannelList] repeat <<<<' )
-			if  ( loop % 200 ) == 0 :
+			if ( loop % 50 ) == 0 : # 10sec
 				self.UpdateProgress( )
-			
-			time.sleep( 0.05 )
+
+			if self.mShowEPGInfo and ( loop % 300 ) == 0 : # 60sec
+				self.LoadByCurrentEPG( True )
+
+			time.sleep( 0.2 )
 			loop += 1
 
 
@@ -3741,7 +3889,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.mIsTune = False
 			self.ResetLabel( )
 			self.Epgevent_GetCurrent( )
-			self.LoadByCurrent( )
 			self.UpdateChannelAndEPG( )
 
 		except Exception, e :
