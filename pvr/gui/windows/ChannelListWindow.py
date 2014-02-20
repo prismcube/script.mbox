@@ -1111,8 +1111,8 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mSearchList and len( self.mSearchList ) > 0 :
 					self.mSearchList = []
 					#self.mChannelList = self.mInstanceBackup
-					#self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
-					self.mDataCache.SetChannelReloadStatus( True )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					#self.mDataCache.SetChannelReloadStatus( True )
 					LOG_TRACE( '[ChannelList] Restore channel from search' )
 
 				ret = self.SaveSlideMenuHeader( )
@@ -1963,10 +1963,19 @@ class ChannelListWindow( BaseWindow ) :
 		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		#path tree, Mainmenu/Submenu
+		sortEnable   = True
+		searchEnable = True
 		mSort = self.mUserMode.mSortingMode
 		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			sortEnable = False
 			mSort = ElisEnum.E_SORT_BY_NUMBER
 			LOG_TRACE( '[ChannelList] fixed sort by number in Favorite Group' )
+
+		if not self.mChannelList :
+			searchEnable = False
+
+		self.mCtrlButtonSorting.setEnabled( sortEnable )
+		self.mCtrlButtonSearch.setEnabled( searchEnable )
 
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :

@@ -129,7 +129,7 @@
 "SQL error or broken database";"SQL-Fehler oder defekte Datenbank";;;;"Chyba SQL nebo poškozená databáze ";;"Błąd SQL, lub uszkodzona baza danych";;;;;"Chyba SQL alebo poškodená databáza";;1130
 "If the problem continues, force repository refresh";"Wenn das Problem weiterhin besteht, repository Aktualisierung erzwingen";;;;"Pokud problém přetrvává, vynúťte obnovu repozitáře ";;"W przypadku powtarzających się problemów odśwież repozytorium";;;;;"Ak problém pretrváva, vynúťte obnovu repozitára";;1131
 "( SYSTEM > Add-ons > Get Add-ons > Press i button > Force refresh )";"( System Add-ons > Weitere Add-ons > i button drücken > Aktualisierung erzwingen )";;;;"(Systém > Doplňky > Získat doplňky > Stisknout tlačítko 'i' > Vynutit obnovu) ";;"( Ustawienia > Wtyczki > Pobierz wtyczki > Zaznacz wtyczkę, wciśnij klawisz i > Wymuś ponowne wczytanie )";;;;;"(Systém > Doplnky > Získať doplnky > Stlačiť tlačidlo 'i' > Vynútiť obnovu)";;1132
-"Timer";"Timer";"Minuteur";"Timer";"Tiempo";"Časovač";"Timer";"Programator zdarzeń";"Timer";"Таймер";"Timer";"Timer";"Časovač";"Таймер";1133
+"Timer";"Timer";"Minuteur";"Timer";"Tiempo";"Časovač";"Timer";"Timer";"Timer";"Таймер";"Timer";"Timer";"Časovač";"Таймер";1133
 "The Timer displays the list of all your timer recordings";"Timer zeigt Ihnen die Liste Ihrer Timer Programmierungen ";;;;"Časovač zobrazuje seznam všech vašich časových nahrávek ";;"Wyświetl listę zaprogramowanych zdarzeń ";;;;;"Časovač zobrazuje zoznam všetkých vašich časových nahrávok ";;1134
 "Add Manual Timer";"Manuellen Timer hinzufügen";"Ajouter un minuteur manuel";"Aggiungi Timer";"Añadir temporizador manual";"Přidat časovač ručně";"Add Manual Timer";"Dodaj zdarzenie ręcznie";"Add Manual Timer";"Добавить Таймер Вручную";"Add Manual Timer";"Add Manual Timer";"Pridať časovač ručne";"Додати Таймер Вручну";1135
 "Delete Timer";"Timer löschen";"Supprimer un minuteur";"Elimina Timer";"Borrar temporizador";"Vymazat časovač";"Delete Timer";"Usuń timer";"Delete Timer";"Удалить Таймер";"Delete Timer";"Delete Timer";"Vymazať časovač";"Видалити Таймер";1136
@@ -145,23 +145,23 @@
 "Appearance";"Aussehen";;;;"Vzhled ";;"Wygląd";;;;;"Vzhľad";;1146
 "To fix an empty repository or any other problems, try Force refresh in the context menu";"Um eine leere Repository oder andere Probleme zu beheben, erzwingen Sie eine aktualisieren im Kontextmenü";;;;"Pokud je repozitář prázdný, nebo jiný problém, vyzkoušejte vynutit obnovu ve skrytém menu ";;"Aby naprawić puste repozytorium, lub w przypadku wystąpienia innych problemów, odśwież wtyczkę w menu kontekstowym";;;;;"Ak je repozitár prázdny, alebo iný problém, vyskúšajte vynútiť obnovu v skrytom menu";;1147
 "Show Logical Channel Number";"Logische Sendernummern Anzeigen";;;;"Zapnout logické číslování (LCN)";;"Pokaż LCN (logiczną numerację kanałów)";;;;;"Zapnúť logické číslovanie (LCN)";;1148
-"Delete from approved repository";;;;;;;"Usuń z zatwierdzonego repozytorium";;;;;;;1149
-"Add to approved repository";;;;;;;"Dodaj do zatwierdzonego repozytorium";;;;;;;1150
-"Skip zapping confirm";;;;;;;"Pomiń potwierdzanie podczas zappingu";;;;;;;1151
-"PROVIDER";;;;;;;"OPERATOR";;;;;;;1152
-"Service Info";;;;;;;"Informacje serwisowe";;;;;;;1153
-"Otherwise it will restore after few seconds";;;;;;;"W przeciwnym razie zostanie przywrócony po kilku sekundach";;;;;;;1154
-"Please select other OSD language to type different characters";;;;;;;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;;;1155
-"Please press %s button to change keyboard language";;;;;;;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;;;1156
-"Removable Device(%s)";;;;;;;"Usuwane urządzenie(%s)";;;;;;;1157
-"Video output format";;;;;;;;;;;;;;1158
-"Next calibration step";;;;;;;;;;;;;;1159
-"Exit calibration";;;;;;;;;;;;;;1160
-"Loading new language...";;;;;;;;;;;;;;1161
+"Delete from approved repository";;;;;"Smazat ze schváleného repozitáře";;"Usuń z zatwierdzonego repozytorium";;;;;"Zmazať zo schváleného repozitára";;1149
+"Add to approved repository";;;;;"Přidat do schváleného repozitáře";;"Dodaj do zatwierdzonego repozytorium";;;;;"Pridať do schváleného repozitára";;1150
+"Skip zapping confirm";;;;;"Automatický výstup ze seznamu kanálů";;"Pomiń potwierdzanie podczas zappingu";;;;;"Automatický výstup zo zonamu kanálov";;1151
+"PROVIDER";;;;;"Poskytovatel";;"OPERATOR";;;;;"Provajder";;1152
+"Service Info";;;;;"Info o kanály";;"Informacje serwisowe";;;;;"Info o kanály";;1153
+"Otherwise it will restore after few seconds";;;;;"Nebo bude obnovena po pár sekundách";;"W przeciwnym razie zostanie przywrócony po kilku sekundach";;;;;"Alebo bude obnovená po pár sekundách";;1154
+"Please select other OSD language to type non-English characters";;;;;"Pro možnost psaní dalších znaků zvolte prosím jiný OSD jazyk";;"Wybierz inny język OSD, aby wpisać odmienne znaki";;;;;"Pre možnosť písania ďaľších znakov zvoľte prosím iný OSD jazyk ";;1155
+"Please press %s button to change keyboard language";;;;;"Prosím stiskněte %s tlačítko pro změnu jazyka klávesnice";;"Wciśnij przycisk %s, aby zmienić język klawiatury";;;;;"Prosím stlačte %s tlačidlo na zmenu jazyka klávesnice ";;1156
+"Removable Device(%s)";;;;;"Vyměnitelné zařízení(%s)";;"Usuwane urządzenie(%s)";;;;;"Vymeniteľné zariadenie(%s)";;1157
+"Video output format";;;;;"Formát video výstupu";;"Format wyjścia wideo";;;;;"Formát video výstupu";;1158
+"Next calibration step";;;;;"Další krok kalibrace obrazu";;"Następny krok kalibracji";;;;;"Ďalší krok kalibrácie obrazu";;1159
+"Exit calibration";;;;;"Ukončit kalibraci obrazu";;"Opuść kalibrację";;;;;"Ukončiť kallibráciu obrazu";;1160
+"Loading new language...";;;;;"Načítání nového jazyka...";;"Instalacja nowego języka...";;;;;"Načítavanie nového jazyka...";;1161
 "Grid";"Gitter";"Grille";"Griglia";"Parrilla";"Mřížka";"Grid";"Siatka";"Grid";"Сетка";"Grid";"Grid";"Mriežka";"Сітка";1162
-"Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Aktualnie trwa";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
+"Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Teraz";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
 "Following";"Folgen";"Suivant";"Seguito";"Siguiente";"Následující";"Following";"Później";"Following";"Следующий";"Following";"Following";"Nasledujúca";"Наступний";1164
-"Live Streaming";;;;;;;;;;;;;;1200
+"Live Streaming";;;;;"Živé streamovanie";;;;;;;"Živé streamovanie";;1200
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -236,7 +236,7 @@
 "Secondary Subtitle Language";"Zweite Untertitel Sprache";"Langage secondaire des sous-titres ";"Lingua Sottotitoli Secondaria";"Lenguaje secundario Subtítulos";"Sekundární jazyk titulků";"Secondary Subtitle Language";"Drugi język napisów ekranowych";"Secondary Subtitle Language";"Второй Язык Субтитров";"Secondary Subtitle Language";"Secondary Subtitle Language";"Sekundárny jazyk titulkov";"Друга мова субтитрів";2072
 "Hearing Impaired";"Hörgeschädigte";"Malentendant";"Non udenti";"Problemas de audición";"Sluchově postižený";"Hearing Impaired";"Napisy dla niedosłyszących";"Hearing Impaired";"Нарушение Слуха";"Hearing Impaired";"Hearing Impaired";"Sluchovo postihnutý";"Вади слуху";2073
 "Deep Standby";"Deep Standby";"Veille profonde";"Deep Standby";"Deep Standby";"Hluboko v pohotovostním režimu";"Deep Standby";"Głębokie czuwanie";"Deep Standby";"Полное Отключение";"Deep Standby";"Deep Standby";"Hlboko v pohotovostnom režime";"Повне відключення";2074
-"Remote Addr";"Remote Addr";"Addr distant";"Remote Addr";"Remote Addr";"Vzdálená Adr.";"Remote Addr";"Adresacja pilota";"Remote Addr";"Удаленный Адрес";"Remote Addr";"Remote Addr";"Vzdialená Adr.";"Видалена адреса";2075
+"Remote Addr";"Remote Addr";"Addr distant";"Remote Addr";"Remote Addr";"Vzdálená Adr.";"Remote Addr";"Remote Addr";"Remote Addr";"Удаленный Адрес";"Remote Addr";"Remote Addr";"Vzdialená Adr.";"Видалена адреса";2075
 "Addr1";"Addr1";"Addr1";"Addr1";"Addr1";"Adr1";"Addr1";"Addr1";"Addr1";"Адрес1";"Addr1";"Addr1";"Adr1";"Адреса1";2076
 "Addr2";"Addr2";"Addr2";"Addr2";"Addr2";"Adr2";"Addr2";"Addr2";"Addr2";"Адрес2";"Addr2";"Addr2";"Adr2";"Адреса2";2077
 "Addr3";"Addr3";"Addr3";"Addr3";"Addr3";"Adr3";"Addr3";"Addr3";"Addr3";"Адрес3";"Addr3";"Addr3";"Adr3";"Адреса3";2078
@@ -535,8 +535,8 @@
 "NoChannel";"Keine Sender";"Aucune chaîne";"Nessun Canale";"Sin canal";"Žádný Program";"NoChannel";"Brak kanałów";"NoChannel";"Нет Канала";"NoChannel";"NoChannel";"Žiadny Program";"Немає Каналу";3020
 "Strength";"Stärke";"Puissance";"Forza";"Fuerza";"Síla";"Strength";"Siła";"Strength";"Сигнал";"Strength";"Strength";"Sila";"Сигнал";3021
 "Quality";"Qualität";"Qualité";"Qualità";"Calidad";"Kvalita";"Quality";"Jakość";"Quality";"Качество";"Quality";"Quality";"Kvalita";"Якість";3022
-"Watching PIP";"Bild in Bild Modus";"Watching PIP";"Watching PIP";"Watching PIP";"Sledování PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Sledovanie PIP";"Watching PIP";3023
-"only available when Video plays in fullscreen";"nur verfügbar, wenn Video im Vollbild spielt";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"Dostupné pouze při přehrávání videa na celou obrazovku";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"Dostupné iba pri prehrávaní videa na celú obrazovku";"only available when Video plays in fullscreen";3024
+"Watching PIP";"Bild in Bild Modus";"Watching PIP";"Watching PIP";"Watching PIP";"Sledování PIP";"Watching PIP";"Oglądaj PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Watching PIP";"Sledovanie PIP";"Watching PIP";3023
+"only available when Video plays in fullscreen";"nur verfügbar, wenn Video im Vollbild spielt";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"Dostupné pouze při přehrávání videa na celou obrazovku";"only available when Video plays in fullscreen";"Dostępny tylko na pełnym ekranie";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"only available when Video plays in fullscreen";"Dostupné iba pri prehrávaní videa na celú obrazovku";"only available when Video plays in fullscreen";3024
 "Update Channels";"Sender aktualisieren";"Mettre à jour les chaînes ";"Aggiornamento Canali";"Actualizar canales";"Aktualizace kanálů";"Update Channels";"Zaktualizuj kanały";"Update Channels";"Обновить Каналы";"Update Channels";"Update Channels";"Aktualizácia kanálov";"Оновити Канали";3025
 "Loading new channels...";"Lade neue Sender... ";"Chargement des nouvelles chaînes...";;;"Načítání nových kanálů …";;"Ładowanie nowych kanałów...";;"Загзузка новых каналов...";;;"Načítavanie nových kanálov...";;3026
 "Please wait";"Bitte warten";"Veuillez patienter";"Attendere Prego";"Por favor espera";"Prosím počkejte";"Please wait";"Proszę czekać…";"Please wait";"Подождите";"Please wait";"Please wait";"Prosím počkajte";"Зачекайте";3027
@@ -664,14 +664,14 @@
 "Apply";"Anwenden";"Appliquer";"Applica";"Aplicar";"Aplikovat";"Apply";"Zastosuj";"Apply";"Применить";"Apply";"Apply";"Aplikovať";"Застосувати";3149
 "Switch to East";"Nach Osten wechseln";"Changer à Est";"Muovi a East";"Cambiar al Este";"Přepnout na východ";"Switch to East";"Przełącz na wschód";"Switch to East";"Направление Восток";"Switch to East";"Switch to East";"Prepnúť na východ";"Напрямок Схід";3150
 "Switch to West";"Nach Westen wechseln";"Changer à Ouest";"Muovi a Ovest";"Cambiar al Oeste";"Přepnout na západ";"Switch to West";"Przełącz na zachód";"Switch to West";"Направление Запад";"Switch to West";"Switch to West";"Prepnúť na západ";"Напрямок Захід";3151
-"VIDEO PID";;;;;;;"VIDEO PID";;;;;;;3152
-"AUDIO PID";;;;;;;"AUDIO PID";;;;;;;3153
-"PCR PID";;;;;;;"PCR PID";;;;;;;3154
-"TSID";;;;;;;"TSID";;;;;;;3155
-"ONID";;;;;;;"ONID";;;;;;;3156
-"SID";;;;;;;"SID";;;;;;;3157
-"STRENGTH";;;;;;;"SIŁA SYGNAŁU";;;;;;;3158
-"QUALITY";;;;;;;"JAKOŚĆ";;;;;;;3159
+"VIDEO PID";;;;;"VIDEO PID";;"VIDEO PID";;;;;"VIDEO PID";;3152
+"AUDIO PID";;;;;"AUDIO PID";;"AUDIO PID";;;;;"AUDIO PID";;3153
+"PCR PID";;;;;"PCR PID";;"PCR PID";;;;;"PCR PID";;3154
+"TSID";;;;;"TSID";;"TSID";;;;;"TSID";;3155
+"ONID";;;;;"ONID";;"ONID";;;;;"ONID";;3156
+"SID";;;;;"SID";;"SID";;;;;"SID";;3157
+"STRENGTH";;;;;"SILA";;"SIŁA SYGNAŁU";;;;;"SILA";;3158
+"QUALITY";;;;;"KVALITA";;"JAKOŚĆ";;;;;"KVALITA";;3159
 "XBMC Addons and Userdata";"XBMC Addons und Benutzerdaten";;;;"XBMC doplňky a uživatelská data ";;"Dodatki XBMC i dane użytkownika";;;;;"XBMC doplnky a užívateľské dáta";;3160
 "STB Configuration";"STB Konfiguration";;;;"Nastavení boxu ";;"Ustawienia odbiornika";;;;;"Nastavenie boxu";;3161
 "Select Data To Be Backup ( Optional )";"Wählen Sie die Daten aus für ein Backup (optional)";;;;"Vybrat data do zálohy (volitelné)";;"Wybierz dane przeznaczone do wykonania kopii zapasowej";;;;;"Vybrať dáta do zálohy (voliteľné)";;3162
@@ -708,7 +708,7 @@
 "Rename OK";"Umbenennen OK";"Renommage réussi";"Rinominato";"Renombrar OK";"Přejmenovat OK";"Rename OK";"Zmiana nazwy OK";"Rename OK";"Переименовать ОК";"Rename OK";"Rename OK";"Premenovať OK";"Перейменувати ОК";3193
 "Delete favorite group";"Favoritengruppe löschen";"Supprimer groupe favori";"Cancella gruppo favoriti";"Borrar grupo favorito";"Odstranění skupiny oblíbených";"Delete favorite group";"Usuń grupę";"Delete favorite group";"Удалить Группу Любимые";"Delete favorite group";"Delete favorite group";"Odstránenie skupiny obľúbených";"Видалити Групу Улюблені";3194
 "Delete OK";"Löschen OK";"Suppression réussie";"Cancellato";"Borrar OK";"Smazat OK";"Delete OK";"Kasowanie OK";"Delete OK";"Удалить ОК";"Delete OK";"Delete OK";"Zmazať OK";"Видалити ОК";3195
-"Press [BACK] on the remote to close channel search dialog";;;;;;;;;;;;;;3196
+"Press [BACK] on the remote to close channel search dialog";;;;;"Stiskněte tlačítko [BACK] na DO o krok zpět";;"Naciśnij [BACK] na pilocie, aby zamknąć menu wyszukiwania kanałów";;;;;"Stlačte tlačidlo [BACK] na DO o krok späť";;3196
 "Are you sure you want to stop the channel scan?";"Wollen Sie den Sendersuchlauf wirklich abbrechen?";"Etes vous sur de vouloir arrêter le%n scan des chaînes?";"Interrompere la ricerca?";"¿Está seguro de que desea detener la búsqueda de canales?";"Jste si jisti, že chcete zastavit prohledávání kanálů?";"Are you sure you want to stop the channel scan?";"Czy na pewno chcesz przerwać wyszukiwanie kanałów?";"Are you sure you want to stop the channel scan?";"Остановить сканирование каналов?";"Are you sure you want to stop the channel scan?";"Are you sure you want to stop the channel scan?";"Ste si istí, že chcete zastaviť prehľadávanie kanálov?";"Зупинити сканування каналів?";3197
 "Exit Channel Search";"Sendersuchlauf verlassen";"Quitter la recherche des chaînes";"Esci da ricerca canali";"Salir de la busqueda de canales";"Opustit vyhledávání kanálů";"Exit Channel Search";"Przerwij wyszukiwanie kanałów";"Exit Channel Search";"Выйти из Поиска Каналов";"Exit Channel Search";"Exit Channel Search";"Opustiť vyhľadávanie kanálov";"Вийти з Пошуку Каналів";3198
 "TV channels : %d %sRadio channels : %d";"TV Sender : %d %sRadio Sender : %d";"Chaînes TV : %d %sChaînes Radio : %d";"Canali TV : %d %sCanali Radio : %d";"Canales de TV : %d %sCanales de Radio : %d";"Televizní kanály : %d %sKanálů rádio : %d";"TV channels : %d %sRadio channels : %d";"Kanały TV : %d %sStacje radiowe: %d";"TV channels : %d %sRadio channels : %d";"ТВ каналы : %d %sРадио каналы : %d";"TV channels : %d %sRadio channels : %d";"TV channels : %d %sRadio channels : %d";"Televízne kanály : %d %sKanálov rádio : %d";"ТВ канали : %d %sРадіо канали : %d";3199
@@ -826,7 +826,7 @@
 "Skipping all channels is not allowed";"Überspringen aller Kanäle ist nicht erlaubt";"Sauter tous les canaux n'est pas autorisé";"Skipping all channels is not allowed";"Omitir todos los canales que no están permitidos";"Přeskočení všech kanálů není povoleno";"Skipping all channels is not allowed";"Pomijanie wszystkich kanałów nie%n jest dozwolone";"Skipping all channels is not allowed";"Пропуск всех каналов не допускается";"Skipping all channels is not allowed";"Skipping all channels is not allowed";"Preskočenie všetkých kanálov nie je povolené";"Skipping all channels is not allowed";3311
 "Are you sure you want to delete the channels%s including currently recording or reserved?";"Sind Sie sicher dass Sie den Sender%s inkl. laufender Aufnahmen oder Timer löschen wollen?";"Etes vous sur de vouloir supprimer les chaînes%s incluant ceux en cours d'enregistrement ou réservées?";"Sei sicuro di voler eliminare il canale%s tra cui in fase di registrazione o riservati?";"¿Está seguro que desea eliminar los canales%s incluidos los que actualmente grabando o los reservados?";"Jste si jisti, že chcete smazat programy%s, včetně aktuální nahrávky nebo rezervace?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Czy na pewno chcesz usunąć kanały wliczając%s aktualnie nagrywane lub z rezerwacją?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Уверены что хотите удалить каналы%s включая текущие записи и таймеры?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Ste si istí, že chcete zmazať programy%s, vrátane aktuálnej nahrávky alebo rezervácie?";"Впевнені що хочете видалити канали%s включаючи поточні записи і таймери?";3312
 "Delete Channels";"Kanäle löschen";"Supprimer les chaînes";"Elimina Canali";"Borrar canales";"Odstranění kanálů";"Delete Channels";"Usuń kanały";"Delete Channels";"Удалить Каналы";"Delete Channels";"Delete Channels";"Odstránenie kanálov";"Видалити Канали";3313
-"Insert";;;;;;;"Wstaw ";;;;;;;3314
+"Insert";;;;;"Vložit";;"Wstaw ";;;;;"Vložiť";;3314
 "Add channels to this group";"Kanäle zu dieser Gruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo";"Přidat k této oblíbené skupině";"Add channels to this group";"Dodaj kanały do tej grupy";"Add channels to this group";"Добавить в Эту Группу Любимых";"Add channels to this group";"Add channels to this group";"Pridať k tejto obľúbenej skupine";"Додати до групи улюблених";3315
 "Save and exit";"Sichern und verlassen";"Enregistrer et quitter";"Salvare e uscire";"Salvar y salir";"Uložit a opustit";"Save and exit";"Zapisz i wyjdź";"Save and exit";"Сохранить и выйти";"Save and exit";"Save and exit";"Uložiť a opustiť";"Зберегти і вийти";3316
 "Add Channels to This Favorite Group";"Kanäle zu dieser Favoritengruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo favorito";"Přidat kanály do této favoritní skupiny";"Add Channels to This Favorite Group";"Dodaj kanały do tej grupy ulubionych";"Add Channels to This Favorite Group";"Добавить в Эту Группу Любимых";"Add Channels to This Favorite Group";"Add Channels to This Favorite Group";"Pridať kanály do tejto favoritnej skupiny";"Add Channels to This Favorite Group";3317
@@ -892,8 +892,8 @@
 "Select a provider you want to scan channels from";"Anbieter wählen für Sendersuchlauf ";"Sélectionnez un fournisseur pour lancer la recherche";"Select a provider you want to scan channels from";"Seleccione un proveedor donde desee escanear los canales de";"Vyberte provajdra, kterého chcete prohledat";"Select a provider you want to scan channels from";"Wybierz operatora, którego kanały chcesz wyszukać";"Select a provider you want to scan channels from";"Выберите провайдер с которого вы хотите отсканировать каналы";"Select a provider you want to scan channels from";"Select a provider you want to scan channels from";"Vyberte provajdera, ktorého chcete prehľadať";"Select a provider you want to scan channels from";3377
 "Enable/Disable HD List option";"Aktivieren / Deaktivieren der HD Option Liste";"Activer / Désactiver l'option liste HD";"Enable/Disable HD List option";"Activar/Desactivar Lista HD";"Povolit / Zakázat možnost HD List";"Enable/Disable HD List option";"Włącz / Wyłącz opcję Lista HD";"Enable/Disable HD List option";"Включить / выключить опцию список hd";"Enable/Disable HD List option";"Enable/Disable HD List option";"Povoliť/Zakázať možnosť HD List ";"Enable/Disable HD List option";3378
 "HD List";"HD Liste";"Liste HD";"HD List";"Lista HD";"HD List";"HD List";"Lista HD";"HD List";"HD список";"HD List";"HD List";"HD List";"HD List";3379
-"Display user presentation of service numbers in a familiar form or sequentially";;;;;;;;;;;;;;3380
-"Logical Channel Numbering";;;;;;;;;;;;;;3381
+"Display user presentation of service numbers in a familiar form or sequentially";;;;;;;"Wyświetl numery usług w znanej postaci, lub sekwencyjnie";;;;;;;3380
+"Logical Channel Numbering";;;;;;;"Logiczne sortowanie kanałów (LCN)";;;;;;;3381
 "Start Search";"Suchlauf Starten";"Commencer la recherche";"Start Search";"Iniciar busqueda";"Spustit vyhledávání";"Start Search";"Start wyszukiwania";"Start Search";"Начать Поиск";"Start Search";"Start Search";"Spustiť vyhľadávanie";"Почати Пошук";3382
 "DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"Commutateur DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 přepínač";"DiSEqC 1.0 Switch";"Przełącznik DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Переключатель";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 prepínač";"DiSEqC 1.0 Перемикач";3383
 "Select the DiSEqC switch which your satellite is connected to";"Wählen Sie den DiSEqC switch mit dem Ihre Anlage ausgerüstet ist";"Choisissez le commutateur DiSEqC auquel votre satellite est connecté";"Selezionare il DiSEqC collegato al";"Seleccione el conmutador DiSEqC que su satélite está conectado a";"Vyberte DiSEqC přepínač, který používáte";"Select the DiSEqC switch which your satellite is connected to";"Wybierz przełącznik DiSEqC wykorzystywany w instalacji antenowej";"Select the DiSEqC switch which your satellite is connected to";"Задайте соответствующие настройки DISEqC переключателя для спутника";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";"Vyberte DiSEqC prepínač, ktorý používate";"Задайте відповідні налаштування DISEqC перемикача для супутника";3384
