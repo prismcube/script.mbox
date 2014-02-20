@@ -572,13 +572,13 @@ class ChannelListWindow( BaseWindow ) :
 			isUpdate = False
 			LOG_TRACE( '[ChannelList] get epglist None' )
 
-		LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
-
 		if isUpdate :
 			self.mEPGList = epgList
 			self.mEPGHashTable = {}
 			for iEPG in self.mEPGList :
 				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
+
+			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
 
 		self.mLock.release( )
 		self.CloseBusyDialog( )
