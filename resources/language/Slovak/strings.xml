@@ -162,7 +162,7 @@
 	<string id="1162">Mriežka</string>
 	<string id="1163">Aktuálne</string>
 	<string id="1164">Nasledujúca</string>
-	<string id="1165"></string>
+	<string id="1165">Ukáž viac EPG</string>
 	<string id="2001">Posledný ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>
@@ -709,7 +709,7 @@
 	<string id="3193">Premenovať OK</string>
 	<string id="3194">Odstránenie skupiny obľúbených</string>
 	<string id="3195">Zmazať OK</string>
-	<string id="3196"></string>
+	<string id="3196">Stlačte tlačidlo [BACK] na DO o krok späť</string>
 	<string id="3197">Ste si istí, že chcete zastaviť prehľadávanie kanálov?</string>
 	<string id="3198">Opustiť vyhľadávanie kanálov</string>
 	<string id="3199">Televízne kanály : %d %sKanálov rádio : %d</string>
@@ -827,7 +827,7 @@
 	<string id="3311">Preskočenie všetkých kanálov nie je povolené</string>
 	<string id="3312">Ste si istí, že chcete zmazať programy%s, vrátane aktuálnej nahrávky alebo rezervácie?</string>
 	<string id="3313">Odstránenie kanálov</string>
-	<string id="3314"></string>
+	<string id="3314">Vložiť</string>
 	<string id="3315">Pridať k tejto obľúbenej skupine</string>
 	<string id="3316">Uložiť a opustiť</string>
 	<string id="3317">Pridať kanály do tejto favoritnej skupiny</string>
