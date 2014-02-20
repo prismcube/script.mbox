@@ -469,6 +469,7 @@ class BaseWindow( BaseObjectWindow ) :
 		self.mDataCache.SetMediaCenter( True )
 		self.mDataCache.SetDelaySettingWindow( True )
 		if aNowPlay == True :
+			self.mDataCache.SetReserved22( True )
 			self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
@@ -482,29 +483,31 @@ class BaseWindow( BaseObjectWindow ) :
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			channelList = self.mDataCache.Channel_GetList( )
-			if iChannel and channelList and len( channelList ) > 0 :
-				iEPG = self.mDataCache.Epgevent_GetPresent( )
-				if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
-				   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
-					#pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
-					self.mDataCache.Player_AVBlank( True )
-					self.mDataCache.Channel_InvalidateCurrent( )
-					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					self.UpdateMediaCenterVolume( )
-					self.mDataCache.SyncMute( )
-					self.mDataCache.Player_AVBlank( True )
-					LOG_TRACE( '----------------------------------------------ch lock' )
+			if self.mDataCache.GetReserved22( ) :
+				self.mDataCache.SetReserved22( False )
+				if iChannel and channelList and len( channelList ) > 0 :
+					iEPG = self.mDataCache.Epgevent_GetPresent( )
+					if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
+					   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+						#pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+						self.mDataCache.Player_AVBlank( True )
+						self.mDataCache.Channel_InvalidateCurrent( )
+						self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+						self.UpdateMediaCenterVolume( )
+						self.mDataCache.SyncMute( )
+						self.mDataCache.Player_AVBlank( True )
+						LOG_TRACE( '----------------------------------------------ch lock' )
 
-				else :
-					self.mDataCache.Channel_InvalidateCurrent( )
-					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					self.mDataCache.SyncMute( )
-					self.mDataCache.SetParentLockPass( True )
+					else :
+						self.mDataCache.Channel_InvalidateCurrent( )
+						self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+						self.mDataCache.SyncMute( )
+						self.mDataCache.SetParentLockPass( True )
 
-					#self.UpdateVolume( )
-					self.UpdateMediaCenterVolume( )
-					thread = threading.Timer( 0.9, self.mDataCache.SyncMute )
-					thread.start( )
+						#self.UpdateVolume( )
+						self.UpdateMediaCenterVolume( )
+						thread = threading.Timer( 0.9, self.mDataCache.SyncMute )
+						thread.start( )
 
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
