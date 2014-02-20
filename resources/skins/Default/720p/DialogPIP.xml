@@ -179,8 +179,8 @@
 							<usecontrolcoords>false</usecontrolcoords>
 							<onup></onup>
 							<ondown></ondown>
-							<onleft></onleft>
-							<onright></onright>
+							<onleft>4803850</onleft>
+							<onright>4803850</onright>
 							<!--visible>!Control.IsVisible(4803000)</visible-->
 							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
 							<defaultcontrol always="true">4808001</defaultcontrol>
@@ -494,6 +494,176 @@
 					</control>
 				</control>
 			</control>
+
+			<!-- channel list -->
+			<control type="group">
+				<control type="image">
+					<posx>880</posx>
+					<posy>-7</posy>
+					<width>500</width>
+					<height>740</height>
+					<texture>black-back_noAlpha.png</texture>
+					<colordiffuse>DFFFFFFF</colordiffuse>
+				</control>
+				<control type="group">
+					<posx>890</posx>
+					<posy>55</posy>
+					<width>300</width>
+					<height>30</height>
+					<control type="image">
+						<description>Header image - TV</description>
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>35</width>
+						<height>28</height>
+						<aspectratio>keep</aspectratio>
+						<texture>icon_tv3.png</texture>
+					</control>
+					<control type="label">
+						<description>Header name</description>
+						<posx>42</posx>
+						<posy>2</posy>
+						<width>250</width>
+						<height>30</height>
+						<font>font14</font>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>PIP $ADDON[script.mbox 1045]</label>
+					</control>
+				</control>
+				<control type="group">
+					<control type="list" id="4803850">
+						<posx>890</posx>
+						<posy>100</posy>
+						<width>490</width>
+						<height>560</height>
+						<align>left</align>
+						<onleft>4808000</onleft>
+						<onright>4808000</onright>
+						<onup>4803850</onup>
+						<ondown>4803850</ondown>
+						<viewtype label="535">list</viewtype>
+						<scrolltime>0</scrolltime>
+						<itemlayout height="40" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>38</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>7</posx>
+								<posy>4</posy>
+								<width>195</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</itemlayout>
+						<focusedlayout height="40" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>38</height>
+								<texture border="5">StackFO_white2.png</texture>
+							</control>
+							<control type="label">
+								<posx>7</posx>
+								<posy>4</posy>
+								<width>195</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
+								<align>left</align>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</focusedlayout>
+					<content>
+						<item>
+							<label>i001 ZDF HD</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item>
+							<label>i002 zdf_neo HD</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item>
+							<label>i003 zdf.kultur HD</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item>
+							<label>i004 France 24</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+
+					</control>
+				</control>
+				<control type="label">
+					<posx>892</posx>
+					<posy>53r</posy>
+					<width>340</width>
+					<height>20</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4803850).CurrentPage]/$INFO[Container(4803850).NumPages][/COLOR])</label>
+				</control>
+
+				<control type="label">
+					<description>time label</description>
+					<posx>20r</posx>
+					<posy>5</posy>
+					<width>200</width>
+					<height>30</height>
+					<align>right</align>
+					<aligny>center</aligny>
+					<font>font28_title</font>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>$INFO[System.Time]</label>
+					<include>DefaultWindowOpenCloseAnimation</include>
+					<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+				</control>
+				<control type="label">
+					<posx>20r</posx>
+					<posy>35</posy>
+					<width>600</width>
+					<height>15</height>
+					<align>right</align>
+					<aligny>center</aligny>
+					<font>font10</font>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>$INFO[System.Date]</label>
+					<include>DefaultWindowOpenCloseAnimation</include>
+					<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+				</control>
+
+			</control>
+
+
+
+
+
 		</control>
 	</controls>
 </window>
