@@ -215,6 +215,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from remotecontrol import ElmoRemoteControl as Content
 				elif self.urlPath[0] == '/web/powerstate' : 
 					from powerstatus import ElmoPowerStatus as Content 
+				elif self.urlPath[0] == '/web/timerlist' :
+					from timerlist import ElmoTimerList as Content 
 
 				############# Live TV ####################################
 				

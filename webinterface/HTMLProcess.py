@@ -7,7 +7,7 @@ from urllib import unquote, quote
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
-	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings]
+	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer]
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -75,6 +75,49 @@ class WebPage( object ) :
 			#self.mDataCache.LoadChannelList( )
 			self.mDataCache.RefreshCacheByChannelList( channelList )
 			self.mDataCache.SetChannelReloadStatus( True )
+
+	def getBasicTemplate( self, mainContent ) :
+
+		content  = """
+		
+			<html>
+			<head>
+				<title>PrismCube Web UI</title>
+				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+			<body>
+			<div id='wrapper'>
+
+				<div id='top'>
+					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
+					<div id='title'>
+						PrismCube Web UI
+					</div>
+				</div>
+				
+				<div id='menu'>
+					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
+					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
+				</div>
+				
+				<div id='main'>
+
+					<div id='content'>
+					%s
+					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
+					</div>
+					
+				</div>
+
+			</div>
+			</body>
+			</html>
+		""" % mainContent 
+
+		return content
+
 				
 class Channel( WebPage ) :
 
@@ -245,6 +288,7 @@ class Channel( WebPage ) :
 					<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
 					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
 				</div>
 				
@@ -740,7 +784,7 @@ class Recordings( WebPage ) :
 			keyVal = img.split("_")[2]
 			thumbnailList[keyVal] =  img
 
-		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
 		
 		for rec in recordingList :
 
@@ -761,55 +805,60 @@ class Recordings( WebPage ) :
 				content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
 				content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
 				content += '	</tr>'
-				content += '</table>'
+				content += '	</table>'
+				content += ' 	</td>'
+				content += '</tr>'
+				content += '<tr><td colspan="2" align="center"><hr></td></tr>'
 			except :
-				print 'error cache record thumbnai'
+				print 'error cache record thumbnail'
 
 		content += '</td></tr></table>'
 		return self.getBasicTemplate( content ) 
-			
-	def getBasicTemplate( self, mainContent ) :
 
-		content  = """
+class Timer( WebPage ) :
+
+	def __init__( self, command ) :
+		super(Timer, self).__init__()
+		self.content = self.timerContent(command) 
+
+	def timerContent( self, command ) :
+		timerList = self.mDataCache.Timer_GetTimerList()
+		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+
+		for timer in timerList :
 		
-			<html>
-			<head>
-				<title>PrismCube Web UI</title>
-				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
-			<body>
-			<div id='wrapper'>
-
-				<div id='top'>
-					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
-					<div id='title'>
-						PrismCube Web UI
-					</div>
-				</div>
-				
-				<div id='menu'>
-					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
-					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
-					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
-					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
-				</div>
-				
-				<div id='main'>
-
-					<div id='content'>
-					%s
-					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
-					</div>
-					
-				</div>
-
-			</div>
-			</body>
-			</html>
-		""" % mainContent 
-
-		return content
-
+			timerDuration =  int( timer.mDuration / 60 )
+			if ( timer.mDuration % 60 ) != 0 :
+				timerDuration += 1
+			try :
 		
+				content += '<tr>'
+				content += '	<td>'
+				content += '	<table width="100%" border="0" cellpadding="5">'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( timer.mChannelNo, timer.mName )
+				content += '		<td align="right"><p class="timerContent">' 
+				content += 		TimeToString(timer.mStartTime) + ' <span class="timerTime">' + TimeToString(timer.mStartTime, TimeFormatEnum.E_HH_MM) + "</span> ~ "
+				content += 		TimeToString(timer.mStartTime + timer.mDuration) + ' <span class="timerTime">' + TimeToString(timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM)
+				content += 		'</span></p></td>'
+				content += '		<td rowspan="2" align="center" width="100"></td>' 	#Delete Button here!!!
+				content += '	</tr>'
+				content += '	<tr>'
+				content += '		<td><p class="recContent">' + str(timer.mName) +  '</p></td>'
+				content += '		<td align="right"><p class="recContent">' + str(timerDuration) + ' min</p></td>'
+				content += '	</tr>'
+				content += '	</table>'
+				content +=' 	</td>'
+				content +='</tr>'
+				content += '<tr><td><hr></td></tr>'
+				
+			except Exception, err :
+				print str(err)
+				print 'error timer list'
+
+		content += '</td></tr></table>'
+				
+		return self.getBasicTemplate( content ) 
 
 		
 		

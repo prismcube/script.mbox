@@ -1,7 +1,6 @@
-
 from datetime import datetime
 from webinterface import Webinterface
-# from ElisClass import *
+from xml.sax.saxutils import escape
 
 class ElmoGetCurrent( Webinterface ) :
 
@@ -115,7 +114,7 @@ class ElmoGetCurrent( Webinterface ) :
 			xmlstr += '         <e2eventid>' + str(self.currentEpg.mEventId) + '</e2eventid>\n'
 			xmlstr += '         <e2eventname>' + self.currentEpg.mEventName + '</e2eventname>\n'
 			xmlstr += '         <e2eventtitle>' + self.currentEpg.mEventName + '</e2eventtitle>\n'
-			xmlstr += '         <e2eventdescription>' + self.currentEpg.mEventDescription + '</e2eventdescription>\n'
+			xmlstr += '         <e2eventdescription>' + escape( self.currentEpg.mEventDescription ) + '</e2eventdescription>\n'
 			xmlstr += '         <e2eventstart>' + str( self.currentEpg.mStartTime ) + '</e2eventstart>\n'
 			xmlstr += '         <e2eventduration>' + str( self.currentEpg.mDuration ) + '</e2eventduration>\n'
 			
@@ -137,7 +136,7 @@ class ElmoGetCurrent( Webinterface ) :
 			xmlstr += '         <e2eventid>' + str( self.followingEpg.mEventName ) + '</e2eventid>\n'
 			xmlstr += '         <e2eventname>' + str( self.followingEpg.mEventName ) + '</e2eventname>\n'
 			xmlstr += '         <e2eventtitle>' + str( self.followingEpg.mEventName ) + '</e2eventtitle>\n'
-			xmlstr += '         <e2eventdescription>' + str( self.followingEpg.mEventDescription ) + '</e2eventdescription>\n'
+			xmlstr += '         <e2eventdescription>' + escape( str( self.followingEpg.mEventDescription ) ) + '</e2eventdescription>\n'
 			xmlstr += '         <e2eventstart>' + str( self.followingEpg.mStartTime ) + '</e2eventstart>\n'
 			xmlstr += '         <e2eventduration>' + str( self.followingEpg.mDuration ) + '</e2eventduration>\n'
 			xmlstr += '         <e2eventremaining>' + str( self.followingEpg.mDuration ) + '</e2eventremaining>\n'
