@@ -18,6 +18,7 @@
 			<control type="group">
 				<posx>-5</posx>
 				<posy>-5</posy>
+				<visible>!substring(Window.Property(ShowListPIP),true)</visible>
 				<control type="group" id="4801000">
 					<posx>835</posx>
 					<posy>131</posy>
@@ -168,7 +169,7 @@
 							<colordiffuse>EFFFFFFF</colordiffuse>
 						</control>
 						<control type="grouplist" id="4808000">
-							<posx>5</posx>
+							<posx>0</posx>
 							<posy>0</posy>
 							<width>370</width>
 							<height>50</height>
@@ -179,71 +180,77 @@
 							<usecontrolcoords>false</usecontrolcoords>
 							<onup></onup>
 							<ondown></ondown>
-							<onleft>4803850</onleft>
-							<onright>4803850</onright>
+							<onleft></onleft>
+							<onright></onright>
 							<!--visible>!Control.IsVisible(4803000)</visible-->
 							<visible>substring(Window.Property(ShowOSDStatus),true)</visible>
-							<defaultcontrol always="true">4808001</defaultcontrol>
-
+							<defaultcontrol always="true">4808010</defaultcontrol>
+							<control type="button" id="4808010">
+								<width>35</width>
+								<height>35</height>
+								<texturefocus>OSDChannelFO.png</texturefocus>
+								<texturenofocus>OSDChannelNF.png</texturenofocus>
+								<onclick>SetFocus(4803850)</onclick>
+							</control>
 							<control type="button" id="4808001">
-								<width>36</width>
-								<height>36</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDChannelUPFO.png</texturefocus>
 								<texturenofocus>OSDChannelUPNF_new.png</texturenofocus>
 							</control>
 							<control type="button" id="4808002">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDChannelDownFO.png</texturefocus>
 								<texturenofocus>OSDChannelDownNF_new.png</texturenofocus>
 							</control>
 							<control type="button" id="4808005">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDMoveFO.png</texturefocus>
 								<texturenofocus>OSDMoveNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808006">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDResizeFO.png</texturefocus>
 								<texturenofocus>OSDResizeNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808007">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDResetFO.png</texturefocus>
 								<texturenofocus>OSDResetNF.png</texturenofocus>
 							</control>
 							<control type="button" id="4808020">
-								<width>10</width>
-								<height>10</height>
+								<width>1</width>
+								<height>1</height>
 								<texturefocus></texturefocus>
 								<texturenofocus></texturenofocus>
 								<enable>false</enable>
 							</control>
 							<control type="button" id="4808008">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDBackFO_R.png</texturefocus>
 								<texturenofocus>OSDBackNF_R.png</texturenofocus>
 							</control>
 							<control type="button" id="4808004">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDFullScreenFO_G.png</texturefocus>
 								<texturenofocus>OSDFullScreenNF_G.png</texturenofocus>
 							</control>
 							<control type="button" id="4808003">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDAudioFO_Y.png</texturefocus>
 								<texturenofocus>OSDAudioNF_Y.png</texturenofocus>
 								<!--onclick>Mute</onclick-->
 							</control>
 							<control type="button" id="4808009">
-								<width>37</width>
-								<height>37</height>
+								<width>35</width>
+								<height>35</height>
 								<texturefocus>OSDExitFO_B.png</texturefocus>
 								<texturenofocus>OSDExitNF_B.png</texturenofocus>
 							</control>
@@ -439,6 +446,17 @@
 									<label>SCRIPT1077</label>
 									<visible>Control.HasFocus(4808009)</visible>
 								</control>
+								<control type="label">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>400</width>
+									<height>28</height>
+									<align>left</align>
+									<font>font10</font>
+									<textcolor>grey</textcolor>
+									<label>SCRIPT1045</label>
+									<visible>Control.HasFocus(4808010)</visible>
+								</control>
 							</control>
 						</control>
 					</control>
@@ -496,18 +514,22 @@
 			</control>
 
 			<!-- channel list -->
-			<control type="group">
+			<control type="group" id="4803800">
+				<posx>960</posx>
+				<posy>0</posy>
+				<visible>substring(Window.Property(ShowListPIP),true)</visible>
 				<control type="image">
-					<posx>880</posx>
+					<posx>30</posx>
 					<posy>-7</posy>
-					<width>500</width>
+					<width>300</width>
 					<height>740</height>
 					<texture>black-back_noAlpha.png</texture>
 					<colordiffuse>DFFFFFFF</colordiffuse>
 				</control>
+
 				<control type="group">
-					<posx>890</posx>
-					<posy>55</posy>
+					<posx>40</posx>
+					<posy>20</posy>
 					<width>300</width>
 					<height>30</height>
 					<control type="image">
@@ -531,104 +553,234 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>PIP $ADDON[script.mbox 1045]</label>
+						<label>PIP $LOCALIZE[SCRIPT1045]</label>
 					</control>
 				</control>
 				<control type="group">
+					<posx>40</posx>
+					<posy>180</posy>
+					<!--control type="image">
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>270</width>
+						<height>500</height>
+						<texture>black-back_noAlpha.png</texture>
+						<colordiffuse>E5FFFFFF</colordiffuse>
+					</control-->
+					<control type="label">
+						<posx>-40</posx>
+						<posy>250</posy>
+						<width>290</width>
+						<height>20</height>
+						<font>font35_title</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>LOADING...</label>
+						<visible>!substring(Window.Property(ReadyToListPIP),true)</visible>
+					</control>
 					<control type="list" id="4803850">
-						<posx>890</posx>
-						<posy>100</posy>
-						<width>490</width>
-						<height>560</height>
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>270</width>
+						<height>504</height>
 						<align>left</align>
-						<onleft>4808000</onleft>
-						<onright>4808000</onright>
+						<onleft></onleft>
+						<onright></onright>
 						<onup>4803850</onup>
 						<ondown>4803850</ondown>
 						<viewtype label="535">list</viewtype>
+						<!--pagecontrol>1003501</pagecontrol-->
 						<scrolltime>0</scrolltime>
-						<itemlayout height="40" width="380">
+						<itemlayout height="63" width="270">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>380</width>
-								<height>38</height>
+								<width>270</width>
+								<height>60</height>
 								<texture border="5">button-nofocus.png</texture>
 							</control>
-							<!-- Channel Name -->
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+							</control>
+							<!-- is locked? -->
+							<control type="image">
+								<posx>183</posx>
+								<posy>5</posy>
+								<width>39</width>
+								<height>28</height>
+								<texture>OverlayLocked.png</texture>
+								<colordiffuse>8FFFFFFF</colordiffuse>
+								<visible>substring(ListItem.Property(iLock),true)</visible>
+							</control>
+							<!-- is hd? -->
+							<control type="image">
+								<posx>213</posx>
+								<posy>10</posy>
+								<width>24</width>
+								<height>18</height>
+								<texture>IconHD1g.png</texture>
+								<visible>substring(ListItem.Property(iHD),true)</visible>
+							</control>
+							<!-- is cas? -->
+							<control type="image">
+								<posx>238</posx>
+								<posy>10</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconCas1g.png</texture>
+								<visible>substring(ListItem.Property(iCas),true)</visible>
+							</control>
+							<!-- Channel Number -->
 							<control type="label">
-								<posx>7</posx>
-								<posy>4</posy>
-								<width>195</width>
+								<posx>90</posx>
+								<posy>5</posy>
+								<width>185</width>
 								<height>30</height>
-								<font>font13_title</font>
+								<font>font24_title</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
+								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>90</posx>
+								<posy>35</posy>
+								<width>180</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+								<scroll>false</scroll>
+								<scrollspeed>150</scrollspeed>
+							</control>
 						</itemlayout>
-						<focusedlayout height="40" width="380">
+						<focusedlayout height="63" width="270">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>380</width>
-								<height>38</height>
+								<width>270</width>
+								<height>60</height>
 								<texture border="5">StackFO_white2.png</texture>
 							</control>
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+							</control>
+							<!-- is locked? -->
+							<control type="image">
+								<posx>183</posx>
+								<posy>5</posy>
+								<width>39</width>
+								<height>28</height>
+								<texture>OverlayLocked.png</texture>
+								<visible>substring(ListItem.Property(iLock),true)</visible>
+							</control>
+							<!-- is hd? -->
+							<control type="image">
+								<posx>213</posx>
+								<posy>10</posy>
+								<width>24</width>
+								<height>18</height>
+								<texture>IconHD1w.png</texture>
+								<visible>substring(ListItem.Property(iHD),true)</visible>
+							</control>
+							<!-- is cas? -->
+							<control type="image">
+								<posx>238</posx>
+								<posy>10</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconCas1w.png</texture>
+								<visible>substring(ListItem.Property(iCas),true)</visible>
+							</control>
+							<!-- Channel Number -->
 							<control type="label">
-								<posx>7</posx>
-								<posy>4</posy>
-								<width>195</width>
+								<posx>90</posx>
+								<posy>5</posy>
+								<width>185</width>
 								<height>30</height>
-								<font>font13_title</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>white</selectedcolor>
+								<font>font24_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
+								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>90</posx>
+								<posy>35</posy>
+								<width>180</width>
+								<height>20</height>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label2]</label>
+								<scroll>false</scroll>
+							</control>
 						</focusedlayout>
-					<content>
-						<item>
-							<label>i001 ZDF HD</label>
-							<onclick>-</onclick>
-							<visible>true</visible>
-						</item>
-						<item>
-							<label>i002 zdf_neo HD</label>
-							<onclick>-</onclick>
-							<visible>true</visible>
-						</item>
-						<item>
-							<label>i003 zdf.kultur HD</label>
-							<onclick>-</onclick>
-							<visible>true</visible>
-						</item>
-						<item>
-							<label>i004 France 24</label>
-							<onclick>-</onclick>
-							<visible>true</visible>
-						</item>
-					</content>
-
 					</control>
 				</control>
+
+				<!-- page label -->
 				<control type="label">
-					<posx>892</posx>
-					<posy>53r</posy>
-					<width>340</width>
+					<posx>42</posx>
+					<posy>23r</posy>
+					<width>290</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4803850).CurrentPage]/$INFO[Container(4803850).NumPages][/COLOR])</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106]</label>
 				</control>
+				<!--control type="label">
+					<posx>15r</posx>
+					<posy>33r</posy>
+					<width>290</width>
+					<height>20</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>[COLOR=blue]$INFO[Container(4803850).CurrentPage]/$INFO[Container(4803850).NumPages][/COLOR] $LOCALIZE[SCRIPT1107]</label>
+				</control-->
 
-				<control type="label">
+				<!--control type="label">
 					<description>time label</description>
 					<posx>20r</posx>
 					<posy>5</posy>
@@ -646,7 +798,7 @@
 				<control type="label">
 					<posx>20r</posx>
 					<posy>35</posy>
-					<width>600</width>
+					<width>300</width>
 					<height>15</height>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -656,14 +808,21 @@
 					<label>$INFO[System.Date]</label>
 					<include>DefaultWindowOpenCloseAnimation</include>
 					<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
-				</control>
-
+				</control-->
 			</control>
-
-
-
-
+			<control type="image" id="4803801">
+				<posx>1000</posx>
+				<posy>50</posy>
+				<width>280</width>
+				<height>150</height>
+				<texture>video_pig_overlay.png</texture>
+				<visible>substring(Window.Property(ShowListPIP),true)</visible>
+			</control>
 
 		</control>
 	</controls>
+
 </window>
+
+
+
