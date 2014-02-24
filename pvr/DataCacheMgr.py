@@ -3049,7 +3049,7 @@ class DataCacheMgr( object ) :
 			currentMode = self.Zappingmode_GetCurrent( )
 			channelList = self.Channel_GetList( )
 			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV )
+				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV, False )
 
 			channelListHash = {}
 			if channelList and len( channelList ) > 0 :
