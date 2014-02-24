@@ -53,7 +53,7 @@ CTRL_ID_BASE_LABEL_NOSIGNAL	 = E_BASE_WINDOW_ID + 2006
 CTRL_ID_BASE_LABEL_NOSERVICE = E_BASE_WINDOW_ID + 2007
 
 E_DEFAULT_POSITION_PIP     = [827,125,352,188]#[857,170,352,198] 
-E_SHOWLIST_POSITION_PIP    = [100,150,352,188]
+E_SHOWLIST_POSITION_PIP    = [930,65,350,200]
 CONTEXT_ACTION_DONE_PIP    = 0
 CONTEXT_ACTION_MOVE_PIP    = 1
 CONTEXT_ACTION_SIZE_PIP    = 2
@@ -116,11 +116,11 @@ class DialogPIP( BaseDialog ) :
 			self.CloseDialog( )
 			return
 
-		self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
-		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
-		self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
-		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
-		self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
+		#self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
+		#self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
+		#self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
+		#self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
+		#self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 
 		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
 		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
@@ -247,8 +247,12 @@ class DialogPIP( BaseDialog ) :
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
+				if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+					self.SavePipPosition( )
+
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
-				self.SavePipPosition( )
+				self.ResetLabel( )
+				return
 
 			self.Close( True )
 
@@ -1051,9 +1055,47 @@ class DialogPIP( BaseDialog ) :
 			self.SetGUIArrow( True )
 
 
-	def UpdateCurrentPositon( self ) :
-		idx = self.mCtrlListChannelPIP.getSelectedPosition( ) + 1
-		self.setProperty( 'SelectedPosition', '%s'% idx )
+	def UpdateCurrentPositon( self, aInput = False, aChannel = None ) :
+		if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+			LOG_TRACE( '[PIP] can not position, not list mode' )
+			return
+
+		if aInput :
+			if not self.mChannelList :
+				LOG_TRACE( '[PIP] ChannelList None' )
+				return
+
+			curNumber = 0
+			if aChannel :
+				curNumber = aChannel.mNumber
+
+			else :
+				if self.mCurrentChannel :
+					curNumber = self.mCurrentChannel.mNumber
+				else :
+					curNumber = self.mDataCache.PIP_GetCurrent( )
+
+			if not curNumber :
+				LOG_TRACE( '[PIP] Current channel None' )
+				return
+
+			channelPos = 0
+			currentPos = 0
+			for iChannel in self.mChannelList :
+				if iChannel.mNumber == curNumber :
+					currentPos = channelPos
+					break
+				channelPos += 1
+
+			#self.mCtrlListChannelPIP.selectItem( currentPos )
+			self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
+			self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
+
+			LOG_TRACE( '[PIP] update position item' )
+
+		else :
+			idx = self.mCtrlListChannelPIP.getSelectedPosition( ) + 1
+			self.setProperty( 'SelectedPosition', '%s'% idx )
 
 
 	def ShowContextMenu( self ) :
@@ -1105,50 +1147,10 @@ class DialogPIP( BaseDialog ) :
 			self.setFocusId( CTRL_ID_LIST_CHANNEL_PIP )
 			self.mViewMode = CONTEXT_ACTION_LIST_PIP
 
-			if not self.mChannelList :
-				LOG_TRACE( '[PIP] ChannelList None' )
-				return
-
-			curNumber = 0
-			if self.mCurrentChannel :
-				curNumber = self.mCurrentChannel.mNumber
-			else :
-				curNumber = self.mDataCache.PIP_GetCurrent( )
-
-			if not curNumber :
-				LOG_TRACE( '[PIP] Current channel None' )
-				return
-
-			channelPos = 0
-			currentPos = 0
-			for iChannel in self.mChannelList :
-				if iChannel.mNumber == curNumber :
-					currentPos = channelPos
-					break
-				channelPos += 1
-
-			#self.mCtrlListChannelPIP.selectItem( currentPos )
-			self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
-			self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
-
-			overlayImage = self.getControl( 4803801 )
-			x,y = overlayImage.getPosition( )
-			w = overlayImage.getWidth( )
-			h = overlayImage.getHeight( )
-			LOG_TRACE( '---------------list [%s %s %s %s]'% ( x, y, w, h ) )
-
+			self.UpdateCurrentPositon( True )
 			self.mPosBackup = deepcopy( self.mPosCurrent )
-			#self.SetPositionPIP( x, y, w, h )
-
-			from pvr.GuiHelper import GetInstanceSkinPosition
-			skinPos = GetInstanceSkinPosition( )
-			dx, dy, dw, dh = skinPos.GetPipPosition2( x, y, w, h )
-
-			self.mDataCache.PIP_SetDimension( dx, dy, dw, dh )
-			overlayImage.setPosition( x, y )
-			overlayImage.setWidth( w - 10 )
-			overlayImage.setHeight( h - 10 )
-
+			x,y,w,h = E_SHOWLIST_POSITION_PIP
+			self.SetPositionPIP( x, y, w, h )
 
 
 	def DoSettingToPIP( self, aAction ) :
@@ -1250,6 +1252,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlBasePIPImageBlank.setWidth( bw )
 		self.mCtrlBasePIPImageBlank.setHeight( bh )
 
+		"""
 		if self.mDataCache.GetMediaCenter( ) :
 			#dialog control
 			self.mCtrlImageBlank.setWidth( bw )
@@ -1262,6 +1265,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 			self.mCtrlLabelNoService.setWidth( bw )
 			self.mCtrlLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		"""
 
 		#input ch
 		self.mCtrlGroupInput.setPosition( 5, int( ( bh - 10 ) / 2 ) )
@@ -1405,6 +1409,10 @@ class DialogPIP( BaseDialog ) :
 				self.ResetHideInput( )
 				self.mCurrentChannel = aChannel
 				self.ChannelTuneToPIP( -1 )
+
+			#update channelList position
+			thread = threading.Timer( 0, self.UpdateCurrentPositon, [True, self.mFakeChannel] )
+			thread.start( )
 
 			self.mDataCache.PIP_SetStatus( True )
 			self.mDataCache.PIP_SetCurrentChannel( self.mFakeChannel )
