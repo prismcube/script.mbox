@@ -1,6 +1,6 @@
 from datetime import datetime
 from webinterface import Webinterface
-import dbopen
+from xml.sax.saxutils import escape
 
 class ElmoEpgService( Webinterface ) :
 
@@ -32,8 +32,8 @@ class ElmoEpgService( Webinterface ) :
 				xmlStr += '<e2eventstart>' + str( row.mStartTime ) + '</e2eventstart>\n'
 				xmlStr += '<e2eventduration>' + str( row.mDuration ) + '</e2eventduration>\n'
 				xmlStr += '<e2eventcurrenttime>' + str( self.gmtFrom ) + '</e2eventcurrenttime>\n'
-				xmlStr += '<e2eventtitle>' + row.mEventName + '</e2eventtitle>\n'
-				xmlStr += '<e2eventdescription>' + row.mEventDescription +'</e2eventdescription>\n'
+				xmlStr += '<e2eventtitle>' + escape( row.mEventName ) + '</e2eventtitle>\n'
+				xmlStr += '<e2eventdescription>' + escape( row.mEventDescription ) +'</e2eventdescription>\n'
 				xmlStr += '<e2eventdescriptionextended></e2eventdescriptionextended>\n'
 				xmlStr += '<e2eventservicereference>' + self.params['sRef'] + '</e2eventservicereference>\n'
 				xmlStr += '<e2eventservicename>' + row.mEventName +'</e2eventservicename>\n'
