@@ -114,6 +114,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mOffsetTopIndex = 0
 		self.mLock = thread.allocate_lock( )
 
+		self.mItemCount = 13
+		self.mListHeight= 540
+
 
 	def onInit(self):
 		self.setFocusId( E_CHANNEL_LIST_DEFAULT_FOCUS_ID )
@@ -208,7 +211,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mFavoriteGroupList = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
-		self.mItemCount = 0
 		self.mIsPVR = False
 		self.mSetMarkCount = 0
 		self.mRestoreTuneChannel = self.mDataCache.Channel_GetCurrent( )
@@ -549,7 +551,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( '[ChannelList] timer hash len[%s]'% len( self.mTimerListHash ) )
 
 
-	def LoadByCurrentEPG( self, aUpdateView = False ) :
+	def LoadByCurrentEPG( self, aUpdateAll = False ) :
 		if not self.mShowEPGInfo or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 			LOG_TRACE( '[ChannelList] passed, edit mode or not EPGInfo' )
 			return
@@ -559,10 +561,35 @@ class ChannelListWindow( BaseWindow ) :
 		startTime = time.time()
 
 		self.OpenBusyDialog( )
-		self.mLock.acquire( )
+		#self.mLock.acquire( )
 
 		try :
-			epgList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mUserMode.mServiceType )
+			#epgList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mUserMode.mServiceType )
+			numList = []
+			epgList = []
+			#chNumbers = []
+			if self.mChannelList and len( self.mChannelList ) > 0 :
+				mOffsetTopIndex = self.GetOffsetPosition( )
+				listCount = len( self.mChannelList )
+				endCount = mOffsetTopIndex + self.mItemCount
+				if aUpdateAll :
+					mOffsetTopIndex = 0
+					endCount = listCount - 1
+
+				for offsetIdx in range( mOffsetTopIndex, endCount ) :
+					if offsetIdx < listCount :
+						chNum = ElisEInteger( )
+						chNum.mParam = self.mChannelList[offsetIdx].mNumber
+						numList.append( chNum )
+						#chNumbers.append( self.mChannelList[offsetIdx].mNumber )
+
+					else :
+						LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( mOffsetTopIndex, offsetIdx, listCount ) )
+						break
+				#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
+
+			if numList and len( numList ) > 0 :
+				epgList = self.mDataCache.Epgevent_GetShortList( self.mUserMode.mServiceType, numList )
 
 		except Exception, e :
 			isUpdate = False
@@ -577,15 +604,15 @@ class ChannelListWindow( BaseWindow ) :
 			self.mEPGHashTable = {}
 			for iEPG in self.mEPGList :
 				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
+				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
 
-			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
+			LOG_TRACE( '[ChannelList] epgList COUNT[%s] mode[%s]'% ( len( epgList ), self.mUserMode.mMode ) )
 
-		self.mLock.release( )
+		#self.mLock.release( )
 		self.CloseBusyDialog( )
 		LOG_TRACE( '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime ) )
 
-		if aUpdateView :
-			self.UpdateChannelNameWithEPG( False )
+		self.UpdateChannelNameWithEPG( aUpdateAll )
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
@@ -613,9 +640,25 @@ class ChannelListWindow( BaseWindow ) :
 		self.LoadChannelListHash( )
 		label = ''
 
+		try :
+			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+			self.mAutoConfirm = False
+			SetSetting( 'AUTO_CONFIRM_CHANNEL', '0' )
+
+		try :
+			self.mShowEPGInfo = int( GetSetting( 'SHOW_EPGINFO_CHANNEL' ) )
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+			self.mShowEPGInfo = False
+			SetSetting( 'SHOW_EPGINFO_CHANNEL', '0' )
+
 		if not self.mInitialized or ( not self.mEPGHashTable ) :
 			self.mInitialized = True
-			thread = threading.Timer( 0, self.LoadByCurrentEPG )
+			self.mListHeight= self.mCtrlListCHList.getHeight( )
+			self.mItemCount = self.mListHeight / self.mItemHeight
+			thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
 			thread.start( )
 
 		try :
@@ -693,20 +736,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateChannelAndEPG( )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
-		try :
-			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
-		except Exception, e :
-			LOG_ERR( '[ChannelList] except[%s]'% e )
-			self.mAutoConfirm = False
-			SetSetting( 'AUTO_CONFIRM_CHANNEL', '0' )
-
-		try :
-			self.mShowEPGInfo = int( GetSetting( 'SHOW_EPGINFO_CHANNEL' ) )
-		except Exception, e :
-			LOG_ERR( '[ChannelList] except[%s]'% e )
-			self.mShowEPGInfo = False
-			SetSetting( 'SHOW_EPGINFO_CHANNEL', '0' )
-
 		searchEnable = True
 		if not self.mChannelList :
 			searchEnable = False
@@ -717,7 +746,7 @@ class ChannelListWindow( BaseWindow ) :
 		showEPGInfo = E_TAG_FALSE
 		if self.mShowEPGInfo :
 			showEPGInfo = E_TAG_TRUE
-			self.UpdateChannelNameWithEPG( False )
+			self.UpdateChannelNameWithEPG( )
 		self.UpdatePropertyGUI( 'ShowExtendInfo', showEPGInfo )
 
 
@@ -2605,7 +2634,8 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE( '[ChannelList] update epg, more info mode, navChannel[%s %s]'% ( iChNumber, channelName ) )
 
 				else :
-					self.UpdateChannelNameWithEPG( False )
+					self.LoadByCurrentEPG( )
+					#self.UpdateChannelNameWithEPG( )
 
 				self.mOffsetTopIndex = newOffsetTopIndex
 
@@ -2645,22 +2675,20 @@ class ChannelListWindow( BaseWindow ) :
 		return percent
 
 
-	def UpdateChannelNameWithEPG( self, aUpdateAll = True ) :
+	def UpdateChannelNameWithEPG( self, aUpdateAll = False ) :
 		if not self.mListItems or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 			LOG_TRACE( '[ChannelList] passed, channelList None or not updateMode' )
 			return
 
 		startTime = time.time()
-		listHeight = self.mCtrlListCHList.getHeight( )
-		mItemCount = listHeight / self.mItemHeight
 
-		updateStart = 0
-		updateEnd = len( self.mListItems ) - 1
-		if not aUpdateAll :
-			updateStart = self.GetOffsetPosition( )
-			updateEnd = ( updateStart + mItemCount ) - 1
+		updateStart = self.GetOffsetPosition( )
+		updateEnd = ( updateStart + self.mItemCount ) - 1
+		if aUpdateAll :
+			updateStart = 0
+			updateEnd = len( self.mListItems ) - 1
 
-		LOG_TRACE( '[ChannelList] offsetTop[%s] updateStart[%s] updateEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, listHeight, mItemCount ) )
+		LOG_TRACE( '[ChannelList] offsetTop[%s] updateStart[%s] updateEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
 		self.OpenBusyDialog( )
 		try :
@@ -2709,7 +2737,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateProgress( )
 
 			if self.mShowEPGInfo and ( loop % 300 ) == 0 : # 60sec
-				self.LoadByCurrentEPG( True )
+				self.LoadByCurrentEPG( )
 
 			time.sleep( 0.2 )
 			loop += 1
@@ -2844,9 +2872,9 @@ class ChannelListWindow( BaseWindow ) :
 				#LOG_TRACE( '[Edit] move in current[%s %s]'% ( self.mRestoreTuneChannel.mNumber, self.mRestoreTuneChannel.mName ) )
 				#LOG_TRACE( '[Edit] len channelList[%s] newList[%s] hash[%s]'% ( len(self.mChannelList), len(self.mNewChannelList), len(self.mChannelListHash) ) )
 
-				listHeight = self.mCtrlListCHList.getHeight( )
-				self.mItemCount = listHeight / self.mItemHeight
-				#LOG_TRACE( '[Edit] listHeight[%d] itemHeight[%d] itemCount[%d]'% (listHeight, self.mItemHeight, self.mItemCount) )
+				#self.mListHeight= self.mCtrlListCHList.getHeight( )
+				#self.mItemCount = self.mListHeight / self.mItemHeight
+				#LOG_TRACE( '[Edit] listHeight[%d] itemHeight[%d] itemCount[%d]'% (self.mListHeight, self.mItemHeight, self.mItemCount) )
 
 				if not self.mMarkList :
 					lastPos = self.mCtrlListCHList.getSelectedPosition( )
