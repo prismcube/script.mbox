@@ -20,6 +20,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
 		self.mDataCache.SetRootWindowId( xbmcgui.getCurrentWindowId( ) )
+		self.syncXBMC( )
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
@@ -81,8 +82,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
-
-			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 : 
+			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 :
 				LOG_TRACE( 'XBMCPLAY_TEST -----------START ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 				#if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -165,6 +165,25 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.setProperty( 'Signal', 'NoService' )
 		else :
 			LOG_ERR( 'LoadNoSignalState : Unknown channel status' )
+
+
+	def syncXBMC( self ) :
+		xbmc.executebuiltin( 'PlayerControl(Stop)', True )
+		pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+		InitTranslateByEnumList( )
+		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
+		if self.mDataCache.GetAlarmByViewTimer( ) :
+			self.mDataCache.SetAlarmByViewTimer( False )
+			mHead = MR_LANG( 'Timer Notification' )
+			mLine = MR_LANG( 'Channel is changed by view timer' )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
+
+		type = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
+
+		if type == ElisEnum.E_SERVICE_TYPE_RADIO :
+			self.setProperty( 'TVRadio', 'true' )
+		else :
+			self.setProperty( 'TVRadio', 'false' )
 
 
 	@RunThread

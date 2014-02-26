@@ -180,7 +180,6 @@ class DataCacheMgr( object ) :
 		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
-		self.mReserved22						= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -3355,12 +3354,4 @@ class DataCacheMgr( object ) :
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
 			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
-
-
-	def GetReserved22( self ) :
-		return self.mReserved22
-
-
-	def SetReserved22( self, aFlag ) :
-		self.mReserved22 = aFlag
 
