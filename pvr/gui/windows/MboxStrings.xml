@@ -163,6 +163,7 @@
 	<string id="1163">Current</string>
 	<string id="1164">Following</string>
 	<string id="1165">Show more EPG</string>
+	<string id="1166">LOADING</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
