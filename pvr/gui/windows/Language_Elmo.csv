@@ -38,8 +38,8 @@
 "Mute";"Mute";"Muet";"Mute";"Silencio";"Mute";"Mute";"Wyciszenie";"Mute";"Откл Звука";"Mute";"Mute";"Mute";"Вимкнути Звук";1037
 "A/V Setting";"A/V Einstellungen";"Paramètres A/V";"Impostazioni A/V";"Configuracion A/V";"A/V nastavení";"A/V Setting";"Ustawienia A/V";"A/V Setting";"A/V Установки";"A/V Setting";"A/V Setting";"A/V nastavenia";"A/V Установки";1038
 "Bookmark";"Markierung";"Signets";"Preferiti";"Marcador";"Záložka";"Bookmark";"Zakładka";"Bookmark";"Метки";"Bookmark";"Bookmark";"Záložka";"Мітки";1039
-"Current EPG";"Aktuelles EPG";"EPG courant";"EPG Attuale";"EPG actual";"EPG Nyní";"Current EPG";"Current EPG";"Current EPG";"Текущее Событие";"Current EPG";"Current EPG";"EPG Teraz";"Поточна Подія";1040
-"Next EPG";"nächste EPG";"EPG suivant";"EPG successivo";"Siguiente EPG";"EPG Následující";"Next EPG";"Next EPG";"Next EPG";"Следующее Событие";"Next EPG";"Next EPG";"EPG Nasledujúce";"Наступна Подія";1041
+"Current EPG";"Aktuelles EPG";"EPG courant";"EPG Attuale";"EPG actual";"EPG Nyní";"Current EPG";"Bieżące EPG";"Current EPG";"Текущее Событие";"Current EPG";"Current EPG";"EPG Teraz";"Поточна Подія";1040
+"Next EPG";"nächste EPG";"EPG suivant";"EPG successivo";"Siguiente EPG";"EPG Následující";"Next EPG";"Następne EPG";"Next EPG";"Следующее Событие";"Next EPG";"Next EPG";"EPG Nasledujúce";"Наступна Подія";1041
 "Reset";"Reset";"Réinitialiser";"Reset";"Resetear";"Obnovit";"Reset";"Reset";"Reset";"Сброс";"Reset";"Reset";"Obnoviť";"Скинути";1042
 "Archive";"Archive";"Archive";"Archivio";"Archivos";"Archiv";"Archive";"Archiwum";"Archive";"Архив";"Archive";"Archive";"Archív";"Архів";1043
 "EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"ТВ Гид";"EPG";"EPG";"EPG";"ТВ Гід";1044
@@ -161,7 +161,7 @@
 "Grid";"Gitter";"Grille";"Griglia";"Parrilla";"Mřížka";"Grid";"Siatka";"Grid";"Сетка";"Grid";"Grid";"Mriežka";"Сітка";1162
 "Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Teraz";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
 "Following";"Folgen";"Suivant";"Seguito";"Siguiente";"Následující";"Following";"Później";"Following";"Следующий";"Following";"Following";"Nasledujúca";"Наступний";1164
-"Live Streaming";;;;;"Živé streamovanie";;;;;;;"Živé streamovanie";;1200
+"Live Streaming";;;;;"Živé streamovanie";;"Przekaz kanałów na żywo";;;;;"Živé streamovanie";;1200
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -512,7 +512,7 @@
 "Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";2348
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2349
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2350
-"LCN Search";;;;;;;;;;;;;;2351
+"LCN Search";;;;;;;"Wyszukiwanie LCN";;;;;;;2351
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -897,18 +897,18 @@
 "Start Search";"Suchlauf Starten";"Commencer la recherche";"Start Search";"Iniciar busqueda";"Spustit vyhledávání";"Start Search";"Start wyszukiwania";"Start Search";"Начать Поиск";"Start Search";"Start Search";"Spustiť vyhľadávanie";"Почати Пошук";3382
 "DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"Commutateur DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 přepínač";"DiSEqC 1.0 Switch";"Przełącznik DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Переключатель";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 prepínač";"DiSEqC 1.0 Перемикач";3383
 "Select the DiSEqC switch which your satellite is connected to";"Wählen Sie den DiSEqC switch mit dem Ihre Anlage ausgerüstet ist";"Choisissez le commutateur DiSEqC auquel votre satellite est connecté";"Selezionare il DiSEqC collegato al";"Seleccione el conmutador DiSEqC que su satélite está conectado a";"Vyberte DiSEqC přepínač, který používáte";"Select the DiSEqC switch which your satellite is connected to";"Wybierz przełącznik DiSEqC wykorzystywany w instalacji antenowej";"Select the DiSEqC switch which your satellite is connected to";"Задайте соответствующие настройки DISEqC переключателя для спутника";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";"Vyberte DiSEqC prepínač, ktorý používate";"Задайте відповідні налаштування DISEqC перемикача для супутника";3384
-"Experimental";;;;;;;;;;;;;;3385
-"You can customise the appearance of PRISMCUBE RUBY";;;;;;;;;;;;;;3386
-"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;;;;;;;;3387
-"Advanced";;;;;;;;;;;;;;3388
-"Receive information from the RSS server as soon as it is updated";;;;;;;;;;;;;;3389
-"Allows you to display clock on the top middle of live screen";;;;;;;;;;;;;;3390
-"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;;;;;;;;3391
-"Allows you to display next EPG notification on live screen";;;;;;;;;;;;;;3392
-"Live Streaming (restart required)";;;;;;;;;;;;;;3393
-"Watch live stream of TV channels from PC or mobile devices";;;;;;;;;;;;;;3394
-"Open web interface";;;;;;;;;;;;;;3395
-"Web Interface (restart required)";;;;;;;;;;;;;;3396
+"Experimental";;;;;;;"Eksperymentalne";;;;;;;3385
+"You can customise the appearance of PRISMCUBE RUBY";;;;;;;"Dostosuj wygląd PRISMCUBE RUBY";;;;;;;3386
+"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;;;3387
+"Advanced";;;;;;;"Zaawansowane";;;;;;;3388
+"Receive information from the RSS server as soon as it is updated";;;;;;;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;;;3389
+"Allows you to display clock on the top middle of live screen";;;;;;;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;;;3390
+"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;;;3391
+"Allows you to display next EPG notification on live screen";;;;;;;"Wyświetla następne powiadomienie EPG na ekranie podczas oglądania";;;;;;;3392
+"Live Streaming (restart required)";;;;;;;"Przekaz kanałów na żywo (wymagany restart)";;;;;;;3393
+"Watch live stream of TV channels from PC or mobile devices";;;;;;;"Oglądaj na żywo strumień kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;;;3394
+"Open web interface";;;;;;;"Open web interface";;;;;;;3395
+"Web Interface (restart required)";;;;;;;"Web Interface (wymagany restart)";;;;;;;3396
 "Tuner %d Config : %s";"Tuner %d Konfig : %s";"Configuration %d Tuner : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Konfiguracja tunera %d : %s";"Tuner %d Config : %s";"Тюнер %d Конфигурация : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Тюнер %d Конфігурація : %s";3397
 "You can only have 4 satellites for DiSEqC 1.0";"Sie können nur 4 Satellites bei DiSEqC 1.0 einstellen";"Vous ne pouvez configurer que 4 satellites pour le DiSEqC 1.0";"Si può avere solo 4 satelliti per DiSEqC 1.0";"Tu solo puedes tener 4 satelites para DiSEqC 1.0";"Můžete zvolit maximálně 4 satelity při volbě DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Dla przełącznika DiSEqC 1.0 można skonfigurować do 4 satelitów";"You can only have 4 satellites for DiSEqC 1.0";"Доступно лишь 4 спутника для DISEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Môžete zvoliť maximálne 4 satelity pri voľbe DiSEqC 1.0";"Доступно лише 4 супутники для DISEqC 1.0";3398
 "You can only have 1 satellite for Simple LNB";"Sie können nur 1 Satellite für Einfaches LNB einstellen";"Vous ne pouvez configurer qu'un satellite pour le LNB Simple";"Si può avere solo 1 satellite per semplice LNB";"Tu solo puedes tener 1 satelite para LNB Simple";"Můžete zvolit maximálně jeden satelit pro jednoduché LNB";"You can only have 1 satellite for Simple LNB";"Pojedynczy konwerter może odbierać sygnał tylko z jednego satelity";"You can only have 1 satellite for Simple LNB";"Доступен лишь один спутник для режима Один Конвертор LNB";"You can only have 1 satellite for Simple LNB";"You can only have 1 satellite for Simple LNB";"Môžete zvoliť maximálne jeden satelit pre jednoduché LNB";"Доступний лише один супутник для режиму Один Конвертор LNB";3399
