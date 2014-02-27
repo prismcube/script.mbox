@@ -38,8 +38,8 @@
 "Mute";"Mute";"Muet";"Mute";"Silencio";"Mute";"Mute";"Wyciszenie";"Mute";"Откл Звука";"Mute";"Mute";"Mute";"Вимкнути Звук";1037
 "A/V Setting";"A/V Einstellungen";"Paramètres A/V";"Impostazioni A/V";"Configuracion A/V";"A/V nastavení";"A/V Setting";"Ustawienia A/V";"A/V Setting";"A/V Установки";"A/V Setting";"A/V Setting";"A/V nastavenia";"A/V Установки";1038
 "Bookmark";"Markierung";"Signets";"Preferiti";"Marcador";"Záložka";"Bookmark";"Zakładka";"Bookmark";"Метки";"Bookmark";"Bookmark";"Záložka";"Мітки";1039
-"Current EPG";"Aktuelles EPG";"EPG courant";"EPG Attuale";"EPG actual";"EPG Nyní";"Current EPG";"Current EPG";"Current EPG";"Текущее Событие";"Current EPG";"Current EPG";"EPG Teraz";"Поточна Подія";1040
-"Next EPG";"nächste EPG";"EPG suivant";"EPG successivo";"Siguiente EPG";"EPG Následující";"Next EPG";"Next EPG";"Next EPG";"Следующее Событие";"Next EPG";"Next EPG";"EPG Nasledujúce";"Наступна Подія";1041
+"Current EPG";"Aktuelles EPG";"EPG courant";"EPG Attuale";"EPG actual";"EPG Nyní";"Current EPG";"Bieżące EPG";"Current EPG";"Текущее Событие";"Current EPG";"Current EPG";"EPG Teraz";"Поточна Подія";1040
+"Next EPG";"nächste EPG";"EPG suivant";"EPG successivo";"Siguiente EPG";"EPG Následující";"Next EPG";"Następne EPG";"Next EPG";"Следующее Событие";"Next EPG";"Next EPG";"EPG Nasledujúce";"Наступна Подія";1041
 "Reset";"Reset";"Réinitialiser";"Reset";"Resetear";"Obnovit";"Reset";"Reset";"Reset";"Сброс";"Reset";"Reset";"Obnoviť";"Скинути";1042
 "Archive";"Archive";"Archive";"Archivio";"Archivos";"Archiv";"Archive";"Archiwum";"Archive";"Архив";"Archive";"Archive";"Archív";"Архів";1043
 "EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"EPG";"ТВ Гид";"EPG";"EPG";"EPG";"ТВ Гід";1044
@@ -513,7 +513,7 @@
 "Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";2348
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2349
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2350
-"LCN Search";;;;;;;;;;;;;;2351
+"LCN Search";;;;;;;"Wyszukiwanie LCN";;;;;;;2351
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003

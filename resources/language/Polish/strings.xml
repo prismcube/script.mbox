@@ -39,8 +39,8 @@
 	<string id="1037">Wyciszenie</string>
 	<string id="1038">Ustawienia A/V</string>
 	<string id="1039">Zakładka</string>
-	<string id="1040">Current EPG</string>
-	<string id="1041">Next EPG</string>
+	<string id="1040">Bieżące EPG</string>
+	<string id="1041">Następne EPG</string>
 	<string id="1042">Reset</string>
 	<string id="1043">Archiwum</string>
 	<string id="1044">EPG</string>
@@ -514,7 +514,7 @@
 	<string id="2348">Ethernet</string>
 	<string id="2349">Bezprzewodowa</string>
 	<string id="2350">Tryb usypiania HDD</string>
-	<string id="2351"></string>
+	<string id="2351">Wyszukiwanie LCN</string>
 	<string id="3001">Brak dostępnych informacji EPG</string>
 	<string id="3002">Nagranie w konflikcie z</string>
 	<string id="3003">Błąd</string>
