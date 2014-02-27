@@ -1933,6 +1933,8 @@ class DataCacheMgr( object ) :
 		if aDefaultTune :
 			#self.Channel_TuneDefault( mCurrentChannel )
 			self.Channel_TuneDefault( False, mCurrentChannel )
+			if E_V1_2_APPLY_PIP :
+				self.PIP_SetTunableList( )
 
 
 	def Channel_TuneDefault( self, aDefault = True, aCurrentChannel = None ) :
@@ -1978,6 +1980,8 @@ class DataCacheMgr( object ) :
 		else :
 			LOG_ERR( 'Load Channel_GetCurrent None' )
 
+			if E_V1_2_APPLY_PIP :
+				self.PIP_SetTunableList( )
 
 	def Channel_InvalidateCurrent( self ) :
 		return self.mCommander.Channel_InvalidateCurrent( )

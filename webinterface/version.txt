@@ -1,3 +1,6 @@
+2014.2.29
+ - Web UI, Timer menu added to display the list
+ 
 2014.2.13
   - Web UI, Recording Page Done
   - Web UI, Channel Page Done

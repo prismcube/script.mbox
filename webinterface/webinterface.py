@@ -113,9 +113,13 @@ class MyHandler( BaseHTTPRequestHandler ):
 		return host
 
 	def do_HEAD( self ) :
+	
 		self.send_response(200)
-		self.header("Content-type", "text/html")
+		self.send_header("Content-type", "text/html")
 		self.end_headers()
+
+		print '[HEAD]'
+		print self.path
 
 	def do_GET(self):
 		try :
@@ -215,6 +219,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from remotecontrol import ElmoRemoteControl as Content
 				elif self.urlPath[0] == '/web/powerstate' : 
 					from powerstatus import ElmoPowerStatus as Content 
+				elif self.urlPath[0] == '/web/timerlist' :
+					from timerlist import ElmoTimerList as Content 
 
 				############# Live TV ####################################
 				
