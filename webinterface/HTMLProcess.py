@@ -819,11 +819,34 @@ class Timer( WebPage ) :
 
 	def __init__( self, command ) :
 		super(Timer, self).__init__()
+
+		self.weekday = {}
+		self.weekday[0] = "Sun"
+		self.weekday[1] = "Mon"
+		self.weekday[2] = "Tue"
+		self.weekday[3] = "Wed"
+		self.weekday[4] = "Thu"
+		self.weekday[5] = "Fri"
+		self.weekday[6] = "Sat"
+
+		if len(command) > 0 :
+			self.delId = command[0].split("=")[1]
+			self.mDataCache.Timer_DeleteTimer( int(self.delId) )
+		
 		self.content = self.timerContent(command) 
 
 	def timerContent( self, command ) :
 		timerList = self.mDataCache.Timer_GetTimerList()
-		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content 	= """
+			<script>
+				function del( id ) {
+					if( confirm("Deleting Selected Timer?") ) {
+						location.href = "/Timer?id=" + id;
+					}
+				}
+			</script>
+		"""
+		content += """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
 
 		for timer in timerList :
 		
@@ -840,13 +863,24 @@ class Timer( WebPage ) :
 				content += '		<td align="right"><p class="timerContent">' 
 				content += 		TimeToString(timer.mStartTime) + ' <span class="timerTime">' + TimeToString(timer.mStartTime, TimeFormatEnum.E_HH_MM) + "</span> ~ "
 				content += 		TimeToString(timer.mStartTime + timer.mDuration) + ' <span class="timerTime">' + TimeToString(timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM)
-				content += 		'</span></p></td>'
-				content += '		<td rowspan="2" align="center" width="100"></td>' 	#Delete Button here!!!
+				content += '		</span></p></td>'
+				content += '		<td rowspan="2" align="center" width="100"><a href="javascript:del(' + str(timer.mTimerId) + ');"><img src="/uiImg/Delete.png" border="0"></a></td>' 	#Delete Button here!!!
 				content += '	</tr>'
 				content += '	<tr>'
 				content += '		<td><p class="recContent">' + str(timer.mName) +  '</p></td>'
 				content += '		<td align="right"><p class="recContent">' + str(timerDuration) + ' min</p></td>'
 				content += '	</tr>'
+
+				if timer.mWeeklyTimerCount > 0 :
+					content += '<tr>'
+					content += '<td colspan="2" align="left" class="weeklyInfo">Weekly Recording On : '
+
+					for weeklyTimer in timer.mWeeklyTimer :
+						content += self.weekday[weeklyTimer.mDate]
+						content += '&nbsp;&nbsp;&nbsp;&nbsp;'
+
+					content += '</td></tr>'
+				
 				content += '	</table>'
 				content +=' 	</td>'
 				content +='</tr>'
