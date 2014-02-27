@@ -560,7 +560,7 @@
 
 				<control type="group">
 					<posx>40</posx>
-					<posy>32</posy>
+					<posy>25</posy>
 					<width>300</width>
 					<height>30</height>
 					<control type="image">
@@ -805,7 +805,7 @@
 				<!-- page label -->
 				<control type="label">
 					<posx>42</posx>
-					<posy>23r</posy>
+					<posy>28r</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>font10</font>
@@ -817,7 +817,7 @@
 				</control>
 				<control type="image">
 					<posx>320</posx>
-					<posy>28r</posy>
+					<posy>34r</posy>
 					<width>32</width>
 					<height>32</height>
 					<texture border="5">OSDChannelDownNF_new.png</texture>
@@ -825,7 +825,7 @@
 				</control>
 				<control type="image">
 					<posx>350</posx>
-					<posy>28r</posy>
+					<posy>34r</posy>
 					<width>32</width>
 					<height>32</height>
 					<texture border="5">OSDBackNF.png</texture>
