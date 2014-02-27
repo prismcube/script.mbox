@@ -1,6 +1,6 @@
 from datetime import datetime
 from webinterface import Webinterface
-import dbopen
+from xml.sax.saxutils import escape
 
 class ElmoEpgService( Webinterface ) :
 
@@ -12,66 +12,34 @@ class ElmoEpgService( Webinterface ) :
 		#print self.params['endTime']
 
 		ref = self.unMakeRef( self.params['sRef'] )
-		self.currenttime = self.mCommander.Datetime_GetLocalTime()
+		self.gmtFrom = self.mDataCache.Datetime_GetLocalTime()
+		self.gmtUntil = self.gmtFrom + ( 3600 * 24 * 7 )
+		self.maxCount = 100
 
-		self.conn = dbopen.DbOpen('epg.db').getConnection()		
-
-		sql = 'select eventId, startTime, duration, eventName, eventDescription, sid, tsid, onid '
-		sql += ' from tblEPG where sid=' + str( ref['sid'] ) + ' and tsid=' + str( ref['tsid'] ) + ' and onid=' + str( ref['onid'] ) + ' and startTime=' + self.params['time'] + ' and startTime + duration=' + self.params['endTime']
-		
-		print sql
-
-		self.c = self.conn.cursor()
-		self.c.execute(sql)
-
+		self.epgList = self.mCommander.Epgevent_GetList( ref['sid'], ref['tsid'], ref['onid'], self.gmtFrom, self.gmtUntil, self.maxCount );
+	
 	def xmlResult(self) :
 
 		xmlStr = ''
 		xmlStr += '<?xml version="1.0" encoding="UTF-8"?>\n'
 		xmlStr += '<e2eventlist>\n'
 
-		for row in self.c :
+		if self.epgList :
+			for row in self.epgList :
+	
+				xmlStr += '<e2event>\n'
+				xmlStr += '<e2eventid>' + str( row.mEventId ) + '</e2eventid>\n'
+				xmlStr += '<e2eventstart>' + str( row.mStartTime ) + '</e2eventstart>\n'
+				xmlStr += '<e2eventduration>' + str( row.mDuration ) + '</e2eventduration>\n'
+				xmlStr += '<e2eventcurrenttime>' + str( self.gmtFrom ) + '</e2eventcurrenttime>\n'
+				xmlStr += '<e2eventtitle>' + escape( row.mEventName ) + '</e2eventtitle>\n'
+				xmlStr += '<e2eventdescription>' + escape( row.mEventDescription ) +'</e2eventdescription>\n'
+				xmlStr += '<e2eventdescriptionextended></e2eventdescriptionextended>\n'
+				xmlStr += '<e2eventservicereference>' + self.params['sRef'] + '</e2eventservicereference>\n'
+				xmlStr += '<e2eventservicename>' + row.mEventName +'</e2eventservicename>\n'
+				xmlStr += '</e2event>\n'
 
-			conn = dbopen.DbOpen('channel.db').getConnection()
-			c = conn.cursor()
-
-			sql = 'select name from tblChannel where sid=' + str( row[5] ) + ' and tsid=' + str( row[6] ) + ' and onid=' + str( row[7] )
-			c.execute(sql)
-
-			result = c.fetchone()
-
-			xmlStr += '<e2event>\n'
-			xmlStr += '<e2eventid>\n'
-			xmlStr += 	str( row[0] )
-			xmlStr += '</e2eventid>\n'
-			xmlStr += '<e2eventstart>\n'
-			xmlStr += 	str( row[1] )
-			xmlStr += '</e2eventstart>\n'
-			xmlStr += '<e2eventduration>\n'
-			xmlStr += 	str( row[2] )
-			xmlStr += '</e2eventduration>\n'
-			xmlStr += '<e2eventcurrenttime>\n'
-			xmlStr += 	str( self.currenttime )
-			xmlStr += '</e2eventcurrenttime>\n'
-			xmlStr += '<e2eventtitle>\n'
-			xmlStr += 	row[3]
-			xmlStr += '</e2eventtitle>\n'
-			xmlStr += '<e2eventdescription>\n'
-			# xmlStr += 	row[4].encode('ascii', 'ignore')
-			xmlStr += 	row[4]
-			xmlStr += '</e2eventdescription>\n'
-			xmlStr += '<e2eventdescriptionextended>\n'
-			xmlStr += 	'' 
-			xmlStr += '</e2eventdescriptionextended>\n'
-			xmlStr += '<e2eventservicereference>\n'
-			xmlStr += 	self.makeRef( row[5], row[6], row[7] )  	# def makeRef(self, sid, tsid, onid) :
-			xmlStr += '</e2eventservicereference>\n'
-			xmlStr += '<e2eventservicename>\n'
-			xmlStr += 	result[0]
-			xmlStr += '</e2eventservicename>\n'
-			xmlStr += '</e2event>\n'
-
-			conn.close()
+				print xmlStr
 
 		xmlStr += '</e2eventlist>\n'
 

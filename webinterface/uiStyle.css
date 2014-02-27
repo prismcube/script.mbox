@@ -81,7 +81,7 @@
 	#main {
 		margin-top: 20px;
 		margin-left: 230px;
-		border: 1px solid blue;
+		bborder: 1px solid blue;
 	}
 
 	#remotecontroller {
@@ -140,6 +140,20 @@
 	.recContent {
 		font-family: arial;
 		font-size: 1.0em;
+		font-weight: bold;
+	}
+
+	.timerTime {
+		font-family: arial;
+		font-size: 1.3em;
+		font-weight: bold;
+		color: black;
+	}
+
+	.timerContent {
+		font-family: arial;
+		font-size: 1.0em;
+		color: #bcbcbc;
 		font-weight: bold;
 	}
 
