@@ -527,8 +527,40 @@
 					<colordiffuse>DFFFFFFF</colordiffuse>
 				</control>
 				<control type="group">
+					<control type="label">
+						<description>time label</description>
+						<posx>380</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>30</height>
+						<align>right</align>
+						<aligny>center</aligny>
+						<font>font13_title</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<label>$INFO[System.Time]</label>
+						<include>DefaultWindowOpenCloseAnimation</include>
+						<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+					</control>
+					<!--control type="label">
+						<posx>380</posx>
+						<posy>30</posy>
+						<width>200</width>
+						<height>15</height>
+						<align>right</align>
+						<aligny>center</aligny>
+						<font>font10</font>
+						<textcolor>grey</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<label>$INFO[System.Date]</label>
+						<include>DefaultWindowOpenCloseAnimation</include>
+						<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
+					</control-->
+				</control>
+
+				<control type="group">
 					<posx>40</posx>
-					<posy>30</posy>
+					<posy>32</posy>
 					<width>300</width>
 					<height>30</height>
 					<control type="image">
@@ -545,7 +577,7 @@
 						<description>Header name</description>
 						<posx>42</posx>
 						<posy>2</posy>
-						<width>250</width>
+						<width>340</width>
 						<height>30</height>
 						<font>font14</font>
 						<textcolor>blue</textcolor>
@@ -568,7 +600,7 @@
 						<colordiffuse>E5FFFFFF</colordiffuse>
 					</control-->
 					<control type="label">
-						<posx>20</posx>
+						<posx>0</posx>
 						<posy>250</posy>
 						<width>340</width>
 						<height>30</height>
@@ -577,14 +609,14 @@
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>LOADING...</label>
+						<label>$LOCALIZE[SCRIPT1166]...</label>
 						<visible>!substring(Window.Property(ReadyToListPIP),true)</visible>
 					</control>
 					<control type="list" id="4803850">
 						<posx>0</posx>
 						<posy>70</posy>
 						<width>340</width>
-						<height>440</height>
+						<height>432</height>
 						<align>left</align>
 						<onleft></onleft>
 						<onright></onright>
@@ -593,30 +625,34 @@
 						<viewtype label="535">list</viewtype>
 						<!--pagecontrol>4803851</pagecontrol-->
 						<scrolltime>0</scrolltime>
-						<itemlayout height="55" width="340">
+						<itemlayout height="54" width="340">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>340</width>
-								<height>52</height>
-								<texture border="5">button-nofocus.png</texture>
-							</control>
-							<control type="image">
-								<posx>5</posx>
-								<posy>5</posy>
-								<width>70</width>
-								<height>43</height>
-								<texture>Logo_Background.png</texture>
-							</control>
-							<control type="image">
-								<posx>5</posx>
-								<posy>5</posy>
-								<width>70</width>
-								<height>43</height>
-								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+								<height>50</height>
+								<texture border="10">button-nofocus.png</texture>
 							</control>
 							<control type="group">
-								<posx>253</posx>
+								<posx>7</posx>
+								<posy>7</posy>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>37</height>
+									<texture>Logo_Background.png</texture>
+								</control>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>37</height>
+									<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+								</control>
+							</control>
+							<control type="group">
+								<posx>250</posx>
 								<posy>5</posy>
 								<!-- is locked? -->
 								<control type="image">
@@ -649,11 +685,11 @@
 							</control>
 							<!-- Channel Number -->
 							<control type="label">
-								<posx>80</posx>
+								<posx>70</posx>
 								<posy>0</posy>
-								<width>185</width>
+								<width>190</width>
 								<height>30</height>
-								<font>font24</font>
+								<font>font12</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -663,9 +699,9 @@
 							</control>
 							<!-- Channel Name -->
 							<control type="label">
-								<posx>80</posx>
-								<posy>27</posy>
-								<width>250</width>
+								<posx>70</posx>
+								<posy>25</posy>
+								<width>260</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
@@ -677,30 +713,34 @@
 								<scrollspeed>150</scrollspeed>
 							</control>
 						</itemlayout>
-						<focusedlayout height="55" width="340">
+						<focusedlayout height="54" width="340">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>340</width>
-								<height>52</height>
-								<texture border="5">StackFO_white2.png</texture>
-							</control>
-							<control type="image">
-								<posx>5</posx>
-								<posy>5</posy>
-								<width>70</width>
-								<height>43</height>
-								<texture>Logo_Background.png</texture>
-							</control>
-							<control type="image">
-								<posx>5</posx>
-								<posy>5</posy>
-								<width>70</width>
-								<height>43</height>
-								<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+								<height>50</height>
+								<texture border="10">StackFO_white3.png</texture>
 							</control>
 							<control type="group">
-								<posx>253</posx>
+								<posx>7</posx>
+								<posy>7</posy>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>37</height>
+									<texture>Logo_Background.png</texture>
+								</control>
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>37</height>
+									<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+								</control>
+							</control>
+							<control type="group">
+								<posx>250</posx>
 								<posy>5</posy>
 								<!-- is locked? -->
 								<control type="image">
@@ -732,11 +772,11 @@
 							</control>
 							<!-- Channel Number -->
 							<control type="label">
-								<posx>80</posx>
+								<posx>70</posx>
 								<posy>0</posy>
-								<width>185</width>
+								<width>190</width>
 								<height>30</height>
-								<font>font24</font>
+								<font>font12</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -746,9 +786,9 @@
 							</control>
 							<!-- Channel Name -->
 							<control type="label">
-								<posx>80</posx>
-								<posy>27</posy>
-								<width>250</width>
+								<posx>70</posx>
+								<posy>25</posy>
+								<width>260</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
@@ -766,37 +806,53 @@
 				<control type="label">
 					<posx>42</posx>
 					<posy>23r</posy>
-					<width>440</width>
+					<width>340</width>
 					<height>20</height>
-					<font>font12</font>
+					<font>font10</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
 				</control>
+				<control type="image">
+					<posx>320</posx>
+					<posy>28r</posy>
+					<width>32</width>
+					<height>32</height>
+					<texture border="5">OSDChannelDownNF_new.png</texture>
+					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>28r</posy>
+					<width>32</width>
+					<height>32</height>
+					<texture border="5">OSDBackNF.png</texture>
+				</control>
 
 				<!-- fixed pip position and redraw -->
 				<control type="group">
-					<posx>40</posx>
-					<posy>65</posy>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>340</width>
-						<height>190</height>
-						<texture>video_pig_overlay.png</texture>
-						<visible>!substring(Window(10000).Property(BlankPIP),true)</visible>
+					<posx>42</posx>
+					<posy>62</posy>
+					<control type="group">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>336</width>
+							<height>180</height>
+							<texture>video_pig_overlay.png</texture>
+							<visible>!substring(Window(10000).Property(BlankPIP),true)</visible>
+						</control>
 					</control>
 					<control type="group">
 						<visible>substring(Window(10000).Property(BlankPIP),true)</visible>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>340</width>
-							<height>190</height>
+							<width>335</width>
+							<height>180</height>
 							<texture>black-back_noAlpha.png</texture>
-							<!--visible>substring(Window(10000).Property(BlankPIP),true)</visible-->
 						</control>
 						<control type="group">
 							<posx>4</posx>
@@ -816,7 +872,7 @@
 								<control type="label">
 									<posx>0</posx>
 									<posy>80</posy>
-									<width>340</width>
+									<width>335</width>
 									<height>30</height>
 									<font>font12</font>
 									<textcolor>grey2</textcolor>
@@ -829,7 +885,7 @@
 							<control type="label">
 								<posx>0</posx>
 								<posy>80</posy>
-								<width>340</width>
+								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
 								<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
@@ -841,7 +897,7 @@
 							<control type="label">
 								<posx>0</posx>
 								<posy>80</posy>
-								<width>340</width>
+								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
 								<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
@@ -853,7 +909,7 @@
 							<control type="label">
 								<posx>0</posx>
 								<posy>100</posy>
-								<width>340</width>
+								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
 								<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
@@ -867,13 +923,13 @@
 
 					<control type="group">
 						<posx>0</posx>
-						<posy>80</posy>
+						<posy>70</posy>
 						<animation effect="fade" time="300">VisibleChange</animation>
 						<visible>substring(Window(10000).Property(InputNumber),true)</visible>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>340</width>
+							<width>335</width>
 							<height>50</height>
 							<texture>black-back_noAlpha.png</texture>
 							<colordiffuse>CFFFFFFF</colordiffuse>
@@ -882,7 +938,7 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>340</width>
+							<width>335</width>
 							<height>50</height>
 							<texture>button-focus2.png</texture>
 							<visible>substring(Window(10000).Property(BlankPIP),true)</visible>
@@ -890,7 +946,7 @@
 						<control type="label">
 							<posx>0</posx>
 							<posy>5</posy>
-							<width>340</width>
+							<width>335</width>
 							<height>15</height>
 							<font>font14</font>
 							<textcolor>grey</textcolor>
@@ -917,8 +973,8 @@
 				<!-- ch number -->
 				<control type="label">
 					<posx>50</posx>
-					<posy>230</posy>
-					<width>340</width>
+					<posy>215</posy>
+					<width>335</width>
 					<height>30</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
@@ -927,7 +983,26 @@
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel(4802001)]</label>
 				</control>
-
+				<control type="group">
+					<posx>332</posx>
+					<posy>62</posy>
+					<visible>substring(Window.Property(EnableAudioPIP),true)</visible>
+					<control type="image">
+						<posx>5</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>30</height>
+						<texture>black-back_noAlpha.png</texture>
+						<colordiffuse>CFFFFFFF</colordiffuse>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>0</posy>
+						<width>40</width>
+						<height>30</height>
+						<texture>icon_volume.png</texture>
+					</control>
+				</control>
 			</control>
 
 		</control>

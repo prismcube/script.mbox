@@ -53,7 +53,7 @@ CTRL_ID_BASE_LABEL_NOSIGNAL	 = E_BASE_WINDOW_ID + 2006
 CTRL_ID_BASE_LABEL_NOSERVICE = E_BASE_WINDOW_ID + 2007
 
 E_DEFAULT_POSITION_PIP     = [827,125,352,188]#[857,170,352,198] 
-E_SHOWLIST_POSITION_PIP    = [930,65,350,200]
+E_SHOWLIST_POSITION_PIP    = [932,62,345,190]#[930,65,350,200]
 CONTEXT_ACTION_DONE_PIP    = 0
 CONTEXT_ACTION_MOVE_PIP    = 1
 CONTEXT_ACTION_SIZE_PIP    = 2
@@ -682,7 +682,7 @@ class DialogPIP( BaseDialog ) :
 		skinPos = GetInstanceSkinPosition( )
 		x, y, w, h = skinPos.GetPipPosition2( aPosX, aPosY, aWidth, aHeight )
 
-		self.mDataCache.PIP_SetDimension( x, y, w, h )
+		self.mDataCache.PIP_SetDimension( x - 1, y - 1, w + 4, h + 3 )
 
 		#posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
 		#SetSetting( 'PIP_POSITION', posNotify )
