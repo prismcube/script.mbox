@@ -112,6 +112,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mEPGList = []
 		self.mEPGHashTable = {}
 		self.mOffsetTopIndex = 0
+		self.mNavOffsetTopIndex = 0
 		self.mLock = thread.allocate_lock( )
 
 		self.mItemCount = 13
@@ -169,7 +170,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
 
-		self.mCtrlListCHList.reset( )
+		#self.mCtrlListCHList.reset( )
+		isUpdatePosition = self.UpdateCurrentPosition( )
 
 		self.mIsTune = False
 		self.mIsMark = True
@@ -204,6 +206,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mSearchKeyword = ''
 		self.mAutoConfirm = False
 		self.mShowEPGInfo = False
+		self.mEPGHashTable = {}
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -243,7 +246,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
-		self.Initialize( )
+		self.Initialize( isUpdatePosition )
 
 		#run thread
 		self.mEnableProgressThread = True
@@ -496,7 +499,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mShowEPGInfo :
 				showEPGInfo = True
 			self.UpdatePropertyGUI( 'ShowExtendInfo', '%s'% showEPGInfo )
-			self.UpdateChannelNameWithEPG( )
+			self.UpdateChannelNameWithEPG( True )
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 			SetSetting( 'SHOW_EPGINFO_CHANNEL', '%s'% int( self.mShowEPGInfo ) )
 
@@ -519,13 +522,14 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMaxChannelNum = E_INPUT_MAX
 
 		if self.mChannelList and len( self.mChannelList ) > 0 :
+			idxCount = 0
 			for iChannel in self.mChannelList :
 				chNumber = iChannel.mNumber
 				self.mChannelListHash[chNumber] = iChannel
 				self.mChannelListForMove.append( chNumber )
 
 				channelKey = '%d:%d:%d:%d'% ( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
-				self.mChannelListHashIDs[channelKey] = iChannel
+				self.mChannelListHashIDs[channelKey] = [iChannel, idxCount]
 
 				self.mTPListByChannelHash[iChannel.mNumber] = self.mDataCache.GetTunerIndexBySatellite( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mCarrier.mDVBS.mSatelliteBand )
 				#LOG_TRACE( '[ChannelList] ch[%s %s] tpNum[%s]'% ( iChannel.mNumber, iChannel.mName, self.mTPListByChannelHash.get( iChannel.mNumber, None ) ) )
@@ -535,6 +539,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				if chNumber > self.mMaxChannelNum :
 					self.mMaxChannelNum = chNumber
+
+				idxCount += 1
 		LOG_TRACE( '[ChannelList] load channel hash len[%s] maxNum[%s]'% ( len( self.mChannelListHash ), self.mMaxChannelNum ) )
 
 		self.mTimerListHash = {}
@@ -560,7 +566,8 @@ class ChannelListWindow( BaseWindow ) :
 		epgList = []
 		startTime = time.time()
 
-		self.OpenBusyDialog( )
+		if aUpdateAll :
+			self.OpenBusyDialog( )
 		#self.mLock.acquire( )
 
 		try :
@@ -574,10 +581,10 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					numList = []
 					#chNumbers = []
-					mOffsetTopIndex = self.GetOffsetPosition( )
+					self.mNavOffsetTopIndex = self.GetOffsetPosition( )
 					listCount = len( self.mChannelList )
-					endCount = mOffsetTopIndex + self.mItemCount
-					for offsetIdx in range( mOffsetTopIndex, endCount ) :
+					endCount = self.mNavOffsetTopIndex + self.mItemCount
+					for offsetIdx in range( self.mNavOffsetTopIndex, endCount ) :
 						if offsetIdx < listCount :
 							chNum = ElisEInteger( )
 							chNum.mParam = self.mChannelList[offsetIdx].mNumber
@@ -585,7 +592,7 @@ class ChannelListWindow( BaseWindow ) :
 							#chNumbers.append( self.mChannelList[offsetIdx].mNumber )
 
 						else :
-							LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( mOffsetTopIndex, offsetIdx, listCount ) )
+							LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mNavOffsetTopIndex, offsetIdx, listCount ) )
 							break
 					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
 
@@ -599,6 +606,7 @@ class ChannelListWindow( BaseWindow ) :
 		if not epgList or len( epgList ) < 1 :
 			isUpdate = False
 			LOG_TRACE( '[ChannelList] get epglist None' )
+			print '[ChannelList] get epglist None'
 
 		if isUpdate :
 			self.mEPGList = epgList
@@ -607,10 +615,13 @@ class ChannelListWindow( BaseWindow ) :
 				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
 
 			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
+			print '[ChannelList] epgList COUNT[%s]'% len( epgList )
 
 		#self.mLock.release( )
-		self.CloseBusyDialog( )
+		if isUpdate :
+			self.CloseBusyDialog( )
 		LOG_TRACE( '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime ) )
+		print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
 
 		self.UpdateChannelNameWithEPG( aUpdateAll )
 
@@ -621,23 +632,36 @@ class ChannelListWindow( BaseWindow ) :
 		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid ) :
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, isIndex = False ) :
 		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
 			return None
-		return self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
+
+		retValue = 0
+		if isIndex :
+			retValue = 1
+
+		iChannels = self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
+		if iChannels :
+			iChannels = iChannels[retValue]
+
+		if isIndex and iChannels == None :
+			iChannels = -1 #none exist index
+
+		return iChannels
 
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
 		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
-	def Initialize( self ):
+	def Initialize( self, aUpdatePosition = False ):
 		self.mDataCache.LoadTimerList( )
 		self.LoadRecordingInfo( )
 
-		#already cache load
+		#cache load
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.LoadChannelListHash( )
+
 		label = ''
 
 		try :
@@ -654,12 +678,13 @@ class ChannelListWindow( BaseWindow ) :
 			self.mShowEPGInfo = False
 			SetSetting( 'SHOW_EPGINFO_CHANNEL', '0' )
 
-		if not self.mInitialized or ( not self.mEPGHashTable ) :
+		if not self.mInitialized :
+			aUpdatePosition = True
 			self.mInitialized = True
 			self.mListHeight= self.mCtrlListCHList.getHeight( )
 			self.mItemCount = self.mListHeight / self.mItemHeight
-			thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
-			thread.start( )
+			#thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
+			#thread.start( )
 
 		try :
 			#first get is used cache, reason by fast load
@@ -701,13 +726,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		#clear label
 		self.ResetLabel( )
+		self.LoadByCurrentEPG( )
 
 		if self.mSetEditMode :
 			self.mSetEditMode = False
 			self.GoToEditWindow( )
 		else :
-			self.UpdateChannelList( )
+			self.UpdateChannelList( aUpdatePosition )
 			self.mOffsetTopIndex = self.GetOffsetPosition( )
+			self.mNavOffsetTopIndex = self.mOffsetTopIndex
 
 		#init navChannel by focus
 		self.mNavEpg = None
@@ -859,7 +886,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
 
 			self.ResetLabel( )
-			self.mCtrlListCHList.reset( )
+			#self.mCtrlListCHList.reset( )
 			self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 			self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 			#self.UpdateChannelList( )
@@ -880,7 +907,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mFlag_ModeChanged = False
 			self.mDataCache.Channel_ResetOldChannelList( )
 
-			thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
+			thread = threading.Timer( 0, self.LoadByCurrentEPG )
 			thread.start( )
 			LOG_TRACE( '[ChannelList] epgList hash len[%s]'% len( self.mEPGHashTable ) )
 
@@ -950,7 +977,7 @@ class ChannelListWindow( BaseWindow ) :
 				#LOG_TRACE( '[ChannelList] IN: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
 
 				self.mListItems = None
-				self.mCtrlListCHList.reset( )
+				#self.mCtrlListCHList.reset( )
 				self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
 				self.UpdateControlGUI( E_SLIDE_CLOSE )
@@ -1060,7 +1087,7 @@ class ChannelListWindow( BaseWindow ) :
 						#	LOG_TRACE( '[ChannelList] backup last None' )
 
 					self.mListItems = None
-					self.mCtrlListCHList.reset( )
+					#self.mCtrlListCHList.reset( )
 					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
 
@@ -1432,9 +1459,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListItems = None
 		self.mSetMarkCount = 0
 		self.mDataCache.Channel_ResetOldChannelList( )
-		self.mCtrlListCHList.reset( )
+		#self.mCtrlListCHList.reset( )
 
-		self.LoadByCurrentEPG( True )
+		self.LoadByCurrentEPG( )
 		self.UpdateChannelList( )
 		self.RestartAsyncEPG( )
 
@@ -2085,11 +2112,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
+		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		self.mNavChannel = None
 		self.mChannelList = None
-
-		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
 		#path tree, Mainmenu/Submenu
 		sortEnable   = True
@@ -2180,16 +2206,17 @@ class ChannelListWindow( BaseWindow ) :
 				break
 
 
-	def UpdateChannelList( self ) :
+	def UpdateChannelList( self, aUpdatePosition = True ) :
 		#starttime = time.time( )
 		#print '==================== TEST TIME[LIST] START[%s]'% starttime
 
 		#no channel is set Label comment
-		self.mCtrlListCHList.reset( )
 		if E_SUPPORT_FRODO_EMPTY_LISTITEM :
+			self.mCtrlListCHList.reset( )
 			xbmcgui.Window( 10000 ).setProperty( 'isEmpty', E_TAG_FALSE )
 
 		if self.mChannelList == None :
+			self.mCtrlListCHList.reset( )
 			if self.mFlag_DeleteAll :
 				self.mListItems = None
 				label = MR_LANG( 'No Channel' )			
@@ -2279,7 +2306,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 		iChannel = None
 		#refresh sync tune and current focus
@@ -2332,8 +2359,9 @@ class ChannelListWindow( BaseWindow ) :
 			if isFind == False :
 				iChannelIdx = 0
 
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, iChannelIdx, E_TAG_SET_SELECT_POSITION )
-		time.sleep( 0.02 )
+		if aUpdatePosition :
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, iChannelIdx, E_TAG_SET_SELECT_POSITION )
+			time.sleep( 0.02 )
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
@@ -2606,7 +2634,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				newOffsetTopIndex = self.GetOffsetPosition( )
 				LOG_TRACE( '----------------------------topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
-				if self.mOffsetTopIndex == newOffsetTopIndex :
+				if self.mNavOffsetTopIndex == newOffsetTopIndex :
 					if self.mNavEpg and self.mNavChannel :
 						channelName = '%s'% self.mNavChannel.mName
 						epgEvent = self.GetEPGByIds( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
@@ -2693,9 +2721,10 @@ class ChannelListWindow( BaseWindow ) :
 			updateStart = 0
 			updateEnd = len( self.mListItems ) - 1
 
-		LOG_TRACE( '[ChannelList] offsetTop[%s] updateStart[%s] updateEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
+		LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
-		self.OpenBusyDialog( )
+		if aUpdateAll :
+			self.OpenBusyDialog( )
 		try :
 			idx = -1
 			updateCount = 0
@@ -2708,7 +2737,7 @@ class ChannelListWindow( BaseWindow ) :
 				if idx > updateEnd :
 					break
 
-				if idx < len( self.mChannelList ) :
+				if self.mChannelList and idx < len( self.mChannelList ) :
 					iChannel = self.mChannelList[idx]
 
 					channelName = '%s'% iChannel.mName
@@ -2729,8 +2758,10 @@ class ChannelListWindow( BaseWindow ) :
 		except Exception, e :
 			LOG_ERR( '[ChannelList] except[%s]'% e )
 
-		self.CloseBusyDialog( )
+		if aUpdateAll :
+			self.CloseBusyDialog( )
 		LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime ) )
+		print '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime )
 
 
 	@RunThread
@@ -3972,7 +4003,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True, keyword )
 
 
-
 	def Close( self ):
 		self.mEventBus.Deregister( self )
 		if self.mEnableProgressThread == True and self.mPlayProgressThread :
@@ -3983,6 +4013,37 @@ class ChannelListWindow( BaseWindow ) :
 		self.StopAsyncSort( )
 		self.SetVideoRestore( )
 		#WinMgr.GetInstance( ).CloseWindow( )
+
+
+	def UpdateCurrentPosition( self ) :
+		isFail = True
+		if not self.mInitialized :
+			LOG_TRACE( '[ChannelList] passed, not selected position by first load' )
+			return isFail
+
+		try :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				chIndex = self.GetChannelByIDs( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, True )
+				#if self.mChannelList and len( self.mChannelList ) > chIndex and self.mCtrlListCHList.getSelectedPosition( ) != chIndex :
+				if chIndex > -1 and self.mChannelList and len( self.mChannelList ) > chIndex :
+					#self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chIndex, E_TAG_SET_SELECT_POSITION )
+					self.mCtrlListCHList.selectItem( chIndex )
+					LOG_TRACE( '[ChannelList] sync position[%s] to current channel[%s %s]'% ( chIndex, iChannel.mNumber, iChannel.mName ) )
+
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ), iChannel.mName )
+					if not self.mChannelList or len( self.mChannelList ) < 1 :
+						label = MR_LANG( 'No Channel' )
+
+					self.mNavChannel = iChannel
+					self.UpdateChannelAndEPG( )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+					isFail = False
+
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+
+		return isFail
 
 
 	def ShowHotkeys( self ) :
@@ -3999,8 +4060,12 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def StartAsyncEPG( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG ) 				
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
 		self.mAsyncTuneTimer.start( )
+
+		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mNavOffsetTopIndex != self.GetOffsetPosition( ) :
+			updateEpgInfo = threading.Timer( 0.05, self.LoadByCurrentEPG )
+			updateEpgInfo.start( )
 
 
 	def StopAsyncEPG( self ) :
@@ -4168,7 +4233,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ReloadChannelList( self, aInit = FLAG_SLIDE_OPEN ) :
 		self.mListItems = None
-		self.mCtrlListCHList.reset( )
+		#self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )
 		mainIdx = self.mUserSlidePos.mMain
 		subIdx  = self.mUserSlidePos.mSub
