@@ -33,5 +33,6 @@
 		<!--setting id="DISPLAY_EXTEND_INFO" type="bool" label="1145" default="false" /-->
 		<!--setting id="DISPLAY_CHANNEL_NUMBER" type="bool" label="1148" default="true" /-->
 		<setting id="WEB_INTERFACE" type="bool" label="1144" default="false" />
+		<setting id="SURFACE_24" type="bool" label="1144" default="false" />
 	</category>
 </settings>
