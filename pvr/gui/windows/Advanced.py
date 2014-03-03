@@ -141,6 +141,21 @@ class Advanced( SettingWindow ) :
 				self.ControlSelect( )
 			elif groupId == E_SpinEx02 :
 				self.SetSettingFromNumber( 'WEB_INTERFACE', self.GetSelectedIndex( E_SpinEx02 ) )
+			elif groupId == E_SpinEx03 :
+				if self.GetSelectedIndex( E_SpinEx03 ) == 1 :
+					self.mCommander.Player_SetResolution24( 1 )
+					time.sleep( 1 )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIDEO_RESTORE )
+					dialog.doModal( )
+
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.SetSettingFromNumber( 'SURFACE_24', self.GetSelectedIndex( E_SpinEx03 ) )
+					else :
+						control = self.getControl( E_SpinEx03 + 3 )
+						control.selectItem( 0 )
+					self.mCommander.Player_SetResolution24( 0 )
+				else :
+					self.SetSettingFromNumber( 'SURFACE_24', self.GetSelectedIndex( E_SpinEx03 ) )
 
 		elif selectedId == E_HBBTV :
 			pass
@@ -187,12 +202,13 @@ class Advanced( SettingWindow ) :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04 ]
+			hideControlIds = [ E_SpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
