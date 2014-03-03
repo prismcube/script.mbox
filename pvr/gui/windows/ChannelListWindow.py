@@ -171,7 +171,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
 
 		#self.mCtrlListCHList.reset( )
-		isUpdatePosition = self.UpdateCurrentPosition( )
+		isUpdatePosition = self.InitCurrentPosition( )
 
 		self.mIsTune = False
 		self.mIsMark = True
@@ -514,6 +514,37 @@ class ChannelListWindow( BaseWindow ) :
 		self.mSetEditMode = aMode
 
 
+	def InitCurrentPosition( self ) :
+		isFail = True
+		if not self.mInitialized :
+			LOG_TRACE( '[ChannelList] passed, not selected position by first load' )
+			return isFail
+
+		try :
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				chIndex = self.GetChannelByIDs( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, True )
+				#if self.mChannelList and len( self.mChannelList ) > chIndex and self.mCtrlListCHList.getSelectedPosition( ) != chIndex :
+				if chIndex > -1 and self.mChannelList and len( self.mChannelList ) > chIndex :
+					#self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chIndex, E_TAG_SET_SELECT_POSITION )
+					self.mCtrlListCHList.selectItem( chIndex )
+					LOG_TRACE( '[ChannelList] sync position[%s] to current channel[%s %s]'% ( chIndex, iChannel.mNumber, iChannel.mName ) )
+
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ), iChannel.mName )
+					if not self.mChannelList or len( self.mChannelList ) < 1 :
+						label = MR_LANG( 'No Channel' )
+
+					self.mNavChannel = iChannel
+					self.UpdateChannelAndEPG( )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+					isFail = False
+
+		except Exception, e :
+			LOG_ERR( '[ChannelList] except[%s]'% e )
+
+		return isFail
+
+
 	def LoadChannelListHash( self ) :
 		self.mChannelListHash = {}
 		self.mChannelListHashIDs = {}
@@ -606,22 +637,19 @@ class ChannelListWindow( BaseWindow ) :
 		if not epgList or len( epgList ) < 1 :
 			isUpdate = False
 			LOG_TRACE( '[ChannelList] get epglist None' )
-			print '[ChannelList] get epglist None'
 
 		if isUpdate :
-			self.mEPGList = epgList
-			for iEPG in self.mEPGList :
+			for iEPG in epgList :
 				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
 				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
 
 			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
-			print '[ChannelList] epgList COUNT[%s]'% len( epgList )
 
 		#self.mLock.release( )
 		if isUpdate :
 			self.CloseBusyDialog( )
-		LOG_TRACE( '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime ) )
-		print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
+
+		#print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
 
 		self.UpdateChannelNameWithEPG( aUpdateAll )
 
@@ -685,6 +713,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mItemCount = self.mListHeight / self.mItemHeight
 			#thread = threading.Timer( 0, self.LoadByCurrentEPG, [True] )
 			#thread.start( )
+		LOG_TRACE( '[ChannelList]updatePosition[%s]'% aUpdatePosition )
 
 		try :
 			#first get is used cache, reason by fast load
@@ -2760,8 +2789,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aUpdateAll :
 			self.CloseBusyDialog( )
-		LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime ) )
-		print '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime )
+
+		#print '[ChannelList] UpdateChannelNameWithEPG------testTime[%s]'% ( time.time() - startTime )
 
 
 	@RunThread
@@ -4009,41 +4038,10 @@ class ChannelListWindow( BaseWindow ) :
 			self.mEnableProgressThread = False				
 			self.mPlayProgressThread.join( )
 
-		self.StopAsyncEPG( )
-		self.StopAsyncSort( )
+		threading.Timer( 0, self.StopAsyncEPG ).start( )
+		threading.Timer( 0, self.StopAsyncSort ).start( )
 		self.SetVideoRestore( )
 		#WinMgr.GetInstance( ).CloseWindow( )
-
-
-	def UpdateCurrentPosition( self ) :
-		isFail = True
-		if not self.mInitialized :
-			LOG_TRACE( '[ChannelList] passed, not selected position by first load' )
-			return isFail
-
-		try :
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				chIndex = self.GetChannelByIDs( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, True )
-				#if self.mChannelList and len( self.mChannelList ) > chIndex and self.mCtrlListCHList.getSelectedPosition( ) != chIndex :
-				if chIndex > -1 and self.mChannelList and len( self.mChannelList ) > chIndex :
-					#self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chIndex, E_TAG_SET_SELECT_POSITION )
-					self.mCtrlListCHList.selectItem( chIndex )
-					LOG_TRACE( '[ChannelList] sync position[%s] to current channel[%s %s]'% ( chIndex, iChannel.mNumber, iChannel.mName ) )
-
-					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ), iChannel.mName )
-					if not self.mChannelList or len( self.mChannelList ) < 1 :
-						label = MR_LANG( 'No Channel' )
-
-					self.mNavChannel = iChannel
-					self.UpdateChannelAndEPG( )
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
-					isFail = False
-
-		except Exception, e :
-			LOG_ERR( '[ChannelList] except[%s]'% e )
-
-		return isFail
 
 
 	def ShowHotkeys( self ) :
