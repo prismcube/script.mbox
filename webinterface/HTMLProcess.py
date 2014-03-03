@@ -740,6 +740,11 @@ class Epg( WebPage ) :
 				content += " : "
 				content += TimeToString( info.mStartTime, 1)
 				content += '</div>'
+
+				content += '<div class="epgDescription">'
+				if info.mEventDescription and str(info.mEventDescription) != '(null)':
+					content += str(info.mEventDescription)
+				content += '</div>'
 	
 		return self.epgTemplate( content )
 
@@ -751,11 +756,12 @@ class Epg( WebPage ) :
 			<head>
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<body>
 			<div id='epgWrapper'>
 
 				<div id='epgTop'>
-					<p>PrismCube Web UI</p>
+					<p>PrismCube EPG Data</p>
 				</div>
 
 				%s
@@ -793,7 +799,12 @@ class Recordings( WebPage ) :
 				recDuration += 1
 			try :				
 				content += "<tr>"
-				content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+
+				try :
+					content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+				except :
+					content += '	<td>[No Image]</td>'
+					
 				content += '	<td>'
 				content += '	<table width="100%" border="0" cellpadding="5">'
 				content += '	<tr>'
@@ -880,6 +891,11 @@ class Timer( WebPage ) :
 						content += '&nbsp;&nbsp;&nbsp;&nbsp;'
 
 					content += '</td></tr>'
+
+				elif timer.mTimerType == 7 :
+
+					content += '<tr>'
+					content += '<td colspan="2" align="left" class="timerView">View Only</td></tr>'
 				
 				content += '	</table>'
 				content +=' 	</td>'
