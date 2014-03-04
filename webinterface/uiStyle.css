@@ -216,6 +216,30 @@
 	/* EPG Page */
 	/* ======================================================== */	
 	
-	
+
+	/* EPG Page */
+	/* ======================================================== */	
+
+	.liveTitle {
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: normal;
+		padding: 7px;
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.liveContent {
+		font-family: arial;
+		font-size: 0.9em;
+		padding-top: 10px;
+	}
+
+	.vlcLink {
+		font-family: arial;
+		font-size: 0.8em;
+	}
+
+	/* EPG Page */
+	/* ======================================================== */	
 	
 	
