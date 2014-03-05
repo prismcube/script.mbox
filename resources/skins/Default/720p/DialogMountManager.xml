@@ -33,10 +33,12 @@
 				<control type="group">
 					<posx>0</posx>
 					<posy>20</posy>
-					<include>DialogSpinEx01</include>
-					<include>DialogSpinEx02</include>
 					<include>DialogInput03</include>
 					<include>DialogInput04</include>
+					<include>DialogInput05</include>
+					<include>DialogSpinEx01</include>
+					<include>DialogSpinEx02</include>
+					<include>DialogInput06</include>
 				</control>
 			</control>
 		</control>
