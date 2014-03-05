@@ -6,6 +6,7 @@ Search for window name
  E_LIVEWindow
  E_Timeshift
  E_Configure
+ E_Advanced
  E_TunerConfiguration
  E_Archive
  E_SystemInfo
@@ -47,7 +48,7 @@ Search for window name
 
 		<!-- E_SettingWindowBackground -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000)</visible>
+			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000) + !substring(Window.Property(CurrentWindow),4900000)</visible>
 			<include>DefaultSettingWindowEffect</include>
 			<posx>80</posx>
 			<posy>110</posy>
@@ -156,6 +157,17 @@ Search for window name
 				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>1000</posx>
+				<posy>660</posy>
+				<width>500</width>
+				<font>font28_title</font>
+				<label>$LOCALIZE[SCRIPT1200]</label>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<visible>substring(Window.Property(LiveStream),true)</visible>
 			</control>
 			<control type="image">
 				<posx>30r</posx>
@@ -316,7 +328,11 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1103</label>
 						</control>
-						<control type="image" id="1290109">
+						<control type="button" id="1290109">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Advanced</label>
+						</control>
+						<control type="image" id="1290110">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>
@@ -4042,6 +4058,156 @@ Search for window name
 					<posx>290</posx>
 					<posy>60</posy>
 					<control type="label" id="1501003">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>745</width>
+						<height>45</height>
+						<font>font13_title</font>
+						<textcolor>blue</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>150</scrollspeed>
+						<scrollsuffix>  |  </scrollsuffix>
+					</control>
+					<!--
+					<include>SpinEx01</include>
+					<include>SpinEx02</include>
+					<include>SpinEx03</include>
+					<include>SpinEx04</include>
+					<include>SpinEx05</include>
+					<include>SpinEx06</include>
+					<include>Input01</include>
+					<include>Input02</include>
+					<include>Input03</include>
+					<include>Input04</include>
+					<include>Input05</include>
+					<include>Input06</include>
+					<include>Input07</include>
+					-->
+				</control>
+			</control>
+		</control>
+
+		<!-- *********** E_Advanced ********** -->	
+		<control type="group" id="4900000">
+			<visible>substring(Window.Property(CurrentWindow),4900000)</visible>
+			<defaultcontrol always="true">4909000</defaultcontrol>
+			<control type="group">
+				<include>DefaultSettingWindowEffect</include>
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
+				<posx>90</posx>
+				<posy>50</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1100</width>
+					<height>640</height>
+					<texture border="20">DialogBack.png</texture>
+				</control>
+				<control type="image">
+					<description>LOGO</description>
+					<posx>30</posx>
+					<posy>15</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>Confluence_Logo.png</texture>
+				</control>
+				<!--
+				<control type="image">
+					<posx>233</posx>
+					<posy>581</posy>
+					<width>18</width>
+					<height>19</height>
+					<texture>HomeHasSub.png</texture>
+					<colordiffuse>FFFFFFFF</colordiffuse>
+					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+				</control>
+				-->
+				<control type="list" id="4909000">
+					<posx>10</posx>
+					<posy>90</posy>
+					<width>260</width>
+					<height>481</height>
+					<onup>4909000</onup>
+					<ondown>4909000</ondown>
+					<itemlayout height="60" width="260">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>260</width>
+							<height>60</height>
+							<texture border="5">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>250</posx>
+							<posy>15</posy>
+							<width>240</width>
+							<height>25</height>
+							<font>font13_title</font>
+							<textcolor>grey3</textcolor>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="60" width="260">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>260</width>
+							<height>60</height>
+							<texture border="5">MenuItemFO.png</texture>
+							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(4909000)">Conditional</animation>
+						</control>
+						<control type="label">
+							<posx>250</posx>
+							<posy>15</posy>
+							<width>240</width>
+							<height>25</height>
+							<font>font13_title</font>
+							<textcolor>white</textcolor>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+				<control type="image">
+					<posx>268</posx>
+					<posy>14</posy>
+					<width>800</width>
+					<height>612</height>
+					<texture border="5">black-back2.png</texture>
+				</control>
+				<control type="image">
+					<posx>266</posx>
+					<posy>15</posy>
+					<width>804</width>
+					<height>90</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>GlassTitleBar.png</texture>
+				</control>
+				<control type="label">
+					<description>header label</description>
+					<posx>300</posx>
+					<posy>20</posy>
+					<width>740</width>
+					<height>30</height>
+					<font>font14</font>
+					<!--label>$LOCALIZE[SCRIPT1055] - $INFO[Container(1509000).ListItem.Label]</label-->
+					<label>$INFO[Container(4909000).ListItem.Label]</label>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+				<control type="group" id="4909010">
+					<posx>290</posx>
+					<posy>60</posy>
+					<control type="label" id="4901003">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>745</width>

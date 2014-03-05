@@ -49,6 +49,7 @@ class NullWindow( BaseWindow ) :
 		if GetSetting( 'DISPLAY_EVENT_LIVE' ).lower( ) == 'true'.lower( ) :
 			self.mNewEPGAlarmEnabled = True
 		self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
+		self.setProperty( 'LiveStream', GetSetting( 'LIVE_STREAM' ) )
 		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
