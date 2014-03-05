@@ -29,6 +29,7 @@
 		<setting id="DISPLAY_CLOCK_NULLWINDOW" type="bool" label="1142" default="false" />
 		<setting id="DISPLAY_CLOCK_VFD" type="bool" label="1143"  default="false" />
 		<setting id="DISPLAY_EVENT_LIVE" type="bool" label="1144" default="false" />
+		<setting id="SURFACE_24" type="bool" label="1167" default="false" />
 		<!--setting id="DISPLAY_EXTEND_INFO" type="bool" label="1145" default="false" /-->
 		<!--setting id="DISPLAY_CHANNEL_NUMBER" type="bool" label="1148" default="true" /-->
 	</category>
