@@ -1016,7 +1016,7 @@
 	<string id="3499">Změna kódu PIN</string>
 	<string id="3500">Pokud zvolíte volbu 'Zap', PRISMCUBE RUBY po změně programu automaticky spustí nahrávání timeshift</string>
 	<string id="3501">Zvolte preferovanou velikost timeshiftu</string>
-	<string id="3502">Zvolte délku záznamu pro program, které nemá žádné EPG informace</string>
+	<string id="3502">Zvolte délku záznamu pro program, který nemá žádné EPG informace</string>
 	<string id="3503">Nastavení času před - nahráváním EPG kanálů</string>
 	<string id="3504">Nastavení času po skončení nahrávání EPG kanálů</string>
 	<string id="3505">Dolby Audio</string>
