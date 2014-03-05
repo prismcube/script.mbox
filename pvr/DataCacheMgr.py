@@ -2250,6 +2250,18 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
 
+	def Record_GetNetworkVolume( self ) :
+		return self.mCommander.Record_GetNetworkVolume( )
+
+
+	def Record_AddNetworkVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_AddNetworkVolume( aENetworkVolume )
+
+
+	def Record_DeleteNetworkVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_DeleteNetworkVolume( aENetworkVolume )
+
+
 	def Timer_StopRecordingByRecordKey( self, aKey ) :
 		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
 

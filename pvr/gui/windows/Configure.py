@@ -534,6 +534,10 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
 	 			dialog.doModal( )
 
+		elif selectedId == E_RECORDING_OPTION and groupId == E_Input01 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOUNT_MANAGER )
+			dialog.doModal( )
+
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
 
@@ -646,10 +650,18 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				#ToDO : default path, get mount path
+				defaultPath = MR_LANG( 'None' )
+				self.AddInputControl( E_Input01, 'Record Path', defaultPath, MR_LANG( 'Set the record path from mount to remote file system' ) )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01 ]
+				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )

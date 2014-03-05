@@ -499,6 +499,7 @@ E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 E_V1_2_APPLY_PIP = True
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 E_SUPPORT_MEDIA_PLAY_AV_SWITCH = False
+E_SUPPORT_EXTEND_RECORD_PATH = True
 
 ############################ Global Function For GUI ############################
 
