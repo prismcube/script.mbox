@@ -143,6 +143,13 @@
 		font-weight: bold;
 	}
 
+	.weeklyInfo {
+		font-family: arial;
+		font-size: 0.9em;
+		font-weight: normal;
+		color : red;
+	}
+
 	.timerTime {
 		font-family: arial;
 		font-size: 1.3em;
@@ -157,6 +164,13 @@
 		font-weight: bold;
 	}
 
+	.timerView {
+		font-family: arial;
+		font-size: 0.9em;
+		font-weight: normal;
+		color: green;
+	}
+
 	/* Remote Control */
 	/* ======================================================== */	
 
@@ -169,10 +183,10 @@
 	}
 
 	#epgTop {
-		height: 90px;
+		height: 50px;
 		background-color: #525252;
 		font-family: arial;
-		font-size: 2.0em;
+		font-size: 1.8em;
 		text-align: center;
 		font-weight: bold;
 		color: white;
@@ -183,12 +197,49 @@
 		font-family: arial;
 		font-size: 1.0em;
 		font-weight: bold;
+	}
+
+	.epgDescription {
+		padding: 10px;
+		font-family: arial;
+		font-size: 0.8em;
 		border-bottom: 1px dotted #dfdfdf;
+	}
+
+	.noEpg {
+		font-family: arial;
+		font-weight: bold;
+		font-size: 1.2em;
+		color: red;
+	}
+	
+	/* EPG Page */
+	/* ======================================================== */	
+	
+
+	/* EPG Page */
+	/* ======================================================== */	
+
+	.liveTitle {
+		font-family: arial;
+		font-size: 1.0em;
+		font-weight: normal;
+		padding: 7px;
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.liveContent {
+		font-family: arial;
+		font-size: 0.9em;
+		padding-top: 10px;
+	}
+
+	.vlcLink {
+		font-family: arial;
+		font-size: 0.8em;
 	}
 
 	/* EPG Page */
 	/* ======================================================== */	
-	
-	
 	
 	
