@@ -623,7 +623,7 @@ class ChannelListWindow( BaseWindow ) :
 							#chNumbers.append( self.mChannelList[offsetIdx].mNumber )
 
 						else :
-							LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mNavOffsetTopIndex, offsetIdx, listCount ) )
+							#LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mNavOffsetTopIndex, offsetIdx, listCount ) )
 							break
 					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
 
@@ -2750,7 +2750,7 @@ class ChannelListWindow( BaseWindow ) :
 			updateStart = 0
 			updateEnd = len( self.mListItems ) - 1
 
-		LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
+		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
 		if aUpdateAll :
 			self.OpenBusyDialog( )
