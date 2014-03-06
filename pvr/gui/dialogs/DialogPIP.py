@@ -138,6 +138,12 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
 		self.mCtrlListChannelPIP   = self.getControl( CTRL_ID_LIST_CHANNEL_PIP )
 
+		#init tunable list : loop though or record full
+		if self.mDataCache.Record_GetRunningRecorderCount( ) > 1 or \
+		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH :
+			self.mDataCache.PIP_SetTunableList( )
+			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )
+
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.Channel_GetCurrentByStartOnFirst( )
 
