@@ -31,6 +31,11 @@ class SimpleChannelList( BaseWindow ) :
 		self.mEnableAysncTimer = True		
 		self.mFirstTune = False
 		self.mEPGUpdateTimer = None		
+		try :
+			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
+		except Exception, e :
+			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+			self.mAutoConfirm = False
 
 		self.mCtrlBigList = self.getControl( LIST_ID_BIG_CHANNEL )
 		#self.SetSingleWindowPosition( E_SIMPLE_CHANNEL_LIST_BASE_ID )
@@ -358,6 +363,11 @@ class SimpleChannelList( BaseWindow ) :
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 			self.mFirstTune = True
+
+			if self.mAutoConfirm :
+				self.Close( )
+				return
+
 		self.RestartEPGUpdateTimer( )
 
 
