@@ -134,7 +134,7 @@
 	<string id="1134">Wyświetl listę zaprogramowanych zdarzeń </string>
 	<string id="1135">Dodaj zdarzenie ręcznie</string>
 	<string id="1136">Usuń timer</string>
-	<string id="1137">Instalacja niezweryfikanych dodatków może spowolić pracę twojego odbiornika</string>
+	<string id="1137">Instalacja niezweryfikanych dodatków może spowolnić pracę twojego odbiornika</string>
 	<string id="1138">Naciśnij lewy przycisk na pilocie, aby ustawić fokus OK / Anuluj</string>
 	<string id="1139">Dodatkowe opcje</string>
 	<string id="1140">Pokaż RSS w menu głównym</string>
@@ -905,13 +905,13 @@
 	<string id="3389">Otrzymuj informacje z serwera RSS gdy tylko są dostępne</string>
 	<string id="3390">Wyświetla zegar u góry ekranu podczas oglądania</string>
 	<string id="3391">Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu</string>
-	<string id="3392">Wyświetla następne powiadomienie EPG na ekranie podczas oglądania</string>
-	<string id="3393">Przekaz kanałów na żywo (wymagany restart)</string>
-	<string id="3394">Oglądaj na żywo strumień kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych</string>
+	<string id="3392">Wyświetla następne powiadomienie EPG podczas oglądania</string>
+	<string id="3393">Streaming kanałów (wymagany restart)</string>
+	<string id="3394">Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych</string>
 	<string id="3395">Open web interface</string>
 	<string id="3396">Web Interface (wymagany restart)</string>
-	<string id="3397"></string>
-	<string id="3398"></string>
+	<string id="3397">Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału</string>
+	<string id="3398">Automatyczny format 1080 24p</string>
 	<string id="3399">Konfiguracja tunera %d : %s</string>
 	<string id="3400">Dla przełącznika DiSEqC 1.0 można skonfigurować do 4 satelitów</string>
 	<string id="3401">Pojedynczy konwerter może odbierać sygnał tylko z jednego satelity</string>
