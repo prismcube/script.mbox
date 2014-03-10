@@ -3053,7 +3053,7 @@ Search for window name
 						<texturenofocus>scroll-left.png</texturenofocus>
 						<onleft></onleft>
 						<onright>1400706</onright>
-						<onup>1003621</onup>
+						<onup>1003630</onup>
 						<ondown></ondown>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
@@ -3104,7 +3104,7 @@ Search for window name
 						<texturenofocus>scroll-right.png</texturenofocus>
 						<onleft>1400702</onleft>
 						<onright></onright>
-						<onup>1003621</onup>
+						<onup>1003630</onup>
 						<ondown></ondown>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
