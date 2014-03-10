@@ -133,7 +133,7 @@
 "The Timer displays the list of all your timer recordings";"Timer zeigt Ihnen die Liste Ihrer Timer Programmierungen ";;;;"Časovač zobrazuje seznam všech vašich časových nahrávek ";;"Wyświetl listę zaprogramowanych zdarzeń ";;;;;"Časovač zobrazuje zoznam všetkých vašich časových nahrávok ";;1134
 "Add Manual Timer";"Manuellen Timer hinzufügen";"Ajouter un minuteur manuel";"Aggiungi Timer";"Añadir temporizador manual";"Přidat časovač ručně";"Add Manual Timer";"Dodaj zdarzenie ręcznie";"Add Manual Timer";"Добавить Таймер Вручную";"Add Manual Timer";"Add Manual Timer";"Pridať časovač ručne";"Додати Таймер Вручну";1135
 "Delete Timer";"Timer löschen";"Supprimer un minuteur";"Elimina Timer";"Borrar temporizador";"Vymazat časovač";"Delete Timer";"Usuń timer";"Delete Timer";"Удалить Таймер";"Delete Timer";"Delete Timer";"Vymazať časovač";"Видалити Таймер";1136
-"Installing unverified addons may slow your box down";"Installation ungeprüfter Addons können Ihre Box verlangsamen";;;;"Instalace neověřených doplňků může zpomalit váš box ";;"Instalacja niezweryfikanych dodatków może spowolić pracę twojego odbiornika";;;;;"Inštalácia neoverených doplnkov môže spomaliť váš box";;1137
+"Installing unverified addons may slow your box down";"Installation ungeprüfter Addons können Ihre Box verlangsamen";;;;"Instalace neověřených doplňků může zpomalit váš box ";;"Instalacja niezweryfikanych dodatków może spowolnić pracę twojego odbiornika";;;;;"Inštalácia neoverených doplnkov môže spomaliť váš box";;1137
 "Press the left button on the remote to set focus to OK / Cancel";"Drücken Sie die Pfeil Taste nach Links auf der Fernbedienung, um auf OK / Abbrechen zu gelangen";;;;"Stiskněte šipku doleva na dálkovém ovladači pro potvrzení OK / Zrušit ";;"Naciśnij lewy przycisk na pilocie, aby ustawić fokus OK / Anuluj";;;;;"Stlačte šípku doľava na diaľkovom ovládači pre potvrdenie OK / Zrušiť";;1138
 "Extra Options";"Extra Optionen";;;;"Extra možnosti ";;"Dodatkowe opcje";;;;;"Extra možnosti";;1139
 "Show RSS on Main Menu";"RSS im Hauptmenü anzeigen";;;;"Ukázat RSS v hlavním menu ";;"Pokaż RSS w menu głównym";;;;;"Ukázať RSS v Hlavnom menu";;1140
@@ -161,10 +161,10 @@
 "Grid";"Gitter";"Grille";"Griglia";"Parrilla";"Mřížka";"Grid";"Siatka";"Grid";"Сетка";"Grid";"Grid";"Mriežka";"Сітка";1162
 "Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Teraz";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
 "Following";"Folgen";"Suivant";"Seguito";"Siguiente";"Následující";"Following";"Później";"Following";"Следующий";"Following";"Following";"Nasledujúca";"Наступний";1164
-"Show more EPG";;;;;"Ukaž víc EPG";;;;;;;"Ukáž viac EPG";;1165
-"LOADING";;;;;;;;;;;;;;1166
-"Automatic 1080 24p";;;;;;;;;;;;;;1167
-"Live Streaming";;;;;;;;;;;;;;1200
+"Show more EPG";;;;;"Ukaž víc EPG";;"Pokaż więcej EPG";;;;;"Ukáž viac EPG";;1165
+"LOADING";;;;;;;"ŁADOWANIE";;;;;;;1166
+"Automatic 1080 24p";;;;;;;"Automatyczny format 1080 24p";;;;;;;1167
+"Live Streaming";;;;;;;"Przekaz na żywo";;;;;;;1200
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -900,19 +900,19 @@
 "Start Search";"Suchlauf Starten";"Commencer la recherche";"Start Search";"Iniciar busqueda";"Spustit vyhledávání";"Start Search";"Start wyszukiwania";"Start Search";"Начать Поиск";"Start Search";"Start Search";"Spustiť vyhľadávanie";"Почати Пошук";3382
 "DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"Commutateur DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 přepínač";"DiSEqC 1.0 Switch";"Przełącznik DiSEqC 1.0";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Переключатель";"DiSEqC 1.0 Switch";"DiSEqC 1.0 Switch";"DiSEqC 1.0 prepínač";"DiSEqC 1.0 Перемикач";3383
 "Select the DiSEqC switch which your satellite is connected to";"Wählen Sie den DiSEqC switch mit dem Ihre Anlage ausgerüstet ist";"Choisissez le commutateur DiSEqC auquel votre satellite est connecté";"Selezionare il DiSEqC collegato al";"Seleccione el conmutador DiSEqC que su satélite está conectado a";"Vyberte DiSEqC přepínač, který používáte";"Select the DiSEqC switch which your satellite is connected to";"Wybierz przełącznik DiSEqC wykorzystywany w instalacji antenowej";"Select the DiSEqC switch which your satellite is connected to";"Задайте соответствующие настройки DISEqC переключателя для спутника";"Select the DiSEqC switch which your satellite is connected to";"Select the DiSEqC switch which your satellite is connected to";"Vyberte DiSEqC prepínač, ktorý používate";"Задайте відповідні налаштування DISEqC перемикача для супутника";3384
-"Experimental";;;;;;;;;;;;;;3385
-"You can customise the appearance of PRISMCUBE RUBY";;;;;;;;;;;;;;3386
-"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;;;;;;;;3387
-"Advanced";;;;;;;;;;;;;;3388
-"Receive information from the RSS server as soon as it is updated";;;;;;;;;;;;;;3389
-"Allows you to display clock on the top middle of live screen";;;;;;;;;;;;;;3390
-"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;;;;;;;;3391
-"Allows you to display next EPG notification on live screen";;;;;;;;;;;;;;3392
-"Live Streaming (restart required)";;;;;;;;;;;;;;3393
-"Watch live stream of TV channels from PC or mobile devices";;;;;;;;;;;;;;3394
-"Open web interface";;;;;;;;;;;;;;3395
-"Web Interface (restart required)";;;;;;;;;;;;;;3396
-"Allows you to playback 1080 24p video without having to switch the video output manually";;;;;;;;;;;;;;3397
+"Experimental";;;;;;;"Ustawienia eksperymentalne";;;;;;;3385
+"You can customise the appearance of PRISMCUBE RUBY";;;;;;;"Dostosuj wygląd PRISMCUBE RUBY";;;;;;;3386
+"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;;;3387
+"Advanced";;;;;;;"Zaawansowane";;;;;;;3388
+"Receive information from the RSS server as soon as it is updated";;;;;;;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;;;3389
+"Allows you to display clock on the top middle of live screen";;;;;;;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;;;3390
+"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;;;3391
+"Allows you to display next EPG notification on live screen";;;;;;;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;;;3392
+"Live Streaming (restart required)";;;;;;;"Streaming kanałów (wymagany restart)";;;;;;;3393
+"Watch live stream of TV channels from PC or mobile devices";;;;;;;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;;;3394
+"Open web interface";;;;;;;"Open web interface";;;;;;;3395
+"Web Interface (restart required)";;;;;;;"Web Interface (wymagany restart)";;;;;;;3396
+"Allows you to playback 1080 24p video without having to switch the video output manually";;;;;;;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;;;3397
 "Tuner %d Config : %s";"Tuner %d Konfig : %s";"Configuration %d Tuner : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Konfiguracja tunera %d : %s";"Tuner %d Config : %s";"Тюнер %d Конфигурация : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Тюнер %d Конфігурація : %s";3398
 "You can only have 4 satellites for DiSEqC 1.0";"Sie können nur 4 Satellites bei DiSEqC 1.0 einstellen";"Vous ne pouvez configurer que 4 satellites pour le DiSEqC 1.0";"Si può avere solo 4 satelliti per DiSEqC 1.0";"Tu solo puedes tener 4 satelites para DiSEqC 1.0";"Můžete zvolit maximálně 4 satelity při volbě DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Dla przełącznika DiSEqC 1.0 można skonfigurować do 4 satelitów";"You can only have 4 satellites for DiSEqC 1.0";"Доступно лишь 4 спутника для DISEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Môžete zvoliť maximálne 4 satelity pri voľbe DiSEqC 1.0";"Доступно лише 4 супутники для DISEqC 1.0";3399
 "You can only have 1 satellite for Simple LNB";"Sie können nur 1 Satellite für Einfaches LNB einstellen";"Vous ne pouvez configurer qu'un satellite pour le LNB Simple";"Si può avere solo 1 satellite per semplice LNB";"Tu solo puedes tener 1 satelite para LNB Simple";"Můžete zvolit maximálně jeden satelit pro jednoduché LNB";"You can only have 1 satellite for Simple LNB";"Pojedynczy konwerter może odbierać sygnał tylko z jednego satelity";"You can only have 1 satellite for Simple LNB";"Доступен лишь один спутник для режима Один Конвертор LNB";"You can only have 1 satellite for Simple LNB";"You can only have 1 satellite for Simple LNB";"Môžete zvoliť maximálne jeden satelit pre jednoduché LNB";"Доступний лише один супутник для режиму Один Конвертор LNB";3400
