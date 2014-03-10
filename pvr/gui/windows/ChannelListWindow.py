@@ -2803,6 +2803,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mShowEPGInfo and ( loop % 300 ) == 0 : # 60sec
 				self.LoadByCurrentEPG( )
+				self.RestartAsyncEPG( )
 
 			time.sleep( 0.2 )
 			loop += 1
