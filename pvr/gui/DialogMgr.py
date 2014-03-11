@@ -260,9 +260,9 @@ class DialogMgr( object ) :
 				return DialogServiceInfo( 'DialogServiceInfo.xml', self.scriptDir )
 
 
-			#elif aDialogId == DIALOG_ID_TEST_WORK :
-			#	#from pvr.gui.dialogs.DialogTestCode import DialogTestCode
-			#	#return DialogTestCode( 'DialogTestCode.xml', self.scriptDir )
+			elif aDialogId == DIALOG_ID_TEST_WORK :
+				from pvr.gui.dialogs.DialogTestCode import DialogTestCode
+				return DialogTestCode( 'DialogTestCode4.xml', self.scriptDir )
 			#	from pvr.gui.windows.PIPWindow import DialogTestCode
 			#	return DialogTestCode( 'DialogTestCode3.xml', self.scriptDir )
 

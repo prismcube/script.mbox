@@ -59,6 +59,7 @@ class IpParser( object ) :
 					return NETWORK_WIRELESS
 				elif line.startswith( 'auto eth0' ) :
 					return NETWORK_ETHERNET
+			return NETWORK_ETHERNET
 		except Exception, e :
 				if inputFile.closed == False :
 					inputFile.close( )
