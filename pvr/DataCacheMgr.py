@@ -2255,11 +2255,15 @@ class DataCacheMgr( object ) :
 
 
 	def Record_AddNetworkVolume( self, aENetworkVolume ) :
-		return self.mCommander.Record_AddNetworkVolume( aENetworkVolume )
+		return self.mCommander.Record_AddNetworkVolume( [aENetworkVolume] )
 
 
 	def Record_DeleteNetworkVolume( self, aENetworkVolume ) :
-		return self.mCommander.Record_DeleteNetworkVolume( aENetworkVolume )
+		return self.mCommander.Record_DeleteNetworkVolume( [aENetworkVolume] )
+
+
+	def Record_SetDefaultVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_SetDefaultVolume( [aENetworkVolume] )
 
 
 	def Timer_StopRecordingByRecordKey( self, aKey ) :

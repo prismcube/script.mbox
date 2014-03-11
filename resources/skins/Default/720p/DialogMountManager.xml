@@ -17,30 +17,79 @@
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
-				<include>DialogInput01</include>
+				<include>DialogInput03</include>
+				<include>DialogInput02</include>
+
+				<control type="group">
+					<posx>10</posx>
+					<posy>150</posy>
+					<control type="label" id="201">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Control.Label(201)]</label>
+						<textcolor>grey3</textcolor>
+						<font>font13</font>
+					</control>
+					<control type="group">
+						<posx>200</posx>
+						<posy>0</posy>
+						<control type="progress" id="300">
+							<description>Progressbar</description>
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+							<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						</control>
+						<control type="label" id="301">
+							<posx>100</posx>
+							<posy>0</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Control.Label(301)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font13</font>
+						</control>
+						<control type="label" id="302">
+							<posx>320</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>40</height>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[Control.Label(301)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font13</font>
+						</control>
+					</control>
+				</control>
+
 				<control type="image">
 					<posx>0</posx>
-					<posy>122</posy>
+					<posy>192</posy>
 					<width>510</width>
 					<height>3</height>
 					<texture>separator2.png</texture>
 				</control>
 				<control type="group">
 					<posx>0</posx>
-					<posy>20</posy>
-					<include>DialogInput02</include>
-				</control>
-				<control type="group">
-					<posx>0</posx>
-					<posy>20</posy>
-					<include>DialogInput03</include>
+					<posy>40</posy>
 					<include>DialogInput04</include>
 					<include>DialogInput05</include>
+					<include>DialogInput06</include>
 					<include>DialogSpinEx01</include>
 					<include>DialogSpinEx02</include>
-					<include>DialogInput06</include>
+					<include>DialogInput07</include>
 				</control>
 			</control>
+			
 		</control>
 	</controls>
 </window>

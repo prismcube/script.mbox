@@ -1321,7 +1321,7 @@ def IsIPv4( address ) :
 	return True
 
 
-def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
+def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1345,7 +1345,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
 	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
-		os.system( '/bin/umount %s'% aSmbPath )
+		os.system( '/bin/umount -f %s'% aSmbPath )
 		os.system( 'sync' )
 
 	CreateDirectory( aSmbPath )
@@ -1357,7 +1357,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb' ) :
 		return zipFile
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
-	if not CheckDirectory( zipFile ) :
+	if isCheck and ( not CheckDirectory( zipFile ) ) :
 		LOG_TRACE( 'file not found zipPath[%s]'% zipFile )
 		zipFile = ''
 
