@@ -8,10 +8,13 @@ class ElmoCurrentTime( Webinterface ) :
 		self.currenttime = datetime.fromtimestamp( self.mDataCache.Datetime_GetLocalTime() )
 
 	def xmlResult(self) :
-		xml = ''
-		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n';
-		xmlstr += '<e2currenttime>\n';
-		xmlstr += 	str(self.currenttime.hour) + ':' + str(self.currenttime.minute) + ':' + str(self.currenttime.second);
-		xmlstr += '</e2currenttime>\n';
+		
+		xmlstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+		xmlstr += '<e2currenttime>\n'
+		xmlstr += 	str(self.currenttime.hour) + ':' + str(self.currenttime.minute) + ':' + str(self.currenttime.second)
+		xmlstr += '</e2currenttime>\n'
+
+		print self.currenttime
+		print self.mDataCache.Datetime_GetLocalTime()
 	
 		return xmlstr
