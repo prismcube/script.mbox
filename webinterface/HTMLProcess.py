@@ -96,7 +96,7 @@ class WebPage( object ) :
 				
 				<div id='menu'>
 					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
-					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
@@ -286,7 +286,7 @@ class Channel( WebPage ) :
 				
 				<div id='menu'>
 					<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
-					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='/stream/stream.m3u' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
@@ -741,6 +741,11 @@ class Epg( WebPage ) :
 				content += " : "
 				content += TimeToString( info.mStartTime, 1)
 				content += '</div>'
+
+				content += '<div class="epgDescription">'
+				if info.mEventDescription and str(info.mEventDescription) != '(null)':
+					content += str(info.mEventDescription)
+				content += '</div>'
 	
 		return self.epgTemplate( content )
 
@@ -752,11 +757,12 @@ class Epg( WebPage ) :
 			<head>
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<body>
 			<div id='epgWrapper'>
 
 				<div id='epgTop'>
-					<p>PrismCube Web UI</p>
+					<p>PrismCube EPG Data</p>
 				</div>
 
 				%s
@@ -794,7 +800,12 @@ class Recordings( WebPage ) :
 				recDuration += 1
 			try :				
 				content += "<tr>"
-				content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+
+				try :
+					content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+				except :
+					content += '	<td>[No Image]</td>'
+					
 				content += '	<td>'
 				content += '	<table width="100%" border="0" cellpadding="5">'
 				content += '	<tr>'
@@ -820,11 +831,34 @@ class Timer( WebPage ) :
 
 	def __init__( self, command ) :
 		super(Timer, self).__init__()
+
+		self.weekday = {}
+		self.weekday[0] = "Sun"
+		self.weekday[1] = "Mon"
+		self.weekday[2] = "Tue"
+		self.weekday[3] = "Wed"
+		self.weekday[4] = "Thu"
+		self.weekday[5] = "Fri"
+		self.weekday[6] = "Sat"
+
+		if len(command) > 0 :
+			self.delId = command[0].split("=")[1]
+			self.mDataCache.Timer_DeleteTimer( int(self.delId) )
+		
 		self.content = self.timerContent(command) 
 
 	def timerContent( self, command ) :
 		timerList = self.mDataCache.Timer_GetTimerList()
-		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content 	= """
+			<script>
+				function del( id ) {
+					if( confirm("Deleting Selected Timer?") ) {
+						location.href = "/Timer?id=" + id;
+					}
+				}
+			</script>
+		"""
+		content += """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
 
 		for timer in timerList :
 		
@@ -841,13 +875,29 @@ class Timer( WebPage ) :
 				content += '		<td align="right"><p class="timerContent">' 
 				content += 		TimeToString(timer.mStartTime) + ' <span class="timerTime">' + TimeToString(timer.mStartTime, TimeFormatEnum.E_HH_MM) + "</span> ~ "
 				content += 		TimeToString(timer.mStartTime + timer.mDuration) + ' <span class="timerTime">' + TimeToString(timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM)
-				content += 		'</span></p></td>'
-				content += '		<td rowspan="2" align="center" width="100"></td>' 	#Delete Button here!!!
+				content += '		</span></p></td>'
+				content += '		<td rowspan="2" align="center" width="100"><a href="javascript:del(' + str(timer.mTimerId) + ');"><img src="/uiImg/Delete.png" border="0"></a></td>' 	#Delete Button here!!!
 				content += '	</tr>'
 				content += '	<tr>'
 				content += '		<td><p class="recContent">' + str(timer.mName) +  '</p></td>'
 				content += '		<td align="right"><p class="recContent">' + str(timerDuration) + ' min</p></td>'
 				content += '	</tr>'
+
+				if timer.mWeeklyTimerCount > 0 :
+					content += '<tr>'
+					content += '<td colspan="2" align="left" class="weeklyInfo">Weekly Recording On : '
+
+					for weeklyTimer in timer.mWeeklyTimer :
+						content += self.weekday[weeklyTimer.mDate]
+						content += '&nbsp;&nbsp;&nbsp;&nbsp;'
+
+					content += '</td></tr>'
+
+				elif timer.mTimerType == 7 :
+
+					content += '<tr>'
+					content += '<td colspan="2" align="left" class="timerView">View Only</td></tr>'
+				
 				content += '	</table>'
 				content +=' 	</td>'
 				content +='</tr>'

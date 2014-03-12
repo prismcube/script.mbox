@@ -1457,6 +1457,18 @@ class DataCacheMgr( object ) :
 		return eventList
 
 
+	def Epgevent_GetShortList( self, aType, aNumList ) :
+		return self.mCommander.Epgevent_GetShortList( aType, aNumList )
+
+
+	def Epgevent_GetShortListAll( self, aZappingMode = None ) :
+		if not aZappingMode :
+			aZappingMode = self.Zappingmode_GetCurrent( )
+
+		zappingModes = [aZappingMode]
+		return self.mCommander.Epgevent_GetShortListAll( zappingModes )
+
+
 	def Epgevent_GetCurrentByChannelFromEpgCF( self, aSid, aTsid, aOnid ) :
 		eventList = None
 		if SUPPORT_EPG_DATABASE	== True :

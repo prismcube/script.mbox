@@ -1342,11 +1342,13 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	if not mntHistory :
 		return zipFile
 
-	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	#ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	ret = re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
 		os.system( '/bin/umount -f %s'% aSmbPath )
 		os.system( 'sync' )
+		time.sleep( 2 )
 
 	CreateDirectory( aSmbPath )
 
@@ -1355,6 +1357,13 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
 		return zipFile
+
+	else :
+		# mount check confirm
+		mntHistory = ExecuteShell( 'mount' )
+		if not mntHistory or ( not bool( re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE ) ) ) :
+			LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
+			return zipFile
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
 	if isCheck and ( not CheckDirectory( zipFile ) ) :

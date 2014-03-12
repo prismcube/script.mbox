@@ -15,6 +15,7 @@ import pvr.NetConfig as NetConfig
 import pvr.DataCacheMgr
 import pvr.GlobalEvent
 import pvr.gui.GuiConfig as GuiConfig
+from pvr.GuiHelper import *
 
 import webinterface
 import thread
@@ -41,7 +42,8 @@ class Launcher( object ):
 				self.InitElisMgr( )
 				self.DoElisTest( )
 				self.InitCacheMgr( )
-				if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+				#if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+				if GetSetting( 'WEB_INTERFACE' ) == 'true' :
 					self.StartWebInterface( )
 
 				self.InitWindowMgr( )
@@ -75,7 +77,8 @@ class Launcher( object ):
 
 
 	def StartWebInterface( self ) :
-		if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+		#if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+		if GetSetting( 'WEB_INTERFACE' ) == 'true' :
 			LOG_TRACE( 'Start Webinterface' )
 			thread.start_new_thread( webinterface.index, () )
 			thread.start_new_thread( webinterface.streamIndex, () )

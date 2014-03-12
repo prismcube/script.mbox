@@ -1,0 +1,64 @@
+<html>
+<head>
+	<title>PrismCube Web UI</title>
+	<link href="uiStyle.css" type="text/css" rel="stylesheet">
+	<script>
+	
+		function showIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "visible";
+		}
+		
+		function hideIcon( target ) {
+			var icon = "img0" + target;
+			document.getElementById(icon).style.visibility = "hidden";
+		}
+	
+	</script>
+<body>
+<div id="wrapper">
+
+	<div id="top">
+		<div id="logo"><img src="./uiImg/prismcube_logo.png"></div>		
+		<div id="title">
+			PrismCube Web UI
+		</div>
+	</div>
+	
+	<div id="menu">
+		<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> <a href="uiChannel.html" onmouseover="javacript:showIcon(1);" onmouseout="javascript:hideIcon(1);">Channel</a></p>
+		<p><img src="./uiImg/mark.png" id="img02" style="visibility: hidden;"> Live Stream</p>
+		<p><img src="./uiImg/mark.png" id="img03" style="visibility: hidden;"> <a href="uiRemote.html" onmouseover="javacript:showIcon(3);" onmouseout="javascript:hideIcon(3);">Remote Control</a></p>
+		<p><img src="./uiImg/mark.png" id="img05" style="visibility: hidden;"> <a href="Timer" onmouseover="javacript:showIcon(5);" onmouseout="javascript:hideIcon(5);">Timer</a></p>
+		<p><img src="./uiImg/mark.png" id="img04" style="visibility: hidden;"> <a href="Recordings" onmouseover="javacript:showIcon(4);" onmouseout="javascript:hideIcon(4);">Recordings</a></p>
+	</div>
+	
+	<div id="main">
+		<p class="liveTitle">Live Stream</p>
+
+		<table border="0" width="70%">
+		<tr>
+			<td valign="top">
+		
+				<p class="liveContent">In order to watch live channel on your PC, you need to have VLC Player installed.</p>
+				<p class="liveContent">Click "Stream" button below and you will be asked to download Stream.m3u file which you can open with
+				VLC Player to watch the live channel.</p>
+
+				<a href="/stream/stream.m3u"><img src="/uiImg/stream.png" border="0"></a>
+			</td>
+			<td width="20">&nbsp;</td>
+			<td align="center">
+				<p class="vlcLink">
+				<a href="http://www.videolan.org/vlc/download-windows.html"><img src="/uiImg/vlc.png" border="0"></a>
+				<br>
+				Download<br>VLC Player 
+				</p>
+			</td>
+		</tr>
+		</table>
+		
+	</div>
+
+</div>
+</body>
+</html>

@@ -6,6 +6,7 @@ Search for window name
  E_LIVEWindow
  E_Timeshift
  E_Configure
+ E_Advanced
  E_TunerConfiguration
  E_Archive
  E_SystemInfo
@@ -23,7 +24,7 @@ Search for window name
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<include file="mbox_single_includes.xml">"mbox_single_includes.xml"</include>
 	<onload>SetProperty(GridItemGap,3)</onload>	
-	<onload>SetProperty(ItemHeight,40)</onload>
+	<onload>SetProperty(ItemHeight,41)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
 	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
@@ -47,7 +48,7 @@ Search for window name
 
 		<!-- E_SettingWindowBackground -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000)</visible>
+			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000) + !substring(Window.Property(CurrentWindow),4900000)</visible>
 			<include>DefaultSettingWindowEffect</include>
 			<posx>80</posx>
 			<posy>110</posy>
@@ -156,6 +157,17 @@ Search for window name
 				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>1000</posx>
+				<posy>660</posy>
+				<width>500</width>
+				<font>font28_title</font>
+				<label>$LOCALIZE[SCRIPT1200]</label>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<visible>substring(Window.Property(LiveStream),true)</visible>
 			</control>
 			<control type="image">
 				<posx>30r</posx>
@@ -316,7 +328,11 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT1103</label>
 						</control>
-						<control type="image" id="1290109">
+						<control type="button" id="1290109">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Advanced</label>
+						</control>
+						<control type="image" id="1290110">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>
@@ -967,8 +983,8 @@ Search for window name
 				<control type="list" id="1300050">
 					<posx>0</posx>
 					<posy>40</posy>
-					<width>780</width>
-					<height>521</height>
+					<width>810</width>
+					<height>540</height>
 					<onleft>1300102</onleft>
 					<onright>1300061</onright>
 					<onup>1300050</onup>
@@ -979,94 +995,22 @@ Search for window name
 					<movement>2</movement>
 					<visible>true</visible>
 					<enable>!Control.HasFocus(1300101) | !Control.HasFocus(1300102) | !ControlGroup(1309001).HasFocus</enable>
-					<itemlayout height="40" width="780">
+					<itemlayout height="41" width="810">
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
+							<width>720</width>
+							<height>42</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
-						<!-- is move? -->
-						<control type="image">
-							<posx>0</posx>
-							<posy>13</posy>
-							<width>22</width>
-							<height>16</height>
-							<texture>DI_Move.png</texture>
-							<visible>substring(ListItem.Property(iMove),true)</visible>
-						</control>
-						<!-- is skip? -->
-						<control type="image">
-							<posx>586</posx>
-							<posy>13</posy>
-							<width>26</width>
-							<height>18</height>
-							<texture>DI_Skip1g.png</texture>
-							<visible>substring(ListItem.Property(iSkip),true)</visible>
-						</control>
-						<!-- is hd? -->
-						<control type="image">
-							<posx>614</posx>
-							<posy>12</posy>
-							<width>24</width>
-							<height>18</height>
-							<texture>IconHD1g.png</texture>
-							<visible>substring(ListItem.Property(iHD),true)</visible>
-						</control>
-						<!-- is cas? -->
-						<control type="image">
-							<posx>640</posx>
-							<posy>12</posy>
-							<width>26</width>
-							<height>18</height>
-							<texture>IconCas1g.png</texture>
-							<visible>substring(ListItem.Property(iCas),true)</visible>
-						</control>
-						<!-- is Tuner1 -->
-						<control type="image">
-							<posx>668</posx>
-							<posy>12</posy>
-							<width>26</width>
-							<height>18</height>
-							<visible>substring(ListItem.Property(iTuner1),true)</visible>
-							<texture>IconT1g.png</texture>
-						</control>
-						<!-- is Tuner2 -->
-						<control type="image">
-							<posx>668</posx>
-							<posy>12</posy>
-							<width>26</width>
-							<height>18</height>
-							<visible>substring(ListItem.Property(iTuner2),true)</visible>
-							<texture>IconT2g.png</texture>
-						</control>
-						<!-- is Tuner1 & Tuner2 -->
-						<control type="image">
-							<posx>668</posx>
-							<posy>12</posy>
-							<width>26</width>
-							<height>18</height>
-							<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-							<texture>IconT12g.png</texture>
-						</control>
 						<!-- is locked? -->
 						<control type="image">
-							<posx>8</posx>
+							<posx>4</posx>
 							<posy>9</posy>
-							<width>35</width>
-							<height>25</height>
+							<width>39</width>
+							<height>27</height>
 							<texture>OverlayLocked.png</texture>
 							<visible>substring(ListItem.Property(iLock),true)</visible>
-						</control>
-						<!-- is marked? -->
-						<control type="image">
-							<posx>0</posx>
-							<posy>10</posy>
-							<width>20</width>
-							<height>20</height>
-							<texture>OverlayWatched.png</texture>
-							<visible>substring(ListItem.Property(iMark),true)</visible>
 						</control>
 						<!-- is recording? -->
 						<control type="image">
@@ -1077,77 +1021,14 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
-						<control type="label">
-							<description>Channel Number</description>
-							<posx>35</posx>
-							<posy>0</posy>
-							<width>60</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-						<!-- is Align < 10,000 ? -->
-						<control type="label">
-							<description>Channel Name</description>
-							<posx>95</posx>
-							<posy>0</posy>
-							<width>350</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
-							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-							<visible>substring(ListItem.Property(iAlign),false)</visible>
-						</control>
-						<!-- is Align > 10,000 ? -->
-						<control type="label">
-							<description>Channel Name</description>
-							<posx>105</posx>
-							<posy>0</posy>
-							<width>350</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
-							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-							<visible>substring(ListItem.Property(iAlign),true)</visible>
-						</control>
-						<control type="label">
-							<description>Channel HD</description>
-							<posx>440</posx>
-							<posy>0</posy>
-							<width>100</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Property(iHDLabel)]</label>
-						</control>
-					</itemlayout>
-					<focusedlayout height="40" width="780">
+						<!-- is marked? -->
 						<control type="image">
 							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-							<texture border="0,2,0,2">MenuItemFO.png</texture>
-						</control>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
+							<posy>10</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>OverlayWatched.png</texture>
+							<visible>substring(ListItem.Property(iMark),true)</visible>
 						</control>
 						<!-- is move? -->
 						<control type="image">
@@ -1158,153 +1039,22 @@ Search for window name
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
-						<!-- is locked? -->
-						<control type="image">
-							<posx>8</posx>
-							<posy>9</posy>
-							<width>35</width>
-							<height>25</height>
-							<texture>OverlayLocked.png</texture>
-							<visible>substring(ListItem.Property(iLock),true)</visible>
-						</control>
-						<!-- is marked? -->
-						<control type="image">
-							<posx>0</posx>
-							<posy>10</posy>
-							<width>20</width>
-							<height>20</height>
-							<texture>OverlayWatched.png</texture>
-							<visible>substring(ListItem.Property(iMark),true)</visible>
-						</control>
-						<!-- is recording? -->
-						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
-							<texture>IconPlateRec.png</texture>
-							<visible>substring(ListItem.Property(iRec),true)</visible>
-						</control>
-						<!-- is skip? -->
-						<control type="image">
-							<posx>586</posx>
-							<posy>13</posy>
-							<width>26</width>
-							<height>18</height>
-							<texture>DI_Skip1g.png</texture>
-							<visible>substring(ListItem.Property(iSkip),true)</visible>
-						</control>
 						<control type="group">
-							<visible>!substring(Window(10000).Property(isMove),true)</visible>
+							<posx>618</posx>
+							<posy>8</posy>
+							<!-- is skip? -->
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>DI_Skip1g.png</texture>
+								<visible>substring(ListItem.Property(iSkip),true)</visible>
+							</control>
 							<!-- is hd? -->
 							<control type="image">
-								<posx>614</posx>
-								<posy>12</posy>
-								<width>24</width>
-								<height>18</height>
-								<texture>IconHD1w.png</texture>
-								<visible>substring(ListItem.Property(iHD),true)</visible>
-							</control>
-							<!-- is cas? -->
-							<control type="image">
-								<posx>640</posx>
-								<posy>12</posy>
-								<width>26</width>
-								<height>18</height>
-								<texture>IconCas1w.png</texture>
-								<visible>substring(ListItem.Property(iCas),true)</visible>
-							</control>
-							<!-- is Tuner1 -->
-							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
-								<width>26</width>
-								<height>18</height>
-								<visible>substring(ListItem.Property(iTuner1),true)</visible>
-								<texture>IconT1w_new.png</texture>
-							</control>
-							<!-- is Tuner2 -->
-							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
-								<width>26</width>
-								<height>18</height>
-								<visible>substring(ListItem.Property(iTuner2),true)</visible>
-								<texture>IconT2w_new.png</texture>
-							</control>
-							<!-- is Tuner1 & Tuner2 -->
-							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
-								<width>26</width>
-								<height>18</height>
-								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
-								<texture>IconT12w_new.png</texture>
-							</control>
-							<control type="label">
-								<description>Channel Number</description>
-								<posx>35</posx>
+								<posx>26</posx>
 								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<font>font13</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>selected</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Label]</label>
-							</control>
-							<!-- is Align < 10,000 ? -->
-							<control type="label">
-								<description>Channel Name</description>
-								<posx>95</posx>
-								<posy>0</posy>
-								<width>350</width>
-								<height>40</height>
-								<font>font13</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>selected</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<scroll>true</scroll>
-								<label>$INFO[ListItem.Label2]</label>
-								<visible>substring(ListItem.Property(iAlign),false)</visible>
-							</control>
-							<!-- is Align > 10,000 ? -->
-							<control type="label">
-								<description>Channel Name</description>
-								<posx>105</posx>
-								<posy>0</posy>
-								<width>350</width>
-								<height>40</height>
-								<font>font13</font>
-								<textcolor>white</textcolor>
-								<selectedcolor>selected</selectedcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<scroll>true</scroll>
-								<label>$INFO[ListItem.Label2]</label>
-								<visible>substring(ListItem.Property(iAlign),true)</visible>
-							</control>
-							<control type="label">
-								<description>Channel HD</description>
-								<posx>440</posx>
-								<posy>0</posy>
-								<width>100</width>
-								<height>40</height>
-								<font>font13</font>
-								<textcolor>grey3</textcolor>
-								<align>left</align>
-								<aligny>center</aligny>
-								<label>$INFO[ListItem.Property(iHDLabel)]</label>
-							</control>
-						</control>
-						<control type="group">
-							<visible>substring(Window(10000).Property(isMove),true)</visible>
-							<!-- is hd? -->
-							<control type="image">
-								<posx>614</posx>
-								<posy>12</posy>
 								<width>24</width>
 								<height>18</height>
 								<texture>IconHD1g.png</texture>
@@ -1312,8 +1062,8 @@ Search for window name
 							</control>
 							<!-- is cas? -->
 							<control type="image">
-								<posx>640</posx>
-								<posy>12</posy>
+								<posx>52</posx>
+								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
 								<texture>IconCas1g.png</texture>
@@ -1321,8 +1071,8 @@ Search for window name
 							</control>
 							<!-- is Tuner1 -->
 							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
+								<posx>80</posx>
+								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
@@ -1330,8 +1080,8 @@ Search for window name
 							</control>
 							<!-- is Tuner2 -->
 							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
+								<posx>80</posx>
+								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
@@ -1339,13 +1089,27 @@ Search for window name
 							</control>
 							<!-- is Tuner1 & Tuner2 -->
 							<control type="image">
-								<posx>668</posx>
-								<posy>12</posy>
+								<posx>80</posx>
+								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
 								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 								<texture>IconT12g.png</texture>
 							</control>
+							<control type="progress">
+								<posx>26</posx>
+								<posy>20</posy>
+								<width>80</width>
+								<height>9</height>
+								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
+								<progress>percent</progress>
+								<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
 							<control type="label">
 								<description>Channel Number</description>
 								<posx>35</posx>
@@ -1361,9 +1125,9 @@ Search for window name
 							<!-- is Align < 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>95</posx>
+								<posx>85</posx>
 								<posy>0</posy>
-								<width>350</width>
+								<width>550</width>
 								<height>40</height>
 								<font>font13</font>
 								<textcolor>grey3</textcolor>
@@ -1375,9 +1139,9 @@ Search for window name
 							<!-- is Align > 10,000 ? -->
 							<control type="label">
 								<description>Channel Name</description>
-								<posx>105</posx>
+								<posx>95</posx>
 								<posy>0</posy>
-								<width>350</width>
+								<width>540</width>
 								<height>40</height>
 								<font>font13</font>
 								<textcolor>grey3</textcolor>
@@ -1392,11 +1156,323 @@ Search for window name
 								<posy>0</posy>
 								<width>100</width>
 								<height>40</height>
-								<font>font13</font>
+								<font>font12</font>
 								<textcolor>grey3</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Property(iHDLabel)]</label>
+							</control>
+						</control>
+					</itemlayout>
+					<focusedlayout height="41" width="810">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>720</width>
+							<height>42</height>
+							<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>720</width>
+							<height>42</height>
+							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
+							<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
+						</control>
+						<!-- is locked? -->
+						<control type="image">
+							<posx>4</posx>
+							<posy>9</posy>
+							<width>39</width>
+							<height>27</height>
+							<texture>OverlayLocked.png</texture>
+							<visible>substring(ListItem.Property(iLock),true)</visible>
+						</control>
+						<!-- is recording? -->
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>IconPlateRec.png</texture>
+							<visible>substring(ListItem.Property(iRec),true)</visible>
+						</control>
+						<!-- is move? -->
+						<control type="image">
+							<posx>0</posx>
+							<posy>13</posy>
+							<width>22</width>
+							<height>16</height>
+							<texture>DI_Move.png</texture>
+							<visible>substring(ListItem.Property(iMove),true)</visible>
+						</control>
+						<!-- is marked? -->
+						<control type="image">
+							<posx>0</posx>
+							<posy>10</posy>
+							<width>20</width>
+							<height>20</height>
+							<texture>OverlayWatched.png</texture>
+							<visible>substring(ListItem.Property(iMark),true)</visible>
+						</control>
+						<control type="group">
+							<visible>!substring(Window(10000).Property(isMove),true)</visible>
+							<control type="group">
+								<posx>618</posx>
+								<posy>8</posy>
+								<!-- is skip? -->
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<texture>DI_Skip1g.png</texture>
+									<visible>substring(ListItem.Property(iSkip),true)</visible>
+								</control>
+								<!-- is hd? -->
+								<control type="image">
+									<posx>26</posx>
+									<posy>0</posy>
+									<width>24</width>
+									<height>18</height>
+									<texture>IconHD1w.png</texture>
+									<visible>substring(ListItem.Property(iHD),true)</visible>
+								</control>
+								<!-- is cas? -->
+								<control type="image">
+									<posx>52</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<texture>IconCas1w.png</texture>
+									<visible>substring(ListItem.Property(iCas),true)</visible>
+								</control>
+								<!-- is Tuner1 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner1),true)</visible>
+									<texture>IconT1w_new.png</texture>
+								</control>
+								<!-- is Tuner2 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner2),true)</visible>
+									<texture>IconT2w_new.png</texture>
+								</control>
+								<!-- is Tuner1 & Tuner2 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
+									<texture>IconT12w_new.png</texture>
+								</control>
+								<control type="progress">
+									<posx>26</posx>
+									<posy>20</posy>
+									<width>80</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
+								</control>
+							</control>
+							<control type="group">
+								<posx>0</posx>
+								<posy>0</posy>
+								<control type="label">
+									<description>Channel Number</description>
+									<posx>35</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>white</textcolor>
+									<selectedcolor>selected</selectedcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+								<!-- is Align < 10,000 ? -->
+								<control type="label">
+									<description>Channel Name</description>
+									<posx>85</posx>
+									<posy>0</posy>
+									<width>550</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>white</textcolor>
+									<selectedcolor>selected</selectedcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label2]</label>
+									<visible>substring(ListItem.Property(iAlign),false)</visible>
+								</control>
+								<!-- is Align > 10,000 ? -->
+								<control type="label">
+									<description>Channel Name</description>
+									<posx>95</posx>
+									<posy>0</posy>
+									<width>540</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>white</textcolor>
+									<selectedcolor>selected</selectedcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label2]</label>
+									<visible>substring(ListItem.Property(iAlign),true)</visible>
+								</control>
+								<control type="label">
+									<description>Channel HD</description>
+									<posx>440</posx>
+									<posy>0</posy>
+									<width>100</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>grey3</textcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Property(iHDLabel)]</label>
+								</control>
+							</control>
+						</control>
+						<control type="group">
+							<visible>substring(Window(10000).Property(isMove),true)</visible>
+							<control type="group">
+								<posx>618</posx>
+								<posy>8</posy>
+								<!-- is skip? -->
+								<control type="image">
+									<posx>0</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<texture>DI_Skip1g.png</texture>
+									<visible>substring(ListItem.Property(iSkip),true)</visible>
+								</control>
+								<!-- is hd? -->
+								<control type="image">
+									<posx>26</posx>
+									<posy>0</posy>
+									<width>24</width>
+									<height>18</height>
+									<texture>IconHD1g.png</texture>
+									<visible>substring(ListItem.Property(iHD),true)</visible>
+								</control>
+								<!-- is cas? -->
+								<control type="image">
+									<posx>52</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<texture>IconCas1g.png</texture>
+									<visible>substring(ListItem.Property(iCas),true)</visible>
+								</control>
+								<!-- is Tuner1 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner1),true)</visible>
+									<texture>IconT1g.png</texture>
+								</control>
+								<!-- is Tuner2 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner2),true)</visible>
+									<texture>IconT2g.png</texture>
+								</control>
+								<!-- is Tuner1 & Tuner2 -->
+								<control type="image">
+									<posx>80</posx>
+									<posy>0</posy>
+									<width>26</width>
+									<height>18</height>
+									<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
+									<texture>IconT12g.png</texture>
+								</control>
+								<control type="progress">
+									<posx>26</posx>
+									<posy>20</posy>
+									<width>80</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
+								</control>
+							</control>
+							<control type="group">
+								<posx>0</posx>
+								<posy>0</posy>
+								<control type="label">
+									<description>Channel Number</description>
+									<posx>35</posx>
+									<posy>0</posy>
+									<width>60</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>grey3</textcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label]</label>
+								</control>
+								<!-- is Align < 10,000 ? -->
+								<control type="label">
+									<description>Channel Name</description>
+									<posx>85</posx>
+									<posy>0</posy>
+									<width>550</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>grey3</textcolor>
+									<selectedcolor>selected</selectedcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label2]</label>
+									<visible>substring(ListItem.Property(iAlign),false)</visible>
+								</control>
+								<!-- is Align > 10,000 ? -->
+								<control type="label">
+									<description>Channel Name</description>
+									<posx>95</posx>
+									<posy>0</posy>
+									<width>540</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>grey3</textcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Label2]</label>
+									<visible>substring(ListItem.Property(iAlign),true)</visible>
+								</control>
+								<control type="label">
+									<description>Channel HD</description>
+									<posx>440</posx>
+									<posy>0</posy>
+									<width>100</width>
+									<height>40</height>
+									<font>font13</font>
+									<textcolor>grey3</textcolor>
+									<align>left</align>
+									<aligny>center</aligny>
+									<label>$INFO[ListItem.Property(iHDLabel)]</label>
+								</control>
 							</control>
 						</control>
 					</focusedlayout>
@@ -1417,7 +1493,7 @@ Search for window name
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 				<control type="label" id="1300022">
-					<posx>770</posx>
+					<posx>800</posx>
 					<posy>105</posy>
 					<width>200</width>
 					<height>28</height>
@@ -1426,31 +1502,14 @@ Search for window name
 					<textcolor>blue</textcolor>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
-				<!--control type="image">
-					<posx>100</posx>
-					<posy>100</posy>
-					<width>50</width>
-					<height>30</height>
-					<texture>tv.png</texture>
-					<visible>!substring(Window.Property(TVRadio),true)</visible>
-				</control>
-				<control type="image">
-					<posx>100</posx>
-					<posy>98</posy>
-					<width>50</width>
-					<height>30</height>
-					<texture>icon_radio2.png</texture>
-					<visible>substring(Window.Property(TVRadio),true)</visible>
-				</control-->
-
 			</control>
 
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="1300061">
-				<posx>770</posx>
+				<posx>800</posx>
 				<posy>105</posy>
 				<width>25</width>
-				<height>521</height>
+				<height>541</height>
 				<include>DefaultWindowFade</include>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
@@ -1467,7 +1526,7 @@ Search for window name
 
 			<!-- middle right -->
 			<control type="group" id="1300300">
-				<posx>835</posx>
+				<posx>850</posx>
 				<posy>122</posy>
 				<width>430</width>
 				<height>600</height>
@@ -1483,40 +1542,15 @@ Search for window name
 						<height>10</height>
 						<font>font12_title</font>
 						<textcolor>grey</textcolor>
-						<label>$INFO[Control.GetLabel]</label>
+						<label>TV - zdf-neo HD$INFO[Control.GetLabel]</label>
 						<description>ch name</description>
 						<visible>substring(Window.Property(Signal),True)</visible>
 					</control>
-					<!--
-					<control type="label">
-						<posx>110</posx>
-						<posy>120</posy>
-						<width>120</width>
-						<height>40</height>
-						<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
-						<font>font12_title</font>
-						<align>center</align>
-						<textcolor>grey2</textcolor>
-						<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
-					</control>
-					<control type="label">
-						<posx>110</posx>
-						<posy>120</posy>
-						<width>120</width>
-						<height>40</height>
-						<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
-						<font>font12_title</font>
-						<align>center</align>
-						<textcolor>grey2</textcolor>
-						<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
-					</control>
-					-->
 				</control>
 				<control type="group">
 					<posx>0</posx>
 					<posy>200</posy>
-					<width>390</width>
-
+					<visible>!substring(Window.Property(ShowExtendInfo),True)</visible>
 					<control type="group">
 						<control type="label" id="1300305">
 							<posx>0</posx>
@@ -1539,7 +1573,6 @@ Search for window name
 							<overlaytexture>-</overlaytexture>
 						</control>
 					</control>
-
 					<control type="label" id="1300304">
 						<description>EPG Info</description>
 						<posx>0</posx>
@@ -1570,6 +1603,7 @@ Search for window name
 					<control type="group" id="1300309">
 						<posx>0</posx>
 						<posy>80</posy>
+						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>-2</posx>
 							<posy>72</posy>
@@ -1586,121 +1620,206 @@ Search for window name
 							<label>SCRIPT1014</label>
 						</control>
 					</control>
+				</control>
 
-					<!-- components -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>390</width>
+					<visible>substring(Window.Property(ShowExtendInfo),True)</visible>
+					<!--control type="label">
+						<description>EPG Info</description>
+						<posx>0</posx>
+						<posy>50</posy>
+						<width>350</width>
+						<height>15</height>
+						<font>font13caps</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Control.GetLabel(1300304)]</label>
+					</control-->
+					<control type="label">
+						<description>satellite info</description>
+						<posx>0</posx>
+						<posy>190</posy>
+						<font>font12_title</font>
+						<textcolor>grey3</textcolor>
+						<label>$INFO[Control.GetLabel(1300307)]</label>
+					</control>
+					<control type="label">
+						<description>career info</description>
+						<posx>0</posx>
+						<posy>210</posy>
+						<font>font12_title</font>
+						<textcolor>grey3</textcolor>
+						<label>$INFO[Control.GetLabel(1300308)]</label>
+					</control>
 					<control type="group">
-						<posx>-2</posx>
-						<posy>110</posy>
-						<control type="grouplist">
+						<posx>250</posx>
+						<posy>270</posy>
+						<visible>substring(Window.Property(iLock),True)</visible>
+						<control type="image">
+							<posx>-2</posx>
+							<posy>0</posy>
+							<width>35</width>
+							<height>25</height>
+							<texture>OverlayLocked.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>30</posx>
+							<posy>0</posy>
+							<font>font12_title</font>
+							<textcolor>grey3</textcolor>
+							<label>SCRIPT1014</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>0</posx>
+						<posy>238</posy>
+						<include>DefaultWindowFade</include>
+						<control type="label">
 							<posx>0</posx>
-							<posy>100</posy>
-							<width>360</width>
+							<posy>10</posy>
+							<font>font12_title</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[Control.getLabel(1300305)]</label>
+						</control>
+						<control type="label">
+							<description>EPG duration</description>
+							<posx>0</posx>
+							<posy>30</posy>
+							<font>font12_title</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[Window.Property(EPGDuration)]</label>
+						</control>
+						<control type="textbox">
+							<description>EPG information</description>
+							<posx>0</posx>
+							<posy>60</posy>
+							<width>352</width>
+						 	<height>164</height>
+							<font>font12_title</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[Window.Property(EPGDescription)]</label>
+							<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+						</control>
+					</control>
+				</control>
+
+				<control type="group">
+					<posx>-5</posx>
+					<posy>472</posy>
+					<!-- components -->
+					<control type="grouplist">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>360</width>
+						<height>30</height>
+						<itemgap>4</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
 							<height>30</height>
-							<itemgap>8</itemgap>
-							<visible>true</visible>
-							<orientation>horizontal</orientation>
-							<control type="group">
+							<visible>substring(Window.Property(HasAgeRating),true)</visible>
+							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasAgeRating),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>30</height>
-									<texture>ageIcon.png</texture>
-								</control>
-								<control type="label">
-									<posx>20</posx>
-									<posy>3</posy>
-									<width>50</width>
-									<height>10</height>
-									<font>font12</font>
-									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
-								</control>
+								<texture>ageIcon.png</texture>
 							</control>
-							<control type="group" id="1300313">
+							<control type="label">
+								<posx>20</posx>
+								<posy>3</posy>
+								<width>50</width>
+								<height>10</height>
+								<font>font12</font>
+								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+							</control>
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasTeletext),true)</visible>
+							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasTeletext),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>30</height>
-									<texture>IconTeletext.png</texture>
-								</control>
+								<texture>IconTeletext.png</texture>
 							</control>
-							<control type="group" id="1300310">
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasSubtitle),true)</visible>
+							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>60</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasSubtitle),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>30</height>
-									<texture>IconSubtitle.png</texture>
-								</control>
+								<texture>IconSubtitle.png</texture>
 							</control>
-							<control type="group" id="1300311">
-								<posx>2</posx>
-								<posy>0</posy>
+						</control>
+						<control type="group">
+							<posx>2</posx>
+							<posy>0</posy>
+							<width>82</width>
+							<height>21</height>
+							<visible>substring(Window.Property(HasDolby),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>4</posy>
 								<width>82</width>
 								<height>21</height>
-								<visible>substring(Window.Property(HasDolby),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>4</posy>
-									<width>82</width>
-									<height>21</height>
-									<texture>dolbydigital.png</texture>
-								</control>
+								<texture>dolbydigital.png</texture>
 							</control>
-							<control type="group" id="1300314">
-								<posx>2</posx>
-								<posy>0</posy>
+						</control>
+						<control type="group">
+							<posx>2</posx>
+							<posy>0</posy>
+							<width>82</width>
+							<height>21</height>
+							<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+							<control type="image">
+								<posx>0</posx>
+								<posy>4</posy>
 								<width>82</width>
 								<height>21</height>
-								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>4</posy>
-									<width>82</width>
-									<height>21</height>
-									<texture>dolbydigitalplus.png</texture>
-								</control>
+								<texture>dolbydigitalplus.png</texture>
 							</control>
-							<control type="group" id="1300312">
+						</control>
+						<control type="group">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<visible>substring(Window.Property(HasHD),true)</visible>
+							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>65</width>
 								<height>30</height>
-								<visible>substring(Window.Property(HasHD),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>65</width>
-									<height>30</height>
-									<texture>OverlayHD.png</texture>
-								</control>
+								<texture>OverlayHD.png</texture>
 							</control>
 						</control>
 					</control>
-
-					<!-- cas -->
-					<control type="group">
-						<posx>0</posx>
-						<posy>250</posy>
-						<include>CASInfo</include>
-					</control>
 				</control>
+
+				<!-- cas -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>500</posy>
+					<include>CASInfo</include>
+				</control>
+
 			</control>
 
 			<!--  page -->
@@ -2162,6 +2281,26 @@ Search for window name
 									<ondown>1300122</ondown>
 								</control>
 								<control type="radiobutton" id="1300122">
+									<posx>0</posx>
+									<posy>90</posy>
+									<width>230</width>
+									<height>40</height>
+									<textoffsetx>20</textoffsetx>
+									<textwidth>195</textwidth>
+									<aligny>center</aligny>
+									<font>font12_title</font>
+									<texturefocus>MenuItemFO.png</texturefocus>
+									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<pulseonselect>false</pulseonselect>
+									<textcolor>grey3</textcolor>
+									<focusedcolor>white</focusedcolor>
+									<label>SCRIPT1165</label>
+									<onleft>1300202</onleft>
+									<onright>1300049</onright>
+									<onup>1300121</onup>
+									<ondown>1300121</ondown>
+								</control>
+								<control type="radiobutton" id="1300123">
 									<posx>0</posx>
 									<posy>90</posy>
 									<width>230</width>
@@ -2914,7 +3053,7 @@ Search for window name
 						<texturenofocus>scroll-left.png</texturenofocus>
 						<onleft></onleft>
 						<onright>1400706</onright>
-						<onup>1003621</onup>
+						<onup>1003630</onup>
 						<ondown></ondown>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
@@ -2965,7 +3104,7 @@ Search for window name
 						<texturenofocus>scroll-right.png</texturenofocus>
 						<onleft>1400702</onleft>
 						<onright></onright>
-						<onup>1003621</onup>
+						<onup>1003630</onup>
 						<ondown></ondown>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
@@ -3919,6 +4058,156 @@ Search for window name
 					<posx>290</posx>
 					<posy>60</posy>
 					<control type="label" id="1501003">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>745</width>
+						<height>45</height>
+						<font>font13_title</font>
+						<textcolor>blue</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<scroll>true</scroll>
+						<scrollspeed>150</scrollspeed>
+						<scrollsuffix>  |  </scrollsuffix>
+					</control>
+					<!--
+					<include>SpinEx01</include>
+					<include>SpinEx02</include>
+					<include>SpinEx03</include>
+					<include>SpinEx04</include>
+					<include>SpinEx05</include>
+					<include>SpinEx06</include>
+					<include>Input01</include>
+					<include>Input02</include>
+					<include>Input03</include>
+					<include>Input04</include>
+					<include>Input05</include>
+					<include>Input06</include>
+					<include>Input07</include>
+					-->
+				</control>
+			</control>
+		</control>
+
+		<!-- *********** E_Advanced ********** -->	
+		<control type="group" id="4900000">
+			<visible>substring(Window.Property(CurrentWindow),4900000)</visible>
+			<defaultcontrol always="true">4909000</defaultcontrol>
+			<control type="group">
+				<include>DefaultSettingWindowEffect</include>
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
+				<posx>90</posx>
+				<posy>50</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1100</width>
+					<height>640</height>
+					<texture border="20">DialogBack.png</texture>
+				</control>
+				<control type="image">
+					<description>LOGO</description>
+					<posx>30</posx>
+					<posy>15</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>Confluence_Logo.png</texture>
+				</control>
+				<!--
+				<control type="image">
+					<posx>233</posx>
+					<posy>581</posy>
+					<width>18</width>
+					<height>19</height>
+					<texture>HomeHasSub.png</texture>
+					<colordiffuse>FFFFFFFF</colordiffuse>
+					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+				</control>
+				-->
+				<control type="list" id="4909000">
+					<posx>10</posx>
+					<posy>90</posy>
+					<width>260</width>
+					<height>481</height>
+					<onup>4909000</onup>
+					<ondown>4909000</ondown>
+					<itemlayout height="60" width="260">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>260</width>
+							<height>60</height>
+							<texture border="5">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>250</posx>
+							<posy>15</posy>
+							<width>240</width>
+							<height>25</height>
+							<font>font13_title</font>
+							<textcolor>grey3</textcolor>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="60" width="260">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>260</width>
+							<height>60</height>
+							<texture border="5">MenuItemFO.png</texture>
+							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(4909000)">Conditional</animation>
+						</control>
+						<control type="label">
+							<posx>250</posx>
+							<posy>15</posy>
+							<width>240</width>
+							<height>25</height>
+							<font>font13_title</font>
+							<textcolor>white</textcolor>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+				<control type="image">
+					<posx>268</posx>
+					<posy>14</posy>
+					<width>800</width>
+					<height>612</height>
+					<texture border="5">black-back2.png</texture>
+				</control>
+				<control type="image">
+					<posx>266</posx>
+					<posy>15</posy>
+					<width>804</width>
+					<height>90</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>GlassTitleBar.png</texture>
+				</control>
+				<control type="label">
+					<description>header label</description>
+					<posx>300</posx>
+					<posy>20</posy>
+					<width>740</width>
+					<height>30</height>
+					<font>font14</font>
+					<!--label>$LOCALIZE[SCRIPT1055] - $INFO[Container(1509000).ListItem.Label]</label-->
+					<label>$INFO[Container(4909000).ListItem.Label]</label>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+				<control type="group" id="4909010">
+					<posx>290</posx>
+					<posy>60</posy>
+					<control type="label" id="4901003">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>745</width>
@@ -7303,7 +7592,7 @@ Search for window name
 				<description>ChannelList Channel Name</description>
 				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
 				<control type="label">
-					<posx>840</posx>
+					<posx>850</posx>
 					<posy>289</posy>
 					<width>350</width>
 					<height>10</height>
