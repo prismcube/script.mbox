@@ -463,9 +463,9 @@ class RemoteControl(WebPage):
 		currentVol = self.mCommander.Player_GetVolume()
 
 		if control == 'up' : 
-			setVolume = currentVol + 1
+			setVolume = currentVol + 4
 		elif control == 'down' :
-			setVolume = currentVol - 1
+			setVolume = currentVol - 4
 		
 		self.mCommander.Player_SetVolume(setVolume)
 		pvr.XBMCInterface.XBMC_SetVolume(setVolume)
