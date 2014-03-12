@@ -85,6 +85,9 @@ class DialogMountManager( SettingDialog ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
+		elif Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.SetMountByVolumeList( )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
@@ -100,6 +103,7 @@ class DialogMountManager( SettingDialog ) :
 
 		if groupId == E_DialogInput04 : #reset
 			self.mSelectIdx = -1
+			self.SetMountByVolumeList( )
 			self.DrawItem( )
 
 		else :
@@ -522,4 +526,30 @@ class DialogMountManager( SettingDialog ) :
 			#self.SetControlLabel2String( E_DialogInput03, '%s(%s/%s)'% ( trackList[selectAction].mDescription, self.mSelectIdx + 1, len( self.mNetVolumeList ) ) )
 
 		return True
+
+
+	def SetMountByVolumeList( self ) :
+		volumeList = self.mDataCache.Record_GetNetworkVolume( )
+		if not volumeList or len( volumeList ) < 1 :
+			LOG_TRACE( '[MountManager] passed, volume list None' )
+			return
+
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+
+		RemoveDirectory( '/config/smbReserved.info' )
+		volumeCount = len( volumeList )
+		count = 0
+		for netVolume in volumeList :
+			count += 1
+			cmd = netVolume.mMountCmd
+			lblLabel = '[%s/%s]%s'% ( count, volumeCount, netVolume.mMountPath )
+			self.mCtrlLabelDefaultPath.setLabel( lblLabel )
+			self.SetControlLabel2String( E_DialogInput04, lblLabel )
+			os.system( 'umount -f %s '% netVolume.mMountPath )
+			os.system( '%s'% cmd )
+			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+			os.system( 'sync' )
+
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+		self.DrawItem( )
 
