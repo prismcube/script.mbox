@@ -241,5 +241,43 @@
 
 	/* EPG Page */
 	/* ======================================================== */	
+
+	/* EPG Grid */
+	/* ======================================================== */	
+
+	#timeline ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background: url(/uiImg/bg_nav.png) repeat-x left top;
+		float: left;
+		width: 910px;
+	}
+
+	#timeline li.timeTitle {
+		float: left;
+		padding: 5px;
+		margin: 0;
+		width: 190px;
+		border-right: 1px dotted yellow;
+		color: #dfdfdf;
+		font-family: arial;
+		font-weight: bold;
+		text-align: center;
+	}
+	
+	#timeline li.time {
+		float: left;
+		padding: 5px;
+		margin: 0;
+		width: 120px;
+		border-right: 1px dotted yellow;
+		color: #dfdfdf;
+		font-family: arial;
+		font-size: 0.8em;
+	}
+	
+	/* EPG Grid */
+	/* ======================================================== */	
 	
 	
