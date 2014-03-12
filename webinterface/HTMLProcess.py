@@ -1,13 +1,15 @@
-import pvr.DataCacheMgr
-import pvr.ElisMgr
+#import pvr.DataCacheMgr
+#import pvr.ElisMgr
 from pvr.gui.WindowImport import *
 import xbmc
 from urllib import unquote, quote
+from datetime import datetime
 
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
 	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer]
+	htmlClass.append(EpgGrid)
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -97,6 +99,7 @@ class WebPage( object ) :
 				<div id='menu'>
 					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
 					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<!-- <p><img src="./uiImg/mark.png" id="img06" style="visibility: hidden;"> <a href="EpgGrid" onmouseover="javacript:showIcon(6);" onmouseout="javascript:hideIcon(6);">EPG</a></p> -->
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
@@ -288,6 +291,7 @@ class Channel( WebPage ) :
 					<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
 					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<!-- <p><img src="./uiImg/mark.png" id="img06" style="visibility: hidden;"> <a href="EpgGrid" onmouseover="javacript:showIcon(6);" onmouseout="javascript:hideIcon(6);">EPG</a></p> -->
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
 				</div>
@@ -460,9 +464,9 @@ class RemoteControl(WebPage):
 		currentVol = self.mCommander.Player_GetVolume()
 
 		if control == 'up' : 
-			setVolume = currentVol + 1
+			setVolume = currentVol + 4
 		elif control == 'down' :
-			setVolume = currentVol - 1
+			setVolume = currentVol - 4
 		
 		self.mCommander.Player_SetVolume(setVolume)
 		pvr.XBMCInterface.XBMC_SetVolume(setVolume)
@@ -744,7 +748,7 @@ class Epg( WebPage ) :
 
 				content += '<div class="epgDescription">'
 				if info.mEventDescription and str(info.mEventDescription) != '(null)':
-					content += str(info.mEventDescription)
+					content += (str(info.mEventDescription)).replace('\n', '<br />');
 				content += '</div>'
 	
 		return self.epgTemplate( content )
@@ -804,7 +808,7 @@ class Recordings( WebPage ) :
 				try :
 					content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
 				except :
-					content += '	<td>[No Image]</td>'
+					content += '	<td><img src="/uiImg/thumb.jpg"></td>'
 					
 				content += '	<td>'
 				content += '	<table width="100%" border="0" cellpadding="5">'
@@ -909,6 +913,44 @@ class Timer( WebPage ) :
 
 		content += '</td></tr></table>'
 				
+		return self.getBasicTemplate( content ) 
+
+class EpgGrid( WebPage ) :
+
+	def __init__( self, command ) :
+		super(EpgGrid, self).__init__()
+		self.content = self.epgGridContent(command) 
+
+	def epgGridContent( self, command ) :
+
+		currenttime = datetime.fromtimestamp( self.mDataCache.Datetime_GetLocalTime() )
+		currentHour = currenttime.hour
+	
+		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content += '<tr><td>'
+
+		content += """
+				<div id="timeline">
+				<ul>
+					<li class="timeTitle">%s
+				""" % TimeToString( self.mDataCache.Datetime_GetLocalTime() )
+		for i in range(6) :
+			if currentHour < 10 :
+				content += '<li class="time">0%d:00' % currentHour
+			else :
+				content += '<li class="time">%d:00' % currentHour
+
+			currentHour += 1
+			if currentHour >= 24 :
+				currentHour = 0
+
+		content += """
+				</ul>
+				</div>
+		"""
+		
+		content += '</td></tr></table>'
+		content += '</td></tr></table>'
 		return self.getBasicTemplate( content ) 
 
 		
