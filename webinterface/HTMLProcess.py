@@ -4,6 +4,7 @@ from pvr.gui.WindowImport import *
 import xbmc
 from urllib import unquote, quote
 from datetime import datetime
+from BeautifulSoup import BeautifulSoup 
 
 def GetHTMLClass( className, *param ) :
 
@@ -922,17 +923,22 @@ class EpgGrid( WebPage ) :
 
 	def epgGridContent( self, command ) :
 
+		print '[EPG Grid]'
+		print command
+
+		# get current time
 		currenttime = datetime.fromtimestamp( self.mDataCache.Datetime_GetLocalTime() )
 		currentHour = currenttime.hour
+
+		#get channel list
+		chList = self.mDataCache.Channel_GetList( aTemporaryReload=1, aType=self.mZappingMode.mServiceType, aMode=ElisEnum.E_MODE_ALL)
 	
-		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content = """<table border="0" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
 		content += '<tr><td>'
 
-		content += """
-				<div id="timeline">
-				<ul>
-					<li class="timeTitle">%s
-				""" % TimeToString( self.mDataCache.Datetime_GetLocalTime() )
+		content += '<div id="timeline"><ul><li class="timeTitle">%s' % TimeToString( self.mDataCache.Datetime_GetLocalTime() )
+				
+		# display time line at top		
 		for i in range(6) :
 			if currentHour < 10 :
 				content += '<li class="time">0%d:00' % currentHour
@@ -943,13 +949,18 @@ class EpgGrid( WebPage ) :
 			if currentHour >= 24 :
 				currentHour = 0
 
-		content += """
-				</ul>
-				</div>
-		"""
+		content += "</ul></div>"
+		content += '<div class="clearAll"></div>'
+
+		#display EPG Content 
+		for ch in chList[:5] :
+			content += '<div class="epgGridContent"><ul><li class="channel">%s' % ch.mName
+			content += '</ul></div>'
+			content += '<div class="clearAll"></div>'
+
+		content += '</td></tr></table>'
+		content += '</td></tr></table>'
 		
-		content += '</td></tr></table>'
-		content += '</td></tr></table>'
 		return self.getBasicTemplate( content ) 
 
 		
