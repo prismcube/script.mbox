@@ -10,7 +10,7 @@ E_PROGRESS_ID_DEFAULT_USE = 202
 E_LABEL_ID_DEFAULT_USE    = 203
 E_PROGRESS_ID_USE         = 300
 E_LABEL_ID_USE            = 301
-E_LABEL_ID_ONLINE         = 302
+E_IMAGE_ID_ONLINE         = 302
 
 E_NETWORK_VOLUME_ADD = 0
 E_NETWORK_VOLUME_EDIT = 1
@@ -37,7 +37,6 @@ class DialogMountManager( SettingDialog ) :
 		self.mCtrlLabelDefaultUse    = self.getControl( E_LABEL_ID_DEFAULT_USE )
 		self.mCtrlProgressUse        = self.getControl( E_PROGRESS_ID_USE )
 		self.mCtrlLabelUse           = self.getControl( E_LABEL_ID_USE )
-		self.mCtrlLabelOnline        = self.getControl( E_LABEL_ID_ONLINE )
 		#self.setProperty( 'DialogDrawFinished', 'False' )
 		lblTitle = MR_LANG( 'Record Path' )
 		self.SetHeaderLabel( lblTitle )
@@ -104,7 +103,9 @@ class DialogMountManager( SettingDialog ) :
 
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_DialogInput07 or groupId == E_DialogInput02 : #apply, delete
+			xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 			self.DoNetworkVolume( groupId )
+			xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
 		if groupId == E_DialogInput03 : #select
 			if self.ShowMountList( ) :
@@ -412,7 +413,7 @@ class DialogMountManager( SettingDialog ) :
 		isDefault = 0
 		is4Gb     = 0
 		usePercent= 0
-		lblOnline = MR_LANG( 'Off-line' )
+		lblOnline = E_TAG_FALSE
 		self.mNetVolume = ElisENetworkVolume( )
 		self.mNetVolume.mRemotePath = ''
 		self.mNetVolume.mMountPath = ''
@@ -430,7 +431,7 @@ class DialogMountManager( SettingDialog ) :
 			isDefault = self.mNetVolume.mIsDefaultSet
 			is4Gb     = self.mNetVolume.mSupport4G
 			if self.mNetVolume.mOnline :
-				lblOnline = '%s%s%s'% ( E_TAG_COLOR_GREEN, MR_LANG( 'On-line' ), E_TAG_COLOR_END )
+				lblOnline = E_TAG_TRUE
 			if self.mNetVolume.mTotalMB > 0 :
 				usePercent = int( ( ( 1.0 * ( self.mNetVolume.mTotalMB - self.mNetVolume.mFreeMB ) ) / self.mNetVolume.mTotalMB ) * 100 )
 
@@ -463,10 +464,14 @@ class DialogMountManager( SettingDialog ) :
 
 		#hdd size
 		default_Path = MR_LANG( 'HDD' )
+		default_lblOnline = E_TAG_TRUE
 		default_usePercent = 0
 		if self.mTotalHDD > 0 :
 			default_usePercent = int( ( ( 1.0 * ( self.mTotalHDD - self.mFreeHDD ) ) / self.mTotalHDD ) * 100 )
 			#LOG_TRACE( '--------------hdd use[%s] free[%s] total[%s]'% ( (self.mTotalHDD - self.mFreeHDD), self.mFreeHDD, self.mTotalHDD ) )
+		else :
+			#hdd is none
+			default_lblOnline = E_TAG_FALSE
 
 		default_byte = '%sMb'% self.mFreeHDD
 		if self.mFreeHDD > 1024 :
@@ -489,6 +494,10 @@ class DialogMountManager( SettingDialog ) :
 				default_usePercent = int( ( ( 1.0 * ( self.mDefaultPathVolume.mTotalMB - self.mDefaultPathVolume.mFreeMB ) ) / self.mDefaultPathVolume.mTotalMB ) * 100 )
 			default_lblPercent = '%s%%, %s Free'% ( default_usePercent, lblbyte )
 
+			default_lblOnline = E_TAG_FALSE
+			if self.mDefaultPathVolume.mOnline :
+				default_lblOnline = E_TAG_TRUE
+
 		#lblDefault = '%s : %s'% ( MR_LANG( 'Default path' ), mntDefault )
 		lblPercent = '%s%%, %s %s'% ( usePercent, lblbyte, MR_LANG( 'Free' ) )
 
@@ -499,7 +508,8 @@ class DialogMountManager( SettingDialog ) :
 		#select info
 		self.mCtrlProgressUse.setPercent( usePercent )
 		self.mCtrlLabelUse.setLabel( lblPercent )
-		self.mCtrlLabelOnline.setLabel( lblOnline )
+		self.setProperty( 'SelectVolumeConnect', lblOnline )
+		self.setProperty( 'DefaultVolumeConnect', default_lblOnline )
 
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		LOG_TRACE( '----------------------------------DrawItem property[%s]'% ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( ) )
@@ -565,11 +575,12 @@ class DialogMountManager( SettingDialog ) :
 			LOG_TRACE( '[MountManager] passed, volume list None' )
 			return
 
-		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
 		RemoveDirectory( '/config/smbReserved.info' )
 		volumeCount = len( volumeList )
 		count = 0
+		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
 		for netVolume in volumeList :
 			count += 1
 			cmd = netVolume.mMountCmd
@@ -577,10 +588,13 @@ class DialogMountManager( SettingDialog ) :
 			self.mCtrlLabelDefaultPath.setLabel( lblLabel )
 			self.SetControlLabel2String( E_DialogInput04, lblLabel )
 			os.system( 'umount -f %s '% netVolume.mMountPath )
+			time.sleep( 1 )
 			os.system( '%s'% cmd )
 			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
 			os.system( 'sync' )
 
-		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'sync' )
+		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		self.DrawItem( )
 
