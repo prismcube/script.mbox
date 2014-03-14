@@ -11,27 +11,64 @@
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
-				<height>480</height>
+				<height>520</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group">
 				<posx>50</posx>
 				<posy>60</posy>
-				<control type="label" id="201">
+				<width>610</width>
+				<height>80</height>
+				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>400</width>
 					<height>40</height>
 					<align>left</align>
 					<aligny>center</aligny>
+					<label>Default path</label>
+					<textcolor>grey3</textcolor>
+					<font>font13</font>
+				</control>
+				<control type="label" id="201">
+					<posx>90r</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>40</height>
+					<align>right</align>
+					<aligny>center</aligny>
 					<label>$INFO[Control.Label(201)]</label>
 					<textcolor>grey3</textcolor>
 					<font>font13</font>
 				</control>
+				<control type="group">
+					<posx>290</posx>
+					<posy>30</posy>
+					<control type="progress" id="202">
+						<description>Progressbar</description>
+						<posx>0</posx>
+						<posy>15</posy>
+						<width>100</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+					</control>
+					<control type="label" id="203">
+						<posx>105</posx>
+						<posy>2</posy>
+						<width>150</width>
+						<height>40</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Control.Label(203)]</label>
+						<textcolor>grey3</textcolor>
+						<font>font12</font>
+					</control>
+				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>38</posy>
+					<posy>68</posy>
 					<width>510</width>
 					<height>2</height>
 					<texture>separator2.png</texture>
@@ -40,7 +77,7 @@
 			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
-				<posy>30</posy>
+				<posy>60</posy>
 				<include>DialogInput03</include>
 				<include>DialogInput02</include>
 
@@ -88,7 +125,7 @@
 							<height>40</height>
 							<align>right</align>
 							<aligny>center</aligny>
-							<label>$INFO[Control.Label(301)]</label>
+							<label>$INFO[Control.Label(302)]</label>
 							<textcolor>grey3</textcolor>
 							<font>font13</font>
 						</control>

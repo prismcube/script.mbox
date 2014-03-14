@@ -5,10 +5,12 @@ E_RECORDPATH_SETUPMENU_GROUP_ID	 = 9010
 E_RECORDPATH_SUBMENU_LIST_ID     = 9000
 E_RECORDPATH_SETTING_DESCRIPTION = 1003
 
-E_LABEL_ID_DEFAULT_PATH = 201
-E_PROGRESS_ID_USE       = 300
-E_LABEL_ID_USE          = 301
-E_LABEL_ID_ONLINE       = 302
+E_LABEL_ID_DEFAULT_PATH   = 201
+E_PROGRESS_ID_DEFAULT_USE = 202
+E_LABEL_ID_DEFAULT_USE    = 203
+E_PROGRESS_ID_USE         = 300
+E_LABEL_ID_USE            = 301
+E_LABEL_ID_ONLINE         = 302
 
 E_NETWORK_VOLUME_ADD = 0
 E_NETWORK_VOLUME_EDIT = 1
@@ -30,15 +32,22 @@ class DialogMountManager( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.mCtrlLabelDefaultPath = self.getControl( E_LABEL_ID_DEFAULT_PATH )
-		self.mCtrlProgressUse      = self.getControl( E_PROGRESS_ID_USE )
-		self.mCtrlLabelUse         = self.getControl( E_LABEL_ID_USE )
-		self.mCtrlLabelOnline      = self.getControl( E_LABEL_ID_ONLINE )
+		self.mCtrlLabelDefaultPath   = self.getControl( E_LABEL_ID_DEFAULT_PATH )
+		self.mCtrlProgressDefaultUse = self.getControl( E_PROGRESS_ID_DEFAULT_USE )
+		self.mCtrlLabelDefaultUse    = self.getControl( E_LABEL_ID_DEFAULT_USE )
+		self.mCtrlProgressUse        = self.getControl( E_PROGRESS_ID_USE )
+		self.mCtrlLabelUse           = self.getControl( E_LABEL_ID_USE )
+		self.mCtrlLabelOnline        = self.getControl( E_LABEL_ID_ONLINE )
 		#self.setProperty( 'DialogDrawFinished', 'False' )
-		lblTitle = MR_LANG( 'RECORD PATH' )
+		lblTitle = MR_LANG( 'Record Path' )
 		self.SetHeaderLabel( lblTitle )
 
 		self.mDefaultPathVolume = None
+		self.mFreeHDD  = 0
+		self.mTotalHDD = 0
+		if CheckHdd( ) :
+			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
+			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
 		self.mMode = E_NETWORK_VOLUME_ADD
 		self.mSelectIdx = -1
@@ -392,12 +401,10 @@ class DialogMountManager( SettingDialog ) :
 
 
 	def DrawItem( self ) :
-		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 		self.ResetAllControl( )
 		time.sleep( 0.2 )
-		#defaultFocus = E_DialogInput01
-		#if self.mInitialized :
-		#	defaultFocus = E_DialogSpinEx01
+		defaultFocus = E_DialogInput05
 
 		lblSelect = MR_LANG( 'None' )
 		lblRemote = lblSelect
@@ -412,12 +419,13 @@ class DialogMountManager( SettingDialog ) :
 
 		if self.mNetVolumeList and self.mSelectIdx > -1 and self.mSelectIdx < len( self.mNetVolumeList ) :
 			#self.mSelectIdx = 0
+			defaultFocus = E_DialogInput03
 			self.mNetVolume = deepcopy( self.mNetVolumeList[self.mSelectIdx] )
 			getPath   = self.mNetVolume.mRemoteFullPath
 			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
 			urlType   = urlparse.urlparse( getPath ).scheme
 			lblMount  = self.mNetVolume.mMountPath
-			lblSelect = '[%s]%s'% ( urlType, lblMount )
+			lblSelect = '[%s] %s'% ( urlType, lblMount )
 			lblRemote = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
 			isDefault = self.mNetVolume.mIsDefaultSet
 			is4Gb     = self.mNetVolume.mSupport4G
@@ -443,6 +451,7 @@ class DialogMountManager( SettingDialog ) :
 		self.SetEnableControls( visibleControlIds, True )
 		if self.mSelectIdx < 0 :
 			self.SetEnableControl( E_DialogInput02, False )
+			#ToDO : usb? then enable false
 
 		self.InitControl( )
 		time.sleep( 0.2 )
@@ -450,27 +459,49 @@ class DialogMountManager( SettingDialog ) :
 		#	self.mInitialize = True
 		self.SetAutoHeight( False )
 		self.UpdateLocation( )
-		#self.SetFocus( defaultFocus )
+		self.SetFocus( defaultFocus )
 
+		#hdd size
+		default_Path = MR_LANG( 'HDD' )
+		default_usePercent = 0
+		if self.mTotalHDD > 0 :
+			default_usePercent = int( ( ( 1.0 * ( self.mTotalHDD - self.mFreeHDD ) ) / self.mTotalHDD ) * 100 )
+			#LOG_TRACE( '--------------hdd use[%s] free[%s] total[%s]'% ( (self.mTotalHDD - self.mFreeHDD), self.mFreeHDD, self.mTotalHDD ) )
+
+		default_byte = '%sMb'% self.mFreeHDD
+		if self.mFreeHDD > 1024 :
+			default_byte = '%sGb'% ( self.mFreeHDD / 1024 )
+		elif self.mFreeHDD < 0 :
+			default_byte = '%sKb'% ( self.mFreeHDD * 1024 )
+
+		default_lblPercent = '%s%%, %s Free'% ( default_usePercent, default_byte )
+
+		#select size
 		lblbyte = '%sMb'% self.mNetVolume.mFreeMB
 		if self.mNetVolume.mFreeMB > 1024 :
 			lblbyte = '%sGb'% ( self.mNetVolume.mFreeMB / 1024 )
 		elif self.mNetVolume.mFreeMB < 0 :
 			lblbyte = '%sKb'% ( self.mNetVolume.mFreeMB * 1024 )
 
-		mntDefault = MR_LANG( 'HDD' )
 		if self.mDefaultPathVolume :
-			mntDefault = self.mDefaultPathVolume.mMountPath
+			default_Path = self.mDefaultPathVolume.mMountPath
+			if self.mDefaultPathVolume.mTotalMB > 0 :
+				default_usePercent = int( ( ( 1.0 * ( self.mDefaultPathVolume.mTotalMB - self.mDefaultPathVolume.mFreeMB ) ) / self.mDefaultPathVolume.mTotalMB ) * 100 )
+			default_lblPercent = '%s%%, %s Free'% ( default_usePercent, lblbyte )
 
-		lblDefault = '%s : %s'% ( MR_LANG( 'Default path' ), mntDefault )
+		#lblDefault = '%s : %s'% ( MR_LANG( 'Default path' ), mntDefault )
 		lblPercent = '%s%%, %s %s'% ( usePercent, lblbyte, MR_LANG( 'Free' ) )
 
-		self.mCtrlLabelDefaultPath.setLabel( lblDefault )
+		#default info
+		self.mCtrlLabelDefaultPath.setLabel( default_Path )
+		self.mCtrlLabelDefaultUse.setLabel( default_lblPercent )
+		self.mCtrlProgressDefaultUse.setPercent( default_usePercent )
+		#select info
 		self.mCtrlProgressUse.setPercent( usePercent )
 		self.mCtrlLabelUse.setLabel( lblPercent )
 		self.mCtrlLabelOnline.setLabel( lblOnline )
 
-		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		LOG_TRACE( '----------------------------------DrawItem property[%s]'% ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( ) )
 
 

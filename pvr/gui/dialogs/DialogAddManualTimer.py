@@ -7,6 +7,7 @@ E_LABEL_EPG_START_TIME		= 102
 E_LABEL_EPG_END_TIME		= 103
 E_BUTTON_ADD				= 200
 E_BUTTON_CANCEL				= 201
+E_PROGRESS_USE				= 300
 
 E_ONCE						= 0
 E_WEEKLY					= 1
@@ -64,8 +65,19 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
 
+		netVolumeID = -1
+		self.mFreeHDD  = 0
+		self.mTotalHDD = 0
+		if CheckHdd( ) :
+			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
+			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+		self.mSelectIdx = 99
+		self.mNetVolume = None
+
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
+			netVolumeID = self.mTimer.mVolumeID
 		else :
 			self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
 
@@ -75,6 +87,8 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mRecordName = self.mEPG.mEventName
 		else :
 			self.mRecordName = self.mChannel.mName
+
+		self.GetVolumeContext( netVolumeID )
 
 		self.Reload( )
 		self.DrawItem( )
@@ -86,7 +100,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
-		
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -143,6 +157,9 @@ class DialogAddManualTimer( SettingDialog ) :
 
 			elif groupId == E_DialogInput03 :
 				self.ShowEndTime( )
+
+			elif groupId == E_DialogInput04 :
+				self.ShowNetworkVolume( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -212,6 +229,98 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def GetConflictTimer( self ) :
 		return self.mConflictTimer
+
+
+	def GetVolumeInfo( self, aNetVolume = None ) :
+		lblSelect = MR_LANG( 'HDD' )
+		lblOnline = MR_LANG( 'OffLine' )
+		useFree = self.mFreeHDD
+		useTotal= self.mTotalHDD
+		useInfo = 0
+		if aNetVolume :
+			lblSelect = aNetVolume.mMountPath
+			if aNetVolume.mOnline :
+				lblOnline = '%s%s%s'% ( E_TAG_COLOR_GREEN, MR_LANG( 'OnLine' ), E_TAG_COLOR_END )
+			useFree = aNetVolume.mFreeMB
+			if aNetVolume.mTotalMB > 0 :
+				useTotal = aNetVolume.mTotalMB
+
+		useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
+
+		lblByte = '%sMb'% useFree
+		if useFree > 1024 :
+			lblByte = '%sGb'% ( useFree / 1024 )
+		elif useFree < 0 :
+			lblByte = '%sKb'% ( useFree * 1024 )
+		lblPercent = '%s%%, %s Free'% ( useInfo, lblByte )
+
+		return lblSelect, useInfo, lblPercent, lblOnline
+
+
+	def GetVolumeContext( self, aVolumeID = -1 ) :
+		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackIndex = 0
+		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+			for netVolume in self.mNetVolumeList :
+				getPath = netVolume.mRemoteFullPath
+				urlType = urlparse.urlparse( getPath ).scheme
+				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblType = 'local'
+				if urlType :
+					lblType = '%s'% urlType.upper()
+
+				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
+				lblPath = '[%s]%s'% ( lblType, netVolume.mMountPath )
+				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
+
+				if aVolumeID > -1 :
+					if netVolume.mIndexID == aVolumeID :
+						self.mNetVolume = netVolume
+						self.mSelectIdx = trackIndex
+						LOG_TRACE( '[ManaulTimer] Edit Timer, get volumeID[%s]'% aVolumeID )
+				else :
+					if netVolume.mIsDefaultSet :
+						self.mNetVolume = netVolume
+						LOG_TRACE( '[ManaulTimer] find Default volume, mnt[%s]'% netVolume.mMountPath )
+
+				trackList.append( ContextItem( lblPath, trackIndex ) )
+				trackIndex += 1
+
+		else :
+			self.mNetVolumeList = []
+			LOG_TRACE( 'Record_GetNetworkVolume none' )
+
+		return trackList
+
+
+	def ShowNetworkVolume( self ) :
+		trackList = self.GetVolumeContext( )
+		if not trackList or len( trackList ) < 1 :
+			LOG_TRACE( '[ManaulTimer] show fail, mount list is None' )
+			return
+
+		selectedIdx = 0
+		if self.mSelectIdx != 99 :
+			selectedIdx = self.mSelectIdx + 1
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( trackList, selectedIdx )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction < 0 :
+			return
+
+		self.mSelectIdx = selectAction
+		if selectAction == 99 :
+			self.mNetVolume = None
+		elif selectAction < len( self.mNetVolumeList ) :
+			self.mNetVolume = deepcopy( self.mNetVolumeList[selectAction] )
+
+		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
+		self.SetControlLabel2String( E_DialogInput04, lblSelect )
+		self.setProperty( 'NetVolumeConnect', lblOnline )
+		self.setProperty( 'NetVolumeUse', lblPercent )
+		self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
 
 
 	def Reload ( self ) :
@@ -343,17 +452,28 @@ class DialogAddManualTimer( SettingDialog ) :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Select Channel' ),  MR_LANG( 'Record Name' ) )
 			else :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
-				
+
 			self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Start Date' ), [ MR_LANG( 'Date' ) ], 0 )			
 			#self.AddInputControl(  E_DialogSpinEx02, 'Date', 'Date' )
 			self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
 			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )
 			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of Week' ) )
+
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
+
+			lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
+			self.AddInputControl( E_DialogInput04, MR_LANG( 'Record Path' ), lblSelect )
+			self.setProperty( 'NetVolumeConnect', lblOnline )
+			self.setProperty( 'NetVolumeUse', lblPercent )
+			self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
+			if self.mTimer :
+				#block control by Edit timer
+				self.SetEnableControl( E_DialogInput04, False )
+
 			self.AddOkCanelButton( )
 
-			self.SetAutoHeight( True )
+			self.SetAutoHeight( False )
 			self.InitControl( )
 			
 			self.ChangeRecordMode( )
@@ -367,9 +487,11 @@ class DialogAddManualTimer( SettingDialog ) :
 		if self.mTimerMode == E_RECORD_MODE: 
 			self.SetEnableControl( E_DialogSpinEx01, True )
 			self.SetEnableControl( E_DialogInput03, True )
+			self.SetEnableControl( E_DialogInput04, True )
 		else :
 			self.SetEnableControl( E_DialogSpinEx01, False )
 			self.SetEnableControl( E_DialogInput03, False )
+			self.SetEnableControl( E_DialogInput04, False )
 
 		self.SetFocus( E_DialogSpinEx03 )
 
@@ -754,8 +876,11 @@ class DialogAddManualTimer( SettingDialog ) :
 						self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
 						return False
 					ret = self.mDataCache.Timer_AddViewTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mRecordName )
-				else :			
-					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, True )
+				else :
+					volumeId = 0
+					if self.mNetVolume :
+						volumeId = self.mNetVolume.mIndexID
+					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mUsedWeeklyList[0].mDuration, self.mRecordName, True, volumeId )
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.mConflictTimer = ret
