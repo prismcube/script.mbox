@@ -398,9 +398,11 @@ class RemoteControl(WebPage):
 		cmds = command[0].split("=")
 
 		if cmds[1] == "2001" :
+			#not used
 			pass
 
 		if cmds[1] == "2002" :
+			#power Todo
 			pass
 
 		if cmds[1] == "2003" :
@@ -416,6 +418,7 @@ class RemoteControl(WebPage):
 			xbmc.executebuiltin( 'xbmc.Action(DVBBlue)' )
 
 		if cmds[1] == "2007" :
+			#not used
 			pass
 
 		if cmds[1] == "2008" :
@@ -428,7 +431,7 @@ class RemoteControl(WebPage):
 			xbmc.executebuiltin( 'xbmc.Action(DVBRecord)' )
 
 		if cmds[1] == "2011" :
-			pass
+			xbmc.executebuiltin( 'xbmc.Action(Play)' )
 
 		if cmds[1] == "2012" :
 			xbmc.executebuiltin( 'xbmc.Action(Stop)' )
@@ -443,7 +446,7 @@ class RemoteControl(WebPage):
 			xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
 
 		if cmds[1] == "2016" :
-			pass
+			xbmc.executebuiltin( 'xbmc.Action(info)' )
 
 		if cmds[1] == "2017" :
 			xbmc.executebuiltin( 'xbmc.Action(Up)' )
@@ -464,9 +467,9 @@ class RemoteControl(WebPage):
 			xbmc.executebuiltin( 'xbmc.Action(Back)' )
 
 		if cmds[1] == "2023" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBGreen)' )
+			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 
-		if cmds[1] == "20124" :
+		if cmds[1] == "2024" :
 			xbmc.executebuiltin( 'xbmc.Action(ContextMenu)' )
 
 		if cmds[1] == "2025" :
@@ -485,12 +488,14 @@ class RemoteControl(WebPage):
 			xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
 
 		if cmds[1] == "2030" :
-			xbmc.executebuiltin( 'xbmc.Action(DVBTTX)' )
+			# Teletext Todo
+			pass
 
 		if cmds[1] == "2031" :
 			xbmc.executebuiltin( 'xbmc.Action(DVBSubtitle)' )
 
 		if cmds[1] == "2032" :
+			# NumLock Toto
 			pass
 
 		"""
