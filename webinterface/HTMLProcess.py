@@ -5,6 +5,7 @@ import xbmc
 from urllib import unquote, quote
 from datetime import datetime
 from BeautifulSoup import BeautifulSoup 
+import os
 
 def GetHTMLClass( className, *param ) :
 
@@ -238,12 +239,29 @@ class Channel( WebPage ) :
 
 	def getChannelContent( self, content ) :
 
+		try :
+			f = open("/usr/share/xbmc/addons/script.mbox/webinterface/uiStyle.css", "r");
+			css = f.read();
+			f.close();
+		except Exception, e :
+			print str(e)
+			css = ''
+
+		print '[Style Path]'
+		print str( os.getcwd() )
+
 		self.channelContent  = """
-		
+
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html>
 			<head>
 				<title>PrismCube Web UI</title>
-				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<script src="./jquery.js"></script>
+				<script src="./block.js"></script>
+				<style>
+					%s
+				</style>
 				<script>
 				
 					function showIcon( target ) {
@@ -277,6 +295,22 @@ class Channel( WebPage ) :
 						window.open( target, 'epg', 'width=500, height=500, scrollbars=1');
 					}
 
+				</script>
+				<script>
+				// invoke blockUI as needed -->
+				$(document).ready( function() {
+				   $.blockUI({ css: { 
+				            border: 'none', 
+				            padding: '15px', 
+				            backgroundColor: '#000', 
+				            '-webkit-border-radius': '10px', 
+				            '-moz-border-radius': '10px', 
+				            opacity: .5, 
+				            color: 'yellow'
+				        } }); 
+				 
+				    setTimeout($.unblockUI, 1800); 
+				});
 				</script>
 			<body>
 			<div id='wrapper'>
@@ -318,7 +352,7 @@ class Channel( WebPage ) :
 			</body>
 			</html>
 			
-		""" % ( self.getSubMenu(), content )
+		""" % ( css, self.getSubMenu(), content )
 		return self.channelContent
 
 	def getSubMenu( self ) :

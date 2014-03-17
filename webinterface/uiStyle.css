@@ -1,4 +1,4 @@
-	#wrapper {
+#wrapper {
 		width: 1200px;
 		padding: 10px;
 		margin-left: 20px;
@@ -8,6 +8,7 @@
 		margin: auto;
 		overflow-y: scroll
 	}
+
 	
 	/* ======================================================== */
 	/* Top Menu */
@@ -103,8 +104,9 @@
 		font-family: arial;
 		font-size: 1.0em;
 		font-weight: normal;
-		padding: 7px;
+		padding: 0;
 		border-left: 7px solid #dfdfdf;
+		border-bottom: 1px solid #dfdfdf;
 	}
 	
 	#channels tr:first-child td {
@@ -120,8 +122,9 @@
 	}
 	
 	.channelContent {
-		padding: 3px;
-		border-bottom: 1px solid #dfdfdf;
+		display: inline-block;
+		padding: 0;
+		margin: 5px;
 	}
 
 	/* Channel List */
