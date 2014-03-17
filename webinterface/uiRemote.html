@@ -1,7 +1,114 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title>PrismCube Web UI</title>
-	<link href="uiStyle.css" type="text/css" rel="stylesheet">
+	
+	<script src="./jquery.js"></script>
+	<script src="./block.js"></script>
+	
+	<style>
+	
+	#wrapper {
+		width: 1200px;
+		padding: 10px;
+		margin-left: 20px;
+	}
+
+	body {
+		margin: auto;
+		overflow-y: scroll
+	}
+	
+	/* ======================================================== */
+	/* Top Menu */
+	
+	#top {
+		height: 90px;
+		background-color: #525252;
+		
+	}
+	
+	#title {
+		text-align: center;
+		padding-top: 25px;
+		color: white;
+		font-family: arial;
+		font-weight: bold;
+		font-size: 1.8em;
+		padding-right: 227px;
+	}
+	
+	#logo {
+		margin-left: 10px;
+		float: left;
+	}
+
+	/* Top Menu */
+	/* ======================================================== */
+	
+	
+	/* ======================================================== */
+	/* Side Menu */
+	
+	#menu {
+		margin-top: 30px;
+		clear: both;
+		float: left;
+		width: 200px;
+		padding-left: 20px;
+		float: left;
+	}
+
+	#menu p {
+		line-height: 1.0em;
+		font-family: arial;
+		font-weight: bold;
+	}
+	
+	#menu p a:link {
+		text-decoration: none;
+		color: #525252;
+	}
+
+	#menu p a:visited {
+		color: #525252;
+	}
+
+	#menu p a:hover {
+		color: #ff6c00;
+	}
+
+	
+	/* Side Menu */
+	/* ======================================================== */
+	
+	
+	/* ======================================================== */
+	/* Main Screen */
+	
+	#main {
+		margin-top: 20px;
+		margin-left: 230px;
+	}
+
+	#remotecontroller {
+		margin-left: 400px;
+		padding-top: 30px;
+		zoom: 1;
+	}
+	
+	#remotecontroller img {
+		display: block;
+	}
+
+	#hiddenFrame {
+		visibility: hidden;
+	}
+
+	/* Main Screen */
+	/* ======================================================== */	
+	
+	</style>
 	<script>
 		function Go(cmd) {
 			document.myForm.command.value = cmd;
@@ -17,6 +124,22 @@
 			var icon = "img0" + target;
 			document.getElementById(icon).style.visibility = "hidden";
 		}
+	</script>
+	<script>
+	// invoke blockUI as needed -->
+	$(document).ready( function() {
+	   $.blockUI({ css: { 
+	            border: 'none', 
+	            padding: '15px', 
+	            backgroundColor: '#000', 
+	            '-webkit-border-radius': '10px', 
+	            '-moz-border-radius': '10px', 
+	            opacity: .5, 
+	            color: 'yellow'
+	        } }); 
+	 
+	    setTimeout($.unblockUI, 3000); 
+	});
 	</script>
 <body>
 <div id="wrapper">
