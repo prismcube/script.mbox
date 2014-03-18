@@ -485,7 +485,7 @@ def CreateDirectory( aPath ) :
 	if os.path.exists( aPath ) :
 		return
 
-	os.makedirs( aPath, 0644 )
+	os.makedirs( aPath, 0755 )
 
 
 def CreateFile( aPath ) :

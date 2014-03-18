@@ -4071,6 +4071,48 @@ Search for window name
 						<scrollspeed>150</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 					</control>
+					<control type="group">
+						<posx>500</posx>
+						<posy>360</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="progress" id="1501300">
+							<description>Progressbar</description>
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+						</control>
+						<control type="label">
+							<posx>230</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>right</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font12</font>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>5</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>5</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+
+					</control>
 					<!--
 					<include>SpinEx01</include>
 					<include>SpinEx02</include>

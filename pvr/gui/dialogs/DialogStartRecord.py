@@ -50,12 +50,13 @@ class DialogStartRecord( SettingDialog ) :
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mFreeHDD  = 0
 		self.mTotalHDD = 0
-		if CheckHdd( ) :
-			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
-			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
-		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		self.mSelectIdx = 99
 		self.mNetVolume = None
+		self.mNetVolumeList = []
+		if E_SUPPORT_EXTEND_RECORD_PATH and CheckHdd( ) :
+			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
+			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
 		self.Reload( )
 		self.DrawItem( )
@@ -163,19 +164,25 @@ class DialogStartRecord( SettingDialog ) :
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
 		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = MR_LANG( 'OffLine' )
+		lblOnline = E_TAG_TRUE
 		useFree = self.mFreeHDD
 		useTotal= self.mTotalHDD
 		useInfo = 0
 		if aNetVolume :
-			lblSelect = aNetVolume.mMountPath
-			if aNetVolume.mOnline :
-				lblOnline = '%s%s%s'% ( E_TAG_COLOR_GREEN, MR_LANG( 'OnLine' ), E_TAG_COLOR_END )
+			lblSelect = os.path.basename( aNetVolume.mMountPath )
+			if not aNetVolume.mOnline :
+				lblOnline = E_TAG_FALSE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
 
-		useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
+		else :
+			#hdd not
+			if useTotal < 1 :
+				lblOnline = E_TAG_FALSE
+
+		if useTotal > 0 :
+			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
 		lblByte = '%sMb'% useFree
 		if useFree > 1024 :
@@ -211,6 +218,8 @@ class DialogStartRecord( SettingDialog ) :
 				else :
 					if netVolume.mIsDefaultSet :
 						self.mNetVolume = netVolume
+						if aVolumeID == -99 :
+							self.mSelectIdx = trackIndex
 						LOG_TRACE( '[ManaulTimer] find Default volume, mnt[%s]'% netVolume.mMountPath )
 
 				trackList.append( ContextItem( lblPath, trackIndex ) )
@@ -254,7 +263,7 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def Reload ( self ) :
-		netVolumeID = -1
+		netVolumeID = -99
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		self.mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -287,7 +296,7 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def DrawItem( self ) :
-		posx, posy = 210, 310
+		posx, posy = 300, 310
 		try :
 			if self.mTimer :
 				posy = 270
@@ -352,14 +361,17 @@ class DialogStartRecord( SettingDialog ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
-		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
-		self.AddInputControl( E_DialogInput05, MR_LANG( 'Record Path' ), lblSelect )
-		self.AddInputControl( E_DialogInput06, '', '' )
-		self.SetEnableControl( E_DialogInput06, False )
-		self.setProperty( 'NetVolumeConnect', lblOnline )
-		self.setProperty( 'NetVolumeUse', lblPercent )
-		self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
-		self.getControl( 200 ).setPosition( posx, posy )
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
+			self.AddInputControl( E_DialogInput05, MR_LANG( 'Record Path' ), lblSelect )
+			self.AddInputControl( E_DialogInput06, '', '' )
+			self.SetEnableControl( E_DialogInput06, False )
+			self.setProperty( 'NetVolumeConnect', lblOnline )
+			self.setProperty( 'NetVolumeUse', lblPercent )
+			self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
+			self.getControl( 200 ).setPosition( posx, posy )
+
+			self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 		self.AddOkCanelButton( )
 

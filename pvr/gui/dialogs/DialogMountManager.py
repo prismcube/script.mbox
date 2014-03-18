@@ -5,22 +5,19 @@ E_RECORDPATH_SETUPMENU_GROUP_ID	 = 9010
 E_RECORDPATH_SUBMENU_LIST_ID     = 9000
 E_RECORDPATH_SETTING_DESCRIPTION = 1003
 
-E_LABEL_ID_DEFAULT_PATH   = 201
-E_PROGRESS_ID_DEFAULT_USE = 202
-E_LABEL_ID_DEFAULT_USE    = 203
 E_PROGRESS_ID_USE         = 300
-E_LABEL_ID_USE            = 301
-E_IMAGE_ID_ONLINE         = 302
 
 E_NETWORK_VOLUME_ADD = 0
 E_NETWORK_VOLUME_EDIT = 1
-E_NETWORK_VOLUME_DELETE = 2
+E_NETWORK_VOLUME_SELECT = 2
 
 E_DEFAULT_PATH_INTERNAL_HDD = 0
 E_DEFAULT_PATH_NETWORK_VOLUME = 1
 
 E_ID_NO  = 0
 E_ID_YES = 1
+
+E_DEFAULT_PATH_MOUNT_POSITION = '/media/smb'
 
 
 class DialogMountManager( SettingDialog ) :
@@ -32,11 +29,7 @@ class DialogMountManager( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.mCtrlLabelDefaultPath   = self.getControl( E_LABEL_ID_DEFAULT_PATH )
-		self.mCtrlProgressDefaultUse = self.getControl( E_PROGRESS_ID_DEFAULT_USE )
-		self.mCtrlLabelDefaultUse    = self.getControl( E_LABEL_ID_DEFAULT_USE )
-		self.mCtrlProgressUse        = self.getControl( E_PROGRESS_ID_USE )
-		self.mCtrlLabelUse           = self.getControl( E_LABEL_ID_USE )
+		self.mCtrlProgressUse = self.getControl( E_PROGRESS_ID_USE )
 		#self.setProperty( 'DialogDrawFinished', 'False' )
 		lblTitle = MR_LANG( 'Record Path' )
 		self.SetHeaderLabel( lblTitle )
@@ -48,6 +41,7 @@ class DialogMountManager( SettingDialog ) :
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
+		self.mNetVolumeListHash = {}
 		self.mMode = E_NETWORK_VOLUME_ADD
 		self.mSelectIdx = -1
 		self.mNetVolume = ElisENetworkVolume( )
@@ -56,13 +50,16 @@ class DialogMountManager( SettingDialog ) :
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			self.mSelectIdx = 0
+			self.mMode = E_NETWORK_VOLUME_SELECT
 			#check default
 			for netVolume in self.mNetVolumeList :
+				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
+				self.mNetVolumeListHash[hashkey] = netVolume
+
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
-					break
 
-		self.DrawItem( )
+		self.InitItem( )
 
 		self.setProperty( 'DialogDrawFinished', 'True' )
 		#self.mInitialized = True
@@ -76,6 +73,12 @@ class DialogMountManager( SettingDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			if self.mMode != E_NETWORK_VOLUME_SELECT and self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+				self.mMode = E_NETWORK_VOLUME_SELECT
+				self.DrawItem( )
+				LOG_TRACE( '[MountManager] cancel done, restore[%s]'% self.mSelectIdx )
+				return
+
 			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -111,11 +114,6 @@ class DialogMountManager( SettingDialog ) :
 			if self.ShowMountList( ) :
 				self.DrawItem( )
 
-		if groupId == E_DialogInput04 : #reset
-			self.mSelectIdx = -1
-			self.SetMountByVolumeList( )
-			self.DrawItem( )
-
 		else :
 			#if groupId == E_DialogSpinEx01 or groupId == E_DialogSpinEx02 : #isDefault
 			#	self.ControlSelect( )
@@ -132,19 +130,110 @@ class DialogMountManager( SettingDialog ) :
 
 
 	def Close( self ) :
-		self.ResetAllControl( )
+		#self.SetMountByVolumeList( )
 		self.CloseDialog( )
+
+
+	def GetNetworkVolumes( self ) :
+		return self.mNetVolumeList
+
+
+	def GetDefaultVolume( self ) :
+		return self.mDefaultPathVolume
+
+
+	def GetVolumeIDs( self, aReqVolume = None ) :
+		getVolume = None
+		if aReqVolume :
+			hashKey = '%s:%s'% ( aReqVolume.mRemoteFullPath, aReqVolume.mMountPath )
+			getVolume = self.mNetVolumeListHash.get( hashKey, None )
+
+		return getVolume
+
+
+	def GetVolumeInfo( self, aNetVolume = None ) :
+		lblSelect = MR_LANG( 'HDD' )
+		lblOnline = E_TAG_TRUE
+		useFree   = self.mFreeHDD
+		useTotal  = self.mTotalHDD
+		useInfo   = 0
+		if aNetVolume :
+			lblSelect = os.path.basename( aNetVolume.mMountPath )
+			if not aNetVolume.mOnline :
+				lblOnline = E_TAG_FALSE
+			useFree = aNetVolume.mFreeMB
+			if aNetVolume.mTotalMB > 0 :
+				useTotal = aNetVolume.mTotalMB
+
+		else :
+			#hdd not
+			if useTotal < 1 :
+				lblOnline = E_TAG_FALSE
+
+		if useTotal > 0 :
+			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
+
+		lblByte = '%sMb'% useFree
+		if useFree > 1024 :
+			lblByte = '%sGb'% ( useFree / 1024 )
+		elif useFree < 0 :
+			lblByte = '%sKb'% ( useFree * 1024 )
+		lblPercent = '%s%%, %s Free'% ( useInfo, lblByte )
+
+		return lblSelect, useInfo, lblPercent, lblOnline
+
+
+	def SetEditEnableVolume( self, aCheckControl = None ) :
+		deleteVisible = False
+		deleteName = MR_LANG( 'Delete' )
+		selectName = MR_LANG( 'Add' )
+		netVolume = self.GetVolumeIDs( self.mNetVolume )
+		if netVolume :
+			if aCheckControl == E_DialogSpinEx02 :
+				if netVolume.mSupport4G == self.mNetVolume.mSupport4G :
+					self.DrawItem( E_DialogSpinEx02 )
+					return
+
+			self.mMode = E_NETWORK_VOLUME_EDIT
+			selectName = MR_LANG( 'Edit' )
+			deleteName = MR_LANG( 'Cancel' )
+			deleteVisible = True
+
+			lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( netVolume )
+			self.setProperty( 'NetVolumeConnect', lblOnline )
+			self.setProperty( 'NetVolumeUse', lblPercent )
+			self.mCtrlProgressUse.setPercent( useInfo )
+
+		else :
+			#new
+			self.mNetVolume.mSupport4G = 0
+			self.mNetVolume.mIsDefaultSet = 0
+			self.SelectPosition( E_DialogSpinEx02, 0 )
+			#self.SetControlLabel2String( E_DialogInput04, USER_ENUM_LIST_YES_NO[0] )
+
+			if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+				self.mMode = E_NETWORK_VOLUME_ADD
+				deleteName = MR_LANG( 'Cancel' )
+				deleteVisible = True
+
+		self.SetControlLabelString( E_DialogInput03, selectName )
+		self.SetControlLabel2String( E_DialogInput03, '' )
+		self.SetEnableControl( E_DialogInput03, False )
+
+		self.SetControlLabel2String( E_DialogInput02, deleteName )
+		self.SetVisibleControl( E_DialogInput02, deleteVisible )
+		self.SetEnableControl( E_DialogInput02, True )
 
 
 	def SetNetworkVolume( self, aInput, aBrowseTitle = '' ) :
 
-		# select path
-		if aInput == E_DialogInput05 or aInput == E_DialogInput06 :
+		# remote path
+		if aInput == E_DialogInput05 :
 			browseTitle = MR_LANG( 'Select' )
 			if aInput == E_DialogInput05 :
 				browseTitle = '%s %s'% ( browseTitle, MR_LANG( 'Record Path' ) )
-			elif aInput == E_DialogInput06 :
-				browseTitle = '%s %s'% ( browseTitle, MR_LANG( 'Mount Path' ) )
+			#elif aInput == E_DialogInput06 :
+			#	browseTitle = '%s %s'% ( browseTitle, MR_LANG( 'Mount Path' ) )
 
 			getPath = xbmcgui.Dialog( ).browsedirectory( browseTitle )
 			LOG_TRACE( '----------getPath[%s]'% getPath )
@@ -186,89 +275,45 @@ class DialogMountManager( SettingDialog ) :
 				return
 
 			#init value
-			if aInput == E_DialogInput05 :
-				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
-				lblPath = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
-				self.mNetVolume.mRemotePath = '//' + lblPath
-				self.mNetVolume.mRemoteFullPath = getPath
-				self.SetControlLabel2String( E_DialogInput05, lblPath )
-				LOG_TRACE( 'lblPath[%s] remote[%s] fullpath[%s]'% ( lblPath, self.mNetVolume.mRemotePath, self.mNetVolume.mRemoteFullPath ) )
+			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+			lblPath = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
+			self.mNetVolume.mRemotePath = '//' + lblPath
+			self.mNetVolume.mRemoteFullPath = getPath
+			lblMount= os.path.basename( lblPath )
+			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_MOUNT_POSITION, lblMount )
+			self.SetControlLabel2String( E_DialogInput05, lblPath )
+			self.SetControlLabel2String( E_DialogInput06, lblMount )
+			LOG_TRACE( 'lblPath[%s] remote[%s] fullpath[%s] mountPath[%s]'% ( lblPath, self.mNetVolume.mRemotePath, self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath ) )
+			self.SetEditEnableVolume( )
 
-			elif aInput == E_DialogInput06 :
-				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
-				lblPath = os.path.join( urlHost, urlPath )
-				mntPath = os.path.dirname( urlPath )
-				self.mNetVolume.mMountPath = mntPath
-				self.SetControlLabel2String( E_DialogInput06, lblPath )
-				LOG_TRACE( 'lblPath[%s] mount[%s]'% ( lblPath, mntPath ) )
-
-		elif aInput == E_DialogSpinEx01 :
-			if not self.mNetVolume.mRemotePath or ( not self.mNetVolume.mMountPath ) :
-				self.SelectPosition( E_DialogSpinEx01, self.mNetVolume.mIsDefaultSet )
+		elif aInput == E_DialogInput06 :
+			if not self.mNetVolume.mRemotePath :
 				lblLine = MR_LANG( 'Enter the input record path first' )
-				if not self.mNetVolume.mMountPath :
-					lblLine = MR_LANG( 'Enter the input mount path first' )
-
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
 				dialog.doModal( )
 				return
 
-			mIsDefaultSet_backup = self.mNetVolume.mIsDefaultSet
-			self.mNetVolume.mIsDefaultSet = self.GetSelectedIndex( E_DialogSpinEx01 )
-			if not self.DoCheckDefaultPath( self.mNetVolume ) :
-				self.mNetVolume.mIsDefaultSet = mIsDefaultSet_backup
-				self.SelectPosition( E_DialogSpinEx01, mIsDefaultSet_backup )
-			LOG_TRACE( '======================mIsDefaultSet_backup[%s] mIsDefaultSet[%s] GetSelectedIndex[%s]'% ( mIsDefaultSet_backup, self.mNetVolume.mIsDefaultSet, self.GetSelectedIndex( E_DialogSpinEx01 ) ) )
+			mntName = os.path.basename( self.mNetVolume.mMountPath )
+			label = MR_LANG( 'Change a Mount Name' )
+			kb = xbmc.Keyboard( mntName, label, False )
+			kb.doModal( )
+
+			isConfirmed = kb.isConfirmed( )
+			mntName = kb.getText( )
+			if not isConfirmed or mntName == None or mntName == '' :
+				LOG_TRACE('[Edit] No favName or cencel')
+				return
+
+			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_MOUNT_POSITION, mntName )
+			self.SetControlLabel2String( E_DialogInput06, mntName )
+			LOG_TRACE( 'lblPath[%s] mount[%s]'% ( mntName, self.mNetVolume.mMountPath ) )
+			self.SetEditEnableVolume( )
+
 
 		elif aInput == E_DialogSpinEx02 :
 			self.mNetVolume.mSupport4G = self.GetSelectedIndex( E_DialogSpinEx02 )
-
-
-	def DoCheckDefaultPath( self, aNetVolume = None, aAsk = True ) :
-		if not aNetVolume :
-			LOG_TRACE( '[MountManager] pass, volume is None' )
-			return False
-
-		isReset = False
-		isChange = False
-
-		if self.mDefaultPathVolume :
-			if self.mDefaultPathVolume.mMountPath == aNetVolume.mMountPath :
-				if self.mDefaultPathVolume.mIsDefaultSet != aNetVolume.mIsDefaultSet :
-					#current : no -> yes, yes -> no
-					isChange = True
-					if self.mDefaultPathVolume.mIsDefaultSet and ( not aNetVolume.mIsDefaultSet ) :
-						isReset = True
-
-			else :
-				#change : another -> this volume
-				isChange = True
-
-		else :
-			#new default
-			isChange = True
-			if not aNetVolume.mIsDefaultSet :
-				isReset = True
-				if not aAsk :
-					isChange = False
-
-		if isChange :
-			if aAsk :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				lblLine = MR_LANG( 'Are you sure default path this volume?' )
-				if isReset :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Reset default path' ), MR_LANG( 'Are you sure default path internal HDD?' ) )
-				dialog.SetDialogProperty( MR_LANG( 'Default path' ), lblLine )
-				dialog.doModal( )
-				isChange = False
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					isChange = True
-
-			#if isChange :
-			#	isChange = self.mDataCache.Record_SetDefaultVolume( aNetVolume )
-
-		return isChange
+			self.SetEditEnableVolume( E_DialogSpinEx02 )
 
 
 	def DoDeleteVolume( self, aNetVolume = None, aIsUMount = True ) :
@@ -284,18 +329,18 @@ class DialogMountManager( SettingDialog ) :
 				os.system( 'sync' )
 
 			listCount = len( self.mNetVolumeList )
-			if not self.mNetVolumeList or ( listCount - 1 ) < 1 :
+			if not self.mNetVolumeList or listCount < 1 :
 				self.mSelectIdx = -1
-				#self.mNetVolume = ElisENetworkVolume( )
-				#self.mNetVolume.mRemotePath = ''
-				#self.mNetVolume.mMountPath = ''
 
 			else :
-				if self.mSelectIdx >= listCount - 1 :
-					self.mSelectIdx = listCount - 2
+				if self.mSelectIdx < listCount - 1 :
+					pass
 
 				else :
-					self.mSelectIdx -= 1
+					if listCount - 1 > 0 :
+						self.mSelectIdx = listCount - 2
+					else :
+						self.mSelectIdx = -1
 
 		return ret
 
@@ -310,48 +355,59 @@ class DialogMountManager( SettingDialog ) :
 				mountPath = ''
 				lblLine = MR_LANG( 'Can not apply' )
 				if self.mNetVolume.mRemotePath and self.mNetVolume.mMountPath :
+					netVolume = self.GetVolumeIDs( self.mNetVolume )
+					if netVolume and \
+					   netVolume.mRemoteFullPath == self.mNetVolume.mRemoteFullPath and \
+					   netVolume.mMountPath == self.mNetVolume.mMountPath and \
+					   netVolume.mSupport4G == self.mNetVolume.mSupport4G :
+						isAdd = False
+						lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'Arleady mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+						LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
-					urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
-					self.mNetVolume.mMountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, self.mNetVolume.mRemotePath, self.mNetVolume.mMountPath )
-					mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
-					LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
-					#self.mNetVolume.printdebug( )
+					else :
+						#add new, edit
+						urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
+						self.mNetVolume.mMountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, self.mNetVolume.mRemotePath, self.mNetVolume.mMountPath )
+						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
+						LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
+						#self.mNetVolume.printdebug( )
 
-					lblLine = MR_LANG( 'Can not mount this volume' )
-					if mountPath != '' :
-						isAdd = True
-						#is edit? delete old volume
-						if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
-							for netVolume in self.mNetVolumeList :
-								netVolume.printdebug()
-								if netVolume.mMountPath == self.mNetVolume.mMountPath :
-									if not self.DoDeleteVolume( netVolume, False ) :
-										isAdd = False
-										lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'Arleady mounted' ), netVolume.mRemotePath, self.mNetVolume.mMountPath )
+						lblLine = MR_LANG( 'Can not mount this volume' )
+						if mountPath != '' :
+							isAdd = True
+							#is edit? delete old volume
+							netVolume = self.GetVolumeIDs( self.mNetVolume )
+							LOG_TRACE( '--------------------------find volume GetVolumeIDs[%s]'% netVolume )
+							if netVolume :
+								if not self.DoDeleteVolume( netVolume, False ) :
+									isAdd = False
+									lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'Arleady mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
 
-									LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
-									#netVolume.printdebug( )
-									break
+								LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
-						if isAdd :
-							lblLine = MR_LANG( 'Can not add this volume' )
-							ret = self.mDataCache.Record_AddNetworkVolume( self.mNetVolume )
-							LOG_TRACE( '----------------------------------ret[%s]'% ret )
-							if ret :
-								isFail = False
-								lblLine = '%s\n%s%s to %s'% ( MR_LANG( 'Add volume' ), urlHost, os.path.dirname(urlPath), mountPath )
-								if self.DoCheckDefaultPath( self.mNetVolume, False ) :
-									ret = self.mDataCache.Record_SetDefaultVolume( self.mNetVolume )
+							if isAdd :
+								lblLine = MR_LANG( 'Can not add this volume' )
+								ret = self.mDataCache.Record_AddNetworkVolume( self.mNetVolume )
+								LOG_TRACE( '----------------------------------ret[%s]'% ret )
+								if ret :
+									isFail = False
+									lblLine = '%s \'%s\''% ( MR_LANG( 'Add volume' ), os.path.basename( self.mNetVolume.mMountPath ) )
 
-							else :
-								# Add fail then restore umount
-								os.system( '/bin/umount -f %s'% mountPath )
-								os.system( 'sync' )
+								else :
+									# Add fail then restore umount
+									os.system( '/bin/umount -f %s'% mountPath )
+									os.system( 'sync' )
 
 			elif aInput == E_DialogInput02 :
+				if self.mMode != E_NETWORK_VOLUME_SELECT :
+					self.mMode = E_NETWORK_VOLUME_SELECT
+					self.DrawItem( )
+					LOG_TRACE( '[MountManager] cancel done, restore[%s]'% self.mSelectIdx )
+					return
+
 				delTitle= MR_LANG( 'Delete' )
 				delLine = MR_LANG( 'Are you delete this volume?' )
-				delLine = '%s\n%s'% ( self.mNetVolume.mMountPath, delLine )
+				delLine = '%s\n%s'% ( os.path.basename( self.mNetVolume.mMountPath ), delLine )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( delTitle, delLine )
 				dialog.doModal( )
@@ -379,12 +435,15 @@ class DialogMountManager( SettingDialog ) :
 
 
 		selectIdx = -1
+		self.mNetVolumeListHash = {}
 		self.mDefaultPathVolume = None
 		defaultPath = E_DEFAULT_PATH_INTERNAL_HDD
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
 				selectIdx += 1
+				hashkey = '%s:%s'% ( netVolume.mRemoteFullPath, netVolume.mMountPath )
+				self.mNetVolumeListHash[hashkey] = netVolume
 				if netVolume.mMountPath == self.mNetVolume.mMountPath :
 					self.mSelectIdx = selectIdx
 
@@ -395,21 +454,44 @@ class DialogMountManager( SettingDialog ) :
 			#	self.mNetVolume = self.mNetVolumeList[self.mSelectIdx]
 			#	self.mNetVolume.printdebug()
 
+		self.mMode = E_NETWORK_VOLUME_SELECT
 		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
 
 		self.DrawItem( )
 		LOG_TRACE( '[MountManager] Done' )
 
 
-	def DrawItem( self ) :
-		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+	def InitItem( self ) :
+		lblValue = MR_LANG( 'None' )
 		self.ResetAllControl( )
-		time.sleep( 0.2 )
+		self.AddInputControl( E_DialogInput03, MR_LANG( 'Select' ), lblValue )
+		self.AddInputControl( E_DialogInput02, '', MR_LANG( 'Delete' ) )
+
+		self.AddInputControl( E_DialogInput05, MR_LANG( 'Record Path' ), lblValue )
+		self.AddInputControl( E_DialogInput06, MR_LANG( 'Volume Name' ), lblValue )
+		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Use record per 4GB' ), USER_ENUM_LIST_YES_NO, 0 )
+		#self.AddInputControl( E_DialogInput04, MR_LANG( 'Default Volume' ), USER_ENUM_LIST_YES_NO[0] )
+		self.AddInputControl( E_DialogInput07, MR_LANG( 'Apply' ), '' )
+
+		#visibleControlIds = [E_DialogInput02, E_DialogInput03, E_DialogInput05, E_DialogInput06, E_DialogSpinEx02, E_DialogInput07 ]
+		#self.SetEnableControl( E_DialogInput04, False )
+
+		self.InitControl( )
+		self.SetAutoHeight( False )
+		self.UpdateLocation( )
+
+		self.DrawItem( )
+
+
+	def DrawItem( self, aDefaultFocus = None ) :
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 		defaultFocus = E_DialogInput05
 
-		lblSelect = MR_LANG( 'None' )
-		lblRemote = lblSelect
-		lblMount  = lblSelect
+		selectControlVisible = False
+		selectControl = MR_LANG( 'Add' )
+		lblSelect = ''
+		lblRemote = MR_LANG( 'None' )
+		lblMount  = lblRemote
 		isDefault = 0
 		is4Gb     = 0
 		usePercent= 0
@@ -418,48 +500,42 @@ class DialogMountManager( SettingDialog ) :
 		self.mNetVolume.mRemotePath = ''
 		self.mNetVolume.mMountPath = ''
 
-		if self.mNetVolumeList and self.mSelectIdx > -1 and self.mSelectIdx < len( self.mNetVolumeList ) :
-			#self.mSelectIdx = 0
-			defaultFocus = E_DialogInput03
-			self.mNetVolume = deepcopy( self.mNetVolumeList[self.mSelectIdx] )
-			getPath   = self.mNetVolume.mRemoteFullPath
-			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
-			urlType   = urlparse.urlparse( getPath ).scheme
-			lblMount  = self.mNetVolume.mMountPath
-			lblSelect = '[%s] %s'% ( urlType, lblMount )
-			lblRemote = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
-			isDefault = self.mNetVolume.mIsDefaultSet
-			is4Gb     = self.mNetVolume.mSupport4G
-			if self.mNetVolume.mOnline :
-				lblOnline = E_TAG_TRUE
-			if self.mNetVolume.mTotalMB > 0 :
-				usePercent = int( ( ( 1.0 * ( self.mNetVolume.mTotalMB - self.mNetVolume.mFreeMB ) ) / self.mNetVolume.mTotalMB ) * 100 )
+		if self.mMode == E_NETWORK_VOLUME_SELECT and self.mSelectIdx > -1 :
+			if self.mNetVolumeList and self.mSelectIdx < len( self.mNetVolumeList ) :
+				#self.mSelectIdx = 0
+				self.mMode = E_NETWORK_VOLUME_SELECT
+				selectControlVisible = True
+				selectControl = MR_LANG( 'Select' )
+				defaultFocus = E_DialogInput03
+				self.mNetVolume = deepcopy( self.mNetVolumeList[self.mSelectIdx] )
+				getPath   = self.mNetVolume.mRemoteFullPath
+				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				urlType   = urlparse.urlparse( getPath ).scheme
+				lblMount  = os.path.basename( self.mNetVolume.mMountPath )
+				lblSelect = '[%s] %s'% ( urlType, lblMount )
+				lblRemote = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
+				isDefault = self.mNetVolume.mIsDefaultSet
+				is4Gb     = self.mNetVolume.mSupport4G
+				if self.mNetVolume.mOnline :
+					lblOnline = E_TAG_TRUE
+				if self.mNetVolume.mTotalMB > 0 :
+					usePercent = int( ( ( 1.0 * ( self.mNetVolume.mTotalMB - self.mNetVolume.mFreeMB ) ) / self.mNetVolume.mTotalMB ) * 100 )
 
-		#self.AddInputControl( E_DialogInput01, MR_LANG( 'Add' ), '' )
-		self.AddInputControl( E_DialogInput03, MR_LANG( 'Select' ), lblSelect )
-		self.AddInputControl( E_DialogInput02, '', MR_LANG( 'Delete' ) )
+		self.SetControlLabelString( E_DialogInput03, selectControl )
+		self.SetControlLabel2String( E_DialogInput03, lblSelect )
+		self.SetControlLabel2String( E_DialogInput02, MR_LANG( 'Delete' ) )
 
-		self.AddInputControl( E_DialogInput04, 'Reset', '' )
-		self.AddInputControl( E_DialogInput05, 'Record Path', lblRemote )
-		self.AddInputControl( E_DialogInput06, 'Access Location', lblMount )
-		self.AddUserEnumControl( E_DialogSpinEx01, 'Use default path', USER_ENUM_LIST_YES_NO, isDefault )
-		self.AddUserEnumControl( E_DialogSpinEx02, 'Use record per 4GB', USER_ENUM_LIST_YES_NO, is4Gb )
-		self.AddInputControl( E_DialogInput07, 'Apply', '' )
+		self.SetControlLabel2String( E_DialogInput05, lblRemote )
+		self.SetControlLabel2String( E_DialogInput06, lblMount )
+		self.SelectPosition( E_DialogSpinEx02, is4Gb )
+		#self.SetControlLabel2String( E_DialogInput04, USER_ENUM_LIST_YES_NO[isDefault] )
 
-		visibleControlIds = [E_DialogInput02, E_DialogInput03, E_DialogInput04, E_DialogInput05, E_DialogInput06, E_DialogSpinEx01, E_DialogSpinEx02, E_DialogInput07 ]
+		self.SetEnableControls( [E_DialogInput03, E_DialogInput02], selectControlVisible )
+		self.SetVisibleControl( E_DialogInput02, selectControlVisible )
+		#	#ToDO : usb? then enable false
 
-		self.SetVisibleControls( visibleControlIds, True )
-		self.SetEnableControls( visibleControlIds, True )
-		if self.mSelectIdx < 0 :
-			self.SetEnableControl( E_DialogInput02, False )
-			#ToDO : usb? then enable false
-
-		self.InitControl( )
-		time.sleep( 0.2 )
-		#if not self.mInitialized :
-		#	self.mInitialize = True
-		self.SetAutoHeight( False )
-		self.UpdateLocation( )
+		if aDefaultFocus :
+			defaultFocus = aDefaultFocus
 		self.SetFocus( defaultFocus )
 
 		#hdd size
@@ -498,18 +574,17 @@ class DialogMountManager( SettingDialog ) :
 			if self.mDefaultPathVolume.mOnline :
 				default_lblOnline = E_TAG_TRUE
 
-		#lblDefault = '%s : %s'% ( MR_LANG( 'Default path' ), mntDefault )
 		lblPercent = '%s%%, %s %s'% ( usePercent, lblbyte, MR_LANG( 'Free' ) )
 
 		#default info
-		self.mCtrlLabelDefaultPath.setLabel( default_Path )
-		self.mCtrlLabelDefaultUse.setLabel( default_lblPercent )
-		self.mCtrlProgressDefaultUse.setPercent( default_usePercent )
+		#self.mCtrlLabelDefaultPath.setLabel( default_Path )
+		#self.mCtrlLabelDefaultUse.setLabel( default_lblPercent )
+		#self.mCtrlProgressDefaultUse.setPercent( default_usePercent )
+
 		#select info
 		self.mCtrlProgressUse.setPercent( usePercent )
-		self.mCtrlLabelUse.setLabel( lblPercent )
-		self.setProperty( 'SelectVolumeConnect', lblOnline )
-		self.setProperty( 'DefaultVolumeConnect', default_lblOnline )
+		self.setProperty( 'NetVolumeUse', lblPercent )
+		self.setProperty( 'NetVolumeConnect', lblOnline )
 
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		LOG_TRACE( '----------------------------------DrawItem property[%s]'% ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( ) )
@@ -518,19 +593,19 @@ class DialogMountManager( SettingDialog ) :
 	def GetMountList( self ) :
 		#self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
-		trackList = []
+		trackList = [ContextItem( MR_LANG( 'Add' ), 99 )]
 		trackIndex = 0
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
-				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
-				lblPath = '[%s]%s'% ( lblType, netVolume.mMountPath )
+				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
 				LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				trackList.append( ContextItem( lblPath, trackIndex ) )
@@ -553,11 +628,16 @@ class DialogMountManager( SettingDialog ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-		dialog.SetProperty( trackList, self.mSelectIdx )
+		dialog.SetProperty( trackList, self.mSelectIdx + 1 )
 		dialog.doModal( )
 
 		selectAction = dialog.GetSelectedAction( )
 		if selectAction < 0 :
+			return
+
+		if selectAction == 99 :
+			self.mMode = E_NETWORK_VOLUME_ADD
+			self.DrawItem( E_DialogInput05 )
 			return
 
 		LOG_TRACE('Select[%s --> %s]'% ( self.mSelectIdx, selectAction ) )
@@ -579,22 +659,51 @@ class DialogMountManager( SettingDialog ) :
 
 		RemoveDirectory( '/config/smbReserved.info' )
 		volumeCount = len( volumeList )
+		defVolume = None
 		count = 0
+		failCount = 0
+		failItem = ''
 		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
 		for netVolume in volumeList :
 			count += 1
-			cmd = netVolume.mMountCmd
-			lblLabel = '[%s/%s]%s'% ( count, volumeCount, netVolume.mMountPath )
-			self.mCtrlLabelDefaultPath.setLabel( lblLabel )
-			self.SetControlLabel2String( E_DialogInput04, lblLabel )
-			os.system( 'umount -f %s '% netVolume.mMountPath )
-			time.sleep( 1 )
-			os.system( '%s'% cmd )
-			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+			lblRet = MR_LANG( 'OK' )
+			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
+			if netVolume.mIsDefaultSet :
+				defVolume = netVolume
+			self.SetControlLabel2String( E_DialogInput03, lblLabel )
+
+			mntHistory = ExecuteShell( 'mount' )
+			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
+				if not mntPath :
+					mntHistory = ExecuteShell( 'mount' )
+					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+						lblRet = MR_LANG( 'Fail' )
+						failCount += 1
+						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
+
+			lblLabel = '%s%s'% ( lblRet, lblLabel )
+			self.SetControlLabel2String( E_DialogInput03, lblLabel )
+
+			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
+			os.system( 'echo \"%s\" >> /config/smbReserved.info'% netVolume.mMountCmd )
 			os.system( 'sync' )
+			time.sleep( 1 )
 
 		os.system( 'chmod 755 /config/smbReserved.info' )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
-		self.DrawItem( )
+
+		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+		self.SetControlLabel2String( E_DialogInput03, lblSelect )
+		self.setProperty( 'NetVolumeConnect', lblOnline )
+		self.setProperty( 'NetVolumeUse', lblPercent )
+		self.mCtrlProgressUse.setPercent( useInfo )
+
+		if failCount :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Fail' ), failItem[1:] )
+			dialog.doModal( )
+
+		#self.DrawItem( )
 

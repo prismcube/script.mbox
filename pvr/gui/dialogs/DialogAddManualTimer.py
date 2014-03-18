@@ -65,15 +65,16 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
 
-		netVolumeID = -1
+		netVolumeID = -99
 		self.mFreeHDD  = 0
 		self.mTotalHDD = 0
-		if CheckHdd( ) :
-			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
-			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
-		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		self.mSelectIdx = 99
 		self.mNetVolume = None
+		self.mNetVolumeList = []
+		if E_SUPPORT_EXTEND_RECORD_PATH and CheckHdd( ) :
+			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
+			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
@@ -233,19 +234,25 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
 		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = MR_LANG( 'OffLine' )
+		lblOnline = E_TAG_TRUE
 		useFree = self.mFreeHDD
 		useTotal= self.mTotalHDD
 		useInfo = 0
 		if aNetVolume :
-			lblSelect = aNetVolume.mMountPath
-			if aNetVolume.mOnline :
-				lblOnline = '%s%s%s'% ( E_TAG_COLOR_GREEN, MR_LANG( 'OnLine' ), E_TAG_COLOR_END )
+			lblSelect = os.path.basename( aNetVolume.mMountPath )
+			if not aNetVolume.mOnline :
+				lblOnline = E_TAG_FALSE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
 
-		useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
+		else :
+			#hdd not
+			if useTotal < 1 :
+				lblOnline = E_TAG_FALSE
+
+		if useTotal > 0 :
+			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
 		lblByte = '%sMb'% useFree
 		if useFree > 1024 :
@@ -281,6 +288,8 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					if netVolume.mIsDefaultSet :
 						self.mNetVolume = netVolume
+						if aVolumeID == -99 :
+							self.mSelectIdx = trackIndex
 						LOG_TRACE( '[ManaulTimer] find Default volume, mnt[%s]'% netVolume.mMountPath )
 
 				trackList.append( ContextItem( lblPath, trackIndex ) )
@@ -441,7 +450,6 @@ class DialogAddManualTimer( SettingDialog ) :
 		global LIST_WEEKLY
 
 		try :
-
 			self.ResetAllControl( )
 			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), [ MR_LANG( 'Record' ),  MR_LANG( 'View' ) ], 0 )
 			if self.mTimer :
@@ -462,14 +470,17 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
 
-			lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
-			self.AddInputControl( E_DialogInput04, MR_LANG( 'Record Path' ), lblSelect )
-			self.setProperty( 'NetVolumeConnect', lblOnline )
-			self.setProperty( 'NetVolumeUse', lblPercent )
-			self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
-			if self.mTimer :
-				#block control by Edit timer
-				self.SetEnableControl( E_DialogInput04, False )
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
+				self.AddInputControl( E_DialogInput04, MR_LANG( 'Record Path' ), lblSelect )
+				self.setProperty( 'NetVolumeConnect', lblOnline )
+				self.setProperty( 'NetVolumeUse', lblPercent )
+				self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
+				if self.mTimer :
+					#block control by Edit timer
+					self.SetEnableControl( E_DialogInput04, False )
+
+				self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 			self.AddOkCanelButton( )
 
