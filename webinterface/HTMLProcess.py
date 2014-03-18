@@ -119,6 +119,7 @@ class WebPage( object ) :
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
+					<p><img src='./uiImg/mark.png' id='img07' style='visibility: hidden;'> <a href='Screenshot' onmouseover='javacript:showIcon(7);' onmouseout='javascript:hideIcon(7);'>Screenshot</a></p>
 				</div>
 				
 				<div id='main'>
@@ -343,6 +344,7 @@ class Channel( WebPage ) :
 					<!-- <p><img src="./uiImg/mark.png" id="img06" style="visibility: hidden;"> <a href="EpgGrid" onmouseover="javacript:showIcon(6);" onmouseout="javascript:hideIcon(6);">EPG</a></p> -->
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
+					<p><img src='./uiImg/mark.png' id='img07' style='visibility: hidden;'> <a href='Screenshot' onmouseover='javacript:showIcon(7);' onmouseout='javascript:hideIcon(7);'>Screenshot</a></p>
 				</div>
 				
 				<div id='main'>
@@ -932,7 +934,35 @@ class Epg( WebPage ) :
 			
 		""" % content
 
-		return content 
+		return content
+
+
+class Screenshot( WebPage ) :
+
+	def __init__( self, command ) :
+		super(Screenshot, self).__init__()
+		self.content = self.screenshotContent(command)
+
+	def screenshotContent( self, command ) :
+		os.system( '/usr/bin/grab -j 75' )
+		content = """<img src="getScreenshot" width="640">"""
+
+		return self.getBasicTemplate( content )
+
+
+class getScreenshot( WebPage ) :
+
+	def __init__( self, command ) :
+		super(getScreenshot, self).__init__()
+		self.content = self.getScreenshotContent(command)
+
+	def getScreenshotContent( self, command ) :
+		f = open("/tmp/screenshot.jpg", "rb")
+		content = f.read()
+		f.close()
+
+		return content
+
 
 class Recordings( WebPage ) :
 
