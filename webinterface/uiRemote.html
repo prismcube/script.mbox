@@ -109,10 +109,78 @@
 	/* ======================================================== */	
 	
 	</style>
+
 	<script>
+
+		$(document).ready( function() {
+		   $.blockUI({ css: { 
+	    	        border: 'none', 
+	        	    padding: '15px', 
+	            	backgroundColor: '#000', 
+		            '-webkit-border-radius': '10px', 
+		            '-moz-border-radius': '10px', 
+	    	        opacity: .5, 
+	        	    color: 'yellow'
+		        } }); 
+		 
+	    	setTimeout($.unblockUI, 2500); 
+		});
+
+	</script>
+
+	<script>
+
+		var numLock = 1;
+	
 		function Go(cmd) {
 			document.myForm.command.value = cmd;
 			document.myForm.submit();
+		}
+
+		function GoNumCheck( target ) {
+			if( numLock == 1 ) {
+				if( target == "play" )
+					Go(2011);
+				if( target == "source" ) 
+					Go(2007);
+				if( target == "xmbc" ) 
+					Go(2008);
+				if( target == "tvradio" ) 
+					Go(2009);
+				if( target == "rec" ) 
+					Go(2010);
+				if( target == "stop" ) 
+					Go(2012);
+				if( target == "rew" ) 
+					Go(2013);
+				if( target == "ff" ) 
+					Go(2014);
+				if( target == "archive" ) 
+					Go(2015);
+				if( target == "epg" ) 
+					Go(2016);
+			} else {
+				if( target == "play" ) 
+					Go("Number0");
+				if( target == "source" ) 
+					Go("Number1");
+				if( target == "xmbc" ) 
+					Go("Number2");
+				if( target == "tvradio" ) 
+					Go("Number3");
+				if( target == "rec" ) 
+					Go("Number4");
+				if( target == "stop" ) 
+					Go("Number5");
+				if( target == "rew" ) 
+					Go("Number6");
+				if( target == "ff" ) 
+					Go("Number7");
+				if( target == "archive" ) 
+					Go("Number8");
+				if( target == "epg" ) 
+					Go("Number9");
+			}
 		}
 
 		function showIcon( target ) {
@@ -124,23 +192,21 @@
 			var icon = "img0" + target;
 			document.getElementById(icon).style.visibility = "hidden";
 		}
+
+		function numLockClick() {
+			if( numLock == 1 ) {
+				document.getElementById('numLock').src = './images/RCU_67_red.png';
+				numLock = 2;
+				Go(2032);
+			} else {
+				document.getElementById('numLock').src = './images/RCU_67.jpg';
+				numLock = 1;
+				Go(2032);
+			}
+		}
+		
 	</script>
-	<script>
-	// invoke blockUI as needed -->
-	$(document).ready( function() {
-	   $.blockUI({ css: { 
-	            border: 'none', 
-	            padding: '15px', 
-	            backgroundColor: '#000', 
-	            '-webkit-border-radius': '10px', 
-	            '-moz-border-radius': '10px', 
-	            opacity: .5, 
-	            color: 'yellow'
-	        } }); 
-	 
-	    setTimeout($.unblockUI, 2500); 
-	});
-	</script>
+	
 <body>
 <div id="wrapper">
 
@@ -206,11 +272,11 @@
 				
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td><a href="javascript:Go(2007);"><img src="./images/RCU_15.jpg" border="0" alt="source"></a></td>
+					<td><a href="javascript:GoNumCheck('source');"><img src="./images/RCU_15.jpg" border="0" alt="source"></a></td>
 					<td><img src="./images/RCU_16.jpg" border="0"></td>
-					<td><a href="javascript:Go(2008);"><img src="./images/RCU_17.jpg" border="0" alt="xbmc"></a></td>
+					<td><a href="javascript:GoNumCheck('xmbc');"><img src="./images/RCU_17.jpg" border="0" alt="xbmc"></a></td>
 					<td><img src="./images/RCU_18.jpg" border="0"></td>
-					<td><a href="javascript:Go(2009);"><img src="./images/RCU_19.jpg" border="0" alt="TV Radio"></a></td>
+					<td><a href="javascript:GoNumCheck('tvradio');"><img src="./images/RCU_19.jpg" border="0" alt="TV Radio"></a></td>
 				</tr>
 				</table>
 				
@@ -222,21 +288,21 @@
 				
 				<table cellspacing="0" cellpadding="0" border="0">
 				<tr>
-				    <td><a href="javascript:Go(2010);"><img src="./images/RCU_21.jpg" border="0" alt="rec"></a></td>
+				    <td><a href="javascript:GoNumCheck('rec');"><img src="./images/RCU_21.jpg" border="0" alt="rec"></a></td>
 				    <td><img src="./images/RCU_22.jpg" border="0"></td>
-				    <td rowspan="3"><a href="javascript:Go(2011);"><img src="./images/RCU_23.jpg" border="0" alt="play pause"></a></td>
+				    <td rowspan="3"><a href="javascript:GoNumCheck('play');"><img src="./images/RCU_23.jpg" border="0" alt="play pause"></a></td>
 				    <td><img src="./images/RCU_24.jpg" border="0"></td>
-				    <td><a href="javascript:Go(2012);"><img src="./images/RCU_25.jpg" border="0" alt="stop"></a></td>
+				    <td><a href="javascript:GoNumCheck('stop');"><img src="./images/RCU_25.jpg" border="0" alt="stop"></a></td>
 				</tr>
 				<tr>
 				    <td colspan="2"><img src="./images/RCU_26.jpg" border="0"></td>
 				    <td colspan="2"><img src="./images/RCU_27.jpg" border="0"></td>
 				</tr>
 				<tr>
-				    <td><a href="javascript:Go(2013);"><img src="./images/RCU_28.jpg" border="0"></a></td>
-				    <td><img src="./images/RCU_29.jpg" border="0" alt="rew"></td>
+				    <td><a href="javascript:GoNumCheck('rew');"><img src="./images/RCU_28.jpg" border="0" alt="rew"></a></td>
+				    <td><img src="./images/RCU_29.jpg" border="0"></td>
 				    <td><img src="./images/RCU_30.jpg" border="0"></td>
-				    <td><a href="javascript:Go(2014);"><img src="./images/RCU_31.jpg" border="0" alt="ff"></a></td>
+				    <td><a href="javascript:GoNumCheck('ff');"><img src="./images/RCU_31.jpg" border="0" alt="ff"></a></td>
 				</tr>
 				</table>
 				
@@ -248,9 +314,9 @@
 				
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td><a href="javascript:Go(2015);"><img src="./images/RCU_33.jpg" border="0" alt="archive"></a></td>
+					<td><a href="javascript:GoNumCheck('archive');"><img src="./images/RCU_33.jpg" border="0" alt="archive"></a></td>
 					<td><img src="./images/RCU_34.jpg" border="0"></td>
-					<td><a href="javascript:Go(2016);"><img src="./images/RCU_35.jpg" border="0" alt="epg"></a></td>
+					<td><a href="javascript:GoNumCheck('epg');"><img src="./images/RCU_35.jpg" border="0" alt="epg"></a></td>
 				</tr>
 				</table>
 				
@@ -326,7 +392,8 @@
 					<td><img src="./images/RCU_64.jpg" border="0"></td>
 					<td><a href="javascript:Go(2031);"><img src="./images/RCU_65.jpg" border="0" alt="subtitle"></a></td>
 					<td><img src="./images/RCU_66.jpg" border="0"></td>
-					<td><a href="javascript:Go(2032);"><img src="./images/RCU_67.jpg" border="0" alt="lock"></a></td>
+					<!-- <td><a href="javascript:Go(2032);"><img id="numLock" src="./images/RCU_67.jpg" border="0" alt="lock"></a></td> -->
+					<td><a href="javascript:numLockClick();"><img id="numLock" src="./images/RCU_67.jpg" border="0" alt="lock"></a></td>
 				</tr>
 				</table>
 				
@@ -342,113 +409,6 @@
 		</table>
 		</div>
 
-				<div style="display:none">
-
-				<table border="0" cellpadding="0" cellspacing="0" style="margin: 0;">
-				<tr>
-				    <td><img src="./images/nonactive/RCU_01.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_02.jpg"></td>
-					<td><a href="javascript:Go(3)"><img src="./images/nonactive/RCU_03.jpg" border="0"></a></td>	<!-- stand by  -->
-					<td><img src="./images/nonactive/RCU_04.jpg"></td>
-					<td><img src="./images/nonactive/RCU_05.jpg"></td>	<!-- to be used later  -->
-					<td><img src="./images/RCU_right_02.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_03.jpg"></td>
-					<td><img src="./images/nonactive/RCU_07.jpg"></td>
-					<td><img src="./images/RCU_right_03.jpg"></td>
-				</tr>
-				</table>
-				<div style="display:none">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_04.jpg"></td>
-					<td><a href="javascript:Go(2)"><img src="./images/nonactive/RCU_08.jpg" border="0"></a></td>	<!-- deep stand by  -->
-					<td><a href="javascript:Go(1)"><img src="./images/nonactive/RCU_09.jpg" border="0"></a></td>	<!-- restart gui -->
-					<td><img src="./images/RCU_right_04.jpg"></td>
-				</tr>
-				</table>
-				</div>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_05.jpg"></td>
-					<td><a href="javascript:Go(0)"><img src="./images/nonactive/RCU_10.jpg" border="0"></a></td>	<!-- reboot  -->
-					<td><a href="javascript:Go(174)"><img src="./images/nonactive/RCU_11.jpg" border="0"></a></td>	<!-- exit  -->
-					<td><img src="./images/RCU_right_05.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_06.jpg"></td>
-					<td><img src="./images/nonactive/RCU_12.jpg"></td>
-					<td><img src="./images/RCU_right_06.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_07.jpg"></td>
-					<td><img src="./images/nonactive/RCU_13.jpg"></td>
-					<td><a href="javascript:Go(103)"><img src="./images/nonactive/RCU_14.jpg" border="0"></a></td>	<!-- up  -->
-					<td><img src="./images/nonactive/RCU_15.jpg"></td>
-					<td><img src="./images/RCU_right_07.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_08.jpg"></td>
-					<td><a href="javascript:Go(105)"><img src="./images/nonactive/RCU_16.jpg" border="0"></a></td>	<!-- left  -->
-					<td><a href="javascript:Go(352)"><img src="./images/nonactive/RCU_17.jpg" border="0"></a></td>	<!-- ok  -->
-					<td><a href="javascript:Go(106)"><img src="./images/nonactive/RCU_18.jpg" border="0"></a></td>	<!-- right  -->
-					<td><img src="./images/RCU_right_08.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_09.jpg"></td>
-					<td><img src="./images/nonactive/RCU_19.jpg"></td>
-					<td><a href="javascript:Go(108)"><img src="./images/nonactive/RCU_20.jpg" border="0"></a></td>	<!-- down -->
-					<td><img src="./images/nonactive/RCU_21.jpg"></td>
-					<td><img src="./images/RCU_right_09.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_10.jpg"></td>
-					<td><img src="./images/nonactive/RCU_22.jpg"></td>
-					<td><img src="./images/RCU_right_10.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_11.jpg"></td>
-					<td><a href="javascript:Go(115);"><img src="./images/nonactive/RCU_23.jpg" border="0"></a></td>	<!-- vol up  -->
-					<td><img src="./images/nonactive/RCU_24.jpg"></td>
-					<td><a href="javascript:Go(403)"><img src="./images/nonactive/RCU_25.jpg" border="0"></a></td>	<!-- ch up  -->
-					<td><img src="./images/RCU_right_11.jpg"></td>
-				</tr>
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td><img src="./images/RCU_left_12.jpg"></td>
-					<td><a href="javascript:Go(114)"><img src="./images/nonactive/RCU_26.jpg" border="0"></a></td>	<!-- vol down  -->
-					<td><img src="./images/nonactive/RCU_27.jpg"></td>
-					<td><a href="javascript:Go(402)"><img src="./images/nonactive/RCU_28.jpg" border="0"></a></td>	<!-- ch down  -->
-					<td><img src="./images/RCU_right_12.jpg"></td>
-				</tr>
-				</table>
-				<table border="0" cellpadding="0" cellspacing="0" style="margin: 0;">
-				<tr>
-				    <td><img src="./images/nonactive/RCU_29.jpg"></td>
-				</tr>
-				</table>
-				
-				</div>
-		
 	</div>
 
 	<div id="hiddenFrame">

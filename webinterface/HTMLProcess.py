@@ -88,7 +88,21 @@ class WebPage( object ) :
 			<head>
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<script>
+				
+					function showIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'visible';
+					}
+					
+					function hideIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'hidden';
+					}
+
+				</script>
 			<body>
+			
 			<div id='wrapper'>
 
 				<div id='top'>
@@ -430,6 +444,10 @@ class RemoteControl(WebPage):
 		print command
 
 		cmds = command[0].split("=")
+
+		if not cmds[1].isdigit()  :
+			target = 'xbmc.Action(' + cmds[1] + ')'
+			xbmc.executebuiltin(target)
 
 		if cmds[1] == "2001" :
 			#not used
