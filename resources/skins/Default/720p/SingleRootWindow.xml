@@ -897,21 +897,22 @@ Search for window name
 						<width>1200</width>
 						<height>620</height>
 						<texture border="20">ContentPanel.png</texture>
-						<visible>!substring(Window(10000).Property(isEdit),true)</visible>
+						<!--visible>!substring(Window(10000).Property(isEdit),true)</visible-->
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultVisibleFadeEffect</include>
 					<visible>true</visible>
 					<control type="image">
 						<posx>40</posx>
 						<posy>40</posy>
 						<width>1200</width>
-						<height>625</height>
+						<height>620</height>
+						<texture border="20">ContentPanel.png</texture>
 						<texture border="20">ContentPanelRED.png</texture>
 						<visible>substring(Window(10000).Property(isEdit),true)</visible>
 					</control>
-				</control>
+				</control-->
 				<control type="image">
 					<posx>40</posx>
 					<posy>653</posy>

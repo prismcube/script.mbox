@@ -323,7 +323,7 @@
 						<itemgap>5</itemgap>
 						<visible>true</visible>
 						<orientation>horizontal</orientation>
-						<control type="group">
+						<!--control type="group">
 							<width>30</width>
 							<height>30</height>
 							<visible>substring(Window.Property(iLock),true)</visible>
@@ -351,7 +351,7 @@
 							<height>30</height>
 							<texture>IconT2.png</texture>
 							<visible>substring(Window.Property(iTuner2),true)</visible>
-						</control>
+						</control-->
 						<control type="image">
 							<posx>150</posx>
 							<posy>1</posy>
@@ -375,14 +375,14 @@
 								<visible>substring(Window.Property(iCas),true)</visible>
 							</control>
 						</control>
-						<control type="image">
+						<!--control type="image">
 							<posx>200</posx>
 							<posy>1</posy>
 							<width>30</width>
 							<height>30</height>
 							<texture>IconFavFocus.png</texture>
 							<visible>substring(Window.Property(iFav),true)</visible>
-						</control>
+						</control-->
 					</control>
 				</control>
 
