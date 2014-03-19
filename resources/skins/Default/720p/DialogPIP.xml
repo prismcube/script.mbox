@@ -585,7 +585,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>PIP $LOCALIZE[SCRIPT1045]</label>
+						<label>$LOCALIZE[SCRIPT1201]</label>
 					</control>
 				</control>
 				<control type="group">
