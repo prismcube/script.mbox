@@ -76,9 +76,12 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
+
+		defaultFocus = E_DialogSpinEx03
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
 			netVolumeID = self.mTimer.mVolumeID
+			defaultFocus = E_DialogInput03
 		else :
 			self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
 
@@ -94,7 +97,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.Reload( )
 		self.DrawItem( )
 
-		self.SetFocus( E_DialogSpinEx03 )		
+		self.SetFocus( defaultFocus )
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
@@ -271,13 +274,12 @@ class DialogAddManualTimer( SettingDialog ) :
 			for netVolume in self.mNetVolumeList :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
-				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
-				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
-				lblPath = '[%s]%s'% ( lblType, netVolume.mMountPath )
+				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -468,7 +470,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of Week' ) )
 
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
-			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )			
+			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )
 
 			if E_SUPPORT_EXTEND_RECORD_PATH :
 				lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )

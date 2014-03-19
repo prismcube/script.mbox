@@ -201,13 +201,12 @@ class DialogStartRecord( SettingDialog ) :
 			for netVolume in self.mNetVolumeList :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
-				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
-				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
-				lblPath = '[%s]%s'% ( lblType, netVolume.mMountPath )
+				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -365,7 +364,7 @@ class DialogStartRecord( SettingDialog ) :
 			lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
 			self.AddInputControl( E_DialogInput05, MR_LANG( 'Record Path' ), lblSelect )
 			self.AddInputControl( E_DialogInput06, '', '' )
-			self.SetEnableControl( E_DialogInput06, False )
+			self.SetEnableControls( [E_DialogInput05, E_DialogInput06], False )
 			self.setProperty( 'NetVolumeConnect', lblOnline )
 			self.setProperty( 'NetVolumeUse', lblPercent )
 			self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
