@@ -361,7 +361,7 @@
 				</control>
 
 
-		<control type="slider">
+		<!--control type="slider">
 			<description>Seek Slider</description>
 			<posx>430</posx>
 			<posy>82r</posy>
@@ -371,9 +371,9 @@
 			<textureslidernib>osd_slider_nibNF.png</textureslidernib>
 			<textureslidernibfocus>osd_slider_nib.png</textureslidernibfocus>
 			<animation effect="fade" time="200">VisibleChange</animation>
-		</control>
+		</control-->
 
-				<control type="button" id="202">
+				<!--control type="button" id="202">
 					<description>play time</description>
 					<posx>410</posx>
 					<posy>595</posy>
@@ -382,8 +382,8 @@
 					<font>font10</font>
 					<textcolor>grey</textcolor>
 					<align>center</align>
-					<!--texturefocus>TSProgressCurrentFO.png</texturefocus>
-					<texturenofocus>TSProgressCurrentNF.png</texturenofocus-->
+					<texturefocus>TSProgressCurrentFO.png</texturefocus>
+					<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
 
 					<texturefocus>osd_slider_nibNF.png</texturefocus>
 					<texturenofocus>osd_slider_nib.png</texturenofocus>
@@ -391,8 +391,8 @@
 					<onright>202</onright>
 					<onup>500</onup>
 					<ondown>3750</ondown>
-					<!--enable>substring(Window.Property(IsXpeeding),true)</enable-->
-				</control>
+					<enable>substring(Window.Property(IsXpeeding),true)</enable>
+				</control-->
 				<control type="label" id="203">
 					<description>mode</description>
 					<posx>20</posx>
