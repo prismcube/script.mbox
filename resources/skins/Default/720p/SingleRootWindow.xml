@@ -906,21 +906,22 @@ Search for window name
 						<width>1200</width>
 						<height>620</height>
 						<texture border="20">ContentPanel.png</texture>
-						<visible>!substring(Window(10000).Property(isEdit),true)</visible>
+						<!--visible>!substring(Window(10000).Property(isEdit),true)</visible-->
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultVisibleFadeEffect</include>
 					<visible>true</visible>
 					<control type="image">
 						<posx>40</posx>
 						<posy>40</posy>
 						<width>1200</width>
-						<height>625</height>
+						<height>620</height>
+						<texture border="20">ContentPanel.png</texture>
 						<texture border="20">ContentPanelRED.png</texture>
 						<visible>substring(Window(10000).Property(isEdit),true)</visible>
 					</control>
-				</control>
+				</control-->
 				<control type="image">
 					<posx>40</posx>
 					<posy>653</posy>
@@ -5354,26 +5355,26 @@ Search for window name
 				</control>
 				<!-- Grid background -->
 				<control type="image">
-					<posx>-13</posx>
-					<posy>100r</posy>
-					<width>61</width>
+					<posx>-1</posx>
+					<posy>99r</posy>
+					<width>42</width>
 					<height>115</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
 				<control type="image">
-					<posx>1234</posx>
-					<posy>100r</posy>
-					<width>59</width>
+					<posx>1239</posx>
+					<posy>99r</posy>
+					<width>54</width>
 					<height>115</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
 				<control type="image">
-					<posx>45</posx>
-					<posy>68r</posy>
-					<width>1190</width>
-					<height>83</height>
+					<posx>40</posx>
+					<posy>61r</posy>
+					<width>1200</width>
+					<height>77</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture>floor.png</texture>
 				</control>
@@ -5388,10 +5389,10 @@ Search for window name
 				</control>
 				
 				<control type="image">
-					<posx>40</posx>
-					<posy>653</posy>
-					<width>1200</width>
-					<height>64</height>
+					<posx>36</posx>
+					<posy>654</posy>
+					<width>1209</width>
+					<height>58</height>
 					<texture border="15">ContentPanelMirror.png</texture>
 				</control>
 			</control>

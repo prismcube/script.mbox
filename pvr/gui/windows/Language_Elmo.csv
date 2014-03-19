@@ -165,6 +165,7 @@
 "LOADING";;;;;;;"ŁADOWANIE";;;;;;;1166
 "Automatic 1080 24p";;;;;;;"Automatyczny format 1080 24p";;;;;;;1167
 "Live Streaming";;;;;;;"Przekaz na żywo";;;;;;;1200
+"PIP Channel List";;;;;;;;;;;;;;167
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -1396,3 +1397,4 @@
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3878
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3879
 "Channel is changed by view timer";"Sender wurde umgeschaltet durch den View Timer";"Changez de chaîne par l'affichage de la minuterie";"Ulteriore assistenza";"Canales esta cambiando por view timer";"Program je změněn časovačem zobrazení ";"Channel is changed by view timer";"Kanał będzie przełączany według wskazań timera";"Channel is changed by view timer";"Канал изменен просмотром таймера";"Channel is changed by view timer";"Channel is changed by view timer";"Program je zmenený časovačom zobrazenia ";"Channel is changed by view timer";3880
+"[COLOR ffff4444]Edit Channels[/COLOR]";;;;;;;;;;;;;;3881

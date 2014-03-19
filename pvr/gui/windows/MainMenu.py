@@ -40,13 +40,13 @@ BUTTON_ID_CAS					= E_MAIN_MENU_BASE_ID + 90107
 BUTTON_ID_UPDATE				= E_MAIN_MENU_BASE_ID + 90108
 BUTTON_ID_ADVANCED				= E_MAIN_MENU_BASE_ID + 90109
 
-BUTTON_ID_EPG_GRID			= E_MAIN_MENU_BASE_ID + 90312
-BUTTON_ID_EPG_CHANNEL		= E_MAIN_MENU_BASE_ID + 90313
-BUTTON_ID_EPG_CURRENT		= E_MAIN_MENU_BASE_ID + 90314
-BUTTON_ID_EPG_FOLLOWING		= E_MAIN_MENU_BASE_ID + 90315
+BUTTON_ID_EPG_GRID				= E_MAIN_MENU_BASE_ID + 90312
+BUTTON_ID_EPG_CHANNEL			= E_MAIN_MENU_BASE_ID + 90313
+BUTTON_ID_EPG_CURRENT			= E_MAIN_MENU_BASE_ID + 90314
+BUTTON_ID_EPG_FOLLOWING			= E_MAIN_MENU_BASE_ID + 90315
 
-BUTTON_ID_TIMER_ADD_MANUAL	= E_MAIN_MENU_BASE_ID + 90912
-BUTTON_ID_TIMER_DELETE		= E_MAIN_MENU_BASE_ID + 90913
+BUTTON_ID_TIMER_ADD_MANUAL		= E_MAIN_MENU_BASE_ID + 90912
+BUTTON_ID_TIMER_DELETE			= E_MAIN_MENU_BASE_ID + 90913
 
 BUTTON_ID_CHANNEL_LIST_FAVORITE = E_MAIN_MENU_BASE_ID + 90412
 BUTTON_ID_CHANNEL_LIST_LIST		= E_MAIN_MENU_BASE_ID + 90413
@@ -54,6 +54,8 @@ BUTTON_ID_CHANNEL_LIST_EDIT		= E_MAIN_MENU_BASE_ID + 90414
 
 
 E_MAIN_MENU_DEFAULT_FOCUS_ID	=  E_MAIN_MENU_BASE_ID + 9000
+
+BUTTON_ID_TEMP_RESERVED22						= 23123
 
 
 import sys
@@ -126,6 +128,9 @@ class MainMenu( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
+
+		elif actionId == Action.ACTION_MBOX_RESERVED22 :
+			self.onClick( BUTTON_ID_TEMP_RESERVED22 )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
@@ -279,7 +284,7 @@ class MainMenu( BaseWindow ) :
 
 				self.mDataCache.System_Reboot( )
 
-		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA  :
+		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA or aControlId == BUTTON_ID_TEMP_RESERVED22 :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
@@ -305,10 +310,14 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
 
-			self.SetMediaCenter( )
-			self.mDataCache.SetAVBlankByArchive( True )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			if aControlId == BUTTON_ID_TEMP_RESERVED22 :
+				self.SetMediaCenter( True )
+			else :
+				self.SetMediaCenter( )
+			#self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
-				xbmc.executebuiltin( 'ActivateWindow(Home)' )			
+				xbmc.executebuiltin( 'ActivateWindow(Home)' )
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 			elif aControlId == BUTTON_ID_MEDIA_WEATHER :
 				xbmc.executebuiltin( 'ActivateWindow(Weather)' )
@@ -331,8 +340,9 @@ class MainMenu( BaseWindow ) :
 				LOG_TRACE( 'BUTTON_ID_MEDIA_ADDON_MGR' )
 			elif aControlId == BUTTON_ID_MEDIA_SYS_INFO :
 				xbmc.executebuiltin( 'ActivateWindow(SystemInfo)' )
-			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :				
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITES )
+			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
+				#xbmc.executebuiltin( 'ActivateWindow(Home)' )
+				xbmc.executebuiltin( "ActivateWindow(favourites)" )
 				
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )

@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.Util import UpdateMonthTranslation, UpdateWeekdayTranslation
 from pvr.XBMCInterface import XBMC_GetCurrentLanguage
-
+import time
 
 class RootWindow( xbmcgui.WindowXML ) :
 	def __init__( self, *args, **kwargs ) :
@@ -11,6 +11,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mPlatform = pvr.Platform.GetPlatform( )
+		self.mWaiting = False
 
 	def onInit( self ) :
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
@@ -19,6 +20,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
 		self.mDataCache.SetRootWindowId( xbmcgui.getCurrentWindowId( ) )
+		self.syncXBMC( )
 
 		try :
 			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
@@ -80,7 +82,18 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
-			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 :
+				LOG_TRACE( 'XBMCPLAY_TEST -----------START ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
+				#if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
+				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
+				LOG_TRACE( 'XBMCPLAY_TEST -----------START2 ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
+				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
+				#WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).onAction( aAction )
+				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
+			else :
+				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
@@ -152,4 +165,49 @@ class RootWindow( xbmcgui.WindowXML ) :
 			self.setProperty( 'Signal', 'NoService' )
 		else :
 			LOG_ERR( 'LoadNoSignalState : Unknown channel status' )
+
+
+	def syncXBMC( self ) :
+		xbmc.executebuiltin( 'PlayerControl(Stop)', True )
+		pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+		InitTranslateByEnumList( )
+		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
+		if self.mDataCache.GetAlarmByViewTimer( ) :
+			self.mDataCache.SetAlarmByViewTimer( False )
+			mHead = MR_LANG( 'Timer Notification' )
+			mLine = MR_LANG( 'Channel is changed by view timer' )
+			xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
+
+		type = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
+
+		if type == ElisEnum.E_SERVICE_TYPE_RADIO :
+			self.setProperty( 'TVRadio', 'true' )
+		else :
+			self.setProperty( 'TVRadio', 'false' )
+
+
+	@RunThread
+	def GotoNullwindow( self ) :
+		curID = xbmcgui.getCurrentWindowDialogId( )
+		nextID = curID
+		count  = 0
+		while curID != 9999 :
+			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+			for i in range( 50 ) : #wait 5sec
+				nextID = xbmcgui.getCurrentWindowDialogId( )
+				LOG_TRACE( "GotoNullwindow nextID=%d currentWidnow=%d" %(nextID,xbmcgui.getCurrentWindowId()))
+				if curID != nextID :
+					curID = nextID
+					break
+				time.sleep( 0.1 )
+
+			count += 1
+			if count > 10 : #close maximum dialogi
+				break
+		windowId = WinMgr.GetInstance( ).GetLastWindowID( )
+
+		if windowId != WinMgr.WIN_ID_NULLWINDOW :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
+		self.mWaiting = False
 

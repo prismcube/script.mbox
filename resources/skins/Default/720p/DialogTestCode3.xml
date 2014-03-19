@@ -87,12 +87,12 @@
 							<texturenofocus>OSDAudioNF.png</texturenofocus>
 							<!--onclick>Mute</onclick-->
 						</control>
-						<control type="button" id="4708004">
+						<!--control type="button" id="4708004">
 							<width>35</width>
 							<height>35</height>
 							<texturefocus>OSDFullScreenFO.png</texturefocus>
 							<texturenofocus>OSDFullScreenNF.png</texturenofocus>
-						</control>
+						</control-->
 						<control type="button" id="4708005">
 							<width>35</width>
 							<height>35</height>
@@ -111,18 +111,18 @@
 							<texturefocus>OSDResetFO.png</texturefocus>
 							<texturenofocus>OSDResetNF.png</texturenofocus>
 						</control>
-						<control type="button" id="4708008">
+						<!--control type="button" id="4708008">
 							<width>35</width>
 							<height>35</height>
 							<texturefocus>OSDBackFO.png</texturefocus>
 							<texturenofocus>OSDBackNF.png</texturenofocus>
-						</control>
-						<control type="button" id="4708009">
+						</control-->
+						<!--control type="button" id="4708009">
 							<width>35</width>
 							<height>35</height>
 							<texturefocus>OSDExitFO.png</texturefocus>
 							<texturenofocus>OSDExitNF.png</texturenofocus>
-						</control>
+						</control-->
 					</control>
 
 					<!-- info section -->
@@ -258,7 +258,7 @@
 					</control>
 				</control>
 
-				<control type="group" id="4703000">
+				<!--control type="group" id="4703000">
 					<posx>-35</posx>
 					<posy>-15</posy>
 					<visible>substring(Window.Property(SettingPIP),true)</visible>
@@ -306,7 +306,7 @@
 							<texture>Arrow-bottom-focus.png</texture>
 						</control>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<control type="image">

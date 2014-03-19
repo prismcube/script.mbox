@@ -263,7 +263,7 @@ class LivePlate( LivePlateWindow ) :
 			self.ChannelTune( PREV_CHANNEL )
 			self.RestartAutomaticHide( )
 
-		elif actionId == Action.ACTION_MBOX_XBMC :
+		elif actionId == Action.ACTION_MBOX_XBMC or actionId == Action.ACTION_MBOX_RESERVED22 :
 			if self.GetBlinkingProperty( ) != 'None' :
 				LOG_TRACE( '------------22----try recording' )
 				return
@@ -285,7 +285,10 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 				
 			self.Close( )
-			self.SetMediaCenter( )
+			if actionId == Action.ACTION_MBOX_XBMC :
+				self.SetMediaCenter( )
+			else :
+				self.SetMediaCenter( True )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
 

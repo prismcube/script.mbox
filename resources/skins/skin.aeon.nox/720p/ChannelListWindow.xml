@@ -142,41 +142,41 @@
 								<height>1</height>
 								<texture background="true">views/listpanel_line.png</texture>
 							</control>
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
 								<texture>IconT1w.png</texture>
-							</control>
+							</control-->
 							<!-- is Tuner2 -->
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2w.png</texture>
-							</control>
+							</control-->
 							<!-- is Tuner1 Tuner2 -->
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 								<texture>IconT12w.png</texture>
-							</control>
+							</control-->
 							<!-- is cas? -->
-							<control type="image">
+							<!--control type="image">
 								<posx>650</posx>
 								<posy>6</posy>
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
 								<visible>substring(ListItem.Property(iCas),true)</visible>
-							</control>
+							</control-->
 							<!-- is lock? -->
 							<control type="image">
 								<posx>5</posx>
@@ -261,41 +261,41 @@
 								<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 								<texture>listpanel_selectbar.png</texture>
 							</control>
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
 								<texture>IconT1w.png</texture>
-							</control>
+							</control-->
 							<!-- is Tuner2 -->
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2w.png</texture>
-							</control>
+							</control-->
 							<!-- is Tuner1 Tuner2 -->
-							<control type="image">
+							<!--control type="image">
 								<posx>590</posx>
 								<posy>5</posy>
 								<width>40</width>
 								<height>30</height>
 								<visible>substring(ListItem.Property(iTuner1_2),true)</visible>
 								<texture>IconT12w.png</texture>
-							</control>
+							</control-->
 							<!-- is cas? -->
-							<control type="image">
+							<!--control type="image">
 								<posx>650</posx>
 								<posy>6</posy>
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
 								<visible>substring(ListItem.Property(iCas),true)</visible>
-							</control>
+							</control-->
 							<!-- is lock? -->
 							<control type="image">
 								<posx>5</posx>
