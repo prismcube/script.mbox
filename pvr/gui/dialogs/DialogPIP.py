@@ -19,6 +19,8 @@ CTRL_ID_IMAGE_ARROW_RIGHT	= E_PIP_WINDOW_BASE_ID + 3002
 CTRL_ID_IMAGE_ARROW_TOP		= E_PIP_WINDOW_BASE_ID + 3003
 CTRL_ID_IMAGE_ARROW_BOTTOM	= E_PIP_WINDOW_BASE_ID + 3004
 
+CTRL_ID_LIST_CHANNEL_PIP    = E_PIP_WINDOW_BASE_ID + 3850
+
 CTRL_ID_GROUP_LIST_PIP		= E_PIP_WINDOW_BASE_ID + 8000
 CTRL_ID_BUTTON_NEXT_PIP		= E_PIP_WINDOW_BASE_ID + 8001
 CTRL_ID_BUTTON_PREV_PIP		= E_PIP_WINDOW_BASE_ID + 8002
@@ -29,6 +31,7 @@ CTRL_ID_BUTTON_SIZE_PIP		= E_PIP_WINDOW_BASE_ID + 8006
 CTRL_ID_BUTTON_DEFAULT_PIP	= E_PIP_WINDOW_BASE_ID + 8007
 CTRL_ID_BUTTON_EXIT_PIP		= E_PIP_WINDOW_BASE_ID + 8008
 CTRL_ID_BUTTON_STOP_PIP		= E_PIP_WINDOW_BASE_ID + 8009
+CTRL_ID_BUTTON_LIST_PIP		= E_PIP_WINDOW_BASE_ID + 8010
 
 CTRL_ID_GROUP_LIST_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8100
 CTRL_ID_BUTTON_MOVE_2ND_PIP	= E_PIP_WINDOW_BASE_ID + 8110
@@ -50,12 +53,14 @@ CTRL_ID_BASE_LABEL_NOSIGNAL	 = E_BASE_WINDOW_ID + 2006
 CTRL_ID_BASE_LABEL_NOSERVICE = E_BASE_WINDOW_ID + 2007
 
 E_DEFAULT_POSITION_PIP     = [827,125,352,188]#[857,170,352,198] 
+E_SHOWLIST_POSITION_PIP    = [932,62,345,190]#[930,65,350,200]
 CONTEXT_ACTION_DONE_PIP    = 0
 CONTEXT_ACTION_MOVE_PIP    = 1
 CONTEXT_ACTION_SIZE_PIP    = 2
 CONTEXT_ACTION_SWITCH_PIP  = 3
 CONTEXT_ACTION_DEFAULT_PIP = 4
 CONTEXT_ACTION_STOP_PIP    = 5
+CONTEXT_ACTION_LIST_PIP    = 6
 
 E_POSX_ABILITY   = 20
 E_POSY_ABILITY   = 10
@@ -67,6 +72,9 @@ PREV_CHANNEL_PIP = 1
 NEXT_CHANNEL_PIP = 2
 SWITCH_CHANNEL_PIP = 3
 INPUT_CHANNEL_PIP  = 4
+LIST_CHANNEL_PIP = 5
+
+E_USE_CHANNEL_LOGO = True
 
 PIP_CHECKWINDOW = [
 	WinMgr.WIN_ID_NULLWINDOW,
@@ -97,6 +105,7 @@ class DialogPIP( BaseDialog ) :
 		if E_V1_2_APPLY_PIP :
 			self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
 		self.mCurrentChannel.mError = -1
+		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
 
 
 	def onInit( self ) :
@@ -107,11 +116,11 @@ class DialogPIP( BaseDialog ) :
 			self.CloseDialog( )
 			return
 
-		self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
-		self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
-		self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
-		self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
-		self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
+		#self.mCtrlImageBlank       = self.getControl( CTRL_ID_IMAGE_BLANK )
+		#self.mCtrlLabelLock        = self.getControl( CTRL_ID_LABEL_LOCK )
+		#self.mCtrlLabelScramble    = self.getControl( CTRL_ID_LABEL_SCRAMBLE )
+		#self.mCtrlLabelNoSignal    = self.getControl( CTRL_ID_LABEL_NOSIGNAL )
+		#self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 
 		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
 		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
@@ -127,6 +136,13 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlLabelInputCH     = self.getControl( CTRL_ID_LABEL_INPUTCH )
 		self.mCtrlLabelInputName   = self.getControl( CTRL_ID_LABEL_INPUTNAME )
 		self.mCtrlGroupList2ndPIP  = self.getControl( CTRL_ID_GROUP_LIST_2ND_PIP )
+		self.mCtrlListChannelPIP   = self.getControl( CTRL_ID_LIST_CHANNEL_PIP )
+
+		#init tunable list : loop though or record full
+		if self.mDataCache.Record_GetRunningRecorderCount( ) > 1 or \
+		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH :
+			self.mDataCache.PIP_SetTunableList( )
+			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.Channel_GetCurrentByStartOnFirst( )
@@ -134,8 +150,10 @@ class DialogPIP( BaseDialog ) :
 		self.mChannelList     = []
 		self.mChannelListHash = {}
 		self.mTunableList     = []
+		self.mListItems       = []
 		self.mViewMode        = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent      = deepcopy( E_DEFAULT_POSITION_PIP )
+		self.mPosBackup       = deepcopy( E_DEFAULT_POSITION_PIP )
 		self.mPIP_EnableAudio = False
 		self.mAsyncTuneTimer  = None
 		self.mAsyncInputTimer = None
@@ -154,7 +172,7 @@ class DialogPIP( BaseDialog ) :
 		self.mEventBus.Register( self )
 
 		self.Load( )
-		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
+		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
 
 
 	def onAction( self, aAction ) :
@@ -187,20 +205,29 @@ class DialogPIP( BaseDialog ) :
 
 			self.ChannelTuneToPIP( INPUT_CHANNEL_PIP )
 
-		elif actionId == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			if self.mViewMode == CONTEXT_ACTION_LIST_PIP :
+				self.mViewMode = CONTEXT_ACTION_DONE_PIP
+				self.ResetLabel( ) 
+				return
+
 			self.DoSettingToPIP( actionId )
 
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.DoSettingToPIP( actionId )
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
+		     actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 
-		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			self.DoSettingToPIP( actionId )
+			if self.mViewMode == CONTEXT_ACTION_LIST_PIP :
+				self.UpdateCurrentPositon( )
 
-		elif actionId == Action.ACTION_PAGE_UP :
-			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
+			else :
+				if actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+					self.DoSettingToPIP( actionId )
+				else :
+					updown = NEXT_CHANNEL_PIP
+					if actionId == Action.ACTION_PAGE_DOWN :
+						updown = PREV_CHANNEL_PIP
 
-		elif actionId == Action.ACTION_PAGE_DOWN :
-			self.ChannelTuneToPIP( PREV_CHANNEL_PIP )
+					self.ChannelTuneToPIP( updown )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			LOG_TRACE( '[PIP] No Radio support' )
@@ -226,8 +253,12 @@ class DialogPIP( BaseDialog ) :
 
 		elif actionId == Action.ACTION_COLOR_BLUE :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
+				if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+					self.SavePipPosition( )
+
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
-				self.SavePipPosition( )
+				self.ResetLabel( )
+				return
 
 			self.Close( True )
 
@@ -254,11 +285,14 @@ class DialogPIP( BaseDialog ) :
 		elif aControlId  == CTRL_ID_BUTTON_NEXT_PIP :
 			self.ChannelTuneToPIP( NEXT_CHANNEL_PIP )
 
-		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
-			self.SetAudioPIP( )
+		elif aControlId  == CTRL_ID_LIST_CHANNEL_PIP :
+			self.ChannelTuneToPIP( LIST_CHANNEL_PIP )
 
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
 			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
+			self.SetAudioPIP( )
 
 		elif aControlId  == CTRL_ID_BUTTON_MOVE_PIP or aControlId  == CTRL_ID_BUTTON_MOVE_2ND_PIP :
 			if self.mViewMode == CONTEXT_ACTION_DONE_PIP :
@@ -285,6 +319,9 @@ class DialogPIP( BaseDialog ) :
 
 		elif aControlId  == CTRL_ID_BUTTON_STOP_PIP :
 			self.DoContextAction( CONTEXT_ACTION_STOP_PIP )
+
+		elif aControlId  == CTRL_ID_BUTTON_LIST_PIP :
+			self.DoContextAction( CONTEXT_ACTION_LIST_PIP )
 
 
 	def onFocus( self, aControlId ) :
@@ -356,7 +393,7 @@ class DialogPIP( BaseDialog ) :
 		LOG_TRACE( '[PIP] Window close')
 		self.mEventBus.Deregister( self )
 
-		self.setFocusId( CTRL_ID_BUTTON_NEXT_PIP )
+		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_FALSE )
 
 		winId = xbmcgui.getCurrentWindowId( )
@@ -593,6 +630,8 @@ class DialogPIP( BaseDialog ) :
 			return
 
 		self.SetButtonExtended( )
+		thread = threading.Timer( 0, self.InitChannelList )
+		thread.start( )
 
 		if self.mDataCache.GetMediaCenter( ) :
 			if self.mDataCache.PIP_GetStatus( ) :
@@ -649,12 +688,52 @@ class DialogPIP( BaseDialog ) :
 		skinPos = GetInstanceSkinPosition( )
 		x, y, w, h = skinPos.GetPipPosition2( aPosX, aPosY, aWidth, aHeight )
 
-		self.mDataCache.PIP_SetDimension( x, y, w, h )
+		self.mDataCache.PIP_SetDimension( x - 1, y - 1, w + 4, h + 3 )
 
 		#posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
 		#SetSetting( 'PIP_POSITION', posNotify )
 
 		self.SetGUIToPIP( )
+
+
+	def InitChannelList( self ) :
+		listItems = []
+		self.mCtrlListChannelPIP.reset( )
+		self.mChannelList = self.mDataCache.PIP_GetTunableList( )
+		currentPos = 0
+		channelCount = 0
+		for iChannel in self.mChannelList :
+
+			if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
+				currentPos = channelCount
+
+			iChNumber = iChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
+
+			listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s'% iChannel.mName )
+
+			if E_USE_CHANNEL_LOGO :
+				logo = '%s_%s' %( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mSid )
+				chImage = self.mChannelLogo.GetLogo( logo )
+				listItem.setProperty( 'ChannelLogo', '%s'% chImage )
+
+			if iChannel.mLocked : 
+				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+			if iChannel.mIsCA : 
+				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+			if iChannel.mIsHD :
+				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
+
+			channelCount += 1
+			listItems.append( listItem )
+
+		self.setProperty( 'ReadyToListPIP', E_TAG_TRUE )
+		self.mCtrlListChannelPIP.addItems( listItems )
+
+		#self.mCtrlListChannelPIP.selectItem( currentPos )
+		self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
+		self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
 
 
 	def Channel_GetCurrentByStartOnFirst( self ) :
@@ -755,7 +834,7 @@ class DialogPIP( BaseDialog ) :
 
 	def ChannelTuneToPIP( self, aDir ) :
 		fakeChannel = self.mCurrentChannel
-		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP :
+		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP and aDir != LIST_CHANNEL_PIP :
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
@@ -770,6 +849,24 @@ class DialogPIP( BaseDialog ) :
 
 		elif aDir == NEXT_CHANNEL_PIP :
 			fakeChannel = self.mDataCache.PIP_GetNext( fakeChannel )
+
+		elif aDir == LIST_CHANNEL_PIP :
+			if not self.mChannelList or len( self.mChannelList ) < 1 :
+				LOG_TRACE( '[PIP] tune fail, channel list None' )
+				return
+
+			idx = self.mCtrlListChannelPIP.getSelectedPosition( )
+			if idx < len( self.mChannelList ) :
+				fakeChannel = self.mChannelList[idx]
+			else :
+				LOG_TRACE( '[PIP] incorrect index, not exist position[%s]'% idx )
+				return
+
+			if self.mCurrentChannel and self.mCurrentChannel.mNumber == fakeChannel.mNumber :
+				LOG_TRACE( '[PIP] passed, same channel' )
+				return
+
+			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		elif aDir == INPUT_CHANNEL_PIP :
 			self.StopAsyncTune( )
@@ -927,14 +1024,23 @@ class DialogPIP( BaseDialog ) :
 
 
 	def ResetLabel( self ) :
+		self.getFocusId( )
+		if self.getFocusId( ) == CTRL_ID_LIST_CHANNEL_PIP :
+			self.mPosCurrent = deepcopy( self.mPosBackup )
+			self.SetPositionPIP( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
+
 		self.UpdatePropertyGUI( 'SetContextAction', '' )
+		self.UpdatePropertyGUI( 'ShowListPIP', E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'ShowOSDStatus', E_TAG_TRUE )
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_TRUE )
 		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_FALSE )
 
 		time.sleep( 0.2 )
-		self.setFocusId( CTRL_ID_GROUP_LIST_PIP )
+		currentFocus = CTRL_ID_GROUP_LIST_PIP
+		if self.mViewMode == CONTEXT_ACTION_LIST_PIP :
+			currentFocus = CTRL_ID_LIST_CHANNEL_PIP
+		self.setFocusId( currentFocus )
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
@@ -953,6 +1059,49 @@ class DialogPIP( BaseDialog ) :
 			self.setProperty( 'ShowOSDStatus', E_TAG_FALSE )
 			self.setProperty( 'SetContextAction', lbltxt )
 			self.SetGUIArrow( True )
+
+
+	def UpdateCurrentPositon( self, aInput = False, aChannel = None ) :
+		if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+			LOG_TRACE( '[PIP] can not position, not list mode' )
+			return
+
+		if aInput :
+			if not self.mChannelList :
+				LOG_TRACE( '[PIP] ChannelList None' )
+				return
+
+			curNumber = 0
+			if aChannel :
+				curNumber = aChannel.mNumber
+
+			else :
+				if self.mCurrentChannel :
+					curNumber = self.mCurrentChannel.mNumber
+				else :
+					curNumber = self.mDataCache.PIP_GetCurrent( )
+
+			if not curNumber :
+				LOG_TRACE( '[PIP] Current channel None' )
+				return
+
+			channelPos = 0
+			currentPos = 0
+			for iChannel in self.mChannelList :
+				if iChannel.mNumber == curNumber :
+					currentPos = channelPos
+					break
+				channelPos += 1
+
+			#self.mCtrlListChannelPIP.selectItem( currentPos )
+			self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
+			self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
+
+			LOG_TRACE( '[PIP] update position item' )
+
+		else :
+			idx = self.mCtrlListChannelPIP.getSelectedPosition( ) + 1
+			self.setProperty( 'SelectedPosition', '%s'% idx )
 
 
 	def ShowContextMenu( self ) :
@@ -999,6 +1148,16 @@ class DialogPIP( BaseDialog ) :
 			self.mViewMode = CONTEXT_ACTION_DONE_PIP
 			self.Close( )
 
+		elif aAction == CONTEXT_ACTION_LIST_PIP :
+			self.UpdatePropertyGUI( 'ShowListPIP', E_TAG_TRUE ) 
+			self.setFocusId( CTRL_ID_LIST_CHANNEL_PIP )
+			self.mViewMode = CONTEXT_ACTION_LIST_PIP
+
+			self.UpdateCurrentPositon( True )
+			self.mPosBackup = deepcopy( self.mPosCurrent )
+			x,y,w,h = E_SHOWLIST_POSITION_PIP
+			self.SetPositionPIP( x, y, w, h )
+
 
 	def DoSettingToPIP( self, aAction ) :
 		ret = False
@@ -1007,6 +1166,9 @@ class DialogPIP( BaseDialog ) :
 
 		elif self.mViewMode == CONTEXT_ACTION_SWITCH_PIP :
 			#ToDO
+			return ret
+
+		elif self.mViewMode == CONTEXT_ACTION_LIST_PIP :
 			return ret
 
 		#self.setFocusId( CTRL_ID_GROUP_LIST_2ND_PIP )
@@ -1096,6 +1258,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlBasePIPImageBlank.setWidth( bw )
 		self.mCtrlBasePIPImageBlank.setHeight( bh )
 
+		"""
 		if self.mDataCache.GetMediaCenter( ) :
 			#dialog control
 			self.mCtrlImageBlank.setWidth( bw )
@@ -1108,6 +1271,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlLabelNoSignal.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 			self.mCtrlLabelNoService.setWidth( bw )
 			self.mCtrlLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
+		"""
 
 		#input ch
 		self.mCtrlGroupInput.setPosition( 5, int( ( bh - 10 ) / 2 ) )
@@ -1251,6 +1415,10 @@ class DialogPIP( BaseDialog ) :
 				self.ResetHideInput( )
 				self.mCurrentChannel = aChannel
 				self.ChannelTuneToPIP( -1 )
+
+			#update channelList position
+			thread = threading.Timer( 0, self.UpdateCurrentPositon, [True, self.mFakeChannel] )
+			thread.start( )
 
 			self.mDataCache.PIP_SetStatus( True )
 			self.mDataCache.PIP_SetCurrentChannel( self.mFakeChannel )

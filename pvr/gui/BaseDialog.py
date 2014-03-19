@@ -153,6 +153,20 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			aListControl.selectItem( aIdx )
+			if aIdx == aListControl.getSelectedPosition( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
+
+
 	def UpdateSetFocus( self, aControlId, aUserTime = 0 ) :
 		ret = False
 		startTime = time.time()
