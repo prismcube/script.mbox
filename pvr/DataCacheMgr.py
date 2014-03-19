@@ -1968,7 +1968,7 @@ class DataCacheMgr( object ) :
 		#LOG_TRACE( '-----found ch[%s]'% isCurrentChannelDelete )
 		if not isCurrentChannelDelete :
 			if aCurrentChannel and aCurrentChannel.mError == 0 :
-				self.Channel_SetCurrent( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
+				self.Channel_SetCurrentSync( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
 				#LOG_TRACE( '-------------1 tune[%s %s]'% ( aCurrentChannel.mNumber, aCurrentChannel.mName ) )
 				return
 
@@ -1978,7 +1978,7 @@ class DataCacheMgr( object ) :
 		if aCurrentChannel == None or isCurrentChannelDelete :
 			channelList = self.Channel_GetList( )
 			if channelList and len( channelList ) > 0 :
-				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
+				self.Channel_SetCurrentSync( channelList[0].mNumber, channelList[0].mServiceType )
 				#LOG_TRACE( '-------------2 tune[%s %s]'% ( channelList[0].mNumber, channelList[0].mName ) )
 
 
@@ -1987,7 +1987,7 @@ class DataCacheMgr( object ) :
 		channelList = self.Channel_GetList( )
 		if iChannel and channelList and len( channelList ) > 0 :
 			self.Channel_InvalidateCurrent( )
-			self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+			self.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
 		else :
 			LOG_ERR( 'Load Channel_GetCurrent None' )
@@ -3065,7 +3065,7 @@ class DataCacheMgr( object ) :
 			currentMode = self.Zappingmode_GetCurrent( )
 			channelList = self.Channel_GetList( )
 			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV )
+				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV, False )
 
 			channelListHash = {}
 			if channelList and len( channelList ) > 0 :
