@@ -166,6 +166,7 @@
 	<string id="1166">LOADING</string>
 	<string id="1167">Automatic 1080 24p</string>
 	<string id="1200">Live Streaming</string>
+	<string id="1201">PIP Channel List</string>
 	<string id="2001">Last ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>
@@ -1397,4 +1398,5 @@
 	<string id="3878">Finish</string>
 	<string id="3879">Go to the channel search setup page</string>
 	<string id="3880">Channel is changed by view timer</string>
+	<string id="3881">[COLOR ffff4444]Edit Channels[/COLOR]</string>
 </strings>

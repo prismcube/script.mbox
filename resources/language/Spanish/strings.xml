@@ -166,6 +166,7 @@
 	<string id="1166"></string>
 	<string id="1167"></string>
 	<string id="1200"></string>
+	<string id="1201"></string>
 	<string id="2001">Ultimo ServiceType</string>
 	<string id="2002">CurrentVoutResolution</string>
 	<string id="2003">1080p</string>
@@ -1397,4 +1398,5 @@
 	<string id="3878">Final</string>
 	<string id="3879">Ir al la pagina de busqueda de canales</string>
 	<string id="3880">Canales esta cambiando por view timer</string>
+	<string id="3881"></string>
 </strings>
