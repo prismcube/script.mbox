@@ -173,26 +173,26 @@ class Channel( WebPage ) :
 		self.allChannel = self.mDataCache.Channel_GetList( aTemporaryReload=1, aType= self.mZappingMode.mServiceType, aMode=ElisEnum.E_MODE_ALL)
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.allChannel : 
-			"""
-			content += '<tr><td width="100">' + str(cls.mNumber) + '</td>'
-			content += '<td width="300">' + cls.mName + '</a></td>'
-			content += '<td class="epg">[<a href="Zapping?' + str(cls.mNumber) +'" target="zapper">Zap</a>]</td>'
-			content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')">EPG</a>]</td>'
-			# content += '<td class="epg">[<a href="/epg?sid='+ str(cls.mSid) + '&tsid=' + str(cls.mTsid) + '&onid=' + str(cls.mOnid) + '">EPG</a>]</td>'
-			content += '</tr>'
-			"""
-			
-			content += '<tr>'
-			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mNumber) + '</p></td>'
-			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
-			content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
-			content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
-			content += '</tr>'
-			
-		content += '</table></td></tr></table>'
+		if self.allChannel :
+			for cls in self.allChannel :
+				"""
+				content += '<tr><td width="100">' + str(cls.mNumber) + '</td>'
+				content += '<td width="300">' + cls.mName + '</a></td>'
+				content += '<td class="epg">[<a href="Zapping?' + str(cls.mNumber) +'" target="zapper">Zap</a>]</td>'
+				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')">EPG</a>]</td>'
+				# content += '<td class="epg">[<a href="/epg?sid='+ str(cls.mSid) + '&tsid=' + str(cls.mTsid) + '&onid=' + str(cls.mOnid) + '">EPG</a>]</td>'
+				content += '</tr>'
+				"""
+				content += '<tr>'
+				content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mNumber) + '</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+				content += '</tr>'
 
-		self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
+			self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
+
+		content += '</table></td></tr></table>'
 		return self.getChannelContent(content)
 
 	def satelliteChannelContent( self ) :
@@ -200,11 +200,12 @@ class Channel( WebPage ) :
 		self.satelliteList = self.mDataCache.Satellite_GetConfiguredList()
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.satelliteList : 
-			content += '<tr>'
-			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
-			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
-			content += '</tr>'
+		if self.satelliteList :
+			for cls in self.satelliteList :
+				content += '<tr>'
+				content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
+				content += '</tr>'
 
 		content += '</td></tr></table>'
 		return self.getChannelContent(content)
@@ -228,8 +229,9 @@ class Channel( WebPage ) :
 		self.allChannel = self.mDataCache.Favorite_GetList(0, self.mZappingMode.mServiceType)
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.allChannel : 
-			content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></p></td></tr>'
+		if self.allChannel :
+			for cls in self.allChannel :
+				content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></p></td></tr>'
 
 		content += '</table></td></tr></table>'
 
