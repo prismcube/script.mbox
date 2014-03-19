@@ -479,6 +479,8 @@ class BaseWindow( BaseObjectWindow ) :
 			self.UpdateMediaCenterVolume( )
 			self.mDataCache.SyncMute( )
 
+		self.SetRadioScreen( )
+
 
 	def UpdateMediaCenterVolume( self ) :
 		if self.mDataCache.Get_Player_AVBlank( ) :
