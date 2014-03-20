@@ -757,7 +757,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.ResetLabel( )
 		self.LoadByCurrentEPG( )
 
+		startOnEdit = False
 		if self.mSetEditMode :
+			startOnEdit       = True
 			self.mSetEditMode = False
 			self.GoToEditWindow( )
 		else :
@@ -803,6 +805,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mShowEPGInfo :
 			showEPGInfo = E_TAG_TRUE
 			self.UpdateChannelNameWithEPG( )
+
+		if startOnEdit :
+			showEPGInfo = E_TAG_FALSE
 		self.UpdatePropertyGUI( 'ShowExtendInfo', showEPGInfo )
 
 
