@@ -1017,7 +1017,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), MR_LANG( '[COLOR ffff4444]Edit Channels[/COLOR]' ) ) )
+
+				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), '[COLOR ffff4444]%s[/COLOR]'% MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )
