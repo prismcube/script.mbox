@@ -500,7 +500,7 @@ E_V1_2_APPLY_PIP = True
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
 
-E_V1_4_MOUNT_MANAGER = True
+E_V1_4_MOUNT_MANAGER = False
 
 ############################ Global Function For GUI ############################
 
