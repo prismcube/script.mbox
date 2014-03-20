@@ -1113,7 +1113,9 @@ class NullWindow( BaseWindow ) :
 		elif aAction == Action.ACTION_MOVE_UP or aAction == Action.ACTION_MOVE_DOWN :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_PVR :
+				self.CloseSubTitle( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_MAINMENU ).ShowFavoriteGroup( )
+				self.CheckSubTitle( )
 
 			self.mIsShowDialog = False
 			return
