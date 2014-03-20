@@ -529,10 +529,10 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			pass
+			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			pass
+			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -1109,6 +1109,14 @@ class NullWindow( BaseWindow ) :
 				else :
 					self.mIsShowDialog = False
 				return
+
+		elif aAction == Action.ACTION_MOVE_UP or aAction == Action.ACTION_MOVE_DOWN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_PVR :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_MAINMENU ).ShowFavoriteGroup( )
+
+			self.mIsShowDialog = False
+			return
 
 
 		self.CloseSubTitle( )
