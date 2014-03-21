@@ -218,6 +218,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.SetControlLabel2String( E_DialogInput02, aRestoreValue )
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
+		self.mDataCache.Frontdisplay_ResolutionByIdentified( )
+
 
 	def GetAudioTrack( self ) :
 		getCount = self.mDataCache.Audiotrack_GetCount( )

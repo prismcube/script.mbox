@@ -94,6 +94,7 @@ class DialogMgr( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mPlatform =  pvr.Platform.GetPlatform( )
+		self.mPIPDialog = None
 
 		self.mLock = thread.allocate_lock()
 		thread.start_new_thread( self.AsyncCheckVolume,() )
@@ -241,7 +242,12 @@ class DialogMgr( object ) :
 
 			elif aDialogId == DIALOG_ID_PIP :
 				from pvr.gui.dialogs.DialogPIP import DialogPIP
-				return DialogPIP( 'DialogPIP.xml', self.scriptDir )
+				if E_V1_6_PIP_SINGLE_TONE :
+					if self.mPIPDialog == None:
+						self.mPIPDialog = DialogPIP( 'DialogPIP.xml', self.scriptDir )
+					return self.mPIPDialog
+				else :
+					return DialogPIP( 'DialogPIP.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_BIG_SELECT :
 				from pvr.gui.dialogs.DialogBigSelect import DialogBigSelect
