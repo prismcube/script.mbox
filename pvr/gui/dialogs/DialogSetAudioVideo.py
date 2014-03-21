@@ -249,7 +249,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 			LOG_TRACE('getTrack name[%s] lang[%s]'% ( idxTrack.mName, idxTrack.mLang ) )
 			label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 			if idxTrack.mName == '' :
-				label = '%s' % idxTrack.mLang
+				label = 'Stereo-%s' % idxTrack.mLang
 			elif idxTrack.mLang == '' :
 				label = '%s' % idxTrack.mName
 			elif idxTrack.mName == '' and idxTrack.mLang == '' :
