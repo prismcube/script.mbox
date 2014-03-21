@@ -269,19 +269,7 @@ class BaseWindow( BaseObjectWindow ) :
 			else :
 				mExecute = True
 
-		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( 0 )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( VOLUME_STEP )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( -VOLUME_STEP )
-			mExecute = True
-
-		elif E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
+		if E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True

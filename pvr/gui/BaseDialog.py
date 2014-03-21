@@ -69,18 +69,6 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 			else :
 				mExecute = True
 
-		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( 0 )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( VOLUME_STEP )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( -VOLUME_STEP )		
-			mExecute = True
-
 		return mExecute
 
 
