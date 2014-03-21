@@ -662,7 +662,7 @@ class Configure( SettingWindow ) :
 			lblByte = '%sGb'% ( useFree / 1024 )
 		elif useFree < 0 :
 			lblByte = '%sKb'% ( useFree * 1024 )
-		lblPercent = '%s%%, %s Free'% ( useInfo, lblByte )
+		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 
@@ -891,9 +891,9 @@ class Configure( SettingWindow ) :
 							break
 						idxCount += 1
 
-				self.AddInputControl( E_Input01, 'Set Record Path', '', MR_LANG( 'Set the record path from mount to remote file system' ) )
-				self.AddInputControl( E_Input02, 'Default Volume', defaultPath, MR_LANG( 'Set the default path from internal hdd or select a remote file system' ) )
-				self.AddInputControl( E_Input03, '', 'Refresh Volumes', MR_LANG( 'remount from remote all file system' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )
+				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
+				self.AddInputControl( E_Input03, '', MR_LANG( 'Refresh Record Path' ), MR_LANG( 'Remount your record storage directory' ) )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
 

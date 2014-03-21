@@ -257,12 +257,12 @@ class DialogAddManualTimer( SettingDialog ) :
 		if useTotal > 0 :
 			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
-		lblByte = '%sMb'% useFree
+		lblByte = '%sMB'% useFree
 		if useFree > 1024 :
-			lblByte = '%sGb'% ( useFree / 1024 )
+			lblByte = '%sGB'% ( useFree / 1024 )
 		elif useFree < 0 :
-			lblByte = '%sKb'% ( useFree * 1024 )
-		lblPercent = '%s%%, %s Free'% ( useInfo, lblByte )
+			lblByte = '%sKB'% ( useFree * 1024 )
+		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 

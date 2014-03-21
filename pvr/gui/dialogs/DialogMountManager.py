@@ -31,7 +31,7 @@ class DialogMountManager( SettingDialog ) :
 
 		self.mCtrlProgressUse = self.getControl( E_PROGRESS_ID_USE )
 		#self.setProperty( 'DialogDrawFinished', 'False' )
-		lblTitle = MR_LANG( 'Record Path' )
+		lblTitle = MR_LANG( 'Add/Remove Record Path' )
 		self.SetHeaderLabel( lblTitle )
 
 		self.mDefaultPathVolume = None
@@ -173,12 +173,12 @@ class DialogMountManager( SettingDialog ) :
 		if useTotal > 0 :
 			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
-		lblByte = '%sMb'% useFree
+		lblByte = '%sMB'% useFree
 		if useFree > 1024 :
-			lblByte = '%sGb'% ( useFree / 1024 )
+			lblByte = '%sGB'% ( useFree / 1024 )
 		elif useFree < 0 :
-			lblByte = '%sKb'% ( useFree * 1024 )
-		lblPercent = '%s%%, %s Free'% ( useInfo, lblByte )
+			lblByte = '%sKB'% ( useFree * 1024 )
+		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 
@@ -248,7 +248,7 @@ class DialogMountManager( SettingDialog ) :
 			LOG_TRACE( '------------------------urlType[%s]'% urlType )
 			if aInput == E_DialogInput06 :
 				if urlType :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Incorrect path' ), MR_LANG( 'select your local directory' ) )
+					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
 				else :
 					isFail = False
 
@@ -265,7 +265,7 @@ class DialogMountManager( SettingDialog ) :
 						# upnp, zeroconf, daap, ...
 						lblLine = MR_LANG( 'No %s support' )% urlType
 				else :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Incorrect path' ), MR_LANG( 'select your remote directory' ) )
+					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
 
 
 			if isFail :
@@ -288,14 +288,14 @@ class DialogMountManager( SettingDialog ) :
 
 		elif aInput == E_DialogInput06 :
 			if not self.mNetVolume.mRemotePath :
-				lblLine = MR_LANG( 'Enter the input record path first' )
+				lblLine = MR_LANG( 'Enter record path first' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
 				dialog.doModal( )
 				return
 
 			mntName = os.path.basename( self.mNetVolume.mMountPath )
-			label = MR_LANG( 'Change a Mount Name' )
+			label = MR_LANG( 'Enter New Path Name' )
 			kb = xbmc.Keyboard( mntName, label, False )
 			kb.doModal( )
 
@@ -353,7 +353,7 @@ class DialogMountManager( SettingDialog ) :
 			lblTitle= MR_LANG( 'Error' )
 			if aInput == E_DialogInput07 :
 				mountPath = ''
-				lblLine = MR_LANG( 'Can not apply' )
+				lblLine = MR_LANG( 'Could not apply' )
 				if self.mNetVolume.mRemotePath and self.mNetVolume.mMountPath :
 					netVolume = self.GetVolumeIDs( self.mNetVolume )
 					if netVolume and \
@@ -361,7 +361,7 @@ class DialogMountManager( SettingDialog ) :
 					   netVolume.mMountPath == self.mNetVolume.mMountPath and \
 					   netVolume.mSupport4G == self.mNetVolume.mSupport4G :
 						isAdd = False
-						lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'Arleady mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+						lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
 						LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
 					else :
@@ -372,7 +372,7 @@ class DialogMountManager( SettingDialog ) :
 						LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
 						#self.mNetVolume.printdebug( )
 
-						lblLine = MR_LANG( 'Can not mount this volume' )
+						lblLine = MR_LANG( 'The path could not be mounted' )
 						if mountPath != '' :
 							isAdd = True
 							#is edit? delete old volume
@@ -381,17 +381,17 @@ class DialogMountManager( SettingDialog ) :
 							if netVolume :
 								if not self.DoDeleteVolume( netVolume, False ) :
 									isAdd = False
-									lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'Arleady mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+									lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
 
 								LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
 							if isAdd :
-								lblLine = MR_LANG( 'Can not add this volume' )
+								lblLine = MR_LANG( 'Could not add this record path' )
 								ret = self.mDataCache.Record_AddNetworkVolume( self.mNetVolume )
 								LOG_TRACE( '----------------------------------ret[%s]'% ret )
 								if ret :
 									isFail = False
-									lblLine = '%s \'%s\''% ( MR_LANG( 'Add volume' ), os.path.basename( self.mNetVolume.mMountPath ) )
+									lblLine = '\'%s\' %s'% ( os.path.basename( self.mNetVolume.mMountPath ), MR_LANG( 'is mounted' ) )
 
 								else :
 									# Add fail then restore umount
@@ -406,7 +406,7 @@ class DialogMountManager( SettingDialog ) :
 					return
 
 				delTitle= MR_LANG( 'Delete' )
-				delLine = MR_LANG( 'Are you delete this volume?' )
+				delLine = MR_LANG( 'Do you want to delete this record path?' )
 				delLine = '%s\n%s'% ( os.path.basename( self.mNetVolume.mMountPath ), delLine )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( delTitle, delLine )
@@ -419,12 +419,12 @@ class DialogMountManager( SettingDialog ) :
 				if ret :
 					isFail = False
 					urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
-					lblLine = '%s\n%s%s'% ( MR_LANG( 'Delete volume' ), urlHost, os.path.dirname( urlPath ) )
+					lblLine = '\'%s\' %s'% ( os.path.dirname( urlPath ), MR_LANG( 'is removed' ) )
 
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			if isFail :
-				lblLine = '%s\n%s'% ( MR_LANG( 'Fail' ), lblLine )
+				lblLine = '%s'% lblLine
 				dialog.SetDialogProperty( lblTitle, lblLine )
 				dialog.doModal( )
 				return
@@ -468,8 +468,8 @@ class DialogMountManager( SettingDialog ) :
 		self.AddInputControl( E_DialogInput02, '', MR_LANG( 'Delete' ) )
 
 		self.AddInputControl( E_DialogInput05, MR_LANG( 'Record Path' ), lblValue )
-		self.AddInputControl( E_DialogInput06, MR_LANG( 'Volume Name' ), lblValue )
-		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Use record per 4GB' ), USER_ENUM_LIST_YES_NO, 0 )
+		self.AddInputControl( E_DialogInput06, MR_LANG( 'Path Name' ), lblValue )
+		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Split into 4GB files' ), USER_ENUM_LIST_YES_NO, 0 )
 		#self.AddInputControl( E_DialogInput04, MR_LANG( 'Default Volume' ), USER_ENUM_LIST_YES_NO[0] )
 		self.AddInputControl( E_DialogInput07, MR_LANG( 'Apply' ), '' )
 
@@ -549,26 +549,26 @@ class DialogMountManager( SettingDialog ) :
 			#hdd is none
 			default_lblOnline = E_TAG_FALSE
 
-		default_byte = '%sMb'% self.mFreeHDD
+		default_byte = '%sMB'% self.mFreeHDD
 		if self.mFreeHDD > 1024 :
-			default_byte = '%sGb'% ( self.mFreeHDD / 1024 )
+			default_byte = '%sGB'% ( self.mFreeHDD / 1024 )
 		elif self.mFreeHDD < 0 :
-			default_byte = '%sKb'% ( self.mFreeHDD * 1024 )
+			default_byte = '%sKB'% ( self.mFreeHDD * 1024 )
 
-		default_lblPercent = '%s%%, %s Free'% ( default_usePercent, default_byte )
+		default_lblPercent = '%s%%, %s %s'% ( default_usePercent, default_byte, MR_LANG( 'Free' ) )
 
 		#select size
-		lblbyte = '%sMb'% self.mNetVolume.mFreeMB
+		lblbyte = '%sMB'% self.mNetVolume.mFreeMB
 		if self.mNetVolume.mFreeMB > 1024 :
-			lblbyte = '%sGb'% ( self.mNetVolume.mFreeMB / 1024 )
+			lblbyte = '%sGB'% ( self.mNetVolume.mFreeMB / 1024 )
 		elif self.mNetVolume.mFreeMB < 0 :
-			lblbyte = '%sKb'% ( self.mNetVolume.mFreeMB * 1024 )
+			lblbyte = '%sKB'% ( self.mNetVolume.mFreeMB * 1024 )
 
 		if self.mDefaultPathVolume :
 			default_Path = self.mDefaultPathVolume.mMountPath
 			if self.mDefaultPathVolume.mTotalMB > 0 :
 				default_usePercent = int( ( ( 1.0 * ( self.mDefaultPathVolume.mTotalMB - self.mDefaultPathVolume.mFreeMB ) ) / self.mDefaultPathVolume.mTotalMB ) * 100 )
-			default_lblPercent = '%s%%, %s Free'% ( default_usePercent, lblbyte )
+			default_lblPercent = '%s%%, %s %s'% ( default_usePercent, lblbyte, MR_LANG( 'Free' ) )
 
 			default_lblOnline = E_TAG_FALSE
 			if self.mDefaultPathVolume.mOnline :
@@ -702,7 +702,7 @@ class DialogMountManager( SettingDialog ) :
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Fail' ), failItem[1:] )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), failItem[1:] )
 			dialog.doModal( )
 
 		#self.DrawItem( )
