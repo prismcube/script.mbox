@@ -757,7 +757,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.ResetLabel( )
 		self.LoadByCurrentEPG( )
 
+		startOnEdit = False
 		if self.mSetEditMode :
+			startOnEdit       = True
 			self.mSetEditMode = False
 			self.GoToEditWindow( )
 		else :
@@ -803,6 +805,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mShowEPGInfo :
 			showEPGInfo = E_TAG_TRUE
 			self.UpdateChannelNameWithEPG( )
+
+		if startOnEdit :
+			showEPGInfo = E_TAG_FALSE
 		self.UpdatePropertyGUI( 'ShowExtendInfo', showEPGInfo )
 
 
@@ -1017,7 +1022,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), MR_LANG( '[COLOR ffff4444]Edit Channels[/COLOR]' ) ) )
+
+				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), '[COLOR ffff4444]%s[/COLOR]'% MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )
