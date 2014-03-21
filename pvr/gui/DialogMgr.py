@@ -242,10 +242,12 @@ class DialogMgr( object ) :
 
 			elif aDialogId == DIALOG_ID_PIP :
 				from pvr.gui.dialogs.DialogPIP import DialogPIP
-				#return DialogPIP( 'DialogPIP.xml', self.scriptDir )
-				if self.mPIPDialog == None:
-					self.mPIPDialog = DialogPIP( 'DialogPIP.xml', self.scriptDir )
-				return self.mPIPDialog
+				if E_V1_6_PIP_SINGLE_TONE :
+					if self.mPIPDialog == None:
+						self.mPIPDialog = DialogPIP( 'DialogPIP.xml', self.scriptDir )
+					return self.mPIPDialog
+				else :
+					return DialogPIP( 'DialogPIP.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_BIG_SELECT :
 				from pvr.gui.dialogs.DialogBigSelect import DialogBigSelect
