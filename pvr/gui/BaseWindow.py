@@ -443,17 +443,22 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetMediaCenter( self, aNowPlay=False ) :
 		#import pvr.gui.WindowMgr as WinMgr
-		import pvr.gui.DialogMgr as DiaMgr
-		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
-		self.mDataCache.SetDelaySettingWindow( True )
 		if aNowPlay == True :
 			self.mDataCache.SetMediaCenter( True )
 			self.mCommander.AppMediaPlayer_Control( 1 )
+		else :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			self.mDataCache.SetDelaySettingWindow( True )
+			self.mDataCache.SetMediaCenterUI( True )
+
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
 
 
 	def CheckMediaCenter( self ) :
+		if self.mDataCache.GetMediaCenterUI( ) :
+			self.mDataCache.SetMediaCenterUI( False )
 		if self.mDataCache.GetMediaCenter( ) == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#current channel re-zapping
