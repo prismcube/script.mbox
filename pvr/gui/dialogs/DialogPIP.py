@@ -180,14 +180,27 @@ class DialogPIP( BaseDialog ) :
 		self.mIsOk = actionId
 		#LOG_TRACE('onAction[%d] pipStatus[%s]'% ( actionId, self.mViewMode ) )
 
-		#if not self.mDataCache.GetMediaCenter( ) :
-		if self.GlobalAction( actionId ) :
-			return
+		if self.mDataCache.GetMediaCenter( ) and ( xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW ) :
+			mExecute = False
+			if actionId == Action.ACTION_MUTE :
+				self.UpdateVolume( 0 )
+				mExecute = True
+
+			elif actionId == Action.ACTION_VOLUME_UP :
+				self.UpdateVolume( VOLUME_STEP )
+				mExecute = True
+
+			elif actionId == Action.ACTION_VOLUME_DOWN :
+				self.UpdateVolume( -VOLUME_STEP )
+				mExecute = True
+
+			if mExecute :
+				return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
-				self.ResetLabel( ) 
+				self.ResetLabel( )
 				self.SavePipPosition( )
 				return
 
@@ -1370,6 +1383,7 @@ class DialogPIP( BaseDialog ) :
 					self.mDataCache.PIP_SetStatus( True )
 					ret = self.mDataCache.PIP_EnableAudio( isEnable )
 					self.mPIP_EnableAudio = isEnable
+					self.UpdateVolume( VOLUME_STEP )
 
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
