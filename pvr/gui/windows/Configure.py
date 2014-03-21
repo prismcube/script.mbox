@@ -593,6 +593,8 @@ class Configure( SettingWindow ) :
 			ElisPropertyEnum( 'HDMI Format', self.mCommander ).SetPropIndex( aRestoreIdx )
 			self.SetControlLabel2String( E_Input01, aRestoreValue )
 
+		self.mDataCache.Frontdisplay_ResolutionByIdentified( )
+
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )

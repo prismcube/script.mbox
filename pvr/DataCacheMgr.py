@@ -2509,8 +2509,6 @@ class DataCacheMgr( object ) :
 				iconIndex = -1
 			elif hdmiFormat == '720p' :
 				iconIndex = ElisEnum.E_ICON_720p
-			#elif hdmiFormat == '1080p-25' :
-			#	iconIndex = ElisEnum.E_ICON_1080p
 			elif hdmiFormat == '1080p' :
 				iconIndex = ElisEnum.E_ICON_1080p
 
@@ -2521,6 +2519,10 @@ class DataCacheMgr( object ) :
 					iconIndex = -1
 				elif aEvent.mVideoHeight <= 720 :
 					iconIndex = ElisEnum.E_ICON_720p
+
+				else :
+					if aEvent.mVideoInterlaced == 0 :
+						iconIndex = ElisEnum.E_ICON_1080p
 
 				self.Frontdisplay_Resolution( iconIndex )
 
