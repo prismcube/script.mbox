@@ -54,7 +54,6 @@ class ChannelLogoMgr( object ) :
 
 		for node in treeRoot.findall( 'logo' ) :
 			self.mMboxLogoHash[ node.get( 'id' ) ] =  os.path.join( mbox_logo_path, node.text)
-		print 'dhkim test mMboxLogoHash ok = %s' % self.mMboxLogoHash
 
 		if GetSetting( 'CUSTOM_ICON' ) != 'false' :
 			logopath = GetSetting( 'CUSTOM_ICON' )
@@ -64,7 +63,6 @@ class ChannelLogoMgr( object ) :
 				for node in treeRoot.findall( 'logo' ) :
 					self.mCustomLogoHash[ node.get( 'id' ) ] = os.path.join( logopath, node.text)
 				self.mUseCustomPath = True
-				print 'dhkim test mCustomLogoHash ok = %s' % self.mCustomLogoHash
 			except :
 				LOG_ERR( 'custom icon path load failed' )		
 
@@ -79,7 +77,6 @@ class ChannelLogoMgr( object ) :
 
 
 	def GetMboxLogo( self, aId, aServiceType ) :
-		print 'dhkim test GetMboxLogo'
 		logo = self.mMboxLogoHash.get( aId, None )
 		if logo == None :
 			if aServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -91,7 +88,6 @@ class ChannelLogoMgr( object ) :
 
 
 	def GetCustomLogo( self, aId, aServiceType ) :
-		print 'dhkim test GetCustomLogo'
 		logo = self.mCustomLogoHash.get( aId, None )
 		if logo == None :
 			logo = self.GetMboxLogo( aId, aServiceType )

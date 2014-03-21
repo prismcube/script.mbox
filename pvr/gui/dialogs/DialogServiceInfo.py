@@ -69,12 +69,7 @@ class DialogServiceInfo( BaseDialog ) :
 			self.mCtrlStrength.setLabel( '%s%%' % tun[0].mParam )
 			self.mCtrlQuality.setLabel( '%s%%' % tun[1].mParam )
 
-		#self.getControl( CONTROL_ID_LABEL_RESOLUTION_VALUE ).setLabel( '%s' % ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( ) )
-		res = self.mCommander.VideoIdentified_GetStatus( )
-		if res and res.mParam :
-			self.getControl( CONTROL_ID_LABEL_RESOLUTION_VALUE ).setLabel( '%s' % res.mParam )
-		else :
-			self.getControl( CONTROL_ID_LABEL_RESOLUTION_VALUE ).setLabel( MR_LANG( 'Unknown' ) )
+		self.getControl( CONTROL_ID_LABEL_RESOLUTION_VALUE ).setLabel( self.mDataCache.GetResolution( ) )
 		
 		audioIndex = self.mCommander.Audiotrack_GetSelectedIndex( )
 		audioValue = self.mCommander.Audiotrack_Get( audioIndex )

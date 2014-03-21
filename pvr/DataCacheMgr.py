@@ -180,6 +180,7 @@ class DataCacheMgr( object ) :
 		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
+		self.mSavedResolution					= self.GetResolution( True )
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -2514,6 +2515,7 @@ class DataCacheMgr( object ) :
 
 			self.Frontdisplay_Resolution( iconIndex )
 		else :
+			self.SaveResolution( aEvent )
 			if hdmiFormat == 'Automatic' :
 				if aEvent.mVideoHeight <= 576 :
 					iconIndex = -1
@@ -3372,4 +3374,32 @@ class DataCacheMgr( object ) :
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
 			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+
+
+	def SaveResolution( self, aEvent ) :
+		res = ''
+		if aEvent.mVideoHeight <= 576 :
+			res = '576'
+		elif aEvent.mVideoHeight <= 720 :
+			res = '720'
+		else :
+			res = '1080'
+
+		if aEvent.mVideoInterlaced == 0 :
+			res += 'p'
+		else :
+			res += 'i'
+
+		self.mSavedResolution = res
+
+
+	def GetResolution( self, aInit = False ) :
+		if aInit :
+			res = self.mCommander.VideoIdentified_GetStatus( )
+			if res :
+				return res.mParam
+			else :
+				return ''
+		else :
+			return self.mSavedResolution
 
