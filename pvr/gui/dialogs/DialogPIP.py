@@ -180,9 +180,9 @@ class DialogPIP( BaseDialog ) :
 		self.mIsOk = actionId
 		#LOG_TRACE('onAction[%d] pipStatus[%s]'% ( actionId, self.mViewMode ) )
 
-		if not self.mDataCache.GetMediaCenter( ) :
-			if self.GlobalAction( actionId ) :
-				return
+		#if not self.mDataCache.GetMediaCenter( ) :
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :

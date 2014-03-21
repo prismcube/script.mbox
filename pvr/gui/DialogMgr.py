@@ -284,9 +284,9 @@ class DialogMgr( object ) :
 		homeWindow = xbmcgui.Window( 10000 )
 		while( 1 ) :
 			#if not self.mDataCache.GetMediaCenter( ) :
-			#	LOG_TRACE( 'Volume check TEST : Update Volume ' )							
+			#	LOG_TRACE( 'Volume check TEST : Update Volume ' )
 			if homeWindow.getProperty( 'VolumeChanged') == 'true' :
-				LOG_TRACE( 'Volume check TEST : Update Volume ' )				
+				LOG_TRACE( 'Volume check TEST : Update Volume ' )
 				self.UpdateVolume( )
 				xbmcgui.Window( 10000 ).setProperty( 'VolumeChanged', 'false')
 
