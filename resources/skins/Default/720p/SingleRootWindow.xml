@@ -440,8 +440,8 @@ Search for window name
 						<orientation>Horizontal</orientation>
 						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
 						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209010</onleft>
-						<onright>1209010</onright>
+						<onleft>1209012</onleft>
+						<onright>1209012</onright>
 						<visible>Container(1209000).HasFocus(3)</visible>
 						<control type="image" id="1290311">
 							<width>35</width>
@@ -484,8 +484,8 @@ Search for window name
 						<orientation>Horizontal</orientation>
 						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
 						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209010</onleft>
-						<onright>1209010</onright>
+						<onleft>1209013</onleft>
+						<onright>1209013</onright>
 						<visible>Container(1209000).HasFocus(9)</visible>
 						<control type="image" id="1290911">
 							<width>35</width>
@@ -521,8 +521,8 @@ Search for window name
 						<orientation>Horizontal</orientation>
 						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
 						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
-						<onleft>1209010</onleft>
-						<onright>1209010</onright>
+						<onleft>1209011</onleft>
+						<onright>1209011</onright>
 						<visible>Container(1209000).HasFocus(4)</visible>
 						<control type="image" id="1290411">
 							<width>35</width>
