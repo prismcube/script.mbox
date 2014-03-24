@@ -99,6 +99,7 @@ XBMC_CHECKWINDOW = [
 class DialogPIP( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
+		LOG_TRACE( "DialogPIP Open")
 		self.mCurrentChannel = ElisIChannel( )
 		self.mCurrentChannel.mNumber = self.mDataCache.Channel_GetCurrent( )
 		self.mIsOk = None
@@ -106,11 +107,13 @@ class DialogPIP( BaseDialog ) :
 			self.mCurrentChannel.mNumber = self.mDataCache.PIP_GetCurrent( )
 		self.mCurrentChannel.mError = -1
 		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
-
+		LOG_TRACE( "DialogPIP Open")
 
 	def onInit( self ) :
 		#self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+
+		LOG_TRACE( "DialogPIP Onit")		
 
 		if not self.PIP_LoadToBaseControlIDs( ) :
 			self.CloseDialog( )
@@ -123,6 +126,9 @@ class DialogPIP( BaseDialog ) :
 		#self.mCtrlLabelNoService   = self.getControl( CTRL_ID_LABEL_NOSERVICE )
 
 		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
+
+		LOG_TRACE( "DialogPIP self.mCtrlGroupPIP =%s" %self.mCtrlGroupPIP  )		
+		
 		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
 		self.mCtrlImageFocusFO     = self.getControl( CTRL_ID_IMAGE_FOCUSED )
 		self.mCtrlImageArrowLeft   = self.getControl( CTRL_ID_IMAGE_ARROW_LEFT )
@@ -174,6 +180,7 @@ class DialogPIP( BaseDialog ) :
 		self.Load( )
 		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
 
+		self.setProperty( "LoadFinished", "True" )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -438,6 +445,7 @@ class DialogPIP( BaseDialog ) :
 
 		#self.PIP_PositionBackup( self.mPosCurrent )
 		self.CloseDialog( )
+		self.setProperty( "LoadFinished", "False" )		
 
 
 	def CloseByMediaPlayStop( self ) :
