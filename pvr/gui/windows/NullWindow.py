@@ -403,7 +403,7 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.SetMediaCenter( True )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
-			if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if self.mWinId == xbmcgui.getCurrentWindowId( ) and self.mMediaPlayerStarted == False:
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 
