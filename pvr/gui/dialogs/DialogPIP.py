@@ -183,15 +183,18 @@ class DialogPIP( BaseDialog ) :
 		if self.mDataCache.GetMediaCenter( ) and ( xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW ) :
 			mExecute = False
 			if actionId == Action.ACTION_MUTE :
-				self.UpdateVolume( 0 )
+				#self.UpdateVolume( 0 )
+				self.mDataCache.LoadVolumeBySetGUI( )
 				mExecute = True
 
 			elif actionId == Action.ACTION_VOLUME_UP :
-				self.UpdateVolume( VOLUME_STEP )
+				#self.UpdateVolume( VOLUME_STEP )
+				self.mDataCache.LoadVolumeBySetGUI( )
 				mExecute = True
 
 			elif actionId == Action.ACTION_VOLUME_DOWN :
-				self.UpdateVolume( -VOLUME_STEP )
+				#self.UpdateVolume( -VOLUME_STEP )
+				self.mDataCache.LoadVolumeBySetGUI( )
 				mExecute = True
 
 			if mExecute :
@@ -1374,7 +1377,7 @@ class DialogPIP( BaseDialog ) :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'The channel is locked' )
 
-
+		"""
 		if not self.mDataCache.GetMediaCenter( ) :
 			#check dvb only
 			#1. check audio in main
@@ -1383,13 +1386,14 @@ class DialogPIP( BaseDialog ) :
 			if mute or volume < 1 :
 				isAudioBlock = True
 				lblMsg = MR_LANG( 'Audio is muted' )
-
+		"""
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			lblTitle = MR_LANG( 'No Audio' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
 			return
+
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
