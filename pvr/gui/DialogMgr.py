@@ -97,7 +97,7 @@ class DialogMgr( object ) :
 		self.mPIPDialog = None
 
 		self.mLock = thread.allocate_lock()
-		thread.start_new_thread( self.AsyncCheckVolume,() )
+		#thread.start_new_thread( self.AsyncCheckVolume,() )
 		
 
 	def GetDialog( self, aDialogId ) :
