@@ -918,11 +918,34 @@ class DialogPIP( BaseDialog ) :
 
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if ( not isFail ) and fakeChannel and iChannel :
+				LOG_TRACE( '----------------main ch[%s %s] pip[%s %s]'% ( iChannel.mNumber, iChannel.mName, fakeChannel.mNumber, fakeChannel.mName ) )
+				#check 1 - load tunable pip
 				if iChannel.mSid == fakeChannel.mSid and iChannel.mTsid == fakeChannel.mTsid and iChannel.mOnid == fakeChannel.mOnid :
-					LOG_TRACE( '[PIP] Cannot switch PIP. Same channel' )
 					isFail = True
+					LOG_TRACE( '[PIP] Cannot switch PIP. Same channel' )
 
-				else :
+					# check 2 - last pip, issue 2661
+					pipCurrent = self.mDataCache.PIP_GetCurrent( )
+					pipCurrent = self.mDataCache.Channel_GetByNumber( pipCurrent, True )
+					if pipCurrent :
+						if iChannel.mSid != pipCurrent.mSid or iChannel.mTsid != pipCurrent.mTsid or iChannel.mOnid != pipCurrent.mOnid :
+							isFail = False
+							fakeChannel = pipCurrent
+							LOG_TRACE( '[PIP] pipCurrent[%s %s]'% ( pipCurrent.mNumber, pipCurrent.mName ) )
+							LOG_TRACE( '[PIP] Available switch PIP. different channel, check more pipCurrent' )
+
+				# check 3 - find channel current mode
+				if not isFail :
+					if not self.mDataCache.GetChannelByIDs( fakeChannel.mSid, fakeChannel.mTsid, fakeChannel.mOnid ) :
+						isFail = True
+						curMode = EnumToString( 'mode', self.mCurrentMode.mMode )
+						lblTitle = MR_LANG( 'Error' )
+						lblMsg = MR_LANG( 'No service channel this mode' )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( lblTitle, lblMsg )
+						dialog.doModal( )
+
+				if not isFail :
 					if self.mDataCache.PIP_IsStarted( ) :
 
 						if self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :

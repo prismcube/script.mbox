@@ -540,8 +540,11 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		else :
-			self.NotAvailAction( )
-			LOG_TRACE( 'unknown key[%s]'% actionId )
+			if actionId == Action.ACTION_MUTE or actionId == Action.ACTION_VOLUME_UP or actionId == Action.ACTION_VOLUME_DOWN :
+				pass
+			else :
+				self.NotAvailAction( )
+				LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
 
