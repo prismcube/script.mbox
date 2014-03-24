@@ -1383,7 +1383,7 @@ class DialogPIP( BaseDialog ) :
 					self.mDataCache.PIP_SetStatus( True )
 					ret = self.mDataCache.PIP_EnableAudio( isEnable )
 					self.mPIP_EnableAudio = isEnable
-					self.UpdateVolume( VOLUME_STEP )
+					self.mDataCache.LoadVolumeBySetGUI( ) #mute,volume sync
 
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
