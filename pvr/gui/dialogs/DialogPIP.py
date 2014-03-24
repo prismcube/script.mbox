@@ -180,7 +180,7 @@ class DialogPIP( BaseDialog ) :
 		self.Load( )
 		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
 
-		self.setProperty( "LoadFinished", "True" )
+		self.setProperty( 'LoadFinished', E_TAG_TRUE )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -445,7 +445,7 @@ class DialogPIP( BaseDialog ) :
 
 		#self.PIP_PositionBackup( self.mPosCurrent )
 		self.CloseDialog( )
-		self.setProperty( "LoadFinished", "False" )		
+		self.setProperty( 'LoadFinished', E_TAG_FALSE )
 
 
 	def CloseByMediaPlayStop( self ) :

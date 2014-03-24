@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">301</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
-	<onload>SetProperty(LoadFinished,False)</onload>	
+	<onload>SetProperty(LoadFinished,false)</onload>
 	<controls>
 		<include>DefaultDialogCloseEffect</include>
 		<control type="group" id="4800000">
@@ -15,7 +15,7 @@
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 				<visible>substring(Window.Property(TVRadio),true)</visible>
 			</control-->
-			<visible>substring(Window.Property(OpenPIP),true) +  substring(Window.Property(LoadFinished),true)</visible>
+			<visible>substring(Window.Property(OpenPIP),true) + substring(Window.Property(LoadFinished),true)</visible>
 			<control type="group">
 				<posx>-5</posx>
 				<posy>-5</posy>
