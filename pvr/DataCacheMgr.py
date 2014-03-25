@@ -176,7 +176,6 @@ class DataCacheMgr( object ) :
 		self.mHasLinkageService					= False
 
 		self.mPIPStart							= self.PIP_IsStarted( )
-		self.mPIPAudioChange					= False
 		self.mCurrentChannelPIP					= None
 		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
@@ -3030,14 +3029,6 @@ class DataCacheMgr( object ) :
 
 	def PIP_SetStatus( self, isStart = False ) :
 		self.mPIPStart = isStart
-
-
-	def PIP_SetAudioChange( self, aChange ) :
-		self.mPIPAudioChange = aChange
-
-
-	def PIP_GetAudioChange( self ) :
-		return self.mPIPAudioChange
 
 
 	def PIP_SetDimension( self, aPosX, aPosY, aWidth, aHeight ) :

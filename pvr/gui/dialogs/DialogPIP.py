@@ -1401,7 +1401,6 @@ class DialogPIP( BaseDialog ) :
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
-			self.mDataCache.PIP_SetAudioChange( True )
 			if self.mPIP_EnableAudio :
 				self.mDataCache.PIP_EnableAudio( False )
 
@@ -1417,9 +1416,7 @@ class DialogPIP( BaseDialog ) :
 					self.mPIP_EnableAudio = isEnable
 					self.mDataCache.LoadVolumeBySetGUI( ) #mute,volume sync
 
-			self.mDataCache.PIP_SetAudioChange( False )
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
-
 
 		else :
 			ret = self.mDataCache.PIP_EnableAudio( isEnable )
