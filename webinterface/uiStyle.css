@@ -1,6 +1,4 @@
-	
-
-	#wrapper {
+#wrapper {
 		width: 1200px;
 		padding: 10px;
 		margin-left: 20px;
@@ -10,6 +8,7 @@
 		margin: auto;
 		overflow-y: scroll
 	}
+
 	
 	/* ======================================================== */
 	/* Top Menu */
@@ -81,7 +80,6 @@
 	#main {
 		margin-top: 20px;
 		margin-left: 230px;
-		bborder: 1px solid blue;
 	}
 
 	#remotecontroller {
@@ -106,8 +104,9 @@
 		font-family: arial;
 		font-size: 1.0em;
 		font-weight: normal;
-		padding: 7px;
+		padding: 0;
 		border-left: 7px solid #dfdfdf;
+		border-bottom: 1px solid #dfdfdf;
 	}
 	
 	#channels tr:first-child td {
@@ -123,8 +122,9 @@
 	}
 	
 	.channelContent {
-		padding: 3px;
-		border-bottom: 1px solid #dfdfdf;
+		display: inline-block;
+		padding: 0;
+		margin: 5px;
 	}
 
 	/* Channel List */
@@ -240,6 +240,66 @@
 	}
 
 	/* EPG Page */
+	/* ======================================================== */	
+
+	/* EPG Grid */
+	/* ======================================================== */	
+
+	#timeline ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background: url(/uiImg/bg_nav.png) repeat-x left top;
+		float: left;
+	}
+
+	#timeline li.timeTitle {
+		float: left;
+		padding: 5px;
+		margin: 0;
+		width: 150;
+		border-right: 1px dotted yellow;
+		color: #dfdfdf;
+		font-family: arial;
+		font-weight: bold;
+		text-align: center;
+	}
+	
+	#timeline li.time {
+		float: left;
+		padding: 5px;
+		margin: 0;
+		width: 120px;
+		border-right: 1px dotted yellow;
+		color: #dfdfdf;
+		font-family: arial;
+		font-size: 0.8em;
+	}
+
+	.epgGridContent ul {
+		margin: 1px 0 0 0;
+		padding: 0;
+		list-style: none;
+		float: left;
+	}
+
+	.epgGridContent li.channel {
+		float: left;
+		padding: 5px;
+		margin: 0;
+		width: 150px;
+		height: 100px;
+		border: 1px solid red;
+		font-family: arial;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.clearAll {
+		clear: both;
+	}
+	
+	/* EPG Grid */
 	/* ======================================================== */	
 	
 	

@@ -15,6 +15,7 @@ import pvr.NetConfig as NetConfig
 import threading
 import select
 import pvr.Platform
+#import pvr.GlobalEvent as globalEvent
 
 gElisMgr = None
 
@@ -29,6 +30,7 @@ def GetInstance( ) :
 
 
 class ElisEventHandler( EventHandler ) :
+
 	def handle( self ) :
 		cur_thread = threading.currentThread( )
 		LOG_TRACE( 'check threadname %s' % cur_thread.getName( ) )
@@ -50,7 +52,10 @@ class ElisEventHandler( EventHandler ) :
 	
 
 	def AddEvent( self, aEvent ) :
-		self.mEventBus.AddEvent( aEvent )
+		if aEvent.getName( ) == ElisEventXBMC.getName() :
+			pvr.GlobalEvent.GetInstance().DoXBMCEvent( aEvent )
+		else :
+			self.mEventBus.AddEvent( aEvent )
 
 
 class ElisEventRecevier( EventServer ) :

@@ -180,6 +180,8 @@ class DataCacheMgr( object ) :
 		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
 		self.mVideoOutput						= E_VIDEO_HDMI
+		self.mSavedResolution					= self.GetResolution( True )
+		self.mIsMediaCenterUi					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1968,7 +1970,7 @@ class DataCacheMgr( object ) :
 		#LOG_TRACE( '-----found ch[%s]'% isCurrentChannelDelete )
 		if not isCurrentChannelDelete :
 			if aCurrentChannel and aCurrentChannel.mError == 0 :
-				self.Channel_SetCurrent( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
+				self.Channel_SetCurrentSync( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
 				#LOG_TRACE( '-------------1 tune[%s %s]'% ( aCurrentChannel.mNumber, aCurrentChannel.mName ) )
 				return
 
@@ -1978,7 +1980,7 @@ class DataCacheMgr( object ) :
 		if aCurrentChannel == None or isCurrentChannelDelete :
 			channelList = self.Channel_GetList( )
 			if channelList and len( channelList ) > 0 :
-				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
+				self.Channel_SetCurrentSync( channelList[0].mNumber, channelList[0].mServiceType )
 				#LOG_TRACE( '-------------2 tune[%s %s]'% ( channelList[0].mNumber, channelList[0].mName ) )
 
 
@@ -1987,7 +1989,7 @@ class DataCacheMgr( object ) :
 		channelList = self.Channel_GetList( )
 		if iChannel and channelList and len( channelList ) > 0 :
 			self.Channel_InvalidateCurrent( )
-			self.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+			self.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
 		else :
 			LOG_ERR( 'Load Channel_GetCurrent None' )
@@ -2525,18 +2527,21 @@ class DataCacheMgr( object ) :
 				iconIndex = -1
 			elif hdmiFormat == '720p' :
 				iconIndex = ElisEnum.E_ICON_720p
-			#elif hdmiFormat == '1080p-25' :
-			#	iconIndex = ElisEnum.E_ICON_1080p
 			elif hdmiFormat == '1080p' :
 				iconIndex = ElisEnum.E_ICON_1080p
 
 			self.Frontdisplay_Resolution( iconIndex )
 		else :
+			self.SaveResolution( aEvent )
 			if hdmiFormat == 'Automatic' :
 				if aEvent.mVideoHeight <= 576 :
 					iconIndex = -1
 				elif aEvent.mVideoHeight <= 720 :
 					iconIndex = ElisEnum.E_ICON_720p
+
+				else :
+					if aEvent.mVideoInterlaced == 0 :
+						iconIndex = ElisEnum.E_ICON_1080p
 
 				self.Frontdisplay_Resolution( iconIndex )
 
@@ -3081,7 +3086,7 @@ class DataCacheMgr( object ) :
 			currentMode = self.Zappingmode_GetCurrent( )
 			channelList = self.Channel_GetList( )
 			if currentMode and currentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
-				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV )
+				channelList = self.Channel_GetAllChannels( ElisEnum.E_SERVICE_TYPE_TV, False )
 
 			channelListHash = {}
 			if channelList and len( channelList ) > 0 :
@@ -3386,4 +3391,41 @@ class DataCacheMgr( object ) :
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
 			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
+
+
+	def SaveResolution( self, aEvent ) :
+		res = ''
+		if aEvent.mVideoHeight <= 576 :
+			res = '576'
+		elif aEvent.mVideoHeight <= 720 :
+			res = '720'
+		else :
+			res = '1080'
+
+		if aEvent.mVideoInterlaced == 0 :
+			res += 'p'
+		else :
+			res += 'i'
+
+		self.mSavedResolution = res
+
+
+	def GetResolution( self, aInit = False ) :
+		if aInit :
+			res = self.mCommander.VideoIdentified_GetStatus( )
+			if res :
+				return res.mParam
+			else :
+				return ''
+		else :
+			return self.mSavedResolution
+
+
+	def SetMediaCenterUI( self, aFlag ) :
+		self.mIsMediaCenterUi = aFlag
+
+
+	def GetMediaCenterUI( self ) :
+		return self.mIsMediaCenterUi
 

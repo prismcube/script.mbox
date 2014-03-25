@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 
-E_ADVANCED_BASE_ID				=  WinMgr.WIN_ID_ADVANCED * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+E_ADVANCED_BASE_ID				=  WinMgr.WIN_ID_ADVANCED * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID 
 E_ADVANCED_SUBMENU_LIST_ID		=  E_ADVANCED_BASE_ID + 9000
 E_ADVANCED_SETTING_DESCRIPTION	=  E_ADVANCED_BASE_ID + 1003
 
@@ -40,12 +40,12 @@ class Advanced( SettingWindow ) :
 		self.mGroupItems = []
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
-
+		
 		self.mDescriptionList	= [
 		MR_LANG( 'You can customise the appearance of PRISMCUBE RUBY' ),
 		#MR_LANG( 'HBB TV Settings' ),
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ) ]
-
+	
 		self.setFocusId( E_ADVANCED_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_ADVANCED_BASE_ID )
@@ -54,7 +54,7 @@ class Advanced( SettingWindow ) :
 
 		self.mCtrlLeftGroup = self.getControl( E_ADVANCED_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
-
+		
 		if self.mPrevListItemID != -1 :
 			self.mCtrlLeftGroup.selectItem( self.mPrevListItemID )
 
@@ -164,7 +164,7 @@ class Advanced( SettingWindow ) :
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
 			return
-
+	
 		if self.mInitialized == False :
 			return
 
@@ -197,25 +197,25 @@ class Advanced( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, True )
 
 			self.InitControl( )
-
+			
 		elif selectedId == E_LIVESTREAM :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			#self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
-			#self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
 
-			visibleControlIds = [ E_SpinEx03 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04 ]
+			hideControlIds = [ E_SpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 
 		elif selectedId == E_HBBTV :
 			pass
-
+		
 		else :
 			LOG_ERR( 'Could not find the selected ID' )
 

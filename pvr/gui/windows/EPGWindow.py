@@ -1477,6 +1477,9 @@ class EPGWindow( BaseWindow ) :
 		
 		selectedEPG = self.GetSelectedEPG( )
 
+		if self.mEPGMode == E_VIEW_GRID and selectedEPG :
+			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )		
+
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			context.append( ContextItem( MR_LANG( 'Select channel' ), CONTEXT_SELECT_CHANNEL ) )
 
@@ -1516,7 +1519,8 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
-			context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
+			if self.mEPGMode != E_VIEW_GRID :
+				context.append( ContextItem( MR_LANG( 'Extend information' ), CONTEXT_EXTEND_INFOMATION ) )
 			context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 

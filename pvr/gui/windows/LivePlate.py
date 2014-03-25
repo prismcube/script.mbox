@@ -286,7 +286,6 @@ class LivePlate( LivePlateWindow ) :
 				
 			self.Close( )
 			self.SetMediaCenter( )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :

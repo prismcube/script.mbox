@@ -91,6 +91,8 @@ class Action(object) :
 
 
 	ACTION_MBOX_RESERVED21		= 431
+	ACTION_MBOX_RESERVED22		= 432
+	ACTION_MBOX_RESERVED23		= 433
 
 	# re defined for another platform
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
@@ -267,19 +269,7 @@ class BaseWindow( BaseObjectWindow ) :
 			else :
 				mExecute = True
 
-		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( 0 )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( VOLUME_STEP )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( -VOLUME_STEP )
-			mExecute = True
-
-		elif E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
+		if E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True
@@ -304,18 +294,14 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetRadioScreen( self, aType = -1 ) :
 		radio = 'False'
-		state = False
 		if aType == -1 :
 			aType = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
 		if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			radio = 'True'
-			state = True
 
 		self.setProperty( 'TVRadio', radio )
 		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
-
-		return radio
 
 
 	def SetVideoRestore( self ) :
@@ -392,23 +378,6 @@ class BaseWindow( BaseObjectWindow ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
-	def UpdateMediaCenterVolume( self ) :
-		if self.mDataCache.Get_Player_AVBlank( ) :
-			LOG_TRACE( '----------blocking avblank' )
-			return
-
-		volume = 0
-		if self.mPlatform.IsPrismCube( ) :
-			if self.mPlatform.GetXBMCVersion( ) >= self.mPlatform.GetFrodoVersion( ) :
-				volume =  XBMC_GetVolume( )
-
-		else :
-			volume = self.mCommander.Player_GetVolume( )
-
-		LOG_TRACE( 'GET VOLUME=%d' %volume )
-		self.mCommander.Player_SetVolume( volume )
-
-
 	def GetAudioStatus( self ) :
 		mute, volume = ( False, 0 )
 		if self.mDataCache.Get_Player_AVBlank( ) :
@@ -460,23 +429,26 @@ class BaseWindow( BaseObjectWindow ) :
 		return ret
 
 
-	def SetMediaCenter( self ) :
-		import pvr.gui.WindowMgr as WinMgr
-		import pvr.gui.DialogMgr as DiaMgr
-		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+	def SetMediaCenter( self, aNowPlay=False ) :
+		#import pvr.gui.WindowMgr as WinMgr
+		if aNowPlay == True :
+			self.mDataCache.SetMediaCenter( True )
+			self.mCommander.AppMediaPlayer_Control( 1 )
+		else :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			self.mDataCache.SetDelaySettingWindow( True )
+			self.mDataCache.SetMediaCenterUI( True )
 
-		self.mDataCache.SetMediaCenter( True )
-		self.mDataCache.SetDelaySettingWindow( True )
-		self.mCommander.AppMediaPlayer_Control( 1 )
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
 
 
 	def CheckMediaCenter( self ) :
+		if self.mDataCache.GetMediaCenterUI( ) :
+			self.mDataCache.SetMediaCenterUI( False )
 		if self.mDataCache.GetMediaCenter( ) == True :
-			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 			self.mCommander.AppMediaPlayer_Control( 0 )
-			xbmc.executebuiltin("Custom.StartStopService(Stop)", False)
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			channelList = self.mDataCache.Channel_GetList( )
@@ -488,34 +460,36 @@ class BaseWindow( BaseObjectWindow ) :
 					self.mDataCache.Player_AVBlank( True )
 					self.mDataCache.Channel_InvalidateCurrent( )
 					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					self.UpdateMediaCenterVolume( )
-					self.mDataCache.SyncMute( )
 					self.mDataCache.Player_AVBlank( True )
 					LOG_TRACE( '----------------------------------------------ch lock' )
 
 				else :
 					self.mDataCache.Channel_InvalidateCurrent( )
 					self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-					self.mDataCache.SyncMute( )
 					self.mDataCache.SetParentLockPass( True )
 
-					#self.UpdateVolume( )
-					self.UpdateMediaCenterVolume( )
-					thread = threading.Timer( 0.9, self.mDataCache.SyncMute )
-					thread.start( )
-
-			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
-			InitTranslateByEnumList( )
-			self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
-
-			if self.mDataCache.GetAlarmByViewTimer( ) :
-				self.mDataCache.SetAlarmByViewTimer( False )
-				mHead = MR_LANG( 'Timer Notification' )
-				mLine = MR_LANG( 'Channel is changed by view timer' )
-				xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)'% ( mHead, mLine ) )
+			self.UpdateMediaCenterVolume( )
+			self.mDataCache.SyncMute( )
 
 		self.SetRadioScreen( )
+
+
+	def UpdateMediaCenterVolume( self ) :
+		if self.mDataCache.Get_Player_AVBlank( ) :
+			LOG_TRACE( '----------blocking avblank' )
+			return
+
+		volume = 0
+		if self.mPlatform.IsPrismCube( ) :
+			if self.mPlatform.GetXBMCVersion( ) >= self.mPlatform.GetFrodoVersion( ) :
+				volume = XBMC_GetVolume( )
+
+		else :
+			volume = self.mCommander.Player_GetVolume( )
+
+		LOG_TRACE( 'GET VOLUME=%d' %volume )
+		self.mCommander.Player_SetVolume( volume )
 
 
 	def OpenBusyDialog( self ) :

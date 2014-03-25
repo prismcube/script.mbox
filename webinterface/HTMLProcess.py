@@ -1,13 +1,17 @@
-import pvr.DataCacheMgr
-import pvr.ElisMgr
+#import pvr.DataCacheMgr
+#import pvr.ElisMgr
 from pvr.gui.WindowImport import *
 import xbmc
 from urllib import unquote, quote
+from datetime import datetime
+from BeautifulSoup import BeautifulSoup 
+import os
 
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
 	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer]
+	htmlClass.append(EpgGrid)
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -84,7 +88,21 @@ class WebPage( object ) :
 			<head>
 				<title>PrismCube Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<script>
+				
+					function showIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'visible';
+					}
+					
+					function hideIcon( target ) {
+						var icon = 'img0' + target;
+						document.getElementById(icon).style.visibility = 'hidden';
+					}
+
+				</script>
 			<body>
+			
 			<div id='wrapper'>
 
 				<div id='top'>
@@ -97,6 +115,7 @@ class WebPage( object ) :
 				<div id='menu'>
 					<p><img src='./uiImg/mark.png' id='img01' style='visibility: hidden;'> <a href='uiChannel.html' onmouseover='javacript:showIcon(1);' onmouseout='javascript:hideIcon(1);'>Channel</a></p>
 					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
+					<!-- <p><img src="./uiImg/mark.png" id="img06" style="visibility: hidden;"> <a href="EpgGrid" onmouseover="javacript:showIcon(6);" onmouseout="javascript:hideIcon(6);">EPG</a></p> -->
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
@@ -154,26 +173,26 @@ class Channel( WebPage ) :
 		self.allChannel = self.mDataCache.Channel_GetList( aTemporaryReload=1, aType= self.mZappingMode.mServiceType, aMode=ElisEnum.E_MODE_ALL)
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.allChannel : 
-			"""
-			content += '<tr><td width="100">' + str(cls.mNumber) + '</td>'
-			content += '<td width="300">' + cls.mName + '</a></td>'
-			content += '<td class="epg">[<a href="Zapping?' + str(cls.mNumber) +'" target="zapper">Zap</a>]</td>'
-			content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')">EPG</a>]</td>'
-			# content += '<td class="epg">[<a href="/epg?sid='+ str(cls.mSid) + '&tsid=' + str(cls.mTsid) + '&onid=' + str(cls.mOnid) + '">EPG</a>]</td>'
-			content += '</tr>'
-			"""
-			
-			content += '<tr>'
-			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mNumber) + '</p></td>'
-			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
-			content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
-			content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
-			content += '</tr>'
-			
-		content += '</table></td></tr></table>'
+		if self.allChannel :
+			for cls in self.allChannel :
+				"""
+				content += '<tr><td width="100">' + str(cls.mNumber) + '</td>'
+				content += '<td width="300">' + cls.mName + '</a></td>'
+				content += '<td class="epg">[<a href="Zapping?' + str(cls.mNumber) +'" target="zapper">Zap</a>]</td>'
+				content += '<td class="epg">[<a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')">EPG</a>]</td>'
+				# content += '<td class="epg">[<a href="/epg?sid='+ str(cls.mSid) + '&tsid=' + str(cls.mTsid) + '&onid=' + str(cls.mOnid) + '">EPG</a>]</td>'
+				content += '</tr>'
+				"""
+				content += '<tr>'
+				content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mNumber) + '</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+				content += '</tr>'
 
-		self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
+			self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
+
+		content += '</table></td></tr></table>'
 		return self.getChannelContent(content)
 
 	def satelliteChannelContent( self ) :
@@ -181,11 +200,12 @@ class Channel( WebPage ) :
 		self.satelliteList = self.mDataCache.Satellite_GetConfiguredList()
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.satelliteList : 
-			content += '<tr>'
-			content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
-			content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
-			content += '</tr>'
+		if self.satelliteList :
+			for cls in self.satelliteList :
+				content += '<tr>'
+				content += '<td align="center" width="50"><p class="channelContent">' + str(cls.mLongitude) + '</p></td>'
+				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelBySatellite?' + str(cls.mName) + '">' + cls.mName +'</a></p></td>'
+				content += '</tr>'
 
 		content += '</td></tr></table>'
 		return self.getChannelContent(content)
@@ -209,8 +229,9 @@ class Channel( WebPage ) :
 		self.allChannel = self.mDataCache.Favorite_GetList(0, self.mZappingMode.mServiceType)
 		content = """<table border="1" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table id="channels" width="100%">"""
 
-		for cls in self.allChannel : 
-			content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></p></td></tr>'
+		if self.allChannel :
+			for cls in self.allChannel :
+				content += '<tr><td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChannelByFavorite?' + cls.mGroupName + '">' + cls.mGroupName + '</a></p></td></tr>'
 
 		content += '</table></td></tr></table>'
 
@@ -234,12 +255,29 @@ class Channel( WebPage ) :
 
 	def getChannelContent( self, content ) :
 
+		try :
+			f = open("/usr/share/xbmc/addons/script.mbox/webinterface/uiStyle.css", "r");
+			css = f.read();
+			f.close();
+		except Exception, e :
+			print str(e)
+			css = ''
+
+		print '[Style Path]'
+		print str( os.getcwd() )
+
 		self.channelContent  = """
-		
+
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html>
 			<head>
 				<title>PrismCube Web UI</title>
-				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
+				<script src="./jquery.js"></script>
+				<script src="./block.js"></script>
+				<style>
+					%s
+				</style>
 				<script>
 				
 					function showIcon( target ) {
@@ -274,6 +312,22 @@ class Channel( WebPage ) :
 					}
 
 				</script>
+				<script>
+				// invoke blockUI as needed -->
+				$(document).ready( function() {
+				   $.blockUI({ css: { 
+				            border: 'none', 
+				            padding: '15px', 
+				            backgroundColor: '#000', 
+				            '-webkit-border-radius': '10px', 
+				            '-moz-border-radius': '10px', 
+				            opacity: .5, 
+				            color: 'yellow'
+				        } }); 
+				 
+				    setTimeout($.unblockUI, 1800); 
+				});
+				</script>
 			<body>
 			<div id='wrapper'>
 
@@ -288,6 +342,7 @@ class Channel( WebPage ) :
 					<p><img src="./uiImg/mark.png" id="img01" style="visibility: hidden;"> Channel</p>
 					<p><img src='./uiImg/mark.png' id='img02' style='visibility: hidden;'> <a href='uiStream.html' onmouseover='javacript:showIcon(2);' onmouseout='javascript:hideIcon(2);'>Live Stream</a></p>
 					<p><img src='./uiImg/mark.png' id='img03' style='visibility: hidden;'> <a href='uiRemote.html' onmouseover='javacript:showIcon(3);' onmouseout='javascript:hideIcon(3);'>Remote Control</a></p>
+					<!-- <p><img src="./uiImg/mark.png" id="img06" style="visibility: hidden;"> <a href="EpgGrid" onmouseover="javacript:showIcon(6);" onmouseout="javascript:hideIcon(6);">EPG</a></p> -->
 					<p><img src='./uiImg/mark.png' id='img05' style='visibility: hidden;'> <a href='Timer' onmouseover='javacript:showIcon(5);' onmouseout='javascript:hideIcon(5);'>Timer</a></p>
 					<p><img src='./uiImg/mark.png' id='img04' style='visibility: hidden;'> <a href='Recordings' onmouseover='javacript:showIcon(4);' onmouseout='javascript:hideIcon(4);'>Recordings</a></p>
 				</div>
@@ -313,7 +368,7 @@ class Channel( WebPage ) :
 			</body>
 			</html>
 			
-		""" % ( self.getSubMenu(), content )
+		""" % ( css, self.getSubMenu(), content )
 		return self.channelContent
 
 	def getSubMenu( self ) :
@@ -392,6 +447,112 @@ class RemoteControl(WebPage):
 
 		cmds = command[0].split("=")
 
+		if not cmds[1].isdigit()  :
+			target = 'xbmc.Action(' + cmds[1] + ')'
+			xbmc.executebuiltin(target)
+
+		if cmds[1] == "2001" :
+			#not used
+			pass
+
+		if cmds[1] == "2002" :
+			#power Todo
+			pass
+
+		if cmds[1] == "2003" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBRed)' )
+
+		if cmds[1] == "2004" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBGreen)' )
+
+		if cmds[1] == "2005" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBYellow)' )
+
+		if cmds[1] == "2006" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBBlue)' )
+
+		if cmds[1] == "2007" :
+			#not used
+			pass
+
+		if cmds[1] == "2008" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBMediaCenter)' )
+
+		if cmds[1] == "2009" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBTVRadio)' )
+
+		if cmds[1] == "2010" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBRecord)' )
+
+		if cmds[1] == "2011" :
+			xbmc.executebuiltin( 'xbmc.Action(Play)' )
+
+		if cmds[1] == "2012" :
+			xbmc.executebuiltin( 'xbmc.Action(Stop)' )
+
+		if cmds[1] == "2013" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBRewind)' )
+
+		if cmds[1] == "2014" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBFF)' )
+
+		if cmds[1] == "2015" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBArchive)' )
+
+		if cmds[1] == "2016" :
+			xbmc.executebuiltin( 'xbmc.Action(info)' )
+
+		if cmds[1] == "2017" :
+			xbmc.executebuiltin( 'xbmc.Action(Up)' )
+
+		if cmds[1] == "2018" :
+			xbmc.executebuiltin( 'xbmc.Action(Left)' )
+
+		if cmds[1] == "2019" :
+			xbmc.executebuiltin( 'xbmc.Action(Select)' )
+
+		if cmds[1] == "2020" :
+			xbmc.executebuiltin( 'xbmc.Action(Right)' )
+
+		if cmds[1] == "2021" :
+			xbmc.executebuiltin( 'xbmc.Action(Down)' )
+
+		if cmds[1] == "2022" :
+			xbmc.executebuiltin( 'xbmc.Action(Back)' )
+
+		if cmds[1] == "2023" :
+			xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
+
+		if cmds[1] == "2024" :
+			xbmc.executebuiltin( 'xbmc.Action(ContextMenu)' )
+
+		if cmds[1] == "2025" :
+			xbmc.executebuiltin( 'xbmc.Action(VolumeUp)' )
+
+		if cmds[1] == "2026" :
+			xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+
+		if cmds[1] == "2027" :
+			xbmc.executebuiltin( 'xbmc.Action(VolumeDown)' )
+
+		if cmds[1] == "2028" :
+			xbmc.executebuiltin( 'xbmc.Action(Mute)' )
+
+		if cmds[1] == "2029" :
+			xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+
+		if cmds[1] == "2030" :
+			# Teletext Todo
+			pass
+
+		if cmds[1] == "2031" :
+			xbmc.executebuiltin( 'xbmc.Action(DVBSubtitle)' )
+
+		if cmds[1] == "2032" :
+			# NumLock Toto
+			pass
+
+		"""
 		if cmds[1] == "114" :
 			self.VolumeControl("down")
 			self.content = "Volume Up"
@@ -410,6 +571,7 @@ class RemoteControl(WebPage):
 		if int( cmds[1] ) in [ 0, 1, 2, 3 ] :
 			self.PowerControl( cmds[1] )
 			self.content = "Power Control"
+		"""
 
 	def PowerControl( self, control ) :
 
@@ -460,9 +622,9 @@ class RemoteControl(WebPage):
 		currentVol = self.mCommander.Player_GetVolume()
 
 		if control == 'up' : 
-			setVolume = currentVol + 1
+			setVolume = currentVol + 4
 		elif control == 'down' :
-			setVolume = currentVol - 1
+			setVolume = currentVol - 4
 		
 		self.mCommander.Player_SetVolume(setVolume)
 		pvr.XBMCInterface.XBMC_SetVolume(setVolume)
@@ -744,7 +906,7 @@ class Epg( WebPage ) :
 
 				content += '<div class="epgDescription">'
 				if info.mEventDescription and str(info.mEventDescription) != '(null)':
-					content += str(info.mEventDescription)
+					content += (str(info.mEventDescription)).replace('\n', '<br />');
 				content += '</div>'
 	
 		return self.epgTemplate( content )
@@ -804,7 +966,7 @@ class Recordings( WebPage ) :
 				try :
 					content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
 				except :
-					content += '	<td>[No Image]</td>'
+					content += '	<td><img src="/uiImg/thumb.jpg"></td>'
 					
 				content += '	<td>'
 				content += '	<table width="100%" border="0" cellpadding="5">'
@@ -909,6 +1071,54 @@ class Timer( WebPage ) :
 
 		content += '</td></tr></table>'
 				
+		return self.getBasicTemplate( content ) 
+
+class EpgGrid( WebPage ) :
+
+	def __init__( self, command ) :
+		super(EpgGrid, self).__init__()
+		self.content = self.epgGridContent(command) 
+
+	def epgGridContent( self, command ) :
+
+		print '[EPG Grid]'
+		print command
+
+		# get current time
+		currenttime = datetime.fromtimestamp( self.mDataCache.Datetime_GetLocalTime() )
+		currentHour = currenttime.hour
+
+		#get channel list
+		chList = self.mDataCache.Channel_GetList( aTemporaryReload=1, aType=self.mZappingMode.mServiceType, aMode=ElisEnum.E_MODE_ALL)
+	
+		content = """<table border="0" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+		content += '<tr><td>'
+
+		content += '<div id="timeline"><ul><li class="timeTitle">%s' % TimeToString( self.mDataCache.Datetime_GetLocalTime() )
+				
+		# display time line at top		
+		for i in range(6) :
+			if currentHour < 10 :
+				content += '<li class="time">0%d:00' % currentHour
+			else :
+				content += '<li class="time">%d:00' % currentHour
+
+			currentHour += 1
+			if currentHour >= 24 :
+				currentHour = 0
+
+		content += "</ul></div>"
+		content += '<div class="clearAll"></div>'
+
+		#display EPG Content 
+		for ch in chList[:5] :
+			content += '<div class="epgGridContent"><ul><li class="channel">%s' % ch.mName
+			content += '</ul></div>'
+			content += '<div class="clearAll"></div>'
+
+		content += '</td></tr></table>'
+		content += '</td></tr></table>'
+		
 		return self.getBasicTemplate( content ) 
 
 		

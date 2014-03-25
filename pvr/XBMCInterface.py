@@ -347,6 +347,7 @@ def XBMC_SetCurrentLanguage( aLanguage ) :
 		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )		
 		#xbmc.setLanguage( aLanguage )
 
+	xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', 'False' )
 	checkLanguage = threading.Timer( 0.5, XBMC_CheckChangeLanguage, [newLanguage] )
 	checkLanguage.start( )
 

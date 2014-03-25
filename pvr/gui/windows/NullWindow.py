@@ -204,10 +204,11 @@ class NullWindow( BaseWindow ) :
 		if self.IsActivate( ) == False  :
 			LOG_TRACE( 'SKIP' )
 			return
-	
+
 		actionId = aAction.getId( )
-		if self.GlobalAction( actionId ) :
+		if self.GlobalAction( actionId ) and actionId != Action.ACTION_MBOX_RESERVED22   :
 			return
+
 
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -367,36 +368,44 @@ class NullWindow( BaseWindow ) :
 				#	WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif actionId == Action.ACTION_MBOX_XBMC :
-			if self.GetBlinkingProperty( ) != 'None' :
-				LOG_TRACE( '----------------try recording' )
-				return
+		elif actionId == Action.ACTION_MBOX_XBMC or actionId == Action.ACTION_MBOX_RESERVED22 :
+			if actionId == Action.ACTION_MBOX_XBMC :
+				if self.GetBlinkingProperty( ) != 'None' :
+					LOG_TRACE( '----------------try recording' )
+					return
 
-			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
-			if isDownload :
-				self.DialogPopupOK( actionId + 1000 )
-				return
+				isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
+				if isDownload :
+					self.DialogPopupOK( actionId + 1000 )
+					return
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
-				if status.mMode == ElisEnum.E_MODE_PVR :
-					self.DialogPopupOK( actionId )
-					return
+				if actionId == Action.ACTION_MBOX_XBMC :			
+					if status.mMode == ElisEnum.E_MODE_PVR :
+						self.DialogPopupOK( actionId )
+						return
 
 				self.mDataCache.Player_Stop( )
 
-			if not CheckHdd( ) :
-				self.CloseSubTitle( )
-				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
-				self.CheckSubTitle( )
+			if actionId == Action.ACTION_MBOX_XBMC :			
+				if not CheckHdd( ) :
+					self.CloseSubTitle( )
+					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+					dialog.doModal( )
+					self.CheckSubTitle( )
 
 			self.Close( )
-			self.SetMediaCenter( )
+			if actionId == Action.ACTION_MBOX_XBMC :
+				self.SetMediaCenter( )
+			else :
+				self.SetMediaCenter( True )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
-			xbmc.executebuiltin( 'ActivateWindow(Home)' )
+			if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+				xbmc.executebuiltin( 'ActivateWindow(Home)' )
+
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
@@ -520,17 +529,22 @@ class NullWindow( BaseWindow ) :
 			self.DialogPopupOK( actionId )
 
 		elif actionId == Action.ACTION_MOVE_UP :
+			#self.DialogPopupOK( actionId )
 			pass
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
+			#self.DialogPopupOK( actionId )
 			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		else :
-			self.NotAvailAction( )
-			LOG_TRACE( 'unknown key[%s]'% actionId )
+			if actionId == Action.ACTION_MUTE or actionId == Action.ACTION_VOLUME_UP or actionId == Action.ACTION_VOLUME_DOWN :
+				pass
+			else :
+				self.NotAvailAction( )
+				LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
 
@@ -1100,6 +1114,16 @@ class NullWindow( BaseWindow ) :
 				else :
 					self.mIsShowDialog = False
 				return
+
+		elif aAction == Action.ACTION_MOVE_UP or aAction == Action.ACTION_MOVE_DOWN :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_PVR :
+				self.CloseSubTitle( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_MAINMENU ).ShowFavoriteGroup( )
+				self.CheckSubTitle( )
+
+			self.mIsShowDialog = False
+			return
 
 
 		self.CloseSubTitle( )
