@@ -55,8 +55,6 @@ BUTTON_ID_CHANNEL_LIST_EDIT		= E_MAIN_MENU_BASE_ID + 90414
 
 E_MAIN_MENU_DEFAULT_FOCUS_ID	=  E_MAIN_MENU_BASE_ID + 9000
 
-BUTTON_ID_TEMP_RESERVED22						= 23123
-
 
 import sys
 import os
@@ -128,9 +126,6 @@ class MainMenu( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
-
-		elif actionId == Action.ACTION_MBOX_RESERVED22 :
-			self.onClick( BUTTON_ID_TEMP_RESERVED22 )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			if HasAvailableRecordingHDD( ) == False :
@@ -284,7 +279,7 @@ class MainMenu( BaseWindow ) :
 
 				self.mDataCache.System_Reboot( )
 
-		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA or aControlId == BUTTON_ID_TEMP_RESERVED22 :
+		elif ( aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO ) or aControlId == BUTTON_ID_FAVORITE_EXTRA :
 			isDownload = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SYSTEM_UPDATE ).GetStatusFromFirmware( )
 			if isDownload :
 				msg = MR_LANG( 'Try again after completing firmware update' )
@@ -310,11 +305,7 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
 
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-			if aControlId == BUTTON_ID_TEMP_RESERVED22 :
-				self.SetMediaCenter( True )
-			else :
-				self.SetMediaCenter( )
+			self.SetMediaCenter( )
 			#self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )

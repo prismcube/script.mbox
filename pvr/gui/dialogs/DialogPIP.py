@@ -107,7 +107,6 @@ class DialogPIP( BaseDialog ) :
 		self.mCurrentChannel.mError = -1
 		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
 
-
 	def onInit( self ) :
 		#self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -174,20 +173,40 @@ class DialogPIP( BaseDialog ) :
 		self.Load( )
 		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
 
+		if xbmcgui.Window( 10000 ).getProperty( 'PIPLoadFinished' ) != E_TAG_TRUE :
+			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_TRUE )
+			LOG_TRACE( '[PIP] visible true, PIPLoadFinished' )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.mIsOk = actionId
 		#LOG_TRACE('onAction[%d] pipStatus[%s]'% ( actionId, self.mViewMode ) )
 
-		if not self.mDataCache.GetMediaCenter( ) :
-			if self.GlobalAction( actionId ) :
+		if self.mDataCache.GetMediaCenter( ) and ( xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW ) :
+			mExecute = False
+			if actionId == Action.ACTION_MUTE :
+				#self.UpdateVolume( 0 )
+				self.mDataCache.LoadVolumeBySetGUI( )
+				mExecute = True
+
+			elif actionId == Action.ACTION_VOLUME_UP :
+				#self.UpdateVolume( VOLUME_STEP )
+				self.mDataCache.LoadVolumeBySetGUI( )
+				mExecute = True
+
+			elif actionId == Action.ACTION_VOLUME_DOWN :
+				#self.UpdateVolume( -VOLUME_STEP )
+				self.mDataCache.LoadVolumeBySetGUI( )
+				mExecute = True
+
+			if mExecute :
 				return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mViewMode > CONTEXT_ACTION_DONE_PIP :
 				self.mViewMode = CONTEXT_ACTION_DONE_PIP
-				self.ResetLabel( ) 
+				self.ResetLabel( )
 				self.SavePipPosition( )
 				return
 
@@ -424,6 +443,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCheckMediaPlayThread = None
 
 		#self.PIP_PositionBackup( self.mPosCurrent )
+		#xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
 		self.CloseDialog( )
 
 
@@ -905,11 +925,34 @@ class DialogPIP( BaseDialog ) :
 
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if ( not isFail ) and fakeChannel and iChannel :
+				LOG_TRACE( '----------------main ch[%s %s] pip[%s %s]'% ( iChannel.mNumber, iChannel.mName, fakeChannel.mNumber, fakeChannel.mName ) )
+				#check 1 - load tunable pip
 				if iChannel.mSid == fakeChannel.mSid and iChannel.mTsid == fakeChannel.mTsid and iChannel.mOnid == fakeChannel.mOnid :
-					LOG_TRACE( '[PIP] Cannot switch PIP. Same channel' )
 					isFail = True
+					LOG_TRACE( '[PIP] Cannot switch PIP. Same channel' )
 
-				else :
+					# check 2 - last pip, issue 2661
+					pipCurrent = self.mDataCache.PIP_GetCurrent( )
+					pipCurrent = self.mDataCache.Channel_GetByNumber( pipCurrent, True )
+					if pipCurrent :
+						if iChannel.mSid != pipCurrent.mSid or iChannel.mTsid != pipCurrent.mTsid or iChannel.mOnid != pipCurrent.mOnid :
+							isFail = False
+							fakeChannel = pipCurrent
+							LOG_TRACE( '[PIP] pipCurrent[%s %s]'% ( pipCurrent.mNumber, pipCurrent.mName ) )
+							LOG_TRACE( '[PIP] Available switch PIP. different channel, check more pipCurrent' )
+
+				# check 3 - find channel current mode
+				if not isFail :
+					if not self.mDataCache.GetChannelByIDs( fakeChannel.mSid, fakeChannel.mTsid, fakeChannel.mOnid ) :
+						isFail = True
+						curMode = EnumToString( 'mode', self.mCurrentMode.mMode )
+						lblTitle = MR_LANG( 'Error' )
+						lblMsg = MR_LANG( 'No service channel this mode' )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( lblTitle, lblMsg )
+						dialog.doModal( )
+
+				if not isFail :
 					if self.mDataCache.PIP_IsStarted( ) :
 
 						if self.mDataCache.GetMediaCenter( ) and xbmcgui.getCurrentWindowId( ) in XBMC_CHECKWINDOW :
@@ -1338,7 +1381,7 @@ class DialogPIP( BaseDialog ) :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'The channel is locked' )
 
-
+		"""
 		if not self.mDataCache.GetMediaCenter( ) :
 			#check dvb only
 			#1. check audio in main
@@ -1347,13 +1390,14 @@ class DialogPIP( BaseDialog ) :
 			if mute or volume < 1 :
 				isAudioBlock = True
 				lblMsg = MR_LANG( 'Audio is muted' )
-
+		"""
 		if isAudioBlock :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			lblTitle = MR_LANG( 'No Audio' )
 			dialog.SetDialogProperty( lblTitle, lblMsg )
 			dialog.doModal( )
 			return
+
 
 		isEnable = not self.mPIP_EnableAudio
 		if self.mDataCache.GetMediaCenter( ) and E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
@@ -1370,9 +1414,9 @@ class DialogPIP( BaseDialog ) :
 					self.mDataCache.PIP_SetStatus( True )
 					ret = self.mDataCache.PIP_EnableAudio( isEnable )
 					self.mPIP_EnableAudio = isEnable
+					self.mDataCache.LoadVolumeBySetGUI( ) #mute,volume sync
 
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
-
 
 		else :
 			ret = self.mDataCache.PIP_EnableAudio( isEnable )

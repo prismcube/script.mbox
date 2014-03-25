@@ -181,6 +181,7 @@ class DataCacheMgr( object ) :
 
 		self.mVideoOutput						= E_VIDEO_HDMI
 		self.mSavedResolution					= self.GetResolution( True )
+		self.mIsMediaCenterUi					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -3374,6 +3375,7 @@ class DataCacheMgr( object ) :
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
 			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
 
 
 	def SaveResolution( self, aEvent ) :
@@ -3402,4 +3404,12 @@ class DataCacheMgr( object ) :
 				return ''
 		else :
 			return self.mSavedResolution
+
+
+	def SetMediaCenterUI( self, aFlag ) :
+		self.mIsMediaCenterUi = aFlag
+
+
+	def GetMediaCenterUI( self ) :
+		return self.mIsMediaCenterUi
 
