@@ -501,7 +501,6 @@ E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
 E_SUPPORT_EXTEND_RECORD_PATH = True
 
-E_V1_4_MOUNT_MANAGER = False
 E_V1_6_PIP_SINGLE_TONE = True
 
 ############################ Global Function For GUI ############################

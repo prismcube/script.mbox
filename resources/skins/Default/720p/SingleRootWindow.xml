@@ -4083,7 +4083,7 @@ Search for window name
 					</control>
 					<control type="group">
 						<posx>500</posx>
-						<posy>360</posy>
+						<posy>320</posy>
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
 						<control type="progress" id="1501300">
 							<description>Progressbar</description>

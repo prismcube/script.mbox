@@ -683,7 +683,7 @@ class Configure( SettingWindow ) :
 
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
 				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
-				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
+				LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
 					if netVolume.mIndexID == aVolumeID :
@@ -769,6 +769,8 @@ class Configure( SettingWindow ) :
 		failCount = 0
 		failItem = ''
 		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		self.SetControlLabelString( E_Input03, '' )
+		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
 		for netVolume in volumeList :
 			count += 1
 			cmd = netVolume.mMountCmd
@@ -797,13 +799,15 @@ class Configure( SettingWindow ) :
 		os.system( 'chmod 755 /config/smbReserved.info' )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
-		self.SetControlLabel2String( E_Input03, MR_LANG( 'Refresh Volumes' ) )
+		self.SetControlLabelString( E_Input03, MR_LANG( 'Refresh Record Path' ) )
+		self.SetControlLabel2String( E_Input03, '' )
 
 		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
 		self.SetControlLabel2String( E_Input02, lblSelect )
 		self.setProperty( 'NetVolumeConnect', lblOnline )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+		self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -895,7 +899,7 @@ class Configure( SettingWindow ) :
 
 				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )
 				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
-				self.AddInputControl( E_Input03, '', MR_LANG( 'Refresh Record Path' ), MR_LANG( 'Remount your record storage directory' ) )
+				self.AddInputControl( E_Input03, MR_LANG( 'Refresh Record Path' ), '', MR_LANG( 'Remount your record storage directory' ) )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
 
