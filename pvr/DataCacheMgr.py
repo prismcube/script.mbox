@@ -3384,6 +3384,7 @@ class DataCacheMgr( object ) :
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )
 			ElisPropertyEnum( 'Audio Language', self.mCommander ).SetProp( prop )
+			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
 
 
 	def SaveResolution( self, aEvent ) :

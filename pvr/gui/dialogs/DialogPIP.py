@@ -107,7 +107,6 @@ class DialogPIP( BaseDialog ) :
 		self.mCurrentChannel.mError = -1
 		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
 
-
 	def onInit( self ) :
 		#self.SetFrontdisplayMessage( MR_LANG('PIP Channel') )
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -173,6 +172,10 @@ class DialogPIP( BaseDialog ) :
 
 		self.Load( )
 		self.setFocusId( CTRL_ID_BUTTON_LIST_PIP )
+
+		if xbmcgui.Window( 10000 ).getProperty( 'PIPLoadFinished' ) != E_TAG_TRUE :
+			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_TRUE )
+			LOG_TRACE( '-------------------------------------PIPLoadFinished' )
 
 
 	def onAction( self, aAction ) :
@@ -441,6 +444,7 @@ class DialogPIP( BaseDialog ) :
 
 		#self.PIP_PositionBackup( self.mPosCurrent )
 		self.CloseDialog( )
+		#xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
 
 
 	def CloseByMediaPlayStop( self ) :
