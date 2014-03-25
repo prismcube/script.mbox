@@ -175,7 +175,7 @@ class DialogPIP( BaseDialog ) :
 
 		if xbmcgui.Window( 10000 ).getProperty( 'PIPLoadFinished' ) != E_TAG_TRUE :
 			xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_TRUE )
-			LOG_TRACE( '-------------------------------------PIPLoadFinished' )
+			LOG_TRACE( '[PIP] visible true, PIPLoadFinished' )
 
 
 	def onAction( self, aAction ) :
@@ -443,8 +443,8 @@ class DialogPIP( BaseDialog ) :
 		self.mCheckMediaPlayThread = None
 
 		#self.PIP_PositionBackup( self.mPosCurrent )
-		self.CloseDialog( )
 		#xbmcgui.Window( 10000 ).setProperty( 'PIPLoadFinished', E_TAG_FALSE )
+		self.CloseDialog( )
 
 
 	def CloseByMediaPlayStop( self ) :
