@@ -403,8 +403,6 @@ class Channel( WebPage ) :
 		else :
 			submenu += """<td><a href='Channel?mode' onmouseover="javascript:showColor(5, 'mode');" onmouseout="javascript:hideColor(5, 'mode');"><img id='icon5' src='./uiImg/mode_bw.png' border='0'></a></td>"""
 
-		print submenu
-
 		return submenu
 
 	def getCasCaid(self, name) :
