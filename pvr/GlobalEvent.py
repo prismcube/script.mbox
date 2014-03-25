@@ -788,9 +788,13 @@ class GlobalEvent( object ) :
 
 
 	def DoXBMCEvent( self, aEvent  ) :
-		aEvent.printdebug()
+		#aEvent.printdebug()
 		if aEvent.mName == "OnPlay" :
 			LOG_TRACE( 'XBMCEvent OnPlay' )
+			if self.mDataCache.PIP_GetAudioChange( ) :
+				LOG_TRACE( '[GlobalEvent] pass, change audio' )
+				return
+
 			liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )			
 			if aEvent.mValue == "True" :
 				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
