@@ -419,6 +419,7 @@ class DialogPIP( BaseDialog ) :
 
 		if self.mPIP_EnableAudio :
 			self.mDataCache.PIP_EnableAudio( False )
+			self.setProperty( 'EnableAudioPIP', E_TAG_FALSE )
 
 		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
 			ret = self.PIP_Stop( )

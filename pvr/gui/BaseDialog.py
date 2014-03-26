@@ -221,17 +221,21 @@ class SettingDialog( BaseDialog ) :
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex( )
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( selectedItem )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 2 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
