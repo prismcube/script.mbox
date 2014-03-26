@@ -423,9 +423,9 @@ class MainMenu( BaseWindow ) :
 					currentIdx = idx
 					break
 
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_GROUP )
 		dialog.SetPreviousBlocking( False )
-		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, E_MODE_FAVORITE_GROUP, E_SELECT_ONLY, currentIdx )
+		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, currentIdx )
 		dialog.doModal( )
 
 		isSelect = dialog.GetSelectedList( )
