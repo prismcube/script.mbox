@@ -83,6 +83,8 @@ class RootWindow( xbmcgui.WindowXML ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
 			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 :
+				pass
+				"""
 				LOG_TRACE( 'XBMCPLAY_TEST -----------START ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
 				#if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -92,6 +94,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 				#WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).onAction( aAction )
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
+				"""
 			else :
 				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 

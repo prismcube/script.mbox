@@ -269,19 +269,7 @@ class BaseWindow( BaseObjectWindow ) :
 			else :
 				mExecute = True
 
-		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( 0 )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( VOLUME_STEP )
-			mExecute = True
-
-		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( -VOLUME_STEP )
-			mExecute = True
-
-		elif E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
+		if E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True
@@ -443,17 +431,22 @@ class BaseWindow( BaseObjectWindow ) :
 
 	def SetMediaCenter( self, aNowPlay=False ) :
 		#import pvr.gui.WindowMgr as WinMgr
-		import pvr.gui.DialogMgr as DiaMgr
-		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
-		self.mDataCache.SetDelaySettingWindow( True )
 		if aNowPlay == True :
 			self.mDataCache.SetMediaCenter( True )
 			self.mCommander.AppMediaPlayer_Control( 1 )
+		else :
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+			self.mDataCache.SetDelaySettingWindow( True )
+			self.mDataCache.SetMediaCenterUI( True )
+
 		#by doliyu for manual service start.
 		xbmc.executebuiltin("Custom.StartStopService(Start)", False)
 
 
 	def CheckMediaCenter( self ) :
+		if self.mDataCache.GetMediaCenterUI( ) :
+			self.mDataCache.SetMediaCenterUI( False )
 		if self.mDataCache.GetMediaCenter( ) == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#current channel re-zapping

@@ -218,6 +218,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.SetControlLabel2String( E_DialogInput02, aRestoreValue )
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_SetPositionSync( True )
 
+		self.mDataCache.Frontdisplay_ResolutionByIdentified( )
+
 
 	def GetAudioTrack( self ) :
 		getCount = self.mDataCache.Audiotrack_GetCount( )
@@ -247,7 +249,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 			LOG_TRACE('getTrack name[%s] lang[%s]'% ( idxTrack.mName, idxTrack.mLang ) )
 			label = '%s-%s'% ( idxTrack.mName, idxTrack.mLang )
 			if idxTrack.mName == '' :
-				label = '%s' % idxTrack.mLang
+				label = 'Stereo-%s' % idxTrack.mLang
 			elif idxTrack.mLang == '' :
 				label = '%s' % idxTrack.mName
 			elif idxTrack.mName == '' and idxTrack.mLang == '' :

@@ -33,4 +33,7 @@
 		<setting id="WEB_INTERFACE" type="bool" label="1144" default="false" />
 		<setting id="SURFACE_24" type="bool" label="1144" default="false" />
 	</category>
+	<category label="hide">
+		<setting id="CUSTOM_ICON" type="text" label="Custom Icom" default="false" />
+	</category>
 </settings>

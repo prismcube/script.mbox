@@ -352,7 +352,7 @@
 							<itemgap>5</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
-							<control type="group">
+							<!--control type="group">
 								<width>30</width>
 								<height>30</height>
 								<visible>substring(Window.Property(iLock),true)</visible>
@@ -388,7 +388,7 @@
 								<height>30</height>
 								<texture>IconCas.png</texture>
 								<visible>substring(Window.Property(iCas),true)</visible>
-							</control>
+							</control-->
 							<control type="group">
 								<posx>110</posx>
 								<posy>10</posy>
