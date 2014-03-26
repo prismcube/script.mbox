@@ -397,12 +397,13 @@ class NullWindow( BaseWindow ) :
 					dialog.doModal( )
 					self.CheckSubTitle( )
 
-			self.Close( )
 			if actionId == Action.ACTION_MBOX_XBMC :
+				self.Close( )
 				self.SetMediaCenter( )
 			else :
 				self.SetMediaCenter( True )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+			LOG_ERR('self.mWinId = %s xbmcgui.getCurrentWindowId( ) = %s, self.mMediaPlayerStarted = %s' % (self.mWinId, xbmcgui.getCurrentWindowId( ),self.mMediaPlayerStarted ) )
 			if self.mWinId == xbmcgui.getCurrentWindowId( ) and self.mMediaPlayerStarted == False:
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
@@ -682,7 +683,7 @@ class NullWindow( BaseWindow ) :
 					if self.mMediaPlayerStarted == True :
 						self.mForceSetCurrent = False
 						self.mMediaPlayerStarted = True 
-						xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' )
+						xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' , True )
 						xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume )'% aEvent.mUrl )		
 						self.mCommander.ExternalMediaPlayer_Started( 1 )
 						LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
@@ -706,7 +707,7 @@ class NullWindow( BaseWindow ) :
 					if self.mMediaPlayerStarted == True :
 						self.mMediaPlayerStarted = False
 						self.mForceSetCurrent = False
-						xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' )
+						xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 						self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 						self.mCommander.AppMediaPlayer_Control( 0 )
 						self.ForceSetCurrent( )
@@ -719,7 +720,7 @@ class NullWindow( BaseWindow ) :
 				if self.mMediaPlayerStarted == True :
 					self.mForceSetCurrent = False
 					self.mMediaPlayerStarted = False
-					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' )
+					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 					self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 					self.mCommander.AppMediaPlayer_Control( 0 )					
 					self.ForceSetCurrent( )
@@ -731,7 +732,7 @@ class NullWindow( BaseWindow ) :
 				if self.mMediaPlayerStarted == True :
 					self.mMediaPlayerStarted = False
 					self.mForceSetCurrent = False
-					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' )
+					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 					xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume )'% aEvent.mUrl )
 					self.mMediaPlayerStarted = True 
 					self.mCommander.ExternalMediaPlayer_Started( 1 )
@@ -954,7 +955,7 @@ class NullWindow( BaseWindow ) :
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 			if self.mHBBTVReady == True :
 				if self.mMediaPlayerStarted == True :
-					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' )
+					xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 					self.mCommander.AppMediaPlayer_Control( 0 )
 					self.mMediaPlayerStarted = False;
 					self.ForceSetCurrent( )
