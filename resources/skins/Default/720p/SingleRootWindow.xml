@@ -944,46 +944,85 @@ Search for window name
 				<posy>669</posy>
 				<width>440</width>
 				<height>32</height>
-				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-				<control type="image">
-					<posx>20</posx>
+				<!--visible>substring(Window.Property(CurrentWindow),1300000)</visible-->
+				<control type="group">
+					<posx>0</posx>
 					<posy>0</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>OSDIconInfoNF.png</texture>
+					<control type="image">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDIconInfoNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>58</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1101</label>
+					</control>
 				</control>
-				<control type="label">
-					<posx>58</posx>
-					<posy>5</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>font10</font>
-					<label>SCRIPT1101</label>
+				<control type="group">
+					<posx>200</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture flipx="true">OSDPlayNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1139</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>400</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDRewindNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>Previous Group</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>600</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDForwardNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>Next Group</label>
+					</control>
 				</control>
 			</control>
 
-			<control type="group">
-				<posx>300</posx>
-				<posy>669</posy>
-				<width>440</width>
-				<height>32</height>
-				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-				<control type="image">
-					<posx>35</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture flipx="true">OSDPlayNF.png</texture>
-				</control>
-				<control type="label">
-					<posx>73</posx>
-					<posy>5</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>font10</font>
-					<label>SCRIPT1139</label>
-				</control>
-			</control>
 
 			<!-- middle left -->
 			<control type="group" id="1300049">
@@ -1546,7 +1585,8 @@ Search for window name
 				<control type="group">
 					<posx>106</posx>
 					<posy>11</posy>
-					<visible>substring(Window.Property(ShowChannelPath2),true)</visible>
+					<!--visible>substring(Window.Property(ShowChannelPath2),true)</visible-->
+					<visible>false</visible>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>

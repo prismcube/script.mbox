@@ -1036,13 +1036,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-
-				lblTitle = '%s [%s]'% ( MR_LANG( 'Channel List' ), EnumToString( 'mode', self.mUserMode.mMode ) )
-				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-					lblTitle = '%s - [COLOR ffff4444]%s[/COLOR]'% ( lblTitle, MR_LANG( 'Edit Channels' ) )
-
-				self.SetHeaderTitle( lblTitle )
-				#self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), '[COLOR ffff4444]%s[/COLOR]'% MR_LANG( 'Edit Channels' ) ) )
+				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), '[COLOR ffff4444]%s[/COLOR]'% MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
 				ret = self.mDataCache.Channel_Backup( )
@@ -1157,14 +1151,8 @@ class ChannelListWindow( BaseWindow ) :
 
 					#clear label
 					self.ResetLabel( )
-					#self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
+					self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 					self.UpdateChannelAndEPG( )
-
-					lblTitle = '%s [%s]'% ( MR_LANG( 'Channel List' ), EnumToString( 'mode', self.mUserMode.mMode ) )
-					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-						lblTitle = '%s - [COLOR ffff4444]%s[/COLOR]'% ( lblTitle, MR_LANG( 'Edit Channels' ) )
-
-					self.SetHeaderTitle( lblTitle )
 
 				else :
 					self.mLastChannel = None
@@ -1568,8 +1556,8 @@ class ChannelListWindow( BaseWindow ) :
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-			if scVisible == E_TAG_TRUE :
-				lblChannelPath = zappingName
+			#if scVisible == E_TAG_TRUE :
+			#	lblChannelPath = zappingName
 
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', mSort )
 
@@ -1578,17 +1566,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
-		w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
-		self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
+		#w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
+		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
 
-		self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
-		self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
-
-		lblTitle = '%s [%s]'% ( MR_LANG( 'Channel List' ), EnumToString( 'mode', self.mUserMode.mMode ) )
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			lblTitle = '%s - [COLOR ffff4444]%s[/COLOR]'% ( lblTitle, MR_LANG( 'Edit Channels' ) )
-
-		self.SetHeaderTitle( lblTitle )
+		#self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
+		#self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
 
 		#current zapping backup
 		#self.mDataCache.Channel_Backup( )
@@ -2225,8 +2207,8 @@ class ChannelListWindow( BaseWindow ) :
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-			if scVisible == E_TAG_TRUE :
-				lblChannelPath = zappingName
+			#if scVisible == E_TAG_TRUE :
+			#	lblChannelPath = zappingName
 
 		lblSort = EnumToString( 'sort', mSort )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
@@ -2238,17 +2220,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
-		w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
-		self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
+		#w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
+		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
 
-		self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
-		self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
-
-		lblTitle = '%s [%s]'% ( MR_LANG( 'Channel List' ), EnumToString( 'mode', self.mUserMode.mMode ) )
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			lblTitle = '%s - [COLOR ffff4444]%s[/COLOR]'% ( lblTitle, MR_LANG( 'Edit Channels' ) )
-
-		self.SetHeaderTitle( lblTitle )
+		#self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
+		#self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -3572,10 +3548,10 @@ class ChannelListWindow( BaseWindow ) :
 
 				if zappingName :
 					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-					self.mCtrlLabelChannelPath.setLabel( zappingName )
+					self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
 
-					w = self.mCtrlLabelChannelPath.CalcTextWidth( zappingName )
-					self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
+					#w = self.mCtrlLabelChannelPath.CalcTextWidth( zappingName )
+					#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
 
 
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
@@ -4417,12 +4393,12 @@ class ChannelListWindow( BaseWindow ) :
 		tmpChannelPath = lblChannelPath
 		if nextGroup :
 			#tmpChannelPath = '%s > %s'% ( lblChannelPath, nextGroup )
-			#lblChannelPath = '%s > [COLOR grey2]%s[/COLOR]'% ( lblChannelPath, nextGroup )
-			lblChannelPath = '[COLOR grey2]%s[/COLOR]'% nextGroup
+			lblChannelPath = '%s > [COLOR grey2]%s[/COLOR]'% ( lblChannelPath, nextGroup )
+			#lblChannelPath = '[COLOR grey2]%s[/COLOR]'% nextGroup
 
 		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
-		w = self.mCtrlLabelChannelPath.CalcTextWidth( nextGroup )
-		self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
+		#w = self.mCtrlLabelChannelPath.CalcTextWidth( nextGroup )
+		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
 
 		self.RestartAsyncSort( )
 
