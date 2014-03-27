@@ -757,9 +757,9 @@ class ArchiveWindow( BaseWindow ) :
 					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( recInfo.mRecordKey, playOffset ) )
 					if playOffset < 0 :
 						playOffset = 0
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100, recInfo.mVolumePath )
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 				else :
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100, recInfo.mVolumePath )
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
 				SetLock2( True )
 				self.mPlayingRecord = recInfo

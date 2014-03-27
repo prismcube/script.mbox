@@ -2138,8 +2138,8 @@ class DataCacheMgr( object ) :
 		return ret
 
 
-	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed, aVolumePath ) :
-		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed, aVolumePath )
+	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
+		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		#self.InitBookmarkButton( )
 		self.SetAVBlankByArchive( True )
 		self.Frontdisplay_PlayPause( )

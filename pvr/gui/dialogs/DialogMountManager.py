@@ -367,7 +367,13 @@ class DialogMountManager( SettingDialog ) :
 					else :
 						#add new, edit
 						urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
-						self.mNetVolume.mMountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, self.mNetVolume.mRemotePath, self.mNetVolume.mMountPath )
+						if not IsIPv4( urlHost ) :
+							hostip = ExecuteShell( 'net lookup %s'% urlHost )
+							if hostip and IsIPv4( hostip ) :
+								urlHost = hostip
+
+						remotePath = '//%s%s'% ( urlHost, os.path.dirname( urlPath ) )
+						self.mNetVolume.mMountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, self.mNetVolume.mMountPath )
 						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
 						LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
 						#self.mNetVolume.printdebug( )
@@ -381,7 +387,8 @@ class DialogMountManager( SettingDialog ) :
 							if netVolume :
 								if not self.DoDeleteVolume( netVolume, False ) :
 									isAdd = False
-									lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+									#lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+									lblLine = '%s \'%s\''% ( MR_LANG( 'The path is already mounted' ), os.path.basename( self.mNetVolume.mMountPath ) )
 
 								LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
@@ -458,6 +465,7 @@ class DialogMountManager( SettingDialog ) :
 		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
 
 		self.DrawItem( )
+		self.UpdateShell( )
 		LOG_TRACE( '[MountManager] Done' )
 
 
@@ -706,4 +714,21 @@ class DialogMountManager( SettingDialog ) :
 			dialog.doModal( )
 
 		#self.DrawItem( )
+
+
+	def UpdateShell( self ) :
+		RemoveDirectory( '/config/smbReserved.info' )
+		if not self.mNetVolumeList or len( self.mNetVolumeList ) < 1 :
+			return
+
+		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		for netVolume in self.mNetVolumeList :
+			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
+			os.system( 'echo \"%s\" >> /config/smbReserved.info'% netVolume.mMountCmd )
+
+
+		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'sync' )
+		time.sleep( 1 )
+
 
