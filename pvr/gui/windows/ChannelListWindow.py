@@ -5,8 +5,6 @@ E_CHANNEL_LIST_BASE_ID					=  WinMgr.WIN_ID_CHANNEL_LIST_WINDOW * E_BASE_WINDOW_
 #xml control id
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= E_CHANNEL_LIST_BASE_ID + 21
 E_CONTROL_ID_LABEL_CHANNEL_SORT			= E_CHANNEL_LIST_BASE_ID + 22
-E_CONTROL_ID_IMAGE_SHORTCUT				= E_CHANNEL_LIST_BASE_ID + 31
-E_CONTROL_ID_LABEL_ZAPPING_MODE			= E_CHANNEL_LIST_BASE_ID + 32
 E_CONTROL_ID_SCROLLBAR_CHANNEL			= E_CHANNEL_LIST_BASE_ID + 61
 E_CONTROL_ID_SCROLLBAR_SUBMENU			= E_CHANNEL_LIST_BASE_ID + 503
 E_CONTROL_ID_GROUP_MAINMENU 			= E_CHANNEL_LIST_BASE_ID + 100
@@ -173,10 +171,6 @@ class ChannelListWindow( BaseWindow ) :
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
-
-		#shortCut group
-		self.mCtrlImageShortCutForward   = self.getControl( E_CONTROL_ID_IMAGE_SHORTCUT )
-		self.mCtrlLabelZappingMode       = self.getControl( E_CONTROL_ID_LABEL_ZAPPING_MODE )
 
 		#self.mCtrlListCHList.reset( )
 		isUpdatePosition = self.InitCurrentPosition( )
@@ -1349,7 +1343,6 @@ class ChannelListWindow( BaseWindow ) :
 		#	return
 
 		retPass = False
-		scVisible = E_TAG_TRUE
 		zappingName = ''
 
 		if aAction == E_SLIDE_ACTION_MAIN:
@@ -1439,7 +1432,6 @@ class ChannelListWindow( BaseWindow ) :
 				pass
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
-				scVisible = E_TAG_FALSE
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
 				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', '', aKeyword )
 				#LOG_TRACE('[ChannelList] All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
@@ -1556,8 +1548,6 @@ class ChannelListWindow( BaseWindow ) :
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-			#if scVisible == E_TAG_TRUE :
-			#	lblChannelPath = zappingName
 
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', mSort )
 
@@ -1566,11 +1556,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
-		#w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
-		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
-
-		#self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
-		#self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
 
 		#current zapping backup
 		#self.mDataCache.Channel_Backup( )
@@ -2143,10 +2128,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		testlistItems = []
-		scVisible = E_TAG_TRUE
 		self.mTempGroupSubmenu = []
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
-			scVisible = E_TAG_FALSE
 			#for item in range( len( self.mListAllChannel ) ) :
 			#	testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
 			testlistItems.append( xbmcgui.ListItem( '' ) )
@@ -2207,8 +2190,6 @@ class ChannelListWindow( BaseWindow ) :
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-			#if scVisible == E_TAG_TRUE :
-			#	lblChannelPath = zappingName
 
 		lblSort = EnumToString( 'sort', mSort )
 		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
@@ -2220,11 +2201,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		#shortCut listUp
 		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
-		#w = self.mCtrlLabelChannelPath.CalcTextWidth( lblChannelPath )
-		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
-
-		#self.mCtrlLabelZappingMode.setLabel( EnumToString( 'mode', self.mUserMode.mMode ) )
-		#self.UpdatePropertyGUI( 'ShowChannelPath2', scVisible )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -3550,9 +3526,6 @@ class ChannelListWindow( BaseWindow ) :
 					lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 					self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
 
-					#w = self.mCtrlLabelChannelPath.CalcTextWidth( zappingName )
-					#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
-
 
 	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
@@ -4376,29 +4349,25 @@ class ChannelListWindow( BaseWindow ) :
 		nextGroup = currentGroup
 		nextIdx = currentIdx + aMove
 		if nextIdx < 0 :
-			LOG_TRACE( '[ChannelList] pass, can not move, first group' )
+			nextIdx = len( self.mListShortCutGroup ) - 1
+
+		if nextIdx >= len( self.mListShortCutGroup ) :
+			nextIdx = 0
+
+		if not ( nextIdx < len( self.mListShortCutGroup ) ) :
+			LOG_TRACE( '[ChannelList] error, incorrect index' )
 			return
 
-		if nextIdx < len( self.mListShortCutGroup ) :
-			nextGroup = self.mListShortCutGroup[nextIdx]
-
-		else :
-			LOG_TRACE( '[ChannelList] pass, can not move, last group' )
-			return
+		nextGroup = self.mListShortCutGroup[nextIdx]
 
 		self.mUserSlidePos.mSub = nextIdx
 		self.mCtrlListSubmenu.selectItem( nextIdx )
 
 		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
-		tmpChannelPath = lblChannelPath
 		if nextGroup :
-			#tmpChannelPath = '%s > %s'% ( lblChannelPath, nextGroup )
 			lblChannelPath = '%s > [COLOR grey2]%s[/COLOR]'% ( lblChannelPath, nextGroup )
-			#lblChannelPath = '[COLOR grey2]%s[/COLOR]'% nextGroup
 
 		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
-		#w = self.mCtrlLabelChannelPath.CalcTextWidth( nextGroup )
-		#self.mCtrlImageShortCutForward.setPosition( int( w ) + 50, 0 )
 
 		self.RestartAsyncSort( )
 
