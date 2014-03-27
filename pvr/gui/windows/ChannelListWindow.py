@@ -506,8 +506,10 @@ class ChannelListWindow( BaseWindow ) :
 			showEPGInfo = False
 			if self.mShowEPGInfo :
 				showEPGInfo = True
+				self.LoadByCurrentEPG( )
+
 			self.UpdatePropertyGUI( 'ShowExtendInfo', '%s'% showEPGInfo )
-			self.UpdateChannelNameWithEPG( True )
+			self.UpdateChannelNameWithEPG( True, True )
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 			SetSetting( 'SHOW_EPGINFO_CHANNEL', '%s'% int( self.mShowEPGInfo ) )
 
@@ -2767,15 +2769,19 @@ class ChannelListWindow( BaseWindow ) :
 		return percent
 
 
-	def UpdateChannelNameWithEPG( self, aUpdateAll = False ) :
-		if not self.mListItems or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			LOG_TRACE( '[ChannelList] passed, channelList None or not updateMode' )
+	def UpdateChannelNameWithEPG( self, aUpdateAll = False, aForce = False ) :
+		if not aForce and ( self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW ) :
+			LOG_TRACE( '[ChannelList] passed, edit mode' )
+			return
+
+		if not self.mListItems :
+			LOG_TRACE( '[ChannelList] passed, channelList None' )
 			return
 
 		startTime = time.time()
 
 		updateStart = self.GetOffsetPosition( )
-		updateEnd = ( updateStart + self.mItemCount ) - 1
+		updateEnd = ( updateStart + self.mItemCount )
 		if aUpdateAll :
 			updateStart = 0
 			updateEnd = len( self.mListItems ) - 1
