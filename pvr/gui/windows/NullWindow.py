@@ -701,8 +701,10 @@ class NullWindow( BaseWindow ) :
 						LOG_ERR( 'self.mHBBTVReady[%s], self.mMediaPlayerStarted[%s]'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 
 				elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
-					pass
-			
+					LOG_ERR( 'self.mHBBTVReady[%s], self.ElisEventExternalMediaPlayerSetSpeed[%s]'% ( self.mHBBTVReady, aEvent.mSpeed ) )
+					if self.mMediaPlayerStarted == True :
+						xbmc.executebuiltin( 'XBMC.PlayerControl(Play)' )
+					
 				elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
 					pass
 			
@@ -749,6 +751,14 @@ class NullWindow( BaseWindow ) :
 					self.mMediaPlayerStarted = True 
 					self.mCommander.ExternalMediaPlayer_Started( 1 )
 					LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
+
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
+				LOG_ERR( 'self.mHBBTVReady[%s], self.ElisEventExternalMediaPlayerSetSpeed[%s]'% ( self.mHBBTVReady, aEvent.mSpeed ) )
+				if self.mMediaPlayerStarted == True :
+					xbmc.executebuiltin( 'XBMC.PlayerControl(Play)' )
+
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
+				pass
 
 			else:
 				pass 
