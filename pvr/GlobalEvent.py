@@ -805,7 +805,10 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
-				liveWindow.CheckMediaCenter()
+				if liveWindow.mHbbTVShowing == True :
+					liveWindow.HbbTV_MediaPlayerStop()
+				else :
+					liveWindow.CheckMediaCenter()
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')
