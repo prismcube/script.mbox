@@ -798,9 +798,10 @@ class GlobalEvent( object ) :
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					self.mDataCache.Player_Stop( )
 
-				liveWindow.SetMediaCenter( True )
-				if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
-					xbmc.executebuiltin( 'ActivateWindow(Home)' )
+				if liveWindow.mHbbTVShowing != True :
+					liveWindow.SetMediaCenter( True )
+					if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
+						xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
