@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
 import time
 
-E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3950
 E_CONTROL_ID_LIST2 = E_BASE_WINDOW_ID + 3960
 
 DIALOG_BUTTON_CLOSE_ID = 3901
@@ -14,26 +13,34 @@ class DialogChannelGroup( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mIsOk = None
-		self.mCtrlList = None
 		self.mListItems = []
 		self.mDefaultList = []
 		self.mTitle = ''
 		self.mDefaultFocus = 0
+		self.mListType = E_MODE_DEFAULT_LIST
+		self.mZappingGroupList = [ MR_LANG( 'All Channels' ), [ElisIFavoriteGroup()], [ElisINetworkInfo()], [ElisISatelliteInfo()], [ElisIChannelCASInfo()], [ElisIProviderInfo()] ]
+		self.mTitleMode = [ MR_LANG( 'All Channels' ), MR_LANG( 'Favorite group' ), MR_LANG( 'Network' ), MR_LANG( 'Satellite' ), MR_LANG( 'FTA/CAS' ), MR_LANG( 'Provider' ) ]
+		self.mChangeMode = ElisEnum.E_MODE_ALL
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-
-		self.setProperty( 'DialogDrawFinished', 'False' )
+		self.setProperty( 'DialogDrawFinished', E_TAG_FALSE )
 
 		self.mLastSelected = -1
-		self.mCtrlList = self.getControl( self.E_CONTROL_ID_LIST2 )
+		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST2 )
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
 
-		self.InitList( )
-		self.mEventBus.Register( self )
+		if self.mListType == E_MODE_ZAPPING_GROUP :
+			self.InitGroup( )
+			self.setProperty( 'ZappingModeInfo', E_TAG_TRUE )
 
-		self.setProperty( 'DialogDrawFinished', 'True' )
-		self.SetFocusList( E_CONTROL_ID_LIST2 )
+		else :
+			self.DrawDefault( )
+
+		#self.mEventBus.Register( self )
+
+		self.setProperty( 'DialogDrawFinished', E_TAG_TRUE )
+		self.setFocusId( E_CONTROL_ID_LIST2 )
 
 
 	def onAction( self, aAction ) :
@@ -66,6 +73,18 @@ class DialogChannelGroup( BaseDialog ) :
 			self.mLastSelected = -1
 			self.Close( )
 
+		elif actionId == Action.ACTION_COLOR_RED :
+			self.DrawItemByGroups( ElisEnum.E_MODE_SATELLITE )
+
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			self.DrawItemByGroups( ElisEnum.E_MODE_CAS )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.DrawItemByGroups( ElisEnum.E_MODE_PROVIDER )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.DrawItemByGroups( ElisEnum.E_MODE_FAVORITE )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
@@ -84,10 +103,6 @@ class DialogChannelGroup( BaseDialog ) :
 		pass
 
 
-	def SetFocusList( self, aControlId ) :
-		self.setFocusId( aControlId )
-
-
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
@@ -96,30 +111,40 @@ class DialogChannelGroup( BaseDialog ) :
 				xbmc.executebuiltin('xbmc.Action(stop)')
 
 
-	def InitList( self ) :
+	def DrawDefault( self ) :
 		self.mCtrlList.reset( )
-		self.mListItems = []
-
-		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 
 		if not self.mDefaultList or len( self.mDefaultList ) < 1 :
+			LOG_TRACE( 'No item' )
 			return
 
-		self.GroupItems( )
+		for item in self.mDefaultList :
+			listItem = xbmcgui.ListItem( '%s'% item )
+			self.mListItems.append( listItem )
 
 		self.mCtrlList.addItems( self.mListItems )
 		self.mCtrlList.selectItem( self.mDefaultFocus )
-		idx = self.mCtrlList.getSelectedPosition( )
-		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
+		self.mCtrlPos.setLabel( '%s'% ( self.mDefaultFocus + 1 ) )
 
 
-	def GroupItems( self ) :
-		for item in self.mDefaultList :
-			listItem = xbmcgui.ListItem( '%s'% item.mGroupName )
-			if item.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
-				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+	def DrawItemByGroups( self, aReqMode = None ) :
+		self.mCtrlList.reset( )
+		self.mListItems = []
+		self.mDefaultList = []
 
-			self.mListItems.append( listItem )
+		if not aReqMode :
+			aReqMode = self.mZappingMode.mMode
+
+		defaultFocus = self.LoadToGroup( aReqMode )
+
+		if defaultFocus > -1 :
+			self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitleMode[ aReqMode ] )
+			self.mCurrentIdx = defaultFocus
+			self.mCtrlList.addItems( self.mListItems )
+			self.mCtrlList.selectItem( defaultFocus )
+			#idx = self.mCtrlList.getSelectedPosition( )
+
+		self.mCtrlPos.setLabel( '%s'% ( defaultFocus + 1 ) )
 
 
 	def SelectItem( self ) :
@@ -134,10 +159,11 @@ class DialogChannelGroup( BaseDialog ) :
 		self.mLastSelected = aPos
 
 
-	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aDefaultFocus = 0 ) :
+	def SetDefaultProperty( self, aListType = E_MODE_DEFAULT_LIST, aTitle = 'SELECT', aList = None, aDefaultFocus = 0 ) :
 		self.mTitle = aTitle
 		self.mDefaultList = aList
 		self.mDefaultFocus = aDefaultFocus
+		self.mListType = aListType
 
 
 	def GetSelectedList( self ) :
@@ -149,46 +175,213 @@ class DialogChannelGroup( BaseDialog ) :
 
 
 	def Close( self ) :
-		self.mEventBus.Deregister( self )
+		#self.mEventBus.Deregister( self )
+		if self.mListType == E_MODE_ZAPPING_GROUP :
+			isFail = self.DoChangeToZappingMode( )
+			if isFail :
+				LOG_TRACE( 'Failed change, try again or another' )
+				return
+
 		self.CloseDialog( )
 
 
-	def LoadByGroup( self, aMode = E_MODE_FAVORITE_GROUP ) :
-		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+	def InitGroup( self ) :
+		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mChangeMode = self.mZappingMode.mMode
+
+		self.mZappingGroupList[ ElisEnum.E_MODE_FAVORITE ]  = self.mDataCache.Favorite_GetList( )
+		#self.mZappingGroupList[ ElisEnum.E_MODE_NETWORK ] # reserved
+		self.mZappingGroupList[ ElisEnum.E_MODE_SATELLITE ] = self.mDataCache.Satellite_GetConfiguredList( )
+		self.mZappingGroupList[ ElisEnum.E_MODE_CAS ]       = self.mDataCache.Fta_cas_GetList( )
+		self.mZappingGroupList[ ElisEnum.E_MODE_PROVIDER ]  = self.mDataCache.Provider_GetList( )
+
+		if self.mZappingMode.mMode == ElisEnum.E_MODE_ALL :
+			self.mChangeMode = ElisEnum.E_MODE_FAVORITE
+
+		self.DrawItemByGroups( self.mChangeMode )
+
+
+	def LoadToGroup( self, aMode = ElisEnum.E_MODE_FAVORITE ) :
 
 		#check AllChannels
-		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
+		"""
+		allChannels = self.mDataCache.Channel_GetAllChannels( self.mZappingMode.mServiceType, True )
 		if not allChannels or len( allChannels ) < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
 			dialog.doModal( )
-			return
+			return -1
+		"""
+		if not self.mZappingGroupList[aMode] or len( self.mZappingGroupList[aMode] ) < 1 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No group available' ) )
+			dialog.doModal( )
+			return -1
 
 		#check fav groups
-		favoriteGroup = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, zappingmode.mServiceType )
-		if not favoriteGroup or len( favoriteGroup ) < 1 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No favorite group available' ) )
-			dialog.doModal( )
-			return
-
-		#favoriteList = [MR_LANG( 'All Channels' )]
-		iFavGroup = ElisIFavoriteGroup( )
-		iFavGroup.mGroupName = MR_LANG( 'All Channels' )
-		iFavGroup.mServiceType = zappingmode.mServiceType
-		favoriteList = [ iFavGroup ]
-		for item in favoriteGroup :
-			#favoriteList.append( item.mGroupName )
-			favoriteList.append( item )
-
-		#find current focus
+		countIdx = 0
 		currentIdx = 0
-		if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE :
-			favName = zappingmode.mFavoriteGroup.mGroupName
-			for idx in range( 1, len( favoriteList ) ) :
-				if favName == favoriteList[idx].mGroupName :
-					currentIdx = idx
-					break
+		currGroup = ''
+		self.mChangeMode = aMode
+		self.mDefaultList = [self.mZappingGroupList[ElisEnum.E_MODE_ALL]]
+		self.mListItems.append( xbmcgui.ListItem( '%s'% self.mZappingGroupList[ElisEnum.E_MODE_ALL] ) )
+		for iGroupInfo in self.mZappingGroupList[aMode] :
+			groupName = ''
+			countIdx += 1
+			fastScan = False
 
+			if aMode == ElisEnum.E_MODE_FAVORITE :
+				groupName = iGroupInfo.mGroupName
+				currGroup = self.mZappingMode.mFavoriteGroup.mGroupName
+				if iGroupInfo.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
+					fastScan = True
+
+			elif aMode == ElisEnum.E_MODE_SATELLITE :
+				groupName = self.mDataCache.GetFormattedSatelliteName( iGroupInfo.mLongitude, iGroupInfo.mBand )
+				currGroup = self.mDataCache.GetFormattedSatelliteName( self.mZappingMode.mSatelliteInfo.mLongitude, self.mZappingMode.mSatelliteInfo.mBand )
+
+			elif aMode == ElisEnum.E_MODE_CAS :
+				groupName = iGroupInfo.mName
+				currGroup = self.mZappingMode.mCasInfo.mName
+
+			elif aMode == ElisEnum.E_MODE_PROVIDER :
+				groupName = iGroupInfo.mProviderName
+				currGroup = self.mZappingMode.mProviderInfo.mProviderName
+
+			if not groupName :
+				LOG_TRACE( 'passed, empty group name' )
+				continue
+
+			if self.mZappingMode.mMode != ElisEnum.E_MODE_ALL and groupName == currGroup :
+				currentIdx = countIdx
+				LOG_TRACE( '------------------currentIdx[%s] groupName[%s]'% ( currentIdx, groupName ) )
+
+			listItem = xbmcgui.ListItem( '%s'% groupName )
+			if fastScan :
+				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+
+			self.mListItems.append( listItem )
+			self.mDefaultList.append( groupName )
+
+		return currentIdx
+
+
+	def DoChangeToZappingMode( self ) :
+		isFail = False
+		lblLine = MR_LANG( 'Can not change this group' )
+
+		isSelect = self.mLastSelected
+
+		LOG_TRACE('---------------select[%s] defaultIdx[%s]'% ( isSelect, self.mCurrentIdx ) )
+		if isSelect < 0 :
+			LOG_TRACE( 'passed, back or cancel' )
+			return isFail
+
+		LOG_TRACE( '----------------changeMode[%s] currentMode[%s]'% ( self.mChangeMode, self.mZappingMode.mMode ) )
+		if isSelect == 0 :
+			if self.mZappingMode.mMode == ElisEnum.E_MODE_ALL :
+				LOG_TRACE( 'passed, select same(all)' )
+				return isFail
+
+			self.mChangeMode = ElisEnum.E_MODE_ALL
+
+		if self.mChangeMode == self.mZappingMode.mMode :
+			if isSelect == self.mCurrentIdx :
+				LOG_TRACE( 'passed, selected same' )
+				return isFail
+
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+
+		try :
+			groupInfo = []
+			instanceList = []
+			zappingmode = deepcopy( self.mZappingMode )
+
+			zappingmode.mMode = self.mChangeMode
+			zappingGroup = self.mZappingGroupList[self.mChangeMode]
+			if self.mChangeMode != ElisEnum.E_MODE_ALL :
+				isSelect -= 1
+				groupInfo = zappingGroup[isSelect]
+
+			aKeyword  = ''
+			aInstance = True
+			aMode = zappingmode.mMode
+			aType = zappingmode.mServiceType
+			aSort = zappingmode.mSortingMode
+
+			if self.mChangeMode == ElisEnum.E_MODE_ALL :
+				instanceList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort, aKeyword, aInstance )
+
+			elif self.mChangeMode == ElisEnum.E_MODE_SATELLITE :
+				zappingmode.mSatelliteInfo = groupInfo
+				instanceList = self.mDataCache.Channel_GetListBySatellite( aType, aMode, aSort, groupInfo.mLongitude, groupInfo.mBand, aKeyword, aInstance )
+
+			elif self.mChangeMode == ElisEnum.E_MODE_CAS :
+				zappingmode.mCasInfo = groupInfo
+				instanceList = self.mDataCache.Channel_GetListByFTACas( aType, aMode, aSort, groupInfo.mCAId, aKeyword, aInstance )
+
+			elif self.mChangeMode == ElisEnum.E_MODE_FAVORITE :
+				zappingmode.mFavoriteGroup = groupInfo
+				instanceList = self.mDataCache.Channel_GetListByFavorite( aType, aMode, aSort, groupInfo.mGroupName, aKeyword, aInstance )
+
+			elif self.mChangeMode == ElisEnum.E_MODE_NETWORK :
+				pass
+
+			elif self.mChangeMode == ElisEnum.E_MODE_PROVIDER :
+				zappingmode.mProviderInfo = groupInfo
+				instanceList = self.mDataCache.Channel_GetListByProvider( aType, aMode, aSort, groupInfo.mProviderName, aKeyword, aInstance )
+
+			if not instanceList or len( instanceList ) < 1 :
+				isFail = True
+				lblLine = MR_LANG( 'No channels available' )
+				raise Exception, 'Failed, No channels available'
+
+			#set change
+			ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
+			if ret :
+				self.mDataCache.Channel_Save( )
+
+				#data cache re-load
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				#self.mDataCache.LoadChannelList( )
+				self.mDataCache.RefreshCacheByChannelList( instanceList )
+				self.mDataCache.SetChannelReloadStatus( True )
+				self.mDataCache.Channel_ResetOldChannelList( )
+
+				# channel tune, default 1'st
+				iChannelList = self.mDataCache.Channel_GetList( )
+				if iChannelList and len( iChannelList ) > 0 :
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					if iChannel and iChannel.mError == 0 :
+						fChannel = self.mDataCache.Channel_GetCurr( iChannel.mNumber )
+						if fChannel and fChannel.mError == 0 :
+							iChannel = fChannel
+						else :
+							iChannel = iChannelList[0]
+					else :
+						iChannel = iChannelList[0]
+
+					self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, None, True )
+
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+
+			else :
+				isFail = True
+				lblLine = MR_LANG( 'Failed to change this group' )
+				raise Exception, 'Failed Zappingmode_SetCurrent'
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			isFail = True
+
+		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+
+		if isFail :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+			dialog.doModal( )
+
+		return isFail
 
 
