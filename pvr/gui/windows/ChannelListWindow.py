@@ -48,11 +48,12 @@ FLAG_OPT_MOVE    = 2
 FLAG_OPT_MOVE_OK = 3
 FLAG_OPT_MOVE_UPDOWN = 4
 FLAG_OPT_MOVE_EXIT = 5
-FLAG_CLOCKMODE_ADMYHM   = 1
-FLAG_CLOCKMODE_AHM      = 2
-FLAG_CLOCKMODE_HMS      = 3
-FLAG_CLOCKMODE_HHMM     = 4
-FLAG_MODE_JUMP         = True
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
+FLAG_MODE_JUMP     = True
+FLAG_USE_COLOR_KEY = False
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
@@ -417,6 +418,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.DoModeChange( FLAG_MODE_RADIO )
 			else :
 				self.DoModeChange( FLAG_MODE_TV )
+
+		elif actionId == Action.ACTION_COLOR_RED :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_SATELLITE )
+
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_FTACAS )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_PROVIDER )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_FAVORITE )
 
 
 	def onClick(self, aControlId):
@@ -4377,4 +4390,34 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.RestartAsyncSort( )
 
+
+	def UpdateShortCutZapping( self, aReqMode = E_SLIDE_MENU_FAVORITE ) :
+		if not FLAG_USE_COLOR_KEY :
+			LOG_TRACE( '[ChannelList] pass, no support key' )
+			return
+
+		if self.mMoveFlag :
+			LOG_TRACE( '[ChannelList] pass, edit mode and move' )
+			return
+
+		self.GetFocusId( )
+		if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST :
+			LOG_TRACE( '[ChannelList] pass, opened slide' )
+			return
+
+		if self.mUserSlidePos.mMain != aReqMode :
+			if ( aReqMode == E_SLIDE_MENU_SATELLITE and self.mListSatellite and len( self.mListSatellite ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_FTACAS and self.mListCasList and len( self.mListCasList ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_PROVIDER and self.mListProvider and len( self.mListProvider ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_FAVORITE and self.mListFavorite and len( self.mListFavorite ) > 0 ) :
+				self.mUserSlidePos.mMain = aReqMode
+				self.mUserSlidePos.mSub = 0
+				self.mCtrlListMainmenu.selectItem( aReqMode )
+				self.mCtrlListSubmenu.selectItem( 0 )
+				time.sleep( 0.2 )
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, aReqMode )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True )
+
+		else :
+			self.UpdateShortCutGroup( )
 
