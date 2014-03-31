@@ -2,7 +2,6 @@ from pvr.gui.WindowImport import *
 import time
 
 E_CONTROL_ID_LIST = E_BASE_WINDOW_ID + 3950
-E_CONTROL_ID_LIST2 = E_BASE_WINDOW_ID + 3960
 
 DIALOG_BUTTON_CLOSE_ID = 3901
 DIALOG_HEADER_LABEL_ID = 3902
@@ -29,13 +28,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 		self.setProperty( 'DialogDrawFinished', 'False' )
 		self.mShowListID = E_CONTROL_ID_LIST
-
-		value  = E_TAG_FALSE
-		if self.mMode == E_MODE_FAVORITE_GROUP :
-			value  = E_TAG_TRUE
-			self.mShowListID = E_CONTROL_ID_LIST2
-
-		self.setProperty( 'iFavGroup', value )
 
 		self.mMarkList = []
 		self.mLastSelected = -1
@@ -137,8 +129,7 @@ class DialogMultiSelect( BaseDialog ) :
 
 		if self.mMode == E_MODE_CHANNEL_LIST :
 			self.ChannelItems( )
-		elif self.mMode == E_MODE_FAVORITE_GROUP :
-			self.GroupItems( )
+
 		else :
 			self.ListItems( )
 
@@ -146,15 +137,6 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlList.selectItem( self.mDefaultFocus )
 		idx = self.mCtrlList.getSelectedPosition( )
 		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
-
-
-	def GroupItems( self ) :
-		for item in self.mDefaultList :
-			listItem = xbmcgui.ListItem( '%s'% item.mGroupName )
-			if item.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
-				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
-
-			self.mListItems.append( listItem )
 
 
 	def ListItems( self ) :

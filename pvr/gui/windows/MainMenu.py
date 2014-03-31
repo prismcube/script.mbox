@@ -387,12 +387,18 @@ class MainMenu( BaseWindow ) :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( MR_LANG( 'Display the events next on schedule' ) )
 
 
+	def ShowGroupByZappingMode( self ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_GROUP )
+		dialog.SetDefaultProperty( E_MODE_ZAPPING_GROUP )
+		dialog.doModal( )
+
+
 	def ShowFavoriteGroup( self ) :
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 
 		#check AllChannels
-		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
-		if not allChannels or len( allChannels ) < 1 :
+		chCount = self.mDataCache.Channel_GetCount( zappingmode.mServiceType )
+		if not chCount or chCount < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
 			dialog.doModal( )
@@ -406,26 +412,21 @@ class MainMenu( BaseWindow ) :
 			dialog.doModal( )
 			return
 
-		#favoriteList = [MR_LANG( 'All Channels' )]
+		currentIdx = 0
+		loopCount = 0
+
 		iFavGroup = ElisIFavoriteGroup( )
 		iFavGroup.mGroupName = MR_LANG( 'All Channels' )
-		iFavGroup.mServiceType = zappingmode.mServiceType
 		favoriteList = [ iFavGroup ]
-		for item in favoriteGroup :
-			#favoriteList.append( item.mGroupName )
-			favoriteList.append( item )
-
-		currentIdx = 0
-		if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE :
-			favName = zappingmode.mFavoriteGroup.mGroupName
-			for idx in range( 1, len( favoriteList ) ) :
-				if favName == favoriteList[idx].mGroupName :
-					currentIdx = idx
-					break
+		for iFavGroup in favoriteGroup :
+			loopCount += 1
+			favoriteList.append( iFavGroup )
+			if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE and \
+			   zappingmode.mFavoriteGroup.mGroupName == iFavGroup.mGroupName :
+				currentIdx = loopCount
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_GROUP )
-		dialog.SetPreviousBlocking( False )
-		dialog.SetDefaultProperty( MR_LANG( 'Favorite group' ), favoriteList, currentIdx )
+		dialog.SetDefaultProperty( E_MODE_FAVORITE_GROUP, MR_LANG( 'Favorite group' ), favoriteList, currentIdx )
 		dialog.doModal( )
 
 		isSelect = dialog.GetSelectedList( )
@@ -436,70 +437,70 @@ class MainMenu( BaseWindow ) :
 			LOG_TRACE( 'back, cancel or same' )
 			return
 
+		isFail = False
+		iChannelList = []
+		lblLine = MR_LANG( 'Failed to change favorite group' )
 
-		isSame = False
-		if isSelect == 0 :
-			#if zappingmode.mMode == ElisEnum.E_MODE_ALL :
-			#	isSame = True
+		self.OpenBusyDialog( )
+		try :
+			iZappingmode = deepcopy( zappingmode )
+			if isSelect == 0 :
+				iZappingmode.mMode = ElisEnum.E_MODE_ALL
 
-			zappingmode.mMode = ElisEnum.E_MODE_ALL
+			else :
+				isSelect -= 1
+				favName = favoriteGroup[isSelect].mGroupName
+				iZappingmode.mMode = ElisEnum.E_MODE_FAVORITE
+				iZappingmode.mFavoriteGroup = favoriteGroup[isSelect]
+				iChannelList = self.mDataCache.Channel_GetListByFavorite( iZappingmode.mServiceType, ElisEnum.E_MODE_FAVORITE, iZappingmode.mSortingMode, favName, '', True )
+				if not iChannelList or len( iChannelList ) < 1 :
+					isFail = True
+					lblLine = MR_LANG( 'No channels available' )
+					raise Exception, 'Failed, No channels available'
 
-		else :
-			isSelect -= 1
-			favName = favoriteGroup[isSelect].mGroupName
-			iChannelList = self.mDataCache.Channel_GetListByFavorite( zappingmode.mServiceType, ElisEnum.E_MODE_FAVORITE, zappingmode.mSortingMode, favName )
-			if not iChannelList or len( iChannelList ) < 1 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( favName, MR_LANG( 'No channels available' ) )
-				dialog.doModal( )
-				return
+			#set change
+			ret = self.mDataCache.Zappingmode_SetCurrent( iZappingmode )
+			if ret :
+				self.mDataCache.Channel_Save( )
 
-			#if zappingmode.mMode == ElisEnum.E_MODE_FAVORITE and zappingmode.mFavoriteGroup == favName :
-			#	isSame = True
+				#data cache re-load
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				self.mDataCache.LoadChannelList( )
+				self.mDataCache.SetChannelReloadStatus( True )
+				self.mDataCache.Channel_ResetOldChannelList( )
 
-			zappingmode.mMode = ElisEnum.E_MODE_FAVORITE
-			zappingmode.mFavoriteGroup = favoriteGroup[isSelect]
-
-
-		if isSame :
-			LOG_TRACE( 'Already changed' )
-			return
-
-
-		#set change
-		ret = self.mDataCache.Zappingmode_SetCurrent( zappingmode )
-		if ret :
-			self.OpenBusyDialog( )
-			self.mDataCache.Channel_Save( )
-
-			#data cache re-load
-			self.mDataCache.LoadZappingmode( )
-			self.mDataCache.LoadZappingList( )
-			self.mDataCache.LoadChannelList( )
-			self.mDataCache.SetChannelReloadStatus( True )
-			self.mDataCache.Channel_ResetOldChannelList( )
-
-			self.CloseBusyDialog( )
-
-			# channel tune, default 1'st
-			iChannelList = self.mDataCache.Channel_GetList( )
-			if iChannelList and len( iChannelList ) > 0 :
-				iChannel = self.mDataCache.Channel_GetCurrent( )
-				if iChannel and iChannel.mError == 0 :
-					fChannel = self.mDataCache.Channel_GetCurr( iChannel.mNumber )
-					if fChannel and fChannel.mError == 0 :
-						iChannel = fChannel
+				# channel tune, default 1'st
+				iChannelList = self.mDataCache.Channel_GetList( )
+				if iChannelList and len( iChannelList ) > 0 :
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					if iChannel and iChannel.mError == 0 :
+						fChannel = self.mDataCache.Channel_GetCurr( iChannel.mNumber )
+						if fChannel and fChannel.mError == 0 :
+							iChannel = fChannel
+						else :
+							iChannel = iChannelList[0]
 					else :
 						iChannel = iChannelList[0]
-				else :
-					iChannel = iChannelList[0]
 
-				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, None, True )
+					self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, None, True )
+
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
-		else :
+			else :
+				isFail = True
+				lblLine = MR_LANG( 'Failed to change favorite group' )
+				raise Exception, 'Failed Zappingmode_SetCurrent'
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			isFail = True
+
+		self.CloseBusyDialog( )
+
+		if isFail :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Error', MR_LANG( 'Failed to change favorite group' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
 			dialog.doModal( )
 
 

@@ -26,6 +26,7 @@ class DialogChannelGroup( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.setProperty( 'DialogDrawFinished', E_TAG_FALSE )
 
+		self.mCurrentIdx   = -1
 		self.mLastSelected = -1
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST2 )
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
@@ -113,14 +114,25 @@ class DialogChannelGroup( BaseDialog ) :
 
 	def DrawDefault( self ) :
 		self.mCtrlList.reset( )
+		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 
 		if not self.mDefaultList or len( self.mDefaultList ) < 1 :
 			LOG_TRACE( 'No item' )
 			return
 
-		for item in self.mDefaultList :
-			listItem = xbmcgui.ListItem( '%s'% item )
-			self.mListItems.append( listItem )
+		if self.mListType == E_MODE_FAVORITE_GROUP :
+			for iFavGroup in self.mDefaultList :
+				listItem = xbmcgui.ListItem( '%s'% iFavGroup.mGroupName )
+				if iFavGroup.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
+					listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+
+				self.mListItems.append( listItem )
+
+		else :
+			#default list
+			for item in self.mDefaultList :
+				listItem = xbmcgui.ListItem( '%s'% item )
+				self.mListItems.append( listItem )
 
 		self.mCtrlList.addItems( self.mListItems )
 		self.mCtrlList.selectItem( self.mDefaultFocus )
@@ -128,6 +140,10 @@ class DialogChannelGroup( BaseDialog ) :
 
 
 	def DrawItemByGroups( self, aReqMode = None ) :
+		if self.mListType != E_MODE_ZAPPING_GROUP :
+			LOG_TRACE( 'pass, not zapping group. List type default' )
+			return
+
 		self.mCtrlList.reset( )
 		self.mListItems = []
 		self.mDefaultList = []
@@ -135,10 +151,10 @@ class DialogChannelGroup( BaseDialog ) :
 		if not aReqMode :
 			aReqMode = self.mZappingMode.mMode
 
+		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitleMode[ aReqMode ] )
 		defaultFocus = self.LoadToGroup( aReqMode )
 
 		if defaultFocus > -1 :
-			self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitleMode[ aReqMode ] )
 			self.mCurrentIdx = defaultFocus
 			self.mCtrlList.addItems( self.mListItems )
 			self.mCtrlList.selectItem( defaultFocus )
