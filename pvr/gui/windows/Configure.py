@@ -812,8 +812,8 @@ class Configure( SettingWindow ) :
 			groupName = MR_LANG( 'None' )
 
 			zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
-			allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
-			if not allChannels or len( allChannels ) < 1 :
+			chCount = self.mDataCache.Channel_GetCount( zappingmode.mServiceType )
+			if not chCount or chCount < 1 :
 				groupName = MR_LANG( 'None' )
 				self.mEpgStartChannel = 1
 				self.mEpgEndChannel = 1
@@ -832,13 +832,12 @@ class Configure( SettingWindow ) :
 							ElisPropertyInt( 'Auto EPG Favorite Group', self.mCommander ).SetProp( 0 )
 						groupName = favoriteGroup[ self.mEpgFavGroup ].mGroupName
 
-				if self.mEpgStartChannel > len( allChannels ) or self.mEpgEndChannel > len( allChannels ) :
+				if self.mEpgStartChannel > chCount or self.mEpgEndChannel > chCount :
 					self.mEpgStartChannel = 1
 					self.mEpgEndChannel = 1
 					ElisPropertyInt( 'Auto EPG Start Channel', self.mCommander ).SetProp( self.mEpgStartChannel )
 					ElisPropertyInt( 'Auto EPG End Channel', self.mCommander ).SetProp( self.mEpgEndChannel )
 
-			
 			self.AddEnumControl( E_SpinEx01, 'Auto EPG', MR_LANG( 'Automatic EPG grabber' ), MR_LANG( 'When set to \'On\', the system automatically start to collect EPG data' ) )
 			self.AddEnumControl( E_SpinEx02, 'EPG Grab Interval', MR_LANG( 'Grab Interval' ), MR_LANG( 'Adjust EPG scan interval for each channel' ) )
 			self.AddEnumControl( E_SpinEx03, 'Auto EPG Channel', MR_LANG( 'Grab Mode' ), MR_LANG( 'Select which channels to grab EPG data from' ) )
@@ -1524,8 +1523,8 @@ class Configure( SettingWindow ) :
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 
 		#check AllChannels
-		allChannels = self.mDataCache.Channel_GetAllChannels( zappingmode.mServiceType, True )
-		if not allChannels or len( allChannels ) < 1 :
+		chCount = self.mDataCache.Channel_GetCount( zappingmode.mServiceType )
+		if not chCount or chCount < 1 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )
 			dialog.doModal( )
@@ -1541,14 +1540,12 @@ class Configure( SettingWindow ) :
 
 		iFavGroup = ElisIFavoriteGroup( )
 		iFavGroup.mGroupName = MR_LANG( 'All' )
-		iFavGroup.mServiceType = zappingmode.mServiceType
 		favoriteList = [ iFavGroup ]
-		for item in favoriteGroup :
-			favoriteList.append( item )
+		for iFavGroup in favoriteGroup :
+			favoriteList.append( iFavGroup )
 
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-		dialog.SetPreviousBlocking( False )
-		dialog.SetDefaultProperty( MR_LANG( 'Select Favorite Group' ), favoriteList, E_MODE_FAVORITE_GROUP, E_SELECT_ONLY, self.mEpgFavGroup + 1 )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_GROUP )
+		dialog.SetDefaultProperty( E_MODE_FAVORITE_GROUP, MR_LANG( 'Select Favorite Group' ), favoriteList, self.mEpgFavGroup + 1 )
 		dialog.doModal( )
 
 		isSelect = dialog.GetSelectedList( )

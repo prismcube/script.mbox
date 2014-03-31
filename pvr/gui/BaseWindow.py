@@ -493,11 +493,11 @@ class BaseWindow( BaseObjectWindow ) :
 
 
 	def OpenBusyDialog( self ) :
-		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
 
 	def CloseBusyDialog( self ) :
-		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
 
 	def NotificationDialog( self, aMsg1, aMsg2, aTimeMs = 2000, aImage = '' ) :

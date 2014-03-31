@@ -6167,12 +6167,12 @@
 		</control>
 	</include>
 
-	<include name="DefaultSelectList">
+	<include name="DefaultSelectGroup">
 		<control type="list" id="1003960">
 			<posx>20</posx>
 			<posy>67</posy>
-			<width>580</width>
-			<height>506</height>
+			<width>480</width>
+			<height>414</height>
 			<onleft>3904</onleft>
 			<onright>1003961</onright>
 			<onup>1003960</onup>
@@ -6183,17 +6183,17 @@
 			<movement>2</movement>
 			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
 			<visible>true</visible>
-			<itemlayout height="46" width="580">
+			<itemlayout height="46" width="480">
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>580</width>
+					<width>480</width>
 					<height>40</height>
 					<texture border="5">button-nofocus.png</texture>
 				</control>
 				<!-- is fastScan? -->
 				<control type="image">
-					<posx>540</posx>
+					<posx>440</posx>
 					<posy>12</posy>
 					<width>26</width>
 					<height>18</height>
@@ -6212,24 +6212,24 @@
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 			</itemlayout>
-			<focusedlayout height="46" width="580">
+			<focusedlayout height="46" width="480">
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>580</width>
+					<width>480</width>
 					<height>40</height>
 					<texture border="5">button-nofocus.png</texture>
 				</control>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>580</width>
+					<width>480</width>
 					<height>40</height>
 					<texture border="5">button-focus2.png</texture>
 				</control>
 				<!-- is fastScan? -->
 				<control type="image">
-					<posx>540</posx>
+					<posx>440</posx>
 					<posy>12</posy>
 					<width>26</width>
 					<height>18</height>
@@ -6251,10 +6251,10 @@
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="1003961">
-			<posx>595</posx>
+			<posx>495</posx>
 			<posy>65</posy>
 			<width>25</width>
-			<height>510</height>
+			<height>414</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
@@ -6267,8 +6267,10 @@
 			<onup></onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
-			<visible>substring(Window.Property(iFavGroup),true)</visible>
 		</control>
+	</include>
+
+	<include name="DefaultSelectList">
 		<control type="list" id="1003950">
 			<posx>20</posx>
 			<posy>57</posy>
@@ -6535,7 +6537,6 @@
 			<onup></onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
-			<visible>!Control.IsVisible(1003961)</visible>
 		</control>
 	</include>
 

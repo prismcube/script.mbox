@@ -531,7 +531,7 @@ class DataCacheMgr( object ) :
 				channelDB.Close( )
 			else :
 				return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
-			
+
 
 	@DataLock
 	def GetFormattedSatelliteNameList( self ) :
@@ -1538,10 +1538,10 @@ class DataCacheMgr( object ) :
 		return self.mEPGData
 
 
-	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand, aKeyword = '' ) :
+	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand, aKeyword = '', aInstanceLoad = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			if aKeyword :
+			if aKeyword or aInstanceLoad :
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', '', self.mSkip, self.mChannelListDBTable, aKeyword )
 			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
@@ -1551,10 +1551,10 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
 
-	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid, aKeyword = '' ) :
+	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid, aKeyword = '', aInstanceLoad = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			if aKeyword :
+			if aKeyword or aInstanceLoad :
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', '', self.mSkip, self.mChannelListDBTable, aKeyword )
 			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
@@ -1564,7 +1564,7 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 
 
-	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName, aKeyword = '' ) :
+	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName, aKeyword = '', aInstanceLoad = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			tunerTP = None
 			recCount = self.Record_GetRunningRecorderCount( )
@@ -1576,7 +1576,7 @@ class DataCacheMgr( object ) :
 				else :
 					tunerTP = 2
 			channelDB = ElisChannelDB( )
-			if aKeyword :
+			if aKeyword or aInstanceLoad :
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, tunerTP, None, None, aFavName, '', self.mSkip, self.mChannelListDBTable, aKeyword )
 			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
@@ -1605,11 +1605,11 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 
-	def Channel_GetListByProvider( self, aType, aMode, aSort, aProvider, aKeyword = '' ) :
+	def Channel_GetListByProvider( self, aType, aMode, aSort, aProvider, aKeyword = '', aInstanceLoad = False ) :
 		channelList = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			if aKeyword :
+			if aKeyword or aInstanceLoad :
 				channelDB.SetListUse( E_ENUM_OBJECT_INSTANCE )
 			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, '', aProvider, self.mSkip, self.mChannelListDBTable, aKeyword )
 			channelDB.SetListUse( E_ENUM_OBJECT_REUSE_ZAPPING )
