@@ -998,7 +998,7 @@ Search for window name
 						<width>550</width>
 						<height>20</height>
 						<font>font10</font>
-						<label>Previous Group</label>
+						<label>SCRIPT1202</label>
 					</control>
 				</control>
 				<control type="group">
@@ -1017,7 +1017,7 @@ Search for window name
 						<width>550</width>
 						<height>20</height>
 						<font>font10</font>
-						<label>Next Group</label>
+						<label>SCRIPT1203</label>
 					</control>
 				</control>
 			</control>
