@@ -122,6 +122,17 @@ Search for window name
 					<textcolor>white</textcolor>
 				</control-->
 			</control>
+			
+			<!-- HbbTV RED button -->
+			<control type="image">
+				<posx>200r</posx>
+				<posy>80r</posy>
+				<width>180</width>
+				<height>51</height>
+				<texture>multifeed.png</texture>
+				<visible>substring(Window.Property(EnableHbbTV),True)</visible>				
+			</control>
+			
 			<control type="label">
 				<posx>550</posx>
 				<posy>330</posy>
