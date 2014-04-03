@@ -721,6 +721,34 @@ def GetUnpackFiles( aZipFile ) :
 	return fileList
 
 
+def GetUnpackFilenames( aZipFile ) :
+	tFile = '/mtmp/test'
+	cmd = "unzip -l %s | awk '{print $1, $4}' > %s" % ( aZipFile, tFile )
+	fileList = []
+	try :
+		os.system( cmd )
+		os.system( 'sync' )
+		time.sleep( 0.2 )
+		f = open( tFile, 'r' )
+		ret = f.readlines( )
+		f.close( )
+
+		for line in ret :
+			pars = re.split(' ', line )
+			if pars[0].isdigit( ) :
+				pars[0] = int( pars[0] )
+				pars[1] = pars[1].rstrip( )
+
+				if pars[1] :
+					fileList.append( pars[1] )
+
+	except Exception, e :
+		LOG_TRACE( 'except[%s]'% e )
+		return False
+
+	return fileList
+
+
 def GetUnpackByMD5( aFile ) :
 	value = ''
 	openFile = '%s.md5'% aFile

@@ -810,7 +810,7 @@ class LivePlate( LivePlateWindow ) :
 
 		logo = '%s_%s' %( aChannel.mCarrier.mDVBS.mSatelliteLongitude, aChannel.mSid )
 		LOG_TRACE( 'logo=%s' %logo )
-		LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
+		#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
 		chImage = self.mChannelLogo.GetLogo( logo, aChannel.mServiceType )
 		#if chImage == self.mChannelLogo.mDefaultLogo or chImage == self.mChannelLogo.mDefaultLogoRadio :
 		#	chImage = ''
