@@ -53,7 +53,7 @@ FLAG_CLOCKMODE_AHM    = 2
 FLAG_CLOCKMODE_HMS    = 3
 FLAG_CLOCKMODE_HHMM   = 4
 FLAG_MODE_JUMP     = True
-FLAG_USE_COLOR_KEY = False
+FLAG_USE_COLOR_KEY = True
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
@@ -678,24 +678,27 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
-		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
+		if not self.mTimerListHash or len( self.mTimerListHash ) < 1 :
 			return None
 		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, isIndex = False ) :
-		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
-			return None
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, aReqIndex = False ) :
+		if not self.mChannelListHashIDs or len( self.mChannelListHashIDs ) < 1 :
+			retVal = None
+			if aReqIndex :
+				retVal = -1
+			return retVal
 
 		retValue = 0
-		if isIndex :
+		if aReqIndex :
 			retValue = 1
 
 		iChannels = self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 		if iChannels :
 			iChannels = iChannels[retValue]
 
-		if isIndex and iChannels == None :
+		if aReqIndex and iChannels == None :
 			iChannels = -1 #none exist index
 
 		return iChannels
@@ -4319,11 +4322,11 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def StopAsyncSort( self ) :
-		if self.mAsyncSortTimer	and self.mAsyncSortTimer.isAlive( ) :
+		if self.mAsyncSortTimer and self.mAsyncSortTimer.isAlive( ) :
 			self.mAsyncSortTimer.cancel( )
 			del self.mAsyncSortTimer
 
-		self.mAsyncSortTimer  = None
+		self.mAsyncSortTimer = None
 
 
 	def UpdateShortCutGroup( self, aMove = 1 ) :
