@@ -1486,13 +1486,13 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = False
 			self.mMediaPlayerStarted = True 
 			#xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)' , True)
-			xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume )'% aURL )		
+			xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume, hbbtv )'% aURL )		
 			self.mCommander.ExternalMediaPlayer_Started( 1 )
 			LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 		else:
 			self.mForceSetCurrent = True
 			self.mCommander.AppMediaPlayer_Control( 1 )
-			xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume )'% aURL )
+			xbmc.executebuiltin( 'XBMC.PlayMedia(%s, noresume, hbbtv )'% aURL )
 			self.mMediaPlayerStarted = True 
 			self.mCommander.ExternalMediaPlayer_Started( 1 )
 			LOG_ERR( 'self.mHBBTVReady[%s], self.mMediaPlayerStarted[%s]'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
