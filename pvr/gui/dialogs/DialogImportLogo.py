@@ -38,12 +38,12 @@ class DialogImportLogo( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.getControl( 102 ).setLabel( MR_LANG( 'Import Channel Logo' ) )
-		self.getControl( 103 ).setLabel( MR_LANG( 'Select enable or disable custom channel logo.' ) )
-		self.getControl( 104 ).setLabel( MR_LANG( 'Select the ways for the import custom channel logo.' ) )
+		self.getControl( 102 ).setLabel( MR_LANG( 'Import Channel Logos' ) )
+		self.getControl( 103 ).setLabel( MR_LANG( 'Enable/Disable customized version of channel logos' ) )
+		self.getControl( 104 ).setLabel( MR_LANG( 'Select a way of importing customized channel logos' ) )
 	
 		self.mCtrlEnable	= self.getControl( CONTROL_ID_RADIO_ENABLE )
-		self.mCtrlEnable.setLabel( MR_LANG( 'Enable custom channel logo' ) )
+		self.mCtrlEnable.setLabel( MR_LANG( 'Customized Channel Logos' ) )
 		if GetSetting( 'CUSTOM_ICON' ) == 'true' :
 			self.mCtrlEnable.setSelected( True )
 		else :
@@ -55,10 +55,10 @@ class DialogImportLogo( BaseDialog ) :
 		self.mCtrlCancel			= self.getControl( CONTROL_ID_BUTTON_CANCEL )
 		self.mCtrlLoaded			= self.getControl( CONTROL_ID_LABEL_LOADED )
 
-		self.mCtrlImportUSB.setLabel( MR_LANG( 'Import from USB' ) )
-		self.mCtrlImportInternet.setLabel( MR_LANG( 'Import via Internet' ) )
-		self.mCtrlClear.setLabel( MR_LANG( 'Clear custom label' ) )
-		self.mCtrlLoaded.setLabel( MR_LANG( 'Not Loaded' ) )
+		self.mCtrlImportUSB.setLabel( MR_LANG( 'Load Icons from USB' ) )
+		self.mCtrlImportInternet.setLabel( MR_LANG( 'Load Icons via Internet' ) )
+		self.mCtrlClear.setLabel( MR_LANG( 'Remove All Customized Logos' ) )
+		self.mCtrlLoaded.setLabel( MR_LANG( '0 Icon Loaded' ) )
 		self.DisableControl( )
 
 
@@ -84,7 +84,7 @@ class DialogImportLogo( BaseDialog ) :
 			ziplist = self.GetZipFileFromUSB( usbPath )
 			if ziplist :
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Channel Logo Zip File' ), ziplist, False, 0 )
+				ret = dialog.select( MR_LANG( 'Select Zip File for Channel Icons' ), ziplist, False, 0 )
 				if ret >= 0 :
 					retlist = self.CheckZipFileUsb( usbPath, ziplist[ ret ] )
 					if retlist :
@@ -106,7 +106,7 @@ class DialogImportLogo( BaseDialog ) :
 
 		elif aControlId == CONTROL_ID_BUTTON_CLEAR :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete all custom channel logo?' ), MR_LANG( 'All custom channel logo will be erased' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete all customized channel logos?' ), MR_LANG( 'All customized channel logos will be erased' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				xbmc.executebuiltin( "ActivateWindow(busydialog)" )
@@ -117,7 +117,7 @@ class DialogImportLogo( BaseDialog ) :
 				SetSetting( 'CUSTOM_ICON', 'false' )
 				pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'false'
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Complete' ), MR_LANG( 'Restart Required\nSystem restart is needed in order to apply icons' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'System restart is needed in order to apply changes' ) )
 				dialog.doModal( )
 				xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 				self.close( )
@@ -182,7 +182,7 @@ class DialogImportLogo( BaseDialog ) :
 				percent = 0
 				count = 0
 				progressDialog = xbmcgui.DialogProgress( )
-				progressDialog.create( MR_LANG( 'Copy logo files' ), strInit )
+				progressDialog.create( MR_LANG( 'Copy Files' ), strInit )
 				progressDialog.update( percent, strReady )
 
 				for hash in mergehash :
@@ -203,13 +203,13 @@ class DialogImportLogo( BaseDialog ) :
 
 					count = count + 1
 					if progressDialog.iscanceled( ) and onceCanceld :
-						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'Please wait' ) ) )
+						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Cancellation in progrss...' ) ) )
 						onceCanceld = False
 
 					percent = int( 1.0 * count / filecount * 100 )
 					if percent > 99 :
 						percent = 99
-					strCopy = MR_LANG( 'Copying file' ) + '...'
+					strCopy = MR_LANG( 'Copying files' ) + '...'
 					progressDialog.update( percent, strCopy, '%s' % mergehash.get( hash, None ).strip( ) )
 
 				outputFile.writelines( '</Logolist>\n' )
@@ -231,7 +231,7 @@ class DialogImportLogo( BaseDialog ) :
 				percent = 0
 				count = 0
 				progressDialog = xbmcgui.DialogProgress( )
-				progressDialog.create( MR_LANG( 'Copy logo files' ), strInit )
+				progressDialog.create( MR_LANG( 'Copy Files' ), strInit )
 				progressDialog.update( percent, strReady )
 
 				for hash in self.mIconHash :
@@ -247,13 +247,13 @@ class DialogImportLogo( BaseDialog ) :
 
 					count = count + 1
 					if progressDialog.iscanceled( ) and onceCanceld :
-						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Attention' ), MR_LANG( 'Please wait' ) ) )
+						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Cancellation in progrss...' ) ) )
 						onceCanceld = False
 
 					percent = int( 1.0 * count / filecount * 100 )
 					if percent > 99 :
 						percent = 99
-					strCopy = MR_LANG( 'Copying file' ) + '...'
+					strCopy = MR_LANG( 'Copying files' ) + '...'
 					progressDialog.update( percent, strCopy, '%s' % self.mIconHash.get( hash, None ).strip( ) )
 
 				outputFile.writelines( '</Logolist>\n' )
@@ -267,7 +267,7 @@ class DialogImportLogo( BaseDialog ) :
 
 			pvr.ChannelLogoMgr.GetInstance( ).LoadCustom( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Complete' ), MR_LANG( 'Restart Required\nSystem restart is needed in order to apply icons' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'System restart is needed in order to apply changes' ) )
 			dialog.doModal( )
 			self.CloseDialog( )
 
@@ -277,7 +277,7 @@ class DialogImportLogo( BaseDialog ) :
 			if progressDialog :
 				progressDialog.close( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Import channel logo fail to complete' ), MR_LANG( 'All custom logo data will be erased' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Importing channel logos failed to complete' ), MR_LANG( 'All customized logo data will be erased' ) )
 			dialog.doModal( )
 			os.system( 'rm -rf %s' % CUSTOM_LOGO_PATH )
 			self.CloseDialog( )
@@ -336,7 +336,7 @@ class DialogImportLogo( BaseDialog ) :
 		checkedItems = self.CheckPath( aPath, aFilelist )
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 		self.mCheckedItem = checkedItems
-		self.mCtrlLoaded.setLabel( '%s %s' % ( checkedItems, MR_LANG( 'Icons loaded' ) ) )
+		self.mCtrlLoaded.setLabel( '%s %s' % ( checkedItems, MR_LANG( 'Icons Loaded' ) ) )
 		if checkedItems :
 			self.mCheckedItem	= checkedItems
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -359,7 +359,7 @@ class DialogImportLogo( BaseDialog ) :
 			return zipfiles
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No .zip file in USB' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No zip file found in USB' ) )
 			dialog.doModal( )
 			return None
 
@@ -379,7 +379,7 @@ class DialogImportLogo( BaseDialog ) :
 				return retlist
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Extract zip file fail to complete' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Extracting zip file failed to complete' ) )
 		dialog.doModal( )
 		return False
 
@@ -407,12 +407,12 @@ class DialogImportLogo( BaseDialog ) :
 							return retlist
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Download zip file is broken' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The zip file is invalid or corrupted' ) )
 				dialog.doModal( )
 				return False
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Download zip file fail to complete' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Downloading zip file failed to complete' ) )
 				dialog.doModal( )
 				return False
 
@@ -440,7 +440,7 @@ class DialogImportLogo( BaseDialog ) :
 
 			while pipe.poll( ) == None :
 				if progressDialog.iscanceled( ) :
-					strCancel = MR_LANG( 'Canceling' ) + '...'
+					strCancel = MR_LANG( 'Cancelling' ) + '...'
 					progressDialog.update( percent, strCancel )
 					self.DeleteTempLogo( )
 					pipe.kill( )
@@ -453,11 +453,11 @@ class DialogImportLogo( BaseDialog ) :
 					percent = int( 1.0 * count / filecount * 100 )
 					if percent > 99 :
 						percent = 99
-					strCopy = MR_LANG( 'Extract data' ) + '...'
+					strCopy = MR_LANG( 'Extracting data' ) + '...'
 					progressDialog.update( percent, strCopy, '%s' % line.strip( ) )
 					count = count + 1
 
-			progressDialog.update( 100, MR_LANG( 'Extract Zip File' ), MR_LANG( 'Complete' ) )
+			progressDialog.update( 100, MR_LANG( 'Extracting Zip File' ), MR_LANG( 'Complete' ) )
 			time.sleep( 1 )
 			progressDialog.update( 0, '' )
 			progressDialog.close( )
@@ -487,7 +487,7 @@ class DialogImportLogo( BaseDialog ) :
 						logolist.append( logo.strip( ) )
 
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Channel Logo' ), logolist, False, 0 )
+				ret = dialog.select( MR_LANG( 'Select Channel Icon Package' ), logolist, False, 0 )
 				if ret >= 0 :
 					return logolist[ ret ] + '.zip'
 
@@ -495,7 +495,7 @@ class DialogImportLogo( BaseDialog ) :
 		except Exception, e :
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Download zip file fail to complete' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Downloading zip file failed to complete' ) )
 			dialog.doModal( )
 			LOG_TRACE( 'SelectInternetLogo except = %s' % e )
 			return None
@@ -525,7 +525,7 @@ class DialogImportLogo( BaseDialog ) :
 			xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 			self.DeleteTempLogo( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Downloading zip file fail to complete' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Downloading zip file failed to complete' ) )
 			dialog.doModal( )
 			return False
 

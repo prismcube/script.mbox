@@ -1144,7 +1144,7 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
-			self.AddInputControl( E_Input06, MR_LANG( 'Import Channel Logo' ), '',  MR_LANG( 'Import Channel Logo' ) )
+			self.AddInputControl( E_Input06, MR_LANG( 'Import Channel Logos' ), '',  MR_LANG( 'Import customized channel icons from USB flash memory or via Internet' ) )
 			self.AddInputControl( E_Input07, MR_LANG( 'Backup and Restore System' ), '',  MR_LANG( 'Backup whole system image to USB or restore it from USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
