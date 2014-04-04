@@ -203,7 +203,7 @@ class DialogImportLogo( BaseDialog ) :
 
 					count = count + 1
 					if progressDialog.iscanceled( ) and onceCanceld :
-						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Cancellation in progrss...' ) ) )
+						xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Copying files process cannot be stopped' ) ) )
 						onceCanceld = False
 
 					percent = int( 1.0 * count / filecount * 100 )
@@ -247,7 +247,7 @@ class DialogImportLogo( BaseDialog ) :
 
 					count = count + 1
 					if progressDialog.iscanceled( ) and onceCanceld :
-						xbmc.executebuiltin( 'Notification(%s, %s, 3000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Cancellation in progrss...' ) ) )
+						xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( MR_LANG( 'Please Wait' ), MR_LANG( 'Copying files process cannot be stopped' ) ) )
 						onceCanceld = False
 
 					percent = int( 1.0 * count / filecount * 100 )
