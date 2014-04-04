@@ -1800,3 +1800,37 @@ def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
 	else :
 		return ElisEnum.E_ENGLISH
 
+
+def GetOffsetPosition( aControlList ) :
+	pos = aControlList.getOffsetPosition( )
+	if pos < 0 :
+		pos = 0
+	return pos
+
+
+def CalculateProgress( aCurrentTime, aEpgStart, aDuration  ) :
+	percent = 0
+	startTime = aEpgStart
+	endTime = aEpgStart + aDuration
+
+	pastDuration = endTime - aCurrentTime
+
+	if aCurrentTime > endTime : #past
+		return 100
+
+	elif aCurrentTime < startTime : #future
+		return 0
+
+	if pastDuration < 0 : #past
+		pastDuration = 0
+
+	if aDuration > 0 :
+		percent = 100 - ( pastDuration * 100.0 / aDuration )
+
+	else :
+		percent = 0
+
+	#LOG_TRACE( 'Percent[%s]'% percent )
+	return percent
+
+

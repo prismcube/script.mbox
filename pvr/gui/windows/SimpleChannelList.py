@@ -1,12 +1,14 @@
 from pvr.gui.WindowImport import *
 import traceback
 
-E_SIMPLE_CHANNEL_LIST_BASE_ID		=  WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
-LIST_ID_BIG_CHANNEL					= E_SIMPLE_CHANNEL_LIST_BASE_ID + 1000
+E_SIMPLE_CHANNEL_LIST_BASE_ID =  WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
+LIST_ID_BIG_CHANNEL           = E_SIMPLE_CHANNEL_LIST_BASE_ID + 1000
+LIST_ID_BIG_GROUP             = E_SIMPLE_CHANNEL_LIST_BASE_ID + 1001
 
-
-E_NOMAL_UPDATE_TIME				= 30
-E_SHORT_UPDATE_TIME				= 1
+E_NOMAL_UPDATE_TIME = 30
+E_SHORT_UPDATE_TIME = 1
+E_SHOW_GROUP_LIST = True
+E_SIMPLE_CHANNEL_ITEM_HEIGHT = 70
 
 class BackupModeClass( object ) :
 	def __init__( self ) :
@@ -23,13 +25,14 @@ class SimpleChannelList( BaseWindow ) :
 		self.mLock = thread.allocate_lock( )
 		self.mChannelList = None
 		self.mCurrentChannel = None		
+		self.mChannelListHash    = {}
+		self.mChannelNumbersHash = {}
 		self.mEPGHashTable = {}
 		self.mEPGList	= []	
-		self.mListItems = []		
-		self.mFirstTune = False
-		self.mEPGUpdateTimer = None
-		self.mEnableAysncTimer = False
+		self.mListItems = []
+		self.mItemCount = 8
 		self.mBackupMode = BackupModeClass( )
+		self.mOffsetTopIndex = 0
 	
 	def onInit( self ) :
 		self.SetActivate( True )
@@ -37,12 +40,9 @@ class SimpleChannelList( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.CheckMediaCenter( )
 
-		self.mChannelListHash = {}
-		self.mChannelNumbersHash = {}
-		self.mEnableAysncTimer = True
-		self.mFirstTune = False
-		self.mEPGUpdateTimer = None
-		self.mAsyncUpdateTimer = None
+		self.mAsyncEPGTimer      = None
+		self.mEPGUpdateTimer     = None
+		self.mAsyncUpdateTimer   = None
 		try :
 			self.mAutoConfirm = int( GetSetting( 'AUTO_CONFIRM_CHANNEL' ) )
 
@@ -50,7 +50,8 @@ class SimpleChannelList( BaseWindow ) :
 			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
 			self.mAutoConfirm = False
 
-		self.mCtrlBigList = self.getControl( LIST_ID_BIG_CHANNEL )
+		self.mCtrlBigList   = self.getControl( LIST_ID_BIG_CHANNEL )
+		self.mCtrlGroupList = self.getControl( LIST_ID_BIG_GROUP )
 		#self.SetSingleWindowPosition( E_SIMPLE_CHANNEL_LIST_BASE_ID )
 		#self.SetPipScreen( )
 
@@ -63,6 +64,7 @@ class SimpleChannelList( BaseWindow ) :
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
 		self.mUserMode         = deepcopy( self.mCurrentMode )
+		self.mChangeMode       = None
 		self.mGroupIndex       = -1
 		self.mUserGroup        = ''
 		self.mCurrentGroup     = ''
@@ -74,12 +76,8 @@ class SimpleChannelList( BaseWindow ) :
 		self.mZappingGroupList[ ElisEnum.E_MODE_PROVIDER ]  = self.mDataCache.Provider_GetList( )
 		self.mZappingGroupList[ ElisEnum.E_MODE_FAVORITE ]  = self.mDataCache.Favorite_GetList( )
 
-		self.UpdateAllEPGList( )
-
-		self.mEventBus.Register( self )
-
-		self.StartEPGUpdateTimer( )
-
+		self.UpdateListAll( )
+		loadEpgAll = False
 		if not self.mInitialized :
 			self.mInitialized = True
 			self.mBackupMode.mZappingTV    = deepcopy( self.mCurrentMode )
@@ -89,19 +87,24 @@ class SimpleChannelList( BaseWindow ) :
 			self.mBackupMode.mZappingRadio.mMode = ElisEnum.E_MODE_ALL
 			self.mBackupMode.mZappingRadio.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
 			self.mBackupMode.mZappingRadio.mSortingMode = self.mCurrentMode.mSortingMode
+			listHeight= self.mCtrlBigList.getHeight( )
+			self.mItemCount = listHeight / E_SIMPLE_CHANNEL_ITEM_HEIGHT
+			loadEpgAll = True
+
+		self.LoadByCurrentEPG( loadEpgAll )
+
+		self.mEventBus.Register( self )
+		self.StartEPGUpdateTimer( )
 
 		self.setFocusId( LIST_ID_BIG_CHANNEL )
 		self.setProperty( 'ZappingModeInfo', E_TAG_TRUE )
-
-
-	def ResetControls( self ) :
-		self.mListItems = []
+		self.UpdateSelectedPosition( )
 
 
 	def onAction( self, aAction ) :
 		if self.IsActivate( ) == False  :
 			return
-	
+
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -109,19 +112,24 @@ class SimpleChannelList( BaseWindow ) :
 
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			if self.mChangeMode :
+				self.mChangeMode = None
+				self.setProperty( 'SimpleChannelGroup', E_TAG_FALSE )
+				self.UpdateListToEPG( )
+				self.StartEPGUpdateTimer( )
+				self.setFocusId( LIST_ID_BIG_CHANNEL )
+				return
+
 			self.Close( )
 
-		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT:
+		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			self.Close( )
 
-		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN:
-			self.UpdateSelectedPosition( )
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			self.RestartAsyncEPG( )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
-			self.mEventBus.Deregister( self )
-			self.StopEPGUpdateTimer( )
-
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.ToggleTVRadio( )
@@ -133,12 +141,11 @@ class SimpleChannelList( BaseWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available for the selected mode' ) )
 					dialog.doModal( )
 
-			self.StartEPGUpdateTimer( )
-			self.mEventBus.Register( self )			
-
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			if self.mFocusId  == LIST_ID_BIG_CHANNEL :
+			if self.mFocusId == LIST_ID_BIG_CHANNEL :
 				self.Tune( )
+			elif self.mFocusId == LIST_ID_BIG_GROUP :
+				self.GetSelectGroup( )
 
 		elif actionId == Action.ACTION_MBOX_FF :
 			self.UpdateShortCutGroup( 1 )
@@ -175,21 +182,12 @@ class SimpleChannelList( BaseWindow ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				#if self.mIsUpdateEnable == True	:
 				#LOG_TRACE( '[SimpleChannelList] record start/stop event' )
-				self.StopEPGUpdateTimer( )
-				self.UpdateListUpdateOnly( )
-				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
-
-			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-				if self.mFirstTune == True :
-					self.mFirstTune = False
-					#LOG_TRACE( '[SimpleChannelList]--------------- First Tune -----------------' )
-					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )			
+				self.UpdateListAll( True )
 
 
 	def Close( self ) :
-		self.mEnableAysncTimer = False
-		self.mFirstTune = False
 		self.mEventBus.Deregister( self )
+		self.StopAsyncEPG( )
 		self.StopAsyncUpdate( )
 		self.StopEPGUpdateTimer( )
 
@@ -202,21 +200,25 @@ class SimpleChannelList( BaseWindow ) :
 		self.mEPGHashTable = {}
 
 
-	def UpdateAllEPGList( self, aLoadChannel = False ) :
-		self.Flush( )
+	def ResetControls( self ) :
+		self.mListItems = []
+
+
+	def UpdateListAll( self, aLoadChannel = False ) :
+		#self.Flush( )
+		self.StopEPGUpdateTimer( )
 
 		if aLoadChannel :
-			self.mEnableAysncTimer = False
 			self.ResetControls( )
 			self.GetChannelList( )
-			self.mEnableAysncTimer = True
 
-		self.Load( )
+		self.InitToChannel( )
 		self.UpdateList( )
+		self.StartEPGUpdateTimer( )
 		#threading.Timer( 0.5, self.UpdateSelectedPosition ).start( )
 
 
-	def Load( self ) :
+	def InitToChannel( self ) :
 		lblPath = EnumToString( 'mode', self.mUserMode.mMode )
 		self.mUserGroup = ''
 		self.mListGroupName = []
@@ -243,10 +245,9 @@ class SimpleChannelList( BaseWindow ) :
 
 		if self.mGroupIndex < 0 :
 			loopCount  = 0
-			currentIdx = -1
 			for groupName in self.mListGroupName :
 				if groupName == self.mUserGroup :
-					self.mGroupIndex = loopCount
+					self.mGroupIndex   = loopCount
 					self.mCurrentGroup = self.mUserGroup
 					break
 
@@ -266,22 +267,7 @@ class SimpleChannelList( BaseWindow ) :
 				self.mChannelNumbersHash[iChannel.mNumber] = iChannel
 				idxCount += 1
 
-		#self.mLock.acquire( )
-		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mServiceType )
-
-		except Exception, e :
-			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
-
-		#self.mLock.release( )
-		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
-			return
-
-		LOG_TRACE( '[SimpleChannelList] self.mEPGList COUNT[%s]'% len( self.mEPGList ) )
-
-		for epg in self.mEPGList :
-			hashKey = '%d:%d:%d'% ( epg.mSid, epg.mTsid, epg.mOnid )
-			self.mEPGHashTable[ hashKey ] = epg
+		LOG_TRACE( '[SimpleChannelList] mChannelListHash[%s] mChannelNumbersHash[%s]'% ( len( self.mChannelListHash ), len( self.mChannelNumbersHash ) ) )
 
 
 	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, aReqIndex = False ) :
@@ -316,102 +302,188 @@ class SimpleChannelList( BaseWindow ) :
 		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 
 
-	def UpdateListUpdateOnly( self ) :
-		self.UpdateList( True )
+	def LoadByCurrentEPG( self, aUpdateAll = False ) :
+		if not self.mChannelList or len( self.mChannelList ) < 1 :
+			LOG_TRACE( '[SimpleChannelList] pass, channelList None' )
+			return
+
+		isUpdate = True
+		epgList = []
+		startTime = time.time()
+
+		if aUpdateAll :
+			self.OpenBusyDialog( )
+		#self.mLock.acquire( )
+
+		try :
+			if aUpdateAll :
+				self.mEPGHashTable = {}
+				#epgList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mUserMode.mServiceType )
+				epgList = self.mDataCache.Epgevent_GetShortListAll( self.mUserMode )
+				#LOG_TRACE( '[SimpleChannelList] aUpdateAll[%s] mode[%s] type[%s]'% ( aUpdateAll, self.mUserMode.mMode, self.mUserMode.mServiceType ) )
+
+			else :
+				numList = []
+				#chNumbers = []
+				self.mOffsetTopIndex = GetOffsetPosition( self.mCtrlBigList )
+				endCount  = self.mOffsetTopIndex + self.mItemCount
+				listCount = len( self.mChannelList )
+				for offsetIdx in range( self.mOffsetTopIndex, endCount ) :
+					if offsetIdx < listCount :
+						chNum = ElisEInteger( )
+						chNum.mParam = self.mChannelList[offsetIdx].mNumber
+						numList.append( chNum )
+						#chNumbers.append( self.mChannelList[offsetIdx].mNumber )
+
+					else :
+						#LOG_TRACE( '[SimpleChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mOffsetTopIndex, offsetIdx, listCount ) )
+						break
+				#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, self.mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
+
+				if numList and len( numList ) > 0 :
+					epgList = self.mDataCache.Epgevent_GetShortList( self.mUserMode.mServiceType, numList )
+
+		except Exception, e :
+			isUpdate = False
+			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+
+		if not epgList or len( epgList ) < 1 :
+			isUpdate = False
+			LOG_TRACE( '[SimpleChannelList] get epglist None' )
+
+		if isUpdate :
+			for iEPG in epgList :
+				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
+				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
+
+			LOG_TRACE( '[SimpleChannelList] epgList COUNT[%s]'% len( epgList ) )
+
+		#self.mLock.release( )
+		if aUpdateAll :
+			self.CloseBusyDialog( )
+
+		#print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
+
+		self.UpdateListToEPG( aUpdateAll )
 
 
-	def UpdateList( self, aUpdateOnly=False ) :
+	def UpdateListToEPG( self, aUpdateAll = False, aForce = False ) :
+		if not self.mListItems or ( not self.mChannelList ) :
+			LOG_TRACE( '[SimpleChannelList] pass, channelList None' )
+			return
+
+		startTime = time.time()
+
+		updateStart = GetOffsetPosition( self.mCtrlBigList )
+		updateEnd = ( updateStart + self.mItemCount )
+		if aUpdateAll :
+			updateStart = 0
+			updateEnd = len( self.mListItems ) - 1
+
+		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, E_SIMPLE_CHANNEL_ITEM_HEIGHT, self.mItemCount ) )
+
+		if aUpdateAll :
+			self.OpenBusyDialog( )
+
+		try :
+			updateCount = 0
+			strNoEvent = MR_LANG( 'No event' )
+			listCount = len( self.mChannelList )
+			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+
+			for idx in range( updateStart, updateEnd ) :
+				if self.mChannelList and idx < listCount :
+					hasEvent = E_TAG_FALSE
+					epgName  = strNoEvent
+					listItem = self.mListItems[idx]
+					iChannel = self.mChannelList[idx]
+					epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+
+					if epgEvent :
+						hasEvent = E_TAG_TRUE
+						epgName  = epgEvent.mEventName
+						epgStart = epgEvent.mStartTime + self.mLocalOffset
+						listItem.setProperty( 'percent', '%s'% CalculateProgress( currentTime, epgStart, epgEvent.mDuration ) )
+						#LOG_TRACE( 'idx[%s] per[%s] ch[%s %s]'% ( idx, CalculateProgress( currentTime, epgStart, epgEvent.mDuration ), iChannel.mNumber, iChannel.mName ) )
+
+					updateCount += 1
+					listItem.setLabel2( epgName )
+					listItem.setProperty( 'HasEvent', hasEvent )
+
+				else :
+					break
+
+			LOG_TRACE( '[SimpleChannelList] UpdateItemsEPG [%s]counts'% updateCount )
+
+		except Exception, e :
+			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+
+		if aUpdateAll :
+			self.CloseBusyDialog( )
+
+		#print '[SimpleChannelList] UpdateListToEPG------testTime[%s]'% ( time.time() - startTime )
+
+
+	def UpdateList( self, aUpdateOnly = False ) :
 		if not self.mChannelList or len( self.mChannelList ) < 1 :
 			self.mCtrlBigList.reset( )
 			self.mListItems = []
-			xbmc.executebuiltin( 'container.refresh' )			
+			LOG_TRACE( '[SimpleChannelList] pass, Channel list None' )
 			return
 
-		aUpdateOnly = True
-		if not self.mListItems :
-			aUpdateOnly = False
-			#self.mLock.acquire( )
-			self.mListItems = []
-			#self.mLock.release( )
-		else :
-			if len( self.mChannelList ) != len( self.mListItems ) :
-				LOG_TRACE( '[SimpleChannelList] UpdateOnly------------>Create' )
-				aUpdateOnly = False 
-				#self.mLock.acquire( )
-				self.mListItems = []
-				#self.mLock.release( )
-
-		LOG_TRACE( '[SimpleChannelList] LAEL98 UPDATE CONTAINER aUpdateOnly[%s]'% aUpdateOnly )
-				
-		currentTime = self.mDataCache.Datetime_GetLocalTime( )
-		runningTimers = self.mDataCache.Timer_GetRunningTimers( )		
-
+		loopCount = 0
 		strNoEvent = MR_LANG( 'No event' )
 
-		if aUpdateOnly == False :
+		if not self.mListItems or self.mDataCache.GetChannelReloadStatus( ) :
 			self.mListItems = []
+			self.mCtrlBigList.reset( )
+			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+			runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+
 			for iChannel in self.mChannelList :
-				listItem = xbmcgui.ListItem( '', '' )
-				self.mListItems.append( listItem )
+				iChNumber = iChannel.mNumber
+				if E_V1_2_APPLY_PRESENTATION_NUMBER :
+					iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
 
-			self.mCtrlBigList.addItems( self.mListItems )
-
-		#self.mCtrlBigList.setVisible( False )
-		loopCount = 0
-		for iChannel in self.mChannelList :
-			iChNumber = iChannel.mNumber
-			if E_V1_2_APPLY_PRESENTATION_NUMBER :
-				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
-
-			if self.IsRunningTimer( runningTimers, iChannel ) :
-				tempChannelName = '[COLOR=red]%04d %s[/COLOR]' %( iChNumber, iChannel.mName )
-			else :
 				tempChannelName = '%04d %s' %( iChNumber, iChannel.mName )
+				if self.IsRunningTimer( runningTimers, iChannel ) :
+					tempChannelName = '[COLOR=red]%04d %s[/COLOR]' %( iChNumber, iChannel.mName )
 
-			hasEpg = False
+				listItem = xbmcgui.ListItem( tempChannelName )
 
-			try :
+				hasEvent = E_TAG_FALSE
+				epgName  = strNoEvent
 				epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 
-				if self.mListItems and loopCount < len( self.mListItems ) :
-					if epgEvent :
-						hasEpg = True
-						listItem = self.mListItems[loopCount]
-						listItem.setLabel( tempChannelName )
-						listItem.setLabel2( epgEvent.mEventName )
+				if epgEvent :
+					hasEvent = E_TAG_TRUE
+					epgName  = epgEvent.mEventName
+					epgStart = epgEvent.mStartTime + self.mLocalOffset
+					listItem.setProperty( 'percent', '%s'% CalculateProgress( currentTime, epgStart, epgEvent.mDuration ) )
 
-						epgStart = epgEvent.mStartTime + self.mLocalOffset
-						listItem.setProperty( 'HasEvent', E_TAG_TRUE )
-						listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
-
-					else :
-						listItem = self.mListItems[loopCount]
-						listItem.setLabel( tempChannelName )
-						listItem.setLabel2( strNoEvent )
-						listItem.setProperty( 'HasEvent', E_TAG_FALSE )
+				listItem.setLabel2( epgName )
+				listItem.setProperty( 'HasEvent', hasEvent )
 
 				#add channel logo
 				if E_USE_CHANNEL_LOGO == True :
 					logo = '%s_%s'% ( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mSid )
 					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
 
-			except Exception, ex :
-				LOG_ERR( '[SimpleChannelList] except[%s]'% traceback.format_exc() )
+				loopCount += 1
+				self.mListItems.append( listItem )
 
-			if aUpdateOnly == True and  loopCount == 8 :
-				xbmc.executebuiltin( 'container.refresh' )
-				LOG_TRACE( '[SimpleChannelList] LAEL98 UPDATE CONTAINER' )
+			self.mCtrlBigList.addItems( self.mListItems )
+			LOG_TRACE( '[SimpleChannelList] done, update list item' )
 
-			loopCount += 1
-
-		xbmc.executebuiltin( 'container.refresh' )
-		if not aUpdateOnly :
-			self.FocusCurrentChannel( )
-		#self.mCtrlBigList.setVisible( True )
+		self.FocusCurrentChannel( )
 
 
 	def UpdateSelectedPosition( self ) :
+		propertyName = 'SelectedPosition'
 		selectedPos = self.mCtrlBigList.getSelectedPosition( )
+		if self.mChangeMode :
+			propertyName = 'SelectedGroup'
+			selectedPos = self.mCtrlGroupList.getSelectedPosition( )
 
 		lblPos = 0
 		if selectedPos < 0 :
@@ -419,43 +491,23 @@ class SimpleChannelList( BaseWindow ) :
 		else :
 			lblPos = selectedPos + 1
 
-		self.setProperty( 'SelectedPosition', '%s'% lblPos )
+		if not self.mChangeMode and ( not self.mChannelList ) :
+			lblPos = 0
+
+		self.setProperty( propertyName, '%s'% lblPos )
 
 
 	def FocusCurrentChannel( self ) :
 		if not self.mChannelList or ( not self.mCurrentChannel ) :
+			self.UpdateSelectedPosition( )
 			return
 
 		fucusIndex = self.GetChannelByIDs( self.mCurrentChannel.mNumber, self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid, True )
 		if fucusIndex > -1 :
 			self.mCtrlBigList.selectItem( fucusIndex )
+			time.sleep( 0.2 )
 
 		self.UpdateSelectedPosition( )
-		LOG_TRACE( '--------------------ch[%s %s] idx[%s]'% ( self.mCurrentChannel.mNumber, self.mCurrentChannel.mName, fucusIndex ) )
-
-
-	def CalculateProgress( self, aCurrentTime, aEpgStart, aDuration  ) :
-		startTime = aEpgStart
-		endTime = aEpgStart + aDuration
-		
-		pastDuration = endTime - aCurrentTime
-
-		if aCurrentTime > endTime : #past
-			return 100
-
-		elif aCurrentTime < startTime : #future
-			return 0
-
-		if pastDuration < 0 : #past
-			pastDuration = 0
-
-		if aDuration > 0 :
-			percent = 100 - ( pastDuration * 100.0 / aDuration )
-		else :
-			percent = 0
-
-		#LOG_TRACE( '[SimpleChannelList] Percent[%s]'% percent )
-		return percent
 
 
 	def IsRunningTimer( self, aRunningTimers, aChannel ) :
@@ -472,60 +524,92 @@ class SimpleChannelList( BaseWindow ) :
 	def Tune( self ) :
 		self.StopEPGUpdateTimer( )	
 		selectedPos = self.mCtrlBigList.getSelectedPosition( )
+
 		if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-			channel = self.mChannelList[ selectedPos ]
+			iChannel = self.mChannelList[ selectedPos ]
+
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				self.mDataCache.Player_Stop( )
+
 			else :
-				if self.mCurrentChannel.mNumber == channel.mNumber :
+				if self.mCurrentChannel.mNumber == iChannel.mNumber :
 					self.Close( )
 					return
 
 			if not self.mDataCache.Get_Player_AVBlank( ) :
 				self.mDataCache.Player_AVBlank( True )
 
-			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
-			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-			self.mFirstTune = True
+			self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+			self.mCurrentChannel = deepcopy( iChannel )
 
 			if self.mAutoConfirm :
 				self.Close( )
 				return
 
-		self.RestartEPGUpdateTimer( )
+
+	def RestartAsyncUpdate( self ) :
+		self.StopAsyncUpdate( )
+		self.StartAsyncUpdate( )
 
 
-	def RestartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
+	def StartAsyncUpdate( self ) :
+		self.mAsyncUpdateTimer = threading.Timer( 1, self.UpdateListAll, [True] )
+		self.mAsyncUpdateTimer.start( )
+
+
+	def StopAsyncUpdate( self ) :
+		if self.mAsyncUpdateTimer and self.mAsyncUpdateTimer.isAlive( ) :
+			self.mAsyncUpdateTimer.cancel( )
+			del self.mAsyncUpdateTimer
+
+		self.mAsyncUpdateTimer = None
+
+
+	def RestartEPGUpdateTimer( self ) :
 		self.StopEPGUpdateTimer( )
-		self.StartEPGUpdateTimer( aTimeout )
+		self.StartEPGUpdateTimer( )
 
 
-	def StartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
-		self.mEPGUpdateTimer = threading.Timer( aTimeout, self.AsyncEPGUpdateTimer )
+	def StartEPGUpdateTimer( self ) :
+		self.mEPGUpdateTimer = threading.Timer( E_NOMAL_UPDATE_TIME, self.AsyncEPGUpdateTimer )
 		self.mEPGUpdateTimer.start( )
-	
+
 
 	def StopEPGUpdateTimer( self ) :
 		if self.mEPGUpdateTimer and self.mEPGUpdateTimer.isAlive( ) :
 			self.mEPGUpdateTimer.cancel( )
 			del self.mEPGUpdateTimer
-			
+
 		self.mEPGUpdateTimer = None
 
 
 	def AsyncEPGUpdateTimer( self ) :	
-		if self.mEPGUpdateTimer == None :
-			LOG_WARN( 'EPG update timer expired' )
-			return
+		self.LoadByCurrentEPG( )
 
-		if self.mEnableAysncTimer == False :
-			LOG_WARN( '[SimpleChannelList]EnableAysncTimer is False' )
-			return
-
-		self.Load( )
-
-		self.UpdateListUpdateOnly( )
+		#recall per 30sec
 		self.RestartEPGUpdateTimer( )
+
+
+	def RestartAsyncEPG( self ) :
+		self.StopAsyncEPG( )
+		self.StartAsyncEPG( )
+
+
+	def StartAsyncEPG( self ) :
+		self.mAsyncEPGTimer = threading.Timer( 0.5, self.UpdateSelectedPosition )
+		self.mAsyncEPGTimer.start( )
+
+		if not self.mChangeMode and self.mOffsetTopIndex != GetOffsetPosition( self.mCtrlBigList ) :
+			updateEpgInfo = threading.Timer( 0.05, self.LoadByCurrentEPG )
+			updateEpgInfo.start( )
+
+
+	def StopAsyncEPG( self ) :
+		if self.mAsyncEPGTimer and self.mAsyncEPGTimer.isAlive( ) :
+			self.mAsyncEPGTimer.cancel( )
+			del self.mAsyncEPGTimer
+
+		self.mAsyncEPGTimer = None
 
 
 	def ToggleTVRadio( self ) :
@@ -546,6 +630,9 @@ class SimpleChannelList( BaseWindow ) :
 			LOG_TRACE( '[SimpleChannelList] pass, channel is None' )
 			return False
 
+		self.mEventBus.Deregister( self )
+		self.StopEPGUpdateTimer( )
+
 		self.mServiceType = serviceType
 		#self.mUserMode.mServiceType = serviceType
 		self.mZappingGroupList[ ElisEnum.E_MODE_SATELLITE ] = self.mDataCache.Satellite_GetConfiguredList( )
@@ -554,7 +641,7 @@ class SimpleChannelList( BaseWindow ) :
 		self.mZappingGroupList[ ElisEnum.E_MODE_FAVORITE ]  = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, serviceType )
 
 		self.GetChannelList( )
-		self.Load( )
+		self.InitToChannel( )
 
 		#1.default channel, First Channel
 		iChannel = None
@@ -586,25 +673,10 @@ class SimpleChannelList( BaseWindow ) :
 		#self.UpdateSelectedPosition( )
 		LOG_TRACE( '[SimpleChannelList] toggle tv/radio' )
 
+		self.StartEPGUpdateTimer( )
+		self.mEventBus.Register( self )
+
 		return True
-
-
-	def RestartAsyncUpdate( self ) :
-		self.StopAsyncUpdate( )
-		self.StartAsyncUpdate( )
-
-
-	def StartAsyncUpdate( self ) :
-		self.mAsyncUpdateTimer = threading.Timer( 1, self.UpdateAllEPGList, [True] )
-		self.mAsyncUpdateTimer.start( )
-
-
-	def StopAsyncUpdate( self ) :
-		if self.mAsyncUpdateTimer and self.mAsyncUpdateTimer.isAlive( ) :
-			self.mAsyncUpdateTimer.cancel( )
-			del self.mAsyncUpdateTimer
-
-		self.mAsyncUpdateTimer = None
 
 
 	def UpdateShortCutGroup( self, aMove = 1 ) :
@@ -647,6 +719,10 @@ class SimpleChannelList( BaseWindow ) :
 
 
 	def UpdateShortCutZapping( self, aReqMode = ElisEnum.E_MODE_FAVORITE ) :
+		if E_SHOW_GROUP_LIST :
+			self.ShowGroupListByMode( aReqMode )
+			return
+
 		isAvail = False
 		groupList = []
 		if self.mUserMode.mMode != aReqMode :
@@ -667,7 +743,114 @@ class SimpleChannelList( BaseWindow ) :
 
 		self.mGroupIndex = 0
 		self.mUserMode.mMode = aReqMode
-		self.UpdateAllEPGList( True )
+		self.UpdateListAll( True )
+
+
+	def ShowGroupListByMode( self, aReqMode = ElisEnum.E_MODE_FAVORITE ) :
+		groupList = self.mZappingGroupList[aReqMode]
+		if not groupList or len( groupList ) < 1 :
+			LOG_TRACE( '[SimpleChannelList] pass, zapping group None' )
+			return
+
+		self.StopEPGUpdateTimer( )
+
+		currGroupName = self.mUserGroup
+		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
+			currGroupName = self.mDataCache.GetFormattedSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
+
+		loopCount  = 0
+		currentIdx = 0
+		groupListItems = []
+		self.mChangeMode = deepcopy( self.mUserMode )
+		self.mChangeMode.mMode = aReqMode
+		groupListItems.append( xbmcgui.ListItem( '%s'% self.mZappingGroupList[ElisEnum.E_MODE_ALL] ) )
+		for iGroupInfo in groupList :
+			groupName  = ''
+			loopCount += 1
+			fastScan = False
+
+			if aReqMode == ElisEnum.E_MODE_FAVORITE :
+				groupName = iGroupInfo.mGroupName
+				if iGroupInfo.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
+					fastScan = True
+
+			elif aReqMode == ElisEnum.E_MODE_SATELLITE :
+				groupName = self.mDataCache.GetFormattedSatelliteName( iGroupInfo.mLongitude, iGroupInfo.mBand )
+
+			elif aReqMode == ElisEnum.E_MODE_CAS :
+				groupName = iGroupInfo.mName
+
+			elif aReqMode == ElisEnum.E_MODE_PROVIDER :
+				groupName = iGroupInfo.mProviderName
+
+			if not groupName :
+				LOG_TRACE( '[SimpleChannelList] pass, empty group name' )
+				continue
+
+			if self.mUserMode.mMode != ElisEnum.E_MODE_ALL and groupName == currGroupName :
+				currentIdx = loopCount
+				#LOG_TRACE( '[SimpleChannelList] current group, currentIdx[%s] groupName[%s]'% ( currentIdx, groupName ) )
+
+			listItem = xbmcgui.ListItem( '%s'% groupName )
+			if fastScan :
+				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
+
+			groupListItems.append( listItem )
+
+		self.mCtrlGroupList.reset( )
+		self.mCtrlGroupList.addItems( groupListItems )
+		self.setProperty( 'SimpleChannelGroup', E_TAG_TRUE )
+		self.mCtrlGroupList.selectItem( currentIdx )
+		self.setFocusId( LIST_ID_BIG_GROUP )
+
+		lblPath = EnumToString( 'mode', aReqMode )
+		self.setProperty( 'SimpleChannelPath', lblPath )
+		self.setProperty( 'SelectedGroup', '%s'% ( currentIdx + 1 ) )
+
+
+	def GetSelectGroup( self ) :
+		isAvail = True
+		isSelect = -1
+		try :
+			if not self.mChangeMode :
+				raise Exception, '[SimpleChannelList] pass, group mode None'
+
+			groupList = self.mZappingGroupList[self.mChangeMode.mMode]
+			if not groupList or len( groupList ) < 1 :
+				raise Exception, '[SimpleChannelList] pass, group list None'
+
+			isSelect = self.mCtrlGroupList.getSelectedPosition( )
+			LOG_TRACE( '[SimpleChannelList] select group[%s] currIdx[%s]'% ( isSelect, self.mGroupIndex ) )
+			if isSelect < 0 :
+				raise Exception, '[SimpleChannelList] pass, select None'
+
+			if isSelect == 0 and self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+				raise Exception, 'pass, select same(all)'
+
+			if self.mChangeMode.mMode == self.mUserMode.mMode :
+				if isSelect > 0 and ( isSelect - 1 ) == self.mGroupIndex :
+					raise Exception, 'pass, selected same'
+
+		except Exception, e :
+			isAvail = False
+			LOG_ERR( '[SimpleChannelList] except[%s]'% e )
+
+		if isAvail :
+			self.mGroupIndex = 0
+			self.mUserMode.mMode = self.mChangeMode.mMode
+			if isSelect == 0 :
+				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
+
+			else :
+				isSelect -= 1
+
+			self.mGroupIndex = isSelect
+			self.UpdateListAll( True )
+
+		self.mChangeMode = None
+		self.setProperty( 'SimpleChannelGroup', E_TAG_FALSE )
+		self.setFocusId( LIST_ID_BIG_CHANNEL )
+		self.StartEPGUpdateTimer( )
 
 
 	def GetChannelList( self ) :

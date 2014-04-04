@@ -7372,7 +7372,7 @@ Search for window name
 					</control>
 				</control>
 				<control type="group">
-					<visible>substring(Window.Property(CurrentWindow),4600000)</visible>
+					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 					<control type="list" id="4601000">
 						<posx>890</posx>
 						<posy>100</posy>
@@ -7423,13 +7423,13 @@ Search for window name
 							</control>
 							<!-- progress Bar -->
 							<control type="progress" >
-								<description>EPG progress control</description>
 								<posx>300</posx>
 								<posy>17</posy>
 								<width>70</width>
 								<height>9</height>
 								<progress>percent</progress>
-								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
+								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -7485,13 +7485,13 @@ Search for window name
 							</control>
 							<!-- progress Bar -->
 							<control type="progress" >
-								<description>EPG progress control</description>
 								<posx>300</posx>
 								<posy>17</posy>
 								<width>70</width>
 								<height>9</height>
 								<progress>percent</progress>
-								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
+								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -7522,6 +7522,129 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
+				</control>
+
+				<control type="group">
+					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
+					<control type="list" id="4601001">
+						<posx>890</posx>
+						<posy>100</posy>
+						<width>490</width>
+						<height>560</height>
+						<align>left</align>
+						<onleft></onleft>
+						<onright></onright>
+						<onup>4601001</onup>
+						<ondown>4601001</ondown>
+						<viewtype label="535">list</viewtype>
+						<scrolltime>0</scrolltime>
+						<itemlayout height="70" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>68</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>DefaultFolder.png</texture>
+							</control>
+							<!-- is fastScan? -->
+							<control type="image">
+								<posx>345</posx>
+								<posy>25</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconFastScan.png</texture>
+								<visible>substring(ListItem.Property(iFastScan),true)</visible>
+							</control>
+							<!-- Group Name -->
+							<control type="label">
+								<posx>92</posx>
+								<posy>16</posy>
+								<width>250</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</itemlayout>
+						<focusedlayout height="70" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>68</height>
+								<texture border="5">StackFO_white2.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>DefaultFolder.png</texture>
+							</control>
+							<!-- is fastScan? -->
+							<control type="image">
+								<posx>345</posx>
+								<posy>25</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconFastScan.png</texture>
+								<visible>substring(ListItem.Property(iFastScan),true)</visible>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>92</posx>
+								<posy>16</posy>
+								<width>250</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</focusedlayout>
+					</control>
+				</control>
+				<control type="label">
+					<posx>892</posx>
+					<posy>56r</posy>
+					<width>340</width>
+					<height>20</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>
 		</control>
