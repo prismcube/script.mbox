@@ -2835,7 +2835,7 @@ Search for window name
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
-									<label></label>
+									<label>HbbTV</label>
 								</control>
 							</control>
 							<control type="group" id="1400520">
