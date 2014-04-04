@@ -312,6 +312,36 @@ class GlobalEvent( object ) :
 			elif aEvent.mUpdateType == 1 :
 				self.mDataCache.UpdateChannelByDBUpdate( aEvent.mChannelNo, aEvent.mServiceType )
 
+		#for HBBTV
+		elif E_SUPPROT_HBBTV == True :
+			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )
+			if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStart( aEvent.mUrl )
+
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSetSpeed( 0 )				
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSeek( 0 )
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerStopPlay.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStop(  )
+				
+			elif aEvent.getName() == ElisEventHBBTVReady.getName() :
+				LOG_TRACE( 'HbbTV TEST' )
+				#HBBTV			
+				#This event must be received from global event.
+				if aEvent.mReady == 1 :
+					LOG_TRACE("Now new AIT is ready, HBBTV Browser ready")
+					self.mDataCache.SetHbbTVEnable( True )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowRedButton( )
+
+				else :
+					LOG_TRACE( 'HbbTV Disable Event' )
+					self.mDataCache.SetHbbTVEnable( False )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideRedButton( )	
 
 
 	def StopLoading( self ) :
