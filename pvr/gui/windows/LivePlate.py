@@ -139,6 +139,11 @@ class LivePlate( LivePlateWindow ) :
 		#self.mCasInfoThread = None
 		self.mFirstTune = 0
 
+		if not self.mInitialized :
+			self.mInitialized = True
+			if ElisPropertyInt( 'AIT Ready', self.mCommander ).GetProp( ) :
+				self.mDataCache.SetHbbTVEnable( True )
+
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
