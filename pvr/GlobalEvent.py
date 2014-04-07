@@ -223,7 +223,7 @@ class GlobalEvent( object ) :
 					thread = threading.Timer( 0.3, self.AsyncPowerSave )
 					thread.start( )
 			else :
-				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).GetLastWindowID( )
+				LOG_TRACE( 'Skip auto power down : %s' % WinMgr.GetInstance( ).GetLastWindowID( ) )
 
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 			self.ChannelChangedByRecord( aEvent )
