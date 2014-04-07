@@ -1335,7 +1335,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		if not IsIPv4( hostip ) :
 			return zipFile
 
-	smbPath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
+	#remotePath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
 	#LOG_TRACE( 'smbPath[%s]'% smbPath )
 
 	mntHistory = ExecuteShell( 'mount' )
@@ -1352,7 +1352,20 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 
 	CreateDirectory( aSmbPath )
 
-	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, smbPath, aSmbPath )
+	remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	if urlType == 'smb' :
+		remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	elif urlType == 'nfs' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, aSmbPath )
+	elif urlType == 'ftp' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'modprobe fuse && curlftpfs %s:%s -o user=%s:%s,allow_other'% ( urlUser, urlPass, remotePath, aSmbPath )
+
+	LOG_TRACE( 'remotePath[%s] mountPath[%s] cmd[%s]'% ( remotePath, aSmbPath, cmd ) )
+
 	if ExecuteShell( cmd ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )

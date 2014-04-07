@@ -17,7 +17,9 @@ E_DEFAULT_PATH_NETWORK_VOLUME = 1
 E_ID_NO  = 0
 E_ID_YES = 1
 
-E_DEFAULT_PATH_MOUNT_POSITION = '/media/smb'
+E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
+E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
+E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
 
 
 class DialogMountManager( SettingDialog ) :
@@ -44,6 +46,7 @@ class DialogMountManager( SettingDialog ) :
 		self.mNetVolumeListHash = {}
 		self.mMode = E_NETWORK_VOLUME_ADD
 		self.mSelectIdx = -1
+		self.mInputMountPath = E_DEFAULT_PATH_SMB_POSITION
 		self.mNetVolume = ElisENetworkVolume( )
 		self.mNetVolume.mRemotePath = ''
 		self.mNetVolume.mMountPath = ''
@@ -254,11 +257,19 @@ class DialogMountManager( SettingDialog ) :
 
 			else :
 				if urlType :
+					self.mInputMountPath = E_DEFAULT_PATH_SMB_POSITION
 					if urlType == 'smb' :
 						isFail = False
+						self.mInputMountPath = E_DEFAULT_PATH_SMB_POSITION
 						LOG_TRACE( '-----------------------smb getPath[%s]'% getPath )
 
 					elif urlType == 'nfs' :
+						isFail = False
+						self.mInputMountPath = E_DEFAULT_PATH_NFS_POSITION
+						pass
+
+					elif urlType == 'ftp' :
+						self.mInputMountPath = E_DEFAULT_PATH_FTP_POSITION
 						pass
 
 					else :
@@ -276,11 +287,11 @@ class DialogMountManager( SettingDialog ) :
 
 			#init value
 			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
-			lblPath = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
+			lblPath  = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
 			self.mNetVolume.mRemotePath = '//' + lblPath
 			self.mNetVolume.mRemoteFullPath = getPath
-			lblMount= os.path.basename( lblPath )
-			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_MOUNT_POSITION, lblMount )
+			lblMount = os.path.basename( lblPath )
+			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_SMB_POSITION, lblMount )
 			self.SetControlLabel2String( E_DialogInput05, lblPath )
 			self.SetControlLabel2String( E_DialogInput06, lblMount )
 			LOG_TRACE( 'lblPath[%s] remote[%s] fullpath[%s] mountPath[%s]'% ( lblPath, self.mNetVolume.mRemotePath, self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath ) )
@@ -305,7 +316,7 @@ class DialogMountManager( SettingDialog ) :
 				LOG_TRACE('[Edit] No favName or cencel')
 				return
 
-			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_MOUNT_POSITION, mntName )
+			self.mNetVolume.mMountPath = os.path.join( self.mInputMountPath, mntName )
 			self.SetControlLabel2String( E_DialogInput06, mntName )
 			LOG_TRACE( 'lblPath[%s] mount[%s]'% ( mntName, self.mNetVolume.mMountPath ) )
 			self.SetEditEnableVolume( )
@@ -373,10 +384,23 @@ class DialogMountManager( SettingDialog ) :
 								urlHost = hostip
 
 						remotePath = '//%s%s'% ( urlHost, os.path.dirname( urlPath ) )
-						self.mNetVolume.mMountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, self.mNetVolume.mMountPath )
+						mountCmd   = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, self.mNetVolume.mMountPath )
+						urlType = urlparse.urlparse( self.mNetVolume.mRemoteFullPath ).scheme
+						if urlType == 'smb' :
+							remotePath = '//%s%s'% ( urlHost, os.path.dirname( urlPath ) )
+							mountCmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, self.mNetVolume.mMountPath )
+						elif urlType == 'nfs' :
+							remotePath = '%s:%s'% ( urlHost, os.path.dirname( urlPath ) )
+							mountCmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, self.mNetVolume.mMountPath )
+						elif urlType == 'ftp' :
+							remotePath = '%s:%s'% ( urlHost, os.path.dirname( urlPath ) )
+							mountCmd = 'modprobe fuse && curlftpfs %s:%s -o user=%s:%s,allow_other'% ( remotePath, self.mNetVolume.mMountPath, urlUser, urlPass  )
+							pass
+						self.mNetVolume.mMountCmd = mountCmd
 						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
 						LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
-						#self.mNetVolume.printdebug( )
+						self.mNetVolume.printdebug( )
+						return
 
 						lblLine = MR_LANG( 'The path could not be mounted' )
 						if mountPath != '' :
