@@ -1943,6 +1943,8 @@ class DataCacheMgr( object ) :
 		self.LoadChannelList( )
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 		if aDefaultTune :
 			#self.Channel_TuneDefault( mCurrentChannel )

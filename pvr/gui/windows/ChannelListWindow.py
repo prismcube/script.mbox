@@ -1941,6 +1941,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
 					isSave = self.mDataCache.Channel_Save( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 					#### data cache re-load ####
 					self.mDataCache.SetSkipChannelView( False )

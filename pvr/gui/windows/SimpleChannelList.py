@@ -434,11 +434,12 @@ class SimpleChannelList( BaseWindow ) :
 		loopCount = 0
 		strNoEvent = MR_LANG( 'No event' )
 
-		if not self.mListItems or self.mDataCache.GetChannelReloadStatus( ) :
+		if not self.mListItems :
 			self.mListItems = []
 			self.mCtrlBigList.reset( )
 			currentTime = self.mDataCache.Datetime_GetLocalTime( )
 			runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+			LOG_TRACE( '[SimpleChannelList] reset items' )
 
 			for iChannel in self.mChannelList :
 				iChNumber = iChannel.mNumber
@@ -680,6 +681,29 @@ class SimpleChannelList( BaseWindow ) :
 
 
 	def UpdateShortCutGroup( self, aMove = 1 ) :
+		if self.mChangeMode : #show group list
+			selectPos = self.mCtrlGroupList.getSelectedPosition( )
+			if selectPos < 0 :
+				LOG_TRACE( 'pass, select none' )
+				return
+			nextIdx = selectPos + aMove
+			totCount = self.mCtrlGroupList.size( )
+			#LOG_TRACE( '[SimpleChannelList]listTotal[%s] selectIdx[%s] nextIdx[%s]'% ( totCount, selectPos, nextIdx ) )
+			if nextIdx < 1 :
+				nextIdx = totCount - 1
+			elif nextIdx >= totCount :
+				nextIdx = 1
+			self.mCtrlGroupList.selectItem( nextIdx )
+
+			nextGroup = self.mCtrlGroupList.getListItem( nextIdx ).getLabel( )
+			time.sleep( 0.02 )
+			lblPath = EnumToString( 'mode', self.mChangeMode.mMode )
+			if nextGroup :
+				lblPath = '%s > [COLOR grey3]%s[/COLOR]'% ( lblPath, nextGroup )
+
+			self.setProperty( 'SimpleChannelPath', lblPath )
+			return
+
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
 			LOG_TRACE( '[SimpleChannelList] pass, currrent mode All Channels' )
 			return
@@ -692,7 +716,6 @@ class SimpleChannelList( BaseWindow ) :
 		if not self.mUserGroup :
 			LOG_TRACE( '[SimpleChannelList] pass, current group None' )
 			return
-
 
 		nextIdx = self.mGroupIndex + aMove
 		if nextIdx < 0 :
