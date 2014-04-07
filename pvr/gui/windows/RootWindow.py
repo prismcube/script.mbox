@@ -30,9 +30,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					if E_SUPPROT_HBBTV == True :
-						self.mCommander.AppHBBTV_Ready( 1 )						
-						self.mCommander.AppHBBTV_Ready( 0 )
-						#self.mDataCache.Splash_StartAndStop( 0 )
+						#self.mCommander.AppHBBTV_Ready( 1 )						
+						#self.mCommander.AppHBBTV_Ready( 0 )
+						self.mDataCache.Splash_StartAndStop( 0 )
 					self.mInitialized = True
 					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -97,7 +97,15 @@ class RootWindow( xbmcgui.WindowXML ) :
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 				"""
 			else :
-				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+				if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+					if aAction.getId( ) != Action.ACTION_PREVIOUS_MENU :
+						LOG_ERR("Do nothing in HBBTV Mode");
+						return
+					else :
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser()
+						return
+				else :
+					WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :

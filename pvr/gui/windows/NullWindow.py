@@ -225,9 +225,9 @@ class NullWindow( BaseWindow ) :
 
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			if self.mHbbTVShowing == True :		
-				self.HbbTV_HideBrowser()
-				return
+			#if self.mHbbTVShowing == True :		
+			#	self.HbbTV_HideBrowser()
+			#	return
 				
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				self.CloseSubTitle( )			
@@ -255,9 +255,9 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if self.mHbbTVShowing == True :		
-				self.HbbTV_HideBrowser()
-				return
+			#if self.mHbbTVShowing == True :		
+			#	self.HbbTV_HideBrowser()
+			#	return
 		
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
