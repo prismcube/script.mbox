@@ -1517,6 +1517,8 @@ class NullWindow( BaseWindow ) :
 
 
 	def HbbTV_MediaPlayerSeek( self, aSeek ) :
-		pass	
+		LOG_ERR( 'self.mHBBTVReady[%s], self.HbbTV_MediaPlayerSeek[%s]'% ( self.mHBBTVReady, aSeek ) )
+		if self.mMediaPlayerStarted == True :
+			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )	
 	
 	
