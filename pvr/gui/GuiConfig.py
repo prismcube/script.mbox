@@ -482,6 +482,9 @@ E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
 E_VOLITILE_PIP_STATUS_PATH = '/mtmp/PIPStatus'
+E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
+E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
+E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False

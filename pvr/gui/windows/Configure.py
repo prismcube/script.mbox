@@ -769,6 +769,10 @@ class Configure( SettingWindow ) :
 		failCount = 0
 		failItem = ''
 		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
+
 		self.SetControlLabelString( E_Input03, '' )
 		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
 		for netVolume in volumeList :
@@ -792,6 +796,7 @@ class Configure( SettingWindow ) :
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
+			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
 			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
 			os.system( 'sync' )
 			time.sleep( 1 )

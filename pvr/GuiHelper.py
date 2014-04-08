@@ -1322,6 +1322,7 @@ def IsIPv4( address ) :
 
 
 def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
+	urlType = urlparse.urlparse( aUrl ).scheme
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1362,7 +1363,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		cmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, aSmbPath )
 	elif urlType == 'ftp' :
 		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
-		cmd = 'modprobe fuse && curlftpfs %s:%s -o user=%s:%s,allow_other'% ( urlUser, urlPass, remotePath, aSmbPath )
+		cmd = 'modprobe fuse && curlftpfs %s %s -o user=%s:%s,allow_other'% ( remotePath, aSmbPath, urlUser, urlPass )
 
 	LOG_TRACE( 'remotePath[%s] mountPath[%s] cmd[%s]'% ( remotePath, aSmbPath, cmd ) )
 

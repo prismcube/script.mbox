@@ -17,10 +17,6 @@ E_DEFAULT_PATH_NETWORK_VOLUME = 1
 E_ID_NO  = 0
 E_ID_YES = 1
 
-E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
-E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
-E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
-
 
 class DialogMountManager( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -266,11 +262,10 @@ class DialogMountManager( SettingDialog ) :
 					elif urlType == 'nfs' :
 						isFail = False
 						self.mInputMountPath = E_DEFAULT_PATH_NFS_POSITION
-						pass
 
 					elif urlType == 'ftp' :
+						isFail = False
 						self.mInputMountPath = E_DEFAULT_PATH_FTP_POSITION
-						pass
 
 					else :
 						# upnp, zeroconf, daap, ...
@@ -291,7 +286,9 @@ class DialogMountManager( SettingDialog ) :
 			self.mNetVolume.mRemotePath = '//' + lblPath
 			self.mNetVolume.mRemoteFullPath = getPath
 			lblMount = os.path.basename( lblPath )
-			self.mNetVolume.mMountPath = os.path.join( E_DEFAULT_PATH_SMB_POSITION, lblMount )
+			self.mNetVolume.mMountPath = ''
+			if lblMount : # select root? then mount name is None
+				self.mNetVolume.mMountPath = os.path.join( self.mInputMountPath, lblMount )
 			self.SetControlLabel2String( E_DialogInput05, lblPath )
 			self.SetControlLabel2String( E_DialogInput06, lblMount )
 			LOG_TRACE( 'lblPath[%s] remote[%s] fullpath[%s] mountPath[%s]'% ( lblPath, self.mNetVolume.mRemotePath, self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath ) )
@@ -313,7 +310,15 @@ class DialogMountManager( SettingDialog ) :
 			isConfirmed = kb.isConfirmed( )
 			mntName = kb.getText( )
 			if not isConfirmed or mntName == None or mntName == '' :
-				LOG_TRACE('[Edit] No favName or cencel')
+				LOG_TRACE('[Edit] No name or cencel')
+				return
+
+			symbolPattern = '\'|\"|\%|\^|\&|\*|\`'
+			if bool( re.search( symbolPattern, mntName, re.IGNORECASE ) ) :
+				LOG_TRACE( '[Edit] invalid characters' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'That name contains invalid characters' ) )
+				dialog.doModal( )
 				return
 
 			self.mNetVolume.mMountPath = os.path.join( self.mInputMountPath, mntName )
@@ -394,13 +399,12 @@ class DialogMountManager( SettingDialog ) :
 							mountCmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, self.mNetVolume.mMountPath )
 						elif urlType == 'ftp' :
 							remotePath = '%s:%s'% ( urlHost, os.path.dirname( urlPath ) )
-							mountCmd = 'modprobe fuse && curlftpfs %s:%s -o user=%s:%s,allow_other'% ( remotePath, self.mNetVolume.mMountPath, urlUser, urlPass  )
-							pass
+							mountCmd = 'modprobe fuse && curlftpfs %s %s -o user=%s:%s,allow_other'% ( remotePath, self.mNetVolume.mMountPath, urlUser, urlPass  )
+
 						self.mNetVolume.mMountCmd = mountCmd
 						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
-						LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
-						self.mNetVolume.printdebug( )
-						return
+						#LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
+						#self.mNetVolume.printdebug( )
 
 						lblLine = MR_LANG( 'The path could not be mounted' )
 						if mountPath != '' :
@@ -428,6 +432,9 @@ class DialogMountManager( SettingDialog ) :
 									# Add fail then restore umount
 									os.system( '/bin/umount -f %s'% mountPath )
 									os.system( 'sync' )
+
+				else :
+					lblLine = MR_LANG( 'Please input path name' )
 
 			elif aInput == E_DialogInput02 :
 				if self.mMode != E_NETWORK_VOLUME_SELECT :
@@ -544,7 +551,7 @@ class DialogMountManager( SettingDialog ) :
 				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
 				urlType   = urlparse.urlparse( getPath ).scheme
 				lblMount  = os.path.basename( self.mNetVolume.mMountPath )
-				lblSelect = '[%s] %s'% ( urlType, lblMount )
+				lblSelect = '[%s] %s'% ( urlType.upper(), lblMount )
 				lblRemote = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
 				isDefault = self.mNetVolume.mIsDefaultSet
 				is4Gb     = self.mNetVolume.mSupport4G
@@ -746,6 +753,9 @@ class DialogMountManager( SettingDialog ) :
 			return
 
 		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
 		for netVolume in self.mNetVolumeList :
 			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
 			os.system( 'echo \"%s\" >> /config/smbReserved.info'% netVolume.mMountCmd )
