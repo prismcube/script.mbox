@@ -183,6 +183,8 @@ class DataCacheMgr( object ) :
 		self.mSavedResolution					= self.GetResolution( True )
 		self.mIsMediaCenterUi					= False
 
+		self.mHbbTVEnable = False
+
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
 
@@ -1177,6 +1179,9 @@ class DataCacheMgr( object ) :
 
 		if self.mRootWindow :
 			self.mRootWindow.setProperty( 'Signal', 'True' )
+
+		if self.mCurrentChannel and aChannelNumber != self.mCurrentChannel.mNumber :
+			self.SetHbbTVEnable( False )
 
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			if aTemporaryHash :
@@ -3414,4 +3419,14 @@ class DataCacheMgr( object ) :
 
 	def GetMediaCenterUI( self ) :
 		return self.mIsMediaCenterUi
+
+
+	def SetHbbTVEnable( self, aEnable ) :
+		LOG_TRACE( 'SetHbbTVEnable=%s' %aEnable )
+		self.mHbbTVEnable = aEnable
+
+
+	def GetHbbTVEnable( self ) :
+		LOG_TRACE( 'GetHbbTVEnable=%s' %self.mHbbTVEnable )
+		return self.mHbbTVEnable
 
