@@ -129,7 +129,7 @@ Search for window name
 				<posy>80r</posy>
 				<width>180</width>
 				<height>51</height>
-				<texture>multifeed.png</texture>
+				<texture>hbbtv4.png</texture>
 				<visible>substring(Window.Property(EnableHbbTV),True)</visible>				
 			</control>
 			
