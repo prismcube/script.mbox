@@ -324,7 +324,7 @@ class GlobalEvent( object ) :
 		
 			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
 				#ToDO
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSeek( 0 )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSeek( aEvent.mSeekPosition )
 		
 			elif aEvent.getName( ) == ElisEventExternalMediaPlayerStopPlay.getName( ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStop(  )
@@ -837,7 +837,8 @@ class GlobalEvent( object ) :
 
 			elif aEvent.mValue == "False" :
 				if liveWindow.mHbbTVShowing == True :
-					liveWindow.HbbTV_MediaPlayerStop()
+					#liveWindow.HbbTV_MediaPlayerStop()
+					pass
 				else :
 					liveWindow.CheckMediaCenter()
 
