@@ -160,7 +160,10 @@ class FTIWindow( SettingWindow ) :
 		tuner1ConfiguredSatellites = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )
 		tuner2ConfiguredSatellites = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 )
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
-			loopcount = 2
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				loopcount = 1
+			else :
+				loopcount = 2
 			configuredsatellitecnt.append( len( tuner1ConfiguredSatellites ) )
 			configuredsatellitecnt.append( len( tuner2ConfiguredSatellites ) )
 		else :

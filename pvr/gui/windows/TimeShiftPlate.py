@@ -106,6 +106,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onInit( self ) :
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support' ) )
+			dialog.doModal( )
+			WinMgr.GetInstance( ).CloseWindow( )
+			return
+
 		self.SetActivate( True )
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		if playingRecord :

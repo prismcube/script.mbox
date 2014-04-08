@@ -15,7 +15,6 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 	def onInit( self ) :
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
-		print 'self.mInitialized=%s' %self.mInitialized
 
 		UpdateMonthTranslation( )
 		UpdateWeekdayTranslation( )
@@ -72,52 +71,28 @@ class RootWindow( xbmcgui.WindowXML ) :
 							WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
 						else :
 							WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).show( )
+
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
+			import traceback
+			LOG_ERR( 'Exception root window %s traceback = %s' % ex, traceback.format_exc( ) )
 
 
 	def onAction( self, aAction ) :
-		#LOG_TRACE( '=========== ROOT ============= action=%d' %aAction.getId( ) )
-		#LOG_TRACE( '=========== ROOT ============= getfocus=%d' %self.getFocusId( ) )
-
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
-			if aAction.getId( ) == Action.ACTION_MBOX_RESERVED22 :
-				pass
-				"""
-				LOG_TRACE( 'XBMCPLAY_TEST -----------START ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
-				#if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
-				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-				LOG_TRACE( 'XBMCPLAY_TEST -----------START2 ------------- %d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
-				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
-				#WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).onAction( aAction )
-				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
-				"""
-			else :
-				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
+				return
+			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
 				if aAction.getId() == Action.ACTION_MBOX_RESERVED21 :
-					print 'action show gui : domodal new window'
 					if self.mInitialized == False :
 						pass
 					else :
-						print '>>>>>>now domodal'
 						WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
-						print '<<<<<<now domodal out'
 						xbmc.executebuiltin('xbmc.Action(dvbres21)')
 
-		"""
-		actionId = aAction.getId( )
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
-			LOG_ERR( '------------- Root Window -------------' )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-		"""
-			
-				
+
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :

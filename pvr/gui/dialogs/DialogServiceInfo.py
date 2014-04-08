@@ -112,7 +112,6 @@ class DialogServiceInfo( BaseDialog ) :
 
 
 	def SetTuningStatus( self, aEvent ) :
-		print 'dhkim test strength=%s quality=%s locked=%s' % ( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 		if aEvent.mIsLocked :
 			self.mCtrlStrength.setLabel( '%s%%' % aEvent.mSignalStrength )
 			self.mCtrlQuality.setLabel( '%s%%' % aEvent.mSignalQuality )

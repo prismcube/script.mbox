@@ -8,6 +8,7 @@ import xbmcgui
 import urllib
 import stat
 from subprocess import *
+from Product import *
 
 
 gPlatform = None
@@ -36,7 +37,9 @@ def GetPlatform( ) :
 		elif 'linux' == gPlatformName or 'linux2' == gPlatformName :
 			gPlatform = LinuxPlatform( )
 		elif 'NXP BL-STB' == gPlatformName :
-			gPlatform = PrismCubePlatform( )
+			gPlatform = PrismCubePlatform( PRODUCT_RUBY )
+		elif 'Entropic STB' == gPlatformName :
+			gPlatform = PrismCubePlatform( PRODUCT_OSCAR )
 		elif 'darwin' == gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
@@ -182,6 +185,10 @@ class Platform( object ) :
 		return False
 
 
+	def GetProduct( self ) :
+		return PRODUCT_RUBY
+
+
 	def GetMediaPath( self, aMediaFile ) :
 		# TODO: Fix when we support multiple skins
 		return os.path.join( self.GetScriptDir( ), 'resources', 'skins', 'Default', 'media', aMediaFile )
@@ -205,6 +212,7 @@ class PrismCubePlatform( Platform ) :
 
 	def __init__( self, *args, **kwargs ) :
 		Platform.__init__( self, *args, **kwargs )
+		self.mProduct = args[0]
 
 
 	def GetName( self ) :
@@ -217,6 +225,10 @@ class PrismCubePlatform( Platform ) :
 
 	def IsPrismCube( self ) :
 		return True
+
+
+	def GetProduct( self ) :
+		return self.mProduct
 
 
 	def IsRootfUbiFs( self ) :

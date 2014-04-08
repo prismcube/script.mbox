@@ -75,7 +75,7 @@ class Configure( SettingWindow ) :
 		self.mWifiSubnet			= 'None'
 		self.mWifiGateway			= 'None'
 		self.mWifiDns				= 'None'
-		self.mUseStatic				= False
+		self.mUseStatic				= NET_DHCP
 
 		self.mCheckNetworkTimer		= None
 		self.mStateNetLink			= 'Busy'
@@ -894,23 +894,29 @@ class Configure( SettingWindow ) :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode if you press \'Standby\' button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for switching into standby mode when not being used' ) )
-			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
+			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
+				self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
-			self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
-			#self.AddInputControl( E_Input01, MR_LANG( 'Advanced Options'), '', MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) )
-
+			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
+				self.AddEnumControl( E_SpinEx06, 'HDD Sleep Mode', MR_LANG( 'HDD Sleep Mode' ), MR_LANG( 'When set to \'On\', the hard drive is turned off when the system goes into active standby mode' ) )
 			if E_V1_1_UPDATE_NOTIFY :
 				self.AddUserEnumControl( E_SpinEx07, MR_LANG( 'Update Notification' ), USER_ENUM_LIST_UPDATE_NOTIFY, self.mUpdateNotify, MR_LANG( 'Adjust notification frequency for firmware update' ) )
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
-				hideControlIds = [ E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-			else :
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01 ]
-				hideControlIds = [ E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
+
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.SetVisibleControl( E_SpinEx03, False )
+				self.SetVisibleControl( E_SpinEx06, False )
+
+			if not E_V1_1_UPDATE_NOTIFY :
+				self.SetVisibleControl( E_SpinEx07, False )
+
 			self.InitControl( )
 
 		else :
@@ -1501,23 +1507,8 @@ class Configure( SettingWindow ) :
 			if self.mUpdateNotify == 1 :
 				SetSetting( 'UPDATE_NOTIFY_COUNT', '0' )
 
-		elif aGroupId == E_Input01 :
-			settings = xbmcaddon.Addon( 'script.mbox' )
-			settings.openSettings(True,1)
-			self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
-			self.ShowClockOnVFD( )
-
 		else :
 			self.ControlSelect( )
-
-
-	def ShowClockOnVFD( self ) :
-		VFDClock = GetSetting( 'DISPLAY_CLOCK_VFD' )
-		if VFDClock == 'true' :
-			ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 1 )
-		else :
-			ElisPropertyEnum( 'FrontDisplay Function', self.mCommander ).SetProp( 0 )
-			self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 
 
 	def ShowFavoriteGroup( self ) :

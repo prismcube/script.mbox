@@ -81,7 +81,8 @@ BUTTON_ID_FOCUS_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
 LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3503
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
-BUTTON_ID_BASE_RUNNNING_REC		= E_EPG_WINDOW_BASE_ID + 3601
+BUTTON_ID_BASE_RUNNNING_REC_1	= E_EPG_WINDOW_BASE_ID + 3601
+BUTTON_ID_BASE_RUNNNING_REC_2	= E_EPG_WINDOW_BASE_ID + 3602
 BUTTON_ID_BASE_SCHEDULED		= E_EPG_WINDOW_BASE_ID + 3701
 BUTTON_ID_BASE_SCHEDULED_VIEW	= E_EPG_WINDOW_BASE_ID + 3801
 
@@ -2793,17 +2794,19 @@ class EPGWindow( BaseWindow ) :
 
 
 	def InitGridEPGButtons( self ) :
+		self.mCtrlRecButtonList = []
+		ctrlButton = self.getControl( BUTTON_ID_BASE_RUNNNING_REC_1 )
+		ctrlButton.setVisible( False )
+		self.mCtrlRecButtonList.append( ctrlButton )
+		ctrlButton = self.getControl( BUTTON_ID_BASE_RUNNNING_REC_2 )
+		ctrlButton.setVisible( False )
+		self.mCtrlRecButtonList.append( ctrlButton )
+
 		self.mCtrlGridEPGButtonList = []
 		for i in range( E_GRID_MAX_BUTTON_COUNT ):
 			ctrlButton = self.getControl(BUTTON_ID_BASE_GRID + i)
 			ctrlButton.setVisible( False )
 			self.mCtrlGridEPGButtonList.append( ctrlButton )
-
-		self.mCtrlRecButtonList = []
-		for i in range( E_MAX_RECORD_COUNT ):
-			ctrlButton = self.getControl(BUTTON_ID_BASE_RUNNNING_REC + i)
-			ctrlButton.setVisible( False )
-			self.mCtrlRecButtonList.append( ctrlButton )
 
 		self.mCtrlScheduledButtonList = []
 		for i in range( E_GRID_SCHEDULED_BUTTON_COUNT ):

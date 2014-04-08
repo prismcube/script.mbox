@@ -4146,7 +4146,7 @@ class ChannelListWindow( BaseWindow ) :
 				isChangeDuration = True
 
 		isOK = False
-		if isRunRec < 2 or isChangeDuration :
+		if isRunRec < E_MAX_RECORD_COUNT or isChangeDuration :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
