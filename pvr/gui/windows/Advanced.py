@@ -10,6 +10,7 @@ E_ADVANCED_DEFAULT_FOCUS_ID	=  E_ADVANCED_SUBMENU_LIST_ID
 
 E_APPEARANCE			= 0
 E_LIVESTREAM			= 1
+E_CEC					= 2
 
 FILE_NAME_HBB_TV		= '/config/hbbtv'
 
@@ -34,8 +35,8 @@ class Advanced( SettingWindow ) :
 
 		leftGroupItems			= [
 		MR_LANG( 'Appearance' ),
-		#MR_LANG( 'HBB TV' ),
-		MR_LANG( 'Experimental' ) ]
+		MR_LANG( 'Experimental' ),
+		MR_LANG( 'CEC' ) ]
 
 		self.mGroupItems = []
 		for i in range( len( leftGroupItems ) ) :
@@ -43,8 +44,8 @@ class Advanced( SettingWindow ) :
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'You can customise the appearance of PRISMCUBE RUBY' ),
-		#MR_LANG( 'HBB TV Settings' ),
-		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ) ]
+		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
+		MR_LANG( 'CEC Control' ) ]
 	
 		self.setFocusId( E_ADVANCED_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
@@ -166,6 +167,9 @@ class Advanced( SettingWindow ) :
 				else :
 					self.SetHbbTv( False )
 
+		elif selectedId == E_CEC :
+			self.ControlSelect( )
+
 
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
@@ -198,9 +202,12 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Show Next EPG Notification' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) ), MR_LANG( 'Allows you to display next EPG notification on live screen' ) )
 
-			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			#self.SetVisibleControls( visibleControlIds, True )
-			#self.SetEnableControls( visibleControlIds, True )
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05 ]
+			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 			
@@ -211,11 +218,26 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'HBB TV' ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'HBB TV on/off' ) )
 
-			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			#self.SetVisibleControls( visibleControlIds, True )
-			#self.SetEnableControls( visibleControlIds, True )
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05 ]
+			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+
+		elif selectedId == E_CEC :
+			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
+			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'CEC Contrl Enable' ), MR_LANG( 'CEC on/off' ) )
+			self.AddEnumControl( E_SpinEx02, 'CEC TV On', MR_LANG( 'CEC TV On' ), MR_LANG( 'CEC TV On' ) )
+			self.AddEnumControl( E_SpinEx03, 'CEC TV Off', MR_LANG( 'CEC TV Off' ), MR_LANG( 'CEC TV Off' ) )
+			self.AddEnumControl( E_SpinEx04, 'CEC STB On', MR_LANG( 'CEC STB On' ), MR_LANG( 'CEC STB On' ) )
+			self.AddEnumControl( E_SpinEx05, 'CEC STB Off', MR_LANG( 'CEC STB Off' ), MR_LANG( 'CEC STB Off' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 		else :
 			LOG_ERR( 'Could not find the selected ID' )
