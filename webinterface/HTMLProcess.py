@@ -10,7 +10,7 @@ import os
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
-	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer, Screenshot, getScreenshot]
+	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer, Screenshot, Record, getScreenshot]
 
 	htmlClass.append(EpgGrid)
 	htmlClass.append(RecordingDel)
