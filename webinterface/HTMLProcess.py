@@ -997,7 +997,7 @@ class Screenshot( WebPage ) :
 
 	def screenshotContent( self, command ) :
 		os.system( '/usr/bin/grab -j 75' )
-		content = """<img src="getScreenshot" width="640">"""
+		content = """<img src="getScreenshot" width="920">"""
 
 		return self.getBasicTemplate( content )
 
