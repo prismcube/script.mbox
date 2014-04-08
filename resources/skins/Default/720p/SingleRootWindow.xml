@@ -7301,7 +7301,7 @@ Search for window name
 							<textcolor>grey2</textcolor>
 							<font>font10</font>
 							<align>left</align>
-							<label>Satellite</label>
+							<label>SCRIPT1204</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7323,7 +7323,7 @@ Search for window name
 							<textcolor>grey2</textcolor>
 							<font>font10</font>
 							<align>left</align>
-							<label>FTA/CAS</label>
+							<label>SCRIPT1003</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7345,7 +7345,7 @@ Search for window name
 							<textcolor>grey2</textcolor>
 							<font>font10</font>
 							<align>left</align>
-							<label>Provider</label>
+							<label>SCRIPT1205</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7367,7 +7367,7 @@ Search for window name
 							<textcolor>grey2</textcolor>
 							<font>font10</font>
 							<align>left</align>
-							<label>Favorite</label>
+							<label>SCRIPT1206</label>
 						</control>
 					</control>
 				</control>

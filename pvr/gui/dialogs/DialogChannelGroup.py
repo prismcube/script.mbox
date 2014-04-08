@@ -284,7 +284,7 @@ class DialogChannelGroup( BaseDialog ) :
 
 	def DoChangeToZappingMode( self ) :
 		isFail = False
-		lblLine = MR_LANG( 'Can not change this group' )
+		lblLine = MR_LANG( 'Could not change the group' )
 
 		isSelect = self.mLastSelected
 
@@ -384,7 +384,7 @@ class DialogChannelGroup( BaseDialog ) :
 
 			else :
 				isFail = True
-				lblLine = MR_LANG( 'Failed to change this group' )
+				lblLine = MR_LANG( 'Failed to change the group' )
 				raise Exception, 'Failed Zappingmode_SetCurrent'
 
 		except Exception, e :

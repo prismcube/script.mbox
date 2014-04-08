@@ -948,7 +948,7 @@ class DialogPIP( BaseDialog ) :
 						isFail = True
 						curMode = EnumToString( 'mode', self.mCurrentMode.mMode )
 						lblTitle = MR_LANG( 'Error' )
-						lblMsg = MR_LANG( 'No service channel this mode' )
+						lblMsg = MR_LANG( 'No service channel available' )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( lblTitle, lblMsg )
 						dialog.doModal( )
