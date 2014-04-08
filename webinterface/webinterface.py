@@ -4,6 +4,7 @@ import pvr.ElisMgr
 import pvr.NetConfig as NetConfig
 import sys
 import urllib2 as urllib
+from urllib import urlencode
 from os import curdir, sep
 import xbmcaddon
 import dbopen
@@ -130,7 +131,9 @@ class MyHandler( BaseHTTPRequestHandler ):
 
 			self.__addon__ = xbmcaddon.Addon( id='script.mbox' )
 			self.fullPath = self.__addon__.getAddonInfo( 'path' )
+			
 		except Exception, err :
+			print '[GET]'
 			print str(err)
 
 		self.serving()
@@ -364,6 +367,7 @@ class MyHandler( BaseHTTPRequestHandler ):
 			return
 
 		except IOError, er:
+		
 			print str(er)
 			self.send_error(404, 'File not found')
 
@@ -492,10 +496,20 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			self.unRef['comment'] = source[10]			#11
 			
 		except :
-
-			print 
+			pass 
 
 def index():
+
+	#connect to find.prismcube.com server to pass the self-information
+	try :
+		data = {'ip' : str(getMyIp()) }
+		data = urlencode( data )
+		f = urllib.urlopen("http://www.fwupdater.com/prismcube/index.html", data, 3)
+		
+	except Exception, err:
+		print '[Find]'
+		print str(err)
+
 	try :
 		server = HTTPServer( ('', 1313), MyHandler )
 		server.serve_forever()

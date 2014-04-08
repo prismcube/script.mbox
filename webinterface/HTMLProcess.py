@@ -10,8 +10,9 @@ import os
 def GetHTMLClass( className, *param ) :
 
 	# enlist every file to be processed by program 
-	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer]
+	htmlClass = [RemoteControl, Channel, ChannelBySatellite, ChannelByCas, ChannelByFavorite, Zapping, Epg, Recordings, Timer, Record]
 	htmlClass.append(EpgGrid)
+	htmlClass.append(RecordingDel)
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -67,6 +68,14 @@ class WebPage( object ) :
 
 		return self.content
 
+	def GetParams( self, command ) :
+		params = {}
+		args = command.split('&')
+		for arg in args :
+			temp = arg.split('=') 
+			params[temp[0]] = temp[1]
+		return params
+
 	def ResetChannelListOnChannelWindow( self, channelList, mMode ) :
 
 		self.currentZappingMode = self.mDataCache.Zappingmode_GetCurrent()
@@ -100,6 +109,13 @@ class WebPage( object ) :
 						document.getElementById(icon).style.visibility = 'hidden';
 					}
 
+					function delRecord( target ) {
+						if( confirm("Are You Sure To Delete the Selected Fild?") ) {
+							document.recordDel.key.value = target;
+							document.recordDel.submit();
+						}
+					}
+
 				</script>
 			<body>
 			
@@ -125,6 +141,17 @@ class WebPage( object ) :
 
 					<div id='content'>
 					%s
+
+					<form name="recordForm" action="Record" method="post">
+						<input type="hidden" name="sid">
+						<input type="hidden" name="tsid">
+						<input type="hidden" name="onid">
+					</form>
+
+					<form name="recordDel" action="RecordingDel" method="get">
+						<input type="hidden" name="key">
+					</form>
+					
 					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
 					</div>
 					
@@ -188,6 +215,8 @@ class Channel( WebPage ) :
 				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + cls.mName +'</p></td>'
 				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(cls.mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
 				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(cls.mSid) + ',' + str(cls.mTsid) + ',' + str(cls.mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+				# content += '<td align="center" width="100"><p class="channelContent"><a href="Record?sid='+str(cls.mSid)+'&tsid='+str(cls.mTsid)+'&onid='+str(cls.mOnid)+'"><img src="./uiImg/record.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(cls.mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p></td>'
 				content += '</tr>'
 
 			self.ResetChannelListOnChannelWindow( self.allChannel, ElisEnum.E_MODE_ALL ) 
@@ -311,6 +340,15 @@ class Channel( WebPage ) :
 						window.open( target, 'epg', 'width=500, height=500, scrollbars=1');
 					}
 
+					function JumpToRecord( channelNumber ) {
+						var duration = prompt("Please Enter Duration Time (in Min) for the Recording");
+						if( duration ) {
+							document.recordForm.channelNumber.value = channelNumber;
+							document.recordForm.duration.value = duration;
+							document.recordForm.submit();
+						} 
+					}
+
 				</script>
 				<script>
 				// invoke blockUI as needed -->
@@ -359,6 +397,11 @@ class Channel( WebPage ) :
 
 					<div id='content'>
 					%s
+					<form name="recordForm" action="Record" method="get" target="zapper">
+						<input type="hidden" name="channelNumber">
+						<input type="hidden" name="duration">
+					</form>
+					
 					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
 					</div>
 					
@@ -402,8 +445,6 @@ class Channel( WebPage ) :
 			submenu += """<td><img id='icon5' src='./uiImg/mode.png' border='0'></td>"""
 		else :
 			submenu += """<td><a href='Channel?mode' onmouseover="javascript:showColor(5, 'mode');" onmouseout="javascript:hideColor(5, 'mode');"><img id='icon5' src='./uiImg/mode_bw.png' border='0'></a></td>"""
-
-		print submenu
 
 		return submenu
 
@@ -697,15 +738,16 @@ class ChannelBySatellite( Channel ) :
 				content += '<td align="center"><p class="channelContent">' + str( channelList[indexer].mNumber ) + '</p></td>'
 				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName + '</p></td>'
 				content += '<td align="center"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
-				content += '<td align="center"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td></tr>'
+				content += '<td align="center"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(channelList[indexer].mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p></td></tr>'
 				
 			except IndexError :
-				content += '<td>&nbsp;</td><td>&nbsp;</td>'
+				content += '<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>'
 				content += '<td>&nbsp;</td><td>&nbsp;</td></tr>'
 				chEnd = True
 
 			except TypeError :
-				content += '<td>&nbsp;</td><td>&nbsp;</td>'
+				content += '<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>'
 				content += '<td>&nbsp;</td><td>&nbsp;</td></tr>'
 				chEnd = True
 
@@ -762,10 +804,11 @@ class ChannelByCas( Channel ) :
 				
 				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
 				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
-
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(channelList[indexer].mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p></td>'
 				content += "</tr>"
 
 			except IndexError :
+				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
@@ -834,15 +877,20 @@ class ChannelByFavorite( Channel ) :
 				content += '<td width="200"><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName + '</p></td>'
 				content += '<td align="center" width="100"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) +'" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
 				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(channelList[indexer].mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p></td>'
 				content += "</tr>"
+
 			except IndexError :
+				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "</tr>"
 				chEnd = True
+
 			except TypeError :
+				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
 				content += "<td>&nbsp;</td>"
@@ -955,7 +1003,7 @@ class Recordings( WebPage ) :
 
 		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
 		
-		for rec in recordingList :
+		for rec in reversed(recordingList) :
 
 			recDuration =  int( rec.mDuration / 60 )
 			if ( rec.mDuration % 60 ) != 0 :
@@ -973,7 +1021,8 @@ class Recordings( WebPage ) :
 				content += '	<tr>'
 				content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
 				content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
-				content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a></td>' % str(rec.mRecordKey)
+				content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a>' % str(rec.mRecordKey)
+				content += '		<br><a href="javascript:delRecord(%s)"><img src="./uiImg/Delete.png" border="0"></a></td>'  % str(rec.mRecordKey)
 				content += '	</tr>'
 				content += '	<tr>'
 				content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
@@ -1121,5 +1170,132 @@ class EpgGrid( WebPage ) :
 		
 		return self.getBasicTemplate( content ) 
 
+class Record( WebPage ) :
+
+	def __init__( self, command ) :
+		super(Record, self).__init__()
+		self.content = "Record Class"
+
+		self.stationInfo = self.GetParams( command[0] )		
+		self.StartRecordingWithoutAsking()
+
+	def StartRecordingWithoutAsking( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		if HasAvailableRecordingHDD( ) == False :
+			return
+
+		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
+		isOK = False
+
+		if mTimer :
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			#dialog.doModal( )
+
+			#if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+			#	RecordConflict( dialog.GetConflictTimer( ) )
+
+			return
+
+		elif runningCount < 2 :
+			copyTimeshift = 0
+			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
+			localTime = self.mDataCache.Datetime_GetLocalTime( )				
+
+			#check ValidEPG
+			hasValidEPG = False
+			if otrInfo.mHasEPG :
+				if localTime >= otrInfo.mEventStartTime  and localTime < otrInfo.mEventEndTime :
+					hasValidEPG = True
+
+			if hasValidEPG == False :
+				otrInfo.mHasEPG = False
+				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+				otrInfo.mExpectedRecordDuration = prop.GetProp( )
+				otrInfo.mEventStartTime = localTime
+				otrInfo.mEventEndTime = localTime +	otrInfo.mExpectedRecordDuration
+				otrInfo.mEventName = self.mDataCache.Channel_GetCurrent( ).mName
+
+			if otrInfo.mTimeshiftAvailable :
+				timeshiftRecordSec = int( otrInfo.mTimeshiftRecordMs/1000 )
+				LOG_TRACE( 'mTimeshiftRecordMs=%dMs : %dSec' %(otrInfo.mTimeshiftRecordMs, timeshiftRecordSec ) )
+			
+				if otrInfo.mHasEPG == True :			
+				
+					copyTimeshift  = localTime - otrInfo.mEventStartTime
+					LOG_TRACE( 'copyTimeshift #3=%d' %copyTimeshift )
+					if copyTimeshift > timeshiftRecordSec :
+						copyTimeshift = timeshiftRecordSec
+					LOG_TRACE( 'copyTimeshift #4=%d' %copyTimeshift )
+				else :
+					self.ShowRecordingStartDialog( )
+					return
+
+			LOG_TRACE( 'copyTimeshift=%d' %copyTimeshift )
+
+			if copyTimeshift <  0 or copyTimeshift > 12*3600 : #12hour * 60min * 60sec
+				copyTimeshift = 0
+
+			#expectedDuration =  self.mEndTime - self.mStartTime - copyTimeshift
+			expectedDuration = otrInfo.mEventEndTime - localTime - 5 # 5sec margin
+
+			LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
+
+			if expectedDuration < 0:
+				LOG_ERR( 'Error : Already Passed' )
+				expectedDuration = 0
+
+			print '[Record]'
+			print self.stationInfo['channelNumber']
+			print self.stationInfo['duration']
+
+			# ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, int(self.stationInfo['sid']),  int(self.stationInfo['tsid']), int(self.stationInfo['onid']) )
+			ret = self.mDataCache.Timer_AddManualTimer( int(self.stationInfo['channelNumber']), 1, localTime + 10, int(self.stationInfo['duration']), 'Web UI Recordings', 0 )
+
+			#if ret[0].mParam == -1 or ret[0].mError == -1 :
+			LOG_ERR( 'StartDialog ret=%s ' %ret )
+			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
+				LOG_ERR( 'StartDialog ' )
+				#RecordConflict( ret )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+					RecordConflict( dialog.GetConflictTimer( ) )
+
+			else :
+				isOK = True
+
+		else:
+			#msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			#dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
+			#dialog.doModal( )
+			pass
+			
+
+		if isOK :
+			#self.SetBlinkingProperty( 'True' )
+			#self.mEnableBlickingTimer = True
+			#self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT			
+			#self.StartBlinkingIconTimer( )
+			
+			self.mDataCache.SetChannelReloadStatus( True )
+
+class RecordingDel( WebPage ) :
+
+	def __init__( self, command ) :
+		super(RecordingDel, self).__init__()
+
+		print '[del]'
+		print command
 		
+		self.params = self.GetParams( command[0] )
+		self.mDataCache.Record_DeleteRecord( int(self.params['key']), 1)
+
+		self.content = """
+			<script>
+				location.href = 'Recordings';
+			</script>
+		"""
 		
