@@ -371,8 +371,15 @@ class LivePlate( LivePlateWindow ) :
 
 		elif actionId == Action.ACTION_COLOR_RED :
 			if self.mHotKeyAvailableRed :
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode != ElisEnum.E_MODE_LIVE :
+					return
+				self.Close( )
+				self.StopAutomaticHide()	
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowBrowser( )
-
+					
+				
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE and self.mDataCache.GetLinkageService(  ) :
