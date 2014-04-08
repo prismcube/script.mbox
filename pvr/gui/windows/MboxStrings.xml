@@ -167,6 +167,8 @@
 	<string id="1167">Automatic 1080 24p</string>
 	<string id="1200">Live Streaming</string>
 	<string id="1201">PIP Channel List</string>
+	<string id="1202">Previous Group</string>
+	<string id="1203">Next Group</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>

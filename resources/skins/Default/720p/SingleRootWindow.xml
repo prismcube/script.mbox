@@ -944,46 +944,84 @@ Search for window name
 				<posy>669</posy>
 				<width>440</width>
 				<height>32</height>
-				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-				<control type="image">
-					<posx>20</posx>
+				<control type="group">
+					<posx>0</posx>
 					<posy>0</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>OSDIconInfoNF.png</texture>
+					<control type="image">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDIconInfoNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>58</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1101</label>
+					</control>
 				</control>
-				<control type="label">
-					<posx>58</posx>
-					<posy>5</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>font10</font>
-					<label>SCRIPT1101</label>
+				<control type="group">
+					<posx>200</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture flipx="true">OSDPlayNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1139</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>400</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDRewindNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1202</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>600</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>35</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>OSDForwardNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>73</posx>
+						<posy>5</posy>
+						<width>550</width>
+						<height>20</height>
+						<font>font10</font>
+						<label>SCRIPT1203</label>
+					</control>
 				</control>
 			</control>
 
-			<control type="group">
-				<posx>300</posx>
-				<posy>669</posy>
-				<width>440</width>
-				<height>32</height>
-				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-				<control type="image">
-					<posx>35</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture flipx="true">OSDPlayNF.png</texture>
-				</control>
-				<control type="label">
-					<posx>73</posx>
-					<posy>5</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>font10</font>
-					<label>SCRIPT1139</label>
-				</control>
-			</control>
 
 			<!-- middle left -->
 			<control type="group" id="1300049">
@@ -1488,32 +1526,6 @@ Search for window name
 					</focusedlayout>
 				</control>
 			</control>
-			<!--  Path Info -->
-			<control type="group" id="1300020">
-				<posx>5</posx>
-				<posy>-20</posy>
-				<include>DefaultWindowFade</include>
-				<control type="label" id="1300021">
-					<posx>106</posx>
-					<posy>102</posy>
-					<width>400</width>
-					<height>28</height>
-					<font>font12</font>
-					<textcolor>blue</textcolor>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-				<control type="label" id="1300022">
-					<posx>800</posx>
-					<posy>105</posy>
-					<width>200</width>
-					<height>28</height>
-					<font>font12</font>
-					<align>right</align>
-					<textcolor>blue</textcolor>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-			</control>
-
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="1300061">
 				<posx>800</posx>
@@ -1532,6 +1544,31 @@ Search for window name
 				<onup>1300061</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+			</control>
+			<!--  Path Info -->
+			<control type="group" id="1300020">
+				<posx>5</posx>
+				<posy>80</posy>
+				<include>DefaultWindowFade</include>
+				<control type="label" id="1300021">
+					<posx>106</posx>
+					<posy>2</posy>
+					<width>400</width>
+					<height>28</height>
+					<font>font12</font>
+					<textcolor>blue</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="1300022">
+					<posx>800</posx>
+					<posy>5</posy>
+					<width>200</width>
+					<height>28</height>
+					<font>font12</font>
+					<align>right</align>
+					<textcolor>blue</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
 			</control>
 
 			<!-- middle right -->
@@ -7120,6 +7157,15 @@ Search for window name
 		<control type="group" id="4600000">
 			<visible>substring(Window.Property(CurrentWindow),4600000)</visible>
 			<defaultcontrol always="true">4609999</defaultcontrol>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
+				<texture>backgrounds/RADIOSKIN.jpg</texture>
+				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
+				<visible>substring(Window.Property(TVRadio),true)</visible>
+			</control>
 			<control type="label">
 				<posx>550</posx>
 				<posy>330</posy>
@@ -7177,8 +7223,7 @@ Search for window name
 				<texturefocus>-</texturefocus>
 				<visible>true</visible>
 			</control>
-			
-			
+
 			<control type="group" id="4609999">
 				<defaultcontrol always="true">4601000</defaultcontrol>	
 				<!--animation effect="slide" start="0,0" end="-420,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4601000)">Conditional</animation-->
@@ -7192,7 +7237,7 @@ Search for window name
 				</control>
 				<control type="group">
 					<posx>890</posx>
-					<posy>55</posy>
+					<posy>65</posy>
 					<width>300</width>
 					<height>30</height>
 					<control type="image">
@@ -7200,8 +7245,8 @@ Search for window name
 						<visible>!substring(Window.Property(TVRadio),true)</visible>
 						<posx>0</posx>
 						<posy>5</posy>
-						<width>35</width>
-						<height>28</height>
+						<width>32</width>
+						<height>25</height>
 						<aspectratio>keep</aspectratio>
 						<texture>icon_tv3.png</texture>
 					</control>
@@ -7210,8 +7255,8 @@ Search for window name
 						<visible>substring(Window.Property(TVRadio),true)</visible>
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>35</width>
-						<height>33</height>
+						<width>32</width>
+						<height>30</height>
 						<aspectratio>keep</aspectratio>
 						<texture>icon_radio3.png</texture>
 					</control>
@@ -7220,19 +7265,114 @@ Search for window name
 						<visible>substring(Window.Property(TVRadio),true) | !substring(Window.Property(TVRadio),true)</visible>
 						<posx>42</posx>
 						<posy>2</posy>
-						<width>250</width>
+						<width>300</width>
 						<height>30</height>
-						<font>font14</font>
+						<font>font12</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>SCRIPT1045</label>
+						<!--label>SCRIPT1045</label-->
+						<label>$INFO[Window.Property(SimpleChannelPath)]</label>
+					</control>
+				</control>
+				<!-- color info -->
+				<control type="group">
+					<posx>890</posx>
+					<posy>25r</posy>
+					<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>Satellite</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>100</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>FTA/CAS</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>200</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>Provider</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>300</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>Favorite</label>
+						</control>
 					</control>
 				</control>
 				<control type="group">
-					<visible>substring(Window.Property(CurrentWindow),4600000)</visible>
+					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 					<control type="list" id="4601000">
 						<posx>890</posx>
 						<posy>100</posy>
@@ -7283,13 +7423,13 @@ Search for window name
 							</control>
 							<!-- progress Bar -->
 							<control type="progress" >
-								<description>EPG progress control</description>
 								<posx>300</posx>
 								<posy>17</posy>
 								<width>70</width>
 								<height>9</height>
 								<progress>percent</progress>
-								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
+								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -7345,13 +7485,13 @@ Search for window name
 							</control>
 							<!-- progress Bar -->
 							<control type="progress" >
-								<description>EPG progress control</description>
 								<posx>300</posx>
 								<posy>17</posy>
 								<width>70</width>
 								<height>9</height>
 								<progress>percent</progress>
-								<midtexture border="6,0,6,0">OSDProgressMid2.png</midtexture>
+								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -7373,7 +7513,7 @@ Search for window name
 				</control>
 				<control type="label">
 					<posx>892</posx>
-					<posy>53r</posy>
+					<posy>56r</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
@@ -7382,6 +7522,129 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
+				</control>
+
+				<control type="group">
+					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
+					<control type="list" id="4601001">
+						<posx>890</posx>
+						<posy>100</posy>
+						<width>490</width>
+						<height>560</height>
+						<align>left</align>
+						<onleft></onleft>
+						<onright></onright>
+						<onup>4601001</onup>
+						<ondown>4601001</ondown>
+						<viewtype label="535">list</viewtype>
+						<scrolltime>0</scrolltime>
+						<itemlayout height="70" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>68</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>DefaultFolder.png</texture>
+							</control>
+							<!-- is fastScan? -->
+							<control type="image">
+								<posx>345</posx>
+								<posy>25</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconFastScan.png</texture>
+								<visible>substring(ListItem.Property(iFastScan),true)</visible>
+							</control>
+							<!-- Group Name -->
+							<control type="label">
+								<posx>92</posx>
+								<posy>16</posy>
+								<width>250</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>grey2</textcolor>
+								<selectedcolor>grey2</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</itemlayout>
+						<focusedlayout height="70" width="380">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>380</width>
+								<height>68</height>
+								<texture border="5">StackFO_white2.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>Logo_Background.png</texture>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>10</posy>
+								<width>80</width>
+								<height>50</height>
+								<texture>DefaultFolder.png</texture>
+							</control>
+							<!-- is fastScan? -->
+							<control type="image">
+								<posx>345</posx>
+								<posy>25</posy>
+								<width>26</width>
+								<height>18</height>
+								<texture>IconFastScan.png</texture>
+								<visible>substring(ListItem.Property(iFastScan),true)</visible>
+							</control>
+							<!-- Channel Name -->
+							<control type="label">
+								<posx>92</posx>
+								<posy>16</posy>
+								<width>250</width>
+								<height>30</height>
+								<font>font13_title</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</focusedlayout>
+					</control>
+				</control>
+				<control type="label">
+					<posx>892</posx>
+					<posy>56r</posy>
+					<width>340</width>
+					<height>20</height>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>
 		</control>

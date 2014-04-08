@@ -177,9 +177,6 @@ class WindowMgr( object ) :
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 
-					if aWindowId == WIN_ID_SIMPLE_CHANNEL_LIST :
-						self.mWindows[aWindowId].PreAction( )
-						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
 					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
@@ -217,9 +214,6 @@ class WindowMgr( object ) :
 
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 						LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-
-						if parentId == WIN_ID_SIMPLE_CHANNEL_LIST :
-							self.mWindows[parentId].PreAction( )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )

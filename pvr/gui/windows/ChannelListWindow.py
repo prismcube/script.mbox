@@ -48,11 +48,12 @@ FLAG_OPT_MOVE    = 2
 FLAG_OPT_MOVE_OK = 3
 FLAG_OPT_MOVE_UPDOWN = 4
 FLAG_OPT_MOVE_EXIT = 5
-FLAG_CLOCKMODE_ADMYHM   = 1
-FLAG_CLOCKMODE_AHM      = 2
-FLAG_CLOCKMODE_HMS      = 3
-FLAG_CLOCKMODE_HHMM     = 4
-FLAG_MODE_JUMP         = True
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
+FLAG_MODE_JUMP     = True
+FLAG_USE_COLOR_KEY = True
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
@@ -94,6 +95,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListCasList   = []
 		self.mListFavorite  = []
 		self.mListProvider  = []
+		self.mTempGroupSubmenu  = []
+		self.mListShortCutGroup = []
 		self.mLoadMode = None
 		self.mLoadSlidePos = SlidePosition( )
 		self.mCurrentPosition = 0
@@ -301,6 +304,12 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
+		elif actionId == Action.ACTION_MBOX_FF :
+			self.UpdateShortCutGroup( 1 )
+
+		elif actionId == Action.ACTION_MBOX_REWIND :
+			self.UpdateShortCutGroup( -1 )
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mMoveFlag :
@@ -410,6 +419,18 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				self.DoModeChange( FLAG_MODE_TV )
 
+		elif actionId == Action.ACTION_COLOR_RED :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_SATELLITE )
+
+		elif actionId == Action.ACTION_COLOR_GREEN :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_FTACAS )
+
+		elif actionId == Action.ACTION_COLOR_YELLOW :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_PROVIDER )
+
+		elif actionId == Action.ACTION_COLOR_BLUE :
+			self.UpdateShortCutZapping( E_SLIDE_MENU_FAVORITE )
+
 
 	def onClick(self, aControlId):
 		#LOG_TRACE( '[ChannelList] onclick focusID[%d]'% aControlId )
@@ -498,8 +519,10 @@ class ChannelListWindow( BaseWindow ) :
 			showEPGInfo = False
 			if self.mShowEPGInfo :
 				showEPGInfo = True
+				self.LoadByCurrentEPG( )
+
 			self.UpdatePropertyGUI( 'ShowExtendInfo', '%s'% showEPGInfo )
-			self.UpdateChannelNameWithEPG( True )
+			self.UpdateChannelNameWithEPG( True, True )
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 			SetSetting( 'SHOW_EPGINFO_CHANNEL', '%s'% int( self.mShowEPGInfo ) )
 
@@ -612,7 +635,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					numList = []
 					#chNumbers = []
-					self.mNavOffsetTopIndex = self.GetOffsetPosition( )
+					self.mNavOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 					listCount = len( self.mChannelList )
 					endCount = self.mNavOffsetTopIndex + self.mItemCount
 					for offsetIdx in range( self.mNavOffsetTopIndex, endCount ) :
@@ -625,7 +648,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							#LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mNavOffsetTopIndex, offsetIdx, listCount ) )
 							break
-					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
+					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, self.mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
 
 					if numList and len( numList ) > 0 :
 						epgList = self.mDataCache.Epgevent_GetShortList( self.mUserMode.mServiceType, numList )
@@ -646,7 +669,7 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
 
 		#self.mLock.release( )
-		if isUpdate :
+		if aUpdateAll :
 			self.CloseBusyDialog( )
 
 		#print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
@@ -655,24 +678,27 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
-		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
+		if not self.mTimerListHash or len( self.mTimerListHash ) < 1 :
 			return None
 		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, isIndex = False ) :
-		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
-			return None
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, aReqIndex = False ) :
+		if not self.mChannelListHashIDs or len( self.mChannelListHashIDs ) < 1 :
+			retVal = None
+			if aReqIndex :
+				retVal = -1
+			return retVal
 
 		retValue = 0
-		if isIndex :
+		if aReqIndex :
 			retValue = 1
 
 		iChannels = self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 		if iChannels :
 			iChannels = iChannels[retValue]
 
-		if isIndex and iChannels == None :
+		if aReqIndex and iChannels == None :
 			iChannels = -1 #none exist index
 
 		return iChannels
@@ -764,7 +790,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.GoToEditWindow( )
 		else :
 			self.UpdateChannelList( aUpdatePosition )
-			self.mOffsetTopIndex = self.GetOffsetPosition( )
+			self.mOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 			self.mNavOffsetTopIndex = self.mOffsetTopIndex
 
 		#init navChannel by focus
@@ -1022,7 +1048,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-
 				self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Channel List' ), '[COLOR ffff4444]%s[/COLOR]'% MR_LANG( 'Edit Channels' ) ) )
 				self.UpdateChannelAndEPG( )
 
@@ -1166,7 +1191,7 @@ class ChannelListWindow( BaseWindow ) :
 						#onid = self.mNavChannel.mOnid
 						#iEPG = self.mDataCache.Epgevent_GetPresent( )
 						iEPG = self.mDataCache.GetEpgeventCurrent( )
-						
+
 						if iEPG == None or iEPG.mError != 0 :
 							return -1
 
@@ -1336,9 +1361,11 @@ class ChannelListWindow( BaseWindow ) :
 		#	return
 
 		retPass = False
+		zappingName = ''
 
 		if aAction == E_SLIDE_ACTION_MAIN:
 			testlistItems = []
+			scListGroup = []
 			mSort = self.mUserMode.mSortingMode
 
 			if aMenuIndex == E_SLIDE_MENU_ALLCHANNEL :
@@ -1349,12 +1376,14 @@ class ChannelListWindow( BaseWindow ) :
 					for groupInfo in self.mListSatellite :
 						ret = self.mDataCache.GetFormattedSatelliteName( groupInfo.mLongitude, groupInfo.mBand )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
+						scListGroup.append( ret )
 				else :
 					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
 			elif aMenuIndex == E_SLIDE_MENU_FTACAS :
 				if self.mListCasList :
 					for groupInfo in self.mListCasList :
+						scListGroup.append( groupInfo.mName )
 						ret = '%s(%s)'% ( groupInfo.mName, groupInfo.mChannelCount )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
 				else :
@@ -1363,6 +1392,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMenuIndex == E_SLIDE_MENU_PROVIDER :
 				if self.mListProvider :
 					for groupInfo in self.mListProvider :
+						scListGroup.append( groupInfo.mProviderName )
 						listItem = xbmcgui.ListItem( '%s'% groupInfo.mProviderName )
 						testlistItems.append( listItem )
 				else :
@@ -1371,6 +1401,7 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMenuIndex == E_SLIDE_MENU_FAVORITE :
 				if self.mListFavorite :
 					for groupInfo in self.mListFavorite :
+						scListGroup.append( groupInfo.mGroupName )
 						listItem = xbmcgui.ListItem( '%s'% groupInfo.mGroupName )
 						if groupInfo.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
 							listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
@@ -1390,6 +1421,7 @@ class ChannelListWindow( BaseWindow ) :
 				#submenu update
 				self.mCtrlListSubmenu.reset( )
 				self.mCtrlListSubmenu.addItems( testlistItems )
+				self.mTempGroupSubmenu = scListGroup
 
 				if aMenuIndex == self.mUserSlidePos.mMain :
 					self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
@@ -1406,8 +1438,7 @@ class ChannelListWindow( BaseWindow ) :
 			if aForce == True :
 				idxMain = self.mUserSlidePos.mMain
 				idxSub  = self.mUserSlidePos.mSub
-			
-			zappingName = ''
+
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				#if self.mUserMode.mMode == idxMain :
 				if self.mUserSlidePos.mMain == idxMain and \
@@ -1425,7 +1456,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
-					groupInfo = self.mListSatellite[idxSub]
+					groupInfo   = self.mListSatellite[idxSub]
 					zappingName = self.mDataCache.GetSatelliteName( groupInfo.mLongitude, groupInfo.mBand )
 					self.mUserMode.mMode = ElisEnum.E_MODE_SATELLITE
 					self.mUserMode.mSatelliteInfo = groupInfo
@@ -1434,7 +1465,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif idxMain == E_SLIDE_MENU_FTACAS :
 				if self.mListCasList :
-					groupInfo = self.mListCasList[idxSub]
+					groupInfo   = self.mListCasList[idxSub]
 					zappingName = groupInfo.mName
 					caid = groupInfo.mCAId
 					self.mUserMode.mMode = ElisEnum.E_MODE_CAS
@@ -1459,7 +1490,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.mUserMode.mProviderInfo = groupInfo
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '', groupInfo.mProviderName, aKeyword )
 					#LOG_TRACE( '[ChannelList] cmd[channel_GetListByProvider] idx_Provider[%s] list_Provider[%s]'% ( idxSub, zappingName ) )
-
 
 		if aKeyword :
 			nameColumn = ' > '
@@ -1493,6 +1523,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMarkList = []
 		self.mListItems = None
 		self.mSetMarkCount = 0
+		self.mListShortCutGroup = []
 		self.mDataCache.Channel_ResetOldChannelList( )
 		#self.mCtrlListCHList.reset( )
 
@@ -1540,6 +1571,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
 		self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
+
+		#shortCut listUp
+		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
 
 		#current zapping backup
 		#self.mDataCache.Channel_Backup( )
@@ -1821,6 +1855,7 @@ class ChannelListWindow( BaseWindow ) :
 							self.mDataCache.LoadZappingList( )
 							#self.mDataCache.LoadChannelList( )
 							self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+							WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 							#LOG_TRACE( '[ChannelList] ===================== save yes: cache re-load' )
 
 							if self.mFlag_ModeChanged :
@@ -1906,6 +1941,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
 					isSave = self.mDataCache.Channel_Save( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 					#### data cache re-load ####
 					self.mDataCache.SetSkipChannelView( False )
@@ -2112,7 +2148,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		testlistItems = []
-
+		self.mTempGroupSubmenu = []
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
 			#for item in range( len( self.mListAllChannel ) ) :
 			#	testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
@@ -2120,19 +2156,22 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
-				for groupInfo in self.mListSatellite:
+				for groupInfo in self.mListSatellite :
 					ret = self.mDataCache.GetFormattedSatelliteName( groupInfo.mLongitude, groupInfo.mBand )
+					self.mTempGroupSubmenu.append( ret )
 					testlistItems.append( xbmcgui.ListItem( ret ) )
 
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_CAS :
 			if self.mListCasList :
 				for groupInfo in self.mListCasList :
+					self.mTempGroupSubmenu.append( groupInfo.mName )
 					ret = '%s(%s)'% ( groupInfo.mName, groupInfo.mChannelCount )
 					testlistItems.append( xbmcgui.ListItem( ret ) )
 
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
 			if self.mListFavorite :
 				for groupInfo in self.mListFavorite :
+					self.mTempGroupSubmenu.append( groupInfo.mGroupName )
 					listItem = xbmcgui.ListItem( '%s'% groupInfo.mGroupName )
 					if groupInfo.mServiceType > ElisEnum.E_SERVICE_TYPE_RADIO :
 						listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
@@ -2142,6 +2181,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif self.mUserMode.mMode == ElisEnum.E_MODE_PROVIDER :
 			if self.mListProvider :
 				for groupInfo in self.mListProvider :
+					self.mTempGroupSubmenu.append( groupInfo.mProviderName )
 					listItem = xbmcgui.ListItem( '%s'% groupInfo.mProviderName )
 					testlistItems.append( listItem )
 
@@ -2149,7 +2189,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListSubmenu.addItems( testlistItems )
 		zappingName = self.SetSlideMenuHeader( aInitLoad )
 
-		self.mNavChannel = None
+		self.mNavChannel  = None
 		self.mChannelList = None
 
 		#path tree, Mainmenu/Submenu
@@ -2178,6 +2218,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING,     lblButtonSort )
+
+		#shortCut listUp
+		self.mListShortCutGroup = deepcopy( self.mTempGroupSubmenu )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -2208,6 +2251,7 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			LOG_TRACE( '[ChannelList] >>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
 		"""
+
 
 	def UpdateChannelByDBUpdateEvent( self, aEvent = None ) :
 		if not aEvent :
@@ -2667,7 +2711,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdatePropertyGUI( 'EPGDuration', '%sm'% ( self.mNavEpg.mDuration / 60 ) )
 
 			if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-				newOffsetTopIndex = self.GetOffsetPosition( )
+				newOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 				LOG_TRACE( '----------------------------topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
 				if self.mNavOffsetTopIndex == newOffsetTopIndex :
 					if self.mNavEpg and self.mNavChannel :
@@ -2715,13 +2759,6 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_ERR( '[ChannelList] except[%s]'% e )
 
 
-	def GetOffsetPosition( self ) :
-		pos = self.mCtrlListCHList.getOffsetPosition( )
-		if pos < 0 :
-			pos = 0
-		return pos
-
-
 	def GetEPGDurationProgress( self, aEPGStartTime = 0, aEPGDuration = 0 ) :
 		percent      = 0
 		startTime    = aEPGStartTime + self.mLocalOffset
@@ -2743,39 +2780,38 @@ class ChannelListWindow( BaseWindow ) :
 		return percent
 
 
-	def UpdateChannelNameWithEPG( self, aUpdateAll = False ) :
-		if not self.mListItems or self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			LOG_TRACE( '[ChannelList] passed, channelList None or not updateMode' )
+	def UpdateChannelNameWithEPG( self, aUpdateAll = False, aForce = False ) :
+		if not aForce and ( self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW ) :
+			LOG_TRACE( '[ChannelList] passed, edit mode' )
+			return
+
+		if not self.mListItems or ( not self.mChannelList ) :
+			LOG_TRACE( '[ChannelList] passed, channelList None' )
 			return
 
 		startTime = time.time()
 
-		updateStart = self.GetOffsetPosition( )
-		updateEnd = ( updateStart + self.mItemCount ) - 1
+		updateStart = GetOffsetPosition( self.mCtrlListCHList )
+		updateEnd = ( updateStart + self.mItemCount )
 		if aUpdateAll :
 			updateStart = 0
 			updateEnd = len( self.mListItems ) - 1
 
-		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
+		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( GetOffsetPosition( self.mCtrlListCHList ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
 		if aUpdateAll :
 			self.OpenBusyDialog( )
+
 		try :
-			idx = -1
 			updateCount = 0
-			for listItem in self.mListItems :
-				idx += 1
-
-				if idx < updateStart :
-					continue
-
-				if idx > updateEnd :
-					break
-
-				if self.mChannelList and idx < len( self.mChannelList ) :
+			listCount = len( self.mChannelList )
+			#for listItem in self.mListItems :
+			for idx in range( updateStart, updateEnd ) :
+				if self.mChannelList and idx < listCount :
+					listItem = self.mListItems[idx]
 					iChannel = self.mChannelList[idx]
-
 					channelName = '%s'% iChannel.mName
+
 					if self.mShowEPGInfo :
 						epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 						if epgEvent :
@@ -2787,6 +2823,9 @@ class ChannelListWindow( BaseWindow ) :
 
 					listItem.setLabel2( channelName )
 					updateCount += 1
+
+				else :
+					break
 
 			LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG [%s]counts'% updateCount )
 
@@ -4068,7 +4107,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
 		self.mAsyncTuneTimer.start( )
 
-		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mNavOffsetTopIndex != self.GetOffsetPosition( ) :
+		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mNavOffsetTopIndex != GetOffsetPosition( self.mCtrlListCHList ) :
 			updateEpgInfo = threading.Timer( 0.05, self.LoadByCurrentEPG )
 			updateEpgInfo.start( )
 
@@ -4276,10 +4315,105 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def StopAsyncSort( self ) :
-		if self.mAsyncSortTimer	and self.mAsyncSortTimer.isAlive( ) :
+		if self.mAsyncSortTimer and self.mAsyncSortTimer.isAlive( ) :
 			self.mAsyncSortTimer.cancel( )
 			del self.mAsyncSortTimer
 
-		self.mAsyncSortTimer  = None
+		self.mAsyncSortTimer = None
 
+
+	def UpdateShortCutGroup( self, aMove = 1 ) :
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			LOG_TRACE( '[ChannelList] pass, currrent mode All Channels' )
+			return
+
+		if self.mMoveFlag :
+			LOG_TRACE( '[ChannelList] pass, edit mode and move' )
+			return
+
+		if not self.mListShortCutGroup or len( self.mListShortCutGroup ) < 1 :
+			LOG_TRACE( '[ChannelList] pass, short cut group None' )
+			return
+
+		self.GetFocusId( )
+		if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST :
+			LOG_TRACE( '[ChannelList] pass, opened slide' )
+			return
+
+		currentGroup = ''
+		if self.mUserSlidePos.mSub < len( self.mListShortCutGroup ) :
+			currentGroup = self.mListShortCutGroup[self.mUserSlidePos.mSub]
+
+		if not currentGroup :
+			LOG_TRACE( '[ChannelList] pass, current group None' )
+			return
+
+		countIdx = 0
+		currentIdx = -1
+		for groupName in self.mListShortCutGroup :
+			if groupName == currentGroup :
+				currentIdx = countIdx
+				break
+
+			countIdx += 1
+
+		if currentIdx < 0 :
+			LOG_TRACE( '[ChannelList] pass, can not find current group' )
+			return
+
+		nextGroup = currentGroup
+		nextIdx = currentIdx + aMove
+		if nextIdx < 0 :
+			nextIdx = len( self.mListShortCutGroup ) - 1
+
+		if nextIdx >= len( self.mListShortCutGroup ) :
+			nextIdx = 0
+
+		if not ( nextIdx < len( self.mListShortCutGroup ) ) :
+			LOG_TRACE( '[ChannelList] error, incorrect index' )
+			return
+
+		nextGroup = self.mListShortCutGroup[nextIdx]
+
+		self.mUserSlidePos.mSub = nextIdx
+		self.mCtrlListSubmenu.selectItem( nextIdx )
+
+		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode )
+		if nextGroup :
+			lblChannelPath = '%s > [COLOR grey2]%s[/COLOR]'% ( lblChannelPath, nextGroup )
+
+		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
+
+		self.RestartAsyncSort( )
+
+
+	def UpdateShortCutZapping( self, aReqMode = E_SLIDE_MENU_FAVORITE ) :
+		if not FLAG_USE_COLOR_KEY :
+			LOG_TRACE( '[ChannelList] pass, no support key' )
+			return
+
+		if self.mMoveFlag :
+			LOG_TRACE( '[ChannelList] pass, edit mode and move' )
+			return
+
+		self.GetFocusId( )
+		if self.mFocusId != E_CONTROL_ID_LIST_CHANNEL_LIST :
+			LOG_TRACE( '[ChannelList] pass, opened slide' )
+			return
+
+		if self.mUserSlidePos.mMain != aReqMode :
+			if ( aReqMode == E_SLIDE_MENU_SATELLITE and self.mListSatellite and len( self.mListSatellite ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_FTACAS and self.mListCasList and len( self.mListCasList ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_PROVIDER and self.mListProvider and len( self.mListProvider ) > 0 ) or \
+			   ( aReqMode == E_SLIDE_MENU_FAVORITE and self.mListFavorite and len( self.mListFavorite ) > 0 ) :
+				self.mUserSlidePos.mMain = aReqMode
+				self.mUserSlidePos.mSub = 0
+				self.mCtrlListMainmenu.selectItem( aReqMode )
+				self.mCtrlListSubmenu.selectItem( 0 )
+				time.sleep( 0.2 )
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, aReqMode )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True )
+
+		else :
+			self.UpdateShortCutGroup( )
 

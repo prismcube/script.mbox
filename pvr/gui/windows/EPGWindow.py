@@ -1272,7 +1272,7 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'StartTime', tempName )
 					listItem.setProperty( 'Duration', '' )
 					listItem.setProperty( 'HasEvent', 'true' )
-					listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
+					listItem.setProperty( 'Percent', '%s'% CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
 
 					timer = self.GetTimerByEPG( epgEvent, True )
 
@@ -2744,30 +2744,6 @@ class EPGWindow( BaseWindow ) :
 			self.GridSetFocus( )
 
 		self.UpdateEPGInfomation( )
-
-
-	def CalculateProgress( self, aCurrentTime, aEpgStart, aDuration  ) :
-		startTime = aEpgStart
-		endTime = aEpgStart + aDuration
-		
-		pastDuration = endTime - aCurrentTime
-
-		if aCurrentTime > endTime : #past
-			return 100
-
-		elif aCurrentTime < startTime : #future
-			return 0
-
-		if pastDuration < 0 : #past
-			pastDuration = 0
-
-		if aDuration > 0 :
-			percent = 100 - ( pastDuration * 100.0 / aDuration )
-		else :
-			percent = 0
-
-		#LOG_TRACE( 'Percent=%d' %percent )
-		return percent
 
 
 	def SetFocusList( self, aMode ) :
