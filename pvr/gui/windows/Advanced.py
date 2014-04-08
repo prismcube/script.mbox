@@ -10,8 +10,8 @@ E_ADVANCED_DEFAULT_FOCUS_ID	=  E_ADVANCED_SUBMENU_LIST_ID
 
 E_APPEARANCE			= 0
 E_LIVESTREAM			= 1
-E_HBBTV					= 2
 
+FILE_NAME_HBB_TV		= '/config/hbbtv'
 
 
 class Advanced( SettingWindow ) :
@@ -63,6 +63,7 @@ class Advanced( SettingWindow ) :
 
 
 	def Close( self ) :
+		os.system( 'sync' )
 		self.mInitialized = False
 		self.ResetAllControl( )
 		WinMgr.GetInstance( ).CloseWindow( )
@@ -139,8 +140,10 @@ class Advanced( SettingWindow ) :
 		elif selectedId == E_LIVESTREAM :
 			if groupId == E_SpinEx01 :
 				self.ControlSelect( )
+
 			elif groupId == E_SpinEx02 :
 				self.SetSettingFromNumber( 'WEB_INTERFACE', self.GetSelectedIndex( E_SpinEx02 ) )
+
 			elif groupId == E_SpinEx03 :
 				if self.GetSelectedIndex( E_SpinEx03 ) == 1 :
 					self.mCommander.Player_SetResolution24( 1 )
@@ -157,8 +160,11 @@ class Advanced( SettingWindow ) :
 				else :
 					self.SetSettingFromNumber( 'SURFACE_24', self.GetSelectedIndex( E_SpinEx03 ) )
 
-		elif selectedId == E_HBBTV :
-			pass
+			elif groupId == E_SpinEx04 :
+				if self.GetSelectedIndex( E_SpinEx04 ) :
+					self.SetHbbTv( True )
+				else :
+					self.SetHbbTv( False )
 
 
 	def onFocus( self, aControlId ) :
@@ -192,9 +198,9 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Show Next EPG Notification' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) ), MR_LANG( 'Allows you to display next EPG notification on live screen' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			#self.SetVisibleControls( visibleControlIds, True )
+			#self.SetEnableControls( visibleControlIds, True )
 
 			self.InitControl( )
 			
@@ -203,19 +209,14 @@ class Advanced( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'HBB TV' ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'HBB TV on/off' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx04 ]
-			self.SetVisibleControls( hideControlIds, False )
+			#visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			#self.SetVisibleControls( visibleControlIds, True )
+			#self.SetEnableControls( visibleControlIds, True )
 
 			self.InitControl( )
 
-		elif selectedId == E_HBBTV :
-			pass
-		
 		else :
 			LOG_ERR( 'Could not find the selected ID' )
 
@@ -234,6 +235,20 @@ class Advanced( SettingWindow ) :
 			SetSetting( aId, 'true' )
 		else :
 			SetSetting( aId, 'false' )
+
+
+	def GetHbbTv( self ) :
+		if os.path.exists( FILE_NAME_HBB_TV ) :
+			return 1
+		else :
+			return 0
+
+
+	def SetHbbTv( self, aFlag ) :
+		if aFlag :
+			os.system( 'touch %s' % FILE_NAME_HBB_TV )
+		else :
+			os.system( 'rm %s' % FILE_NAME_HBB_TV )
 
 
 	def WaitInitialize( self ) :
