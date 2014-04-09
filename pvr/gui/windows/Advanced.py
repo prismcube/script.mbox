@@ -36,7 +36,7 @@ class Advanced( SettingWindow ) :
 		leftGroupItems			= [
 		MR_LANG( 'Appearance' ),
 		MR_LANG( 'Experimental' ),
-		MR_LANG( 'CEC' ) ]
+		MR_LANG( 'HDMI-CEC' ) ]
 
 		self.mGroupItems = []
 		for i in range( len( leftGroupItems ) ) :
@@ -45,7 +45,7 @@ class Advanced( SettingWindow ) :
 		self.mDescriptionList	= [
 		MR_LANG( 'You can customise the appearance of PRISMCUBE RUBY' ),
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
-		MR_LANG( 'CEC Control' ) ]
+		MR_LANG( 'Control PRISMCUBE using your existing TV remote when connected via HDMI' ) ]
 	
 		self.setFocusId( E_ADVANCED_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
@@ -216,7 +216,7 @@ class Advanced( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'HBB TV' ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'HBB TV on/off' ) )
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'HbbTV' ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -229,15 +229,17 @@ class Advanced( SettingWindow ) :
 
 		elif selectedId == E_CEC :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'CEC Contrl Enable' ), MR_LANG( 'CEC on/off' ) )
-			self.AddEnumControl( E_SpinEx02, 'CEC TV On', MR_LANG( 'CEC TV On' ), MR_LANG( 'CEC TV On' ) )
-			self.AddEnumControl( E_SpinEx03, 'CEC TV Off', MR_LANG( 'CEC TV Off' ), MR_LANG( 'CEC TV Off' ) )
-			self.AddEnumControl( E_SpinEx04, 'CEC STB On', MR_LANG( 'CEC STB On' ), MR_LANG( 'CEC STB On' ) )
-			self.AddEnumControl( E_SpinEx05, 'CEC STB Off', MR_LANG( 'CEC STB Off' ), MR_LANG( 'CEC STB Off' ) )
+			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'HDMI-CEC Setting' ), MR_LANG( 'HDMI-CEC on/off' ) )
+			self.AddEnumControl( E_SpinEx02, 'CEC TV On', MR_LANG( 'HDMI-CEC TV On' ), MR_LANG( 'Set an action for STB when turning TV on via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx03, 'CEC TV Off', MR_LANG( 'HDMI-CEC TV Off' ), MR_LANG( 'Set an action for STB when turning TV off via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx04, 'CEC STB On', MR_LANG( 'HDMI-CEC STB On' ), MR_LANG( 'Set an action for TV when turning STB on via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx05, 'CEC STB Off', MR_LANG( 'HDMI-CEC STB Off' ), MR_LANG( 'Set an action for TV when turning STB off via HDMI-CEC' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
+
+			self.InitControl( )
 
 		else :
 			LOG_ERR( 'Could not find the selected ID' )
