@@ -4797,23 +4797,60 @@ Search for window name
 
 				<!-- hasLock -->
 				<control type="group">
-					<posx>0</posx>
-					<posy>200</posy>
+					<posx>250</posx>
+					<posy>85</posy>
 					<visible>substring(Window.Property(HasLock),true)</visible>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>40</width>
-						<height>30</height>
+						<width>35</width>
+						<height>25</height>
 						<texture>OverlayLocked.png</texture>
-						<description>lock</description>
+						<colordiffuse>75FFFFFF</colordiffuse>
 					</control>
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
 						<font>font12_title</font>
-						<textcolor>grey</textcolor>
+						<textcolor>grey3</textcolor>
 						<label>SCRIPT1014</label>
+					</control>
+				</control>
+
+				<!-- recPath -->
+				<control type="group">
+					<posx>-5</posx>
+					<posy>210</posy>
+					<visible>substring(Window.Property(RecNetVolume),true)</visible>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>connected.png</texture>
+						<colordiffuse>75FFFFFF</colordiffuse>
+					</control>
+					<control type="label">
+						<posx>23</posx>
+						<posy>-5</posy>
+						<width>50</width>
+						<height>40</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Window.Property(iNetVolumeType)]</label>
+						<textcolor>grey2</textcolor>
+						<font>font12_title</font>
+					</control>
+					<control type="label">
+						<posx>70</posx>
+						<posy>-10</posy>
+						<width>300</width>
+						<height>40</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Window.Property(iNetVolumeName)]</label>
+						<textcolor>grey2</textcolor>
+						<font>font14</font>
 					</control>
 				</control>
 

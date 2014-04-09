@@ -2264,6 +2264,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
 
+	def Record_GetMountInfo( self, aKey ) :
+		if SUPPORT_RECORD_DATABASE == True :
+			recordDB = ElisRecordDB( )
+			recInfo = recordDB.Record_GetMountInfo( aKey )
+			recordDB.Close( )
+			return recInfo
+
+
 	def Record_GetNetworkVolume( self ) :
 		return self.mCommander.Record_GetNetworkVolume( )
 
@@ -2278,6 +2286,10 @@ class DataCacheMgr( object ) :
 
 	def Record_SetDefaultVolume( self, aENetworkVolume ) :
 		return self.mCommander.Record_SetDefaultVolume( [aENetworkVolume] )
+
+
+	def Record_RefreshNetworkVolume( self ) :
+		return self.mCommander.Record_RefreshNetworkVolume( )
 
 
 	def Timer_StopRecordingByRecordKey( self, aKey ) :

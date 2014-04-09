@@ -456,8 +456,8 @@ class DialogMountManager( SettingDialog ) :
 				ret = self.DoDeleteVolume( self.mNetVolume )
 				if ret :
 					isFail = False
-					urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
-					lblLine = '\'%s\' %s'% ( os.path.dirname( urlPath ), MR_LANG( 'is removed' ) )
+					#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
+					lblLine = '\'%s\' %s'% ( os.path.basename( self.mNetVolume.mMountPath ), MR_LANG( 'is removed' ) )
 
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

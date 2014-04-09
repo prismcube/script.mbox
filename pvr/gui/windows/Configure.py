@@ -793,6 +793,7 @@ class Configure( SettingWindow ) :
 						lblRet = MR_LANG( 'Fail' )
 						failCount += 1
 						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
+						os.system( 'umount -f %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
@@ -813,6 +814,7 @@ class Configure( SettingWindow ) :
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
 		self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+		self.mDataCache.Record_RefreshNetworkVolume( )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
