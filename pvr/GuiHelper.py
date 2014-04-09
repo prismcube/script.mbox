@@ -485,7 +485,7 @@ def CreateDirectory( aPath ) :
 	if os.path.exists( aPath ) :
 		return
 
-	os.makedirs( aPath, 0644 )
+	os.makedirs( aPath, 0755 )
 
 
 def CreateFile( aPath ) :
@@ -1321,7 +1321,8 @@ def IsIPv4( address ) :
 	return True
 
 
-def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
+def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
+	urlType = urlparse.urlparse( aUrl ).scheme
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1335,33 +1336,51 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
 		if not IsIPv4( hostip ) :
 			return zipFile
 
-	smbPath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
+	#remotePath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
 	#LOG_TRACE( 'smbPath[%s]'% smbPath )
 
 	mntHistory = ExecuteShell( 'mount' )
 	if not mntHistory :
 		return zipFile
 
-	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	#ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	ret = re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
-		os.system( '/bin/umount %s'% aSmbPath )
+		os.system( '/bin/umount -f %s'% aSmbPath )
 		os.system( 'sync' )
+		time.sleep( 2 )
 
 	CreateDirectory( aSmbPath )
 
-	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, smbPath, aSmbPath )
+	remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	if urlType == 'smb' :
+		remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	elif urlType == 'nfs' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, aSmbPath )
+	elif urlType == 'ftp' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'modprobe fuse && curlftpfs %s %s -o user=%s:%s,allow_other'% ( remotePath, aSmbPath, urlUser, urlPass )
+
+	LOG_TRACE( 'remotePath[%s] mountPath[%s] cmd[%s]'% ( remotePath, aSmbPath, cmd ) )
+
 	if ExecuteShell( cmd ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
 		return zipFile
 
-	if aReserved :
-		os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
-		os.system( 'sync' )
+	else :
+		# mount check confirm
+		mntHistory = ExecuteShell( 'mount' )
+		if not mntHistory or ( not bool( re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE ) ) ) :
+			LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
+			return zipFile
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
-	if not CheckDirectory( zipFile ) :
+	if isCheck and ( not CheckDirectory( zipFile ) ) :
 		LOG_TRACE( 'file not found zipPath[%s]'% zipFile )
 		zipFile = ''
 
