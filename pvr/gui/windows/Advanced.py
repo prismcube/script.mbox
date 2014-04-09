@@ -229,7 +229,7 @@ class Advanced( SettingWindow ) :
 
 		elif selectedId == E_CEC :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'HDMI-CEC Setting' ), MR_LANG( 'HDMI-CEC on/off' ) )
+			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'HDMI-CEC Setting' ), MR_LANG( 'Enable/Disable HDMI-CEC option' ) )
 			self.AddEnumControl( E_SpinEx02, 'CEC TV On', MR_LANG( 'HDMI-CEC TV On' ), MR_LANG( 'Set an action for STB when turning TV on via HDMI-CEC' ) )
 			self.AddEnumControl( E_SpinEx03, 'CEC TV Off', MR_LANG( 'HDMI-CEC TV Off' ), MR_LANG( 'Set an action for STB when turning TV off via HDMI-CEC' ) )
 			self.AddEnumControl( E_SpinEx04, 'CEC STB On', MR_LANG( 'HDMI-CEC STB On' ), MR_LANG( 'Set an action for TV when turning STB on via HDMI-CEC' ) )
