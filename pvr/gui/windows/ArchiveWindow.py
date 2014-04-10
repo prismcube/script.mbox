@@ -566,23 +566,24 @@ class ArchiveWindow( BaseWindow ) :
 		recItem.setProperty( 'Marked', 'False' )
 		recItem.setProperty( 'Playing', 'False' )
 
-		netVolume = E_TAG_FALSE
-		if aRecordInfo.mMountInfo :
-			mntType = 'HDD'
-			netVolume = E_TAG_TRUE
-			retPath = os.path.dirname( aRecordInfo.mMountInfo )
-			if retPath == E_DEFAULT_PATH_SMB_POSITION :
-				mntType = 'SMB'
-			elif retPath == E_DEFAULT_PATH_NFS_POSITION :
-				mntType = 'NFS'
-			elif retPath == E_DEFAULT_PATH_FTP_POSITION :
-				mntType = 'FTP'
-			else :
-				#internal
-				netVolume = E_TAG_FALSE
-			recItem.setProperty( 'iNetVolumeType', mntType )
-			recItem.setProperty( 'iNetVolumeName', os.path.basename( aRecordInfo.mMountInfo ) )
-		recItem.setProperty( 'RecNetVolume', netVolume )
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			netVolume = E_TAG_FALSE
+			if aRecordInfo.mMountInfo :
+				mntType = 'HDD'
+				netVolume = E_TAG_TRUE
+				retPath = os.path.dirname( aRecordInfo.mMountInfo )
+				if retPath == E_DEFAULT_PATH_SMB_POSITION :
+					mntType = 'SMB'
+				elif retPath == E_DEFAULT_PATH_NFS_POSITION :
+					mntType = 'NFS'
+				elif retPath == E_DEFAULT_PATH_FTP_POSITION :
+					mntType = 'FTP'
+				else :
+					#internal
+					netVolume = E_TAG_FALSE
+				recItem.setProperty( 'iNetVolumeType', mntType )
+				recItem.setProperty( 'iNetVolumeName', os.path.basename( aRecordInfo.mMountInfo ) )
+			recItem.setProperty( 'RecNetVolume', netVolume )
 
 		if aRecItem == None :		
 			self.mRecordListItems.append( recItem )
@@ -1247,26 +1248,26 @@ class ArchiveWindow( BaseWindow ) :
 				self.setProperty( E_XML_PROPERTY_DOLBY,    HasEPGComponent( iEPG, ElisEnum.E_HasDolbyDigital ) )
 				self.setProperty( E_XML_PROPERTY_HD,       HasEPGComponent( iEPG, ElisEnum.E_HasHDVideo ) )
 
-				netVolume = E_TAG_FALSE
-				#mountInfo = self.mDataCache.Record_GetMountInfo( recInfo.mRecordKey )
-				mountInfo = recInfo.mMountInfo
-				if mountInfo :
-					mntType = 'HDD'
-					netVolume = E_TAG_TRUE
-					retPath = os.path.dirname( mountInfo )
-					if retPath == E_DEFAULT_PATH_SMB_POSITION :
-						mntType = 'SMB'
-					elif retPath == E_DEFAULT_PATH_NFS_POSITION :
-						mntType = 'NFS'
-					elif retPath == E_DEFAULT_PATH_FTP_POSITION :
-						mntType = 'FTP'
-					else :
-						#internal
-						netVolume = E_TAG_FALSE
-					self.setProperty( 'iNetVolumeType', mntType )
-					self.setProperty( 'iNetVolumeName', os.path.basename( mountInfo ) )
-
-				self.setProperty( 'RecNetVolume', netVolume )
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					netVolume = E_TAG_FALSE
+					#mountInfo = self.mDataCache.Record_GetMountInfo( recInfo.mRecordKey )
+					mountInfo = recInfo.mMountInfo
+					if mountInfo :
+						mntType = 'HDD'
+						netVolume = E_TAG_TRUE
+						retPath = os.path.dirname( mountInfo )
+						if retPath == E_DEFAULT_PATH_SMB_POSITION :
+							mntType = 'SMB'
+						elif retPath == E_DEFAULT_PATH_NFS_POSITION :
+							mntType = 'NFS'
+						elif retPath == E_DEFAULT_PATH_FTP_POSITION :
+							mntType = 'FTP'
+						else :
+							#internal
+							netVolume = E_TAG_FALSE
+						self.setProperty( 'iNetVolumeType', mntType )
+						self.setProperty( 'iNetVolumeName', os.path.basename( mountInfo ) )
+					self.setProperty( 'RecNetVolume', netVolume )
 
 			else :
 				self.ResetArchiveInfomation( )
