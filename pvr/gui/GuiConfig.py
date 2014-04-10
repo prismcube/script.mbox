@@ -2,7 +2,10 @@ import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob
 from copy import deepcopy
 from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.GuiHelper import MR_LANG
+import pvr.Platform
+from pvr.Product import *
 
+# XBMC INTERFACE
 E_ADD_XBMC_HTTP_FUNCTION			= True
 E_ADD_XBMC_JSONRPC_FUNCTION			= False
 E_ADD_XBMC_ADDON_API				= False
@@ -10,6 +13,7 @@ E_ADD_XBMC_ADDON_API				= False
 # HBBTV SUPPOERT
 E_SUPPROT_HBBTV				= True
 E_SUPPROT_WEBINTERFACE		= True
+
 #E_SUPPROT_WEBINTERFACE		= False
 RECORD_WIDTHOUT_ASKING		= True
 RECORD_ENDTIME_TRICK_MARGIN = 1
@@ -211,7 +215,10 @@ E_WEST							= 0
 E_EAST							= 1
 
 # RECORD
-E_MAX_RECORD_COUNT				= 2
+if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
+	E_MAX_RECORD_COUNT				= 2
+elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+	E_MAX_RECORD_COUNT				= 1
 
 # Volume
 VOLUME_STEP						= 4
@@ -296,7 +303,10 @@ E_LIST_SKIN_ZOOM_RATE				= [ '-20', '-18', '-16', '-14', '-12', '-10', '-8', '-6
 
 E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ), MR_LANG( 'UniCable' ) ]
 E_LIST_TUNER2_SIGNAL				= [ MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) ]
-E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
+if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
+	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
+elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ), MR_LANG( 'UniCable' ) ]
 
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
 E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
@@ -483,6 +493,9 @@ E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
 E_VOLITILE_PIP_STATUS_PATH = '/mtmp/PIPStatus'
+E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
+E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
+E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False
@@ -500,8 +513,8 @@ E_V1_2_APPLY_TEXTWIDTH_LABEL = True
 E_V1_2_APPLY_PIP = True
 E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY = True
 E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
+E_SUPPORT_EXTEND_RECORD_PATH = False
 
-E_V1_4_MOUNT_MANAGER = False
 E_V1_6_PIP_SINGLE_TONE = True
 
 ############################ Global Function For GUI ############################

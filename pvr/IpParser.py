@@ -582,9 +582,9 @@ class IpParser( object ) :
 
 	def GetWifiUseStatic( self ) :
 		dev = self.GetWifidevice( )
+		status = NET_DHCP
 		if dev :
 			try :
-				status = NET_DHCP
 				inputFile = open( FILE_NAME_INTERFACES, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
@@ -607,6 +607,7 @@ class IpParser( object ) :
 
 		else :
 			LOG_ERR( 'Could not find wifi device' )
+			return status
 
 
 	def GetWifiUseHiddenSsid( self ) :

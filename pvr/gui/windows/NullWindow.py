@@ -772,7 +772,7 @@ class NullWindow( BaseWindow ) :
 
 			return
 
-		elif runningCount < 2 :
+		elif runningCount < E_MAX_RECORD_COUNT :
 			copyTimeshift = 0
 			otrInfo = self.mDataCache.Timer_GetOTRInfo( )
 			localTime = self.mDataCache.Datetime_GetLocalTime( )				
@@ -906,7 +906,7 @@ class NullWindow( BaseWindow ) :
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
 
 		isOK = False
-		if runningCount < 2 or mTimer :
+		if runningCount < E_MAX_RECORD_COUNT or mTimer :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 

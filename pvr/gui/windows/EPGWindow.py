@@ -81,7 +81,8 @@ BUTTON_ID_FOCUS_BUTTON			= E_EPG_WINDOW_BASE_ID + 3501
 LABEL_ID_GRID_EPG				= E_EPG_WINDOW_BASE_ID + 3503
 GROUP_ID_LEFT_SLIDE				= E_EPG_WINDOW_BASE_ID + 9000
 
-BUTTON_ID_BASE_RUNNNING_REC		= E_EPG_WINDOW_BASE_ID + 3601
+BUTTON_ID_BASE_RUNNNING_REC_1	= E_EPG_WINDOW_BASE_ID + 3601
+BUTTON_ID_BASE_RUNNNING_REC_2	= E_EPG_WINDOW_BASE_ID + 3602
 BUTTON_ID_BASE_SCHEDULED		= E_EPG_WINDOW_BASE_ID + 3701
 BUTTON_ID_BASE_SCHEDULED_VIEW	= E_EPG_WINDOW_BASE_ID + 3801
 
@@ -1271,7 +1272,7 @@ class EPGWindow( BaseWindow ) :
 					listItem.setProperty( 'StartTime', tempName )
 					listItem.setProperty( 'Duration', '' )
 					listItem.setProperty( 'HasEvent', 'true' )
-					listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
+					listItem.setProperty( 'Percent', '%s'% CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
 
 					timer = self.GetTimerByEPG( epgEvent, True )
 
@@ -2745,30 +2746,6 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateEPGInfomation( )
 
 
-	def CalculateProgress( self, aCurrentTime, aEpgStart, aDuration  ) :
-		startTime = aEpgStart
-		endTime = aEpgStart + aDuration
-		
-		pastDuration = endTime - aCurrentTime
-
-		if aCurrentTime > endTime : #past
-			return 100
-
-		elif aCurrentTime < startTime : #future
-			return 0
-
-		if pastDuration < 0 : #past
-			pastDuration = 0
-
-		if aDuration > 0 :
-			percent = 100 - ( pastDuration * 100.0 / aDuration )
-		else :
-			percent = 0
-
-		#LOG_TRACE( 'Percent=%d' %percent )
-		return percent
-
-
 	def SetFocusList( self, aMode ) :
 		if aMode == E_VIEW_GRID :	
 			self.setFocusId( LIST_ID_GRID_CHANNEL )
@@ -2793,17 +2770,19 @@ class EPGWindow( BaseWindow ) :
 
 
 	def InitGridEPGButtons( self ) :
+		self.mCtrlRecButtonList = []
+		ctrlButton = self.getControl( BUTTON_ID_BASE_RUNNNING_REC_1 )
+		ctrlButton.setVisible( False )
+		self.mCtrlRecButtonList.append( ctrlButton )
+		ctrlButton = self.getControl( BUTTON_ID_BASE_RUNNNING_REC_2 )
+		ctrlButton.setVisible( False )
+		self.mCtrlRecButtonList.append( ctrlButton )
+
 		self.mCtrlGridEPGButtonList = []
 		for i in range( E_GRID_MAX_BUTTON_COUNT ):
 			ctrlButton = self.getControl(BUTTON_ID_BASE_GRID + i)
 			ctrlButton.setVisible( False )
 			self.mCtrlGridEPGButtonList.append( ctrlButton )
-
-		self.mCtrlRecButtonList = []
-		for i in range( E_MAX_RECORD_COUNT ):
-			ctrlButton = self.getControl(BUTTON_ID_BASE_RUNNNING_REC + i)
-			ctrlButton.setVisible( False )
-			self.mCtrlRecButtonList.append( ctrlButton )
 
 		self.mCtrlScheduledButtonList = []
 		for i in range( E_GRID_SCHEDULED_BUTTON_COUNT ):

@@ -635,7 +635,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					numList = []
 					#chNumbers = []
-					self.mNavOffsetTopIndex = self.GetOffsetPosition( )
+					self.mNavOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 					listCount = len( self.mChannelList )
 					endCount = self.mNavOffsetTopIndex + self.mItemCount
 					for offsetIdx in range( self.mNavOffsetTopIndex, endCount ) :
@@ -648,7 +648,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							#LOG_TRACE( '[ChannelList] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mNavOffsetTopIndex, offsetIdx, listCount ) )
 							break
-					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
+					#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, self.mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
 
 					if numList and len( numList ) > 0 :
 						epgList = self.mDataCache.Epgevent_GetShortList( self.mUserMode.mServiceType, numList )
@@ -669,7 +669,7 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( '[ChannelList] epgList COUNT[%s]'% len( epgList ) )
 
 		#self.mLock.release( )
-		if isUpdate :
+		if aUpdateAll :
 			self.CloseBusyDialog( )
 
 		#print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
@@ -678,24 +678,27 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetTimerByIDs( self, aNumber, aSid, aTsid, aOnid ) :
-		if self.mTimerListHash == None or len( self.mTimerListHash ) < 1 :
+		if not self.mTimerListHash or len( self.mTimerListHash ) < 1 :
 			return None
 		return self.mTimerListHash.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 
 
-	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, isIndex = False ) :
-		if self.mChannelListHashIDs == None or len( self.mChannelListHashIDs ) < 1 :
-			return None
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, aReqIndex = False ) :
+		if not self.mChannelListHashIDs or len( self.mChannelListHashIDs ) < 1 :
+			retVal = None
+			if aReqIndex :
+				retVal = -1
+			return retVal
 
 		retValue = 0
-		if isIndex :
+		if aReqIndex :
 			retValue = 1
 
 		iChannels = self.mChannelListHashIDs.get( '%d:%d:%d:%d' %( aNumber, aSid, aTsid, aOnid ), None )
 		if iChannels :
 			iChannels = iChannels[retValue]
 
-		if isIndex and iChannels == None :
+		if aReqIndex and iChannels == None :
 			iChannels = -1 #none exist index
 
 		return iChannels
@@ -787,7 +790,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.GoToEditWindow( )
 		else :
 			self.UpdateChannelList( aUpdatePosition )
-			self.mOffsetTopIndex = self.GetOffsetPosition( )
+			self.mOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 			self.mNavOffsetTopIndex = self.mOffsetTopIndex
 
 		#init navChannel by focus
@@ -1188,7 +1191,7 @@ class ChannelListWindow( BaseWindow ) :
 						#onid = self.mNavChannel.mOnid
 						#iEPG = self.mDataCache.Epgevent_GetPresent( )
 						iEPG = self.mDataCache.GetEpgeventCurrent( )
-						
+
 						if iEPG == None or iEPG.mError != 0 :
 							return -1
 
@@ -1852,6 +1855,7 @@ class ChannelListWindow( BaseWindow ) :
 							self.mDataCache.LoadZappingList( )
 							#self.mDataCache.LoadChannelList( )
 							self.mDataCache.RefreshCacheByChannelList( self.mChannelList )
+							WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 							#LOG_TRACE( '[ChannelList] ===================== save yes: cache re-load' )
 
 							if self.mFlag_ModeChanged :
@@ -1937,6 +1941,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mDataCache.Zappingmode_SetCurrent( self.mUserMode )
 					isSave = self.mDataCache.Channel_Save( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 					#### data cache re-load ####
 					self.mDataCache.SetSkipChannelView( False )
@@ -2706,7 +2711,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdatePropertyGUI( 'EPGDuration', '%sm'% ( self.mNavEpg.mDuration / 60 ) )
 
 			if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-				newOffsetTopIndex = self.GetOffsetPosition( )
+				newOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
 				LOG_TRACE( '----------------------------topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
 				if self.mNavOffsetTopIndex == newOffsetTopIndex :
 					if self.mNavEpg and self.mNavChannel :
@@ -2754,13 +2759,6 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_ERR( '[ChannelList] except[%s]'% e )
 
 
-	def GetOffsetPosition( self ) :
-		pos = self.mCtrlListCHList.getOffsetPosition( )
-		if pos < 0 :
-			pos = 0
-		return pos
-
-
 	def GetEPGDurationProgress( self, aEPGStartTime = 0, aEPGDuration = 0 ) :
 		percent      = 0
 		startTime    = aEPGStartTime + self.mLocalOffset
@@ -2787,38 +2785,33 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( '[ChannelList] passed, edit mode' )
 			return
 
-		if not self.mListItems :
+		if not self.mListItems or ( not self.mChannelList ) :
 			LOG_TRACE( '[ChannelList] passed, channelList None' )
 			return
 
 		startTime = time.time()
 
-		updateStart = self.GetOffsetPosition( )
+		updateStart = GetOffsetPosition( self.mCtrlListCHList )
 		updateEnd = ( updateStart + self.mItemCount )
 		if aUpdateAll :
 			updateStart = 0
 			updateEnd = len( self.mListItems ) - 1
 
-		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
+		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( GetOffsetPosition( self.mCtrlListCHList ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
 		if aUpdateAll :
 			self.OpenBusyDialog( )
+
 		try :
-			idx = -1
 			updateCount = 0
-			for listItem in self.mListItems :
-				idx += 1
-
-				if idx < updateStart :
-					continue
-
-				if idx > updateEnd :
-					break
-
-				if self.mChannelList and idx < len( self.mChannelList ) :
+			listCount = len( self.mChannelList )
+			#for listItem in self.mListItems :
+			for idx in range( updateStart, updateEnd ) :
+				if self.mChannelList and idx < listCount :
+					listItem = self.mListItems[idx]
 					iChannel = self.mChannelList[idx]
-
 					channelName = '%s'% iChannel.mName
+
 					if self.mShowEPGInfo :
 						epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 						if epgEvent :
@@ -2830,6 +2823,9 @@ class ChannelListWindow( BaseWindow ) :
 
 					listItem.setLabel2( channelName )
 					updateCount += 1
+
+				else :
+					break
 
 			LOG_TRACE( '[ChannelList] UpdateChannelNameWithEPG [%s]counts'% updateCount )
 
@@ -4111,7 +4107,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
 		self.mAsyncTuneTimer.start( )
 
-		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mNavOffsetTopIndex != self.GetOffsetPosition( ) :
+		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mNavOffsetTopIndex != GetOffsetPosition( self.mCtrlListCHList ) :
 			updateEpgInfo = threading.Timer( 0.05, self.LoadByCurrentEPG )
 			updateEpgInfo.start( )
 
@@ -4189,7 +4185,7 @@ class ChannelListWindow( BaseWindow ) :
 				isChangeDuration = True
 
 		isOK = False
-		if isRunRec < 2 or isChangeDuration :
+		if isRunRec < E_MAX_RECORD_COUNT or isChangeDuration :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
@@ -4319,11 +4315,11 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def StopAsyncSort( self ) :
-		if self.mAsyncSortTimer	and self.mAsyncSortTimer.isAlive( ) :
+		if self.mAsyncSortTimer and self.mAsyncSortTimer.isAlive( ) :
 			self.mAsyncSortTimer.cancel( )
 			del self.mAsyncSortTimer
 
-		self.mAsyncSortTimer  = None
+		self.mAsyncSortTimer = None
 
 
 	def UpdateShortCutGroup( self, aMove = 1 ) :

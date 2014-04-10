@@ -94,7 +94,8 @@ class SystemInfo( SettingWindow ) :
 
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'System' ) ) )
 		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'Version' ) ) )
-		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
+		if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
+			self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
 
 		self.SetHeaderTitle( MR_LANG( 'STB Information' ) )
 

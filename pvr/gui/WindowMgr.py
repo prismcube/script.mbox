@@ -177,9 +177,6 @@ class WindowMgr( object ) :
 				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 
-					if aWindowId == WIN_ID_SIMPLE_CHANNEL_LIST :
-						self.mWindows[aWindowId].PreAction( )
-						
 					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 					#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
 					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
@@ -217,9 +214,6 @@ class WindowMgr( object ) :
 
 					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 						LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-
-						if parentId == WIN_ID_SIMPLE_CHANNEL_LIST :
-							self.mWindows[parentId].PreAction( )
 
 						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
 						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
@@ -274,10 +268,9 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.MainMenu import MainMenu
 			from pvr.gui.windows.ChannelListWindow import ChannelListWindow
 			from pvr.gui.windows.LivePlate import LivePlate
-			from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
-			from pvr.gui.windows.Configure import Configure	
-			from pvr.gui.windows.Installation import Installation	
-			from pvr.gui.windows.AntennaSetup import AntennaSetup
+			from pvr.gui.windows.TimeShiftPlate import TimeShiftPlate
+			from pvr.gui.windows.Configure import Configure
+			from pvr.gui.windows.Installation import Installation
 			from pvr.gui.windows.TunerConfiguration import TunerConfiguration
 			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
@@ -285,8 +278,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
 			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
 			from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
-			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
+			from pvr.gui.windows.SatelliteConfigDisEqC10 import SatelliteConfigDisEqC10
+			from pvr.gui.windows.SatelliteConfigDisEqC11 import SatelliteConfigDisEqC11
 			from pvr.gui.windows.ChannelSearch import ChannelSearch
 			from pvr.gui.windows.AutomaticScan import AutomaticScan	
 			from pvr.gui.windows.ManualScan import ManualScan
@@ -297,7 +290,6 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.EPGWindow import EPGWindow
 			from pvr.gui.windows.MediaCenter import MediaCenter
 			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
-			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			from pvr.gui.windows.Favorites import Favorites
@@ -307,6 +299,14 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SimpleChannelList import SimpleChannelList
 			from pvr.gui.windows.FastScan import FastScan
 			from pvr.gui.windows.Advanced import Advanced
+
+			if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
+				from pvr.gui.windows.ruby.AntennaSetup import AntennaSetup
+				from pvr.gui.windows.ruby.FirstInstallation import FirstInstallation
+			elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+				from pvr.gui.windows.oscar.AntennaSetup import AntennaSetup
+				from pvr.gui.windows.oscar.FirstInstallation import FirstInstallation
+
 			#from pvr.gui.windows.PIPWindow import PIPWindow
 
 			from pvr.HiddenTest import HiddenTest

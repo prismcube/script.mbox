@@ -485,7 +485,7 @@ def CreateDirectory( aPath ) :
 	if os.path.exists( aPath ) :
 		return
 
-	os.makedirs( aPath, 0644 )
+	os.makedirs( aPath, 0755 )
 
 
 def CreateFile( aPath ) :
@@ -1321,7 +1321,8 @@ def IsIPv4( address ) :
 	return True
 
 
-def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
+def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
+	urlType = urlparse.urlparse( aUrl ).scheme
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )
 	zipFile = ''
 	hostip = urlHost
@@ -1335,33 +1336,51 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', aReserved = False ) :
 		if not IsIPv4( hostip ) :
 			return zipFile
 
-	smbPath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
+	#remotePath = '//%s'% os.path.join( '%s'% hostip, os.path.dirname( urlPath )[1:] )
 	#LOG_TRACE( 'smbPath[%s]'% smbPath )
 
 	mntHistory = ExecuteShell( 'mount' )
 	if not mntHistory :
 		return zipFile
 
-	ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	#ret = re.search( 'type cifs', mntHistory, re.IGNORECASE )
+	ret = re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
-		os.system( '/bin/umount %s'% aSmbPath )
+		os.system( '/bin/umount -f %s'% aSmbPath )
 		os.system( 'sync' )
+		time.sleep( 2 )
 
 	CreateDirectory( aSmbPath )
 
-	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, smbPath, aSmbPath )
+	remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+	cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	if urlType == 'smb' :
+		remotePath = '//%s%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t cifs -o username=%s,password=%s %s %s'% ( urlUser, urlPass, remotePath, aSmbPath )
+	elif urlType == 'nfs' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'mount -t nfs %s %s -o nolock,mountvers=4'% ( remotePath, aSmbPath )
+	elif urlType == 'ftp' :
+		remotePath = '%s:%s'% ( hostip, os.path.dirname( urlPath ) )
+		cmd = 'modprobe fuse && curlftpfs %s %s -o user=%s:%s,allow_other'% ( remotePath, aSmbPath, urlUser, urlPass )
+
+	LOG_TRACE( 'remotePath[%s] mountPath[%s] cmd[%s]'% ( remotePath, aSmbPath, cmd ) )
+
 	if ExecuteShell( cmd ) :
 		# result something? maybe error
 		LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
 		return zipFile
 
-	if aReserved :
-		os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
-		os.system( 'sync' )
+	else :
+		# mount check confirm
+		mntHistory = ExecuteShell( 'mount' )
+		if not mntHistory or ( not bool( re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE ) ) ) :
+			LOG_TRACE( 'Fail to mount: cmd[%s]'% cmd )
+			return zipFile
 
 	zipFile = '%s/%s'% ( aSmbPath, urlFile )
-	if not CheckDirectory( zipFile ) :
+	if isCheck and ( not CheckDirectory( zipFile ) ) :
 		LOG_TRACE( 'file not found zipPath[%s]'% zipFile )
 		zipFile = ''
 
@@ -1609,6 +1628,13 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
+def ResetPositionVolumeInfo( self, aTextLabel, aBaseWidth, aShowGroupID, aCalcTextID ) :
+	if aTextLabel :
+		width = self.getControl( aCalcTextID ).CalcTextWidth( aTextLabel )
+		posw = aBaseWidth - ( 185 + width )
+		self.getControl( aShowGroupID ).setPosition( int( posw ), 0 )
+
+
 def KillScript( aId ) :
 	try :
 		pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]
@@ -1799,4 +1825,38 @@ def GetXBMCLanguageToPropAudioLanguage( aLanguage ) :
 
 	else :
 		return ElisEnum.E_ENGLISH
+
+
+def GetOffsetPosition( aControlList ) :
+	pos = aControlList.getOffsetPosition( )
+	if pos < 0 :
+		pos = 0
+	return pos
+
+
+def CalculateProgress( aCurrentTime, aEpgStart, aDuration  ) :
+	percent = 0
+	startTime = aEpgStart
+	endTime = aEpgStart + aDuration
+
+	pastDuration = endTime - aCurrentTime
+
+	if aCurrentTime > endTime : #past
+		return 100
+
+	elif aCurrentTime < startTime : #future
+		return 0
+
+	if pastDuration < 0 : #past
+		pastDuration = 0
+
+	if aDuration > 0 :
+		percent = 100 - ( pastDuration * 100.0 / aDuration )
+
+	else :
+		percent = 0
+
+	#LOG_TRACE( 'Percent[%s]'% percent )
+	return percent
+
 

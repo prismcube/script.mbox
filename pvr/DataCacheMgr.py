@@ -1943,6 +1943,8 @@ class DataCacheMgr( object ) :
 		self.LoadChannelList( )
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
+		import pvr.gui.WindowMgr as WinMgr
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 		if aDefaultTune :
 			#self.Channel_TuneDefault( mCurrentChannel )
@@ -2264,6 +2266,34 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
 
+	def Record_GetMountInfo( self, aKey ) :
+		if SUPPORT_RECORD_DATABASE == True :
+			recordDB = ElisRecordDB( )
+			recInfo = recordDB.Record_GetMountInfo( aKey )
+			recordDB.Close( )
+			return recInfo
+
+
+	def Record_GetNetworkVolume( self ) :
+		return self.mCommander.Record_GetNetworkVolume( )
+
+
+	def Record_AddNetworkVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_AddNetworkVolume( [aENetworkVolume] )
+
+
+	def Record_DeleteNetworkVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_DeleteNetworkVolume( [aENetworkVolume] )
+
+
+	def Record_SetDefaultVolume( self, aENetworkVolume ) :
+		return self.mCommander.Record_SetDefaultVolume( [aENetworkVolume] )
+
+
+	def Record_RefreshNetworkVolume( self ) :
+		return self.mCommander.Record_RefreshNetworkVolume( )
+
+
 	def Timer_StopRecordingByRecordKey( self, aKey ) :
 		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
 
@@ -2365,8 +2395,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )
 
 
-	def Timer_AddManualTimer( self, aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt ) :
-		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt )
+	def Timer_AddManualTimer( self, aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId ) :
+		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId )
 
 
 	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
