@@ -520,6 +520,16 @@
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2347
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2348
 "LCN Search";;;;;;;"Wyszukiwanie LCN";;;;;;;2349
+"CEC Enable";;;;;;;;;;;;;;2350
+"CEC TV On";;;;;;;;;;;;;;2351
+"Nothing";;;;;;;;;;;;;;2352
+"Wakeup";;;;;;;;;;;;;;2353
+"CEC TV Off";;;;;;;;;;;;;;2354
+"Standby";;;;;;;;;;;;;;2355
+"CEC STB On";;;;;;;;;;;;;;2356
+"CEC STB Off";;;;;;;;;;;;;;2357
+"Record Default Path Change";;;;;;;;;;;;;;2358
+"Internal";;;;;;;;;;;;;;2359
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -1430,3 +1440,17 @@
 "South";"Süd";"Sud";"Sud";"Sur";"Jih";"South";"Południe";"South";"Юг";"South";"South";"Juh";"Південь";3908
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3909
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3910
+"HbbTV";;;;;;;;;;;;;;3911
+"HDMI-CEC";;;;;;;;;;;;;;3912
+"Control PRISMCUBE using your existing TV remote when connected via HDMI";;;;;;;;;;;;;;3913
+"Watch HbbTV on your PRISMCUBE";;;;;;;;;;;;;;3914
+"Enable/Disable HDMI-CEC option";;;;;;;;;;;;;;3915
+"HDMI-CEC Setting";;;;;;;;;;;;;;3916
+"HDMI-CEC TV On";;;;;;;;;;;;;;3917
+"Set an action for STB when turning TV on via HDMI-CEC";;;;;;;;;;;;;;3918
+"HDMI-CEC TV Off";;;;;;;;;;;;;;3919
+"Set an action for STB when turning TV off via HDMI-CEC";;;;;;;;;;;;;;3920
+"HDMI-CEC STB On";;;;;;;;;;;;;;3921
+"Set an action for TV when turning STB on via HDMI-CEC";;;;;;;;;;;;;;3922
+"HDMI-CEC STB Off";;;;;;;;;;;;;;3923
+"Set an action for TV when turning STB off via HDMI-CEC";;;;;;;;;;;;;;3924

@@ -521,6 +521,16 @@
 	<string id="2347">Wireless</string>
 	<string id="2348">HDD Sleep Mode</string>
 	<string id="2349">LCN Search</string>
+	<string id="2350">CEC Enable</string>
+	<string id="2351">CEC TV On</string>
+	<string id="2352">Nothing</string>
+	<string id="2353">Wakeup</string>
+	<string id="2354">CEC TV Off</string>
+	<string id="2355">Standby</string>
+	<string id="2356">CEC STB On</string>
+	<string id="2357">CEC STB Off</string>
+	<string id="2358">Record Default Path Change</string>
+	<string id="2359">Internal</string>
 	<string id="3001">No EPG information available</string>
 	<string id="3002">That recording conflicts with</string>
 	<string id="3003">Error</string>
@@ -1431,4 +1441,18 @@
 	<string id="3908">South</string>
 	<string id="3909">Finish</string>
 	<string id="3910">Go to the channel search setup page</string>
+	<string id="3911">HbbTV</string>
+	<string id="3912">HDMI-CEC</string>
+	<string id="3913">Control PRISMCUBE using your existing TV remote when connected via HDMI</string>
+	<string id="3914">Watch HbbTV on your PRISMCUBE</string>
+	<string id="3915">Enable/Disable HDMI-CEC option</string>
+	<string id="3916">HDMI-CEC Setting</string>
+	<string id="3917">HDMI-CEC TV On</string>
+	<string id="3918">Set an action for STB when turning TV on via HDMI-CEC</string>
+	<string id="3919">HDMI-CEC TV Off</string>
+	<string id="3920">Set an action for STB when turning TV off via HDMI-CEC</string>
+	<string id="3921">HDMI-CEC STB On</string>
+	<string id="3922">Set an action for TV when turning STB on via HDMI-CEC</string>
+	<string id="3923">HDMI-CEC STB Off</string>
+	<string id="3924">Set an action for TV when turning STB off via HDMI-CEC</string>
 </strings>
