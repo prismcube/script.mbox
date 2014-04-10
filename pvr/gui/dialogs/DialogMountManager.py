@@ -443,7 +443,7 @@ class DialogMountManager( SettingDialog ) :
 									os.system( 'sync' )
 
 				else :
-					lblLine = MR_LANG( 'Please input path name' )
+					lblLine = MR_LANG( 'Please enter path name' )
 
 			elif aInput == E_DialogInput02 :
 				if self.mMode != E_NETWORK_VOLUME_SELECT :
