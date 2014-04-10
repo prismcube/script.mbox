@@ -111,7 +111,7 @@ class WebPage( object ) :
 					}
 
 					function delRecord( target ) {
-						if( confirm("Are You Sure To Delete the Selected Fild?") ) {
+						if( confirm("Are You Sure To Delete the Selected File?") ) {
 							document.recordDel.key.value = target;
 							document.recordDel.submit();
 						}
@@ -1213,6 +1213,11 @@ class Record( WebPage ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 		if HasAvailableRecordingHDD( ) == False :
+			self.content = """
+				<script>
+					alert("No HDD available, cannot record without HDD");
+				</script>
+			"""
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -1224,7 +1229,12 @@ class Record( WebPage ) :
 
 			#if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
 			#	RecordConflict( dialog.GetConflictTimer( ) )
-
+			
+			self.content = """
+				<script>
+					alert("Cannot start recording. Recording alreay in progress");
+				</script>
+			"""
 			return
 
 		elif runningCount < 2 :
@@ -1280,18 +1290,24 @@ class Record( WebPage ) :
 			print self.stationInfo['duration']
 
 			# ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, int(self.stationInfo['sid']),  int(self.stationInfo['tsid']), int(self.stationInfo['onid']) )
-			ret = self.mDataCache.Timer_AddManualTimer( int(self.stationInfo['channelNumber']), 1, localTime + 10, int(self.stationInfo['duration']), 'Web UI Recordings', 0 )
+			ret = self.mDataCache.Timer_AddManualTimer( int(self.stationInfo['channelNumber']), 1, localTime + 5, int(self.stationInfo['duration']) * 60, 'Web UI Recordings', 0 )
 
 			#if ret[0].mParam == -1 or ret[0].mError == -1 :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
 			if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
 				LOG_ERR( 'StartDialog ' )
 				#RecordConflict( ret )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				#dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-					RecordConflict( dialog.GetConflictTimer( ) )
+					#RecordConflict( dialog.GetConflictTimer( ) )
+					self.content = """
+						<script>
+							alert("Cannot record, due to conflict");
+						</script>
+					"""
+				return
 
 			else :
 				isOK = True
@@ -1301,6 +1317,12 @@ class Record( WebPage ) :
 			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			#dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			#dialog.doModal( )
+			self.content = """
+				<script>
+					alert("2 Recordings in progress, cannot record more.");
+				</script>
+			"""
+			return
 			pass
 			
 
