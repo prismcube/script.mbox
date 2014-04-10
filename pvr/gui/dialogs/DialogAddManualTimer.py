@@ -899,7 +899,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					ret = self.mDataCache.Timer_AddViewTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mRecordName )
 				else :
 					volumeId = 0
-					if self.mNetVolume :
+					if E_SUPPORT_EXTEND_RECORD_PATH and self.mNetVolume :
 						volumeId = self.mNetVolume.mIndexID
 					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mUsedWeeklyList[0].mDuration, self.mRecordName, True, volumeId )
 
