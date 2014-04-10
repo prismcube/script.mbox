@@ -771,14 +771,35 @@ class ArchiveWindow( BaseWindow ) :
 					if self.CheckPincode( ) == False :
 						return False
 
+				isPlay = False
 				if aResume == True :
 					playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( recInfo.mRecordKey )
 					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( recInfo.mRecordKey, playOffset ) )
 					if playOffset < 0 :
 						playOffset = 0
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
+					isPlay = self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 				else :
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+					isPlay = self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+
+				if not isPlay :
+					lblLine = MR_LANG( 'Can not playback' )
+					if E_SUPPORT_EXTEND_RECORD_PATH and recInfo.mMountInfo :
+						mntType = 'HDD'
+						retPath = os.path.dirname( recInfo.mMountInfo )
+						if retPath == E_DEFAULT_PATH_SMB_POSITION :
+							mntType = 'SMB'
+						elif retPath == E_DEFAULT_PATH_NFS_POSITION :
+							mntType = 'NFS'
+						elif retPath == E_DEFAULT_PATH_FTP_POSITION :
+							mntType = 'FTP'
+
+						if mntType != 'HDD' :
+							lblLine = '%s \'%s\'\n %s'% ( lblLine, mntType, MR_LANG( 'Please check network connection' ) )
+
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+					dialog.doModal( )
+					return False
 
 				SetLock2( True )
 				self.mPlayingRecord = recInfo
