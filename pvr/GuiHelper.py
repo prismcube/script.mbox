@@ -1628,6 +1628,13 @@ def ResizeImageWidthByTextSize( aControlIdText, aControlIdImage, aText = '', aCo
 		#LOG_TRACE( 'resize image label[%s] width[%s]'% ( lblText, int( mWidth ) ) )
 
 
+def ResetPositionVolumeInfo( self, aTextLabel, aBaseWidth, aShowGroupID, aCalcTextID ) :
+	if aTextLabel :
+		width = self.getControl( aCalcTextID ).CalcTextWidth( aTextLabel )
+		posw = aBaseWidth - ( 185 + width )
+		self.getControl( aShowGroupID ).setPosition( int( posw ), 0 )
+
+
 def KillScript( aId ) :
 	try :
 		pids = [ pid for pid in os.listdir( '/proc' ) if pid.isdigit( ) ]

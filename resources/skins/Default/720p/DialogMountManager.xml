@@ -36,12 +36,12 @@
 					<include>DialogSpinEx02</include>
 					<!--include>DialogInput04</include-->
 					<control type="group">
-						<posx>10</posx>
+						<posx>0</posx>
 						<posy>272</posy>
-						<control type="group">
-							<posx>290</posx>
+						<control type="group" id="300">
+							<posx>0</posx>
 							<posy>0</posy>
-							<control type="progress" id="300">
+							<control type="progress" id="301">
 								<description>Progressbar</description>
 								<posx>0</posx>
 								<posy>15</posy>
@@ -50,12 +50,12 @@
 								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
 							</control>
-							<control type="label">
-								<posx>228</posx>
+							<control type="label" id="302">
+								<posx>105</posx>
 								<posy>2</posy>
 								<width>150</width>
 								<height>40</height>
-								<align>right</align>
+								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[Window.Property(NetVolumeUse)]</label>
 								<textcolor>grey3</textcolor>

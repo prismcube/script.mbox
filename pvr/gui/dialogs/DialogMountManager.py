@@ -5,7 +5,10 @@ E_RECORDPATH_SETUPMENU_GROUP_ID	 = 9010
 E_RECORDPATH_SUBMENU_LIST_ID     = 9000
 E_RECORDPATH_SETTING_DESCRIPTION = 1003
 
-E_PROGRESS_ID_USE         = 300
+E_IMAGE_DIALOG_BACKGROUND = 9001
+E_GROUP_ID_SHOW_INFO      = 300
+E_PROGRESS_NETVOLUME      = 301
+E_LABEL_ID_USE_INFO       = 302
 
 E_NETWORK_VOLUME_ADD = 0
 E_NETWORK_VOLUME_EDIT = 1
@@ -27,8 +30,12 @@ class DialogMountManager( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 
-		self.mCtrlProgressUse = self.getControl( E_PROGRESS_ID_USE )
+		self.mCtrlGroupShowInfo = self.getControl( E_GROUP_ID_SHOW_INFO )
+		self.mCtrlLabelUseInfo = self.getControl( E_LABEL_ID_USE_INFO )
+		self.mCtrlProgressUse = self.getControl( E_PROGRESS_NETVOLUME )
 		#self.setProperty( 'DialogDrawFinished', 'False' )
+
+		self.mDialogWidth = self.getControl( E_IMAGE_DIALOG_BACKGROUND ).getWidth( )
 		lblTitle = MR_LANG( 'Add/Remove Record Path' )
 		self.SetHeaderLabel( lblTitle )
 
@@ -202,6 +209,7 @@ class DialogMountManager( SettingDialog ) :
 			self.setProperty( 'NetVolumeConnect', lblOnline )
 			self.setProperty( 'NetVolumeUse', lblPercent )
 			self.mCtrlProgressUse.setPercent( useInfo )
+			ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 		else :
 			#new
@@ -625,6 +633,7 @@ class DialogMountManager( SettingDialog ) :
 		self.mCtrlProgressUse.setPercent( usePercent )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.setProperty( 'NetVolumeConnect', lblOnline )
+		ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		LOG_TRACE( '----------------------------------DrawItem property[%s]'% ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( ) )
@@ -739,6 +748,7 @@ class DialogMountManager( SettingDialog ) :
 		self.setProperty( 'NetVolumeConnect', lblOnline )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.mCtrlProgressUse.setPercent( useInfo )
+		ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

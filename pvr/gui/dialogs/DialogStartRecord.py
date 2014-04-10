@@ -15,7 +15,10 @@ E_LABEL_DURATION			= 502
 # Control IDs
 E_LABEL_RECORD_NAME			= 101
 E_GROUP_LIST_CONTROL		= 8000
-E_PROGRESS_USE				= 300
+E_IMAGE_DIALOG_BACKGROUND   = 9001
+E_GROUP_ID_SHOW_INFO        = 300
+E_PROGRESS_NETVOLUME        = 301
+E_LABEL_ID_USE_INFO         = 302
 
 E_FROM_NOW					= 0 
 E_FROM_EPG					= 1
@@ -53,6 +56,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.mSelectIdx = 99
 		self.mNetVolume = None
 		self.mNetVolumeList = []
+		self.mDialogWidth = self.getControl( E_IMAGE_DIALOG_BACKGROUND ).getWidth( )
 		if E_SUPPORT_EXTEND_RECORD_PATH and CheckHdd( ) :
 			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
@@ -258,7 +262,8 @@ class DialogStartRecord( SettingDialog ) :
 		self.SetControlLabel2String( E_DialogInput05, lblSelect )
 		self.setProperty( 'NetVolumeConnect', lblOnline )
 		self.setProperty( 'NetVolumeUse', lblPercent )
-		self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
+		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+		ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 
 	def Reload ( self ) :
@@ -367,8 +372,9 @@ class DialogStartRecord( SettingDialog ) :
 			self.SetEnableControls( [E_DialogInput05, E_DialogInput06], False )
 			self.setProperty( 'NetVolumeConnect', lblOnline )
 			self.setProperty( 'NetVolumeUse', lblPercent )
-			self.getControl( E_PROGRESS_USE ).setPercent( useInfo )
-			self.getControl( 200 ).setPosition( posx, posy )
+			self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+			#self.getControl( 300 ).setPosition( posx, posy )
+			ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 			self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 

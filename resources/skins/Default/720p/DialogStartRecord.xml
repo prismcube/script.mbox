@@ -42,45 +42,49 @@
 				<!-- Record path -->
 				<include>DialogInput05</include>
 				<include>DialogInput06</include>
-				<control type="group" id="200">
-					<posx>300</posx>
+				<control type="group">
+					<posx>0</posx>
 					<posy>310</posy>
-					<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
-					<control type="progress" id="300">
-						<description>Progressbar</description>
+					<control type="group" id="300">
 						<posx>0</posx>
-						<posy>15</posy>
-						<width>100</width>
-						<height>16</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
-					</control>
-					<control type="label">
-						<posx>228</posx>
-						<posy>2</posy>
-						<width>150</width>
-						<height>40</height>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[Window.Property(NetVolumeUse)]</label>
-						<textcolor>grey3</textcolor>
-						<font>font12</font>
-					</control>
-					<control type="image">
-						<posx>-30</posx>
-						<posy>10</posy>
-						<width>25</width>
-						<height>25</height>
-						<texture>connected.png</texture>
-						<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
-					</control>
-					<control type="image">
-						<posx>-30</posx>
-						<posy>10</posy>
-						<width>25</width>
-						<height>25</height>
-						<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
-						<texture>disconnected.png</texture>
+						<posy>0</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="progress" id="301">
+							<description>Progressbar</description>
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+						</control>
+						<control type="label" id="302">
+							<posx>105</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font12</font>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
 					</control>
 				</control>
 				<control type="group">

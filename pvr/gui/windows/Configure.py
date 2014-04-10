@@ -11,8 +11,10 @@ E_CONFIGURE_SUBMENU_LIST_ID		=  E_CONFIGURE_BASE_ID + 9000
 E_CONFIGURE_SETTING_DESCRIPTION	=  E_CONFIGURE_BASE_ID + 1003
 
 
-E_CONFIGURE_DEFAULT_FOCUS_ID	=  E_CONFIGURE_SUBMENU_LIST_ID
-E_PROGRESS_NETVOLUME			=  E_CONFIGURE_BASE_ID + 1300
+E_CONFIGURE_DEFAULT_FOCUS_ID    =  E_CONFIGURE_SUBMENU_LIST_ID
+E_GROUP_ID_SHOW_INFO            =  E_CONFIGURE_BASE_ID + 1300
+E_PROGRESS_NETVOLUME            =  E_CONFIGURE_BASE_ID + 1301
+E_LABEL_ID_USE_INFO             =  E_CONFIGURE_BASE_ID + 1302
 
 E_LANGUAGE				= 0
 E_PARENTAL				= 1
@@ -545,6 +547,7 @@ class Configure( SettingWindow ) :
 				self.setProperty( 'NetVolumeConnect', lblOnline )
 				self.setProperty( 'NetVolumeUse', lblPercent )
 				self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+				ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 				defProperty = 0
 				defVolumeIdx = 99
@@ -752,6 +755,7 @@ class Configure( SettingWindow ) :
 		self.setProperty( 'NetVolumeConnect', lblOnline )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 
 	def RefreshByVolumeList( self ) :
@@ -814,6 +818,7 @@ class Configure( SettingWindow ) :
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
 		self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 		self.mDataCache.Record_RefreshNetworkVolume( )
 
 		if failCount :
@@ -920,6 +925,7 @@ class Configure( SettingWindow ) :
 				self.setProperty( 'NetVolumeConnect', lblOnline )
 				self.setProperty( 'NetVolumeUse', lblPercent )
 				self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+				ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
 				self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
