@@ -4500,6 +4500,31 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>580</posx>
+						<posy>35</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
 					<control type="image">
@@ -4605,6 +4630,30 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>580</posx>
+						<posy>35</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4714,6 +4763,18 @@
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
+					<control type="label">
+						<posx>108</posx>
+						<posy>170</posy>
+						<width>200</width>
+						<height>25</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<textcolor>grey2</textcolor>
+						<font>font12</font>
+					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -4729,6 +4790,31 @@
 						<height>84</height>
 						<texture>OSDPlayNF.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>5</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
 					</control>
 				</itemlayout>
 				<focusedlayout height="186" width="216">
@@ -4766,6 +4852,18 @@
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
+					<control type="label">
+						<posx>108</posx>
+						<posy>170</posy>
+						<width>200</width>
+						<height>25</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<textcolor>white</textcolor>
+						<font>font12</font>
+					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -4781,6 +4879,30 @@
 						<height>84</height>
 						<texture>OSDPlayFO.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>5</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4859,6 +4981,31 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>256</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
 				</itemlayout>
 				<focusedlayout height="117" width="208">
 					<control type="image">
@@ -4893,6 +5040,32 @@
 						<visible>substring(ListItem.Property(Playing),True)</visible>
 						<animation reversible="true" effect="zoom" start="62,266,84,84" end="54,168,100,100" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="62,266,84,84" start="54,168,100,100" time="300">unfocus</animation>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>256</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<animation reversible="true" effect="slide" start="0,0" end="70,-130" time="300">focus</animation>
+						<animation reversible="true" effect="slide" end="0,0" start="70,-130" time="300">unfocus</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4955,6 +5128,20 @@
 				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)] ($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
 				<visible>!substring(Container(1003420).CurrentPage,0)</visible>
 			</control>
+			<!-- NetVolume -->
+			<control type="label">
+				<posx>110</posx>
+				<posy>590</posy>
+				<width>1035</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>($INFO[Container(1003420).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003420).ListItem(0).Property(iNetVolumeName)]</label>
+				<visible>substring(Container(1003420).ListItem(0).Property(RecNetVolume),true)</visible>
+			</control>
 		</control>
 	</include>
 
@@ -5014,6 +5201,31 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>95</posx>
+						<posy>105</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
 				</itemlayout>
 				<focusedlayout height="81" width="144">
 					<control type="image">
@@ -5049,6 +5261,32 @@
 						<animation reversible="true" effect="zoom" start="40,108,64,64" end="22,48,100,100" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="40,108,64,64" start="22,48,100,100" time="300">unfocus</animation>
 					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>90</posx>
+						<posy>105</posy>
+						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<animation reversible="true" effect="slide" start="0,0" end="35,-60" time="300">focus</animation>
+						<animation reversible="true" effect="slide" end="0,0" start="35,-60" time="300">unfocus</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
 				</focusedlayout>
 			</control>
 			<control type="label">
@@ -5077,6 +5315,19 @@
 				<aligny>center</aligny>
 				<label>$INFO[Container(1003430).ListItem(0).Label] ($INFO[Container(1003430).ListItem(0).Property(RecDate)]  $INFO[Container(1003430).ListItem(0).Property(RecDuration)])</label>
 				<visible>!substring(Container(1003430).CurrentPage,0)</visible>
+			</control>
+			<control type="label">
+				<posx>100</posx>
+				<posy>240</posy>
+				<width>770</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>($INFO[Container(1003430).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003430).ListItem(0).Property(iNetVolumeName)]</label>
+				<visible>substring(Container(1003430).ListItem(0).Property(RecNetVolume),true)</visible>
 			</control>
 			<control type="scrollbar" id="1003431">
 				<posx>150</posx>

@@ -972,8 +972,8 @@ class BaseWindow( BaseObjectWindow ) :
 				self.setProperty( 'SettingBackground', 'False' )
 				self.setProperty( 'DafultBackgroundImage', 'False' )
 				self.setProperty( 'SettingPIG', 'False' )
-				for i in range( E_CTRL_BTN_INFO_MAX ) :
-					self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
+				#for i in range( E_CTRL_BTN_INFO_MAX ) :
+				#	self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO + i ).setVisible( True )
 
 			elif aWindowId == WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID :
 				self.setProperty( 'SettingBackground', 'False' )

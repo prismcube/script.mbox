@@ -13,8 +13,10 @@ E_CONFIGURE_SUBMENU_LIST_ID		=  E_CONFIGURE_BASE_ID + 9000
 E_CONFIGURE_SETTING_DESCRIPTION	=  E_CONFIGURE_BASE_ID + 1003
 
 
-E_CONFIGURE_DEFAULT_FOCUS_ID	=  E_CONFIGURE_SUBMENU_LIST_ID
-
+E_CONFIGURE_DEFAULT_FOCUS_ID    =  E_CONFIGURE_SUBMENU_LIST_ID
+E_GROUP_ID_SHOW_INFO            =  E_CONFIGURE_BASE_ID + 1300
+E_PROGRESS_NETVOLUME            =  E_CONFIGURE_BASE_ID + 1301
+E_LABEL_ID_USE_INFO             =  E_CONFIGURE_BASE_ID + 1302
 
 E_LANGUAGE				= 0
 E_PARENTAL				= 1
@@ -536,6 +538,48 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
 	 			dialog.doModal( )
 
+		elif selectedId == E_RECORDING_OPTION :
+			if groupId == E_Input01 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_MOUNT_MANAGER )
+				dialog.doModal( )
+				defVolume = dialog.GetDefaultVolume( )
+				self.mNetVolumeList = dialog.GetNetworkVolumes( )
+				lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+				self.SetControlLabel2String( E_Input02, lblSelect )
+				self.setProperty( 'NetVolumeConnect', lblOnline )
+				self.setProperty( 'NetVolumeUse', lblPercent )
+				self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+				ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+
+				defProperty = 0
+				defVolumeIdx = 99
+				selectEnable = False
+				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+					selectEnable = True
+					if defVolume :
+						idxCount = 0
+						for netVolume in self.mNetVolumeList :
+							if netVolume.mIndexID == defVolume.mIndexID :
+								defProperty = 1
+								defVolumeIdx = idxCount
+								break
+
+							idxCount += 1
+
+				if self.mSelectVolume != defVolumeIdx :
+					self.mSelectVolume = defVolumeIdx
+					ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+
+				enableControlIds = [E_Input02, E_Input03]
+				self.SetEnableControls( enableControlIds, selectEnable )
+
+
+			elif groupId == E_Input02 :
+				self.ShowNetworkVolume( )
+
+			elif groupId == E_Input03 :
+				self.RefreshByVolumeList( )
+
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
 
@@ -598,11 +642,199 @@ class Configure( SettingWindow ) :
 		self.mDataCache.Frontdisplay_ResolutionByIdentified( )
 
 
+	def GetVolumeInfo( self, aNetVolume = None ) :
+		lblSelect = MR_LANG( 'HDD' )
+		lblOnline = E_TAG_TRUE
+		useFree   = self.mFreeHDD
+		useTotal  = self.mTotalHDD
+		useInfo   = 0
+		if aNetVolume :
+			lblSelect = os.path.basename( aNetVolume.mMountPath )
+			if not aNetVolume.mOnline :
+				lblOnline = E_TAG_FALSE
+			useFree = aNetVolume.mFreeMB
+			if aNetVolume.mTotalMB > 0 :
+				useTotal = aNetVolume.mTotalMB
+
+		else :
+			#hdd not
+			if useTotal < 1 :
+				lblOnline = E_TAG_FALSE
+
+		if useTotal > 0 :
+			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
+
+		lblByte = '%sMb'% useFree
+		if useFree > 1024 :
+			lblByte = '%sGb'% ( useFree / 1024 )
+		elif useFree < 0 :
+			lblByte = '%sKb'% ( useFree * 1024 )
+		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
+
+		return lblSelect, useInfo, lblPercent, lblOnline
+
+
+	def GetVolumeContext( self, aVolumeID = -1 ) :
+		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackIndex = 0
+		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+			for netVolume in self.mNetVolumeList :
+				getPath = netVolume.mRemoteFullPath
+				urlType = urlparse.urlparse( getPath ).scheme
+				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblType = 'local'
+				if urlType :
+					lblType = '%s'% urlType.upper()
+
+				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
+				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
+				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
+
+				if aVolumeID > -1 :
+					if netVolume.mIndexID == aVolumeID :
+						self.mSelectVolume = trackIndex
+						LOG_TRACE( '[ManaulTimer] Edit Timer, get volumeID[%s]'% aVolumeID )
+				else :
+					if netVolume.mIsDefaultSet :
+						LOG_TRACE( '[ManaulTimer] find Default volume, mnt[%s]'% netVolume.mMountPath )
+
+				trackList.append( ContextItem( lblPath, trackIndex ) )
+				trackIndex += 1
+
+		else :
+			self.mNetVolumeList = []
+			LOG_TRACE( 'Record_GetNetworkVolume none' )
+
+		return trackList
+
+
+	def ShowNetworkVolume( self ) :
+		trackList = self.GetVolumeContext( )
+		if not trackList or len( trackList ) < 1 :
+			LOG_TRACE( '[ManaulTimer] show fail, mount list is None' )
+			return
+
+		selectedIdx = 0
+		if self.mSelectVolume != 99 :
+			selectedIdx = self.mSelectVolume + 1
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( trackList, selectedIdx )
+		dialog.doModal( )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction < 0 :
+			LOG_TRACE( '[Configure] cancel, previous back' )
+			return
+
+		if selectAction == self.mSelectVolume :
+			LOG_TRACE( '[Configure] pass, select same' )
+			return
+
+		self.mSelectVolume = selectAction
+
+		defVolume = None
+		defProperty = 0 #E_DEFAULT_PATH_INTERNAL_HDD
+		if selectAction == 99 :
+			if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+				for netVolume in self.mNetVolumeList :
+					if netVolume.mIsDefaultSet :
+						netVolume.mIsDefaultSet = 0
+						self.mDataCache.Record_SetDefaultVolume( netVolume )
+						LOG_TRACE( '[Configure] clear default volume[%s]'% netVolume.mMountPath )
+						break
+		elif selectAction < len( self.mNetVolumeList ) :
+			defVolume = deepcopy( self.mNetVolumeList[selectAction] )
+			defVolume.mIsDefaultSet = 1
+			defProperty = 1 #E_DEFAULT_PATH_NETWORK_VOLUME
+			self.mDataCache.Record_SetDefaultVolume( defVolume )
+			LOG_TRACE( '[Configure] changed default volume[%s]'% defVolume.mMountPath )
+
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+
+		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+		self.SetControlLabel2String( E_Input02, lblSelect )
+		self.setProperty( 'NetVolumeConnect', lblOnline )
+		self.setProperty( 'NetVolumeUse', lblPercent )
+		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+
+
+	def RefreshByVolumeList( self ) :
+		volumeList = self.mDataCache.Record_GetNetworkVolume( )
+		if not volumeList or len( volumeList ) < 1 :
+			LOG_TRACE( '[MountManager] passed, volume list None' )
+			return
+
+		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+
+		RemoveDirectory( '/config/smbReserved.info' )
+		volumeCount = len( volumeList )
+		defVolume = None
+		count = 0
+		failCount = 0
+		failItem = ''
+		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
+
+		self.SetControlLabelString( E_Input03, '' )
+		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
+		for netVolume in volumeList :
+			count += 1
+			cmd = netVolume.mMountCmd
+			lblRet = MR_LANG( 'OK' )
+			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
+			if netVolume.mIsDefaultSet :
+				defVolume = netVolume
+			self.SetControlLabel2String( E_Input03, lblLabel )
+
+			mntHistory = ExecuteShell( 'mount' )
+			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
+				if not mntPath :
+					mntHistory = ExecuteShell( 'mount' )
+					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+						lblRet = MR_LANG( 'Fail' )
+						failCount += 1
+						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
+						os.system( 'umount -f %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
+
+			lblLabel = '%s%s'% ( lblRet, lblLabel )
+			self.SetControlLabel2String( E_Input03, lblLabel )
+			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
+			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+			os.system( 'sync' )
+			time.sleep( 1 )
+
+		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'sync' )
+		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+		self.SetControlLabelString( E_Input03, MR_LANG( 'Refresh Record Path' ) )
+		self.SetControlLabel2String( E_Input03, '' )
+
+		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+		self.SetControlLabel2String( E_Input02, lblSelect )
+		self.setProperty( 'NetVolumeConnect', lblOnline )
+		self.setProperty( 'NetVolumeUse', lblPercent )
+		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+		self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+		self.mDataCache.Record_RefreshNetworkVolume( )
+
+		if failCount :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Fail' ), failItem[1:] )
+			dialog.doModal( )
+
+
 	def SetListControl( self ) :
 		self.ResetAllControl( )
 		self.WaitInitialize( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
@@ -650,10 +882,55 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				#ToDO : default path, get mount path
+				self.mFreeHDD  = 0
+				self.mTotalHDD = 0
+				if CheckHdd( ) :
+					self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
+					self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
+
+				self.mSelectVolume = 99
+				defVolume = None
+				defaultPath = MR_LANG( 'HDD' )
+				disableControlIds = [ E_Input02, E_Input03 ]
+				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+					disableControlIds = []
+					for netVolume in self.mNetVolumeList :
+						idxCount = 0
+						if netVolume.mIsDefaultSet :
+							defaultPath = os.path.basename( netVolume.mMountPath )
+							defVolume = netVolume
+							self.mSelectVolume = idxCount
+							break
+						idxCount += 1
+
+				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )
+				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
+				self.AddInputControl( E_Input03, MR_LANG( 'Refresh Record Path' ), '', MR_LANG( 'Remount your record storage directory' ) )
+				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
+				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
+
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+				time.sleep( 0.2 )
+				if disableControlIds :
+					self.SetEnableControls( disableControlIds, False )
+
+				lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+				self.setProperty( 'NetVolumeConnect', lblOnline )
+				self.setProperty( 'NetVolumeUse', lblPercent )
+				self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+				ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+
+				self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )

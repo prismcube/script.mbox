@@ -61,7 +61,7 @@
 
 		<!-- *********** E_ChannelList ********** -->	
 		<control type="group" id="1300000">
-			<!--visible>substring(Window.Property(CurrentWindow),1300000)</visible-->
+			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
 			<control type="group">
@@ -900,6 +900,65 @@
 							<label>SCRIPT1014</label>
 						</control>
 					</control>
+
+					<control type="group">
+						<posx>0</posx>
+						<posy>200</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>20</posx>
+							<posy>-7</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>FTP</label>
+							<textcolor>grey3</textcolor>
+							<font>font10</font>
+						</control>
+						<control type="label">
+							<posx>50</posx>
+							<posy>-5</posy>
+							<width>300</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>/devel_home/youn/temp/test1/2/3/4asfasfsfsfsasfds</label>
+							<textcolor>grey2</textcolor>
+							<font>font12_title</font>
+						</control>
+					</control>
+					<control type="group">
+						<posx>0</posx>
+						<posy>230</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>30</height>
+							<texture>StackFO_white3.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>-7</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>FTP</label>
+							<textcolor>grey3</textcolor>
+							<font>font10</font>
+						</control>
+					</control>
+
 				</control>
 
 				<control type="group">
@@ -1676,6 +1735,7 @@
 		</control>
 
 
+
 		<!-- PIG Image & Radio Image -->
 		<control type="image" id="8899">
 			<posx>850</posx>
@@ -1692,6 +1752,260 @@
 			<font>font12_title</font>
 			<textcolor>grey</textcolor>
 			<label>$INFO[Control.GetLabel(1300303)]</label>
+		</control>
+
+
+		<control type="group">
+			<!--visible>substring(Window.Property(ViewMode),posterwrap)</visible-->
+			<posx>0</posx>
+			<posy>130</posy>
+			<control type="wraplist" id="1300049">
+				<visible>true</visible>
+				<posx>-100</posx>
+				<posy>0</posy>
+				<width>1526</width>
+				<height>460</height>
+				<onleft>1300049</onleft>
+				<onright>1300049</onright>
+				<onup>3300100</onup>
+				<ondown>1003421</ondown>
+				<pagecontrol>1003421</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>3</focusposition>
+				<orientation>horizontal</orientation>
+				<preloaditems>4</preloaditems>
+				<itemlayout height="117" width="208">
+					<control type="image">
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>3</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>62</posx>
+						<posy>266</posy>
+						<width>84</width>
+						<height>84</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<control type="image">
+						<posx>4</posx>
+						<posy>254</posy>
+						<width>200</width>
+						<height>109</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>256</posy>
+						<!--visible>substring(ListItem.Property(RecNetVolume),true)</visible-->
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>SMB$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
+				</itemlayout>
+				<focusedlayout height="117" width="208">
+					<control type="image">
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>3</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+						<animation reversible="true" effect="zoom" start="3,256,26,26" end="-69,126,40,40" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="3,256,26,26" start="-69,126,40,40" time="300">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>62</posx>
+						<posy>266</posy>
+						<width>84</width>
+						<height>84</height>
+						<texture>OSDPlayFO.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+						<animation reversible="true" effect="zoom" start="62,266,84,84" end="54,168,100,100" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="62,266,84,84" start="54,168,100,100" time="300">unfocus</animation>
+					</control>
+					<!-- NetVolume -->
+					<control type="group">
+						<posx>160</posx>
+						<posy>256</posy>
+						<!--visible>substring(ListItem.Property(RecNetVolume),true)</visible-->
+						<animation reversible="true" effect="slide" start="0,0" end="60,-100" time="300">focus</animation>
+						<animation reversible="true" effect="slide" end="0,0" start="60,-100" time="300">unfocus</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+						<control type="label">
+							<posx>5</posx>
+							<posy>-8</posy>
+							<width>50</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<font>font12</font>
+							<textcolor>grey2</textcolor>
+							<label>SMB$INFO[ListItem.Property(iNetVolumeType)]</label>
+						</control>
+					</control>
+
+
+
+
+
+				</focusedlayout>
+						<content>
+							<item>
+								<!--label>i234</label-->
+								<label>i001</label>
+								<label2>ZDF HD [COLOR green](Our friendship won't end)[/COLOR]</label2>
+								<onclick>-</onclick>
+								<visible>true</visible>
+							</item>
+							<item>
+								<label>i002</label>
+								<label2>zdf_neo HD [COLOR green](Goodbye...Its not the end)[/COLOR]</label2>
+								<onclick>-</onclick>
+								<visible>true</visible>
+							</item>
+							<item>
+								<label>i003</label>
+								<label2>zdf.kultur HD</label2>
+								<onclick>-</onclick>
+								<visible>true</visible>
+							</item>
+							<item>
+								<label>i004</label>
+								<label2>France 24 [COLOR green](For we shall meet again, You guided me through mazes that I struggled)[/COLOR]</label2>
+								<onclick>-</onclick>
+								<visible>true</visible>
+							</item>
+						</content>
+
+			</control>
+			<control type="scrollbar" id="1003421">
+				<posx>180</posx>
+				<posy>480</posy>
+				<width>880</width>
+				<height>25</height>
+				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">ScrollBarH_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">ScrollBarH_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onup>1300049</onup>
+				<ondown>3309000</ondown>
+				<showonepage>false</showonepage>
+				<orientation>horizontal</orientation>
+				<visible>Control.IsVisible(1300049)</visible>
+			</control>
+		</control>
+		<control type="group">
+			<!--visible>substring(Window.Property(ViewMode),posterwrap)</visible-->
+			<control type="label">
+				<posx>110</posx>
+				<posy>510</posy>
+				<width>1035</width>
+				<height>35</height>
+				<font>font30_title</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<info>Container(1300049).ListItem(0).Label2</info>
+			</control>
+			<control type="label">
+				<posx>110</posx>
+				<posy>550</posy>
+				<width>1035</width>
+				<height>20</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<info>Container(1300049).ListItem(0).Label</info>
+			</control>
+			<control type="label">
+				<posx>110</posx>
+				<posy>572</posy>
+				<width>1035</width>
+				<height>20</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>$INFO[Container(1300049).ListItem(0).Property(RecDate)] ($INFO[Container(1300049).ListItem(0).Property(RecDuration)])</label>
+				<visible>!substring(Container(1300049).CurrentPage,0)</visible>
+			</control>
+			<!-- NetVolume -->
+			<control type="label">
+				<posx>110</posx>
+				<posy>590</posy>
+				<width>1035</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>(SMB$INFO[ListItem(0).Property(iNetVolumeType)]) youn$INFO[ListItem(0).Property(iNetVolumeName)]</label>
+				<!--visible>substring(ListItem(0).Property(RecNetVolume),true)</visible-->
+			</control>
 		</control>
 
 	</controls>
