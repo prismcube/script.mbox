@@ -4818,7 +4818,19 @@ Search for window name
 				</control>
 
 				<!-- recPath -->
-				<control type="group">
+				<control type="label">
+					<posx>0</posx>
+					<posy>120</posy>
+					<width>350</width>
+					<height>40</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>$INFO[Window.Property(iNetVolumeType)] : $INFO[Window.Property(iNetVolumeName)]</label>
+					<visible>substring(Window.Property(RecNetVolume),true)</visible>
+				</control>
+				<!--control type="group">
 					<posx>-5</posx>
 					<posy>210</posy>
 					<visible>substring(Window.Property(RecNetVolume),true)</visible>
@@ -4852,7 +4864,7 @@ Search for window name
 						<textcolor>grey2</textcolor>
 						<font>font14</font>
 					</control>
-				</control>
+				</control-->
 
 				<!-- components -->
 				<control type="group">

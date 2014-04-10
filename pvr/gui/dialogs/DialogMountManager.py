@@ -377,7 +377,8 @@ class DialogMountManager( SettingDialog ) :
 					   netVolume.mMountPath == self.mNetVolume.mMountPath and \
 					   netVolume.mSupport4G == self.mNetVolume.mSupport4G :
 						isAdd = False
-						lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+						#lblLine = '%s\'%s\' on \'%s\''% ( MR_LANG( 'The path is already mounted' ), netVolume.mRemotePath, os.path.basename( self.mNetVolume.mMountPath ) )
+						lblLine = '%s \'%s\''% ( MR_LANG( 'The path is already mounted' ), os.path.basename( self.mNetVolume.mMountPath ) )
 						LOG_TRACE( '[MountManager] detected same path mnt[%s] new[%s]'% ( netVolume.mMountPath, self.mNetVolume.mMountPath ) )
 
 					else :
