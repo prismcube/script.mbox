@@ -2402,8 +2402,13 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )
 
 
-	def Timer_AddManualTimer( self, aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId ) :
-		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId )
+	def Timer_AddManualTimer( self, aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId = 0 ) :
+		ret = False
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			ret = self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt, aVolumeId )
+		else :
+			ret = self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt )
+		return ret
 
 
 	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer ) :
