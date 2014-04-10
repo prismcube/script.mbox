@@ -222,7 +222,19 @@ class NullWindow( BaseWindow ) :
 		if self.GlobalAction( actionId ) and actionId != Action.ACTION_MBOX_RESERVED22   :
 			return
 
-
+		#only for test
+		#if actionId == Action.REMOTE_9:
+		#	LOG_TRACE("Show Google TV")
+		#	#self.mCommander.AppHBBTV_Ready( 1 )
+		#	self.mCommander.System_ShowWebPage("http://www.youtube.com/tv", 0 )
+		#	return
+			
+		#if actionId == Action.REMOTE_8:
+		#	LOG_TRACE("Close Google TV")
+		#	self.mCommander.System_CloseWebPage( )
+		#	self.mCommander.AppHBBTV_Ready( 0 )
+		#	return	
+			
 		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			#if self.mHbbTVShowing == True :		
@@ -1470,8 +1482,6 @@ class NullWindow( BaseWindow ) :
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :
 			LOG_TRACE("HbbTV not Ready ... Do nothing")
-				
-
 
 	def HbbTV_HideBrowser( self ) :
 		if self.mMediaPlayerStarted == True :
@@ -1509,8 +1519,8 @@ class NullWindow( BaseWindow ) :
 			self.mMediaPlayerStarted = False
 			self.mForceSetCurrent = False
 			xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
-			self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 			self.mCommander.AppMediaPlayer_Control( 0 )
+			self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 			LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 
 

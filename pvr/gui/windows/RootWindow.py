@@ -105,6 +105,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+			if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+				LOG_ERR("Do nothing in onclick, hbbtv mode is true")
+				return
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )				
 		
  
