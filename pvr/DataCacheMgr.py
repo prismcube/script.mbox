@@ -183,7 +183,8 @@ class DataCacheMgr( object ) :
 		self.mSavedResolution					= self.GetResolution( True )
 		self.mIsMediaCenterUi					= False
 
-		self.mHbbTVEnable = False
+		self.mHbbTVEnable						= False
+		self.mHbbtvStatus						= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -281,6 +282,7 @@ class DataCacheMgr( object ) :
 
 		# SetPropertyNetworkAddress
 		self.InitNetwork( )
+		self.SetHbbtvStatus( )
 
 	
 	def InitNetwork( self ) :
@@ -3441,14 +3443,6 @@ class DataCacheMgr( object ) :
 			return self.mSavedResolution
 
 
-	def SetMediaCenterUI( self, aFlag ) :
-		self.mIsMediaCenterUi = aFlag
-
-
-	def GetMediaCenterUI( self ) :
-		return self.mIsMediaCenterUi
-
-
 	def SetHbbTVEnable( self, aEnable ) :
 		LOG_TRACE( 'SetHbbTVEnable=%s' %aEnable )
 		self.mHbbTVEnable = aEnable
@@ -3458,3 +3452,13 @@ class DataCacheMgr( object ) :
 		LOG_TRACE( 'GetHbbTVEnable=%s' %self.mHbbTVEnable )
 		return self.mHbbTVEnable
 
+
+	def SetHbbtvStatus( self ) :
+		if os.path.exists( FILE_NAME_HBB_TV ) :
+			self.mHbbtvStatus = True
+		else :
+			self.mHbbtvStatus = False
+
+
+	def GetHbbtvStatus( self ) :
+		return self.mHbbtvStatus

@@ -146,6 +146,8 @@ class LivePlate( LivePlateWindow ) :
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
+		if not self.mDataCache.GetHbbtvStatus( ) :
+			self.mHotKeyAvailableRed = False
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -496,6 +498,8 @@ class LivePlate( LivePlateWindow ) :
 			if E_SUPPROT_HBBTV :
 				if aEvent.getName() == ElisEventHBBTVReady.getName() :
 					LOG_TRACE( 'HBBTEST event[%s]' % aEvent.getName( ) )
+					if not self.mDataCache.GetHbbtvStatus( ) :
+						return
 					isEnable = E_TAG_FALSE
 					self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
 					if self.mHotKeyAvailableRed :

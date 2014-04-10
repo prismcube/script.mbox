@@ -1445,7 +1445,9 @@ class NullWindow( BaseWindow ) :
 
 	def HbbTV_ShowRedButton( self ) :
 		LOG_TRACE( 'Show HbbTV' )
-		if self.mDataCache.GetHbbTVEnable() :
+		if not self.mDataCache.GetHbbtvStatus( ) :
+			return
+		if self.mDataCache.GetHbbTVEnable( ) :
 			self.setProperty ( 'EnableHbbTV', 'True' )
 			self.mHbbTVTimer = threading.Timer( 10 , self.HbbTV_HideRedButton )
 			self.mHbbTVTimer.start( )
@@ -1461,7 +1463,9 @@ class NullWindow( BaseWindow ) :
 
 	def HbbTV_ShowBrowser( self ) :
 		LOG_TRACE( 'Show HbbTV Command' )
-		if self.mDataCache.GetHbbTVEnable() :
+		if not self.mDataCache.GetHbbtvStatus( ) :
+			return
+		if self.mDataCache.GetHbbTVEnable( ) :
 			self.mHbbTVShowing = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :

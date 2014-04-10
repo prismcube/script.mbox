@@ -12,8 +12,6 @@ E_APPEARANCE			= 0
 E_LIVESTREAM			= 1
 E_CEC					= 2
 
-FILE_NAME_HBB_TV		= '/config/hbbtv'
-
 
 class Advanced( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -22,13 +20,6 @@ class Advanced( SettingWindow ) :
 		self.mDescriptionList	= []
 		self.mCtrlLeftGroup		= None
 		self.mPrevListItemID	= -1
-
-		#self.mMainRss			= self.GetSettingToNumber( GetSetting( 'RSS_FEED_MAIN_MENU' ) )
-		#self.mClockLiveScreen	= self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
-		#self.mClockFront		= self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) )
-		#self.mEpgNotify			= self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) )
-
-		#self.mLiveStream		= self.GetSettingToNumber( GetSetting( 'LIVE_STREAM' ) )
 
 	def onInit( self ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
