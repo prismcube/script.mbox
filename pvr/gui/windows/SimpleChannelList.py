@@ -114,11 +114,7 @@ class SimpleChannelList( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mChangeMode :
-				self.mChangeMode = None
-				self.setProperty( 'SimpleChannelGroup', E_TAG_FALSE )
-				self.UpdateListToEPG( )
-				self.StartEPGUpdateTimer( )
-				self.setFocusId( LIST_ID_BIG_CHANNEL )
+				self.PreviousChannelList( )
 				return
 
 			self.Close( )
@@ -202,6 +198,18 @@ class SimpleChannelList( BaseWindow ) :
 
 	def ResetControls( self ) :
 		self.mListItems = []
+
+
+	def PreviousChannelList( self ) :
+		self.mChangeMode = None
+		self.setProperty( 'SimpleChannelGroup', E_TAG_FALSE )
+		self.UpdateListToEPG( )
+		self.StartEPGUpdateTimer( )
+		self.setFocusId( LIST_ID_BIG_CHANNEL )
+		lblPath = EnumToString( 'mode', self.mUserMode.mMode )
+		if self.mUserGroup :
+			lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
+		self.setProperty( 'SimpleChannelPath', lblPath )
 
 
 	def UpdateListAll( self, aLoadChannel = False ) :
