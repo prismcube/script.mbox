@@ -1280,17 +1280,17 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_Input03, True )
 
 
-	def NotifyFindPrismcubeCom( self, ip ) :
+	def NotifyFindPrismcubeCom( self, aIP ) :
 		try :
-			print ip
-			data = {'ip' : str( ip ) }
+			data = {'ip' : str( aIP ) }
 			data = urlencode( data )
 			f = urllib.urlopen("http://www.fwupdater.com/prismcube/index.html", data, 3)
 
 		except Exception, err:
-			print '[Find]'
-			print str(err)
-		
+			LOG_TRACE( '[Find]' )
+			LOG_TRACE( str(err) )
+
+
 	def LoadEthernetInformation( self ) :
 		self.mEthernetConnectMethod = NetMgr.GetInstance( ).GetEthernetMethod( )
 		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetNetworkAddress( NETWORK_ETHERNET )
@@ -1319,8 +1319,6 @@ class Configure( SettingWindow ) :
 			
 			self.SetListControl( )
 			self.CloseProgress( )
-
-			
 
 
 	def EthernetSetting( self, aControlId ) :
