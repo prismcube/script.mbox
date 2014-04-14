@@ -277,7 +277,7 @@ class DialogMountManager( SettingDialog ) :
 
 					else :
 						# upnp, zeroconf, daap, ...
-						lblLine = MR_LANG( 'No %s support' )% urlType
+						lblLine = MR_LANG( 'No %s support' ) % urlType
 				else :
 					lblLine = MR_LANG( 'Invalid record path chosen' )
 
