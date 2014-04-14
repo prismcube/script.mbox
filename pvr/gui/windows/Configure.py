@@ -140,7 +140,7 @@ class Configure( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
-		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
+		self.SetHeaderTitle( "%s - %s" % ( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
 
 		self.MakeLanguageList( )
 
@@ -324,8 +324,9 @@ class Configure( SettingWindow ) :
 
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
+				self.OpenBusyDialog( )
 				self.SetListControl( )
-				self.SetDefaultControl( )
+				self.CloseBusyDialog( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
@@ -830,10 +831,10 @@ class Configure( SettingWindow ) :
 
 
 	def SetListControl( self ) :
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.ResetAllControl( )
 		self.WaitInitialize( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
 
 		if selectedId == E_LANGUAGE :
@@ -986,11 +987,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
-				#self.OpenBusyDialog( )
-				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
-				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
+					self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
+					self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 					self.AddInputControl( E_Input01, MR_LANG( 'Search Wifi' ), self.mCurrentSsid, MR_LANG( 'Search for available wireless connections' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
@@ -1013,6 +1013,8 @@ class Configure( SettingWindow ) :
 						self.LoadEthernetInformation( )
 						self.mReLoadEthernetInformation = False
 
+					self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
+					self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mEthernetConnectMethod, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
 					self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mEthernetIpAddress, MR_LANG( 'Enter your IP address' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mEthernetNetmask, MR_LANG( 'Enter your subnet mask' ) )
@@ -1034,8 +1036,6 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_Input07, False )
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 					self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-
-				#self.CloseBusyDialog( )
 
 			else :
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
@@ -1290,7 +1290,8 @@ class Configure( SettingWindow ) :
 		except Exception, err:
 			print '[Find]'
 			print str(err)
-		
+
+
 	def LoadEthernetInformation( self ) :
 		self.mEthernetConnectMethod = NetMgr.GetInstance( ).GetEthernetMethod( )
 		self.mEthernetIpAddress, self.mEthernetNetmask, self.mEthernetGateway, self.mEthernetNamesServer = NetMgr.GetInstance( ).GetNetworkAddress( NETWORK_ETHERNET )
