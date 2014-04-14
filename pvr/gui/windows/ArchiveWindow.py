@@ -783,7 +783,7 @@ class ArchiveWindow( BaseWindow ) :
 					isPlay = self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
 				if not isPlay :
-					lblLine = MR_LANG( 'Can not playback' )
+					lblLine = MR_LANG( 'Could not playback' )
 					if E_SUPPORT_EXTEND_RECORD_PATH and recInfo.mMountInfo :
 						mntType = 'HDD'
 						retPath = os.path.dirname( recInfo.mMountInfo )
