@@ -118,18 +118,36 @@ class IpParser( object ) :
 		addressGateway = 'None'
 		addressNameServer = 'None'
 		try :
-			inputFile = None
-			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % dev + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % dev + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
+			cmd = "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % dev
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				addressIp = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( addressIp, err ) = p.communicate( )
+				addressIp = addressIp.strip( )
 
-			for command in osCommand :
-				time.sleep( 0.01 )
-				os.system( command )
+			cmd = "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % dev
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				addressMask = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( addressMask, err ) = p.communicate( )
+				addressMask = addressMask.strip( )
 
-			time.sleep( 0.02 )
-			inputFile = open( FILE_TEMP, 'r' )
-			addressIp = inputFile.readline( )
-			addressMask = inputFile.readline( )
-			addressGateway = inputFile.readline( )
+			cmd = "route -n | awk '/^0.0.0.0/ {print $2}'"
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				addressGateway = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( addressGateway, err ) = p.communicate( )
+				addressGateway = addressGateway.strip( )
+
 			addressNameServer = self.GetNameServer( )
 
 			if self.CheckIsIptype( addressIp ) == False :
@@ -144,12 +162,9 @@ class IpParser( object ) :
 			if self.CheckIsIptype( addressNameServer ) == False :
 				addressNameServer = 'None'
 
-			inputFile.close( )
 			return addressIp, addressMask, addressGateway, addressNameServer
 
 		except Exception, e :
-			if inputFile and inputFile.closed == False :
-				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			return 'None', 'None', 'None', 'None'
 
