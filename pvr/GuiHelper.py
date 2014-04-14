@@ -35,7 +35,7 @@ def RecordConflict( aInfo ) :
 
 	label = [ '', '', '' ]
 	
-	try :		
+	try :
 		if aInfo[0].mError == -1 :
 			label[0] = MR_LANG( 'No EPG information available' )
 		else :
@@ -1385,6 +1385,40 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		zipFile = ''
 
 	return zipFile
+
+
+def CheckEthernetType( ) :
+	from pvr.gui.GuiConfig import E_USE_OLD_NETWORK
+	if E_USE_OLD_NETWORK :
+		import pvr.IpParser as NetMgr
+	else :
+		import pvr.NetworkMgr as NetMgr
+
+	nType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+	return nType
+
+
+def CheckNetworkStatus( ) :
+	from pvr.gui.GuiConfig import NETWORK_ETHERNET
+	retValue   = False
+	linkStatus = 'down'
+
+	nType = CheckEthernetType( )
+	if nType == NETWORK_ETHERNET :
+		linkStatus = CheckEthernet( 'eth0' )
+
+	else :
+		from pvr.XBMCInterface import XBMC_CheckNetworkStatus
+		wifiRet = XBMC_CheckNetworkStatus( )
+		if wifiRet == 'Connected' or wifiRet == 'Busy' :
+			linkStatus = 'up'
+		#LOG_TRACE('network wifi ret[%s] link[%s]'% ( wifiRet, linkStatus ) )
+
+	if linkStatus != 'down' :
+		retValue = True
+
+	LOG_TRACE( 'network type[%s] link[%s] ret[%s]'% ( nType, linkStatus, retValue ) )
+	return retValue
 
 
 class GuiSkinPosition( object ) :

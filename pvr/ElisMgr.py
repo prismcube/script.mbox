@@ -52,6 +52,9 @@ class ElisEventHandler( EventHandler ) :
 	
 
 	def AddEvent( self, aEvent ) :
+		if not aEvent :
+			return
+
 		if aEvent.getName( ) == ElisEventXBMC.getName() :
 			pvr.GlobalEvent.GetInstance().DoXBMCEvent( aEvent )
 		else :

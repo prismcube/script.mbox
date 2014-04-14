@@ -768,16 +768,18 @@ class Configure( SettingWindow ) :
 
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
-		RemoveDirectory( '/config/smbReserved.info' )
+		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
 		volumeCount = len( volumeList )
 		defVolume = None
 		count = 0
 		failCount = 0
 		failItem = ''
-		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
+		os.system( 'echo \"#!/bin/sh\" >> %s'% E_DEFAULT_NETWORK_VOLUME_SHELL  )
+		for netVolume in self.mNetVolumeList :
+			os.system( 'echo \"umount -f %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 
 		self.SetControlLabelString( E_Input03, '' )
 		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
@@ -803,12 +805,12 @@ class Configure( SettingWindow ) :
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
-			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
-			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+			os.system( 'echo \"mkdir -p %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+			os.system( 'echo \"%s\" >> %s'% ( cmd, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 			os.system( 'sync' )
 			time.sleep( 1 )
 
-		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'chmod 755 %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		self.SetControlLabelString( E_Input03, MR_LANG( 'Refresh Record Path' ) )

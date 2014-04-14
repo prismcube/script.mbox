@@ -183,6 +183,8 @@ class DataCacheMgr( object ) :
 		self.mSavedResolution					= self.GetResolution( True )
 		self.mIsMediaCenterUi					= False
 
+		self.mNetVolumeList						= []
+
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
 
@@ -279,6 +281,9 @@ class DataCacheMgr( object ) :
 
 		# SetPropertyNetworkAddress
 		self.InitNetwork( )
+
+		#init record path
+		self.InitNetworkVolume( )
 
 	
 	def InitNetwork( self ) :
@@ -2274,8 +2279,12 @@ class DataCacheMgr( object ) :
 			return recInfo
 
 
-	def Record_GetNetworkVolume( self ) :
-		return self.mCommander.Record_GetNetworkVolume( )
+	def Record_GetNetworkVolume( self, aCache = False ) :
+		if aCache :
+			return self.mNetVolumeList
+
+		self.mNetVolumeList = self.mCommander.Record_GetNetworkVolume( )
+		return self.mNetVolumeList
 
 
 	def Record_AddNetworkVolume( self, aENetworkVolume ) :
@@ -2294,6 +2303,79 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Record_RefreshNetworkVolume( )
 
 
+	def InitNetworkVolume( self ) :
+		from pvr.GuiHelper import CheckNetworkStatus, ExecuteShell, MountToSMB
+		#return value, 1'st value :
+		#  inteager < 0 : error No.
+		#  inteager > 0 : fail count
+		#  inteager = 0 : success
+
+		#return value, 2'nd value :
+		#  lblText : status label
+
+		retVal = 0
+		isFail = False
+		lblLine = MR_LANG( 'Can not refreshed, after a while try again' )
+		try :
+			if not CheckNetworkStatus( ) :
+				retVal = -1
+				lblLine = MR_LANG( 'Try again after network connected' )
+				raise Exception, 'pass, network fail'
+
+			status = self.Player_GetStatus( )
+			if status == ElisEnum.E_MODE_PVR :
+				retVal = -2
+				lblLine = MR_LANG( 'Try again after stopping playback' )
+				raise Exception, 'pass, pvr playing'
+
+			if self.Record_GetRunningRecorderCount( ) :
+				retVal = -3
+				lblLine = MR_LANG( 'Try again after stopping record' )
+				raise Exception, 'pass, run recording'
+
+			volumeList = self.Record_GetNetworkVolume( )
+			if not volumeList or len( volumeList ) < 1 :
+				retVal = -4
+				lblLine = MR_LANG( 'Record path is empty' )
+				raise Exception, 'pass, volume list None'
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+			isFail = True
+
+		if isFail :
+			return retVal, lblLine
+
+		lblLine = MR_LANG( 'Success' )
+		volumeCount = len( volumeList )
+		count = 0
+		failCount = 0
+		failItem = ''
+		for netVolume in volumeList :
+			count += 1
+			cmd = netVolume.mMountCmd
+			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
+			LOG_TRACE( '[DataCache]checkVolume %s'% lblLabel )
+
+			mntHistory = ExecuteShell( 'mount' )
+			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
+				if not mntPath :
+					mntHistory = ExecuteShell( 'mount' )
+					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+						failCount += 1
+						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
+
+			time.sleep( 0.5 )
+
+		self.Record_RefreshNetworkVolume( )
+		if failCount > 0 :
+			lblLine = '%s%s'% ( MR_LANG( 'Fail to record path unconnect' ), failItem )
+			LOG_TRACE( '[DataCache]%s'% lblLine )
+
+		return failCount, lblLine
+
+
 	def Timer_StopRecordingByRecordKey( self, aKey ) :
 		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
 
@@ -2310,9 +2392,10 @@ class DataCacheMgr( object ) :
 				timer = self.Timer_GetByIndex( i )
 				timerList.append( timer )
 
-		if timerList == None :
+		if not timerList :
 			timerList = []
 
+		"""
 		runningTimers = self.Timer_GetRunningTimers()
 
 		try :
@@ -2326,12 +2409,12 @@ class DataCacheMgr( object ) :
 							break
 
 					if hasMatch == False :
-						timerList.append( runningTimers[i] )				
+						timerList.append( runningTimers[i] )
 
 		except Exception, e :
 			timerList = []
 			LOG_ERR( 'Exception [%s]'% e )
-
+		"""
 		return timerList
 
 
