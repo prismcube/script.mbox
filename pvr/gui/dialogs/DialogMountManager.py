@@ -255,7 +255,7 @@ class DialogMountManager( SettingDialog ) :
 			LOG_TRACE( '------------------------urlType[%s]'% urlType )
 			if aInput == E_DialogInput06 :
 				if urlType :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
+					lblLine = MR_LANG( 'Invalid record path chosen' )
 				else :
 					isFail = False
 
@@ -277,9 +277,9 @@ class DialogMountManager( SettingDialog ) :
 
 					else :
 						# upnp, zeroconf, daap, ...
-						lblLine = MR_LANG( 'No %s support' )% urlType
+						lblLine = MR_LANG( 'No %s support' ) % urlType
 				else :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
+					lblLine = MR_LANG( 'Invalid record path chosen' )
 
 
 			if isFail :
