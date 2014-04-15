@@ -1005,10 +1005,10 @@
 	<string id="3482">Wyświetla zegar u góry ekranu podczas oglądania</string>
 	<string id="3483">Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu</string>
 	<string id="3484">Wyświetla następne powiadomienie EPG podczas oglądania</string>
-	<string id="3485">Streaming kanałów (wymagany restart)</string>
-	<string id="3486">Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych</string>
+	<string id="3485">Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych</string>
+	<string id="3486"></string>
 	<string id="3487">Open web interface</string>
-	<string id="3488">Web Interface (wymagany restart)</string>
+	<string id="3488"></string>
 	<string id="3489">Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału</string>
 	<string id="3490"></string>
 	<string id="3491"></string>

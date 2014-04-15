@@ -1004,10 +1004,10 @@
 "Allows you to display clock on the top middle of live screen";;;;;;;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;;;3482
 "Allows you to display clock on front panel display instead of channel name and menu";;;;;;;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;;;3483
 "Allows you to display next EPG notification on live screen";;;;;;;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;;;3484
-"Live Streaming (restart required)";;;;;;;"Streaming kanałów (wymagany restart)";;;;;;;3485
-"Watch live stream of TV channels from PC or mobile devices";;;;;;;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;;;3486
+"Watch live stream of TV channels from PC or mobile devices";;;;;;;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;;;3485
+"restart required";;;;;;;;;;;;;;3486
 "Open web interface";;;;;;;"Open web interface";;;;;;;3487
-"Web Interface (restart required)";;;;;;;"Web Interface (wymagany restart)";;;;;;;3488
+"Web Interface";;;;;;;;;;;;;;3488
 "Allows you to playback 1080 24p video without having to switch the video output manually";;;;;;;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;;;3489
 "Watch HbbTV on your PRISMCUBE";;;;;;;;;;;;;;3490
 "Enable/Disable HDMI-CEC option";;;;;;;;;;;;;;3491

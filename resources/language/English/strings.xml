@@ -1005,10 +1005,10 @@
 	<string id="3482">Allows you to display clock on the top middle of live screen</string>
 	<string id="3483">Allows you to display clock on front panel display instead of channel name and menu</string>
 	<string id="3484">Allows you to display next EPG notification on live screen</string>
-	<string id="3485">Live Streaming (restart required)</string>
-	<string id="3486">Watch live stream of TV channels from PC or mobile devices</string>
+	<string id="3485">Watch live stream of TV channels from PC or mobile devices</string>
+	<string id="3486">restart required</string>
 	<string id="3487">Open web interface</string>
-	<string id="3488">Web Interface (restart required)</string>
+	<string id="3488">Web Interface</string>
 	<string id="3489">Allows you to playback 1080 24p video without having to switch the video output manually</string>
 	<string id="3490">Watch HbbTV on your PRISMCUBE</string>
 	<string id="3491">Enable/Disable HDMI-CEC option</string>
