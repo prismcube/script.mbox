@@ -505,7 +505,7 @@ class EPGSearchWindow( BaseWindow ) :
 	def ShowEPGTimer( self ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		selectedEPG = self.GetSelectedEPG( )

@@ -158,6 +158,7 @@ class Configure( SettingWindow ) :
 
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
 		self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
+		self.mHDDStatus     = True
 
 		self.SetListControl( )
 		self.StartCheckNetworkTimer( )
@@ -567,9 +568,11 @@ class Configure( SettingWindow ) :
 
 							idxCount += 1
 
+				# 1. change defvolume from manager(edited,deleted)
 				if self.mSelectVolume != defVolumeIdx :
 					self.mSelectVolume = defVolumeIdx
 					ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+					#LOG_TRACE( '[Configure] defProperty[%s]'% defProperty )
 
 				enableControlIds = [E_Input02, E_Input03]
 				self.SetEnableControls( enableControlIds, selectEnable )
@@ -644,15 +647,20 @@ class Configure( SettingWindow ) :
 
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
-		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = E_TAG_TRUE
+		lblSelect = MR_LANG( 'None' )
+		lblOnline = E_TAG_FALSE
 		useFree   = self.mFreeHDD
 		useTotal  = self.mTotalHDD
 		useInfo   = 0
+		if self.mHDDStatus :
+			lblSelect = MR_LANG( 'HDD' )
+			lblOnline = E_TAG_TRUE
+
 		if aNetVolume :
+			lblOnline = E_TAG_FALSE
 			lblSelect = os.path.basename( aNetVolume.mMountPath )
-			if not aNetVolume.mOnline :
-				lblOnline = E_TAG_FALSE
+			if aNetVolume.mOnline :
+				lblOnline = E_TAG_TRUE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
@@ -665,18 +673,21 @@ class Configure( SettingWindow ) :
 		if useTotal > 0 :
 			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
-		lblByte = '%sMb'% useFree
+		lblByte = '%sMB'% useFree
 		if useFree > 1024 :
-			lblByte = '%sGb'% ( useFree / 1024 )
+			lblByte = '%sGB'% ( useFree / 1024 )
 		elif useFree < 0 :
-			lblByte = '%sKb'% ( useFree * 1024 )
+			lblByte = '%sKB'% ( useFree * 1024 )
 		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 
 
 	def GetVolumeContext( self, aVolumeID = -1 ) :
-		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackList = []
+		if self.mHDDStatus :
+			trackList.append( ContextItem( MR_LANG( 'Internal HDD' ), 99 ) )
+
 		trackIndex = 0
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
@@ -716,8 +727,14 @@ class Configure( SettingWindow ) :
 			return
 
 		selectedIdx = 0
-		if self.mSelectVolume != 99 :
+		if self.mHDDStatus and self.mSelectVolume != 99 :
 			selectedIdx = self.mSelectVolume + 1
+		else :
+			selectedIdx = self.mSelectVolume
+
+		if selectedIdx < 0 :
+			selectedIdx = 0
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( trackList, selectedIdx )
 		dialog.doModal( )
@@ -777,7 +794,7 @@ class Configure( SettingWindow ) :
 		failItem = ''
 		os.system( 'echo \"#!/bin/sh\" >> %s'% E_DEFAULT_NETWORK_VOLUME_SHELL  )
 		for netVolume in self.mNetVolumeList :
-			os.system( 'echo \"umount -f %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+			os.system( 'echo \"/bin/umount -fl %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
@@ -794,6 +811,9 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, lblLabel )
 
 			mntHistory = ExecuteShell( 'mount' )
+			if mntHistory and ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				RemoveDirectory( netVolume.mMountPath )
+
 			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
 				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
 				if not mntPath :
@@ -802,7 +822,7 @@ class Configure( SettingWindow ) :
 						lblRet = MR_LANG( 'Fail' )
 						failCount += 1
 						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
-						os.system( 'umount -f %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
+						os.system( '/bin/umount -fl %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
@@ -894,19 +914,23 @@ class Configure( SettingWindow ) :
 				#ToDO : default path, get mount path
 				self.mFreeHDD  = 0
 				self.mTotalHDD = 0
-				if CheckHdd( ) :
+				self.mSelectVolume = -1
+				defaultPath = MR_LANG( 'None' )
+				self.mHDDStatus = CheckHdd( )
+				if self.mHDDStatus :
 					self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 					self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
+					self.mSelectVolume = 99
+					defaultPath = MR_LANG( 'HDD' )
 
-				self.mSelectVolume = 99
 				defVolume = None
-				defaultPath = MR_LANG( 'HDD' )
 				disableControlIds = [ E_Input02, E_Input03 ]
 				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 					disableControlIds = []
+					idxCount = 0
 					for netVolume in self.mNetVolumeList :
-						idxCount = 0
+						LOG_TRACE( '[Configure] idxCount[%s] volume[%s] isDefault[%s]'% ( idxCount, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 						if netVolume.mIsDefaultSet :
 							defaultPath = os.path.basename( netVolume.mMountPath )
 							defVolume = netVolume

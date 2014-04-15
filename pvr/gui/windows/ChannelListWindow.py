@@ -392,9 +392,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.ShowRecordingStopDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
-				
+
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.GoToPreviousWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
@@ -4175,7 +4175,7 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		isChangeDuration = False

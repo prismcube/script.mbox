@@ -347,7 +347,7 @@ class EPGWindow( BaseWindow ) :
 				self.mEventBus.Register( self )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
 
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -1630,7 +1630,7 @@ class EPGWindow( BaseWindow ) :
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		try :	
@@ -1668,9 +1668,9 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
-		#if HasAvailableRecordingHDD( ) == False :
+		#if not HasAvailableRecordingHDD( ) :
 		#	return
-			
+
 		selectedEPG = self.GetSelectedEPG( )
 
 		timer = None
@@ -1830,7 +1830,7 @@ class EPGWindow( BaseWindow ) :
 				return
 		"""
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
@@ -1888,7 +1888,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ShowViewTimer( self, aTimer = None ) :
-		#if HasAvailableRecordingHDD( ) == False :
+		#if not HasAvailableRecordingHDD( ) :
 		#	return
 
 		#1.get timer

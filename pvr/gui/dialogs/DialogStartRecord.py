@@ -53,12 +53,14 @@ class DialogStartRecord( SettingDialog ) :
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mFreeHDD  = 0
 		self.mTotalHDD = 0
+		self.mHDDStatus = False
 		self.mSelectIdx = 99
 		self.mNetVolume = None
 		self.mNetVolumeList = []
 		self.mDialogWidth = self.getControl( E_IMAGE_DIALOG_BACKGROUND ).getWidth( )
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 		if E_SUPPORT_EXTEND_RECORD_PATH and CheckHdd( ) :
-			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+			self.mHDDStatus = True
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
@@ -167,15 +169,20 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
-		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = E_TAG_TRUE
+		lblSelect = MR_LANG( 'None' )
+		lblOnline = E_TAG_FALSE
 		useFree = self.mFreeHDD
 		useTotal= self.mTotalHDD
 		useInfo = 0
+		if self.mHDDStatus :
+			lblSelect = MR_LANG( 'HDD' )
+			lblOnline = E_TAG_TRUE
+
 		if aNetVolume :
+			lblOnline = E_TAG_FALSE
 			lblSelect = os.path.basename( aNetVolume.mMountPath )
-			if not aNetVolume.mOnline :
-				lblOnline = E_TAG_FALSE
+			if aNetVolume.mOnline :
+				lblOnline = E_TAG_TRUE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
@@ -199,7 +206,10 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def GetVolumeContext( self, aVolumeID = -1 ) :
-		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackList = []
+		if self.mHDDStatus :
+			trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+
 		trackIndex = 0
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
@@ -242,8 +252,14 @@ class DialogStartRecord( SettingDialog ) :
 			return
 
 		selectedIdx = 0
-		if self.mSelectIdx != 99 :
+		if self.mHDDStatus and self.mSelectIdx != 99 :
 			selectedIdx = self.mSelectIdx + 1
+		else :
+			selectedIdx = self.mSelectIdx
+
+		if selectedIdx < 0 :
+			selectedIdx = 0
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( trackList, selectedIdx )
 		dialog.doModal( )

@@ -869,7 +869,8 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
 				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )
-				context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
@@ -889,7 +890,8 @@ class ArchiveWindow( BaseWindow ) :
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
-				context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			else :

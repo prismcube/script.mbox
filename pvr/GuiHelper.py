@@ -579,9 +579,16 @@ def CheckHdd( ) :
 		return False
 
 
-def	HasAvailableRecordingHDD( ) :
+def	HasAvailableRecordingHDD( aCheckVolume = True ) :
 	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.gui.GuiConfig import E_SUPPORT_EXTEND_RECORD_PATH
+	import pvr.DataCacheMgr
+	dataCache = pvr.DataCacheMgr.GetInstance( )
+
 	if not CheckHdd( ) :
+		if E_SUPPORT_EXTEND_RECORD_PATH and aCheckVolume and dataCache.Record_GetNetworkVolume( True ) :
+			return True
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
 		dialog.doModal( )
@@ -1347,7 +1354,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	ret = re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
-		os.system( '/bin/umount -f %s'% aSmbPath )
+		os.system( '/bin/umount -fl %s'% aSmbPath )
 		os.system( 'sync' )
 		time.sleep( 2 )
 

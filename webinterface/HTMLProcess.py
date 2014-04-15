@@ -1213,7 +1213,7 @@ class Record( WebPage ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			self.content = """
 				<script>
 					alert("No HDD available, cannot record without HDD");
