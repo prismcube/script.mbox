@@ -2316,11 +2316,11 @@ class DataCacheMgr( object ) :
 
 		retVal = 0
 		isFail = False
-		lblLine = MR_LANG( 'Can not refreshed, after a while try again' )
+		lblLine = MR_LANG( 'Network Volume failure' )
 		try :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
-				lblLine = MR_LANG( 'Try again after network connected' )
+				lblLine = MR_LANG( 'Try again after connecting network' )
 				raise Exception, 'pass, network fail'
 
 			status = self.Player_GetStatus( )
@@ -2374,7 +2374,7 @@ class DataCacheMgr( object ) :
 
 		self.Record_RefreshNetworkVolume( )
 		if failCount > 0 :
-			lblLine = '%s%s'% ( MR_LANG( 'Fail to record path unconnect' ), failItem )
+			lblLine = '%s%s'% ( MR_LANG( 'Record path failure' ), failItem )
 			LOG_TRACE( '[DataCache]%s'% lblLine )
 
 		return failCount, lblLine
