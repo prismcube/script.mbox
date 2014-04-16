@@ -489,8 +489,11 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
 					return
 
-			if HasAvailableRecordingHDD( ) == False :
+			self.CloseSubTitle( )
+			if not HasAvailableRecordingHDD( False ) :
+				self.CheckSubTitle( )
 				return
+			self.CheckSubTitle( )
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_PVR :
@@ -527,9 +530,12 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			self.CloseSubTitle( )
+			if not HasAvailableRecordingHDD( ) :
+				self.CheckSubTitle( )
 				return
-				
+			self.CheckSubTitle( )
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -790,7 +796,7 @@ class NullWindow( BaseWindow ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -933,7 +939,7 @@ class NullWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )

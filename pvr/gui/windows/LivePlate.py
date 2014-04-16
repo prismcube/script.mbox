@@ -207,9 +207,9 @@ class LivePlate( LivePlateWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
 				if self.mShowOpenWindow == WinMgr.WIN_ID_ARCHIVE_WINDOW :
-					if HasAvailableRecordingHDD( ) == False :
+					if not HasAvailableRecordingHDD( ) :
 						return
-						
+
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -297,9 +297,9 @@ class LivePlate( LivePlateWindow ) :
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
-				
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -328,7 +328,7 @@ class LivePlate( LivePlateWindow ) :
 			   or self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND :
 				return -1
 
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( False ) :
 				return
 
 			if self.mDataCache.Get_Player_AVBlank( ) :
@@ -1249,7 +1249,7 @@ class LivePlate( LivePlateWindow ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -1396,7 +1396,7 @@ class LivePlate( LivePlateWindow ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )

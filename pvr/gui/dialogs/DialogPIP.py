@@ -138,7 +138,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlListChannelPIP   = self.getControl( CTRL_ID_LIST_CHANNEL_PIP )
 
 		#init tunable list : loop though or record full
-		if self.mDataCache.Record_GetRunningRecorderCount( ) > 1 or \
+		if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or \
 		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH :
 			self.mDataCache.PIP_SetTunableList( )
 			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )

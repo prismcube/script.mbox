@@ -286,7 +286,8 @@ class DataCacheMgr( object ) :
 		self.SetHbbtvStatus( )
 
 		#init record path
-		self.InitNetworkVolume( )
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			self.InitNetworkVolume( )
 
 	
 	def InitNetwork( self ) :
@@ -2321,7 +2322,7 @@ class DataCacheMgr( object ) :
 
 		retVal = 0
 		isFail = False
-		lblLine = MR_LANG( 'Network volume failure' )
+		lblLine = MR_LANG( 'Network Volume failure' )
 		try :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
@@ -2364,6 +2365,9 @@ class DataCacheMgr( object ) :
 			LOG_TRACE( '[DataCache]checkVolume %s'% lblLabel )
 
 			mntHistory = ExecuteShell( 'mount' )
+			if mntHistory and ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				RemoveDirectory( netVolume.mMountPath )
+
 			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
 				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
 				if not mntPath :

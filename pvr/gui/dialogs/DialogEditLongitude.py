@@ -62,7 +62,7 @@ class DialogEditLongitude( BaseDialog ) :
 		self.SetInputLabel( )
 
 		context = [ '+ 0.1', '- 0.1', '+ 1', '- 1', MR_LANG( 'Switch to West' ), MR_LANG( 'Switch to East' ), MR_LANG( 'Reset' ), MR_LANG( 'Apply' ) ]
-		icon = [ 'OSDRight.png', 'OSDLeft.png', 'OSDForwardNF.png', 'OSDRewindNF.png' ]
+		icon = [ 'OSDPlayNF.png', 'OSDPlayNF_Rotated.png', 'OSDForwardNF.png', 'OSDRewindNF.png' ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 

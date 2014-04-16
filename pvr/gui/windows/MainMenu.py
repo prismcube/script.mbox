@@ -128,8 +128,9 @@ class MainMenu( BaseWindow ) :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
-				return	
+			if not HasAvailableRecordingHDD( ) :
+				return
+
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
@@ -192,8 +193,9 @@ class MainMenu( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ADVANCED )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
+
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif aControlId == BUTTON_ID_EPG or ( aControlId >= BUTTON_ID_EPG_GRID and aControlId <= BUTTON_ID_EPG_FOLLOWING ):
@@ -534,7 +536,7 @@ class MainMenu( BaseWindow ) :
 		"""
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		isOK = False
@@ -549,7 +551,7 @@ class MainMenu( BaseWindow ) :
 		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
 			RecordConflict( dialog.GetConflictTimer( ) )
 		"""
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
