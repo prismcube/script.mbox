@@ -1463,7 +1463,7 @@ class NullWindow( BaseWindow ) :
 
 	def HbbTV_ShowRedButton( self ) :
 		LOG_TRACE( 'Show HbbTV' )
-		if not self.mDataCache.GetHbbtvStatus( ) :
+		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			return
 		if self.mDataCache.GetHbbTVEnable( ) :
 			self.setProperty ( 'EnableHbbTV', 'True' )
@@ -1479,15 +1479,17 @@ class NullWindow( BaseWindow ) :
 
 		self.setProperty ( 'EnableHbbTV', 'False' )
 
+
 	def HbbTV_ShowBrowser( self ) :
 		LOG_TRACE( 'Show HbbTV Command' )
-		if not self.mDataCache.GetHbbtvStatus( ) :
+		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			return
 		if self.mDataCache.GetHbbTVEnable( ) :
 			self.mHbbTVShowing = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :
 			LOG_TRACE("HbbTV not Ready ... Do nothing")
+
 
 	def HbbTV_HideBrowser( self ) :
 		if self.mMediaPlayerStarted == True :
@@ -1539,6 +1541,5 @@ class NullWindow( BaseWindow ) :
 	def HbbTV_MediaPlayerSeek( self, aSeek ) :
 		LOG_ERR( 'self.mHBBTVReady[%s], self.HbbTV_MediaPlayerSeek[%s]'% ( self.mHBBTVReady, aSeek ) )
 		if self.mMediaPlayerStarted == True :
-			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )	
-	
-	
+			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )
+
