@@ -343,7 +343,7 @@ class Channel( WebPage ) :
 					}
 
 					function JumpToRecord( channelNumber ) {
-						var duration = prompt("Please Enter Duration Time (in Min) for the Recording");
+						var duration = prompt("Please enter duration time (in min) for the recording");
 						if( duration ) {
 							document.recordForm.channelNumber.value = channelNumber;
 							document.recordForm.duration.value = duration;
