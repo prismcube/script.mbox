@@ -895,6 +895,8 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			else :
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				return
 				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
