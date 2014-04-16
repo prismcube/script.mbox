@@ -96,7 +96,7 @@ class WebPage( object ) :
 		
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<script>
 				
@@ -125,7 +125,7 @@ class WebPage( object ) :
 				<div id='top'>
 					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
 					<div id='title'>
-						PrismCube Web UI
+						PRISMCUBE Web UI
 					</div>
 				</div>
 				
@@ -303,7 +303,7 @@ class Channel( WebPage ) :
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<script src="./jquery.js"></script>
 				<script src="./block.js"></script>
 				<style>
@@ -374,7 +374,7 @@ class Channel( WebPage ) :
 				<div id='top'>
 					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
 					<div id='title'>
-						PrismCube Web UI
+						PRISMCUBE Web UI
 					</div>
 				</div>
 				
@@ -968,7 +968,7 @@ class Epg( WebPage ) :
 
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<body>
