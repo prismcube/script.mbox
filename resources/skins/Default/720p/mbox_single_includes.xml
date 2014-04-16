@@ -5688,7 +5688,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGName)]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+						<!--animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation-->
 					</control>
 					<!-- progress Bar -->
 					<control type="progress" >
@@ -5820,7 +5820,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(EPGName)]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+						<!--animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation-->
 					</control>
 					<!-- progress Bar -->
 					<control type="progress" >

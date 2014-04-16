@@ -514,9 +514,12 @@ class EPGWindow( BaseWindow ) :
 				#if self.mIsUpdateEnable == True	:
 				LOG_TRACE( 'record start/stop event' )
 				self.StopEPGUpdateTimer( )
-
-				self.UpdateListUpdateOnly( )
-				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				if self.mDataCache.SharedChannel_GetUpdated( WinMgr.WIN_ID_EPG_WINDOW ) :
+					self.UpdateAllEPGList()
+					self.StartEPGUpdateTimer( )					
+				else :
+					self.UpdateListUpdateOnly( )
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			elif aEvent.getName( ) == ElisPMTReceivedEvent.getName( ) :
 				#LOG_TRACE( "--------- received ElisPMTReceivedEvent-----------" )
@@ -1303,8 +1306,11 @@ class EPGWindow( BaseWindow ) :
 		self.mVisibleTopIndex = topIndex
 		"""
 
+		print 'test test %d/%d' %(topIndex, channelCount )
+
 		for i in range( E_CURRENT_MAX_ROW_COUNT ) :
 			channelIndex = i + topIndex
+			print 'test test channelIndex=%d' %channelIndex
 			channel = self.mChannelList[channelIndex]
 			hasEpg = False
 
@@ -1312,6 +1318,7 @@ class EPGWindow( BaseWindow ) :
 				epgEvent = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
 
 				if epgEvent :
+					print 'test test has epg'
 					hasEpg = True
 					listItem = self.mListItems[channelIndex]
 					epgStart = epgEvent.mStartTime + self.mLocalOffset
@@ -1336,6 +1343,7 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'ViewTimer', hasTimer )
 
 				else :
+					print 'test test no epg'				
 					listItem = self.mListItems[channelIndex]
 					listItem.setProperty( 'EPGName', strNoEvent )					
 					listItem.setProperty( 'StartTime', '' )
@@ -1359,6 +1367,8 @@ class EPGWindow( BaseWindow ) :
 
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
+
+		xbmc.executebuiltin( 'container.refresh' )
 
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
