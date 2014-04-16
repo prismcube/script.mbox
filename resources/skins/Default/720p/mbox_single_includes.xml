@@ -805,10 +805,10 @@
 		<align>center</align>
 		<aligny>center</aligny>
 		<font>font12</font>
-		<texturefocus border="5">StackFO_white2.png</texturefocus>
-		<texturenofocus border="5">StackNF.png</texturenofocus>
+		<!--texturefocus border="5">StackFO_white2.png</texturefocus>
+		<texturenofocus border="5">StackNF.png</texturenofocus-->
 		<pulseonselect>false</pulseonselect>
-		<colordiffuse>75FFFFFF</colordiffuse>
+		<!--colordiffuse>75FFFFFF</colordiffuse-->
 	</include>
 
 	<include name="DefaultButtonTimelineValues">
@@ -5648,7 +5648,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
+						<label>$INFO[ListItem.Label] $INFO[ListItem.Label2]</label>
 					</control>
 					<!-- Channel Name
 					<control type="label">
@@ -5687,7 +5687,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
+						<label>$INFO[ListItem.Property(EPGName)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<!-- progress Bar -->
@@ -5780,7 +5780,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
+						<label>$INFO[ListItem.Label] $INFO[ListItem.Label2]</label>
 					</control>
 					<!-- Channel Name
 					<control type="label">
@@ -5819,7 +5819,7 @@
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
+						<label>$INFO[ListItem.Property(EPGName)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<!-- progress Bar -->

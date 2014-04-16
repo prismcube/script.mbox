@@ -63,6 +63,8 @@ E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 60
 E_GRID_DEFAULT_GAP				= 5
 
+E_CURRENT_MAX_ROW_COUNT		= 8
+
 E_DIR_CURRENT					= 0
 E_DIR_LINE_UP					= 1
 E_DIR_LINE_DOWN					= 2
@@ -111,10 +113,10 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGHashTable = {}
 		self.mEPGCount = 0
 		self.mListItems = []
+		self.mListItemsChannelMode = []		
 		self.mTimerList = []
 		self.mUpdateEPGInfomationTimer = None
 		self.mUpdateSelcetedPositionTimer = None
-		self.mResetListItems = False
 		
 
 		#GRID MODE
@@ -299,6 +301,11 @@ class EPGWindow( BaseWindow ) :
 
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				#self.UpdateEPGInfomation( )
+				if self.mEPGMode == E_VIEW_CURRENT	:				
+					self.UpdateCurrentView( True )
+				else :
+					self.UpdateFollowingView( True )
+					
 				if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
 					self.mUpdateEPGInfomationTimer.cancel( )
 
@@ -318,6 +325,11 @@ class EPGWindow( BaseWindow ) :
 
 			elif self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				#self.UpdateEPGInfomation( )
+				if self.mEPGMode == E_VIEW_CURRENT	:				
+					self.UpdateCurrentView( True )
+				else :
+					self.UpdateFollowingView( True )
+				
 				if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
 					self.mUpdateEPGInfomationTimer.cancel( )
 
@@ -388,18 +400,17 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_REWIND :
 			if self.mEPGMode == E_VIEW_GRID :
-				self.GridGoToCurrent( )
+				self.GridControlCurrent( )
 			else:
 				self.SelectPrevChannel( )
+				self.UpdateSelectedChannel( )				
 				self.RestartEPGUpdateTimer( 0.5 )
-				self.UpdateSelectedChannel( )
-
 				#self.SelectPrevChannel( )
 
 		elif actionId == Action.ACTION_MBOX_FF : #no service
 			self.SelectNextChannel( )
+			self.UpdateSelectedChannel( )			
 			self.RestartEPGUpdateTimer( 0.5 )
-			self.UpdateSelectedChannel( )
 
 			#self.SelectNextChannel( )
 
@@ -448,14 +459,17 @@ class EPGWindow( BaseWindow ) :
 			self.StopEPGUpdateTimer( )
 	
 			#self.mLock.acquire( )
+			self.OpenBusyDialog( )
 
-			self.mEPGMode += 1
-			if self.mEPGMode >= E_VIEW_END :
-				self.mEPGMode = 0 
+			newMode = self.mEPGMode + 1
+			if newMode >= E_VIEW_END :
+				newMode = 0 
 
 			self.mSelectChannel = self.mCurrentChannel
 
-			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
+			SetSetting( 'EPG_MODE','%d' %newMode )
+			self.CheckModeChange()
+			self.mEPGMode = newMode
 
 			self.UpdateViewMode( )
 			self.InitControl( )
@@ -467,11 +481,15 @@ class EPGWindow( BaseWindow ) :
 			else :
 				self.SetPipScreen()
 
-			self.mListItems = []				
+			#self.mListItems = [] 
+			#reset items in channel mode 
+			self.mListItemsChannelMode	= [ ]	
+			
 			self.UpdateAllEPGList( )
+
+			self.CloseBusyDialog( )
 			
 			#self.mLock.release( )
-
 			self.mEventBus.Register( self )
 			self.StartEPGUpdateTimer( )
 		
@@ -593,9 +611,6 @@ class EPGWindow( BaseWindow ) :
 
 
 	def Flush( self ) :
-		if self.mResetListItems == True :
-			self.mResetListItems = False	
-			self.mListItems = []
 		self.mEPGList = []
 		self.mEPGHashTable = {}
 		self.mEPGCount = 0
@@ -830,12 +845,16 @@ class EPGWindow( BaseWindow ) :
 
 			if self.mEPGMode == E_VIEW_GRID :
 				self.mCtrlGridChannelList.selectItem( focusIndex )
+				for loop in range( 10 ) :
+					if self.GridGetSelectedPosition( ) == focusIndex :
+						break
+					time.sleep( 0.02 )
 			else :
 				self.mCtrlBigList.selectItem( focusIndex )
 
 
 	def UpdateSelectedChannel( self ) :
-		if self.mEPGMode == E_VIEW_GRID :
+		if self.mEPGMode != E_VIEW_CHANNEL :
 			return
 	
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
@@ -958,12 +977,6 @@ class EPGWindow( BaseWindow ) :
 
 		self.LoadTimerList( )
 
-		if  self.mChannelList  == None :
-			 self.mChannelList = []
-
-		if self.mListItems == None :
-			self.mListItems = []
-
 		if self.mEPGMode == E_VIEW_GRID :
 			self.UpdateGridView( aUpdateOnly )
 		
@@ -979,66 +992,44 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateTimeSeperator( )
 
 
-	def UpdateGridChannelList( self, aUpdateOnly=False ) :
+	def UpdateChannelList( self ) :
 
 		self.mDebugStart = time.time( )
+
 		try :
-			if self.mChannelList == None or len(self.mChannelList ) <= 0  :
-				self.mCtrlGridChannelList.reset( )
-				self.mListItems = []
-				xbmc.executebuiltin( 'container.refresh' )				
-				return
 
-			aUpdateOnly = True
-			if self.mListItems == None  :
-				aUpdateOnly = False
-				self.mLock.acquire( )
-				self.mListItems = []
-				self.mLock.release( )
-				LOG_TRACE( 'UpdateOnly------------>Create' )				
-			else :
-				if len( self.mChannelList ) != len( self.mListItems ) :
-					LOG_TRACE( 'UpdateOnly------------>Create %d : %d' %( len( self.mChannelList ), len( self.mListItems ) ) )
-					aUpdateOnly = False 
-					self.mLock.acquire( )
+			if self.mEPGMode == E_VIEW_GRID :
+				if self.mChannelList == None or len(self.mChannelList ) <= 0  :
+					self.mCtrlGridChannelList.reset( )
 					self.mListItems = []
-					self.mLock.release( )
-
-			print 'LAEL98 UPDATE CONTAINER aUpdateOnly=%d' %aUpdateOnly
+					xbmc.executebuiltin( 'container.refresh' )				
+					return
 					
-			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+				if self.mDataCache.SharedChannel_GetUpdated( WinMgr.WIN_ID_EPG_WINDOW ) :
+					self.mChannelList = self.mDataCache.Channel_GetList( )
+					self.mListItems = self.mDataCache.SharedChannel_GetListItems()
+					self.mCtrlGridChannelList.addItems( self.mListItems )
+					self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, False )
 
-			strNoEvent = MR_LANG( 'No event' )
+			elif 	self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING  :
+				if self.mChannelList == None or len( self.mChannelList ) <= 0 :
+					self.mCtrlBigList.reset( )
+					self.mListItems = []
+					xbmc.executebuiltin( 'container.refresh' )			
+					return
 
-			if aUpdateOnly == False :
-				for i in range( len( self.mChannelList ) ) :
-					listItem = xbmcgui.ListItem( '', '' )
-					self.mListItems.append( listItem )				
-				self.mCtrlGridChannelList.addItems( self.mListItems )
-			
-			for i in range( len( self.mChannelList ) ) :
-				channel = self.mChannelList[i]
-				iChNumber = channel.mNumber
-				if E_V1_2_APPLY_PRESENTATION_NUMBER :
-					iChNumber = self.mDataCache.CheckPresentationNumber( channel )
-				listItem = self.mListItems[i]
-				listItem.setLabel( '%04d' %iChNumber )
-				listItem.setLabel2( '%s' %channel.mName )				
+				if self.mDataCache.SharedChannel_GetUpdated( WinMgr.WIN_ID_EPG_WINDOW ) :
+					self.mChannelList = self.mDataCache.Channel_GetList( )
+					self.mListItems = self.mDataCache.SharedChannel_GetListItems()
+					self.mCtrlBigList.addItems( self.mListItems )
+					self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, False )
 
-				#add channel logo
-				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-					#LOG_TRACE( 'logo=%s' %logo )
-					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
-
-				if  i== E_GRID_MAX_ROW_COUNT:
-					xbmc.executebuiltin( 'container.refresh' )
-					print 'LAEL98 UPDATE CONTAINER'
+ 			elif 	self.mEPGMode == E_VIEW_CHANNEL  :
+				self.UpdateSelectedChannel( )
+ 			
+ 			
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-
-		xbmc.executebuiltin( 'container.refresh' )
 
 		self.mDebugEnd = time.time( )
 		print 'epg loading test =%s' %( self.mDebugEnd  - self.mDebugStart )
@@ -1154,24 +1145,24 @@ class EPGWindow( BaseWindow ) :
 
 		if self.mEPGList == None :
 			self.mCtrlList.reset( )
-			self.mListItems = []
+			self.mListItemsChannelMode = []
 			return
 
 		try :
 			aUpdateOnly = True
 	
-			if self.mListItems == None  :
+			if self.mListItemsChannelMode == None  :
 				aUpdateOnly = False
 				self.mLock.acquire( )
-				self.mListItems = []
+				self.mListItemsChannelMode = []
 				self.mLock.release( )			
 
 			else :
-				if len( self.mEPGList ) != len( self.mListItems ) :
+				if len( self.mEPGList ) != len( self.mListItemsChannelMode ) :
 					LOG_TRACE( 'UpdateOnly------------>Create' )
 					aUpdateOnly = False 
 					self.mLock.acquire( )	
-					self.mListItems = []
+					self.mListItemsChannelMode = []
 					self.mLock.release( )
 
 			for i in range( len( self.mEPGList ) ) :
@@ -1180,7 +1171,7 @@ class EPGWindow( BaseWindow ) :
 				if aUpdateOnly == False :
 					listItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )
 				else :
-					listItem = self.mListItems[i]
+					listItem = self.mListItemsChannelMode[i]
 					listItem.setLabel( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ) )
 					listItem.setLabel2( epgEvent.mEventName )
 
@@ -1202,10 +1193,10 @@ class EPGWindow( BaseWindow ) :
 					#LOG_TRACE( '-------------------viewTimer property[%s]'% hasTimer )
 
 				if aUpdateOnly == False :
-					self.mListItems.append( listItem )
+					self.mListItemsChannelMode.append( listItem )
 			
 			if aUpdateOnly == False :
-				self.mCtrlList.addItems( self.mListItems )
+				self.mCtrlList.addItems( self.mListItemsChannelMode )
 				#self.setFocusId( LIST_ID_COMMON_EPG )
 			#else :
 			xbmc.executebuiltin( 'container.refresh' )
@@ -1217,45 +1208,24 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdateCurrentView( self, aUpdateOnly ) :
+		
 		self.mDebugStart = time.time( )		
-		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			self.mCtrlBigList.reset( )
-			self.mListItems = []
-			xbmc.executebuiltin( 'container.refresh' )			
+
+		channelCount = len( self.mChannelList )
+		topIndex =  self.mCtrlBigList.getOffsetPosition( )
+
+		"""
+		if aUpdateOnly == True and self.mVisibleTopIndex ==  topIndex :
 			return
+		self.mVisibleTopIndex = topIndex
+		"""
 
-		aUpdateOnly = True
-		if self.mListItems == None  :
-			aUpdateOnly = False
-			self.mLock.acquire( )
-			self.mListItems = []
-			self.mLock.release( )			
-		else :
-			if len( self.mChannelList ) != len( self.mListItems ) :
-				LOG_TRACE( 'UpdateOnly------------>Create' )
-				aUpdateOnly = False 
-				self.mLock.acquire( )
-				self.mListItems = []
-				self.mLock.release( )
-
-		print 'LAEL98 UPDATE CONTAINER aUpdateOnly=%d' %aUpdateOnly
-				
 		currentTime = self.mDataCache.Datetime_GetLocalTime( )
-
 		strNoEvent = MR_LANG( 'No event' )
 
-		if aUpdateOnly == False :
-			for i in range( len( self.mChannelList ) ) :
-				listItem = xbmcgui.ListItem( '', '' )
-				self.mListItems.append( listItem )
-			self.mCtrlBigList.addItems( self.mListItems )
-		
-		for i in range( len( self.mChannelList ) ) :
-			channel = self.mChannelList[i]
-			iChNumber = channel.mNumber
-			if E_V1_2_APPLY_PRESENTATION_NUMBER :
-				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
-			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
+		for i in range( E_CURRENT_MAX_ROW_COUNT ) :
+			channelIndex = i + topIndex
+			channel = self.mChannelList[channelIndex]
 			hasEpg = False
 
 			try :
@@ -1263,12 +1233,10 @@ class EPGWindow( BaseWindow ) :
 
 				if epgEvent :
 					hasEpg = True
-					listItem = self.mListItems[i]
-					listItem.setLabel( tempChannelName )
-					listItem.setLabel2( epgEvent.mEventName )
-
+					listItem = self.mListItems[channelIndex]
 					epgStart = epgEvent.mStartTime + self.mLocalOffset
 					tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+					listItem.setProperty( 'EPGName', epgEvent.mEventName )
 					listItem.setProperty( 'StartTime', tempName )
 					listItem.setProperty( 'Duration', '' )
 					listItem.setProperty( 'HasEvent', 'true' )
@@ -1292,10 +1260,8 @@ class EPGWindow( BaseWindow ) :
 						#LOG_TRACE( '---------propety View[%s]'% hasTimer )
 
 				else :
-					listItem = self.mListItems[i]
-					listItem.setLabel( tempChannelName )
-					listItem.setLabel2( strNoEvent )
-
+					listItem = self.mListItems[channelIndex]
+					listItem.setProperty( 'EPGName', strNoEvent )
 					listItem.setProperty( 'StartTime', '' )
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'false' )
@@ -1315,65 +1281,31 @@ class EPGWindow( BaseWindow ) :
 						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
 						listItem.setProperty( 'ViewTimer', hasTimer )
 
-				#add channel logo
-				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-					#LOG_TRACE( 'logo=%s' %logo )
-					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
-
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
 
-			if aUpdateOnly == True and  i==8 :
-				xbmc.executebuiltin( 'container.refresh' )
-				print 'LAEL98 UPDATE CONTAINER'
-
-			#self.setFocusId( LIST_ID_BIG_EPG )
-		#else :
 		xbmc.executebuiltin( 'container.refresh' )
-		#self.SetFocusList( self.mEPGMode )
-		#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)
 
 		self.mDebugEnd = time.time( )
 		print 'epg loading test =%s' %( self.mDebugEnd  - self.mDebugStart )
 
 
 	def  UpdateFollowingView( self, aUpdateOnly ) :
-		if self.mChannelList == None or len( self.mChannelList ) <= 0:
-			self.mCtrlBigList.reset( )
-			self.mListItems = []
-			xbmc.executebuiltin( 'container.refresh' )			
-			return
-
-		aUpdateOnly = True
-		if self.mListItems == None  :
-			aUpdateOnly = False
-			self.mLock.acquire( )
-			self.mListItems = []
-			self.mLock.release( )			
-		else :
-			if len( self.mChannelList ) != len( self.mListItems ) :
-				LOG_TRACE( 'UpdateOnly------------>Create' )
-				aUpdateOnly = False 
-				self.mLock.acquire( )
-				self.mListItems = []
-				self.mLock.release( )				
 
 		strNoEvent = MR_LANG( 'No event' )
 
-		if aUpdateOnly == False :
-			for i in range( len( self.mChannelList ) ) :
-				listItem = xbmcgui.ListItem( '', '' )
-				self.mListItems.append( listItem )				
-			self.mCtrlBigList.addItems( self.mListItems )				
+		channelCount = len( self.mChannelList )
+		topIndex =  self.mCtrlBigList.getOffsetPosition( )
 
-		for i in range( len( self.mChannelList ) ) :
-			channel = self.mChannelList[i]
-			iChNumber = channel.mNumber
-			if E_V1_2_APPLY_PRESENTATION_NUMBER :
-				iChNumber = self.mDataCache.CheckPresentationNumber( channel )
-			tempChannelName = '%04d %s' %( iChNumber, channel.mName )
+		"""
+		if aUpdateOnly == True and self.mVisibleTopIndex ==  topIndex :
+			return
+		self.mVisibleTopIndex = topIndex
+		"""
+
+		for i in range( E_CURRENT_MAX_ROW_COUNT ) :
+			channelIndex = i + topIndex
+			channel = self.mChannelList[channelIndex]
 			hasEpg = False
 
 			try :
@@ -1381,12 +1313,10 @@ class EPGWindow( BaseWindow ) :
 
 				if epgEvent :
 					hasEpg = True
-					listItem = self.mListItems[i]
-					listItem.setLabel( tempChannelName )
-					listItem.setLabel2( epgEvent.mEventName )
-
+					listItem = self.mListItems[channelIndex]
 					epgStart = epgEvent.mStartTime + self.mLocalOffset
 					tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+					listItem.setProperty( 'EPGName', epgEvent.mEventName )					
 					listItem.setProperty( 'StartTime', tempName )
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'true' )
@@ -1406,10 +1336,8 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'ViewTimer', hasTimer )
 
 				else :
-					listItem = self.mListItems[i]
-					listItem.setLabel( tempChannelName )
-					listItem.setLabel2( strNoEvent )
-					
+					listItem = self.mListItems[channelIndex]
+					listItem.setProperty( 'EPGName', strNoEvent )					
 					listItem.setProperty( 'StartTime', '' )
 					listItem.setProperty( 'Duration', '' )						
 					listItem.setProperty( 'HasEvent', 'false' )
@@ -1429,24 +1357,9 @@ class EPGWindow( BaseWindow ) :
 						hasTimer = '%s'% self.GetViewTimerByEPG( None, channel )
 						listItem.setProperty( 'ViewTimer', hasTimer )
 
-				#add channel logo
-				if E_USE_CHANNEL_LOGO == True :
-					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
-					#LOG_TRACE( 'logo=%s' %logo )
-					#LOG_TRACE( 'logo path=%s' %self.mChannelLogo.GetLogo( logo ) )
-					listItem.setProperty( 'ChannelLogo', self.mChannelLogo.GetLogo( logo, self.mServiceType ) )
-
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex )
 
-			if aUpdateOnly == True and  i==8 :
-				xbmc.executebuiltin( 'container.refresh' )
-				print 'LAEL98 UPDATE CONTAINER'
-
-		xbmc.executebuiltin( 'container.refresh' )
-		#self.SetFocusList( self.mEPGMode )
-		#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)	
-	
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
 		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
@@ -2032,10 +1945,10 @@ class EPGWindow( BaseWindow ) :
 				self.mEventBus.Deregister( self )	
 				self.StopEPGUpdateTimer( )
 
-				self.mResetListItems = True
+				self.OpenBusyDialog( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_SEARCH ).SetText( keyword )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_SEARCH )
-
+				self.CloseBusyDialog( )				
 
 				
 				"""
@@ -2695,42 +2608,55 @@ class EPGWindow( BaseWindow ) :
 		self.Flush( )
 		self.mGridEPGCache = {}		
 		self.mLock.release( )
-	
+
+		start = time.time()
+
+		self.ResetEPGInfomation( )
+		self.UpdateChannelList( )
+
 		if self.mEPGMode == E_VIEW_GRID :
-			self.UpdateGridChannelList( )
 			normalize = int( self.mDataCache.Datetime_GetGMTTime( ) / E_GRID_HALF_HOUR )
 			self.mShowingGMTTime = normalize * E_GRID_HALF_HOUR
 			self.SetTimeline( )
+			
 			if self.mGridKeepFocus == True :
 				self.mGridKeepFocus = False
 			else :
 				self.FocusCurrentChannel( )
-			
-			if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
-				self.mUpdateEPGInfomationTimer.cancel( )
-			self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
-			self.mUpdateEPGInfomationTimer.start( )
-			return
 
-		if self.mEPGMode == E_VIEW_CHANNEL :
-			self.GetSelectChannel( )
+			self.mLock.acquire( )
+			self.mVisibleTopIndex = self.GridGetOffsetPosition( )
+			self.mVisibleFocusRow = self.GridGetSelectedPosition( ) - self.mVisibleTopIndex
+			self.mVisibleFocusCol = 0
+			self.mLock.release( )
+			self.Load( )
+			self.UpdateList( )
+			self.GridSetFocus( )
 
-		self.Load( )
-		self.UpdateList( )
-		self.UpdateSelectedChannel( )
-		self.FocusCurrentChannel( )
-		
+		else :
+			self.FocusCurrentChannel( )
+			self.Load()
+			self.UpdateList( )
+
+		#if self.mEPGMode == E_VIEW_CHANNEL :
+		#	self.GetSelectChannel( )
+
+		#self.Load( )
+		#self.UpdateList( )
+		#self.UpdateSelectedChannel( )
+		#self.FocusCurrentChannel( )
+	
 		#time.sleep( 0.2 )
-		self.ResetEPGInfomation( )
 
 		if self.mUpdateEPGInfomationTimer and self.mUpdateEPGInfomationTimer.isAlive( ) :
 			self.mUpdateEPGInfomationTimer.cancel( )
-		
+
 		self.mUpdateEPGInfomationTimer = threading.Timer( 0.5, self.AsyncUpdateEPGInfomation )
 		self.mUpdateEPGInfomationTimer.start( )
 
 
 	def AsyncUpdateEPGInfomation( self ) :
+		"""
 		if self.mEPGMode == E_VIEW_GRID :
 			self.mLock.acquire( )
 			self.mVisibleTopIndex = self.GridGetOffsetPosition( )
@@ -2742,7 +2668,7 @@ class EPGWindow( BaseWindow ) :
 			self.Load( )
 			self.UpdateList( )
 			self.GridSetFocus( )
-
+		"""
 		self.UpdateEPGInfomation( )
 
 
@@ -2858,7 +2784,7 @@ class EPGWindow( BaseWindow ) :
 				self.setFocusId( GROUP_ID_LEFT_SLIDE )
 
 
-	def GridGoToCurrent( self ) :
+	def GridControlCurrent( self ) :
 		self.mLock.acquire( )
 		self.mVisibleFocusCol = 0
 		self.mShowingOffset = 0
@@ -3225,3 +3151,14 @@ class EPGWindow( BaseWindow ) :
 					self.mSelectChannel = self.mChannelList[channelIndex]
 					break
 				channelIndex += 1
+
+
+	def CheckModeChange( self ) :
+		newMode = int( GetSetting( 'EPG_MODE' ) )
+		if newMode != self.mEPGMode :
+			self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, True )
+			if newMode == E_VIEW_CURRENT :	
+				self.mCtrlBigList.reset( )
+			elif newMode == E_VIEW_GRID :
+				self.mCtrlGridChannelList.reset( )	
+
