@@ -7784,20 +7784,20 @@ Search for window name
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
-								<scroll>false</scroll>
+								<scroll>true</scroll>
 							</control>
 						</focusedlayout>
 					</control>
 				</control>
 				<control type="label">
-					<posx>892</posx>
+					<posx>20r</posx>
 					<posy>56r</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>font12</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
-					<align>left</align>
+					<align>right</align>
 					<aligny>center</aligny>
 					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
