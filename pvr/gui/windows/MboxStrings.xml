@@ -1458,4 +1458,7 @@
 	<string id="3931">Finish</string>
 	<string id="3932">Go to the channel search setup page</string>
 	<string id="3933">Network Volume failure</string>
+	<string id="3934">Maximum Partition Size</string>
+	<string id="3935">Maximum media partition size</string>
+	<string id="3936">Partition size not valid</string>
 </strings>
