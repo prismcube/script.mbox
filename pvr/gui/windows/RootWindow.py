@@ -75,7 +75,7 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		except Exception, ex :
 			import traceback
-			LOG_ERR( 'Exception root window %s traceback = %s' % ex, traceback.format_exc( ) )
+			LOG_ERR( 'Exception root window %s traceback = %s' % ( ex, traceback.format_exc( ) ) )
 
 
 	def onAction( self, aAction ) :

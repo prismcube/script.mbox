@@ -228,6 +228,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAgeLimit = self.mDataCache.GetPropertyAge( )
 
 		if self.mDataCache.GetChannelReloadStatus( ) :
+			isUpdatePosition = True
 			self.mListItems = None
 			self.mDataCache.LoadZappingList( )
 

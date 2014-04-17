@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+from subprocess import *
 import pvr.Platform
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
@@ -35,6 +36,7 @@ E_WIFI					= 101
 
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
+HDD_RESERVED_USE		= 70
 
 
 class Configure( SettingWindow ) :
@@ -513,6 +515,7 @@ class Configure( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
 					dialog.doModal( )
+
 				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting media partition%s cannot be undone!' )% NEW_LINE )
@@ -521,6 +524,7 @@ class Configure( SettingWindow ) :
 						self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting HDD' ), ING ), 120 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
+
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting recording partition%s cannot be undone!' )% NEW_LINE )
@@ -529,12 +533,14 @@ class Configure( SettingWindow ) :
 						self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting HDD' ), ING ), 60 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
+
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Format your hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( )
+
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
@@ -1762,18 +1768,31 @@ class Configure( SettingWindow ) :
 
 
 	def MakeDedicate( self ) :
-		mediasize = 100
+		maxsize = self.GetMaxMediaSize( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
+		dialog.doModal( )
+
+		mediadefault = 100
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediasize , 3 )
+		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			mediasize = dialog.GetString( )
+			mediadefault = dialog.GetString( )
+
+		if maxsize < int( mediadefault ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+			dialog.doModal( )
+			return
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			return
 			self.OpenBusyDialog( )
-			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
+			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
 			ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 			self.mDataCache.Player_AVBlank( True )
 			if self.mUseUsbBackup :
@@ -1781,6 +1800,33 @@ class Configure( SettingWindow ) :
 				CreateDirectory( E_DEFAULT_BACKUP_PATH )
 				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
 			self.mCommander.Make_Dedicated_HDD( )
+
+
+	def GetMaxMediaSize( self ) :
+		try :
+			size = 0
+			device = '/dev/sda'
+			cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				size = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( size, err ) = p.communicate( )
+				size = size.strip( )
+
+			size = re.sub( ',', '', size )
+			size = int( size.split( '.' )[0] )
+
+			if size > HDD_RESERVED_USE :
+				return size - HDD_RESERVED_USE
+			else :
+				return 0
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return 0
 
 
 	def MakeBackupScript( self ) :
