@@ -162,12 +162,12 @@
 "Current";"Jetzt läuft";"Courant";"Corrente";"En ejecucion";"Aktuálně";"Momenteel";"Teraz";"Current";"Текущий";"Current";"Current";"Aktuálne";"Поточний";1163
 "Following";"Folgen";"Suivant";"Seguito";"Siguiente";"Následující";"Following";"Później";"Following";"Следующий";"Following";"Following";"Nasledujúca";"Наступний";1164
 "Show more EPG";;;;;"Ukaž víc EPG";;"Pokaż więcej EPG";;;;;"Ukáž viac EPG";;1165
-"LOADING";;;;;;;"ŁADOWANIE";;;;;;;1166
-"Automatic 1080 24p";;;;;;;"Automatyczny format 1080 24p";;;;;;;1167
-"Live Streaming";;;;;;;"Przekaz na żywo";;;;;;;1200
-"PIP Channel List";;;;;;;;;;;;;;1201
-"Previous Group";;;;;;;;;;;;;;1202
-"Next Group";;;;;;;;;;;;;;1203
+"LOADING";;;;;"Načítání";;"ŁADOWANIE";;;;;"Načítavanie";;1166
+"Automatic 1080 24p";;;;;"Automaticky 1080 24p";;"Automatyczny format 1080 24p";;;;;"Automaticky 1080 24p";;1167
+"Live Streaming";;;;;"Živé streamování";;"Przekaz na żywo";;;;;"Živé streamovanie";;1200
+"PIP Channel List";;;;;"PIP seznam programů";;;;;;;"PIP zoznam programov";;1201
+"Previous Group";;;;;"Předchozí skupina";;;;;;;"Predchádzajúca skupina";;1202
+"Next Group";;;;;"Následující skupina";;;;;;;"Nasledujúca skupina";;1203
 "Satellite";"Satellit und Position";"Satellite";"Satellite";"Satelite y posicion";"Satelit";"Satelliet en positie";"Satelita";"Uydu ve konumu";"Спутник";"Satellite";"Satellite";"Satelit";"Супутник";1204
 "Provider";"Anbieter";"Fournisseur";"Provider";"Proveedor";"Provajder";"Provider";"Operator";"Provider";"Провайдер";"Provider";"Provider";"Provajder";"Provider";1205
 "Favorite";"Favoriten";"Favoris";"Favoriti";"Favoritos";"Oblíbený";"Favorite";"Ulubione";"Favorite";"Любимые";"Favorite";"Favorite";"Obľúbený";"Улюблені";1206
@@ -519,7 +519,7 @@
 "Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";"Ethernet";2346
 "Wireless";"Drahtlosnetzwerk";"Sans Fil";"Wireless";"Wireless";"Wireless";"Wireless";"Bezprzewodowa";"Wireless";"Wi-Fi";"Wireless";"Wireless";"Wireless";"Wi-Fi";2347
 "HDD Sleep Mode";"HDD Ruhemodus ";"Disque dur en mode veille";;;"Mód uspání HDD";;"Tryb usypiania HDD";;"Режим отключения HDD";;;"Mód uspania HDD";;2348
-"LCN Search";;;;;;;"Wyszukiwanie LCN";;;;;;;2349
+"LCN Search";;;;;"LCN vyhledávání";;"Wyszukiwanie LCN";;;;;"LCN vyhľadávanie";;2349
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -538,13 +538,13 @@
 "MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIA";"MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIA";"MULTIMEDIA";"MULTIMEDIA";"MULTIMEDIA";"МУЛЬТИМЕДИА";"MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIÁ";"МУЛЬТИМЕДІА";3016
 "UNKNOWN";"UNBEKANNT";"INCONNU";"SCONOSCIUTO";"DESCONOCIDO";"NEZNÁMÝ";"UNKNOWN";"NIEZNANE";"UNKNOWN";"НЕИЗВЕСТНО";"UNKNOWN";"UNKNOWN";"NEZNÁMY";"НЕВІДОМО";3017
 "Unknown";"Unbekannt";"Inconnu";"Sconosciuto";"Desconocido";"Neznámý";"Onbekend";"Nieznany";"Bilinmiyor";"Неизвестно";"Unknown";"Unknown";"Neznámy";"Невідомо";3018
-"Network Volume failure";;;;;;;;;;;;;;3019
-"Try again after connecting network";;;;;;;;;;;;;;3020
+"Network Volume failure";;;;;"Hlasitost přes síť selhala";;;;;;;"Hlasitosť cez sieť zlyhala";;3019
+"Try again after connecting network";;;;;"Zkuste to znovu po připojení sítě";;;;;;;"Skúste to znovu po pripojení siete";;3020
 "Try again after stopping playback";"Aufnahmen und Timeshift";"Réessayer à nouveau après avoir arrêté le playback";"Riprovare dopo l'arresto della riproduzione";"Nada";"Zkuste to znovu po zastavení přehrávání";"None";"Spróbuj ponownie po zakończeniu odtwarzania";"None";"Попробовать еще раз после остановки воспроизведения";"Try again after stopping playback";"Try again after stopping playback";"Skúste to znovu po zastavení prehrávania";"Спробувати ще раз після зупинки відтворення";3021
-"Try again after stopping record";;;;;;;;;;;;;;3022
-"Record path is empty";;;;;;;;;;;;;;3023
-"Success";;;;;;;;;;;;;;3024
-"Record path failure";;;;;;;;;;;;;;3025
+"Try again after stopping record";;;;;"Zkuste to znovu po skončení nahrávání";;;;;;;"Skúste to znovu po skončení nahrávania";;3022
+"Record path is empty";;;;;"Cesta nahrávky je prázdná";;;;;;;"Cesta nahrávky je prázdna";;3023
+"Success";;;;;"Úspěšně";;;;;;;"Úspešne";;3024
+"Record path failure";;;;;"Chyba cesty nahrávky";;;;;;;"Chyba cesty nahrávky";;3025
 "NoChannel";"Keine Sender";"Aucune chaîne";"Nessun Canale";"Sin canal";"Žádný Program";"NoChannel";"Brak kanałów";"NoChannel";"Нет Канала";"NoChannel";"NoChannel";"Žiadny Program";"Немає Каналу";3026
 "Strength";"Stärke";"Puissance";"Forza";"Fuerza";"Síla";"Strength";"Siła";"Strength";"Сигнал";"Strength";"Strength";"Sila";"Сигнал";3027
 "Quality";"Qualität";"Qualité";"Qualità";"Calidad";"Kvalita";"Quality";"Jakość";"Quality";"Качество";"Quality";"Quality";"Kvalita";"Якість";3028
@@ -570,13 +570,13 @@
 "The channel will be changed %s min later";"Der Sender wechselt in %s Minuten";"La chaîne sera changée %s minutes plus tard";"Il canale sarà cambiato %s min più tardi";"El canal será cambiado %s minutos más tarde";"Kanál bude změněn o %s min později";"The channel will be changed %s min later";"Kanał zostanie zmieniony za %s minut";"The channel will be changed %s min later";"Канал будет изменен через %s минут";"The channel will be changed %s min later";"The channel will be changed %s min later";"Kanál bude zmenený o %s min neskôr";"Канал буде змінено через %s хвилин";3048
 "Your system will reboot in %s seconds";"Ihr System wird in %s Sekunden Neu starten";"Votre système va redémarrer dans %s secondes";"Il sistema si riavvierà in %s secondi";"Tu sistema reiniciara en %s segundos";"Váš systém se restartuje %s sekund";"Your system will reboot in %s seconds";"System zostanie uruchomiony ponownie za %s sekund";"Your system will reboot in %s seconds";"Ресивер будет перезагружен через %s секунд";"Your system will reboot in %s seconds";"Your system will reboot in %s seconds";"Váš systém sa reštartuje %s sekúnd";"Ресивер буде перезавантажений через %s секунд";3049
 "Favorite group";"Favoritengruppe";"Groupe favoris";"Impossibile cambiare gruppo preferito";"Grupo favoritos";"Oblíbené skupiny";"Favorite group";"Listy ulubionych";"Favorite group";"Группа любимые";"Favorite group";"Favorite group";"Obľúbené skupiny";"Група улюблені";3050
-"No group available";;;;;;;;;;;;;;3051
-"Could not change the group";;;;;;;;;;;;;;3052
+"No group available";;;;;"Žádná dostupná skupina";;;;;;;"Žiadna dostupná skupina";;3051
+"Could not change the group";;;;;"Skupinu nelze změnit";;;;;;;"Skupinu nie je možné zmeniť";;3052
 "No channels available";"Keine Kanäle verfügbar";"Aucune chaîne disponible";"Nessun canale disponibile";"No hay canales disponibles";"Žádné kanály nejsou k dispozici";"No channels available";"Brak kanałów";"No channels available";"Нет доступных каналов";"No channels available";"No channels available";"Žiadne kanály nie sú k dispozícii";"Немає доступних каналів";3053
-"Failed to change the group";;;;;;;;;;;;;;3054
+"Failed to change the group";;;;;"Změna skupiny selhala";;;;;;;"Zmena skupiny zlyhala";;3054
 "Your channel list is empty";"Ihre Senderliste ist leer";"Votre liste de chaînes est vide";"La tua lista dei canali è vuota";"Tu lista de canales está vacia";"Váš seznam kanálů je prázdný";"Your channel list is empty";"Lista kanałów jest pusta";"Your channel list is empty";"Список каналов пуст";"Your channel list is empty";"Your channel list is empty";"Váš zoznam kanálov je prázdny";"Список каналів порожній";3055
 "To watch PIP, please switch from radio mode to TV mode";"Für PIP, schalten Sie bitte von Radio in den TV-Modus";"Pour voir l'incrustation, s'il vous plaît passer%n du mode radio au mode TV";;;"Pro spuštění PIP přepněte prosim z radio modu do TV modu";;"Aby korzystać z PIP proszę przejść do trybu TV";;"Для просмотра PIP, переключитесь в режим ТВ";;;"Pre spustenie PIP prepnite prosim z radio modu do TV modu";;3056
-"No service channel available";;;;;;;;;;;;;;3057
+"No service channel available";;;;;"Žádný dostupný kanál";;;;;;;"Žiadny dostupný kanál";;3057
 "Unable to tune the channel on PIP";"Sender nicht in PIP möglich";"Impossible de syntoniser le canal en incrustation";;;"Kanál nelze naladit do PIP";;"Nie można pokazać kanału w PIP";;"Невозможно настроить канал на PIP";;;"Kanál nemožno naladiť do PIP";;3058
 "No Channel";"Kein Sender";"Aucune chaîne";"Nessun Canale";"Sin canal";"Žádný kanál";"No Channel";"Brak kanału";"No Channel";"Нет Канала";"No Channel";"No Channel";"Žiadny kanál";"Немає Каналу";3059
 "Move PIP window";"PIP Fenster bewegen";"Bouger la fenêtre d'incrustation";;;"Pohyb PIP okna";;"Przesuń okno PIP";;"Перемещение PIP окна";;;"Pohyb PIP okna";;3060
@@ -595,15 +595,15 @@
 "Installation in progress";"Installation wird durch geführt";"Installation en cours";"Installazione in corso";"Instalación en progreso";"Probíhá instalace";"Installation in progress";"Trwa instalacja…";"Installation in progress";"Процесс установки";"Installation in progress";"Installation in progress";"Prebieha inštalácia";"Процес установки";3073
 "Aborting";"Abbrechen";"Annulation";"Annullato";"Abortando";"Přerušuje se";"Aborting";"Trwa anulowanie…";"Aborting";"Отмена";"Aborting";"Aborting";"Prerušuje sa";"Відміна";3074
 "HDD";"HDD";"Disque dur";"HDD";"HDD";"HDD";"HDD";"Dysk twardy";"HDD";"Диск";"HDD";"HDD";"HDD";"Диск";3075
-"Free";;;;;;;;;;;;;;3076
-"Internal HDD";;;;;;;;;;;;;;3077
+"Free";;;;;"Volný";;;;;;;"Voľný";;3076
+"Internal HDD";;;;;"Interní HDD";;;;;;;"Interný HDD";;3077
 "Edit Recording";"Aufnahme bearbeiten";"Modifier enregistrement";"Edita Registrazione";"Editar grabación";"Upravit záznam";"Edit Recording";"Edytuj nagranie";"Edit Recording";"Редактировать";"Edit Recording";"Edit Recording";"Upraviť záznam";"Редагувати";3078
 "Start Time";"Startzeit";"Temps de début";"Inizio";"Hora de inicio";"Čas spuštění";"Start Time";"Czas rozpoczęcia";"Start Time";"Время Начала";"Start Time";"Start Time";"Čas spustenia";"Час початку";3079
 "End Time";"Endzeit";"Temps de fin";"Fine";"Hora final";"Čas ukončení";"End Time";"Czas zakończenia";"End Time";"Время Окончания";"End Time";"End Time";"čas ukončenia";"Час закінчення";3080
 "min(s)";"min(s)";"Min(s)";"Minuti";"min(s)";"min(s)";"min(s)";"min";"min(s)";"минут";"min(s)";"min(s)";"min(s)";"хвилин";3081
 "From EPG";"Von EPG";"De l'EPG";"Da EPG";"desde EPG";"Z EPG";"From EPG";"Z EPG";"From EPG";"С ТВ Гида";"From EPG";"From EPG";"Z EPG";"З ТВ Гіда";3082
 "Timeshift Copy Duration";"Timeshift Datei Dauer";"Timeshift Copy Duration";"Durata Timeshift";"Duracion copia Timeshift";"Délka Kopírování Timeshift";"Timeshift Copy Duration";"Długość kopiowania Timeshiftu";"Timeshift Copy Duration";"Timeshift Copy Duration";"Timeshift Copy Duration";"Timeshift Copy Duration";"Dĺžka Kopírovania Timeshift";"Тривалість Тайм-шифту";3083
-"Record Path";;;;;;;;;;;;;;3084
+"Record Path";;;;;"Cesta nahrávky";;;;;;;"Cesta nahrávky";;3084
 "Change Duration";"Dauer ändern";"Changer durée";"Cambia Durata";"Cambiar duracion";"Změna Trvání";"Change Duration";"Zmień czas trwania";"Change Duration";"Изменить Длительность";"Change Duration";"Change Duration";"Zmena Trvania";"Змінити тривалість";3085
 "Start";"Start";"Commencer";"Start";"Iniciar";"Začátek";"Start";"Start";"Start";"Начать";"Start";"시작";"Začiatok";"Почати";3086
 "Enter End Time";"Endzeit eingeben";"Entrez un temps de fin";"Inserisci Fine evento";"Introduce hora final";"Zadejte čas ukončení";"Enter End Time";"Wprowadź czas zakończenia";"Enter End Time";"Задать Время Окончания";"Enter End Time";"Enter End Time";"Zadajte čas ukončenia";"Задати час закінчення";3087
@@ -669,25 +669,25 @@
 "Low Frequency";"LNB-Low-Frequenz";"Basse fréquence";"Frequenza Bassa";"Frecuencia LNB Baja";"Nízká frekvence";"Lage frequentie van LNB";"Pasmo dolne";"LNB-Low frekansı";"Нижняя частота";"Low Frequency";"Low Frequency";"Nízka frekvencia";"Нижня частота";3147
 "High Frequency";"LNB-High-Frequenz";"Haute fréquence";"Frequenza Alta";"Frecuencia LNB Alta";"Vysoká frekvence";"Hoge frequentie van LNB";"Pasmo górne";"LNB-High frekansı";"Высокая частота";"High Frequency";"High Frequency";"Vysoká frekvencia";"Висока частота";3148
 "Switch Frequency";"LNB-Grenzfrequenz";"Changer la fréquence";"Frequenza Switch";"Límite Frecuencia LNB";"Frekvence přepínání";"Grensfrequentie van LNB";"Częstotliwość przełączania";"LNB sınır frekansı";"Частота переключения";"Switch Frequency";"Switch Frequency";"Frekvencia prepínania";"Частота перемикання";3149
-"Add/Remove Record Path";;;;;;;;;;;;;;3150
-"Select";;;;;;;;;;;;;;3151
-"Invalid record path chosen";;;;;;;;;;;;;;3152
+"Add/Remove Record Path";;;;;"Přidat/vymazat cestu nahrávky";;;;;;;"Pridať/vymazať cestu nahrávky";;3150
+"Select";;;;;"Vybrat";;;;;;;"Vybrať";;3151
+"Invalid record path chosen";;;;;"Zvolená nesprávná cesta nahrávky";;;;;;;"Vybraná nesprávna cesta nahrávky";;3152
 "No %s support";"Nicht unterstützt %s";"Aucun support %s";"Non supportato %s";"No soportado %s";"Nepodporováno %s";"No support %s";"Brak wsparcia %s";"No support %s";"Нет поддержки %s";"No support %s";"No support %s";"Nepodporované %s";"Немає підтримки %s";3153
-"Enter record path first";;;;;;;;;;;;;;3154
-"Enter New Path Name";;;;;;;;;;;;;;3155
+"Enter record path first";;;;;"Nejdříve vyberte cestu nahrávky";;;;;;;"Najskôr vyberte cestu nahrávky";;3154
+"Enter New Path Name";;;;;"Vyberte nový název cesty";;;;;;;"Vyberte nový názov cesty";;3155
 "That name contains invalid characters";"Dieser Name enthält ungültige Zeichen";"Ce nom contient des caractères non valides";"That name contains invalid characters";"Ese nombre contiene carácteres no permitidos";"Jméno obsahuje nepovolené znaky";"That name contains invalid characters";"Ta nazwa zawiera niedozwolone znaki";"That name contains invalid characters";"Это имя содержит недопустимые символы";"That name contains invalid characters";"That name contains invalid characters";"Meno obsahuje nepovolené znaky";"That name contains invalid characters";3156
-"Could not apply";;;;;;;;;;;;;;3157
-"The path is already mounted";;;;;;;;;;;;;;3158
-"The path could not be mounted";;;;;;;;;;;;;;3159
-"Could not add this record path";;;;;;;;;;;;;;3160
-"is mounted";;;;;;;;;;;;;;3161
-"Please enter path name";;;;;;;;;;;;;;3162
-"Do you want to delete this record path?";;;;;;;;;;;;;;3163
-"is removed";;;;;;;;;;;;;;3164
-"Path Name";;;;;;;;;;;;;;3165
-"Split into 4GB files";;;;;;;;;;;;;;3166
+"Could not apply";;;;;"Nelze nastavit";;;;;;;"Nie je možné nastaviť";;3157
+"The path is already mounted";;;;;"Cesta je připojena";;;;;;;"Cesta je pripojená";;3158
+"The path could not be mounted";;;;;"Cesta se nelze připojit";;;;;;;"Cesta sa nedá pripojiť";;3159
+"Could not add this record path";;;;;"Tato cesta nahrávky nelze přidat";;;;;;;"Táto cesta nahrávky sa nedá pridať";;3160
+"is mounted";;;;;"je připojena";;;;;;;"je pripojená";;3161
+"Please enter path name";;;;;"Prosím přidejte název cesty";;;;;;;"Prosím pridajte názov cesty";;3162
+"Do you want to delete this record path?";;;;;"Chcete smazat tuto cestu nahrávání?";;;;;;;"Chcete zmazať túto cestu nahrávania?";;3163
+"is removed";;;;;"je smazána";;;;;;;"je zmazaná";;3164
+"Path Name";;;;;"Název cesty";;;;;;;"Názov cesty";;3165
+"Split into 4GB files";;;;;"Rozdělit po 4GB souborech";;;;;;;"Rozdeliť po 4GB súboroch";;3166
 "Apply";"Anwenden";"Appliquer";"Applica";"Aplicar";"Aplikovat";"Apply";"Zastosuj";"Apply";"Применить";"Apply";"Apply";"Aplikovať";"Застосувати";3167
-"Fail";;;;;;;;;;;;;;3168
+"Fail";;;;;"Selhat";;;;;;;"Zlyhať";;3168
 "Edit Timer";"Timer bearbeiten";"Editer le minuteur";"Edita Timer";"Editar temporizador";"Upravit časovač";"Edit Timer";"Edytuj timer";"Edit Timer";"Редактировать Таймер";"Edit Timer";"Edit Timer";"Upraviť časovač";"Редагувати Таймер";3169
 "Record";"Aufnehmen";;;;"Nahrát ";;"Nagrywanie";;;;;"Nahrať";;3170
 "Timer Mode";"Timer Modus";;;;"Mód časovače";;"Tryb timera";;;;;"Mód časovača";;3171
@@ -712,8 +712,8 @@
 "SID";;;;;"SID";;"SID";;;;;"SID";;3190
 "STRENGTH";;;;;"SILA";;"SIŁA SYGNAŁU";;;;;"SILA";;3191
 "QUALITY";;;;;"KVALITA";;"JAKOŚĆ";;;;;"KVALITA";;3192
-"VIDEO RESOLUTION";;;;;;;;;;;;;;3193
-"AUDIO";;;;;;;;;;;;;;3194
+"VIDEO RESOLUTION";;;;;"ROZLIŠENÍ VIDEA";;;;;;;"ROZLÍŠENIE VIDEA";;3193
+"AUDIO";;;;;"AUDIO";;;;;;;"AUDIO";;3194
 "XBMC Addons and Userdata";"XBMC Addons und Benutzerdaten";;;;"XBMC doplňky a uživatelská data ";;"Dodatki XBMC i dane użytkownika";;;;;"XBMC doplnky a užívateľské dáta";;3195
 "STB Configuration";"STB Konfiguration";;;;"Nastavení boxu ";;"Ustawienia odbiornika";;;;;"Nastavenie boxu";;3196
 "Select Data To Be Backup ( Optional )";"Wählen Sie die Daten aus für ein Backup (optional)";;;;"Vybrat data do zálohy (volitelné)";;"Wybierz dane przeznaczone do wykonania kopii zapasowej";;;;;"Vybrať dáta do zálohy (voliteľné)";;3197
@@ -990,22 +990,22 @@
 "Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Тюнер 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";3468
 "Select a tuner you want to search";"Tuner für Suchlauf wählen";"Sélectionnez le tuner que vous souhaitez pour la recherche";"Select a tuner you want to search";"Seleccionar un tuner para realizar la busqueda";"Vyberte tuner, který chcete prohledat";"Select a tuner you want to search";"Wybierz tuner do wyszukania";"Select a tuner you want to search";"Выберите тюнер, который необходимо найти";"Select a tuner you want to search";"Select a tuner you want to search";"Vyberte tuner, ktorý chcete prehľadať";"Select a tuner you want to search";3469
 "Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Тюнер";"Tuner";"Tuner";"Tuner";"Tuner";3470
-"Display user presentation of service numbers in a familiar form or sequentially";;;;;;;"Wyświetl numery usług w znanej postaci, lub sekwencyjnie";;;;;;;3471
-"Logical Channel Numbering";;;;;;;"Logiczne sortowanie kanałów (LCN)";;;;;;;3472
+"Display user presentation of service numbers in a familiar form or sequentially";;;;;"Zobrazit uživatelskou prezentaci čísel služeb v obvyklé formě nebo sekvenčně";;"Wyświetl numery usług w znanej postaci, lub sekwencyjnie";;;;;"Zobraziť užívateľskú prezentáciu čísel služieb v obvyklej forme alebo sekvenčne";;3471
+"Logical Channel Numbering";;;;;"Logické číslování kanálů";;"Logiczne sortowanie kanałów (LCN)";;;;;"Logické číslovanie kanálov";;3472
 "Start Search";"Suchlauf Starten";"Commencer la recherche";"Start Search";"Iniciar busqueda";"Spustit vyhledávání";"Start Search";"Start wyszukiwania";"Start Search";"Начать Поиск";"Start Search";"Start Search";"Spustiť vyhľadávanie";"Почати Пошук";3473
-"Experimental";;;;;;;"Ustawienia eksperymentalne";;;;;;;3474
-"You can customise the appearance of PRISMCUBE RUBY";;;;;;;"Dostosuj wygląd PRISMCUBE RUBY";;;;;;;3475
-"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;;;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;;;3476
-"Advanced";;;;;;;"Zaawansowane";;;;;;;3477
-"Receive information from the RSS server as soon as it is updated";;;;;;;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;;;3478
-"Allows you to display clock on the top middle of live screen";;;;;;;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;;;3479
-"Allows you to display clock on front panel display instead of channel name and menu";;;;;;;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;;;3480
-"Allows you to display next EPG notification on live screen";;;;;;;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;;;3481
-"Live Streaming (restart required)";;;;;;;"Streaming kanałów (wymagany restart)";;;;;;;3482
-"Watch live stream of TV channels from PC or mobile devices";;;;;;;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;;;3483
-"Open web interface";;;;;;;"Open web interface";;;;;;;3484
-"Web Interface (restart required)";;;;;;;"Web Interface (wymagany restart)";;;;;;;3485
-"Allows you to playback 1080 24p video without having to switch the video output manually";;;;;;;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;;;3486
+"Experimental";;;;;"Experimentálne ";;"Ustawienia eksperymentalne";;;;;"Experimentálne ";;3474
+"You can customise the appearance of PRISMCUBE RUBY";;;;;"Můžete přizpůsobit vzhled PRISMCUBE RUBY ";;"Dostosuj wygląd PRISMCUBE RUBY";;;;;"Môžete prispôsobiť vzhľad PRISMCUBE RUBY ";;3475
+"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;"UPOZORNĚNÍ : Použitím experimentálních funkcí mohou vzniknout problémy, které mohou mít vliv na stabilitu systému ";;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;"UPOZORNENIE : Použitím experimentálnych funkcií môžu vzniknúť problémy, ktoré môžu mať vplyv na stabilitu systému ";;3476
+"Advanced";;;;;"Rozšířené";;"Zaawansowane";;;;;"Rozšírené";;3477
+"Receive information from the RSS server as soon as it is updated";;;;;"Přijímejte informace z RSS serveru , ihned po jeho aktualizací";;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;"Prijímajte informácie z RSS servera, ihneď po jeho aktualizácií";;3478
+"Allows you to display clock on the top middle of live screen";;;;;"Umožní zobrazit hodiny ve středu horní části obrazovky";;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;"Umožní zobraziť hodiny v strede hornej časti obrazovky";;3479
+"Allows you to display clock on front panel display instead of channel name and menu";;;;;"Umožní zobrazit hodiny na předním panelu namísto názvu kanálu a menu";;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;"Umožní zobraziť hodiny na prednom panely namiesto názvu kanálu a menu";;3480
+"Allows you to display next EPG notification on live screen";;;;;"Umožní zobrazit následující EPG událost zobrazením Infolišty";;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;"Umožní zobraziť nasledujúcu EPG udalosť zobrazením infolišty ";;3481
+"Live Streaming (restart required)";;;;;"Živé streamování ( potřebný restart )";;"Streaming kanałów (wymagany restart)";;;;;"Živé streamovanie ( potrebný reštart )";;3482
+"Watch live stream of TV channels from PC or mobile devices";;;;;"Sledujte živé vysílání TV kanálů v PC nebo mobilních zařízeních";;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;"Sledujte živé vysielanie TV kanálov v PC alebo mobilných zariadeniach";;3483
+"Open web interface";;;;;"Otevřít webové rozhraní";;"Open web interface";;;;;"Otvoriť webové rozhranie";;3484
+"Web Interface (restart required)";;;;;"Webové rozhraní ( potřebný restart )";;"Web Interface (wymagany restart)";;;;;"Webové rozhranie ( potrebný reštart )";;3485
+"Allows you to playback 1080 24p video without having to switch the video output manually";;;;;"Umožní přehrávat 1080 24p videa bez potřeby přepínat video výstup manuálně";;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;"Umožní prehrávať 1080 24p videá bez potreby prepínať video výstup manuálne";;3486
 "Tuner %d Config : %s";"Tuner %d Konfig : %s";"Configuration %d Tuner : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Konfiguracja tunera %d : %s";"Tuner %d Config : %s";"Тюнер %d Конфигурация : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Тюнер %d Конфігурація : %s";3487
 "You can only have 4 satellites for DiSEqC 1.0";"Sie können nur 4 Satellites bei DiSEqC 1.0 einstellen";"Vous ne pouvez configurer que 4 satellites pour le DiSEqC 1.0";"Si può avere solo 4 satelliti per DiSEqC 1.0";"Tu solo puedes tener 4 satelites para DiSEqC 1.0";"Můžete zvolit maximálně 4 satelity při volbě DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Dla przełącznika DiSEqC 1.0 można skonfigurować do 4 satelitów";"You can only have 4 satellites for DiSEqC 1.0";"Доступно лишь 4 спутника для DISEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Môžete zvoliť maximálne 4 satelity pri voľbe DiSEqC 1.0";"Доступно лише 4 супутники для DISEqC 1.0";3488
 "You can only have 1 satellite for Simple LNB";"Sie können nur 1 Satellite für Einfaches LNB einstellen";"Vous ne pouvez configurer qu'un satellite pour le LNB Simple";"Si può avere solo 1 satellite per semplice LNB";"Tu solo puedes tener 1 satelite para LNB Simple";"Můžete zvolit maximálně jeden satelit pro jednoduché LNB";"You can only have 1 satellite for Simple LNB";"Pojedynczy konwerter może odbierać sygnał tylko z jednego satelity";"You can only have 1 satellite for Simple LNB";"Доступен лишь один спутник для режима Один Конвертор LNB";"You can only have 1 satellite for Simple LNB";"You can only have 1 satellite for Simple LNB";"Môžete zvoliť maximálne jeden satelit pre jednoduché LNB";"Доступний лише один супутник для режиму Один Конвертор LNB";3489
@@ -1052,9 +1052,9 @@
 "Thumbnail";"Thumbnail";"Vignette";"Thumbnail";"Miniatura";"Náhled";"Thumbnail";"Miniatury";"Thumbnail";"Thumbnail";"Thumbnail";"Thumbnail";"Náhľad";"Thumbnail";3530
 "Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Sfera";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";"Poster_wrap";3531
 "Fanart";"Lüfterart";"Fanart";"Fanart";"Fanart";"Fanart";"Fanart";"Ściana";"Fanart";"Fanart";"Fanart";"Fanart";"Fanart";"Fanart";3532
-"Could not playback";;;;;;;;;;;;;;3533
-"Please check network connection";;;;;;;;;;;;;;3534
-"Refresh record path";;;;;;;;;;;;;;3535
+"Could not playback";;;;;"Nelze přehrát po síti";;;;;;;"Nedá sa prehrať po sieti";;3533
+"Please check network connection";;;;;"Zkontrolujte prosím síťové připojení";;;;;;;"Skontrolujte prosím sieťové pripojenie";;3534
+"Refresh record path";;;;;"Obnovit cestu nahrávání";;;;;;;"Obnoviť cestu nahrávania";;3535
 "Play from beginning";"Vom Anfang abspielen";"Jouer depuis le début";"Giocare dall'inizio";"Reproducir desde el principio";"Hrát od začátku";"Play from beginning";"Odtwarzaj od początku";"Play from beginning";"Воспроизвести сначала";"Play from beginning";"Play from beginning";"Hrať od začiatku";"Відтворити спочатку";3536
 "Are you sure you want to delete this file?";"Wollen Sie diese Datei wirklich löschen?";"Etes-vous sûr de vouloir supprimer ce fichier?";"Sei sicuro di voler cancellare questo file?";"Realmente quieres borrar este archivo?";"Opravdu chcete odstranit tento soubor?";"Are you sure you want to delete this file?";"Czy na pewno chcesz usunąć ten plik?";"Are you sure you want to delete this file?";"Уверены что хотите удалить этот файл?";"Are you sure you want to delete this file?";"Are you sure you want to delete this file?";"Naozaj chcete odstrániť tento súbor?";"Впевнені що хочете видалити цей файл?";3537
 "Delete File";"Datei löschen";"Supprimer un fichier";"Elimina File";"Borrar archivo";"Odstranit soubor";"Delete File";"Usuń plik";"Delete File";"Удалить Файл";"Delete File";"Delete File";"Odstrániť súbor";"Видалити Файл";3538
@@ -1104,7 +1104,7 @@
 "Everything on your hard drive will be erased";"Alle Daten auf Ihrer Festplatte werden gelöscht";"La totalité de votre disque dur va être supprimée";"Il disco rigido sarà cancellato";"Todo en su disco duro será borrado";"Vše na pevném disku bude vymazáno";"Everything on your hard drive will be erased";"Cała zawartość dysku twardego zostanie usunięta";"Everything on your hard drive will be erased";"Все данные на жестком диске будут удалены";"Everything on your hard drive will be erased";"Everything on your hard drive will be erased";"Všetko na pevnom disku bude vymazané";"Всі дані на жорсткому диску будуть видалені";3582
 "Format your hard disk drive?";"Soll ihre Festplatte formatiert werden?";"Formater votre disque dur?";"Formattare il disco rigido?";"Dar formato a la unidad de disco duro?";"Formátovat pevný disk?";"Format your hard disk drive?";"Czy formatować dysk twardy?";"Format your hard disk drive?";"Форматировать диск?";"Format your hard disk drive?";"Format your hard disk drive?";"Formátovať pevný disk?";"Форматувати диск?";3583
 "Could not find a hard drive";"Festplatte kann nicht gefunden werden";"Disque dur non trouvé";"Impossibile trovare un disco rigido";"No se pudo encontrar un disco duro";"Nepodařilo se najít pevný disk";"Could not find a hard drive";"Nie odnaleziono dysku twardego";"Could not find a hard drive";"Диск недоступен";"Could not find a hard drive";"Could not find a hard drive";"Nepodarilo sa nájsť pevný disk";"Диск недоступний";3584
-"Refresh Record Path";;;;;;;;;;;;;;3585
+"Refresh Record Path";;;;;"Obnovit cestu nahrávání ";;;;;;;"Obnoviť cestu nahrávania ";;3585
 "Select the language for the subtitle to be in";"Wählen Sie die Sprache für die Untertitel aus";"Choisissez le langage des sous-titres";"Selezionare lingua sottotitoli";"Seleccione el idioma de los subtítulos para estar en";"Vyberte jazyk titulků v";"Select the language for the subtitle to be in";"Wybierz domyślny język dla napisów ekranowych";"Select the language for the subtitle to be in";"Задать требуемый язык субтитров";"Select the language for the subtitle to be in";"Select the language for the subtitle to be in";"Vyberte jazyk titulkov v";"Задати потрібну мову субтитрів";3586
 "Select the language for the secondary subtitle to be in";"Wählen Sie die zweite Sprache für die Untertitel aus";"Choisissez le langage des sous-titres secondaires";"Selezionare la seconda lingua sottotitoli";"Seleccione el idioma para el subtítulo secundaria a estar en";"Vyberte jazyk pro sekundární titulky v";"Select the language for the secondary subtitle to be in";"Wybierz dodatkowy język dla napisów ekranowych";"Select the language for the secondary subtitle to be in";"Задать второй язык субтитров";"Select the language for the secondary subtitle to be in";"Select the language for the secondary subtitle to be in";"Vyberte jazyk pre sekundárne titulky v";"Задати другу мову субтитрів";3587
 "Set the hearing impaired function";"Wählen Sie die Sprache für Hörbehinderte aus";"Activer la fonction pour les malentendants";"Impostare la funzione udenti";"Ajuste la función de personas con discapacidad auditiva";"Nastavit funkci sluchově postižené";"Set the hearing impaired function";"Uruchom funkcję napisów dla niedosłyszących";"Set the hearing impaired function";"Для людей с нарушением слуха";"Set the hearing impaired function";"Set the hearing impaired function";"Nastaviť funkciu sluchovo postihnutých";"Для людей з вадами слуху";3588
@@ -1121,10 +1121,10 @@
 "Select recording duration for a channel that has no EPG info";"Wählen Sie die Aufnahmedauer für einen Sender, die keine EPG Informationen hat";"Choisir la durée d'enregistremnt pour une chaîne qui n'a pas d'information EPG";"Selezionare la durata della registrazione di un canale che non ha informazioni EPG";"Seleccione duración de la grabación de un canal que no tiene la información de EPG";"Zvolte délku záznamu pro program, který nemá žádné EPG informace";"Select recording duration for a channel that has no EPG info";"Wybierz domyślną długość nagrywania dla kanału, który nie posiada EPG";"Select recording duration for a channel that has no EPG info";"Задать длительность записи по умолчанию для каналов без ТВ Гида";"Select recording duration for a channel that has no EPG info";"Select recording duration for a channel that has no EPG info";"Zvoľte dĺžku záznamu pre program, ktorý nemá žiadne EPG informácie";"Задати тривалість запису за замовчуванням для каналів без ТВ Гіда";3599
 "Set the pre-recording time for a EPG channel";"Stellen Sie die Vorlauf-Aufnahmezeit für einen EPG-Sender ein";"Définir le temps de pré-enregistrement pour une chaîne EPG";"Impostare il tempo di pre-registrazione di un canale EPG";"Ajuste el tiempo de pre-grabación de un canal de EPG";"Nastavení času před - nahráváním EPG kanálů";"Set the pre-recording time for a EPG channel";"Wybierz czas, który ma zostać zapisany dodatkowo przed planowanym zdarzeniem";"Set the pre-recording time for a EPG channel";"Установка времени отступа перед таймером записи по ТВ Гиду";"Set the pre-recording time for a EPG channel";"Set the pre-recording time for a EPG channel";"Nastavenie času pred-nahrávaním EPG kanálov";"Встановлення часу відступу перед таймером запису по ТВ Гідові";3600
 "Set the post-recording time for a EPG channel";"Stellen Sie die Nachlauf-Aufnahmezeit für einen EPG-Sender ein";"Définir le temps de pré-enregistrement pour une chaîne EPG";"Impostare il tempo di post-registrazione per un canale EPG";"Ajuste el tiempo de post-grabación de un canal de EPG";"Nastavení času po skončení nahrávání EPG kanálů";"Set the post-recording time for a EPG channel";"Wybierz czas, który ma zostać zapisany dodatkowo po planowanym zdarzeniu";"Set the post-recording time for a EPG channel";"Установка времени отступа после таймера записи по ТВ Гиду";"Set the post-recording time for a EPG channel";"Set the post-recording time for a EPG channel";"Nastavenie času po skončení nahrávania EPG kanálov";"Встановлення часу відступу після таймера запису по ТВ Гідові";3601
-"Add or remove a record storage location";;;;;;;;;;;;;;3602
-"Current Record Path";;;;;;;;;;;;;;3603
-"Select a directory where the recorded files will be stored";;;;;;;;;;;;;;3604
-"Remount your record storage directory";;;;;;;;;;;;;;3605
+"Add or remove a record storage location";;;;;"Přidat nebo smazat umístění nahrávky na úložišti";;;;;;;"Pridať alebo zmazať umiestnenie nahrávky na úložisku";;3602
+"Current Record Path";;;;;"Aktuální cesta nahrávání";;;;;;;"Aktuálna cesta nahrávania";;3603
+"Select a directory where the recorded files will be stored";;;;;"Vybrat adresář, kde budou uloženy nahrávky";;;;;;;"Vybrať adresár, kde budú uložené nahrávky";;3604
+"Remount your record storage directory";;;;;"Znovu připojit adresář nahrávky na úložišti";;;;;;;"Znovu pripojiť adresár nahrávky na úložisku";;3605
 "Set the Audio HDMI format";"Audio HDMI Format einstellen";"Activer le format audio HDMI";"Impostare il formato audio HDMI";"Ajuste el formato de audio HDMI";"Nastavte formát Audio HDMI";"Set the Audio HDMI format";"Wybierz format dźwięku przesyłanego przez złącze HDMI";"Set the Audio HDMI format";"Задать формат звука на выходе HDMI";"Set the Audio HDMI format";"Set the Audio HDMI format";"Nastavte formát Audio HDMI";"Задати формат звуку на виході HDMI";3606
 "Select a delay time for audio";"Wählen sie die Verzögerungsrate für Audio";"Choisir un temps de délai pour audio";"Selezionare un tempo di ritardo per l'audio";"Seleccione un tiempo de retardo para el audio";"Vyberte čas zpoždění pro audio";"Select a delay time for audio";"Wybierz przesunięcie czasowe dźwięku względem obrazu, jeśli widoczne są problemy z synchronizacją";"Select a delay time for audio";"Задать время задержки звука";"Select a delay time for audio";"Select a delay time for audio";"Vyberte čas oneskorenia pre audio";"Задати час затримки звуку";3607
 "Set RGB or YUV for HDMI color space";"Stellen Sie RGB oder YUV ein für den HDMI-Farbraum";"Choisir RGB ou YUV pour l'espace couleur HDMI";"Impostare RGB o YUV ";"Seleccione RGB o YUV para HDMI color space";"Nastavit RGB nebo YUV pro barevný prostor HDMI";"Set RGB or YUV for HDMI color space";"Wybierz przestrzeń kolorów RGB lub YUV dla obrazu HDMI";"Set RGB or YUV for HDMI color space";"Выбор цветовой схемы HDMI между RGB и YUV";"Set RGB or YUV for HDMI color space";"Set RGB or YUV for HDMI color space";"Nastaviť RGB alebo YUV pre priestor farieb HDMI";"Вибір кольорової схеми HDMI між RGB і YUV";3608
@@ -1350,7 +1350,7 @@
 "Backup Data Copy";"Sicherungsdaten kopieren";;;;"Kopírování zálohy";;"Kopiowanie danych";;;;;"Kopírovanie zálohy";;3828
 "Copying big data";"Kopiere große Daten";;;;"Kopírování velkých dat ";;"Kopiowanie dużej ilosci danych";;;;;"Kopírovanie veľkých dát";;3829
 "This will take a while";"Dies wird eine Weile dauern";;;;"Bude to chvíli trvat";;"Może to zająć trochę czasu";;;;;"Bude to chvíľu trvať";;3830
-"Not support";;;;;;;;;;;;;;3831
+"Not support";;;;;"Nepodporovaný";;;;;;;"Nepodporovaný";;3831
 "Timeshift not ready%s Please try again";"Timeshift nicht fertig%s Bitte erneut versuchen";"Timeshift pas encore prêt%s Veuillez réessayer";"Timeshift non pronto%s prova ancora";"Timeshift no disponible%s Inténtalo de nuevo";"Timeshift není připraven%s Prosím zkuste to znovu";"Timeshift not ready%s Please try again";"Timeshift nie jest gotowy%s Spróbuj ponownie";"Timeshift not ready%s Please try again";"Тайм-Шифт не готов%s Попробуйте еще раз";"Timeshift not ready%s Please try again";"Timeshift not ready%s Please try again";"Timeshift nie je pripravený%s Prosím skúste to znova";"Тайм-шифт не готовий%s Спробуйте ще раз";3832
 "Add a bookmark";"Eine Markierung hinzufügen";"Ajouter signet";"Aggiungi segnalibro";"Añadir un marcador";"Přidat záložku";"Add a bookmark";"Dodaj zakładkę";"Add a bookmark";"Добавить метку";"Add a bookmark";"Add a bookmark";"Pridať záložku";"Додати мітку";3833
 "Start auto-chaptering";"Kapitel-Automatik starten";"Démarrer le chapitrage automatique";"Avvio automatico Chaptering";"Inicio automático de capítulos";"Spustit Automatické - oddělování";"Start auto-chaptering";"Uruchom automatyczny podział na rozdziały";"Start auto-chaptering";"Разбить на сюжеты автоматически";"Start auto-chaptering";"Start auto-chaptering";"Spustiť Automatické-oddeľovanie";"Розбити на сюжети автоматично";3834
