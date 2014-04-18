@@ -574,10 +574,10 @@
 	<string id="3051">Žiadna dostupná skupina</string>
 	<string id="3052">Skupinu nie je možné zmeniť</string>
 	<string id="3053">Žiadne kanály nie sú k dispozícii</string>
-	<string id="3054">Zmena skupiny zlyhala </string>
+	<string id="3054">Zmena skupiny zlyhala</string>
 	<string id="3055">Váš zoznam kanálov je prázdny</string>
 	<string id="3056">Pre spustenie PIP prepnite prosim z radio modu do TV modu</string>
-	<string id="3057">Žiadny dostupný kanál </string>
+	<string id="3057">Žiadny dostupný kanál</string>
 	<string id="3058">Kanál nemožno naladiť do PIP</string>
 	<string id="3059">Žiadny kanál</string>
 	<string id="3060">Pohyb PIP okna</string>
@@ -604,7 +604,7 @@
 	<string id="3081">min(s)</string>
 	<string id="3082">Z EPG</string>
 	<string id="3083">Dĺžka Kopírovania Timeshift</string>
-	<string id="3084">Cesta nahrávky </string>
+	<string id="3084">Cesta nahrávky</string>
 	<string id="3085">Zmena Trvania</string>
 	<string id="3086">Začiatok</string>
 	<string id="3087">Zadajte čas ukončenia</string>
@@ -688,7 +688,7 @@
 	<string id="3165">Názov cesty</string>
 	<string id="3166">Rozdeliť po 4GB súboroch</string>
 	<string id="3167">Aplikovať</string>
-	<string id="3168">Zlyhať </string>
+	<string id="3168">Zlyhať</string>
 	<string id="3169">Upraviť časovač</string>
 	<string id="3170">Nahrať</string>
 	<string id="3171">Mód časovača</string>
@@ -913,7 +913,7 @@
 	<string id="3390">Nemožno zmazať transpondér</string>
 	<string id="3391">Inštalácia a spustenie XBMC add-ons%s nemôže riadne fungovať bez interného HDD</string>
 	<string id="3392">Žiadne kanály niesú k dispozícii pre zvolený režim</string>
-	<string id="3393">HbbTV </string>
+	<string id="3393">HbbTV</string>
 	<string id="3394">Subkanál </string>
 	<string id="3395">Dosiahli ste maximálny počet%s povolených nahrávok</string>
 	<string id="3396">Triedenie</string>

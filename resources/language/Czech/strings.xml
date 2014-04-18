@@ -574,10 +574,10 @@
 	<string id="3051">Žádná dostupná skupina</string>
 	<string id="3052">Skupinu nelze změnit</string>
 	<string id="3053">Žádné kanály nejsou k dispozici</string>
-	<string id="3054">Změna skupiny selhala </string>
+	<string id="3054">Změna skupiny selhala</string>
 	<string id="3055">Váš seznam kanálů je prázdný</string>
 	<string id="3056">Pro spuštění PIP přepněte prosim z radio modu do TV modu</string>
-	<string id="3057">Žádný dostupný kanál </string>
+	<string id="3057">Žádný dostupný kanál</string>
 	<string id="3058">Kanál nelze naladit do PIP</string>
 	<string id="3059">Žádný kanál</string>
 	<string id="3060">Pohyb PIP okna</string>
@@ -604,7 +604,7 @@
 	<string id="3081">min(s)</string>
 	<string id="3082">Z EPG</string>
 	<string id="3083">Délka Kopírování Timeshift</string>
-	<string id="3084">Cesta nahrávky </string>
+	<string id="3084">Cesta nahrávky</string>
 	<string id="3085">Změna Trvání</string>
 	<string id="3086">Začátek</string>
 	<string id="3087">Zadejte čas ukončení</string>
@@ -688,7 +688,7 @@
 	<string id="3165">Název cesty</string>
 	<string id="3166">Rozdělit po 4GB souborech</string>
 	<string id="3167">Aplikovat</string>
-	<string id="3168">Selhat </string>
+	<string id="3168">Selhat</string>
 	<string id="3169">Upravit časovač</string>
 	<string id="3170">Nahrát </string>
 	<string id="3171">Mód časovače</string>
@@ -913,7 +913,7 @@
 	<string id="3390">Nelze smazat transpondér</string>
 	<string id="3391">Instalace a spuštění XBMC add-ons%s nemůže řádně fungovat bez interního HDD</string>
 	<string id="3392">Žádné kanály nejsou k dispozici pro zvolený režim</string>
-	<string id="3393">HbbTV </string>
+	<string id="3393">HbbTV</string>
 	<string id="3394">Subkanál </string>
 	<string id="3395">Dosáhli jste maximální počet%s povolených nahrávek</string>
 	<string id="3396">Třídění</string>
