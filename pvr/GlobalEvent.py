@@ -400,11 +400,8 @@ class GlobalEvent( object ) :
 			self.mDataCache.Subtitle_Show( )
 
 		else :
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 0 )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
 			dialog.doModal( )
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 1 )
 
 		self.mIsDialogOpend = False
 
