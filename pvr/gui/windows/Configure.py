@@ -710,9 +710,9 @@ class Configure( SettingWindow ) :
 					lblType = '%s'% urlType.upper()
 
 				if not netVolume.mOnline :
-					lblStatus = '-%s'% MR_LANG( 'unconnect' )
+					lblStatus = '-%s'% MR_LANG( 'Disconnected' )
 				if netVolume.mReadOnly :
-					lblStatus = '-%s'% MR_LANG( 'read only' )
+					lblStatus = '-%s'% MR_LANG( 'Read only' )
 
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
 				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
@@ -741,7 +741,7 @@ class Configure( SettingWindow ) :
 	def ShowNetworkVolume( self ) :
 		trackList = self.GetVolumeContext( )
 		if not trackList or len( trackList ) < 1 :
-			LOG_TRACE( '[ManaulTimer] show fail, mount list is None' )
+			LOG_TRACE( '[ManaulTimer] Nothing in the mount list' )
 			return
 
 		selectedIdx = 0
@@ -780,9 +780,9 @@ class Configure( SettingWindow ) :
 		elif selectAction < len( self.mNetVolumeList ) :
 			netVolume = self.mNetVolumeList[selectAction]
 			if not netVolume.mOnline or netVolume.mReadOnly :
-				lblLine = MR_LANG( 'Can not select record path reason by read only' )
+				lblLine = MR_LANG( 'Read only folder' )
 				if not netVolume.mOnline :
-					lblLine = MR_LANG( 'Can not select record path reason by not mount' )
+					lblLine = MR_LANG( 'Inaccessible folder' )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
