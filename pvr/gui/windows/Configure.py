@@ -564,7 +564,7 @@ class Configure( SettingWindow ) :
 				selectEnable = False
 				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 					selectEnable = True
-					if defVolume :
+					if defVolume and defVolume.mOnline and ( not defVolume.mReadOnly ) :
 						idxCount = 0
 						for netVolume in self.mNetVolumeList :
 							if netVolume.mIndexID == defVolume.mIndexID :
@@ -573,6 +573,10 @@ class Configure( SettingWindow ) :
 								break
 
 							idxCount += 1
+
+					else :
+						ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 0 )
+						LOG_TRACE( '[Configure] changed default HDD, default volume is Not online or readonly' )
 
 				# 1. change defvolume from manager(edited,deleted)
 				if self.mSelectVolume != defVolumeIdx :
@@ -700,12 +704,20 @@ class Configure( SettingWindow ) :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
 				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblStatus = ''
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
+				if not netVolume.mOnline :
+					lblStatus = '-%s'% MR_LANG( 'unconnect' )
+				if netVolume.mReadOnly :
+					lblStatus = '-%s'% MR_LANG( 'read only' )
+
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
-				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
+				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
+				if lblStatus :
+					lblPath = '[COLOR grey3]%s[/COLOR]'% lblPath
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -754,7 +766,6 @@ class Configure( SettingWindow ) :
 			LOG_TRACE( '[Configure] pass, select same' )
 			return
 
-		self.mSelectVolume = selectAction
 
 		defVolume = None
 		defProperty = 0 #E_DEFAULT_PATH_INTERNAL_HDD
@@ -767,12 +778,24 @@ class Configure( SettingWindow ) :
 						LOG_TRACE( '[Configure] clear default volume[%s]'% netVolume.mMountPath )
 						break
 		elif selectAction < len( self.mNetVolumeList ) :
-			defVolume = deepcopy( self.mNetVolumeList[selectAction] )
+			netVolume = self.mNetVolumeList[selectAction]
+			if not netVolume.mOnline or netVolume.mReadOnly :
+				lblLine = MR_LANG( 'Can not select record path reason by read only' )
+				if not netVolume.mOnline :
+					lblLine = MR_LANG( 'Can not select record path reason by not mount' )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+				dialog.doModal( )
+				return
+
+			defVolume = deepcopy( netVolume )
 			defVolume.mIsDefaultSet = 1
 			defProperty = 1 #E_DEFAULT_PATH_NETWORK_VOLUME
 			self.mDataCache.Record_SetDefaultVolume( defVolume )
 			LOG_TRACE( '[Configure] changed default volume[%s]'% defVolume.mMountPath )
 
+		self.mSelectVolume = selectAction
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
 
@@ -938,10 +961,14 @@ class Configure( SettingWindow ) :
 					for netVolume in self.mNetVolumeList :
 						LOG_TRACE( '[Configure] idxCount[%s] volume[%s] isDefault[%s]'% ( idxCount, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 						if netVolume.mIsDefaultSet :
-							defaultPath = os.path.basename( netVolume.mMountPath )
-							defVolume = netVolume
-							self.mSelectVolume = idxCount
-							break
+							if not netVolume.mOnline or netVolume.mReadOnly :
+								ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 0 )
+								LOG_TRACE( '[Configure] changed default HDD, default volume is Not online or readonly' )
+							else :
+								defaultPath = os.path.basename( netVolume.mMountPath )
+								defVolume = netVolume
+								self.mSelectVolume = idxCount
+								break
 						idxCount += 1
 
 				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )

@@ -216,11 +216,19 @@ class DialogStartRecord( SettingDialog ) :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
 				#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblStatus = ''
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
-				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
+				if not netVolume.mOnline :
+					lblStatus = '-%s'% MR_LANG( 'unconnect' )
+				if netVolume.mReadOnly :
+					lblStatus = '-%s'% MR_LANG( 'read only' )
+
+				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
+				if lblStatus :
+					lblPath = '[COLOR grey3]%s[/COLOR]'% lblPath
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -268,12 +276,23 @@ class DialogStartRecord( SettingDialog ) :
 		if selectAction < 0 :
 			return
 
-		self.mSelectIdx = selectAction
 		if selectAction == 99 :
 			self.mNetVolume = None
 		elif selectAction < len( self.mNetVolumeList ) :
-			self.mNetVolume = deepcopy( self.mNetVolumeList[selectAction] )
+			netVolume = self.mNetVolumeList[selectAction]
+			if not netVolume.mOnline or netVolume.mReadOnly :
+				lblLine = MR_LANG( 'Can not select record path reason by read only' )
+				if not netVolume.mOnline :
+					lblLine = MR_LANG( 'Can not select record path reason by not mount' )
 
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+				dialog.doModal( )
+				return
+
+			self.mNetVolume = deepcopy( netVolume )
+
+		self.mSelectIdx = selectAction
 		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
 		self.SetControlLabel2String( E_DialogInput05, lblSelect )
 		self.setProperty( 'NetVolumeConnect', lblOnline )
