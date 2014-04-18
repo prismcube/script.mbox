@@ -1455,4 +1455,8 @@
 	<string id="3932">South</string>
 	<string id="3933">Finish</string>
 	<string id="3934">Go to the channel search setup page</string>
+	<string id="3935">Disconnected</string>
+	<string id="3936">Read only</string>
+	<string id="3937">Read only folder</string>
+	<string id="3938">Inaccessible folder</string>
 </strings>
