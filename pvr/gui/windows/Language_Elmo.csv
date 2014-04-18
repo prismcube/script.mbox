@@ -538,7 +538,7 @@
 "MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIA";"MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIA";"MULTIMEDIA";"MULTIMEDIA";"MULTIMEDIA";"МУЛЬТИМЕДИА";"MULTIMEDIA";"MULTIMEDIA";"MULTIMÉDIÁ";"МУЛЬТИМЕДІА";3016
 "UNKNOWN";"UNBEKANNT";"INCONNU";"SCONOSCIUTO";"DESCONOCIDO";"NEZNÁMÝ";"UNKNOWN";"NIEZNANE";"UNKNOWN";"НЕИЗВЕСТНО";"UNKNOWN";"UNKNOWN";"NEZNÁMY";"НЕВІДОМО";3017
 "Unknown";"Unbekannt";"Inconnu";"Sconosciuto";"Desconocido";"Neznámý";"Onbekend";"Nieznany";"Bilinmiyor";"Неизвестно";"Unknown";"Unknown";"Neznámy";"Невідомо";3018
-"Network volume failure";;;;;"Hlasitost přes síť selhala";;;;;;;"Hlasitosť cez sieť zlyhala ";;3019
+"Network volume failure";;;;;"Hlasitost přes síť selhala";;;;;;;"Hlasitosť cez sieť zlyhala";;3019
 "Try again after connecting network";;;;;"Zkuste to znovu po připojení sítě";;;;;;;"Skúste to znovu po pripojení siete";;3020
 "Try again after stopping playback";"Aufnahmen und Timeshift";"Réessayer à nouveau après avoir arrêté le playback";"Riprovare dopo l'arresto della riproduzione";"Nada";"Zkuste to znovu po zastavení přehrávání";"None";"Spróbuj ponownie po zakończeniu odtwarzania";"None";"Попробовать еще раз после остановки воспроизведения";"Try again after stopping playback";"Try again after stopping playback";"Skúste to znovu po zastavení prehrávania";"Спробувати ще раз після зупинки відтворення";3021
 "Try again after stopping record";;;;;"Zkuste to znovu po skončení nahrávání";;;;;;;"Skúste to znovu po skončení nahrávania";;3022
@@ -1440,3 +1440,7 @@
 "South";"Süd";"Sud";"Sud";"Sur";"Jih";"South";"Południe";"South";"Юг";"South";"South";"Juh";"Південь";3918
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3919
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3920
+"Disconnected";;;;;;;;;;;;;;3921
+"Read only";;;;;;;;;;;;;;3922
+"Read only folder";;;;;;;;;;;;;;3923
+"Inaccessible folder";;;;;;;;;;;;;;3924

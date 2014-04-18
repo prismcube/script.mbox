@@ -539,7 +539,7 @@
 	<string id="3016">MULTIMÉDIÁ</string>
 	<string id="3017">NEZNÁMY</string>
 	<string id="3018">Neznámy</string>
-	<string id="3019">Hlasitosť cez sieť zlyhala </string>
+	<string id="3019">Hlasitosť cez sieť zlyhala</string>
 	<string id="3020">Skúste to znovu po pripojení siete</string>
 	<string id="3021">Skúste to znovu po zastavení prehrávania</string>
 	<string id="3022">Skúste to znovu po skončení nahrávania</string>
@@ -1441,4 +1441,8 @@
 	<string id="3918">Juh</string>
 	<string id="3919">Dokončiť</string>
 	<string id="3920">Prejsť na stránku nastavenia vyhľadávania kanálov</string>
+	<string id="3921"></string>
+	<string id="3922"></string>
+	<string id="3923"></string>
+	<string id="3924"></string>
 </strings>
