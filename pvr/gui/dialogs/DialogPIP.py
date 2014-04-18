@@ -377,7 +377,8 @@ class DialogPIP( BaseDialog ) :
 				LOG_TRACE( '[PIP] ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( '[PIP] EventRecv EOF_END' )
-					#self.mDataCache.Player_Stop( )
+					self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+					self.mDataCache.Player_Stop( )
 					self.mIsOk = Action.ACTION_STOP
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
@@ -612,6 +613,7 @@ class DialogPIP( BaseDialog ) :
 			full = False
 			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
 				mute = True
+				full = True
 
 		else :
 			enable = True
@@ -622,6 +624,7 @@ class DialogPIP( BaseDialog ) :
 				enable = False
 				if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
 					mute = True
+					full = True
 
 			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
 			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
@@ -913,7 +916,38 @@ class DialogPIP( BaseDialog ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				isFail = True
-				LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
+				if self.mDataCache.PIP_SwapWindow( ) :
+					isFail = False
+					# True : main - pip surface, pip - main surface
+					# False: restore normal
+					if self.mDataCache.PIP_GetSwapStatus( ) :
+						lblLabel =  MR_LANG( 'Playback' )
+						if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+							lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+
+						elif status.mMode == ElisEnum.E_MODE_PVR :
+							lblLabel =  MR_LANG( 'Playback' )
+							playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+							if playingRecord :
+								lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+
+						else :
+							lblLabel =  MR_LANG( 'Unknown' )
+
+						self.mCtrlLabelChannel.setLabel( lblLabel )
+						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
+						xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
+						xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
+						LOG_TRACE( '[PIP] switch media' )
+
+					else :
+						self.SetLabelChannel( fakeChannel )
+						self.RestartAsyncTune( fakeChannel )
+						LOG_TRACE( '[PIP] switch pip' )
+
+				LOG_TRACE( '[PIP] switch PIP and media(archive)' )
+				return
+				#LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
 
 			if ( not isFail ) and self.mCurrentMode and \
 			   self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
