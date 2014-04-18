@@ -2322,7 +2322,7 @@ class DataCacheMgr( object ) :
 
 		retVal = 0
 		isFail = False
-		lblLine = MR_LANG( 'Network Volume failure' )
+		lblLine = MR_LANG( 'Network volume failure' )
 		try :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
