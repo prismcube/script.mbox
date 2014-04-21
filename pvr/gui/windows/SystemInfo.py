@@ -465,7 +465,6 @@ class SystemInfo( SettingWindow ) :
 
 	def GetTotalSize( self ) :
 		size = MR_LANG( 'Unknown' )
-		unit = ''
 		device = '/dev/sda'
 		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
 		if sys.version_info < ( 2, 7 ) :

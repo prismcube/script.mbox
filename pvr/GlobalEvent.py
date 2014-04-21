@@ -315,6 +315,36 @@ class GlobalEvent( object ) :
 			elif aEvent.mUpdateType == 1 :
 				self.mDataCache.UpdateChannelByDBUpdate( aEvent.mChannelNo, aEvent.mServiceType )
 
+		#for HBBTV
+		elif E_SUPPROT_HBBTV == True :
+			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )
+			if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStart( aEvent.mUrl )
+
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSetSpeed( 0 )				
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSeek( aEvent.mSeekPosition )
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerStopPlay.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStop(  )
+				
+			elif aEvent.getName() == ElisEventHBBTVReady.getName() :
+				LOG_TRACE( 'HbbTV TEST' )
+				#HBBTV			
+				#This event must be received from global event.
+				if aEvent.mReady == 1 :
+					LOG_TRACE("Now new AIT is ready, HBBTV Browser ready")
+					self.mDataCache.SetHbbTVEnable( True )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowRedButton( )
+
+				else :
+					LOG_TRACE( 'HbbTV Disable Event' )
+					self.mDataCache.SetHbbTVEnable( False )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideRedButton( )	
 
 
 	def StopLoading( self ) :
@@ -370,11 +400,8 @@ class GlobalEvent( object ) :
 			self.mDataCache.Subtitle_Show( )
 
 		else :
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 0 )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
 			dialog.doModal( )
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 1 )
 
 		self.mIsDialogOpend = False
 
@@ -801,14 +828,19 @@ class GlobalEvent( object ) :
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					self.mDataCache.Player_Stop( )
 
-				liveWindow.SetMediaCenter( True )
-				if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
-					xbmc.executebuiltin( 'ActivateWindow(Home)' )
+				if liveWindow.mHbbTVShowing != True :
+					liveWindow.SetMediaCenter( True )
+					if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
+						xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
-				liveWindow.CheckMediaCenter()
+				if liveWindow.mHbbTVShowing == True :
+					#liveWindow.HbbTV_MediaPlayerStop()
+					pass
+				else :
+					liveWindow.CheckMediaCenter()
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')

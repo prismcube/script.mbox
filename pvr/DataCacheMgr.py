@@ -184,6 +184,8 @@ class DataCacheMgr( object ) :
 		self.mSavedResolution					= self.GetResolution( True )
 		self.mIsMediaCenterUi					= False
 
+		self.mHbbTVEnable						= False
+		self.mHbbtvStatus						= False
 		self.mNetVolumeList						= []
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
@@ -282,6 +284,7 @@ class DataCacheMgr( object ) :
 
 		# SetPropertyNetworkAddress
 		self.InitNetwork( )
+		self.SetHbbtvStatus( )
 
 		#init record path
 		if E_SUPPORT_EXTEND_RECORD_PATH :
@@ -1184,6 +1187,9 @@ class DataCacheMgr( object ) :
 
 		if self.mRootWindow :
 			self.mRootWindow.setProperty( 'Signal', 'True' )
+
+		if self.mCurrentChannel and aChannelNumber != self.mCurrentChannel.mNumber :
+			self.SetHbbTVEnable( False )
 
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			if aTemporaryHash :
@@ -2320,7 +2326,7 @@ class DataCacheMgr( object ) :
 
 		retVal = 0
 		isFail = False
-		lblLine = MR_LANG( 'Network Volume failure' )
+		lblLine = MR_LANG( 'Network volume failure' )
 		try :
 			if not CheckNetworkStatus( ) :
 				retVal = -1
@@ -3548,10 +3554,22 @@ class DataCacheMgr( object ) :
 			return self.mSavedResolution
 
 
-	def SetMediaCenterUI( self, aFlag ) :
-		self.mIsMediaCenterUi = aFlag
+	def SetHbbTVEnable( self, aEnable ) :
+		LOG_TRACE( 'SetHbbTVEnable=%s' %aEnable )
+		self.mHbbTVEnable = aEnable
 
 
-	def GetMediaCenterUI( self ) :
-		return self.mIsMediaCenterUi
+	def GetHbbTVEnable( self ) :
+		LOG_TRACE( 'GetHbbTVEnable=%s' %self.mHbbTVEnable )
+		return self.mHbbTVEnable
 
+
+	def SetHbbtvStatus( self ) :
+		if os.path.exists( FILE_NAME_HBB_TV ) :
+			self.mHbbtvStatus = True
+		else :
+			self.mHbbtvStatus = False
+
+
+	def GetHbbtvStatus( self ) :
+		return self.mHbbtvStatus

@@ -29,8 +29,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 					if E_SUPPROT_HBBTV == True :
-						self.mCommander.AppHBBTV_Ready( 0 )
-						#self.mDataCache.Splash_StartAndStop( 0 )
+						#self.mCommander.AppHBBTV_Ready( 1 )						
+						#self.mCommander.AppHBBTV_Ready( 0 )
+						self.mDataCache.Splash_StartAndStop( 0 )
 					self.mInitialized = True
 					self.LoadNoSignalState( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -74,14 +75,22 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 		except Exception, ex :
 			import traceback
-			LOG_ERR( 'Exception root window %s traceback = %s' % ex, traceback.format_exc( ) )
+			LOG_ERR( 'Exception root window %s traceback = %s' % ( ex, traceback.format_exc( ) ) )
 
 
 	def onAction( self, aAction ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
-				return
-			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+			if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+				if aAction.getId( ) != Action.ACTION_PREVIOUS_MENU :
+					LOG_ERR("Do nothing in HBBTV Mode");
+					return
+				else :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
+					return
+			else :
+				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
+					return
+				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
 			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
@@ -96,6 +105,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+			if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+				LOG_ERR("Do nothing in onclick, hbbtv mode is true")
+				return
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )				
 		
  

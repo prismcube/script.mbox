@@ -323,7 +323,11 @@ class SystemUpdate( SettingWindow ) :
 			LOG_TRACE( 'Export Settings to USB' )
 			self.ExportSettingsToUSB( )
 
-		elif groupId == E_Input06 :	
+		elif groupId == E_Input06 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_IMPORT_LOGO )
+			dialog.doModal( )
+
+		elif groupId == E_Input07 :
 			if self.GetStatusFromFirmware( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after completing firmware update' ) )
@@ -1140,7 +1144,8 @@ class SystemUpdate( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Update Channels via Internet' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Import Configuration from USB' ), '', MR_LANG( 'Import configuration data from USB flash memory' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Export Configuration to USB' ), '',  MR_LANG( 'Export existing configuration files to USB flash memory' ) )
-			self.AddInputControl( E_Input06, MR_LANG( 'Backup and Restore System' ), '',  MR_LANG( 'Backup whole system image to USB or restore it from USB' ) )
+			self.AddInputControl( E_Input06, MR_LANG( 'Import Channel Logos' ), '',  MR_LANG( 'Import customized channel icons from USB flash memory or via Internet' ) )
+			self.AddInputControl( E_Input07, MR_LANG( 'Backup and Restore System' ), '',  MR_LANG( 'Backup whole system image to USB or restore it from USB' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -1148,11 +1153,13 @@ class SystemUpdate( SettingWindow ) :
 			self.SetEnableControl( E_Input04, True )
 			self.SetEnableControl( E_Input05, True )
 			self.SetEnableControl( E_Input06, True )
+			self.SetEnableControl( E_Input07, True )
 
 			self.SetVisibleControl( E_Input03, True )
 			self.SetVisibleControl( E_Input04, True )
 			self.SetVisibleControl( E_Input05, True )
 			self.SetVisibleControl( E_Input06, True )
+			self.SetVisibleControl( E_Input07, True )
 
 			self.InitControl( )
 			#self.SetFocusControl( E_Input01 )
@@ -1187,10 +1194,12 @@ class SystemUpdate( SettingWindow ) :
 			self.SetEnableControl( E_Input04, False )
 			self.SetEnableControl( E_Input05, False )
 			self.SetEnableControl( E_Input06, False )
+			self.SetEnableControl( E_Input07, False )
 			self.SetVisibleControl( E_Input03, False )
 			self.SetVisibleControl( E_Input04, False )
 			self.SetVisibleControl( E_Input05, False )
 			self.SetVisibleControl( E_Input06, False )
+			self.SetVisibleControl( E_Input07, False )
 
 			self.InitControl( )
 			self.SetFocusControl( buttonFocus )
@@ -2738,9 +2747,10 @@ class SystemUpdate( SettingWindow ) :
 			if aIsSelectedXBMC :
 				strInit = MR_LANG( 'Initializing process' ) + '...'
 				strReady = MR_LANG( 'Ready to start' ) + '...'
+				percent = 0
 				progressDialog = xbmcgui.DialogProgress( )
 				progressDialog.create( MR_LANG( 'XBMC Data Backup' ), strInit )
-				progressDialog.update( 0, strReady )
+				progressDialog.update( percent, strReady )
 
 				fileCount = GetDirectoryAllFileCount( [ '/mnt/hdd0/program/.xbmc/media', '/mnt/hdd0/program/.xbmc/addons', '/mnt/hdd0/program/.xbmc/sounds', '/mnt/hdd0/program/.xbmc/userdata', '/mnt/hdd0/program/.xbmc/system'] )
 				os.system( 'echo cd /mnt/hdd0/program > /tmp/xbmc_backup.sh' )
@@ -2867,9 +2877,10 @@ class SystemUpdate( SettingWindow ) :
 		try :
 			strInit = MR_LANG( 'Initializing process' ) + '...'
 			strReady = MR_LANG( 'Ready to start' ) + '...'
+			percent = 0
 			progressDialog = xbmcgui.DialogProgress( )
 			progressDialog.create( MR_LANG( 'Backup Data Copy' ), strInit )
-			progressDialog.update( 0, strReady )
+			progressDialog.update( percent, strReady )
 
 			count = 1
 			for path in pathlist :
