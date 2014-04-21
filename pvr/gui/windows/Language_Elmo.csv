@@ -1458,3 +1458,37 @@
 "Read only";;;;;;;;;;;;;;3936
 "Read only folder";;;;;;;;;;;;;;3937
 "Inaccessible folder";;;;;;;;;;;;;;3938
+"Import Channel Logos";;;;;;;;;;;;;;3939
+"Enable/Disable customized version of channel logos";;;;;;;;;;;;;;3940
+"Select a way of importing customized channel logos";;;;;;;;;;;;;;3941
+"Customized Channel Logos";;;;;;;;;;;;;;3942
+"Load Icons from USB";;;;;;;;;;;;;;3943
+"Load Icons via Internet";;;;;;;;;;;;;;3944
+"Remove All Customized Logos";;;;;;;;;;;;;;3945
+"Icon(s) Loaded";;;;;;;;;;;;;;3946
+"Select Zip File for Channel Icons";;;;;;;;;;;;;;3947
+"Downlaod process failed";;;;;;;;;;;;;;3948
+"All customized channel logos will be erased";;;;;;;;;;;;;;3949
+"Delete all customized channel logos?";;;;;;;;;;;;;;3950
+"System restart is needed in order to apply changes";;;;;;;;;;;;;;3951
+"Copy Files";;;;;;;;;;;;;;3952
+"Copying files process cannot be stopped";;;;;;;;;;;;;;3953
+"Please Wait";;;;;;;;;;;;;;3954
+"Copying files";;;;;;;;;;;;;;3955
+"Copying logo files";;;;;;;;;;;;;;3956
+"All customized logo data will be erased";;;;;;;;;;;;;;3957
+"Importing channel logos failed to complete";;;;;;;;;;;;;;3958
+"Select OK Button to apply icons";;;;;;;;;;;;;;3959
+"Invalid path";;;;;;;;;;;;;;3960
+"No zip file found in USB";;;;;;;;;;;;;;3961
+"Extracting zip file failed to complete";;;;;;;;;;;;;;3962
+"The zip file is invalid or corrupted";;;;;;;;;;;;;;3963
+"Downloading zip file failed to complete";;;;;;;;;;;;;;3964
+"Extract Zip File";;;;;;;;;;;;;;3965
+"Cancelling";;;;;;;;;;;;;;3966
+"Extracting data";;;;;;;;;;;;;;3967
+"Extracting Zip File";;;;;;;;;;;;;;3968
+"Select Channel Icon Package";;;;;;;;;;;;;;3969
+"Allows you to display customized channel logos";;;;;;;;;;;;;;3970
+"Show Customized Channel Logos";;;;;;;;;;;;;;3971
+"Import customized channel icons from USB flash memory or via Internet";;;;;;;;;;;;;;3972
