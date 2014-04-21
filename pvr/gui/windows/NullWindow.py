@@ -2,6 +2,7 @@ from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
 import xbmc, xbmcgui
 #import xbmc, xbmcgui, gc
+import time
 
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
@@ -1528,6 +1529,11 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = False
 			xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 			self.mCommander.AppMediaPlayer_Control( 0 )
+			#LOG_TRACE("MediaPlayerStop Sleep Start")
+			#time.sleep(3)
+			#LOG_TRACE("MediaPlayerStop Sleep End")
+			self.UpdateMediaCenterVolume( )
+			self.mDataCache.SyncMute( )
 			self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 			LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 

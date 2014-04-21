@@ -81,12 +81,20 @@ class RootWindow( xbmcgui.WindowXML ) :
 	def onAction( self, aAction ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
 			if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
-				if aAction.getId( ) != Action.ACTION_PREVIOUS_MENU :
-					LOG_ERR("Do nothing in HBBTV Mode");
-					return
-				else :
+				if aAction.getId( ) == Action.ACTION_PREVIOUS_MENU :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
+
+				elif aAction.getId( ) == Action.ACTION_SHOW_INFO or aAction.getId( ) == Action.ACTION_MBOX_XBMC or aAction.getId( ) == Action.ACTION_MBOX_TVRADIO or aAction.getId( ) == Action.ACTION_PAGE_UP or aAction.getId( ) == Action.ACTION_PAGE_DOWN  or aAction.getId( ) == Action.ACTION_MBOX_ARCHIVE :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
+					WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+
+				elif aAction.getId( ) == Action.ACTION_VOLUME_DOWN  or aAction.getId( ) == Action.ACTION_VOLUME_DOWN or aAction.getId( ) == Action.ACTION_MUTE :
+					WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+
+				else :
+					LOG_ERR("Don nothing in HBBTV Mode ")
 					return
+
 			else :
 				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
 					return
@@ -158,7 +166,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def syncXBMC( self ) :
-		xbmc.executebuiltin( 'PlayerControl(Stop)', True )
+		liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
+		if liveWindow.mHbbTVShowing != True :
+			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 		pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 		InitTranslateByEnumList( )
 		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )

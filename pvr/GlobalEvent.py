@@ -823,10 +823,11 @@ class GlobalEvent( object ) :
 			LOG_TRACE( 'XBMCEvent OnPlay' )
 			liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )			
 			if aEvent.mValue == "True" :
-				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
-				status = self.mDataCache.Player_GetStatus( )
-				if status.mMode != ElisEnum.E_MODE_LIVE :
-					self.mDataCache.Player_Stop( )
+				if liveWindow.mHbbTVShowing != True :
+					WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mMode != ElisEnum.E_MODE_LIVE :
+						self.mDataCache.Player_Stop( )
 
 				if liveWindow.mHbbTVShowing != True :
 					liveWindow.SetMediaCenter( True )
@@ -837,23 +838,21 @@ class GlobalEvent( object ) :
 
 			elif aEvent.mValue == "False" :
 				if liveWindow.mHbbTVShowing == True :
-					#liveWindow.HbbTV_MediaPlayerStop()
 					pass
 				else :
-					liveWindow.CheckMediaCenter()
+					liveWindow.CheckMediaCenter( )
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')
 			mute = int( volumelist[0] )
 			volume = int( volumelist[1] )
-			mw_mute = self.mCommander.Player_GetMute(  )
-			mw_volume = self.mCommander.Player_GetVolume(  )
+			mw_mute = self.mCommander.Player_GetMute( )
+			mw_volume = self.mCommander.Player_GetVolume( )
 
-			LOG_TRACE( "Mute=%d:%d Volume=%d:%d" %(mute, mw_mute, volume, mw_volume) )			
+			LOG_TRACE( "Mute=%d:%d Volume=%d:%d" % ( mute, mw_mute, volume, mw_volume ) )
 
-			if mute !=  mw_mute:
+			if mute != mw_mute :
 				self.mCommander.Player_SetMute( mute )
 			elif volume != mw_volume :
 				self.mCommander.Player_SetVolume( volume )
 
-	
