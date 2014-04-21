@@ -58,7 +58,7 @@ class DialogImportLogo( BaseDialog ) :
 		self.mCtrlImportUSB.setLabel( MR_LANG( 'Load Icons from USB' ) )
 		self.mCtrlImportInternet.setLabel( MR_LANG( 'Load Icons via Internet' ) )
 		self.mCtrlClear.setLabel( MR_LANG( 'Remove All Customized Logos' ) )
-		self.mCtrlLoaded.setLabel( '0' + MR_LANG( 'Icon(s) Loaded' ) )
+		self.mCtrlLoaded.setLabel( '0 ' + MR_LANG( 'Icon(s) Loaded' ) )
 		self.DisableControl( )
 
 
