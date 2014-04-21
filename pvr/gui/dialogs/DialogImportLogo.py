@@ -58,7 +58,7 @@ class DialogImportLogo( BaseDialog ) :
 		self.mCtrlImportUSB.setLabel( MR_LANG( 'Load Icons from USB' ) )
 		self.mCtrlImportInternet.setLabel( MR_LANG( 'Load Icons via Internet' ) )
 		self.mCtrlClear.setLabel( MR_LANG( 'Remove All Customized Logos' ) )
-		self.mCtrlLoaded.setLabel( MR_LANG( '0 Icon Loaded' ) )
+		self.mCtrlLoaded.setLabel( '0' + MR_LANG( 'Icon(s) Loaded' ) )
 		self.DisableControl( )
 
 
@@ -336,11 +336,11 @@ class DialogImportLogo( BaseDialog ) :
 		checkedItems = self.CheckPath( aPath, aFilelist )
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 		self.mCheckedItem = checkedItems
-		self.mCtrlLoaded.setLabel( '%s %s' % ( checkedItems, MR_LANG( 'Icons Loaded' ) ) )
+		self.mCtrlLoaded.setLabel( '%s %s' % ( checkedItems, MR_LANG( 'Icon(s) Loaded' ) ) )
 		if checkedItems :
 			self.mCheckedItem	= checkedItems
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Complete' ), MR_LANG( '%s %s\n%s' ) % ( checkedItems, MR_LANG( 'Icons loaded' ), MR_LANG( 'Select OK Button to apply icons' ) ) )
+			dialog.SetDialogProperty( MR_LANG( 'Complete' ), '%s %s\n%s' % ( checkedItems, MR_LANG( 'Icon(s) Loaded' ), MR_LANG( 'Select OK Button to apply icons' ) ) )
 			dialog.doModal( )
 		else :
 			self.mCheckedItem = 0
