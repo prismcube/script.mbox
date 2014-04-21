@@ -128,6 +128,12 @@ class Advanced( SettingWindow ) :
 					self.SetFrontdisplayMessage( MR_LANG('Advanced') )
 			elif groupId == E_SpinEx04 :
 				self.SetSettingFromNumber( 'DISPLAY_EVENT_LIVE', self.GetSelectedIndex( E_SpinEx04 ) )
+			elif groupId == E_SpinEx05 :
+				self.SetSettingFromNumber( 'CUSTOM_ICON', self.GetSelectedIndex( E_SpinEx05 ) )
+				if self.GetSelectedIndex( E_SpinEx05 ) == 1 :
+					pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'true'
+				else :
+					pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'false'
 
 		elif selectedId == E_LIVESTREAM :
 			if groupId == E_SpinEx01 :
@@ -192,8 +198,9 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Show Clock on Live Screen' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) ), MR_LANG( 'Allows you to display clock on the top middle of live screen' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Show Next EPG Notification' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) ), MR_LANG( 'Allows you to display next EPG notification on live screen' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Show Customized Channel Logos' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'CUSTOM_ICON' ) ), MR_LANG( 'Allows you to display customized channel logos' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 

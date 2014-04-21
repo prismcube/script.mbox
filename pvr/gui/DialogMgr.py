@@ -70,7 +70,7 @@ DIALOG_ID_ROOTFS_BACKUP				= 37
 DIALOG_ID_SERVICE_INFO				= 38
 DIALOG_ID_CHANNEL_GROUP				= 39
 DIALOG_ID_MOUNT_MANAGER				= 40
-
+DIALOG_ID_IMPORT_LOGO				= 41
 
 DIALOG_ID_TEST_WORK			= 99
 
@@ -275,6 +275,9 @@ class DialogMgr( object ) :
 				from pvr.gui.dialogs.DialogMountManager import DialogMountManager
 				return DialogMountManager( 'DialogMountManager.xml', self.scriptDir )
 
+			elif aDialogId == DIALOG_ID_IMPORT_LOGO :
+				from pvr.gui.dialogs.DialogImportLogo import DialogImportLogo
+				return DialogImportLogo( 'DialogImportLogo.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_TEST_WORK :
 				from pvr.gui.dialogs.DialogTestCode import DialogTestCode
