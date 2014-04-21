@@ -204,9 +204,6 @@ class Advanced( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05 ]
-			self.SetVisibleControls( hideControlIds, False )
-
 			self.InitControl( )
 			
 		elif selectedId == E_LIVESTREAM :
