@@ -3153,7 +3153,9 @@ class DataCacheMgr( object ) :
 
 	def PIP_Stop( self ) :
 		if self.PIP_GetSwapStatus( ) :
-			self.PIP_SwapWindow( False )
+			import pvr.gui.DialogMgr as DiaMgr
+			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).SwapExchangeToPIP( None, True, False )
+
 		return self.mCommander.PIP_Stop( )
 
 
@@ -3289,6 +3291,7 @@ class DataCacheMgr( object ) :
 	def PIP_SwapWindow( self, aSwap = None ) :
 		if aSwap == None :
 			aSwap = not self.mPIPSwapStatus
+
 		ret = self.mCommander.PIP_SwapWindow( aSwap )
 		if ret :
 			self.mPIPSwapStatus = aSwap

@@ -264,7 +264,8 @@ class DialogPIP( BaseDialog ) :
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if self.mHotKeyAvailableGreen :
-				self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+				status = self.mDataCache.Player_GetStatus( )
+				self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP, status.mMode )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			if self.mHotKeyAvailableYellow :
@@ -308,7 +309,8 @@ class DialogPIP( BaseDialog ) :
 			self.ChannelTuneToPIP( LIST_CHANNEL_PIP )
 
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
-			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+			status = self.mDataCache.Player_GetStatus( )
+			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP, status.mMode )
 
 		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
 			self.SetAudioPIP( )
@@ -508,6 +510,13 @@ class DialogPIP( BaseDialog ) :
 			#1. show/hide auto
 			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
 				isShow = True
+
+			if self.mDataCache.PIP_GetSwapStatus( ) :
+				from pvr.GuiHelper import GetInstanceSkinPosition
+				posNotify = self.LoadPositionPIP( )
+				skinPos = GetInstanceSkinPosition( )
+				x, y, w, h = skinPos.GetPipPosition2( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+				self.mDataCache.PIP_SetDimension( x, y, w, h )
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% isShow )
@@ -856,9 +865,10 @@ class DialogPIP( BaseDialog ) :
 		return pChNumber
 
 
-	def ChannelTuneToPIP( self, aDir ) :
+	def ChannelTuneToPIP( self, aDir, aLiveStatus = ElisEnum.E_MODE_LIVE ) :
 		fakeChannel = self.mCurrentChannel
-		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP and aDir != LIST_CHANNEL_PIP :
+		if aLiveStatus == ElisEnum.E_MODE_LIVE and \
+		   aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP and aDir != LIST_CHANNEL_PIP :
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
@@ -913,38 +923,32 @@ class DialogPIP( BaseDialog ) :
 
 		elif aDir == SWITCH_CHANNEL_PIP :
 			isFail = False
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode != ElisEnum.E_MODE_LIVE :
-				isFail = True
-				if self.mDataCache.PIP_SwapWindow( ) :
-					isFail = False
-					# True : main - pip surface, pip - main surface
-					# False: restore normal
-					if self.mDataCache.PIP_GetSwapStatus( ) :
-						lblLabel =  MR_LANG( 'Playback' )
-						if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-							lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+			#status = self.mDataCache.Player_GetStatus( )
+			if aLiveStatus != ElisEnum.E_MODE_LIVE :
 
-						elif status.mMode == ElisEnum.E_MODE_PVR :
-							lblLabel =  MR_LANG( 'Playback' )
-							playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-							if playingRecord :
-								lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+				if fakeChannel :
+					lblLine = MR_LANG( 'Can not switch' )
+					if fakeChannel.mLocked :
+						isFail = True
+						lblLine = '%s\n%s'% ( MR_LANG( 'Channel locked' ), lblLine )
+					elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
+						isFail = True
+						lblMsg = MR_LANG( 'No Signal' )
+						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'Scramble' :
+							lblMsg = MR_LANG( 'Scrambled' )
+						elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'NoService' :
+							lblMsg = MR_LANG( 'No Service' )
 
-						else :
-							lblLabel =  MR_LANG( 'Unknown' )
+						lblLine = '%s\n%s'% ( lblMsg, lblLine )
 
-						self.mCtrlLabelChannel.setLabel( lblLabel )
-						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_FALSE )
-						xbmcgui.Window( 10000 ).setProperty( 'iLockPIP', E_TAG_FALSE )
-						xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_TRUE )
-						LOG_TRACE( '[PIP] switch media' )
+					if isFail :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						lblTitle = MR_LANG( 'Attension' )
+						dialog.SetDialogProperty( lblTitle, lblLine )
+						dialog.doModal( )
+						return
 
-					else :
-						self.SetLabelChannel( fakeChannel )
-						self.RestartAsyncTune( fakeChannel )
-						LOG_TRACE( '[PIP] switch pip' )
-
+				self.SwapExchangeToPIP( fakeChannel )
 				LOG_TRACE( '[PIP] switch PIP and media(archive)' )
 				return
 				#LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
@@ -1018,6 +1022,28 @@ class DialogPIP( BaseDialog ) :
 				LOG_TRACE( '[PIP] already started' )
 				#self.mDataCache.PIP_AVBlank( False )
 
+				#1. isSwap? show label playback
+				if self.mDataCache.PIP_GetSwapStatus( ) :
+					lblLabel = MR_LANG( 'Playback' )
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+						iChannel = self.mDataCache.Channel_GetCurrent( )
+						if iChannel :
+							lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+
+					elif status.mMode == ElisEnum.E_MODE_PVR :
+						lblLabel =  MR_LANG( 'Playback' )
+						playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+						if playingRecord :
+							lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+
+					else :
+						lblLabel =  MR_LANG( 'Unknown' )
+
+					self.mCtrlLabelChannel.setLabel( lblLabel )
+					return
+
+				#2. isLive? show label pipChannel
 				if fakeChannel :
 					if fakeChannel.mLocked :
 						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
@@ -1074,6 +1100,45 @@ class DialogPIP( BaseDialog ) :
 		return True
 
 
+	def SwapExchangeToPIP( self, aChannel = None, aGetLabelControl = False, aOrder = None ) :
+		if self.mDataCache.PIP_SwapWindow( aOrder ) :
+			# True : main - pip surface, pip - main surface
+			# False: restore normal
+			if self.mDataCache.PIP_GetSwapStatus( ) :
+				lblLabel = MR_LANG( 'Playback' )
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					if iChannel :
+						lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+
+				elif status.mMode == ElisEnum.E_MODE_PVR :
+					lblLabel =  MR_LANG( 'Playback' )
+					playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+					if playingRecord :
+						lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+
+				else :
+					lblLabel =  MR_LANG( 'Unknown' )
+
+				if aGetLabelControl :
+					self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( lblLabel )
+				else :
+					self.mCtrlLabelChannel.setLabel( lblLabel )
+
+				LOG_TRACE( '[PIP] switch media' )
+
+			else :
+				fakeChannel = aChannel
+				if not fakeChannel :
+					pChNumber = self.mDataCache.PIP_GetCurrent( )
+					fakeChannel = self.mDataCache.PIP_GetByNumber( pChNumber )
+
+				self.SetLabelChannel( fakeChannel, aGetLabelControl )
+				#self.RestartAsyncTune( fakeChannel )
+				LOG_TRACE( '[PIP] switch pip' )
+
+
 	def SetLabelInputNumber( self ) :
 		imagePng = 'black-back_noAlpha.png'
 		if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
@@ -1087,7 +1152,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlLabelInputName.setLabel( aChannelName )
 
 
-	def SetLabelChannel( self, aChannel = None ) :
+	def SetLabelChannel( self, aChannel = None, aGetLabelControl = False ) :
 		if not aChannel :
 			LOG_TRACE( 'No channel label' )
 			return
@@ -1097,7 +1162,10 @@ class DialogPIP( BaseDialog ) :
 			pChNumber = self.mDataCache.CheckPresentationNumber( aChannel )
 
 		label = '%s - %s'% ( pChNumber, aChannel.mName )
-		self.mCtrlLabelChannel.setLabel( label )
+		if aGetLabelControl :
+			self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( label )
+		else :
+			self.mCtrlLabelChannel.setLabel( label )
 		#self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
 
@@ -1499,6 +1567,9 @@ class DialogPIP( BaseDialog ) :
 			thread = threading.Timer( 0, self.UpdateCurrentPositon, [True, self.mFakeChannel] )
 			thread.start( )
 
+			if self.mDataCache.PIP_GetSwapStatus( ) :
+				self.SwapExchangeToPIP( self.mFakeChannel )
+
 			self.mDataCache.PIP_SetStatus( True )
 			self.mDataCache.PIP_SetCurrentChannel( self.mFakeChannel )
 			self.mIndexAvail = 0
@@ -1542,6 +1613,9 @@ class DialogPIP( BaseDialog ) :
 		if not aChannel :
 			LOG_TRACE( '[PIP] could not tune by external. None channel' )
 			return
+
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.SwapExchangeToPIP( aChannel, True, False )
 
 		self.mDataCache.PIP_SetStatus( True )
 		self.mDataCache.PIP_SetCurrentChannel( aChannel )
