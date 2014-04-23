@@ -23,6 +23,16 @@
 							<height>265</height>
 							<texture border="5">StackFO_white2.png</texture>
 						</control>
+						<control type="image" id="4801003">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>425</width>
+							<height>265</height>
+							<texture border="5">StackFO_white2.png</texture>
+							<visible>!substring(Window.Property(PIPSwapStatus),None)</visible>
+							<animation reversible="false" effect="zoom" end="700" start="100" center="auto" easing="out" time="500" condition="substring(Window.Property(PIPSwapStatus),true)">conditional</animation>
+							<animation reversible="false" effect="zoom" end="100" start="700" center="auto" easing="out" time="500" condition="substring(Window.Property(PIPSwapStatus),false)">conditional</animation>
+						</control>
 					</control>
 					<control type="group">
 						<control type="group" id="4801100">

@@ -2109,8 +2109,8 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
-		if self.PIP_GetSwapStatus( ) :
-			self.PIP_SwapWindow( False )
+		import pvr.gui.DialogMgr as DiaMgr
+		DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).SwapExchangeToPIP( None, True, False )
 
 		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
 			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
@@ -3151,8 +3151,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_Start( aNumber )
 
 
-	def PIP_Stop( self ) :
-		if self.PIP_GetSwapStatus( ) :
+	def PIP_Stop( self, aResetSwap = True ) :
+		if aResetSwap and self.PIP_GetSwapStatus( ) :
 			import pvr.gui.DialogMgr as DiaMgr
 			DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).SwapExchangeToPIP( None, True, False )
 
@@ -3288,13 +3288,16 @@ class DataCacheMgr( object ) :
 		return self.mCommander.PIP_GetAVBlank( )
 
 
-	def PIP_SwapWindow( self, aSwap = None ) :
+	def PIP_SwapWindow( self, aSwap = None, aRegular = True ) :
 		if aSwap == None :
 			aSwap = not self.mPIPSwapStatus
 
 		ret = self.mCommander.PIP_SwapWindow( aSwap )
-		if ret :
+		if ret and aRegular :
 			self.mPIPSwapStatus = aSwap
+
+		if ret and ( not self.GetMediaCenter( ) ) :
+			self.PIP_EnableAudio( aSwap )
 
 		return ret
 

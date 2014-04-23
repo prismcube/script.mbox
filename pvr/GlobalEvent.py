@@ -849,6 +849,8 @@ class GlobalEvent( object ) :
 					pass
 				else :
 					liveWindow.CheckMediaCenter()
+					if self.mDataCache.PIP_GetSwapStatus( ) :
+						self.mDataCache.PIP_SwapWindow( False )
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')

@@ -69,6 +69,17 @@ class DialogTestCode( BaseDialog ) :
 		elif aAction == Action.ACTION_MBOX_FF :
 			self.setProperty( 'ShowExtendInfo', E_TAG_TRUE )
 
+
+		elif aAction == Action.ACTION_MOVE_UP :
+			imgctrl = self.getControl( 998 )
+			pos = imgctrl.getPosition( )
+			imgctrl.setPosition( pos[0], pos[1] - 10 )
+
+		elif aAction == Action.ACTION_MOVE_DOWN :
+			imgctrl = self.getControl( 998 )
+			pos = imgctrl.getPosition( )
+			imgctrl.setPosition( pos[0], pos[1] + 10 )
+
 		"""
 		elif aAction == Action.ACTION_PLAYER_PLAY or aAction == Action.ACTION_PAUSE :
 			self.TestScreen( )
@@ -137,6 +148,9 @@ class DialogTestCode( BaseDialog ) :
 
 		#elif aAction == Action.ACTION_MOVE_RIGHT :
 		#	self.MoveTest( 10 )
+
+
+
 
 
 	def onClick( self, aControlId ):

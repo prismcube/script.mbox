@@ -139,6 +139,10 @@ class LivePlate( LivePlateWindow ) :
 		#self.mCasInfoThread = None
 		self.mFirstTune = 0
 
+		#isSwap? show media surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( False, False )
+
 		if not self.mInitialized :
 			self.mInitialized = True
 			if ElisPropertyInt( 'AIT Ready', self.mCommander ).GetProp( ) :
@@ -1542,6 +1546,11 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+
+		#isSwap? swap surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( True, False )
+
 		"""
 		if self.mCasInfoThread :
 			self.mEnableCasInfo = False
