@@ -90,6 +90,9 @@ class InfoPlate( LivePlateWindow ) :
 		#button icon
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
+		#isSwap? show media surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( False, False )
 
 		self.SetRadioScreen( )
 		self.InitControl( )
@@ -687,6 +690,10 @@ class InfoPlate( LivePlateWindow ) :
 
 		self.StopAutomaticHide( )
 		#WinMgr.GetInstance( ).CloseWindow( )
+
+		#isSwap? swap surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( True, False )
 
 
 	def SetAutomaticHide( self, aHide=True ) :

@@ -816,7 +816,9 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
-				liveWindow.CheckMediaCenter()
+				liveWindow.CheckMediaCenter( )
+				if self.mDataCache.PIP_GetSwapStatus( ) :
+					self.mDataCache.PIP_SwapWindow( False )
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')

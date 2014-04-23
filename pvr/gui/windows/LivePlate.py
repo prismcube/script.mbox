@@ -139,6 +139,10 @@ class LivePlate( LivePlateWindow ) :
 		#self.mCasInfoThread = None
 		self.mFirstTune = 0
 
+		#isSwap? show media surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( False, False )
+
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 
@@ -1501,6 +1505,11 @@ class LivePlate( LivePlateWindow ) :
 		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
+
+		#isSwap? swap surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( True, False )
+
 		"""
 		if self.mCasInfoThread :
 			self.mEnableCasInfo = False
