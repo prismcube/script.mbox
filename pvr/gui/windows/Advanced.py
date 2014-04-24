@@ -42,7 +42,7 @@ class Advanced( SettingWindow ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'You can customise the appearance of PRISMCUBE RUBY' ),
+		MR_LANG( 'You can customize the appearance of PRISMCUBE RUBY' ),
 		#MR_LANG( 'HBB TV Settings' ),
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ) ]
 	
