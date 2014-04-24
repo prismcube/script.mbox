@@ -223,14 +223,21 @@ class SimpleChannelList( BaseWindow ) :
 		#	lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
 		self.setProperty( 'SimpleChannelPath', lblPath )
 
+		slideVisible = E_TAG_FALSE
 		groupListSlide = []
 		if self.mUserMode.mMode != ElisEnum.E_MODE_ALL :
+			slideVisible = E_TAG_TRUE
 			for groupName in self.mListGroupName :
 				listItem = xbmcgui.ListItem( '%s'% groupName )
 				groupListSlide.append( listItem )
+
+		if not groupListSlide or len( groupListSlide ) < 1 :
+			slideVisible = E_TAG_FALSE
+
 		self.mCtrlGroupSlide.reset( )
 		self.mCtrlGroupSlide.addItems( groupListSlide )
 		self.mCtrlGroupSlide.selectItem( self.mGroupIndex )
+		self.setProperty( 'ShowGroupSlide', slideVisible )
 
 
 	def UpdateListAll( self, aLoadChannel = False ) :
