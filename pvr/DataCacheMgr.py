@@ -3300,6 +3300,10 @@ class DataCacheMgr( object ) :
 		return self.mPIPSwapStatus
 
 
+	def PIP_IsSwapped( self ) :
+		return self.mCommander.PIP_IsSwapped( )
+
+
 	def PIP_GetPrev( self, aChannel ) :
 		if aChannel	== None or aChannel.mError != 0 :
 			return None
