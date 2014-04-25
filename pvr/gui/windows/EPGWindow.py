@@ -112,11 +112,14 @@ class EPGWindow( BaseWindow ) :
 		self.mEPGList = []
 		self.mEPGHashTable = {}
 		self.mEPGCount = 0
+		self.mEPGMode = -1
 		self.mListItems = []
 		self.mListItemsChannelMode = []		
 		self.mTimerList = []
 		self.mUpdateEPGInfomationTimer = None
 		self.mUpdateSelcetedPositionTimer = None
+		self.mCtrlGridChannelList = None
+		self.mCtrlBigList = None
 		
 
 		#GRID MODE
@@ -3164,11 +3167,19 @@ class EPGWindow( BaseWindow ) :
 
 
 	def CheckModeChange( self ) :
-		newMode = int( GetSetting( 'EPG_MODE' ) )
-		if newMode != self.mEPGMode :
-			self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, True )
-			if newMode == E_VIEW_CURRENT :	
-				self.mCtrlBigList.reset( )
-			elif newMode == E_VIEW_GRID :
-				self.mCtrlGridChannelList.reset( )	
+		try :
+			newMode = int( GetSetting( 'EPG_MODE' ) )
+			if newMode != self.mEPGMode :
+				self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, True )
+				if newMode == E_VIEW_CURRENT :
+					if self.mCtrlBigList :
+						self.mCtrlBigList.reset( )
+				elif newMode == E_VIEW_GRID :
+					if self.mCtrlGridChannelList :
+						self.mCtrlGridChannelList.reset( )
+
+		except Exception, ex :
+			print 'Error exception[%s]'% ex
+			import traceback
+			LOG_ERR( 'traceback=%s' %traceback.format_exc( ) )
 
