@@ -201,7 +201,6 @@ class GlobalEvent( object ) :
 				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_CHECK_FORCE )
 
 			if restorePIP and self.mDataCache.PIP_GetSwapStatus( ) :
-				import pvr.gui.DialogMgr as DiaMgr
 				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).SwapExchangeToPIP( None, True, False )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
@@ -848,9 +847,12 @@ class GlobalEvent( object ) :
 					#liveWindow.HbbTV_MediaPlayerStop()
 					pass
 				else :
+					xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 					liveWindow.CheckMediaCenter()
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
 					if self.mDataCache.PIP_GetSwapStatus( ) :
 						self.mDataCache.PIP_SwapWindow( False )
+					xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')

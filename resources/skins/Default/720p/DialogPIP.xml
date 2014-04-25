@@ -611,8 +611,18 @@
 									<texture>IconCas1g.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
+								<control type="progress">
+									<posx>12</posx>
+									<posy>30</posy>
+									<width>70</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(ListItem.Property(HasEvent),true)</visible>
+								</control>
 							</control>
-							<!-- Channel Number -->
+							<!-- Channel info -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
@@ -626,11 +636,11 @@
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
-							<!-- Channel Name -->
+							<!-- epg Name -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>260</width>
+								<width>190</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
@@ -698,8 +708,18 @@
 									<texture>IconCas1w.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
+								<control type="progress">
+									<posx>12</posx>
+									<posy>30</posy>
+									<width>70</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(ListItem.Property(HasEvent),true)</visible>
+								</control>
 							</control>
-							<!-- Channel Number -->
+							<!-- Channel info -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
@@ -713,11 +733,11 @@
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
-							<!-- Channel Name -->
+							<!-- epg Name -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>260</width>
+								<width>190</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
