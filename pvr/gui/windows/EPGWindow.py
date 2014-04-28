@@ -241,6 +241,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ResetControls( self ) :
+		self.mDataCache.SharedChannel_SetUpdated( WinMgr.WIN_ID_EPG_WINDOW, True )	
 		self.mListItems = []
 		self.InitTimelineButtons( )
 		self.InitGridEPGButtons( )
@@ -1056,8 +1057,15 @@ class EPGWindow( BaseWindow ) :
 		col = 0
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
 
+		channelCount = 0
+		if self.mChannelList :
+			channelCount =  len( self.mChannelList )
+			
 		for i in range( E_GRID_MAX_ROW_COUNT ) :
 			#epgList = self.mGridEPGList[i]
+			if self.mVisibleTopIndex + i >= channelCount :
+				break
+
 			epgList = self.mGridEPGCache.get( '%d' %( self.mVisibleTopIndex + i ), None )			
 			offsetX = 0
 			offsetX2 = 0
@@ -1214,23 +1222,24 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdateCurrentView( self, aUpdateOnly ) :
-		
 		self.mDebugStart = time.time( )		
 
-		channelCount = len( self.mChannelList )
-		topIndex =  self.mCtrlBigList.getOffsetPosition( )
-
-		"""
-		if aUpdateOnly == True and self.mVisibleTopIndex ==  topIndex :
-			return
-		self.mVisibleTopIndex = topIndex
-		"""
+		channelCount = 0
+		topIndex	= 0	
+		if self.mChannelList :
+			channelCount = len( self.mChannelList )
+			topIndex =  self.mCtrlBigList.getOffsetPosition( )
 
 		currentTime = self.mDataCache.Datetime_GetLocalTime( )
 		strNoEvent = MR_LANG( 'No event' )
 
 		for i in range( E_CURRENT_MAX_ROW_COUNT ) :
 			channelIndex = i + topIndex
+			LOG_TRACE( 'channelIndex=%d count=%d' %(channelIndex,channelCount) )			
+			
+			if channelIndex >= channelCount :
+				break
+
 			channel = self.mChannelList[channelIndex]
 			hasEpg = False
 
@@ -1300,20 +1309,18 @@ class EPGWindow( BaseWindow ) :
 
 		strNoEvent = MR_LANG( 'No event' )
 
-		channelCount = len( self.mChannelList )
-		topIndex =  self.mCtrlBigList.getOffsetPosition( )
-
-		"""
-		if aUpdateOnly == True and self.mVisibleTopIndex ==  topIndex :
-			return
-		self.mVisibleTopIndex = topIndex
-		"""
-
-		print 'test test %d/%d' %(topIndex, channelCount )
+		channelCount = 0
+		topIndex = 0
+		if self.mChannelList :
+			channelCount = len( self.mChannelList )
+			topIndex =  self.mCtrlBigList.getOffsetPosition( )
 
 		for i in range( E_CURRENT_MAX_ROW_COUNT ) :
 			channelIndex = i + topIndex
-			print 'test test channelIndex=%d' %channelIndex
+
+			if channelIndex >= channelCount :
+				break
+			
 			channel = self.mChannelList[channelIndex]
 			hasEpg = False
 
@@ -1321,7 +1328,6 @@ class EPGWindow( BaseWindow ) :
 				epgEvent = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
 
 				if epgEvent :
-					print 'test test has epg'
 					hasEpg = True
 					listItem = self.mListItems[channelIndex]
 					epgStart = epgEvent.mStartTime + self.mLocalOffset
@@ -1346,7 +1352,6 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'ViewTimer', hasTimer )
 
 				else :
-					print 'test test no epg'				
 					listItem = self.mListItems[channelIndex]
 					listItem.setProperty( 'EPGName', strNoEvent )					
 					listItem.setProperty( 'StartTime', '' )
@@ -1589,6 +1594,9 @@ class EPGWindow( BaseWindow ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
+			import traceback
+			LOG_ERR( 'traceback=%s' %traceback.format_exc( ) )
+			
 
 		self.UpdateListUpdateOnly( )
 		
