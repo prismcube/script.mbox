@@ -72,13 +72,15 @@ class DialogAddManualTimer( SettingDialog ) :
 		netVolumeID = -99
 		self.mFreeHDD  = 0
 		self.mTotalHDD = 0
+		self.mHDDStatus = False
 		self.mSelectIdx = 99
 		self.mNetVolume = None
 		self.mNetVolumeList = []
 		self.mDialogWidth = self.getControl( E_IMAGE_DIALOG_BACKGROUND ).getWidth( )
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 
 		if E_SUPPORT_EXTEND_RECORD_PATH and CheckHdd( ) :
-			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+			self.mHDDStatus = True
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
@@ -242,15 +244,20 @@ class DialogAddManualTimer( SettingDialog ) :
 
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
-		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = E_TAG_TRUE
+		lblSelect = MR_LANG( 'None' )
+		lblOnline = E_TAG_FALSE
 		useFree = self.mFreeHDD
 		useTotal= self.mTotalHDD
 		useInfo = 0
+		if self.mHDDStatus :
+			lblSelect = MR_LANG( 'HDD' )
+			lblOnline = E_TAG_TRUE
+
 		if aNetVolume :
+			lblOnline = E_TAG_FALSE
 			lblSelect = os.path.basename( aNetVolume.mMountPath )
-			if not aNetVolume.mOnline :
-				lblOnline = E_TAG_FALSE
+			if aNetVolume.mOnline :
+				lblOnline = E_TAG_TRUE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
@@ -274,18 +281,29 @@ class DialogAddManualTimer( SettingDialog ) :
 
 
 	def GetVolumeContext( self, aVolumeID = -1 ) :
-		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackList = []
+		if self.mHDDStatus :
+			trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+
 		trackIndex = 0
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
 				#urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblStatus = ''
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
-				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
+				if not netVolume.mOnline :
+					lblStatus = '-%s'% MR_LANG( 'Disconnected' )
+				if netVolume.mReadOnly :
+					lblStatus = '-%s'% MR_LANG( 'Read only' )
+
+				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
+				if lblStatus :
+					lblPath = '[COLOR grey3]%s[/COLOR]'% lblPath
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -313,12 +331,18 @@ class DialogAddManualTimer( SettingDialog ) :
 	def ShowNetworkVolume( self ) :
 		trackList = self.GetVolumeContext( )
 		if not trackList or len( trackList ) < 1 :
-			LOG_TRACE( '[ManaulTimer] show fail, mount list is None' )
+			LOG_TRACE( '[ManaulTimer] Nothing in the mount list' )
 			return
 
 		selectedIdx = 0
-		if self.mSelectIdx != 99 :
+		if self.mHDDStatus and self.mSelectIdx != 99 :
 			selectedIdx = self.mSelectIdx + 1
+		else :
+			selectedIdx = self.mSelectIdx
+
+		if selectedIdx < 0 :
+			selectedIdx = 0
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( trackList, selectedIdx )
 		dialog.doModal( )
@@ -327,12 +351,23 @@ class DialogAddManualTimer( SettingDialog ) :
 		if selectAction < 0 :
 			return
 
-		self.mSelectIdx = selectAction
 		if selectAction == 99 :
 			self.mNetVolume = None
 		elif selectAction < len( self.mNetVolumeList ) :
-			self.mNetVolume = deepcopy( self.mNetVolumeList[selectAction] )
+			netVolume = self.mNetVolumeList[selectAction]
+			if not netVolume.mOnline or netVolume.mReadOnly :
+				lblLine = MR_LANG( 'Read only folder' )
+				if not netVolume.mOnline :
+					lblLine = MR_LANG( 'Inaccessible folder' )
 
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+				dialog.doModal( )
+				return
+
+			self.mNetVolume = deepcopy( netVolume )
+
+		self.mSelectIdx = selectAction
 		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
 		self.SetControlLabel2String( E_DialogInput04, lblSelect )
 		self.setProperty( 'NetVolumeConnect', lblOnline )

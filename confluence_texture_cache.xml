@@ -4,6 +4,9 @@
 	<!-- background -->
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
+	<!-- null window -->
+	<texture>multifeed.png</texture>
+	<texture>hbbtv4.png</texture>
 	<!-- channel logo -->
 	<texture>Logo_Background.png</texture>
 	<!-- main menu -->
@@ -55,6 +58,12 @@
 	<texture>MediaItemDetailBG.png</texture>
 	<texture>RecIconSample.png</texture>
 	<texture>folder-focus.png</texture>
+	<texture>OSDPlayNF_Rotated.png</texture>
+	<texture>OSDPlayPauseNF.png</texture>
+	<texture>OSDOK.png</texture>
+	<texture>OSDTVRadioNF.png</texture>
+	<texture>OSDBackNF.png</texture>
+	<texture>OSDMenuNF.png</texture>
 	<!-- epg -->
 	<texture>D1.png</texture>
 	<texture>D2.png</texture>
@@ -106,7 +115,6 @@
 	<texture>IconT12w_new.png</texture>
 	<texture>IconPlateRec.png</texture>
 	<texture>OverlayLocked.png</texture>
-	<texture>ContentPanelRED.png</texture>
 	<texture>MenuItemFO_edit.png</texture>
 	<texture>DI_Move.png</texture>
 	<texture>DI_Skip1g.png</texture>
@@ -116,6 +124,8 @@
 	<texture>i_record.png</texture>
 	<texture>tv.png</texture>
 	<texture>icon_radio2.png</texture>
+	<texture>OSDChannelNF.png</texture>
+	<texture>OSDChannelFO.png</texture>
 	<texture>OSDIconInfo.png</texture>
 	<texture>OSDIconWarning.png</texture>
 	<texture>OSDTeletextNF.png</texture>
@@ -180,6 +190,9 @@
 	<texture>OSDAudioNF_Y.png</texture>
 	<texture>OSDExitFO_B.png</texture>
 	<texture>OSDExitNF_B.png</texture>
+	<texture>OSDChannelNFg.png</texture>
+	<texture>OSDChannelUPNF_new.png</texture>
+	<texture>OSDChannelDownNF_new.png</texture>
 	<!-- volume bar -->
 	<texture>InfoMessagePanel.png</texture>
 	<texture>VolumeIcon.png</texture>

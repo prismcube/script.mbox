@@ -49,6 +49,7 @@ CONTEXT_UNLOCK					= 5
 CONTEXT_RENAME					= 6
 CONTEXT_START_MARK				= 7
 CONTEXT_CLEAR_MARK				= 8
+CONTEXT_REFRESH_NET_VOLUME		= 9
 
 
 class ArchiveWindow( BaseWindow ) :
@@ -782,7 +783,7 @@ class ArchiveWindow( BaseWindow ) :
 					isPlay = self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
 				if not isPlay :
-					lblLine = MR_LANG( 'Can not playback' )
+					lblLine = MR_LANG( 'Could not playback' )
 					if E_SUPPORT_EXTEND_RECORD_PATH and recInfo.mMountInfo :
 						mntType = 'HDD'
 						retPath = os.path.dirname( recInfo.mMountInfo )
@@ -868,6 +869,8 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
 				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
@@ -887,9 +890,13 @@ class ArchiveWindow( BaseWindow ) :
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				context.append( ContextItem( MR_LANG( 'Hotkeys' ), CONTEXT_ACTION_HOTKEYS ) )
 
 			else :
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					context.append( ContextItem( MR_LANG( 'Refresh record path' ), CONTEXT_REFRESH_NET_VOLUME ) )
 				return
 				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -933,10 +940,33 @@ class ArchiveWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_CLEAR_MARK :
 			self.DoClearMark( )
 
+		elif aContextAction == CONTEXT_REFRESH_NET_VOLUME :
+			self.DoRefreshNetVolume( )
+
 		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
 			self.ShowHotkeys( )
 		else :
 			LOG_ERR( 'Unknown Context Action' )
+
+
+	def DoRefreshNetVolume( self ) :
+		self.OpenBusyDialog( )
+		retVal, lblLine = self.mDataCache.InitNetworkVolume( )
+		self.CloseBusyDialog( )
+
+		lblTitle = MR_LANG( 'Fail' )
+		if retVal == 0 :
+			self.Flush( )
+			self.Load( )
+			self.UpdateList( )
+			return
+
+		elif retVal < 0 :
+			lblTitle = MR_LANG( 'Error' )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( lblTitle, lblLine )
+		dialog.doModal( )
 
 
 	def ShowDeleteConfirm( self ) :
@@ -1148,7 +1178,8 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ShowHotkeys( self ) :
-		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDPlayNF.png', 'OSDOK.png', MR_LANG( 'Playback' ) ), ( 'OSDPauseNF.png', '', MR_LANG( 'Pause' ) ) , ( 'OSDStopNF.png', '', MR_LANG( 'Stop' ) ) , ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ) , ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+		lblPlaybackPause = '%s/%s'% ( MR_LANG( 'Playback' ),  MR_LANG( 'Pause' ) )
+		context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDPlayPauseNF.png', '', lblPlaybackPause ), ( 'OSDOK.png', '', MR_LANG( 'Playback' ) ) , ( 'OSDStopNF.png', '', MR_LANG( 'Stop' ) ) , ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ) , ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )

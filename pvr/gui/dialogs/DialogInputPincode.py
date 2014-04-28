@@ -100,7 +100,7 @@ class DialogInputPincode( BaseDialog ) :
 					self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \

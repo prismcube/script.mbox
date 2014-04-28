@@ -363,7 +363,7 @@ class EPGWindow( BaseWindow ) :
 				self.mEventBus.Register( self )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
 
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -1545,13 +1545,13 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowHotkeys( self ) :
 		if self.mEPGMode == E_VIEW_GRID :
-			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'First EPG Data' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+			context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDPlayNF.png', '', MR_LANG( 'Zoom' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'First EPG Data' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		elif  self.mEPGMode == E_VIEW_CHANNEL :
-			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Previous Channel' ) ), ( 'OSDForwardNF.png', '', MR_LANG( 'Next Channel' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+			context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Previous Channel' ) ), ( 'OSDForwardNF.png', '', MR_LANG( 'Next Channel' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		else :
-			context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+			context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )
@@ -1561,7 +1561,7 @@ class EPGWindow( BaseWindow ) :
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		try :	
@@ -1602,9 +1602,9 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
-		#if HasAvailableRecordingHDD( ) == False :
+		#if not HasAvailableRecordingHDD( ) :
 		#	return
-			
+
 		selectedEPG = self.GetSelectedEPG( )
 
 		timer = None
@@ -1764,7 +1764,7 @@ class EPGWindow( BaseWindow ) :
 				return
 		"""
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
@@ -1822,7 +1822,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ShowViewTimer( self, aTimer = None ) :
-		#if HasAvailableRecordingHDD( ) == False :
+		#if not HasAvailableRecordingHDD( ) :
 		#	return
 
 		#1.get timer

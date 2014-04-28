@@ -2,6 +2,7 @@ from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
 import xbmc, xbmcgui
 #import xbmc, xbmcgui, gc
+import time
 
 
 E_NULL_WINDOW_BASE_ID = WinMgr.WIN_ID_NULLWINDOW * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
@@ -489,8 +490,11 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST )
 					return
 
-			if HasAvailableRecordingHDD( ) == False :
+			self.CloseSubTitle( )
+			if not HasAvailableRecordingHDD( False ) :
+				self.CheckSubTitle( )
 				return
+			self.CheckSubTitle( )
 
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_PVR :
@@ -527,9 +531,12 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			self.CloseSubTitle( )
+			if not HasAvailableRecordingHDD( ) :
+				self.CheckSubTitle( )
 				return
-				
+			self.CheckSubTitle( )
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -790,7 +797,7 @@ class NullWindow( BaseWindow ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -933,7 +940,7 @@ class NullWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		mTimer = self.mDataCache.GetRunnigTimerByChannel( )
@@ -1457,7 +1464,7 @@ class NullWindow( BaseWindow ) :
 
 	def HbbTV_ShowRedButton( self ) :
 		LOG_TRACE( 'Show HbbTV' )
-		if not self.mDataCache.GetHbbtvStatus( ) :
+		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			return
 		if self.mDataCache.GetHbbTVEnable( ) :
 			self.setProperty ( 'EnableHbbTV', 'True' )
@@ -1473,15 +1480,17 @@ class NullWindow( BaseWindow ) :
 
 		self.setProperty ( 'EnableHbbTV', 'False' )
 
+
 	def HbbTV_ShowBrowser( self ) :
 		LOG_TRACE( 'Show HbbTV Command' )
-		if not self.mDataCache.GetHbbtvStatus( ) :
+		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			return
 		if self.mDataCache.GetHbbTVEnable( ) :
 			self.mHbbTVShowing = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :
 			LOG_TRACE("HbbTV not Ready ... Do nothing")
+
 
 	def HbbTV_HideBrowser( self ) :
 		if self.mMediaPlayerStarted == True :
@@ -1520,6 +1529,11 @@ class NullWindow( BaseWindow ) :
 			self.mForceSetCurrent = False
 			xbmc.executebuiltin( 'XBMC.PlayerControl(Stop)', True )
 			self.mCommander.AppMediaPlayer_Control( 0 )
+			#LOG_TRACE("MediaPlayerStop Sleep Start")
+			#time.sleep(3)
+			#LOG_TRACE("MediaPlayerStop Sleep End")
+			self.UpdateMediaCenterVolume( )
+			self.mDataCache.SyncMute( )
 			self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
 			LOG_ERR( 'self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'% ( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 
@@ -1533,6 +1547,5 @@ class NullWindow( BaseWindow ) :
 	def HbbTV_MediaPlayerSeek( self, aSeek ) :
 		LOG_ERR( 'self.mHBBTVReady[%s], self.HbbTV_MediaPlayerSeek[%s]'% ( self.mHBBTVReady, aSeek ) )
 		if self.mMediaPlayerStarted == True :
-			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )	
-	
-	
+			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )
+

@@ -228,6 +228,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAgeLimit = self.mDataCache.GetPropertyAge( )
 
 		if self.mDataCache.GetChannelReloadStatus( ) :
+			isUpdatePosition = True
 			self.mListItems = None
 			self.mDataCache.LoadZappingList( )
 
@@ -392,9 +393,9 @@ class ChannelListWindow( BaseWindow ) :
 					self.ShowRecordingStopDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			if HasAvailableRecordingHDD( ) == False :
+			if not HasAvailableRecordingHDD( ) :
 				return
-				
+
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.GoToPreviousWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
@@ -4091,7 +4092,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ShowHotkeys( self ) :
-		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+		context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDOK.png', '', MR_LANG( 'Tune In' ) ), ( 'OSDRewindNF.png', '', MR_LANG( 'Previous Group' ) ), ( 'OSDForwardNF.png', '', MR_LANG( 'Next Group' ) ), ( 'OSDRecordNF.png', '', MR_LANG ( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTVRadioNF.png', '', MR_LANG( 'TV/Radio' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )
@@ -4175,7 +4176,7 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		isChangeDuration = False

@@ -35,7 +35,7 @@ def RecordConflict( aInfo ) :
 
 	label = [ '', '', '' ]
 	
-	try :		
+	try :
 		if aInfo[0].mError == -1 :
 			label[0] = MR_LANG( 'No EPG information available' )
 		else :
@@ -579,9 +579,16 @@ def CheckHdd( ) :
 		return False
 
 
-def	HasAvailableRecordingHDD( ) :
+def	HasAvailableRecordingHDD( aCheckVolume = True ) :
 	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.gui.GuiConfig import E_SUPPORT_EXTEND_RECORD_PATH
+	import pvr.DataCacheMgr
+	dataCache = pvr.DataCacheMgr.GetInstance( )
+
 	if not CheckHdd( ) :
+		if E_SUPPORT_EXTEND_RECORD_PATH and aCheckVolume and dataCache.Record_GetNetworkVolume( True ) :
+			return True
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
 		dialog.doModal( )
@@ -713,6 +720,34 @@ def GetUnpackFiles( aZipFile ) :
 				#pars[1] = re.sub( '\n', '', pars[1] )
 				if pars[1] :
 					fileList.append( pars )
+
+	except Exception, e :
+		LOG_TRACE( 'except[%s]'% e )
+		return False
+
+	return fileList
+
+
+def GetUnpackFilenames( aZipFile ) :
+	tFile = '/mtmp/test'
+	cmd = "unzip -l %s | awk '{print $1, $4}' > %s" % ( aZipFile, tFile )
+	fileList = []
+	try :
+		os.system( cmd )
+		os.system( 'sync' )
+		time.sleep( 0.2 )
+		f = open( tFile, 'r' )
+		ret = f.readlines( )
+		f.close( )
+
+		for line in ret :
+			pars = re.split(' ', line )
+			if pars[0].isdigit( ) :
+				pars[0] = int( pars[0] )
+				pars[1] = pars[1].rstrip( )
+
+				if pars[1] :
+					fileList.append( pars[1] )
 
 	except Exception, e :
 		LOG_TRACE( 'except[%s]'% e )
@@ -1347,7 +1382,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	ret = re.search( '%s'% aSmbPath, mntHistory, re.IGNORECASE )
 	if bool( ret ) :
 		LOG_TRACE( 'already mount cifs, umount %s'% aSmbPath )
-		os.system( '/bin/umount -f %s'% aSmbPath )
+		os.system( '/bin/umount -fl %s'% aSmbPath )
 		os.system( 'sync' )
 		time.sleep( 2 )
 
@@ -1385,6 +1420,40 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		zipFile = ''
 
 	return zipFile
+
+
+def CheckEthernetType( ) :
+	from pvr.gui.GuiConfig import E_USE_OLD_NETWORK
+	if E_USE_OLD_NETWORK :
+		import pvr.IpParser as NetMgr
+	else :
+		import pvr.NetworkMgr as NetMgr
+
+	nType = NetMgr.GetInstance( ).GetCurrentServiceType( )
+	return nType
+
+
+def CheckNetworkStatus( ) :
+	from pvr.gui.GuiConfig import NETWORK_ETHERNET
+	retValue   = False
+	linkStatus = 'down'
+
+	nType = CheckEthernetType( )
+	if nType == NETWORK_ETHERNET :
+		linkStatus = CheckEthernet( 'eth0' )
+
+	else :
+		from pvr.XBMCInterface import XBMC_CheckNetworkStatus
+		wifiRet = XBMC_CheckNetworkStatus( )
+		if wifiRet == 'Connected' or wifiRet == 'Busy' :
+			linkStatus = 'up'
+		#LOG_TRACE('network wifi ret[%s] link[%s]'% ( wifiRet, linkStatus ) )
+
+	if linkStatus != 'down' :
+		retValue = True
+
+	LOG_TRACE( 'network type[%s] link[%s] ret[%s]'% ( nType, linkStatus, retValue ) )
+	return retValue
 
 
 class GuiSkinPosition( object ) :

@@ -507,7 +507,7 @@ class EPGSearchWindow( BaseWindow ) :
 	def ShowEPGTimer( self ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			return
 
 		selectedEPG = self.GetSelectedEPG( )
@@ -633,7 +633,7 @@ class EPGSearchWindow( BaseWindow ) :
 
 
 	def ShowHotkeys( self ) :
-		context = [ ( 'OSDLeft.png', '', MR_LANG( 'Slide Menu' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
+		context = [ ( 'OSDPlayNF_Rotated.png', '', MR_LANG( 'Extra Options' ) ), ( 'OSDRecordNF.png', '',  MR_LANG( 'Start Recording' ) ), ( 'OSDStopNF.png', '', MR_LANG( 'Stop Recording' ) ), ( 'OSDTeletextNF.png', '', MR_LANG( 'Search' ) ), ( 'OSDBackNF.png', 'OSDMenuNF.png', MR_LANG( 'Go Back' ) ) ]
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_HOTKEYS )
 		dialog.SetProperty( context )

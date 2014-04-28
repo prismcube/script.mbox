@@ -30,6 +30,8 @@ PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
 PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
 PRISMCUBE_REQUEST_FW_PATH = 'ruby_v1.xxx.xxx'
 
+# custom logo
+CUSTOM_LOGO_PATH					= xbmc.translatePath( "special://profile/channellogo" )
 
 # SUPPORT : SKIN RELOAD 'Q' KEY
 E_SUPPORT_USE_KEY_Q = False
@@ -496,6 +498,7 @@ CONTEXT_ACTION_CHANNEL_SEARCH   = 46
 
 E_DEFAULT_ACTION_CLICK_EVENT	= 1000
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
+E_DEFAULT_NETWORK_VOLUME_SHELL  = '/config/smbReserved.info'
 E_DEFAULT_BOOKMARK_LIMIT = 100
 E_DEFAULT_THUMBNAIL_ICON = 'RecIconSample.png'
 E_VOLITILE_PIP_STATUS_PATH = '/mtmp/PIPStatus'

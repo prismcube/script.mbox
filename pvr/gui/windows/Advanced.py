@@ -34,7 +34,7 @@ class Advanced( SettingWindow ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'You can customise the appearance of PRISMCUBE RUBY' ),
+		MR_LANG( 'You can customize the appearance of PRISMCUBE RUBY' ),
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
 		MR_LANG( 'Control PRISMCUBE using your existing TV remote when connected via HDMI' ) ]
 	
@@ -128,6 +128,12 @@ class Advanced( SettingWindow ) :
 					self.SetFrontdisplayMessage( MR_LANG('Advanced') )
 			elif groupId == E_SpinEx04 :
 				self.SetSettingFromNumber( 'DISPLAY_EVENT_LIVE', self.GetSelectedIndex( E_SpinEx04 ) )
+			elif groupId == E_SpinEx05 :
+				self.SetSettingFromNumber( 'CUSTOM_ICON', self.GetSelectedIndex( E_SpinEx05 ) )
+				if self.GetSelectedIndex( E_SpinEx05 ) == 1 :
+					pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'true'
+				else :
+					pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'false'
 
 		elif selectedId == E_LIVESTREAM :
 			if groupId == E_SpinEx01 :
@@ -192,22 +198,20 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Show Clock on Live Screen' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) ), MR_LANG( 'Allows you to display clock on the top middle of live screen' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Show Next EPG Notification' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) ), MR_LANG( 'Allows you to display next EPG notification on live screen' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Show Customized Channel Logos' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'CUSTOM_ICON' ) ), MR_LANG( 'Allows you to display customized channel logos' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx05 ]
-			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 			
 		elif selectedId == E_LIVESTREAM :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddEnumControl( E_SpinEx01, 'UPnP', '%s ( %s )' % ( MR_LANG( 'Live Streaming' ),  MR_LANG( 'restart required' ) ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
+			self.AddUserEnumControl( E_SpinEx02, '%s ( %s )' % ( MR_LANG( 'Web Interface' ),  MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'HbbTV' ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
+			self.AddUserEnumControl( E_SpinEx04, '%s ( %s )' % ( MR_LANG( 'HbbTV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )

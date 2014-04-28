@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+from subprocess import *
 import pvr.Platform
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
@@ -35,6 +36,7 @@ E_WIFI					= 101
 
 
 TIME_SEC_CHECK_NET_STATUS = 0.05
+HDD_RESERVED_USE		= 70
 
 
 class Configure( SettingWindow ) :
@@ -140,7 +142,7 @@ class Configure( SettingWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
-		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
+		self.SetHeaderTitle( "%s - %s" % ( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
 
 		self.MakeLanguageList( )
 
@@ -158,6 +160,7 @@ class Configure( SettingWindow ) :
 
 		self.mAnalogAscpect = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetProp( )
 		self.mVideoOutput	= self.mDataCache.GetVideoOutput( )
+		self.mHDDStatus     = True
 
 		self.SetListControl( )
 		self.StartCheckNetworkTimer( )
@@ -324,8 +327,9 @@ class Configure( SettingWindow ) :
 
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
+				self.OpenBusyDialog( )
 				self.SetListControl( )
-				self.SetDefaultControl( )
+				self.CloseBusyDialog( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
@@ -511,6 +515,7 @@ class Configure( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
 					dialog.doModal( )
+
 				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting media partition%s cannot be undone!' )% NEW_LINE )
@@ -519,6 +524,7 @@ class Configure( SettingWindow ) :
 						self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting HDD' ), ING ), 120 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
+
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Formatting recording partition%s cannot be undone!' )% NEW_LINE )
@@ -527,12 +533,14 @@ class Configure( SettingWindow ) :
 						self.mProgressThread = self.ShowProgress( '%s%s'% ( MR_LANG( 'Formatting HDD' ), ING ), 60 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
+
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'Format your hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( )
+
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
@@ -556,7 +564,7 @@ class Configure( SettingWindow ) :
 				selectEnable = False
 				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 					selectEnable = True
-					if defVolume :
+					if defVolume and defVolume.mOnline and ( not defVolume.mReadOnly ) :
 						idxCount = 0
 						for netVolume in self.mNetVolumeList :
 							if netVolume.mIndexID == defVolume.mIndexID :
@@ -566,9 +574,15 @@ class Configure( SettingWindow ) :
 
 							idxCount += 1
 
+					else :
+						ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 0 )
+						LOG_TRACE( '[Configure] changed default HDD, default volume is Not online or readonly' )
+
+				# 1. change defvolume from manager(edited,deleted)
 				if self.mSelectVolume != defVolumeIdx :
 					self.mSelectVolume = defVolumeIdx
 					ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+					#LOG_TRACE( '[Configure] defProperty[%s]'% defProperty )
 
 				enableControlIds = [E_Input02, E_Input03]
 				self.SetEnableControls( enableControlIds, selectEnable )
@@ -643,15 +657,20 @@ class Configure( SettingWindow ) :
 
 
 	def GetVolumeInfo( self, aNetVolume = None ) :
-		lblSelect = MR_LANG( 'HDD' )
-		lblOnline = E_TAG_TRUE
+		lblSelect = MR_LANG( 'None' )
+		lblOnline = E_TAG_FALSE
 		useFree   = self.mFreeHDD
 		useTotal  = self.mTotalHDD
 		useInfo   = 0
+		if self.mHDDStatus :
+			lblSelect = MR_LANG( 'HDD' )
+			lblOnline = E_TAG_TRUE
+
 		if aNetVolume :
+			lblOnline = E_TAG_FALSE
 			lblSelect = os.path.basename( aNetVolume.mMountPath )
-			if not aNetVolume.mOnline :
-				lblOnline = E_TAG_FALSE
+			if aNetVolume.mOnline :
+				lblOnline = E_TAG_TRUE
 			useFree = aNetVolume.mFreeMB
 			if aNetVolume.mTotalMB > 0 :
 				useTotal = aNetVolume.mTotalMB
@@ -664,30 +683,41 @@ class Configure( SettingWindow ) :
 		if useTotal > 0 :
 			useInfo = int( ( ( 1.0 * ( useTotal - useFree ) ) / useTotal ) * 100 )
 
-		lblByte = '%sMb'% useFree
+		lblByte = '%sMB'% useFree
 		if useFree > 1024 :
-			lblByte = '%sGb'% ( useFree / 1024 )
+			lblByte = '%sGB'% ( useFree / 1024 )
 		elif useFree < 0 :
-			lblByte = '%sKb'% ( useFree * 1024 )
+			lblByte = '%sKB'% ( useFree * 1024 )
 		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 
 
 	def GetVolumeContext( self, aVolumeID = -1 ) :
-		trackList = [ContextItem( MR_LANG( 'Internal HDD' ), 99 )]
+		trackList = []
+		if self.mHDDStatus :
+			trackList.append( ContextItem( MR_LANG( 'Internal HDD' ), 99 ) )
+
 		trackIndex = 0
 		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 			for netVolume in self.mNetVolumeList :
 				getPath = netVolume.mRemoteFullPath
 				urlType = urlparse.urlparse( getPath ).scheme
 				urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+				lblStatus = ''
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
 
+				if not netVolume.mOnline :
+					lblStatus = '-%s'% MR_LANG( 'Disconnected' )
+				if netVolume.mReadOnly :
+					lblStatus = '-%s'% MR_LANG( 'Read only' )
+
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
-				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
+				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
+				if lblStatus :
+					lblPath = '[COLOR grey3]%s[/COLOR]'% lblPath
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :
@@ -711,12 +741,18 @@ class Configure( SettingWindow ) :
 	def ShowNetworkVolume( self ) :
 		trackList = self.GetVolumeContext( )
 		if not trackList or len( trackList ) < 1 :
-			LOG_TRACE( '[ManaulTimer] show fail, mount list is None' )
+			LOG_TRACE( '[ManaulTimer] Nothing in the mount list' )
 			return
 
 		selectedIdx = 0
-		if self.mSelectVolume != 99 :
+		if self.mHDDStatus and self.mSelectVolume != 99 :
 			selectedIdx = self.mSelectVolume + 1
+		else :
+			selectedIdx = self.mSelectVolume
+
+		if selectedIdx < 0 :
+			selectedIdx = 0
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( trackList, selectedIdx )
 		dialog.doModal( )
@@ -730,7 +766,6 @@ class Configure( SettingWindow ) :
 			LOG_TRACE( '[Configure] pass, select same' )
 			return
 
-		self.mSelectVolume = selectAction
 
 		defVolume = None
 		defProperty = 0 #E_DEFAULT_PATH_INTERNAL_HDD
@@ -743,12 +778,24 @@ class Configure( SettingWindow ) :
 						LOG_TRACE( '[Configure] clear default volume[%s]'% netVolume.mMountPath )
 						break
 		elif selectAction < len( self.mNetVolumeList ) :
-			defVolume = deepcopy( self.mNetVolumeList[selectAction] )
+			netVolume = self.mNetVolumeList[selectAction]
+			if not netVolume.mOnline or netVolume.mReadOnly :
+				lblLine = MR_LANG( 'Read only folder' )
+				if not netVolume.mOnline :
+					lblLine = MR_LANG( 'Inaccessible folder' )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
+				dialog.doModal( )
+				return
+
+			defVolume = deepcopy( netVolume )
 			defVolume.mIsDefaultSet = 1
 			defProperty = 1 #E_DEFAULT_PATH_NETWORK_VOLUME
 			self.mDataCache.Record_SetDefaultVolume( defVolume )
 			LOG_TRACE( '[Configure] changed default volume[%s]'% defVolume.mMountPath )
 
+		self.mSelectVolume = selectAction
 		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
 
@@ -768,16 +815,18 @@ class Configure( SettingWindow ) :
 
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
-		RemoveDirectory( '/config/smbReserved.info' )
+		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
 		volumeCount = len( volumeList )
 		defVolume = None
 		count = 0
 		failCount = 0
 		failItem = ''
-		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
+		os.system( 'echo \"#!/bin/sh\" >> %s'% E_DEFAULT_NETWORK_VOLUME_SHELL  )
+		for netVolume in self.mNetVolumeList :
+			os.system( 'echo \"/bin/umount -fl %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 
 		self.SetControlLabelString( E_Input03, '' )
 		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
@@ -791,6 +840,9 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, lblLabel )
 
 			mntHistory = ExecuteShell( 'mount' )
+			if mntHistory and ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				RemoveDirectory( netVolume.mMountPath )
+
 			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
 				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
 				if not mntPath :
@@ -799,16 +851,16 @@ class Configure( SettingWindow ) :
 						lblRet = MR_LANG( 'Fail' )
 						failCount += 1
 						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
-						os.system( 'umount -f %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
+						os.system( '/bin/umount -fl %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
-			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
-			os.system( 'echo \"%s\" >> /config/smbReserved.info'% cmd )
+			os.system( 'echo \"mkdir -p %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+			os.system( 'echo \"%s\" >> %s'% ( cmd, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 			os.system( 'sync' )
 			time.sleep( 1 )
 
-		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'chmod 755 %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 		self.SetControlLabelString( E_Input03, MR_LANG( 'Refresh Record Path' ) )
@@ -830,10 +882,10 @@ class Configure( SettingWindow ) :
 
 
 	def SetListControl( self ) :
+		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.ResetAllControl( )
 		self.WaitInitialize( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.setProperty( 'NetVolumeInfo', E_TAG_FALSE )
 
 		if selectedId == E_LANGUAGE :
@@ -891,24 +943,32 @@ class Configure( SettingWindow ) :
 				#ToDO : default path, get mount path
 				self.mFreeHDD  = 0
 				self.mTotalHDD = 0
-				if CheckHdd( ) :
+				self.mSelectVolume = -1
+				defaultPath = MR_LANG( 'None' )
+				self.mHDDStatus = CheckHdd( )
+				if self.mHDDStatus :
 					self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 					self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
+					self.mSelectVolume = 99
+					defaultPath = MR_LANG( 'HDD' )
 
-				self.mSelectVolume = 99
 				defVolume = None
-				defaultPath = MR_LANG( 'HDD' )
 				disableControlIds = [ E_Input02, E_Input03 ]
 				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 				if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
 					disableControlIds = []
+					idxCount = 0
 					for netVolume in self.mNetVolumeList :
-						idxCount = 0
+						LOG_TRACE( '[Configure] idxCount[%s] volume[%s] isDefault[%s]'% ( idxCount, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 						if netVolume.mIsDefaultSet :
-							defaultPath = os.path.basename( netVolume.mMountPath )
-							defVolume = netVolume
-							self.mSelectVolume = idxCount
-							break
+							if not netVolume.mOnline or netVolume.mReadOnly :
+								ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 0 )
+								LOG_TRACE( '[Configure] changed default HDD, default volume is Not online or readonly' )
+							else :
+								defaultPath = os.path.basename( netVolume.mMountPath )
+								defVolume = netVolume
+								self.mSelectVolume = idxCount
+								break
 						idxCount += 1
 
 				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )
@@ -986,11 +1046,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			if self.mPlatform.IsPrismCube( ) :
-				#self.OpenBusyDialog( )
-				self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
-				self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 				if self.mUseNetworkType == NETWORK_WIRELESS :
 					self.LoadWifiInformation( )
+					self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
+					self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 					self.AddInputControl( E_Input01, MR_LANG( 'Search Wifi' ), self.mCurrentSsid, MR_LANG( 'Search for available wireless connections' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'IP Address' ), self.mWifiAddress )
 					self.AddInputControl( E_Input03, MR_LANG( 'Subnet Mask' ), self.mWifiSubnet )
@@ -1013,6 +1072,8 @@ class Configure( SettingWindow ) :
 						self.LoadEthernetInformation( )
 						self.mReLoadEthernetInformation = False
 
+					self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or wireless for your network connection' ) )
+					self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 					self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mEthernetConnectMethod, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
 					self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mEthernetIpAddress, MR_LANG( 'Enter your IP address' ) )
 					self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mEthernetNetmask, MR_LANG( 'Enter your subnet mask' ) )
@@ -1034,8 +1095,6 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_Input07, False )
 				if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 					self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-
-				#self.CloseBusyDialog( )
 
 			else :
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
@@ -1736,18 +1795,30 @@ class Configure( SettingWindow ) :
 
 
 	def MakeDedicate( self ) :
-		mediasize = 100
+		maxsize = self.GetMaxMediaSize( )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Maximum Partition Size' ), MR_LANG( 'Maximum media partition size' ) + ' : %s GB' % maxsize )
+		dialog.doModal( )
+
+		mediadefault = 100
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediasize , 3 )
+		dialog.SetDialogProperty( MR_LANG( 'Enter Media Partition Size in GB' ), '%s' % mediadefault , 4 )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			mediasize = dialog.GetString( )
+			mediadefault = dialog.GetString( )
+
+		if maxsize < int( mediadefault ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Partition size not valid' ) )
+			dialog.doModal( )
+			return
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediasize, MR_LANG( 'Start formatting HDD?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Your Media Partition is %s GB' ) % mediadefault, MR_LANG( 'Start formatting HDD?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.OpenBusyDialog( )
-			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
+			ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediadefault ) * 1024 )
 			ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 			self.mDataCache.Player_AVBlank( True )
 			if self.mUseUsbBackup :
@@ -1755,6 +1826,33 @@ class Configure( SettingWindow ) :
 				CreateDirectory( E_DEFAULT_BACKUP_PATH )
 				os.system( 'touch %s/isUsbBackup' % E_DEFAULT_BACKUP_PATH )
 			self.mCommander.Make_Dedicated_HDD( )
+
+
+	def GetMaxMediaSize( self ) :
+		try :
+			size = 0
+			device = '/dev/sda'
+			cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
+			if sys.version_info < ( 2, 7 ) :
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				size = p.stdout.read( ).strip( )
+				p.stdout.close( )
+			else :
+				p = Popen( cmd, shell=True, stdout=PIPE, close_fds=True )
+				( size, err ) = p.communicate( )
+				size = size.strip( )
+
+			size = re.sub( ',', '', size )
+			size = int( size.split( '.' )[0] )
+
+			if size > HDD_RESERVED_USE :
+				return size - HDD_RESERVED_USE
+			else :
+				return 0
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return 0
 
 
 	def MakeBackupScript( self ) :

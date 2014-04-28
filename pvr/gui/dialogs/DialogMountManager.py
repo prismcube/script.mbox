@@ -42,7 +42,9 @@ class DialogMountManager( SettingDialog ) :
 		self.mDefaultPathVolume = None
 		self.mFreeHDD  = 0
 		self.mTotalHDD = 0
+		self.mHDDStatus = False
 		if CheckHdd( ) :
+			self.mHDDStatus = True
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
@@ -255,7 +257,7 @@ class DialogMountManager( SettingDialog ) :
 			LOG_TRACE( '------------------------urlType[%s]'% urlType )
 			if aInput == E_DialogInput06 :
 				if urlType :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
+					lblLine = MR_LANG( 'Invalid record path chosen' )
 				else :
 					isFail = False
 
@@ -277,9 +279,9 @@ class DialogMountManager( SettingDialog ) :
 
 					else :
 						# upnp, zeroconf, daap, ...
-						lblLine = MR_LANG( 'No %s support' )% urlType
+						lblLine = MR_LANG( 'No %s support' ) % urlType
 				else :
-					lblLine = '%s\n%s'% ( MR_LANG( 'Invalid record path chosen' ) )
+					lblLine = MR_LANG( 'Invalid record path chosen' )
 
 
 			if isFail :
@@ -349,8 +351,11 @@ class DialogMountManager( SettingDialog ) :
 		LOG_TRACE( '[MountManager] Record_DeleteNetworkVolume[%s]'% ret )
 		if ret :
 			if aIsUMount :
-				os.system( '/bin/umount -f %s'% aNetVolume.mMountPath )
+				os.system( '/bin/umount -fl %s'% aNetVolume.mMountPath )
 				os.system( 'sync' )
+				mntHistory = ExecuteShell( 'mount' )
+				if mntHistory and ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+					RemoveDirectory( aNetVolume.mMountPath )
 
 			listCount = len( self.mNetVolumeList )
 			if not self.mNetVolumeList or listCount < 1 :
@@ -439,7 +444,7 @@ class DialogMountManager( SettingDialog ) :
 
 								else :
 									# Add fail then restore umount
-									os.system( '/bin/umount -f %s'% mountPath )
+									os.system( '/bin/umount -fl %s'% mountPath )
 									os.system( 'sync' )
 
 				else :
@@ -497,12 +502,14 @@ class DialogMountManager( SettingDialog ) :
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
 
-			#if selectIdx > -1 :
-			#	self.mNetVolume = self.mNetVolumeList[self.mSelectIdx]
-			#	self.mNetVolume.printdebug()
+			if not self.mHDDStatus and ( not self.mDefaultPathVolume ) :
+				defaultPath = E_DEFAULT_PATH_NETWORK_VOLUME
+				self.mDefaultPathVolume = self.mNetVolumeList[0]
+				self.mDefaultPathVolume.mIsDefaultSet = 1
+				self.mDataCache.Record_SetDefaultVolume( self.mDefaultPathVolume )
 
 		self.mMode = E_NETWORK_VOLUME_SELECT
-		ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
+		#ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
 
 		self.DrawItem( )
 		self.UpdateShell( )
@@ -706,13 +713,13 @@ class DialogMountManager( SettingDialog ) :
 
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
-		RemoveDirectory( '/config/smbReserved.info' )
+		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
 		volumeCount = len( volumeList )
 		defVolume = None
 		count = 0
 		failCount = 0
 		failItem = ''
-		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
+		os.system( 'echo \"#!/bin/sh\" >> %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		for netVolume in volumeList :
 			count += 1
 			lblRet = MR_LANG( 'OK' )
@@ -734,12 +741,12 @@ class DialogMountManager( SettingDialog ) :
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_DialogInput03, lblLabel )
 
-			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
-			os.system( 'echo \"%s\" >> /config/smbReserved.info'% netVolume.mMountCmd )
+			os.system( 'echo \"mkdir -p %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+			os.system( 'echo \"%s\" >> %s'% ( netVolume.mMountCmd, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 			os.system( 'sync' )
 			time.sleep( 1 )
 
-		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'chmod 755 %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
@@ -759,20 +766,22 @@ class DialogMountManager( SettingDialog ) :
 
 
 	def UpdateShell( self ) :
-		RemoveDirectory( '/config/smbReserved.info' )
+		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
 		if not self.mNetVolumeList or len( self.mNetVolumeList ) < 1 :
 			return
 
-		os.system( 'echo \"#!/bin/sh\" >> /config/smbReserved.info' )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION ) )
-		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> /config/smbReserved.info'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION ) )
+		os.system( 'echo \"#!/bin/sh\" >> %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		for netVolume in self.mNetVolumeList :
-			os.system( 'echo \"mkdir -p %s\" >> /config/smbReserved.info'% netVolume.mMountPath )
-			os.system( 'echo \"%s\" >> /config/smbReserved.info'% netVolume.mMountCmd )
+			os.system( 'echo \"/bin/umount -fl %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_PATH_SMB_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_PATH_NFS_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		os.system( 'echo \"rm -rf %s; mkdir -p %s\" >> %s'% ( E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_PATH_FTP_POSITION, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+		for netVolume in self.mNetVolumeList :
+			os.system( 'echo \"mkdir -p %s\" >> %s'% ( netVolume.mMountPath, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
+			os.system( 'echo \"%s\" >> %s'% ( netVolume.mMountCmd, E_DEFAULT_NETWORK_VOLUME_SHELL ) )
 
 
-		os.system( 'chmod 755 /config/smbReserved.info' )
+		os.system( 'chmod 755 %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		os.system( 'sync' )
 		time.sleep( 1 )
 

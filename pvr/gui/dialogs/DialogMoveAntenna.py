@@ -37,7 +37,7 @@ class DialogMoveAntenna( BaseDialog ) :
 		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
 		context = [ MR_LANG( 'Rotate to East' ), MR_LANG( 'One step to East' ), MR_LANG( 'Stop' ), MR_LANG( 'One step to West' ), MR_LANG( 'Rotate to West' ), MR_LANG( 'Reset Limits' ), MR_LANG( 'East Limit' ), MR_LANG( 'West Limit' ),  MR_LANG( 'Store Current Position' ) ]
-		icon = [ 'OSDRewindNF.png', 'OSDLeft.png', 'OSDPauseNF.png', 'OSDRight.png', 'OSDForwardNF.png' ]
+		icon = [ 'OSDRewindNF.png', 'OSDPlayNF_Rotated.png', 'OSDPlayPauseNF.png', 'OSDPlayNF.png', 'OSDForwardNF.png' ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 

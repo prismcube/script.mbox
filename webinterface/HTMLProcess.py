@@ -96,7 +96,7 @@ class WebPage( object ) :
 		
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<script>
 				
@@ -111,7 +111,7 @@ class WebPage( object ) :
 					}
 
 					function delRecord( target ) {
-						if( confirm("Are You Sure To Delete the Selected File?") ) {
+						if( confirm("Are you sure to delete the selected file?") ) {
 							document.recordDel.key.value = target;
 							document.recordDel.submit();
 						}
@@ -125,7 +125,7 @@ class WebPage( object ) :
 				<div id='top'>
 					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
 					<div id='title'>
-						PrismCube Web UI
+						PRISMCUBE Web UI
 					</div>
 				</div>
 				
@@ -303,7 +303,7 @@ class Channel( WebPage ) :
 			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<script src="./jquery.js"></script>
 				<script src="./block.js"></script>
 				<style>
@@ -343,7 +343,7 @@ class Channel( WebPage ) :
 					}
 
 					function JumpToRecord( channelNumber ) {
-						var duration = prompt("Please Enter Duration Time (in Min) for the Recording");
+						var duration = prompt("Please enter duration time (in min) for the recording");
 						if( duration ) {
 							document.recordForm.channelNumber.value = channelNumber;
 							document.recordForm.duration.value = duration;
@@ -374,7 +374,7 @@ class Channel( WebPage ) :
 				<div id='top'>
 					<div id='logo'><img src='./uiImg/prismcube_logo.png'></div>		
 					<div id='title'>
-						PrismCube Web UI
+						PRISMCUBE Web UI
 					</div>
 				</div>
 				
@@ -968,7 +968,7 @@ class Epg( WebPage ) :
 
 			<html>
 			<head>
-				<title>PrismCube Web UI</title>
+				<title>PRISMCUBE Web UI</title>
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<body>
@@ -1094,7 +1094,7 @@ class Timer( WebPage ) :
 		content 	= """
 			<script>
 				function del( id ) {
-					if( confirm("Deleting Selected Timer?") ) {
+					if( confirm("Are you sure to delete the selected timer?") ) {
 						location.href = "/Timer?id=" + id;
 					}
 				}
@@ -1213,7 +1213,7 @@ class Record( WebPage ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
-		if HasAvailableRecordingHDD( ) == False :
+		if not HasAvailableRecordingHDD( ) :
 			self.content = """
 				<script>
 					alert("No HDD available, cannot record without HDD");
