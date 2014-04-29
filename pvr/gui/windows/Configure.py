@@ -273,6 +273,8 @@ class Configure( SettingWindow ) :
 						self.StopCheckNetworkTimer( )
 						time.sleep( 0.5 )
 						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
+						self.mDataCache.SetChannelReloadStatus( True )
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 			elif groupId == E_Input02 :
 				dialog = xbmcgui.Dialog( )
