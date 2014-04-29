@@ -932,23 +932,23 @@ class DialogPIP( BaseDialog ) :
 			#status = self.mDataCache.Player_GetStatus( )
 			if aLiveStatus != ElisEnum.E_MODE_LIVE or self.mDataCache.GetMediaCenter( ) :
 				if fakeChannel :
-					lblLine = MR_LANG( 'Can not switch' )
+					lblLine = MR_LANG( 'That channel is locked' )
 					if fakeChannel.mLocked :
 						isFail = True
-						lblLine = '%s\n%s'% ( MR_LANG( 'Channel locked' ), lblLine )
+						#lblLine = '%s\n%s'% ( MR_LANG( 'Locked channel' ), lblLine )
 					elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
 						isFail = True
-						lblMsg = MR_LANG( 'No Signal' )
+						lblLine = MR_LANG( 'No Signal' )
 						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'Scramble' :
-							lblMsg = MR_LANG( 'Scrambled' )
+							lblLine = MR_LANG( 'Scrambled' )
 						elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'NoService' :
-							lblMsg = MR_LANG( 'No Service' )
+							lblLine = MR_LANG( 'No Service' )
 
-						lblLine = '%s\n%s'% ( lblMsg, lblLine )
+						#lblLine = '%s\n%s'% ( lblMsg, lblLine )
 
 					if isFail :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						lblTitle = MR_LANG( 'Attension' )
+						lblTitle = MR_LANG( 'Could not switch PIP' )
 						dialog.SetDialogProperty( lblTitle, lblLine )
 						dialog.doModal( )
 						return
@@ -1042,7 +1042,7 @@ class DialogPIP( BaseDialog ) :
 				if self.mDataCache.PIP_GetSwapStatus( ) :
 					lblLabel = MR_LANG( 'Playback' )
 					if self.mDataCache.GetMediaCenter( ) :
-						lblLabel = MR_LANG( 'MediaPlay' )
+						lblLabel = MR_LANG( 'Media Playback' )
 
 					else :
 						status = self.mDataCache.Player_GetStatus( )
@@ -1131,7 +1131,7 @@ class DialogPIP( BaseDialog ) :
 				lblLabel = MR_LANG( 'Playback' )
 				if self.mDataCache.GetMediaCenter( ) :
 					swapAudio = self.mPIP_EnableAudio
-					lblLabel = MR_LANG( 'MediaPlay' )
+					lblLabel = MR_LANG( 'Media Playback' )
 
 				else :
 					status = self.mDataCache.Player_GetStatus( )
