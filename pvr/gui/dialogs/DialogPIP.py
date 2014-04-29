@@ -5,6 +5,7 @@ CTRL_ID_BUTTON_SETTING_PIP	= E_PIP_WINDOW_BASE_ID + 0001
 
 CTRL_ID_GROUP_PIP			= E_PIP_WINDOW_BASE_ID + 1000
 CTRL_ID_IMAGE_FOCUSED		= E_PIP_WINDOW_BASE_ID + 1002
+CTRL_ID_IMAGE_FOCUSED_OUT	= E_PIP_WINDOW_BASE_ID + 1003
 CTRL_ID_GROUP_INPUT			= E_PIP_WINDOW_BASE_ID + 1100
 CTRL_ID_IMAGE_INPUTBG		= E_PIP_WINDOW_BASE_ID + 1101
 CTRL_ID_LABEL_INPUTCH		= E_PIP_WINDOW_BASE_ID + 1102
@@ -74,6 +75,7 @@ SWITCH_CHANNEL_PIP = 3
 INPUT_CHANNEL_PIP  = 4
 LIST_CHANNEL_PIP = 5
 
+E_PIP_CHANNEL_ITEM_HEIGHT = 54
 E_USE_CHANNEL_LOGO = True
 
 PIP_CHECKWINDOW = [
@@ -124,6 +126,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlGroupPIP         = self.getControl( CTRL_ID_GROUP_PIP )
 		self.mCtrlLabelChannel     = self.getControl( CTRL_ID_LABEL_CHANNEL )
 		self.mCtrlImageFocusFO     = self.getControl( CTRL_ID_IMAGE_FOCUSED )
+		self.mCtrlImageFocusFOUT   = self.getControl( CTRL_ID_IMAGE_FOCUSED_OUT )
 		self.mCtrlImageArrowLeft   = self.getControl( CTRL_ID_IMAGE_ARROW_LEFT )
 		self.mCtrlImageArrowRight  = self.getControl( CTRL_ID_IMAGE_ARROW_RIGHT )
 		self.mCtrlImageArrowTop    = self.getControl( CTRL_ID_IMAGE_ARROW_TOP )
@@ -148,14 +151,16 @@ class DialogPIP( BaseDialog ) :
 
 		self.mChannelList     = []
 		self.mChannelListHash = {}
+		self.mChannelNumbersHash = {}
 		self.mTunableList     = []
 		self.mListItems       = []
 		self.mViewMode        = CONTEXT_ACTION_DONE_PIP
 		self.mPosCurrent      = deepcopy( E_DEFAULT_POSITION_PIP )
 		self.mPosBackup       = deepcopy( E_DEFAULT_POSITION_PIP )
-		self.mPIP_EnableAudio = False
+		self.mPIP_EnableAudio = self.mDataCache.PIP_GetSwapStatus( )
 		self.mAsyncTuneTimer  = None
 		self.mAsyncInputTimer = None
+		self.mAsyncDrawSwapTimer = None
 		self.mIndexAvail      = 0
 		self.mFakeChannel     = self.mCurrentChannel
 		self.mInputString     = ''
@@ -163,11 +168,19 @@ class DialogPIP( BaseDialog ) :
 		self.mCheckMediaPlay  = False
 		self.mCheckMediaPlayThread = None
 		self.mLastNumber      = self.mDataCache.PIP_GetCurrent( )
+		self.mSwapping        = False
 
-		self.mHotKeyAvailableGreen = True
-		self.mHotKeyAvailableYellow= True
+		self.mHotKeyAvailableGreen  = True
+		self.mHotKeyAvailableYellow = True
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		listHeight= self.mCtrlListChannelPIP.getHeight( )
+		self.mItemCount = listHeight / E_PIP_CHANNEL_ITEM_HEIGHT
+		self.mOffsetTopIndex = 0
+		self.mAsyncEPGTimer  = None
+		self.mAsyncRefreshEPGTimer = None
+		self.mEPGHashTable   = {}
+
 		self.mEventBus.Register( self )
 
 		self.Load( )
@@ -236,7 +249,7 @@ class DialogPIP( BaseDialog ) :
 		     actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 
 			if self.mViewMode == CONTEXT_ACTION_LIST_PIP :
-				self.UpdateCurrentPositon( )
+				self.RestartAsyncEPG( )
 
 			else :
 				if actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
@@ -264,7 +277,14 @@ class DialogPIP( BaseDialog ) :
 
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			if self.mHotKeyAvailableGreen :
-				self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+				eMode = ElisEnum.E_MODE_LIVE
+				if self.mDataCache.GetMediaCenter( ) :
+					eMode = ElisEnum.E_MODE_MULTIMEDIA
+				else :
+					status = self.mDataCache.Player_GetStatus( )
+					if status :
+						eMode = status.mMode
+				self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP, eMode )
 
 		elif actionId == Action.ACTION_COLOR_YELLOW :
 			if self.mHotKeyAvailableYellow :
@@ -280,6 +300,7 @@ class DialogPIP( BaseDialog ) :
 				return
 
 			self.Close( True )
+
 
 		else :
 			LOG_TRACE( '[PIP] Unknown key[%s]'% actionId )
@@ -308,7 +329,14 @@ class DialogPIP( BaseDialog ) :
 			self.ChannelTuneToPIP( LIST_CHANNEL_PIP )
 
 		elif aControlId  == CTRL_ID_BUTTON_ACTIVE_PIP :
-			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+			eMode = ElisEnum.E_MODE_LIVE
+			if self.mDataCache.GetMediaCenter( ) :
+				eMode = ElisEnum.E_MODE_MULTIMEDIA
+			else :
+				status = self.mDataCache.Player_GetStatus( )
+				if status :
+					eMode = status.mMode
+			self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP, eMode )
 
 		elif aControlId  == CTRL_ID_BUTTON_MUTE_PIP :
 			self.SetAudioPIP( )
@@ -377,7 +405,8 @@ class DialogPIP( BaseDialog ) :
 				LOG_TRACE( '[PIP] ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( '[PIP] EventRecv EOF_END' )
-					#self.mDataCache.Player_Stop( )
+					self.ChannelTuneToPIP( SWITCH_CHANNEL_PIP )
+					self.mDataCache.Player_Stop( )
 					self.mIsOk = Action.ACTION_STOP
 					thread = threading.Timer( 0, self.Close, [False] )
 					thread.start( )
@@ -416,22 +445,40 @@ class DialogPIP( BaseDialog ) :
 		self.UpdatePropertyGUI( 'ShowNamePIP', E_TAG_FALSE )
 
 		winId = xbmcgui.getCurrentWindowId( )
-
-		if self.mPIP_EnableAudio :
-			self.mDataCache.PIP_EnableAudio( False )
-			self.setProperty( 'EnableAudioPIP', E_TAG_FALSE )
-
 		if aStopPIP or ( self.mDataCache.GetMediaCenter( ) and winId not in XBMC_CHECKWINDOW ) :
 			ret = self.PIP_Stop( )
 
-		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
-			if self.mPIP_EnableAudio and winId in XBMC_CHECKWINDOW :
-				self.SetAudioXBMC( True )
+		#sync to audio by exit to full screen when swap
+		isNotSync   = False
+		audioEnable = False
+		if self.mDataCache.PIP_GetSwapStatus( ) and ( not self.mPIP_EnableAudio ) :
+			isNotSync   = True
+			audioEnable = True
+		elif ( not self.mDataCache.PIP_GetSwapStatus( ) ) and self.mPIP_EnableAudio :
+			isNotSync   = True
+			audioEnable = False
 
-				# back? stay pip
-				if not aStopPIP :
-					self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
+		if isNotSync :
+			# sync to main
+			if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
+				self.mDataCache.PIP_EnableAudio( False )
+				ret = self.mDataCache.PIP_Stop( False )
+				if ret :
+					self.mDataCache.PIP_SetStatus( False )
+					self.SetAudioXBMC( not audioEnable )
 
+					# back? stay pip
+					if not aStopPIP :
+						self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
+						self.mDataCache.PIP_SetStatus( True )
+						if self.mDataCache.PIP_GetSwapStatus( ) :
+							self.mDataCache.PIP_SwapWindow( True )
+
+			self.mDataCache.PIP_EnableAudio( audioEnable )
+		self.setProperty( 'EnableAudioPIP', E_TAG_FALSE )
+
+		self.StopAsyncEPG( )
+		self.StopAsyncDrawSwap( )
 		self.StopAsyncHideInput( )
 		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive( ) :
 			self.mAsyncTuneTimer.join( )
@@ -507,6 +554,14 @@ class DialogPIP( BaseDialog ) :
 			#1. show/hide auto
 			if WinMgr.GetInstance( ).GetLastWindowID( ) in PIP_CHECKWINDOW :
 				isShow = True
+
+			#2. isSwap? main surface to pip
+			if self.mDataCache.PIP_GetSwapStatus( ) :
+				from pvr.GuiHelper import GetInstanceSkinPosition
+				posNotify = self.LoadPositionPIP( )
+				skinPos = GetInstanceSkinPosition( )
+				x, y, w, h = skinPos.GetPipPosition2( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+				self.mDataCache.PIP_SetDimension( x, y, w, h )
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% isShow )
@@ -612,6 +667,7 @@ class DialogPIP( BaseDialog ) :
 			full = False
 			if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
 				mute = True
+				full = True
 
 		else :
 			enable = True
@@ -622,6 +678,7 @@ class DialogPIP( BaseDialog ) :
 				enable = False
 				if E_SUPPORT_MEDIA_PLAY_AV_SWITCH :
 					mute = True
+					full = True
 
 			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
 			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
@@ -655,10 +712,11 @@ class DialogPIP( BaseDialog ) :
 		thread.start( )
 
 		if self.mDataCache.GetMediaCenter( ) :
-			if self.mDataCache.PIP_GetStatus( ) :
-				ret = self.mDataCache.PIP_Stop( )
-				if ret :
-					self.mDataCache.PIP_SetStatus( False )
+			#deprecate 2012.04.24, instead of swap scenario
+			#if self.mDataCache.PIP_GetStatus( ) :
+			#	ret = self.mDataCache.PIP_Stop( False )
+			#	if ret :
+			#		self.mDataCache.PIP_SetStatus( False )
 
 			self.mCheckMediaPlay = True
 			self.mCheckMediaPlayThread = threading.Timer( 0, self.CloseByMediaPlayStop )
@@ -715,46 +773,6 @@ class DialogPIP( BaseDialog ) :
 		#SetSetting( 'PIP_POSITION', posNotify )
 
 		self.SetGUIToPIP( )
-
-
-	def InitChannelList( self ) :
-		listItems = []
-		self.mCtrlListChannelPIP.reset( )
-		self.mChannelList = self.mDataCache.PIP_GetTunableList( )
-		currentPos = 0
-		channelCount = 0
-		for iChannel in self.mChannelList :
-
-			if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
-				currentPos = channelCount
-
-			iChNumber = iChannel.mNumber
-			if E_V1_2_APPLY_PRESENTATION_NUMBER :
-				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
-
-			listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s'% iChannel.mName )
-
-			if E_USE_CHANNEL_LOGO :
-				logo = '%s_%s' %( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mSid )
-				chImage = self.mChannelLogo.GetLogo( logo )
-				listItem.setProperty( 'ChannelLogo', '%s'% chImage )
-
-			if iChannel.mLocked : 
-				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-			if iChannel.mIsCA : 
-				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
-			if iChannel.mIsHD :
-				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
-
-			channelCount += 1
-			listItems.append( listItem )
-
-		self.setProperty( 'ReadyToListPIP', E_TAG_TRUE )
-		self.mCtrlListChannelPIP.addItems( listItems )
-
-		#self.mCtrlListChannelPIP.selectItem( currentPos )
-		self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
-		self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
 
 
 	def Channel_GetCurrentByStartOnFirst( self ) :
@@ -853,9 +871,10 @@ class DialogPIP( BaseDialog ) :
 		return pChNumber
 
 
-	def ChannelTuneToPIP( self, aDir ) :
+	def ChannelTuneToPIP( self, aDir, aLiveStatus = ElisEnum.E_MODE_LIVE ) :
 		fakeChannel = self.mCurrentChannel
-		if aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP and aDir != LIST_CHANNEL_PIP :
+		if aLiveStatus == ElisEnum.E_MODE_LIVE and \
+		   aDir != INPUT_CHANNEL_PIP and aDir != CURR_CHANNEL_PIP and aDir != LIST_CHANNEL_PIP :
 			xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
 
 		if not fakeChannel or fakeChannel.mError != 0 or fakeChannel.mNumber == 0 :
@@ -910,10 +929,42 @@ class DialogPIP( BaseDialog ) :
 
 		elif aDir == SWITCH_CHANNEL_PIP :
 			isFail = False
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode != ElisEnum.E_MODE_LIVE :
-				isFail = True
-				LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
+			#status = self.mDataCache.Player_GetStatus( )
+			if aLiveStatus != ElisEnum.E_MODE_LIVE or self.mDataCache.GetMediaCenter( ) :
+				if fakeChannel :
+					lblLine = MR_LANG( 'Can not switch' )
+					if fakeChannel.mLocked :
+						isFail = True
+						lblLine = '%s\n%s'% ( MR_LANG( 'Channel locked' ), lblLine )
+					elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
+						isFail = True
+						lblMsg = MR_LANG( 'No Signal' )
+						if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'Scramble' :
+							lblMsg = MR_LANG( 'Scrambled' )
+						elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) == 'NoService' :
+							lblMsg = MR_LANG( 'No Service' )
+
+						lblLine = '%s\n%s'% ( lblMsg, lblLine )
+
+					if isFail :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						lblTitle = MR_LANG( 'Attension' )
+						dialog.SetDialogProperty( lblTitle, lblLine )
+						dialog.doModal( )
+						return
+
+				self.mSwapping = True
+				if self.mDataCache.GetMediaCenter( ) :
+					# media swap != audio swap ? restore sync full screen
+					if self.mDataCache.PIP_GetSwapStatus( ) and ( not self.mPIP_EnableAudio ) :
+						self.mPIP_EnableAudio = True
+					self.SetAudioPIP( )
+				self.SwapExchangeToPIP( fakeChannel )
+				self.RestartAsyncDrawSwap( aLiveStatus )
+				self.mSwapping = False
+				LOG_TRACE( '[PIP] switch PIP and media(archive)' )
+				return
+				#LOG_TRACE( '[PIP] Cannot switch PIP. No Live program' )
 
 			if ( not isFail ) and self.mCurrentMode and \
 			   self.mCurrentMode.mServiceType != ElisEnum.E_SERVICE_TYPE_TV :
@@ -967,6 +1018,7 @@ class DialogPIP( BaseDialog ) :
 					ret = self.mDataCache.Channel_SetCurrentSync( fakeChannel.mNumber, ElisEnum.E_SERVICE_TYPE_TV, True )
 					if ret :
 						fakeChannel = iChannel
+						self.RestartAsyncDrawSwap( aLiveStatus )
 
 					else :
 						isFail = True
@@ -982,8 +1034,36 @@ class DialogPIP( BaseDialog ) :
 		elif aDir == CURR_CHANNEL_PIP :
 			if self.mDataCache.PIP_GetStatus( ) :
 				LOG_TRACE( '[PIP] already started' )
-				#self.mDataCache.PIP_AVBlank( False )
+				if self.mDataCache.GetMediaCenter( ) :
+					if not self.mFakeChannel :
+						self.mFakeChannel = fakeChannel
 
+				#1. isSwap? show label playback
+				if self.mDataCache.PIP_GetSwapStatus( ) :
+					lblLabel = MR_LANG( 'Playback' )
+					if self.mDataCache.GetMediaCenter( ) :
+						lblLabel = MR_LANG( 'MediaPlay' )
+
+					else :
+						status = self.mDataCache.Player_GetStatus( )
+						if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+							iChannel = self.mDataCache.Channel_GetCurrent( )
+							if iChannel :
+								lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+
+						elif status.mMode == ElisEnum.E_MODE_PVR :
+							lblLabel =  MR_LANG( 'Playback' )
+							playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+							if playingRecord :
+								lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+
+						else :
+							lblLabel =  MR_LANG( 'Unknown' )
+
+					self.mCtrlLabelChannel.setLabel( lblLabel )
+					return
+
+				#2. isLive? show label pipChannel
 				if fakeChannel :
 					if fakeChannel.mLocked :
 						xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', E_TAG_TRUE )
@@ -1040,6 +1120,59 @@ class DialogPIP( BaseDialog ) :
 		return True
 
 
+	def SwapExchangeToPIP( self, aChannel = None, aGetLabelControl = False, aOrder = None, aRegular = True ) :
+		LOG_TRACE( '----------------------------------------------PIP_GetSwapStatus[%s]'% self.mDataCache.PIP_GetSwapStatus( ) )
+		if self.mDataCache.PIP_SwapWindow( aOrder, aRegular ) :
+			# True : main - pip surface, pip - main surface
+			# False: restore normal
+			swapAudio = False
+			if self.mDataCache.PIP_GetSwapStatus( ) :
+				swapAudio = True
+				lblLabel = MR_LANG( 'Playback' )
+				if self.mDataCache.GetMediaCenter( ) :
+					swapAudio = self.mPIP_EnableAudio
+					lblLabel = MR_LANG( 'MediaPlay' )
+
+				else :
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+						iChannel = self.mDataCache.Channel_GetCurrent( )
+						if iChannel :
+							lblLabel = '%s - P%04d.%s' %( MR_LANG( 'TIMESHIFT' ), iChannel.mNumber, iChannel.mName )
+
+					elif status.mMode == ElisEnum.E_MODE_PVR :
+						lblLabel =  MR_LANG( 'Playback' )
+						playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+						if playingRecord :
+							lblLabel = '%s - P%04d.%s'% ( lblLabel, playingRecord.mChannelNo, playingRecord.mRecordName )
+
+					else :
+						lblLabel =  MR_LANG( 'Unknown' )
+
+				if aGetLabelControl :
+					self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( lblLabel )
+				else :
+					self.mCtrlLabelChannel.setLabel( lblLabel )
+
+				LOG_TRACE( '[PIP] switch media' )
+
+			else :
+				if self.mDataCache.GetMediaCenter( ) :
+					swapAudio = self.mPIP_EnableAudio
+
+				fakeChannel = aChannel
+				if not fakeChannel :
+					pChNumber = self.mDataCache.PIP_GetCurrent( )
+					fakeChannel = self.mDataCache.PIP_GetByNumber( pChNumber )
+
+				self.SetLabelChannel( fakeChannel, aGetLabelControl )
+				#self.RestartAsyncTune( fakeChannel )
+				LOG_TRACE( '[PIP] switch pip' )
+
+			self.mPIP_EnableAudio = swapAudio
+			self.setProperty( 'EnableAudioPIP', E_TAG_FALSE )
+
+
 	def SetLabelInputNumber( self ) :
 		imagePng = 'black-back_noAlpha.png'
 		if xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
@@ -1053,7 +1186,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlLabelInputName.setLabel( aChannelName )
 
 
-	def SetLabelChannel( self, aChannel = None ) :
+	def SetLabelChannel( self, aChannel = None, aGetLabelControl = False ) :
 		if not aChannel :
 			LOG_TRACE( 'No channel label' )
 			return
@@ -1063,7 +1196,10 @@ class DialogPIP( BaseDialog ) :
 			pChNumber = self.mDataCache.CheckPresentationNumber( aChannel )
 
 		label = '%s - %s'% ( pChNumber, aChannel.mName )
-		self.mCtrlLabelChannel.setLabel( label )
+		if aGetLabelControl :
+			self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( label )
+		else :
+			self.mCtrlLabelChannel.setLabel( label )
 		#self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
 
 
@@ -1073,6 +1209,9 @@ class DialogPIP( BaseDialog ) :
 			self.mPosCurrent = deepcopy( self.mPosBackup )
 			self.SetPositionPIP( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
 
+		if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+			self.StopRefreshEPG( )
+			self.StopAsyncEPG( )
 		self.UpdatePropertyGUI( 'SetContextAction', '' )
 		self.UpdatePropertyGUI( 'ShowListPIP', E_TAG_FALSE )
 		self.UpdatePropertyGUI( 'SettingPIP', E_TAG_FALSE )
@@ -1103,49 +1242,6 @@ class DialogPIP( BaseDialog ) :
 			self.setProperty( 'ShowOSDStatus', E_TAG_FALSE )
 			self.setProperty( 'SetContextAction', lbltxt )
 			self.SetGUIArrow( True )
-
-
-	def UpdateCurrentPositon( self, aInput = False, aChannel = None ) :
-		if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
-			LOG_TRACE( '[PIP] can not position, not list mode' )
-			return
-
-		if aInput :
-			if not self.mChannelList :
-				LOG_TRACE( '[PIP] ChannelList None' )
-				return
-
-			curNumber = 0
-			if aChannel :
-				curNumber = aChannel.mNumber
-
-			else :
-				if self.mCurrentChannel :
-					curNumber = self.mCurrentChannel.mNumber
-				else :
-					curNumber = self.mDataCache.PIP_GetCurrent( )
-
-			if not curNumber :
-				LOG_TRACE( '[PIP] Current channel None' )
-				return
-
-			channelPos = 0
-			currentPos = 0
-			for iChannel in self.mChannelList :
-				if iChannel.mNumber == curNumber :
-					currentPos = channelPos
-					break
-				channelPos += 1
-
-			#self.mCtrlListChannelPIP.selectItem( currentPos )
-			self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
-			self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
-
-			LOG_TRACE( '[PIP] update position item' )
-
-		else :
-			idx = self.mCtrlListChannelPIP.getSelectedPosition( ) + 1
-			self.setProperty( 'SelectedPosition', '%s'% idx )
 
 
 	def ShowContextMenu( self ) :
@@ -1283,6 +1379,10 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageFocusFO.setWidth( w )
 		self.mCtrlImageFocusFO.setHeight( h )
 
+		#swap effect
+		self.mCtrlImageFocusFOUT.setWidth( w )
+		self.mCtrlImageFocusFOUT.setHeight( h )
+
 		#base overlay for radio mode
 		bh = h - 10
 		bw = w - 10
@@ -1382,6 +1482,10 @@ class DialogPIP( BaseDialog ) :
 			isAudioBlock = True
 			lblMsg = MR_LANG( 'The channel is locked' )
 
+		#2. isSwap? set must
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			isAudioBlock = False
+
 		"""
 		if not self.mDataCache.GetMediaCenter( ) :
 			#check dvb only
@@ -1405,7 +1509,7 @@ class DialogPIP( BaseDialog ) :
 			if self.mPIP_EnableAudio :
 				self.mDataCache.PIP_EnableAudio( False )
 
-			ret = self.mDataCache.PIP_Stop( )
+			ret = self.mDataCache.PIP_Stop( False )
 			if ret :
 				self.mDataCache.PIP_SetStatus( False )
 				self.SetAudioXBMC( not isEnable )
@@ -1417,6 +1521,9 @@ class DialogPIP( BaseDialog ) :
 					self.mPIP_EnableAudio = isEnable
 					self.mDataCache.LoadVolumeBySetGUI( ) #mute,volume sync
 
+					if self.mDataCache.PIP_GetSwapStatus( ) :
+						self.mDataCache.PIP_SwapWindow( True )
+
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
 		else :
@@ -1425,7 +1532,13 @@ class DialogPIP( BaseDialog ) :
 				self.mPIP_EnableAudio = isEnable
 			LOG_TRACE( '[PIP] DVB audioSwitch ret[%s] pipAudio[%s] mediaAudio[%s]'% ( ret, isEnable, not isEnable ) )
 
-		self.setProperty( 'EnableAudioPIP', '%s'% self.mPIP_EnableAudio )
+
+		alertAudio = self.mPIP_EnableAudio
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			alertAudio = not alertAudio
+		self.setProperty( 'EnableAudioPIP', '%s'% alertAudio )
+
+		return True
 
 
 	def RestartAsyncTune( self, aChannel = None ) :
@@ -1465,12 +1578,21 @@ class DialogPIP( BaseDialog ) :
 			thread = threading.Timer( 0, self.UpdateCurrentPositon, [True, self.mFakeChannel] )
 			thread.start( )
 
+			if self.mDataCache.PIP_GetSwapStatus( ) and ( not self.mSwapping ) :
+				aForce = False
+				if not self.mDataCache.GetMediaCenter( ) :
+					aForce = True
+
+				self.SetAudioPIP( aForce, False )
+				self.SwapExchangeToPIP( self.mFakeChannel )
+
 			self.mDataCache.PIP_SetStatus( True )
 			self.mDataCache.PIP_SetCurrentChannel( self.mFakeChannel )
 			self.mIndexAvail = 0
 			self.mCurrentChannel = self.mFakeChannel
 			ret = self.mDataCache.PIP_Start( self.mFakeChannel.mNumber )
 			LOG_TRACE( '[PIP] PIP_Start ret[%s] ch[%s %s]'% ( ret, self.mFakeChannel.mNumber, self.mFakeChannel.mName ) )
+
 			if ret :
 				if self.mFakeChannel.mLocked :
 					self.SetAudioPIP( True, False )
@@ -1508,6 +1630,9 @@ class DialogPIP( BaseDialog ) :
 		if not aChannel :
 			LOG_TRACE( '[PIP] could not tune by external. None channel' )
 			return
+
+		if self.mDataCache.PIP_GetSwapStatus( ) and ( not self.mDataCache.GetMediaCenter( ) ) :
+			self.SwapExchangeToPIP( aChannel, True, False )
 
 		self.mDataCache.PIP_SetStatus( True )
 		self.mDataCache.PIP_SetCurrentChannel( aChannel )
@@ -1551,5 +1676,318 @@ class DialogPIP( BaseDialog ) :
 	def ResetHideInput( self ) :
 		self.mInputString = ''
 		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_FALSE )
+
+
+
+	def RestartAsyncDrawSwap( self, aMode = ElisEnum.E_MODE_LIVE ) :
+		self.StopAsyncDrawSwap( )
+		self.StartAsyncDrawSwap( aMode )
+
+
+	def StartAsyncDrawSwap( self, aMode = ElisEnum.E_MODE_LIVE ) :
+		self.mAsyncDrawSwapTimer = threading.Timer( 0, self.ResetDrawSwap, [aMode] )
+		self.mAsyncDrawSwapTimer.start( )
+
+
+	def StopAsyncDrawSwap( self ) :
+		if self.mAsyncDrawSwapTimer and self.mAsyncDrawSwapTimer.isAlive( ) :
+			self.mAsyncDrawSwapTimer.cancel( )
+			del self.mAsyncDrawSwapTimer
+
+		self.mAsyncDrawSwapTimer = None
+
+
+	def ResetDrawSwap( self, aMode = ElisEnum.E_MODE_LIVE ) :
+		swapStatus = E_TAG_FALSE
+		if self.mDataCache.PIP_GetSwapStatus( ) or aMode == ElisEnum.E_MODE_LIVE :
+			swapStatus = E_TAG_TRUE
+
+		self.setProperty( 'PIPSwapStatus', swapStatus )
+		swapHideThread = threading.Timer( 1, self.HideDrawSwap )
+		swapHideThread.start( )
+
+
+	def HideDrawSwap( self ) :
+		self.setProperty( 'PIPSwapStatus', 'None' )
+
+
+
+	########### part 2 : pip channel list ############
+
+	def GetChannelByIDs( self, aNumber, aSid, aTsid, aOnid, aReqIndex = False ) :
+		if not self.mChannelListHash or len( self.mChannelListHash ) < 1 :
+			retVal = None
+			if aReqIndex :
+				retVal = -1
+			return retVal
+
+		retValue = 0
+		if aReqIndex :
+			retValue = 1
+
+		iChannel = self.mChannelListHash.get( '%d:%d:%d:%d'% ( aNumber, aSid, aTsid, aOnid ), None )
+		if iChannel :
+			iChannel = iChannel[retValue]
+
+		if aReqIndex and iChannel == None :
+			iChannel = -1 #none exist index
+
+		return iChannel
+
+
+	def GetChannelByNumber( self, aNumber ) :
+		if not self.mChannelNumbersHash or len( self.mChannelNumbersHash ) < 1 :
+			return None
+
+		return self.mChannelNumbersHash.get( aNumber, None )
+
+
+	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
+		return self.mEPGHashTable.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+
+
+	def LoadByCurrentEPG( self, aUpdateAll = False ) :
+		if not self.mChannelList or len( self.mChannelList ) < 1 :
+			LOG_TRACE( '[PIP] pass, channelList None' )
+			return
+
+		isUpdate = True
+		epgList = []
+		startTime = time.time()
+
+		if aUpdateAll :
+			self.OpenBusyDialog( )
+		#self.mLock.acquire( )
+
+		try :
+			if aUpdateAll :
+				self.mEPGHashTable = {}
+				#epgList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mCurrentMode.mServiceType )
+				epgList = self.mDataCache.Epgevent_GetShortListAll( self.mCurrentMode )
+				#LOG_TRACE( '[PIP] aUpdateAll[%s] mode[%s] type[%s]'% ( aUpdateAll, self.mCurrentMode.mMode, self.mCurrentMode.mServiceType ) )
+
+			else :
+				numList = []
+				#chNumbers = []
+				self.mOffsetTopIndex = GetOffsetPosition( self.mCtrlListChannelPIP )
+				endCount  = self.mOffsetTopIndex + self.mItemCount
+				listCount = len( self.mChannelList )
+				for offsetIdx in range( self.mOffsetTopIndex, endCount ) :
+					if offsetIdx < listCount :
+						chNum = ElisEInteger( )
+						chNum.mParam = self.mChannelList[offsetIdx].mNumber
+						numList.append( chNum )
+						#chNumbers.append( self.mChannelList[offsetIdx].mNumber )
+
+					else :
+						#LOG_TRACE( '[PIP] limit over, mOffsetTopIndex[%s] offsetIdx[%s] chlen[%s]'% ( self.mOffsetTopIndex, offsetIdx, listCount ) )
+						break
+				#LOG_TRACE( '[ChannelList] aUpdateAll[%s] mOffsetTopIndex[%s] mItemCount[%s] chlen[%s] numList[%s][%s]'% ( aUpdateAll, self.mOffsetTopIndex, self.mItemCount, listCount, len( numList ), chNumbers ) )
+
+				if numList and len( numList ) > 0 :
+					epgList = self.mDataCache.Epgevent_GetShortList( self.mCurrentMode.mServiceType, numList )
+
+		except Exception, e :
+			isUpdate = False
+			LOG_ERR( '[PIP] except[%s]'% e )
+
+		if not epgList or len( epgList ) < 1 :
+			isUpdate = False
+			LOG_TRACE( '[PIP] get epglist None' )
+
+		if isUpdate :
+			for iEPG in epgList :
+				self.mEPGHashTable[ '%d:%d:%d'% ( iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) ] = iEPG
+				#LOG_TRACE( 'epg [%s %s:%s:%s]'% ( iEPG.mChannelNo, iEPG.mSid, iEPG.mTsid, iEPG.mOnid ) )
+
+			LOG_TRACE( '[PIP] epgList COUNT[%s]'% len( epgList ) )
+
+		#self.mLock.release( )
+		if aUpdateAll :
+			self.CloseBusyDialog( )
+
+		#print '[ChannelList] LoadByCurrentEPG-----testTime[%s]'% ( time.time() - startTime )
+
+		self.UpdateListToEPG( aUpdateAll )
+		self.RestartRefreshEPG( )
+
+
+	def UpdateListToEPG( self, aUpdateAll = False, aForce = False ) :
+		if not self.mListItems or ( not self.mChannelList ) :
+			LOG_TRACE( '[PIP] pass, channelList None' )
+			return
+
+		startTime = time.time()
+
+		updateStart = GetOffsetPosition( self.mCtrlListChannelPIP )
+		updateEnd = ( updateStart + self.mItemCount )
+		if aUpdateAll :
+			updateStart = 0
+			updateEnd = len( self.mListItems ) - 1
+
+		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( self.GetOffsetPosition( ), updateStart, updateEnd, E_PIP_CHANNEL_ITEM_HEIGHT, self.mItemCount ) )
+
+		if aUpdateAll :
+			self.OpenBusyDialog( )
+
+		try :
+			updateCount = 0
+			strNoEvent = MR_LANG( 'No event' )
+			listCount = len( self.mChannelList )
+			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+
+			for idx in range( updateStart, updateEnd ) :
+				if self.mChannelList and idx < listCount :
+					hasEvent = E_TAG_FALSE
+					epgName  = strNoEvent
+					listItem = self.mListItems[idx]
+					iChannel = self.mChannelList[idx]
+					epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+
+					if epgEvent :
+						hasEvent = E_TAG_TRUE
+						epgName  = epgEvent.mEventName
+						epgStart = epgEvent.mStartTime + self.mLocalOffset
+						listItem.setProperty( 'percent', '%s'% CalculateProgress( currentTime, epgStart, epgEvent.mDuration ) )
+						#LOG_TRACE( 'idx[%s] per[%s] ch[%s %s]'% ( idx, CalculateProgress( currentTime, epgStart, epgEvent.mDuration ), iChannel.mNumber, iChannel.mName ) )
+
+					updateCount += 1
+					listItem.setLabel2( epgName )
+					listItem.setProperty( 'HasEvent', hasEvent )
+
+				else :
+					break
+
+			LOG_TRACE( '[PIP] UpdateItemsEPG [%s]counts'% updateCount )
+
+		except Exception, e :
+			LOG_ERR( '[PIP] except[%s]'% e )
+
+		if aUpdateAll :
+			self.CloseBusyDialog( )
+
+		#print '[PIP] UpdateListToEPG------testTime[%s]'% ( time.time() - startTime )
+
+
+	def InitChannelList( self ) :
+		self.mListItems = []
+		self.mCtrlListChannelPIP.reset( )
+		self.mChannelList = self.mDataCache.PIP_GetTunableList( )
+		currentTime = self.mDataCache.Datetime_GetLocalTime( )
+		idxCount    = 0
+		currentPos  = 0
+		self.mEPGHashTable = {}
+		self.mChannelListHash = {}
+		self.mChannelNumbersHash = {}
+
+		for iChannel in self.mChannelList :
+			hashKey = '%d:%d:%d:%d'% ( iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
+			self.mChannelListHash[hashKey] = [iChannel, idxCount]
+			self.mChannelNumbersHash[iChannel.mNumber] = iChannel
+
+			if self.mCurrentChannel and self.mCurrentChannel.mNumber == iChannel.mNumber :
+				currentPos = idxCount
+
+			iChNumber = iChannel.mNumber
+			if E_V1_2_APPLY_PRESENTATION_NUMBER :
+				iChNumber = self.mDataCache.CheckPresentationNumber( iChannel )
+
+			listItem = xbmcgui.ListItem( '%04d %s'% ( iChNumber, '%s'% iChannel.mName ) )
+
+			if E_USE_CHANNEL_LOGO :
+				logo = '%s_%s' %( iChannel.mCarrier.mDVBS.mSatelliteLongitude, iChannel.mSid )
+				chImage = self.mChannelLogo.GetLogo( logo )
+				listItem.setProperty( 'ChannelLogo', '%s'% chImage )
+
+			if iChannel.mLocked :
+				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+			if iChannel.mIsCA :
+				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+			if iChannel.mIsHD :
+				listItem.setProperty( E_XML_PROPERTY_IHD, E_TAG_TRUE )
+
+			idxCount += 1
+			self.mListItems.append( listItem )
+
+		self.setProperty( 'ReadyToListPIP', E_TAG_TRUE )
+		self.mCtrlListChannelPIP.addItems( self.mListItems )
+
+		#self.mCtrlListChannelPIP.selectItem( currentPos )
+		self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
+		self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
+		LOG_TRACE( '[PIP] mChannelListHash[%s] mChannelNumbersHash[%s]'% ( len( self.mChannelListHash ), len( self.mChannelNumbersHash ) ) )
+		self.LoadByCurrentEPG( )
+
+
+	def UpdateCurrentPositon( self, aInput = False, aChannel = None ) :
+		if self.mViewMode != CONTEXT_ACTION_LIST_PIP :
+			LOG_TRACE( '[PIP] can not position, not list mode' )
+			return
+
+		if aInput :
+			if not self.mChannelList :
+				LOG_TRACE( '[PIP] ChannelList None' )
+				return
+
+			if not aChannel :
+				if self.mCurrentChannel :
+					aChannel = self.mCurrentChannel
+				else :
+					curNumber = self.mDataCache.PIP_GetCurrent( )
+					aChannel = self.mDataCache.PIP_GetByNumber( curNumber )
+
+			currentPos = 0
+			if aChannel :
+				currentPos = self.GetChannelByIDs( aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid, True )
+			if currentPos < 0 :
+				currentPos = 0
+
+			self.UpdateControlListSelectItem( self.mCtrlListChannelPIP, currentPos )
+			self.setProperty( 'SelectedPosition', '%s'% ( currentPos + 1 ) )
+			LOG_TRACE( '[PIP] update position item' )
+
+		else :
+			idx = self.mCtrlListChannelPIP.getSelectedPosition( ) + 1
+			self.setProperty( 'SelectedPosition', '%s'% idx )
+
+
+	def RestartAsyncEPG( self ) :
+		self.StopAsyncEPG( )
+		self.StartAsyncEPG( )
+
+
+	def StartAsyncEPG( self ) :
+		self.mAsyncEPGTimer = threading.Timer( 0.5, self.UpdateCurrentPositon )
+		self.mAsyncEPGTimer.start( )
+
+		if self.mOffsetTopIndex != GetOffsetPosition( self.mCtrlListChannelPIP ) :
+			updateEpgInfo = threading.Timer( 0.05, self.LoadByCurrentEPG )
+			updateEpgInfo.start( )
+
+
+	def StopAsyncEPG( self ) :
+		if self.mAsyncEPGTimer and self.mAsyncEPGTimer.isAlive( ) :
+			self.mAsyncEPGTimer.cancel( )
+			del self.mAsyncEPGTimer
+
+		self.mAsyncEPGTimer = None
+
+
+	def RestartRefreshEPG( self ) :
+		self.StopRefreshEPG( )
+		self.StartRefreshEPG( )
+
+
+	def StartRefreshEPG( self ) :
+		self.mAsyncRefreshEPGTimer = threading.Timer( 30, self.LoadByCurrentEPG )
+		self.mAsyncRefreshEPGTimer.start( )
+
+
+	def StopRefreshEPG( self ) :
+		if self.mAsyncRefreshEPGTimer and self.mAsyncRefreshEPGTimer.isAlive( ) :
+			self.mAsyncRefreshEPGTimer.cancel( )
+			del self.mAsyncRefreshEPGTimer
+
+		self.mAsyncRefreshEPGTimer = None
 
 
