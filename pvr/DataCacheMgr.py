@@ -3493,6 +3493,9 @@ class DataCacheMgr( object ) :
 	def SyncLanguagePropFromXBMC( self, aLangauge ) :
 		currentLanguageProp = ElisPropertyEnum( 'Language', self.mCommander ).GetProp( )
 		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp :
+			import pvr.gui.WindowMgr as WinMgr
+			self.SetChannelReloadStatus( True )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 			prop = GetXBMCLanguageToPropLanguage( aLangauge )
 			ElisPropertyEnum( 'Language', self.mCommander ).SetProp( prop )
 			prop = GetXBMCLanguageToPropAudioLanguage( aLangauge )

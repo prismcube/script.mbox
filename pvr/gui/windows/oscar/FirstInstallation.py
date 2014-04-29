@@ -271,6 +271,7 @@ class FirstInstallation( FTIWindow ) :
 		self.mTunerMgr.SetNeedLoad( True )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
+		WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.SetTunerProperty( )
 			self.mTunerMgr.SaveConfiguration( )

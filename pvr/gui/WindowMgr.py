@@ -454,6 +454,7 @@ class WindowMgr( object ) :
 			self.CopyIncludeFile( )		
 			self.AddDefaultFont( )
 			pvr.DataCacheMgr.GetInstance( ).SetChannelReloadStatus( True )
+			self.GetWindow( WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 
 			return True
 
