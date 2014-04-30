@@ -113,7 +113,7 @@ class DialogImportLogo( BaseDialog ) :
 				os.system( 'rm -rf %s' % TEMP_LOGO_PATH )
 				os.system( 'rm -rf %s' % CUSTOM_LOGO_PATH )
 				os.system( 'sync' )
-				pvr.ChannelLogoMgr.GetInstance( ).LoadCustom( )
+				pvr.ChannelLogoMgr.GetInstance( ).LoadCustomLogo( )
 				SetSetting( 'CUSTOM_ICON', 'false' )
 				pvr.ChannelLogoMgr.GetInstance( ).mUseCustomPath = 'false'
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -265,7 +265,7 @@ class DialogImportLogo( BaseDialog ) :
 				time.sleep( 1 )
 				progressDialog.close( )
 
-			pvr.ChannelLogoMgr.GetInstance( ).LoadCustom( )
+			pvr.ChannelLogoMgr.GetInstance( ).LoadCustomLogo( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'System restart is needed in order to apply changes' ) )
 			dialog.doModal( )

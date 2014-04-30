@@ -33,8 +33,6 @@ class ChannelLogoMgr( object ) :
 	def __init__( self ) :
 		self.mMboxLogoHash = {}
 		self.mCustomLogoHash = {}
-		self.mDefaultLogo = None
-		self.mDefaultLogoRadio = None
 		self.mUseCustomPath = GetSetting( 'CUSTOM_ICON' )
 		self.Load( )
 
@@ -42,23 +40,27 @@ class ChannelLogoMgr( object ) :
 	def Load( self ) :
 		if E_USE_CHANNEL_LOGO == False :
 			return
-		scriptDir = pvr.Platform.GetPlatform( ).GetScriptDir( )
-		mbox_logo_path = os.path.join( pvr.Platform.GetPlatform( ).GetScriptDir( ), 'resources', 'channellogo' )
 
-		LOG_TRACE( 'Log Path=%s' % mbox_logo_path )
-		self.mDefaultLogo = os.path.join( mbox_logo_path, 'DefaultLogo.png' )
-		self.mDefaultLogoRadio = os.path.join( mbox_logo_path, 'DefaultLogo_radio.png' )		
-
-		parseTree = ElementTree.parse( os.path.join( mbox_logo_path, 'ChannelLogo.xml') )
-		treeRoot = parseTree.getroot( )
-
-		for node in treeRoot.findall( 'logo' ) :
-			self.mMboxLogoHash[ node.get( 'id' ) ] =  os.path.join( mbox_logo_path, node.text )
-
-		self.LoadCustom( )
+		self.LoadDefaultLogo( )
+		self.LoadCustomLogo( )
 
 
-	def LoadCustom( self ) :
+	def LoadDefaultLogo( self ) :
+		self.mMboxLogoHash = {}
+		try :
+			mbox_logo_path = os.path.join( pvr.Platform.GetPlatform( ).GetScriptDir( ), 'resources', 'channellogo' )
+			LOG_TRACE( 'Log Path=%s' % mbox_logo_path )
+
+			parseTree = ElementTree.parse( os.path.join( mbox_logo_path, 'ChannelLogo.xml') )
+			treeRoot = parseTree.getroot( )
+
+			for node in treeRoot.findall( 'logo' ) :
+				self.mMboxLogoHash[ node.get( 'id' ) ] =  os.path.join( mbox_logo_path, node.text )
+		except :
+			LOG_ERR( 'defult logo path load failed' )
+
+
+	def LoadCustomLogo( self ) :
 		self.mCustomLogoHash = {}
 		try :
 			parseTree = ElementTree.parse( os.path.join( CUSTOM_LOGO_PATH, 'ChannelLogo.xml' ) )
@@ -66,7 +68,7 @@ class ChannelLogoMgr( object ) :
 			for node in treeRoot.findall( 'logo' ) :
 				self.mCustomLogoHash[ node.get( 'id' ) ] = os.path.join( CUSTOM_LOGO_PATH, node.text)
 		except :
-			LOG_ERR( 'custom icon path load failed' )
+			LOG_ERR( 'custom logo path load failed' )
 
 
 	def GetLogo( self, aId, aServiceType=ElisEnum.E_SERVICE_TYPE_TV  ) :
@@ -82,9 +84,9 @@ class ChannelLogoMgr( object ) :
 		logo = self.mMboxLogoHash.get( aId, None )
 		if logo == None :
 			if aServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				return self.mDefaultLogo
+				return 'DefaultLogo.png'
 			else :
-				return self.mDefaultLogoRadio						
+				return 'DefaultLogo_radio.png'
 
 		return logo
 
@@ -95,9 +97,9 @@ class ChannelLogoMgr( object ) :
 			logo = self.GetMboxLogo( aId, aServiceType )
 			if logo == None :
 				if aServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					return self.mDefaultLogo
+					return 'DefaultLogo.png'
 				else :
-					return self.mDefaultLogoRadio						
+					return 'DefaultLogo_radio.png'
 
 		return logo
 		
@@ -107,7 +109,7 @@ class ChannelLogoMgr( object ) :
 			return None
 	
 		if aServiceType == ElisEnum.E_SERVICE_TYPE_TV:
-			return self.mDefaultLogo
+			return 'DefaultLogo.png'
 		else :
-			return self.mDefaultLogoRadio
+			return 'DefaultLogo_radio.png'
 
