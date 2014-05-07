@@ -1149,10 +1149,14 @@ class DialogPIP( BaseDialog ) :
 					else :
 						lblLabel =  MR_LANG( 'Unknown' )
 
-				if aGetLabelControl :
-					self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( lblLabel )
-				else :
-					self.mCtrlLabelChannel.setLabel( lblLabel )
+				try :
+					if aGetLabelControl :
+						self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( lblLabel )
+					else :
+						self.mCtrlLabelChannel.setLabel( lblLabel )
+
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]'% e )
 
 				LOG_TRACE( '[PIP] switch media' )
 
@@ -1167,7 +1171,7 @@ class DialogPIP( BaseDialog ) :
 
 				self.SetLabelChannel( fakeChannel, aGetLabelControl )
 				#self.RestartAsyncTune( fakeChannel )
-				LOG_TRACE( '[PIP] switch pip' )
+				LOG_TRACE( '[PIP] restore switch pip' )
 
 			self.mPIP_EnableAudio = swapAudio
 			self.setProperty( 'EnableAudioPIP', E_TAG_FALSE )
@@ -1181,6 +1185,7 @@ class DialogPIP( BaseDialog ) :
 		self.mCtrlImageInputBG.setImage( imagePng )
 		xbmcgui.Window( 10000 ).setProperty( 'InputNumber', E_TAG_TRUE )
 		self.mCtrlLabelInputCH.setLabel( self.mInputString )
+
 
 	def SetLabelInputName( self, aChannelName = MR_LANG( 'No Channel' ) ) :
 		self.mCtrlLabelInputName.setLabel( aChannelName )
@@ -1196,11 +1201,15 @@ class DialogPIP( BaseDialog ) :
 			pChNumber = self.mDataCache.CheckPresentationNumber( aChannel )
 
 		label = '%s - %s'% ( pChNumber, aChannel.mName )
-		if aGetLabelControl :
-			self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( label )
-		else :
-			self.mCtrlLabelChannel.setLabel( label )
-		#self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber ) 
+		try :
+			if aGetLabelControl :
+				self.getControl( CTRL_ID_LABEL_CHANNEL ).setLabel( label )
+			else :
+				self.mCtrlLabelChannel.setLabel( label )
+			#self.UpdatePropertyGUI( 'ShowPIPChannelNumber', '%s'% pChNumber )
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]'% e )
 
 
 	def ResetLabel( self ) :
@@ -1611,7 +1620,7 @@ class DialogPIP( BaseDialog ) :
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', E_TAG_FALSE )
 
 		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+			LOG_ERR( 'Error exception[%s]'% e )
 
 
 	def TuneChannelByExternal( self, aChannel = None, aRetune = False ) :

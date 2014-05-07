@@ -2931,7 +2931,7 @@ class DataCacheMgr( object ) :
 			iMode = ElisEnum.E_MODE_LIVE
 			iLock = True
 
-		LOG_TRACE( 'parentlock[%s]'% self.mParentLock )
+		LOG_TRACE( 'parentlock checking[%s]'% self.mParentLock )
 		if iMode == ElisEnum.E_MODE_LIVE and \
 		   iLock and ( iEPG and iEPG.mError == 0 ) :
 			isLimit = AgeLimit( self.mPropertyAge, iEPG.mAgeRating, self.mAgeGurantee )
