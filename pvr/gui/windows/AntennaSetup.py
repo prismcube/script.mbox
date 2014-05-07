@@ -34,16 +34,20 @@ class AntennaSetup( SettingWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.LoadTunerProperty( )
 
-		#connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
-		#self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Tuner Connection' ), E_LIST_TUNER_CONNECTION, self.mTunerConnection, connectTypeDescription )
-		#self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 2 Signal' ), E_LIST_TUNER2_SIGNAL, self.mTunerSignal, MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
-		self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
-		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
-		#self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner2Control, MR_LANG( 'Select a control method for tuner 2' ) )
-		#self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
+			self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04, E_Input02 ]
+			self.SetVisibleControls( hideControlIds, False )
 
-		hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04, E_Input02 ]
-		self.SetVisibleControls( hideControlIds, False )
+		else :
+			connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
+			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Tuner Connection' ), E_LIST_TUNER_CONNECTION, self.mTunerConnection, connectTypeDescription )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 2 Signal' ), E_LIST_TUNER2_SIGNAL, self.mTunerSignal, MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
+			self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner2Control, MR_LANG( 'Select a control method for tuner 2' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
 		self.InitControl( )
 		self.DisableControl( )
@@ -201,8 +205,8 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def DisableControl( self, aControlID = None ) :
-		return
-		"""
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			return
 		if aControlID == None or aControlID == E_SpinEx01 :
 			if self.mTunerConnection == E_TUNER_LOOPTHROUGH or self.mTunerConnection == E_TUNER_ONECABLE :
 				control = self.getControl( E_SpinEx02 + 3 )
@@ -237,7 +241,6 @@ class AntennaSetup( SettingWindow ) :
 				self.mTuner2Control = self.mTuner1Control
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
-		"""
 
 
 	def SetTunerProperty( self ) :
