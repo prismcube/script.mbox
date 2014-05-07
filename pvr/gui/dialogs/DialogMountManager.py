@@ -69,6 +69,7 @@ class DialogMountManager( SettingDialog ) :
 
 		self.InitItem( )
 
+		self.mEventBus.Register( self )
 		self.setProperty( 'DialogDrawFinished', 'True' )
 		#self.mInitialized = True
 
@@ -134,11 +135,22 @@ class DialogMountManager( SettingDialog ) :
 
 
 	def onEvent( self, aEvent ) :
-		pass
+		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
+
+			if aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) :
+				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+				for netvolume in self.mNetVolumeList :
+					netvolume.printdebug()
+
+			elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+				for netvolume in self.mNetVolumeList :
+					netvolume.printdebug()
 
 
 	def Close( self ) :
 		#self.SetMountByVolumeList( )
+		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 
 
@@ -282,7 +294,6 @@ class DialogMountManager( SettingDialog ) :
 						lblLine = MR_LANG( 'No %s support' ) % urlType
 				else :
 					lblLine = MR_LANG( 'Invalid record path chosen' )
-
 
 			if isFail :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -543,6 +554,8 @@ class DialogMountManager( SettingDialog ) :
 		defaultFocus = E_DialogInput05
 
 		selectControlVisible = False
+		disableConrols = []
+		enableConrols = [E_DialogInput03, E_DialogInput02, E_DialogInput05, E_DialogInput06, E_DialogSpinEx02, E_DialogInput07]
 		selectControl = MR_LANG( 'Add' )
 		lblSelect = ''
 		lblRemote = MR_LANG( 'None' )
@@ -554,6 +567,10 @@ class DialogMountManager( SettingDialog ) :
 		self.mNetVolume = ElisENetworkVolume( )
 		self.mNetVolume.mRemotePath = ''
 		self.mNetVolume.mMountPath = ''
+
+		if self.mMode == E_NETWORK_VOLUME_ADD :
+			disableConrols = [E_DialogInput03,E_DialogInput02]
+			enableConrols = [E_DialogInput05, E_DialogInput06, E_DialogSpinEx02, E_DialogInput07]
 
 		if self.mMode == E_NETWORK_VOLUME_SELECT and self.mSelectIdx > -1 :
 			if self.mNetVolumeList and self.mSelectIdx < len( self.mNetVolumeList ) :
@@ -576,6 +593,12 @@ class DialogMountManager( SettingDialog ) :
 				if self.mNetVolume.mTotalMB > 0 :
 					usePercent = int( ( ( 1.0 * ( self.mNetVolume.mTotalMB - self.mNetVolume.mFreeMB ) ) / self.mNetVolume.mTotalMB ) * 100 )
 
+				if self.mNetVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, self.mNetVolume.mMountPath, re.IGNORECASE ) ) :
+					# usb? then enable false
+					lblSelect = '[USB] %s'% lblMount
+					enableConrols = [E_DialogInput03]
+					disableConrols = [E_DialogInput02, E_DialogInput05, E_DialogInput06, E_DialogInput07, E_DialogSpinEx02]
+
 		self.SetControlLabelString( E_DialogInput03, selectControl )
 		self.SetControlLabel2String( E_DialogInput03, lblSelect )
 		self.SetControlLabel2String( E_DialogInput02, MR_LANG( 'Delete' ) )
@@ -585,9 +608,9 @@ class DialogMountManager( SettingDialog ) :
 		self.SelectPosition( E_DialogSpinEx02, is4Gb )
 		#self.SetControlLabel2String( E_DialogInput04, USER_ENUM_LIST_YES_NO[isDefault] )
 
-		self.SetEnableControls( [E_DialogInput03, E_DialogInput02], selectControlVisible )
+		self.SetEnableControls( enableConrols, True )
+		self.SetEnableControls( disableConrols, False )
 		self.SetVisibleControl( E_DialogInput02, selectControlVisible )
-		#	#ToDO : usb? then enable false
 
 		if aDefaultFocus :
 			defaultFocus = aDefaultFocus
@@ -659,6 +682,9 @@ class DialogMountManager( SettingDialog ) :
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
+				else :
+					if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+						lblType = 'USB'
 
 				#lblPath = '[%s]%s%s'% ( lblType, urlHost, os.path.dirname( urlPath ) )
 				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )

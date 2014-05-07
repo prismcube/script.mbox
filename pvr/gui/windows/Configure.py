@@ -107,6 +107,7 @@ class Configure( SettingWindow ) :
 	def onInit( self ) :
 		self.OpenBusyDialog( )
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
@@ -167,8 +168,11 @@ class Configure( SettingWindow ) :
 		self.mInitialized = True
 		self.CloseBusyDialog( )
 
+		self.mEventBus.Register( self )
+
 
 	def Close( self ) :
+		self.mEventBus.Deregister( self )
 		if self.mAsyncVideoSetThread :
 			self.mAsyncVideoSetThread.cancel( )
 			self.mAsyncVideoSetThread = None
@@ -623,6 +627,17 @@ class Configure( SettingWindow ) :
 			self.ShowDescription( aControlId, E_CONFIGURE_SETTING_DESCRIPTION )
 
 
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
+			   aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					if self.mCtrlLeftGroup.getSelectedPosition( ) == E_RECORDING_OPTION :
+						self.SetListControl( )
+					else :
+						self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+
+
 	def ShowHdmiFormat( self ) :
 		hdmiList = []
 		selectIdx = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropIndex( )
@@ -710,6 +725,9 @@ class Configure( SettingWindow ) :
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
+				else :
+					if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+						lblType = 'USB'
 
 				if not netVolume.mOnline :
 					lblStatus = '-%s'% MR_LANG( 'Disconnected' )
@@ -1425,6 +1443,10 @@ class Configure( SettingWindow ) :
 					return
 
 			self.ConnectEthernet( )
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
+				if netVolumeList and len( netVolumeList ) > 0 :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).DoRefreshNetVolume( True )
 
 
 	def WifiSetting( self, aControlId ) :
@@ -1482,6 +1504,10 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 				else :
 					self.ConnectCurrentWifi( )
+					if E_SUPPORT_EXTEND_RECORD_PATH :
+						netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
+						if netVolumeList and len( netVolumeList ) > 0 :
+							WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).DoRefreshNetVolume( True )
 
 
 	def ConnectCurrentWifi( self ) :

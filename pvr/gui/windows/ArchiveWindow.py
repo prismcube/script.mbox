@@ -350,6 +350,13 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
 				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
+			elif aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
+			     aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+				if E_SUPPORT_EXTEND_RECORD_PATH :
+					self.Flush( )
+					self.Load( )
+					self.UpdateList( )
+
 
 	def InitControl( self ) :
 
@@ -949,13 +956,17 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( 'Unknown Context Action' )
 
 
-	def DoRefreshNetVolume( self ) :
+	def DoRefreshNetVolume( self, aExtenal = False ) :
 		self.OpenBusyDialog( )
 		retVal, lblLine = self.mDataCache.InitNetworkVolume( )
 		self.CloseBusyDialog( )
 
 		lblTitle = MR_LANG( 'Fail' )
 		if retVal == 0 :
+			if aExtenal :
+				LOG_TRACE( 'refresh volume Done' )
+				return
+
 			self.Flush( )
 			self.Load( )
 			self.UpdateList( )

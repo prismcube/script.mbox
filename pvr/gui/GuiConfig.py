@@ -499,6 +499,7 @@ E_VOLITILE_PIP_STATUS_PATH = '/mtmp/PIPStatus'
 E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
 E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
 E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
+E_DEFAULT_PATH_USB_POSITION = '/media/sd'
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False

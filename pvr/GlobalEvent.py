@@ -304,10 +304,20 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [False] )
 			thread.start( )
 
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW and \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CONFIGURE :
+					self.mDataCache.Record_GetNetworkVolume( )
+
 		elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
 			self.mDataCache.SetUSBAttached( True )
 			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [True] )
 			thread.start( )
+
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW and \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CONFIGURE :
+					self.mDataCache.Record_GetNetworkVolume( )
 
 		elif aEvent.getName( ) == ElisEventViewTimerStatus.getName( ) :
 			LOG_TRACE( '-----------------------event name[%s]'% aEvent.getName( ) )
@@ -576,9 +586,9 @@ class GlobalEvent( object ) :
 
 
 	def ShowAttatchDialog( self, aAttatch = False ) :
-		if xbmcgui.getCurrentWindowDialogId( ) != 9999 :
-			LOG_TRACE( 'Another dialog aready popuped!!' )
-			return
+		#if xbmcgui.getCurrentWindowDialogId( ) != 9999 :
+		#	LOG_TRACE( 'Another dialog aready popuped!!' )
+		#	return
 
 		msg = MR_LANG( 'Connected' )
 		if not aAttatch :
