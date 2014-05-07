@@ -253,7 +253,7 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
 				LOG_TRACE('----------HBB Tv Ready')
-				self.mCommander.AppHBBTV_Ready( 0 )
+				self.mDataCache.Splash_StartAndStop( 0 )
 				self.mHBBTVReady = False
 
 			self.mDataCache.Teletext_NotifyHide( )
