@@ -220,6 +220,9 @@ class DialogStartRecord( SettingDialog ) :
 				lblType = 'local'
 				if urlType :
 					lblType = '%s'% urlType.upper()
+				else :
+					if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+						lblType = 'USB'
 
 				if not netVolume.mOnline :
 					lblStatus = '-%s'% MR_LANG( 'Disconnected' )
