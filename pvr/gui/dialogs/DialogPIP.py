@@ -620,6 +620,7 @@ class DialogPIP( BaseDialog ) :
 			self.mCtrlBasePIPLabelNoService.setPosition( 0, int( ( bh - 10 ) / 2 ) )
 			#self.mCtrlLabelChannel.setPosition( 5, bh - 25 )
 
+
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 			return
@@ -629,9 +630,9 @@ class DialogPIP( BaseDialog ) :
 		if aSetPosition and self.mDataCache.PIP_GetStatus( ) :
 			from pvr.GuiHelper import GetInstanceSkinPosition
 			skinPos = GetInstanceSkinPosition( )
-			x, y, w, h = skinPos.GetPipPosition2( x, y, w, h )
+			px, py, pw, ph = skinPos.GetPipPosition( x, y, w, h )
 
-			self.mDataCache.PIP_SetDimension( x, y, w, h )
+			self.mDataCache.PIP_SetDimension( px - 1, py - 1, pw - 5, ph - 5 )
 
 
 	def PIP_LoadToBaseControlIDs( self ) :
@@ -765,9 +766,9 @@ class DialogPIP( BaseDialog ) :
 
 		from pvr.GuiHelper import GetInstanceSkinPosition
 		skinPos = GetInstanceSkinPosition( )
-		x, y, w, h = skinPos.GetPipPosition2( aPosX, aPosY, aWidth, aHeight )
+		px, py, pw, ph = skinPos.GetPipPosition( aPosX, aPosY, aWidth, aHeight )
 
-		self.mDataCache.PIP_SetDimension( x - 1, y - 1, w + 4, h + 3 )
+		self.mDataCache.PIP_SetDimension( px - 1, py - 1, pw - 5, ph - 5 )
 
 		#posNotify = '%s|%s|%s|%s'% ( self.mPosCurrent[0], self.mPosCurrent[1], self.mPosCurrent[2], self.mPosCurrent[3] )
 		#SetSetting( 'PIP_POSITION', posNotify )
