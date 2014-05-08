@@ -299,13 +299,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SimpleChannelList import SimpleChannelList
 			from pvr.gui.windows.FastScan import FastScan
 			from pvr.gui.windows.Advanced import Advanced
-
-			if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
-				from pvr.gui.windows.ruby.AntennaSetup import AntennaSetup
-				from pvr.gui.windows.ruby.FirstInstallation import FirstInstallation
-			elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-				from pvr.gui.windows.oscar.AntennaSetup import AntennaSetup
-				from pvr.gui.windows.oscar.FirstInstallation import FirstInstallation
+			from pvr.gui.windows.AntennaSetup import AntennaSetup
+			from pvr.gui.windows.FirstInstallation import FirstInstallation
 
 			#from pvr.gui.windows.PIPWindow import PIPWindow
 

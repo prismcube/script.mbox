@@ -332,21 +332,33 @@ class FirstInstallation( FTIWindow ) :
 
 		elif aStep == E_STEP_ANTENNA :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
-			self.LoadTunerProperty( )
-			connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
+			self.LoadTunerProperty( )			
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
-			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Tuner Connection' ), E_LIST_TUNER_CONNECTION, self.mTunerConnection, connectTypeDescription )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 2 Signal' ), E_LIST_TUNER2_SIGNAL, self.mTunerSignal, MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner2Control, MR_LANG( 'Select a control method for tuner 2' ) )
+
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
+
+				visibleControlIds = [ E_SpinEx03 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				self.SetVisibleControls( hideControlIds, False )
+			else :
+				connectTypeDescription = '%s %s' % ( MR_LANG( 'When set to \'Separated\', the tuner 2 receives its own signal input'), MR_LANG('however it will receive only the channel level currently being received by the tuner 1 when this is set to \'Loopthrough\'' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Tuner Connection' ), E_LIST_TUNER_CONNECTION, self.mTunerConnection, connectTypeDescription )
+				self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 2 Signal' ), E_LIST_TUNER2_SIGNAL, self.mTunerSignal, MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
+				self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
+				self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 Control' ), E_LIST_TUNER_CONTROL, self.mTuner2Control, MR_LANG( 'Select a control method for tuner 2' ) )
+				
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+				hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				self.SetVisibleControls( hideControlIds, False )
+
 			self.AddPrevNextButton( MR_LANG( 'Go to the satellite configuration page' ), MR_LANG( 'Go back to the video and audio setup page' ) )
-
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
-			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 			time.sleep( 0.2 )
@@ -503,6 +515,9 @@ class FirstInstallation( FTIWindow ) :
 
 	def DisableControl( self, aControlID = None ) :
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				return
+
 			if aControlID == None or aControlID == E_SpinEx01 :
 				if self.mTunerConnection == E_TUNER_LOOPTHROUGH or self.mTunerConnection == E_TUNER_ONECABLE :
 					control = self.getControl( E_SpinEx02 + 3 )

@@ -148,6 +148,7 @@ class LivePlate( LivePlateWindow ) :
 			if ElisPropertyInt( 'AIT Ready', self.mCommander ).GetProp( ) :
 				self.mDataCache.SetHbbTVEnable( True )
 
+		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
 		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :

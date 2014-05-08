@@ -936,7 +936,7 @@ class DialogPIP( BaseDialog ) :
 					lblLine = MR_LANG( 'That channel is locked' )
 					if fakeChannel.mLocked :
 						isFail = True
-						#lblLine = '%s\n%s'% ( MR_LANG( 'Locked channel' ), lblLine )
+
 					elif xbmcgui.Window( 10000 ).getProperty( 'PIPSignal' ) != E_TAG_TRUE :
 						isFail = True
 						lblLine = MR_LANG( 'No Signal' )
