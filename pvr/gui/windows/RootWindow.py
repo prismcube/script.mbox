@@ -97,7 +97,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 			else :
 				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
-					return
+					if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW and \
+					   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST :
+						return
 				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
 		else :
