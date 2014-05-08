@@ -176,6 +176,7 @@ class DataCacheMgr( object ) :
 		self.mHasLinkageService					= False
 
 		self.mPIPStart							= self.PIP_IsStarted( )
+		self.mPIPSwapStatus						= False
 		self.mCurrentChannelPIP					= None
 		self.mOldHdmiFormatIndex				= ElisEnum.E_ICON_720p
 
@@ -2102,6 +2103,9 @@ class DataCacheMgr( object ) :
 
 
 	def Player_Stop( self ) :
+		if self.PIP_GetSwapStatus( ) :
+			self.PIP_SwapWindow( False )
+
 		if xbmcgui.Window( 10000 ).getProperty( 'RadioPlayback' ) == E_TAG_TRUE :
 			xbmcgui.Window( 10000 ).setProperty( 'RadioPlayback', E_TAG_FALSE )
 
@@ -3142,6 +3146,8 @@ class DataCacheMgr( object ) :
 
 
 	def PIP_Stop( self ) :
+		if self.PIP_GetSwapStatus( ) :
+			self.PIP_SwapWindow( False )
 		return self.mCommander.PIP_Stop( )
 
 
@@ -3272,6 +3278,20 @@ class DataCacheMgr( object ) :
 
 	def PIP_GetAVBlank( self ) :
 		return self.mCommander.PIP_GetAVBlank( )
+
+
+	def PIP_SwapWindow( self, aSwap = None ) :
+		if aSwap == None :
+			aSwap = not self.mPIPSwapStatus
+		ret = self.mCommander.PIP_SwapWindow( aSwap )
+		if ret :
+			self.mPIPSwapStatus = aSwap
+
+		return ret
+
+
+	def PIP_GetSwapStatus( self ) :
+		return self.mPIPSwapStatus
 
 
 	def PIP_GetPrev( self, aChannel ) :
