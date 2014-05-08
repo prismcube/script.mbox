@@ -182,6 +182,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mBannerTimeout = self.mDataCache.GetPropertyPlaybackBannerTime( )
+		#isSwap? show media surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( False, False )
 
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
@@ -2026,6 +2029,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
+
+		#isSwap? swap surface
+		if self.mDataCache.PIP_GetSwapStatus( ) :
+			self.mDataCache.PIP_SwapWindow( True, False )
 
 		self.Flush( )
 		self.StopAsyncMove( )

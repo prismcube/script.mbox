@@ -23,6 +23,16 @@
 							<height>265</height>
 							<texture border="5">StackFO_white2.png</texture>
 						</control>
+						<control type="image" id="4801003">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>425</width>
+							<height>265</height>
+							<texture border="5">StackFO_white2.png</texture>
+							<visible>!substring(Window.Property(PIPSwapStatus),None)</visible>
+							<animation reversible="false" effect="zoom" end="700" start="100" center="auto" easing="out" time="500" condition="substring(Window.Property(PIPSwapStatus),true)">conditional</animation>
+							<animation reversible="false" effect="zoom" end="100" start="700" center="auto" easing="out" time="500" condition="substring(Window.Property(PIPSwapStatus),false)">conditional</animation>
+						</control>
 					</control>
 					<control type="group">
 						<control type="group" id="4801100">
@@ -601,8 +611,18 @@
 									<texture>IconCas1g.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
+								<control type="progress">
+									<posx>12</posx>
+									<posy>30</posy>
+									<width>70</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(ListItem.Property(HasEvent),true)</visible>
+								</control>
 							</control>
-							<!-- Channel Number -->
+							<!-- Channel info -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
@@ -616,11 +636,11 @@
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
-							<!-- Channel Name -->
+							<!-- epg Name -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>260</width>
+								<width>190</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>
@@ -688,8 +708,18 @@
 									<texture>IconCas1w.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
+								<control type="progress">
+									<posx>12</posx>
+									<posy>30</posy>
+									<width>70</width>
+									<height>9</height>
+									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+									<progress>percent</progress>
+									<visible>substring(ListItem.Property(HasEvent),true)</visible>
+								</control>
 							</control>
-							<!-- Channel Number -->
+							<!-- Channel info -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
@@ -703,11 +733,11 @@
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
 							</control>
-							<!-- Channel Name -->
+							<!-- epg Name -->
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>260</width>
+								<width>190</width>
 								<height>20</height>
 								<font>font12</font>
 								<textcolor>grey2</textcolor>

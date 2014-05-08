@@ -155,6 +155,7 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			#LOG_TRACE( '----------------ElisEventChannelChangeStatus mStatus[%s]'% aEvent.mStatus )
+			restorePIP = False
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).setProperty( 'Signal', 'Scramble' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
@@ -172,14 +173,17 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_PROGRAM_NOT_FOUND )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_SCRAMBLED_CHANNEL :#6
+				restorePIP = True
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'Scramble' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_PROGRAM_NOT_FOUND :#7
+				restorePIP = True
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'NoService' )
 
 			elif aEvent.mStatus == ElisEnum.E_CC_PIP_FAILED_NO_SIGNAL :#5
+				restorePIP = True
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', 'True' )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'False' )
 
@@ -195,6 +199,9 @@ class GlobalEvent( object ) :
 				xbmcgui.Window( 10000 ).setProperty( 'BlankPIP', blank )
 				xbmcgui.Window( 10000 ).setProperty( 'PIPSignal', 'True' )
 				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_CHECK_FORCE )
+
+			if restorePIP and self.mDataCache.PIP_GetSwapStatus( ) :
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).SwapExchangeToPIP( None, True, False )
 
 			if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_NULLWINDOW :
 				return
@@ -808,7 +815,13 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
+				xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 				liveWindow.CheckMediaCenter()
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+				if self.mDataCache.PIP_GetSwapStatus( ) :
+					self.mDataCache.PIP_SwapWindow( False )
+				xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')
