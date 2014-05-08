@@ -1493,4 +1493,8 @@
 	<string id="3956">South</string>
 	<string id="3957">Finish</string>
 	<string id="3958">Go to the channel search setup page</string>
+	<string id="3959">That channel is locked</string>
+	<string id="3960">Could not switch PIP</string>
+	<string id="3961">Media Playback</string>
+	<string id="3962">MediaPlay</string>
 </strings>
