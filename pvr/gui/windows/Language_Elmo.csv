@@ -295,7 +295,7 @@
 "Functional Range";"Funktionsumfang";"Rang fonctionnel";"Funzioni";"Rango de funcionamiento";"Funkční rozsah";"Functieomvang";"Zakres funkcjonalności";"Fonksiyon kapsamı";"Диапазон Функциональности";"Functional Range";"Functional Range";"Funkčný rozsah";"Діапазон Функціональності";2122
 "High";"Hoch";"Elevé";"Alto";"Alto";"Vysoký";"Hoog";"Wysoki";"Yuksek";"Высоко";"High";"High";"Vysoký";"Високо";2123
 "Middle";"Mittel";"Moyen";"Medio";"Medio";"Střední";"Gemiddeld";"Średni";"Orta";"Средне";"Middle";"Middle";"Stredný";"Середньо";2124
-"Low";"Unten";"Bas";"Basso";"Bajo";"Nízký";"Laag";"Niski";"Low";"Низко";"Low";"Low";"Nízky";"Низько";2125
+"Low";"Niedrig";"Bas";"Basso";"Bajo";"Nízký";"Laag";"Niski";"Low";"Низко";"Low";"Low";"Nízky";"Низько";2125
 "Channel Banner Duration";"Anzeigedauer Programm-Meldung";"Durée barre des chaînes";"Durata Banner Canali";"Duracion visualizacion mensaje canal";"Trvání info baneru";"Weergaveduur programmamelding";"Czas wyświetlania bannera informacyjnego";"Program mesajı gosterim suresi";"Длительность Показа Инфопанели";"Channel Banner Duration";"Channel Banner Duration";"Trvanie info banera";"Тривалість Показу інфопанелі";2126
 "Playback Banner Duration";"Anzeigedauer Wiedergabe-Meldung";"Durée barre playback";"Durata Playback";"Duracion de la visualizacion, mensaje de reproduccion";"Trvání baneru přehrávání";"Weergaveduur weergavemelding";"Czas wyświetlania bannera przy odtwarzaniu";"Oynatma mesajı gosterim suresi";"Продолжительность показа сообщения о воспроизведении";"Playback Banner Duration";"Playback Banner Duration";"Trvanie banera prehrávania";"Тривалість показу повідомлення про відтворення";2127
 "Display Volume";"Lautstärke Anzeigen";"Affichage du volume";"Display Volume";"Volumen del display";"Zobrazení hlasitosti";"Display Volume";"Wyświetlanie głośności";"Display Volume";"Отображать Громкость";"Display Volume";"Display Volume";"Zobrazenie hlasitosti";"Відображати Гучність";2128
@@ -612,10 +612,10 @@
 "HDD";"HDD";"Disque dur";"HDD";"HDD";"HDD";"HDD";"Dysk twardy";"HDD";"Диск";"HDD";"HDD";"HDD";"Диск";3080
 "Free";"Frei";;;;"Volný";;"Wolny";;;;;"Voľný";;3081
 "Internal HDD";"Interne HDD";;;;"Interní HDD";;"Wewnętrzny dysk";;;;;"Interný HDD";;3082
-"Disconnected";;;;;;;"Odłączony";;;;;;;3083
-"Read only";;;;;;;"Tylko do odczytu";;;;;;;3084
-"Read only folder";;;;;;;"Folder tylko do odczytu";;;;;;;3085
-"Inaccessible folder";;;;;;;"Folder niedostępny";;;;;;;3086
+"Disconnected";"Getrennt";;;;;;"Odłączony";;;;;;;3083
+"Read only";"Nur Lesen";;;;;;"Tylko do odczytu";;;;;;;3084
+"Read only folder";"Nur Lesen Ordner";;;;;;"Folder tylko do odczytu";;;;;;;3085
+"Inaccessible folder";"Kein zugriff auf Ordner";;;;;;"Folder niedostępny";;;;;;;3086
 "Edit Recording";"Aufnahme bearbeiten";"Modifier enregistrement";"Edita Registrazione";"Editar grabación";"Upravit záznam";"Edit Recording";"Edytuj nagranie";"Edit Recording";"Редактировать";"Edit Recording";"Edit Recording";"Upraviť záznam";"Редагувати";3087
 "Start Time";"Startzeit";"Temps de début";"Inizio";"Hora de inicio";"Čas spuštění";"Start Time";"Czas rozpoczęcia";"Start Time";"Время Начала";"Start Time";"Start Time";"Čas spustenia";"Час початку";3088
 "End Time";"Endzeit";"Temps de fin";"Fine";"Hora final";"Čas ukončení";"End Time";"Czas zakończenia";"End Time";"Время Окончания";"End Time";"End Time";"čas ukončenia";"Час закінчення";3089
@@ -628,42 +628,42 @@
 "Enter End Time";"Endzeit eingeben";"Entrez un temps de fin";"Inserisci Fine evento";"Introduce hora final";"Zadejte čas ukončení";"Enter End Time";"Wprowadź czas zakończenia";"Enter End Time";"Задать Время Окончания";"Enter End Time";"Enter End Time";"Zadajte čas ukončenia";"Задати час закінчення";3096
 "Enter New Duration";"Neue Dauer eingeben";"Entrez une nouvelle durée";"Inserisci durata";"Introduce nueva duración";"Zadejte novou doba trvání";"Enter New Duration";"Wprowadź nową długość";"Enter New Duration";"Задать Новую Длительность";"Enter New Duration";"Enter New Duration";"Zadajte novú doba trvania";"Задати нову тривалість";3097
 "in mins";"in Minuten";"en minutes";"In minuti";"en minutos";"v min";"in mins";"w minutach";"in mins";"в минутах";"in mins";"in mins";"v min";"у хвилинах";3098
-"Import Channel Logos";;;;;;;"Import dodatkowych ikon z logo kanałów";;;;;;;3099
-"Enable/Disable customized version of channel logos";;;;;;;"Włącz/wyłącz dodatkowe ikony";;;;;;;3100
-"Select a way of importing customized channel logos";;;;;;;"Wybierz sposób importowania ikon";;;;;;;3101
-"Customized Channel Logos";;;;;;;"Dodatkowe ikony kanałów";;;;;;;3102
-"Load Icons from USB";;;;;;;"Pobierz ikony z USB";;;;;;;3103
-"Load Icons via Internet";;;;;;;"Pobierz ikony poprzez internet";;;;;;;3104
-"Remove All Customized Logos";;;;;;;"Usuń wszystkie pobrane ikony";;;;;;;3105
-"Icon(s) Loaded";;;;;;;"pobranych ikon";;;;;;;3106
+"Import Channel Logos";"Senderlogos Importieren";;;;;;"Import dodatkowych ikon z logo kanałów";;;;;;;3099
+"Enable/Disable customized version of channel logos";"Benutzerdefinierte Senderlogos Aktivieren / Deaktivieren";;;;;;"Włącz/wyłącz dodatkowe ikony";;;;;;;3100
+"Select a way of importing customized channel logos";"Wähle einen Weg zum importieren benutzerdefinierter Senderlogos aus";;;;;;"Wybierz sposób importowania ikon";;;;;;;3101
+"Customized Channel Logos";"Benutzerdefinierte Senderlogos";;;;;;"Dodatkowe ikony kanałów";;;;;;;3102
+"Load Icons from USB";"Icons von USB Laden";;;;;;"Pobierz ikony z USB";;;;;;;3103
+"Load Icons via Internet";"Icons via Internet Laden";;;;;;"Pobierz ikony poprzez internet";;;;;;;3104
+"Remove All Customized Logos";"Alle benutzerdefinierten Senderlogos löschen";;;;;;"Usuń wszystkie pobrane ikony";;;;;;;3105
+"Icon(s) Loaded";"Icon(s) Geladen";;;;;;"pobranych ikon";;;;;;;3106
 "Please insert a USB flash memory";"Bitte stecken Sie einen USB Stick an";"Veuillez insérer un flash disque USB";"Si prega di inserire una memoria flash USB";"Por favor, inserte una memoria flash USB";"Vložte USB flash paměť";"Please insert a USB flash memory";"Proszę podłączyć pamięć flash USB";"Please insert a USB flash memory";"Подключите USB накопитель";"Please insert a USB flash memory";"Please insert a USB flash memory";"Vložte USB flash pamäť";"Підключіть USB накопичувач";3107
-"Select Zip File for Channel Icons";;;;;;;"Wybierz plik Zip z ikonami";;;;;;;3108
-"Downlaod process failed";;;;;;;"Pobieranie nieudane";;;;;;;3109
-"All customized channel logos will be erased";;;;;;;"Wszystkie ikony zostaną usunięte";;;;;;;3110
-"Delete all customized channel logos?";;;;;;;"Czy usunąć wszystkie dodatkowe ikony?";;;;;;;3111
+"Select Zip File for Channel Icons";"Wählen Sie Zip-Datei für Sender Icons";;;;;;"Wybierz plik Zip z ikonami";;;;;;;3108
+"Downlaod process failed";"Download Prozess gescheitert";;;;;;"Pobieranie nieudane";;;;;;;3109
+"All customized channel logos will be erased";"Alle benutzerdefinierten Senderlogos werden gelöscht";;;;;;"Wszystkie ikony zostaną usunięte";;;;;;;3110
+"Delete all customized channel logos?";"Alle benutzerdefinierten Senderlogos löschen?";;;;;;"Czy usunąć wszystkie dodatkowe ikony?";;;;;;;3111
 "Restart Required";"Restart erforderlich";"Redémarrage requis";"Riavvio richiesto";"Necesario reiniciar";"Vyžaduje se restart";"Restart Required";"Wymagany restart";"Restart Required";"Требуется Перезагрузка";"Restart Required";"Restart Required";"Vyžaduje sa reštartovanie";"Потрібне Перезавантаження";3112
-"System restart is needed in order to apply changes";;;;;;;"W celu zastosowania zmian uruchom ponownie system";;;;;;;3113
+"System restart is needed in order to apply changes";"Neustart des Systems ist erforderlich, um Änderungen zu übernehmen";;;;;;"W celu zastosowania zmian uruchom ponownie system";;;;;;;3113
 "Initializing process";"Initialisieren Prozess";;;;"Proces inicializace ";;"Inicjalizacja procesu";;;;;"Proces inicializácie";;3114
 "Ready to start";"Startbereit";;;;"Připraven ke spuštění ";;"Gotowy do rozpoczęcia";;;;;"Pripravený na spustenie";;3115
-"Copy Files";;;;;;;"Kopiowanie plików";;;;;;;3116
-"Copying files process cannot be stopped";;;;;;;"Proces kopiowania plików nie może być zatrzymany";;;;;;;3117
-"Please Wait";;;;;;;"Proszę czekać";;;;;;;3118
-"Copying files";;;;;;;"Kopiowanie plików";;;;;;;3119
-"Copying logo files";;;;;;;"Kopiowanie plików z ikonami";;;;;;;3120
+"Copy Files";"Dateien Kopieren";;;;;;"Kopiowanie plików";;;;;;;3116
+"Copying files process cannot be stopped";"Kopieren von Dateien kann nicht unterbrochen werden";;;;;;"Proces kopiowania plików nie może być zatrzymany";;;;;;;3117
+"Please Wait";"Bitte warten";;;;;;"Proszę czekać";;;;;;;3118
+"Copying files";"Kopiere Dateien";;;;;;"Kopiowanie plików";;;;;;;3119
+"Copying logo files";"Kopiere Logo Dateien";;;;;;"Kopiowanie plików z ikonami";;;;;;;3120
 "Complete";"abgeschlossn";;;;"Dokončený ";;"Gotowe";;;;;"Dokončený";;3121
-"All customized logo data will be erased";;;;;;;"Wszystkie dane dotyczące pobranych ikon zostaną usunięte";;;;;;;3122
-"Importing channel logos failed to complete";;;;;;;"Nie udało się dokończyć importu ikon";;;;;;;3123
-"Select OK Button to apply icons";;;;;;;"Wybierz przycisk OK, aby zastosować";;;;;;;3124
-"Invalid path";;;;;;;"Błędna lokalizacja";;;;;;;3125
-"No zip file found in USB";;;;;;;"Nie znaleziono pliku zip na USB";;;;;;;3126
-"Extracting zip file failed to complete";;;;;;;"Rozpakowywanie pliku zip zakończyło się niepowodzeniem";;;;;;;3127
-"The zip file is invalid or corrupted";;;;;;;"Archiwum zip jest błędne, lub uszkodzone";;;;;;;3128
-"Downloading zip file failed to complete";;;;;;;"Pobieranie pliku zip zakończyło się niepowodzeniem";;;;;;;3129
-"Extract Zip File";;;;;;;"Wypakowywanie z pliku zip";;;;;;;3130
-"Cancelling";;;;;;;"Anulowanie";;;;;;;3131
-"Extracting data";;;;;;;"Wypakowywanie danych";;;;;;;3132
-"Extracting Zip File";;;;;;;"Wypakowywanie z pliku zip";;;;;;;3133
-"Select Channel Icon Package";;;;;;;"Wybierz pakiet z ikonami";;;;;;;3134
+"All customized logo data will be erased";"Alle benutzerdefinierten Logos werden gelöscht";;;;;;"Wszystkie dane dotyczące pobranych ikon zostaną usunięte";;;;;;;3122
+"Importing channel logos failed to complete";"Importieren Senderlogos nicht abgeschlossen";;;;;;"Nie udało się dokończyć importu ikon";;;;;;;3123
+"Select OK Button to apply icons";"OK-Taste Drücken um Logos zu übernhemen";;;;;;"Wybierz przycisk OK, aby zastosować";;;;;;;3124
+"Invalid path";"Ungültiger Pfad";;;;;;"Błędna lokalizacja";;;;;;;3125
+"No zip file found in USB";"Kein Zip Datei auf USB gefunden";;;;;;"Nie znaleziono pliku zip na USB";;;;;;;3126
+"Extracting zip file failed to complete";"Entpacken der Zipdatei Fehlgeschlagen";;;;;;"Rozpakowywanie pliku zip zakończyło się niepowodzeniem";;;;;;;3127
+"The zip file is invalid or corrupted";"Die Zip-Datei ist ungültig oder beschädigt";;;;;;"Archiwum zip jest błędne, lub uszkodzone";;;;;;;3128
+"Downloading zip file failed to complete";"Download Zip Datei konnte nicht abgeschlossen werden";;;;;;"Pobieranie pliku zip zakończyło się niepowodzeniem";;;;;;;3129
+"Extract Zip File";"Zip Datei extrahieren";;;;;;"Wypakowywanie z pliku zip";;;;;;;3130
+"Cancelling";"Abbruch";;;;;;"Anulowanie";;;;;;;3131
+"Extracting data";"Entpacke Dateien";;;;;;"Wypakowywanie danych";;;;;;;3132
+"Extracting Zip File";"Entpacke Zip Datei";;;;;;"Wypakowywanie z pliku zip";;;;;;;3133
+"Select Channel Icon Package";"Senderlogo Paket wählen";;;;;;"Wybierz pakiet z ikonami";;;;;;;3134
 "Add Satellite";"Satellit hinzufügen";"Ajouter satellite";"Aggiungi Satellite";"Añadir salite";"Přidat Satelit";"Add Satellite";"Dodaj satelitę";"Add Satellite";"Добавить Спутник";"Add Satellite";"Add Satellite";"Pridať Satelit";"Додати Супутник";3135
 "Confirm";"Bestätigen";"Confirmer";"Conferma";"Confirmar";"Potvrdit";"Bevestigen";"Potwierdź";"Onaylayın";"Подтвердить";"Confirm";"Confirm";"Potvrdiť";"Підтвердити";3136
 "Longitude Degree";"Längengrade";"Degré de longitude";"Longitudine";"Grados Longitud";"Stupeň zeměpisné délky";"Longitude Degree";"Długość geograficzna";"Longitude Degree";"Долгота";"Longitude Degree";"Longitude Degree";"Stupeň zemepisnej dĺžky";"Довгота";3137
@@ -922,7 +922,7 @@
 "Number of your Radio Channels";"Anzahl ihrer Radio Kanäle";"Nombre de chaînes radio";"Numero dei canali radio";"Número de sus canales de radio";"Počet Rádio programů";"Number of your Radio Channels";"Liczba stacji radiowych";"Number of your Radio Channels";"Количество Радиоканалов";"Number of your Radio Channels";"Number of your Radio Channels";"Počet Rádio programov";"Кількість радіоканалів";3390
 "Exit the first installation";"Erstinstallation verlassen";"Quitter la première installation";"Uscire alla prima installazione";"Salir de la primera instalación";"Ukončení prvotní instalace";"Exit the first installation";"Opuść kreator początkowej instalacji";"Exit the first installation";"Выйти из первичной установки";"Exit the first installation";"Exit the first installation";"Ukončenie prvotnej inštalácie";"Вийти з первинної установки";3391
 "Go back to the time and date setup page";"Gehen Sie zurück zur Uhrzeit und Datum Setup Seite";"Retourner à la page de configuration de l'heure et de la date";"Torna alla pagina delle impostazioni di ora e data";"Volver a la página de configuración de hora y fecha";"Přejděte zpět na stránku Nastavení času a data";"Go back to the time and date setup page";"Wróć do konfiguracji daty i czasu";"Go back to the time and date setup page";"Перейти назад к установке даты и времени";"Go back to the time and date setup page";"Go back to the time and date setup page";"Prejdite späť na stránku Nastavenia času a dátumu";"Перейти назад до установки дати і часу";3392
-"Select Satellite";" Satellit auswählen";"Choisir le satellite";"Seleziona Satellite";"Seleccionar satélite";"Výběr satelitu";"Select Satellite";"Wybierz satelitę";"Select Satellite";"Выбрать Спутник";"Select Satellite";"Select Satellite";"Výber satelitu";"Вибрати Супутник";3393
+"Select Satellite";"Satellit auswählen";"Choisir le satellite";"Seleziona Satellite";"Seleccionar satélite";"Výběr satelitu";"Select Satellite";"Wybierz satelitę";"Select Satellite";"Выбрать Спутник";"Select Satellite";"Select Satellite";"Výber satelitu";"Вибрати Супутник";3393
 "Scanning multiple satellites at the same time%s cannot be done in manual channel search";"Scannen mehrerer Satelliten gleichzeitig%s kann nicht im manuellen Sendersuchlauf durchgeführt werden";"Balayage de plusieurs satellites en même temps%s impossible en recherche manuelle";;;"Vyhledávání více satelitů současn%s není možné v manuálním vyhledávání";;"Skanowanie wielu satelitów w tym samym czasie%s nie może być wykonane w trybie wyszukiwania ręcznego";;"Поиск нескольких спутников нельзя%s выполнить в ручном режиме поиска каналов";;;"Vyhľadávanie viacerých satelitov súčasn%s nie je možné v manuálnom vyhľadávaní";;3394
 "Select Transponder";"Transponder auswählen";"Choisir un transpondeur";"Seleziona Transponder";"Seleccionar transpondedor";"Výběr transpondéru";"Select Transponder";"Wybierz transponder";"Select Transponder";"Выбрать Транспондер";"Select Transponder";"Select Transponder";"Výber transpondéra";"Вибрати Транспондер";3395
 "No configured satellite or transponder available";"Keine konfigurierten Satelliten oder Transponder verfügbar";"Aucun satellite configuré ou pas de transpondeur disponible";;;"Žádný nastavený satelit nebo transpondér";;"Brak skonfigurowanych satelitów lub transponderów";;"Не настроены спутники или транспондеры";;;"Žiadny nastavený satelit alebo transpondér";;3396
@@ -987,7 +987,7 @@
 "Skipping all channels is not allowed";"Überspringen aller Kanäle ist nicht erlaubt";"Sauter tous les canaux n'est pas autorisé";"Skipping all channels is not allowed";"Omitir todos los canales que no están permitidos";"Přeskočení všech kanálů není povoleno";"Skipping all channels is not allowed";"Pomijanie wszystkich kanałów nie%n jest dozwolone";"Skipping all channels is not allowed";"Пропуск всех каналов не допускается";"Skipping all channels is not allowed";"Skipping all channels is not allowed";"Preskočenie všetkých kanálov nie je povolené";"Skipping all channels is not allowed";3455
 "Are you sure you want to delete the channels%s including currently recording or reserved?";"Sind Sie sicher dass Sie den Sender%s inkl. laufender Aufnahmen oder Timer löschen wollen?";"Etes vous sur de vouloir supprimer les chaînes%s incluant ceux en cours d'enregistrement ou réservées?";"Sei sicuro di voler eliminare il canale%s tra cui in fase di registrazione o riservati?";"¿Está seguro que desea eliminar los canales%s incluidos los que actualmente grabando o los reservados?";"Jste si jisti, že chcete smazat programy%s, včetně aktuální nahrávky nebo rezervace?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Czy na pewno chcesz usunąć kanały wliczając%s aktualnie nagrywane lub z rezerwacją?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Уверены что хотите удалить каналы%s включая текущие записи и таймеры?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Are you sure you want to delete the channels%s including currently recording or reserved?";"Ste si istí, že chcete zmazať programy%s, vrátane aktuálnej nahrávky alebo rezervácie?";"Впевнені що хочете видалити канали%s включаючи поточні записи і таймери?";3456
 "Delete Channels";"Kanäle löschen";"Supprimer les chaînes";"Elimina Canali";"Borrar canales";"Odstranění kanálů";"Delete Channels";"Usuń kanały";"Delete Channels";"Удалить Каналы";"Delete Channels";"Delete Channels";"Odstránenie kanálov";"Видалити Канали";3457
-"Insert";"einfügen";;;;"Vložit";;"Wstaw ";;;;;"Vložiť";;3458
+"Insert";"Einfügen";;;;"Vložit";;"Wstaw ";;;;;"Vložiť";;3458
 "Add channels to this group";"Kanäle zu dieser Gruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo";"Přidat k této oblíbené skupině";"Add channels to this group";"Dodaj kanały do tej grupy";"Add channels to this group";"Добавить в Эту Группу Любимых";"Add channels to this group";"Add channels to this group";"Pridať k tejto obľúbenej skupine";"Додати до групи улюблених";3459
 "Save and exit";"Sichern und verlassen";"Enregistrer et quitter";"Salvare e uscire";"Salvar y salir";"Uložit a opustit";"Save and exit";"Zapisz i wyjdź";"Save and exit";"Сохранить и выйти";"Save and exit";"Save and exit";"Uložiť a opustiť";"Зберегти і вийти";3460
 "Add Channels to This Favorite Group";"Kanäle zu dieser Favoritengruppe hinzufügen";"Ajouter à ce groupe favoris";"Aggiungi a questo gruppo preferito";"Añadir canales a este grupo favorito";"Přidat kanály do této favoritní skupiny";"Add Channels to This Favorite Group";"Dodaj kanały do tej grupy ulubionych";"Add Channels to This Favorite Group";"Добавить в Эту Группу Любимых";"Add Channels to This Favorite Group";"Add Channels to This Favorite Group";"Pridať kanály do tejto favoritnej skupiny";"Add Channels to This Favorite Group";3461
@@ -1045,37 +1045,37 @@
 "Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";"Тюнер 2";"Tuner 2";"Tuner 2";"Tuner 2";"Tuner 2";3513
 "Select a tuner you want to search";"Tuner für Suchlauf wählen";"Sélectionnez le tuner que vous souhaitez pour la recherche";"Select a tuner you want to search";"Seleccionar un tuner para realizar la busqueda";"Vyberte tuner, který chcete prohledat";"Select a tuner you want to search";"Wybierz tuner do wyszukania";"Select a tuner you want to search";"Выберите тюнер, который необходимо найти";"Select a tuner you want to search";"Select a tuner you want to search";"Vyberte tuner, ktorý chcete prehľadať";"Select a tuner you want to search";3514
 "Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Tuner";"Тюнер";"Tuner";"Tuner";"Tuner";"Tuner";3515
-"Display user presentation of service numbers in a familiar form or sequentially";;;;;"Zobrazit uživatelskou prezentaci čísel služeb v obvyklé formě nebo sekvenčně";;"Wyświetl numery usług w znanej postaci, lub sekwencyjnie";;;;;"Zobraziť užívateľskú prezentáciu čísel služieb v obvyklej forme alebo sekvenčne";;3516
+"Display user presentation of service numbers in a familiar form or sequentially";"Zeigt dem Anwender Sendernummern in bekannter oder fortlaufenden Weise an";;;;"Zobrazit uživatelskou prezentaci čísel služeb v obvyklé formě nebo sekvenčně";;"Wyświetl numery usług w znanej postaci, lub sekwencyjnie";;;;;"Zobraziť užívateľskú prezentáciu čísel služieb v obvyklej forme alebo sekvenčne";;3516
 "Logical Channel Numbering";"Logische Sender Nummerierung";;;;"Logické číslování kanálů";;"Logiczne sortowanie kanałów (LCN)";;;;;"Logické číslovanie kanálov";;3517
 "Start Search";"Suchlauf Starten";"Commencer la recherche";"Start Search";"Iniciar busqueda";"Spustit vyhledávání";"Start Search";"Start wyszukiwania";"Start Search";"Начать Поиск";"Start Search";"Start Search";"Spustiť vyhľadávanie";"Почати Пошук";3518
 "Experimental";"Experimentel";;;;"Experimentálne";;"Ustawienia eksperymentalne";;;;;"Experimentálne";;3519
 "HDMI-CEC";"HDMI-CEC";;;;"HDMI - CEC";;"HDMI-CEC";;;;;"HDMI-CEC";;3520
-"You can customize the appearance of PRISMCUBE RUBY";;;;;;;"Dostosuj wygląd PRISMCUBE RUBY";;;;;;;3521
-"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";;;;;"UPOZORNĚNÍ : Použitím experimentálních funkcí mohou vzniknout problémy, které mohou mít vliv na stabilitu systému";;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;"UPOZORNENIE: Použitím experimentálnych funkcií môžu vzniknúť problémy, ktoré môžu mať vplyv na stabilitu systému";;3522
-"Control PRISMCUBE using your existing TV remote when connected via HDMI";;;;;"Ovládejte PRISMCUBE přes dálkové ovládání od TV přes připojení HDMI";;"Kontroluj PRISMCUBE przez HDMI używając pilota od telewizora";;;;;"Ovládajte PRISMCUBE cez diaľkové ovládanie od TV cez pripojenie HDMI";;3523
-"Advanced";;;;;"Rozšířené";;"Zaawansowane";;;;;"Rozšírené";;3524
-"Receive information from the RSS server as soon as it is updated";;;;;"Přijímejte informace z RSS serveru , ihned po jeho aktualizací";;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;"Prijímajte informácie z RSS servera, ihneď po jeho aktualizácií";;3525
-"Allows you to display clock on the top middle of live screen";;;;;"Umožní zobrazit hodiny ve středu horní části obrazovky";;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;"Umožní zobraziť hodiny v strede hornej časti obrazovky";;3526
-"Allows you to display clock on front panel display instead of channel name and menu";;;;;"Umožní zobrazit hodiny na předním panelu namísto názvu kanálu a menu";;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;"Umožní zobraziť hodiny na prednom panely namiesto názvu kanálu a menu";;3527
-"Allows you to display next EPG notification on live screen";;;;;"Umožní zobrazit následující EPG událost zobrazením Infolišty";;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;"Umožní zobraziť nasledujúcu EPG udalosť zobrazením infolišty";;3528
-"Allows you to display customized channel logos";;;;;;;"Pozwala na wyświetlanie dodatkowych ikon kanałów";;;;;;;3529
-"Show Customized Channel Logos";;;;;;;"Pokaż dodatkowe ikony kanałów";;;;;;;3530
-"Watch live stream of TV channels from PC or mobile devices";;;;;"Sledujte živé vysílání TV kanálů v PC nebo mobilních zařízeních";;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;"Sledujte živé vysielanie TV kanálov v PC alebo mobilných zariadeniach";;3531
-"restart required";;;;;"potřebný restart";;"wymaga ponownego uruchomienia";;;;;"potrebný reštart";;3532
-"Open web interface";;;;;"Otevřít webové rozhraní";;"Open web interface";;;;;"Otvoriť webové rozhranie";;3533
-"Web Interface";;;;;"Webové rozhraní";;"Web Interface";;;;;"Webové rozhranie";;3534
-"Allows you to playback 1080 24p video without having to switch the video output manually";;;;;"Umožní přehrávat 1080 24p videa bez potřeby přepínat video výstup manuálně";;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;"Umožní prehrávať 1080 24p videá bez potreby prepínať video výstup manuálne";;3535
+"You can customize the appearance of PRISMCUBE RUBY";"Sie können das Aussehen des PRISMCUBE RUBY Menüs anpassen";;;;;;"Dostosuj wygląd PRISMCUBE RUBY";;;;;;;3521
+"WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable";"WARNUNG: Durch verwenden experimenteller Features kann nicht mehr garantiert werden, dass Ihr System stabil läuft";;;;"UPOZORNĚNÍ : Použitím experimentálních funkcí mohou vzniknout problémy, které mohou mít vliv na stabilitu systému";;"UWAGA : użycie funkcji eksperymentalnych może spowodować problemy z wydajnością i stabilnością systemu!";;;;;"UPOZORNENIE: Použitím experimentálnych funkcií môžu vzniknúť problémy, ktoré môžu mať vplyv na stabilitu systému";;3522
+"Control PRISMCUBE using your existing TV remote when connected via HDMI";"Steuert die PRISMCUBE mit ihrer TV Fernbedienung wenn per HDMI verbunden";;;;"Ovládejte PRISMCUBE přes dálkové ovládání od TV přes připojení HDMI";;"Kontroluj PRISMCUBE przez HDMI używając pilota od telewizora";;;;;"Ovládajte PRISMCUBE cez diaľkové ovládanie od TV cez pripojenie HDMI";;3523
+"Advanced";"Erweitert";;;;"Rozšířené";;"Zaawansowane";;;;;"Rozšírené";;3524
+"Receive information from the RSS server as soon as it is updated";"Empfängt RSS Meldungen vom Server sofort nach Erscheinen";;;;"Přijímejte informace z RSS serveru , ihned po jeho aktualizací";;"Otrzymuj informacje z serwera RSS gdy tylko są dostępne";;;;;"Prijímajte informácie z RSS servera, ihneď po jeho aktualizácií";;3525
+"Allows you to display clock on the top middle of live screen";"Ermöglicht die Anzeige der Uhrzeit mittig oben im Live TV";;;;"Umožní zobrazit hodiny ve středu horní části obrazovky";;"Wyświetla zegar u góry ekranu podczas oglądania";;;;;"Umožní zobraziť hodiny v strede hornej časti obrazovky";;3526
+"Allows you to display clock on front panel display instead of channel name and menu";"Ermöglicht die Anzeige der Uhrzeit auf dem Front Display des Receivers anstatt Kanalname oder Menüanzeige";;;;"Umožní zobrazit hodiny na předním panelu namísto názvu kanálu a menu";;"Wyświetla zegar na wyświetlaczu zamiast nazwy kanału i menu";;;;;"Umožní zobraziť hodiny na prednom panely namiesto názvu kanálu a menu";;3527
+"Allows you to display next EPG notification on live screen";"Ermöglicht die Anzeige des nächsten EPG im Live TV";;;;"Umožní zobrazit následující EPG událost zobrazením Infolišty";;"Wyświetla następne powiadomienie EPG podczas oglądania";;;;;"Umožní zobraziť nasledujúcu EPG udalosť zobrazením infolišty";;3528
+"Allows you to display customized channel logos";"Schauen des Fernsehprogramms auf PC oder Mobilgerät";;;;;;"Pozwala na wyświetlanie dodatkowych ikon kanałów";;;;;;;3529
+"Show Customized Channel Logos";"Zeige benutzerdefinierter Senderlogos";;;;;;"Pokaż dodatkowe ikony kanałów";;;;;;;3530
+"Watch live stream of TV channels from PC or mobile devices";"Schauen des Fernsehprogramms auf PC oder Mobilgerät";;;;"Sledujte živé vysílání TV kanálů v PC nebo mobilních zařízeních";;"Oglądaj na żywo streaming kanałów telewizyjnych na komputerze lub w urządzeniach mobilnych";;;;;"Sledujte živé vysielanie TV kanálov v PC alebo mobilných zariadeniach";;3531
+"restart required";"Neustart erforderlich";;;;"potřebný restart";;"wymaga ponownego uruchomienia";;;;;"potrebný reštart";;3532
+"Open web interface";"Webinterface öffnen";;;;"Otevřít webové rozhraní";;"Open web interface";;;;;"Otvoriť webové rozhranie";;3533
+"Web Interface";"Webinferface";;;;"Webové rozhraní";;"Web Interface";;;;;"Webové rozhranie";;3534
+"Allows you to playback 1080 24p video without having to switch the video output manually";"Ermöglicht die Wiedergabe bis 1080 24p, ohne den Videoausgang manuell umzuschalten";;;;"Umožní přehrávat 1080 24p videa bez potřeby přepínat video výstup manuálně";;"Pozwala na odtwarzanie wideo 1080 24p bez konieczności ręcznego przełączania sygnału";;;;;"Umožní prehrávať 1080 24p videá bez potreby prepínať video výstup manuálne";;3535
 "Watch HbbTV on your PRISMCUBE";"Schaue HbbTV auf deinem PRSIMCUBE";;;;"Sledujte HbbTV na Vašem PRISMCUBE";;"Oglądaj HbbTV na twoim PRISMCUBE";;;;;"Sledujte HbbTV na Vašom PRISMCUBE";;3536
 "Enable/Disable HDMI-CEC option";"AN/AUS HDMI-CEC Option";;;;"Zapnout/vypnout funkci HDMI - CEC";;"Włącz/wyłącz opcję HDMI-CEC";;;;;"Zapnúť/vypnúť funkciu HDMI-CEC";;3537
 "HDMI-CEC Setting";"HDMI-CEC Einstellungen";;;;"Nastavení HDMI - CEC";;"HDMI-CEC";;;;;"Nastavenie HDMI-CEC";;3538
 "HDMI-CEC TV On";"HDMI-CEC TV Ein";;;;"HDMI - CEC TV zap";;"HDMI-CEC podczas włączania TV";;;;;"HDMI-CEC TV zap";;3539
-"Set an action for STB when turning TV on via HDMI-CEC";;;;;"Nastaví akci, kterou STB provede po zapnutí TV přes HDMI - CEC";;"Ustaw zachowanie STB w przypadku włączenia telewizora";;;;;"Nastaví akciu, ktorú STB vykoná po zapnutí TV cez HDMI-CEC";;3540
+"Set an action for STB when turning TV on via HDMI-CEC";"Schaltet STB ein, wenn das TV Gerät eingeschaltet wird per HDMI-CEC";;;;"Nastaví akci, kterou STB provede po zapnutí TV přes HDMI - CEC";;"Ustaw zachowanie STB w przypadku włączenia telewizora";;;;;"Nastaví akciu, ktorú STB vykoná po zapnutí TV cez HDMI-CEC";;3540
 "HDMI-CEC TV Off";"HDMI-CEC TV Aus";;;;"HDMI - CEC TV vyp";;"HDMI-CEC podczas wyłączania TV";;;;;"HDMI-CEC TV vyp";;3541
-"Set an action for STB when turning TV off via HDMI-CEC";;;;;"Nastaví akci, kterou STB provede po vypnutí TV přes HDMI - CEC";;"Ustaw zachowanie STB w przypadku wyłączenia telewizora";;;;;"Nastaví akciu, ktorú STB vykoná po vypnutí TV cez HDMI-CEC";;3542
+"Set an action for STB when turning TV off via HDMI-CEC";"Schaltet STB aus, wenn das TV Gerät ausgeschaltet wird per HDMI-CEC";;;;"Nastaví akci, kterou STB provede po vypnutí TV přes HDMI - CEC";;"Ustaw zachowanie STB w przypadku wyłączenia telewizora";;;;;"Nastaví akciu, ktorú STB vykoná po vypnutí TV cez HDMI-CEC";;3542
 "HDMI-CEC STB On";"HDMI-CEC STB Ein";;;;"HDMI - CEC STB zap";;"HDMI-CEC podczas włączania STB";;;;;"HDMI-CEC STB zap";;3543
-"Set an action for TV when turning STB on via HDMI-CEC";;;;;"Nastaví akci, kterou TV provede po zapnutí STB přes HDMI - CEC";;"Ustaw zachowanie telewizora w przypadku włączenia STB";;;;;"Nastaví akciu, ktorú TV vykoná po zapnutí STB cez HDMI-CEC";;3544
+"Set an action for TV when turning STB on via HDMI-CEC";"Schaltet TV Gerät ein, wenn STB eingeschaltet wird per HDMI-CEC";;;;"Nastaví akci, kterou TV provede po zapnutí STB přes HDMI - CEC";;"Ustaw zachowanie telewizora w przypadku włączenia STB";;;;;"Nastaví akciu, ktorú TV vykoná po zapnutí STB cez HDMI-CEC";;3544
 "HDMI-CEC STB Off";"HDMI-CEC STB Aus";;;;"HDMI - CEC STB vyp";;"HDMI-CEC podczas wyłączania STB";;;;;"HDMI-CEC STB vyp";;3545
-"Set an action for TV when turning STB off via HDMI-CEC";;;;;"Nastaví akci, kterou TV provede po vypnutí STB přes HDMI - CEC";;"Ustaw zachowanie telewizora w przypadku wyłączenia STB";;;;;"Nastaví akciu, ktorú TV vykoná po vypnutí STB cez HDMI-CEC";;3546
+"Set an action for TV when turning STB off via HDMI-CEC";"Schaltet TV Gerät aus, wenn STB ausgeschaltet wird per HDMI-CEC";;;;"Nastaví akci, kterou TV provede po vypnutí STB přes HDMI - CEC";;"Ustaw zachowanie telewizora w przypadku wyłączenia STB";;;;;"Nastaví akciu, ktorú TV vykoná po vypnutí STB cez HDMI-CEC";;3546
 "Tuner %d Config : %s";"Tuner %d Konfig : %s";"Configuration %d Tuner : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Konfiguracja tunera %d : %s";"Tuner %d Config : %s";"Тюнер %d Конфигурация : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Tuner %d Config : %s";"Тюнер %d Конфігурація : %s";3547
 "You can only have 4 satellites for DiSEqC 1.0";"Sie können nur 4 Satellites bei DiSEqC 1.0 einstellen";"Vous ne pouvez configurer que 4 satellites pour le DiSEqC 1.0";"Si può avere solo 4 satelliti per DiSEqC 1.0";"Tu solo puedes tener 4 satelites para DiSEqC 1.0";"Můžete zvolit maximálně 4 satelity při volbě DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Dla przełącznika DiSEqC 1.0 można skonfigurować do 4 satelitów";"You can only have 4 satellites for DiSEqC 1.0";"Доступно лишь 4 спутника для DISEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"You can only have 4 satellites for DiSEqC 1.0";"Môžete zvoliť maximálne 4 satelity pri voľbe DiSEqC 1.0";"Доступно лише 4 супутники для DISEqC 1.0";3548
 "You can only have 1 satellite for Simple LNB";"Sie können nur 1 Satellite für Einfaches LNB einstellen";"Vous ne pouvez configurer qu'un satellite pour le LNB Simple";"Si può avere solo 1 satellite per semplice LNB";"Tu solo puedes tener 1 satelite para LNB Simple";"Můžete zvolit maximálně jeden satelit pro jednoduché LNB";"You can only have 1 satellite for Simple LNB";"Pojedynczy konwerter może odbierać sygnał tylko z jednego satelity";"You can only have 1 satellite for Simple LNB";"Доступен лишь один спутник для режима Один Конвертор LNB";"You can only have 1 satellite for Simple LNB";"You can only have 1 satellite for Simple LNB";"Môžete zvoliť maximálne jeden satelit pre jednoduché LNB";"Доступний лише один супутник для режиму Один Конвертор LNB";3549
@@ -1360,7 +1360,7 @@
 "Import configuration data from USB flash memory";"Konfigurationsdaten laden vom USB Stick";"Importer un liste de chaînes pré-configurée via USB";"Importa dati di configurazione da pendrive USB";"Importar configuracion de datos de USB";"Import dat konfigurace z USB flash paměti";"Import configuration data from USB flash memory";"Import danych konfiguracji z pamięci flash USB";"Import configuration data from USB flash memory";"Импорт конфигурационных данных с USB накопителя";"Import configuration data from USB flash memory";"Import configuration data from USB flash memory";"Import údajov konfigurácie z USB flash pamäte";"Імпорт конфігураційних даних з USB накопичувача";3828
 "Export Configuration to USB";"Konfiguration auf USB sichern";"Exporter les chaînes vers USB";"Esporta configurazione su USB";"Exportar configuracion a un USB";"Export konfigurace do USB";"Export Configuration to USB";"Eksport konfiguracji na USB";"Export Configuration to USB";"Экспорт Настроек на USB";"Export Configuration to USB";"Export Configuration to USB";"Export konfigurácie do USB";"Експорт Налаштувань на USB";3829
 "Export existing configuration files to USB flash memory";"Vorhandene Konfiguration sdateien auf den USB Stick sichern";"Exporter votre liste de chaînes via USB";"Esportare i file di configurazione esistenti su drive USB";"Exportar los archivos de configuración existentes a USB";"Exportovat existující konfigurační soubor do USB flash paměti";"Export existing configuration files to USB flash memory";"Eksport danych konfiguracji na pamięć flash USB";"Export existing configuration files to USB flash memory";"Экспорт конфигурационных данных на USB накопитель";"Export existing configuration files to USB flash memory";"Export existing configuration files to USB flash memory";"Exportovať existujúci konfiguračný súbor do USB flash pamäte";"Експорт конфігураційних даних на USB накопичувач";3830
-"Import customized channel icons from USB flash memory or via Internet";;;;;;;"Import dodatkowych ikon z pamięci USB, lub z internetu";;;;;;;3831
+"Import customized channel icons from USB flash memory or via Internet";"Importieren von Senderlogos per USB-Speicher oder über Internet";;;;;;"Import dodatkowych ikon z pamięci USB, lub z internetu";;;;;;;3831
 "Backup and Restore System";"Sicherung und Wiederherstellung System";;;;"Záloha a obnova systému ";;"Kopia zapasowa systemu";;;;;"Záloha a obnova systému";;3832
 "Backup whole system image to USB or restore it from USB";"Ganzes System auf USB sichern oder wiederherstellen vom USB Stick";;;;"Záloha celého systému na USB nebo obnova z USB";;"Wykonaj kopię całego systemu, lub przywróć go z pamięci flash USB";;;;;"Záloha celého systému na USB alebo obnova z USB";;3833
 "Update Firmware";"Firmware Update";"Mettre à jour le firmware";"Aggiornamento firmware";"Actualizar Firmware";"Aktualizace firmwaru";"Update Firmware";"Aktualizacja oprogramowania";"Update Firmware";"Обновить ПО";"Update Firmware";"Update Firmware";"Aktualizácia firmvéru";"Оновити ПО";3834
