@@ -508,6 +508,9 @@ class DialogPIP( BaseDialog ) :
 
 
 	def PIP_Stop( self, aForce = False ) :
+		if not E_V1_2_APPLY_PIP :
+			return
+
 		winId = xbmcgui.getCurrentWindowId( )
 
 		if self.mDataCache.GetMediaCenter( ) and winId in XBMC_CHECKWINDOW :
