@@ -1000,7 +1000,9 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Refresh Record Path' ), '', MR_LANG( 'Remount your record storage directory' ) )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
-				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input04, E_Input05, E_Input06, E_Input07 ]
+				hideControlIds.remove( E_Input01 )
+				hideControlIds.remove( E_Input02 )
+				hideControlIds.remove( E_Input03 )
 
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
