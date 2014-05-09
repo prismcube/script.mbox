@@ -202,6 +202,11 @@ class DialogStartRecord( SettingDialog ) :
 			lblByte = '%sKB'% ( useFree * 1024 )
 		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
+		isShowVolumeInfo = E_TAG_TRUE
+		if not self.mHDDStatus and ( not aNetVolume ) :
+			isShowVolumeInfo = E_TAG_FALSE
+		self.setProperty( 'NetVolumeInfo', isShowVolumeInfo )
+
 		return lblSelect, useInfo, lblPercent, lblOnline
 
 
@@ -414,7 +419,7 @@ class DialogStartRecord( SettingDialog ) :
 			#self.getControl( 300 ).setPosition( posx, posy )
 			ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
-			self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+			#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 		self.AddOkCanelButton( )
 

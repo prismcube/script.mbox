@@ -84,7 +84,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mTotalHDD = self.mCommander.Record_GetPartitionSize( )
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
-
 		defaultFocus = E_DialogSpinEx03
 		if self.mTimer :
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
@@ -276,6 +275,11 @@ class DialogAddManualTimer( SettingDialog ) :
 		elif useFree < 0 :
 			lblByte = '%sKB'% ( useFree * 1024 )
 		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
+
+		isShowVolumeInfo = E_TAG_TRUE
+		if not self.mHDDStatus and ( not aNetVolume ) :
+			isShowVolumeInfo = E_TAG_FALSE
+		self.setProperty( 'NetVolumeInfo', isShowVolumeInfo )
 
 		return lblSelect, useInfo, lblPercent, lblOnline
 
@@ -528,7 +532,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					#block control by Edit timer
 					self.SetEnableControl( E_DialogInput04, False )
 
-				self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+				#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 			self.AddOkCanelButton( )
 

@@ -707,6 +707,11 @@ class Configure( SettingWindow ) :
 			lblByte = '%sKB'% ( useFree * 1024 )
 		lblPercent = '%s%%, %s %s'% ( useInfo, lblByte, MR_LANG( 'Free' ) )
 
+		isShowVolumeInfo = E_TAG_TRUE
+		if not self.mHDDStatus and ( not aNetVolume ) :
+			isShowVolumeInfo = E_TAG_FALSE
+		self.setProperty( 'NetVolumeInfo', isShowVolumeInfo )
+
 		return lblSelect, useInfo, lblPercent, lblOnline
 
 
@@ -891,7 +896,7 @@ class Configure( SettingWindow ) :
 		self.setProperty( 'NetVolumeConnect', lblOnline )
 		self.setProperty( 'NetVolumeUse', lblPercent )
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
-		self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+		#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 		self.mDataCache.Record_RefreshNetworkVolume( )
 
@@ -1016,7 +1021,7 @@ class Configure( SettingWindow ) :
 				self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
 				ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 
-				self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
+				#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 
 			self.SetVisibleControls( hideControlIds, False )
 			

@@ -7,6 +7,7 @@ import pvr.BackupSettings
 from pvr.XBMCInterface import XBMC_GetVolume, XBMC_SetVolumeByBuiltin, XBMC_GetMute, XBMC_GetCurrentLanguage
 from pvr.gui.GuiConfig import *
 from pvr.Util import TimeToString, TimeFormatEnum
+from pvr.Product import *
 
 if E_USE_OLD_NETWORK :
 	import pvr.IpParser as NetMgr
@@ -2709,6 +2710,9 @@ class DataCacheMgr( object ) :
 
 	def HDD_GetMountPath( self, aFind = '' ) :
 		hddPath = ''
+		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+			return hddPath
+
 		retList = self.mCommander.HDD_GetMountPath( )
 		if retList and len( retList ) > 0 and retList[0].mError == 0 :
 			hddPath = retList[0].mParam

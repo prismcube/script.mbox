@@ -456,7 +456,8 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( 'InfoPlateName', E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
+		if E_V1_2_APPLY_PIP :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
 		visible = E_TAG_FALSE
 		chList = self.mDataCache.Channel_GetList( )
