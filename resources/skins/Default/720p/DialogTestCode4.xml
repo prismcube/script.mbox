@@ -2183,5 +2183,23 @@
 						</content>
 
 			</control>
+						<control type="image">
+							<posx>200</posx>
+							<posy>100</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+						</control>
+						<control type="image">
+							<posx>190</posx>
+							<posy>110</posy>
+							<width>45</width>
+							<height>25</height>
+							<texture>StackFO_white3NF.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+						</control>
+
 	</controls>
 </window>

@@ -4512,6 +4512,17 @@
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -4523,6 +4534,7 @@
 							<font>font12</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
@@ -4642,6 +4654,17 @@
 							<width>45</width>
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -4653,6 +4676,7 @@
 							<font>font12</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</focusedlayout>
@@ -4803,6 +4827,17 @@
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -4814,6 +4849,7 @@
 							<font>font12</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
@@ -4891,6 +4927,17 @@
 							<width>45</width>
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -4902,6 +4949,7 @@
 							<font>font12</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</focusedlayout>
@@ -4993,6 +5041,17 @@
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -5004,6 +5063,7 @@
 							<font>font12</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
@@ -5054,6 +5114,17 @@
 							<width>45</width>
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -5065,6 +5136,7 @@
 							<font>font12</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</focusedlayout>
@@ -5213,6 +5285,17 @@
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -5224,6 +5307,7 @@
 							<font>font12</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</itemlayout>
@@ -5274,6 +5358,17 @@
 							<width>45</width>
 							<height>25</height>
 							<texture>StackFO_white3NF.png</texture>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
+						<control type="image">
+							<posx>10</posx>
+							<posy>-10</posy>
+							<width>27</width>
+							<height>45</height>
+							<texture>USB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
 							<posx>5</posx>
@@ -5285,6 +5380,7 @@
 							<font>font12</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 					</control>
 				</focusedlayout>

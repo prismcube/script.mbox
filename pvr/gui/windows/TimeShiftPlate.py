@@ -106,19 +106,19 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onInit( self ) :
-		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support' ) )
-			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
-			return
-
 		self.SetActivate( True )
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		if playingRecord :
 			self.SetFrontdisplayMessage( playingRecord.mRecordName )
 		else :
 			self.mDataCache.Frontdisplay_SetCurrentMessage( )
+
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support' ) )
+			dialog.doModal( )
+			WinMgr.GetInstance( ).CloseWindow( )
+			return
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
@@ -579,9 +579,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_YELLOW, E_TAG_TRUE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
-		visible = E_TAG_FALSE
+		if E_V1_2_APPLY_PIP :
+			self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
+		visible = E_TAG_FALSE
 		if self.mMode == ElisEnum.E_MODE_PVR : 
 			visible = E_TAG_TRUE
 			if not E_V1_2_APPLY_TEXTWIDTH_LABEL :

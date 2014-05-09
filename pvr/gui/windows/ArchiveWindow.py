@@ -579,17 +579,22 @@ class ArchiveWindow( BaseWindow ) :
 			if aRecordInfo.mMountInfo :
 				mntType = 'HDD'
 				netVolume = E_TAG_TRUE
+				netVolumeUSB = E_TAG_FALSE
 				retPath = os.path.dirname( aRecordInfo.mMountInfo )
-				if retPath == E_DEFAULT_PATH_SMB_POSITION :
-					mntType = 'SMB'
-				elif retPath == E_DEFAULT_PATH_NFS_POSITION :
-					mntType = 'NFS'
-				elif retPath == E_DEFAULT_PATH_FTP_POSITION :
-					mntType = 'FTP'
+				if retPath == E_DEFAULT_PATH_SMB_POSITION or \
+				   retPath == E_DEFAULT_PATH_NFS_POSITION or \
+				   retPath == E_DEFAULT_PATH_FTP_POSITION :
+					mntType = 'NAS'
+				elif bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, aRecordInfo.mMountInfo, re.IGNORECASE ) ) :
+					mntType = 'USB'
+					netVolumeUSB = E_TAG_TRUE
 				else :
 					#internal
 					netVolume = E_TAG_FALSE
+					netVolumeUSB = E_TAG_FALSE
+
 				recItem.setProperty( 'iNetVolumeType', mntType )
+				recItem.setProperty( 'iNetVolumeUSB', netVolumeUSB )
 				recItem.setProperty( 'iNetVolumeName', os.path.basename( aRecordInfo.mMountInfo ) )
 			recItem.setProperty( 'RecNetVolume', netVolume )
 
@@ -794,12 +799,12 @@ class ArchiveWindow( BaseWindow ) :
 					if E_SUPPORT_EXTEND_RECORD_PATH and recInfo.mMountInfo :
 						mntType = 'HDD'
 						retPath = os.path.dirname( recInfo.mMountInfo )
-						if retPath == E_DEFAULT_PATH_SMB_POSITION :
-							mntType = 'SMB'
-						elif retPath == E_DEFAULT_PATH_NFS_POSITION :
-							mntType = 'NFS'
-						elif retPath == E_DEFAULT_PATH_FTP_POSITION :
-							mntType = 'FTP'
+						if retPath == E_DEFAULT_PATH_SMB_POSITION or \
+						   retPath == E_DEFAULT_PATH_NFS_POSITION or \
+						   retPath == E_DEFAULT_PATH_FTP_POSITION :
+							mntType = 'NAS'
+						elif bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, recInfo.mMountInfo, re.IGNORECASE ) ) :
+							mntType = 'USB'
 
 						if mntType != 'HDD' :
 							lblLine = '%s \'%s\'\n %s'% ( lblLine, mntType, MR_LANG( 'Please check network connection' ) )
@@ -1318,17 +1323,22 @@ class ArchiveWindow( BaseWindow ) :
 					if mountInfo :
 						mntType = 'HDD'
 						netVolume = E_TAG_TRUE
+						netVolumeUSB = E_TAG_FALSE
 						retPath = os.path.dirname( mountInfo )
-						if retPath == E_DEFAULT_PATH_SMB_POSITION :
-							mntType = 'SMB'
-						elif retPath == E_DEFAULT_PATH_NFS_POSITION :
-							mntType = 'NFS'
-						elif retPath == E_DEFAULT_PATH_FTP_POSITION :
-							mntType = 'FTP'
+						if retPath == E_DEFAULT_PATH_SMB_POSITION or \
+						   retPath == E_DEFAULT_PATH_NFS_POSITION or \
+						   retPath == E_DEFAULT_PATH_FTP_POSITION :
+							mntType = 'NAS'
+						elif bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, mountInfo, re.IGNORECASE ) ) :
+							mntType = 'USB'
+							netVolumeUSB = E_TAG_TRUE
 						else :
 							#internal
 							netVolume = E_TAG_FALSE
+							netVolumeUSB = E_TAG_FALSE
+
 						self.setProperty( 'iNetVolumeType', mntType )
+						self.setProperty( 'iNetVolumeUSB', netVolumeUSB )
 						self.setProperty( 'iNetVolumeName', os.path.basename( mountInfo ) )
 					self.setProperty( 'RecNetVolume', netVolume )
 
@@ -1344,6 +1354,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.setProperty( 'RecDuration',  '' )
 		self.setProperty( 'RecName', '' )				
 		self.setProperty( 'RecNetVolume', E_TAG_FALSE )
+		self.setProperty( 'iNetVolumeUSB', E_TAG_FALSE )
 		self.setProperty( 'iNetVolumeType', '' )
 		self.setProperty( 'iNetVolumeName', '' )
 		self.setProperty( 'EPGAgeRating', '' )

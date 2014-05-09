@@ -569,7 +569,9 @@ def CheckDirectory( aPath ) :
 def CheckHdd( ) :
 	import pvr.Platform
 	import pvr.ElisMgr
-	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+	from pvr.Product import *
+	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
+	   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 		return False
 
 	retList = pvr.ElisMgr.GetInstance( ).GetCommander( ).HDD_GetMountPath( )
