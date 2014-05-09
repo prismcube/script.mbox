@@ -560,8 +560,8 @@ class DialogPIP( BaseDialog ) :
 				from pvr.GuiHelper import GetInstanceSkinPosition
 				posNotify = self.LoadPositionPIP( )
 				skinPos = GetInstanceSkinPosition( )
-				x, y, w, h = skinPos.GetPipPosition2( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
-				self.mDataCache.PIP_SetDimension( x, y, w, h )
+				px, py, pw, ph = skinPos.GetPipPosition( posNotify[0], posNotify[1], posNotify[2], posNotify[3] )
+				self.mDataCache.PIP_SetDimension( px - 1, py - 1, pw - 5, ph - 5 )
 
 			ret = self.mDataCache.PIP_AVBlank( not isShow )
 			xbmcgui.Window( 10000 ).setProperty( 'OpenPIP', '%s'% isShow )
