@@ -271,6 +271,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if iZapping and iZapping.mError == 0 :
 				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 			iChannel = self.mDataCache.Channel_GetCurrent( True )
 			self.mDataCache.mCurrentChannel = iChannel
 
