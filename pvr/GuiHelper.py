@@ -567,9 +567,9 @@ def CheckDirectory( aPath ) :
 
 
 def CheckHdd( ) :
+	from pvr.Product import *
 	import pvr.Platform
 	import pvr.ElisMgr
-	from pvr.Product import *
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
 	   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 		return False
