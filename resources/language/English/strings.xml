@@ -1493,4 +1493,6 @@
 	<string id="3960">Could not switch PIP</string>
 	<string id="3961">Media Playback</string>
 	<string id="3962">MediaPlay</string>
+	<string id="3963">Do you want to restart the system now?</string>
+	<string id="3964">You must reboot your system for the changes to take effect.</string>
 </strings>
