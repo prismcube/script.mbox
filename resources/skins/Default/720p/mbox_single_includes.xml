@@ -4502,37 +4502,37 @@
 					</control>
 					<!-- NetVolume -->
 					<control type="group">
-						<posx>580</posx>
+						<posx>583</posx>
 						<posy>35</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>font12</font>
-							<textcolor>grey2</textcolor>
+							<textcolor>grey3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -4645,29 +4645,28 @@
 					</control>
 					<!-- NetVolume -->
 					<control type="group">
-						<posx>580</posx>
+						<posx>583</posx>
 						<posy>35</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
-							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
@@ -4823,31 +4822,31 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>font12</font>
-							<textcolor>grey2</textcolor>
+							<textcolor>grey3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -4924,23 +4923,22 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
-							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
@@ -5037,31 +5035,31 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>font12</font>
-							<textcolor>grey2</textcolor>
+							<textcolor>grey3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -5111,23 +5109,22 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
-							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
@@ -5281,31 +5278,31 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
 							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>font12</font>
-							<textcolor>grey2</textcolor>
+							<textcolor>grey3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
@@ -5355,23 +5352,22 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>45</width>
+							<width>42</width>
 							<height>25</height>
-							<texture>StackFO_white3NF.png</texture>
+							<texture>IconEmpty.png</texture>
 							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="image">
-							<posx>10</posx>
-							<posy>-10</posy>
-							<width>27</width>
-							<height>45</height>
-							<texture>USB.png</texture>
-							<colordiffuse>75FFFFFF</colordiffuse>
-							<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>5</posx>
+							<posx>4</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>

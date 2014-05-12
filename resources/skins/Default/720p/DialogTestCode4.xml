@@ -2184,6 +2184,30 @@
 
 			</control>
 						<control type="image">
+							<posx>192</posx>
+							<posy>80</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconNas1.png</texture>
+						</control>
+						<control type="image">
+							<posx>250</posx>
+							<posy>80</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconNas2.png</texture>
+						</control>
+
+						<control type="image">
+							<posx>192</posx>
+							<posy>110</posy>
+							<width>42</width>
+							<height>25</height>
+							<texture>IconUSB.png</texture>
+							<!--colordiffuse>75FFFFFF</colordiffuse-->
+							<!--animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation-->
+						</control>
+						<control type="image">
 							<posx>200</posx>
 							<posy>100</posy>
 							<width>27</width>
