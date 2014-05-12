@@ -21,13 +21,9 @@ class Advanced( SettingWindow ) :
 		self.mDescriptionList	= []
 		self.mCtrlLeftGroup		= None
 		self.mPrevListItemID	= -1
+		self.mPrevLiveStream	= ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( )
+		self.mPrevWebinterface	= self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) )
 
-		#self.mMainRss			= self.GetSettingToNumber( GetSetting( 'RSS_FEED_MAIN_MENU' ) )
-		#self.mClockLiveScreen	= self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
-		#self.mClockFront		= self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) )
-		#self.mEpgNotify			= self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) )
-
-		#self.mLiveStream		= self.GetSettingToNumber( GetSetting( 'LIVE_STREAM' ) )
 
 	def onInit( self ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
@@ -63,9 +59,21 @@ class Advanced( SettingWindow ) :
 
 
 	def Close( self ) :
+		self.RestartSystem( )
 		self.mInitialized = False
 		self.ResetAllControl( )
 		WinMgr.GetInstance( ).CloseWindow( )
+
+
+	def RestartSystem( self ) :
+		if self.mPrevLiveStream != ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( ) or \
+			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) :
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'You must reboot your system for the changes to take effect.' ), MR_LANG( 'Do you want to restart the system now?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mDataCache.System_Reboot( )
 
 
 	def onAction( self, aAction ) :

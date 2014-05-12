@@ -11,6 +11,7 @@ MENU_ID_EDIT_TRANSPONDER		= 4
 MENU_ID_CONFIGURE				= 5
 MENU_ID_CAS						= 6
 MENU_ID_UPDATE					= 7
+MENU_ID_ADVANCED				= 8
 
 MAIN_LIST_ID					= E_INSTALLATION_BASE_ID + 9000
 
@@ -32,7 +33,8 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Edit Transponder' ),
 		MR_LANG( 'Configuration' ),
 		MR_LANG( 'CAS' ),
-		MR_LANG( 'Update' ) ]
+		MR_LANG( 'Update' ),
+		MR_LANG( 'Advanced' ) ]
 
 		self.mDescriptionList = [
 		MR_LANG( 'Take the following steps for getting your PRISMCUBE RUBY ready for use' ),
@@ -42,7 +44,8 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Add new transponders or edit the transponders already exist' ),
 		MR_LANG( 'Configure the general settings for your digital satellite receiver' ),
 		MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
-		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ) ]
+		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' ),
+		MR_LANG( 'Set the advanced preferences that can customize the box to your specific needs' ) ]
 
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
@@ -106,6 +109,9 @@ class Installation( BaseWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 				dialog.doModal( )
+
+		elif selectedId == MENU_ID_ADVANCED :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ADVANCED )
 
 	def onFocus( self, aControlId ) :
 		if self.IsActivate( ) == False  :
