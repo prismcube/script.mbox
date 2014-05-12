@@ -643,6 +643,7 @@ class DialogPIP( BaseDialog ) :
 		try :
 			self.mLastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
 			if self.mDataCache.GetMediaCenter( ) :
+				WinMgr.GetInstance( ).LoadSkinPosition( )
 				self.mLastWindow = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 				LOG_TRACE( '[PIP] Check current window[%s]'% xbmcgui.getCurrentWindowId() )
 			self.mCtrlBasePIPGroup          = self.mLastWindow.getControl( CTRL_ID_BASE_GROUP_PIP )
