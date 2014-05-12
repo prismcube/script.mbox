@@ -4,33 +4,22 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
-				<height>340</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+				<height>520</height>
+				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="button" id="6995">
-				<description>Close Window button</description>
-				<posx>455</posx>
-				<posy>36</posy>
-				<width>110</width>
-				<height>25</height>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>SCRIPT21</label>
-				<font>Font_Bold18</font>
-			</control>
-			<include>DefaultDialogCloseButton</include>
+			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>25</posx>
-				<posy>5</posy>
+				<posx>40</posx>
+
+				<!-- Timer Mode -->
+				<include>DialogSpinEx03</include>
 
 				<!-- Recording Type -->
 				<include>DialogSpinEx01</include>
@@ -43,17 +32,72 @@
 
 				<!-- Date -->
 				<include>DialogSpinEx02</include>
-				
+
 				<!--StartTime -->
 				<include>DialogInput02</include>
 
 				<!--EndTim -->
 				<include>DialogInput03</include>
 
-				<!-- OK/Cancel -->
-				<include>DefaultSettingDialogButtonOKCancel</include>
+				<!-- Record path -->
+				<include>DialogInput04</include>
+				<control type="group">
+					<posx>0</posx>
+					<posy>390</posy>
+					<control type="group" id="300">
+						<posx>0</posx>
+						<posy>0</posy>
+						<!--visible>Control.IsVisible(1006240)</visible-->
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="progress" id="301">
+							<description>Progressbar</description>
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<!--texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture-->
+						</control>
+						<control type="label" id="302">
+							<posx>105</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font12</font>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+					</control>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>40</posy>
+
+					<!-- OK/Cancel -->
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
 
 			</control>
+
+
 		</control>
 	</controls>
 </window>

@@ -4,27 +4,25 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="300">
-			<include>DefaultDialogCloseEffect</include>
+		<include>DefaultDialogCloseEffect</include>			
 			<posx>90</posx>
 			<posy>30</posy>
-
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1100</width>
-				<height>530</height>
-				<texture border="20">osd/osd_settings_back.png</texture>
+				<height>520</height>
+				<texture border="20">DialogBack.png</texture>
 			</control>
-
 			<control type="group">
 				<control type="button" id="301">
 					<description>Prev button</description>
 					<posx>80</posx>
-					<posy>465</posy>
-					<width>30</width>
-					<height>30</height>
-					<texturenofocus>views/multiplex_arrowfocus2.png</texturenofocus>
-					<texturefocus>views/multiplex_arrow2.png</texturefocus>
+					<posy>450</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-left.png</texturenofocus>
+					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
 					<onleft></onleft>
 					<onright>302</onright>
 					<ondown>110</ondown>
@@ -34,11 +32,11 @@
 				<control type="button" id="302">
 					<description>Next button</description>
 					<posx>970</posx>
-					<posy>465</posy>
-					<width>30</width>
-					<height>30</height>
-					<texturenofocus>views/multiplex_arrowfocus.png</texturenofocus>
-					<texturefocus>views/multiplex_arrow.png</texturefocus>
+					<posy>450</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-right.png</texturenofocus>
+					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
 					<onleft>301</onleft>
 					<onright></onright>
 					<ondown>110</ondown>
@@ -46,11 +44,11 @@
 					<visible>substring(Window.Property(EPGNext),true)</visible>
 				</control>
 				<control type="label">
-					<posx>120</posx>
+					<posx>130</posx>
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12</font>
+					<font>font12_title</font>
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -58,11 +56,11 @@
 					<visible>Control.IsVisible(301)</visible>
 				</control>
 				<control type="label">
-					<posx>960</posx>
+					<posx>970</posx>
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12</font>
+					<font>font12_title</font>
 					<textcolor>grey2</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -74,7 +72,7 @@
 					<posy>458</posy>
 					<width>200</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>font13_title</font>
 					<textcolor>white</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
@@ -90,7 +88,7 @@
 				  <height>100</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>Font_OSDTitle2</font>
+				  <font>font35_title</font>
 				  <textcolor>FFFFFFFF</textcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
 			</control>
@@ -100,7 +98,7 @@
 				  <posx>80</posx>
 				  <posy>135</posy>
 				  <width>950</width>
-				  <height>330</height>
+				  <height>320</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
 				  <font>font13</font>
@@ -117,11 +115,11 @@
 				<width>25</width>
 				<height>321</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
-				<texturesliderbar></texturesliderbar>
-				<texturesliderbarfocus></texturesliderbarfocus>
-				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
-				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 				<onleft></onleft>
 				<onright></onright>
 				<ondown></ondown>
@@ -135,7 +133,7 @@
 				<description>start time</description>
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
-			</control>				
+			</control>
 			<control type="label">
 				<posx>830</posx>
 				<posy>82</posy>
@@ -153,13 +151,33 @@
 
 			<control type="group">
 				<control type="grouplist">
-					<posx>400</posx>
+					<posx>300</posx>
 					<posy>90</posy>
-					<width>400</width>
+					<width>510</width>
 					<height>40</height>
-					<itemgap>10</itemgap>
+					<itemgap>25</itemgap>
 					<align>right</align>
 					<orientation>horizontal</orientation>
+					<control type="group">
+						<width>60</width>
+						<height>40</height>
+						<visible>substring(Window.Property(HasAgeRating),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>40</height>
+							<texture>ageIcon.png</texture>
+						</control>
+						<control type="label">
+							<posx>18</posx>
+							<posy>6</posy>
+							<width>50</width>
+							<height>10</height>
+							<font>font15</font>
+							<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
+						</control>
+					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -178,18 +196,18 @@
 					</control>
 					<control type="image">
 						<posx>0</posx>
-						<posy>7</posy>
-						<width>102</width>
-						<height>40</height>
-						<texture>dolbydigital.png</texture>
+						<posy>4</posy>
+						<width>105</width>
+						<height>33</height>
+						<texture>dolbydigital1.png</texture>
 						<visible>substring(Window.Property(HasDolby),true) + !Control.IsVisible(201)</visible>
 					</control>
 					<control type="image" id="201">
 						<posx>0</posx>
-						<posy>7</posy>
-						<width>102</width>
-						<height>40</height>
-						<texture>dolbydigitalplus.png</texture>
+						<posy>4</posy>
+						<width>105</width>
+						<height>33</height>
+						<texture>dolbydigitalplus1.png</texture>
 						<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
 					</control>
 					<control type="image">
