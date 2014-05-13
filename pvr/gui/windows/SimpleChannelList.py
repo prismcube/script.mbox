@@ -858,7 +858,6 @@ class SimpleChannelList( BaseWindow ) :
 			if isSelect == 0 and self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
 				lblPath = EnumToString( 'mode', self.mUserMode.mMode )
 				self.setProperty( 'SimpleChannelPath', lblPath )
-				self.setProperty( 'ShowGroupSlide', E_TAG_FALSE )
 				raise Exception, 'pass, select same(all)'
 
 			if self.mChangeMode.mMode == self.mUserMode.mMode :
