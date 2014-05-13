@@ -290,13 +290,15 @@ class LivePlate( LivePlateWindow ) :
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
 
-			if not CheckHdd( ) :
+			if not CheckHdd( True ) :
 				self.StopAutomaticHide( )
 				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
+				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
-				
+
 			self.Close( )
 			self.SetMediaCenter( )
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
