@@ -126,6 +126,7 @@ class GlobalEvent( object ) :
 				else :
 					LOG_TRACE( 'Already opened, hddfull' )
 
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_EPG_WINDOW :
 				if self.mDataCache.Channel_GetZappingListStatus( ) :
 					self.mDataCache.Channel_SetZappingListStatus( )
