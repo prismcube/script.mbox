@@ -73,8 +73,8 @@ class ElmoGetCurrent( Webinterface ) :
 			self.followingEpg =  ElisIEPGEvent()		
 		"""
 		
-		print 'current time'
-		print self.mCommander.Datetime_GetLocalTime()
+		# print 'current time'
+		# print self.mCommander.Datetime_GetLocalTime()
 		
 		# self.ref = self.makeRef(self.currentChannel.mSid, self.currentChannel.mTsid, self.currentChannel.mOnid, self.currentChannel.mNumber) 
 		self.ref = self.makeRef(self.currentChannel.mSid, self.currentChannel.mTsid, self.currentChannel.mOnid, self.currentChannel.mNumber) 
