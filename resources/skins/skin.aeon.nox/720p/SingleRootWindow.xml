@@ -6336,6 +6336,69 @@
 					</control>
 				</control>
 
+				<!-- Prev & Next Group l-->
+				<control type="group">
+					<posx>890</posx>
+					<posy>65</posy>
+					<visible>substring(Window.Property(ShowGroupSlide),true)</visible>
+					<control type="image">
+						<posx>0</posx>
+						<posy>10</posy>
+						<width>18</width>
+						<height>15</height>
+						<texture>TSIconRewind.png</texture>
+					</control>
+					<control type="image">
+						<posx>360</posx>
+						<posy>10</posy>
+						<width>18</width>
+						<height>15</height>
+						<texture>TSIconFastForward.png</texture>
+					</control>
+					<control type="wraplist" id="4601003">
+						<posx>40</posx>
+						<posy>2</posy>
+						<width>300</width>
+						<height>30</height>
+						<onleft></onleft>
+						<onright></onright>
+						<onup></onup>
+						<ondown></ondown>
+						<pagecontrol></pagecontrol>
+						<scrolltime>300</scrolltime>
+						<focusposition>1</focusposition>
+						<orientation>horizontal</orientation>
+						<preloaditems>2</preloaditems>
+						<itemlayout height="30" width="150">
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>150</width>
+								<height>30</height>
+								<align>center</align>
+								<aligny>center</aligny>
+								<font>font10</font>
+								<textcolor>grey2</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout height="30" width="150">
+							<control type="label">
+								<posx>0</posx>
+								<posy>-2</posy>
+								<width>150</width>
+								<height>30</height>
+								<align>center</align>
+								<aligny>center</aligny>
+								<font>font14</font>
+								<textcolor>selected</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+								<scroll>false</scroll>
+							</control>
+						</focusedlayout>
+					</control>
+				</control>
+
 				<!-- Channels -->
 				<control type="group">
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
