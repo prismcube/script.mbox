@@ -7,7 +7,7 @@ class ElmoMovieList( Webinterface ) :
 		super(ElmoMovieList, self).__init__(urlPath)
 		self.conn = dbopen.DbOpen('recordinfo.db').getConnection()
 
-		sql = "select ChannelName, RecordName, StartTime, duration, RecordKey  from tblRecordInfo"
+		sql = "select ChannelName, RecordName, StartTime, duration, RecordKey  from tblRecordInfo where serviceType=1 or serviceType=3"
 		self.c = self.conn.cursor()
 		self.c.execute(sql)
 

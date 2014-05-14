@@ -179,7 +179,20 @@ class MyHandler( BaseHTTPRequestHandler ):
 
 				print '[WebUI] About to download Stream.m3u file for Recordings'
 
-				content = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % self.urlPath[1]
+				conn = dbopen.DbOpen('recordinfo.db').getConnection()
+
+				sql = "select MountInfo from tblRecordInfo where RecordKey=" + self.urlPath[1]
+				c = conn.cursor()
+				c.execute(sql)
+
+				mountInfo = c.fetchone()[0]
+				print mountInfo
+
+				if mountInfo == 'Internal' :
+					content = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % self.urlPath[1]
+				else :
+					content = "http://" + getMyIp().strip() + ":49152/content%s/%s/0.ts" % (mountInfo, self.urlPath[1])
+					
 				self.wfile.write( content )
 
 				return
@@ -262,25 +275,63 @@ class MyHandler( BaseHTTPRequestHandler ):
 
 				elif self.urlPath[0] == "/file" :
 
-					print 'Record Play'
+					paramName = self.urlPath[1].split("=")[0]
+					paramVal = self.urlPath[1].split("=")[1]
 
-					recordKey = self.urlPath[1].split("=")[1]
-					myip = getMyIp()
-					target = "http://" + myip.strip() + ":49152/content/internal-recordings/" + recordKey + "/0.ts"
+					if paramName == 'file' :
+					
+						print 'Record Play'
+
+						# recordKey = self.urlPath[1].split("=")[1]
+						recordKey = paramVal
+						
+						myip = getMyIp()
+
+						conn = dbopen.DbOpen('recordinfo.db').getConnection()
+						c = conn.cursor()
+
+						sql = "select MountInfo from tblRecordInfo where RecordKey=" + recordKey
+						print sql
+						
+						c = conn.cursor()
+						c.execute(sql)
+
+						mountInfo = c.fetchone()[0]
+
+						if mountInfo == 'Internal' :
+							target = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % recordKey
+						else :
+							target = "http://" + getMyIp().strip() + ":49152/content%s/%s/0.ts" % (mountInfo, recordKey)
+						# target = "http://" + myip.strip() + ":49152/content/internal-recordings/" + recordKey + "/0.ts"
+
+						print '[Stream Handler] Recording File Read '
+						print target
+
+						self.streamResult = urllib.urlopen(target)
+
+						i = 0 
+						j = 0
+
+						print '[Stream Handler] Ready to stream recorded file'
+
+					else :
+
+						print 'Media File Play'
+						filePath = urllib.unquote(paramVal)
+						print filePath
+
+						try :
+							self.streamResult = file(filePath, 'rb')
+							print paramVal
+							print '[Media File] Streming from Media file'
+						except :
+							print '[Media File] File Open Error'
+							return 
 
 					self.send_response( 200 )
 					self.send_header( 'Content-Type', 'application/text' )
 					self.end_headers()
-
-					print '[Stream Handler] Recording File Read '
-					print target
-
-					self.streamResult = urllib.urlopen(target)
-
-					i = 0 
-					j = 0
-
-					print '[Stream Handler] Ready to stream recorded file'
+					
 					while True :
 						"""
 						j = j + 1
