@@ -14,6 +14,9 @@ def GetHTMLClass( className, *param ) :
 
 	htmlClass.append(EpgGrid)
 	htmlClass.append(RecordingDel)
+	htmlClass.append(ZapUp)
+	htmlClass.append(ZapDown)
+	htmlClass.append(RecordCheck)
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -97,6 +100,7 @@ class WebPage( object ) :
 			<html>
 			<head>
 				<title>PRISMCUBE Web UI</title>
+				<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 				<link href='uiStyle.css' type='text/css' rel='stylesheet'>
 				<script>
 				
@@ -349,6 +353,15 @@ class Channel( WebPage ) :
 							document.recordForm.duration.value = duration;
 							document.recordForm.submit();
 						} 
+					}
+
+					function RecordCheck( channelNumber ) {
+						var duration = prompt("Please enter duration time (in min) for the recording");
+
+						if(duration) {
+							target = 'RecordCheck?channelNumber='+channelNumber+'&duration='+ duration;
+							window.open( target, 'CheckHDD', 'height=500, width=500');
+						}
 					}
 
 				</script>
@@ -742,7 +755,8 @@ class ChannelBySatellite( Channel ) :
 				content += '<td><p class="channelContent">&nbsp;&nbsp;&nbsp;&nbsp;' + channelList[indexer].mName + '</p></td>'
 				content += '<td align="center"><p class="channelContent"><a href="Zapping?' + str(channelList[indexer].mNumber) + '" target="zapper"><img src="./uiImg/zap.png" border="0"></a></p></td>'
 				content += '<td align="center"><p class="channelContent"><a href="javascript:JumpToEpg(' + str(channelList[indexer].mSid) + ',' + str(channelList[indexer].mTsid) + ',' + str(channelList[indexer].mOnid) + ')"><img src="./uiImg/EPG.png" border="0"></a></p></td>'
-				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(channelList[indexer].mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p></td></tr>'
+				content += '<td align="center" width="100"><p class="channelContent"><a href="javascript:JumpToRecord('+str(channelList[indexer].mNumber)+');"><img src="./uiImg/record.png" border="0"></a></p>'
+				content += '<a href="javascript:RecordCheck('+str(channelList[indexer].mNumber)+');">RRR</a></td></tr>'
 				
 			except IndexError :
 				content += '<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>'
@@ -1033,38 +1047,44 @@ class Recordings( WebPage ) :
 			thumbnailList[keyVal] =  img
 
 		content = """<table border="0" width="930" style="border-collapse:collapse;" cellpadding="0" cellspacing="0"><tr><td><table width="100%" border="0">"""
+
+		if recordingList :
 		
-		for rec in reversed(recordingList) :
+			for rec in reversed(recordingList) :
+			
+				recDuration =  int( rec.mDuration / 60 )
+				if ( rec.mDuration % 60 ) != 0 :
+					recDuration += 1
+				try :				
+					content += "<tr>"
 
-			recDuration =  int( rec.mDuration / 60 )
-			if ( rec.mDuration % 60 ) != 0 :
-				recDuration += 1
-			try :				
-				content += "<tr>"
-
-				try :
-					content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+					try :
+						content += '	<td><img src="' + thumbnailList[str(rec.mRecordKey)] + '"></td>'
+					except :
+						content += '	<td><img src="/uiImg/thumb.jpg"></td>'
+						
+					content += '	<td>'
+					content += '	<table width="100%" border="0" cellpadding="5">'
+					content += '	<tr>'
+					content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
+					content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
+					content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a>' % str(rec.mRecordKey)
+					content += '		<br><a href="javascript:delRecord(%s)"><img src="./uiImg/Delete.png" border="0"></a></td>'  % str(rec.mRecordKey)
+					content += '	</tr>'
+					content += '	<tr>'
+					content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
+					content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
+					content += '	</tr>'
+					content += '	</table>'
+					content += ' 	</td>'
+					content += '</tr>'
+					content += '<tr><td colspan="2" align="center"><hr></td></tr>'
 				except :
-					content += '	<td><img src="/uiImg/thumb.jpg"></td>'
-					
-				content += '	<td>'
-				content += '	<table width="100%" border="0" cellpadding="5">'
-				content += '	<tr>'
-				content += '		<td><p class="recContent">P%04d.%s</p></td>' % ( rec.mChannelNo, rec.mChannelName )
-				content += '		<td align="right"><p class="recContent">' + TimeToString(rec.mStartTime) + '</p></td>'
-				content += '		<td rowspan="2" align="center" width="100"><a href="/recording/stream.m3u?%s"><img src="./uiImg/stream.png" border="0"></a>' % str(rec.mRecordKey)
-				content += '		<br><a href="javascript:delRecord(%s)"><img src="./uiImg/Delete.png" border="0"></a></td>'  % str(rec.mRecordKey)
-				content += '	</tr>'
-				content += '	<tr>'
-				content += '		<td><p class="recContent">' + str(rec.mRecordName) +  '</p></td>'
-				content += '		<td align="right"><p class="recContent">' + str(recDuration) + ' min</p></td>'
-				content += '	</tr>'
-				content += '	</table>'
-				content += ' 	</td>'
-				content += '</tr>'
-				content += '<tr><td colspan="2" align="center"><hr></td></tr>'
-			except :
-				print 'error cache record thumbnail'
+					print 'error cache record thumbnail'
+
+		else :
+
+			content += '<tr><td><br><br><p class="recContent">No Recordings</p></td></tr></table>'
 
 		content += '</td></tr></table>'
 		return self.getBasicTemplate( content ) 
@@ -1202,7 +1222,12 @@ class EpgGrid( WebPage ) :
 		return self.getBasicTemplate( content ) 
 
 class Record( WebPage ) :
-
+	"""
+		paramaters 
+			channelNumber
+			duration
+			volumeId
+	"""
 	def __init__( self, command ) :
 		super(Record, self).__init__()
 		self.content = "Record Class"
@@ -1291,7 +1316,7 @@ class Record( WebPage ) :
 			print self.stationInfo['duration']
 
 			# ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, otrInfo.mEventName, True, 0, int(self.stationInfo['sid']),  int(self.stationInfo['tsid']), int(self.stationInfo['onid']) )
-			ret = self.mDataCache.Timer_AddManualTimer( int(self.stationInfo['channelNumber']), 1, localTime + 5, int(self.stationInfo['duration']) * 60, 'Web UI Recordings', 0 )
+			ret = self.mDataCache.Timer_AddManualTimer( int(self.stationInfo['channelNumber']), 1, localTime + 5, int(self.stationInfo['duration']) * 60, 'Web UI Recordings', int(self.stationInfo['volumeId']) )
 
 			#if ret[0].mParam == -1 or ret[0].mError == -1 :
 			LOG_ERR( 'StartDialog ret=%s ' %ret )
@@ -1351,4 +1376,73 @@ class RecordingDel( WebPage ) :
 				location.href = 'Recordings';
 			</script>
 		"""
+
+class ZapUp( WebPage ) :
+
+	def __init__( self, command ) :
+		super( ZapUp, self).__init__()
+		try :
+			xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+			self.content = "OK"
+		except :
+			self.content = "Fail"
+
+class ZapDown( WebPage ) :
+
+	def __init__( self, command ) :
+		super( ZapDown, self).__init__()
+		try :
+			xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+			self.content = "OK"
+		except :
+			self.content = "Fail"
+
+class RecordCheck( WebPage ) :
+
+	def __init__( self, command ) :
+		super( RecordCheck, self).__init__()
+		self.params = self.GetParams( command[0] )
+		self.content = self.CheckHDDListContent()
+
+		# print self.mDataCache.Record_GetNetworkVolume( True )
+
+	def CheckHDDListContent( self ) :
+
+		volumeList = self.mDataCache.Record_GetNetworkVolume(True) 
+		if volumeList :
+
+			content = """
+				<html>
+				<head>
+					<title>PrismCube</title>
+					<style type="text/css" rel="stylesheet">
+						p {
+							font-size: 0.8em;
+							font-family: "arial";
+						}
+					</style>
+				</head>
+				<body>
+					<p>List Goes Here</p>
+				</body>
+				</html>
+			"""
+		else :
+
+			content = """
+				<html>
+				<head>
+					<title>PrismCube</title>
+				</head>
+				<body>
+				<script>
+					var target = "Record?channelNumber=%s&duration=%s&volumeId=0";
+					location.href = target;
+					this.close();
+				</script>
+				</body>
+				</html>
+			""" % ( self.params['channelNumber'], self.params['duration'])
+			
+		return content
 		
