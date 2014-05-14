@@ -22,6 +22,7 @@ class Advanced( SettingWindow ) :
 		self.mPrevListItemID	= -1
 		self.mPrevLiveStream	= ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( )
 		self.mPrevWebinterface	= self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) )
+		self.mPrevHbbtv			= self.GetHbbTv( )
 
 
 	def onInit( self ) :
@@ -66,7 +67,8 @@ class Advanced( SettingWindow ) :
 
 	def RestartSystem( self ) :
 		if self.mPrevLiveStream != ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( ) or \
-			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) :
+			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) or \
+			self.mPrevHbbtv != self.GetHbbTv( ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'You must reboot your system for the changes to take effect.' ), MR_LANG( 'Do you want to restart the system now?' ) )
