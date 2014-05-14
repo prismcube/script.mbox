@@ -255,7 +255,7 @@ class DataCacheMgr( object ) :
 	def Load( self ) :
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
-		self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
+		#self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
