@@ -431,7 +431,7 @@ class DialogMountManager( SettingDialog ) :
 						#LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
 						#self.mNetVolume.printdebug( )
 
-						lblLine = MR_LANG( 'The path could not be mounted' )
+						lblLine = MR_LANG( 'Unable to mount location' )
 						if mountPath != '' :
 							isAdd = True
 							#is edit? delete old volume
@@ -457,6 +457,10 @@ class DialogMountManager( SettingDialog ) :
 									# Add fail then restore umount
 									os.system( '/bin/umount -fl %s'% mountPath )
 									os.system( 'sync' )
+
+						else :
+							lblTitle = MR_LANG( 'Unable to mount location' )
+							lblLine = MR_LANG( 'Make sure you have permission to access that folder' )
 
 				else :
 					lblLine = MR_LANG( 'Please enter path name' )
