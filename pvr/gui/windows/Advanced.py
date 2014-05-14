@@ -210,13 +210,17 @@ class Advanced( SettingWindow ) :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Show RSS on Main Menu' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'RSS_FEED_MAIN_MENU' ) ), MR_LANG( 'Receive information from the RSS server as soon as it is updated' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Show Clock on Live Screen' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) ), MR_LANG( 'Allows you to display clock on the top middle of live screen' ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
+			if pvr.Platform.GetPlatform( ).GetProduct( ) != PRODUCT_OSCAR :
+				self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Show Clock on Front Panel Display' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_CLOCK_VFD' ) ), MR_LANG( 'Allows you to display clock on front panel display instead of channel name and menu' ) )
 			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Show Next EPG Notification' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'DISPLAY_EVENT_LIVE' ) ), MR_LANG( 'Allows you to display next EPG notification on live screen' ) )
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Show Customized Channel Logos' ), USER_ENUM_LIST_ON_OFF, self.GetSettingToNumber( GetSetting( 'CUSTOM_ICON' ) ), MR_LANG( 'Allows you to display customized channel logos' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
+
+			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+				self.SetVisibleControl( E_SpinEx03, False )
 
 			self.InitControl( )
 			
