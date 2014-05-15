@@ -75,7 +75,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mAscending[E_SORT_TITLE] = True
 		self.mAscending[E_SORT_DURATION] = False
 
-	
+
 	def onInit( self ) :
 		self.setProperty( 'SetBackgroundColor', '1' )
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
@@ -193,7 +193,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
-				if	self.mMarkMode == True :
+				if self.mMarkMode == True :
 					self.DoMarkToggle( )
 				else :
 					if actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
@@ -210,6 +210,11 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
+
+			elif focusId == BUTTON_ID_NAS_ARCHIVE :
+				if E_SUPPORT_EXTEND_RECORD_PATH and self.mNetVolumeList and \
+				   self.mNetVolumeSelectIndex > -1 and self.mNetVolumeSelectIndex < len( self.mNetVolumeList ) :
+					self.mCtrlNetVolumeList.selectItem( self.mNetVolumeSelectIndex )
 
 		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
@@ -387,6 +392,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
 			     aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
 				if E_SUPPORT_EXTEND_RECORD_PATH :
+					self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 					self.Flush( )
 					self.Load( )
 					self.UpdateList( )

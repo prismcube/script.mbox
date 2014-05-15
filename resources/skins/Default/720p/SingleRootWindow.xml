@@ -4670,7 +4670,7 @@ Search for window name
 								<align>left</align>
 								<aligny>center</aligny>
 								<font>font12</font>
-								<textcolor>grey2</textcolor>
+								<textcolor>grey3</textcolor>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</itemlayout>
@@ -4681,6 +4681,15 @@ Search for window name
 								<width>210</width>
 								<height>40</height>
 								<texture border="5">button-focus.png</texture>
+								<visible>Control.HasFocus(3309050)</visible>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<texture border="5">button-nofocus.png</texture>
+								<visible>!Control.HasFocus(3309050)</visible>
 							</control>
 							<control type="label">
 								<posx>5</posx>
@@ -4791,7 +4800,7 @@ Search for window name
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
-						<onright>3309020</onright>
+						<onright>3309050</onright>
 						<onup>3300104</onup>
 						<ondown>3300106</ondown>
 						<enable>!substring(Container(3309050).CurrentPage,0)</enable>
