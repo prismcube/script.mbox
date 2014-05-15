@@ -236,7 +236,7 @@ class DialogStartRecord( SettingDialog ) :
 
 				lblPath = '[%s]%s%s'% ( lblType, os.path.basename( netVolume.mMountPath ), lblStatus )
 				if lblStatus :
-					lblPath = '[COLOR grey3]%s[/COLOR]'% lblPath
+					lblPath = '[COLOR ff2E2E2E]%s[/COLOR]'% lblPath
 				#LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
 				if aVolumeID > -1 :

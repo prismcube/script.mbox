@@ -1340,6 +1340,9 @@ def ExecuteShell( cmd = '' ) :
 
 
 def IsIPv4( address ) :
+	if not address :
+		return False
+
 	# check if string is valid ipv4 address
 	if address.replace( '.', '' ).strip( '1234567890' ) :
 		return False
