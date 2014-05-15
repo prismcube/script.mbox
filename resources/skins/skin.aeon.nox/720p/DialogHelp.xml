@@ -29,7 +29,7 @@
 					<posy>-5</posy>
 					<width>820</width>
 					<height>30</height>
-					<font>Font_Reg32</font>
+					<font>Font_Reg19</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>FF6db9e5</textcolor>
@@ -41,7 +41,7 @@
 					<posy>-5</posy>
 					<width>500</width>
 					<height>30</height>
-					<font>Font_Reg22_Caps</font>
+					<font>Font_Reg15</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -53,7 +53,7 @@
 					<posy>-5</posy>
 					<width>100</width>
 					<height>30</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg15</font>
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -64,19 +64,23 @@
 			<control type="group" id="8500">
 				<control type="image" id="100">
 					<visible>Control.IsVisible(8500)</visible>
-					<texture border="20">$INFO[Window.Property(imagepath)]</texture>
+					<texture>$INFO[Window.Property(imagepath)]</texture>
 				</control>
 				<control type="group">
-					<align>left</align>
-					<aligny>top</aligny>
-					<font>Font_Reg30</font>
-					<textcolor>white</textcolor>
 					<visible>Control.IsVisible(8500)</visible>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 					<control type="textbox" id="200">
+						<align>left</align>
+						<aligny>top</aligny>
+						<font>Font_Reg15</font>
+						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label1)]</label>
 					</control>
 					<control type="textbox" id="201">
+						<align>left</align>
+						<aligny>top</aligny>
+						<font>Font_Reg15</font>
+						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label2)]</label>
 					</control>
 				</control>

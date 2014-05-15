@@ -16,7 +16,6 @@
  E_Favorite
  E_SystemUpdate
  E_SimpleChannelList
- E_PIPWindow
 -->
 <window id="3000">
 	<defaultcontrol always="true">1100000</defaultcontrol>
@@ -120,7 +119,7 @@
 					<posy>105</posy>
 					<width>480</width>
 					<height>30</height>
-					<font>Font_Reg57</font>
+					<font>Font_Reg38</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>grey2</textcolor>
@@ -179,7 +178,7 @@
 				<width>500</width>
 				<align>left</align>
 				<aligny>center</aligny>
-				<font>font28_title</font>
+				<font>Font_Reg38</font>
 				<label>$LOCALIZE[SCRIPT1200]</label>
 				<textcolor>grey</textcolor>
 				<visible>substring(Window.Property(LiveStream),true)</visible>
@@ -229,7 +228,7 @@
 
 			<!-- Menus -->
 			<control type="group">
-				<posy>400</posy>
+				<posy>402</posy>
 				<animation type="Visible" reversible="false">
 					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 					<effect type="fade" start="0" end="100" time="300" />
@@ -582,18 +581,18 @@
 			<control type="group">
 				<control type="image">
 					<posx>-13</posx>
-					<posy>226r</posy>
+					<posy>213r</posy>
 					<width>866</width>
-					<height>70</height>
+					<height>60</height>
 					<texture flipy="false" flipx="true">$VAR[TimePanelImageVar]</texture>
 					<colordiffuse>EE000000</colordiffuse>
 				</control>
 					<control type="label">
 					<posx>15</posx>
-					<posy>191r</posy>
+					<posy>187r</posy>
 					<width>1145</width>
 					<height>36</height>
-					<font>Font_Reg26</font>
+					<font>Font_Reg15</font>
 					<label>$INFO[Container(1209000).ListItem.Label2]</label>
 					<align>left</align>
 					<textcolor>white</textcolor>
@@ -601,10 +600,10 @@
 				</control>
 				<control type="label" id="1200100">
 					<posx>15</posx>
-					<posy>191r</posy>
+					<posy>187r</posy>
 					<width>1145</width>
 					<height>36</height>
-					<font>Font_Reg26</font>
+					<font>Font_Reg15</font>
 					<align>left</align>
 					<textcolor>white</textcolor>
 					<visible>!Control.HasFocus(1209000)</visible>
@@ -616,25 +615,25 @@
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="image">
 					<posx>340r</posx>
-					<posy>226r</posy>
+					<posy>213r</posy>
 					<width>345</width>
-					<height>70</height>
+					<height>60</height>
 					<texture>$VAR[TimePanelImageVar]</texture>
 					<colordiffuse>EE000000</colordiffuse>
 				</control>
 				<control type="label">
 					<posx>15r</posx>
-					<posy>193r</posy>
+					<posy>187r</posy>
 					<width>300</width>
 					<height>36</height>
 					<align>right</align>
 					<label>[COLOR=FFdfdfdf] $INFO[System.Date(DDD)], $INFO[System.Date(d)] $INFO[System.Date(mmm)] $INFO[System.Date(yyyy)]  •  [/COLOR][COLOR=FF6db9e5] $INFO[System.Time][/COLOR]</label>
-					<font>Font_Reg28_Caps</font>
+					<font>Font_Reg15_Caps</font>
 					<textcolor>$VAR[HomeMenuWidgetTextVar]</textcolor>
 				</control>
 			</control>
 
-			<!-- RSS  Feed & Background Image -->
+			<!-- RSS Feed & Background Image -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>33r</posy>
@@ -644,7 +643,7 @@
 					<posy>0</posy>
 					<height>30</height>
 					<width>1155</width>
-					<font>font12</font>
+					<font>Font_Reg15_Caps</font>
 					<urlset>1</urlset>
 					<textcolor>blue</textcolor>
 					<titlecolor>blue</titlecolor>
@@ -766,28 +765,28 @@
 				</control>
 			</control>
 
-			<!-- Sort Info -->
+			<!-- Channel Mode & Sorting Info -->
 			<control type="group" id="1300020">
 				<posx>5</posx>
-				<posy>55</posy>
+				<posy>53</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300021">
 					<posx>106</posx>
-					<posy>0</posy>
+					<posy>1</posy>
 					<width>400</width>
 					<height>28</height>
-					<font>Font_Reg32</font>
-					<textcolor>blue</textcolor>
+					<font>Font_Reg19</font>
+					<textcolor>FF6db9e5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="1300022">
 					<posx>800</posx>
-					<posy>0</posy>
+					<posy>1</posy>
 					<width>200</width>
 					<height>28</height>
-					<font>Font_Reg32</font>
+					<font>Font_Reg19</font>
 					<align>right</align>
-					<textcolor>blue</textcolor>
+					<textcolor>FF6db9e5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 			</control>
@@ -795,7 +794,7 @@
 			<control type="label" id="1300601">
 				<posx>30</posx>
 				<posy>30</posy>
-				<font>Font_Reg28</font>
+				<font>Font_Reg19</font>
 				<textcolor>grey</textcolor>
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
@@ -803,7 +802,7 @@
 			<!-- Channels -->
 			<control type="group" id="1300049">
 				<posx>75</posx>
-				<posy>70</posy>
+				<posy>67</posy>
 				<include>DefaultWindowFade</include>
 				<control type="list" id="1300050">
 					<posx>0</posx>
@@ -940,7 +939,7 @@
 								<posy>0</posy>
 								<width>60</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey3</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -952,7 +951,7 @@
 								<posy>0</posy>
 								<width>550</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey3</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -965,7 +964,7 @@
 								<posy>0</posy>
 								<width>540</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey3</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -978,7 +977,7 @@
 								<posy>0</posy>
 								<width>100</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey3</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -1002,7 +1001,7 @@
 							<width>730</width>
 							<height>42</height>
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-							<texture border="6">views/tripanel/listselect_fo_solid.png</texture>
+							<texture border="6">views/tripanel/listselect_fo.png</texture>
 							<colordiffuse>FFB20000</colordiffuse>
 						</control>
 						<!-- Lock Icon -->
@@ -1119,7 +1118,7 @@
 									<posy>0</posy>
 									<width>60</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
@@ -1132,7 +1131,7 @@
 									<posy>0</posy>
 									<width>550</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
@@ -1146,7 +1145,7 @@
 									<posy>0</posy>
 									<width>540</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
@@ -1160,7 +1159,7 @@
 									<posy>0</posy>
 									<width>100</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1246,7 +1245,7 @@
 									<posy>0</posy>
 									<width>60</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1259,7 +1258,7 @@
 									<posy>0</posy>
 									<width>550</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
@@ -1274,7 +1273,7 @@
 									<posy>0</posy>
 									<width>540</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1287,7 +1286,7 @@
 									<posy>0</posy>
 									<width>100</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1337,8 +1336,8 @@
 						<posx>0</posx>
 						<posy>207</posy>
 						<width>350</width>
-						<height>10</height>
-						<font>Font_Reg28</font>
+						<height>20</height>
+						<font>Font_Reg19</font>
 						<textcolor>grey</textcolor>
 						<label>TV - zdf-neo HD$INFO[Control.GetLabel]</label>
 						<visible>substring(Window.Property(Signal),True)</visible>
@@ -1353,19 +1352,18 @@
 					<control type="group">
 						<control type="label" id="1300305">
 							<posx>0</posx>
-							<posy>20</posy>
-							<font>Font_Reg28</font>
+							<posy>15</posy>
+							<font>Font_Reg19</font>
 							<textcolor>grey</textcolor>
 							<label></label>
 						</control>
 						<control type="progress" id="1300306">
 							<posx>200</posx>
-							<posy>25</posy>
+							<posy>10</posy>
 							<width>150</width>
 							<height>15</height>
 							<color>grey</color>
 							<border>0</border>
-							<overlaytexture>-</overlaytexture>
 						</control>
 					</control>
 					<!-- EPG Info -->
@@ -1374,7 +1372,7 @@
 						<posy>50</posy>
 						<width>350</width>
 						<height>15</height>
-						<font>Font_Reg28_Caps</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -1382,7 +1380,7 @@
 					<control type="label" id="1300307">
 						<posx>0</posx>
 						<posy>110</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -1390,7 +1388,7 @@
 					<control type="label" id="1300308">
 						<posx>0</posx>
 						<posy>130</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -1410,7 +1408,7 @@
 						<control type="label">
 							<posx>30</posx>
 							<posy>75</posy>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey</textcolor>
 							<label>SCRIPT1014</label>
 						</control>
@@ -1420,22 +1418,22 @@
 				<!-- More EPG Info Mode -->
 				<control type="group">
 					<posx>0</posx>
-					<posy>0</posy>
+					<posy>5</posy>
 					<width>390</width>
 					<visible>substring(Window.Property(ShowExtendInfo),True)</visible>
 					<!-- Satellite Info -->
 					<control type="label">
 						<posx>0</posx>
 						<posy>200</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<label>$INFO[Control.GetLabel(1300307)]</label>
 					</control>
 					<!-- Transponder Info -->
 					<control type="label">
 						<posx>0</posx>
-						<posy>220</posy>
-						<font>Font_Reg28</font>
+						<posy>225</posy>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<label>$INFO[Control.GetLabel(1300308)]</label>
 					</control>
@@ -1455,38 +1453,38 @@
 						<control type="label">
 							<posx>30</posx>
 							<posy>0</posy>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey3</textcolor>
 							<label>SCRIPT1014</label>
 						</control>
 					</control>
 					<control type="group">
 						<posx>0</posx>
-						<posy>238</posy>
+						<posy>240</posy>
 						<include>DefaultWindowFade</include>
 						<!-- EPG Start & End Time -->
 						<control type="label">
 							<posx>0</posx>
 							<posy>10</posy>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Control.getLabel(1300305)]</label>
 						</control>
 						<!-- EPG Duration -->
 						<control type="label">
 							<posx>0</posx>
-							<posy>30</posy>
-							<font>Font_Reg28</font>
+							<posy>35</posy>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Window.Property(EPGDuration)]</label>
 						</control>
 						<!-- EPG Summary -->
 						<control type="textbox">
 							<posx>0</posx>
-							<posy>60</posy>
+							<posy>55</posy>
 							<width>352</width>
 						 	<height>164</height>
-							<font>Font_Reg25</font>
+							<font>Font_Reg17</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Window.Property(EPGDescription)]</label>
 							<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -1524,7 +1522,7 @@
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -1612,7 +1610,7 @@
 			<!-- Hotkeys -->
 			<control type="grouplist">
 				<posx>80</posx>
-				<posy>674</posy>
+				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
 				<align>left</align>
@@ -1666,13 +1664,14 @@
 
 			<!--  Item & Page Number -->
 			<control type="group">
+				<posx>80r</posx>
+				<posy>55r</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300401">
-					<posx>260r</posx>
-					<posy>30r</posy>
+					<posx>180r</posx>
 					<width>100</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
@@ -1681,29 +1680,25 @@
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<posx>80r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
-					<posx>80r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -1763,7 +1758,7 @@
 						<textoffsetx>10</textoffsetx>
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<texturefocus border="5">button-focus.png</texturefocus>
 						<texturenofocus>-</texturenofocus>
 						<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
@@ -1793,7 +1788,7 @@
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>white</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -1808,14 +1803,14 @@
 								<width>240</width>
 								<height>40</height>
 								<texture>button-focus.png</texture>
-								<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+								<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 							</control>
 							<control type="label">
 								<posx>10</posx>
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<align>left</align>
 								<aligny>center</aligny>
 								<textcolor>white</textcolor>
@@ -1906,7 +1901,7 @@
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>grey3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1945,7 +1940,7 @@
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<shadowcolor>ff000000</shadowcolor>
@@ -1981,7 +1976,7 @@
 									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<radiowidth>70</radiowidth>
 									<radioheight>70</radioheight>
 									<radioposx>175</radioposx>
@@ -2007,7 +2002,7 @@
 									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<radiowidth>70</radiowidth>
 									<radioheight>70</radioheight>
 									<radioposx>175</radioposx>
@@ -2038,7 +2033,7 @@
 									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<radiowidth>70</radiowidth>
 									<radioheight>70</radioheight>
 									<radioposx>175</radioposx>
@@ -2064,7 +2059,7 @@
 									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<radiowidth>70</radiowidth>
 									<radioheight>70</radioheight>
 									<radioposx>175</radioposx>
@@ -2090,7 +2085,7 @@
 									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>Font_Reg28</font>
+									<font>Font_Reg19</font>
 									<radiowidth>70</radiowidth>
 									<radioheight>70</radioheight>
 									<radioposx>175</radioposx>
@@ -2158,7 +2153,7 @@
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
@@ -2181,7 +2176,7 @@
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
@@ -2262,7 +2257,7 @@
 						</control>
 						<control type="image" id="1400010">
 							<posx>45</posx>
-							<posy>7</posy>
+							<posy>8</posy>
 							<width>60</width>
 							<height>25</height>
 							<texture>i_record.png</texture>
@@ -2270,8 +2265,8 @@
 						</control>
 						<control type="label" id="1400011">
 							<posx>116</posx>
-							<posy>18</posy>
-							<font>Font_Reg28</font>
+							<posy>17</posy>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -2289,7 +2284,7 @@
 						</control>
 						<control type="image" id="1400015">
 							<posx>25</posx>
-							<posy>7</posy>
+							<posy>8</posy>
 							<width>60</width>
 							<height>25</height>
 							<texture>i_record.png</texture>
@@ -2298,7 +2293,7 @@
 						<control type="label" id="1400016">
 							<posx>95</posx>
 							<posy>17</posy>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -2310,14 +2305,14 @@
 					<posx>50</posx>
 					<posy>600</posy>
 
-					<!-- Playback -->
+					<!-- PVR Playback -->
 					<control type="label">
 						<posx>-40</posx>
 						<posy>5</posy>
 						<width>300</width>
 						<height>50</height>
 						<align>center</align>
-						<font>Font_Reg35</font>
+						<font>Font_Reg24</font>
 						<textcolor>red</textcolor>
 						<label>SCRIPT1123</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible>
@@ -2352,7 +2347,7 @@
 						<width>160</width>
 						<height>50</height>
 						<align>left</align>
-						<font>Font_Reg57</font>
+						<font>Font_Reg38</font>
 						<label>$INFO[Control.GetLabel]</label>
 						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
@@ -2365,7 +2360,7 @@
 						<height>50</height>
 						<scroll>true</scroll>
 						<align>left</align>
-						<font>Font_Reg57</font>
+						<font>Font_Reg38</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -2502,7 +2497,7 @@
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>Font_Reg22</font>
+									<font>Font_Reg17</font>
 									<align>center</align>
 									<label>HbbTV</label>
 								</control>
@@ -2521,7 +2516,7 @@
 									<posy>0</posy>
 									<width>80</width>
 									<height>30</height>
-									<font>Font_Reg22</font>
+									<font>Font_Reg17</font>
 									<align>center</align>
 									<label>SCRIPT1039</label>
 								</control>
@@ -2540,7 +2535,7 @@
 									<posy>0</posy>
 									<width>50</width>
 									<height>30</height>
-									<font>Font_Reg22</font>
+									<font>Font_Reg17</font>
 									<align>center</align>
 									<label>SCRIPT1039</label>
 								</control>
@@ -2559,7 +2554,7 @@
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>Font_Reg22</font>
+									<font>Font_Reg17</font>
 									<align>center</align>
 									<label>SCRIPT1124</label>
 								</control>
@@ -2578,7 +2573,7 @@
 									<posy>0</posy>
 									<width>48</width>
 									<height>30</height>
-									<font>Font_Reg22</font>
+									<font>Font_Reg17</font>
 									<align>center</align>
 									<label>SCRIPT1060</label>
 								</control>
@@ -2714,7 +2709,6 @@
 							</control>
 						</control>
 					</control>
-
 				</control>
 
 				<!-- EPG Info -->
@@ -2727,7 +2721,7 @@
 						<posy>15</posy>
 						<width>270</width>
 						<height>15</height>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<align>left</align>
 						<textcolor>grey2</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
@@ -2738,7 +2732,7 @@
 						<posy>7</posy>
 						<width>400</width>
 						<textcolor>9f9c9f9b</textcolor>
-						<font>Font_Reg38</font>
+						<font>Font_Reg24</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400702">
@@ -2761,7 +2755,7 @@
 						<posx>277</posx>
 						<posy>36</posy>
 						<align>left</align>
-						<font>Font_Reg28</font>
+						<font>Font_Reg17</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="progress" id="1400707">
@@ -2776,7 +2770,7 @@
 						<description>End EPG Time</description>
 						<posx>1048</posx>
 						<posy>36</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg17</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="button" id="1400706">
@@ -2889,7 +2883,7 @@
 									<height>22</height>
 									<align>center</align>
 									<aligny>center</aligny>
-									<font>font12</font>
+									<font>Font_Reg17</font>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 								<control type="label">
@@ -2900,7 +2894,7 @@
 									<height>10</height>
 									<align>left</align>
 									<aligny>center</aligny>
-									<font>font10</font>
+									<font>Font_Reg17</font>
 									<label>$INFO[ListItem.Label2]</label>
 								</control>
 							</itemlayout>
@@ -2923,7 +2917,7 @@
 									<height>22</height>
 									<align>center</align>
 									<aligny>center</aligny>
-									<font>font13</font>
+									<font>Font_Reg17</font>
 									<textcolor>white</textcolor>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
@@ -2934,7 +2928,7 @@
 									<height>10</height>
 									<align>left</align>
 									<aligny>center</aligny>
-									<font>font13</font>
+									<font>Font_Reg17</font>
 									<label>$INFO[ListItem.Label2]</label>
 								</control>
 							</focusedlayout>
@@ -2960,7 +2954,7 @@
 						</control>
 						<control type="image" id="2900010">
 							<posx>45</posx>
-							<posy>7</posy>
+							<posy>8</posy>
 							<width>60</width>
 							<height>25</height>
 							<texture>i_record.png</texture>
@@ -2968,8 +2962,8 @@
 						</control>
 						<control type="label" id="2900011">
 							<posx>116</posx>
-							<posy>18</posy>
-							<font>Font_Reg28</font>
+							<posy>17</posy>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -2987,7 +2981,7 @@
 						</control>
 						<control type="image" id="2900015">
 							<posx>25</posx>
-							<posy>7</posy>
+							<posy>8</posy>
 							<width>60</width>
 							<height>25</height>
 							<texture>i_record.png</texture>
@@ -2996,7 +2990,7 @@
 						<control type="label" id="2900016">
 							<posx>95</posx>
 							<posy>17</posy>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -3024,7 +3018,7 @@
 							<posy>4</posy>
 							<width>50</width>
 							<height>10</height>
-							<font>Font_Reg22</font>
+							<font>Font_Reg17</font>
 							<textcolor>grey</textcolor>
 							<label>SCRIPT1122</label>
 						</control>
@@ -3040,7 +3034,9 @@
 						<control type="label">
 							<posx>105</posx>
 							<posy>4</posy>
-							<font>Font_Reg22</font>
+							<width>150</width>
+							<height>10</height>
+							<font>Font_Reg17</font>
 							<textcolor>grey</textcolor>
 							<label>SCRIPT1129</label>
 							<visible>substring(Window.Property(BookMarkShow),true)</visible>
@@ -3072,7 +3068,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>Font_Reg22</font>
+								<font>Font_Reg17</font>
 								<align>center</align>
 								<label></label>
 							</control>
@@ -3091,7 +3087,7 @@
 								<posy>0</posy>
 								<width>80</width>
 								<height>30</height>
-								<font>Font_Reg22</font>
+								<font>Font_Reg17</font>
 								<align>center</align>
 								<label>SCRIPT1039</label>
 							</control>
@@ -3110,7 +3106,7 @@
 								<posy>0</posy>
 								<width>50</width>
 								<height>30</height>
-								<font>Font_Reg22</font>
+								<font>Font_Reg17</font>
 								<align>center</align>
 								<label>SCRIPT1039</label>
 							</control>
@@ -3130,7 +3126,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>Font_Reg22</font>
+								<font>Font_Reg17</font>
 								<align>center</align>
 								<label>SCRIPT1124</label>
 							</control>
@@ -3149,7 +3145,7 @@
 								<posy>0</posy>
 								<width>48</width>
 								<height>30</height>
-								<font>Font_Reg22</font>
+								<font>Font_Reg17</font>
 								<align>center</align>
 								<label>SCRIPT1060</label>
 							</control>
@@ -3171,6 +3167,18 @@
 
 				<!-- EPG Progress Bar & Info -->
 				<control type="group">
+					<!-- Window Title -->
+					<control type="label" id="2900203">
+						<posx>5</posx>
+						<posy>580</posy>
+						<width>210</width>
+						<height>20</height>
+						<font>Font_Reg25</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>center</align>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
 					<control type="progress" id="2900201">
 						<posx>400</posx>
 						<posy>595</posy>
@@ -3218,19 +3226,7 @@
 						<width>100</width>
 						<height>15</height>
 						<textcolor>red</textcolor>
-						<font>Font_Reg28</font>
-					</control>
-					<!-- Window Title -->
-					<control type="label" id="2900203">
-						<posx>5</posx>
-						<posy>580</posy>
-						<width>210</width>
-						<height>20</height>
-						<font>Font_Reg42</font>
-						<textcolor>FFB2D4F5</textcolor>
-						<shadowcolor>black</shadowcolor>
-						<align>center</align>
-						<label>$INFO[Control.GetLabel]</label>
+						<font>Font_Reg19</font>
 					</control>
 				</control>
 				<!-- Start & End Time -->
@@ -3244,7 +3240,7 @@
 						<width>100</width>
 						<height>15</height>
 						<textcolor>grey</textcolor>
-						<font>Font_Reg35</font>
+						<font>Font_Reg21</font>
 						<label>00:00:00</label>
 					</control>
 					<control type="label" id="2900222">
@@ -3254,7 +3250,7 @@
 						<width>100</width>
 						<height>15</height>
 						<textcolor>grey</textcolor>
-						<font>Font_Reg35</font>
+						<font>Font_Reg21</font>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
@@ -3597,7 +3593,7 @@
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<posx>90</posx>
-				<posy>50</posy>
+				<posy>51</posy>
 
 				<!-- Content Panel Image -->
 				<include>DefaultSettingSmallContentPanel</include>
@@ -3605,10 +3601,10 @@
 				<!-- Menu Title -->
 				<control type="label">
 					<posx>300</posx>
-					<posy>12</posy>
+					<posy>9</posy>
 					<width>740</width>
 					<height>30</height>
-					<font>Font_Reg32</font>
+					<font>Font_Reg21</font>
 					<label>$INFO[Container(1509000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -3621,7 +3617,7 @@
 					<posx>10</posx>
 					<posy>75</posy>
 					<width>260</width>
-					<height>441</height>
+					<height>500</height>
 					<onup>1509000</onup>
 					<ondown>1509000</ondown>
 					<itemlayout height="54" width="260">
@@ -3637,7 +3633,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey3</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -3659,7 +3655,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -3671,7 +3667,7 @@
 				<!-- Arrow Image -->
 				<control type="image">
 					<posx>233</posx>
-					<posy>531</posy>
+					<posy>565</posy>
 					<width>18</width>
 					<height>19</height>
 					<texture>HomeHasSub.png</texture>
@@ -3689,7 +3685,7 @@
 						<posy>0</posy>
 						<width>745</width>
 						<height>45</height>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>blue</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<align>left</align>
@@ -3768,7 +3764,7 @@
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<posx>90</posx>
-				<posy>50</posy>
+				<posy>51</posy>
 
 				<!-- Content Panel Image -->
 				<include>DefaultSettingSmallContentPanel</include>
@@ -3776,10 +3772,10 @@
 				<!-- Menu Title  -->
 				<control type="label">
 					<posx>300</posx>
-					<posy>12</posy>
+					<posy>9</posy>
 					<width>740</width>
 					<height>30</height>
-					<font>Font_Reg32</font>
+					<font>Font_Reg21</font>
 					<label>$INFO[Container(4909000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -3808,7 +3804,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey3</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -3830,7 +3826,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -3848,7 +3844,7 @@
 						<posy>0</posy>
 						<width>745</width>
 						<height>45</height>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>blue</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<align>left</align>
@@ -3911,7 +3907,7 @@
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -3934,7 +3930,7 @@
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -3946,7 +3942,7 @@
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -4008,18 +4004,11 @@
 
 			<!-- Content Panel Image -->
 			<control type="group">
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
-				<include>DefaultVisibleFadeEffect</include>
-				<visible>true</visible>
+				<include>DefaultWindowFade</include>
 				<control type="group">
+					<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+					<include>DefaultVisibleFadeEffect</include>
 					<include>DefaultSettingBigContentPanel</include>
-					<!--control type="image">
-						<posx>40</posx>
-						<posy>42</posy>
-						<width>1200</width>
-						<height>720</height>
-						<texture>wall/wall_bg_reflection.png</texture>
-					</control-->
 				</control>
 			</control>
 
@@ -4040,10 +4029,10 @@
 				<control type="image">
 					<posx>10</posx>
 					<posy>-2</posy>
-					<width>30</width>
-					<height>30</height>
+					<width>25</width>
+					<height>25</height>
 					<aspectratio>keep</aspectratio>
-					<texture>defaulticons/DefaultMovies.png</texture>
+					<texture>defaulticons/DefaultVideo.png</texture>
 				</control>
 
 				<!-- Window Header Title -->
@@ -4052,8 +4041,7 @@
 					<posy>-4</posy>
 					<width min="0" max="800">auto</width>
 					<height>30</height>
-					<font>Font_Reg28_Caps</font>
-					<shadowcolor>black</shadowcolor>
+					<font>Font_Reg15_Caps</font>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -4081,24 +4069,24 @@
 					<width>352</width>
 					<height>18</height>
 					<align>left</align>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 				</control>
 				<control type="progress" id="3300402">
 					<posx>0</posx>
 					<posy>25</posy>
 					<width>352</width>
-					<height>10</height>
+					<height>15</height>
 					<visible>substring(Window.Property(ViewMode),common)</visible>
 				</control>
 
 				<!-- Start Time -->
 				<control type="label" id="3300403">
 					<posx>0</posx>
-					<posy>32</posy>
+					<posy>40</posy>
 					<width>100</width>
 					<height>20</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg17</font>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>grey2</textcolor>
@@ -4108,10 +4096,10 @@
 				<!-- End Time -->
 				<control type="label" id="3300404">
 					<posx>352</posx>
-					<posy>32</posy>
+					<posy>40</posy>
 					<width>100</width>
 					<height>20</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg17</font>
 					<align>right</align>
 					<aligny>center</aligny>
 					<textcolor>grey2</textcolor>
@@ -4122,14 +4110,14 @@
 			<control type="group" id="3309020">
 				<include>DefaultWindowFade</include>
 				<posx>850</posx>
-				<posy>360</posy>
+				<posy>370</posy>
 				<visible>substring(Window.Property(ViewMode),common)</visible>
 
 				<!-- Channel Name -->
 				<control type="label" id="3300300">
 					<posx>0</posx>
 					<posy>0</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(ChannelName)]</label>
 				</control>
@@ -4138,7 +4126,7 @@
 				<control type="label" id="3300301">
 					<posx>0</posx>
 					<posy>30</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(RecDuration)]</label>
 				</control>
@@ -4147,7 +4135,7 @@
 				<control type="label" id="3300302">
 					<posx>150</posx>
 					<posy>30</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(RecDate)]</label>
 				</control>
@@ -4155,10 +4143,10 @@
 				<!-- Recording Name -->
 				<control type="textbox" id="3300303">
 					<posx>0</posx>
-					<posy>60</posy>
+					<posy>50</posy>
 					<width>352</width>
 					<height>160</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(RecName)]</label>
 				</control>
@@ -4179,7 +4167,7 @@
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<label>SCRIPT1014</label>
 					</control>
@@ -4193,7 +4181,7 @@
 					<height>40</height>
 					<align>left</align>
 					<aligny>center</aligny>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Window.Property(iNetVolumeType)] : $INFO[Window.Property(iNetVolumeName)]</label>
 					<visible>substring(Window.Property(RecNetVolume),true)</visible>
@@ -4229,7 +4217,7 @@
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -4305,101 +4293,95 @@
 						</control>
 					</control>
 				</control>
+			</control>
 
-				<!-- Hotkeys -->
-				<control type="grouplist">
-					<posx>80</posx>
-					<posy>674</posy>
-					<width>850</width>
-					<height>32</height>
-					<align>left</align>
-					<itemgap>0</itemgap>
-					<orientation>Horizontal</orientation>
-					<visible>substring(Window.Property(ArchiveFootor),True) + [substring(Window.Property(CurrentWindow),3300000) + [substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)] + substring(Window.Property(PvrPlay),False)]</visible>
-					<control type="group">
-						<include>DefaultFooterGroupValues</include>
-						<control type="image">
-							<include>DefaultFooterImageValues</include>
-							<texture>OSDIconInfoNF.png</texture>
-						</control>
-						<control type="label">
-							<include>DefaultFooterLabelValues</include>
-							<label>SCRIPT1101</label>
-						</control>
+			<!-- Hotkeys -->
+			<control type="grouplist">
+				<posx>80</posx>
+				<posy>665</posy>
+				<width>850</width>
+				<height>32</height>
+				<align>left</align>
+				<itemgap>0</itemgap>
+				<orientation>Horizontal</orientation>
+				<visible>substring(Window.Property(ArchiveFootor),True) + [substring(Window.Property(CurrentWindow),3300000) + [substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)] + substring(Window.Property(PvrPlay),False)]</visible>
+				<control type="group">
+					<include>DefaultFooterGroupValues</include>
+					<control type="image">
+						<include>DefaultFooterImageValues</include>
+						<texture>OSDIconInfoNF.png</texture>
 					</control>
-					<control type="group">
-						<include>DefaultFooterGroupValues</include>
-						<control type="image">
-							<include>DefaultFooterImageValues</include>
-							<texture flipx="true">OSDPlayNF.png</texture>
-						</control>
-						<control type="label">
-							<include>DefaultFooterLabelValues</include>
-							<label>SCRIPT1139</label>
-						</control>
+					<control type="label">
+						<include>DefaultFooterLabelValues</include>
+						<label>SCRIPT1101</label>
+					</control>
+				</control>
+				<control type="group">
+					<include>DefaultFooterGroupValues</include>
+					<control type="image">
+						<include>DefaultFooterImageValues</include>
+						<texture flipx="true">OSDPlayNF.png</texture>
+					</control>
+					<control type="label">
+						<include>DefaultFooterLabelValues</include>
+						<label>SCRIPT1139</label>
 					</control>
 				</control>
 			</control>
 
 			<!-- Item & Page Number for Common list -->
 			<control type="group">
+				<posx>90r</posx>
+				<posy>55r</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
 				<!-- Item & Page Number for Thumbnail list -->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
 				<!-- Item & Page Number for Posterwrap list -->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
 				<!-- Item & Page Number for Fanart list -->
 				<control type="label">
-					<posx>90r</posx>
-					<posy>47r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
@@ -4553,7 +4535,7 @@
 							<width>180</width>
 							<height>44</height>
 							<label>$INFO[ListItem.Label]</label>
-							<font>Font_Reg32</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 						</control>
 					</itemlayout>
@@ -4571,7 +4553,7 @@
 							<width>180</width>
 							<height>44</height>
 							<label>$INFO[ListItem.Label]</label>
-							<font>Font_Reg32</font>
+							<font>Font_Reg19</font>
 						</control>
 					</focusedlayout>
 				</control>
@@ -4583,7 +4565,7 @@
 						<posy>135</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402501">
@@ -4591,7 +4573,7 @@
 						<posy>195</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402801">
@@ -4599,7 +4581,7 @@
 						<posy>255</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 
@@ -4609,7 +4591,7 @@
 						<posy>135</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402503">
@@ -4617,7 +4599,7 @@
 						<posy>195</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402504">
@@ -4625,7 +4607,7 @@
 						<posy>255</posy>
 						<width>700</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 
@@ -4635,7 +4617,7 @@
 						<posy>135</posy>
 						<width>900</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402605">
@@ -4643,7 +4625,7 @@
 						<posy>195</posy>
 						<width>900</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="label" id="3402602">
@@ -4651,7 +4633,7 @@
 						<posy>255</posy>
 						<width>900</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="progress" id="3402702">
@@ -4666,7 +4648,7 @@
 						<posy>315</posy>
 						<width>900</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="progress" id="3402703">
@@ -4681,7 +4663,7 @@
 						<posy>375</posy>
 						<width>900</width>
 						<height>35</height>
-						<font>Font_Reg32</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 					</control>
 					<control type="progress" id="3402704">
@@ -4704,7 +4686,7 @@
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<posx>90</posx>
-				<posy>50</posy>
+				<posy>51</posy>
 
 				<!-- Content Panel Image -->
 				<include>DefaultSettingSmallContentPanel</include>
@@ -4712,10 +4694,10 @@
 				<!-- Installation Description -->
 				<control type="label">
 					<posx>300</posx>
-					<posy>12</posy>
+					<posy>9</posy>
 					<width>740</width>
 					<height>30</height>
-					<font>Font_Reg32</font>
+					<font>Font_Reg21</font>
 					<label>SCRIPT1031</label>
 					<align>left</align>
 					<textcolor>white</textcolor>
@@ -4748,7 +4730,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey3</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -4770,7 +4752,7 @@
 							<posy>0</posy>
 							<width>230</width>
 							<height>55</height>
-							<font>Font_Reg28</font>
+							<font>Font_Reg19</font>
 							<textcolor>white</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -4811,16 +4793,20 @@
 		<control type="group" id="3709999">
 			<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
 
-			<!-- Background Image -->
+			<!-- Content Panel Image -->
 			<control type="group">
 				<include>DefaultWindowFade</include>
-				<include>DefaultEPGBackground</include>
+				<control type="group">
+					<visible>substring(Window.Property(EPGMode),grid) | ! substring(Window.Property(EPGMode),grid)</visible>
+					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingBigContentPanel</include>
+				</control>
 			</control>
 
 			<control type="group" id="3709003">
 				<include>DefaultWindowFade</include>
-				<include>DefaultCommonEPGView</include> <!-- Default Common EPG View ID = 3500 -->
-				<include>DefaultBigEPGView</include>	<!-- Default Big EPG View ID = 3510 -->
+				<include>DefaultCommonEPGView</include> <!-- Default Common EPG View ID 	= 3500 -->
+				<include>DefaultBigEPGView</include>	<!-- Default Big EPG View ID		= 3510 -->
 			</control>
 
 			<!-- Grid Mode -->
@@ -4843,7 +4829,7 @@
 						<textwidth>250</textwidth>
 						<align>left</align>
 						<aligny>center</aligny>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<texturefocus border="5">button-focus.png</texturefocus>
 						<texturenofocus border="5">button-nofocus.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
@@ -4923,7 +4909,7 @@
 								<posy>2</posy>
 								<width>185</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -4937,7 +4923,7 @@
 								<posy>32</posy>
 								<width>185</width>
 								<height>20</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -4975,7 +4961,7 @@
 								<posy>2</posy>
 								<width>185</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -4989,7 +4975,7 @@
 								<posy>32</posy>
 								<width>185</width>
 								<height>20</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -5023,8 +5009,8 @@
 						<posy>501</posy>
 						<width>800</width>
 						<height>40</height>
-						<font>Font_Reg28</font>
-						<textcolor>blue</textcolor>
+						<font>Font_Reg19</font>
+						<textcolor>FF6db9e5</textcolor>
 						<align>left</align>						
 						<aligny>center</aligny>
 						<label></label>
@@ -5483,7 +5469,7 @@
 						<textwidth>185</textwidth>
 						<align>left</align>
 						<aligny>center</aligny>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<texturefocus border="5">StackFO_white2.png</texturefocus>
 						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
@@ -5513,8 +5499,8 @@
 					<posy>0</posy>
 					<width>600</width>
 					<height>40</height>
-					<font>Font_Reg35</font>
-					<textcolor>blue</textcolor>
+					<font>Font_Reg25</font>
+					<textcolor>FF6db9e5</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
@@ -5545,7 +5531,7 @@
 					<posy>0</posy>
 					<width>352</width>
 					<height>18</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<visible>substring(Window.Property(Signal),True) + !substring(Window.Property(EPGMode),grid)</visible>
 				</control>
 			</control>
@@ -5553,22 +5539,22 @@
 			<!-- EPG Info -->
 			<control type="group" id="3709020">
 				<posx>850</posx>
-				<posy>360</posy>
+				<posy>340</posy>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="3700300">
 					<description>Start & End Time</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>00:00-00:00</label>
 				</control>
 				<control type="label" id="3700301">
 					<description>Date</description>
-					<posx>150</posx>
-					<posy>0</posy>
-					<font>Font_Reg28</font>
+					<posx>220</posx>
+					<font>Font_Reg19</font>
+					<align>right</align>
 					<textcolor>grey</textcolor>
 					<label></label>
 				</control>
@@ -5577,17 +5563,17 @@
 					<description>Duration</description>
 					<posx>0</posx>
 					<posy>30</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label></label>
 				</control>
 				<control type="textbox" id="3700303">
 					<description>Summary</description>
 					<posx>0</posx>
-					<posy>52</posy>
+					<posy>55</posy>
 					<width>352</width>
-					<height>172</height>
-					<font>Font_Reg25</font>
+					<height>170</height>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<label>SCRIPT1030</label>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -5622,7 +5608,7 @@
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>Font_Reg17</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -5711,7 +5697,7 @@
 			<!-- Hotkeys -->
 			<control type="grouplist">
 				<posx>80</posx>
-				<posy>674</posy>
+				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
 				<align>left</align>
@@ -5742,52 +5728,50 @@
 				</control>
 			</control>
 
-			<!-- Item & Page Number for Common list -->
-			<control type="label">
-				<include>DefaultWindowFade</include>
+			<control type="group">
 				<posx>80r</posx>
-				<posy>47r</posy>
-				<width>340</width>
-				<height>20</height>
-				<font>Font_Reg25</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode),channel) </visible>
-			</control>
+				<posy>55r</posy>
+				<!-- Item & Page Number for Common list -->
+				<control type="label">
+					<include>DefaultWindowFade</include>
+					<width>340</width>
+					<height>20</height>
+					<font>Font_Reg17</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+					<visible>substring(Window.Property(EPGMode),channel) </visible>
+				</control>
 
-			<!-- Item & Page Number for Big list -->
-			<control type="label">
-				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>47r</posy>
-				<width>340</width>
-				<height>20</height>
-				<font>Font_Reg25</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
-			</control>
+				<!-- Item & Page Number for Big list -->
+				<control type="label">
+					<include>DefaultWindowFade</include>
+					<width>340</width>
+					<height>20</height>
+					<font>Font_Reg17</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+					<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
+				</control>
 
-			<!-- Item & Page Number for Grid -->
-			<control type="label">
-				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>47r</posy>
-				<width>340</width>
-				<height>20</height>
-				<font>Font_Reg25</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode), grid)</visible>
+				<!-- Item & Page Number for Grid -->
+				<control type="label">
+					<include>DefaultWindowFade</include>
+					<width>340</width>
+					<height>20</height>
+					<font>Font_Reg17</font>
+					<textcolor>grey</textcolor>
+					<scroll>false</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+					<visible>substring(Window.Property(EPGMode), grid)</visible>
+				</control>
 			</control>
 
 			<!-- Slide Menu -->
@@ -5854,17 +5838,11 @@
 
 			<!-- Content Panel Image -->
 			<control type="group">
-				<include>DefaultVisibleFadeEffect</include>
-				<visible>true</visible>
+				<include>DefaultWindowFade</include>
 				<control type="group">
+					<visible>true</visible>
+					<include>DefaultVisibleFadeEffect</include>
 					<include>DefaultSettingBigContentPanel</include>
-					<!--control type="image">
-						<posx>40</posx>
-						<posy>42</posy>
-						<width>1200</width>
-						<height>720</height>
-						<texture>wall/wall_bg_reflection.png</texture>
-					</control-->
 				</control>
 			</control>
 
@@ -5880,21 +5858,21 @@
 				<control type="label" id="4000300">
 					<posx>0</posx>
 					<posy>0</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>00:00-00:00</label>
 				</control>
 				<control type="label" id="4000301">
 					<posx>150</posx>
 					<posy>0</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label></label>
 				</control>
 				<control type="label" id="4000302">
 					<posx>0</posx>
 					<posy>30</posy>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label></label>
 				</control>
@@ -5924,7 +5902,7 @@
 			<!-- Hotkeys -->
 			<control type="group">
 				<posx>60</posx>
-				<posy>674</posy>
+				<posy>665</posy>
 				<width>440</width>
 				<height>32</height>
 				<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
@@ -5940,7 +5918,7 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<label>SCRIPT1101</label>
 				</control>
 				<control type="image">
@@ -5955,7 +5933,7 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<label>SCRIPT1139</label>
 				</control>
 			</control>
@@ -5964,15 +5942,15 @@
 			<control type="label">
 				<include>DefaultWindowFade</include>
 				<posx>80r</posx>
-				<posy>47r</posy>
+				<posy>55r</posy>
 				<width>300</width>
 				<height>20</height>
-				<font>Font_Reg25</font>
+				<font>Font_Reg17</font>
 				<textcolor>grey</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
+				<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
 			</control>
 
 			<!-- Slide Menu -->
@@ -6050,7 +6028,7 @@
 						<description>Download Percent</description>
 						<posx>310</posx>
 						<posy>5</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
@@ -6067,7 +6045,7 @@
 						  <height>200</height>
 						  <visible>true</visible>
 						  <colordiffuse>FFFFFFFF</colordiffuse>
-						  <font>Font_Reg25</font>
+						  <font>Font_Reg17</font>
 						  <textcolor>grey</textcolor>
 						  <wrapmultiline>true</wrapmultiline>
 						  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -6094,7 +6072,7 @@
 					<control type="label" id="4300099">
 						<posx>20</posx>
 						<posy>15</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
@@ -6102,7 +6080,7 @@
 					<control type="label" id="4300100">
 						<posx>20</posx>
 						<posy>50</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
@@ -6110,7 +6088,7 @@
 					<control type="label" id="4300101">
 						<posx>20</posx>
 						<posy>75</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
@@ -6118,7 +6096,7 @@
 					<control type="label" id="4300102">
 						<posx>20</posx>
 						<posy>100</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
@@ -6126,7 +6104,7 @@
 					<control type="label">
 						<posx>20</posx>
 						<posy>125</posy>
-						<font>Font_Reg28</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<label>$INFO[Window.Property(DescriptionTitle)]</label>
@@ -6138,7 +6116,7 @@
 						<height>210</height>
 						<visible>true</visible>
 						<colordiffuse>FFFFFFFF</colordiffuse>
-						<font>Font_Reg25</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey3</textcolor>
 						<wrapmultiline>true</wrapmultiline>
 						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -6147,7 +6125,7 @@
 				</control>
 				<control type="group">
 					<posx>0</posx>
-					<posy>548</posy>
+					<posy>553</posy>
 					<visible>substring(Window.Property(ShowInfoLabel),true)</visible>
 					<control type="image">
 						<posx>0</posx>
@@ -6161,7 +6139,7 @@
 						<posy>0</posy>
 						<width>550</width>
 						<height>20</height>
-						<font>Font_Reg25</font>
+						<font>Font_Reg17</font>
 						<label>SCRIPT1101</label>
 					</control>
 				</control>
@@ -6211,7 +6189,7 @@
 			<control type="label" id="4500100">
 				<posx>445</posx>
 				<posy>100</posy>
-				<font>Font_Reg28</font>
+				<font>Font_Reg19</font>
 				<textcolor>white</textcolor>
 				<align>left</align>
 				<width>600</width>
@@ -6228,17 +6206,6 @@
 			<!-- Radio Background Image -->
 			<include>DefaultRadioBackground</include>
 
-			<!-- Current Channel Mode -->
-			<control type="label">
-				<posx>555</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>Font_Reg32</font>
-				<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
-				<textcolor>grey2</textcolor>
-				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
-			</control>
-
 			<!-- Signal Condition -->
 			<control type="label">
 				<include>DefaultSignalConditionValues</include>
@@ -6254,6 +6221,17 @@
 				<include>DefaultSignalConditionValues</include>
 				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+
+			<!-- Listen to Radio Notification -->
+			<control type="label">
+				<posx>555</posx>
+				<posy>300</posy>
+				<width>500</width>
+				<font>Font_Reg38</font>
+				<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
 
 			<!-- Not Available Action Icon -->
@@ -6289,14 +6267,13 @@
 					<height>740</height>
 					<texture>dialogs/context_middle.png</texture>
 					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-					<!--colordiffuse>DFFFFFFF</colordiffuse-->
 				</control>
 
 				<!-- Window Header Image -->
 				<control type="group">
 					<posx>895</posx>
-					<posy>65</posy>
-					<width>300</width>
+					<posy>35</posy>
+					<width>330</width>
 					<height>30</height>
 					<control type="image">
 						<description>TV Icon</description>
@@ -6322,23 +6299,22 @@
 						<description>Sort Mode</description>
 						<visible>substring(Window.Property(TVRadio),true) | !substring(Window.Property(TVRadio),true)</visible>
 						<posx>42</posx>
-						<posy>2</posy>
+						<posy>0</posy>
 						<width>300</width>
 						<height>30</height>
-						<font>font12</font>
+						<font>Font_Reg21</font>
 						<textcolor>white</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<!--label>SCRIPT1045</label-->
 						<label>$INFO[Window.Property(SimpleChannelPath)]</label>
 					</control>
 				</control>
 
-				<!-- Prev & Next Group l-->
+				<!-- Prev & Next Group -->
 				<control type="group">
-					<posx>890</posx>
+					<posx>895</posx>
 					<posy>65</posy>
 					<visible>substring(Window.Property(ShowGroupSlide),true)</visible>
 					<control type="image">
@@ -6377,7 +6353,7 @@
 								<height>30</height>
 								<align>center</align>
 								<aligny>center</aligny>
-								<font>font10</font>
+								<font>Font_Reg12</font>
 								<textcolor>grey2</textcolor>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
@@ -6390,7 +6366,7 @@
 								<height>30</height>
 								<align>center</align>
 								<aligny>center</aligny>
-								<font>font14</font>
+								<font>Font_Reg17</font>
 								<textcolor>selected</textcolor>
 								<label>$INFO[ListItem.Label]</label>
 								<scroll>false</scroll>
@@ -6442,7 +6418,7 @@
 								<posy>6</posy>
 								<width>195</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -6465,7 +6441,7 @@
 								<posy>36</posy>
 								<width>280</width>
 								<height>20</height>
-								<font>Font_Reg25</font>
+								<font>Font_Reg21</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -6502,7 +6478,7 @@
 								<posy>6</posy>
 								<width>195</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>white</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<align>left</align>
@@ -6525,7 +6501,7 @@
 								<posy>36</posy>
 								<width>280</width>
 								<height>20</height>
-								<font>Font_Reg25</font>
+								<font>Font_Reg21</font>
 								<textcolor>white</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<align>left</align>
@@ -6543,12 +6519,12 @@
 					<posy>56r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 
@@ -6574,7 +6550,7 @@
 							<width>100</width>
 							<height>15</height>
 							<textcolor>grey2</textcolor>
-							<font>Font_Reg25</font>
+							<font>Font_Reg17</font>
 							<align>left</align>
 							<label>SCRIPT1204</label>
 						</control>
@@ -6596,7 +6572,7 @@
 							<width>100</width>
 							<height>15</height>
 							<textcolor>grey2</textcolor>
-							<font>Font_Reg25</font>
+							<font>Font_Reg17</font>
 							<align>left</align>
 							<label>SCRIPT1003</label>
 						</control>
@@ -6618,7 +6594,7 @@
 							<width>100</width>
 							<height>15</height>
 							<textcolor>grey2</textcolor>
-							<font>Font_Reg25</font>
+							<font>Font_Reg17</font>
 							<align>left</align>
 							<label>SCRIPT1205</label>
 						</control>
@@ -6640,7 +6616,7 @@
 							<width>100</width>
 							<height>15</height>
 							<textcolor>grey2</textcolor>
-							<font>Font_Reg25</font>
+							<font>Font_Reg17</font>
 							<align>left</align>
 							<label>SCRIPT1206</label>
 						</control>
@@ -6699,7 +6675,7 @@
 								<posy>16</posy>
 								<width>250</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>grey2</textcolor>
 								<selectedcolor>grey2</selectedcolor>
 								<align>left</align>
@@ -6745,7 +6721,7 @@
 								<posy>16</posy>
 								<width>250</width>
 								<height>30</height>
-								<font>Font_Reg28</font>
+								<font>Font_Reg19</font>
 								<textcolor>white</textcolor>
 								<selectedcolor>white</selectedcolor>
 								<align>left</align>
@@ -6763,12 +6739,12 @@
 					<posy>56r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>Font_Reg25</font>
+					<font>Font_Reg17</font>
 					<textcolor>grey</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>
@@ -6953,7 +6929,7 @@
 		<!-- Footer -->
 		<control type="group">
 			<posx>60</posx>
-			<posy>660</posy>
+			<posy>663</posy>
 			<visible>substring(Window.Property(CurrentWindow),2400000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),2500000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),1900000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)] | substring(Window.Property(CurrentWindow),1800000) + [Control.HasFocus(1002101) | Control.HasFocus(1002301)]</visible>
 			<control type="image">
 				<posx>20</posx>
@@ -6967,7 +6943,7 @@
 				<posy>0</posy>
 				<width>330</width>
 				<height>20</height>
-				<font>Font_Reg25</font>
+				<font>Font_Reg17</font>
 				<label>SCRIPT1101</label>
 			</control>
 		</control>
@@ -6983,7 +6959,7 @@
 					<posy>289</posy>
 					<width>350</width>
 					<height>10</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Control.GetLabel(1300303)]</label>
 					<visible>substring(Window.Property(Signal),True)</visible>
@@ -6998,7 +6974,7 @@
 					<width>352</width>
 					<height>18</height>
 					<align>left</align>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<label>$INFO[Control.GetLabel(3300401)]</label>
 					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 				</control>
@@ -7011,7 +6987,7 @@
 					<posy>295</posy>
 					<width>352</width>
 					<height>18</height>
-					<font>Font_Reg28</font>
+					<font>Font_Reg19</font>
 					<label>$INFO[Control.GetLabel(3700401)]</label>
 					<visible>substring(Window.Property(Signal),True) + !substring(Window.Property(EPGMode),grid)</visible>
 				</control>
