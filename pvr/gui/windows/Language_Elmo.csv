@@ -1494,3 +1494,6 @@
 "MediaPlay";;;;;;;;;;;;;;3962
 "Do you want to restart the system now?";;;;;;;;;;;;;;3963
 "You must reboot your system for the changes to take effect.";;;;;;;;;;;;;;3964
+"Recording stopped due to broken NAS connection";;;;;;;;;;;;;;3965
+"Unable to mount location";;;;;;;;;;;;;;3966
+"Make sure you have permission to access that folder";;;;;;;;;;;;;;3967
