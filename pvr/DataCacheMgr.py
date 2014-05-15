@@ -2226,10 +2226,10 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Record_GetCount( aServiceType )
 
 
-	def Record_GetList( self, aServiceType, aHideWatched = False ) :
+	def Record_GetList( self, aServiceType, aHideWatched = False, aMountInfo = '' ) :
 		if SUPPORT_RECORD_DATABASE == True :	
 			recordDB = ElisRecordDB( )
-			recordList = recordDB.Record_GetList( aServiceType, aHideWatched )
+			recordList = recordDB.Record_GetList( aServiceType, aHideWatched, aMountInfo )
 			recordDB.Close( )
 			return recordList
 

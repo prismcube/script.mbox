@@ -4582,7 +4582,7 @@ Search for window name
 						<width>1</width>
 						<height>727</height>
 						<texture>black-back_noAlpha.png</texture>
-						<animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">Conditional</animation>
+						<animation effect="zoom" start="0,0,1,727" end="0,0,229,727" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
 					<control type="image">
 						<posx>1</posx>
@@ -4590,16 +4590,16 @@ Search for window name
 						<width>12</width>
 						<height>727</height>
 						<texture>MediaBladeSub_Part2.png</texture>
-						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">Conditional</animation>
+						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
 				</control>
 				<control type="group" id="3309001">
 					<posx>-220</posx>
 					<posy>0</posy>
-					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300104)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">WindowClose</animation>
-					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300104) + !Control.HasFocus(3300105)">conditional</animation>
+					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">WindowClose</animation>
+					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
 
 					<control type="button">
 						<description>Fake button for mouse control</description>
@@ -4639,6 +4639,61 @@ Search for window name
 							<include>DefaultButtonMediaSubCommonValues</include>
 							<label>SCRIPT1008</label>
 						</control>
+						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
+					</control>
+					<control type="list" id="3309050">
+						<posx>20</posx>
+						<posy>210</posy>
+						<width>240</width>
+						<height>550</height>
+						<onleft>3309000</onleft>
+						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
+						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
+						<onup>3309020</onup>
+						<ondown>3309020</ondown>
+						<visible>![Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus]</visible>
+						<itemlayout height="40" width="150">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="label">
+								<posx>5</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout height="40" width="150">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<texture border="5">button-focus.png</texture>
+							</control>
+							<control type="label">
+								<posx>5</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>font12</font>
+								<textcolor>white</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</focusedlayout>
 					</control>
 				</control>
 				<include>DefaultSideBladeLeft</include>
@@ -4667,7 +4722,7 @@ Search for window name
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3300104</onup>
+						<onup>3300106</onup>
 						<ondown>3300101</ondown>
 					</control>
 					<control type="button" id="3300101">
@@ -4717,7 +4772,50 @@ Search for window name
 						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
 						<onright>3309010</onright>
 						<onup>3300101</onup>
+						<ondown>3300105</ondown>
+					</control>
+					<control type="button" id="3300105">
+						<description>NAS</description>
+						<hitrect x="0" y="120" w="265" h="40" />
+						<posx>0</posx>
+						<posy>120</posy>
+						<include>DefaultButtonCommonValues</include>
+						<radiowidth>18</radiowidth>
+						<radioheight>18</radioheight>
+						<radioposx>222</radioposx>
+						<radioposy>12</radioposy>
+						<textureradiofocus>HomeHasSub.png</textureradiofocus>
+						<textureradionofocus>HomeHasSub.png</textureradionofocus>
+						<label>NAS</label>
+						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
+						<onright>3309020</onright>
+						<onup>3300104</onup>
+						<ondown>3300106</ondown>
+						<enable>!substring(Container(3309050).CurrentPage,0)</enable>
+						<visible>!substring(Container(3309050).CurrentPage,0)</visible>
+					</control>
+					<control type="button" id="3300106">
+						<description>All</description>
+						<hitrect x="0" y="120" w="265" h="40" />
+						<posx>0</posx>
+						<posy>160</posy>
+						<include>DefaultButtonCommonValues</include>
+						<label>All Archive</label>
+						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
+						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
+						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
+						<onup>3300105</onup>
 						<ondown>3300100</ondown>
+						<enable>Control.IsVisible(3300105)</enable>
+						<visible>Control.IsVisible(3300105)</visible>
 					</control>
 				</control>
 			</control>
