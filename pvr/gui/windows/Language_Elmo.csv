@@ -1509,3 +1509,6 @@
 "Do you want to restart the system now?";;;;;;;;;;;;;;3977
 "You must reboot your system for the changes to take effect.";;;;;;;;;;;;;;3978
 "Installing and executing XBMC add-ons%s may not work properly without an external storage";;;;;;;;;;;;;;3979
+"Recording stopped due to broken NAS connection";;;;;;;;;;;;;;3980
+"Unable to mount location";;;;;;;;;;;;;;3981
+"Make sure you have permission to access that folder";;;;;;;;;;;;;;3982

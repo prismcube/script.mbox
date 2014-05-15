@@ -1514,4 +1514,7 @@
 	<string id="3977">Do you want to restart the system now?</string>
 	<string id="3978">You must reboot your system for the changes to take effect.</string>
 	<string id="3979">Installing and executing XBMC add-ons%s may not work properly without an external storage</string>
+	<string id="3980">Recording stopped due to broken NAS connection</string>
+	<string id="3981">Unable to mount location</string>
+	<string id="3982">Make sure you have permission to access that folder</string>
 </strings>
