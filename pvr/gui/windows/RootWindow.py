@@ -123,6 +123,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 			if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
 				LOG_ERR("Do nothing in onclick, hbbtv mode is true")
 				return
+			elif WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+				LOG_ERR("Do nothing in onclick, youtubetv mode is true")
+				return
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )				
 		
  
