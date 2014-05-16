@@ -144,31 +144,15 @@
 		<control type="group">
 			<visible>[ substring(Window.Property(CurrentWindow),1100000) | substring(Window.Property(CurrentWindow),1200000) | substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),2900000) | substring(Window.Property(CurrentWindow),4600000) ] + substring(Window.Property(ShowClock),true)</visible>
 			<control type="label">
-				<description>time label</description>
-				<posx>695</posx>
-				<posy>5</posy>
-				<width>200</width>
+				<posx>0</posx>
+				<posy>-4</posy>
+				<width>1280</width>
 				<height>30</height>
-				<align>right</align>
+				<align>center</align>
 				<aligny>center</aligny>
-				<font>font28_title</font>
-				<textcolor>grey</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>$INFO[System.Time]</label>
-				<include>DefaultWindowOpenCloseAnimation</include>
-				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
-			</control>
-			<control type="label">
-				<posx>695</posx>
-				<posy>35</posy>
-				<width>600</width>
-				<height>15</height>
-				<align>right</align>
-				<aligny>center</aligny>
-				<font>font10</font>
-				<textcolor>grey</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>$INFO[System.Date]</label>
+				<label>[COLOR=FFdfdfdf] $INFO[System.Date(DDD)], $INFO[System.Date(d)] $INFO[System.Date(mmm)] $INFO[System.Date(yyyy)]  •  [/COLOR][COLOR=FF6db9e5] $INFO[System.Time][/COLOR]</label>
+				<font>Font_Reg15_Caps</font>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
 			</control>
@@ -724,6 +708,8 @@
 	</include>
 	
 	<include name="DefaultSubMainMenuFrontValues">
+		<posx>0</posx>
+		<posy>0</posy>
 		<width>104</width>
 		<height>60</height>
 		<texture border="5">home/submenubar_front.png</texture>
@@ -731,6 +717,8 @@
 	</include>
 
 	<include name="DefaultSubMainMenuEndValues">
+		<posx>0</posx>
+		<posy>0</posy>
 		<width>101</width>
 		<height>60</height>
 		<texture border="5">home/submenubar_end.png</texture>
@@ -739,6 +727,7 @@
 
 	<include name="DefaultSubMainMenuMiddleValues">
 		<posx>0</posx>
+		<posy>0</posy>
 		<height>60</height>
 		<width>180</width>
 		<textwidth>160</textwidth>
