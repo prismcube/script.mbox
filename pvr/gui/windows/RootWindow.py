@@ -95,6 +95,11 @@ class RootWindow( xbmcgui.WindowXML ) :
 					LOG_ERR("Don nothing in HBBTV Mode ")
 					return
 
+			# doliyu test youtube stop
+			elif WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+				if aAction.getId( ) == Action.ACTION_PREVIOUS_MENU :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StopYoutubeTV( )
+
 			else :
 				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
 					if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW and \

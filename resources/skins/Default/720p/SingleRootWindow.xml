@@ -431,7 +431,13 @@ Search for window name
 							<label>SCRIPT1065</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
-						<control type="image" id="1290611">
+						<control type="button" id="1290611">
+							<visible>substring(Window.Property(YoutubeTV),true)</visible>
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Youtube TV</label>
+							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
+						</control>
+						<control type="image" id="1290612">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>

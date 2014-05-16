@@ -29,6 +29,7 @@ BUTTON_ID_MEDIA_FILE_MGR        = E_MAIN_MENU_BASE_ID + 90607
 BUTTON_ID_MEDIA_PROFILES        = E_MAIN_MENU_BASE_ID + 90608
 BUTTON_ID_MEDIA_ADDON_MGR       = E_MAIN_MENU_BASE_ID + 90609
 BUTTON_ID_MEDIA_SYS_INFO        = E_MAIN_MENU_BASE_ID + 90610
+BUTTON_ID_MEDIA_YOUTUBE			= E_MAIN_MENU_BASE_ID + 90611
 
 BUTTON_ID_FIRSTINSTALLATION		= E_MAIN_MENU_BASE_ID + 90101
 BUTTON_ID_ANTENNA_SETUP			= E_MAIN_MENU_BASE_ID + 90102
@@ -96,6 +97,7 @@ class MainMenu( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
 		self.setProperty( 'RssShow', GetSetting( 'RSS_FEED_MAIN_MENU' ) )
+		self.setProperty( 'YoutubeTV', GetSetting( 'YOUTUBE_TV' ) )
 		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -338,6 +340,11 @@ class MainMenu( BaseWindow ) :
 			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 				#xbmc.executebuiltin( 'ActivateWindow(Home)' )
 				xbmc.executebuiltin( "ActivateWindow(favourites)" )
+
+		# doliyu test youtube start
+		elif aControlId == BUTTON_ID_MEDIA_YOUTUBE :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StartYoutubeTV( )
 				
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )

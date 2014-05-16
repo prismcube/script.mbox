@@ -21,18 +21,19 @@ E_SET_TUNE = True
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mAsyncTuneTimer = None
-		self.mAsyncShowTimer = None
-		self.mRecordBlinkingTimer = None
-		self.mLinkageServiceTimer = None			
-		self.mOnTimeDelay = 0
-		self.mPreviousBlockTime = 1.0
-		self.mRecordBlinkingCount = E_MAX_BLINKING_COUNT
-		self.mOnBlockTimer_GreenKey = 0
-		self.mIsShowDialog = False
-		self.mEventId  = 0
-		self.mHbbTVTimer = None
-		self.mHbbTVShowing = False
+		self.mAsyncTuneTimer		= None
+		self.mAsyncShowTimer		= None
+		self.mRecordBlinkingTimer	= None
+		self.mLinkageServiceTimer	= None
+		self.mOnTimeDelay			= 0
+		self.mPreviousBlockTime		= 1.0
+		self.mRecordBlinkingCount	= E_MAX_BLINKING_COUNT
+		self.mOnBlockTimer_GreenKey	= 0
+		self.mIsShowDialog			= False
+		self.mEventId				= 0
+		self.mHbbTVTimer			= None
+		self.mHbbTVShowing			= False
+		self.mYoutubeTVStarted		= False
 
 
 		if E_SUPPROT_HBBTV == True :
@@ -1551,4 +1552,14 @@ class NullWindow( BaseWindow ) :
 		LOG_ERR( 'self.mHBBTVReady[%s], self.HbbTV_MediaPlayerSeek[%s]'% ( self.mHBBTVReady, aSeek ) )
 		if self.mMediaPlayerStarted == True :
 			xbmc.executebuiltin( 'XBMC.PlayerControl(seekpercentage(%s))'% aSeek )
+
+
+	def StartYoutubeTV( self ) :
+		print 'doliyu test start youtube'
+		self.mYoutubeTVStarted = True
+
+
+	def StopYoutubeTV( self ) :
+		print 'doliyu test stop youtube'
+		self.mYoutubeTVStarted = False
 

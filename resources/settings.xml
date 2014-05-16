@@ -34,6 +34,7 @@
 		<setting id="SURFACE_24" type="bool" label="1144" default="false" />
 	</category>
 	<category label="hide">
-		<setting id="CUSTOM_ICON" type="text" label="Custom Icom" default="false" />
+		<setting id="CUSTOM_ICON" type="text" label="Custom Icon" default="false" />
+		<setting id="YOUTUBE_TV" type="bool" label="Youtube TV" default="false" />
 	</category>
 </settings>

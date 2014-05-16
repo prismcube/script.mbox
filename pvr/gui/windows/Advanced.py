@@ -180,6 +180,9 @@ class Advanced( SettingWindow ) :
 				else :
 					self.SetHbbTv( False )
 
+			elif groupId == E_SpinEx05 :
+				self.SetSettingFromNumber( 'YOUTUBE_TV', self.GetSelectedIndex( E_SpinEx05 ) )
+
 		elif selectedId == E_CEC :
 			self.ControlSelect( )
 
@@ -232,13 +235,11 @@ class Advanced( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx02, '%s ( %s )' % ( MR_LANG( 'Web Interface' ),  MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
 			self.AddUserEnumControl( E_SpinEx04, '%s ( %s )' % ( MR_LANG( 'HbbTV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Youtube TV' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ), MR_LANG( 'Allows you to play youtube tv' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx05 ]
-			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 
