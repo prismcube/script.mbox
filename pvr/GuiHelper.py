@@ -566,19 +566,21 @@ def CheckDirectory( aPath ) :
 	return os.path.exists( aPath )
 
 
-def CheckHdd( ) :
+def CheckHdd( aCheckForce = False ) :
+	from pvr.Product import *
 	import pvr.Platform
 	import pvr.ElisMgr
-	from pvr.Product import *
-	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
-	   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-		return False
+	if not aCheckForce :
+		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
+		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+			return False
 
+	isMounted = False
 	retList = pvr.ElisMgr.GetInstance( ).GetCommander( ).HDD_GetMountPath( )
 	if retList and len( retList ) > 0 and retList[0].mError == 0 :
-		return True
-	else :
-		return False
+		isMounted = True
+
+	return isMounted
 
 
 def	HasAvailableRecordingHDD( aCheckVolume = True ) :
@@ -1338,6 +1340,9 @@ def ExecuteShell( cmd = '' ) :
 
 
 def IsIPv4( address ) :
+	if not address :
+		return False
+
 	# check if string is valid ipv4 address
 	if address.replace( '.', '' ).strip( '1234567890' ) :
 		return False

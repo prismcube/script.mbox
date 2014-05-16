@@ -2183,6 +2183,55 @@
 						</content>
 
 			</control>
+
+				<control type="group">
+					<posx>800</posx>
+					<posy>100</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>150</height>
+						<texture>DialogContextMiddle.png</texture>
+					</control>
+					<control type="image">
+						<posx>100</posx>
+						<posy>30</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture border="5">button-nofocus.png</texture>
+					</control>
+					<control type="image">
+						<posx>100</posx>
+						<posy>70</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture border="5">button-focus.png</texture>
+					</control>
+					<control type="label">
+						<posx>100</posx>
+						<posy>30</posy>
+						<width>200</width>
+						<height>30</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font14</font>
+						<textcolor>ff2E2E2E</textcolor>
+						<label>TEST-Connected</label>
+					</control>
+					<control type="label">
+						<posx>100</posx>
+						<posy>70</posy>
+						<width>200</width>
+						<height>30</height>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font14</font>
+						<textcolor>ff2E2E2E</textcolor>
+						<label>TEST-Connected</label>
+					</control>
+				</control>
+
 						<control type="image">
 							<posx>192</posx>
 							<posy>80</posy>

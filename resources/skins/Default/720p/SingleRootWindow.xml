@@ -5950,7 +5950,7 @@ Search for window name
 					<control type="image" id="3702110">
 						<include>DefaultButtonGridChannelLogo</include>
 					</control>				
-				</control>
+				</control-->
 				
 				<!-- Grid EPG -->
 				<control type="group" id="3703000">

@@ -257,7 +257,7 @@ class DataCacheMgr( object ) :
 	def Load( self ) :
 
 		self.LoadVolumeAndSyncMute( True ) #False : LoadVolume Only
-		self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
+		#self.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )
 		#self.Frontdisplay_ResolutionByIdentified( )
 
 		#Zapping Mode
@@ -2714,10 +2714,11 @@ class DataCacheMgr( object ) :
 		return usbPath
 
 
-	def HDD_GetMountPath( self, aFind = '' ) :
+	def HDD_GetMountPath( self, aFind = '', aCheckForce = False ) :
 		hddPath = ''
-		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-			return hddPath
+		if not aCheckForce :
+			if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+				return hddPath
 
 		retList = self.mCommander.HDD_GetMountPath( )
 		if retList and len( retList ) > 0 and retList[0].mError == 0 :

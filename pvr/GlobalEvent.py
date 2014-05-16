@@ -120,12 +120,17 @@ class GlobalEvent( object ) :
 			self.mDataCache.ReLoadChannelListByRecording( )
 			if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 				#LOG_TRACE('hddFull, dialogOpen[%s]'% self.mIsHddFullDialogOpened )
+				#LOG_TRACE( '--------------------mHDDFull[%s]'% aEvent.mHDDFull )
+				#aEvent.printdebug( )
+				if aEvent.mHDDFull == 2 :
+					self.mDataCache.Timer_DeleteTimer( aEvent.mTimerId )
 				if self.mIsHddFullDialogOpened == False :
-					thread = threading.Timer( 0.3, self.AsyncHddFull )
+					thread = threading.Timer( 0.3, self.AsyncHddFull, [aEvent.mHDDFull] )
 					thread.start( )
 				else :
 					LOG_TRACE( 'Already opened, hddfull' )
 
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_EPG_WINDOW :
 				if self.mDataCache.Channel_GetZappingListStatus( ) :
 					self.mDataCache.Channel_SetZappingListStatus( )
@@ -370,14 +375,17 @@ class GlobalEvent( object ) :
 			self.IsStartChannelLoad = False
 
 
-	def AsyncHddFull( self ) :
+	def AsyncHddFull( self, aErrorNumber = 0 ) :
 		keyblock = 0
 		currentWinid = self.GetCurrentWindowIdForStanByClose( )
 		if currentWinid == WinMgr.WIN_ID_LIVE_PLATE or currentWinid == WinMgr.WIN_ID_TIMESHIFT_PLATE :
 			keyblock = 1
 		self.mIsHddFullDialogOpened = True
+		lblLine = MR_LANG( 'Recording stopped due to insufficient disk space' )
+		if aErrorNumber == 2 :
+			lblLine = MR_LANG( 'Recording stopped due to broken NAS connection' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), lblLine )
 		dialog.SetStayCount( keyblock )
 		dialog.doModal( )
 
