@@ -1557,9 +1557,34 @@ class NullWindow( BaseWindow ) :
 	def StartYoutubeTV( self ) :
 		print 'doliyu test start youtube'
 		self.mYoutubeTVStarted = True
-
+		self.mCommander.System_ShowWebPage("http://www.youtube.com/tv", 0 )
+		return
 
 	def StopYoutubeTV( self ) :
 		print 'doliyu test stop youtube'
+		self.mCommander.System_CloseWebPage( )
+		self.mCommander.AppHBBTV_Ready( 0 )
 		self.mYoutubeTVStarted = False
+		print 'doliyu test stop youtube : end'
 
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		channelList = self.mDataCache.Channel_GetList( )
+		if iChannel and channelList and len( channelList ) > 0 :
+			iEPG = self.mDataCache.Epgevent_GetPresent( )
+			if self.mDataCache.GetStatusByParentLock( ) and ( not self.mDataCache.GetPincodeDialog( ) ) and \
+			   channelList and len( channelList ) > 0 and iChannel and iChannel.mLocked or self.mDataCache.GetParentLock( iEPG ) :
+				#pvr.GlobalEvent.GetInstance( ).CheckParentLock( E_PARENTLOCK_INIT )
+				self.mDataCache.Player_AVBlank( True )
+				self.mDataCache.Channel_InvalidateCurrent( )
+				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+				self.mDataCache.Player_AVBlank( True )
+				LOG_TRACE( '----------------------------------------------ch lock' )
+
+			else :
+				self.mDataCache.Channel_InvalidateCurrent( )
+				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+				self.mDataCache.SetParentLockPass( True )
+
+		self.UpdateMediaCenterVolume( )
+		self.mDataCache.SyncMute( )
+		return

@@ -848,13 +848,13 @@ class GlobalEvent( object ) :
 			LOG_TRACE( 'XBMCEvent OnPlay' )
 			liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )			
 			if aEvent.mValue == "True" :
-				if liveWindow.mHbbTVShowing != True :
+				if liveWindow.mHbbTVShowing != True and liveWindow.mYoutubeTVStarted != True :
 					WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
 					status = self.mDataCache.Player_GetStatus( )
 					if status.mMode != ElisEnum.E_MODE_LIVE :
 						self.mDataCache.Player_Stop( )
 
-				if liveWindow.mHbbTVShowing != True :
+				if liveWindow.mHbbTVShowing != True and liveWindow.mYoutubeTVStarted != True:
 					liveWindow.SetMediaCenter( True )
 					if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
 						xbmc.executebuiltin( 'ActivateWindow(Home)' )
@@ -862,7 +862,7 @@ class GlobalEvent( object ) :
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
-				if liveWindow.mHbbTVShowing == True :
+				if liveWindow.mHbbTVShowing == True or liveWindow.mYoutubeTVStarted == True:
 					pass
 				else :
 					xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
