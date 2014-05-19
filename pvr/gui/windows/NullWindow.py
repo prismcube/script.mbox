@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time, threading
 import xbmc, xbmcgui
-#import xbmc, xbmcgui, gc
+from pvr.XBMCInterface import XBMC_GetWebserver, XBMC_GetUpnpRenderer, XBMC_GetEsallinterfaces
 import time
 
 
@@ -34,7 +34,9 @@ class NullWindow( BaseWindow ) :
 		self.mHbbTVTimer			= None
 		self.mHbbTVShowing			= False
 		self.mYoutubeTVStarted		= False
-
+		self.mStartedWebserver		= False
+		self.mStartedUpnp			= False
+		self.mStartedEsall			= False
 
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
@@ -1490,6 +1492,7 @@ class NullWindow( BaseWindow ) :
 		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			return
 		if self.mDataCache.GetHbbTVEnable( ) :
+			self.CheckStartedService( )
 			self.mHbbTVShowing = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 		else :
@@ -1501,6 +1504,7 @@ class NullWindow( BaseWindow ) :
 			self.HbbTV_MediaPlayerStop() 
 		LOG_TRACE( 'HideHbbTV Command' )
 		if self.mHbbTVShowing == True :
+			self.RestartService( )
 			self.mHbbTVShowing = False		
 			self.mCommander.AppHBBTV_Ready( 0 )
 		else :
@@ -1556,6 +1560,7 @@ class NullWindow( BaseWindow ) :
 
 	def StartYoutubeTV( self ) :
 		print 'doliyu test start youtube'
+		self.CheckStartedService( )
 		self.mYoutubeTVStarted = True
 		self.mCommander.System_ShowWebPage("http://www.youtube.com/tv", 0 )
 
@@ -1587,4 +1592,28 @@ class NullWindow( BaseWindow ) :
 
 		self.UpdateMediaCenterVolume( )
 		self.mDataCache.SyncMute( )
+		self.RestartService( )
 
+
+	def CheckStartedService( self ) :
+		if XBMC_GetWebserver( ) :
+			self.mStartedWebserver = True
+			xbmc.executebuiltin( 'WebServer(false)' )
+		if XBMC_GetUpnpRenderer( ) :
+			self.mStartedUpnp = True
+			xbmc.executebuiltin( 'UpnpRenderer(false)' )
+		if XBMC_GetEsallinterfaces( ) :
+			self.mStartedEsall = True
+			xbmc.executebuiltin( 'Esallinterfaces(false)' )
+
+
+	def RestartService( self ) :
+		if self.mStartedWebserver :
+			self.mStartedWebserver = False
+			xbmc.executebuiltin( 'WebServer(true)' )
+		if self.mStartedUpnp :
+			self.mStartedUpnp = False
+			xbmc.executebuiltin( 'UpnpRenderer(true)' )
+		if self.mStartedEsall :
+			self.mStartedEsall = False
+			xbmc.executebuiltin( 'Esallinterfaces(true)' )
