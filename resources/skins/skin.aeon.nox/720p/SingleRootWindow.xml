@@ -546,6 +546,12 @@
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
 						</item>
+						<item id="5">
+							<label>YOUTUBE</label>
+							<label2>Open YouTube browser</label2>
+							<onclick>SendClick(1290500)</onclick>
+							<visible>substring(Window.Property(YoutubeTV),true)</visible>
+						</item>
 						<item id="7">
 							<label>SCRIPT1048</label>
 							<label2>SCRIPT1071</label2>
