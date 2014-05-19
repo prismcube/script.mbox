@@ -431,13 +431,7 @@ Search for window name
 							<label>SCRIPT1065</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
-						<control type="button" id="1290611">
-							<visible>substring(Window.Property(YoutubeTV),true)</visible>
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Youtube TV</label>
-							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
-						</control>
-						<control type="image" id="1290612">
+						<control type="image" id="1290611">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>
@@ -694,19 +688,17 @@ Search for window name
 							<onclick>SendClick(1290400)</onclick>
 							<visible>true</visible>
 						</item>
-						<!--
-						<item id="5">
-							<label>SCRIPT1075</label>
-							<label2>SCRIPT1110</label2>
-							<onclick>SendClick(1290500)</onclick>
-							<visible>true</visible>
-						</item>
-						-->
 						<item id="6">
 							<label>SCRIPT1076</label>
 							<label2>SCRIPT1070</label2>
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
+						</item>
+						<item id="5">
+							<label>YOUTUBE</label>
+							<label2>Open youtube browser</label2>
+							<onclick>SendClick(1290500)</onclick>
+							<visible>substring(Window.Property(YoutubeTV),true)</visible>
 						</item>
 						<item id="7">
 							<label>SCRIPT1048</label>

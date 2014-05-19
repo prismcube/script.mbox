@@ -1558,7 +1558,7 @@ class NullWindow( BaseWindow ) :
 		print 'doliyu test start youtube'
 		self.mYoutubeTVStarted = True
 		self.mCommander.System_ShowWebPage("http://www.youtube.com/tv", 0 )
-		return
+
 
 	def StopYoutubeTV( self ) :
 		print 'doliyu test stop youtube'
@@ -1587,4 +1587,4 @@ class NullWindow( BaseWindow ) :
 
 		self.UpdateMediaCenterVolume( )
 		self.mDataCache.SyncMute( )
-		return
+

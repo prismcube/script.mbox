@@ -182,6 +182,11 @@ class Advanced( SettingWindow ) :
 
 			elif groupId == E_SpinEx05 :
 				self.SetSettingFromNumber( 'YOUTUBE_TV', self.GetSelectedIndex( E_SpinEx05 ) )
+				if self.GetSelectedIndex( E_SpinEx05 ) == 1 :
+					self.SetHbbTv( True )
+					control = self.getControl( E_SpinEx04 + 3 )
+					time.sleep( 0.02 )
+					control.selectItem( 1 )
 
 		elif selectedId == E_CEC :
 			self.ControlSelect( )
