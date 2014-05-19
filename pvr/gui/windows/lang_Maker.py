@@ -1061,7 +1061,6 @@ def AutoMakeLanguage() :
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying ID : %s'% E_FILE_MBOX_STRING_ID )
 	verify_defineString()
-	return
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'copy to ../resource/language')
 	langDir = mboxDir + '/resources/language'
@@ -1192,7 +1191,35 @@ def test6():
 	ret = re.findall('"([^"]*)"', var)
 	ret2= re.split('",', var )
 	print ret2, len(ret2)
-	
+
+
+def test7():
+	soup, tagOldString = parseStringInXML('test.xml', 'strings_old' )
+	soup, tagNewString = parseStringInXML('test.xml', 'strings_new' )
+	print '---------old[%s] new[%s]'% ( len(tagOldString), len(tagNewString) )
+
+	oldHash = {}
+	newHash = {}
+	for element in tagOldString :
+		oldHash[element[1]]=element[0]
+
+	for element in tagNewString :
+		newHash[element[1]]=element[0]
+
+	notFind = []
+	for element in tagOldString :
+		fEle = newHash.get( element[1], -1 )
+		if fEle != -1 :
+			print 'find [%s] oldID[%s] newID[%s]'% ( element[1], element[0], fEle )
+		else :
+			notFind.append([element[1], element[0], fEle])
+
+	for ele in notFind :
+		print '>>>>>>>not [%s] oldID[%s] newID[%s]'% ( ele[0],ele[1],ele[2] )
+
+	print '---------notFind[%s]'% len(notFind)
+	print '---------old[%s] new[%s]'% ( len(tagOldString), len(tagNewString) )
+
 
 if __name__ == "__main__":
 
