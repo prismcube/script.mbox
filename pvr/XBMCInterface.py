@@ -318,7 +318,6 @@ def XBMC_GetWebserver( ) :
 		return None
 	else :
 		try :
-			print 'dhkim test XBMC_GetWebserver'
 			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["webserver"]}, "id": 1}')
 			json_response = unicode(json_query, 'utf-8', errors='ignore')
 			jsonobject = simplejson.loads(json_response)
@@ -340,7 +339,6 @@ def XBMC_GetUpnpRenderer( ) :
 		return None
 	else :
 		try :
-			print 'dhkim test XBMC_GetUpnpRenderer'
 			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["upnprenderer"]}, "id": 1}')
 			json_response = unicode(json_query, 'utf-8', errors='ignore')
 			jsonobject = simplejson.loads(json_response)
@@ -362,7 +360,6 @@ def XBMC_GetEsallinterfaces( ) :
 		return None
 	else :
 		try :
-			print 'dhkim test XBMC_GetUpnpRenderer'
 			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["esallinterfaces"]}, "id": 1}')
 			json_response = unicode(json_query, 'utf-8', errors='ignore')
 			jsonobject = simplejson.loads(json_response)
