@@ -12,7 +12,8 @@
 				<posy>0</posy>
 				<width>610</width>
 				<height>400</height>
-				<texture border="40">DialogBack.png</texture>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">

@@ -9,88 +9,46 @@
 			<posy>30</posy>
 			<control type="image">
 				<posx>0</posx>
-				<posy>0</posy>
+				<posy>20</posy>
 				<width>1100</width>
 				<height>520</height>
-				<texture border="20">DialogBack.png</texture>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<control type="group">
-				<control type="button" id="301">
-					<description>Prev button</description>
-					<posx>80</posx>
-					<posy>450</posy>
-					<width>60</width>
-					<height>50</height>
-					<texturenofocus border="5">Arrow-left.png</texturenofocus>
-					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
-					<onleft></onleft>
-					<onright>302</onright>
-					<ondown>110</ondown>
-					<onup>110</onup>
-					<visible>substring(Window.Property(EPGPrev),true)</visible>
-				</control>
-				<control type="button" id="302">
-					<description>Next button</description>
-					<posx>970</posx>
-					<posy>450</posy>
-					<width>60</width>
-					<height>50</height>
-					<texturenofocus border="5">Arrow-right.png</texturenofocus>
-					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
-					<onleft>301</onleft>
-					<onright></onright>
-					<ondown>110</ondown>
-					<onup>110</onup>
-					<visible>substring(Window.Property(EPGNext),true)</visible>
-				</control>
-				<control type="label">
-					<posx>130</posx>
-					<posy>458</posy>
-					<width>100</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>SCRIPT1091</label>
-					<visible>Control.IsVisible(301)</visible>
-				</control>
-				<control type="label">
-					<posx>970</posx>
-					<posy>458</posy>
-					<width>100</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>SCRIPT1092</label>
-					<visible>Control.IsVisible(302)</visible>
-				</control>
-				<control type="label">
-					<posx>520</posx>
-					<posy>458</posy>
-					<width>200</width>
-					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
-					<aligny>center</aligny>
-					<label>$INFO[Window.Property(EPGIndex)]</label>
-					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
-				</control>
-			</control>
-
+			<!-- EPG Title -->
 			<control type="label" id="100">
-				  <description>EPG Title</description>
 				  <posx>80</posx>
 				  <posy>30</posy>
 				  <width>950</width>
 				  <height>100</height>
 				  <visible>true</visible>
-				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font35_title</font>
-				  <textcolor>FFFFFFFF</textcolor>
+				  <font>Font_Reg24</font>
+				  <textcolor>FF6db9e5</textcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
+			</control>
+
+			<!-- Start Time -->
+			<control type="label" id="102">
+				<posx>830</posx>
+				<posy>117</posy>
+				<font>Font_Reg17</font>
+				<label>$INFO[Window.Property(EPGTime)]</label>
+			</control>
+
+			<!-- EPG Date -->
+			<control type="label">
+				<posx>830</posx>
+				<posy>97</posy>
+				<font>Font_Reg17</font>
+				<label>$INFO[Window.Property(EPGDate)]</label>
+			</control>
+
+			<!-- EPG Duration -->
+			<control type="label">
+				<posx>970</posx>
+				<posy>117</posy>
+				<font>Font_Reg17</font>
+				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 
 			<control type="textbox" id="101">
@@ -101,52 +59,33 @@
 				  <height>320</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font13</font>
+				  <font>Font_Reg19</font>
 				  <textcolor>FFFFFFFF</textcolor>
 				  <wrapmultiline>true</wrapmultiline>
 				  <pagecontrol>110</pagecontrol>
 				  <autoscroll delay="3000" time="1000" repeat="10000">!Control.HasFocus(110)</autoscroll>
 				  <label>$INFO[Window.Property(EPGDescription)]</label>
 			</control>
+
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="110">
-				<posx>1050</posx>
-				<posy>135</posy>
+				<posx>1055</posx>
+				<posy>130</posy>
 				<width>25</width>
 				<height>321</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 				<onleft></onleft>
 				<onright></onright>
 				<ondown></ondown>
 				<onup></onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-			</control>
-			<control type="label" id="102">
-				<posx>830</posx>
-				<posy>102</posy>
-				<description>start time</description>
-				<font>font13</font>
-				<label>$INFO[Window.Property(EPGTime)]</label>
-			</control>
-			<control type="label">
-				<posx>830</posx>
-				<posy>82</posy>
-				<description>epg date</description>
-				<font>font13</font>
-				<label>$INFO[Window.Property(EPGDate)]</label>
-			</control>
-			<control type="label">
-				<posx>970</posx>
-				<posy>102</posy>
-				<description>epg duration</description>
-				<font>font13</font>
-				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 
 			<control type="group">
@@ -221,6 +160,76 @@
 				</control>
 			</control>
 
+			<control type="group">
+				<!-- Prev Button -->
+				<control type="button" id="301">
+					<description>Prev</description>
+					<posx>80</posx>
+					<posy>450</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-left.png</texturenofocus>
+					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
+					<onleft></onleft>
+					<onright>302</onright>
+					<ondown>110</ondown>
+					<onup>110</onup>
+					<visible>substring(Window.Property(EPGPrev),true)</visible>
+				</control>
+				<control type="label">
+					<posx>130</posx>
+					<posy>458</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1091</label>
+					<visible>Control.IsVisible(301)</visible>
+				</control>
+
+				<!-- Next Button -->
+				<control type="button" id="302">
+					<description>Next</description>
+					<posx>970</posx>
+					<posy>450</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-right.png</texturenofocus>
+					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
+					<onleft>301</onleft>
+					<onright></onright>
+					<ondown>110</ondown>
+					<onup>110</onup>
+					<visible>substring(Window.Property(EPGNext),true)</visible>
+				</control>
+				<control type="label">
+					<posx>970</posx>
+					<posy>458</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1092</label>
+					<visible>Control.IsVisible(302)</visible>
+				</control>
+
+				<!-- EPG Index -->
+				<control type="label">
+					<posx>520</posx>
+					<posy>458</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>white</textcolor>
+					<aligny>center</aligny>
+					<label>$INFO[Window.Property(EPGIndex)]</label>
+					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
+				</control>
+			</control>
 		</control>
 	</controls>
 </window>

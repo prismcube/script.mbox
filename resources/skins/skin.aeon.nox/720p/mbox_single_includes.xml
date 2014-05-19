@@ -411,15 +411,15 @@
 	</include>
 
 	<include name="DefaultDialogCommonSetting">
-		<control type="image">
+		<!--control type="image">
 			<posx>20</posx>
 			<posy>11</posy>
 			<width>580</width>
 			<height>110</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>GlassTitleBar.png</texture>
-		</control>
-		<control type="button" id="1006995">
+		</control-->
+		<!--control type="button" id="1006995">
 			<description>Close Window button</description>
 			<posx>520</posx>
 			<posy>13</posy>
@@ -429,14 +429,14 @@
 			<texturenofocus>DialogCloseButton.png</texturenofocus>
 			<onleft>1006997</onleft>
 			<onright>1006999</onright>
-		</control>
+		</control-->
 		<control type="label" id="1003005">
 			<description>header label</description>
 			<posx>20</posx>
 			<posy>22</posy>
 			<width>570</width>
 			<height>30</height>
-			<font>font13_title</font>
+			<font>Font_Bold20</font>
 			<align>center</align>
 			<aligny>center</aligny>
 			<textcolor>white</textcolor>
@@ -5418,7 +5418,7 @@
 					<visible>!substring(Container(1003430).CurrentPage,0)</visible>
 				</control>
 				<control type="label">
-					<posy>37</posy>
+					<posy>60</posy>
 					<width>770</width>
 					<align>center</align>
 					<aligny>center</aligny>
