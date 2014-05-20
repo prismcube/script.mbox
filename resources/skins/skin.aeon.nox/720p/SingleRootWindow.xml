@@ -999,6 +999,7 @@
 							<height>42</height>
 							<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
+							<texturenofocus>-</texturenofocus>
 							<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 						</control>
 						<control type="image">
@@ -1008,6 +1009,7 @@
 							<height>42</height>
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
+							<texturenofocus>-</texturenofocus>
 							<colordiffuse>FFB20000</colordiffuse>
 						</control>
 						<!-- Lock Icon -->
@@ -1765,9 +1767,8 @@
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
 						<font>Font_Reg19</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
 						<texturenofocus>-</texturenofocus>
-						<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+						<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 						<pulseonselect>false</pulseonselect>
 						<onleft>1300049</onleft>
 						<onright>1300049</onright>
@@ -1808,7 +1809,7 @@
 								<posy>21</posy>
 								<width>240</width>
 								<height>40</height>
-								<texture>button-focus.png</texture>
+								<texture border="6">views/tripanel/listselect_fo.png</texture>
 								<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 							</control>
 							<control type="label">
@@ -2160,9 +2161,8 @@
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
 								<font>Font_Reg19</font>
-								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+								<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 								<label>SCRIPT1029</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
@@ -2183,9 +2183,8 @@
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
 								<font>Font_Reg19</font>
-								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+								<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 								<label>SCRIPT1009</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
@@ -4416,7 +4415,7 @@
 					<posx>-250</posx>
 					<posy>110</posy>
 					<control type="button" id="3300100">
-						<description>View Button</description>
+						<description>View</description>
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
@@ -4432,7 +4431,7 @@
 						<ondown>3300101</ondown>
 					</control>
 					<control type="button" id="3300101">
-						<description>Sort Button</description>
+						<description>Sort</description>
 						<posx>0</posx>
 						<posy>40</posy>
 						<include>DefaultButtonCommonValues</include>
@@ -4449,7 +4448,7 @@
 						<ondown>3300200</ondown>
 					</control>
 					<control type="radiobutton" id="3300200">
-						<description>Hide Watched Button</description>
+						<description>Hide Watched</description>
 						<posx>0</posx>
 						<posy>80</posy>
 						<include>DefaultButtonCommonValues</include>
