@@ -137,15 +137,11 @@ class DialogMountManager( SettingDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 
-			if aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) :
+			if aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+			   aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
-				for netvolume in self.mNetVolumeList :
-					netvolume.printdebug()
-
-			elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
-				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
-				for netvolume in self.mNetVolumeList :
-					netvolume.printdebug()
+				#for netvolume in self.mNetVolumeList :
+				#	netvolume.printdebug()
 
 
 	def Close( self ) :

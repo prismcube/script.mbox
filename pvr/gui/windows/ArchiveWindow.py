@@ -350,8 +350,8 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
 				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
-			elif aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
-			     aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+			elif aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+			     aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				if E_SUPPORT_EXTEND_RECORD_PATH :
 					self.Flush( )
 					self.Load( )

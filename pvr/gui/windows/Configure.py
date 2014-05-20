@@ -629,8 +629,8 @@ class Configure( SettingWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
-			if aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
-			   aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+			if aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+			   aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				if E_SUPPORT_EXTEND_RECORD_PATH :
 					if self.mCtrlLeftGroup.getSelectedPosition( ) == E_RECORDING_OPTION :
 						self.SetListControl( )
