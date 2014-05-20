@@ -7,14 +7,14 @@
 		<control type="group">
 			<posx>400</posx>
 			<posy>245</posy>
-            <include>DefaultDialogCloseEffect</include>
+			<include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>480</width>
 				<height>230</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="label" id="210">
 				<description>Channel Number</description>
@@ -22,40 +22,38 @@
 				<posy>35</posy>
 				<width>480</width>
 				<height>30</height>
-				<font>Font_Bold24</font>
+				<font>font35_title</font>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
 			<control type="label" id="211">
-				<description>Channel Name</description>			
+				<description>Channel Name</description>
 				<posx>0</posx>
 				<posy>75</posy>
 				<width>480</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>Font_Reg18</font>
+				<font>font13</font>
 			</control>		
 			<control type="label" id="212">
-				<description>EPG Name</description>			
-				<posx>40</posx>
+				<description>EPG Name</description>
+				<posx>35</posx>
 				<posy>125</posy>
 				<width>400</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>Font_Reg18</font>
-				<label>SCRIPT16</label>
+				<font>font13</font>
+				<label>SCRIPT1016</label>
 			</control>
 			<control type="progress" id="213">
 				<posx>40</posx>
 				<posy>170</posy>
 				<width>400</width>
 				<height>15</height>
-				<texturebg>osd/seek/progress_back_long.png</texturebg>
-				<lefttexture>osd/seek/progress_left.png</lefttexture>
-				<midtexture>osd/seek/progress_mid.png</midtexture>
-				<righttexture>osd/seek/progress_right.png</righttexture>
+				<!--texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture-->
 			</control>
 		</control>
 	</controls>

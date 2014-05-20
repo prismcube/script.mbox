@@ -1,0 +1,20 @@
+<window id="3099">
+	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="label" id="100">
+			<posx>50</posx>
+			<posy>50</posy>
+			<width>560</width>
+			<height>30</height>
+			<font>font13_title</font>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<visible>false</visible>
+		</control>
+	</controls>
+</window>
+

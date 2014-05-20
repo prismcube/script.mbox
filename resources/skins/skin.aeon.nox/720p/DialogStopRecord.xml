@@ -4,43 +4,29 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>335</posx>
 			<posy>90</posy>
-            <include>DefaultDialogCloseEffect</include>
+            <!--include>DefaultDialogCloseEffect</include-->
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>100</posy>
 				<width>610</width>
 				<height>310</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="button" id="6995">
-				<description>Close Window button</description>
-				<posx>1</posx>
-				<posy>1</posy>
-				<width>1</width>
-				<height>1</height>
-				<visible>false</visible>
-			</control>
-			<control type="label" id="3005">
-				<description>header label</description>
-				<posx>50</posx>
-				<posy>133</posy>
-				<width>570</width>
-				<height>30</height>
-				<font>Font_Bold20</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+			<control type="group">
+				<posy>100</posy>
+				<include>DefaultDialogCommonSetting</include>
 			</control>
 		</control>
 
-		<control type="grouplist" id="9000">		
+		<control type="grouplist" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<onleft>9000</onleft>
 			<itemgap>0</itemgap>
-			<posx>375</posx>
+			<posx>365</posx>
 			<posy>270</posy>
 			<onup>9000</onup>
 			<ondown>9000</ondown>
@@ -48,30 +34,37 @@
 			
 			<!-- RECORD 1 -->
 			<control type="group" id="500">		
-				<posx>-10</posx>
-				<posy>10</posy>
-				<width>580</width>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
 				<height>70</height>
 				<visible>true</visible>				
 				<defaultcontrol always="true">501</defaultcontrol>
 				<control type="button" id="501">
 					<description>Button Icon</description>
-					<posx>-20</posx>
+					<posx>0</posx>
 					<posy>0</posy>
-					<width>570</width>
+					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
-					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
-					<animation effect="fade" start="100" end="70">Focus</animation>					
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<onleft></onleft>
 					<onright></onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(501)</visible>
 				</control>
 				<control type="label" id="502">
 					<posx>10</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<height>30</height>
-					<font>Font_Reg18</font>
+					<font>font13</font>
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -82,59 +75,64 @@
 					<posy>30</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>Font_Reg18</font>
+					<font>font13_title</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
 				</control>
 				<control type="label" id="504">
-					<posx>520</posx>
+					<posx>530</posx>
 					<posy>30</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>Font_Reg18</font>
+					<font>font13_title</font>
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT24</label>
+					<label>SCRIPT1024</label>
 				</control>
 				<control type="progress" id="505" >
 					<description>progress control</description>
-					<posx>420</posx>
+					<posx>430</posx>
 					<posy>10</posy>
 					<width>100</width>
 					<height>20</height>
-					<texturebg>osd/seek/progress_back.png</texturebg>
-					<lefttexture>osd/seek/progress_left.png</lefttexture>
-					<midtexture>osd/seek/progress_mid.png</midtexture>
-					<righttexture>osd/seek/progress_right.png</righttexture>
-				</control>
+				</control>					
 			</control>
 
 			<!-- RECORD 2 -->			
 			<control type="group" id="510">		
-				<posx>-10</posx>
-				<posy>10</posy>
-				<width>580</width>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
 				<height>70</height>
 				<defaultcontrol always="true">511</defaultcontrol>
 				<control type="button" id="511">
 					<description>Button Icon</description>
-					<posx>-20</posx>
+					<posx>0</posx>
 					<posy>0</posy>
-					<width>570</width>
+					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
-					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
-					<animation effect="fade" start="100" end="70">Focus</animation>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+					<onleft></onleft>
+					<onright></onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(511)</visible>
 				</control>
 				<control type="label" id="512">
 					<posx>10</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<height>30</height>
-					<font>Font_Reg18</font>
+					<font>font13</font>
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -145,34 +143,30 @@
 					<posy>30</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>Font_Reg18</font>
+					<font>font13_title</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
 				</control>
 				<control type="label" id="514">
-					<posx>520</posx>
+					<posx>530</posx>
 					<posy>30</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>Font_Reg18</font>
+					<font>font13_title</font>
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT24</label>
+					<label>SCRIPT1024</label>
 				</control>
 				<control type="progress" id="515" >
 					<description>progress control</description>
-					<posx>420</posx>
+					<posx>430</posx>
 					<posy>10</posy>
 					<width>100</width>
 					<height>20</height>
-					<texturebg>osd/seek/progress_back.png</texturebg>
-					<lefttexture>osd/seek/progress_left.png</lefttexture>
-					<midtexture>osd/seek/progress_mid.png</midtexture>
-					<righttexture>osd/seek/progress_right.png</righttexture>
-				</control>
+				</control>					
 			</control>
 			
 			<!-- CANCEL -->			
@@ -182,22 +176,21 @@
 				<width>550</width>
 				<height>70</height>
 				<control type="button" id="521">
-					<posx>145</posx>
-					<posy>15</posy>				
+					<description>Yes button</description>
+					<posx>160</posx>
+					<posy>17</posy>				
 					<width>250</width>
 					<height>40</height>
-					<font>Font_Bold18</font>
-					<textcolor>grey2</textcolor>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
 					<align>center</align>
-					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
-					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
-					<animation effect="fade" start="100" end="70">Focus</animation>
-					<label>SCRIPT26</label>
+					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
 				</control>
 			</control>
 		</control>
-		
 	</controls>
 </window>
 
