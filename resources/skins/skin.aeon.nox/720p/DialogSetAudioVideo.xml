@@ -4,36 +4,41 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
             <include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
-				<height>440</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+				<height>400</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<control type="button" id="6995">
-				<description>Close Window button</description>
-				<posx>455</posx>
-				<posy>36</posy>
-				<width>110</width>
-				<height>25</height>
-				<align>right</align>
-				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>SCRIPT21</label>
-				<font>Font_Bold18</font>
-			</control>
-			<include>DefaultDialogCloseButton</include>
+			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>25</posx>
-				<posy>5</posy>
-				<include>DialogSpinEx01</include>
-				<include>DialogSpinEx02</include>
-				<include>DialogSpinEx03</include>
+				<posx>40</posx>
+				<include>DialogInput01</include>
+				<control type="image">
+					<posx>0</posx>
+					<posy>122</posy>
+					<width>510</width>
+					<height>3</height>
+					<texture>separator2.png</texture>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogInput02</include>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogSpinEx01</include>
+					<include>DialogSpinEx02</include>
+					<include>DialogSpinEx03</include>
+					<include>DialogSpinEx04</include>
+				</control>
 			</control>
 		</control>
 	</controls>

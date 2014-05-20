@@ -1,0 +1,342 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<defaultcontrol always="true">4708000</defaultcontrol>
+	<controls>
+		<control type="group" id="4700000">
+			<!--visible>substring(Window.Property(CurrentWindow),4700000)</visible>
+			<defaultcontrol always="true">4708000</defaultcontrol-->
+			<posx>0</posx>
+			<posy>-2</posy>
+			<control type="group" id="4701000">
+				<posx>835</posx>
+				<posy>131</posy>
+				<visible>substring(Window.Property(OpenPIP),true)</visible>
+				<control type="group">
+					<control type="image" id="4701001">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>425</width>
+						<height>265</height>
+						<texture>black-back_noAlpha.png</texture>
+						<visible>substring(Window.Property(BlankPIP),true)</visible>
+					</control>
+					<control type="image" id="4701002">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>425</width>
+						<height>265</height>
+						<texture border="10">StackFO_white2.png</texture>
+					</control>
+				</control>
+				<control type="group" id="4702000">
+					<posx>0</posx>
+					<posy>0</posy>
+					<control type="label" id="4702001">
+						<posx>10</posx>
+						<posy>-30</posy>
+						<width>425</width>
+						<height>30</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<control type="image" id="4702002">
+						<posx>0</posx>
+						<posy>-1</posy>
+						<width>370</width>
+						<height>65</height>
+						<texture>black-back_noAlpha.png</texture>
+						<colordiffuse>DFFFFFFF</colordiffuse>
+					</control>
+
+					<control type="grouplist" id="4708000">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>370</width>
+						<height>50</height>
+						<itemgap>0</itemgap>
+						<pagecontrol></pagecontrol>
+						<scrolltime tween="sine" easing="out">200</scrolltime>
+						<orientation>horizontal</orientation>
+						<usecontrolcoords>false</usecontrolcoords>
+						<onup></onup>
+						<ondown></ondown>
+						<onleft></onleft>
+						<onright></onright>
+						<visible>!Control.IsVisible(4703000)</visible>
+						<defaultcontrol always="true">4708001</defaultcontrol>
+						<control type="button" id="4708001">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDChannelUPFO.png</texturefocus>
+							<texturenofocus>OSDChannelUPNF_new.png</texturenofocus>
+						</control>
+						<control type="button" id="4708002">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDChannelDownFO.png</texturefocus>
+							<texturenofocus>OSDChannelDownNF_new.png</texturenofocus>
+						</control>
+						<control type="button" id="4708003">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDAudioFO.png</texturefocus>
+							<texturenofocus>OSDAudioNF.png</texturenofocus>
+							<!--onclick>Mute</onclick-->
+						</control>
+						<!--control type="button" id="4708004">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDFullScreenFO.png</texturefocus>
+							<texturenofocus>OSDFullScreenNF.png</texturenofocus>
+						</control-->
+						<control type="button" id="4708005">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDMoveFO.png</texturefocus>
+							<texturenofocus>OSDMoveNF.png</texturenofocus>
+						</control>
+						<control type="button" id="4708006">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDResizeFO.png</texturefocus>
+							<texturenofocus>OSDResizeNF.png</texturenofocus>
+						</control>
+						<control type="button" id="4708007">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDResetFO.png</texturefocus>
+							<texturenofocus>OSDResetNF.png</texturenofocus>
+						</control>
+						<!--control type="button" id="4708008">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDBackFO.png</texturefocus>
+							<texturenofocus>OSDBackNF.png</texturenofocus>
+						</control-->
+						<!--control type="button" id="4708009">
+							<width>35</width>
+							<height>35</height>
+							<texturefocus>OSDExitFO.png</texturefocus>
+							<texturenofocus>OSDExitNF.png</texturenofocus>
+						</control-->
+					</control>
+
+					<!-- info section -->
+					<control type="group">
+						<posx>10</posx>
+						<posy>40</posy>
+						<control type="group">
+							<visible>Control.IsVisible(4703000)</visible>
+							<control type="label">
+								<posx>0</posx>
+								<posy>-30</posy>
+								<width>400</width>
+								<height>50</height>
+								<font>font12_title</font>
+								<textcolor>grey</textcolor>
+								<scroll>false</scroll>
+								<label>$INFO[Window.Property(SetContextAction)]</label>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>50</height>
+								<font>font12_title</font>
+								<textcolor>grey</textcolor>
+								<scroll>false</scroll>
+								<label>Press 'OK' done</label>
+							</control>
+						</control>
+
+						<control type="group">
+							<visible>!Control.IsVisible(4703000)</visible>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Next Channel</label>
+								<visible>Control.HasFocus(4708001)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Previous Channel</label>
+								<visible>Control.HasFocus(4708002)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Mute</label>
+								<visible>Control.HasFocus(4708003)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Switch full screen to PIP</label>
+								<visible>Control.HasFocus(4708004)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Set move to PIP</label>
+								<visible>Control.HasFocus(4708005)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Set size to PIP</label>
+								<visible>Control.HasFocus(4708006)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Reset to default</label>
+								<visible>Control.HasFocus(4708007)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Go to full screen</label>
+								<visible>Control.HasFocus(4708008)</visible>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>400</width>
+								<height>28</height>
+								<align>left</align>
+								<font>font10</font>
+								<textcolor>grey</textcolor>
+								<label>Stop PIP</label>
+								<visible>Control.HasFocus(4708009)</visible>
+							</control>
+						</control>
+					</control>
+				</control>
+
+				<!--control type="group" id="4703000">
+					<posx>-35</posx>
+					<posy>-15</posy>
+					<visible>substring(Window.Property(SettingPIP),true)</visible>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<control type="image" id="4703001">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-left-focus.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<posx>30</posx>
+						<posy>0</posy>
+						<control type="image" id="4703002">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-right-focus.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<posx>10</posx>
+						<posy>-20</posy>
+						<control type="image" id="4703003">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-top-focus.png</texture>
+						</control>
+					</control>
+					<control type="group">
+						<posx>10</posx>
+						<posy>5</posy>
+						<control type="image" id="4703004">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<texture>Arrow-bottom-focus.png</texture>
+						</control>
+					</control>
+				</control-->
+			</control>
+
+			<control type="image">
+				<posx>770</posx>
+				<posy>53r</posy>
+				<width>550</width>
+				<height>53</height>
+				<texture>black-back_noAlpha.png</texture>
+				<colordiffuse>DFFFFFFF</colordiffuse>
+			</control>
+			<control type="label">
+				<posx>780</posx>
+				<posy>53r</posy>
+				<width>450</width>
+				<height>50</height>
+				<font>font35_title</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>PIP Window - Channel : $INFO[Window.Property(ShowPIPChannelNumber)]</label>
+			</control>
+
+		</control>
+
+
+		<!-- Time & Date -->
+		<include>DefaultCommonTime</include>
+		<include>DefaultCommonDate</include>
+		<include>DefaultCommonLiveStatus</include>
+
+	</controls>
+</window>

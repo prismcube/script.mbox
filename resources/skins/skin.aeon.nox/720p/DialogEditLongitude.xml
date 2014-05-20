@@ -1,0 +1,123 @@
+<window>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,40)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background top image</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>350</width>
+				<height>30</height>
+				<texture border="45,45,45,0">DialogContextTop.png</texture>
+			</control>
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>350</width>
+				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
+			</control>
+			<control type="image" id="101">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<width>350</width>
+				<height>25</height>
+				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+			</control>
+			<control type="label" id="103">
+				<posx>20</posx>
+				<posy>-5</posy>
+				<width>310</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<font>font14</font>
+			</control>
+			<control type="list" id="102">
+				<posx>20</posx>
+				<posy>33</posy>
+				<width>310</width>
+				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>38</height>					<!--Change Property ItemHeight-->
+						<texture border="5">button-nofocus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout width="297" height="40">		<!--Change ProPerty ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<texture border="5">button-focus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>
+
+

@@ -332,7 +332,7 @@
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
-			<width>840</width>
+			<width>870</width>
 			<height>470</height>
 		</content>
 		<content name="Add-ons sind Pakete die Features und Functionen hinzufügen, die nicht normalerweise schon in XBMC enthalten sind.[CR][CR]1. Runter scrollen zu der gewünschten Kategorie und OK drücken.[CR]2. Das Add-on auswählen, das Sie installieren wollen.[CR]3. Eine Inhaltsübersicht wird angezeigt, die es Ihnen erlaubt verschiedene Einstellungen des Add-ons durchzuführen.[CR]4. INSTALLation auswählen um automatisch mit dem Download und der Installation zu beginnen.">
