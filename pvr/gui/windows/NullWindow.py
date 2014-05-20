@@ -1549,7 +1549,12 @@ class NullWindow( BaseWindow ) :
 	def HbbTV_MediaPlayerSetSpeed( self, aSpeed ) :
 		LOG_ERR( 'self.mHBBTVReady[%s], self.ElisEventExternalMediaPlayerSetSpeed[%s]'% ( self.mHBBTVReady, aSpeed ) )
 		if self.mMediaPlayerStarted == True :
-			xbmc.executebuiltin( 'XBMC.PlayerControl(Play)' )	
+			if aSpeed == 0 :
+				xbmc.executebuiltin( 'XBMC.PlayerControl(pause)', True )
+			elif aSpeed == 1 :
+				xbmc.executebuiltin( 'XBMC.PlayerControl(resume)', True )
+			else :
+				LOG_ERR( 'HbbTV_MediaPlayerSetSpeed unknown speed = %s' %  aSpeed )
 
 
 	def HbbTV_MediaPlayerSeek( self, aSeek ) :

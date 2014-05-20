@@ -345,7 +345,7 @@ class GlobalEvent( object ) :
 
 			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
 				#ToDO
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSetSpeed( 0 )				
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSetSpeed( aEvent.mSpeed )				
 		
 			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
 				#ToDO
