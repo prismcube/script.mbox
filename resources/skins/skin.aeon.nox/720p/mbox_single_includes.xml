@@ -750,9 +750,8 @@
 		<textwidth>235</textwidth>
 		<aligny>center</aligny>
 		<font>Font_Reg28</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus>-</texturenofocus>
-		<colordiffuse>FFFFFFFF</colordiffuse>
+		<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 		<pulseonselect>false</pulseonselect>
 	</include>
 
