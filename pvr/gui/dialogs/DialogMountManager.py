@@ -302,9 +302,10 @@ class DialogMountManager( SettingDialog ) :
 			if urlType == 'smb' and urlPath and urlHost and not IsIPv4( urlHost ) :
 				mountPath = GetSharedDirectoryByHost( urlHost, urlPath )
 				if mountPath != '' and mountPath != urlPath :
-					lblLine = MR_LANG( 'Can you select corrected shared directory ?' )
+					lblTitle = MR_LANG( 'No access permission' )
+					lblLine = MR_LANG( 'Try the following path instead;%s%s')% ( NEW_LINE, mountPath )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( '%s'% mountPath, MR_LANG( 'Can you select corrected shared directory ?' ) )
+					dialog.SetDialogProperty( lblTitle, lblLine )
 					#dialog.SetAutoCloseProperty( False, 0, True ) #default yes
 					dialog.doModal( )
 					LOG_TRACE( 'Invalid shared, urlpath[%s] shared[%s]'% ( urlPath, mountPath ) )
