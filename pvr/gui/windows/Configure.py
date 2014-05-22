@@ -899,6 +899,7 @@ class Configure( SettingWindow ) :
 		#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 		self.mDataCache.Record_RefreshNetworkVolume( )
+		self.mNetVolumeList = volumeList
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
