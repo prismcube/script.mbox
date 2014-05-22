@@ -303,7 +303,7 @@ class DialogMountManager( SettingDialog ) :
 				mountPath = GetSharedDirectoryByHost( urlHost, urlPath )
 				if mountPath != '' and mountPath != urlPath :
 					lblTitle = MR_LANG( 'No access permission' )
-					lblLine = MR_LANG( 'Try the following path instead;%s%s')% ( NEW_LINE, mountPath )
+					lblLine = '%s:%s%s'% ( MR_LANG( 'Try the following path instead' ), NEW_LINE, mountPath )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( lblTitle, lblLine )
 					#dialog.SetAutoCloseProperty( False, 0, True ) #default yes
