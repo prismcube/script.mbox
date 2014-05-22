@@ -137,15 +137,11 @@ class DialogMountManager( SettingDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 
-			if aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) :
+			if aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+			   aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
-				for netvolume in self.mNetVolumeList :
-					netvolume.printdebug()
-
-			elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
-				self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
-				for netvolume in self.mNetVolumeList :
-					netvolume.printdebug()
+				#for netvolume in self.mNetVolumeList :
+				#	netvolume.printdebug()
 
 
 	def Close( self ) :
@@ -303,6 +299,22 @@ class DialogMountManager( SettingDialog ) :
 
 			#init value
 			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+			if urlType == 'smb' and urlPath and urlHost and not IsIPv4( urlHost ) :
+				mountPath = GetSharedDirectoryByHost( urlHost, urlPath )
+				if mountPath != '' and mountPath != urlPath :
+					lblTitle = MR_LANG( 'No access permission' )
+					lblLine = '%s:%s%s'% ( MR_LANG( 'Try the following path instead' ), NEW_LINE, mountPath )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( lblTitle, lblLine )
+					#dialog.SetAutoCloseProperty( False, 0, True ) #default yes
+					dialog.doModal( )
+					LOG_TRACE( 'Invalid shared, urlpath[%s] shared[%s]'% ( urlPath, mountPath ) )
+					if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+						return
+
+					urlPath = mountPath
+					getPath = 'smb://%s%s'% ( urlHost, mountPath )
+
 			lblPath  = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
 			self.mNetVolume.mRemotePath = '//' + lblPath
 			self.mNetVolume.mRemoteFullPath = getPath

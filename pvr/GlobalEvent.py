@@ -309,16 +309,13 @@ class GlobalEvent( object ) :
 			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [False] )
 			thread.start( )
 
-			if E_SUPPORT_EXTEND_RECORD_PATH :
-				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW and \
-				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CONFIGURE :
-					self.mDataCache.Record_GetNetworkVolume( )
-
 		elif aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
 			self.mDataCache.SetUSBAttached( True )
 			thread = threading.Timer( 0.1, self.ShowAttatchDialog, [True] )
 			thread.start( )
 
+		elif aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+		     aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 			if E_SUPPORT_EXTEND_RECORD_PATH :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_ARCHIVE_WINDOW and \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CONFIGURE :

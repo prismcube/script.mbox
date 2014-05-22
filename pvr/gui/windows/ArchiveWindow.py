@@ -6,6 +6,8 @@ BUTTON_ID_VIEW_MODE					= E_ARCHIVE_WINDOW_BASE_ID + 100
 BUTTON_ID_SORT_MODE					= E_ARCHIVE_WINDOW_BASE_ID + 101
 TOGGLEBUTTON_ID_ASC					= E_ARCHIVE_WINDOW_BASE_ID + 102
 RADIOBUTTON_ID_EXTRA				= E_ARCHIVE_WINDOW_BASE_ID + 104
+BUTTON_ID_NAS_ARCHIVE				= E_ARCHIVE_WINDOW_BASE_ID + 105
+BUTTON_ID_ALL_ARCHIVE				= E_ARCHIVE_WINDOW_BASE_ID + 106
 RADIOBUTTON_ID_WATCHED				= E_ARCHIVE_WINDOW_BASE_ID + 200
 
 LABEL_ID_PLAY_NAME					= E_ARCHIVE_WINDOW_BASE_ID + 401
@@ -18,14 +20,15 @@ LIST_ID_COMMON_RECORD				= E_BASE_WINDOW_ID + 3400
 LIST_ID_THUMBNAIL_RECORD			= E_BASE_WINDOW_ID + 3410
 LIST_ID_POSTERWRAP_RECORD			= E_BASE_WINDOW_ID + 3420
 LIST_ID_FANART_RECORD				= E_BASE_WINDOW_ID + 3430
+LIST_ID_NETVOLUME					= E_ARCHIVE_WINDOW_BASE_ID + 9050
 
-SCROLL_ID_COMMON_VIEW			= E_BASE_WINDOW_ID + 3401
+SCROLL_ID_COMMON_VIEW				= E_BASE_WINDOW_ID + 3401
 SCROLL_ID_THUMBNAIL_VIEW			= E_BASE_WINDOW_ID + 3411
 SCROLL_ID_POSTERWRAP_VIEW			= E_BASE_WINDOW_ID + 3421
-SCROLL_ID_FANART_VIEW			= E_BASE_WINDOW_ID + 3431
+SCROLL_ID_FANART_VIEW				= E_BASE_WINDOW_ID + 3431
 
 
-E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID	=  E_ARCHIVE_WINDOW_BASE_ID + 9003
+E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID	= E_ARCHIVE_WINDOW_BASE_ID + 9003
 
 
 E_VIEW_LIST						= 0
@@ -72,7 +75,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mAscending[E_SORT_TITLE] = True
 		self.mAscending[E_SORT_DURATION] = False
 
-	
+
 	def onInit( self ) :
 		self.setProperty( 'SetBackgroundColor', '1' )
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
@@ -81,6 +84,9 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.mUpdateInfomationTimer = None
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			self.mNetVolumeSelectIndex = -1
+			self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 
 		status = self.mDataCache.Player_GetStatus( )
 		
@@ -128,6 +134,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
 			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
 			self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+			self.mCtrlNetVolumeList = self.getControl( LIST_ID_NETVOLUME )
 
 			self.mCtrlPlayName = self.getControl( LABEL_ID_PLAY_NAME )
 			self.mCtrlPlayProgress = self.getControl( PROGRESS_ID_PLAY_PROGRESS )
@@ -186,7 +193,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
-				if	self.mMarkMode == True :
+				if self.mMarkMode == True :
 					self.DoMarkToggle( )
 				else :
 					if actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
@@ -203,6 +210,11 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
+
+			elif focusId == BUTTON_ID_NAS_ARCHIVE :
+				if E_SUPPORT_EXTEND_RECORD_PATH and self.mNetVolumeList and \
+				   self.mNetVolumeSelectIndex > -1 and self.mNetVolumeSelectIndex < len( self.mNetVolumeList ) :
+					self.mCtrlNetVolumeList.selectItem( self.mNetVolumeSelectIndex )
 
 		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
@@ -283,7 +295,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.UpdateAscending( )
 			self.UpdateList(  )
-			self.SelectLastRecordKey( )						
+			self.SelectLastRecordKey( )
 
 		elif aControlId == RADIOBUTTON_ID_EXTRA :
 			pass
@@ -299,6 +311,33 @@ class ArchiveWindow( BaseWindow ) :
 				self.DoMarkToggle( )
 			else :
 				self.StartRecordPlayback( True )
+
+		elif aControlId == LIST_ID_NETVOLUME :
+			selectPos = self.mCtrlNetVolumeList.getSelectedPosition( )
+			if selectPos == self.mNetVolumeSelectIndex :
+				LOG_TRACE( '[Archive] pass, select same' )
+				return
+			self.mNetVolumeSelectIndex = selectPos
+			if self.mMarkMode :
+				self.DoClearMark( )
+			self.SetFocusList( self.mViewMode )
+			self.Load( )
+			self.UpdateList( )
+			self.UpdateViewMode( )
+			self.SelectLastRecordKey( )
+
+		elif aControlId == BUTTON_ID_ALL_ARCHIVE :
+			if self.mNetVolumeSelectIndex == -1 :
+				LOG_TRACE( '[Archive] pass, select same' )
+				return
+			self.mNetVolumeSelectIndex = -1
+			if self.mMarkMode :
+				self.DoClearMark( )
+			self.SetFocusList( self.mViewMode )
+			self.Load( )
+			self.UpdateList( )
+			self.UpdateViewMode( )
+			self.SelectLastRecordKey( )
 
 
 	def onFocus( self, controlId ) :
@@ -350,9 +389,10 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStopThumbnail( aEvent.mRecordKey, False )
 				#LOG_TRACE('-----------------------%s[%s]'% ( aEvent.getName( ), aEvent.mRecordKey ) )
 
-			elif aEvent.getName( ) == ElisEventUSBNotifyDetach.getName( ) or \
-			     aEvent.getName( ) == ElisEventUSBNotifyAttach.getName( ) :
+			elif aEvent.getName( ) == ElisEventUSBRecordVolumeAttach.getName( ) or \
+			     aEvent.getName( ) == ElisEventUSBRecordVolumeDetach.getName( ) :
 				if E_SUPPORT_EXTEND_RECORD_PATH :
+					self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 					self.Flush( )
 					self.Load( )
 					self.UpdateList( )
@@ -436,7 +476,13 @@ class ArchiveWindow( BaseWindow ) :
 			isHideWatched = False
 			if self.mCtrlHideWatched.isSelected( ) :
 				isHideWatched = True
-			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType, isHideWatched )
+
+			mountInfo = ''
+			if E_SUPPORT_EXTEND_RECORD_PATH and self.mNetVolumeList :
+				if self.mNetVolumeSelectIndex > -1 and self.mNetVolumeSelectIndex < len( self.mNetVolumeList ) :
+					mountInfo = self.mNetVolumeList[self.mNetVolumeSelectIndex].mMountPath
+
+			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType, isHideWatched, mountInfo )
 			if self.mRecordList == None :
 				self.mRecordCount = 0
 			else :
@@ -487,6 +533,15 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlThumbnailList.reset( )
 			self.mCtrlPosterwrapList.reset( )
 			self.mCtrlFanartList.reset( )
+			if E_SUPPORT_EXTEND_RECORD_PATH :
+				self.mCtrlNetVolumeList.reset( )
+				if self.mNetVolumeList :
+					listItems = []
+					for netVolume in self.mNetVolumeList :
+						volumeName = os.path.basename( netVolume.mMountPath )
+						listItem = xbmcgui.ListItem( '%s'% volumeName )
+						listItems.append( listItem )
+					self.mCtrlNetVolumeList.addItems( listItems )
 
 			#LOG_TRACE('')
 			updateOnly = False
