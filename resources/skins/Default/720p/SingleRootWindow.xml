@@ -350,7 +350,7 @@ Search for window name
 						</control>
 						<control type="button" id="1290109">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Advanced</label>
+							<label>SCRIPT1168</label>
 						</control>
 						<control type="image" id="1290110">
 							<width>35</width>
@@ -695,8 +695,8 @@ Search for window name
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>YOUTUBE</label>
-							<label2>Open youtube browser</label2>
+							<label>SCRIPT1169</label>
+							<label2>SCRIPT1170</label2>
 							<onclick>SendClick(1290500)</onclick>
 							<visible>substring(Window.Property(YoutubeTV),true)</visible>
 						</item>
