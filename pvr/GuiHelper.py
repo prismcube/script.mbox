@@ -1361,6 +1361,43 @@ def IsIPv4( address ) :
 	return True
 
 
+def GetSharedDirectoryByHost( aHostName = '', aReqPath = '' ) :
+	if not aHostName or ( not aReqPath ) :
+		LOG_TRACE( 'no name host' )
+		return ''
+
+	mountPath = ''
+	cmd = '/usr/bin/smbclient -YNL "%s"|awk \'$1-/^#/ {print $0}\''% aHostName
+	result = ExecuteShell( cmd )
+	result = result.split( '\n' )
+	if not result :
+		result = []
+
+	pubDirs = {}
+	for idx in range( len( result ) ) :
+		if result[idx] :
+			if result[idx][0] == '#' :
+				pubDirs[ result[idx][1:] ] = True
+
+	if not pubDirs :
+		LOG_TRACE( 'no shared directory' )
+		return mountPath
+
+	reqPath = aReqPath.split('/')
+	if reqPath and len( reqPath ) > 0 :
+		isFind = False
+		for rpath in reqPath :
+			mountPath += '%s/'% rpath
+			if rpath and pubDirs.get( rpath, None ) :
+				isFind = True
+				break
+		if not isFind :
+			mountPath = ''
+
+	LOG_TRACE( 'len[%s] pubDirs[%s] mountPath[%s]'% ( len( pubDirs ), pubDirs, mountPath )	)
+	return mountPath
+
+
 def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	urlType = urlparse.urlparse( aUrl ).scheme
 	urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( aUrl )

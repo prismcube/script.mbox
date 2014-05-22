@@ -299,6 +299,21 @@ class DialogMountManager( SettingDialog ) :
 
 			#init value
 			urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( getPath )
+			if urlType == 'smb' and urlPath and urlHost and not IsIPv4( urlHost ) :
+				mountPath = GetSharedDirectoryByHost( urlHost, urlPath )
+				if mountPath != '' and mountPath != urlPath :
+					lblLine = MR_LANG( 'Can you select corrected shared directory ?' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( '%s'% mountPath, MR_LANG( 'Can you select corrected shared directory ?' ) )
+					#dialog.SetAutoCloseProperty( False, 0, True ) #default yes
+					dialog.doModal( )
+					LOG_TRACE( 'Invalid shared, urlpath[%s] shared[%s]'% ( urlPath, mountPath ) )
+					if dialog.IsOK( ) != E_DIALOG_STATE_YES :
+						return
+
+					urlPath = mountPath
+					getPath = 'smb://%s%s'% ( urlHost, mountPath )
+
 			lblPath  = '%s%s'% ( urlHost, os.path.dirname( urlPath ) )
 			self.mNetVolume.mRemotePath = '//' + lblPath
 			self.mNetVolume.mRemoteFullPath = getPath
