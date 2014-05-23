@@ -2310,7 +2310,7 @@ class DataCacheMgr( object ) :
 
 
 	def InitNetworkVolume( self ) :
-		from pvr.GuiHelper import CheckNetworkStatus, ExecuteShell, MountToSMB
+		from pvr.GuiHelper import CheckNetworkStatus, RefreshMountToSMB
 		#return value, 1'st value :
 		#  inteager < 0 : error No.
 		#  inteager > 0 : fail count
@@ -2363,23 +2363,16 @@ class DataCacheMgr( object ) :
 			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
 			LOG_TRACE( '[DataCache]checkVolume %s'% lblLabel )
 
-			mntHistory = ExecuteShell( 'mount' )
-			if mntHistory and ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-				RemoveDirectory( netVolume.mMountPath )
-
-			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
-				if not mntPath :
-					mntHistory = ExecuteShell( 'mount' )
-					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-						failCount += 1
-						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
-
+			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount += failCount_
+			if failItem_ :
+				failItem += ',%s'% failItem_
 			time.sleep( 0.5 )
 
 		self.Record_RefreshNetworkVolume( )
+		self.Record_GetNetworkVolume( )
 		if failCount > 0 :
-			lblLine = '%s%s'% ( MR_LANG( 'Record path failure' ), failItem )
+			lblLine = '%s\n%s'% ( MR_LANG( 'Record path failure' ), failItem[1:] )
 			LOG_TRACE( '[DataCache]%s'% lblLine )
 
 		return failCount, lblLine

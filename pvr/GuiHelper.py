@@ -1,5 +1,6 @@
 import xbmc, xbmcgui, xbmcaddon, sys, os, shutil, time, re, stat
 from elisinterface.ElisEnum import ElisEnum
+from pvr.Product import *
 import pvr.Platform
 from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
@@ -489,10 +490,15 @@ def CreateDirectory( aPath ) :
 
 
 def CreateFile( aPath ) :
+	isAble = True
 	try :
 		open( aPath, 'w', 0644 )
+
 	except Exception, e :
+		isAble = False
 		LOG_ERR( 'except[%s]'% e )
+
+	return isAble
 
 
 def RemoveDirectory( aPath ) :
@@ -567,8 +573,6 @@ def CheckDirectory( aPath ) :
 
 
 def CheckHdd( ) :
-	from pvr.Product import *
-	import pvr.Platform
 	import pvr.ElisMgr
 	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
 	   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
@@ -1462,6 +1466,56 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 		zipFile = ''
 
 	return zipFile
+
+
+def RefreshMountToSMB( aNetVolume ) :
+	failCount = 0
+	failItem = ''
+
+	if not aNetVolume :
+		return failCount, failItem
+
+	#1. mount scan : not exist? delete leave directory
+	mntHistory = ExecuteShell( 'mount' )
+	if mntHistory and ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+		RemoveDirectory( aNetVolume.mMountPath )
+
+	#2. read only? unmount refresh
+	cPattern = re.sub( '/', '\/', aNetVolume.mMountPath )
+	readOnlyCheck = 'cat /proc/mounts |awk \'$2-/%s/ {print $4}\'|awk -F"," \'{print $1}\''% cPattern
+	#LOG_TRACE( 'cmd[%s] result[%s]'% ( readOnlyCheck, ExecuteShell( readOnlyCheck ) ) )
+	if mntHistory and bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) and \
+	   ExecuteShell( readOnlyCheck ) == 'ro' :
+		os.system( '/bin/umount -fl %s; rm -rf %s'% ( aNetVolume.mMountPath, aNetVolume.mMountPath ) )
+		time.sleep( 0.1 )
+		mntHistory = ''
+		LOG_TRACE( '[NAS] umount, check read only' )
+
+	#3. retry mount
+	if not mntHistory or ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+		mntPath = MountToSMB( aNetVolume.mRemoteFullPath, aNetVolume.mMountPath, False )
+		if not mntPath :
+			mntHistory = ExecuteShell( 'mount' )
+			if not mntHistory or ( not bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
+				failCount += 1
+				failItem += '%s'% os.path.basename( aNetVolume.mMountPath )
+
+		#LOG_TRACE( '[NAS] mount[%s] ret[%s]'% ( aNetVolume.mMountPath, lblRet ) )
+
+	#4. writable check
+	mntHistory = ExecuteShell( 'mount' )
+	if mntHistory and bool( re.search( '%s'% aNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) :
+		checkFile = '%s/writableCheck'% aNetVolume.mMountPath
+		if CreateFile( checkFile ) :
+			RemoveDirectory( checkFile )
+			LOG_TRACE( '[NAS] done, writable' )
+		else :
+			#read only?
+			os.system( '/bin/mount -o ro,remount %s'% aNetVolume.mMountPath )
+			LOG_TRACE( '[NAS] remount, readonly' )
+
+	#time.sleep( 0.5 )
+	return failCount, failItem
 
 
 def CheckEthernetType( ) :

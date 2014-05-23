@@ -440,7 +440,20 @@ class DialogMountManager( SettingDialog ) :
 
 						self.mNetVolume.mMountCmd = mountCmd
 						mountPath = MountToSMB( self.mNetVolume.mRemoteFullPath, self.mNetVolume.mMountPath, False )
-						#LOG_TRACE( '----------------------------------mountPath[%s]'% mountPath )
+
+						# writable check
+						mntHistory = ExecuteShell( 'mount' )
+						if mntHistory and bool( re.search( '%s'% self.mNetVolume.mMountPath, mntHistory, re.IGNORECASE ) ) :
+							checkFile = '%s/writableCheck'% self.mNetVolume.mMountPath
+							if CreateFile( checkFile ) :
+								RemoveDirectory( checkFile )
+								LOG_TRACE( '[MountManager] done, writable' )
+							else :
+								#can not create?
+								os.system( '/bin/mount -o ro,remount %s'% self.mNetVolume.mMountPath )
+								LOG_TRACE( '[MountManager] remount, readonly' )
+
+						#LOG_TRACE( '[NAS] mountPath[%s]'% mountPath )
 						#self.mNetVolume.printdebug( )
 
 						lblLine = MR_LANG( 'Unable to mount location' )
@@ -448,7 +461,7 @@ class DialogMountManager( SettingDialog ) :
 							isAdd = True
 							#is edit? delete old volume
 							netVolume = self.GetVolumeIDs( self.mNetVolume )
-							LOG_TRACE( '--------------------------find volume GetVolumeIDs[%s]'% netVolume )
+							LOG_TRACE( '[MountManager] find volume GetVolumeIDs[%s]'% netVolume )
 							if netVolume :
 								if not self.DoDeleteVolume( netVolume, False ) :
 									isAdd = False
@@ -460,7 +473,7 @@ class DialogMountManager( SettingDialog ) :
 							if isAdd :
 								lblLine = MR_LANG( 'Could not add this record path' )
 								ret = self.mDataCache.Record_AddNetworkVolume( self.mNetVolume )
-								LOG_TRACE( '----------------------------------ret[%s]'% ret )
+								LOG_TRACE( '[MountManager] addVolume ret[%s]'% ret )
 								if ret :
 									isFail = False
 									lblLine = '\'%s\' %s'% ( os.path.basename( self.mNetVolume.mMountPath ), MR_LANG( 'is mounted' ) )
@@ -770,15 +783,10 @@ class DialogMountManager( SettingDialog ) :
 				defVolume = netVolume
 			self.SetControlLabel2String( E_DialogInput03, lblLabel )
 
-			mntHistory = ExecuteShell( 'mount' )
-			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
-				if not mntPath :
-					mntHistory = ExecuteShell( 'mount' )
-					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-						lblRet = MR_LANG( 'Fail' )
-						failCount += 1
-						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
+			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount += failCount_
+			if failItem_ :
+				failItem += ',%s'% failItem_
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_DialogInput03, lblLabel )
@@ -792,12 +800,26 @@ class DialogMountManager( SettingDialog ) :
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
+		if not defVolume :
+			defVolume = self.mNetVolume
+
+		if not defVolume :
+			if volumeList and len( volumeList ) > 0 :
+				defVolume = volumeList[0]
+
 		lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
-		self.SetControlLabel2String( E_DialogInput03, lblSelect )
-		self.setProperty( 'NetVolumeConnect', lblOnline )
-		self.setProperty( 'NetVolumeUse', lblPercent )
-		self.mCtrlProgressUse.setPercent( useInfo )
+		if defVolume :
+			self.SetControlLabel2String( E_DialogInput03, lblSelect )
+			self.setProperty( 'NetVolumeConnect', lblOnline )
+			self.setProperty( 'NetVolumeUse', lblPercent )
+			self.mCtrlProgressUse.setPercent( useInfo )
+
+		else :
+			self.DrawItem( )
+
 		ResetPositionVolumeInfo( self, lblPercent, self.mDialogWidth, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+		self.mDataCache.Record_RefreshNetworkVolume( )
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

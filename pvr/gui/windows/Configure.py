@@ -864,19 +864,10 @@ class Configure( SettingWindow ) :
 				defVolume = netVolume
 			self.SetControlLabel2String( E_Input03, lblLabel )
 
-			mntHistory = ExecuteShell( 'mount' )
-			if mntHistory and ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-				RemoveDirectory( netVolume.mMountPath )
-
-			if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-				mntPath = MountToSMB( netVolume.mRemoteFullPath, netVolume.mMountPath, False )
-				if not mntPath :
-					mntHistory = ExecuteShell( 'mount' )
-					if not mntHistory or ( not bool( re.search( '%s'% netVolume.mMountPath, mntHistory, re.IGNORECASE ) ) ) :
-						lblRet = MR_LANG( 'Fail' )
-						failCount += 1
-						failItem += '\n%s'% os.path.basename( netVolume.mMountPath )
-						os.system( '/bin/umount -fl %s; rm -rf %s'% ( netVolume.mMountPath, netVolume.mMountPath ) )
+			failCount_, failItem_ = RefreshMountToSMB( netVolume )
+			failCount += failCount_
+			if failItem_ :
+				failItem += ',%s'% failItem_
 
 			lblLabel = '%s%s'% ( lblRet, lblLabel )
 			self.SetControlLabel2String( E_Input03, lblLabel )
@@ -899,7 +890,7 @@ class Configure( SettingWindow ) :
 		#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
 		self.mDataCache.Record_RefreshNetworkVolume( )
-		self.mNetVolumeList = volumeList
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
