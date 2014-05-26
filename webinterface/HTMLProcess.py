@@ -17,6 +17,7 @@ def GetHTMLClass( className, *param ) :
 	htmlClass.append(ZapUp)
 	htmlClass.append(ZapDown)
 	htmlClass.append(RecordCheck)
+	htmlClass.append(CheckNAS)
 
 	for cls in htmlClass :
 		if className == cls.__name__ :
@@ -416,9 +417,11 @@ class Channel( WebPage ) :
 					<form name="recordForm" action="Record" method="get" target="zapper">
 						<input type="hidden" name="channelNumber">
 						<input type="hidden" name="duration">
+						<input type="hidden" name="volumeId" value="0">
+						<input type="hidden" name="NASChecked" value="no">
 					</form>
 					
-					<iframe name='zapper' width='0' height='0' style='display: none;'></iframe>
+					<iframe name='zapper' width='1000' height='500' style='display: none;'></iframe>
 					</div>
 					
 				</div>
@@ -1230,10 +1233,37 @@ class Record( WebPage ) :
 	"""
 	def __init__( self, command ) :
 		super(Record, self).__init__()
-		self.content = "Record Class"
+		self.content = ""
+	
+		self.stationInfo = self.GetParams( command[0] )
+		
+		if self.stationInfo['NASChecked'] == 'no' :
+			print '[Recording] Check for NAS'
+			self.CheckNAS()
+		else :
+			print '[Recording] Recording Start'
+			self.StartRecordingWithoutAsking()
 
-		self.stationInfo = self.GetParams( command[0] )		
-		self.StartRecordingWithoutAsking()
+	def CheckNAS( self ) :
+		print 'checking nas'
+
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
+		if self.mNetVolumeList :
+			self.content = """
+				<script>
+					window.open('CheckNAS?channelNumber=%s&duration=%s&volumeId=%s&NASChecked=%s', 'checknas', 'height=500, width=800');
+				</script>
+			""" % ( self.stationInfo['channelNumber'], self.stationInfo['duration'], self.stationInfo['volumeId'], self.stationInfo['NASChecked'] )
+		else :
+			self.StartRecordingWithoutAsking()
+
+		"""
+		for vol in self.mNetVolumeList :
+			print vol.mIndexID
+			print vol.mRemotePath
+			print vol.mRemoteFullPath
+			print vol.mMountCmd
+		"""
 
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -1337,6 +1367,11 @@ class Record( WebPage ) :
 
 			else :
 				isOK = True
+				self.content = """
+					<script>
+						alert("Recording Has Started");
+					</script>
+				"""
 
 		else:
 			#msg = MR_LANG( 'You have reached the maximum number of%s recordings allowed' )% NEW_LINE
@@ -1444,5 +1479,100 @@ class RecordCheck( WebPage ) :
 				</html>
 			""" % ( self.params['channelNumber'], self.params['duration'])
 			
+		return content
+
+class CheckNAS( WebPage ) :
+	def __init__( self, command ) :
+		super(CheckNAS, self).__init__()
+		self.params = self.GetParams( command[0] )
+		
+		self.content = self.checkNasContent()
+
+	def checkNasContent( self ) :
+
+		naslocations = self.mDataCache.Record_GetNetworkVolume( True )
+		
+		content = """
+			<!doctype html>
+			<html>
+			<head>
+				<title>PrismCube</title>
+				<style>
+					#main {
+						width: 500px;
+						margin: auto;
+					}
+					
+					#title {
+						font-family: consolas;
+						font-size: 1.5em;
+						font-weight: bold;
+						text-align: center;
+					}
+					
+					.select {
+						width: 80%;
+						margin: auto;
+						padding: 10px 20px;
+						border: 0px solid #dfdfdf;
+					}
+
+					.location {
+						display: inline;
+						font-family: arial;
+						font-size: 1.1em;
+						font-weight: bold;
+						border: 0px solid blue;
+						float: left;
+					}
+					
+					.btn {
+						display: inline;
+						text-align: right;
+						border: 0px solid blue;
+						float: right;
+					}
+				</style>
+				<script>
+					function jumpToRecord( volumeid ) {
+						document.myForm.volumeId.value = volumeid;
+						document.myForm.submit();
+						this.close();
+					}
+				</script>
+			</head>
+			<body>
+			<div id="main">
+			<p id="title">Select a Location to Record</p>
+		"""
+		if HasAvailableRecordingHDD( ) :
+			content += '<div class="select">'
+			content += '<div class="location">Internal HDD</div>'
+			content += '<div class="btn"><button type="button" onclick="javascript:jumpToRecord(0);">Select</button></div>'
+			content += '</div><br>'
+
+		starter = 0 
+		for vol in naslocations :
+			if starter == 0 :
+				starter = 1
+			else :
+				content += '<br>'
+			content += '<div class="select">'
+			content += '<div class="location">%s</div>' % vol.mRemotePath
+			content += '<div class="btn"><button type="button" onclick="javascript:jumpToRecord(%s);">Select</button></div>' % vol.mIndexID
+			content += '</div>'
+
+		content += """
+			</div>
+			<form name="myForm" action="Record" method="get" target="zapper">
+				<input type="hidden" name="channelNumber" value="%s">
+				<input type="hidden" name="duration" value="%s">
+				<input type="hidden" name="volumeId">
+				<input type="hidden" name="NASChecked" value="yes">
+			</form>
+			</body>
+			</html>
+		""" % ( self.params['channelNumber'], self.params['duration'] ) 
+
 		return content
 		

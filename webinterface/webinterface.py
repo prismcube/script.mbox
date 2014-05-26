@@ -317,7 +317,10 @@ class MyHandler( BaseHTTPRequestHandler ):
 					else :
 
 						print 'Media File Play'
-						filePath = urllib.unquote(paramVal)
+
+						#filePath = urllib.unquote(paramVal)
+						filePath = paramVal
+						
 						print filePath
 
 						try :

@@ -36,10 +36,10 @@ class ElmoEpgService( Webinterface ) :
 				xmlStr += '<e2eventdescription>' + escape( row.mEventDescription ) +'</e2eventdescription>\n'
 				xmlStr += '<e2eventdescriptionextended></e2eventdescriptionextended>\n'
 				xmlStr += '<e2eventservicereference>' + self.params['sRef'] + '</e2eventservicereference>\n'
-				xmlStr += '<e2eventservicename>' + row.mEventName +'</e2eventservicename>\n'
+				xmlStr += '<e2eventservicename>' + escape(row.mEventName) +'</e2eventservicename>\n'
 				xmlStr += '</e2event>\n'
 
-				print xmlStr
+				# print xmlStr
 
 		xmlStr += '</e2eventlist>\n'
 
