@@ -22,7 +22,8 @@ class Advanced( SettingWindow ) :
 		self.mPrevListItemID	= -1
 		self.mPrevLiveStream	= ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( )
 		self.mPrevWebinterface	= self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) )
-		self.mPrevHbbtv			= self.GetHbbTv( )
+		self.mPrevHbbtv			= self.GetSettingToNumber( GetSetting( 'HBB_TV' ) )
+		self.mPrevYoutubetv		= self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) )
 
 
 	def onInit( self ) :
@@ -68,7 +69,8 @@ class Advanced( SettingWindow ) :
 	def RestartSystem( self ) :
 		if self.mPrevLiveStream != ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( ) or \
 			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) or \
-			self.mPrevHbbtv != self.GetHbbTv( ) :
+			self.mPrevHbbtv != self.GetSettingToNumber( GetSetting( 'HBB_TV' ) ) or \
+			self.mPrevYoutubetv != self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'You must reboot your system for the changes to take effect.' ), MR_LANG( 'Do you want to restart the system now?' ) )
@@ -175,18 +177,12 @@ class Advanced( SettingWindow ) :
 					self.SetSettingFromNumber( 'SURFACE_24', self.GetSelectedIndex( E_SpinEx03 ) )
 
 			elif groupId == E_SpinEx04 :
-				if self.GetSelectedIndex( E_SpinEx04 ) :
-					self.SetHbbTv( True )
-				else :
-					self.SetHbbTv( False )
+				self.SetSettingFromNumber( 'HBB_TV', self.GetSelectedIndex( E_SpinEx04 ) )
+				self.SetHbbTv( )
 
 			elif groupId == E_SpinEx05 :
 				self.SetSettingFromNumber( 'YOUTUBE_TV', self.GetSelectedIndex( E_SpinEx05 ) )
-				if self.GetSelectedIndex( E_SpinEx05 ) == 1 :
-					self.SetHbbTv( True )
-					control = self.getControl( E_SpinEx04 + 3 )
-					time.sleep( 0.02 )
-					control.selectItem( 1 )
+				self.SetHbbTv( )
 
 		elif selectedId == E_CEC :
 			self.ControlSelect( )
@@ -239,8 +235,8 @@ class Advanced( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'UPnP', '%s ( %s )' % ( MR_LANG( 'Live Streaming' ),  MR_LANG( 'restart required' ) ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
 			self.AddUserEnumControl( E_SpinEx02, '%s ( %s )' % ( MR_LANG( 'Web Interface' ),  MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
-			self.AddUserEnumControl( E_SpinEx04, '%s ( %s )' % ( MR_LANG( 'HbbTV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetHbbTv( ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'YouTube TV' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ), MR_LANG( 'Watch YouTube TV on your PRISMCUBE' ) )
+			self.AddUserEnumControl( E_SpinEx04, '%s ( %s )' % ( MR_LANG( 'HbbTV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'HBB_TV' ) ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
+			self.AddUserEnumControl( E_SpinEx05, '%s ( %s )' % ( MR_LANG( 'YouTube TV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ), MR_LANG( 'Watch YouTube TV on your PRISMCUBE' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -282,15 +278,8 @@ class Advanced( SettingWindow ) :
 			SetSetting( aId, 'false' )
 
 
-	def GetHbbTv( self ) :
-		if os.path.exists( FILE_NAME_HBB_TV ) :
-			return 1
-		else :
-			return 0
-
-
-	def SetHbbTv( self, aFlag ) :
-		if aFlag :
+	def SetHbbTv( self ) :
+		if self.GetSelectedIndex( E_SpinEx04 ) == 1 or self.GetSelectedIndex( E_SpinEx05 ) == 1 :
 			os.system( 'touch %s' % FILE_NAME_HBB_TV )
 		else :
 			os.system( 'rm %s' % FILE_NAME_HBB_TV )
