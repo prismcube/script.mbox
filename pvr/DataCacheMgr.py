@@ -1,3 +1,4 @@
+import xbmcaddon
 from decorator import decorator
 from elisinterface.ElisEventClass import *
 from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -3576,7 +3577,7 @@ class DataCacheMgr( object ) :
 
 
 	def SetHbbtvStatus( self ) :
-		if os.path.exists( FILE_NAME_HBB_TV ) :
+		if xbmcaddon.Addon( 'script.mbox' ).getSetting( 'HBB_TV' ) == 'true' :
 			self.mHbbtvStatus = True
 		else :
 			self.mHbbtvStatus = False
