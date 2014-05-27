@@ -15,36 +15,24 @@
 				<posy>-30</posy>
 				<width>350</width>
 				<height>30</height>
-				<texture border="45,45,45,0">DialogContextTop.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextTopVar]</texture>
 			</control>
-			<!--control type="button" id="103">
-				<description>Close Window button</description>
-				<posx>260</posx>
-				<posy>-24</posy>
-				<width>64</width>
-				<height>32</height>
-				<onup>102</onup>
-				<ondown>102</ondown>
-				<onleft>102</onleft>
-				<onright>102</onright>
-				<label>-</label>
-				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
-			</control-->
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>350</width>
-				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextMiddleVar]</texture>
 			</control>
 			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
 				<width>350</width>
 				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextBottomVar]</texture>
 			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
@@ -53,8 +41,6 @@
 				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
-				<!--onleft>103</onleft>
-				<onright>103</onright-->
 				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
@@ -94,7 +80,8 @@
 						<posy>0</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<texture border="5">button-focus.png</texture>
+						<texture border="6">views/tripanel/listselect_fo.png</texture>
+						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="image">

@@ -9,51 +9,48 @@
 			<posx>335</posx>
 			<posy>160</posy>
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
 				<height>400</height>
-				<texture border="40">DialogBack.png</texture>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
 			<control type="image">
-				<posx>40</posx>
+				<posx>20</posx>
 				<posy>10</posy>
-				<width>530</width>
-				<height>90</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<width>570</width>
+				<height>46</height>
+				<texture>osd/osd_settings_buttonnf.png</texture>
+			</control>
+			<control type="label" id="301">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>10</posy>
+				<width>570</width>
+				<height>60</height>
+				<textcolor>FF6db9e5</textcolor>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<scroll>true</scroll>
 			</control>
 			<control type="button" id="300">
-				<description>Close Window button</description>
-				<posx>520</posx>
-				<posy>9</posy>
-				<width>64</width>
-				<height>32</height>
-				<label>-</label>
-				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<description>Close</description>
+				<posx>540</posx>
+				<posy>30</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 			</control>
-			<control type="label" id="301">
-				<description>header label</description>
-				<posx>80</posx>
-				<posy>21</posy>
-				<width>440</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<scroll>true</scroll>
-			</control>
 			<control type="list" id="9000">
-				<posx>15</posx>
+				<posx>20</posx>
 				<posy>65</posy>
 				<width>550</width>
 				<height>240</height>
@@ -77,7 +74,7 @@
 						<posy>0</posy>
 						<width>510</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -100,8 +97,9 @@
 						<posy>0</posy>
 						<width>550</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
-						<visible>Control.HasFocus(9000)</visible>
+                        <texture>views/tripanel/listselect_fo.png</texture>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        <visible>Control.HasFocus(9000)</visible>
 						<include>VisibleFadeEffect</include>
 					</control>
 					<control type="label">
@@ -109,7 +107,7 @@
 						<posy>0</posy>
 						<width>510</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -136,10 +134,10 @@
 			</control>
 			<control type="label" id="302">
 				<posx>580</posx>
-				<posy>310</posy>
+				<posy>305</posy>
 				<width>540</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
@@ -147,10 +145,10 @@
 			</control>
 			<control type="label" id="303">
 				<posx>580</posx>
-				<posy>340</posy>
+				<posy>335</posy>
 				<width>540</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>

@@ -7,14 +7,17 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>610</width>
+				<width>630</width>
 				<height>340</height>
-				<texture border="40">DialogBack.png</texture>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>5</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
 

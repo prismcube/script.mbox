@@ -6032,7 +6032,7 @@
 					<control type="label" id="4300052">
 						<description>Download Percent</description>
 						<posx>310</posx>
-						<posy>5</posy>
+						<posy>20</posy>
 						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>

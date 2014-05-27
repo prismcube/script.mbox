@@ -13,47 +13,50 @@
 				<description>background top image</description>
 				<posx>0</posx>
 				<posy>-30</posy>
-				<width>350</width>
+				<width>365</width>
 				<height>30</height>
-				<texture border="45,45,45,0">DialogContextTop.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextTopVar]</texture>
 			</control>
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>350</width>
-				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
+				<width>365</width>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextMiddleVar]</texture>
 			</control>
 			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
-				<width>350</width>
+				<width>365</width>
 				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextBottomVar]</texture>
 			</control>
 			<control type="label" id="103">
-				<posx>20</posx>
-				<posy>-5</posy>
+				<posx>30</posx>
+				<posy>0</posy>
 				<width>310</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<font>font14</font>
+				<font>Font_Reg25</font>
 			</control>
 			<control type="list" id="102">
-				<posx>20</posx>
-				<posy>33</posy>
-				<width>310</width>
-				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<posx>18</posx>
+				<posy>50</posy>
+				<width>330</width>
+				<height>520</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
-				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
+				<itemlayout width="330" height="36" >		<!--Change Property ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>310</width>
-						<height>38</height>					<!--Change Property ItemHeight-->
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
 						<texture border="5">button-nofocus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
@@ -61,7 +64,7 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>38</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<height>38</height>					<!--Change Property ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -70,32 +73,33 @@
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>165</posx>
 						<posy>0</posy>
-						<width>310</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 				</itemlayout>
-				<focusedlayout width="297" height="40">		<!--Change ProPerty ItemHeight-->
+				<focusedlayout width="330" height="36">		<!--Change Property ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>310</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<texture border="5">button-focus.png</texture>
-						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+                        <texture>views/tripanel/listselect_fo.png</texture>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        <animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>38</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<height>38</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
@@ -103,11 +107,11 @@
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>165</posx>
 						<posy>0</posy>
-						<width>310</width>
-						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>

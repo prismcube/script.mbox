@@ -3,102 +3,155 @@
 	<coordinates>
 		<system>1</system>
 		<posx>240</posx>
-		<posy>100</posy>
+		<posy>115</posy>
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
 		<control type="image">
-			<description>background image</description>
+			<posx>0</posx>
+			<posy>-20</posy>
+			<width>800</width>
+			<height>500</height>
+			<texture>dialogs/dialog_back.png</texture>
+			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+		</control>
+		<control type="image">
+			<posx>15</posx>
+			<posy>0</posy>
+			<width>770</width>
+			<height>42</height>
+			<texture>osd/osd_settings_buttonnf.png</texture>
+		</control>
+		<control type="label" id="102">
+			<description>Title</description>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>800</width>
-			<height>500</height>
-			<texture border="40">DialogBack.png</texture>
-		</control>
-		<control type="image">
-			<description>Dialog Header image</description>
-			<posx>40</posx>
-			<posy>16</posy>
-			<width>720</width>
-			<height>40</height>
-			<texture>dialogheader.png</texture>
-		</control>
-		<control type="label" id="102">
-			<description>header label</description>
-			<posx>40</posx>
-			<posy>20</posy>
-			<width>720</width>
-			<height>30</height>
-			<font>font13_title</font>
+			<height>60</height>
+			<textcolor>FF6db9e5</textcolor>
 			<align>center</align>
-			<aligny>center</aligny>
-			<textcolor>selected</textcolor>
-			<shadowcolor>black</shadowcolor>
+			<scroll>true</scroll>
+			<textoffsetx>45</textoffsetx>
 		</control>
 		<control type="button">
-			<description>Close Window button</description>
-			<posx>710</posx>
-			<posy>15</posy>
-			<width>64</width>
-			<height>32</height>
+			<description>Close</description>
+			<posx>730</posx>
+			<posy>20</posy>
+			<width>20</width>
+			<height>20</height>
 			<label>-</label>
 			<font>-</font>
 			<onclick>PreviousMenu</onclick>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<texturefocus>special://skin/media/close.png</texturefocus>
+			<texturenofocus>close_nofocus.png</texturenofocus>
 			<onleft>10</onleft>
 			<onright>10</onright>
 			<onup>10</onup>
 			<ondown>10</ondown>
 			<visible>system.getbool(input.enablemouse)</visible>
-		</control>
+		</control>			
 		<control type="label" id="103">
-			<description>enable label</description>
+			<description>Description 1</description>
 			<posx>20</posx>
 			<posy>65</posy>
 			<width>760</width>
 			<height>30</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font12</font>
-			<textcolor>blue</textcolor>
-			<shadowcolor>black</shadowcolor>
+			<font>Font_Reg19</font>
+			<textcolor>white3</textcolor>
 		</control>
 		<control type="radiobutton" id ="110">
-			<description>Channel activated</description>
+			<description>Customized Channel Logos</description>
 			<posx>40</posx>
 			<posy>110</posy>
 			<width>720</width>
 			<height>40</height>
-			<font>font12_title</font>
-			<textcolor>grey2</textcolor>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
+			<font>Font_Reg19</font>
+			<radiowidth>70</radiowidth>
+			<radioheight>70</radioheight>
+			<radioposx>655</radioposx>
+			<radioposy>0</radioposy>
 			<align>left</align>
 			<aligny>center</aligny>
-			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+			<texture border="6">views/tripanel/listselect_fo.png</texture>
+			<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+			<texturenofocus>MenuItemNF.png</texturenofocus>
+			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			<pulseonselect>false</pulseonselect>
+			<textcolor>grey3</textcolor>
+			<focusedcolor>white3</focusedcolor>
+			<disabledcolor>grey3</disabledcolor>
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
 			<ondown>111</ondown>
-			<disabledcolor>grey3</disabledcolor>
 		</control>
 		<control type="group">
 			<posy>100</posy>
 			<control type="label" id="104">
-				<description>select way label</description>
+				<description>Description 2</description>
 				<posx>20</posx>
 				<posy>65</posy>
 				<width>760</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12</font>
-				<textcolor>blue</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<font>Font_Reg19</font>
+				<textcolor>white3</textcolor>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>110</posy>
+				<control type="button" id="111">
+					<description>Load from USB</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>110</onup>
+					<ondown>114</ondown>
+				</control>
+				<control type="button" id="114">
+					<description>Load via Internet</description>
+					<posx>0</posx>
+					<posy>45</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>111</onup>
+					<ondown>115</ondown>
+				</control>
+				<control type="button" id="115">
+					<description>Remove All</description>
+					<posx>0</posx>
+					<posy>90</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>114</onup>
+					<ondown>119</ondown>
+				</control>
 			</control>
 			<control type="image">
-				<description>load item image</description>
 				<posx>40</posx>
 				<posy>245</posy>
 				<width>720</width>
@@ -106,114 +159,57 @@
 				<texture border="5">button-nofocus.png</texture>
 			</control>
 			<control type="label" id="117">
-				<description>load item label</description>
+				<description>Number of Icons Loaded</description>
 				<posx>40</posx>
 				<posy>245</posy>
 				<width>720</width>
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12_title</font>
+				<font>Font_Reg19</font>
 				<textcolor>grey3</textcolor>
-			</control>
-			<control type="group" id="9000">
-				<posx>40</posx>
-				<posy>110</posy>
-				<control type="button" id="111">
-					<description>USB Button</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>720</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<align>center</align>
-					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
-					<onup>110</onup>
-					<ondown>114</ondown>
-					<textcolor>grey2</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
-				</control>
-				<control type="button" id="114">
-					<description>Internet Button</description>
-					<posx>0</posx>
-					<posy>45</posy>
-					<width>720</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<align>center</align>
-					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
-					<onup>111</onup>
-					<ondown>115</ondown>
-					<textcolor>grey2</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
-				</control>
-				<control type="button" id="115">
-					<description>Clear Button</description>
-					<posx>0</posx>
-					<posy>90</posy>
-					<width>720</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<align>center</align>
-					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
-					<onup>114</onup>
-					<ondown>119</ondown>
-					<textcolor>grey2</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
-				</control>
 			</control>
 		</control>
 		<control type="group" id="9001">
 			<posx>190</posx>
-			<posy>435</posy>
+			<posy>400</posy>
 			<control type="button" id="118">
-				<description>Ok Button</description>
-				<posx>0</posx>
+				<description>Ok</description>
+				<posx>30</posx>
 				<posy>0</posy>
-				<width>200</width>
-				<height>40</height>
-				<align>center</align>
-				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<label>$LOCALIZE[SCRIPT1022]</label>
-				<font>font12_title</font>
+				<font>Font_Reg19</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
 				<onright>119</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
 			</control>
 			<control type="button" id="119">
-				<description>Cancel Button</description>
+				<description>Cancel</description>
 				<posx>210</posx>
 				<posy>0</posy>
-				<width>200</width>
-				<height>40</height>
-				<align>center</align>
-				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<label>$LOCALIZE[SCRIPT1026]</label>
-				<font>font12_title</font>
+				<font>Font_Reg19</font>
 				<onup>115</onup>
 				<onleft>118</onleft>
 				<onright>118</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
 			</control>
 		</control>
 	</controls>

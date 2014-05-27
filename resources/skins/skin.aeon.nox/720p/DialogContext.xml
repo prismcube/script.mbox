@@ -10,7 +10,7 @@
 			<posy>200</posy>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image">
-				<description>Dialog Top Image</description>
+				<description>Top Panel</description>
 				<posx>0</posx>
 				<posy>-30</posy>
 				<width>365</width>
@@ -19,7 +19,7 @@
 				<texture>$VAR[ContextTopVar]</texture>
 			</control>
 			<control type="image" id="100">
-				<description>Dialog Middle Image</description>
+				<description>Middle Panel</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>365</width>
@@ -27,7 +27,7 @@
 				<texture>$VAR[ContextMiddleVar]</texture>
 			</control>
 			<control type="image" id="101">
-				<description>Dialog Bottom Image</description>
+				<description>Bottom Panel</description>
 				<posx>0</posx>
 				<width>365</width>
 				<height>25</height>
@@ -52,7 +52,7 @@
 						<texture border="5">button-nofocus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
-					<!-- is mark? -->					
+					<!-- Item Selection -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -62,11 +62,11 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>160</posx>
+						<posx>165</posx>
 						<posy>0</posy>
 						<width>330</width>
 						<height>35</height>					<!--Change Property ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>Font_Reg19</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
@@ -83,7 +83,7 @@
                         <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
-					<!-- is mark? -->
+					<!-- Item Selection -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -93,11 +93,11 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>160</posx>
+						<posx>165</posx>
 						<posy>0</posy>
 						<width>330</width>
 						<height>35</height>					<!--Change Property ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>Font_Reg19</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
