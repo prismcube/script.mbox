@@ -252,7 +252,7 @@ class GlobalEvent( object ) :
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
 				self.mDataCache.SetStanbyClosing( True )
-				thread = threading.Timer( 1, self.StanByClose )
+				thread = threading.Timer( 1, self.StandByClose )
 				thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
@@ -763,14 +763,16 @@ class GlobalEvent( object ) :
 		return viewResult
 
 
-	def StanByClose( self ) :
+	def StandByClose( self ) :
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
 
 		curreuntWindowId = self.GetCurrentWindowIdForStanByClose( )
 		previousWindowId = 1234
 
-		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 :
+		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 or \
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True or \
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
 			if curreuntWindowId != previousWindowId :
 				xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 				if xbmcgui.getCurrentWindowDialogId( ) == 9999 :
@@ -804,7 +806,7 @@ class GlobalEvent( object ) :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or  \
 					WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					LOG_TRACE('LAEL98 TEST')				
-					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).UpdateLinkageService( )
 
 
 	def CheckTunablePIP( self, aEvent = None, aForce = False ) :
