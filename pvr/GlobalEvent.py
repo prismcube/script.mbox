@@ -770,9 +770,10 @@ class GlobalEvent( object ) :
 		curreuntWindowId = self.GetCurrentWindowIdForStanByClose( )
 		previousWindowId = 1234
 
-		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 or \
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True or \
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 \
+			or WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True \
+			or WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+
 			if curreuntWindowId != previousWindowId :
 				xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 				if xbmcgui.getCurrentWindowDialogId( ) == 9999 :
