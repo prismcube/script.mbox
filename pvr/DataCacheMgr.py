@@ -3527,7 +3527,7 @@ class DataCacheMgr( object ) :
 
 	def SyncLanguagePropFromXBMC( self, aLangauge ) :
 		currentLanguageProp = ElisPropertyEnum( 'Language', self.mCommander ).GetProp( )
-		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp :
+		if GetXBMCLanguageToPropLanguage( aLangauge ) != currentLanguageProp or GetXBMCLanguageToPropLanguage( aLangauge ) == ElisEnum.E_ENGLISH :
 			import pvr.gui.WindowMgr as WinMgr
 			self.SetChannelReloadStatus( True )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
