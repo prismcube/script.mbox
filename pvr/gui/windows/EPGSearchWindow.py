@@ -117,7 +117,14 @@ class EPGSearchWindow( BaseWindow ) :
 				self.UpdateEPGInfomation( )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			selectedEPG = self.GetSelectedEPG( )		
+			isAvail, isConfiguration = self.HasDefaultRecordPath( )
+			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+				if isConfiguration :
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+				return
+
+			selectedEPG = self.GetSelectedEPG( )
 			if selectedEPG  :
 				timer = self.GetTimerByEPG( selectedEPG )
 				if timer :

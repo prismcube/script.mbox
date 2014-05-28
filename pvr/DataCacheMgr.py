@@ -2357,6 +2357,7 @@ class DataCacheMgr( object ) :
 		count = 0
 		failCount = 0
 		failItem = ''
+		defVolume = None
 		for netVolume in volumeList :
 			count += 1
 			cmd = netVolume.mMountCmd
@@ -2374,6 +2375,31 @@ class DataCacheMgr( object ) :
 		if failCount > 0 :
 			lblLine = '%s\n%s'% ( MR_LANG( 'Record path failure' ), failItem[1:] )
 			LOG_TRACE( '[DataCache]%s'% lblLine )
+
+		#1. reload defVolume
+		volumeList = self.Record_GetNetworkVolume( True )
+		if volumeList and len( volumeList ) > 0 :
+			for netVolume in volumeList :
+				if netVolume.mIsDefaultSet :
+					defVolume = netVolume
+					break
+
+		#2. nas only one? must default
+		if not self.HDD_GetMountPath( ) and self.mNetVolumeList and len( self.mNetVolumeList ) == 1 :
+			defVolume = self.mNetVolumeList[0]
+			defVolume.mIsDefaultSet = 1
+
+		#3. use not able? change default hdd
+		if defVolume and defVolume.mIsDefaultSet :
+			defProperty = 1
+			if not defVolume.mOnline or defVolume.mReadOnly :
+				defProperty = 0
+				defVolume.mIsDefaultSet = 0
+				LOG_TRACE( '[DataCache]changed reset path : HDD' )
+
+			self.Record_SetDefaultVolume( defVolume )
+			ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
+			self.Record_GetNetworkVolume( )
 
 		return failCount, lblLine
 

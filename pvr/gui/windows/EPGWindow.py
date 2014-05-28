@@ -1630,6 +1630,13 @@ class EPGWindow( BaseWindow ) :
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
+		isAvail, isConfiguration = self.HasDefaultRecordPath( )
+		if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+			if isConfiguration :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			return
+
 		if not HasAvailableRecordingHDD( ) :
 			return
 
@@ -1829,6 +1836,13 @@ class EPGWindow( BaseWindow ) :
 	 			dialog.doModal( )
 				return
 		"""
+
+		isAvail, isConfiguration = self.HasDefaultRecordPath( )
+		if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+			if isConfiguration :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			return
 
 		if not HasAvailableRecordingHDD( ) :
 			return

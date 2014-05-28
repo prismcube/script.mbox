@@ -433,8 +433,17 @@ class NullWindow( BaseWindow ) :
 					self.mDataCache.Player_Stop( )
 
 				self.CloseSubTitle( )
+				isAvail, isConfiguration = self.HasDefaultRecordPath( )
+				self.CheckSubTitle( )
+				if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+					if isConfiguration :
+						self.Close( )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+					return
+
 				if RECORD_WIDTHOUT_ASKING == True :
 					if self.GetBlinkingProperty( ) != 'None' :
+						self.CheckSubTitle( )
 						return
 					self.StartRecordingWithoutAsking( )				
 				else :
@@ -764,6 +773,7 @@ class NullWindow( BaseWindow ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+
 		if not HasAvailableRecordingHDD( ) :
 			return
 

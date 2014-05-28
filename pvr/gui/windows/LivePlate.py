@@ -1166,6 +1166,13 @@ class LivePlate( LivePlateWindow ) :
 				self.RestartAutomaticHide( )
 				return
 
+			isAvail, isConfiguration = self.HasDefaultRecordPath( )
+			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+				if isConfiguration :
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+				return
+
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mDataCache.Player_Stop( )
@@ -1213,6 +1220,7 @@ class LivePlate( LivePlateWindow ) :
 	def StartRecordingWithoutAsking( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+
 		if not HasAvailableRecordingHDD( ) :
 			return
 

@@ -411,6 +411,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				isAvail, isConfiguration = self.HasDefaultRecordPath( False )
+				if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please check your recording path setting' ) )
+					dialog.doModal( )
+					return
+
 				if self.mChannelList or len( self.mChannelList ) > 0 :
 					self.ShowRecordingStartDialog( )
 

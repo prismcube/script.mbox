@@ -590,6 +590,22 @@ class Configure( SettingWindow ) :
 					ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defProperty )
 					#LOG_TRACE( '[Configure] defProperty[%s]'% defProperty )
 
+				# 2. default only by one
+				if not self.mHDDStatus and self.mNetVolumeList and len( self.mNetVolumeList ) == 1 :
+					defVolume = self.mNetVolumeList[0]
+					if defVolume.mOnline and ( not defVolume.mReadOnly ) :
+						self.mSelectVolume = 0
+						defVolume.mIsDefaultSet = 1
+						self.mDataCache.Record_SetDefaultVolume( defVolume )
+						ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 1 )
+
+						lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( defVolume )
+						self.SetControlLabel2String( E_Input02, lblSelect )
+						self.setProperty( 'NetVolumeConnect', lblOnline )
+						self.setProperty( 'NetVolumeUse', lblPercent )
+						self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
+						ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
+
 				enableControlIds = [E_Input02, E_Input03]
 				self.SetEnableControls( enableControlIds, selectEnable )
 
@@ -841,6 +857,7 @@ class Configure( SettingWindow ) :
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
 		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
+		defPath_old = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
 		volumeCount = len( volumeList )
 		defVolume = None
 		count = 0
@@ -860,8 +877,6 @@ class Configure( SettingWindow ) :
 			cmd = netVolume.mMountCmd
 			lblRet = MR_LANG( 'OK' )
 			lblLabel = '[%s/%s]%s'% ( count, volumeCount, os.path.basename( netVolume.mMountPath ) )
-			if netVolume.mIsDefaultSet :
-				defVolume = netVolume
 			self.SetControlLabel2String( E_Input03, lblLabel )
 
 			failCount_, failItem_ = RefreshMountToSMB( netVolume )
@@ -876,6 +891,25 @@ class Configure( SettingWindow ) :
 			os.system( 'sync' )
 			time.sleep( 1 )
 
+		self.mDataCache.Record_RefreshNetworkVolume( )
+		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
+
+		#1. reload defVolume
+		if self.mNetVolumeList and len( self.mNetVolumeList ) > 0 :
+			for netVolume in self.mNetVolumeList :
+				if netVolume.mIsDefaultSet :
+					defVolume = netVolume
+					break
+
+		#use not able? change default hdd
+		if defVolume and defVolume.mIsDefaultSet :
+			if not defVolume.mOnline or defVolume.mReadOnly :
+				defVolume.mIsDefaultSet = 0
+				self.mDataCache.Record_SetDefaultVolume( defVolume )
+				ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( 0 )
+				defVolume = None
+				self.mSelectVolume = 99
+
 		os.system( 'chmod 755 %s'% E_DEFAULT_NETWORK_VOLUME_SHELL )
 		os.system( 'sync' )
 		xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
@@ -889,12 +923,17 @@ class Configure( SettingWindow ) :
 		self.getControl( E_PROGRESS_NETVOLUME ).setPercent( useInfo )
 		#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
 		ResetPositionVolumeInfo( self, lblPercent, 815, E_GROUP_ID_SHOW_INFO, E_LABEL_ID_USE_INFO )
-		self.mDataCache.Record_RefreshNetworkVolume( )
-		self.mNetVolumeList = self.mDataCache.Record_GetNetworkVolume( )
 
 		if failCount :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Fail' ), failItem[1:] )
+			dialog.doModal( )
+
+		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		if defPath_old != defPath_cur :
+			lblLine = MR_LANG( 'Recordings will be temporarily stored on your hard drive' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Inaccessible folder' ), lblLine )
 			dialog.doModal( )
 
 
@@ -990,7 +1029,7 @@ class Configure( SettingWindow ) :
 								defaultPath = os.path.basename( netVolume.mMountPath )
 								defVolume = netVolume
 								self.mSelectVolume = idxCount
-								break
+							break
 						idxCount += 1
 
 				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )

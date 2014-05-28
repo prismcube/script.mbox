@@ -542,6 +542,63 @@ class BaseWindow( BaseObjectWindow ) :
 				pipDlg.doModal( )
 
 
+	def HasDefaultRecordPath( self, aRequestAsk = True ) :
+		from pvr.GuiHelper import CheckHdd
+		import pvr.gui.DialogMgr as DiaMgr
+		from elisinterface.ElisProperty import ElisPropertyEnum
+
+		isAvail = E_DEFAULT_RECORD_PATH_NOT_AVAILABLE
+		hddStatus = CheckHdd( )
+		defPath = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		LOG_TRACE( 'Record Default Path Change enum[%s] hdd[%s]'% ( defPath, hddStatus ) )
+
+		if defPath == 'Internal' :
+			if hddStatus :
+				isAvail = E_DEFAULT_RECORD_PATH_RESERVED
+			else :
+				isAvail = E_DEFAULT_RECORD_PATH_NOT_AVAILABLE
+
+		elif defPath == 'Network' :
+			netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
+			if netVolumeList and len( netVolumeList ) > 0 :
+				isDefaultSet = False
+				for netVolume in netVolumeList :
+					if netVolume.mIsDefaultSet :
+						if netVolume.mOnline and ( not netVolume.mReadOnly ) :
+							isAvail = E_DEFAULT_RECORD_PATH_RESERVED
+						else :
+							isAvail = E_DEFAULT_RECORD_PATH_NOT_SELECT
+
+						isDefaultSet = True
+						break
+
+				if not isDefaultSet :
+					isAvail = E_DEFAULT_RECORD_PATH_NOT_SELECT
+
+			else :
+				isAvail = E_DEFAULT_RECORD_PATH_NOT_AVAILABLE
+
+			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED and hddStatus :
+				isAvail = E_DEFAULT_RECORD_PATH_RESERVED
+
+		else :
+			isAvail = E_DEFAULT_RECORD_PATH_NOT_SELECT
+
+		isConfiguration = False
+		if aRequestAsk :
+			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
+				lblTitle = MR_LANG( 'Error' )
+				lblLine  = '%s\n%s'% ( MR_LANG( 'Please check your recording path setting' ), MR_LANG( 'Do you want set path now ?' ) )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( lblTitle, lblLine )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					isConfiguration = True
+
+		LOG_TRACE( 'recordPathAvail[%s] gotoConfig[%s]'% ( isAvail, isConfiguration ) )
+		return isAvail, isConfiguration
+
+
 	def SetSingleWindowPosition( self, aWindowId ) :
 		if E_SUPPORT_SINGLE_WINDOW_MODE :
 			import pvr.gui.WindowMgr as WinMgr

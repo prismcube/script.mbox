@@ -500,6 +500,10 @@ E_DEFAULT_PATH_SMB_POSITION = '/media/smb'
 E_DEFAULT_PATH_NFS_POSITION = '/media/nfs'
 E_DEFAULT_PATH_FTP_POSITION = '/media/ftp'
 E_DEFAULT_PATH_USB_POSITION = '/media/sd'
+E_DEFAULT_RECORD_PATH_NOT_AVAILABLE = -1 #do not recording
+E_DEFAULT_RECORD_PATH_NOT_SELECT    = -2 #avail recording : do not selected
+E_DEFAULT_RECORD_PATH_RESERVED      = 1  #avail recording
+
 
 #patch v1.1
 E_V1_1_UPDATE_NOTIFY        = False

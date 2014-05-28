@@ -543,10 +543,10 @@ class DialogMountManager( SettingDialog ) :
 					self.mDefaultPathVolume = netVolume
 
 			if not self.mHDDStatus and ( not self.mDefaultPathVolume ) :
-				defaultPath = E_DEFAULT_PATH_NETWORK_VOLUME
-				self.mDefaultPathVolume = self.mNetVolumeList[0]
+				self.mDefaultPathVolume = deepcopy( self.mNetVolumeList[0] )
 				self.mDefaultPathVolume.mIsDefaultSet = 1
 				self.mDataCache.Record_SetDefaultVolume( self.mDefaultPathVolume )
+				ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( E_DEFAULT_PATH_NETWORK_VOLUME )
 
 		self.mMode = E_NETWORK_VOLUME_SELECT
 		#ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
