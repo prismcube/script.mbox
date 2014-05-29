@@ -2720,7 +2720,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				newOffsetTopIndex = GetOffsetPosition( self.mCtrlListCHList )
-				LOG_TRACE( '----------------------------topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
+				#LOG_TRACE( '[ChannelList] topIdx old[%s] now[%s]'% ( self.mOffsetTopIndex, newOffsetTopIndex ) )
 				if self.mNavOffsetTopIndex == newOffsetTopIndex :
 					if self.mNavEpg and self.mNavChannel :
 						channelName = '%s'% self.mNavChannel.mName
@@ -2732,8 +2732,8 @@ class ChannelListWindow( BaseWindow ) :
 						if E_V1_2_APPLY_PRESENTATION_NUMBER :
 							iChNumber = self.mDataCache.CheckPresentationNumber( self.mNavChannel, self.mUserMode )
 
-						chIndex = iChNumber - 1
-						if chIndex < len( self.mChannelList ) :
+						chIndex = self.GetChannelByIDs( self.mNavChannel.mNumber, self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid, True )
+						if chIndex > -1 and chIndex < len( self.mChannelList ) :
 							hdLabel = ''
 							if self.mNavChannel.mIsHD :
 								hdLabel = E_TAG_COLOR_HD_LABEL
@@ -2751,7 +2751,7 @@ class ChannelListWindow( BaseWindow ) :
 							else :
 								listItem.setProperty( 'iPos', E_TAG_FALSE )
 
-						LOG_TRACE( '[ChannelList] update epg, more info mode, navChannel[%s %s]'% ( iChNumber, channelName ) )
+						#LOG_TRACE( '[ChannelList] update epg, more info mode, navChannel[%s %s]'% ( iChNumber, channelName ) )
 
 				else :
 					self.LoadByCurrentEPG( )
