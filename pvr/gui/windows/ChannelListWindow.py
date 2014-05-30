@@ -414,7 +414,7 @@ class ChannelListWindow( BaseWindow ) :
 				isAvail, isConfiguration = self.HasDefaultRecordPath( False )
 				if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please check your recording path setting' ) )
+					dialog.SetDialogProperty( MR_LANG( 'No recording path' ), MR_LANG( 'Please check your recording path setting' ) )
 					dialog.doModal( )
 					return
 

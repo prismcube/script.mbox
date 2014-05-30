@@ -587,8 +587,8 @@ class BaseWindow( BaseObjectWindow ) :
 		isConfiguration = False
 		if aRequestAsk :
 			if isAvail != E_DEFAULT_RECORD_PATH_RESERVED :
-				lblTitle = MR_LANG( 'Error' )
-				lblLine  = '%s\n%s'% ( MR_LANG( 'Please check your recording path setting' ), MR_LANG( 'Do you want set path now ?' ) )
+				lblTitle = MR_LANG( 'No recording path' )
+				lblLine  = MR_LANG( 'Do you want to set the recording path now?' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( lblTitle, lblLine )
 				dialog.doModal( )
