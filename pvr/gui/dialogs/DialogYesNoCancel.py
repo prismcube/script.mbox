@@ -24,7 +24,7 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
 		self.mClosedFlag = False
-		#self.IsStandByClose( )
+		self.IsStandByClose( )
 
 		if self.mAutoCloseFlag :
 			thread = threading.Timer( 0.3, self.AutoClose )
