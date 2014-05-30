@@ -1521,4 +1521,8 @@
 	<string id="3981">Go to the channel search setup page</string>
 	<string id="3982">No access permission</string>
 	<string id="3983">Try the following path instead</string>
+	<string id="3984">No recording path</string>
+	<string id="3985">Please check your recording path setting</string>
+	<string id="3986">Recordings will be temporarily stored on your hard drive</string>
+	<string id="3987">Do you want to set the recording path now?</string>
 </strings>
