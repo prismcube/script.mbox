@@ -47,11 +47,10 @@
 		<!-- E_SettingWindowBackground -->
 		<control type="group">
 			<visible>substring(Window.Property(SettingBackground),True) + !substring(Window.Property(CurrentWindow),3500000) + !substring(Window.Property(CurrentWindow),1500000) + !substring(Window.Property(CurrentWindow),4900000)</visible>
-			<posx>80</posx>
-			<posy>110</posy>
 			<include>DefaultSettingMainWindow</include>
 			<control type="group">
-				<posy>10</posy>
+				<posx>78</posx>
+				<posy>120</posy>
 				<include>DefaultFirstTimeInstallationButton</include>
 				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
@@ -651,7 +650,7 @@
 					<width>1155</width>
 					<font>Font_Reg15_Caps</font>
 					<urlset>1</urlset>
-					<textcolor>blue</textcolor>
+					<textcolor>FF6db9e5</textcolor>
 					<titlecolor>blue</titlecolor>
 					<headlinecolor>white</headlinecolor>
 					<visible>substring(Window.Property(RssShow),true)</visible>
@@ -761,13 +760,14 @@
 			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
-			<!-- Content Panel Image -->
+			<!-- Floor and Content Panel Image -->
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="group">
 					<include>DefaultVisibleFadeEffect</include>
-					<visible>true</visible>
+					<include>DefaultSettingFloor</include>
 					<include>DefaultSettingBigContentPanel</include>
+					<include>DefaultSettingSmallContentPanel</include>
 				</control>
 			</control>
 
@@ -777,7 +777,7 @@
 				<posy>53</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300021">
-					<posx>106</posx>
+					<posx>80</posx>
 					<posy>1</posy>
 					<width>400</width>
 					<height>28</height>
@@ -807,7 +807,7 @@
 
 			<!-- Channels -->
 			<control type="group" id="1300049">
-				<posx>75</posx>
+				<posx>47</posx>
 				<posy>67</posy>
 				<include>DefaultWindowFade</include>
 				<control type="list" id="1300050">
@@ -833,21 +833,12 @@
 							<height>42</height>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
-						<!-- Lock Icon -->
-						<control type="image">
-							<posx>4</posx>
-							<posy>8</posy>
-							<width>39</width>
-							<height>27</height>
-							<texture>OverlayLocked.png</texture>
-							<visible>substring(ListItem.Property(iLock),true)</visible>
-						</control>
 						<!-- Recording Icon -->
 						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
+							<posx>5</posx>
+							<posy>9</posy>
+							<width>25</width>
+							<height>25</height>
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
@@ -872,9 +863,18 @@
 						<control type="group">
 							<posx>618</posx>
 							<posy>8</posy>
+							<!-- Lock Icon -->
+							<control type="image">
+								<posx>-4</posx>
+								<posy>-4</posy>
+								<width>39</width>
+								<height>27</height>
+								<texture>OverlayLocked.png</texture>
+								<visible>substring(ListItem.Property(iLock),true)</visible>
+							</control>
 							<!-- Skip Icon -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>27</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -883,7 +883,7 @@
 							</control>
 							<!-- HD Icon -->
 							<control type="image">
-								<posx>26</posx>
+								<posx>56</posx>
 								<posy>0</posy>
 								<width>24</width>
 								<height>18</height>
@@ -892,7 +892,7 @@
 							</control>
 							<!-- CAS Icon -->
 							<control type="image">
-								<posx>52</posx>
+								<posx>82</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -901,7 +901,7 @@
 							</control>
 							<!-- Tuner1 Icon -->
 							<control type="image">
-								<posx>80</posx>
+								<posx>110</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -910,7 +910,7 @@
 							</control>
 							<!-- Tuner2 Icon -->
 							<control type="image">
-								<posx>80</posx>
+								<posx>110</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -919,7 +919,7 @@
 							</control>
 							<!-- Tuner1 & Tuner2 Icon -->
 							<control type="image">
-								<posx>80</posx>
+								<posx>110</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -928,7 +928,7 @@
 							</control>
 							<!-- EPG Progress Bar -->
 							<control type="progress">
-								<posx>26</posx>
+								<posx>56</posx>
 								<posy>20</posy>
 								<width>80</width>
 								<height>9</height>
@@ -946,7 +946,7 @@
 								<width>60</width>
 								<height>40</height>
 								<font>Font_Reg19</font>
-								<textcolor>grey3</textcolor>
+								<textcolor>grey2</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -958,7 +958,7 @@
 								<width>550</width>
 								<height>40</height>
 								<font>Font_Reg19</font>
-								<textcolor>grey3</textcolor>
+								<textcolor>grey2</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -971,7 +971,7 @@
 								<width>540</width>
 								<height>40</height>
 								<font>Font_Reg19</font>
-								<textcolor>grey3</textcolor>
+								<textcolor>grey2</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -984,7 +984,7 @@
 								<width>100</width>
 								<height>40</height>
 								<font>Font_Reg19</font>
-								<textcolor>grey3</textcolor>
+								<textcolor>grey2</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Property(iHDLabel)]</label>
@@ -995,7 +995,7 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>730</width>
+							<width>776</width>
 							<height>42</height>
 							<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -1005,28 +1005,19 @@
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>730</width>
+							<width>776</width>
 							<height>42</height>
 							<visible>substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isMove),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
 							<texturenofocus>-</texturenofocus>
 							<colordiffuse>FFB20000</colordiffuse>
 						</control>
-						<!-- Lock Icon -->
-						<control type="image">
-							<posx>4</posx>
-							<posy>8</posy>
-							<width>39</width>
-							<height>27</height>
-							<texture>OverlayLocked.png</texture>
-							<visible>substring(ListItem.Property(iLock),true)</visible>
-						</control>
 						<!-- Recording Icon -->
 						<control type="image">
-							<posx>0</posx>
-							<posy>5</posy>
-							<width>30</width>
-							<height>30</height>
+							<posx>5</posx>
+							<posy>9</posy>
+							<width>25</width>
+							<height>25</height>
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
@@ -1053,10 +1044,19 @@
 							<control type="group">
 								<posx>618</posx>
 								<posy>8</posy>
+								<!-- Lock Icon -->
+								<control type="image">
+									<posx>-4</posx>
+									<posy>-4</posy>
+									<width>39</width>
+									<height>27</height>
+									<texture>OverlayLocked.png</texture>
+									<visible>substring(ListItem.Property(iLock),true)</visible>
+								</control>
 								<!-- Skip Icon -->
 								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
+									<posx>27</posx>
+									<posy></posy>
 									<width>26</width>
 									<height>18</height>
 									<texture>DI_Skip1g.png</texture>
@@ -1064,7 +1064,7 @@
 								</control>
 								<!-- HD Icon -->
 								<control type="image">
-									<posx>26</posx>
+									<posx>56</posx>
 									<posy>0</posy>
 									<width>24</width>
 									<height>18</height>
@@ -1073,7 +1073,7 @@
 								</control>
 								<!-- CAS Icon -->
 								<control type="image">
-									<posx>52</posx>
+									<posx>82</posx>
 									<posy>0</posy>
 									<width>26</width>
 									<height>18</height>
@@ -1082,7 +1082,7 @@
 								</control>
 								<!-- Tuner1 Icon -->
 								<control type="image">
-									<posx>80</posx>
+									<posx>110</posx>
 									<posy>0</posy>
 									<width>26</width>
 									<height>18</height>
@@ -1091,7 +1091,7 @@
 								</control>
 								<!-- Tuner2 Icon -->
 								<control type="image">
-									<posx>80</posx>
+									<posx>110</posx>
 									<posy>0</posy>
 									<width>26</width>
 									<height>18</height>
@@ -1100,7 +1100,7 @@
 								</control>
 								<!-- Tuner1 & Tuner2 Icon -->
 								<control type="image">
-									<posx>80</posx>
+									<posx>110</posx>
 									<posy>0</posy>
 									<width>26</width>
 									<height>18</height>
@@ -1109,7 +1109,7 @@
 								</control>
 								<!-- EPG Progress Bar -->
 								<control type="progress">
-									<posx>26</posx>
+									<posx>56</posx>
 									<posy>20</posy>
 									<width>80</width>
 									<height>9</height>
@@ -1127,7 +1127,7 @@
 									<width>60</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>white</textcolor>
+									<textcolor>white3</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1140,7 +1140,7 @@
 									<width>550</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>white</textcolor>
+									<textcolor>white3</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1154,7 +1154,7 @@
 									<width>540</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>white</textcolor>
+									<textcolor>white3</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1168,7 +1168,7 @@
 									<width>100</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>grey3</textcolor>
+									<textcolor>white3</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Property(iHDLabel)]</label>
@@ -1254,7 +1254,7 @@
 									<width>60</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>grey3</textcolor>
+									<textcolor>grey2</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -1267,7 +1267,7 @@
 									<width>550</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>grey3</textcolor>
+									<textcolor>grey2</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -1282,7 +1282,7 @@
 									<width>540</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>grey3</textcolor>
+									<textcolor>grey2</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label2]</label>
@@ -1295,7 +1295,7 @@
 									<width>100</width>
 									<height>40</height>
 									<font>Font_Reg19</font>
-									<textcolor>grey3</textcolor>
+									<textcolor>grey2</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Property(iHDLabel)]</label>
@@ -1308,23 +1308,23 @@
 
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="1300061">
+				<include>DefaultWindowFade</include>
 				<posx>812</posx>
 				<posy>105</posy>
 				<width>25</width>
 				<height>541</height>
-				<include>DefaultWindowFade</include>
-	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
 				<onleft>1300049</onleft>
 				<onright>1300101</onright>
 				<ondown>1300061</ondown>
 				<onup>1300061</onup>
-				<showonepage>false</showonepage>
-				<orientation>vertical</orientation>
 			</control>
 
 			<!-- PIG & Info -->
@@ -1345,7 +1345,7 @@
 						<posy>207</posy>
 						<width>350</width>
 						<height>20</height>
-						<font>Font_Reg19</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey</textcolor>
 						<label>TV - zdf-neo HD$INFO[Control.GetLabel]</label>
 						<visible>substring(Window.Property(Signal),True)</visible>
@@ -1355,69 +1355,70 @@
 				<!-- Short EPG Info Mode -->
 				<control type="group">
 					<posx>0</posx>
-					<posy>200</posy>
+					<posy>30</posy>
+					<width>350</width>
 					<visible>!substring(Window.Property(ShowExtendInfo),True)</visible>
-					<control type="group">
-						<control type="label" id="1300305">
-							<posx>0</posx>
-							<posy>15</posy>
-							<font>Font_Reg19</font>
-							<textcolor>grey</textcolor>
-							<label></label>
-						</control>
-						<control type="progress" id="1300306">
-							<posx>200</posx>
-							<posy>10</posy>
-							<width>150</width>
-							<height>15</height>
-							<color>grey</color>
-							<border>0</border>
-						</control>
-					</control>
-					<!-- EPG Info -->
-					<control type="label" id="1300304">
-						<posx>0</posx>
-						<posy>50</posy>
-						<width>350</width>
-						<height>15</height>
-						<font>Font_Reg19</font>
-						<textcolor>grey</textcolor>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
 					<!-- Satellite Info -->
 					<control type="label" id="1300307">
-						<posx>0</posx>
-						<posy>110</posy>
-						<font>Font_Reg19</font>
-						<textcolor>grey</textcolor>
+						<posx>10</posx>
+						<posy>200</posy>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<!-- Transponder Info -->
 					<control type="label" id="1300308">
-						<posx>0</posx>
-						<posy>130</posy>
-						<font>Font_Reg19</font>
-						<textcolor>grey</textcolor>
+						<posx>10</posx>
+						<posy>225</posy>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<!-- EPG Info -->
+					<control type="label" id="1300304">
+						<posx>10</posx>
+						<posy>250</posy>
+						<width>340</width>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+					<!-- EPG Time & Progress Bar -->
+					<control type="group">
+						<control type="label" id="1300305">
+							<posx>10</posx>
+							<posy>275</posy>
+							<font>Font_Reg17</font>
+							<textcolor>grey2</textcolor>
+							<label></label>
+						</control>
+						<control type="progress" id="1300306">
+							<posx>190</posx>
+							<posy>270</posy>
+							<width>150</width>
+							<height>15</height>
+							<color>grey2</color>
+							<border>0</border>
+						</control>
 					</control>
 					<!-- Lock Icon & Label -->
 					<control type="group" id="1300309">
 						<posx>0</posx>
-						<posy>80</posy>
+						<posy>300</posy>
 						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>-2</posx>
-							<posy>72</posy>
-							<width>40</width>
-							<height>30</height>
+							<posy>-10</posy>
+							<width>35</width>
+							<height>25</height>
 							<texture>OverlayLocked.png</texture>
 							<description>lock</description>
 						</control>
 						<control type="label">
 							<posx>30</posx>
-							<posy>75</posy>
-							<font>Font_Reg19</font>
-							<textcolor>grey</textcolor>
+							<posy>0</posy>
+							<font>Font_Reg17</font>
+							<textcolor>grey2</textcolor>
 							<label>SCRIPT1014</label>
 						</control>
 					</control>
@@ -1426,33 +1427,33 @@
 				<!-- More EPG Info Mode -->
 				<control type="group">
 					<posx>0</posx>
-					<posy>5</posy>
-					<width>390</width>
+					<posy>30</posy>
+					<width>350</width>
 					<visible>substring(Window.Property(ShowExtendInfo),True)</visible>
 					<!-- Satellite Info -->
 					<control type="label">
-						<posx>0</posx>
+						<posx>10</posx>
 						<posy>200</posy>
-						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
 						<label>$INFO[Control.GetLabel(1300307)]</label>
 					</control>
 					<!-- Transponder Info -->
 					<control type="label">
-						<posx>0</posx>
+						<posx>10</posx>
 						<posy>225</posy>
-						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
 						<label>$INFO[Control.GetLabel(1300308)]</label>
 					</control>
 					<!-- Lock Icon & Label -->
 					<control type="group">
-						<posx>250</posx>
-						<posy>270</posy>
+						<posx>0</posx>
+						<posy>275</posy>
 						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>-2</posx>
-							<posy>0</posy>
+							<posy>-10</posy>
 							<width>35</width>
 							<height>25</height>
 							<texture>OverlayLocked.png</texture>
@@ -1461,8 +1462,8 @@
 						<control type="label">
 							<posx>30</posx>
 							<posy>0</posy>
-							<font>Font_Reg19</font>
-							<textcolor>grey3</textcolor>
+							<font>Font_Reg17</font>
+							<textcolor>grey2</textcolor>
 							<label>SCRIPT1014</label>
 						</control>
 					</control>
@@ -1472,27 +1473,31 @@
 						<include>DefaultWindowFade</include>
 						<!-- EPG Start & End Time -->
 						<control type="label">
-							<posx>0</posx>
+							<posx>10</posx>
 							<posy>10</posy>
-							<font>Font_Reg19</font>
+							<width>100</width>
+							<font>Font_Reg17</font>
 							<textcolor>grey2</textcolor>
+							<align>left</align>
 							<label>$INFO[Control.getLabel(1300305)]</label>
 						</control>
 						<!-- EPG Duration -->
 						<control type="label">
-							<posx>0</posx>
-							<posy>35</posy>
-							<font>Font_Reg19</font>
+							<posx>342</posx>
+							<posy>10</posy>
+							<width>100</width>
+							<font>Font_Reg17</font>
 							<textcolor>grey2</textcolor>
+							<align>right</align>
 							<label>$INFO[Window.Property(EPGDuration)]</label>
 						</control>
 						<!-- EPG Summary -->
 						<control type="textbox">
-							<posx>0</posx>
-							<posy>55</posy>
-							<width>352</width>
-						 	<height>164</height>
-							<font>Font_Reg17</font>
+							<posx>10</posx>
+							<posy>50</posy>
+							<width>332</width>
+						 	<height>157</height>
+							<font>Font_Reg14</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Window.Property(EPGDescription)]</label>
 							<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -1502,8 +1507,8 @@
 
 				<!-- AV Info -->
 				<control type="group">
-					<posx>-5</posx>
-					<posy>472</posy>
+					<posx>10</posx>
+					<posy>512</posy>
 					<control type="grouplist">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -1609,15 +1614,15 @@
 
 				<!-- CAS Icons -->
 				<control type="group">
-					<posx>0</posx>
-					<posy>500</posy>
+					<posx>10</posx>
+					<posy>480</posy>
 					<include>CASInfo</include>
 				</control>
 			</control>
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>80</posx>
+				<posx>60</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -1672,15 +1677,15 @@
 
 			<!--  Item & Page Number -->
 			<control type="group">
-				<posx>80r</posx>
-				<posy>55r</posy>
+				<posx>0</posx>
+				<posy>0</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300401">
-					<posx>180r</posx>
+					<posx>180</posx>
 					<width>100</width>
 					<height>20</height>
 					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -1688,23 +1693,23 @@
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<width>340</width>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
-					<width>340</width>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
@@ -2223,6 +2228,547 @@
 			<!-- Radio Background Image -->
 			<include>DefaultRadioBackground</include>
 
+			<!-- TV Background Image -->
+			<control type="group">
+				<include>Animation_OpenClose_Furniture</include>
+				<control type="image">
+					<width>1280</width>
+					<height>260</height>
+					<posy>477</posy>
+					<texture>views/showcase_floor.png</texture>
+					<colordiffuse>$VAR[ExtendedColorDiffuseVar]</colordiffuse>
+				</control>
+				<control type="image">
+					<width>1280</width>
+					<height>83</height>
+					<posy>650</posy>
+					<texture>views/panel_spot.png</texture>
+					<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				</control>
+			</control>
+			<control type="group">
+				<posy>-15</posy>
+				<control type="image">
+					<posx>75</posx>
+					<posy>503</posy>
+					<width>1125</width>
+					<height>230</height>
+					<texture>wall/wall_bg.png</texture>
+					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+				</control>
+				<control type="image">
+					<posx>75</posx>
+					<posy>503</posy>
+					<width>1125</width>
+					<height>230</height>
+					<texture>wall/wall_bg_reflection.png</texture>
+				</control>
+			</control>
+
+			<!-- Channel Info -->
+			<control type="group" id="1400600">
+				<posx>50</posx>
+				<posy>400</posy>
+				<!-- PVR Playback -->
+				<control type="label">
+					<posx>-40</posx>
+					<posy>205</posy>
+					<width>300</width>
+					<height>50</height>
+					<align>center</align>
+					<font>Font_Reg24</font>
+					<textcolor>red</textcolor>
+					<label>SCRIPT1123</label>
+					<visible>substring(Window.Property(InfoPlateName),true)</visible>
+				</control>
+
+				<!-- Channel Logo Background Image -->
+				<control type="image">
+					<posx>44</posx>
+					<posy>101</posy>
+					<width>179</width>
+					<height>179</height>
+					<texture>DefaultTVShows_white.png</texture>
+					<colordiffuse>FFEFEFEF</colordiffuse>
+					<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
+				</control>
+
+				<!-- Channel Logo Icon Image -->
+				<control type="image">
+					<posx>73</posx>
+					<posy>152</posy>
+					<width>120</width>
+					<height>75</height>
+					<texture>$INFO[Window.Property(iChannelLogo)]</texture>
+					<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+					<colordiffuse>FFEFEFEF</colordiffuse>
+				</control>
+
+				<!-- Channel Number -->
+				<control type="label" id="1400601">
+					<posx>200</posx>
+					<posy>95</posy>
+					<width>160</width>
+					<height>50</height>
+					<align>right</align>
+					<font>Font_Reg38</font>
+					<textcolor>grey2</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+				</control>
+
+				<!-- Channel Name -->
+				<control type="label" id="1400602">
+					<posx>245</posx>
+					<posy>140</posy>
+					<width>430</width>
+					<height>50</height>
+					<scroll>true</scroll>
+					<align>left</align>
+					<font>Font_Reg38</font>
+					<textcolor>FFA4F4F9</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+
+				<!-- TV & Radio Icons -->
+				<control type = "group">
+					<posx>245</posx>
+					<posy>106</posy>
+					<control type="image" id="1400603">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>70</width>
+						<height>30</height>
+						<texture>tv.png</texture>
+						<!--visible>substring(Window.Property(ServiceTypeTV),true)</visible-->
+						<visible>false</visible>
+					</control>
+					<control type="image" id="1400604">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>70</width>
+						<height>30</height>
+						<texture>icon_radio2.png</texture>
+						<!--visible>substring(Window.Property(ServiceTypeRadio),true)</visible-->
+						<visible>false</visible>
+					</control>
+				</control>
+			</control>
+
+			<!-- EPG Info -->
+			<control type="group" id="1400700">
+				<posx>70</posx>
+				<posy>500</posy>
+				<control type="label" id="1400701">
+					<description>Longitude info</description>
+					<posx>-23</posx>
+					<posy>160</posy>
+					<width>270</width>
+					<height>15</height>
+					<font>Font_Reg19</font>
+					<align>center</align>
+					<textcolor>grey2</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="1400703">
+					<description>EPG Name</description>
+					<posx>225</posx>
+					<posy>105</posy>
+					<width>420</width>
+					<textcolor>white3</textcolor>
+					<font>Font_Reg24</font>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="button" id="1400702">
+					<posx>223</posx>
+					<posy>130</posy>
+					<width>25</width>
+					<height>15</height>
+					<label></label>
+					<font></font>
+					<texturefocus>scroll-left-focus.png</texturefocus>
+					<texturenofocus>scroll-left.png</texturenofocus>
+					<onleft></onleft>
+					<onright>1400706</onright>
+					<onup>1003630</onup>
+					<ondown></ondown>
+					<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+				</control>
+				<control type="label" id="1400704">
+					<description>Start EPG Time</description>
+					<posx>257</posx>
+					<posy>136</posy>
+					<align>left</align>
+					<font>Font_Reg17</font>
+					<textcolor>white3</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="progress" id="1400707">
+					<description>EPG progress</description>
+					<posx>313</posx>
+					<posy>131</posy>
+					<width>700</width>
+					<height>14</height>
+					<border>0</border>
+				</control>
+				<control type="label" id="1400705">
+					<description>End EPG Time</description>
+					<posx>1028</posx>
+					<posy>136</posy>
+					<font>Font_Reg17</font>
+					<textcolor>white3</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="button" id="1400706">
+					<posx>1080</posx>
+					<posy>130</posy>
+					<align>right</align>
+					<width>25</width>
+					<height>15</height>
+					<label></label>
+					<font></font>
+					<texturefocus>scroll-right-focus.png</texturefocus>
+					<texturenofocus>scroll-right.png</texturenofocus>
+					<onleft>1400702</onleft>
+					<onright></onright>
+					<onup>1003630</onup>
+					<ondown></ondown>
+					<visible>!substring(Window.Property(InfoPlateName),true)</visible>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>-24</posx>
+				<posy>123r</posy>
+				<!-- Button Icons -->
+				<include>DefaultInfoPlateGroup</include>
+
+				<!-- Button Descriptions  -->
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<visible>false</visible>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>220</width>
+						<height>33</height>
+						<texture border="0,0,32,0">header.png</texture>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1045</label>
+						<visible>Control.HasFocus(1003630)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1032</label>
+						<visible>Control.HasFocus(1003621)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1033</label>
+						<visible>Control.HasFocus(1003622)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1034</label>
+						<visible>Control.HasFocus(1003623)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1035</label>
+						<visible>Control.HasFocus(1003624)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1036</label>
+						<visible>Control.HasFocus(1003625)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1037</label>
+						<visible>Control.HasFocus(1003626)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1038</label>
+						<visible>Control.HasFocus(1003627)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1039</label>
+						<visible>Control.HasFocus(1003628)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1040</label>
+						<visible>Control.HasFocus(1400702)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1041</label>
+						<visible>Control.HasFocus(1400706)</visible>
+					</control>
+					<control type="label">
+						<include>DefaultInfoPlateButtonDescriptionValues</include>
+						<label>SCRIPT1153</label>
+						<visible>Control.HasFocus(1003631)</visible>
+					</control>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>750</posx>
+				<posy>167r</posy>
+				<!-- CAS Icons -->
+				<include>CASInfo</include>
+			</control>
+
+			<control type="group">
+				<posx>0</posx>
+				<posy>68r</posy>
+				<!-- Color Keys -->
+				<control type="group" id="1400509">
+					<control type="grouplist">
+						<posx>310</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<itemgap>2</itemgap>
+						<visible>true</visible>
+						<orientation>horizontal</orientation>
+						<control type="group" id="1400510">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyRed),true)</visible>
+							<control type="image" id="1400511">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-red.png</texture>
+							</control>
+							<control type="label" id="1400512">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>Font_Reg17</font>
+								<align>center</align>
+								<label>HbbTV</label>
+							</control>
+						</control>
+						<control type="group" id="1400520">
+							<width>80</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+							<control type="image" id="1400521">
+								<width>80</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label" id="1400522">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>80</width>
+								<height>30</height>
+								<font>Font_Reg17</font>
+								<align>center</align>
+								<label>SCRIPT1039</label>
+							</control>
+						</control>
+						<control type="group">
+							<width>50</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
+							<control type="image">
+								<width>50</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-green.png</texture>
+							</control>
+							<control type="label">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>50</width>
+								<height>30</height>
+								<font>Font_Reg17</font>
+								<align>center</align>
+								<label>SCRIPT1039</label>
+							</control>
+						</control>
+						<control type="group" id="1400530">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
+							<control type="image" id="1400531">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus-yellow.png</texture>
+							</control>
+							<control type="label" id="1400532">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>Font_Reg17</font>
+								<align>center</align>
+								<label>SCRIPT1124</label>
+							</control>
+						</control>
+						<control type="group" id="1400540">
+							<width>48</width>
+							<height>30</height>
+							<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
+							<control type="image" id="1400541">
+								<width>48</width>
+								<height>30</height>
+								<texture>settings-button-nofocus.png</texture>
+							</control>
+							<control type="label" id="1400542">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>48</width>
+								<height>30</height>
+								<font>Font_Reg17</font>
+								<align>center</align>
+								<label>SCRIPT1060</label>
+							</control>
+						</control>
+					</control>
+				</control>
+			</control>
+
+			<!-- AV Info -->
+			<control type="group">
+				<posx>535r</posx>
+				<posy>135r</posy>
+				<control type="grouplist">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>510</width>
+					<height>40</height>
+					<itemgap>8</itemgap>
+					<visible>true</visible>
+					<orientation>horizontal</orientation>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>54</width>
+						<height>36</height>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>54</width>
+							<height>36</height>
+							<texture>t1.png</texture>
+							<visible>substring(Window.Property(iTuner1),true)</visible>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>54</width>
+							<height>36</height>
+							<texture>t2.png</texture>
+							<visible>substring(Window.Property(iTuner2),true)</visible>
+						</control>
+					</control>
+					<control type="group">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>54</width>
+						<height>36</height>
+						<visible>substring(Window.Property(HasAgeRating),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>54</width>
+							<height>36</height>
+							<texture>ageIcon.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>12</posy>
+							<width>50</width>
+							<height>10</height>
+							<font>Font_Reg19</font>
+							<label>$INFO[Window.Property(EPGAgeRating)]</label>
+						</control>
+					</control>
+					<control type="group" id="1400608">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>54</width>
+						<height>36</height>
+						<visible>substring(Window.Property(HasTeletext),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>54</width>
+							<height>36</height>
+							<texture>IconTeletext.png</texture>
+						</control>
+					</control>
+					<control type="group" id="1400605">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>54</width>
+						<height>36</height>
+						<visible>substring(Window.Property(HasSubtitle),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>54</width>
+							<height>36</height>
+							<texture>IconSubtitle.png</texture>
+						</control>
+					</control>
+					<control type="group" id="1400606">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>94</width>
+						<height>29</height>
+						<visible>substring(Window.Property(HasDolby),true)</visible>
+						<control type="image">
+							<posx>5</posx>
+							<posy>0</posy>
+							<width>94</width>
+							<height>29</height>
+							<texture>dolbydigital1.png</texture>
+						</control>
+					</control>
+					<control type="group" id="1400609">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>94</width>
+						<height>29</height>
+						<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
+						<control type="image">
+							<posx>5</posx>
+							<posy>0</posy>
+							<width>94</width>
+							<height>29</height>
+							<texture>dolbydigitalplus1.png</texture>
+						</control>
+					</control>
+					<control type="group" id="1400607">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>73</width>
+						<height>34</height>
+						<visible>substring(Window.Property(HasHD),true)</visible>
+						<control type="image">
+							<posx>7</posx>
+							<posy>2</posy>
+							<width>73</width>
+							<height>34</height>
+							<texture>OverlayHD.png</texture>
+						</control>
+					</control>
+				</control>
+			</control>
+
 			<!-- Starting Recording Icon -->
 			<control type="image" id="1400100">
 				<posx>1200</posx>
@@ -2233,566 +2779,65 @@
 				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
 			</control>
 
-			<!-- Info Plate -->
+			<!-- Recording Info -->
 			<control type="group">
-				<control type="image">
-					<posx>-13</posx>
-					<posy>547</posy>
-					<width>1306</width>
-					<height>187</height>
-					<texture>osd/osd_back.png</texture>
-					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-				</control>
-
-				<!-- Recording Info -->
-				<control type="group">
-					<posx>450r</posx>
-					<posy>540</posy>
-					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
-					<control type="group">	<!-- Recording #1 -->
+				<posx>480r</posx>
+				<posy>410</posy>
+				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
+				<control type="group">	<!-- Recording #1 -->
+					<posx>0</posx>
+					<posy>85</posy>
+					<!--control type="image">
 						<posx>0</posx>
-						<posy>-19</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>450</width>
-							<height>35</height>
-							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
-							<visible>Control.IsVisible(1400010)</visible>
-						</control>
-						<control type="image" id="1400010">
-							<posx>45</posx>
-							<posy>8</posy>
-							<width>60</width>
-							<height>25</height>
-							<texture>i_record.png</texture>
-							<visible>substring(Window.Property(ViewRecord1),true)</visible>
-						</control>
-						<control type="label" id="1400011">
-							<posx>116</posx>
-							<posy>17</posy>
-							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-					</control>
-					<control type="group">	<!-- Recording #2 -->
-						<posx>21</posx>
-						<posy>-50</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>450</width>
-							<height>35</height>
-							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
-							<visible>Control.IsVisible(1400015)</visible>
-						</control>
-						<control type="image" id="1400015">
-							<posx>25</posx>
-							<posy>8</posy>
-							<width>60</width>
-							<height>25</height>
-							<texture>i_record.png</texture>
-							<visible>substring(Window.Property(ViewRecord2),true)</visible>
-						</control>
-						<control type="label" id="1400016">
-							<posx>95</posx>
-							<posy>17</posy>
-							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
-							<label>$INFO[Control.GetLabel]</label>
-						</control>
-					</control>
-				</control>
-
-				<!-- Channel Info -->
-				<control type="group" id="1400600">
-					<posx>50</posx>
-					<posy>600</posy>
-
-					<!-- PVR Playback -->
-					<control type="label">
-						<posx>-40</posx>
-						<posy>5</posy>
-						<width>300</width>
-						<height>50</height>
-						<align>center</align>
-						<font>Font_Reg24</font>
-						<textcolor>red</textcolor>
-						<label>SCRIPT1123</label>
-						<visible>substring(Window.Property(InfoPlateName),true)</visible>
-					</control>
-
-					<!-- Channel Logo Background Image -->
-					<control type="image">
-						<posx>-20</posx>
-						<posy>4</posy>
-						<width>90</width>
-						<height>56</height>
-						<texture>Logo_Background.png</texture>
-						<colordiffuse>FFEFEFEF</colordiffuse>
-						<visible>!substring(Window.Property(InfoPlateName),true) + substring(Window.Property(iChannelLogoBack),true)</visible>
-					</control>
-
-					<!-- Channel Logo Icon Image -->
-					<control type="image">
-						<posx>-20</posx>
-						<posy>4</posy>
-						<width>90</width>
-						<height>56</height>
-						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
-						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
-						<colordiffuse>FFEFEFEF</colordiffuse>
-					</control>
-
-					<!-- Channel Number -->
-					<control type="label" id="1400601">
-						<posx>90</posx>
-						<posy>6</posy>
-						<width>160</width>
-						<height>50</height>
-						<align>left</align>
-						<font>Font_Reg38</font>
-						<label>$INFO[Control.GetLabel]</label>
-						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
-					</control>
-
-					<!-- Channel Name -->
-					<control type="label" id="1400602">
-						<posx>260</posx>
-						<posy>6</posy>
+						<posy>0</posy>
 						<width>450</width>
-						<height>50</height>
-						<scroll>true</scroll>
-						<align>left</align>
-						<font>Font_Reg38</font>
-						<textcolor>FFB2D4F5</textcolor>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+						<visible>Control.IsVisible(1400010)</visible>
+					</control-->
+					<control type="image" id="1400010">
+						<posx>45</posx>
+						<posy>8</posy>
+						<width>24</width>
+						<height>24</height>
+						<texture>pvr/PVR-IsRecording.png</texture>
+						<visible>substring(Window.Property(ViewRecord1),true)</visible>
+					</control>
+					<control type="label" id="1400011">
+						<posx>79</posx>
+						<posy>17</posy>
+						<width>300</width>
+						<font>Font_Reg17</font>
+						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
-					</control>
-
-					<!-- TV & Radio Icons -->
-					<control type = "group">
-						<posx>255</posx>
-						<posy>-35</posy>
-						<control type="image" id="1400603">
-							<posx>0</posx>
-							<posy>0</posy>
-							<align>left</align>
-							<width>70</width>
-							<height>30</height>
-							<texture>tv.png</texture>
-							<visible>substring(Window.Property(ServiceTypeTV),true)</visible>
-						</control>
-						<control type="image" id="1400604">
-							<posx>0</posx>
-							<posy>0</posy>
-							<align>left</align>
-							<width>70</width>
-							<height>30</height>
-							<texture>icon_radio2.png</texture>
-							<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
-						</control>
-					</control>
-
-					<!-- Button Icons -->
-					<include>DefaultInfoPlateGroup</include>
-
-					<!-- Button Descriptions  -->
-					<control type="group">
-						<posx>-50</posx>
-						<posy>-40</posy>
-						<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(1003620).HasFocus | Control.HasFocus(1400702) | Control.HasFocus(1400706)">conditional</animation>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>220</width>
-							<height>33</height>
-							<texture border="0,0,32,0">header.png</texture>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1045</label>
-							<visible>Control.HasFocus(1003630)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1032</label>
-							<visible>Control.HasFocus(1003621)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1033</label>
-							<visible>Control.HasFocus(1003622)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1034</label>
-							<visible>Control.HasFocus(1003623)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1035</label>
-							<visible>Control.HasFocus(1003624)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1036</label>
-							<visible>Control.HasFocus(1003625)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1037</label>
-							<visible>Control.HasFocus(1003626)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1038</label>
-							<visible>Control.HasFocus(1003627)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1039</label>
-							<visible>Control.HasFocus(1003628)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1040</label>
-							<visible>Control.HasFocus(1400702)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1041</label>
-							<visible>Control.HasFocus(1400706)</visible>
-						</control>
-						<control type="label">
-							<include>DefaultInfoPlateButtonDescriptionValues</include>
-							<label>SCRIPT1153</label>
-							<visible>Control.HasFocus(1003631)</visible>
-						</control>
-					</control>
-
-					<!-- CAS Icons -->
-					<control type="group">
-						<posx>760</posx>
-						<posy>-36</posy>
-						<include>CASInfo</include>
-					</control>
-
-					<!-- Color Keys -->
-					<control type="group" id="1400509">
-						<control type="grouplist">
-							<posx>180r</posx>
-							<posy>-40</posy>
-							<width>300</width>
-							<height>40</height>
-							<itemgap>2</itemgap>
-							<visible>true</visible>
-							<orientation>horizontal</orientation>
-							<control type="group" id="1400510">
-								<width>48</width>
-								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyRed),true)</visible>
-								<control type="image" id="1400511">
-									<width>48</width>
-									<height>30</height>
-									<texture>settings-button-nofocus-red.png</texture>
-								</control>
-								<control type="label" id="1400512">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>48</width>
-									<height>30</height>
-									<font>Font_Reg17</font>
-									<align>center</align>
-									<label>HbbTV</label>
-								</control>
-							</control>
-							<control type="group" id="1400520">
-								<width>80</width>
-								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyGreen),true) + !substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-								<control type="image" id="1400521">
-									<width>80</width>
-									<height>30</height>
-									<texture>settings-button-nofocus-green.png</texture>
-								</control>
-								<control type="label" id="1400522">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>80</width>
-									<height>30</height>
-									<font>Font_Reg17</font>
-									<align>center</align>
-									<label>SCRIPT1039</label>
-								</control>
-							</control>
-							<control type="group">
-								<width>50</width>
-								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyGreen),true) + substring(Window.Property(iHotkeyGreenRussian),true)</visible>
-								<control type="image">
-									<width>50</width>
-									<height>30</height>
-									<texture>settings-button-nofocus-green.png</texture>
-								</control>
-								<control type="label">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>50</width>
-									<height>30</height>
-									<font>Font_Reg17</font>
-									<align>center</align>
-									<label>SCRIPT1039</label>
-								</control>
-							</control>
-							<control type="group" id="1400530">
-								<width>48</width>
-								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyYellow),true)</visible>
-								<control type="image" id="1400531">
-									<width>48</width>
-									<height>30</height>
-									<texture>settings-button-nofocus-yellow.png</texture>
-								</control>
-								<control type="label" id="1400532">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>48</width>
-									<height>30</height>
-									<font>Font_Reg17</font>
-									<align>center</align>
-									<label>SCRIPT1124</label>
-								</control>
-							</control>
-							<control type="group" id="1400540">
-								<width>48</width>
-								<height>30</height>
-								<visible>substring(Window.Property(iHotkeyBlue),true)</visible>
-								<control type="image" id="1400541">
-									<width>48</width>
-									<height>30</height>
-									<texture>settings-button-nofocus.png</texture>
-								</control>
-								<control type="label" id="1400542">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>48</width>
-									<height>30</height>
-									<font>Font_Reg17</font>
-									<align>center</align>
-									<label>SCRIPT1060</label>
-								</control>
-							</control>
-						</control>
-					</control>
-
-					<!-- AV Info -->
-					<control type="group">
-						<posx>725</posx>
-						<posy>10</posy>
-						<control type="grouplist">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>510</width>
-							<height>40</height>
-							<itemgap>8</itemgap>
-							<visible>true</visible>
-							<orientation>horizontal</orientation>
-							<control type="group">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>40</height>
-									<texture>t1.png</texture>
-									<visible>substring(Window.Property(iTuner1),true)</visible>
-								</control>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>40</height>
-									<texture>t2.png</texture>
-									<visible>substring(Window.Property(iTuner2),true)</visible>
-								</control>
-							</control>
-							<control type="group">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<visible>substring(Window.Property(HasAgeRating),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>40</height>
-									<texture>ageIcon.png</texture>
-								</control>
-								<control type="label">
-									<posx>18</posx>
-									<posy>6</posy>
-									<width>50</width>
-									<height>10</height>
-									<font>Font_Reg26</font>
-									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
-								</control>
-							</control>
-							<control type="group" id="1400608">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<visible>substring(Window.Property(HasTeletext),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>40</height>
-									<texture>IconTeletext.png</texture>
-								</control>
-							</control>
-							<control type="group" id="1400605">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>60</width>
-								<height>40</height>
-								<visible>substring(Window.Property(HasSubtitle),true)</visible>
-								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>60</width>
-									<height>40</height>
-									<texture>IconSubtitle.png</texture>
-								</control>
-							</control>
-							<control type="group" id="1400606">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>105</width>
-								<height>33</height>
-								<visible>substring(Window.Property(HasDolby),true)</visible>
-								<control type="image">
-									<posx>5</posx>
-									<posy>0</posy>
-									<width>105</width>
-									<height>33</height>
-									<texture>dolbydigital1.png</texture>
-								</control>
-							</control>
-							<control type="group" id="1400609">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>105</width>
-								<height>33</height>
-								<visible>substring(Window.Property(HasDolbyPlus),true)</visible>
-								<control type="image">
-									<posx>5</posx>
-									<posy>0</posy>
-									<width>105</width>
-									<height>33</height>
-									<texture>dolbydigitalplus1.png</texture>
-								</control>
-							</control>
-							<control type="group" id="1400607">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>81</width>
-								<height>38</height>
-								<visible>substring(Window.Property(HasHD),true)</visible>
-								<control type="image">
-									<posx>7</posx>
-									<posy>2</posy>
-									<width>81</width>
-									<height>38</height>
-									<texture>OverlayHD.png</texture>
-								</control>
-							</control>
-						</control>
 					</control>
 				</control>
-
-				<!-- EPG Info -->
-				<control type="group" id="1400700">
-					<posx>70</posx>
-					<posy>660</posy>
-					<control type="label" id="1400701">
-						<description>Longitude info</description>
-						<posx>-40</posx>
-						<posy>15</posy>
-						<width>270</width>
-						<height>15</height>
-						<font>Font_Reg19</font>
-						<align>left</align>
-						<textcolor>grey2</textcolor>
-						<label>$INFO[Control.GetLabel]</label>
+				<control type="group">	<!-- Recording #2 -->
+					<posx>0</posx>
+					<posy>110</posy>
+					<!--control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
+						<visible>Control.IsVisible(1400015)</visible>
+					</control-->
+					<control type="image" id="1400015">
+						<posx>45</posx>
+						<posy>8</posy>
+						<width>24</width>
+						<height>24</height>
+						<texture>pvr/PVR-IsRecording.png</texture>
+						<visible>substring(Window.Property(ViewRecord2),true)</visible>
 					</control>
-					<control type="label" id="1400703">
-						<description>EPG Name</description>
-						<posx>240</posx>
-						<posy>7</posy>
-						<width>400</width>
-						<textcolor>9f9c9f9b</textcolor>
-						<font>Font_Reg24</font>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
-					<control type="button" id="1400702">
-						<posx>243</posx>
-						<posy>30</posy>
-						<width>25</width>
-						<height>15</height>
-						<label></label>
-						<font></font>
-						<texturefocus>scroll-left-focus.png</texturefocus>
-						<texturenofocus>scroll-left.png</texturenofocus>
-						<onleft></onleft>
-						<onright>1400706</onright>
-						<onup>1003630</onup>
-						<ondown></ondown>
-						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
-					</control>
-					<control type="label" id="1400704">
-						<description>Start EPG Time</description>
-						<posx>277</posx>
-						<posy>36</posy>
-						<align>left</align>
+					<control type="label" id="1400016">
+						<posx>79</posx>
+						<posy>17</posy>
+						<width>300</width>
 						<font>Font_Reg17</font>
+						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
-					</control>
-					<control type="progress" id="1400707">
-						<description>EPG progress</description>
-						<posx>333</posx>
-						<posy>31</posy>
-						<width>700</width>
-						<height>14</height>
-						<overlaytexture></overlaytexture>
-					</control>
-					<control type="label" id="1400705">
-						<description>End EPG Time</description>
-						<posx>1048</posx>
-						<posy>36</posy>
-						<font>Font_Reg17</font>
-						<label>$INFO[Control.GetLabel]</label>
-					</control>
-					<control type="button" id="1400706">
-						<posx>1100</posx>
-						<posy>30</posy>
-						<align>right</align>
-						<width>25</width>
-						<height>15</height>
-						<label></label>
-						<font></font>
-						<texturefocus>scroll-right-focus.png</texturefocus>
-						<texturenofocus>scroll-right.png</texturenofocus>
-						<onleft>1400702</onleft>
-						<onright></onright>
-						<onup>1003630</onup>
-						<ondown></ondown>
-						<visible>!substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 				</control>
 			</control>
@@ -3594,6 +3639,7 @@
 		<control type="group" id="1500000">
 			<visible>substring(Window.Property(CurrentWindow),1500000)</visible>
 			<defaultcontrol always="true">1509000</defaultcontrol>
+			<include>DefaultSettingFloor</include>
 			<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
@@ -3601,70 +3647,81 @@
 				<posy>51</posy>
 
 				<!-- Content Panel Image -->
-				<include>DefaultSettingSmallContentPanel</include>
+				<include>DefaultSettingBigContentPanel2</include>
 
-				<!-- Menu Title -->
+				<!-- Aeon Nox Logo -->
+				<control type="image">
+					<posx>32</posx>
+					<posy>30</posy>
+					<width>215</width>
+					<height>70</height>
+					<aspectratio>keep</aspectratio>
+					<texture>XBMC_Logo.png</texture>
+					<colordiffuse>white</colordiffuse>
+				</control>
+
+				<!-- Menu Title  -->
 				<control type="label">
 					<posx>300</posx>
-					<posy>9</posy>
+					<posy>19</posy>
 					<width>740</width>
 					<height>30</height>
 					<font>Font_Reg21</font>
 					<label>$INFO[Container(1509000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
 				</control>
 
 				<!-- Menu List -->
 				<control type="list" id="1509000">
 					<posx>10</posx>
-					<posy>75</posy>
+					<posy>115</posy>
 					<width>260</width>
-					<height>500</height>
+					<height>487</height>
 					<onup>1509000</onup>
 					<ondown>1509000</ondown>
-					<itemlayout height="54" width="260">
+					<itemlayout height="54" width="270">
 						<control type="image">
-							<posx>0</posx>
+							<posx>-2</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>255</width>
 							<height>55</height>
 							<texture border="5">MenuItemNF.png</texture>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>grey3</textcolor>
-							<align>right</align>
+							<textcolor>grey2</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 						</control>
 					</itemlayout>
-					<focusedlayout height="54" width="260">
+					<focusedlayout height="54" width="270">
 						<control type="image">
-							<posx>0</posx>
+							<posx>-2</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>255</width>
 							<height>55</height>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
 							<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1509000)">Conditional</animation>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
-							<align>right</align>
+							<textcolor>white3</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 						</control>
 					</focusedlayout>
 				</control>
@@ -3672,7 +3729,7 @@
 				<!-- Arrow Image -->
 				<control type="image">
 					<posx>233</posx>
-					<posy>565</posy>
+					<posy>605</posy>
 					<width>18</width>
 					<height>19</height>
 					<texture>HomeHasSub.png</texture>
@@ -3686,12 +3743,12 @@
 					<posy>60</posy>
 					<!-- Setting Description -->
 					<control type="label" id="1501003">
-						<posx>0</posx>
+						<posx>20</posx>
 						<posy>0</posy>
-						<width>745</width>
+						<width>710</width>
 						<height>45</height>
 						<font>Font_Reg19</font>
-						<textcolor>blue</textcolor>
+						<textcolor>FF6db9e5</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3721,8 +3778,8 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[Window.Property(NetVolumeUse)]</label>
-								<textcolor>grey3</textcolor>
-								<font>font12</font>
+								<textcolor>grey2</textcolor>
+								<font>Font_Reg17</font>
 							</control>
 							<control type="image">
 								<posx>-30</posx>
@@ -3742,21 +3799,6 @@
 							</control>
 						</control>
 					</control>
-					<!--
-					<include>SpinEx01</include>
-					<include>SpinEx02</include>
-					<include>SpinEx03</include>
-					<include>SpinEx04</include>
-					<include>SpinEx05</include>
-					<include>SpinEx06</include>
-					<include>Input01</include>
-					<include>Input02</include>
-					<include>Input03</include>
-					<include>Input04</include>
-					<include>Input05</include>
-					<include>Input06</include>
-					<include>Input07</include>
-					-->
 				</control>
 			</control>
 		</control>
@@ -3765,6 +3807,7 @@
 		<control type="group" id="4900000">
 			<visible>substring(Window.Property(CurrentWindow),4900000)</visible>
 			<defaultcontrol always="true">4909000</defaultcontrol>
+			<include>DefaultSettingFloor</include>
 			<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
@@ -3772,107 +3815,102 @@
 				<posy>51</posy>
 
 				<!-- Content Panel Image -->
-				<include>DefaultSettingSmallContentPanel</include>
+				<include>DefaultSettingBigContentPanel2</include>
+
+				<!-- Aeon Nox Logo -->
+				<control type="image">
+					<posx>32</posx>
+					<posy>30</posy>
+					<width>215</width>
+					<height>70</height>
+					<aspectratio>keep</aspectratio>
+					<texture>XBMC_Logo.png</texture>
+					<colordiffuse>white</colordiffuse>
+				</control>
 
 				<!-- Menu Title  -->
 				<control type="label">
 					<posx>300</posx>
-					<posy>9</posy>
+					<posy>19</posy>
 					<width>740</width>
 					<height>30</height>
 					<font>Font_Reg21</font>
 					<label>$INFO[Container(4909000).ListItem.Label]</label>
 					<align>left</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
 				</control>
 
 				<!-- Menu List -->
 				<control type="list" id="4909000">
 					<posx>10</posx>
-					<posy>75</posy>
+					<posy>115</posy>
 					<width>260</width>
-					<height>481</height>
+					<height>541</height>
 					<onup>4909000</onup>
 					<ondown>4909000</ondown>
-					<itemlayout height="54" width="260">
+					<itemlayout height="54" width="270">
 						<control type="image">
-							<posx>0</posx>
+							<posx>-2</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>255</width>
 							<height>55</height>
 							<texture border="5">MenuItemNF.png</texture>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>grey3</textcolor>
-							<align>right</align>
+							<textcolor>grey2</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 						</control>
 					</itemlayout>
-					<focusedlayout height="54" width="260">
+					<focusedlayout height="54" width="270">
 						<control type="image">
-							<posx>0</posx>
+							<posx>-2</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>255</width>
 							<height>55</height>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
 							<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(4909000)">Conditional</animation>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
-							<align>right</align>
+							<textcolor>white3</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 						</control>
 					</focusedlayout>
 				</control>
 
 				<!-- Setting Description -->
 				<control type="group" id="4909010">
-					<posx>290</posx>
+					<posx>310</posx>
 					<posy>60</posy>
 					<control type="label" id="4901003">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>745</width>
+						<width>710</width>
 						<height>45</height>
 						<font>Font_Reg19</font>
-						<textcolor>blue</textcolor>
-						<shadowcolor>black</shadowcolor>
+						<textcolor>FF6db9e5</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<scroll>true</scroll>
 						<scrollspeed>150</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 					</control>
-					<!--
-					<include>SpinEx01</include>
-					<include>SpinEx02</include>
-					<include>SpinEx03</include>
-					<include>SpinEx04</include>
-					<include>SpinEx05</include>
-					<include>SpinEx06</include>
-					<include>Input01</include>
-					<include>Input02</include>
-					<include>Input03</include>
-					<include>Input04</include>
-					<include>Input05</include>
-					<include>Input06</include>
-					<include>Input07</include>
-					-->
 				</control>
 			</control>
 		</control>
@@ -3956,20 +3994,20 @@
 					</focusedlayout>
 				</control>
 				<control type="scrollbar" id="1709001">
-					<posx>750</posx>
+					<posx>743</posx>
 					<posy>65</posy>
 					<width>20</width>
 					<height>395</height>
-		            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+		            <texturesliderbackground>-</texturesliderbackground>
 					<texturesliderbar>-</texturesliderbar>
 					<texturesliderbarfocus>-</texturesliderbarfocus>
 					<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 					<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 					<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-					<onleft>1709000</onleft>
-					<onright>1709000</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
+					<onleft>1709000</onleft>
+					<onright>1709000</onright>
 				</control>
 			</control>
 		</control>
@@ -4011,9 +4049,22 @@
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="group">
-					<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+					<visible>substring(Window.Property(ViewMode),common)</visible>
 					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingFloor</include>
 					<include>DefaultSettingBigContentPanel</include>
+					<include>DefaultSettingSmallContentPanel</include>
+				</control>
+			</control>
+
+			<!-- Content Panel Image -->
+			<control type="group">
+				<include>DefaultWindowFade</include>
+				<control type="group">
+					<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
+					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingFloor</include>
+					<include>DefaultSettingBigContentPanel3</include>
 				</control>
 			</control>
 
@@ -4078,17 +4129,17 @@
 					<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 				</control>
 				<control type="progress" id="3300402">
-					<posx>0</posx>
-					<posy>25</posy>
-					<width>352</width>
+					<posx>10</posx>
+					<posy>45</posy>
+					<width>332</width>
 					<height>15</height>
 					<visible>substring(Window.Property(ViewMode),common)</visible>
 				</control>
 
 				<!-- Start Time -->
 				<control type="label" id="3300403">
-					<posx>0</posx>
-					<posy>40</posy>
+					<posx>10</posx>
+					<posy>60</posy>
 					<width>100</width>
 					<height>20</height>
 					<font>Font_Reg17</font>
@@ -4100,8 +4151,8 @@
 
 				<!-- End Time -->
 				<control type="label" id="3300404">
-					<posx>352</posx>
-					<posy>40</posy>
+					<posx>342</posx>
+					<posy>60</posy>
 					<width>100</width>
 					<height>20</height>
 					<font>Font_Reg17</font>
@@ -4118,84 +4169,84 @@
 				<posy>370</posy>
 				<visible>substring(Window.Property(ViewMode),common)</visible>
 
-				<!-- Channel Name -->
-				<control type="label" id="3300300">
-					<posx>0</posx>
-					<posy>0</posy>
-					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
-					<label>$INFO[Window.Property(ChannelName)]</label>
-				</control>
-
 				<!-- Date -->
-				<control type="label" id="3300301">
-					<posx>0</posx>
-					<posy>30</posy>
-					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
-					<label>$INFO[Window.Property(RecDuration)]</label>
-				</control>
-
-				<!-- Duration -->
 				<control type="label" id="3300302">
-					<posx>150</posx>
-					<posy>30</posy>
+					<posx>10</posx>
+					<posy>40</posy>
 					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<label>$INFO[Window.Property(RecDate)]</label>
 				</control>
 
-				<!-- Recording Name -->
-				<control type="textbox" id="3300303">
-					<posx>0</posx>
-					<posy>50</posy>
-					<width>352</width>
-					<height>160</height>
+				<!-- Duration -->
+				<control type="label" id="3300301">
+					<posx>342</posx>
+					<posy>40</posy>
+					<width>100</width>
 					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
+					<align>right</align>
+					<label>$INFO[Window.Property(RecDuration)]</label>
+				</control>
+
+				<!-- Channel Name -->
+				<control type="label" id="3300300">
+					<posx>10</posx>
+					<posy>70</posy>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<label>$INFO[Window.Property(ChannelName)]</label>
+				</control>
+
+				<!-- Recording Name -->
+				<control type="label" id="3300303">
+					<posx>10</posx>
+					<posy>100</posy>
+					<width>332</width>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
 					<label>$INFO[Window.Property(RecName)]</label>
+				</control>
+
+				<!-- Recording Path -->
+				<control type="label">
+					<posx>10</posx>
+					<posy>130</posy>
+					<width>332</width>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<label>$INFO[Window.Property(iNetVolumeType)] : $INFO[Window.Property(iNetVolumeName)]</label>
+					<visible>substring(Window.Property(RecNetVolume),true)</visible>
 				</control>
 
 				<!-- Lock Icon & Label -->
 				<control type="group">
-					<posx>250</posx>
-					<posy>85</posy>
-					<visible>substring(Window.Property(HasLock),true)</visible>
+					<posx>10</posx>
+					<posy>160</posy>
+					<!--visible>substring(Window.Property(HasLock),true)</visible-->
 					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
+						<posx>-10</posx>
+						<posy>-10</posy>
 						<width>35</width>
 						<height>25</height>
 						<texture>OverlayLocked.png</texture>
 						<colordiffuse>75FFFFFF</colordiffuse>
 					</control>
 					<control type="label">
-						<posx>30</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<label>SCRIPT1014</label>
 					</control>
 				</control>
 
-				<!-- Recording Path -->
-				<control type="label">
-					<posx>0</posx>
-					<posy>120</posy>
-					<width>350</width>
-					<height>40</height>
-					<align>left</align>
-					<aligny>center</aligny>
-					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
-					<label>$INFO[Window.Property(iNetVolumeType)] : $INFO[Window.Property(iNetVolumeName)]</label>
-					<visible>substring(Window.Property(RecNetVolume),true)</visible>
-				</control>
-
 				<!-- AV Info -->
 				<control type="group">
-					<posx>0</posx>
-					<posy>240</posy>
+					<posx>10</posx>
+					<posy>264</posy>
 					<control type="grouplist">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -4302,7 +4353,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>80</posx>
+				<posx>60</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -4336,16 +4387,18 @@
 
 			<!-- Item & Page Number for Common list -->
 			<control type="group">
-				<posx>90r</posx>
-				<posy>55r</posy>
+				<posx>0</posx>
+				<posy>0</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label">
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
@@ -4353,12 +4406,14 @@
 
 				<!-- Item & Page Number for Thumbnail list -->
 				<control type="label">
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
@@ -4366,12 +4421,14 @@
 
 				<!-- Item & Page Number for Posterwrap list -->
 				<control type="label">
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
@@ -4379,12 +4436,14 @@
 
 				<!-- Item & Page Number for Fanart list -->
 				<control type="label">
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
@@ -4478,26 +4537,42 @@
 			<visible>substring(Window.Property(CurrentWindow),3400000)</visible>
 			<defaultcontrol always="true">3409000</defaultcontrol>
 
+			<control type="group">
+				<include>Animation_OpenClose_Furniture</include>
+				<control type="image">
+					<width>1280</width>
+					<height>260</height>
+					<posy>477</posy>
+					<texture>views/showcase_floor.png</texture>
+					<colordiffuse>$VAR[ExtendedColorDiffuseVar]</colordiffuse>
+				</control>
+				<control type="image">
+					<width>1280</width>
+					<height>83</height>
+					<posy>650</posy>
+					<texture>views/panel_spot.png</texture>
+					<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				</control>
+			</control>
+
 			<!-- Content Panel Image -->
 			<control type="group">
 				<posx>60</posx>
 				<posy>10</posy>
 				<control type="image">
-					<posx>21</posx>
-					<posy>40</posy>
-					<width>1126</width>
-					<height>637</height>
-					<texture>settings/settings_panelback_shadow.png</texture>
-					<visible>!Skin.HasSetting(DisableGlowbar)</visible>
-					<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				</control>
-				<control type="image">
 					<posx>19</posx>
 					<posy>34</posy>
 					<width>1130</width>
-					<height>641</height>
+					<height>651</height>
 					<texture>settings/settings_panelback.png</texture>
 					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+				</control>
+				<control type="image">
+					<posx>25</posx>
+					<posy>97</posy>
+					<width>1115</width>
+					<height>651</height>
+					<texture>wall/wall_bg_reflection.png</texture>
 				</control>
 
 				<!-- Aeon Nox Logo -->
@@ -4522,7 +4597,7 @@
 					<label>SCRIPT1087</label>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
+					<textcolor>grey2</textcolor>
 					<shadowcolor>black</shadowcolor>
 				</control>
 
@@ -4539,7 +4614,7 @@
 							<posx>30</posx>
 							<width>180</width>
 							<height>44</height>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 						</control>
@@ -4557,8 +4632,9 @@
 							<posx>30</posx>
 							<width>180</width>
 							<height>44</height>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 							<font>Font_Reg19</font>
+							<textcolor>grey2</textcolor>
 						</control>
 					</focusedlayout>
 				</control>
@@ -4571,7 +4647,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402501">
 						<posx>275</posx>
@@ -4579,7 +4655,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402801">
 						<posx>275</posx>
@@ -4587,7 +4663,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 
 					<!-- Version -->
@@ -4597,7 +4673,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402503">
 						<posx>275</posx>
@@ -4605,7 +4681,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402504">
 						<posx>275</posx>
@@ -4613,7 +4689,7 @@
 						<width>700</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 
 					<!-- HDD -->
@@ -4623,7 +4699,7 @@
 						<width>900</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402605">
 						<posx>275</posx>
@@ -4631,7 +4707,7 @@
 						<width>900</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="label" id="3402602">
 						<posx>275</posx>
@@ -4639,7 +4715,7 @@
 						<width>900</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="progress" id="3402702">
 						<posx>275</posx>
@@ -4654,7 +4730,7 @@
 						<width>900</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="progress" id="3402703">
 						<posx>275</posx>
@@ -4669,7 +4745,7 @@
 						<width>900</width>
 						<height>35</height>
 						<font>Font_Reg19</font>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 					</control>
 					<control type="progress" id="3402704">
 						<posx>275</posx>
@@ -4686,7 +4762,7 @@
 		<control type="group" id="3500000">
 			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
 			<defaultcontrol always="true">3509000</defaultcontrol>
-
+			<include>DefaultSettingFloor</include>
 			<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
@@ -4694,26 +4770,24 @@
 				<posy>51</posy>
 
 				<!-- Content Panel Image -->
-				<include>DefaultSettingSmallContentPanel</include>
+				<include>DefaultSettingBigContentPanel2</include>
 
-				<!-- Installation Description -->
-				<control type="label">
-					<posx>300</posx>
-					<posy>9</posy>
-					<width>740</width>
-					<height>30</height>
-					<font>Font_Reg21</font>
-					<label>SCRIPT1031</label>
-					<align>left</align>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+				<!-- Aeon Nox Logo -->
+				<control type="image">
+					<posx>32</posx>
+					<posy>30</posy>
+					<width>215</width>
+					<height>70</height>
+					<aspectratio>keep</aspectratio>
+					<texture>XBMC_Logo.png</texture>
+					<colordiffuse>white</colordiffuse>
 				</control>
 
 				<!-- Menu List -->
 				<control type="list" id="3509000">
 					<hitrect x="10" y="75" w="260" h="541"></hitrect>
 					<posx>10</posx>
-					<posy>75</posy>
+					<posy>115</posy>
 					<width>260</width>
 					<height>541</height>
 					<onleft>3509000</onleft>
@@ -4722,58 +4796,69 @@
 					<ondown>3509000</ondown>
 					<pagecontrol>-</pagecontrol>
 					<scrolltime>300</scrolltime>
-					<itemlayout height="54" width="260">
+					<itemlayout height="54" width="270">
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>270</width>
 							<height>55</height>
 							<texture border="5">MenuItemNF.png</texture>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>grey3</textcolor>
-							<align>right</align>
+							<textcolor>grey2</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 							<scroll>true</scroll>
 						</control>
 					</itemlayout>
-					<focusedlayout height="54" width="260">
+					<focusedlayout height="54" width="270">
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>260</width>
+							<width>270</width>
 							<height>55</height>
 							<texture border="6">views/tripanel/listselect_fo.png</texture>
 							<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 						</control>
 						<control type="label">
-							<posx>245</posx>
+							<posx>20</posx>
 							<posy>0</posy>
-							<width>230</width>
+							<width>240</width>
 							<height>55</height>
 							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
-							<align>right</align>
+							<textcolor>white3</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
+							<label>[B]$INFO[ListItem.Label][/B]</label>
 							<scroll>true</scroll>
 						</control>
 					</focusedlayout>
 				</control>
 
+				<!-- Installation Description -->
+				<control type="label">
+					<posx>300</posx>
+					<posy>530</posy>
+					<width>740</width>
+					<font>Font_Reg17_Caps</font>
+					<label>SCRIPT1031</label>
+					<align>left</align>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+
 				<!-- Menu Descriptions -->
 				<control type="textbox">
 					<posx>300</posx>
-					<posy>535</posy>
+					<posy>560</posy>
 					<width>740</width>
-					<height>100</height>
-					<font>Font_Reg26</font>
+					<font>Font_Reg17</font>
 					<label>$INFO[Container(3509000).ListItem.Label2]</label>
 					<align>left</align>
 					<textcolor>white</textcolor>
@@ -4802,9 +4887,22 @@
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="group">
-					<visible>substring(Window.Property(EPGMode),grid) | ! substring(Window.Property(EPGMode),grid)</visible>
+					<visible>! substring(Window.Property(EPGMode),grid)</visible>
 					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingFloor</include>
 					<include>DefaultSettingBigContentPanel</include>
+					<include>DefaultSettingSmallContentPanel</include>
+				</control>
+			</control>
+
+			<!-- Content Panel Image -->
+			<control type="group">
+				<include>DefaultWindowFade</include>
+				<control type="group">
+					<visible>substring(Window.Property(EPGMode),grid)</visible>
+					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingFloor</include>
+					<include>DefaultSettingBigContentPanel3</include>
 				</control>
 			</control>
 
@@ -5544,42 +5642,45 @@
 			<!-- EPG Info -->
 			<control type="group" id="3709020">
 				<posx>850</posx>
-				<posy>340</posy>
+				<posy>152</posy>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<include>DefaultWindowFade</include>
-				<control type="label" id="3700300">
-					<description>Start & End Time</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
-					<label>00:00-00:00</label>
-				</control>
 				<control type="label" id="3700301">
 					<description>Date</description>
-					<posx>220</posx>
-					<font>Font_Reg19</font>
-					<align>right</align>
-					<textcolor>grey</textcolor>
+					<posx>10</posx>
+					<posy>200</posy>
+					<font>Font_Reg17</font>
+					<textcolor>grey2</textcolor>
 					<label></label>
 				</control>
-
+				<control type="label" id="3700300">
+					<description>Start & End Time</description>
+					<posx>10</posx>
+					<posy>225</posy>
+					<width>100</width>
+					<font>Font_Reg17</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<label>00:00-00:00</label>
+				</control>
 				<control type="label" id="3700302">
 					<description>Duration</description>
-					<posx>0</posx>
-					<posy>30</posy>
-					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<posx>342</posx>
+					<posy>225</posy>
+					<width>100</width>
+					<font>Font_Reg17</font>
+					<align>right</align>
+					<textcolor>grey2</textcolor>
 					<label></label>
 				</control>
 				<control type="textbox" id="3700303">
 					<description>Summary</description>
-					<posx>0</posx>
-					<posy>55</posy>
-					<width>352</width>
-					<height>170</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<posx>10</posx>
+					<posy>250</posy>
+					<width>332</width>
+					<height>197</height>
+					<font>Font_Reg14</font>
+					<textcolor>grey2</textcolor>
 					<label>SCRIPT1030</label>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				</control>
@@ -5588,12 +5689,11 @@
 				<control type="group">
 					<include>DefaultWindowFade</include>
 					<control type="grouplist">
-						<posx>-5</posx>
-						<posy>234</posy>
+						<posx>10</posx>
+						<posy>482</posy>
 						<width>360</width>
 						<height>30</height>
-						<itemgap>8</itemgap>
-						<visible>true</visible>
+						<itemgap>4</itemgap>
 						<orientation>horizontal</orientation>
 						<control type="group">
 							<posx>0</posx>
@@ -5693,15 +5793,15 @@
 
 			<!-- CAS -->
 			<control type="group">
-				<posx>848</posx>
-				<posy>621</posy>
+				<posx>860</posx>
+				<posy>602</posy>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<include>CASInfo</include>
 			</control>
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>80</posx>
+				<posx>60</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -5734,17 +5834,19 @@
 			</control>
 
 			<control type="group">
-				<posx>80r</posx>
-				<posy>55r</posy>
+				<posx>0</posx>
+				<posy>0</posy>
 				<!-- Item & Page Number for Common list -->
 				<control type="label">
 					<include>DefaultWindowFade</include>
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(EPGMode),channel) </visible>
@@ -5753,12 +5855,14 @@
 				<!-- Item & Page Number for Big list -->
 				<control type="label">
 					<include>DefaultWindowFade</include>
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
@@ -5767,12 +5871,14 @@
 				<!-- Item & Page Number for Grid -->
 				<control type="label">
 					<include>DefaultWindowFade</include>
-					<width>340</width>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
 					<height>20</height>
-					<font>Font_Reg17</font>
-					<textcolor>grey</textcolor>
+					<font>Font_Reg14_Caps</font>
+					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(EPGMode), grid)</visible>
@@ -5845,9 +5951,10 @@
 			<control type="group">
 				<include>DefaultWindowFade</include>
 				<control type="group">
-					<visible>true</visible>
 					<include>DefaultVisibleFadeEffect</include>
+					<include>DefaultSettingFloor</include>
 					<include>DefaultSettingBigContentPanel</include>
+					<include>DefaultSettingSmallContentPanel</include>
 				</control>
 			</control>
 
@@ -5864,21 +5971,21 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<label>00:00-00:00</label>
 				</control>
 				<control type="label" id="4000301">
 					<posx>150</posx>
 					<posy>0</posy>
 					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<label></label>
 				</control>
 				<control type="label" id="4000302">
 					<posx>0</posx>
 					<posy>30</posy>
 					<font>Font_Reg19</font>
-					<textcolor>grey</textcolor>
+					<textcolor>grey2</textcolor>
 					<label></label>
 				</control>
 				<control type="image" id="4000310">
@@ -5905,55 +6012,50 @@
 			</control>
 
 			<!-- Hotkeys -->
-			<control type="group">
+			<control type="grouplist">
 				<posx>60</posx>
 				<posy>665</posy>
-				<width>440</width>
+				<width>850</width>
 				<height>32</height>
+				<align>left</align>
+				<itemgap>0</itemgap>
+				<orientation>Horizontal</orientation>
 				<visible>substring(Window.Property(CurrentWindow),4000000)</visible>
-				<control type="image">
-					<posx>20</posx>
-					<posy>-2</posy>
-					<width>25</width>
-					<height>25</height>
-					<texture>OSDIconInfoNF.png</texture>
+				<control type="group">
+					<include>DefaultFooterGroupValues</include>
+					<control type="image">
+						<include>DefaultFooterImageValues</include>
+						<texture>OSDIconInfoNF.png</texture>
+					</control>
+					<control type="label">
+						<include>DefaultFooterLabelValues</include>
+						<label>SCRIPT1101</label>
+					</control>
 				</control>
-				<control type="label">
-					<posx>58</posx>
-					<posy>0</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>Font_Reg17</font>
-					<label>SCRIPT1101</label>
-				</control>
-				<control type="image">
-					<posx>275</posx>
-					<posy>-2</posy>
-					<width>25</width>
-					<height>25</height>
-					<texture flipx="true">OSDPlayNF.png</texture>
-				</control>
-				<control type="label">
-					<posx>313</posx>
-					<posy>0</posy>
-					<width>550</width>
-					<height>20</height>
-					<font>Font_Reg17</font>
-					<label>SCRIPT1139</label>
+				<control type="group">
+					<include>DefaultFooterGroupValues</include>
+					<control type="image">
+						<include>DefaultFooterImageValues</include>
+						<texture flipx="true">OSDPlayNF.png</texture>
+					</control>
+					<control type="label">
+						<include>DefaultFooterLabelValues</include>
+						<label>SCRIPT1139</label>
+					</control>
 				</control>
 			</control>
 
 			<!-- Item & Page Number -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>80r</posx>
-				<posy>55r</posy>
-				<width>300</width>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
 				<height>20</height>
-				<font>Font_Reg17</font>
-				<textcolor>grey</textcolor>
+				<font>Font_Reg14_Caps</font>
+				<textcolor>grey2</textcolor>
 				<scroll>false</scroll>
-				<align>right</align>
+				<align>center</align>
 				<aligny>center</aligny>
 				<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
 			</control>
@@ -6034,28 +6136,25 @@
 						<posx>310</posx>
 						<posy>20</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 
-				<control type="group">
-					<posx>780</posx>
-					<posy>260</posy>
-					<control type="textbox">
-						  <posx>0</posx>
-						  <posy>0</posy>
-						  <width>300</width>
-						  <height>200</height>
-						  <visible>true</visible>
-						  <colordiffuse>FFFFFFFF</colordiffuse>
-						  <font>Font_Reg17</font>
-						  <textcolor>grey</textcolor>
-						  <wrapmultiline>true</wrapmultiline>
-						  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
-						  <label>$INFO[Window.Property(CurrentDescription)]</label>
-					</control>
+				<!-- PIG -->
+				<control type="textbox">
+					<posx>790</posx>
+					<posy>280</posy>
+					<width>300</width>
+					<height>200</height>
+					<visible>true</visible>
+					<colordiffuse>FFFFFFFF</colordiffuse>
+					<font>Font_Reg17</font>
+					<textcolor>grey</textcolor>
+					<wrapmultiline>true</wrapmultiline>
+					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					<label>$INFO[Window.Property(CurrentDescription)]</label>
 				</control>
 
 				<control type="group">
@@ -6068,7 +6167,7 @@
 					<control type="image" id="4300098">
 						<posx>-10</posx>
 						<posy>-10</posy>
-						<width>745</width>
+						<width>749</width>
 						<height>380</height>
 						<texture border="20">ContentPanel_New.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
@@ -6078,7 +6177,7 @@
 						<posx>20</posx>
 						<posy>15</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -6086,7 +6185,7 @@
 						<posx>20</posx>
 						<posy>50</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -6094,7 +6193,7 @@
 						<posx>20</posx>
 						<posy>75</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -6102,7 +6201,7 @@
 						<posx>20</posx>
 						<posy>100</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -6110,7 +6209,7 @@
 						<posx>20</posx>
 						<posy>125</posy>
 						<font>Font_Reg19</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<label>$INFO[Window.Property(DescriptionTitle)]</label>
 					</control>
@@ -6122,29 +6221,26 @@
 						<visible>true</visible>
 						<colordiffuse>FFFFFFFF</colordiffuse>
 						<font>Font_Reg17</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey2</textcolor>
 						<wrapmultiline>true</wrapmultiline>
 						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 						<label>$INFO[Window.Property(UpdateDescription)]</label>
 					</control>
 				</control>
+			</control>
+			
+			<control type="group">
+				<posx>90</posx>
+				<posy>665</posy>
+				<visible>substring(Window.Property(ShowInfoLabel),true)</visible>
 				<control type="group">
-					<posx>0</posx>
-					<posy>553</posy>
-					<visible>substring(Window.Property(ShowInfoLabel),true)</visible>
+					<include>DefaultFooterGroupValues</include>
 					<control type="image">
-						<posx>0</posx>
-						<posy>-2</posy>
-						<width>25</width>
-						<height>25</height>
+						<include>DefaultFooterImageValues</include>
 						<texture>OSDIconInfoNF.png</texture>
 					</control>
 					<control type="label">
-						<posx>38</posx>
-						<posy>0</posy>
-						<width>550</width>
-						<height>20</height>
-						<font>Font_Reg17</font>
+						<include>DefaultFooterLabelValues</include>
 						<label>SCRIPT1101</label>
 					</control>
 				</control>

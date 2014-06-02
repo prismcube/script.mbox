@@ -9,7 +9,7 @@
 			<control type="image">
 				<posx>0</posx>
 				<posy>-40</posy>
-				<width>630</width>
+				<width>610</width>
 				<height>740</height>
 				<texture>dialogs/dialog_back.png</texture>
 				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
