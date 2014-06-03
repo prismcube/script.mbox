@@ -84,7 +84,7 @@
 		<control type="image">
 			<posx>-11</posx>
 			<posy>-7</posy>
-			<width>1100</width>
+			<width>1105</width>
 			<height>651</height>
 			<texture>settings/settings_panelback2.png</texture>
 			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
@@ -92,7 +92,7 @@
 		<control type="image">
 			<posx>-5</posx>
 			<posy>46</posy>
-			<width>1085</width>
+			<width>1090</width>
 			<height>665</height>
 			<texture>wall/wall_bg_reflection.png</texture>
 		</control>
