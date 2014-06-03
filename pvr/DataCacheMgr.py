@@ -97,10 +97,13 @@ class DataCacheMgr( object ) :
 	def __init__( self ) :
 		self.mShutdowning = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-
+		self.mChannelLogo = pvr.ChannelLogoMgr.GetInstance( )
+		
 		self.mZappingMode						= None
 		self.mLastZappingMode					= ElisIZappingMode( )
 		self.mChannelList						= None
+		self.mListItems						= []
+		self.mListItemsPool 					= []		
 		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
 		self.mOldChannel						= self.Channel_GetCurrent( True )
@@ -185,6 +188,7 @@ class DataCacheMgr( object ) :
 		self.mVideoOutput						= E_VIDEO_HDMI
 		self.mSavedResolution					= self.GetResolution( True )
 		self.mIsMediaCenterUi					= False
+		self.mChannelWindows					= {}
 
 		self.mHbbTVEnable						= False
 		self.mHbbtvStatus						= False
@@ -731,6 +735,8 @@ class DataCacheMgr( object ) :
 		LOG_TRACE( '-------2-------------count[%d]'% count )
 
 		prevChannel = self.mChannelList[count-1]
+		self.mListItems = []
+		poolCount = len( self.mListItemsPool )
 
 		for i in range( count ) :
 			channel = self.mChannelList[i]
@@ -762,6 +768,29 @@ class DataCacheMgr( object ) :
 				if chNumber > self.mMaxChannelNum :
 					self.mMaxChannelNum = chNumber
 
+				#create listitems
+				if i >= poolCount :
+					listItem = xbmcgui.ListItem( "%04d" %chNumber, channel.mName )
+					self.mListItemsPool.append( listItem )
+				else :
+					listItem = self.mListItemsPool[i]
+					listItem.setLabel( "%04d" %chNumber )
+					listItem.setLabel2( channel.mName )
+
+				if E_USE_CHANNEL_LOGO == True :
+					logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+					listItem.setProperty( E_XML_PROPERTY_CHANNEL_LOG, self.mChannelLogo.GetLogo( logo, channel.mServiceType ) )
+
+				self.mListItems.append( listItem )				
+
+		"""
+		if self.mMaxChannelNum > 9999 :
+			self.mRootWindow.setProperty( E_XML_PROPERTY_CHANNEL_ALIGN, E_TAG_TRUE )
+		else :
+			self.mRootWindow.setProperty( E_XML_PROPERTY_CHANNEL_ALIGN, E_TAG_FALSE )
+		"""
+		self.SharedChannel_SetUpdated( 0, True )		
+		
 		if E_V1_2_APPLY_PIP :
 			self.PIP_SetTunableList( )
 
@@ -839,11 +868,15 @@ class DataCacheMgr( object ) :
 		#	LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
 
 		self.mChannelList = tmpChannelList
+		start = time.time()
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
 			LOG_TRACE( '-------1---------------count[%d]'% count )
 
 			prevChannel = self.mChannelList[count-1]
+
+			self.mListItems = []
+			poolCount = len( self.mListItemsPool )
 
 			for i in range( count ) :
 				channel = self.mChannelList[i]
@@ -880,6 +913,28 @@ class DataCacheMgr( object ) :
 					if chNumber > self.mMaxChannelNum :
 						self.mMaxChannelNum = chNumber
 
+					#create listitems
+					if i >= poolCount :
+						listItem = xbmcgui.ListItem( "%04d" %chNumber, channel.mName )
+						self.mListItemsPool.append( listItem )
+					else :
+						listItem = self.mListItemsPool[i]
+						listItem.setLabel( "%04d" %chNumber )
+						listItem.setLabel2( channel.mName )
+
+					if E_USE_CHANNEL_LOGO == True :
+						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
+						listItem.setProperty( E_XML_PROPERTY_CHANNEL_LOG, self.mChannelLogo.GetLogo( logo, channel.mServiceType ) )
+
+					self.mListItems.append( listItem )				
+
+		self.SharedChannel_SetUpdated( 0, True )
+		"""
+		if self.mMaxChannelNum > 9999 :
+			self.mRootWindow.setProperty( E_XML_PROPERTY_CHANNEL_ALIGN, E_TAG_TRUE )
+		else :
+			self.mRootWindow.setProperty( E_XML_PROPERTY_CHANNEL_ALIGN, E_TAG_FALSE )
+		"""
 
 		#reload tunableList for PIP
 		#if aSync == 0 and mType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -3590,6 +3645,33 @@ class DataCacheMgr( object ) :
 				return ''
 		else :
 			return self.mSavedResolution
+
+
+	def SharedChannel_GetListItems( self ) :
+		return self.mListItems
+
+
+	def SharedChannel_AddWindow( self, aWindowId ) :
+			self.mChannelWindows[aWindowId] = True
+
+			
+	def SharedChannel_SetUpdated( self, aWindowId, aEnable ) :
+		LOG_TRACE( 'aWindowId=%s aEnable=%s' %(aWindowId, aEnable )  )
+		if aWindowId ==  0 :
+			for key in self.mChannelWindows :
+				LOG_TRACE( 'key=%s aEnable=%s' %(key, aEnable )  )			
+				self.mChannelWindows[key] = aEnable
+		else :
+			if self.mChannelWindows.get( aWindowId, -1 ) >= 0 :
+				self.mChannelWindows[aWindowId] = aEnable
+			else :
+				LOG_ERR( 'Can not find WindowId=%s'  %aWindowId )
+
+
+	def SharedChannel_GetUpdated( self, aWindowId ) :
+		ret = self.mChannelWindows.get( aWindowId, 0 )
+		LOG_TRACE( 'RET=%s' %ret )
+		return ret
 
 
 	def SetHbbTVEnable( self, aEnable ) :

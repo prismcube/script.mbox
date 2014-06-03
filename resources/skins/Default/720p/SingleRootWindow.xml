@@ -27,6 +27,7 @@ Search for window name
 	<onload>SetProperty(ItemHeight,41)</onload>
 	<onload>SetProperty(currentPosX,397)</onload>
 	<onload>SetProperty(currentPosY,590)</onload>
+	<onload>SetProperty(EPGMode,None)</onload>
 	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
 	<controls>
 
@@ -5630,7 +5631,7 @@ Search for window name
 					<posy>40</posy>
 					<width>1200</width>
 					<height>620</height>
-					<colordiffuse>F0FFFFFF</colordiffuse>
+					<colordiffuse>E0FFFFFF</colordiffuse>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>
 					<texture border="15">ContentPanel_New.png</texture>
 				</control>
@@ -5795,7 +5796,7 @@ Search for window name
 					<control type="list" id="3702000">
 						<posx>65</posx>
 						<posy>110</posy>
-						<width>270</width>
+						<width>1150</width>
 						<height>504</height>
 						<align>left</align>
 						<onleft></onleft>
@@ -5812,6 +5813,14 @@ Search for window name
 								<width>270</width>
 								<height>60</height>
 								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>270</posx>
+								<posy>0</posy>
+								<width>880</width>
+								<height>60</height>
+								<texture border="5">StackNF.png</texture>
+								<colordiffuse>75FFFFFF</colordiffuse>
 							</control>
 							<control type="image">
 								<posx>0</posx>
@@ -5864,6 +5873,14 @@ Search for window name
 								<width>270</width>
 								<height>60</height>
 								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="image">
+								<posx>270</posx>
+								<posy>0</posy>
+								<width>880</width>
+								<height>60</height>
+								<texture border="5">StackNF.png</texture>
+								<colordiffuse>75FFFFFF</colordiffuse>
 							</control>
 							<control type="image">
 								<posx>0</posx>

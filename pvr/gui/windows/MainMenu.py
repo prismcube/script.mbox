@@ -214,7 +214,9 @@ class MainMenu( BaseWindow ) :
 					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_CURRENT )
 				elif aControlId == BUTTON_ID_EPG_FOLLOWING :
 					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_FOLLOWING )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )				
+
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).CheckModeChange()					
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif aControlId == BUTTON_ID_TIMER or ( aControlId >= BUTTON_ID_TIMER_ADD_MANUAL and aControlId <= BUTTON_ID_TIMER_DELETE ):
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :

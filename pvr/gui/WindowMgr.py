@@ -410,6 +410,9 @@ class WindowMgr( object ) :
 			LOG_ERR( "Exception %s" %ex )
 
 		pvr.DataCacheMgr.GetInstance( ).SetRootWindow( self.mRootWindow )
+		pvr.DataCacheMgr.GetInstance( ).SharedChannel_AddWindow( WIN_ID_SIMPLE_CHANNEL_LIST )
+		pvr.DataCacheMgr.GetInstance( ).SharedChannel_AddWindow( WIN_ID_EPG_WINDOW )		
+		
 		ScanHelper.GetInstance( ).SetRootWindow( self.mRootWindow )
 
 
