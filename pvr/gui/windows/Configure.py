@@ -1032,7 +1032,7 @@ class Configure( SettingWindow ) :
 							break
 						idxCount += 1
 
-				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Add/Remove Record Path' ), '', MR_LANG( 'Add or remove a record storage location for NAS' ) )
 				self.AddInputControl( E_Input02, MR_LANG( 'Current Record Path' ), defaultPath, MR_LANG( 'Select a directory where the recorded files will be stored' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Refresh Record Path' ), '', MR_LANG( 'Remount your record storage directory' ) )
 				visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
