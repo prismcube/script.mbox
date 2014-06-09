@@ -25,6 +25,7 @@ class Installation( BaseWindow ) :
 
 
 	def onInit( self ) :
+		self.SetTitleDes( )
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Installation') )
@@ -53,7 +54,7 @@ class Installation( BaseWindow ) :
 		self.mLeftGroupItems.append( MR_LANG( 'Channel Search' ) )
 		self.mDescriptionList.append( MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ) )
 
-		if self.mDataCache.HasDVBSTuner( ) : # dhkim Todo
+		if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 			self.mLeftGroupItems.append( MR_LANG( 'Edit Satellite' ) )
 			self.mDescriptionList.append( MR_LANG( 'Add, delete or rename satellites' ) )
 
@@ -91,7 +92,7 @@ class Installation( BaseWindow ) :
 			return
 	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		if not self.mDataCache.HasDVBSTuner( ) :
+		if self.mDataCache.GetTunerType( ) != TUNER_TYPE_DVBS :
 			if selectedId > MENU_ID_CHANNEL_SEARCH :
 				selectedId = selectedId + 2
 
@@ -99,20 +100,16 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			if self.mDataCache.HasMultiTuner( ) :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
-			elif self.mDataCache.HasDVBTTuner( ) or self.mDataCache.HasDVBCTuner() :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
-			else :
+			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
-			if self.mDataCache.HasMultiTuner( ) :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
-			elif self.mDataCache.HasDVBTTuner( ) or self.mDataCache.HasDVBCTuner() :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )	
-			else :
+			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )

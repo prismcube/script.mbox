@@ -194,9 +194,9 @@ class FirstInstallation( FTIWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 				self.mReloadSkinPosition = True
-				if self.mDataCache.HasDVBSTuner( ) : # dhkim Todo
+				if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 					self.SetFTIStep( E_STEP_ANTENNA )
-				else :
+				elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
 					self.SetFTIStep( E_STEP_CHANNEL_SEARCH_CONFIG_DVBT )
 				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
@@ -476,9 +476,9 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
-			if self.mDataCache.HasDVBSTuner( ) :
+			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
-			else :
+			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG_DVBT
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time and Date Setup' ) )
 

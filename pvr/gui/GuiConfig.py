@@ -1,5 +1,8 @@
-# TEST FLAG
-USE_TUNER_DVBT = True
+# TUNER TYPE
+TUNER_TYPE_DVBS		= 0
+TUNER_TYPE_DVBT		= 1
+TUNER_TYPE_DVBC 	= 2
+TUNER_TYPE_DVBTC	= 3
 
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy

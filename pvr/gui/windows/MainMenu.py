@@ -92,7 +92,7 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Manage your XBMC add-ons' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
-		if self.mDataCache.GetTunerType( ) : # dhkim Todo
+		if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( True )
 			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( True )
 		else :
@@ -175,18 +175,16 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					if self.mDataCache.HasDVBTTuner( ) # dhkim Todo
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
-					else :
+					if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+					elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
-					if self.mDataCache.HasMultiTuner() :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SELECT_TUNER )
-					elif self.mDataCache.HasDVBTTuner() or self.mDataCache.HasDVBCTuner() :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
-					else :
+					if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+					elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
 
 				elif aControlId == BUTTON_ID_EDIT_SATELLITE :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
