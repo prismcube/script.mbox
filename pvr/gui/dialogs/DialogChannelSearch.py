@@ -14,6 +14,7 @@ E_SCAN_NONE						= 0
 E_SCAN_SATELLITE				= 1
 E_SCAN_TRANSPONDER				= 2
 E_SCAN_PROVIDER					= 3
+E_SCAN_CARRIER					= 4
 
 INVALID_CHANNEL					= 65534
 
@@ -26,6 +27,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mIsOpenAbortDialog			= False
 		self.mTransponderList			= []
 		self.mConfiguredSatelliteList	= []
+		self.mCarrierList				= []
 		self.mLongitude					= 0
 		self.mBand						= 0
 		self.mSatelliteFormatedName		= None
@@ -175,6 +177,11 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mUseNumbering = aUseNumbering
 		self.mUseNaming	= aUseNaming
 		self.mProviderStruct = aProviderStruct
+
+
+	def SetCarrier( self, aCarrier ) :
+		self.mScanMode = E_SCAN_CARRIER
+		self.mCarrierList = aCarrier
 		
 
 	def ScanStart( self ) :
@@ -186,6 +193,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 		elif self.mScanMode == E_SCAN_PROVIDER :
 			self.mCommander.ChannelScan_StartFastChannelScan( self.mTunerIndex, self.mUseNumbering, self.mUseNaming, self.mProviderStruct )
+
+		elif self.mScanMode == E_SCAN_CARRIER :
+			self.mCommander.Channel_Scan( self.mCarrierList )
 
 		else :
 			self.mIsFinished = True
@@ -243,7 +253,8 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
-			pass
+			strTransponderInfo = 'Frequency %d KHz - Band - %d MHz ' % ( aEvent.mCarrier.mDVBT.mFrequency, aEvent.mCarrier.mDVBT.mBand )
+			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
 			pass
@@ -275,7 +286,7 @@ class DialogChannelSearch( BaseDialog ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( True )
 			self.mDataCache.mCurrentChannel = iChannel
 
-		if self.mScanMode == E_SCAN_TRANSPONDER :
+		if self.mScanMode == E_SCAN_TRANSPONDER or self.mScanMode == E_SCAN_CARRIER :
 			self.mCommander.ScanHelper_Start( )
 
 		else :

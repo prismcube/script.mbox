@@ -62,20 +62,14 @@ WIN_ID_SIMPLE_CHANNEL_LIST			= 36
 WIN_ID_FAST_SCAN					= 37
 WIN_ID_PIP_WINDOW					= 38
 WIN_ID_ADVANCED						= 39
-
+WIN_ID_CHANNEL_SCAN_DVBT			= 40
+WIN_ID_DVBT_TUNER_SETUP				= 41
 
 WIN_ID_HIDDEN_TEST					= 99
 
 WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
 WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
-
-WIN_ID_LIST_WINDOW_SETTING_WINDOW = [
-	WIN_ID_ANTENNA_SETUP, WIN_ID_CONFIG_SIMPLE, WIN_ID_CONFIG_MOTORIZED_12, WIN_ID_CONFIG_MOTORIZED_USALS,
-	WIN_ID_CONFIG_ONECABLE, WIN_ID_CONFIG_ONECABLE_2, WIN_ID_CONFIG_DISEQC_10, WIN_ID_CONFIG_DISEQC_11,
-	WIN_ID_CHANNEL_SEARCH, WIN_ID_AUTOMATIC_SCAN, WIN_ID_MANUAL_SCAN, WIN_ID_TUNER_CONFIGURATION,
-	WIN_ID_EDIT_SATELLITE, WIN_ID_EDIT_TRANSPONDER, WIN_ID_CONDITIONAL_ACCESS, WIN_ID_SYSTEM_UPDATE,
-	WIN_ID_FIRST_INSTALLATION, WIN_ID_INSTALLATION, WIN_ID_CONFIGURE, WIN_ID_ADVANCED ]
 
 gWindowMgr = None
 
@@ -301,8 +295,8 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.Advanced import Advanced
 			from pvr.gui.windows.AntennaSetup import AntennaSetup
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
-
-			#from pvr.gui.windows.PIPWindow import PIPWindow
+			from pvr.gui.windows.ChannelScanDVBT import ChannelScanDVBT
+			from pvr.gui.windows.DVBTTunerSetup import DVBTTunerSetup
 
 			from pvr.HiddenTest import HiddenTest
 
@@ -344,9 +338,12 @@ class WindowMgr( object ) :
 				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
 				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
 				self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
-				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )				
+				self.mWindows[WIN_ID_CHANNEL_SCAN_DVBT] = ChannelScanDVBT( self.mRootWindow )
+				self.mWindows[WIN_ID_DVBT_TUNER_SETUP] = DVBTTunerSetup( self.mRootWindow )
+				self.mWindows[WIN_ID_ADVANCED] = Advanced( self.mRootWindow )	
+
 				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
-				self.mWindows[WIN_ID_ADVANCED] = Advanced( self.mRootWindow )
+
 			else :
 				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
 				LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
