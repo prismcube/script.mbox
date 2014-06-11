@@ -690,7 +690,8 @@ Search for window name
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>SCRIPT1076</label>
+							<!--label>SCRIPT1076</label-->
+							<label>XBMC</label>
 							<label2>SCRIPT1070</label2>
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
