@@ -174,19 +174,12 @@ class WindowMgr( object ) :
 				self.mLastId = aWindowId
 				SetLock2( False )
 
-				if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+				LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 
-					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-					#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
-					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
-					self.mWindows[aWindowId].onInit( )
-				else :
-					self.mWindows[self.mLastId].ClearRelayAction( )
-					self.mWindows[currentId].close( )
-					self.mWindows[currentId].SetActivate( False )
-					#if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
-					#	xbmc.executebuiltin('xbmc.Action(dvbres21)')
+				self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+				#self.mWindows[WIN_ID_PIP_WINDOW].PIP_Check( )
+				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+				self.mWindows[aWindowId].onInit( )
 
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
@@ -205,34 +198,27 @@ class WindowMgr( object ) :
 			currentId = self.mLastId
 			if currentId  > 0 :
 				parentId = self.mWindows[currentId].GetParentID( )			
-				LOG_ERR( 'LastWindow=%s' %self.mWindows[currentId].GetName( ) )		
+				LOG_ERR( 'LastWindow=%s' %self.mWindows[currentId].GetName( ) )
 				if parentId > 0 :
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[parentId].GetName( ) )
 					SetLock2( True )					
 					self.mLastId = parentId					
 					SetLock2( False )
 
-					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-						LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					LOG_TRACE( 'CurrentWindow=%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
 
-						self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )						
-						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
-						self.mWindows[parentId].onInit( )
-					else :
-						self.mWindows[currentId].close( )
-						self.mWindows[currentId].SetActivate( False )
-						#if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :										
-						#	xbmc.executebuiltin('xbmc.Action(dvbres21)')
+					self.mRootWindow.setProperty( 'CurrentWindow', '%d' % ( self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+					self.mWindows[parentId].onInit( )
 					
 				else :
 					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW
 
-					if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-						LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
-						DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
-						self.mWindows[aWindowId].onInit( )
+					LOG_TRACE( 'CurrentWindow=%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					self.mRootWindow.setProperty( 'CurrentWindow', '%d' %(self.mLastId * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID ) )
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( )
+					self.mWindows[aWindowId].onInit( )
 					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
@@ -246,10 +232,7 @@ class WindowMgr( object ) :
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			self.mRootWindow = RootWindow( 'SingleRootWindow.xml', self.mScriptDir )
-		else :
-			self.mRootWindow = RootWindow( 'RootWindow.xml', self.mScriptDir )		
+		self.mRootWindow = RootWindow( 'SingleRootWindow.xml', self.mScriptDir )
 
 
 	def CreateAllWindows( self ) :
@@ -301,110 +284,48 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.Advanced import Advanced
 			from pvr.gui.windows.AntennaSetup import AntennaSetup
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
-
 			#from pvr.gui.windows.PIPWindow import PIPWindow
-
 			from pvr.HiddenTest import HiddenTest
 
-
-			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
-				LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
-				self.mWindows[WIN_ID_MAINMENU] = MainMenu( self.mRootWindow )
-				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW] = ChannelListWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_LIVE_PLATE] = LivePlate( self.mRootWindow )
-				self.mWindows[WIN_ID_TIMESHIFT_PLATE] = TimeShiftPlate( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIGURE] = Configure( self.mRootWindow )
-				self.mWindows[WIN_ID_INSTALLATION] = Installation( self.mRootWindow )
-				self.mWindows[WIN_ID_ANTENNA_SETUP] = AntennaSetup( self.mRootWindow )
-				self.mWindows[WIN_ID_TUNER_CONFIGURATION] = TunerConfiguration( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_SIMPLE] = SatelliteConfigSimple( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS] = SatelliteConfigMotorizedUsals( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12] = SatelliteConfigMotorized12( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE] = SatelliteConfigOnecable( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE_2] = SatelliteConfigOnecable2( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_10] = SatelliteConfigDisEqC10( self.mRootWindow )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_11] = SatelliteConfigDisEqC11( self.mRootWindow )
-				self.mWindows[WIN_ID_CHANNEL_SEARCH] = ChannelSearch( self.mRootWindow )
-				self.mWindows[WIN_ID_AUTOMATIC_SCAN] = AutomaticScan( self.mRootWindow )
-				self.mWindows[WIN_ID_MANUAL_SCAN] = ManualScan( self.mRootWindow )
-				self.mWindows[WIN_ID_EDIT_SATELLITE] = EditSatellite( self.mRootWindow )
-				self.mWindows[WIN_ID_EDIT_TRANSPONDER] = EditTransponder( self.mRootWindow )
-				self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow )
-				self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow )
-				self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow )
-				self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow )
-				self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow )
-				self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
-				self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
-				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
-				self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
-				self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
-				self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
-				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )				
-				self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
-				self.mWindows[WIN_ID_ADVANCED] = Advanced( self.mRootWindow )
-			else :
-				self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
-				LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
-				self.mWindows[WIN_ID_MAINMENU]=MainMenu( 'MainMenu.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow( 'ChannelListWindow.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate( 'LivePlate.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate( 'TimeshiftPlate.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIGURE]=Configure( 'Configure.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_INSTALLATION]=Installation( 'Installation.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup( 'AntennaSetup.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration( 'TunerConfiguration.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple( 'SatelliteConfigSimple.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals( 'SatelliteConfigMotorizedUsals.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12( 'SatelliteConfigMotorized12.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable( 'SatelliteConfigOnecable.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2( 'SatelliteConfigOnecable2.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10( 'SatelliteConfigDisEqC10.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11( 'SatelliteConfigDisEqC11.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch( 'ChannelSearch.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan( 'AutomaticScan.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan( 'ManualScan.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite( 'EditSatellite.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder( 'EditTransponder.xml', self.mScriptDir )
-				"""
-				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
-				#ChannelEditWindow( 'channeleditwindow.xml', self.mScriptDir )
-				"""
-				self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo( 'SystemInfo.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow( 'ArchiveWindow.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow( 'EPGWindow.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter( 'MediaCenter.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess( 'ConditionalAccess.xml', self.mScriptDir ) 
-				self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_FAVORITES]=Favorites( 'Favorites.xml', self.mScriptDir )
-				self.mWindows[WIN_ID_SYSTEM_UPDATE]=SystemUpdate( 'SystemUpdate.xml', self.mScriptDir )
-				#self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGSearchWindow.xml', self.mScriptDir  )
-				self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( 'EPGWindow.xml', self.mScriptDir  )
-				self.mWindows[WIN_ID_ZOOM] = Zoom( 'Zoom.xml', self.mScriptDir  )
-				#self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( 'Zoom.xml', self.mScriptDir  )				
-				#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( 'PIPWindow.xml', self.mScriptDir  )				
-				self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
-
-				"""
-				#test
-				from pvr.gui.windows.TimeshiftInfoPlate import TimeShiftInfoPlate
-				self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate( 'TimeshiftInfoPlate.xml', self.mScriptDir )
-
-				from pvr.gui.windows.TimeshiftInfoPlate1 import TimeShiftInfoPlate1
-				self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE1]=TimeShiftInfoPlate1( 'TimeshiftInfoPlate1.xml', self.mScriptDir )
-
-				from pvr.gui.windows.TimeshiftInfoPlate2 import TimeShiftInfoPlate2
-				self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE2]=TimeShiftInfoPlate2( 'TimeshiftInfoPlate2.xml', self.mScriptDir )
-
-				from pvr.gui.windows.test1 import Test1
-				Test1('MyPics.xml', self.mScriptDir ).doModal( )
-				"""
+			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( self.mRootWindow )
+			LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
+			self.mWindows[WIN_ID_MAINMENU] = MainMenu( self.mRootWindow )
+			self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW] = ChannelListWindow( self.mRootWindow )
+			self.mWindows[WIN_ID_LIVE_PLATE] = LivePlate( self.mRootWindow )
+			self.mWindows[WIN_ID_TIMESHIFT_PLATE] = TimeShiftPlate( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIGURE] = Configure( self.mRootWindow )
+			self.mWindows[WIN_ID_INSTALLATION] = Installation( self.mRootWindow )
+			self.mWindows[WIN_ID_ANTENNA_SETUP] = AntennaSetup( self.mRootWindow )
+			self.mWindows[WIN_ID_TUNER_CONFIGURATION] = TunerConfiguration( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_SIMPLE] = SatelliteConfigSimple( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS] = SatelliteConfigMotorizedUsals( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12] = SatelliteConfigMotorized12( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_ONECABLE] = SatelliteConfigOnecable( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_ONECABLE_2] = SatelliteConfigOnecable2( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_DISEQC_10] = SatelliteConfigDisEqC10( self.mRootWindow )
+			self.mWindows[WIN_ID_CONFIG_DISEQC_11] = SatelliteConfigDisEqC11( self.mRootWindow )
+			self.mWindows[WIN_ID_CHANNEL_SEARCH] = ChannelSearch( self.mRootWindow )
+			self.mWindows[WIN_ID_AUTOMATIC_SCAN] = AutomaticScan( self.mRootWindow )
+			self.mWindows[WIN_ID_MANUAL_SCAN] = ManualScan( self.mRootWindow )
+			self.mWindows[WIN_ID_EDIT_SATELLITE] = EditSatellite( self.mRootWindow )
+			self.mWindows[WIN_ID_EDIT_TRANSPONDER] = EditTransponder( self.mRootWindow )
+			self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow )
+			self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow )
+			self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow )
+			self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow )
+			self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow )
+			self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow )
+			self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow )
+			self.mWindows[WIN_ID_INFO_PLATE] = InfoPlate( self.mRootWindow )
+			self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
+			self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
+			self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
+			self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
+			self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
+			self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
+			#self.mWindows[WIN_ID_PIP_WINDOW] = PIPWindow( self.mRootWindow  )
+			self.mWindows[WIN_ID_HIDDEN_TEST] = HiddenTest( self.mRootWindow )
+			self.mWindows[WIN_ID_ADVANCED] = Advanced( self.mRootWindow )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -493,10 +414,7 @@ class WindowMgr( object ) :
 
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
 
-		mboxInclude = 'mbox_includes.xml'
-
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			mboxInclude = 'mbox_single_includes.xml'
+		mboxInclude = 'mbox_single_includes.xml'
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
 			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', mboxInclude )
