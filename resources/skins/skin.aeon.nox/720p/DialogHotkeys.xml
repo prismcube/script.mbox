@@ -120,7 +120,7 @@
 				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus>views/tripanel/listselect_fo.png</texturefocus>
 				<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
 			</control>
 		</control>
 	</controls>

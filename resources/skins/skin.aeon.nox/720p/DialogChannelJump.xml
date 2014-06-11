@@ -45,7 +45,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<font>Font_Reg19</font>
-				<label>SCRIPT1016</label>
+				<label>$ADDON[script.mbox 1016]</label>
 			</control>
 			<control type="progress" id="213">
 				<posx>40</posx>

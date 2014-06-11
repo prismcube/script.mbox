@@ -68,7 +68,7 @@
                 <textoffsety></textoffsety>
 				<onleft>202</onleft>
 				<onright>202</onright>
-				<label>$LOCALIZE[SCRIPT1109]</label>
+				<label>$ADDON[script.mbox 1109]</label>
 			</control>
 
 			<control type="button" id="202">
@@ -86,7 +86,7 @@
                 <textoffsety></textoffsety>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<label>$LOCALIZE[SCRIPT1026]</label>
+				<label>$ADDON[script.mbox 1026]</label>
 			</control>
 		</control>
 	</controls>

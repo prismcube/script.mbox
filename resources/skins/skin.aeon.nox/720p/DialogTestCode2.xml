@@ -134,7 +134,7 @@
 						<align>center</align>
 						<font>font35_title</font>
 						<textcolor>red</textcolor>
-						<label>SCRIPT1123</label>
+						<label>$ADDON[script.mbox 1123]</label>
 						<!--visible>substring(Window.Property(InfoPlateName),true)</visible-->
 					</control>
 					<control type="image">
@@ -225,7 +225,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1032</label>
+							<label>$ADDON[script.mbox 1032]</label>
 							<visible>Control.HasFocus(1003621)</visible>
 						</control>
 						<control type="label">
@@ -237,7 +237,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1033</label>
+							<label>$ADDON[script.mbox 1033]</label>
 							<visible>Control.HasFocus(1003622)</visible>
 						</control>
 						<control type="label">
@@ -249,7 +249,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1034</label>
+							<label>$ADDON[script.mbox 1034]</label>
 							<visible>Control.HasFocus(1003623)</visible>
 						</control>
 						<control type="label">
@@ -261,7 +261,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1035</label>
+							<label>$ADDON[script.mbox 1035]</label>
 							<visible>Control.HasFocus(1003624)</visible>
 						</control>
 						<control type="label">
@@ -273,7 +273,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1036</label>
+							<label>$ADDON[script.mbox 1036]</label>
 							<visible>Control.HasFocus(1003625)</visible>
 						</control>
 						<control type="label">
@@ -285,7 +285,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1037</label>
+							<label>$ADDON[script.mbox 1037]</label>
 							<visible>Control.HasFocus(1003626)</visible>
 						</control>
 						<control type="label">
@@ -297,7 +297,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1038</label>
+							<label>$ADDON[script.mbox 1038]</label>
 							<visible>Control.HasFocus(1003627)</visible>
 						</control>
 						<control type="label">
@@ -309,7 +309,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1039</label>
+							<label>$ADDON[script.mbox 1039]</label>
 							<visible>Control.HasFocus(1003628)</visible>
 						</control>
 						<control type="label">
@@ -321,7 +321,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1040</label>
+							<label>$ADDON[script.mbox 1040]</label>
 							<visible>Control.HasFocus(1400702)</visible>
 						</control>
 						<control type="label">
@@ -333,7 +333,7 @@
 							<aligny>center</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1041</label>
+							<label>$ADDON[script.mbox 1041]</label>
 							<visible>Control.HasFocus(1400706)</visible>
 						</control>
 					</control>
@@ -453,7 +453,7 @@
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
-									<label>SCRIPT1039</label>
+									<label>$ADDON[script.mbox 1039]</label>
 								</control>
 							</control>
 							<control type="group">
@@ -472,7 +472,7 @@
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
-									<label>SCRIPT1039</label>
+									<label>$ADDON[script.mbox 1039]</label>
 								</control>
 							</control>
 							<control type="group">
@@ -491,7 +491,7 @@
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
-									<label>SCRIPT1124</label>
+									<label>$ADDON[script.mbox 1124]</label>
 								</control>
 							</control>
 							<control type="group">
@@ -510,7 +510,7 @@
 									<height>30</height>
 									<font>font10</font>
 									<align>center</align>
-									<label>SCRIPT1060</label>
+									<label>$ADDON[script.mbox 1060]</label>
 								</control>
 							</control>
 						</control>
@@ -711,7 +711,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -720,7 +720,7 @@
 				<posy>330</posy>
 				<width>500</width>
 				<font>font35_title</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -940,7 +940,7 @@
 							<posy>0</posy>
 							<font>font10</font>
 							<textcolor>grey</textcolor>
-							<label>SCRIPT1122</label>
+							<label>$ADDON[script.mbox 1122]</label>
 						</control>
 					</control>
 				</control>
@@ -990,7 +990,7 @@
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
-								<label>SCRIPT1039</label>
+								<label>$ADDON[script.mbox 1039]</label>
 							</control>
 						</control>
 						<control type="group">
@@ -1009,7 +1009,7 @@
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
-								<label>SCRIPT1039</label>
+								<label>$ADDON[script.mbox 1039]</label>
 							</control>
 						</control>
 
@@ -1029,7 +1029,7 @@
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
-								<label>SCRIPT1124</label>
+								<label>$ADDON[script.mbox 1124]</label>
 							</control>
 						</control>
 						<control type="group">
@@ -1048,7 +1048,7 @@
 								<height>30</height>
 								<font>font10</font>
 								<align>center</align>
-								<label>SCRIPT1060</label>
+								<label>$ADDON[script.mbox 1060]</label>
 							</control>
 						</control>
 					</control>
@@ -1228,8 +1228,8 @@
 						<shadowcolor>black</shadowcolor>
 						<align>center</align>
 						<!--label>$INFO[Control.GetLabel]</label-->
-						<label>SCRIPT1123</label>
-						<!--label>SCRIPT3021</label-->
+						<label>$ADDON[script.mbox 1123]</label>
+						<!--label>$ADDON[script.mbox 3021]</label-->
 						<!--label>a123456789012345678901234567890</label-->
 					</control>
 				</control>

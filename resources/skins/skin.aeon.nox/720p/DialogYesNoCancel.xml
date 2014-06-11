@@ -32,7 +32,7 @@
                 <posy>175</posy>
                 <width>180</width>
                 <height>35</height>
-                <label>SCRIPT1027</label>
+                <label>$ADDON[script.mbox 1027]</label>
                 <textcolor>grey2</textcolor>
                 <focusedcolor>white3</focusedcolor>
                 <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
@@ -50,7 +50,7 @@
                 <posy>175</posy>
                 <width>180</width>
                 <height>35</height>
-                <label>SCRIPT1028</label>
+                <label>$ADDON[script.mbox 1028]</label>
                 <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
                 <textcolor>grey2</textcolor>
                 <focusedcolor>white3</focusedcolor>

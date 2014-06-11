@@ -47,7 +47,7 @@
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
                 <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<label>SCRIPT1027</label>
+				<label>$ADDON[script.mbox 1027]</label>
 				<onleft>302</onleft>
 				<onright>302</onright>
 				<onup>303</onup>
@@ -64,7 +64,7 @@
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
                 <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<label>SCRIPT1028</label>
+				<label>$ADDON[script.mbox 1028]</label>
 				<onleft>301</onleft>
 				<onright>301</onright>
 				<onup>303</onup>

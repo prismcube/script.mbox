@@ -279,7 +279,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(3803)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(3803)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 
@@ -289,7 +289,7 @@
 				<posy>490</posy>
 				<width>180</width>
 				<height>40</height>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
                 <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
                 <font>Font_Reg19</font>
                 <textcolor>grey2</textcolor>
@@ -322,7 +322,7 @@
 					<align>left</align>
 					<scroll>true</scroll>
 					<textcolor>grey2</textcolor>
-					<label>SCRIPT1138</label>
+					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
 		</control>

@@ -90,7 +90,7 @@
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT1024</label>
+					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="505" >
 					<description>progress control</description>
@@ -158,7 +158,7 @@
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT1024</label>
+					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="515" >
 					<description>progress control</description>
@@ -187,7 +187,7 @@
 					<align>center</align>
 					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
-					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+					<label>[B]$ADDON[script.mbox 1026][/B]</label>
 				</control>
 			</control>
 		</control>

@@ -247,7 +247,7 @@
 									<font>font12_title</font>
 									<textcolor>grey</textcolor>
 									<scroll>false</scroll>
-									<label>SCRIPT1010</label>
+									<label>$ADDON[script.mbox 1010]</label>
 								</control>
 							</control>
 							<!-- indicate audio -->
@@ -284,7 +284,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1011</label>
+									<label>$ADDON[script.mbox 1011]</label>
 									<visible>Control.HasFocus(4808001)</visible>
 								</control>
 								<control type="label">
@@ -295,7 +295,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1012</label>
+									<label>$ADDON[script.mbox 1012]</label>
 									<visible>Control.HasFocus(4808002)</visible>
 								</control>
 								<control type="label">
@@ -306,7 +306,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1013</label>
+									<label>$ADDON[script.mbox 1013]</label>
 									<visible>Control.HasFocus(4808003)</visible>
 								</control>
 								<control type="label">
@@ -317,7 +317,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1015</label>
+									<label>$ADDON[script.mbox 1015]</label>
 									<visible>Control.HasFocus(4808004)</visible>
 								</control>
 								<control type="label">
@@ -328,7 +328,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1023</label>
+									<label>$ADDON[script.mbox 1023]</label>
 									<visible>Control.HasFocus(4808005)</visible>
 								</control>
 								<control type="label">
@@ -339,7 +339,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1025</label>
+									<label>$ADDON[script.mbox 1025]</label>
 									<visible>Control.HasFocus(4808006)</visible>
 								</control>
 								<control type="label">
@@ -350,7 +350,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1042</label>
+									<label>$ADDON[script.mbox 1042]</label>
 									<visible>Control.HasFocus(4808007)</visible>
 								</control>
 								<control type="label">
@@ -361,7 +361,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1046</label>
+									<label>$ADDON[script.mbox 1046]</label>
 									<visible>Control.HasFocus(4808008)</visible>
 								</control>
 								<control type="label">
@@ -372,7 +372,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1077</label>
+									<label>$ADDON[script.mbox 1077]</label>
 									<visible>Control.HasFocus(4808009)</visible>
 								</control>
 								<control type="label">
@@ -383,7 +383,7 @@
 									<align>left</align>
 									<font>font10</font>
 									<textcolor>grey</textcolor>
-									<label>SCRIPT1045</label>
+									<label>$ADDON[script.mbox 1045]</label>
 									<visible>Control.HasFocus(4808010)</visible>
 								</control>
 							</control>
@@ -514,7 +514,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[SCRIPT1201]</label>
+						<label>$ADDON[script.mbox 1201]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -538,7 +538,7 @@
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[SCRIPT1166]...</label>
+						<label>$ADDON[script.mbox 1166]...</label>
 						<visible>!substring(Window.Property(ReadyToListPIP),true)</visible>
 					</control>
 					<control type="list" id="4803850">
@@ -762,7 +762,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
+					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $ADDON[script.mbox 1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $ADDON[script.mbox 1107]</label>
 				</control>
 				<control type="image">
 					<posx>320</posx>
@@ -828,7 +828,7 @@
 									<scroll>false</scroll>
 									<align>center</align>
 									<aligny>center</aligny>
-									<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
+									<label>[I]$ADDON[script.mbox 1014] [/I]</label>
 								</control>
 							</control>
 							<control type="label">
@@ -837,7 +837,7 @@
 								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+								<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
 								<textcolor>grey2</textcolor>
@@ -849,7 +849,7 @@
 								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+								<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
 								<textcolor>grey2</textcolor>
@@ -861,7 +861,7 @@
 								<width>335</width>
 								<height>30</height>
 								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+								<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
 								<textcolor>grey2</textcolor>

@@ -273,7 +273,7 @@
 							<height>30</height>
 							<font>font10</font>
 							<align>center</align>
-							<label>SCRIPT1039</label>
+							<label>$ADDON[script.mbox 1039]</label>
 						</control>
 					</control>
 					<control type="group" id="530">
@@ -292,7 +292,7 @@
 							<height>30</height>
 							<font>font10</font>
 							<align>center</align>
-							<label>SCRIPT1124</label>
+							<label>$ADDON[script.mbox 1124]</label>
 						</control>
 					</control>
 					<control type="group" id="540">
@@ -311,7 +311,7 @@
 							<height>30</height>
 							<font>font10</font>
 							<align>center</align>
-							<label>SCRIPT1060</label>
+							<label>$ADDON[script.mbox 1060]</label>
 						</control>
 					</control>
 				</control>
@@ -754,28 +754,28 @@
 						</focusedlayout>
 						<content>
 							<item id="1">
-								<label>SCRIPT1001</label>
+								<label>$ADDON[script.mbox 1001]</label>
 								<!--onclick>SendClick(1300700)</onclick-->
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
-								<label>SCRIPT1002</label>
+								<label>$ADDON[script.mbox 1002]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="3">
-								<label>SCRIPT1003</label>
+								<label>$ADDON[script.mbox 1003]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>SCRIPT1004</label>
+								<label>$ADDON[script.mbox 1004]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="5">
-								<label>SCRIPT1005</label>
+								<label>$ADDON[script.mbox 1005]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
@@ -810,7 +810,7 @@
 								<font>font13caps</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1029</label>
+								<label>$ADDON[script.mbox 1029]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1300049</onright>
@@ -833,7 +833,7 @@
 								<font>font13caps</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1009</label>
+								<label>$ADDON[script.mbox 1009]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1309002</onright>
@@ -983,7 +983,7 @@
 									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1006</label>
+									<label>$ADDON[script.mbox 1006]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300114</onup>
@@ -1003,7 +1003,7 @@
 									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1007</label>
+									<label>$ADDON[script.mbox 1007]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300113</onup>

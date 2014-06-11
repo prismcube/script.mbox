@@ -81,7 +81,7 @@
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT1024</label>
+					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="505" >
 					<posx>410</posx>
@@ -139,7 +139,7 @@
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>SCRIPT1024</label>
+					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="515" >
 					<posx>410</posx>
@@ -166,7 +166,7 @@
 					<align>center</align>
 					<texturenofocus>-</texturenofocus>
 					<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+					<label>[B]$ADDON[script.mbox 1026][/B]</label>
 				</control>
 			</control>
 		</control>

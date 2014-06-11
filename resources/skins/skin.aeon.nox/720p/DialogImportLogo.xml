@@ -185,7 +185,7 @@
                 <align>center</align>
                 <textoffsetx>30</textoffsetx>
                 <textoffsety></textoffsety>
-				<label>$LOCALIZE[SCRIPT1022]</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<font>Font_Reg19</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
@@ -204,7 +204,7 @@
                 <align>center</align>
                 <textoffsetx>30</textoffsetx>
                 <textoffsety></textoffsety>
-				<label>$LOCALIZE[SCRIPT1026]</label>
+				<label>$ADDON[script.mbox 1026]</label>
 				<font>Font_Reg19</font>
 				<onup>115</onup>
 				<onleft>118</onleft>

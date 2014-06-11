@@ -185,7 +185,7 @@
 				<aligny>center</aligny>
 				<texturenofocus border="5">button-nofocus.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>$LOCALIZE[SCRIPT1022]</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<font>font12_title</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
@@ -205,7 +205,7 @@
 				<aligny>center</aligny>
 				<texturenofocus border="5">button-nofocus.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>$LOCALIZE[SCRIPT1026]</label>
+				<label>$ADDON[script.mbox 1026]</label>
 				<font>font12_title</font>
 				<onup>115</onup>
 				<onleft>118</onleft>

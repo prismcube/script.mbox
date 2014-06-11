@@ -134,7 +134,7 @@
 					<width>550</width>
 					<height>20</height>
 					<font>font10</font>
-					<label>SCRIPT1101</label>
+					<label>$ADDON[script.mbox 1101]</label>
 				</control>
 			</control>
 
@@ -157,7 +157,7 @@
 					<width>550</width>
 					<height>20</height>
 					<font>font10</font>
-					<label>SCRIPT1139</label>
+					<label>$ADDON[script.mbox 1139]</label>
 				</control>
 			</control>
 
@@ -897,7 +897,7 @@
 							<posy>75</posy>
 							<font>font12_title</font>
 							<textcolor>grey</textcolor>
-							<label>SCRIPT1014</label>
+							<label>$ADDON[script.mbox 1014]</label>
 						</control>
 					</control>
 
@@ -1011,7 +1011,7 @@
 							<posy>0</posy>
 							<font>font12_title</font>
 							<textcolor>grey3</textcolor>
-							<label>SCRIPT1014</label>
+							<label>$ADDON[script.mbox 1014]</label>
 						</control>
 					</control>
 
@@ -1042,7 +1042,7 @@
 						 	<height>164</height>
 							<font>font12_title</font>
 							<textcolor>grey2</textcolor>
-							<!--label>SCRIPT1030</label-->
+							<!--label>$ADDON[script.mbox 1030]</label-->
 							<label>
 		Goodbye, My Friend
 
@@ -1233,7 +1233,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
@@ -1246,7 +1246,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -1376,27 +1376,27 @@
 						</focusedlayout>
 						<content>
 							<item id="1">
-								<label>SCRIPT1001</label>
+								<label>$ADDON[script.mbox 1001]</label>
 								<onclick>SendClick(1300700)</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
-								<label>SCRIPT1002</label>
+								<label>$ADDON[script.mbox 1002]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="3">
-								<label>SCRIPT1003</label>
+								<label>$ADDON[script.mbox 1003]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>SCRIPT1004</label>
+								<label>$ADDON[script.mbox 1004]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="5">
-								<label>SCRIPT1005</label>
+								<label>$ADDON[script.mbox 1005]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
@@ -1430,7 +1430,7 @@
 								<font>font13caps</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1029</label>
+								<label>$ADDON[script.mbox 1029]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1300049</onright>
@@ -1452,7 +1452,7 @@
 								<font>font13caps</font>
 								<texturefocus border="5">button-focus.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1009</label>
+								<label>$ADDON[script.mbox 1009]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1309002</onright>
@@ -1601,7 +1601,7 @@
 									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1006</label>
+									<label>$ADDON[script.mbox 1006]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300114</onup>
@@ -1621,7 +1621,7 @@
 									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1007</label>
+									<label>$ADDON[script.mbox 1007]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300113</onup>
@@ -1653,7 +1653,7 @@
 									<pulseonselect>false</pulseonselect>
 									<textcolor>grey3</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1151</label>
+									<label>$ADDON[script.mbox 1151]</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
 									<onup>1300122</onup>
