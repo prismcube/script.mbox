@@ -476,7 +476,13 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1164]</label>
 						</control>
-						<control type="image" id="1290316">
+						<control type="button" id="1290316">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>CrossEPG</label>
+							<visible>System.HasAddon("script.crossepg")</visible>
+							<onclick>RunAddon("script.crossepg")</onclick>							
+						</control>
+						<control type="image" id="1290317">
 							<width>35</width>
 							<height>35</height>
 							<texture border="0,0,0,3">HomeSubEnd.png</texture>
