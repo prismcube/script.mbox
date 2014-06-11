@@ -344,6 +344,11 @@ class MainMenu( BaseWindow ) :
 
 		# doliyu test youtube start
 		elif aControlId == BUTTON_ID_YOUTUBETV :
+			if os.path.exists( '/mtmp/crossepg_running' ) :
+				mHead = MR_LANG( 'While downloading EPG data' )
+				mLine = MR_LANG( 'Not allowed operation' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+				return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StartYoutubeTV( )
 				

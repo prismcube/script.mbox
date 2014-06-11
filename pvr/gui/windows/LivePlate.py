@@ -383,6 +383,11 @@ class LivePlate( LivePlateWindow ) :
 				status = self.mDataCache.Player_GetStatus( )
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					return
+				if os.path.exists( '/mtmp/crossepg_running' ) :
+					mHead = MR_LANG( 'While downloading EPG data' )
+					mLine = MR_LANG( 'Not allowed operation' )
+					xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+					return
 				self.Close( )
 				self.StopAutomaticHide()	
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
