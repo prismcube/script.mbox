@@ -762,7 +762,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
+					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=FF6db9e5]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
 				</control>
 				<control type="image">
 					<posx>320</posx>

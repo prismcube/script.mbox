@@ -7,121 +7,65 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
 			<posx>360</posx>
-			<posy>50</posy>
+			<posy>60</posy>
 			<control type="image">
-				<description>background image</description>
+				<posx>0</posx>
+				<posy>-20</posy>
+				<width>610</width>
+				<height>625</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			</control>
+			<control type="image">
+				<posx>20</posx>
+				<width>570</width>
+				<height>43</height>
+				<texture>osd/osd_settings_buttonnf.png</texture>
+			</control>
+			<control type="label" id="3801">
+				<description>Title</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>600</width>
-				<height>565</height>
-				<texture border="40">DialogBack.png</texture>
+				<width>610</width>
+				<height>60</height>
+				<font>Font_Reg19</font>
+				<textcolor>FF6db9e5</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<align>center</align>
+				<textoffsetx>45</textoffsetx>
 			</control>
-			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>600</width>
-				<height>120</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
+
 			<control type="button" id="3800">
-				<description>Close Window button</description>
-				<posx>520</posx>
-				<posy>9</posy>
-				<width>64</width>
-				<height>32</height>
-				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<description>Close</description>
+				<posx>550</posx>
+				<posy>20</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
 				<onleft>3850</onleft>
 				<onright>3851</onright>
 				<onup>3802</onup>
 				<ondown>3850</ondown>
 			</control>
-			<control type="label" id="3801">
-				<description>header label</description>
-				<posx>20</posx>
-				<posy>20</posy>
-				<width>570</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<label>$INFO[Control.GetLabel]</label>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
+
 			<control type="label" id="3805">
 				<posx>20</posx>
 				<posy>70</posy>
 				<width>570</width>
 				<height>30</height>
-				<font>font13</font>
+				<font>Font_Reg19</font>
 				<label>$INFO[Control.GetLabel]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="label" id="3803">
 				<textcolor>grey2</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
 			</control>
-			<control type="label">
-				<posx>570</posx>
-				<posy>480</posy>
-				<width>300</width>
-				<height>35</height>
-				<font>font12</font>
-				<align>right</align>
-				<aligny>center</aligny>
-				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3803)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
-				<visible>Control.IsVisible(3850)</visible>
-			</control>
-			<control type="button" id="3802">
-				<posx>20</posx>
-				<posy>490</posy>
-				<width>200</width>
-				<height>40</height>
-				<label>SCRIPT1022</label>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus>MenuItemNF.png</texturenofocus>
-				<texturefocus>button-focus.png</texturefocus>
-				<onleft>3850</onleft>
-				<onright>3851</onright>
-				<onup>3850</onup>
-				<ondown>3800</ondown>
-			</control>
-			<!-- left key comment -->
-			<control type="group">
-				<posx>20</posx>
-				<posy>530</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>20</width>
-					<height>20</height>
-					<texture flipx="true">OSDPlayNF.png</texture>
-				</control>
-				<control type="label">
-					<posx>20</posx>
-					<posy>0</posy>
-					<width>570</width>
-					<height>30</height>
-					<font>font10</font>
-					<align>left</align>
-					<scroll>true</scroll>
-					<textcolor>grey3</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<label>SCRIPT1138</label>
-				</control>
-			</control>
+
 			<control type="list" id="3850">
 				<posx>20</posx>
 				<posy>120</posy>
@@ -144,7 +88,7 @@
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
-					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -152,7 +96,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->					
+					<!-- Item Selection -->					
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -170,14 +114,13 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
-
-					<!-- bookmark offset-->
+					<!-- Bookmark Offset-->
 					<control type="label">
 						<posx>220</posx>
 						<posy>0</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -190,7 +133,7 @@
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -198,23 +141,20 @@
 						<label>/ $INFO[ListItem.Property(RecTotal)]</label>
 					</control>
 					<control type="progress">
-						<posx>130</posx>
+						<posx>150</posx>
 						<posy>45</posy>
 						<width>380</width>
 						<height>18</height>
-						<!--texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-						<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture-->
 						<progress>percent</progress>
 						<visible>substring(ListItem.Property(iPos),true)</visible>
 					</control>
-
-					<!-- Rec date -->
+					<!-- Recording Date -->
 					<control type="label">
-						<posx>510</posx>
+						<posx>530</posx>
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -226,7 +166,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>530</width>
+						<width>550</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
@@ -234,19 +174,14 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>530</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<width>550</width>
+						<height>76</height>
+						<texture border="6">views/tripanel/listselect_fo.png</texture>
+						<texturenofocus>-</texturenofocus>
+						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
-					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>530</width>
-						<height>61</height>
-						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control>
-					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -254,7 +189,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->
+					<!-- Item Selection -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -263,13 +198,13 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(iMark),True)</visible>
 					</control>
-					<!-- bookmark offset-->
+					<!-- Bookmark Offset-->
 					<control type="label">
 						<posx>220</posx>
 						<posy>0</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -282,32 +217,29 @@
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>/ $INFO[ListItem.Property(RecTotal)]</label>
 					</control>
-
 					<control type="progress">
 						<description>progress control</description>
-						<posx>130</posx>
+						<posx>150</posx>
 						<posy>45</posy>
 						<width>380</width>
 						<height>18</height>
-						<!--texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-						<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture-->
 						<progress>percent</progress>
 						<visible>substring(ListItem.Property(iPos),true)</visible>
 					</control>
-					<!-- Rec date -->
+					<!-- Recording Date -->
 					<control type="label">
-						<posx>510</posx>
+						<posx>530</posx>
 						<posy>0</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -317,22 +249,81 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="3851">
-				<posx>560</posx>
+				<posx>575</posx>
 				<posy>120</posy>
 				<width>25</width>
 				<height>350</height>
 				<include>DefaultWindowFade</include>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 				<onleft>3850</onleft>
 				<onright>3850</onright>
 				<ondown></ondown>
 				<onup></onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+			</control>
+
+			<!-- Item & Page Number -->
+			<control type="label">
+				<posx>555</posx>
+				<posy>480</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>Font_Reg17</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(3803)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(3850)</visible>
+			</control>
+
+			<control type="button" id="3802">
+				<description>OK</description>
+				<posx>30</posx>
+				<posy>490</posy>
+				<width>180</width>
+				<height>40</height>
+				<label>SCRIPT1022</label>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+				<textoffsetx>30</textoffsetx>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>3800</ondown>
+			</control>
+
+			<!-- Hotkey -->
+			<control type="group">
+				<posx>30</posx>
+				<posy>535</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>3</posy>
+					<width>25</width>
+					<height>25</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>Font_Reg14</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>grey2</textcolor>
+					<label>SCRIPT1138</label>
+				</control>
 			</control>
 		</control>
 	</controls>

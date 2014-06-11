@@ -5,59 +5,40 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
-			<posx>340</posx>
+			<posx>380</posx>
 			<posy>235</posy>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>230</height>
-				<texture border="40">DialogBack.png</texture>
+				<include>DefaultSmallDialogBackgroundValues</include>
 			</control>
 			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>530</width>
-				<height>90</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<include>DefaulSmalltDialogHeaderSeparatorValues</include>
 			</control>
 			<control type="label" id="100">
-				<description>header label</description>
-				<posx>20</posx>
-				<posy>18</posy>
-				<width>560</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<include>DefaultSmallDialogHeaderValues</include>
 			</control>
 			<control type="label" id="200">
-				<description>dialog message</description>
+				<description>Message</description>
 				<posx>20</posx>
 				<posy>90</posy>
-				<width>560</width>
+				<width>480</width>
 				<height>30</height>
 				<align>center</align>				
 				<aligny>center</aligny>
-				<font>font13</font>
+				<font>Font_Reg19</font>
+				<textcolor>white3</textcolor>
 			</control>
 			<control type="button" id="301">
-				<description>OK button</description>
-				<posx>200</posx>
-				<posy>165</posy>
-				<width>200</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<description>OK</description>
+				<posx>170</posx>
+				<posy>168</posy>
+				<width>180</width>
+				<height>35</height>
+				<font>Font_Reg19</font>
+				<textcolor>grey2</textcolor>
+				<focusedcolor>white3</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 				<label>SCRIPT1026</label>
 				<onleft>303</onleft>
 				<onright>303</onright>
@@ -65,15 +46,13 @@
 				<ondown>303</ondown>
 			</control>
 			<control type="button" id="303">
-				<description>Close Window button</description>
-				<posx>520</posx>
-				<posy>9</posy>
-				<width>64</width>
-				<height>32</height>
-				<label>-</label>
-				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<description>Close</description>
+				<posx>470</posx>
+				<posy>20</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
 				<onleft>301</onleft>
 				<onright>301</onright>
 				<onup>301</onup>

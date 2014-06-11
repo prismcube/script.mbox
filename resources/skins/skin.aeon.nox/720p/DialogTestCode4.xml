@@ -1219,7 +1219,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<!--label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label-->
+					<!--label>([COLOR=FF6db9e5]$INFO[Control.GetLabel][/COLOR])</label-->
 					<label>$INFO[Control.GetLabel]</label>
 					<visible>false</visible>
 				</control>
@@ -1233,7 +1233,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
@@ -1246,7 +1246,7 @@
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>

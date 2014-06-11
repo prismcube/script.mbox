@@ -6,14 +6,17 @@
 		<control type="group" id="8000">
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
-				<height>380</height>
-				<texture border="40">DialogBack.png</texture>
+				<height>440</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>15</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
 				<include>DialogSpinEx01</include>

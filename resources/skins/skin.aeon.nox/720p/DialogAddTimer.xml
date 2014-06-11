@@ -6,114 +6,87 @@
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>335</posx>
-			<posy>100</posy>
-            <include>DefaultDialogCloseEffect</include>
-			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>100</posy>
-				<width>610</width>
-				<height>230</height>
-				<texture border="40">DialogBack.png</texture>
+			<posx>380</posx>
+			<posy>235</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<include>DefaultSmallDialogBackgroundValues</include>
 			</control>
-			<control type="group">
-				<posy>100</posy>
-				<control type="image">
-					<posx>40</posx>
-					<posy>11</posy>
-					<width>530</width>
-					<height>110</height>
-					<aspectratio>stretch</aspectratio>
-					<texture>GlassTitleBar.png</texture>
-				</control>
-				<control type="button" id="6995">
-					<description>Close Window button</description>
-					<posx>520</posx>
-					<posy>13</posy>
-					<width>64</width>
-					<height>32</height>
-					<texturefocus>DialogCloseButton-focus.png</texturefocus>
-					<texturenofocus>DialogCloseButton.png</texturenofocus>
-					<onleft>200</onleft>
-					<onright>202</onright>
-				</control>
-				<control type="label" id="3005">
-					<description>header label</description>
-					<posx>20</posx>
-					<posy>22</posy>
-					<width>570</width>
-					<height>30</height>
-					<font>font13_title</font>
-					<align>center</align>
-					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
-				</control>
+			<control type="image">
+				<include>DefaulSmalltDialogHeaderSeparatorValues</include>
+			</control>
+			<control type="label" id="3005">
+				<description>Title</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>520</width>
+				<height>60</height>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<textcolor>FF6db9e5</textcolor>
+				<textoffsetx>45</textoffsetx>
 			</control>
 
 			<!-- Channel Name -->
 			<control type="label" id="101">
-				<description>Record Name</description>
 				<posx>20</posx>
-				<posy>180</posy>
-				<width>570</width>
+				<posy>80</posy>
+				<width>480</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>white3</textcolor>
 				<label></label>
 			</control>
 
 			<!-- Record Name -->
 			<control type="label" id="102">
-				<description>EPG Start Time</description>
-				<posx>40</posx>
-				<posy>220</posy>
-				<width>530</width>
+				<posx>20</posx>
+				<posy>120</posy>
+				<width>480</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>white3</textcolor>
 				<label></label>
 			</control>
 
 			<control type="button" id="200">
-				<description>Yes button</description>
-				<posx>70</posx>
-				<posy>270</posy>				
-				<width>200</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<description>Yes</description>
+				<posx>80</posx>
+				<posy>175</posy>				
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<onleft>202</onleft>
 				<onright>202</onright>
-				<label>[B]$LOCALIZE[SCRIPT1109][/B]</label>
+				<label>$LOCALIZE[SCRIPT1109]</label>
 			</control>
 
 			<control type="button" id="202">
-				<description>Cancel button</description>
-				<posx>340</posx>
-				<posy>270</posy>				
-				<width>200</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
+				<description>Cancel</description>
+				<posx>260</posx>
+				<posy>175</posy>				
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+				<label>$LOCALIZE[SCRIPT1026]</label>
 			</control>
 		</control>
 	</controls>

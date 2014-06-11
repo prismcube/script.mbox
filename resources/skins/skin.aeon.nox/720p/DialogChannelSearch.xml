@@ -8,55 +8,53 @@
 			<posy>60</posy>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image">
-				<description>background image</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>1200</width>
+				<height>700</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			</control>
+			<control type="image">
+				<posx>20</posx>
+				<width>1160</width>
+				<height>43</height>
+				<texture>osd/osd_settings_buttonnf.png</texture>
+			</control>
+			<control type="label" id="100">
+				<description>Title</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1200</width>
-				<height>640</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<posx>10</posx>
-				<posy>12</posy>
-				<width>1180</width>
-				<height>93</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<height>60</height>
+				<font>Font_Reg19</font>
+				<textcolor>FF6db9e5</textcolor>
+				<label>SCRIPT1017</label>
+				<align>center</align>
+				<textoffsetx>45</textoffsetx>
 			</control>
 			<control type="button" id="104">
-				<description>Close Window button</description>
+				<description>Close</description>
 				<posx>1100</posx>
-				<posy>14</posy>
-				<width>64</width>
-				<height>32</height>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<posy>20</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<onup>400</onup>
 				<ondown>400</ondown>
 				<visible>system.getbool(input.enablemouse)</visible>
 			</control>
-			<control type="label" id="100">
-				<description>Title</description>
-				<posx>0</posx>
-				<posy>10</posy>
-				<width>1200</width>
-				<height>40</height>
-				<font>font13_title</font>
-				<label>SCRIPT1017</label>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
+
 			<control type="label" id="101">
-				<description>TV List</description>
+				<description>TV Channels</description>
 				<posx>85</posx>
 				<posy>60</posy>
 				<width>500</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>Font_Reg19</font>
 				<label>SCRIPT1018</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -64,12 +62,12 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="label" id="103">
-				<description>Radio List</description>
+				<description>Radio Channels</description>
 				<posx>620</posx>
 				<posy>60</posy>
 				<width>500</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>Font_Reg19</font>
 				<label>SCRIPT1019</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -101,7 +99,7 @@
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -130,7 +128,7 @@
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg17</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -153,11 +151,12 @@
 				<posy>95</posy>
 				<width>25</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<ondown>104</ondown>
@@ -171,12 +170,12 @@
 				<posy>467</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<label>([COLOR=FF6db9e5]$INFO[Container(400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(400)</visible>
 			</control>
 			
@@ -204,7 +203,7 @@
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -233,7 +232,7 @@
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg17</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -250,17 +249,18 @@
 				</focusedlayout>
 			</control>
 
-	        <!-- Radio Scrollbar -->
+	        <!-- Radio Scrollbar-->
 			<control type="scrollbar" id="403">
 				<posx>1082</posx>
 				<posy>95</posy>
 				<width>25</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
 				<onleft>402</onleft>
 				<onright>400</onright>
 				<ondown>104</ondown>
@@ -274,23 +274,22 @@
 				<posy>467</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<label>([COLOR=FF6db9e5]$INFO[Container(402).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=FF6db9e5]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(402)</visible>
 			</control>
 
 			<!--  Transponder Info -->
 			<control type="label" id="404">
-				<description>TransponderInfo</description>
 				<posx>55</posx>
 				<posy>510</posy>
 				<width>1000</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>Font_Reg17</font>
 				<label>SCRIPT1020</label>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -299,19 +298,17 @@
 			</control>
 			<!-- Progress Bar -->
 			<control type="progress" id="200">
-				<description>Progressbar</description>
 				<posx>55</posx>
 				<posy>550</posy>
 				<width>1090</width>
-				<height>30</height>
+				<height>25</height>
 			</control>
 			<control type="label" id="405">
-				<description>TransponderInfo</description>
 				<posx>90</posx>
 				<posy>583</posy>
 				<width>1000</width>
 				<height>40</height>
-				<font>font10</font>
+				<font>Font_Reg14</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

@@ -15,7 +15,10 @@
 				<texture>dialogs/dialog_back.png</texture>
 				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>5</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
 				<include>DialogInput01</include>

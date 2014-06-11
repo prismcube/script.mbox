@@ -9,65 +9,85 @@
 			<posx>335</posx>
 			<posy>215</posy>
 			<control type="image" id="9001">
-				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
 				<width>610</width>
-				<height>290</height>
-				<texture border="40">DialogBack.png</texture>
+				<height>280</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>5</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<control type="radiobutton" id ="1007463">
-					<description>Channel activated</description>
+					<description>Channels</description>
 					<posx>30</posx>
 					<posy>70</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<radiowidth>70</radiowidth>
+					<radioheight>70</radioheight>
+					<radioposx>490</radioposx>
+					<radioposy>0</radioposy>
+					<texture border="6">views/tripanel/listselect_fo.png</texture>
+					<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1089</label>
 					<onup>1006997</onup>
 					<ondown>1007464</ondown>
 				</control>
 				<control type="radiobutton" id ="1007464">
-					<description>Network activated</description>
+					<description>Network Settings</description>
 					<posx>30</posx>
 					<posy>110</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<radiowidth>70</radiowidth>
+					<radioheight>70</radioheight>
+					<radioposx>490</radioposx>
+					<radioposy>0</radioposy>
+					<texture border="6">views/tripanel/listselect_fo.png</texture>
+					<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1090</label>
 					<onup>1007463</onup>
 					<ondown>1007465</ondown>
 				</control>
 				<control type="radiobutton" id ="1007465">
-					<description>Script activated</description>
+					<description>Script</description>
 					<posx>30</posx>
 					<posy>150</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<radiowidth>70</radiowidth>
+					<radioheight>70</radioheight>
+					<radioposx>490</radioposx>
+					<radioposy>0</radioposy>
+					<texture border="6">views/tripanel/listselect_fo.png</texture>
+					<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1126</label>
 					<onup>1007464</onup>
@@ -75,16 +95,17 @@
 				</control>
 				<control type="button" id="1006997">
 					<description>Yes button</description>
-					<posx>95</posx>
-					<posy>215</posy>
+					<posx>125</posx>
+					<posy>210</posy>
 					<width>180</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+					<height>35</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
 					<onup>1007465</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006999</onleft>
@@ -92,16 +113,17 @@
 				</control>
 				<control type="button" id="1006999">
 					<description>Cancel button</description>
-					<posx>315</posx>
-					<posy>215</posy>
+					<posx>305</posx>
+					<posy>210</posy>
 					<width>180</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
+					<height>35</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
 					<onup>1007464</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006997</onleft>

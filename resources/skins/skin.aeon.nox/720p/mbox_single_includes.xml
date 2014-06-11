@@ -40,25 +40,104 @@
         </control>
     </include>
 
-	<include name="DefaultSettingSmallContentPanel">	        <!--Installation, Configuration, Advanced Window-->
-		<control type="image">
-			<posx>0</posx>
-			<posy>1</posy>
-			<width>1100</width>
-			<height>720</height>
-			<texture>wall/wall_bg.png</texture>
-			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+    <include name="DefaultSettingFloor">	        	<!--Archive, Channel List, Timer Window -->
+		<control type="group">
+			<include>Animation_OpenClose_Furniture</include>
+			<control type="image">
+				<width>1280</width>
+				<height>260</height>
+				<posy>477</posy>
+				<texture>views/showcase_floor.png</texture>
+				<colordiffuse>$VAR[ExtendedColorDiffuseVar]</colordiffuse>
+			</control>
+			<control type="image">
+				<width>1280</width>
+				<height>83</height>
+				<posy>650</posy>
+				<texture>views/panel_spot.png</texture>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+			</control>
 		</control>
 	</include>
 
-	<include name="DefaultSettingBigContentPanel">	        	<!--Archive, Channel List, Timer Window -->
+	<include name="DefaultSettingBigContentPanel">			<!--Archive, Channel List, Timer Window -->
+		<control type="group">
+			<control type="image">
+				<posx>40</posx>
+				<posy>45</posy>
+				<width>790</width>
+				<height>740</height>
+				<texture>wall/wall_bg.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>488</posy>
+				<width>790</width>
+				<height>230</height>
+				<texture>wall/wall_bg_reflection.png</texture>
+			</control>
+		</control>
+	</include>
+
+	<include name="DefaultSettingBigContentPanel2">			<!--Installation, Configuration, Advanced Window-->
 		<control type="image">
-			<posx>40</posx>
-			<posy>45</posy>
-			<width>1200</width>
-			<height>740</height>
-			<texture>wall/wall_bg.png</texture>
+			<posx>-11</posx>
+			<posy>-7</posy>
+			<width>1105</width>
+			<height>651</height>
+			<texture>settings/settings_panelback2.png</texture>
 			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+		</control>
+		<control type="image">
+			<posx>-5</posx>
+			<posy>46</posy>
+			<width>1090</width>
+			<height>665</height>
+			<texture>wall/wall_bg_reflection.png</texture>
+		</control>
+	</include>
+
+	<include name="DefaultSettingBigContentPanel3">			<!--EPG Grid -->
+		<control type="group">
+			<control type="image">
+				<posx>40</posx>
+				<posy>45</posy>
+				<width>1200</width>
+				<height>740</height>
+				<texture>wall/wall_bg.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>488</posy>
+				<width>1200</width>
+				<height>230</height>
+				<texture>wall/wall_bg_reflection.png</texture>
+			</control>
+		</control>
+	</include>
+
+	<include name="DefaultSettingSmallContentPanel">
+		<control type="group">
+			<posx>850</posx>
+			<posy>160</posy>
+			<include>Animation_ListSlideRight</include>
+			<control type="image">
+				<posy>170</posy>
+				<width>355</width>
+				<height>345</height>
+				<aspectratio scalediffuse="false">scale</aspectratio>
+				<texture background="true" diffuse="thumbs/cdcover_mask_aa.png">diffuseoverlay.png</texture>
+			</control>
+			<control type="image">
+				<posy>515</posy>
+				<width>355</width>
+				<height>345</height>
+				<aspectratio scalediffuse="false" aligny="top">scale</aspectratio>
+				<colordiffuse>d0FFFFFF</colordiffuse>
+				<texture diffuse="thumbs/cdcover_mask_reflect.png" flipy="true" background="true">diffuseoverlay.png</texture>
+			</control>
 		</control>
 	</include>
 
@@ -226,25 +305,53 @@
 
 	<include name="DefaultSettingMainWindow">
 		<control type="group">
-			<posx>-80</posx>
-			<posy>-110</posy>
 			<include>DefaultSettingsTopBar</include>
+			<include>DefaultSettingFloor</include>
+			<control type="group">
+				<control type="image">
+					<posx>70</posx>
+					<posy>45</posy>
+					<width>770</width>
+					<height>740</height>
+					<texture>wall/wall_bg.png</texture>
+					<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+				</control>
+				<control type="image">
+					<posx>70</posx>
+					<posy>488</posy>
+					<width>770</width>
+					<height>230</height>
+					<texture>wall/wall_bg_reflection.png</texture>
+				</control>
+			</control>
+			<control type="group">
+				<posx>855</posx>
+				<posy>220</posy>
+				<include>Animation_ListSlideRight</include>
+				<control type="image">
+					<posy>170</posy>
+					<width>355</width>
+					<height>285</height>
+					<aspectratio scalediffuse="false">scale</aspectratio>
+					<texture background="true" diffuse="thumbs/cdcover_mask_aa.png">diffuseoverlay.png</texture>
+				</control>
+				<control type="image">
+					<posy>455</posy>
+					<width>355</width>
+					<height>345</height>
+					<aspectratio scalediffuse="false" aligny="top">scale</aspectratio>
+					<colordiffuse>d0FFFFFF</colordiffuse>
+					<texture diffuse="thumbs/cdcover_mask_reflect.png" flipy="true" background="true">diffuseoverlay.png</texture>
+				</control>
+			</control>
 		</control>
 		<control type="group">
-			<posx>-40</posx>
-			<posy>-50</posy>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1200</width>
-				<height>719</height>
-				<texture>wall/wall_bg.png</texture>
-				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-			</control>
+			<posx>40</posx>
+			<posy>50</posy>
 			<control type="label" id="1001002">
 				<description>Window Name</description>
 				<posx>50</posx>
-				<posy>9</posy>
+				<posy>4</posy>
 				<width>740</width>
 				<height>30</height>
 				<font>Font_Reg21</font>
@@ -260,7 +367,7 @@
 				<width>700</width>
 				<height>40</height>
 				<font>Font_Reg19</font>
-				<textcolor>blue</textcolor>
+				<textcolor>FF6db9e5</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
@@ -305,7 +412,7 @@
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -316,7 +423,7 @@
 				<posy>250</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -330,11 +437,11 @@
 			<visible>substring(Window.Property(ViewProgress),True)</visible>
 			<control type="label" id="1001008">
 				<description>Strength</description>
-				<posx>830</posx>
-				<posy>320</posy>
+				<posx>825</posx>
+				<posy>340</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Reg28</font>
+				<font>Font_Reg17</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -342,28 +449,28 @@
 			<control type="label" id="1001005">
 				<description>Strength Percent</description>
 				<posx>1160</posx>
-				<posy>320</posy>
+				<posy>340</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Reg28</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 			</control>
 			<control type="progress" id="1001010">
-				<description>Scan Helper Progress</description>
+				<description>Quality Progress</description>
 				<posx>820</posx>
-				<posy>350</posy>
+				<posy>370</posy>
 				<width>350</width>
-				<height>18</height>
+				<height>16</height>
 			</control>
 			<control type="label" id="1001009">
 				<description>Quality</description>
-				<posx>830</posx>
-				<posy>380</posy>
+				<posx>825</posx>
+				<posy>390</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Reg28</font>
+				<font>Font_Reg17</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -371,20 +478,20 @@
 			<control type="label" id="1001006">
 				<description>Quality Percent</description>
 				<posx>1160</posx>
-				<posy>380</posy>
+				<posy>390</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Reg28</font>
+				<font>Font_Reg17</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 			</control>
 			<control type="progress" id="1001011">
-				<description>Scan Helper Progress</description>
+				<description>Quality Progress</description>
 				<posx>820</posx>
-				<posy>410</posy>
+				<posy>420</posy>
 				<width>350</width>
-				<height>18</height>
+				<height>16</height>
 			</control>
 		</control>
 	</include>
@@ -411,37 +518,61 @@
 	</include>
 
 	<include name="DefaultDialogCommonSetting">
-		<!--control type="image">
+		<control type="label" id="1003005">
+			<description>Title</description>
+			<width>610</width>
+			<height>60</height>
+			<font>Font_Reg19</font>
+			<textcolor>FF6db9e5</textcolor>
+			<align>center</align>
+			<scroll>true</scroll>
+			<textoffsetx>45</textoffsetx>
+		</control>
+		<control type="image">
 			<posx>20</posx>
-			<posy>11</posy>
-			<width>580</width>
-			<height>110</height>
-			<aspectratio>stretch</aspectratio>
-			<texture>GlassTitleBar.png</texture>
-		</control-->
-		<!--control type="button" id="1006995">
-			<description>Close Window button</description>
-			<posx>520</posx>
-			<posy>13</posy>
-			<width>64</width>
-			<height>32</height>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<width>570</width>
+			<height>43</height>
+			<texture>osd/osd_settings_buttonnf.png</texture>
+		</control>
+		<control type="button" id="1006995">
+			<description>Close</description>
+			<posx>550</posx>
+			<posy>20</posy>
+			<width>20</width>
+			<height>20</height>
+			<texturefocus>special://skin/media/close.png</texturefocus>
+			<texturenofocus>close_nofocus.png</texturenofocus>
 			<onleft>1006997</onleft>
 			<onright>1006999</onright>
-		</control-->
-		<control type="label" id="1003005">
-			<description>header label</description>
-			<posx>20</posx>
-			<posy>22</posy>
-			<width>570</width>
-			<height>30</height>
-			<font>Font_Bold20</font>
-			<align>center</align>
-			<aligny>center</aligny>
-			<textcolor>white</textcolor>
-			<shadowcolor>black</shadowcolor>
 		</control>
+	</include>
+
+	<include name="DefaultSmallDialogBackgroundValues">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>520</width>
+		<height>230</height>
+		<texture>dialogs/dialog_back.png</texture>
+		<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+	</include>
+
+	<include name="DefaulSmalltDialogHeaderSeparatorValues">
+		<posx>15</posx>
+		<posy>0</posy>
+		<width>490</width>
+		<height>42</height>
+		<texture>osd/osd_settings_buttonnf.png</texture>
+	</include>
+
+	<include name="DefaultSmallDialogHeaderValues">
+		<posx>0</posx>
+		<posy>0</posy>
+		<width>520</width>
+		<height>60</height>
+		<textcolor>FF6db9e5</textcolor>
+		<align>center</align>
+		<scroll>true</scroll>
+		<textoffsetx>45</textoffsetx>
 	</include>
 
 	<include name="DefaultSettingDialogButtonOKCancel">
@@ -449,12 +580,14 @@
 			<description>Yes button</description>
 			<width>210</width>
 			<height>40</height>
-			<font>font12_title</font>
-			<textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
+			<font>Font_Reg19</font>
+			<textcolor>grey2</textcolor>
+			<focusedcolor>white3</focusedcolor>
 			<align>center</align>
-			<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-			<texturefocus border="5">button-focus.png</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+			<textoffsetx>30</textoffsetx>
+			<textoffsety></textoffsety>
 			<onleft>1006999</onleft>
 			<onright>1006999</onright>
 		</control>
@@ -462,12 +595,14 @@
 			<description>Cancel button</description>
 			<width>210</width>
 			<height>40</height>
-			<font>font12_title</font>
-			<textcolor>white</textcolor>
-			<focusedcolor>white</focusedcolor>
+			<font>Font_Reg19</font>
+			<textcolor>grey2</textcolor>
+			<focusedcolor>white3</focusedcolor>
 			<align>center</align>
-			<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-			<texturefocus border="5">button-focus.png</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+			<textoffsetx>30</textoffsetx>
+			<textoffsety></textoffsety>
 			<onleft>1006997</onleft>
 			<onright>1006997</onright>
 		</control>
@@ -700,7 +835,7 @@
 		<posy>0</posy>
 		<width>1060</width>
 		<height>28</height>
-		<font>font12caps</font>
+		<font>Font_Reg19</font>
 		<textcolor>white</textcolor>
 		<scroll>false</scroll>
 		<align>right</align>
@@ -806,7 +941,7 @@
 	<include name="DefaultFooterGroupValues">
 		<posx>0</posx>
 		<posy>0</posy>
-		<width>220</width>
+		<width>200</width>
 		<height>32</height>
 	</include>
 
@@ -818,11 +953,11 @@
 	</include>
 
 	<include name="DefaultFooterLabelValues">
-		<posx>38</posx>
+		<posx>34</posx>
 		<posy>0</posy>
-		<width>190</width>
+		<width>170</width>
 		<height>20</height>
-		<font>Font_Reg17</font>
+		<font>Font_Reg14</font>
 	</include>
 
 	<include name="DefaultButtonGridChannelValues">
@@ -918,12 +1053,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001103,1)</onclick>
 				<onup>1001101</onup>
 				<ondown>1001101</ondown>
@@ -931,12 +1067,13 @@
 			<control type="button" id="1001102">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001103,-1)</onclick>
 				<onup>1001102</onup>
 				<ondown>1001102</ondown>
@@ -972,7 +1109,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -984,7 +1121,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -996,7 +1133,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1004,11 +1141,11 @@
 						<visible>Control.IsEnabled(1001100) + [Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1016,11 +1153,11 @@
 						<visible>!Control.IsEnabled(1001100)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1028,11 +1165,11 @@
 						<visible>Control.IsEnabled(1001100) + ![Control.HasFocus(1001101) | Control.HasFocus(1001102)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1053,12 +1190,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001203,1)</onclick>
 				<onup>1001201</onup>
 				<ondown>1001201</ondown>
@@ -1067,12 +1205,13 @@
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<description>Menu Item Prev Button</description>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001203,-1)</onclick>
 				<onup>1001202</onup>
 				<ondown>1001202</ondown>
@@ -1108,7 +1247,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1120,7 +1259,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1132,7 +1271,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1140,11 +1279,11 @@
 						<visible>Control.IsEnabled(1001200) + [Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1152,11 +1291,11 @@
 						<visible>!Control.IsEnabled(1001200)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1164,11 +1303,11 @@
 						<visible>Control.IsEnabled(1001200) + ![Control.HasFocus(1001201) | Control.HasFocus(1001202)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1189,12 +1328,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001303,1)</onclick>
 				<onup>1001301</onup>
 				<ondown>1001301</ondown>
@@ -1202,12 +1342,13 @@
 			<control type="button" id="1001302">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001303,-1)</onclick>
 				<onup>1001302</onup>
 				<ondown>1001302</ondown>
@@ -1243,7 +1384,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1255,7 +1396,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1267,7 +1408,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1275,11 +1416,11 @@
 						<visible>Control.IsEnabled(1001300) + [Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1287,11 +1428,11 @@
 						<visible>!Control.IsEnabled(1001300)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1299,11 +1440,11 @@
 						<visible>Control.IsEnabled(1001300) + ![Control.HasFocus(1001301) | Control.HasFocus(1001302)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1324,12 +1465,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001403,1)</onclick>
 				<onup>1001401</onup>
 				<ondown>1001401</ondown>
@@ -1337,12 +1479,13 @@
 			<control type="button" id="1001402">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001403,-1)</onclick>
 				<onup>1001402</onup>
 				<ondown>1001402</ondown>
@@ -1378,7 +1521,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1390,7 +1533,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1402,7 +1545,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1410,11 +1553,11 @@
 						<visible>Control.IsEnabled(1001400) + [Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1422,11 +1565,11 @@
 						<visible>!Control.IsEnabled(1001400)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1434,11 +1577,11 @@
 						<visible>Control.IsEnabled(1001400) + ![Control.HasFocus(1001401) | Control.HasFocus(1001402)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1459,12 +1602,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001503,1)</onclick>
 				<onup>1001501</onup>
 				<ondown>1001501</ondown>
@@ -1472,12 +1616,13 @@
 			<control type="button" id="1001502">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001503,-1)</onclick>
 				<onup>1001502</onup>
 				<ondown>1001502</ondown>
@@ -1513,7 +1658,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1525,7 +1670,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1537,7 +1682,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1545,11 +1690,11 @@
 						<visible>Control.IsEnabled(1001500) + [Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1557,11 +1702,11 @@
 						<visible>!Control.IsEnabled(1001500)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1569,11 +1714,11 @@
 						<visible>Control.IsEnabled(1001500) + ![Control.HasFocus(1001501) | Control.HasFocus(1001502)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1594,12 +1739,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001603,1)</onclick>
 				<onup>1001601</onup>
 				<ondown>1001601</ondown>
@@ -1607,12 +1753,13 @@
 			<control type="button" id="1001602">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001603,-1)</onclick>
 				<onup>1001602</onup>
 				<ondown>1001602</ondown>
@@ -1648,7 +1795,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1660,7 +1807,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1672,7 +1819,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1680,11 +1827,11 @@
 						<visible>Control.IsEnabled(1001600) + [Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1692,11 +1839,11 @@
 						<visible>!Control.IsEnabled(1001600)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1704,11 +1851,11 @@
 						<visible>Control.IsEnabled(1001600) + ![Control.HasFocus(1001601) | Control.HasFocus(1001602)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1729,12 +1876,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001703,1)</onclick>
 				<onup>1001701</onup>
 				<ondown>1001701</ondown>
@@ -1742,12 +1890,13 @@
 			<control type="button" id="1001702">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001703,-1)</onclick>
 				<onup>1001702</onup>
 				<ondown>1001702</ondown>
@@ -1783,7 +1932,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1795,7 +1944,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1807,7 +1956,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1815,11 +1964,11 @@
 						<visible>Control.IsEnabled(1001700) + [Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1827,11 +1976,11 @@
 						<visible>!Control.IsEnabled(1001700)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1839,11 +1988,11 @@
 						<visible>Control.IsEnabled(1001700) + ![Control.HasFocus(1001701) | Control.HasFocus(1001702)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1864,12 +2013,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001803,1)</onclick>
 				<onup>1001801</onup>
 				<ondown>1001801</ondown>
@@ -1877,12 +2027,13 @@
 			<control type="button" id="1001802">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001803,-1)</onclick>
 				<onup>1001802</onup>
 				<ondown>1001802</ondown>
@@ -1918,7 +2069,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1930,7 +2081,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1942,7 +2093,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1950,11 +2101,11 @@
 						<visible>Control.IsEnabled(1001800) + [Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1962,11 +2113,11 @@
 						<visible>!Control.IsEnabled(1001800)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1974,11 +2125,11 @@
 						<visible>Control.IsEnabled(1001800) + ![Control.HasFocus(1001801) | Control.HasFocus(1001802)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1999,12 +2150,13 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001900)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>673</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001903,1)</onclick>
 				<onup>1001901</onup>
 				<ondown>1001901</ondown>
@@ -2012,12 +2164,13 @@
 			<control type="button" id="1001902">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001900)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>718</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1001903,-1)</onclick>
 				<onup>1001902</onup>
 				<ondown>1001902</ondown>
@@ -2053,7 +2206,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2065,7 +2218,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2077,7 +2230,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2085,11 +2238,11 @@
 						<visible>Control.IsEnabled(1001900) + [Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2097,11 +2250,11 @@
 						<visible>!Control.IsEnabled(1001900)</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2109,11 +2262,11 @@
 						<visible>Control.IsEnabled(1001900) + ![Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
-						<posx>650</posx>
+						<posx>670</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2154,7 +2307,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2166,7 +2319,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2178,7 +2331,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2190,7 +2343,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2202,7 +2355,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2214,7 +2367,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2255,7 +2408,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2267,7 +2420,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2279,7 +2432,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2291,7 +2444,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2303,7 +2456,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2315,7 +2468,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2356,7 +2509,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2368,7 +2521,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2380,7 +2533,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2392,7 +2545,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2404,7 +2557,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2416,7 +2569,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2457,7 +2610,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2469,7 +2622,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2481,7 +2634,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2493,7 +2646,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2505,7 +2658,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2517,7 +2670,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2558,7 +2711,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2570,7 +2723,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2582,7 +2735,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2594,7 +2747,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2606,7 +2759,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2618,7 +2771,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2659,7 +2812,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2671,7 +2824,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2683,7 +2836,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2695,7 +2848,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2707,7 +2860,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2719,7 +2872,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2760,7 +2913,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2772,7 +2925,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2784,7 +2937,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2796,7 +2949,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2808,7 +2961,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2820,7 +2973,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2861,7 +3014,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2873,7 +3026,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2885,7 +3038,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -2897,7 +3050,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2909,7 +3062,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2921,7 +3074,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2935,19 +3088,19 @@
 
 	<include name="DialogSpinEx01">
 		<control type="group" id="1006110">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006111</defaultcontrol>
 			<control type="button" id="1006111">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1006110)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>455</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006113,1)</onclick>
 				<onup>1006111</onup>
 				<ondown>1006111</ondown>
@@ -2955,12 +3108,13 @@
 			<control type="button" id="1006112">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1006110)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>500</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006113,-1)</onclick>
 				<onup>1006112</onup>
 				<ondown>1006112</ondown>
@@ -2968,16 +3122,16 @@
 			<control type="list" id="1006113">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006111) | Control.HasFocus(1006112)]</visible>
@@ -2985,7 +3139,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -2996,7 +3150,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3008,7 +3162,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3020,7 +3174,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3028,11 +3182,11 @@
 						<visible>Control.IsEnabled(1006110) + [Control.HasFocus(1006111) | Control.HasFocus(1006112)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>470</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3040,11 +3194,11 @@
 						<visible>!Control.IsEnabled(1006110)</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>470</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3052,11 +3206,11 @@
 						<visible>Control.IsEnabled(1006110) + ![Control.HasFocus(1006111) | Control.HasFocus(1006112)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>470</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3070,19 +3224,19 @@
 
 	<include name="DialogSpinEx02">
 		<control type="group" id="1006120">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006121</defaultcontrol>
 			<control type="button" id="1006121">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1006120)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>455</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006123,1)</onclick>
 				<onup>1006121</onup>
 				<ondown>1006121</ondown>
@@ -3090,12 +3244,13 @@
 			<control type="button" id="1006122">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1006120)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>500</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006123,-1)</onclick>
 				<onup>1006122</onup>
 				<ondown>1006122</ondown>
@@ -3103,16 +3258,16 @@
 			<control type="list" id="1006123">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006121) | Control.HasFocus(1006122)]</visible>
@@ -3120,7 +3275,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -3131,7 +3286,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3143,7 +3298,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3155,7 +3310,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3163,11 +3318,11 @@
 						<visible>Control.IsEnabled(1006120) + [Control.HasFocus(1006121) | Control.HasFocus(1006122)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3175,11 +3330,11 @@
 						<visible>!Control.IsEnabled(1006120)</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3187,11 +3342,11 @@
 						<visible>Control.IsEnabled(1006120) + ![Control.HasFocus(1006121) | Control.HasFocus(1006122)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3205,19 +3360,19 @@
 
 	<include name="DialogSpinEx03">
 		<control type="group" id="1006130">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006131</defaultcontrol>
 			<control type="button" id="1006131">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1006130)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>455</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006133,1)</onclick>
 				<onup>1006131</onup>
 				<ondown>1006131</ondown>
@@ -3225,12 +3380,13 @@
 			<control type="button" id="1006132">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1006130)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>500</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006133,-1)</onclick>
 				<onup>1006132</onup>
 				<ondown>1006132</ondown>
@@ -3238,16 +3394,16 @@
 			<control type="list" id="1006133">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006131) | Control.HasFocus(1006132)]</visible>
@@ -3255,7 +3411,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -3266,7 +3422,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3278,7 +3434,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3290,7 +3446,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3298,11 +3454,11 @@
 						<visible>Control.IsEnabled(1006130) + [Control.HasFocus(1006131) | Control.HasFocus(1006132)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3310,11 +3466,11 @@
 						<visible>!Control.IsEnabled(1006130)</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3322,11 +3478,11 @@
 						<visible>Control.IsEnabled(1006130) + ![Control.HasFocus(1006131) | Control.HasFocus(1006132)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3340,19 +3496,19 @@
 
 	<include name="DialogSpinEx04">
 		<control type="group" id="1006140">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006141</defaultcontrol>
 			<control type="button" id="1006141">
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1006140)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<posx>455</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+		        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006143,1)</onclick>
 				<onup>1006141</onup>
 				<ondown>1006141</ondown>
@@ -3360,12 +3516,13 @@
 			<control type="button" id="1006142">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1006140)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<posx>500</posx>
+				<posy>-15</posy>
+				<width>45</width>
+				<height>74</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				<onclick>Control.Move(1006143,-1)</onclick>
 				<onup>1006142</onup>
 				<ondown>1006142</ondown>
@@ -3373,16 +3530,16 @@
 			<control type="list" id="1006143">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
@@ -3390,7 +3547,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>530</width>
 						<height>40</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -3401,7 +3558,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3413,7 +3570,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3425,7 +3582,7 @@
 						<posy>0</posy>
 						<width>480</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3433,11 +3590,11 @@
 						<visible>Control.IsEnabled(1006140) + [Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3445,11 +3602,11 @@
 						<visible>!Control.IsEnabled(1006140)</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>440</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3457,11 +3614,11 @@
 						<visible>Control.IsEnabled(1006140) + ![Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
 					</control>
 					<control type="label">
-						<posx>450</posx>
+						<posx>460</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3475,7 +3632,7 @@
 
 	<include name="DialogInput01">
 		<control type="group" id="1006210">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006211</defaultcontrol>
 			<control type="button" id="1006211">
@@ -3483,7 +3640,7 @@
 				<visible>Control.IsVisible(1006210)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3491,18 +3648,18 @@
 			</control>
 			<control type="list" id="1006213">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3514,7 +3671,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3526,7 +3683,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3534,11 +3691,11 @@
 						<visible>Control.IsEnabled(1006210) + Control.HasFocus(1006211)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3546,11 +3703,11 @@
 						<visible>!Control.IsEnabled(1006210)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3558,11 +3715,11 @@
 						<visible>Control.IsEnabled(1006210) + ![Control.HasFocus(1006211)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3576,7 +3733,7 @@
 
 	<include name="DialogInput02">
 		<control type="group" id="1006220">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006221</defaultcontrol>
 			<control type="button" id="1006221">
@@ -3584,7 +3741,7 @@
 				<visible>Control.IsVisible(1006220)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3592,18 +3749,18 @@
 			</control>
 			<control type="list" id="1006223">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3615,7 +3772,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3627,7 +3784,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3635,11 +3792,11 @@
 						<visible>Control.IsEnabled(1006220) + Control.HasFocus(1006221)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3647,11 +3804,11 @@
 						<visible>!Control.IsEnabled(1006220)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3659,11 +3816,11 @@
 						<visible>Control.IsEnabled(1006220) + ![Control.HasFocus(1006221)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3677,7 +3834,7 @@
 
 	<include name="DialogInput03">
 		<control type="group" id="1006230">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006231</defaultcontrol>
 			<control type="button" id="1006231">
@@ -3685,7 +3842,7 @@
 				<visible>Control.IsVisible(1006230)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3693,18 +3850,18 @@
 			</control>
 			<control type="list" id="1006233">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3716,7 +3873,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3728,7 +3885,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3736,11 +3893,11 @@
 						<visible>Control.IsEnabled(1006230) + Control.HasFocus(1006231)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3748,11 +3905,11 @@
 						<visible>!Control.IsEnabled(1006230)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3760,11 +3917,11 @@
 						<visible>Control.IsEnabled(1006230) + ![Control.HasFocus(1006231)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3778,7 +3935,7 @@
 
 	<include name="DialogInput04">
 		<control type="group" id="1006240">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006241</defaultcontrol>
 			<control type="button" id="1006241">
@@ -3786,7 +3943,7 @@
 				<visible>Control.IsVisible(1006240)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3794,18 +3951,18 @@
 			</control>
 			<control type="list" id="1006243">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3817,7 +3974,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3829,7 +3986,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3837,11 +3994,11 @@
 						<visible>Control.IsEnabled(1006240) + Control.HasFocus(1006241)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3849,11 +4006,11 @@
 						<visible>!Control.IsEnabled(1006240)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3861,11 +4018,11 @@
 						<visible>Control.IsEnabled(1006240) + ![Control.HasFocus(1006241)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3879,7 +4036,7 @@
 
 	<include name="DialogInput05">
 		<control type="group" id="1006250">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006251</defaultcontrol>
 			<control type="button" id="1006251">
@@ -3887,7 +4044,7 @@
 				<visible>Control.IsVisible(1006250)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3895,18 +4052,18 @@
 			</control>
 			<control type="list" id="1006253">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3918,7 +4075,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3930,7 +4087,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -3938,11 +4095,11 @@
 						<visible>Control.IsEnabled(1006250) + Control.HasFocus(1006251)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3950,11 +4107,11 @@
 						<visible>!Control.IsEnabled(1006250)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3962,11 +4119,11 @@
 						<visible>Control.IsEnabled(1006250) + ![Control.HasFocus(1006251)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -3980,7 +4137,7 @@
 
 	<include name="DialogInput06">
 		<control type="group" id="1006260">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006261</defaultcontrol>
 			<control type="button" id="1006261">
@@ -3988,7 +4145,7 @@
 				<visible>Control.IsVisible(1006260)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -3996,18 +4153,18 @@
 			</control>
 			<control type="list" id="1006263">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4019,7 +4176,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4031,7 +4188,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4039,11 +4196,11 @@
 						<visible>Control.IsEnabled(1006260) + Control.HasFocus(1006261)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4051,11 +4208,11 @@
 						<visible>!Control.IsEnabled(1006260)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4063,11 +4220,11 @@
 						<visible>Control.IsEnabled(1006260) + ![Control.HasFocus(1006261)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4081,7 +4238,7 @@
 
 	<include name="DialogInput07">
 		<control type="group" id="1006270">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006271</defaultcontrol>
 			<control type="button" id="1006271">
@@ -4089,7 +4246,7 @@
 				<visible>Control.IsVisible(1006270)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -4097,18 +4254,18 @@
 			</control>
 			<control type="list" id="1006273">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4120,7 +4277,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4132,7 +4289,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4140,11 +4297,11 @@
 						<visible>Control.IsEnabled(1006270) + Control.HasFocus(1006271)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4152,11 +4309,11 @@
 						<visible>!Control.IsEnabled(1006270)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4164,11 +4321,11 @@
 						<visible>Control.IsEnabled(1006270) + ![Control.HasFocus(1006271)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4182,7 +4339,7 @@
 
 	<include name="DialogInput08">
 		<control type="group" id="1006280">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006281</defaultcontrol>
 			<control type="button" id="1006281">
@@ -4190,7 +4347,7 @@
 				<visible>Control.IsVisible(1006280)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -4198,18 +4355,18 @@
 			</control>
 			<control type="list" id="1006283">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4221,7 +4378,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4233,7 +4390,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4241,11 +4398,11 @@
 						<visible>Control.IsEnabled(1006280) + Control.HasFocus(1006281)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4253,11 +4410,11 @@
 						<visible>!Control.IsEnabled(1006280)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4265,11 +4422,11 @@
 						<visible>Control.IsEnabled(1006280) + ![Control.HasFocus(1006281)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4283,7 +4440,7 @@
 
 	<include name="DialogInput09">
 		<control type="group" id="1006290">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006291</defaultcontrol>
 			<control type="button" id="1006291">
@@ -4291,7 +4448,7 @@
 				<visible>Control.IsVisible(1006290)</visible>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texture border="6">views/tripanel/listselect_fo.png</texture>
@@ -4299,18 +4456,18 @@
 			</control>
 			<control type="list" id="1006293">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<width>550</width>
+				<width>530</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="1" width="550">
+				<itemlayout height="1" width="530">
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="40" width="530">
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4322,7 +4479,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4334,7 +4491,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4342,11 +4499,11 @@
 						<visible>Control.IsEnabled(1006290) + Control.HasFocus(1006291)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4354,11 +4511,11 @@
 						<visible>!Control.IsEnabled(1006290)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4366,11 +4523,11 @@
 						<visible>Control.IsEnabled(1006290) + ![Control.HasFocus(1006291)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>520</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4384,7 +4541,7 @@
 
 	<include name="DialogSpinDay">
 		<control type="group" id="1006300">
-			<width>550</width>
+			<width>530</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006302</defaultcontrol>
 			<control type="label" id="1006301">
@@ -4392,7 +4549,7 @@
 				<posy>0</posy>
 				<width>135</width>
 				<height>40</height>
-				<font>font13</font>
+				<font>Font_Reg19</font>
 				<textcolor>grey2</textcolor>
 				<selectedcolor>selected</selectedcolor>
 				<align>left</align>
@@ -4401,8 +4558,8 @@
 				<visible>Control.IsVisible(1006300)</visible>
 			</control>
 			<control type="panel" id="1006302">
-				<posx>155</posx>
-				<width>385</width>
+				<posx>145</posx>
+				<width>380</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<orientation>horizontal</orientation>
@@ -4418,11 +4575,11 @@
 						<fadetime>100</fadetime>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4430,11 +4587,11 @@
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>FFFF0000</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4454,11 +4611,11 @@
 						<texture background="true">button-nofocus.png</texture>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey3</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4466,11 +4623,11 @@
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>30</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>FFFF0000</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4501,7 +4658,7 @@
 		<textoffsetx>20</textoffsetx>
 		<textwidth>195</textwidth>
 		<aligny>center</aligny>
-		<font>font12_title</font>
+		<font>Font_Reg19</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -4511,7 +4668,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),common)</visible>
 			<control type="list" id="1003400">
-				<posx>75</posx>
+				<posx>46</posx>
 				<posy>95</posy>
 				<width>1200</width>
 				<height>560</height>
@@ -4522,11 +4679,11 @@
 				<pagecontrol>1003401</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<preloaditems>2</preloaditems>
-				<itemlayout height="70" width="610">
+				<itemlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
@@ -4556,7 +4713,7 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
-					<!-- Playing -->
+					<!-- Playback -->
 					<control type="image">
 						<posx>30</posx>
 						<posy>5</posy>
@@ -4568,10 +4725,10 @@
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>125</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>460</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -4580,11 +4737,11 @@
 					</control>
 					<!-- Date -->
 					<control type="label">
-						<posx>720</posx>
-						<posy>0</posy>
+						<posx>740</posx>
+						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -4597,7 +4754,7 @@
 						<posy>30</posy>
 						<width>460</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -4606,21 +4763,21 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>710</posx>
+						<posx>740</posx>
 						<posy>30</posy>
 						<width>100</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
-						<posx>580</posx>
-						<posy>35</posy>
+						<posx>608</posx>
+						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4637,17 +4794,17 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
+				<focusedlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(1003400)+substring(Window.Property(ViewMode),common)</visible>
@@ -4656,21 +4813,12 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
-						<!--texture border="0,2,0,2">MenuItemFO.png</texture>
-						<include>DefaultVisibleFadeEffect</include-->
 					</control>
-					<!--control type="image">
-						<posx>530</posx>
-						<posy>5</posy>
-						<width>200</width>
-						<height>61</height>
-						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control-->
-					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -4699,11 +4847,11 @@
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>125</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>460</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4711,12 +4859,12 @@
 					</control>
 					<!-- Date -->
 					<control type="label">
-						<posx>720</posx>
-						<posy>0</posy>
+						<posx>740</posx>
+						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4728,8 +4876,8 @@
 						<posy>30</posy>
 						<width>460</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>white</textcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4738,22 +4886,22 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>710</posx>
+						<posx>740</posx>
 						<posy>30</posy>
 						<width>100</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>white</textcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
-						<posx>580</posx>
-						<posy>35</posy>
+						<posx>608</posx>
+						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4769,28 +4917,28 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>white</textcolor>
+							<font>Font_Reg19</font>
+							<textcolor>white3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003401">
-				<posx>808</posx>
-				<posy>95</posy>
+				<posx>812</posx>
+				<posy>105</posy>
 				<width>25</width>
-				<height>565</height>
-	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<height>541</height>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<onleft>1003400</onleft>
-				<onright>3300100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+				<onleft>1003400</onleft>
+				<onright>3300100</onright>
 			</control>
 			<control type="group">
 				<posx>850</posx>
@@ -4847,39 +4995,37 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>125</posy>
+						<posy>120</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>151</posy>
+						<posy>140</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
+						<font>Font_Reg17</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>170</posy>
+						<posy>160</posy>
 						<width>200</width>
 						<height>25</height>
+						<font>Font_Reg17</font>
+						<textcolor>grey2</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<textcolor>grey2</textcolor>
-						<font>font12</font>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -4917,7 +5063,7 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
+							<font>Font_Reg19</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
@@ -4936,39 +5082,37 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>125</posy>
+						<posy>120</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg17</font>
+						<textcolor>white3</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label2</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>151</posy>
+						<posy>140</posy>
 						<width>200</width>
 						<height>25</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg17</font>
+						<textcolor>white3</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>170</posy>
+						<posy>160</posy>
 						<width>200</width>
 						<height>25</height>
+						<font>Font_Reg17</font>
+						<textcolor>white3</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<textcolor>white</textcolor>
-						<font>font12</font>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -5005,28 +5149,28 @@
 							<height>40</height>
 							<align>left</align>
 							<aligny>center</aligny>
-							<font>font12</font>
-							<textcolor>white</textcolor>
+							<font>Font_Reg19</font>
+							<textcolor>white3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003411">
-				<posx>1175</posx>
+				<posx>1220</posx>
 				<posy>100</posy>
 				<width>25</width>
 				<height>550</height>
-	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<onleft>1003410</onleft>
-				<onright>3300100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+				<onleft>1003410</onleft>
+				<onright>3300100</onright>
 			</control>
 		</control>
 	</include>
@@ -5170,7 +5314,7 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
+							<textcolor>white3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
@@ -5178,7 +5322,7 @@
 			</control>
 			<control type="scrollbar" id="1003421">
 				<posx>180</posx>
-				<posy>480</posy>
+				<posy>490</posy>
 				<width>880</width>
 				<height>25</height>
 	            <texturesliderbackground>views/scrollbarbacklist2.png</texturesliderbackground>
@@ -5201,7 +5345,7 @@
 			<control type="label">
 				<width>1035</width>
 				<font>Font_Reg25</font>
-				<textcolor>white</textcolor>
+				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<align>center</align>
@@ -5212,7 +5356,7 @@
 				<posy>40</posy>
 				<width>1035</width>
 				<font>Font_Reg19</font>
-				<textcolor>white</textcolor>
+				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<align>center</align>
@@ -5223,7 +5367,7 @@
 				<posy>62</posy>
 				<width>1035</width>
 				<font>Font_Reg19</font>
-				<textcolor>white</textcolor>
+				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<scroll>true</scroll>
 				<align>center</align>
@@ -5233,13 +5377,12 @@
 			</control>
 			<!-- NetVolume -->
 			<control type="label">
-				<posy>80</posy>
+				<posy>84</posy>
 				<width>1035</width>
-				<height>40</height>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>Font_Reg19</font>
-				<textcolor>white</textcolor>
+				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>($INFO[Container(1003420).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003420).ListItem(0).Property(iNetVolumeName)]</label>
 				<visible>substring(Container(1003420).ListItem(0).Property(RecNetVolume),true)</visible>
@@ -5385,7 +5528,7 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>Font_Reg19</font>
-							<textcolor>white</textcolor>
+							<textcolor>white3</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
@@ -5397,7 +5540,7 @@
 				<control type="label">
 					<width>770</width>
 					<font>Font_Reg25</font>
-					<textcolor>white</textcolor>
+					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<scroll>true</scroll>
 					<align>center</align>
@@ -5408,7 +5551,7 @@
 					<posy>30</posy>
 					<width>770</width>
 					<font>Font_Reg19</font>
-					<textcolor>white</textcolor>
+					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<scroll>true</scroll>
 					<align>center</align>
@@ -5422,7 +5565,7 @@
 					<align>center</align>
 					<aligny>center</aligny>
 					<font>Font_Reg19</font>
-					<textcolor>white</textcolor>
+					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<label>($INFO[Container(1003430).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003430).ListItem(0).Property(iNetVolumeName)]</label>
 					<visible>substring(Container(1003430).ListItem(0).Property(RecNetVolume),true)</visible>
@@ -5452,7 +5595,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
 			<control type="list" id="1003500">
-				<posx>75</posx>
+				<posx>46</posx>
 				<posy>115</posy>
 				<width>1200</width>
 				<height>520</height>
@@ -5463,15 +5606,15 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003501</pagecontrol>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="40" width="610">
+				<itemlayout height="40" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
-					<!-- Running Recording Icon -->
+					<!-- Recording Icon -->
 					<control type="image">
 						<posx>20</posx>
 						<posy>8</posy>
@@ -5480,7 +5623,7 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
-					<!-- Schedule Recording Icon -->
+					<!-- Timer Icon -->
 					<control type="image">
 						<posx>20</posx>
 						<posy>8</posy>
@@ -5489,7 +5632,7 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Schedule ViewTimer Icon -->
+					<!-- ViewTimer Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>13</posy>
@@ -5504,7 +5647,7 @@
 						<posy>0</posy>
 						<width>65</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -5517,7 +5660,7 @@
 						<posy>0</posy>
 						<width>460</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -5527,11 +5670,11 @@
 					</control>
 					<!-- EPG Date -->
 					<control type="label">
-						<posx>700</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>180</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -5540,11 +5683,11 @@
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 				</itemlayout>
-				<focusedlayout height="40" width="610">
+				<focusedlayout height="40" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>778</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(1003500)</visible>
@@ -5553,14 +5696,12 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>41</height>
-						<!--texture border="0,2,0,2">MenuItemFO.png</texture>
-						<include>DefaultVisibleFadeEffect</include-->
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 					</control>
-					<!-- Running Recording Icon -->
+					<!-- Recording Icon -->
 					<control type="image">
 						<posx>20</posx>
 						<posy>8</posy>
@@ -5569,7 +5710,7 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
-					<!-- Schedule Recording Icon -->
+					<!-- Timer Icon -->
 					<control type="image">
 						<posx>20</posx>
 						<posy>8</posy>
@@ -5578,7 +5719,7 @@
 						<texture>IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Schedule ViewTimer Icon -->
+					<!-- ViewTimer Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>13</posy>
@@ -5593,7 +5734,7 @@
 						<posy>0</posy>
 						<width>65</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -5606,7 +5747,7 @@
 						<posy>0</posy>
 						<width>460</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
@@ -5616,11 +5757,11 @@
 					</control>
 					<!-- EPG Date -->
 					<control type="label">
-						<posx>700</posx>
+						<posx>740</posx>
 						<posy>0</posy>
 						<width>180</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -5631,20 +5772,20 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003501">
-				<posx>808</posx>
+				<posx>812</posx>
 				<posy>105</posy>
 				<width>25</width>
-				<height>545</height>
-	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<height>541</height>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<onleft>1003500</onleft>
-				<onright>3700100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+				<onleft>1003500</onleft>
+				<onright>3700100</onright>
 				<visible>Control.IsVisible(1003500)</visible>
 			</control>		
 			<control type="group">
@@ -5679,7 +5820,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			<control type="list" id="1003510">
-				<posx>50</posx>
+				<posx>46</posx>
 				<posy>95</posy>
 				<width>1225</width>
 				<height>560</height>
@@ -5690,11 +5831,11 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003511</pagecontrol>
 				<scrolltime>0</scrolltime>
-				<itemlayout height="70" width="635">
+				<itemlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>755</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
@@ -5745,9 +5886,8 @@
 						<posy>5</posy>
 						<width>475</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -5758,9 +5898,8 @@
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
@@ -5771,9 +5910,8 @@
 						<posy>30</posy>
 						<width>475</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5781,20 +5919,19 @@
 					</control>
 					<!-- Progress Bar -->
 					<control type="progress" >
-						<description>EPG progress control</description>
-						<posx>612</posx>
+						<posx>645</posx>
 						<posy>45</posy>
-						<width>130</width>
+						<width>100</width>
 						<height>14</height>
 						<progress>percent</progress>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="635">
+				<focusedlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>745</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(1003510)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)]</visible>
@@ -5803,12 +5940,12 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>755</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 					</control>
-					<!-- Running Recording Icon-->
+					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -5817,7 +5954,7 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
-					<!-- Schedule Recording Icon-->
+					<!-- Schedule Recording Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>10</posy>
@@ -5826,7 +5963,7 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Schedule ViewTimer Icon-->
+					<!-- Schedule ViewTimer Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>38</posy>
@@ -5842,7 +5979,7 @@
 						<height>50</height>
 						<texture>Logo_Background.png</texture>
 					</control>
-					<!-- Channel LOGO-->					
+					<!-- Channel LOGO -->					
 					<control type="image">
 						<posx>40</posx>
 						<posy>10</posy>
@@ -5856,22 +5993,20 @@
 						<posy>5</posy>
 						<width>475</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
-					<!-- Start Time  -->
+					<!-- Start Time -->
 					<control type="label">
 						<posx>745</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
@@ -5882,9 +6017,8 @@
 						<posy>30</posy>
 						<width>475</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -5893,9 +6027,9 @@
 					<!-- Progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>612</posx>
+						<posx>645</posx>
 						<posy>45</posy>
-						<width>130</width>
+						<width>100</width>
 						<height>14</height>
 						<progress>percent</progress>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
@@ -5903,20 +6037,20 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003511">
-				<posx>808</posx>
-				<posy>95</posy>
+				<posx>812</posx>
+				<posy>105</posy>
 				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<height>541</height>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-				<onleft>1003510</onleft>
-				<onright>3700100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
+				<onleft>1003510</onleft>
+				<onright>3700100</onright>
 				<visible>Control.IsVisible(1003510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)]</visible>
 			</control>				
 			<control type="group">
@@ -5951,7 +6085,7 @@
 		<control type="group">
 			<visible>substring(Window.Property(TimerMode),true)</visible>
 			<control type="list" id="1003610">
-				<posx>75</posx>
+				<posx>46</posx>
 				<posy>95</posy>
 				<width>1200</width>
 				<height>555</height>
@@ -5962,15 +6096,15 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003611</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="610">
+				<itemlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
-					<!-- Running Recording Icon-->
+					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -5979,7 +6113,7 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
-					<!-- Schedule Recording Icon-->
+					<!-- Schedule Recording Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>10</posy>
@@ -5988,7 +6122,7 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Schedule ViewTimer Icon-->
+					<!-- Schedule ViewTimer Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>38</posy>
@@ -5997,28 +6131,26 @@
 						<texture border="0,2,0,2">IconTimerV.png</texture>
 						<visible>substring(ListItem.Property(ViewTimer),true)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel Name -->
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
 						<width>540</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
-					<!-- start time-->
+					<!-- Start Time -->
 					<control type="label">
-						<posx>720</posx>
+						<posx>740</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
@@ -6029,9 +6161,8 @@
 						<posy>30</posy>
 						<width>540</width>
 						<height>40</height>
-						<font>font13_title</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -6039,24 +6170,23 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>720</posx>
+						<posx>740</posx>
 						<posy>40</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
+						<font>Font_Reg19</font>
 						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(Duration)]</label>
 						<visible>substring(Window.Property(TimerMode),true)</visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
+				<focusedlayout height="70" width="780">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>778</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(1003610) + substring(Window.Property(TimerMode),true)</visible>
@@ -6065,21 +6195,12 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>730</width>
+						<width>778</width>
 						<height>71</height>
-						<!--texture border="0,2,0,2">MenuItemFO.png</texture>
-						<include>DefaultVisibleFadeEffect</include-->
 						<texture border="6">views/tripanel/listselect_fo.png</texture>
 						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 					</control>
-					<!--control type="image">
-						<posx>530</posx>
-						<posy>5</posy>
-						<width>200</width>
-						<height>61</height>
-						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control-->
-					<!-- Running Recording Icon-->
+					<!-- Running Recording Icon -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -6088,7 +6209,7 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
-					<!-- Schedule Recording Icon-->
+					<!-- Schedule Recording Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>10</posy>
@@ -6097,7 +6218,7 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
-					<!-- Schedule ViewTimer Icon-->
+					<!-- Schedule ViewTimer Icon -->
 					<control type="image">
 						<posx>8</posx>
 						<posy>38</posy>
@@ -6106,28 +6227,26 @@
 						<texture border="0,2,0,2">IconTimerV.png</texture>
 						<visible>substring(ListItem.Property(ViewTimer),true)</visible>
 					</control>
-					<!-- Channel Name-->
+					<!-- Channel Name -->
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
 						<width>540</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
-					<!-- start time  -->
+					<!-- Start Time -->
 					<control type="label">
-						<posx>720</posx>
+						<posx>740</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
@@ -6138,9 +6257,8 @@
 						<posy>30</posy>
 						<width>540</width>
 						<height>40</height>
-						<font>font13_title</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -6148,13 +6266,12 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>720</posx>
+						<posx>740</posx>
 						<posy>40</posy>
 						<width>210</width>
 						<height>30</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>Font_Reg19</font>
+						<textcolor>white3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(Duration)]</label>
@@ -6163,16 +6280,18 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="1003611">
-				<posx>808</posx>
-				<posy>95</posy>
+				<posx>812</posx>
+				<posy>105</posy>
 				<width>25</width>
-				<height>565</height>
-	            <texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<height>541</height>
+	            <texturesliderbackground>-</texturesliderbackground>
 				<texturesliderbar>-</texturesliderbar>
 				<texturesliderbarfocus>-</texturesliderbarfocus>
 				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
 				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 				<colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
 				<onleft>1003610</onleft>
 				<onright>4000100</onright>
 				<showonepage>false</showonepage>
@@ -6227,8 +6346,8 @@
 
 	<include name="DefaultInfoPlateGroup">
 		<control type="grouplist" id="1003620">
-			<posx>325</posx>
-			<posy>-35</posy>
+			<posx>315</posx>
+			<posy>-95</posy>
 			<width>380</width>
 			<height>40</height>
 			<itemgap>0</itemgap>
@@ -6491,7 +6610,7 @@
 
 	<include name="DefaultSelectGroup">
 		<control type="list" id="1003960">
-			<posx>20</posx>
+			<posx>25</posx>
 			<posy>67</posy>
 			<width>480</width>
 			<height>414</height>
@@ -6513,7 +6632,7 @@
 					<height>40</height>
 					<texture border="5">button-nofocus.png</texture>
 				</control>
-				<!-- is fastScan? -->
+				<!-- FastScan Channel -->
 				<control type="image">
 					<posx>440</posx>
 					<posy>12</posy>
@@ -6527,7 +6646,7 @@
 					<posy>0</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6547,9 +6666,11 @@
 					<posy>0</posy>
 					<width>480</width>
 					<height>40</height>
-					<texture border="5">button-focus2.png</texture>
+					<texture border="6">views/tripanel/listselect_fo.png</texture>
+					<texturenofocus>-</texturenofocus>
+					<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				</control>
-				<!-- is fastScan? -->
+				<!-- FastScan Channel -->
 				<control type="image">
 					<posx>440</posx>
 					<posy>12</posy>
@@ -6563,7 +6684,7 @@
 					<posy>0</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -6676,7 +6797,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6689,7 +6810,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6702,7 +6823,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6714,7 +6835,7 @@
 					<posy>0</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6796,7 +6917,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -6809,7 +6930,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -6823,7 +6944,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -6836,7 +6957,7 @@
 					<posy>0</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -6863,6 +6984,23 @@
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
 		</control>
+	</include>
+
+	<include name="Objects_SingleKeyOff_720">
+		<width>68</width>
+		<height>68</height>
+		<texturefocus>keyboard/keyboard_singlef.png</texturefocus>
+		<texturenofocus>keyboard/keyboard_singlenf.png</texturenofocus>
+		<include>Objects_KeyOffVars_720</include>
+	</include>
+
+	<include name="Objects_KeyOffVars_720">
+		<textcolor>grey2</textcolor>
+		<selectedcolor>grey2</selectedcolor>
+		<align>center</align>
+		<aligny>center</aligny>
+		<textoffsety>22</textoffsety>
+		<font>Font_Reg19</font>
 	</include>
 
 	<include name="DefaultHeaderTitle">

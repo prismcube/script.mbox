@@ -7,20 +7,22 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
             <include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
 				<height>400</height>
-				<texture border="40">DialogBack.png</texture>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>10</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
 				<posy>0</posy>
 				<include>DialogInput03</include>
 				<include>DialogInput02</include>
-
 				<control type="image">
 					<posx>0</posx>
 					<posy>152</posy>
@@ -34,7 +36,6 @@
 					<include>DialogInput05</include>
 					<include>DialogInput06</include>
 					<include>DialogSpinEx02</include>
-					<!--include>DialogInput04</include-->
 					<control type="group">
 						<posx>0</posx>
 						<posy>272</posy>
@@ -42,13 +43,10 @@
 							<posx>0</posx>
 							<posy>0</posy>
 							<control type="progress" id="301">
-								<description>Progressbar</description>
 								<posx>0</posx>
 								<posy>15</posy>
 								<width>100</width>
 								<height>16</height>
-								<!--texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture-->
 							</control>
 							<control type="label" id="302">
 								<posx>105</posx>
@@ -59,7 +57,7 @@
 								<aligny>center</aligny>
 								<label>$INFO[Window.Property(NetVolumeUse)]</label>
 								<textcolor>grey3</textcolor>
-								<font>font12</font>
+								<font>Font_Reg19</font>
 							</control>
 							<control type="image">
 								<posx>-30</posx>
@@ -79,7 +77,6 @@
 							</control>
 						</control>
 					</control>
-
 					<control type="group">
 						<posx>0</posx>
 						<posy>40</posy>
