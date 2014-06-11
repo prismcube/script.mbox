@@ -357,6 +357,11 @@ class NullWindow( BaseWindow ) :
 		#HBBTV
 		elif actionId == Action.ACTION_COLOR_RED :
 			LOG_TRACE( 'RED KEY' )
+			if os.path.exists( '/mtmp/crossepg_running' ) :
+				mHead = MR_LANG( 'While downloading EPG data' )
+				mLine = MR_LANG( 'Not allowed operation' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+				return
 			self.HbbTV_ShowBrowser( )
 
 
