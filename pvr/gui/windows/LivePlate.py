@@ -1171,6 +1171,10 @@ class LivePlate( LivePlateWindow ) :
 				if isConfiguration :
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+					return
+
+				self.mIsShowDialog = False
+				self.RestartAutomaticHide( )
 				return
 
 			status = self.mDataCache.Player_GetStatus( )

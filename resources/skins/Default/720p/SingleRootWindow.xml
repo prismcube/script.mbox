@@ -2034,7 +2034,7 @@ Search for window name
 								<width>18</width>
 								<height>18</height>
 								<texture>HomeHasSub.png</texture>
-								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus | Control.HasFocus(1300103)] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
