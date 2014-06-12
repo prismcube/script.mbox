@@ -14,7 +14,7 @@ class ElmoEpgService( Webinterface ) :
 		ref = self.unMakeRef( self.params['sRef'] )
 		self.gmtFrom = self.mDataCache.Datetime_GetLocalTime()
 		self.gmtUntil = self.gmtFrom + ( 3600 * 24 * 7 )
-		self.maxCount = 100
+		self.maxCount = 300
 
 		self.epgList = self.mCommander.Epgevent_GetList( ref['sid'], ref['tsid'], ref['onid'], self.gmtFrom, self.gmtUntil, self.maxCount );
 	
@@ -36,10 +36,10 @@ class ElmoEpgService( Webinterface ) :
 				xmlStr += '<e2eventdescription>' + escape( row.mEventDescription ) +'</e2eventdescription>\n'
 				xmlStr += '<e2eventdescriptionextended></e2eventdescriptionextended>\n'
 				xmlStr += '<e2eventservicereference>' + self.params['sRef'] + '</e2eventservicereference>\n'
-				xmlStr += '<e2eventservicename>' + row.mEventName +'</e2eventservicename>\n'
+				xmlStr += '<e2eventservicename>' + escape(row.mEventName) +'</e2eventservicename>\n'
 				xmlStr += '</e2event>\n'
 
-				print xmlStr
+				# print xmlStr
 
 		xmlStr += '</e2eventlist>\n'
 
