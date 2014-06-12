@@ -1,0 +1,204 @@
+<window id="3025">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>90</posx>
+			<posy>50</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>640</height>
+				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>30</posx>
+				<posy>15</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
+			</control>
+			<control type="list" id="9000">
+				<hitrect x="10" y="82" w="260" h="541"></hitrect>
+				<posx>10</posx>
+				<posy>82</posy>
+				<width>260</width>
+				<height>541</height>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<itemlayout height="54" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>55</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>245</posx>
+						<posy>0</posy>
+						<width>230</width>
+						<height>55</height>
+						<font>font13_title</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</itemlayout>
+				<focusedlayout height="54" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>55</height>
+						<texture border="5">MenuItemFO.png</texture>
+					</control>
+					<control type="label">
+						<posx>245</posx>
+						<posy>0</posy>
+						<width>230</width>
+						<height>55</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<posx>269</posx>
+				<posy>14</posy>
+				<width>802</width>
+				<height>45</height>
+				<texture border="5">black-back2.png</texture>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>15</posy>
+				<width>804</width>
+				<height>68</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="label">
+				<description>header label</description>
+				<posx>300</posx>
+				<posy>25</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font14</font>
+				<label>SCRIPT1031</label>				
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="image">
+				<posx>270</posx>
+				<posy>60</posy>
+				<width>800</width>
+				<height>450</height>
+				<texture border="5">button-nofocus.png</texture>
+			</control>
+			<control type="image">
+				<posx>272</posx>
+				<posy>62</posy>
+				<width>600</width>
+				<height>340</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassOverlay.png</texture>
+				<colordiffuse>AAFFFFFF</colordiffuse>
+			</control>
+			<control type="image">
+				<posx>269</posx>
+				<posy>510</posy>
+				<width>802</width>
+				<height>116</height>
+				<texture border="5">black-back2.png</texture>
+			</control>
+			<control type="label">
+				<description>Appearance Description</description>
+				<posx>300</posx>
+				<posy>520</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font12caps</font>
+				<label>$INFO[Container(9000).ListItem.Label]</label>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="textbox">
+				<description>Appearance Description</description>
+				<posx>300</posx>
+				<posy>558</posy>
+				<width>740</width>
+				<height>100</height>
+				<font>font12</font>
+				<label>$INFO[Container(9000).ListItem.Label2]</label>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+		</control>
+		<control type="image" id="8800">
+			<posx>362</posx>
+			<posy>112</posy>
+			<width>797</width>
+			<height>446</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
+		<control type="image" id="8899">
+			<posx>362</posx>
+			<posy>112</posy>
+			<width>798</width>
+			<height>446</height>
+			<texture>video_pig_overlay.png</texture>
+			<visible>!Control.IsVisible(8800)</visible>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+		</control>
+		<control type="group">
+			<include>DefaultWindowFade</include>
+			<control type="label">
+				<posx>810</posx>
+				<posy>310</posy>
+				<width>200</width>
+				<height>40</height>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<font>font13_title</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),False)</visible>
+			</control>
+			<control type="label">
+				<posx>810</posx>
+				<posy>310</posy>
+				<width>200</width>
+				<height>40</height>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<font>font13_title</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),Scramble)</visible>
+			</control>
+		</control>
+	</controls>
+</window>

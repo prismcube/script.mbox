@@ -1,0 +1,45 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>400</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<include>DialogInput01</include>
+				<control type="image">
+					<posx>0</posx>
+					<posy>122</posy>
+					<width>510</width>
+					<height>3</height>
+					<texture>separator2.png</texture>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogInput02</include>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogSpinEx01</include>
+					<include>DialogSpinEx02</include>
+					<include>DialogSpinEx03</include>
+					<include>DialogSpinEx04</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+

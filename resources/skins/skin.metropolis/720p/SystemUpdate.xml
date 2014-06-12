@@ -1,0 +1,162 @@
+<window id="3033">
+	<defaultcontrol always="false">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>80</posx>
+			<posy>110</posy>
+			<animation condition="Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+				<effect type="fade" start="100" end="0" time="300" />
+			</animation>
+			<animation condition="!Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingMainWindow</include>
+			<control type="group" id="9000">
+				<posy>10</posy>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+			</control>
+			<control type="group">
+				<posx>0</posx>
+				<posy>90</posy>
+				<visible>substring(Window.Property(ShowProgress),true)</visible>
+				<control type="progress" id="51">
+					<posx>0</posx>
+					<posy>15</posy>
+					<width>300</width>
+					<height>15</height>
+					<color>grey</color>
+					<border>0</border>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+				</control>
+				<control type="label" id="52">
+					<posx>310</posx>
+					<posy>5</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>780</posx>
+				<posy>260</posy>
+				<control type="textbox">
+					  <posx>0</posx>
+					  <posy>0</posy>
+					  <width>300</width>
+					  <height>200</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font13</font>
+					  <textcolor>grey</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					  <label>$INFO[Window.Property(CurrentDescription)]</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>10</posx>
+				<posy>160</posy>
+				<animation condition="Control.IsVisible(98)" type="Conditional" reversible="false">
+					<effect type="zoom" start="80" end="100" easing="out" tween="back" time="400" />
+					<effect type="fade" start="0" end="100" time="400" />
+				</animation>
+				<control type="image" id="98">
+					<posx>-10</posx>
+					<posy>-10</posy>
+					<width>745</width>
+					<height>380</height>
+					<texture>DialogBack.png</texture>
+					<visible>substring(Window.Property(VersionInfo),true)</visible>
+				</control>
+				<control type="label" id="99">
+					<posx>50</posx>
+					<posy>15</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="100">
+					<posx>50</posx>
+					<posy>50</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="101">
+					<posx>50</posx>
+					<posy>75</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="102">
+					<posx>50</posx>
+					<posy>100</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label">
+					<posx>50</posx>
+					<posy>125</posy>
+					<font>font13_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<label>$INFO[Window.Property(DescriptionTitle)]</label>
+				</control>
+				<control type="textbox" id="103">
+					  <posx>55</posx>
+					  <posy>150</posy>
+					  <width>680</width>
+					  <height>210</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font12</font>
+					  <textcolor>grey3</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					  <label>$INFO[Window.Property(UpdateDescription)]</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>10</posx>
+				<posy>540</posy>
+				<visible>substring(Window.Property(ShowInfoLabel),true)</visible>
+				<control type="image">
+					<width>30</width>
+					<height>30</height>
+					<texture>OSDIconInfo.png</texture>
+				</control>
+				<control type="label">
+					<posx>40</posx>
+					<posy>2</posy>
+					<font>font12_title</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<width>700</width>
+					<label>SCRIPT1090</label>
+				</control>
+			</control>
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+		<include>DefaultFakeButton</include>
+
+	</controls>
+</window>
+

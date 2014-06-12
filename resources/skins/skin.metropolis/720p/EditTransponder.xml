@@ -1,0 +1,27 @@
+<window id="3022">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group" id="9000">
+			<posx>80</posx>
+			<posy>110</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingMainWindow</include>
+			<control type="group">
+				<posy>10</posy>
+				<include>SpinEx01</include>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include>
+				<include>Input06</include>
+				<include>Input07</include>
+				<include>Input08</include>
+			</control>
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+	</controls>
+</window>
+

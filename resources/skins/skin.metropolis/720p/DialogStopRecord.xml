@@ -1,0 +1,197 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>335</posx>
+			<posy>90</posy>
+            <!--include>DefaultDialogCloseEffect</include-->
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>310</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="group">
+				<posy>100</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+		</control>
+
+		<control type="grouplist" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<onleft>9000</onleft>
+			<itemgap>0</itemgap>
+			<posx>365</posx>
+			<posy>270</posy>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<defaultcontrol always="true">500</defaultcontrol>
+			
+			<!-- RECORD 1 -->
+			<control type="group" id="500">		
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>70</height>
+				<visible>true</visible>				
+				<defaultcontrol always="true">501</defaultcontrol>
+				<control type="button" id="501">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+					<onleft></onleft>
+					<onright></onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(501)</visible>
+				</control>
+				<control type="label" id="502">
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="503">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="504">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1024</label>
+				</control>
+				<control type="progress" id="505" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+				</control>					
+			</control>
+
+			<!-- RECORD 2 -->			
+			<control type="group" id="510">		
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>70</height>
+				<defaultcontrol always="true">511</defaultcontrol>
+				<control type="button" id="511">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+					<onleft></onleft>
+					<onright></onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(511)</visible>
+				</control>
+				<control type="label" id="512">
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="513">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="514">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>SCRIPT1024</label>
+				</control>
+				<control type="progress" id="515" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+				</control>					
+			</control>
+			
+			<!-- CANCEL -->			
+			<control type="group" id="520">		
+				<posx>0</posx>
+				<posy>70</posy>
+				<width>550</width>
+				<height>70</height>
+				<control type="button" id="521">
+					<description>Yes button</description>
+					<posx>160</posx>
+					<posy>17</posy>				
+					<width>250</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<align>center</align>
+					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+
+

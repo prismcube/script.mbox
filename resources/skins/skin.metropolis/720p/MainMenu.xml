@@ -1,0 +1,474 @@
+<window id="3002">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<include>DefaultCommonTime</include>
+		<include>DefaultCommonDate</include>
+		<control type="image">
+			<posx>0</posx>
+			<posy>70r</posy>
+			<width>1280</width>
+			<height>90</height>
+			<texture>floor.png</texture>
+			<animation effect="fade" time="250">WindowOpen</animation>
+			<animation effect="fade" time="250">WindowClose</animation>
+		</control>
+		<control type="image">
+			<description>LOGO</description>
+			<posx>20</posx>
+			<posy>5</posy>
+			<width>170</width>
+			<height>100</height>
+			<aspectratio aligny="top" align="left">keep</aspectratio>
+			<texture>Prismcube_Logo.png</texture>
+			<include>DefaultVisibleFadeEffect</include>
+			<include>DefaultWindowOpenCloseAnimation</include>
+		</control>
+
+		<!-- Sub Menu -->
+		<control type="group">
+			<posy>400</posy>
+			<animation type="WindowOpen" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+				<effect type="fade" start="100" end="0" time="300" />
+			</animation>
+			<control type="group" id="9001">
+				<posx>0</posx>
+				<posy>70</posy>
+				<onup>9000</onup>
+				<ondown>101</ondown>
+
+				<!-- Install Sub -->
+				<control type="grouplist" id="9010">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
+					<height>35</height>
+					<align>center</align>
+					<onup>9000</onup>
+					<ondown>101</ondown>
+					<itemgap>0</itemgap>
+					<orientation>Horizontal</orientation>
+					<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+					<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<visible>Container(9000).HasFocus(1)</visible>
+					<control type="image" id="90001">
+						<width>35</width>
+						<height>35</height>
+						<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+					</control>
+					<control type="button" id="90101">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1050</label>
+					</control>
+					<control type="button" id="90102">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1051</label>
+					</control>
+					<control type="button" id="90103">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1052</label>
+					</control>
+					<control type="button" id="90104">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1053</label>
+					</control>
+					<control type="button" id="90105">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1054</label>
+					</control>
+					<control type="button" id="90106">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1055</label>
+					</control>
+					<control type="button" id="90107">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1056</label>
+					</control>
+					<control type="button" id="90108">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1103</label>
+					</control>
+					<control type="image" id="90109">
+						<width>35</width>
+						<height>35</height>
+						<texture border="0,0,0,3">HomeSubEnd.png</texture>
+					</control>
+				</control>
+				
+				<!-- Media center Sub-->
+				<control type="grouplist" id="9016">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1280</width>
+					<height>35</height>
+					<align>center</align>
+					<onup>9000</onup>
+					<ondown>101</ondown>
+					<itemgap>0</itemgap>
+					<orientation>Horizontal</orientation>
+					<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
+					<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
+					<onleft>9016</onleft>
+					<onright>9016</onright>
+					<visible>Container(9000).HasFocus(6)</visible>
+					<control type="image" id="90002">
+						<width>35</width>
+						<height>35</height>
+						<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
+					</control>
+					<control type="button" id="90601">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1057</label>
+						<!--onclick>ActivateWindow(Weather)</onclick-->
+					</control>
+					<control type="button" id="90602">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1058</label>
+						<!--onclick>ActivateWindow(Pictures)</onclick-->
+					</control>
+					<control type="button" id="90603">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1059</label>
+						<!--onclick>ActivateWindow(Music)</onclick-->
+					</control>
+					<control type="button" id="90604">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1060</label>
+						<!--onclick>ActivateWindow(Videos)</onclick-->
+					</control>
+					<control type="button" id="90605">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1061</label>
+						<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
+					</control>
+					<control type="button" id="90606">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1062</label>
+						<!--onclick>ActivateWindow(Settings)</onclick-->
+					</control>
+					<control type="button" id="90607">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1063</label>
+						<!--onclick>ActivateWindow(FileManager)</onclick-->
+					</control>
+					<control type="button" id="90608">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1064</label>
+						<!--onclick>ActivateWindow(Profiles)</onclick-->
+						<visible>False</visible>
+					</control>
+					<control type="button" id="90609">
+						<include>ButtonHomeSubCommonValues</include>
+						<label>SCRIPT1065</label>
+						<!--onclick>ActivateWindow(SystemInfo)</onclick-->
+					</control>
+					<control type="image" id="90610">
+						<width>35</width>
+						<height>35</height>
+						<texture border="0,0,0,3">HomeSubEnd.png</texture>
+					</control>
+				</control>
+			</control>
+
+			<!-- Main List -->
+			<control type="image">
+				<posx>-100</posx>
+				<posy>0</posy>
+				<width>1480</width>
+				<height>75</height>
+				<texture border="0,6,0,6">HomeBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>1280</width>
+				<height>6</height>
+				<texture>HomeOverlay1.png</texture>
+			</control>
+			<control type="fixedlist" id="9000">
+				<posx>-110</posx>
+				<posy>5</posy>
+				<width>1500</width>
+				<height>60</height>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>101</onup>
+				<ondown condition="Control.IsVisible(9001)">9001</ondown>
+				<ondown condition="!Control.IsVisible(9001)">101</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>2</focusposition>
+				<movement>1</movement>
+				<orientation>Horizontal</orientation>
+				<itemlayout height="60" width="300">
+					<control type="image">
+						<posx>0</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="image">
+						<posx>299</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>290</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>grey3</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="60" width="300">
+					<control type="image">
+						<posx>0</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="image">
+						<posx>299</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>290</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>grey3</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>290</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>blue</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.HasFocus(9000)</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+				</focusedlayout>
+				<content>
+					<item id="1">
+						<label>SCRIPT1073</label>
+						<label2>SCRIPT1066</label2>
+						<onclick>SendClick(90100)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="2">
+						<label>SCRIPT1043</label>
+						<label2>SCRIPT1067</label2>
+						<onclick>SendClick(90200)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="3">
+						<label>SCRIPT1044</label>
+						<label2>SCRIPT1068</label2>
+						<onclick>SendClick(90300)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="4">
+						<label>SCRIPT1074</label>
+						<label2>SCRIPT1069</label2>
+						<onclick>SendClick(90400)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="5">
+						<label>SCRIPT1075</label>
+						<label2>SCRIPT1110</label2>
+						<onclick>SendClick(90500)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="6">
+						<label>SCRIPT1076</label>
+						<label2>SCRIPT1070</label2>
+						<onclick>SendClick(90600)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="7">
+						<label>SCRIPT1048</label>
+						<label2>SCRIPT1071</label2>
+						<onclick>SendClick(90700)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="8">
+						<label>SCRIPT1049</label>
+						<label2>SCRIPT1072</label2>
+						<onclick>SendClick(90800)</onclick>
+						<visible>true</visible>
+					</item>
+				</content>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>6</posy>
+				<width>128</width>
+				<height>50</height>
+				<texture>SideFade.png</texture>
+			</control>
+			<control type="image">
+				<posx>128r</posx>
+				<posy>6</posy>
+				<width>128</width>
+				<height>60</height>
+				<texture flipx="true">SideFade.png</texture>
+			</control>
+		</control>
+
+		<!-- RSS and Description -->
+		<control type="group">
+			<posx>0</posx>
+			<posy>33r</posy>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<control type="label">
+				<description>MainMenuDescription</description>
+				<visible>Control.HasFocus(9000)</visible>
+				<posx>1250</posx>
+				<posy>-27</posy>
+				<width>1145</width>
+				<height>30</height>
+				<font>font12</font>
+				<label>$INFO[Container(9000).ListItem.Label2]</label>
+				<align>right</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="100">
+				<description>MainMenuDescription</description>
+				<visible>!Control.HasFocus(9000)</visible>
+				<posx>1250</posx>
+				<posy>-27</posy>
+				<width>1145</width>
+				<height>30</height>
+				<font>font12</font>
+				<align>right</align>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="rss">
+				<description>RSS feed</description>
+				<posx>100</posx>
+				<posy>0</posy>
+				<height>30</height>
+				<width>1145</width>
+				<font>font12</font>
+				<urlset>1</urlset>
+				<textcolor>blue</textcolor>
+				<titlecolor>blue</titlecolor>
+				<headlinecolor>white</headlinecolor>
+				<visible>substring(Window.Property(RssShow),True)</visible>
+			</control> 
+			<control type="image">
+				<description>RSS background</description>
+				<posx>1250</posx>
+				<posy>2</posy>
+				<width>24</width>
+				<height>24</height>
+				<texture>icon-rss.png</texture>
+				<visible>substring(Window.Property(RssShow),True)</visible>
+			</control>
+		</control>
+
+		<!-- Favorite addons -->
+		<control type="group">
+			<posx>20</posx>
+			<posy>55r</posy>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<control type="button" id="101">
+				<description>Favourites push button</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>45</width>
+				<height>45</height>
+				<label>1036</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<onclick>SendClick(90500)</onclick>
+				<texturefocus border="5">floor_buttonFO.png</texturefocus>
+				<texturenofocus border="5">floor_button.png</texturenofocus>
+				<onleft>101</onleft>
+				<onright>101</onright>
+				<onup condition="Control.IsVisible(9001)">9001</onup>
+				<onup condition="!Control.IsVisible(9001)">9000</onup>
+				<ondown>9000</ondown>
+			</control>
+			<control type="image">
+				<description>Favourites Icon</description>
+				<posx>5</posx>
+				<posy>5</posy>
+				<width>35</width>
+				<height>35</height>
+				<aspectratio>keep</aspectratio>
+				<texture>icon_favourites.png</texture>
+			</control>
+		</control>
+
+		<!-- Menu Fake Buttons -->
+		<control type="button" id="90100">
+			<label>Install</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90200">
+			<label>Archive</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90300">
+			<label>EPG</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90400">
+			<label>Channel</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90500">
+			<label>Addons</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90600">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90700">
+			<label>Version</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90800">
+			<label>Help</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+	</controls>
+</window>
+

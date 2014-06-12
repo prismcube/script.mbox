@@ -1,0 +1,47 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>440</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<include>DialogInput01</include>
+				<include>DialogInput02</include>
+				<include>DialogInput03</include>
+				<include>DialogInput04</include>
+				<include>DialogInput05</include>
+				<include>DialogInput06</include>
+				<include>DialogInput07</include>
+				<include>DialogInput08</include>
+				<include>DialogInput09</include>
+				<include>DialogSpinEx01</include>
+				<include>DialogSpinEx02</include>
+				<include>DialogSpinEx03</include>
+				<include>DialogSpinEx04</include>
+
+				<!--include>SpinEx01</include>
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>SpinEx05</include>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include-->
+			</control>
+		</control>
+	</controls>
+</window>
+

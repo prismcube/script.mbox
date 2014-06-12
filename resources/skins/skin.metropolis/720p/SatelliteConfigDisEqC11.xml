@@ -1,0 +1,20 @@
+<window id="3015">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group" id="9000">
+			<posx>80</posx>
+			<posy>110</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingMainWindow</include>
+			<include>DefaultSatelliteConfigGroup</include>
+			<control type="group">
+				<posy>10</posy>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
+			</control>
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+	</controls>
+</window>

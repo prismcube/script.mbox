@@ -1,0 +1,38 @@
+<window id="3029">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<onload>SetProperty(IsFTI,True)</onload>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group" id="9000">
+			<animation condition="Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+				<effect type="fade" start="100" end="0" time="300" />
+			</animation>
+			<animation condition="!Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<posx>80</posx>
+			<posy>110</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingMainWindow</include>
+			<control type="group">
+				<posy>10</posy>
+				<include>SpinEx01</include>
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
+			</control>
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+		<include>DefaultFakeButton</include>
+	</controls>
+</window>

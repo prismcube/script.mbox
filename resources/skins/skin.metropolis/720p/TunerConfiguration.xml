@@ -1,0 +1,128 @@
+<window id="3007">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>80</posx>
+			<posy>110</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<control type="group">
+				<posx>-40</posx>
+				<posy>-50</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1200</width>
+					<height>640</height>
+					<texture border="20">DialogBack.png</texture>
+				</control>
+				<control type="image">
+					<posx>29</posx>
+					<posy>16</posy>
+					<width>770</width>
+					<height>608</height>
+					<texture border="5">black-back2.png</texture>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>13</posy>
+					<width>801</width>
+					<height>100</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>GlassTitleBar.png</texture>
+				</control>
+				<control type="image">
+					<description>LOGO</description>
+					<posx>887</posx>
+					<posy>15</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>Confluence_Logo.png</texture>
+				</control>
+				<control type="label" id="1002">
+					<description>header label</description>
+					<posx>50</posx>
+					<posy>20</posy>
+					<width>740</width>
+					<height>30</height>
+					<font>font14</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+					<control type="label" id="1003">
+					<posx>60</posx>
+					<posy>62</posy>
+					<width>700</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>blue</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<scrollspeed>100</scrollspeed>
+					<scrollsuffix>  |  </scrollsuffix>
+				</control>
+			</control>
+			<control type="list" id="9000">
+				<posx>0</posx>
+				<posy>58</posy>
+				<width>750</width>
+				<height>450</height>
+				<itemgap>0</itemgap>
+				<onup>7001</onup>
+				<ondown>7003</ondown>
+				<itemlayout height="40" width="720">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>750</width>
+						<height>40</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>680</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="720">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>750</width>
+						<height>40</height>
+						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>680</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="group">
+				<posy>10</posy>
+				<include>DefaultFirstTimeInstallationButton</include>
+				<include>DefaultFirstTimeInstallationStepImage</include>
+			</control>
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+	</controls>
+</window>

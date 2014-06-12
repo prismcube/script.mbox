@@ -1,0 +1,848 @@
+<window id="3026">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
+		</control>
+		<include>DefaultCommonTime</include>
+		<control type="image">
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<description>Section header image</description>
+			<posx>20</posx>
+			<posy>3</posy>
+			<width>35</width>
+			<height>35</height>
+			<aspectratio>keep</aspectratio>
+			<texture>icon_video.png</texture>
+		</control>
+		<control type="label">
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<posx>65</posx>
+			<posy>5</posy>
+			<width min="0" max="800">auto</width>
+			<height>30</height>
+			<font>font14</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<scroll>false</scroll>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>SCRIPT1047</label>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>70r</posy>
+			<width>1280</width>
+			<height>90</height>
+			<texture>floor.png</texture>
+			<animation effect="fade" time="250">WindowOpen</animation>
+			<animation effect="fade" time="250">WindowClose</animation>
+		</control>
+		<control type="group">
+			<posy>400</posy>
+			<animation type="WindowOpen" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+				<effect type="fade" start="100" end="0" time="300" />
+			</animation>
+			<control type="image">
+				<posx>-100</posx>
+				<posy>0</posy>
+				<width>1480</width>
+				<height>75</height>
+				<texture border="0,6,0,6">HomeBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>1280</width>
+				<height>6</height>
+				<texture>HomeOverlay1.png</texture>
+			</control>
+			<control type="fixedlist" id="9000">
+				<posx>-110</posx>
+				<posy>5</posy>
+				<width>1500</width>
+				<height>60</height>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>21</onup>
+				<ondown>21</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>2</focusposition>
+				<movement>1</movement>
+				<orientation>Horizontal</orientation>
+				<itemlayout height="60" width="320">
+					<control type="image">
+						<posx>-10</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="image">
+						<posx>309</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>grey3</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="60" width="320">
+					<control type="image">
+						<posx>-10</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="image">
+						<posx>309</posx>
+						<posy>4</posy>
+						<width>1</width>
+						<height>52</height>
+						<texture>HomeSeperator.png</texture>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>grey3</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>60</height>
+						<font>font_MainMenu</font>
+						<textcolor>blue</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.HasFocus(9000)</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+				</focusedlayout>
+				<content>
+					<item id="1">
+						<label>SCRIPT1057</label>
+						<label2>SCRIPT1078</label2>
+						<onclick>ActivateWindow(Weather)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="2">
+						<label>SCRIPT1058</label>
+						<label2>SCRIPT1079</label2>
+						<onclick>ActivateWindow(Pictures)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="3">
+						<label>SCRIPT1059</label>
+						<label2>SCRIPT1081</label2>
+						<onclick>ActivateWindow(Music)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="4">
+						<label>SCRIPT1060</label>
+						<label2>SCRIPT1080</label2>
+						<onclick>ActivateWindow(Videos)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="5">
+						<label>SCRIPT1061</label>
+						<label2>SCRIPT1082</label2>
+						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="6">
+						<label>SCRIPT1062</label>
+						<label2>SCRIPT1083</label2>
+						<onclick>ActivateWindow(Settings)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="7">
+						<label>SCRIPT1063</label>
+						<label2>SCRIPT1084</label2>
+						<onclick>ActivateWindow(FileManager)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="8">
+						<label>SCRIPT1065</label>
+						<label2>SCRIPT1085</label2>
+						<onclick>ActivateWindow(SystemInfo)</onclick>
+						<visible>true</visible>
+					</item>
+				</content>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>6</posy>
+				<width>128</width>
+				<height>50</height>
+				<texture>SideFade.png</texture>
+			</control>
+			<control type="image">
+				<posx>128r</posx>
+				<posy>6</posy>
+				<width>128</width>
+				<height>60</height>
+				<texture flipx="true">SideFade.png</texture>
+			</control>
+		</control>
+
+		<!-- Description -->
+		<control type="group">
+			<posx>0</posx>
+			<posy>33r</posy>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<control type="label">
+				<description>MainMenuDescription</description>
+				<posx>1250</posx>
+				<posy>-10</posy>
+				<width>1145</width>
+				<height>30</height>
+				<font>font12</font>
+				<label>$INFO[Container(9000).ListItem.Label2]</label>
+				<align>right</align>
+				<textcolor>white</textcolor>                
+			</control>
+		</control>
+
+		<!-- Back Button -->
+		<control type="group" id="10">
+			<posx>20</posx>
+			<posy>55r</posy>
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<control type="button" id="21">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>45</width>
+				<height>45</height>
+				<label>1036</label>
+				<font>-</font>
+				<aligny>-</aligny>
+				<onclick>previousmenu</onclick>
+				<texturefocus border="5">floor_buttonFO.png</texturefocus>
+				<texturenofocus border="5">floor_button.png</texturenofocus>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+			</control>
+			<control type="image">
+				<description>Favourites Icon</description>
+				<posx>5</posx>
+				<posy>5</posy>
+				<width>35</width>
+				<height>35</height>
+				<aspectratio>keep</aspectratio>
+				<texture>icon_back.png</texture>
+			</control>
+		</control>
+	</controls>
+</window>
+
+
+
+<!-- Old Type Window
+<window id="3026">
+	<defaultcontrol>102</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
+		</control>
+		<include>DefaultCommonTime</include>
+		<control type="image">
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<description>Section header image</description>
+			<posx>20</posx>
+			<posy>3</posy>
+			<width>35</width>
+			<height>35</height>
+			<aspectratio>keep</aspectratio>
+			<texture>icon_video.png</texture>
+		</control>
+		<control type="label">
+			<include>DefaultWindowOpenCloseAnimation</include>
+			<posx>65</posx>
+			<posy>5</posy>
+			<width min="0" max="800">auto</width>
+			<height>30</height>
+			<font>font14</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<scroll>false</scroll>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>SCRIPT47</label>
+		</control>
+		<control type="group">
+			<animation effect="slide" start="0,140" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="0,140" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<control type="image">
+				<posx>240</posx>
+				<posy>620</posy>
+				<width>800</width>
+				<height>120</height>
+				<texture diffuse="underlay-diffuse.png" border="0,10,0,10">underlay5.png</texture>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT78</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(102)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT79</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(103)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT81</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(104)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT80</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(105)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT82</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(106)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT83</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(107)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT84</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(108)</visible>
+			</control>
+			<control type="label">
+				<posx>40</posx>
+				<posy>645</posy>
+				<width>1200</width>
+				<height>60</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>SCRIPT85</label>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<font>font13</font>
+				<include>DefaultVisibleFadeEffect</include>
+				<visible>Control.HasFocus(109)</visible>
+			</control>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>80</posy>
+			<width>1280</width>
+			<height>500</height>
+			<texture diffuse="underlay-diffuse.png" border="0,10,0,10">underlay.png</texture>
+			<include>DefaultWindowOpenCloseAnimation</include>
+		</control>
+		<control type="group" id="8000">
+			<posx>0</posx>
+			<posy>150</posy>
+			<control type="group">
+				<posx>80</posx>
+				<posy>0</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(102)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/weather.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(102)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="102">
+					<description>Video push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT57[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font13</font>
+					<onclick>ActivateWindow(Weather)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>105</onleft>
+					<onright>103</onright>
+					<onup>106</onup>
+					<ondown>106</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(102)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>370</posx>
+				<posy>0</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(103)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/pictures.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(103)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="103">
+					<description>TV push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT58[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(Pictures)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>102</onleft>
+					<onright>104</onright>
+					<onup>107</onup>
+					<ondown>107</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(103)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>660</posx>
+				<posy>0</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(104)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/music.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(104)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="104">
+					<description>Music push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT59[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(Music)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>103</onleft>
+					<onright>105</onright>
+					<onup>108</onup>
+					<ondown>108</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(104)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>950</posx>
+				<posy>0</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(105)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/videos.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(105)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="105">
+					<description>Pics push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT60[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(Videos)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>104</onleft>
+					<onright>102</onright>
+					<onup>109</onup>
+					<ondown>109</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(105)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>80</posx>
+				<posy>200</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(106)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/programs.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(106)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="106">
+					<description>Weather push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT61[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>109</onleft>
+					<onright>107</onright>
+					<onup>102</onup>
+					<ondown>102</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(106)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>370</posx>
+				<posy>200</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(107)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/system.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(107)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="107">
+					<description>System push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT62[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(Settings)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>106</onleft>
+					<onright>108</onright>
+					<onup>103</onup>
+					<ondown>103</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(107)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>660</posx>
+				<posy>200</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(108)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/appearance.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(108)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="108">
+					<description>Network push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT63[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(FileManager)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>107</onleft>
+					<onright>109</onright>
+					<onup>104</onup>
+					<ondown>104</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(108)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+			<control type="group">
+				<posx>950</posx>
+				<posy>200</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<texture border="25">settings-button-back.png</texture>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(109)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="image">
+					<posx>22</posx>
+					<posy>22</posy>
+					<width>206</width>
+					<height>115</height>
+					<texture diffuse="settings-button-diffuse.png">backgrounds/settings.jpg</texture>
+					<animation effect="zoom" start="22,22,206,115" end="-7,-2,272,156" time="200" center="auto" condition="Control.HasFocus(109)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+				<control type="button" id="109">
+					<description>Profiles push button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>250</width>
+					<height>159</height>
+					<label>[UPPERCASE][B]SCRIPT65[/B][/UPPERCASE]</label>
+					<align>center</align>
+					<aligny>-</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<focusedcolor>blue</focusedcolor>
+					<font>font-25c</font>
+					<onclick>ActivateWindow(SystemInfo)</onclick>
+					<texturefocus border="25">settings-button-focus.png</texturefocus>
+					<texturenofocus border="25">settings-button-nofocus.png</texturenofocus>
+					<textoffsetx>0</textoffsetx>
+					<textoffsety>106</textoffsety>
+					<onleft>108</onleft>
+					<onright>106</onright>
+					<onup>105</onup>
+					<ondown>105</ondown>
+					<animation effect="zoom" start="0,0,250,159" end="-30,-15,310,189" time="200" center="auto" condition="Control.HasFocus(109)">Conditional</animation>
+					<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+					<animation effect="fade" start="100" end="0" time="200" delay="200">WindowClose</animation>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+-->
+

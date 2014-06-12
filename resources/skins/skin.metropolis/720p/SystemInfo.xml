@@ -1,0 +1,250 @@
+<window id="3024">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>90</posx>
+			<posy>50</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>620</height>
+				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>30</posx>
+				<posy>15</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
+			</control>
+			<control type="list" id="9000">
+				<posx>10</posx>
+				<posy>90</posy>
+				<width>260</width>
+				<height>481</height>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<itemlayout height="60" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>60</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>380</width>
+						<height>25</height>
+						<font>font13_title</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="60" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>60</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>380</width>
+						<height>25</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>10</posy>
+				<width>790</width>
+				<height>598</height>
+				<texture border="5">black-back2.png</texture>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>10</posy>
+				<width>804</width>
+				<height>100</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="label">
+				<description>header label</description>
+				<posx>300</posx>
+				<posy>20</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font14</font>
+				<label>SCRIPT1087</label>	
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="group" id="3000">
+				<!-- VERSION -->
+				<control type="label" id="2500">
+					<posx>290</posx>
+					<posy>100</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2501">
+					<posx>290</posx>
+					<posy>135</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2502">
+					<posx>290</posx>
+					<posy>170</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2503">
+					<posx>290</posx>
+					<posy>205</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2504">
+					<posx>290</posx>
+					<posy>240</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<!-- HDD -->
+				<control type="label" id="2600">
+					<posx>290</posx>
+					<posy>103</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2605">
+					<posx>290</posx>
+					<posy>140</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2602">
+					<posx>290</posx>
+					<posy>175</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2702">
+					<posx>290</posx>
+					<posy>206</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2602)</visible>
+				</control>
+				<control type="label" id="2603">
+					<posx>290</posx>
+					<posy>225</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2703">
+					<posx>290</posx>
+					<posy>256</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2603)</visible>
+				</control>
+				<control type="label" id="2604">
+					<posx>290</posx>
+					<posy>275</posy>
+					<width>700</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2704">
+					<posx>290</posx>
+					<posy>306</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2604)</visible>
+				</control>
+			</control>
+		</control>
+		<!--control type="group">
+			<posy>35r</posy>
+			<animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<description>RSS background</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>35</height>
+				<texture border="32,0,0,0">rss_back_long.png</texture>
+			</control>
+			<control type="image">
+				<description>RSS background</description>
+				<posx>1140</posx>
+				<posy>9</posy>
+				<width>24</width>
+				<height>24</height>
+				<texture>icon-rss.png</texture>
+			</control>
+			<control type="rss">
+				<posx>120</posx>
+				<posy>6</posy>
+				<width>1010</width>
+				<height>35</height>
+				<font>font12</font>
+				<urlset>1</urlset>
+				<textcolor>blue</textcolor>
+				<headlinecolor>white</headlinecolor>
+				<titlecolor>blue</titlecolor>
+				<visible>true</visible>
+			</control>
+		</control-->
+	</controls>
+</window>
+

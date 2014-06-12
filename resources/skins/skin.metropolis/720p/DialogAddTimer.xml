@@ -1,0 +1,121 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<defaultcontrol always="true">200</defaultcontrol>	
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>335</posx>
+			<posy>100</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>230</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="group">
+				<posy>100</posy>
+				<control type="image">
+					<posx>40</posx>
+					<posy>11</posy>
+					<width>530</width>
+					<height>110</height>
+					<aspectratio>stretch</aspectratio>
+					<texture>GlassTitleBar.png</texture>
+				</control>
+				<control type="button" id="6995">
+					<description>Close Window button</description>
+					<posx>520</posx>
+					<posy>13</posy>
+					<width>64</width>
+					<height>32</height>
+					<texturefocus>DialogCloseButton-focus.png</texturefocus>
+					<texturenofocus>DialogCloseButton.png</texturenofocus>
+					<onleft>200</onleft>
+					<onright>202</onright>
+				</control>
+				<control type="label" id="3005">
+					<description>header label</description>
+					<posx>20</posx>
+					<posy>22</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>font13_title</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+			</control>
+
+			<!-- Channel Name -->
+			<control type="label" id="101">
+				<description>Record Name</description>
+				<posx>20</posx>
+				<posy>180</posy>
+				<width>570</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label></label>
+			</control>
+
+			<!-- Record Name -->
+			<control type="label" id="102">
+				<description>EPG Start Time</description>
+				<posx>40</posx>
+				<posy>220</posy>
+				<width>530</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label></label>
+			</control>
+
+			<control type="button" id="200">
+				<description>Yes button</description>
+				<posx>70</posx>
+				<posy>270</posy>				
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
+				<onleft>202</onleft>
+				<onright>202</onright>
+				<label>[B]$LOCALIZE[SCRIPT1109][/B]</label>
+			</control>
+
+			<control type="button" id="202">
+				<description>Cancel button</description>
+				<posx>340</posx>
+				<posy>270</posy>				
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+			</control>
+		</control>
+	</controls>
+</window>
+

@@ -1,0 +1,328 @@
+<window>
+	<defaultcontrol always="true">201</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<posx>480</posx>
+			<posy>145</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>320</width>
+				<height>430</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>10</posx>
+				<posy>10</posy>
+				<width>300</width>
+				<height>70</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="image">
+				<posx>30</posx>
+				<posy>70</posy>
+				<width>260</width>
+				<height>50</height>
+				<aspectratio>stretch</aspectratio>
+				<texture border="20">KeyboardEditArea.png</texture>
+			</control>
+			<control type="label" id="4">
+				<description>Edit Text</description>
+				<posx>35</posx>
+				<posy>70</posy>
+				<width>250</width>
+				<height>50</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<disabledcolor>grey2</disabledcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>120</posy>
+				<width>240</width>
+				<height>30</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="label" id="1">
+				<description>dialog Heading</description>
+				<posx>20</posx>
+				<posy>20</posy>
+				<width>280</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<wrapmultiline>true</wrapmultiline>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>380</posy>
+				<width>240</width>
+				<height>40</height>
+				<aspectratio>stretch</aspectratio>
+				<colordiffuse>AAFFFFFF</colordiffuse>
+				<texture flipy="true">GlassTitleBar.png</texture>
+			</control>
+			<control type="group">
+				<posx>40</posx>
+				<posy>150</posy>
+				<control type="button" id="101">
+					<description>1 button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="25,25,5,5">KeyboardCornerTopNF.png</texturenofocus>
+					<texturefocus border="25,25,5,5">KeyboardCornerTop.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>200</onleft>
+					<onright>102</onright>
+					<onup>202</onup>
+					<ondown>104</ondown>
+				</control>
+				<control type="button" id="102">
+					<description>2 button</description>
+					<posx>60</posx>
+					<posy>0</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>101</onleft>
+					<onright>103</onright>
+					<onup>100</onup>
+					<ondown>105</ondown>
+				</control>
+				<control type="button" id="103">
+					<description>3 button</description>
+					<posx>120</posx>
+					<posy>0</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>102</onleft>
+					<onright>200</onright>
+					<onup>203</onup>
+					<ondown>106</ondown>
+				</control>
+				<control type="button" id="200">
+					<description>Backspace button</description>
+					<posx>180</posx>
+					<posy>0</posy>
+					<width>60</width>
+					<height>120</height>
+					<font>font12</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus flipx="true" border="5,25,25,5">KeyboardCornerTopNF.png</texturenofocus>
+					<texturefocus flipx="true" border="5,35,25,5">KeyboardCornerTop.png</texturefocus>
+					<textwidth>120</textwidth>
+					<label>Backspace</label>
+					<focusedcolor>black</focusedcolor>
+					<angle>270</angle>
+					<onleft>103</onleft>
+					<onright>101</onright>
+					<onup>201</onup>
+					<ondown>201</ondown>
+				</control>
+				<control type="button" id="104">
+					<description>4 button</description>
+					<posx>0</posx>
+					<posy>60</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>200</onleft>
+					<onright>105</onright>
+					<onup>101</onup>
+					<ondown>107</ondown>
+				</control>
+				<control type="button" id="105">
+					<description>5 button</description>
+					<posx>60</posx>
+					<posy>60</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>104</onleft>
+					<onright>106</onright>
+					<onup>102</onup>
+					<ondown>108</ondown>
+				</control>
+				<control type="button" id="106">
+					<description>6 button</description>
+					<posx>120</posx>
+					<posy>60</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>105</onleft>
+					<onright>200</onright>
+					<onup>103</onup>
+					<ondown>109</ondown>
+				</control>
+				<control type="button" id="107">
+					<description>7 button</description>
+					<posx>0</posx>
+					<posy>120</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>201</onleft>
+					<onright>108</onright>
+					<onup>104</onup>
+					<ondown>202</ondown>
+				</control>
+				<control type="button" id="108">
+					<description>8 button</description>
+					<posx>60</posx>
+					<posy>120</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>107</onleft>
+					<onright>109</onright>
+					<onup>105</onup>
+					<ondown>100</ondown>
+				</control>
+				<control type="button" id="109">
+					<description>9 button</description>
+					<posx>120</posx>
+					<posy>120</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>108</onleft>
+					<onright>201</onright>
+					<onup>106</onup>
+					<ondown>203</ondown>
+				</control>
+				<control type="button" id="201">
+					<description>Done button</description>
+					<posx>180</posx>
+					<posy>120</posy>
+					<width>60</width>
+					<height>120</height>
+					<font>font12</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus flipx="true" border="5,5,25,25">KeyboardCornerBottomNF.png</texturenofocus>
+					<texturefocus flipx="true" border="5,30,25,25">KeyboardCornerBottom.png</texturefocus>
+					<textwidth>120</textwidth>
+					<label>Done</label>
+					<focusedcolor>black</focusedcolor>
+					<angle>270</angle>
+					<onleft>109</onleft>
+					<onright>107</onright>
+					<onup>200</onup>
+					<ondown>200</ondown>
+				</control>
+				<control type="button" id="202">
+					<description>prev button</description>
+					<posx>0</posx>
+					<posy>180</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font30</font>
+					<label>&lt;</label>
+					<focusedcolor>black</focusedcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="25,5,25,5">KeyboardCornerBottomNF.png</texturenofocus>
+					<texturefocus border="25,5,25,5">KeyboardCornerBottom.png</texturefocus>
+					<onleft>201</onleft>
+					<onright>100</onright>
+					<onup>107</onup>
+					<ondown>101</ondown>
+				</control>
+				<control type="button" id="100">
+					<description>0 button</description>
+					<posx>60</posx>
+					<posy>180</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font13</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<focusedcolor>black</focusedcolor>
+					<onleft>202</onleft>
+					<onright>203</onright>
+					<onup>108</onup>
+					<ondown>102</ondown>
+				</control>
+				<control type="button" id="203">
+					<description>next button</description>
+					<posx>120</posx>
+					<posy>180</posy>
+					<width>60</width>
+					<height>60</height>
+					<font>font30</font>
+					<label>&gt;</label>
+					<focusedcolor>black</focusedcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
+					<onleft>100</onleft>
+					<onright>201</onright>
+					<onup>109</onup>
+					<ondown>103</ondown>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+

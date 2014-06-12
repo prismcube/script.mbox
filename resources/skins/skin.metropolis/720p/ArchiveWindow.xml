@@ -1,0 +1,403 @@
+<window id="3023">
+	<defaultcontrol always="true">9003</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">backgrounds/SKINDEFAULT.jpg</texture>
+			<include>DefaultWindowFade</include>
+			<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) + substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),panart) +  substring(Window.Property(PvrPlay),False)]</visible>
+		</control>
+		<control type="group">
+			<include>DefaultWindowFade</include>
+			<control type="image">
+				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+				<posx>0</posx>
+				<posy>100r</posy>
+				<width>1280</width>
+				<height>100</height>
+				<texture>floor.png</texture>
+			</control>
+			<control type="group">
+				<visible>substring(Window.Property(ViewMode),common)</visible>
+				<control type="image">
+					<posx>40</posx>
+					<posy>40</posy>
+					<width>1200</width>
+					<height>620</height>
+					<texture border="20">ContentPanel.png</texture>
+				</control>
+				<control type="image">
+					<posx>40</posx>
+					<posy>653</posy>
+					<width>1200</width>
+					<height>64</height>
+					<texture border="15">ContentPanelMirror.png</texture>
+				</control>
+			</control>
+		</control>
+		
+		<control type="group" id="9003">
+			<include>DefaultWindowFade</include>
+			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
+			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
+			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->
+			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->
+		</control>
+
+		<!-- PIP COMMON ARCHIVE-->
+		<control type="image" id="8800">
+			<posx>850</posx>
+			<posy>118</posy>
+			<width>352</width>
+			<height>198</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+			<visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(ViewMode),common)</visible>
+		</control>
+		<control type="image" id="8899">
+			<posx>850</posx>
+			<posy>118</posy>
+			<width>352</width>
+			<height>198</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<texture>video_pig_overlay.png</texture>
+			<visible>substring(Window.Property(ViewMode),common) + !Control.IsVisible(8800)</visible>
+		</control>
+
+		<control type="group">
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="group">
+				<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>720</height>
+					<texture>black-back_noAlpha.png</texture>
+					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>1</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>MediaBladeSub_Part2.png</texture>
+					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+			</control>
+			<control type="group" id="9001">
+				<posx>-220</posx>
+				<posy>0</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(104)">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">conditional</animation>
+
+				<control type="button">
+					<description>Fake button for mouse control</description>
+					<posx>-15</posx>
+					<posy>0</posy>
+					<width>245</width>
+					<height>720</height>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<visible>true</visible>
+				</control>
+
+				<control type="image">
+					<posx>185</posx>
+					<posy>160</posy>
+					<width>40</width>
+					<height>40</height>
+					<texture>MediaSubSet.png</texture>
+				</control>
+				<control type="grouplist" id="9010">
+					<posx>10</posx>
+					<posy>210</posy>
+					<width>240</width>
+					<height>550</height>
+					<onleft>104</onleft>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
+					<itemgap>0</itemgap>
+					<control type="radiobutton" id="200">
+						<description>Stack Toggle</description>
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>SCRIPT1008</label>
+					</control>
+				</control>
+			</control>
+			<include>DefaultSideBladeLeft</include>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>-230</posx>
+				<posy>50</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
+			</control>
+			<control type="group" id="9000">
+				<posx>-250</posx>
+				<posy>130</posy>
+				<control type="button" id="100">
+					<description>View As button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<include>DefaultButtonCommonValues</include>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
+					<onup>104</onup>
+					<ondown>101</ondown>
+				</control>
+				<control type="button" id="101">
+					<description>Sort by button</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<include>DefaultButtonCommonValues</include>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
+					<onright>102</onright>
+					<onup>100</onup>
+					<ondown>104</ondown>
+				</control>
+				
+				<control type="togglebutton" id="102">
+					<description>Sort asc</description>
+					<posx>220</posx>
+					<posy>53</posy>
+					<onleft>101</onleft>
+					<onright condition="substring(Window.Property(ViewMode),common)">3400</onright>
+					<onright condition="substring(Window.Property(ViewMode),thumbnail)">3410</onright>
+					<onright condition="substring(Window.Property(ViewMode),posterwrap)">3420</onright>
+					<onright condition="substring(Window.Property(ViewMode),panart)">3430</onright>
+					<onup>101</onup>
+					<ondown>104</ondown>
+					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
+				</control>
+
+				<control type="radiobutton" id="104">
+					<description>Extra Options</description>
+					<hitrect x="0" y="120" w="265" h="40" />
+					<posx>0</posx>
+					<posy>80</posy>
+					<include>DefaultButtonCommonValues</include>
+					<radiowidth>18</radiowidth>
+					<radioheight>18</radioheight>
+					<radioposx>222</radioposx>
+					<radioposy>12</radioposy>
+					<textureradiofocus>HomeHasSub.png</textureradiofocus>
+					<textureradionofocus>HomeHasSub.png</textureradionofocus>
+					<label>SCRIPT1009</label>
+					<onleft condition="substring(Window.Property(ViewMode),common)">3400</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),thumbnail)">3410</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),posterwrap)">3420</onleft>
+					<onleft condition="substring(Window.Property(ViewMode),panart)">3430</onleft>
+					<onright>9010</onright>
+					<onup>101</onup>
+					<ondown>100</ondown>
+				</control>
+			</control>
+		</control>
+		<include>DefaultMiniTitle</include>
+		<include>DefaultCommonTime</include>
+
+		<control type="group">
+			<include>DefaultWindowFade</include>
+			<posx>850</posx>
+			<posy>295</posy>
+			<control type="label" id="401">
+				<description>Archive Name or Live Channel Name</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>352</width>
+				<height>18</height>
+				<!--align>center</align-->
+				<align>left</align>
+				<font>font12_title</font>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
+			</control>
+			<control type="progress" id="402">
+				<description>Progressbar</description>
+				<posx>0</posx>
+				<posy>25</posy>
+				<width>352</width>
+				<height>10</height>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
+			</control>
+			<!-- Play Start Time  -->
+			<control type="label" id="403">
+				<posx>0</posx>
+				<posy>32</posy>
+				<width>100</width>
+				<height>20</height>
+				<font>font12</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
+			</control>
+			<!-- Play End Time  -->
+			<control type="label" id="404">
+				<posx>352</posx>
+				<posy>32</posy>
+				<width>100</width>
+				<height>20</height>
+				<font>font12</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
+			</control>
+			<control type="label">
+				<posx>113</posx>
+				<posy>-82</posy>
+				<width>120</width>
+				<height>40</height>
+				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<font>font12_title</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+			<control type="label">
+				<posx>113</posx>
+				<posy>-82</posy>
+				<width>120</width>
+				<height>40</height>
+				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<font>font12_title</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
+			</control>
+		</control>
+
+		<control type="group" id="9020">
+			<include>DefaultWindowFade</include>
+			<posx>850</posx>
+			<posy>360</posy>
+			<visible>substring(Window.Property(ViewMode),common)</visible>
+			<control type="label" id="300">
+				<description>Channel Name</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(ChannelName)]</label>
+			</control>
+			<control type="label" id="301">
+				<description>Date</description>
+				<posx>0</posx>
+				<posy>30</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecDuration)]</label>
+			</control>
+			<control type="label" id="302">
+				<description>Duration</description>
+				<posx>150</posx>
+				<posy>30</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecDate)]</label>
+			</control>
+			<control type="textbox" id="303">
+				<description>Record Name</description>
+				<posx>0</posx>
+				<posy>60</posy>
+				<width>352</width>
+				<height>160</height>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecName)]</label>
+			</control>
+		</control>
+
+		<!-- Item Position and Page Number for common list-->
+		<control type="group">
+			<include>DefaultWindowFade</include>
+			<control type="label">		
+				<posx>90r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Container(3400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),common) </visible>
+			</control>
+
+			<!-- Item Position and Page Number for thumbnail list-->
+			<control type="label">
+				<posx>90r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
+			</control>
+
+			<!-- Item Position and Page Number for posterwrap list-->
+			<control type="label">
+				<posx>90r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
+			</control>
+
+			<!-- Item Position and Page Number for panart list-->
+			<control type="label">
+				<posx>90r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),panart) </visible>
+			</control>
+		</control>
+	</controls>
+</window>

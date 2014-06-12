@@ -1,0 +1,84 @@
+<window>
+	<defaultcontrol always="true">301</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<zorder>99</zorder>	
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<posx>340</posx>
+			<posy>235</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>600</width>
+				<height>230</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>10</posy>
+				<width>530</width>
+				<height>90</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="label" id="100">
+				<description>header label</description>
+				<posx>20</posx>
+				<posy>18</posy>
+				<width>560</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="200">
+				<description>dialog message</description>
+				<posx>20</posx>
+				<posy>90</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>center</align>				
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
+			<control type="button" id="301">
+				<description>OK button</description>
+				<posx>200</posx>
+				<posy>165</posy>
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
+				<label>SCRIPT1026</label>
+				<onleft>303</onleft>
+				<onright>303</onright>
+				<onup>303</onup>
+				<ondown>303</ondown>
+			</control>
+			<control type="button" id="303">
+				<description>Close Window button</description>
+				<posx>520</posx>
+				<posy>9</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<onleft>301</onleft>
+				<onright>301</onright>
+				<onup>301</onup>
+				<ondown>301</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

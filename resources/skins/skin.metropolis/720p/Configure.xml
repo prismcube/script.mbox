@@ -1,0 +1,146 @@
+<window id="3005">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>90</posx>
+			<posy>50</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>640</height>
+				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>30</posx>
+				<posy>15</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
+			</control>
+			<control type="image">
+				<posx>233</posx>
+				<posy>581</posy>
+				<width>18</width>
+				<height>19</height>
+				<texture>HomeHasSub.png</texture>
+				<colordiffuse>FFFFFFFF</colordiffuse>
+				<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+			</control>
+			<control type="list" id="9000">
+				<posx>10</posx>
+				<posy>90</posy>
+				<width>260</width>
+				<height>481</height>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<itemlayout height="60" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>60</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>240</width>
+						<height>25</height>
+						<font>font13_title</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="60" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>60</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>240</width>
+						<height>25</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>14</posy>
+				<width>800</width>
+				<height>612</height>
+				<texture border="5">black-back2.png</texture>
+			</control>
+			<control type="image">
+				<posx>266</posx>
+				<posy>15</posy>
+				<width>804</width>
+				<height>90</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="label">
+				<description>header label</description>
+				<posx>300</posx>
+				<posy>20</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font14</font>
+				<label>$LOCALIZE[SCRIPT1055] - $INFO[Container(9000).ListItem.Label]</label>				
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="group" id="9010">
+				<posx>290</posx>
+				<posy>60</posy>
+				<control type="label" id="1003">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>745</width>
+					<height>45</height>
+					<font>font13_title</font>
+					<textcolor>blue</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<scrollspeed>150</scrollspeed>
+					<scrollsuffix>  |  </scrollsuffix>
+				</control>
+				<include>SpinEx01</include>
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>SpinEx05</include>
+				<include>SpinEx06</include>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include>
+				<include>Input06</include>
+				<include>Input07</include>
+			</control>
+		</control>
+	</controls>
+</window>
+
