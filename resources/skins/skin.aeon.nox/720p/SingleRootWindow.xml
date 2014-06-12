@@ -1722,6 +1722,7 @@
 				<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1300110).HasFocus | ControlGroup(1309001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<include>DefaultWindowFade</include>
+				<include>Slide_Menu_Tooltip</include>
 				<control type="group">
 					<control type="image">
 	                    <posx>-500</posx>
@@ -1835,7 +1836,7 @@
 								<width>18</width>
 								<height>18</height>
 								<texture>HomeHasSub.png</texture>
-								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus | Control.HasFocus(1300103)] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
@@ -4077,7 +4078,7 @@
 					<posx>-13</posx>
 					<posy>-7</posy>
 		            <width>1306</width>
-		            <height>62</height>
+		            <height>72</height>
 		            <texture flipy="true">home/nav_back.png</texture>
 		            <colordiffuse>$VAR[ExtendedColorVar]</colordiffuse>
 		        </control>
@@ -4086,22 +4087,22 @@
 				<control type="image">
 					<posx>10</posx>
 					<posy>-2</posy>
-					<width>25</width>
-					<height>25</height>
+					<width>28</width>
+					<height>28</height>
 					<aspectratio>keep</aspectratio>
 					<texture>defaulticons/DefaultVideo.png</texture>
 				</control>
 
 				<!-- Window Header Title -->
 				<control type="label" id="1009551">
-					<posx>47</posx>
-					<posy>-4</posy>
+					<posx>52</posx>
+					<posy>-1</posy>
 					<width min="0" max="800">auto</width>
-					<height>30</height>
-					<font>Font_Reg15_Caps</font>
+					<height>25</height>
+					<font>Font_Reg17_Caps</font>
 					<scroll>false</scroll>
 					<align>left</align>
-					<aligny>center</aligny>
+					<shadowcolor>00ffffff</shadowcolor>
 					<label>[COLOR=FFdfdfdf] $INFO[Control.GetLabel] [/COLOR]</label>
 				</control>
 			</control>
@@ -4226,7 +4227,7 @@
 				<control type="group">
 					<posx>10</posx>
 					<posy>160</posy>
-					<!--visible>substring(Window.Property(HasLock),true)</visible-->
+					<visible>substring(Window.Property(HasLock),true)</visible>
 					<control type="image">
 						<posx>-10</posx>
 						<posy>-10</posy>
@@ -4455,6 +4456,11 @@
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
 				<control type="group">
 					<control type="image">
 						<posx>-500</posx>
@@ -6046,6 +6052,11 @@
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
 
 				<!-- Slide Menu Panel -->
 				<include>DefaultSideBladeLeft</include>
@@ -6221,6 +6232,11 @@
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
 
 				<!-- Slide Menu Panel -->
 				<include>DefaultSideBladeLeft</include>
