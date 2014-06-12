@@ -2,6 +2,7 @@ from datetime import datetime
 from webinterface import Webinterface
 import dbopen
 from urllib import unquote, quote
+from xml.sax.saxutils import escape
 
 class ElmoGetAllServices( Webinterface ) :
 
@@ -11,7 +12,7 @@ class ElmoGetAllServices( Webinterface ) :
 		# self.currenttime = self.mCommander.Datetime_GetLocalTime()
 
 		self.conn = dbopen.DbOpen('channel.db').getConnection()		
-		sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno from tblChannel group by sid, tsid, onid order by chno"
+		sql = "select Max(name) as name, sid, tsid, onid, Max(Presentation) as chno, ServiceType from tblChannel group by sid, tsid, onid order by chno"
 		
 		self.c = self.conn.cursor()
 		self.c.execute(sql)
@@ -41,8 +42,9 @@ class ElmoGetAllServices( Webinterface ) :
 
 			#xmlStr += '<e2bouquet>\n'
 			xmlStr += '	<e2service>\n'
-			xmlStr += '		<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) + '</e2servicereference>\n'
-			xmlStr += '		<e2servicename>' + quote( row[0] ) + '</e2servicename>\n'
+			# xmlStr += '		<e2servicereference>' + self.makeRef(row[1], row[2], row[3]) + '</e2servicereference>\n'
+			xmlStr += '		<e2servicereference>' + self.makeRefServiceType(row[5], row[1], row[2], row[3]) + '</e2servicereference>\n'
+			xmlStr += '		<e2servicename>' + escape( row[0] ) + '</e2servicename>\n'
 			xmlStr += '	</e2service>\n'
 			# xmlStr += serviceList
 			# xmlStr += '</e2bouquet>\n'	

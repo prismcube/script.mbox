@@ -73,6 +73,26 @@ class Webinterface( object ) :
 		
 		return ':'.join(ref)
 
+	def makeRefServiceType( self, serviceType, sid, tsid, onid, *number ) :
+		ref = []
+
+		ref.append( str(serviceType) )								# type			0
+		ref.append( '0' ) 								# flag			1
+		ref.append( '1' ) 						# service type		2
+		ref.append( hex(sid)[2:] )						# sid in hexa		3
+		ref.append( hex(tsid)[2:] )						# tsid in hexa		4
+		ref.append( str(onid) )							# onid			5
+		ref.append( 'C00000' )							# namespace		6
+		ref.append( '0' )								# psid			7
+		ref.append( '0' )								# ptsid			8
+		if number :
+			ref.append( str(number[0]) )				# use this as channel number 
+		else :
+			ref.append( '0' ) 							#?				9
+		ref.append('')									#?				10
+		
+		return ':'.join(ref)
+
 	def unMakeRef( self, ref ) :
 		unRef = {}
 		source = urllib.unquote(ref).split(':')
@@ -188,6 +208,9 @@ class MyHandler( BaseHTTPRequestHandler ):
 				mountInfo = c.fetchone()[0]
 				print mountInfo
 
+				# VLC Option added 
+				
+
 				if mountInfo == 'Internal' :
 					content = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % self.urlPath[1]
 				else :
@@ -219,6 +242,8 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from epgbouquet import ElmoEpgBouquet as Content
 				elif self.urlPath[0] == '/web/getallservices' :
 					from getallservices import ElmoGetAllServices as Content
+				elif self.urlPath[0] == '/web/getallservicestv' :
+					from getallservicestv import ElmoGetAllServicesTV as Content
 				elif self.urlPath[0] == '/web/getservices' :
 					from getservices import ElmoGetServices as Content
 				elif self.urlPath[0] == '/web/serviceplayable' :
@@ -237,6 +262,10 @@ class MyHandler( BaseHTTPRequestHandler ):
 					from powerstatus import ElmoPowerStatus as Content 
 				elif self.urlPath[0] == '/web/timerlist' :
 					from timerlist import ElmoTimerList as Content 
+				elif self.urlPath[0] == '/web/timeraddbyeventid' :
+					from timeraddbyeventid import ElmoTimerAddByEventId as Content 
+				elif self.urlPath[0] == '/web/prismcubeversion' :
+					from prismcubeversion import PrismCubeVersion as Content 
 
 				############# Live TV ####################################
 				
@@ -298,6 +327,10 @@ class MyHandler( BaseHTTPRequestHandler ):
 
 						mountInfo = c.fetchone()[0]
 
+						# VLC optin 2014. 6. 11
+						# target = '#EXTM3U\n'
+						# target += '#EXTVLCOPT--http-reconnect=true\n'
+						
 						if mountInfo == 'Internal' :
 							target = "http://" + getMyIp().strip() + ":49152/content/internal-recordings/%s/0.ts" % recordKey
 						else :
@@ -480,8 +513,8 @@ class MyStreamHandler( BaseHTTPRequestHandler ) :
 			j = 0
 
 			# throw away unready streams at first
-			for i in range(1000) :
-				s = self.streamResult.read( 1024 )
+			#for i in range(1000) :
+			#	s = self.streamResult.read( 1024 )
 
 			print '[Stream Handler] Ready to stream'
 			

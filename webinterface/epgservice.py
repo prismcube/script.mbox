@@ -13,8 +13,8 @@ class ElmoEpgService( Webinterface ) :
 
 		ref = self.unMakeRef( self.params['sRef'] )
 		self.gmtFrom = self.mDataCache.Datetime_GetLocalTime()
-		self.gmtUntil = self.gmtFrom + ( 3600 * 24 * 1 )
-		self.maxCount = 100
+		self.gmtUntil = self.gmtFrom + ( 3600 * 24 * 7 )
+		self.maxCount = 300
 
 		self.epgList = self.mCommander.Epgevent_GetList( ref['sid'], ref['tsid'], ref['onid'], self.gmtFrom, self.gmtUntil, self.maxCount );
 	

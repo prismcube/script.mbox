@@ -309,6 +309,7 @@ class Channel( WebPage ) :
 			<html>
 			<head>
 				<title>PRISMCUBE Web UI</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 				<script src="./jquery.js"></script>
 				<script src="./block.js"></script>
 				<style>
@@ -1450,6 +1451,7 @@ class RecordCheck( WebPage ) :
 				<html>
 				<head>
 					<title>PrismCube</title>
+					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 					<style type="text/css" rel="stylesheet">
 						p {
 							font-size: 0.8em;
@@ -1468,6 +1470,7 @@ class RecordCheck( WebPage ) :
 				<html>
 				<head>
 					<title>PrismCube</title>
+					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 				</head>
 				<body>
 				<script>
@@ -1497,6 +1500,7 @@ class CheckNAS( WebPage ) :
 			<html>
 			<head>
 				<title>PrismCube</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 				<style>
 					#main {
 						width: 500px;
