@@ -30,6 +30,7 @@ class ElmoTimerList( Webinterface ) :
 			xmlstr +=		'<e2timeend>%s</e2timeend>\n' % str(info.mStartTime + info.mDuration) 
 			xmlstr +=		'<e2duration>%s</e2duration>\n' % str(info.mDuration)
 			xmlstr +=		'<e2startprepare>%s</e2startprepare>\n' % str(info.mStartTime - 20)
+			xmlstr += 		'<recordkey>%s</recordkey>\n' % str(info.mTimerId)
 
 			if info.mTimerType == 7 :
 				xmlstr +=	'<e2justplay>1</e2justplay>\n' 
