@@ -168,6 +168,8 @@
 	<string id="1168"></string>
 	<string id="1169"></string>
 	<string id="1170"></string>
+	<string id="1171"></string>
+	<string id="1172"></string>
 	<string id="1200"></string>
 	<string id="1201"></string>
 	<string id="1202"></string>
@@ -534,6 +536,8 @@
 	<string id="2357"></string>
 	<string id="2358"></string>
 	<string id="2359"></string>
+	<string id="2360"></string>
+	<string id="2361"></string>
 	<string id="3001">No EPG information available</string>
 	<string id="3002">That recording conflicts with</string>
 	<string id="3003">Error</string>
@@ -1521,4 +1525,12 @@
 	<string id="3985"></string>
 	<string id="3986"></string>
 	<string id="3987"></string>
+	<string id="3988"></string>
+	<string id="3989"></string>
+	<string id="3990"></string>
+	<string id="3991"></string>
+	<string id="3992"></string>
+	<string id="3993"></string>
+	<string id="3994"></string>
+	<string id="3995"></string>
 </strings>

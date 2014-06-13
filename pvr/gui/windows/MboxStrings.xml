@@ -538,6 +538,8 @@
 	<string id="2357">LCN Search</string>
 	<string id="2358">Record Default Path Change</string>
 	<string id="2359">Internal</string>
+	<string id="2360">Cross EPG Enabled</string>
+	<string id="2361">Cross EPG ByStandby</string>
 </property>
 <strings>
 	<string id="3001">No EPG information available</string>
@@ -1527,4 +1529,12 @@
 	<string id="3985">Please check your recording path setting</string>
 	<string id="3986">Recordings will be temporarily stored on your hard drive</string>
 	<string id="3987">Do you want to set the recording path now?</string>
+	<string id="3988">CrossEPG</string>
+	<string id="3989">Download complete</string>
+	<string id="3990">Check your NAS configuration</string>
+	<string id="3991">Operation not allowed</string>
+	<string id="3992">EPG download is in progress</string>
+	<string id="3993">While downloading EPG data</string>
+	<string id="3994">Not allowed operation</string>
+	<string id="3995">Add or remove a record storage location for NAS</string>
 </strings>

@@ -174,6 +174,8 @@
 "Satellite";"Satellit und Position";"Satellite";"Satellite";"Satelite y posicion";"Satelit";"Satelliet en positie";"Satelita";"Uydu ve konumu";"Спутник";"Satellite";"Satellite";"Satelit";"Супутник";1204
 "Provider";"Anbieter";"Fournisseur";"Provider";"Proveedor";"Provajder";"Provider";"Operator";"Provider";"Провайдер";"Provider";"Provider";"Provajder";"Provider";1205
 "Favorite";"Favoriten";"Favoris";"Favoriti";"Favoritos";"Oblíbený";"Favorite";"Ulubione";"Favorite";"Любимые";"Favorite";"Favorite";"Obľúbený";"Улюблені";1206
+"NAS GROUPS";;;;;;;;;;;;;;176
+"ALL ARCHIVES";;;;;;;;;;;;;;177
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -533,6 +535,8 @@
 "LCN Search";"LCN Suche";;;;;;"Wyszukiwanie LCN";;"LCN Поиск";;;;;2357
 "Record Default Path Change";"Standart Aufnahmepfad ändern";;;;;;"Zmień domyślną ścieżkę nagrywania";;;;;;;2358
 "Internal";"Intern";;;;;;"Internal";;;;;;;2359
+"Cross EPG Enabled";;;;;;;;;;;;;;2360
+"Cross EPG ByStandby";;;;;;;;;;;;;;2361
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -1520,3 +1524,11 @@
 "Please check your recording path setting";;;;;;;;;;;;;;3985
 "Recordings will be temporarily stored on your hard drive";;;;;;;;;;;;;;3986
 "Do you want to set the recording path now?";;;;;;;;;;;;;;3987
+"CrossEPG";;;;;;;;;;;;;;3988
+"Download complete";;;;;;;;;;;;;;3989
+"Check your NAS configuration";;;;;;;;;;;;;;3990
+"Operation not allowed";;;;;;;;;;;;;;3991
+"EPG download is in progress";;;;;;;;;;;;;;3992
+"While downloading EPG data";;;;;;;;;;;;;;3993
+"Not allowed operation";;;;;;;;;;;;;;3994
+"Add or remove a record storage location for NAS";;;;;;;;;;;;;;3995
