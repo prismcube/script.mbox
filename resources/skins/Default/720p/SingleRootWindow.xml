@@ -478,7 +478,7 @@ Search for window name
 						</control>
 						<control type="button" id="1290316">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Cross EPG</label>
+							<label>CrossEPG</label>
 							<visible>System.HasAddon("script.crossepg")</visible>
 							<onclick>RunAddon("script.crossepg")</onclick>							
 						</control>
