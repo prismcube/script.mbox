@@ -336,7 +336,7 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventCrossEventProgress.getName( ) :
 			if aEvent.mCurrenChannelIndex + 1 >= aEvent.mTotalChannelCount :
 				mHead = MR_LANG( 'CrossEPG' )
-				mLine = MR_LANG( 'Download cross EPG complete' )
+				mLine = MR_LANG( 'Download complete' )
 				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
 
 		elif aEvent.getName( ) == ElisEventCrossEPGStart.getName( ) :

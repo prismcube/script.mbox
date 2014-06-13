@@ -478,7 +478,7 @@ Search for window name
 						</control>
 						<control type="button" id="1290316">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>CrossEPG</label>
+							<label>Cross EPG</label>
 							<visible>System.HasAddon("script.crossepg")</visible>
 							<onclick>RunAddon("script.crossepg")</onclick>							
 						</control>
@@ -4801,7 +4801,7 @@ Search for window name
 						<ondown>3300105</ondown>
 					</control>
 					<control type="button" id="3300105">
-						<description>NAS</description>
+						<description>NAS GROUPS</description>
 						<hitrect x="0" y="120" w="265" h="40" />
 						<posx>0</posx>
 						<posy>120</posy>
@@ -4812,7 +4812,7 @@ Search for window name
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>NAS</label>
+						<label>$ADDON[script.mbox 1171]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
@@ -4824,12 +4824,12 @@ Search for window name
 						<visible>!substring(Container(3309050).CurrentPage,0)</visible>
 					</control>
 					<control type="button" id="3300106">
-						<description>All</description>
+						<description>ALL ARCHIVES</description>
 						<hitrect x="0" y="120" w="265" h="40" />
 						<posx>0</posx>
 						<posy>160</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>All Archive</label>
+						<label>$ADDON[script.mbox 1172]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>

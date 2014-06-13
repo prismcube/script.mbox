@@ -384,8 +384,8 @@ class LivePlate( LivePlateWindow ) :
 				if status.mMode != ElisEnum.E_MODE_LIVE :
 					return
 				if os.path.exists( '/mtmp/crossepg_running' ) :
-					mHead = MR_LANG( 'While downloading EPG data' )
-					mLine = MR_LANG( 'Not allowed operation' )
+					mHead = MR_LANG( 'Operation not allowed' )
+					mLine = MR_LANG( 'EPG download is in progress' )
 					xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
 					return
 				self.Close( )

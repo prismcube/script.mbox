@@ -4653,7 +4653,7 @@
 						<radioheight>18</radioheight>
 						<radioposx>222</radioposx>
 						<radioposy>12</radioposy>
-						<label>NAS GROUPS</label>
+						<label>$ADDON[script.mbox 1171]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
@@ -4670,7 +4670,7 @@
 						<posx>0</posx>
 						<posy>160</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>ALL ARCHIVES</label>
+						<label>$ADDON[script.mbox 1172]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
