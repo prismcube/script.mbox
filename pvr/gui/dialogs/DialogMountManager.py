@@ -497,8 +497,8 @@ class DialogMountManager( SettingDialog ) :
 									os.system( 'sync' )
 
 						else :
-							lblTitle = MR_LANG( 'Unable to mount location' )
-							lblLine = MR_LANG( 'Make sure you have permission to access that folder' )
+							lblTitle = MR_LANG( 'No access permission' )
+							lblLine = MR_LANG( 'Check your NAS configuration' )
 
 				else :
 					lblLine = MR_LANG( 'Please enter path name' )
