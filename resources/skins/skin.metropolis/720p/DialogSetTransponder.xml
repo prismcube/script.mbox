@@ -14,6 +14,14 @@
 				<height>380</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<posx>-3</posx>
+				<posy>-5</posy>
+				<width>622</width>
+				<height>366</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>

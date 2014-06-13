@@ -14,13 +14,21 @@
 				<height>310</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+<!--			<control type="image">
 				<posx>10</posx>
 				<posy>10</posy>
 				<width>360</width>
 				<height>70</height>
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
+			</control>
+-->			<control type="image">
+				<posx>-4</posx>
+				<posy>-5</posy>
+				<width>388</width>
+				<height>314</height>
+				<texture>frames/Dialog_Glass2PanelMedium.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="image">
 				<posx>30</posx>
@@ -36,9 +44,9 @@
 				<posy>70</posy>
 				<width>310</width>
 				<height>50</height>
-				<font>font13</font>
+				<font>METF_DialogLarge</font>
 				<textcolor>white</textcolor>
-				<disabledcolor>grey2</disabledcolor>
+				<disabledcolor>FFff5858</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
@@ -48,9 +56,9 @@
 				<posy>20</posy>
 				<width>340</width>
 				<height>40</height>
-				<font>font13_title</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<font>METF_Menu</font>
+				<textcolor>DialogTextFO</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 				<align>center</align>
 				<aligny>center</aligny>
 				<wrapmultiline>true</wrapmultiline>
@@ -64,7 +72,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="25,25,5,5">KeyboardCornerTopNF.png</texturenofocus>
@@ -81,7 +89,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -98,7 +106,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -115,7 +123,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -132,7 +140,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus flipx="true" border="5">KeyboardCornerTopNF.png</texturenofocus>
@@ -149,7 +157,7 @@
 					<posy>60</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="5">KeyboardCornerBottomNF.png</texturenofocus>
@@ -166,7 +174,7 @@
 					<posy>60</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -183,7 +191,7 @@
 					<posy>60</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -200,7 +208,7 @@
 					<posy>60</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
@@ -217,7 +225,7 @@
 					<posy>60</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font13</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus flipx="true" border="5">KeyboardCornerBottomNF.png</texturenofocus>

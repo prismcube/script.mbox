@@ -2174,11 +2174,12 @@ Search for window name
 	                    <posy>0</posy>
 	                    <width>500</width>
 	                    <height>720</height>
-	                    <texture>black-back_noAlpha.png</texture>
+						<texture>frames/Dialog_Glass2Panel.png</texture>
+						<colordiffuse>DialogBackgroundColor</colordiffuse>
 	                    <animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
-	                <control type="image">
+<!--	                <control type="image">
 	                    <posx>-12</posx>
 	                    <posy>0</posy>
 	                    <width>12</width>
@@ -2187,7 +2188,7 @@ Search for window name
 	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
 						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
-				</control>
+-->				</control>
 				<control type="button" id="1300101">
 					<description>Fake button for mouse control</description>
 					<posx>-250</posx>

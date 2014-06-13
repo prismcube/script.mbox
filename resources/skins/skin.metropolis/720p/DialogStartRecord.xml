@@ -14,6 +14,14 @@
 				<height>420</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-14</posy>
+				<width>622</width>
+				<height>474</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>30</posx>
@@ -43,7 +51,7 @@
 				<include>DialogInput05</include>
 				<include>DialogInput06</include>
 				<control type="group">
-					<posx>0</posx>
+					<posx>-10</posx>
 					<posy>310</posy>
 					<control type="group" id="300">
 						<posx>0</posx>
@@ -66,8 +74,8 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[Window.Property(NetVolumeUse)]</label>
-							<textcolor>grey3</textcolor>
-							<font>font12</font>
+							<textcolor>white</textcolor>
+							<font>METF_DialogSmall</font>
 						</control>
 						<control type="image">
 							<posx>-30</posx>

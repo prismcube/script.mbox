@@ -14,6 +14,15 @@
 				<height>290</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>-4</posx>
+				<posy>-18</posy>
+				<width>618</width>
+				<height>316</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<control type="radiobutton" id ="1007463">
@@ -22,14 +31,15 @@
 					<posy>70</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+-->					<texturefocus>ButtonFO2Wide.png</texturefocus>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1089</label>
 					<onup>1006997</onup>
@@ -41,14 +51,15 @@
 					<posy>110</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+-->					<texturefocus>ButtonFO2Wide.png</texturefocus>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1090</label>
 					<onup>1007463</onup>
@@ -60,14 +71,15 @@
 					<posy>150</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+-->					<texturefocus>ButtonFO2Wide.png</texturefocus>
 					<pulseonselect>no</pulseonselect>
 					<label>SCRIPT1126</label>
 					<onup>1007464</onup>
@@ -79,12 +91,13 @@
 					<posy>215</posy>
 					<width>180</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLargeBold</font>
 					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
+					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007465</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006999</onleft>
@@ -96,12 +109,13 @@
 					<posy>215</posy>
 					<width>180</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLargeBold</font>
 					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
+					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007464</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006997</onleft>

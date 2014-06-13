@@ -17,9 +17,17 @@
 				<height>230</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<posx>-4</posx>
+				<posy>90</posy>
+				<width>618</width>
+				<height>254</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<control type="group">
 				<posy>100</posy>
-				<control type="image">
+<!--				<control type="image">
 					<posx>40</posx>
 					<posy>11</posy>
 					<width>530</width>
@@ -27,7 +35,7 @@
 					<aspectratio>stretch</aspectratio>
 					<texture>GlassTitleBar.png</texture>
 				</control>
-				<control type="button" id="6995">
+-->				<control type="button" id="6995">
 					<description>Close Window button</description>
 					<posx>520</posx>
 					<posy>13</posy>
@@ -44,11 +52,11 @@
 					<posy>22</posy>
 					<width>570</width>
 					<height>30</height>
-					<font>font13_title</font>
+					<font>METF_Menu</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>white</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>DialogTextFO</textcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 				</control>
 			</control>
 
@@ -59,11 +67,11 @@
 				<posy>180</posy>
 				<width>570</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>METF_MediaDetailsSmall</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 				<label></label>
 			</control>
 
@@ -74,11 +82,11 @@
 				<posy>220</posy>
 				<width>530</width>
 				<height>20</height>
-				<font>font13</font>
+				<font>METF_MediaDetailsSmall</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 				<label></label>
 			</control>
 
@@ -88,12 +96,13 @@
 				<posy>270</posy>				
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
 				<onleft>202</onleft>
 				<onright>202</onright>
 				<label>[B]$LOCALIZE[SCRIPT1109][/B]</label>
@@ -105,12 +114,13 @@
 				<posy>270</posy>				
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>200</onright>
 				<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>

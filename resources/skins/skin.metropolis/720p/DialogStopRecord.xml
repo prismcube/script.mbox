@@ -16,6 +16,14 @@
 				<height>310</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<posx>-4</posx>
+				<posy>82</posy>
+				<width>618</width>
+				<height>280</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<control type="group">
 				<posy>100</posy>
 				<include>DefaultDialogCommonSetting</include>
@@ -60,12 +68,13 @@
 					<visible>Control.HasFocus(501)</visible>
 				</control>
 				<control type="label" id="502">
+					<description>Channel name</description>
 					<posx>10</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<height>30</height>
-					<font>font13</font>
-					<textcolor>grey2</textcolor>
+					<font>METF_ContextValue</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label></label>
@@ -75,7 +84,7 @@
 					<posy>30</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13_title</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -86,7 +95,7 @@
 					<posy>30</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13_title</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
@@ -176,17 +185,18 @@
 				<width>550</width>
 				<height>70</height>
 				<control type="button" id="521">
-					<description>Yes button</description>
+					<description>cancel button</description>
 					<posx>160</posx>
 					<posy>17</posy>				
 					<width>250</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLargeBold</font>
 					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
+					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
 				</control>
 			</control>

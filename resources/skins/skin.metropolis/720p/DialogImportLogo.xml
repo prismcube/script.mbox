@@ -15,7 +15,7 @@
 			<height>500</height>
 			<texture border="40">DialogBack.png</texture>
 		</control>
-		<control type="image">
+<!--		<control type="image">
 			<description>Dialog Header image</description>
 			<posx>40</posx>
 			<posy>16</posy>
@@ -23,17 +23,26 @@
 			<height>40</height>
 			<texture>dialogheader.png</texture>
 		</control>
+-->		<control type="image">
+			<description>background image</description>
+			<posx>-9</posx>
+			<posy>-20</posy>
+			<width>820</width>
+			<height>536</height>
+			<texture>frames/Menu_Glass2c.png</texture>
+			<colordiffuse>DialogBackgroundColor</colordiffuse>
+		</control>
 		<control type="label" id="102">
 			<description>header label</description>
 			<posx>40</posx>
 			<posy>20</posy>
 			<width>720</width>
 			<height>30</height>
-			<font>font13_title</font>
+			<font>METF_Menu</font>
 			<align>center</align>
 			<aligny>center</aligny>
-			<textcolor>selected</textcolor>
-			<shadowcolor>black</shadowcolor>
+			<textcolor>DialogTextFO</textcolor>
+<!--			<shadowcolor>black</shadowcolor>-->
 		</control>
 		<control type="button">
 			<description>Close Window button</description>
@@ -60,9 +69,9 @@
 			<height>30</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font12</font>
-			<textcolor>blue</textcolor>
-			<shadowcolor>black</shadowcolor>
+			<font>METF_PlotText</font>
+			<textcolor>ee3c95c8</textcolor>
+<!--			<shadowcolor>black</shadowcolor>-->
 		</control>
 		<control type="radiobutton" id ="110">
 			<description>Channel activated</description>
@@ -70,14 +79,15 @@
 			<posy>110</posy>
 			<width>720</width>
 			<height>40</height>
-			<font>font12_title</font>
-			<textcolor>grey2</textcolor>
+			<font>METF_DialogLarge</font>
+			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<shadowcolor>black</shadowcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+<!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+-->			<texturefocus>ButtonFO2Wide.png</texturefocus>
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
 			<ondown>111</ondown>
@@ -93,9 +103,9 @@
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12</font>
-				<textcolor>blue</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<font>METF_PlotText</font>
+				<textcolor>ee3c95c8</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="image">
 				<description>load item image</description>
@@ -113,8 +123,8 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font12_title</font>
-				<textcolor>grey3</textcolor>
+				<font>METF_DialogLarge</font>
+				<textcolor>white</textcolor>
 			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
@@ -125,16 +135,17 @@
 					<posy>0</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>110</onup>
 					<ondown>114</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>FFff5858</disabledcolor>
 				</control>
 				<control type="button" id="114">
 					<description>Internet Button</description>
@@ -142,16 +153,17 @@
 					<posy>45</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>111</onup>
 					<ondown>115</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>FFff5858</disabledcolor>
 				</control>
 				<control type="button" id="115">
 					<description>Clear Button</description>
@@ -159,16 +171,17 @@
 					<posy>90</posy>
 					<width>720</width>
 					<height>40</height>
-					<font>font12_title</font>
+					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
+-->					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>114</onup>
 					<ondown>119</ondown>
-					<textcolor>grey2</textcolor>
+					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<disabledcolor>grey3</disabledcolor>
+					<disabledcolor>FFff5858</disabledcolor>
 				</control>
 			</control>
 		</control>
@@ -183,17 +196,18 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>$LOCALIZE[SCRIPT1022]</label>
-				<font>font12_title</font>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>
 				<onleft>119</onleft>
 				<onright>119</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<disabledcolor>FFff5858</disabledcolor>
 			</control>
 			<control type="button" id="119">
 				<description>Cancel Button</description>
@@ -203,17 +217,18 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-				<texturenofocus border="5">button-nofocus.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
 				<label>$LOCALIZE[SCRIPT1026]</label>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>
 				<onleft>118</onleft>
 				<onright>118</onright>
 				<ondown>110</ondown>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<disabledcolor>grey3</disabledcolor>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<disabledcolor>FFff5858</disabledcolor>
 			</control>
 		</control>
 	</controls>

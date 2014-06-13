@@ -16,6 +16,14 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
+				<posx>-6</posx>
+				<posy>-13</posy>
+				<width>612</width>
+				<height>252</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+<!--			<control type="image">
 				<posx>18</posx>
 				<posy>14</posy>
 				<width>564</width>
@@ -23,28 +31,28 @@
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
-			<control type="label" id="100">
+-->			<control type="label" id="100">
 				<description>header label</description>
 				<posx>20</posx>
 				<posy>18</posy>
 				<width>560</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>METF_Menu</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>DialogTextFO</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="200">
 				<description>dialog message</description>
 				<posx>20</posx>
-				<posy>60</posy>
+				<posy>50</posy>
 				<width>560</width>
 				<height>100</height>
 				<!--align>left</align-->				
 				<align>center</align>
 				<aligny>center</aligny>
-				<font>font13</font>
+				<font>METF_PlotText</font>
 			</control>
 			<control type="button" id="301">
 				<description>Yes button</description>
@@ -52,12 +60,13 @@
 				<posy>165</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
 				<label>SCRIPT1027</label>
 				<onleft>302</onleft>
 				<onright>302</onright>
@@ -70,12 +79,14 @@
 				<posy>165</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<selectedcolor>DialogTextFO</selectedcolor>
 				<align>center</align>
-				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
+-->				<texturefocus>ButtonFO2.png</texturefocus>
 				<label>SCRIPT1028</label>
 				<onleft>301</onleft>
 				<onright>301</onright>
