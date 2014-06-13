@@ -509,31 +509,31 @@
 					<content>
 						<item id="1">
 							<label>$ADDON[script.mbox 1073]</label>
-							<label2>$ADDON[script.mbox 1066]</label2>
+							<!--label2>$ADDON[script.mbox 1066]</label2-->
 							<onclick>SendClick(1290100)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
 							<label>$ADDON[script.mbox 1043]</label>
-							<label2>$ADDON[script.mbox 1067]</label2>
+							<!--label2>$ADDON[script.mbox 1067]</label2-->
 							<onclick>SendClick(1290200)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
 							<label>$ADDON[script.mbox 1044]</label>
-							<label2>$ADDON[script.mbox 1068]</label2>
+							<!--label2>$ADDON[script.mbox 1068]</label2-->
 							<onclick>SendClick(1290300)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="9">
 							<label>$ADDON[script.mbox 1133]</label>
-							<label2>$ADDON[script.mbox 1134]</label2>
+							<!--label2>$ADDON[script.mbox 1134]</label2-->
 							<onclick>SendClick(1290900)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
 							<label>$ADDON[script.mbox 1074]</label>
-							<label2>$ADDON[script.mbox 1069]</label2>
+							<!--label2>$ADDON[script.mbox 1069]</label2-->
 							<onclick>SendClick(1290400)</onclick>
 							<visible>true</visible>
 						</item>
@@ -548,25 +548,25 @@
 						<item id="6">
 							<!--label>$ADDON[script.mbox 1076]</label-->
 							<label>XBMC</label>
-							<label2>$ADDON[script.mbox 1070]</label2>
+							<!--label2>$ADDON[script.mbox 1070]</label2-->
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
 							<label>$ADDON[script.mbox 1169]</label>
-							<label2>$ADDON[script.mbox 1170]</label2>
+							<!--label2>$ADDON[script.mbox 1170]</label2-->
 							<onclick>SendClick(1290500)</onclick>
 							<visible>substring(Window.Property(YoutubeTV),true)</visible>
 						</item>
 						<item id="7">
 							<label>$ADDON[script.mbox 1048]</label>
-							<label2>$ADDON[script.mbox 1071]</label2>
+							<!--label2>$ADDON[script.mbox 1071]</label2-->
 							<onclick>SendClick(1290700)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="8">
 							<label>$ADDON[script.mbox 1049]</label>
-							<label2>$ADDON[script.mbox 1072]</label2>
+							<!--label2>$ADDON[script.mbox 1072]</label2-->
 							<onclick>SendClick(1290800)</onclick>
 							<visible>true</visible>
 						</item>
@@ -590,8 +590,8 @@
 			</control>
 
 			<!-- Main Menu Descriptions -->
-			<!--control type="group">
-				<control type="image">
+			<control type="group">
+				<!--control type="image">
 					<posx>-13</posx>
 					<posy>213r</posy>
 					<width>875</width>
@@ -609,7 +609,7 @@
 					<align>left</align>
 					<textcolor>white</textcolor>
 					<visible>Control.HasFocus(1209000)</visible>
-				</control>
+				</control-->
 				<control type="label" id="1200100">
 					<posx>15</posx>
 					<posy>187r</posy>
@@ -618,9 +618,10 @@
 					<font>Font_Reg14</font>
 					<align>left</align>
 					<textcolor>white</textcolor>
-					<visible>!Control.HasFocus(1209000)</visible>
+					<!--visible>!Control.HasFocus(1209000)</visible-->
+					<visible>false</visible>
 				</control>
-			</control-->
+			</control>
 
 			<!-- Time Panel -->
 			<control type="group">
