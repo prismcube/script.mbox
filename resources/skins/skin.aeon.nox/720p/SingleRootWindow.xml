@@ -242,7 +242,7 @@
 					<posx>0</posx>
 					<posy>230</posy>
 					<onup>1209000</onup>
-					<ondown>1200101</ondown>
+					<ondown>1200102</ondown>
 
 					<!-- Installation Submenu -->
 					<control type="grouplist" id="1209010">
@@ -318,6 +318,12 @@
 						<control type="button" id="1290315">
 							<include>DefaultSubMainMenuMiddleValues</include>
 							<label>$ADDON[script.mbox 1164]</label>
+						</control>
+						<control type="button" id="1290316">
+							<include>DefaultSubMainMenuMiddleValues</include>
+							<label>CrossEPG</label>
+							<visible>System.HasAddon("script.crossepg")</visible>
+							<onclick>RunAddon("script.crossepg")</onclick>
 						</control>
 						<control type="image" id="1290316">
 							<include>DefaultSubMainMenuEndValues</include>
@@ -454,7 +460,7 @@
 					<height>60</height>
 					<onleft>1209000</onleft>
 					<onright>1209000</onright>
-					<onup>1200101</onup>
+					<onup>1200102</onup>
 					<ondown condition="Control.IsVisible(1209001)">1209001</ondown>
 					<ondown condition="!Control.IsVisible(1209001)">1200101</ondown>
 					<pagecontrol>-</pagecontrol>
@@ -584,7 +590,7 @@
 			</control>
 
 			<!-- Main Menu Descriptions -->
-			<control type="group">
+			<!--control type="group">
 				<control type="image">
 					<posx>-13</posx>
 					<posy>213r</posy>
@@ -614,26 +620,26 @@
 					<textcolor>white</textcolor>
 					<visible>!Control.HasFocus(1209000)</visible>
 				</control>
-			</control>
+			</control-->
 
 			<!-- Time Panel -->
 			<control type="group">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="image">
-					<posx>340r</posx>
-					<posy>213r</posy>
-					<width>345</width>
-					<height>60</height>
+					<posx>530r</posx>
+					<posy>207r</posy>
+					<width>545</width>
+					<height>54</height>
 					<texture>$VAR[TimePanelImageVar]</texture>
 					<colordiffuse>EE000000</colordiffuse>
 				</control>
 				<control type="label">
-					<posx>15r</posx>
-					<posy>187r</posy>
+					<posx>16r</posx>
+					<posy>185r</posy>
 					<width>300</width>
 					<height>36</height>
 					<align>right</align>
-					<label>[COLOR=FFdfdfdf] $INFO[System.Date(DDD)], $INFO[System.Date(d)] $INFO[System.Date(mmm)] $INFO[System.Date(yyyy)]  •  [/COLOR][COLOR=FF6db9e5] $INFO[System.Time][/COLOR]</label>
+					<label>[COLOR=FFdfdfdf]$INFO[System.Date]  •[/COLOR]  [COLOR=FF6db9e5]$INFO[System.Time][/COLOR]</label>
 					<font>Font_Reg15_Caps</font>
 					<textcolor>$VAR[HomeMenuWidgetTextVar]</textcolor>
 				</control>
@@ -688,24 +694,24 @@
 			</control-->
 
 			<!-- Power Off Button -->
-			<!--control type="group">
-				<posx>270r</posx>
-				<posy>190r</posy>
+			<control type="group">
+				<posx>470r</posx>
+				<posy>177r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200102">
 					<include>DefaultMainMenuButtonValues</include>
-					<onleft>1200101</onleft>
-					<onright>1200101</onright>
+					<!--onleft>1200101</onleft>
+					<onright>1200101</onright-->
 				</control>
-				<control type="image">
+				<!--control type="image">
 					<posx>3</posx>
 					<posy>3</posy>
-					<width>25</width>
-					<height>25</height>
+					<width>20</width>
+					<height>20</height>
 					<aspectratio>keep</aspectratio>
 					<texture>icon_power.png</texture>
-				</control>
-			</control-->
+				</control-->
+			</control>
 
 			<!-- Hidden Menu Buttons -->
 			<control type="button" id="1290100">
