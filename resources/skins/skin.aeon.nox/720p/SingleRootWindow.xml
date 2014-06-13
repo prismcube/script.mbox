@@ -1623,7 +1623,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -1641,7 +1641,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -1651,7 +1651,7 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 				<control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
@@ -1678,8 +1678,8 @@
 
 			<!--  Item & Page Number -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300401">
 					<posx>180</posx>
@@ -1694,25 +1694,23 @@
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1300050).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
+					<align>left</align>
+					<label>[Control.GetLabel(1300401)] $ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -4355,7 +4353,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -4374,7 +4372,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -4384,25 +4382,24 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<!-- Item & Page Number for Common list -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003400).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -4410,14 +4407,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003410).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -4425,14 +4421,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003420).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -4440,14 +4435,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003430).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
@@ -5964,7 +5958,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -5983,7 +5977,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -5993,25 +5987,24 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<!-- Item & Page Number for Common list -->
 				<control type="label">
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003500).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode),channel) </visible>
 				</control>
 
@@ -6020,14 +6013,13 @@
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003510).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 				</control>
 
@@ -6036,14 +6028,13 @@
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(3702000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode), grid)</visible>
 				</control>
 			</control>
@@ -6181,7 +6172,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -6200,7 +6191,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -6210,22 +6201,21 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<!-- Item & Page Number -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
+				<posx>103</posx>
+				<posy>665</posy>
+				<width>200</width>
 				<height>20</height>
-				<font>Font_Reg14_Caps</font>
+				<font>Font_Reg14</font>
 				<textcolor>grey2</textcolor>
 				<scroll>false</scroll>
-				<align>center</align>
-				<aligny>center</aligny>
-				<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
+				<align>left</align>
+				<label>$INFO[Container(1003610).NumItems] $ADDON[script.mbox 1106]</label>
 			</control>
 
 			<!-- Slide Menu -->
@@ -6798,7 +6788,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<label>$INFO[Container(4601000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 
@@ -7018,7 +7008,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>

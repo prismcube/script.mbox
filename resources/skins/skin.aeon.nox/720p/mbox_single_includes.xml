@@ -7012,6 +7012,7 @@
 			<posy>-2</posy>
 			<width>46</width>
 			<height>28</height>
+			<colordiffuse>FF6db9e5</colordiffuse>
 			<texture>defaulticons/DefaultAddonService.png</texture>
 		</control>
 		<!-- EPG, Channel List tv mode -->
@@ -7022,6 +7023,7 @@
 			<posy>-2</posy>
 			<width>46</width>
 			<height>28</height>
+			<colordiffuse>FF6db9e5</colordiffuse>
 			<texture>defaulticons/DefaultTVShows.png</texture>
 		</control>
 		<!-- EPG, Channel List radio mode -->
@@ -7032,6 +7034,7 @@
 			<posy>-2</posy>
 			<width>46</width>
 			<height>28</height>
+			<colordiffuse>FF6db9e5</colordiffuse>
 			<texture>defaulticons/DefaultAddonMusic.png</texture>
 		</control>
 		<control type="label" id="1009550">
@@ -7198,32 +7201,33 @@
                 <texture>tooltip.png</texture>
                 <colordiffuse>$VAR[ExtendedColorVar]</colordiffuse>
             </control>
-            <control type="group">
-                <animation effect="slide" end="0,-15" time="256" tween="cubic" condition="[[!IsEmpty(ListItem.Trailer) + Window.IsActive(videolibrary)] | [!IsEmpty(Window.Property(SongToMusicVideo.Path)) + Window.IsActive(musiclibrary)]] + !Container.Scrolling">Conditional</animation>
-                <control type="image">
-                    <posx>276</posx>
-                    <posy>354</posy>
-                    <width>16</width>
-                    <height>16</height>
-                    <animation effect="rotate" end="-180" center="auto" delay="240" time="640" condition="ControlGroup(1300100).HasFocus | ControlGroup(3309000).HasFocus">Conditional</animation>
-                    <texture>common/arrowleft.png</texture>
-                    <colordiffuse>$VAR[TitleColorVar]</colordiffuse>
-                    <include>Animation_VisibleChange400</include>
-                    <visible>!ControlGroup(9000).HasFocus</visible>
-                </control>
-            </control>
-            <control type="image">
+			<control type="group">
+				<control type="image">
+					<posx>276</posx>
+					<posy>354</posy>
+					<width>16</width>
+					<height>16</height>
+					<animation effect="rotate" end="-180" center="auto" delay="240" time="640" condition="ControlGroup(1300100).HasFocus | ControlGroup(3709000).HasFocus | ControlGroup(3309000).HasFocus | ControlGroup(4009000).HasFocus">Conditional</animation>
+					<animation effect="rotate" end="90" center="auto" delay="240" time="640" condition="ControlGroup(3309000).HasFocus + [substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)]]">Conditional</animation>
+					<animation effect="rotate" end="-90" center="auto" delay="240" time="640" condition="substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),fanart)">Conditional</animation>
+					<texture>common/arrowleft.png</texture>
+					<colordiffuse>FF6db9e5</colordiffuse>
+					<include>Animation_VisibleChange400</include>
+					<visible>!ControlGroup(9000).HasFocus</visible>
+				</control>
+			</control>
+			<control type="image">
 				<posx>276</posx>
 				<posy>354</posy>
 				<width>16</width>
 				<height>16</height>
-                <texture>common/arrowright.png</texture>
-                <colordiffuse>$VAR[TitleColorVar]</colordiffuse>
-                <include>Animation_VisibleChange400</include>
-                <visible>ControlGroup(9000).HasFocus</visible>
-            </control>
-        </control>
-    </include>
+				<texture>common/arrowright.png</texture>
+				<colordiffuse>FF6db9e5</colordiffuse>
+				<include>Animation_VisibleChange400</include>
+				<visible>ControlGroup(9000).HasFocus</visible>
+			</control>
+		</control>
+	</include>
 
 	<include name="CASIconSize">
 		<posx>0</posx>
