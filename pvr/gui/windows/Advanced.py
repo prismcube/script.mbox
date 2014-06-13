@@ -73,7 +73,7 @@ class Advanced( SettingWindow ) :
 			self.mPrevYoutubetv != self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'You must reboot your system for the changes to take effect.' ), MR_LANG( 'Do you want to restart the system now?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Do you want to restart the system now?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mDataCache.System_Reboot( )
