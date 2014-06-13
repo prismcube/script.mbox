@@ -333,6 +333,17 @@ class GlobalEvent( object ) :
 			elif aEvent.mUpdateType == 1 :
 				self.mDataCache.UpdateChannelByDBUpdate( aEvent.mChannelNo, aEvent.mServiceType )
 
+		elif aEvent.getName( ) == ElisEventCrossEventProgress.getName( ) :
+			if aEvent.mCurrenChannelIndex + 1 >= aEvent.mTotalChannelCount :
+				mHead = MR_LANG( 'CrossEPG' )
+				mLine = MR_LANG( 'Download complete' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+
+		elif aEvent.getName( ) == ElisEventCrossEPGStart.getName( ) :
+			script = xbmc.translatePath( xbmcaddon.Addon( 'script.crossepg' ).getAddonInfo( 'path' ) ) + '/CrossEPG_Background.py'
+			cmd = 'AlarmClock(%s,RunScript(%s),%d,True)' % ( 'crossepg', script, 0.2 )
+			xbmc.executebuiltin( cmd )
+
 		#for HBBTV
 		elif E_SUPPROT_HBBTV == True :
 			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )

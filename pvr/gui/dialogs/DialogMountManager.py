@@ -67,6 +67,19 @@ class DialogMountManager( SettingDialog ) :
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
 
+			#do not select usb volume
+			if self.mSelectIdx < len( self.mNetVolumeList ) :
+				netVolume = self.mNetVolumeList[self.mSelectIdx]
+				if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+					selectIdx = -1
+					self.mSelectIdx = -1
+					for netVolume in self.mNetVolumeList :
+						selectIdx += 1
+						netVolume.printdebug()
+						if netVolume.mMountPath and not bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+							self.mSelectIdx = selectIdx
+							break
+
 		self.InitItem( )
 
 		self.mEventBus.Register( self )
@@ -542,6 +555,18 @@ class DialogMountManager( SettingDialog ) :
 				if netVolume.mIsDefaultSet :
 					self.mDefaultPathVolume = netVolume
 
+			#do not select usb volume
+			if self.mSelectIdx < len( self.mNetVolumeList ) :
+				netVolume = self.mNetVolumeList[self.mSelectIdx]
+				if netVolume.mMountPath and bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+					selectIdx = -1
+					self.mSelectIdx = -1
+					for netVolume in self.mNetVolumeList :
+						selectIdx += 1
+						if netVolume.mMountPath and not bool( re.search( '%s\w\d+'% E_DEFAULT_PATH_USB_POSITION, netVolume.mMountPath, re.IGNORECASE ) ) :
+							self.mSelectIdx = selectIdx
+							break
+
 			if not self.mHDDStatus and ( not self.mDefaultPathVolume ) :
 				self.mDefaultPathVolume = deepcopy( self.mNetVolumeList[0] )
 				self.mDefaultPathVolume.mIsDefaultSet = 1
@@ -549,6 +574,7 @@ class DialogMountManager( SettingDialog ) :
 				ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( E_DEFAULT_PATH_NETWORK_VOLUME )
 
 		self.mMode = E_NETWORK_VOLUME_SELECT
+
 		#ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).SetProp( defaultPath )
 
 		self.DrawItem( )
@@ -719,7 +745,8 @@ class DialogMountManager( SettingDialog ) :
 				lblPath = '[%s]%s'% ( lblType, os.path.basename( netVolume.mMountPath ) )
 				LOG_TRACE('mountPath idx[%s] urlType[%s] mRemotePath[%s] mMountPath[%s] isDefault[%s]'% ( trackIndex, urlType, netVolume.mRemotePath, netVolume.mMountPath, netVolume.mIsDefaultSet ) )
 
-				trackList.append( ContextItem( lblPath, trackIndex ) )
+				if lblType != 'USB' :
+					trackList.append( ContextItem( lblPath, trackIndex ) )
 				trackIndex += 1
 
 		else :

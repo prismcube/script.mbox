@@ -121,7 +121,8 @@
 						<posy>0</posy>
 						<width>470</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="6">views/tripanel/listselect_fo.png</texture>
+						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 					</control>
 					<control type="label">
 						<posx>0</posx>
@@ -225,7 +226,8 @@
 						<posy>0</posy>
 						<width>470</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="6">views/tripanel/listselect_fo.png</texture>
+						<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 					</control>
 					<control type="label">
 						<posx>0</posx>

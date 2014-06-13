@@ -8,7 +8,14 @@
 		<include>DefaultSettingsBackground</include>
 
 		<!-- Top Bar Image -->
-		<include>DefaultSettingsTopBar</include>
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>72</height>
+			<texture flipy="true">home/nav_back.png</texture>
+			<colordiffuse>$VAR[ExtendedColorVar]</colordiffuse>
+		</control>
 
 		<!-- Bottom Bar -->
 		<control type="image">

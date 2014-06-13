@@ -242,7 +242,7 @@
 					<posx>0</posx>
 					<posy>230</posy>
 					<onup>1209000</onup>
-					<ondown>1200101</ondown>
+					<ondown>1200102</ondown>
 
 					<!-- Installation Submenu -->
 					<control type="grouplist" id="1209010">
@@ -318,6 +318,12 @@
 						<control type="button" id="1290315">
 							<include>DefaultSubMainMenuMiddleValues</include>
 							<label>$ADDON[script.mbox 1164]</label>
+						</control>
+						<control type="button" id="1290316">
+							<include>DefaultSubMainMenuMiddleValues</include>
+							<label>CrossEPG</label>
+							<visible>System.HasAddon("script.crossepg")</visible>
+							<onclick>RunAddon("script.crossepg")</onclick>
 						</control>
 						<control type="image" id="1290316">
 							<include>DefaultSubMainMenuEndValues</include>
@@ -454,7 +460,7 @@
 					<height>60</height>
 					<onleft>1209000</onleft>
 					<onright>1209000</onright>
-					<onup>1200101</onup>
+					<onup>1200102</onup>
 					<ondown condition="Control.IsVisible(1209001)">1209001</ondown>
 					<ondown condition="!Control.IsVisible(1209001)">1200101</ondown>
 					<pagecontrol>-</pagecontrol>
@@ -584,7 +590,7 @@
 			</control>
 
 			<!-- Main Menu Descriptions -->
-			<control type="group">
+			<!--control type="group">
 				<control type="image">
 					<posx>-13</posx>
 					<posy>213r</posy>
@@ -614,26 +620,26 @@
 					<textcolor>white</textcolor>
 					<visible>!Control.HasFocus(1209000)</visible>
 				</control>
-			</control>
+			</control-->
 
 			<!-- Time Panel -->
 			<control type="group">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="image">
-					<posx>340r</posx>
-					<posy>213r</posy>
-					<width>345</width>
-					<height>60</height>
+					<posx>530r</posx>
+					<posy>207r</posy>
+					<width>545</width>
+					<height>54</height>
 					<texture>$VAR[TimePanelImageVar]</texture>
 					<colordiffuse>EE000000</colordiffuse>
 				</control>
 				<control type="label">
-					<posx>15r</posx>
-					<posy>187r</posy>
+					<posx>16r</posx>
+					<posy>185r</posy>
 					<width>300</width>
 					<height>36</height>
 					<align>right</align>
-					<label>[COLOR=FFdfdfdf] $INFO[System.Date(DDD)], $INFO[System.Date(d)] $INFO[System.Date(mmm)] $INFO[System.Date(yyyy)]  •  [/COLOR][COLOR=FF6db9e5] $INFO[System.Time][/COLOR]</label>
+					<label>[COLOR=FFdfdfdf]$INFO[System.Date]  •[/COLOR]  [COLOR=FF6db9e5]$INFO[System.Time][/COLOR]</label>
 					<font>Font_Reg15_Caps</font>
 					<textcolor>$VAR[HomeMenuWidgetTextVar]</textcolor>
 				</control>
@@ -688,24 +694,24 @@
 			</control-->
 
 			<!-- Power Off Button -->
-			<!--control type="group">
-				<posx>270r</posx>
-				<posy>190r</posy>
+			<control type="group">
+				<posx>470r</posx>
+				<posy>177r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<control type="button" id="1200102">
 					<include>DefaultMainMenuButtonValues</include>
-					<onleft>1200101</onleft>
-					<onright>1200101</onright>
+					<!--onleft>1200101</onleft>
+					<onright>1200101</onright-->
 				</control>
-				<control type="image">
+				<!--control type="image">
 					<posx>3</posx>
 					<posy>3</posy>
-					<width>25</width>
-					<height>25</height>
+					<width>20</width>
+					<height>20</height>
 					<aspectratio>keep</aspectratio>
 					<texture>icon_power.png</texture>
-				</control>
-			</control-->
+				</control-->
+			</control>
 
 			<!-- Hidden Menu Buttons -->
 			<control type="button" id="1290100">
@@ -1623,7 +1629,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -1641,7 +1647,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -1651,7 +1657,7 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 				<control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
@@ -1678,8 +1684,8 @@
 
 			<!--  Item & Page Number -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label" id="1300401">
 					<posx>180</posx>
@@ -1694,25 +1700,23 @@
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1300050).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<control type="label">
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
+					<align>left</align>
+					<label>[Control.GetLabel(1300401)] $ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -1722,6 +1726,7 @@
 				<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1300110).HasFocus | ControlGroup(1309001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<include>DefaultWindowFade</include>
+				<include>Slide_Menu_Tooltip</include>
 				<control type="group">
 					<control type="image">
 	                    <posx>-500</posx>
@@ -1835,7 +1840,7 @@
 								<width>18</width>
 								<height>18</height>
 								<texture>HomeHasSub.png</texture>
-								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus | Control.HasFocus(1300103)] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
@@ -4077,7 +4082,7 @@
 					<posx>-13</posx>
 					<posy>-7</posy>
 		            <width>1306</width>
-		            <height>62</height>
+		            <height>72</height>
 		            <texture flipy="true">home/nav_back.png</texture>
 		            <colordiffuse>$VAR[ExtendedColorVar]</colordiffuse>
 		        </control>
@@ -4086,22 +4091,22 @@
 				<control type="image">
 					<posx>10</posx>
 					<posy>-2</posy>
-					<width>25</width>
-					<height>25</height>
+					<width>28</width>
+					<height>28</height>
 					<aspectratio>keep</aspectratio>
 					<texture>defaulticons/DefaultVideo.png</texture>
 				</control>
 
 				<!-- Window Header Title -->
 				<control type="label" id="1009551">
-					<posx>47</posx>
-					<posy>-4</posy>
+					<posx>52</posx>
+					<posy>-1</posy>
 					<width min="0" max="800">auto</width>
-					<height>30</height>
-					<font>Font_Reg15_Caps</font>
+					<height>25</height>
+					<font>Font_Reg17_Caps</font>
 					<scroll>false</scroll>
 					<align>left</align>
-					<aligny>center</aligny>
+					<shadowcolor>00ffffff</shadowcolor>
 					<label>[COLOR=FFdfdfdf] $INFO[Control.GetLabel] [/COLOR]</label>
 				</control>
 			</control>
@@ -4226,7 +4231,7 @@
 				<control type="group">
 					<posx>10</posx>
 					<posy>160</posy>
-					<!--visible>substring(Window.Property(HasLock),true)</visible-->
+					<visible>substring(Window.Property(HasLock),true)</visible>
 					<control type="image">
 						<posx>-10</posx>
 						<posy>-10</posy>
@@ -4354,7 +4359,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -4373,7 +4378,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -4383,25 +4388,24 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<!-- Item & Page Number for Common list -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<include>DefaultWindowFade</include>
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003400).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -4409,14 +4413,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003410).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -4424,14 +4427,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003420).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -4439,14 +4441,13 @@
 				<control type="label">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003430).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
@@ -4455,7 +4456,127 @@
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
+				<control type="group">
+					<control type="image">
+						<posx>-500</posx>
+						<posy>0</posy>
+						<width>490</width>
+						<height>720</height>
+						<texture>dialogs/context_middle.png</texture>
+						<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+						<animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
+					</control>
+				</control>
 
+				<control type="group" id="3309001">
+					<posx>-220</posx>
+					<posy>0</posy>
+					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3309001).HasFocus + !Control.HasFocus(3300104) + !Control.HasFocus(3300105)">conditional</animation>
+					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">WindowClose</animation>
+					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">conditional</animation>
+					<control type="button">
+						<description>Invisible button for mouse</description>
+						<posx>-15</posx>
+						<posy>0</posy>
+						<width>245</width>
+						<height>720</height>
+						<font>-</font>
+						<texturenofocus>-</texturenofocus>
+						<texturefocus>-</texturefocus>
+						<visible>true</visible>
+					</control>
+					<control type="grouplist" id="3309010">
+						<posx>10</posx>
+						<posy>210</posy>
+						<width>240</width>
+						<height>550</height>
+						<onleft>3309000</onleft>
+						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
+						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
+						<onup>3309010</onup>
+						<ondown>3309010</ondown>
+						<itemgap>0</itemgap>
+						<control type="radiobutton" id="3300200">
+							<description>Stack Toggle</description>
+							<textwidth>170</textwidth>
+							<include>DefaultButtonMediaSubCommonValues</include>
+							<label>$ADDON[script.mbox 1008]</label>
+						</control>
+						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
+					</control>
+					<control type="list" id="3309050">
+						<posx>0</posx>
+						<posy>210</posy>
+						<width>240</width>
+						<height>550</height>
+						<onleft>3309000</onleft>
+						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
+						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
+						<onup>3309020</onup>
+						<ondown>3309020</ondown>
+						<visible>![Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus]</visible>
+						<itemlayout height="40" width="150">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>220</width>
+								<height>40</height>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>0</posy>
+								<width>220</width>
+								<height>40</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>Font_Reg19</font>
+								<textcolor>grey3</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout height="40" width="150">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>220</width>
+								<height>40</height>
+								<texture border="6">views/tripanel/listselect_fo.png</texture>
+								<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+								<visible>Control.HasFocus(3309050)</visible>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>220</width>
+								<height>40</height>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<visible>!Control.HasFocus(3309050)</visible>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>0</posy>
+								<width>210</width>
+								<height>40</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<font>Font_Reg19</font>
+								<textcolor>white3</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</focusedlayout>
+					</control>
+				</control>
 				<!-- Slide Menu Panel -->
 				<include>DefaultSideBladeLeft</include>
 
@@ -4487,7 +4608,7 @@
 						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
-						<onup>3300200</onup>
+						<onup>3300106</onup>
 						<ondown>3300101</ondown>
 					</control>
 					<control type="button" id="3300101">
@@ -4526,7 +4647,48 @@
 						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3300101</onup>
+						<ondown>3300105</ondown>
+					</control>
+					<control type="button" id="3300105">
+						<description>NAS GROUPS</description>
+						<hitrect x="0" y="120" w="265" h="40" />
+						<posx>0</posx>
+						<posy>120</posy>
+						<include>DefaultButtonCommonValues</include>
+						<radiowidth>18</radiowidth>
+						<radioheight>18</radioheight>
+						<radioposx>222</radioposx>
+						<radioposy>12</radioposy>
+						<label>$ADDON[script.mbox 1171]</label>
+						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
+						<onright>3309050</onright>
+						<onup>3300200</onup>
+						<ondown>3300106</ondown>
+						<enable>!substring(Container(3309050).CurrentPage,0)</enable>
+						<visible>!substring(Container(3309050).CurrentPage,0)</visible>
+					</control>
+					<control type="button" id="3300106">
+						<description>ALL ARCHIVES</description>
+						<hitrect x="0" y="120" w="265" h="40" />
+						<posx>0</posx>
+						<posy>160</posy>
+						<include>DefaultButtonCommonValues</include>
+						<label>$ADDON[script.mbox 1172]</label>
+						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
+						<onleft condition="substring(Window.Property(ViewMode),fanart)">1003430</onleft>
+						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
+						<onright condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onright>
+						<onright condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onright>
+						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
+						<onup>3300105</onup>
 						<ondown>3300100</ondown>
+						<enable>Control.IsVisible(3300105)</enable>
+						<visible>Control.IsVisible(3300105)</visible>
 					</control>
 				</control>
 			</control>
@@ -5802,7 +5964,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -5821,7 +5983,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -5831,25 +5993,24 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
+				<posx>103</posx>
+				<posy>665</posy>
 				<!-- Item & Page Number for Common list -->
 				<control type="label">
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003500).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode),channel) </visible>
 				</control>
 
@@ -5858,14 +6019,13 @@
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(1003510).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 				</control>
 
@@ -5874,14 +6034,13 @@
 					<include>DefaultWindowFade</include>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>1280</width>
+					<width>200</width>
 					<height>20</height>
-					<font>Font_Reg14_Caps</font>
+					<font>Font_Reg14</font>
 					<textcolor>grey2</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+					<align>left</align>
+					<label>$INFO[Container(3702000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(EPGMode), grid)</visible>
 				</control>
 			</control>
@@ -5890,6 +6049,11 @@
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
 
 				<!-- Slide Menu Panel -->
 				<include>DefaultSideBladeLeft</include>
@@ -6014,7 +6178,7 @@
 
 			<!-- Hotkeys -->
 			<control type="grouplist">
-				<posx>60</posx>
+				<posx>260</posx>
 				<posy>665</posy>
 				<width>850</width>
 				<height>32</height>
@@ -6033,7 +6197,7 @@
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
-				<control type="group">
+				<!--control type="group">
 					<include>DefaultFooterGroupValues</include>
 					<control type="image">
 						<include>DefaultFooterImageValues</include>
@@ -6043,28 +6207,32 @@
 						<include>DefaultFooterLabelValues</include>
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 			<!-- Item & Page Number -->
 			<control type="label">
 				<include>DefaultWindowFade</include>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
+				<posx>103</posx>
+				<posy>665</posy>
+				<width>200</width>
 				<height>20</height>
-				<font>Font_Reg14_Caps</font>
+				<font>Font_Reg14</font>
 				<textcolor>grey2</textcolor>
 				<scroll>false</scroll>
-				<align>center</align>
-				<aligny>center</aligny>
-				<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
+				<align>left</align>
+				<label>$INFO[Container(1003610).NumItems] $ADDON[script.mbox 1106]</label>
 			</control>
 
 			<!-- Slide Menu -->
 			<control type="group">
 				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<posx>-3</posx>
+					<posy>0</posy>
+					<include>Slide_Menu_Tooltip</include>
+				</control>
 
 				<!-- Slide Menu Panel -->
 				<include>DefaultSideBladeLeft</include>
@@ -6626,7 +6794,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<label>$INFO[Container(4601000).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 
@@ -6846,7 +7014,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=FF6db9e5]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<label>$INFO[Container(4601001).NumItems] $ADDON[script.mbox 1106]</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>
