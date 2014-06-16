@@ -637,7 +637,7 @@
 "All customized channel logos will be erased";"Alle benutzerdefinierten Senderlogos werden gelöscht";;;;;;"Wszystkie ikony zostaną usunięte";;;;;;;3105
 "Delete all customized channel logos?";"Alle benutzerdefinierten Senderlogos löschen?";;;;;;"Czy usunąć wszystkie dodatkowe ikony?";;;;;;;3106
 "Restart Required";"Restart erforderlich";"Redémarrage requis";"Riavvio richiesto";"Necesario reiniciar";"Vyžaduje se restart";"Restart Required";"Wymagany restart";"Restart Required";"Требуется Перезагрузка";"Restart Required";"Restart Required";"Vyžaduje sa reštartovanie";"Потрібне Перезавантаження";3107
-"System restart is needed in order to apply changes";"Neustart des Systems ist erforderlich, um Änderungen zu übernehmen";;;;;;"W celu zastosowania zmian uruchom ponownie system";;;;;;;3108
+"System restart is needed in order to apply changes";"Neustart des Systems ist erforderlich,%n um Änderungen zu übernehmen";;;;;;"W celu zastosowania zmian uruchom ponownie system";;;;;;;3108
 "Initializing process";"Initialisieren Prozess";;;;"Proces inicializace ";;"Inicjalizacja procesu";;;;;"Proces inicializácie";;3109
 "Ready to start";"Startbereit";;;;"Připraven ke spuštění ";;"Gotowy do rozpoczęcia";;;;;"Pripravený na spustenie";;3110
 "Copy Files";"Dateien Kopieren";;;;;;"Kopiowanie plików";;;;;;;3111
@@ -849,7 +849,7 @@
 "Please reset your device to factory settings";"Bitte setzten Sie Ihr Gerät auf Werkeinstellung zurück";"Veuillez réinitialiser votre appareil aux réglages d'usine";"Si prega di ripristinare il dispositivo alle impostazioni di fabbrica";"Por favor resetea tu equipo a los valores de fábrica";"Prosím, vyresetujte zařízení do továrního nastavení";"Please reset your device to factory settings";"Proszę przywrócić odbiornik do ustawień fabrycznych";"Please reset your device to factory settings";"Пожалуйста сбросьте приставку в заводские установки";"Please reset your device to factory settings";"Please reset your device to factory settings";"Prosím, vyresetujte zariadenie do továrenského nastavenia";"Будь ласка скиньте приставку в заводські установки";3317
 "Go to the configuration menu now?";"Jetzt zum Konfigurationsmenü wechseln?";"Aller au menu de configuration maintenant?";"Vai al menu di configurazione ora?";"Ir al menú de configuración ahora?";"Vejít do konfiguračního menu teď?";"Go to the configuration menu now?";"Czy przejść teraz do menu konfiguracyjnego?";"Go to the configuration menu now?";"Перейти в меню конфигурации?";"Go to the configuration menu now?";"Go to the configuration menu now?";"Vojsť do konfiguračného menu teraz?";"Перейти в меню конфігурації?";3318
 "When you perform a factory reset,%s all your settings revert to factory defaults";"Wenn Sie einen Werkreset durchführen,%s werden alle Werte zurückgesetzt";"Quand vous faites une réinitialisation aux paramètres usine%s tous vos paramètres seront réinitialisés aux paramètres usine par défaut";"Quando si esegue un reset di fabbrica,%s tutte le impostazioni ritornano ai valori predefiniti di fabbrica";"Al realizar un reset de fábrica,%s todos los ajustes vuelven a los valor original";"Při obnovení továrního nastavení,%s budou všechny vaše nastavení vráceny na výchozí hodnoty";"When you perform a factory reset,%s all your settings revert to factory defaults";"Gdy zostanie wykonany reset do ustawień fabrycznych,%s wszystkie ustawienia zostaną przywrócone do stanu fabrycznego";"When you perform a factory reset,%s all your settings revert to factory defaults";"После выполнения сброса,%s все настройки примут заводские значения";"When you perform a factory reset,%s all your settings revert to factory defaults";"When you perform a factory reset,%s all your settings revert to factory defaults";"Pri obnovení továrenského nastavenia,%s budú všetky vaše nastavenia vrátené na predvolené hodnoty";"Після виконання скидання,%s всі налаштування приймуть заводські значення";3319
-"Do you want to save changes before exit?";"Wollen Sie vor dem Verlassen die Änderungen speichern?";"Voulez vous sauvegarder les changements avant de quitter?";"Vuoi salvare le modifiche prima di uscire?";"Quiere guardar los cambios antes de salir?";"Chcete uložit změny před ukončením?";"Do you want to save changes before exit?";"Czy chcesz zapisać zmiany przed wyjściem?";"Do you want to save changes before exit?";"Хотите сохранить изменения перед выходом?";"Do you want to save changes before exit?";"Do you want to save changes before exit?";"Chcete uložiť zmeny pred ukončením?";"Хочете зберегти зміни перед виходом?";3320
+"Do you want to save changes before exit?";"Wollen Sie vor dem Verlassen die%n Änderungen speichern?";"Voulez vous sauvegarder les changements avant de quitter?";"Vuoi salvare le modifiche prima di uscire?";"Quiere guardar los cambios antes de salir?";"Chcete uložit změny před ukončením?";"Do you want to save changes before exit?";"Czy chcesz zapisać zmiany przed wyjściem?";"Do you want to save changes before exit?";"Хотите сохранить изменения перед выходом?";"Do you want to save changes before exit?";"Do you want to save changes before exit?";"Chcete uložiť zmeny pred ukončením?";"Хочете зберегти зміни перед виходом?";3320
 "Save Configuration";"Konfiguration speichern";"Enregistrer la configuration";"Salva configurazione";"Salvar configuración";"Uložit konfiguraci";"Save Configuration";"Zapisz konfigurację";"Save Configuration";"Сохранить Конфигурацию";"Save Configuration";"Save Configuration";"Uložiť konfiguráciu";"Зберегти Конфігурацію";3321
 "Are you sure you want to quit the first installation?";"Sind Sie sicher dass Sie die erstinstallation%n verlassen wollen?";"Êtes vous surs de vouloir quitter la première installation?";"Sei sicuro di voler uscire dalla prima installazione?";"Realmente quiere salir de la primera instalacion?";"Jste si jisti, že chcete ukončit prvotní instalaci?";"Are you sure you want to quit the first installation?";"Czy na pewno chcesz przerwać instalację?";"Are you sure you want to quit the first installation?";"Выйти из первичной установки?";"Are you sure you want to quit the first installation?";"Are you sure you want to quit the first installation?";"Ste si istí, že chcete ukončiť prvotnú inštaláciu?";"Вийти з первинної установки?";3322
 "Exit Installation";"Installation verlassen";"Quitter l'installation";"Uscire da installazione";"Salir instalación";"Ukončit instalaci";"Exit Installation";"Wyjdź z instalacji";"Exit Installation";"Выход из Установки";"Exit Installation";"Exit Installation";"Ukončiť inštaláciu";"Вихід з Установки";3323
@@ -1488,12 +1488,20 @@
 "South";"Süd";"Sud";"Sud";"Sur";"Jih";"South";"Południe";"South";"Юг";"South";"South";"Juh";"Південь";3956
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3957
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3958
-"That channel is locked";;;;;;;;;;;;;;3959
-"Could not switch PIP";;;;;;;;;;;;;;3960
-"Media Playback";;;;;;;;;;;;;;3961
-"MediaPlay";;;;;;;;;;;;;;3962
-"Do you want to restart the system now?";;;;;;;;;;;;;;3963
-"You must reboot your system for the changes to take effect.";;;;;;;;;;;;;;3964
-"Recording stopped due to broken NAS connection";;;;;;;;;;;;;;3965
-"Unable to mount location";;;;;;;;;;;;;;3966
-"Make sure you have permission to access that folder";;;;;;;;;;;;;;3967
+"That channel is locked";"Dieser Sender ist gesperrt";;;;;;"Kanał jest zablokowany";;;;;;;3959
+"Could not switch PIP";"Konnte PIP nicht wechseln";;;;;;"Nie można przełączyć PIP";;;;;;;3960
+"Media Playback";"Medienwiedergabe";;;;;;"Odtwarzanie mediów";;;;;;;3961
+"MediaPlay";"Mediaplay";;;;;;"Odtwarzacz";;;;;;;3962
+"Do you want to restart the system now?";"Möchten Sie das System jetzt neu starten?";;;;;;"Czy chcesz teraz zrestartować system?";;;;;;;3963
+"You must reboot your system for the changes to take effect.";"Sie müssen das System neu starten, damit die Änderungen wirksam werden.";;;;;;"Musisz ponownie uruchomić system, aby zastosować zmiany";;;;;;;3964
+"Recording stopped due to broken NAS connection";"Die Aufnahme wurde gestoppt durch%n gebrochene NAS Verbindung";;;;;;"Nagrywanie zatrzymane z powodu%n zerwania połączenia z NAS";;;;;;;3965
+"Unable to mount location";"Konnte Pfad nicht Mounten";;;;;;"Nie można podmontować lokalizacji";;;;;;;3966
+"Make sure you have permission to access that folder";"Stellen Sie sicher, dass Sie zugriff auf diesen Ordner haben";;;;;;"Upewnij się, że masz odpowiednie uprawnienia dostępu do tego folderu";;;;;;;3967
+"No access permission";;;;;;;;;;;;;;3968
+"Try the following path instead";;;;;;;;;;;;;;3969
+"Check your NAS configuration";;;;;;;;;;;;;;3970
+"No recording path";;;;;;;;;;;;;;3971
+"Please check your recording path setting";;;;;;;;;;;;;;3972
+"Recordings will be temporarily stored on your hard drive";;;;;;;;;;;;;;3973
+"Add or remove a record storage location for NAS";;;;;;;;;;;;;;3974
+"Do you want to set the recording path now?";;;;;;;;;;;;;;3975

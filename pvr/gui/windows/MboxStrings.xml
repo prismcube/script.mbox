@@ -1502,4 +1502,12 @@
 	<string id="3965">Recording stopped due to broken NAS connection</string>
 	<string id="3966">Unable to mount location</string>
 	<string id="3967">Make sure you have permission to access that folder</string>
+	<string id="3968">No access permission</string>
+	<string id="3969">Try the following path instead</string>
+	<string id="3970">Check your NAS configuration</string>
+	<string id="3971">No recording path</string>
+	<string id="3972">Please check your recording path setting</string>
+	<string id="3973">Recordings will be temporarily stored on your hard drive</string>
+	<string id="3974">Add or remove a record storage location for NAS</string>
+	<string id="3975">Do you want to set the recording path now?</string>
 </strings>
