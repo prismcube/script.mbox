@@ -1411,6 +1411,7 @@ def MountToSMB( aUrl, aSmbPath = '/media/smb', isCheck = True ) :
 	hostip = urlHost
 
 	if not IsIPv4( urlHost ) :
+		ExecuteShell( 'net cache flush' )
 		hostip = ExecuteShell( 'net lookup %s'% urlHost )
 		if not hostip :
 			#LOG_TRACE( 'lookup fail' )
