@@ -434,6 +434,7 @@ class DialogMountManager( SettingDialog ) :
 						#add new, edit
 						urlHost, urlPort, urlUser, urlPass, urlPath, urlFile, urlSize = GetParseUrl( self.mNetVolume.mRemoteFullPath )
 						if not IsIPv4( urlHost ) :
+							ExecuteShell( 'net cache flush' )
 							hostip = ExecuteShell( 'net lookup %s'% urlHost )
 							if hostip and IsIPv4( hostip ) :
 								urlHost = hostip
