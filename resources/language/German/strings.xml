@@ -575,7 +575,7 @@
 	<string id="3035">Bitte versuchen Sie es erneut nach Beendigung%n der Aufnahmen</string>
 	<string id="3036">Bitte versuchen Sie es erneut nach dem Löschen%n von gesetzten Timern</string>
 	<string id="3037">Aufnahme gestoppt aufgrund unzureichendem%n Speicherplatz</string>
-	<string id="3038">Die Aufnahme wurde gestoppt durch gebrochene NAS Verbindung</string>
+	<string id="3038">Die Aufnahme wurde gestoppt durch%n gebrochene NAS Verbindung</string>
 	<string id="3039">Nachladen Senderliste</string>
 	<string id="3040">PIN Code Eingabe</string>
 	<string id="3041">CAM initialisiert</string>
@@ -650,7 +650,7 @@
 	<string id="3110">Alle benutzerdefinierten Senderlogos werden gelöscht</string>
 	<string id="3111">Alle benutzerdefinierten Senderlogos löschen?</string>
 	<string id="3112">Restart erforderlich</string>
-	<string id="3113">Neustart des Systems ist erforderlich, um Änderungen zu übernehmen</string>
+	<string id="3113">Neustart des Systems ist erforderlich,%n um Änderungen zu übernehmen</string>
 	<string id="3114">Initialisieren Prozess</string>
 	<string id="3115">Startbereit</string>
 	<string id="3116">Dateien Kopieren</string>
@@ -908,7 +908,7 @@
 	<string id="3368">Bitte setzten Sie Ihr Gerät auf Werkeinstellung zurück</string>
 	<string id="3369">Jetzt zum Konfigurationsmenü wechseln?</string>
 	<string id="3370">Wenn Sie einen Werkreset durchführen,%s werden alle Werte zurückgesetzt</string>
-	<string id="3371">Wollen Sie vor dem Verlassen die Änderungen speichern?</string>
+	<string id="3371">Wollen Sie vor dem Verlassen die%n Änderungen speichern?</string>
 	<string id="3372">Konfiguration speichern</string>
 	<string id="3373">Sortieren</string>
 	<string id="3374">Versuchen Sie es noch einmal,%n wenn Sie alle Aufnahmen beendet haben</string>
