@@ -1,9 +1,3 @@
-# TUNER TYPE
-TUNER_TYPE_DVBS		= 0
-TUNER_TYPE_DVBT		= 1
-TUNER_TYPE_DVBC 	= 2
-TUNER_TYPE_DVBTC	= 3
-
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy
 from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -26,6 +20,11 @@ FILE_NAME_HBB_TV			= '/config/hbbtv'
 RECORD_WIDTHOUT_ASKING		= True
 RECORD_ENDTIME_TRICK_MARGIN = 1
 
+# TUNER TYPE
+TUNER_TYPE_DVBS		= 0
+TUNER_TYPE_DVBT		= 1
+TUNER_TYPE_DVBC 	= 2
+TUNER_TYPE_DVBTC	= 3
 
 # WINDOW SIZE
 E_WINDOW_WIDTH		= 1280
