@@ -1,3 +1,9 @@
+# TUNER TYPE
+TUNER_TYPE_DVBS		= 0
+TUNER_TYPE_DVBT		= 1
+TUNER_TYPE_DVBC 	= 2
+TUNER_TYPE_DVBTC	= 3
+
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread, glob, copy
 from copy import deepcopy
 from elisinterface.util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -140,10 +146,11 @@ E_STEP_VIDEO_AUDIO						=	1
 E_STEP_ANTENNA							=	2
 E_STEP_CHANNEL_SEARCH_CONFIG			=	3
 E_STEP_CHANNEL_SEARCH_CONFIG_FAST		=	4
-E_STEP_DATE_TIME						=	5
-E_STEP_RESULT							=	6
+E_STEP_CHANNEL_SEARCH_CONFIG_DVBT		=	5
+E_STEP_DATE_TIME						=	6
+E_STEP_RESULT							=	7
 
-FIRST_TIME_INSTALLATION_STEP			= 6
+E_FTI_MAX_STEP							= 	6
 
 E_FIRST_TIME_INSTALLATION_PREV				= E_BASE_WINDOW_ID + 7001
 E_FIRST_TIME_INSTALLATION_NEXT				= E_BASE_WINDOW_ID + 7003
@@ -438,6 +445,7 @@ E_XML_PROPERTY_RECORDING  = 'iRec'
 E_XML_PROPERTY_TUNER1     = 'iTuner1'
 E_XML_PROPERTY_TUNER2     = 'iTuner2'
 E_XML_PROPERTY_TUNER1_2   = 'iTuner1_2'
+E_XML_PROPERTY_TUNER_T     = 'iTuner_T'		#dvb-t
 E_XML_PROPERTY_FASTSCAN   = 'iFastScan'
 E_XML_PROPERTY_EDITINFO   = 'isEdit'
 E_XML_PROPERTY_MOVE       = 'isMove'

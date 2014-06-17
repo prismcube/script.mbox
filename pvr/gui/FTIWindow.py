@@ -55,7 +55,7 @@ class FTIWindow( SettingWindow ) :
 
 
 	def DrawFTIStep( self, aStep ) :
-		if aStep == E_STEP_CHANNEL_SEARCH_CONFIG_FAST :
+		if aStep == E_STEP_CHANNEL_SEARCH_CONFIG_FAST or aStep == E_STEP_CHANNEL_SEARCH_CONFIG_DVBT :
 			aStep = E_STEP_CHANNEL_SEARCH_CONFIG
 
 		elif aStep == E_STEP_DATE_TIME :
@@ -63,8 +63,8 @@ class FTIWindow( SettingWindow ) :
 
 		elif aStep == E_STEP_RESULT :
 			aStep = 5
-	
-		for i in range( FIRST_TIME_INSTALLATION_STEP ) :
+
+		for i in range( E_FTI_MAX_STEP ) :
 			if i == aStep :
 				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( True )
 			else :

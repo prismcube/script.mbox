@@ -347,7 +347,6 @@ class EPGSearchWindow( BaseWindow ) :
 				else :
 					listItem.setProperty( 'TimerType', 'None' )
 
-
 				if E_USE_CHANNEL_LOGO == True :
 					if channel :
 						logo = '%s_%s' %(channel.mCarrier.mDVBS.mSatelliteLongitude, channel.mSid )
