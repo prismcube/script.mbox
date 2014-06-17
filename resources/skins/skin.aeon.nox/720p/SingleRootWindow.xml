@@ -4093,6 +4093,7 @@
 					<width>28</width>
 					<height>28</height>
 					<aspectratio>keep</aspectratio>
+					<colordiffuse>FF6db9e5</colordiffuse>
 					<texture>defaulticons/DefaultVideo.png</texture>
 				</control>
 
