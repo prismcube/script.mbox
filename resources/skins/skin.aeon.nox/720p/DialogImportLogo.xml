@@ -1,0 +1,216 @@
+<window>
+	<defaultcontrol>110</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>240</posx>
+		<posy>115</posy>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>-20</posy>
+			<width>800</width>
+			<height>500</height>
+			<texture>dialogs/dialog_back.png</texture>
+			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+		</control>
+		<control type="image">
+			<posx>15</posx>
+			<posy>0</posy>
+			<width>770</width>
+			<height>42</height>
+			<texture>osd/osd_settings_buttonnf.png</texture>
+		</control>
+		<control type="label" id="102">
+			<description>Title</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>800</width>
+			<height>60</height>
+			<textcolor>FF6db9e5</textcolor>
+			<align>center</align>
+			<scroll>true</scroll>
+			<textoffsetx>45</textoffsetx>
+		</control>
+		<control type="button">
+			<description>Close</description>
+			<posx>730</posx>
+			<posy>20</posy>
+			<width>20</width>
+			<height>20</height>
+			<label>-</label>
+			<font>-</font>
+			<onclick>PreviousMenu</onclick>
+			<texturefocus>special://skin/media/close.png</texturefocus>
+			<texturenofocus>close_nofocus.png</texturenofocus>
+			<onleft>10</onleft>
+			<onright>10</onright>
+			<onup>10</onup>
+			<ondown>10</ondown>
+			<visible>system.getbool(input.enablemouse)</visible>
+		</control>			
+		<control type="label" id="103">
+			<description>Description 1</description>
+			<posx>20</posx>
+			<posy>65</posy>
+			<width>760</width>
+			<height>30</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Font_Reg19</font>
+			<textcolor>white3</textcolor>
+		</control>
+		<control type="radiobutton" id ="110">
+			<description>Customized Channel Logos</description>
+			<posx>40</posx>
+			<posy>110</posy>
+			<width>720</width>
+			<height>40</height>
+			<font>Font_Reg19</font>
+			<radiowidth>70</radiowidth>
+			<radioheight>70</radioheight>
+			<radioposx>655</radioposx>
+			<radioposy>0</radioposy>
+			<align>left</align>
+			<aligny>center</aligny>
+			<texture border="6">views/tripanel/listselect_fo.png</texture>
+			<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+			<texturenofocus>MenuItemNF.png</texturenofocus>
+			<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			<pulseonselect>false</pulseonselect>
+			<textcolor>grey3</textcolor>
+			<focusedcolor>white3</focusedcolor>
+			<disabledcolor>grey3</disabledcolor>
+			<pulseonselect>no</pulseonselect>
+			<onup>119</onup>
+			<ondown>111</ondown>
+		</control>
+		<control type="group">
+			<posy>100</posy>
+			<control type="label" id="104">
+				<description>Description 2</description>
+				<posx>20</posx>
+				<posy>65</posy>
+				<width>760</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Font_Reg19</font>
+				<textcolor>white3</textcolor>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>110</posy>
+				<control type="button" id="111">
+					<description>Load from USB</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>110</onup>
+					<ondown>114</ondown>
+				</control>
+				<control type="button" id="114">
+					<description>Load via Internet</description>
+					<posx>0</posx>
+					<posy>45</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>111</onup>
+					<ondown>115</ondown>
+				</control>
+				<control type="button" id="115">
+					<description>Remove All</description>
+					<posx>0</posx>
+					<posy>90</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+	                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+	                <textcolor>grey2</textcolor>
+	                <focusedcolor>white3</focusedcolor>
+	                <align>center</align>
+	                <textoffsetx>30</textoffsetx>
+	                <textoffsety></textoffsety>
+					<onup>114</onup>
+					<ondown>119</ondown>
+				</control>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>245</posy>
+				<width>720</width>
+				<height>40</height>
+				<texture border="5">button-nofocus.png</texture>
+			</control>
+			<control type="label" id="117">
+				<description>Number of Icons Loaded</description>
+				<posx>40</posx>
+				<posy>245</posy>
+				<width>720</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Font_Reg19</font>
+				<textcolor>grey3</textcolor>
+			</control>
+		</control>
+		<control type="group" id="9001">
+			<posx>190</posx>
+			<posy>400</posy>
+			<control type="button" id="118">
+				<description>Ok</description>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>Font_Reg19</font>
+				<onup>115</onup>
+				<onleft>119</onleft>
+				<onright>119</onright>
+				<ondown>110</ondown>
+			</control>
+			<control type="button" id="119">
+				<description>Cancel</description>
+				<posx>210</posx>
+				<posy>0</posy>
+				<width>180</width>
+				<height>35</height>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
+				<label>$ADDON[script.mbox 1026]</label>
+				<font>Font_Reg19</font>
+				<onup>115</onup>
+				<onleft>118</onleft>
+				<onright>118</onright>
+				<ondown>110</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

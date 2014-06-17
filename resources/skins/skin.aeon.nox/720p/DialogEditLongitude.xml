@@ -1,0 +1,127 @@
+<window>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,40)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>Background Top Image</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>365</width>
+				<height>30</height>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextTopVar]</texture>
+			</control>
+			<control type="image" id="100">
+				<description>Background Middle Image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>365</width>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextMiddleVar]</texture>
+			</control>
+			<control type="image" id="101">
+				<description>Background Bottom Image</description>
+				<posx>0</posx>
+				<width>365</width>
+				<height>25</height>
+				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
+				<texture>$VAR[ContextBottomVar]</texture>
+			</control>
+			<control type="label" id="103">
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>310</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<font>Font_Reg25</font>
+			</control>
+			<control type="list" id="102">
+				<posx>18</posx>
+				<posy>50</posy>
+				<width>330</width>
+				<height>520</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<itemlayout width="330" height="36" >		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<texture border="5">button-nofocus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change Property ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout width="330" height="36">		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+                        <texture>views/tripanel/listselect_fo.png</texture>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        <animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>38</width>
+						<height>38</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>330</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>Font_Reg19</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>
+
+

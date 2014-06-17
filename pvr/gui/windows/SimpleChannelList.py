@@ -4,6 +4,7 @@ import traceback
 E_SIMPLE_CHANNEL_LIST_BASE_ID =  WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID
 LIST_ID_BIG_CHANNEL           = E_SIMPLE_CHANNEL_LIST_BASE_ID + 1000
 LIST_ID_BIG_GROUP             = E_SIMPLE_CHANNEL_LIST_BASE_ID + 1001
+LIST_ID_ZAPPING_GROUP         = E_SIMPLE_CHANNEL_LIST_BASE_ID + 1003
 
 E_NOMAL_UPDATE_TIME = 30
 E_SHORT_UPDATE_TIME = 1
@@ -52,6 +53,7 @@ class SimpleChannelList( BaseWindow ) :
 
 		self.mCtrlBigList   = self.getControl( LIST_ID_BIG_CHANNEL )
 		self.mCtrlGroupList = self.getControl( LIST_ID_BIG_GROUP )
+		self.mCtrlGroupSlide = self.getControl( LIST_ID_ZAPPING_GROUP )
 		#self.SetSingleWindowPosition( E_SIMPLE_CHANNEL_LIST_BASE_ID )
 		#self.SetPipScreen( )
 
@@ -120,9 +122,17 @@ class SimpleChannelList( BaseWindow ) :
 			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
+			if self.mChangeMode :
+				self.PreviousChannelList( )
+				return
+
 			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			if self.mChangeMode :
+				self.UpdateGroupSlide( )
+				return
+
 			self.RestartAsyncEPG( )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
@@ -131,6 +141,8 @@ class SimpleChannelList( BaseWindow ) :
 				ret = self.ToggleTVRadio( )
 				if ret :
 					self.SetRadioScreen( self.mServiceType )
+					if self.mChangeMode :
+						self.PreviousChannelList( )
 
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -207,9 +219,25 @@ class SimpleChannelList( BaseWindow ) :
 		self.StartEPGUpdateTimer( )
 		self.setFocusId( LIST_ID_BIG_CHANNEL )
 		lblPath = EnumToString( 'mode', self.mUserMode.mMode )
-		if self.mUserGroup :
-			lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
+		#if self.mUserGroup :
+		#	lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
 		self.setProperty( 'SimpleChannelPath', lblPath )
+
+		slideVisible = E_TAG_FALSE
+		groupListSlide = []
+		if self.mUserMode.mMode != ElisEnum.E_MODE_ALL :
+			slideVisible = E_TAG_TRUE
+			for groupName in self.mListGroupName :
+				listItem = xbmcgui.ListItem( '%s'% groupName )
+				groupListSlide.append( listItem )
+
+		if not groupListSlide or len( groupListSlide ) < 1 :
+			slideVisible = E_TAG_FALSE
+
+		self.mCtrlGroupSlide.reset( )
+		self.mCtrlGroupSlide.addItems( groupListSlide )
+		self.mCtrlGroupSlide.selectItem( self.mGroupIndex )
+		self.setProperty( 'ShowGroupSlide', slideVisible )
 
 
 	def UpdateListAll( self, aLoadChannel = False ) :
@@ -261,9 +289,24 @@ class SimpleChannelList( BaseWindow ) :
 
 				loopCount += 1
 
-		if self.mUserGroup :
-			lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
+		#if self.mUserGroup :
+		#	lblPath = '%s > %s'% ( lblPath, self.mUserGroup )
 		self.setProperty( 'SimpleChannelPath', lblPath )
+
+		groupListSlide = []
+		slideVisible = E_TAG_FALSE
+		if self.mUserMode.mMode != ElisEnum.E_MODE_ALL :
+			for groupName in self.mListGroupName :
+				listItem = xbmcgui.ListItem( '%s'% groupName )
+				groupListSlide.append( listItem )
+
+		if groupListSlide :
+			slideVisible = E_TAG_TRUE
+
+		self.mCtrlGroupSlide.reset( )
+		self.mCtrlGroupSlide.addItems( groupListSlide )
+		self.mCtrlGroupSlide.selectItem( self.mGroupIndex )
+		self.setProperty( 'ShowGroupSlide', slideVisible )
 
 		self.mChannelListHash = {}
 		self.mChannelNumbersHash = {}
@@ -688,6 +731,35 @@ class SimpleChannelList( BaseWindow ) :
 		return True
 
 
+	def UpdateGroupSlide( self, aMove = 0 ) :
+		#sync to groupList
+		selectPos = self.mCtrlGroupList.getSelectedPosition( )
+		totCount = self.mCtrlGroupSlide.size( )
+		if selectPos < 0 :
+			LOG_TRACE( 'pass, select none' )
+			return
+
+		nextIdx = selectPos - 1
+
+		if aMove != 0 :
+			#rewind / forward
+			nextIdx = aMove - 1
+			if nextIdx < 0 :
+				nextIdx = totCount - 1
+			elif nextIdx >= totCount :
+				nextIdx = 0
+
+		else :
+			#sync to up / down / page
+			if nextIdx < 0 :
+				nextIdx = 0
+			elif nextIdx >= totCount :
+				nextIdx = totCount
+
+		self.mCtrlGroupSlide.selectItem( nextIdx )
+		time.sleep( 0.02 )
+
+
 	def UpdateShortCutGroup( self, aMove = 1 ) :
 		if self.mChangeMode : #show group list
 			selectPos = self.mCtrlGroupList.getSelectedPosition( )
@@ -702,14 +774,13 @@ class SimpleChannelList( BaseWindow ) :
 			elif nextIdx >= totCount :
 				nextIdx = 1
 			self.mCtrlGroupList.selectItem( nextIdx )
-
 			nextGroup = self.mCtrlGroupList.getListItem( nextIdx ).getLabel( )
 			time.sleep( 0.02 )
 			lblPath = EnumToString( 'mode', self.mChangeMode.mMode )
-			if nextGroup :
-				lblPath = '%s > [COLOR grey3]%s[/COLOR]'% ( lblPath, nextGroup )
-
+			#if nextGroup :
+			#	lblPath = '%s > [COLOR grey3]%s[/COLOR]'% ( lblPath, nextGroup )
 			self.setProperty( 'SimpleChannelPath', lblPath )
+			self.UpdateGroupSlide( nextIdx )
 			return
 
 		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
@@ -742,9 +813,10 @@ class SimpleChannelList( BaseWindow ) :
 			nextGroup = self.mDataCache.GetFormattedSatelliteName( groupList[nextIdx].mLongitude, groupList[nextIdx].mBand )
 
 		lblPath = EnumToString( 'mode', self.mUserMode.mMode )
-		if nextGroup :
-			lblPath = '%s > [COLOR grey3]%s[/COLOR]'% ( lblPath, nextGroup )
+		#if nextGroup :
+		#	lblPath = '%s > [COLOR grey3]%s[/COLOR]'% ( lblPath, nextGroup )
 
+		self.mCtrlGroupSlide.selectItem( nextIdx )
 		self.setProperty( 'SimpleChannelPath', lblPath )
 		self.RestartAsyncUpdate( )
 
@@ -790,8 +862,9 @@ class SimpleChannelList( BaseWindow ) :
 			currGroupName = self.mDataCache.GetFormattedSatelliteName( self.mUserMode.mSatelliteInfo.mLongitude, self.mUserMode.mSatelliteInfo.mBand )
 
 		loopCount  = 0
-		currentIdx = 0
+		currentIdx = 1
 		groupListItems = []
+		groupListSlide = []
 		self.mChangeMode = deepcopy( self.mUserMode )
 		self.mChangeMode.mMode = aReqMode
 		groupListItems.append( xbmcgui.ListItem( '%s'% self.mZappingGroupList[ElisEnum.E_MODE_ALL] ) )
@@ -823,10 +896,12 @@ class SimpleChannelList( BaseWindow ) :
 				#LOG_TRACE( '[SimpleChannelList] current group, currentIdx[%s] groupName[%s]'% ( currentIdx, groupName ) )
 
 			listItem = xbmcgui.ListItem( '%s'% groupName )
+			listItem2= xbmcgui.ListItem( '%s'% groupName )
 			if fastScan :
 				listItem.setProperty( E_XML_PROPERTY_FASTSCAN, E_TAG_TRUE )
 
 			groupListItems.append( listItem )
+			groupListSlide.append( listItem2 )
 
 		self.mCtrlGroupList.reset( )
 		self.mCtrlGroupList.addItems( groupListItems )
@@ -837,6 +912,14 @@ class SimpleChannelList( BaseWindow ) :
 		lblPath = EnumToString( 'mode', aReqMode )
 		self.setProperty( 'SimpleChannelPath', lblPath )
 		self.setProperty( 'SelectedGroup', '%s'% ( currentIdx + 1 ) )
+
+		self.mCtrlGroupSlide.reset( )
+		self.mCtrlGroupSlide.addItems( groupListSlide )
+		self.mCtrlGroupSlide.selectItem( currentIdx - 1 )
+		slideVisible = E_TAG_FALSE
+		if groupListSlide :
+			slideVisible = E_TAG_TRUE
+		self.setProperty( 'ShowGroupSlide', slideVisible )
 
 
 	def GetSelectGroup( self ) :
@@ -858,6 +941,7 @@ class SimpleChannelList( BaseWindow ) :
 			if isSelect == 0 and self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
 				lblPath = EnumToString( 'mode', self.mUserMode.mMode )
 				self.setProperty( 'SimpleChannelPath', lblPath )
+				self.setProperty( 'ShowGroupSlide', E_TAG_FALSE )
 				raise Exception, 'pass, select same(all)'
 
 			if self.mChangeMode.mMode == self.mUserMode.mMode :

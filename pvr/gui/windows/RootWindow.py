@@ -22,55 +22,27 @@ class RootWindow( xbmcgui.WindowXML ) :
 		self.syncXBMC( )
 
 		try :
-			if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-				if self.mInitialized == False :
-					self.CheckFirstRun( )
-					self.LoadTimeShiftControl( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
-					if E_SUPPROT_HBBTV == True :
-						self.mCommander.AppHBBTV_Ready( 0 )
-						#self.mDataCache.Splash_StartAndStop( 0 )
-					self.mInitialized = True
-					self.LoadNoSignalState( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-				else :
-					self.LoadTimeShiftControl( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
-					LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
-					lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
-					LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
+			if self.mInitialized == False :
+				self.CheckFirstRun( )
+				self.LoadTimeShiftControl( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
+				if E_SUPPROT_HBBTV == True :
+					#self.mCommander.AppHBBTV_Ready( 1 )
+					#self.mCommander.AppHBBTV_Ready( 0 )
+					self.mDataCache.Splash_StartAndStop( 0 )
+				self.mInitialized = True
+				self.LoadNoSignalState( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 			else :
-				if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
-					if self.mInitialized == False :
-						self.CheckFirstRun( )
-						if E_SUPPROT_HBBTV == True :
-							self.mCommander.AppHBBTV_Ready( 0 )
-						self.mInitialized = True
-						WinMgr.GetInstance( ).mLastId =  WinMgr.WIN_ID_NULLWINDOW
-						xbmc.executebuiltin('xbmc.Action(dvbres21)')
-
-				else :
-					if self.mInitialized == False :
-						self.CheckFirstRun( )
-						if E_SUPPROT_HBBTV == True :
-							self.mCommander.AppHBBTV_Ready( 0 )
-						self.mInitialized = True
-
-						if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
-							WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
-						else :
-							WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).show( )
-						
-					else :
-						if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
-							WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
-						else :
-							WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).show( )
+				self.LoadTimeShiftControl( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).ResetControls( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST ).ResetControls( )
+				LOG_TRACE( 'WinMgr.GetInstance( ).GetLastWindowID( )=%d' %WinMgr.GetInstance( ).GetLastWindowID( ) )
+				lastWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) )
+				LOG_TRACE( 'lastWindow.GetParentID( )=%d' %lastWindow.GetParentID( ) )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.GetInstance( ).GetLastWindowID( ), lastWindow.GetParentID( ) )
 
 		except Exception, ex :
 			import traceback
@@ -78,34 +50,49 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def onAction( self, aAction ) :
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
+		if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+			if aAction.getId( ) == Action.ACTION_PREVIOUS_MENU :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
+
+			elif aAction.getId( ) == Action.ACTION_SHOW_INFO or aAction.getId( ) == Action.ACTION_MBOX_XBMC or aAction.getId( ) == Action.ACTION_MBOX_TVRADIO or aAction.getId( ) == Action.ACTION_PAGE_UP or aAction.getId( ) == Action.ACTION_PAGE_DOWN  or aAction.getId( ) == Action.ACTION_MBOX_ARCHIVE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
+				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+
+			elif aAction.getId( ) == Action.ACTION_VOLUME_DOWN  or aAction.getId( ) == Action.ACTION_VOLUME_DOWN or aAction.getId( ) == Action.ACTION_MUTE :
+				WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
+
+			else :
+				LOG_ERR("Don nothing in HBBTV Mode ")
+				return
+
+		# doliyu test youtube stop
+		elif WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+			if aAction.getId( ) == Action.ACTION_PREVIOUS_MENU :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StopYoutubeTV( )
+
+		else :
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and aAction.getId( ) == Action.ACTION_COLOR_BLUE :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW and \
 				   WinMgr.GetInstance( ).GetLastWindowID( ) != WinMgr.WIN_ID_SIMPLE_CHANNEL_LIST :
 					return
 			WinMgr.GetInstance( ).GetCurrentWindow( ).onAction( aAction )
 
-		else :
-			if E_WINDOW_ATIVATE_MODE == E_MODE_DOMODAL :
-				if aAction.getId() == Action.ACTION_MBOX_RESERVED21 :
-					if self.mInitialized == False :
-						pass
-					else :
-						WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).doModal( )
-						xbmc.executebuiltin('xbmc.Action(dvbres21)')
-
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :
-			WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )				
+		if WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True :
+			LOG_ERR("Do nothing in onclick, hbbtv mode is true")
+			return
+		elif WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+			LOG_ERR("Do nothing in onclick, youtubetv mode is true")
+			return
+		WinMgr.GetInstance( ).GetCurrentWindow( ).onClick( aControlId )
 		
  
 	def onFocus( self, aControlId ) :
 		#LOG_TRACE( '------------------------------###############################------------------------------ focus=%d' %aControlId )
-		if E_SUPPORT_SINGLE_WINDOW_MODE == True :		
-			#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )		
-			WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )
+		#LOG_TRACE( 'CurrentWindowID=%d focus=%d' %( WinMgr.GetInstance( ).GetLastWindowID(), self.getFocusId( ) ) )
+		WinMgr.GetInstance( ).GetCurrentWindow( ).onFocus( aControlId )
 		
 
 	def CheckFirstRun( self ) :
@@ -148,7 +135,9 @@ class RootWindow( xbmcgui.WindowXML ) :
 
 
 	def syncXBMC( self ) :
-		xbmc.executebuiltin( 'PlayerControl(Stop)', True )
+		liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )
+		if liveWindow.mHbbTVShowing != True :
+			xbmc.executebuiltin( 'PlayerControl(Stop)', True )
 		pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 		InitTranslateByEnumList( )
 		self.mDataCache.SyncLanguagePropFromXBMC( XBMC_GetCurrentLanguage( ) )

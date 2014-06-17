@@ -1,122 +1,92 @@
 <window>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">200</defaultcontrol>	
 	<controls>
-		<control type="group">
-			<posx>335</posx>
-			<posy>100</posy>
-            <include>DefaultDialogCloseEffect</include>
-			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>100</posy>
-				<width>610</width>
-				<height>240</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>380</posx>
+			<posy>235</posy>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<include>DefaultSmallDialogBackgroundValues</include>
 			</control>
-			<control type="group">
-				<posy>100</posy>
-				<control type="button" id="6995">
-					<description>Close Window button</description>
-					<posx>455</posx>
-					<posy>36</posy>
-					<width>110</width>
-					<height>25</height>
-					<align>center</align>
-					<aligny>center</aligny>
-					<textcolor>grey2</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
-					<label>SCRIPT21</label>
-					<font>Font_Bold18</font>
-					<onleft>200</onleft>
-					<onright>202</onright>
-				</control>
-				<include>DefaultDialogCloseButton</include>
+			<control type="image">
+				<include>DefaulSmalltDialogHeaderSeparatorValues</include>
+			</control>
+			<control type="label" id="3005">
+				<description>Title</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>520</width>
+				<height>60</height>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<textcolor>FF6db9e5</textcolor>
+				<textoffsetx>45</textoffsetx>
+			</control>
+
+			<!-- Channel Name -->
+			<control type="label" id="101">
+				<posx>20</posx>
+				<posy>80</posy>
+				<width>480</width>
+				<height>20</height>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white3</textcolor>
+				<label></label>
 			</control>
 
 			<!-- Record Name -->
-			<control type="label" id="101">
-				<description>Record Name</description>
+			<control type="label" id="102">
 				<posx>20</posx>
-				<posy>170</posy>
-				<width>570</width>
+				<posy>120</posy>
+				<width>480</width>
 				<height>20</height>
-				<font>Font_Reg18</font>
+				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label></label>
-			</control>
-
-
-			<!-- Start Time -->
-			<control type="label" id="102">
-				<description>EPG Start Time</description>
-				<posx>100</posx>
-				<posy>220</posy>
-				<width>200</width>
-				<height>20</height>
-				<font>Font_Reg18</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label></label>
-			</control>
-
-
-			<!-- EndTime -->
-			<control type="label" id="103">
-				<description>EPG End Time</description>
-				<posx>350</posx>
-				<posy>220</posy>
-				<width>200</width>
-				<height>20</height>
-				<font>Font_Reg18</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>white3</textcolor>
 				<label></label>
 			</control>
 
 			<control type="button" id="200">
-				<description>Yes button</description>
-				<posx>75</posx>
-				<posy>270</posy>				
-				<width>225</width>
+				<description>Yes</description>
+				<posx>80</posx>
+				<posy>175</posy>				
+				<width>180</width>
 				<height>35</height>
-				<font>Font_Bold18</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
-				<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
-				<animation effect="fade" start="100" end="70">Focus</animation>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<onleft>202</onleft>
 				<onright>202</onright>
-				<label>[B]SCRIPT109[/B]</label>					
+				<label>$ADDON[script.mbox 1109]</label>
 			</control>
 
 			<control type="button" id="202">
-				<description>Cancel button</description>
-				<posx>305</posx>
-				<posy>270</posy>				
-				<width>225</width>
+				<description>Cancel</description>
+				<posx>260</posx>
+				<posy>175</posy>				
+				<width>180</width>
 				<height>35</height>
-				<font>Font_Bold18</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
-				<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
-				<animation effect="fade" start="100" end="70">Focus</animation>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<label>[B]SCRIPT26[/B]</label>					
+				<label>$ADDON[script.mbox 1026]</label>
 			</control>
 		</control>
 	</controls>

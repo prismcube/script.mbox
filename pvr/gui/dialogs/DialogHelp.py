@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import pvr.Platform
 
 try :
 	import xml.etree.cElementTree as ElementTree
@@ -9,12 +10,13 @@ except Exception, e :
 E_SETTING_HEADER_TITLE			=	1002
 E_SETTING_DESCRIPTION			=	1003
 
-FIRST_PAGE						=	1
-LAST_PAGE 						=	22
+FIRST_PAGE				=	1
+LAST_PAGE_DEFAULT			=	22
+LAST_PAGE_OSCAR			=	15
 MAXIMUM_TEXTBOX_NUM			=	2
 
 E_CONTROL_ID_LABEL_PAGENUM		= 	1004
-E_CONTROL_ID_IMAGE				=	100
+E_CONTROL_ID_IMAGE			=	100
 E_CONTROL_ID_TEXTBOX			= 	200
 E_CONTROL_ID_BUTTON_PREV		=	7000
 E_CONTROL_ID_BUTTON_NEXT		=	7001
@@ -26,7 +28,7 @@ class DialogHelp( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mFirstPage				=	FIRST_PAGE
-		self.mLastPage				=	LAST_PAGE
+		self.mLastPage				=	LAST_PAGE_DEFAULT
 		self.mStepNum				= 	self.mFirstPage
 		self.mPrevStepNum			= 	self.mFirstPage
 		self.mRoot 				=	None
@@ -43,11 +45,15 @@ class DialogHelp( SettingDialog ) :
 		if self.mInitialized == False :
 			helpString = self.getProperty( 'HelpString' )
 			if helpString :
-				HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, helpString )
+				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'oscar', helpString )
+					self.mLastPage = LAST_PAGE_OSCAR
+				else :
+					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'default', helpString )
 				if CheckDirectory( HelpStringPath ) :
 					self.mHelpString = HelpStringPath
 				else :
-					self.mHelpString = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', 'English', helpString )
+					self.mHelpString = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', 'English', 'default', helpString )
 
 			self.MakeContentList( )
 			self.mInitialized = True
@@ -112,10 +118,14 @@ class DialogHelp( SettingDialog ) :
 		tree = ElementTree.parse( self.mHelpString )
 		self.mRoot = tree.getroot( )
 
-		for page in self.mRoot.findall( 'page' ) :
-			for content in page.findall( 'content' ) :
-				self.mListContent.append( PageContent ( page.get( 'number' ), page.get( 'title' ), page.get( 'location' ), content.find( 'type' ).text, content.get( 'name' ), int( content.find( 'posx' ).text ), int( content.find( 'posy' ).text ), int( content.find( 'width' ).text ), int( content.find( 'height' ).text ) ) )
+		try :
 
+			for page in self.mRoot.findall( 'page' ) :
+				for content in page.findall( 'content' ) :
+					self.mListContent.append( PageContent ( page.get( 'number' ), page.get( 'title' ), page.get( 'location' ), content.find( 'type' ).text, content.get( 'name' ), int( content.find( 'posx' ).text ), int( content.find( 'posy' ).text ), int( content.find( 'width' ).text ), int( content.find( 'height' ).text ) ) )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" % ex )
 
 	def ShowContents ( self, aList, aStep ) :
 		contentCount = 0

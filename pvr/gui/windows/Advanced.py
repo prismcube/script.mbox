@@ -10,8 +10,7 @@ E_ADVANCED_DEFAULT_FOCUS_ID	=  E_ADVANCED_SUBMENU_LIST_ID
 
 E_APPEARANCE			= 0
 E_LIVESTREAM			= 1
-E_HBBTV					= 2
-
+E_CEC					= 2
 
 
 class Advanced( SettingWindow ) :
@@ -23,6 +22,8 @@ class Advanced( SettingWindow ) :
 		self.mPrevListItemID	= -1
 		self.mPrevLiveStream	= ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( )
 		self.mPrevWebinterface	= self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) )
+		self.mPrevHbbtv			= self.GetSettingToNumber( GetSetting( 'HBB_TV' ) )
+		self.mPrevYoutubetv		= self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) )
 
 
 	def onInit( self ) :
@@ -30,8 +31,8 @@ class Advanced( SettingWindow ) :
 
 		leftGroupItems			= [
 		MR_LANG( 'Appearance' ),
-		#MR_LANG( 'HBB TV' ),
-		MR_LANG( 'Experimental' ) ]
+		MR_LANG( 'Experimental' ),
+		MR_LANG( 'HDMI-CEC' ) ]
 
 		self.mGroupItems = []
 		for i in range( len( leftGroupItems ) ) :
@@ -39,8 +40,8 @@ class Advanced( SettingWindow ) :
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'You can customize the appearance of PRISMCUBE RUBY' ),
-		#MR_LANG( 'HBB TV Settings' ),
-		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ) ]
+		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
+		MR_LANG( 'Control PRISMCUBE using your existing TV remote when connected via HDMI' ) ]
 	
 		self.setFocusId( E_ADVANCED_DEFAULT_FOCUS_ID )
 		self.SetActivate( True )
@@ -67,10 +68,12 @@ class Advanced( SettingWindow ) :
 
 	def RestartSystem( self ) :
 		if self.mPrevLiveStream != ElisPropertyEnum( 'UPnP', self.mCommander ).GetPropIndex( ) or \
-			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) :
+			self.mPrevWebinterface != self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ) or \
+			self.mPrevHbbtv != self.GetSettingToNumber( GetSetting( 'HBB_TV' ) ) or \
+			self.mPrevYoutubetv != self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'You must reboot your system for the changes to take effect.' ), MR_LANG( 'Do you want to restart the system now?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Restart Required' ), MR_LANG( 'Do you want to restart the system now?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mDataCache.System_Reboot( )
@@ -153,8 +156,10 @@ class Advanced( SettingWindow ) :
 		elif selectedId == E_LIVESTREAM :
 			if groupId == E_SpinEx01 :
 				self.ControlSelect( )
+
 			elif groupId == E_SpinEx02 :
 				self.SetSettingFromNumber( 'WEB_INTERFACE', self.GetSelectedIndex( E_SpinEx02 ) )
+
 			elif groupId == E_SpinEx03 :
 				if self.GetSelectedIndex( E_SpinEx03 ) == 1 :
 					self.mCommander.Player_SetResolution24( 1 )
@@ -171,8 +176,16 @@ class Advanced( SettingWindow ) :
 				else :
 					self.SetSettingFromNumber( 'SURFACE_24', self.GetSelectedIndex( E_SpinEx03 ) )
 
-		elif selectedId == E_HBBTV :
-			pass
+			elif groupId == E_SpinEx04 :
+				self.SetSettingFromNumber( 'HBB_TV', self.GetSelectedIndex( E_SpinEx04 ) )
+				self.SetHbbTv( )
+
+			elif groupId == E_SpinEx05 :
+				self.SetSettingFromNumber( 'YOUTUBE_TV', self.GetSelectedIndex( E_SpinEx05 ) )
+				self.SetHbbTv( )
+
+		elif selectedId == E_CEC :
+			self.ControlSelect( )
 
 
 	def onFocus( self, aControlId ) :
@@ -219,22 +232,32 @@ class Advanced( SettingWindow ) :
 			
 		elif selectedId == E_LIVESTREAM :
 			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'UPnP', MR_LANG( 'Live Streaming (restart required)' ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Web Interface (restart required)' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
+			self.AddEnumControl( E_SpinEx01, 'UPnP', '%s ( %s )' % ( MR_LANG( 'Live Streaming' ),  MR_LANG( 'restart required' ) ), MR_LANG( 'Watch live stream of TV channels from PC or mobile devices' ) )
+			self.AddUserEnumControl( E_SpinEx02, '%s ( %s )' % ( MR_LANG( 'Web Interface' ),  MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'WEB_INTERFACE' ) ), MR_LANG( 'Open web interface' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Automatic 1080 24p' ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'SURFACE_24' ) ), MR_LANG( 'Allows you to playback 1080 24p video without having to switch the video output manually' ) )
+			self.AddUserEnumControl( E_SpinEx04, '%s ( %s )' % ( MR_LANG( 'HbbTV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'HBB_TV' ) ), MR_LANG( 'Watch HbbTV on your PRISMCUBE' ) )
+			self.AddUserEnumControl( E_SpinEx05, '%s ( %s )' % ( MR_LANG( 'YouTube TV' ), MR_LANG( 'restart required' ) ), USER_ENUM_LIST_YES_NO, self.GetSettingToNumber( GetSetting( 'YOUTUBE_TV' ) ), MR_LANG( 'Watch YouTube TV on your PRISMCUBE' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05 ]
-			self.SetVisibleControls( hideControlIds, False )
+			self.InitControl( )
+
+		elif selectedId == E_CEC :
+			self.getControl( E_ADVANCED_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
+			self.AddEnumControl( E_SpinEx01, 'CEC Enable', MR_LANG( 'HDMI-CEC Setting' ), MR_LANG( 'Enable/Disable HDMI-CEC option' ) )
+			self.AddEnumControl( E_SpinEx02, 'CEC TV On', MR_LANG( 'HDMI-CEC TV On' ), MR_LANG( 'Set an action for STB when turning TV on via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx03, 'CEC TV Off', MR_LANG( 'HDMI-CEC TV Off' ), MR_LANG( 'Set an action for STB when turning TV off via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx04, 'CEC STB On', MR_LANG( 'HDMI-CEC STB On' ), MR_LANG( 'Set an action for TV when turning STB on via HDMI-CEC' ) )
+			self.AddEnumControl( E_SpinEx05, 'CEC STB Off', MR_LANG( 'HDMI-CEC STB Off' ), MR_LANG( 'Set an action for TV when turning STB off via HDMI-CEC' ) )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			self.InitControl( )
 
-		elif selectedId == E_HBBTV :
-			pass
-		
 		else :
 			LOG_ERR( 'Could not find the selected ID' )
 
@@ -253,6 +276,13 @@ class Advanced( SettingWindow ) :
 			SetSetting( aId, 'true' )
 		else :
 			SetSetting( aId, 'false' )
+
+
+	def SetHbbTv( self ) :
+		if self.GetSelectedIndex( E_SpinEx04 ) == 1 or self.GetSelectedIndex( E_SpinEx05 ) == 1 :
+			os.system( 'touch %s' % FILE_NAME_HBB_TV )
+		else :
+			os.system( 'rm %s' % FILE_NAME_HBB_TV )
 
 
 	def WaitInitialize( self ) :

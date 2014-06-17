@@ -1,91 +1,110 @@
 <window>
-	<defaultcontrol always="true">1003950</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<control type="group">
-			<posx>200</posx>
-			<posy>100</posy>
+		<control type="group" id="3900">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>350</posx>
+			<posy>50</posy>
 			<control type="image">
-				<description>Panel</description>
 				<posx>0</posx>
-				<posy>20</posy>
-				<width>881</width>
-				<height>481</height>
-				<texture>osd/osd_settings_back.png</texture>
+				<posy>-40</posy>
+				<width>610</width>
+				<height>740</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
 			<control type="image">
-				<posx>50</posx>
-				<posy>55</posy>
-				<width>781</width>
-				<height>40</height>
+				<posx>20</posx>
+				<posy>-10</posy>
+				<width>590</width>
+				<height>43</height>
 				<texture>osd/osd_settings_buttonnf.png</texture>
 			</control>
+			<control type="label" id="3902">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>5</posy>
+				<width>570</width>
+				<height>60</height>
+				<textcolor>FF6db9e5</textcolor>
+				<align>center</align>
+				<scroll>true</scroll>
+				<textoffsetx>45</textoffsetx>
+			</control>
 			<control type="button" id="3901">
-				<description>Cancel Window button</description>
-				<posx>709</posx>
-				<posy>50</posy>
-				<width>210</width>
-				<height>40</height>
-				<textcolor>grey2</textcolor>
-				<texturenofocus></texturenofocus>
-				<texturefocus></texturefocus>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>SCRIPT21</label>
-				<font>Font_Bold18</font>
+				<description>Close</description>
+				<posx>560</posx>
+				<posy>10</posy>
+				<width>20</width>
+				<height>20</height>
+				<font>-</font>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>3904</onup>
 				<ondown>1003950</ondown>
-			</control>
-			<control type="label" id="3902">
-				<description>header label</description>
-				<posx>80</posx>
-				<posy>50</posy>
-				<width>400</width>
-				<height>40</height>
-				<font>Font_Bold19</font>
-				<textcolor>white</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
 			</control>
 			<control type="label" id="3903">
 				<textcolor>grey2</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
 			</control>
-			<control type="label">
-				<posx>809</posx>
-				<posy>451</posy>
-				<width>210</width>
-				<height>40</height>
-				<font>Font_Reg14</font>
-				<align>right</align>
-				<aligny>center</aligny>
-				<scroll>true</scroll>
-				<textcolor>grey2</textcolor>
-				<label>$INFO[Control.GetLabel(3903)] SCRIPT106 - SCRIPT107 ($INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages])</label>
-				<visible>Control.IsVisible(1003950)</visible>
+			<control type="group">
+				<control type="label">
+					<posx>590</posx>
+					<posy>577</posy>
+					<width>300</width>
+					<height>35</height>
+					<font>Font_Reg17</font>
+					<align>right</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<textcolor>grey</textcolor>
+					<label>([COLOR=FF6db9e5]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003950).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=FF6db9e5]$INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages][/COLOR])</label>
+				</control>
 			</control>
 			<control type="button" id="3904">
-				<description>Close Window button</description>
-				<posx>0</posx>
-				<posy>451</posy>
+				<posx>45</posx>
+				<posy>585</posy>
 				<width>200</width>
-				<height>40</height>
-				<align>center</align>
-				<font>Font_Bold19</font>
-				<label>SCRIPT22</label>
-				<textcolor>grey2</textcolor>
-				<texturenofocus></texturenofocus>
-				<texturefocus></texturefocus>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>black</shadowcolor>
+				<height>35</height>
+				<label>$ADDON[script.mbox 1022]</label>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
+                <font>Font_Reg19</font>
+                <textcolor>white3</textcolor>
+                <focusedcolor>white3</focusedcolor>
+                <align>center</align>
+				<textoffsetx>30</textoffsetx>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>1003950</onup>
 				<ondown>3901</ondown>
+			</control>
+
+			<!-- Hotkey -->
+			<control type="group">
+				<posx>45</posx>
+				<posy>620</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>3</posy>
+					<width>25</width>
+					<height>25</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>Font_Reg14</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>grey2</textcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
 			</control>
 			<include>DefaultSelectList</include>
 		</control>

@@ -116,7 +116,7 @@ class WebPage( object ) :
 					}
 
 					function delRecord( target ) {
-						if( confirm("Are You Sure To Delete the Selected File?") ) {
+						if( confirm("Are you sure to delete the selected file?") ) {
 							document.recordDel.key.value = target;
 							document.recordDel.submit();
 						}
@@ -1118,7 +1118,7 @@ class Timer( WebPage ) :
 		content 	= """
 			<script>
 				function del( id ) {
-					if( confirm("Deleting Selected Timer?") ) {
+					if( confirm("Are you sure to delete the selected timer?") ) {
 						location.href = "/Timer?id=" + id;
 					}
 				}

@@ -358,9 +358,7 @@ class DialogTestCode( BaseDialog ) :
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for i in range( len( self.mBookmarkButton ) ) :
 				try :
-					mWin = self
-					if E_SUPPORT_SINGLE_WINDOW_MODE :
-						mWin = self.mRootWindow
+					mWin = self.mRootWindow
 					#self.removeControl( self.mBookmarkButton[i] )
 					mWin.removeControl( self.mBookmarkButton[i] )
 				except Exception, e :

@@ -4,135 +4,155 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
+			<posx>335</posx>
+			<posy>160</posy>
 			<control type="image">
-				<description>Panel</description>
-				<posx>315</posx>
-				<posy>155</posy>
-				<width>650</width>
-				<height>420</height>
-				<texture>osd/osd_settings_back.png</texture>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>400</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<control type="group">
-				<posx>115</posx>
-				<posy>25</posy>
-				<control type="label" id="301">
-					<description>Header Label</description>
-					<posx>280</posx>
-					<posy>150</posy>
-					<width>500</width>
-					<height>40</height>
-					<textcolor>white</textcolor>
-					<font>Font_Bold19</font>
-					<align>left</align>
-					<aligny>center</aligny>
-					<scroll>true</scroll>
-				</control>
-				<control type="button" id="300">
-					<posx>800</posx>
-					<posy>150</posy>
-					<width>210</width>
-					<height>40</height>
-					<texturefocus border="5">-</texturefocus>
-					<texturenofocus border="5">-</texturenofocus>
-					<textcolor>grey2</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<font>Font_Bold19</font>
-					<align>right</align>
-					<onleft>3</onleft>
-					<onright>3</onright>
-					<onup>3</onup>
-					<ondown>3</ondown>
-					<visible>false</visible>
-				</control>
-				<control type="label" id="302">
-					<posx>775</posx>
-					<posy>460</posy>
-					<width>500</width>
-					<height>40</height>
-					<font>Font_Bold19</font>
-					<align>right</align>
-					<textcolor>grey2</textcolor>
-					<scroll>true</scroll>
-				</control>
-				<control type="label" id="303">
-					<posx>775</posx>
-					<posy>490</posy>
-					<width>500</width>
-					<height>40</height>
-					<font>Font_Reg18</font>
-					<align>right</align>
-					<textcolor>grey2</textcolor>
-					<scroll>true</scroll>
-				</control>
-				<control type="list" id="9000">
-					<posx>250</posx>
-					<posy>200</posy>
-					<width>550</width>
-					<height>240</height>
-					<onleft>400</onleft>
-					<onright>400</onright>
-					<onup>9000</onup>
-					<ondown>9000</ondown>
-					<scrolltime>200</scrolltime>
-					<pagecontrol>400</pagecontrol>
-					<itemlayout height="40">
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>550</width>
-							<height>40</height>
-							<texture>osd/osd_settings_buttonnf.png</texture>
-						</control>
-						<control type="label">
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>500</width>
-							<height>40</height>
-							<textcolor>grey2</textcolor>
-							<aligny>center</aligny>
-							<font>Font_Reg19</font>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-					</itemlayout>
-					<focusedlayout height="40">
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>550</width>
-							<height>40</height>
-							<texture>osd/osd_settings_buttonf.png</texture>
-						</control>
-						<control type="label">
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>500</width>
-							<height>40</height>
-							<textcolor>white</textcolor>
-							<aligny>center</aligny>
-							<font>Font_Reg19</font>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-					</focusedlayout>
-				</control>
-				<control type="scrollbar" id="400">
-					<description>Scrollbar</description>
-					<posx>225</posx>
-					<posy>200</posy>
-					<width>28</width>
-					<height>240</height>
-					<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
-					<texturesliderbar>-</texturesliderbar>
-					<texturesliderbarfocus>-</texturesliderbarfocus>
-					<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
-					<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
-					<onleft>9000</onleft>
-					<onright>9000</onright>
-					<ondown>400</ondown>
-					<onup>400</onup>
-					<showonepage>false</showonepage>
-					<orientation>vertical</orientation>
-				</control>
+			<control type="image">
+				<posx>20</posx>
+				<posy>10</posy>
+				<width>570</width>
+				<height>46</height>
+				<texture>osd/osd_settings_buttonnf.png</texture>
+			</control>
+			<control type="label" id="301">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>10</posy>
+				<width>570</width>
+				<height>60</height>
+				<textcolor>FF6db9e5</textcolor>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<scroll>true</scroll>
+			</control>
+			<control type="button" id="300">
+				<description>Close</description>
+				<posx>540</posx>
+				<posy>30</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>special://skin/media/close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+			</control>
+			<control type="list" id="9000">
+				<posx>20</posx>
+				<posy>65</posy>
+				<width>550</width>
+				<height>240</height>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<onleft>300</onleft>
+				<onright>400</onright>
+				<pagecontrol>400</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(61)">Conditional</animation>
+				<itemlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>15</posx>
+						<posy>0</posy>
+						<width>510</width>
+						<height>40</height>
+						<font>Font_Reg19</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>41</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(9000)</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>41</height>
+                        <texture>views/tripanel/listselect_fo.png</texture>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        <visible>Control.HasFocus(9000)</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+					<control type="label">
+						<posx>15</posx>
+						<posy>0</posy>
+						<width>510</width>
+						<height>40</height>
+						<font>Font_Reg19</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="400">
+				<posx>570</posx>
+				<posy>60</posy>
+				<width>25</width>
+				<height>250</height>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<ondown>400</ondown>
+				<onup>400</onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+			<control type="label" id="302">
+				<posx>580</posx>
+				<posy>305</posy>
+				<width>540</width>
+				<height>35</height>
+				<font>Font_Reg17</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+			</control>
+			<control type="label" id="303">
+				<posx>580</posx>
+				<posy>335</posy>
+				<width>540</width>
+				<height>35</height>
+				<font>Font_Reg17</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
 			</control>
 		</control>
 	</controls>

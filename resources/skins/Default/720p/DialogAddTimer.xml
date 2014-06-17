@@ -96,7 +96,7 @@
 				<texturefocus border="5">button-focus.png</texturefocus>
 				<onleft>202</onleft>
 				<onright>202</onright>
-				<label>[B]$LOCALIZE[SCRIPT1109][/B]</label>
+				<label>[B]$ADDON[script.mbox 1109][/B]</label>
 			</control>
 
 			<control type="button" id="202">
@@ -113,7 +113,7 @@
 				<texturefocus border="5">button-focus.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+				<label>[B]$ADDON[script.mbox 1026][/B]</label>
 			</control>
 		</control>
 	</controls>

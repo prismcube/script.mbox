@@ -143,8 +143,17 @@ class LivePlate( LivePlateWindow ) :
 		if self.mDataCache.PIP_GetSwapStatus( ) :
 			self.mDataCache.PIP_SwapWindow( False, False )
 
+		if not self.mInitialized :
+			self.mInitialized = True
+			if ElisPropertyInt( 'AIT Ready', self.mCommander ).GetProp( ) :
+				self.mDataCache.SetHbbTVEnable( True )
+
 		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
+		if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			self.mHotKeyAvailableRed = False
+		self.mBannerTimeout = self.mDataCache.GetPropertyChannelBannerTime( )
 
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if not self.mZappingMode :
@@ -281,13 +290,15 @@ class LivePlate( LivePlateWindow ) :
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				self.mDataCache.Player_Stop( )
 
-			if not CheckHdd( ) :
+			if not CheckHdd( True ) :
 				self.StopAutomaticHide( )
 				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
+				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
-				
+
 			self.Close( )
 			self.SetMediaCenter( )
 			xbmc.executebuiltin( 'ActivateWindow(Home)' )
@@ -367,6 +378,22 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			self.DialogPopup( E_CONTROL_ID_BUTTON_SUBTITLE )
 
+		elif actionId == Action.ACTION_COLOR_RED :
+			if self.mHotKeyAvailableRed :
+				status = self.mDataCache.Player_GetStatus( )
+				if status.mMode != ElisEnum.E_MODE_LIVE :
+					return
+				if os.path.exists( '/mtmp/crossepg_running' ) :
+					mHead = MR_LANG( 'Operation not allowed' )
+					mLine = MR_LANG( 'EPG download is in progress' )
+					xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+					return
+				self.Close( )
+				self.StopAutomaticHide()	
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowBrowser( )
+					
+				
 		elif actionId == Action.ACTION_COLOR_GREEN :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE and self.mDataCache.GetLinkageService(  ) :
@@ -437,19 +464,23 @@ class LivePlate( LivePlateWindow ) :
 			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 		if E_V1_2_APPLY_TEXTWIDTH_LABEL :
+			ctrlRed    = self.getControl( E_CONTROL_ID_HOTKEY_RED_LABEL )
 			ctrlGreen  = self.getControl( E_CONTROL_ID_HOTKEY_GREEN_LABEL )
 			ctrlYellow = self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_LABEL )
 			ctrlBlue   = self.getControl( E_CONTROL_ID_HOTKEY_BLUE_LABEL )
+			lblRed     = ctrlRed.getLabel( )
 			lblGreen   = ctrlGreen.getLabel( )
 			lblYellow  = ctrlYellow.getLabel( )
 			lblBlue    = ctrlBlue.getLabel( )
 
+			ResizeImageWidthByTextSize( ctrlRed, self.getControl( E_CONTROL_ID_HOTKEY_RED_IMAGE ), MR_LANG( 'HbbTV' ), self.getControl( ( E_CONTROL_ID_HOTKEY_RED_IMAGE - 1 ) ) )		
 			ResizeImageWidthByTextSize( ctrlGreen, self.getControl( E_CONTROL_ID_HOTKEY_GREEN_IMAGE ), MR_LANG( 'Multi-Feed' ), self.getControl( ( E_CONTROL_ID_HOTKEY_GREEN_IMAGE - 1 ) ) )		
 			ResizeImageWidthByTextSize( ctrlYellow, self.getControl( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE ), MR_LANG( 'A / V' ), self.getControl( ( E_CONTROL_ID_HOTKEY_YELLOW_IMAGE - 1 ) ) )
 			ResizeImageWidthByTextSize( ctrlBlue, self.getControl( E_CONTROL_ID_HOTKEY_BLUE_IMAGE ), MR_LANG( 'PIP' ), self.getControl( ( E_CONTROL_ID_HOTKEY_BLUE_IMAGE - 1 ) ) )
-			if lblGreen and len( lblGreen ) > 9 or \
+			if lblRed    and len( lblRed )    > 9 or \
+			   lblGreen  and len( lblGreen )  > 9 or \
 			   lblYellow and len( lblYellow ) > 9 or \
-			   lblBlue and len( lblBlue ) > 9 :
+			   lblBlue   and len( lblBlue )   > 9 :
 				self.getControl( E_CONTROL_ID_HOTKEY_GROUP ).setPosition( -20, 0 )
 				#LOG_TRACE( '-----------------------------------rePosition, [%s] [%s] [%s]'% (lblGreen,lblYellow,lblBlue) )
 
@@ -459,18 +490,36 @@ class LivePlate( LivePlateWindow ) :
 		if E_V1_2_APPLY_PIP :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_BLUE,   E_TAG_TRUE )
 
-		visible = E_TAG_FALSE
+		visibleRed   = E_TAG_FALSE
+		visibleGreen = E_TAG_FALSE
 		chList = self.mDataCache.Channel_GetList( )
 		if chList and len( chList ) > 0 :
 			hasLinkageService = self.mDataCache.GetLinkageService( )
 			if hasLinkageService :
-				visible = E_TAG_TRUE
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN,  visible )		
+				visibleGreen = E_TAG_TRUE
+
+		if self.mHotKeyAvailableRed :
+			visibleRed = E_TAG_TRUE
+
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED,   visibleRed )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_GREEN, visibleGreen )
 
 
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
+			if E_SUPPROT_HBBTV :
+				if aEvent.getName() == ElisEventHBBTVReady.getName() :
+					LOG_TRACE( 'HBBTEST event[%s]' % aEvent.getName( ) )
+					if not self.mDataCache.GetHbbtvStatus( ) or self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+						return
+					isEnable = E_TAG_FALSE
+					self.mHotKeyAvailableRed = self.mDataCache.GetHbbTVEnable( )
+					if self.mHotKeyAvailableRed :
+						isEnable = E_TAG_TRUE
+					self.UpdatePropertyGUI( E_XML_PROPERTY_HOTKEY_RED, isEnable )
+
+
 			channel = self.mCurrentChannel
 			if self.mFlag_OnEvent != True :
 				#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)

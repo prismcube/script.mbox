@@ -52,7 +52,7 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mCtrlTimeLabel.setLabel( '' )
 		self.mCtrlDateLabel.setLabel( '' )
 		self.mCtrlDurationLabel.setLabel( '' )
-
+		self.ResetEPGInfomation( )
 
 		self.UpdateViewMode( )
 		self.SetSingleWindowPosition( E_EPG_SEARC_BASE_ID )
@@ -68,15 +68,14 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mChannelListHash = {}
 
 		LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
-		
+
 		if self.mChannelList :
 			for channel in self.mChannelList :
 				self.mChannelListHash[ '%d:%d:%d' %( channel.mSid, channel.mTsid, channel.mOnid) ] = channel
 	
-		
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
-		
+
 		self.Load( )
 		self.UpdateList( )
 
@@ -315,19 +314,22 @@ class EPGSearchWindow( BaseWindow ) :
 				channel = self.GetChannelByIDs( epgEvent.mSid, epgEvent.mTsid, epgEvent.mOnid )
 
 				if channel == None :
-					tempChannelName = '%04d %s' %( 0, epgEvent.mEventName )
+					tempChannelNumber = '%04d' %0
+					tempChannelName = '%s' %epgEvent.mEventName
 				else :
-					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+					tempChannelNumber = '%04d' %channel.mNumber
+					tempChannelName = '%s' %channel.mName
 
 				if aUpdateOnly == False :
-					listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
+					listItem = xbmcgui.ListItem( tempChannelNumber, tempChannelName )
 				else :
 					listItem = self.mListItems[i]
-					listItem.setLabel( tempChannelName )
-					listItem.setLabel2( epgEvent.mEventName )
+					listItem.setLabel( tempChannelNumber )
+					listItem.setLabel2( tempChannelName )
 
 				epgStart = epgEvent.mStartTime + self.mLocalOffset
 				tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+				listItem.setProperty( 'EPGName', epgEvent.mEventName )				
 				listItem.setProperty( 'StartTime', tempName )
 				listItem.setProperty( 'Duration', '' )
 				listItem.setProperty( 'HasEvent', 'true' )
@@ -613,8 +615,10 @@ class EPGSearchWindow( BaseWindow ) :
 
 				self.mEventBus.Deregister( self )
 				self.SetText( keyword )
+				self.OpenBusyDialog( )
 				self.Load( )
 				self.UpdateList( )
+				self.CloseBusyDialog( )				
 				self.UpdateEPGInfomation( )						
 				self.mEventBus.Register( self )				
 

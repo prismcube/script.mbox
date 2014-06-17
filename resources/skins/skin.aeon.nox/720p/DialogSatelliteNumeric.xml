@@ -4,29 +4,28 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
-			<include>DefaultDialogCloseEffect</include>
-			<posx>910</posx>
-			<posy>205</posy>
-			<control type="image" id="0">
-				<description>Panel</description>
-				<texture>keyboard/numeric_back.png</texture>
+			<posx>920</posx>
+			<posy>230</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>189</width>
-				<height>311</height>
+				<height>263</height>
+				<texture>keyboard/numeric_back.png</texture>
 			</control>
 			<control type="label" id="1">
 				<description>dialog Heading</description>
 				<visible>false</visible>
 				<posx>17</posx>
-				<posy>208</posy>
+				<posy>191</posy>
 				<width>155</width>
 				<height>31</height>
 			</control>
 			<control type="label" id="4">
 				<description>Edit Text</description>
 				<posx>17</posx>
-				<posy>250</posy>
+				<posy>210</posy>
 				<width>155</width>
 				<height>31</height>
 				<font>Font_Reg19</font>
@@ -41,20 +40,20 @@
 					<control type="button" id="101">
 						<description>1 button</description>
 						<posx>0</posx>
-						<onleft>200</onleft>
+						<onleft>103</onleft>
 						<onright>102</onright>
-						<onup>202</onup>
+						<onup>200</onup>
 						<ondown>104</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="102">
 						<description>2 button</description>
 						<posx>42</posx>
 						<onleft>101</onleft>
 						<onright>103</onright>
-						<onup>203</onup>
+						<onup>100</onup>
 						<ondown>105</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="103">
 						<description>3 button</description>
@@ -63,7 +62,7 @@
 						<onright>101</onright>
 						<onup>201</onup>
 						<ondown>106</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 				</control>
 				<control type="group">
@@ -75,7 +74,7 @@
 						<onright>105</onright>
 						<onup>101</onup>
 						<ondown>107</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="105">
 						<description>5 button</description>
@@ -84,7 +83,7 @@
 						<onright>106</onright>
 						<onup>102</onup>
 						<ondown>108</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="106">
 						<description>6 button</description>
@@ -93,7 +92,7 @@
 						<onright>104</onright>
 						<onup>103</onup>
 						<ondown>109</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 				</control>
 				<control type="group">
@@ -105,7 +104,7 @@
 						<onright>108</onright>
 						<onup>104</onup>
 						<ondown>200</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="108">
 						<description>8 button</description>
@@ -114,7 +113,7 @@
 						<onright>109</onright>
 						<onup>105</onup>
 						<ondown>100</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="109">
 						<description>9 button</description>
@@ -123,20 +122,20 @@
 						<onright>107</onright>
 						<onup>106</onup>
 						<ondown>201</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 				</control>
 				<control type="group">
 					<posy>126</posy>
 					<control type="button" id="200">
-						<description>Backspace button</description>
+						<description>Cancel button</description>
 						<posx>0</posx>
 						<onleft>201</onleft>
 						<onright>100</onright>
 						<onup>107</onup>
-						<ondown>202</ondown>
+						<ondown>101</ondown>
 						<label>C</label>
-						<include>Objects_SingleKeyOff</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="100">
 						<description>0 button</description>
@@ -144,8 +143,8 @@
 						<onleft>200</onleft>
 						<onright>201</onright>
 						<onup>108</onup>
-						<ondown>203</ondown>
-						<include>Objects_SingleKeyOff</include>
+						<ondown>102</ondown>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="201">
 						<description>OK button</description>
@@ -155,143 +154,7 @@
 						<onup>109</onup>
 						<ondown>103</ondown>
 						<label>OK</label>
-						<include>Objects_SingleKeyOff</include>
-					</control>
-				</control>					
-				<control type="group">
-					<posy>168</posy>
-					<control type="button" id="202">
-						<description>'prev' button</description>
-						<posx>0</posx>
-						<onleft>203</onleft>
-						<onright>203</onright>
-						<onup>200</onup>
-						<ondown>101</ondown>
-						<label>&lt;</label>
-						<include>Objects_SingleKeyOff</include>
-					</control>
-					<control type="button" id="203">
-						<description>'next' button</description>
-						<posx>42</posx>
-						<onleft>202</onleft>
-						<onright>202</onright>
-						<onup>100</onup>
-						<ondown>102</ondown>
-						<label>&gt;</label>
-						<include>Objects_SingleKeyOff</include>
-					</control>
-				</control>
-				<control type="group">
-					<posy>0</posy>
-					<control type="button">
-						<description>'1' button</description>
-						<posx>0</posx>
-						<label>$INFO[Control.GetLabel(101)]</label>
-						<visible>Control.HasFocus(101)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'2' button</description>
-						<posx>42</posx>
-						<label>$INFO[Control.GetLabel(102)]</label>
-						<visible>Control.HasFocus(102)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'3' button</description>
-						<posx>84</posx>
-						<label>$INFO[Control.GetLabel(103)]</label>
-						<visible>Control.HasFocus(103)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-				</control>
-				<control type="group">
-					<posy>42</posy>
-					<control type="button">
-						<description>'4' button</description>
-						<posx>0</posx>
-						<label>$INFO[Control.GetLabel(104)]</label>
-						<visible>Control.HasFocus(104)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'5' button</description>
-						<posx>42</posx>
-						<label>$INFO[Control.GetLabel(105)]</label>
-						<visible>Control.HasFocus(105)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'6' button</description>
-						<posx>84</posx>
-						<label>$INFO[Control.GetLabel(106)]</label>
-						<visible>Control.HasFocus(106)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-				</control>
-				<control type="group">
-					<posy>84</posy>
-					<control type="button">
-						<description>'7' button</description>
-						<posx>0</posx>
-						<label>$INFO[Control.GetLabel(107)]</label>
-						<visible>Control.HasFocus(107)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'8' button</description>
-						<posx>42</posx>
-						<label>$INFO[Control.GetLabel(108)]</label>
-						<visible>Control.HasFocus(108)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'9' button</description>
-						<posx>84</posx>
-						<label>$INFO[Control.GetLabel(109)]</label>
-						<visible>Control.HasFocus(109)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-				</control>
-				<control type="group">
-					<posy>126</posy>
-					<control type="button">
-						<description>'C' button</description>
-						<posx>0</posx>
-						<label>$INFO[Control.GetLabel(200)]</label>
-						<visible>Control.HasFocus(200)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'0' button</description>
-						<posx>42</posx>
-						<label>$INFO[Control.GetLabel(100)]</label>
-						<visible>Control.HasFocus(100)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'E' button</description>
-						<posx>84</posx>
-						<label>$INFO[Control.GetLabel(201)]</label>
-						<visible>Control.HasFocus(201)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-				</control>
-				<control type="group">
-					<posy>168</posy>
-					<control type="button">
-						<description>'prev' button</description>
-						<posx>0</posx>
-						<label>$INFO[Control.GetLabel(202)]</label>
-						<visible>Control.HasFocus(202)</visible>
-						<include>Objects_SingleKeyOn</include>
-					</control>
-					<control type="button">
-						<description>'next' button</description>
-						<posx>42</posx>
-						<label>$INFO[Control.GetLabel(203)]</label>
-						<visible>Control.HasFocus(203)</visible>
-						<include>Objects_SingleKeyOn</include>
+						<include>Objects_SingleKeyOff_720</include>
 					</control>
 				</control>
 			</control>

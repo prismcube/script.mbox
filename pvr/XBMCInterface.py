@@ -313,6 +313,69 @@ def XBMC_GetSkinZoom( ) :
 	return skinzoom
 
 
+def XBMC_GetWebserver( ) :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
+		return None
+	else :
+		try :
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["webserver"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('webserver') :
+				result = jsonobject['result']['webserver']
+				webserver = result["webserver"]
+				return webserver
+			else :
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
+def XBMC_GetUpnpRenderer( ) :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
+		return None
+	else :
+		try :
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["upnprenderer"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('upnprenderer') :
+				result = jsonobject['result']['upnprenderer']
+				upnprenderer = result["upnprenderer"]
+				return upnprenderer
+			else :
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
+def XBMC_GetEsallinterfaces( ) :
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :
+		return None
+	else :
+		try :
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["esallinterfaces"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('esallinterfaces') :
+				result = jsonobject['result']['esallinterfaces']
+				esallinterfaces = result["esallinterfaces"]
+				return esallinterfaces
+			else :
+				return None
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return None
+
+
 def XBMC_SetSkinZoom( aZoom ) :	
 	LOG_TRACE( '' )
 	xbmc.executebuiltin( 'lookandfeel.skinzoom( %d )' % aZoom )

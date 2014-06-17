@@ -134,7 +134,6 @@ class GlobalEvent( object ) :
 			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_EPG_WINDOW :
 				if self.mDataCache.Channel_GetZappingListStatus( ) :
 					self.mDataCache.Channel_SetZappingListStatus( )
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).UpdateByAvailableListChanged( )
 
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 			if aEvent.mType == ElisEnum.E_EOF_START :
@@ -252,13 +251,13 @@ class GlobalEvent( object ) :
 
 			elif aEvent.mType == ElisEnum.E_NORMAL_STANDBY or aEvent.mType == ElisEnum.E_STANDBY_REC :
 				self.mDataCache.SetStanbyClosing( True )
-				thread = threading.Timer( 1, self.StanByClose )
+				thread = threading.Timer( 1, self.StandByClose )
 				thread.start( )
 
 		elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
 			if E_SUPPROT_HBBTV :
 				LOG_TRACE('----------HBB Tv Ready')
-				self.mCommander.AppHBBTV_Ready( 0 )
+				self.mDataCache.Splash_StartAndStop( 0 )
 				self.mHBBTVReady = False
 
 			self.mDataCache.Teletext_NotifyHide( )
@@ -334,6 +333,47 @@ class GlobalEvent( object ) :
 			elif aEvent.mUpdateType == 1 :
 				self.mDataCache.UpdateChannelByDBUpdate( aEvent.mChannelNo, aEvent.mServiceType )
 
+		elif aEvent.getName( ) == ElisEventCrossEventProgress.getName( ) :
+			if aEvent.mCurrenChannelIndex + 1 >= aEvent.mTotalChannelCount :
+				mHead = MR_LANG( 'CrossEPG' )
+				mLine = MR_LANG( 'Download complete' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+
+		elif aEvent.getName( ) == ElisEventCrossEPGStart.getName( ) :
+			script = xbmc.translatePath( xbmcaddon.Addon( 'script.crossepg' ).getAddonInfo( 'path' ) ) + '/CrossEPG_Background.py'
+			cmd = 'AlarmClock(%s,RunScript(%s),%d,True)' % ( 'crossepg', script, 0.2 )
+			xbmc.executebuiltin( cmd )
+
+		#for HBBTV
+		elif E_SUPPROT_HBBTV == True :
+			LOG_TRACE("HBBTEST 11111111111111111 %s" % aEvent.getName( ) )
+			if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStart( aEvent.mUrl )
+
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSetSpeed.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSetSpeed( aEvent.mSpeed )				
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerSeekStream.getName( ) :
+				#ToDO
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerSeek( aEvent.mSeekPosition )
+		
+			elif aEvent.getName( ) == ElisEventExternalMediaPlayerStopPlay.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_MediaPlayerStop(  )
+				
+			elif aEvent.getName() == ElisEventHBBTVReady.getName() :
+				LOG_TRACE( 'HbbTV TEST' )
+				#HBBTV			
+				#This event must be received from global event.
+				if aEvent.mReady == 1 :
+					LOG_TRACE("Now new AIT is ready, HBBTV Browser ready")
+					self.mDataCache.SetHbbTVEnable( True )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_ShowRedButton( )
+
+				else :
+					LOG_TRACE( 'HbbTV Disable Event' )
+					self.mDataCache.SetHbbTVEnable( False )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideRedButton( )	
 
 
 	def StopLoading( self ) :
@@ -392,11 +432,8 @@ class GlobalEvent( object ) :
 			self.mDataCache.Subtitle_Show( )
 
 		else :
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 0 )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).HbbTV_HideBrowser( )
 			dialog.doModal( )
-			if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-				self.mCommander.AppHBBTV_Ready( 1 )
 
 		self.mIsDialogOpend = False
 
@@ -736,14 +773,17 @@ class GlobalEvent( object ) :
 		return viewResult
 
 
-	def StanByClose( self ) :
+	def StandByClose( self ) :
 		if xbmc.Player( ).isPlaying( ) :
 			xbmc.Player( ).stop( )
 
 		curreuntWindowId = self.GetCurrentWindowIdForStanByClose( )
 		previousWindowId = 1234
 
-		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 :
+		while curreuntWindowId != WinMgr.WIN_ID_NULLWINDOW or xbmcgui.getCurrentWindowDialogId( ) != 9999 \
+			or WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mHbbTVShowing == True \
+			or WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mYoutubeTVStarted == True :
+
 			if curreuntWindowId != previousWindowId :
 				xbmc.executebuiltin( 'xbmc.Action(PreviousMenu)' )
 				if xbmcgui.getCurrentWindowDialogId( ) == 9999 :
@@ -777,7 +817,7 @@ class GlobalEvent( object ) :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW or  \
 					WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					LOG_TRACE('LAEL98 TEST')				
-					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( )  ).UpdateLinkageService( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).GetLastWindowID( ) ).UpdateLinkageService( )
 
 
 	def CheckTunablePIP( self, aEvent = None, aForce = False ) :
@@ -818,38 +858,41 @@ class GlobalEvent( object ) :
 			LOG_TRACE( 'XBMCEvent OnPlay' )
 			liveWindow = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW )			
 			if aEvent.mValue == "True" :
-				WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
-				status = self.mDataCache.Player_GetStatus( )
-				if status.mMode != ElisEnum.E_MODE_LIVE :
-					self.mDataCache.Player_Stop( )
+				if liveWindow.mHbbTVShowing != True and liveWindow.mYoutubeTVStarted != True :
+					WinMgr.GetInstance( ).GetCurrentWindow( ).SetVideoRestore( )
+					status = self.mDataCache.Player_GetStatus( )
+					if status.mMode != ElisEnum.E_MODE_LIVE :
+						self.mDataCache.Player_Stop( )
 
-				liveWindow.SetMediaCenter( True )
-				if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
-					xbmc.executebuiltin( 'ActivateWindow(Home)' )
+				if liveWindow.mHbbTVShowing != True and liveWindow.mYoutubeTVStarted != True:
+					liveWindow.SetMediaCenter( True )
+					if liveWindow.mWinId == xbmcgui.getCurrentWindowId( ) :
+						xbmc.executebuiltin( 'ActivateWindow(Home)' )
 
 				xbmc.executebuiltin( 'PlayerControl(enplay)', True )
 
 			elif aEvent.mValue == "False" :
-				xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
-				liveWindow.CheckMediaCenter()
-				DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
-				if self.mDataCache.PIP_GetSwapStatus( ) :
-					self.mDataCache.PIP_SwapWindow( False )
-				xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
-
+				if liveWindow.mHbbTVShowing == True or liveWindow.mYoutubeTVStarted == True:
+					pass
+				else :
+					xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
+					liveWindow.CheckMediaCenter()
+					DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_PIP ).PIP_Check( E_PIP_STOP )
+					if self.mDataCache.PIP_GetSwapStatus( ) :
+						self.mDataCache.PIP_SwapWindow( False )
+					xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
 
 		elif aEvent.mName == "OnVolumeChanged" :
 			volumelist  = aEvent.mValue.split(':')
 			mute = int( volumelist[0] )
 			volume = int( volumelist[1] )
-			mw_mute = self.mCommander.Player_GetMute(  )
-			mw_volume = self.mCommander.Player_GetVolume(  )
+			mw_mute = self.mCommander.Player_GetMute( )
+			mw_volume = self.mCommander.Player_GetVolume( )
 
-			LOG_TRACE( "Mute=%d:%d Volume=%d:%d" %(mute, mw_mute, volume, mw_volume) )			
+			LOG_TRACE( "Mute=%d:%d Volume=%d:%d" % ( mute, mw_mute, volume, mw_volume ) )
 
-			if mute !=  mw_mute:
+			if mute != mw_mute :
 				self.mCommander.Player_SetMute( mute )
 			elif volume != mw_volume :
 				self.mCommander.Player_SetVolume( volume )
 
-	

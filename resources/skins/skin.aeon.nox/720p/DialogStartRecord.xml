@@ -4,40 +4,30 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
-				<height>340</height>
-				<texture border="40">osd/osd_settings_back.png</texture>
+				<height>480</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
 			</control>
-			<control type="button" id="6995">
-				<description>Close Window button</description>
-				<posx>455</posx>
-				<posy>36</posy>
-				<width>110</width>
-				<height>25</height>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>SCRIPT21</label>
-				<font>Font_Bold18</font>
+			<control type="group">
+				<posy>8</posy>
+				<include>DefaultDialogCommonSetting</include>
 			</control>
-			<include>DefaultDialogCloseButton</include>
 			<control type="group" id="9000">
-				<posx>25</posx>
-				<posy>5</posy>
+				<posx>40</posx>
+				<posy>-20</posy>
 				<!-- Recording Name -->
 				<control type="label" id ="101">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>560</width>
+					<width>540</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>Font_Reg19</font>
 					<textcolor>white</textcolor>
 					<align>center</align>
 					<aligny>center</aligny>
@@ -45,13 +35,63 @@
 				</control>
 				<!-- Recording -->
 				<include>DialogSpinEx01</include>
-				<!--StartTime -->
+				<!-- Timeshift Duration -->
+				<include>DialogInput04</include>
+				<!-- Start Time -->
 				<include>DialogInput01</include>
-				<!--EndTim -->
+				<!-- End Time -->
 				<include>DialogInput02</include>
 				<!-- Duration -->
 				<include>DialogInput03</include>
-				<!-- OK/Cancel -->
+				<!-- Record Path -->
+				<include>DialogInput05</include>
+				<include>DialogInput06</include>
+				<control type="group">
+					<posx>-20</posx>
+					<posy>310</posy>
+					<control type="group" id="300">
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+						<control type="progress" id="301">
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+						</control>
+						<control type="label" id="302">
+							<posx>110</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>grey3</textcolor>
+							<font>Font_Reg17</font>
+						</control>
+					</control>
+				</control>
+			</control>
+			<control type="group">
+				<posx>35</posx>
+				<posy>5</posy>
 				<include>DefaultSettingDialogButtonOKCancel</include>
 			</control>
 		</control>

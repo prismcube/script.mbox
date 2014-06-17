@@ -58,7 +58,7 @@
 				<align>center</align>
 				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
-				<label>SCRIPT1026</label>
+				<label>$ADDON[script.mbox 1026]</label>
 				<onleft>303</onleft>
 				<onright>303</onright>
 				<onup>303</onup>

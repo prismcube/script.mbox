@@ -14,7 +14,7 @@ BUTTON_ID_ARCHIVE				= E_MAIN_MENU_BASE_ID + 90200
 BUTTON_ID_EPG					= E_MAIN_MENU_BASE_ID + 90300
 BUTTON_ID_TIMER					= E_MAIN_MENU_BASE_ID + 90900
 BUTTON_ID_CHANNEL_LIST			= E_MAIN_MENU_BASE_ID + 90400
-BUTTON_ID_FAVORITE_ADDONS		= E_MAIN_MENU_BASE_ID + 90500
+BUTTON_ID_YOUTUBETV				= E_MAIN_MENU_BASE_ID + 90500
 BUTTON_ID_MEDIA_CENTER			= E_MAIN_MENU_BASE_ID + 90600
 BUTTON_ID_SYSTEM_INFO			= E_MAIN_MENU_BASE_ID + 90700
 BUTTON_ID_HELP					= E_MAIN_MENU_BASE_ID + 90800
@@ -96,6 +96,7 @@ class MainMenu( BaseWindow ) :
 		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
 		self.setProperty( 'RssShow', GetSetting( 'RSS_FEED_MAIN_MENU' ) )
+		self.setProperty( 'YoutubeTV', GetSetting( 'YOUTUBE_TV' ) )
 		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -213,7 +214,9 @@ class MainMenu( BaseWindow ) :
 					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_CURRENT )
 				elif aControlId == BUTTON_ID_EPG_FOLLOWING :
 					SetSetting( 'EPG_MODE','%d' %EPGWindow.E_VIEW_FOLLOWING )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )				
+
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_EPG_WINDOW ).CheckModeChange()					
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif aControlId == BUTTON_ID_TIMER or ( aControlId >= BUTTON_ID_TIMER_ADD_MANUAL and aControlId <= BUTTON_ID_TIMER_DELETE ):
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -301,8 +304,10 @@ class MainMenu( BaseWindow ) :
 
 				self.mDataCache.Player_Stop( )
 
-			if not CheckHdd( ) :
+			if not CheckHdd( True ) :
 				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
+				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
@@ -336,6 +341,16 @@ class MainMenu( BaseWindow ) :
 			elif aControlId == BUTTON_ID_FAVORITE_EXTRA :
 				#xbmc.executebuiltin( 'ActivateWindow(Home)' )
 				xbmc.executebuiltin( "ActivateWindow(favourites)" )
+
+		# doliyu test youtube start
+		elif aControlId == BUTTON_ID_YOUTUBETV :
+			if os.path.exists( '/mtmp/crossepg_running' ) :
+				mHead = MR_LANG( 'While downloading EPG data' )
+				mLine = MR_LANG( 'Not allowed operation' )
+				xbmc.executebuiltin( 'Notification(%s, %s, 5000, DefaultIconInfo.png)' % ( mHead, mLine ) )
+				return
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).StartYoutubeTV( )
 				
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )

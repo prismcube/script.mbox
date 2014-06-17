@@ -519,11 +519,8 @@ class SystemUpdate( SettingWindow ) :
 
 		answer = dialog.IsOK( )
 		if answer == E_DIALOG_STATE_YES :
-			curWinID = xbmcgui.getCurrentWindowId( )
-			updateWinID = self.mWinId
-			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
-				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
+			curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
+			updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
 
 			if curWinID != updateWinID :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_NULLWINDOW )
@@ -1524,11 +1521,8 @@ class SystemUpdate( SettingWindow ) :
 				button2Desc  = MR_LANG( 'Download complete. Press OK to copy firmware files to USB' )
 			"""
 
-			curWinID = xbmcgui.getCurrentWindowId( )
-			updateWinID = self.mWinId
-			if E_SUPPORT_SINGLE_WINDOW_MODE :
-				curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
-				updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
+			curWinID    = WinMgr.GetInstance( ).GetLastWindowID( )
+			updateWinID = WinMgr.WIN_ID_SYSTEM_UPDATE
 
 			LOG_TRACE('-------------------step[%s]'% self.mStepPage )
 			if curWinID == updateWinID and \

@@ -44,7 +44,7 @@
 				<width>1200</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>SCRIPT1017</label>
+				<label>$ADDON[script.mbox 1017]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -57,7 +57,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>SCRIPT1018</label>
+				<label>$ADDON[script.mbox 1018]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -70,7 +70,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>SCRIPT1019</label>
+				<label>$ADDON[script.mbox 1019]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -176,7 +176,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(400)</visible>
 			</control>
 			
@@ -279,7 +279,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(402)</visible>
 			</control>
 
@@ -291,7 +291,7 @@
 				<width>1000</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>SCRIPT1020</label>
+				<label>$ADDON[script.mbox 1020]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

@@ -1,0 +1,90 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>400</height>
+				<texture>dialogs/dialog_back.png</texture>
+				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
+			</control>
+			<control type="group">
+				<posy>10</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>0</posy>
+				<include>DialogInput03</include>
+				<include>DialogInput02</include>
+				<control type="image">
+					<posx>0</posx>
+					<posy>152</posy>
+					<width>510</width>
+					<height>3</height>
+					<texture>separator2.png</texture>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>2</posy>
+					<include>DialogInput05</include>
+					<include>DialogInput06</include>
+					<include>DialogSpinEx02</include>
+					<control type="group">
+						<posx>0</posx>
+						<posy>272</posy>
+						<control type="group" id="300">
+							<posx>0</posx>
+							<posy>0</posy>
+							<control type="progress" id="301">
+								<posx>0</posx>
+								<posy>15</posy>
+								<width>100</width>
+								<height>16</height>
+							</control>
+							<control type="label" id="302">
+								<posx>105</posx>
+								<posy>2</posy>
+								<width>150</width>
+								<height>40</height>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>$INFO[Window.Property(NetVolumeUse)]</label>
+								<textcolor>grey3</textcolor>
+								<font>Font_Reg19</font>
+							</control>
+							<control type="image">
+								<posx>-30</posx>
+								<posy>10</posy>
+								<width>25</width>
+								<height>25</height>
+								<texture>connected.png</texture>
+								<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+							</control>
+							<control type="image">
+								<posx>-30</posx>
+								<posy>10</posy>
+								<width>25</width>
+								<height>25</height>
+								<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+								<texture>disconnected.png</texture>
+							</control>
+						</control>
+					</control>
+					<control type="group">
+						<posx>0</posx>
+						<posy>40</posy>
+						<include>DialogInput07</include>
+					</control>
+				</control>
+			</control>
+			
+		</control>
+	</controls>
+</window>
