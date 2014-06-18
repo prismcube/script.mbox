@@ -1,7 +1,6 @@
 from pvr.gui.GuiConfig import *
 from elisinterface.ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.TunerConfigMgr
-import pvr.Platform
 from pvr.gui.BaseWindow import BaseWindow
 from pvr.gui.BaseWindow import Action
 

@@ -54,7 +54,7 @@ class Installation( BaseWindow ) :
 		self.mLeftGroupItems.append( MR_LANG( 'Channel Search' ) )
 		self.mDescriptionList.append( MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ) )
 
-		if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			self.mLeftGroupItems.append( MR_LANG( 'Edit Satellite' ) )
 			self.mDescriptionList.append( MR_LANG( 'Add, delete or rename satellites' ) )
 
@@ -92,7 +92,7 @@ class Installation( BaseWindow ) :
 			return
 	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		if self.mDataCache.GetTunerType( ) != TUNER_TYPE_DVBS :
+		if self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_SINGLE and self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_DUAL :
 			if selectedId > MENU_ID_CHANNEL_SEARCH :
 				selectedId = selectedId + 2
 
@@ -100,15 +100,15 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP :
-			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+			elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH :
-			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
-			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+			elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE :

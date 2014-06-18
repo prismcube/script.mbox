@@ -194,9 +194,9 @@ class FirstInstallation( FTIWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				xbmc.executebuiltin( 'ActivateWindow(screencalibration)' )
 				self.mReloadSkinPosition = True
-				if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+				if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 					self.SetFTIStep( E_STEP_ANTENNA )
-				elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+				elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 					self.SetFTIStep( E_STEP_CHANNEL_SEARCH_CONFIG_DVBT )
 				self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 
@@ -353,7 +353,7 @@ class FirstInstallation( FTIWindow ) :
 			self.LoadTunerProperty( )			
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 				self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
 
 				visibleControlIds = [ E_SpinEx03 ]
@@ -476,9 +476,9 @@ class FirstInstallation( FTIWindow ) :
 			self.SetDefaultControl( )
 
 		elif aStep == E_STEP_DATE_TIME :
-			if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
-			elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+			elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 				self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG_DVBT
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time and Date Setup' ) )
 
@@ -560,7 +560,7 @@ class FirstInstallation( FTIWindow ) :
 
 	def DisableControl( self, aControlID = None ) :
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 				return
 
 			if aControlID == None or aControlID == E_SpinEx01 :

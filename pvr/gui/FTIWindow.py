@@ -153,7 +153,7 @@ class FTIWindow( SettingWindow ) :
 		tuner1ConfiguredSatellites = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )
 		tuner2ConfiguredSatellites = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 )
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
-			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+			if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 				loopcount = 1
 			else :
 				loopcount = 2

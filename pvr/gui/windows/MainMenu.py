@@ -92,7 +92,7 @@ class MainMenu( BaseWindow ) :
 			MR_LANG( 'Manage your XBMC add-ons' ),
 			MR_LANG( 'Display detailed information about your system status' ) ]
 
-		if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 			self.getControl( BUTTON_ID_EDIT_SATELLITE).setVisible( True )
 			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( True )
 		else :
@@ -175,15 +175,15 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+					if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-					elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+					elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DVBT_TUNER_SETUP )
 
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
-					if self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBS :
+					if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE or self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
-					elif self.mDataCache.GetTunerType( ) == TUNER_TYPE_DVBT :
+					elif self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBT :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SCAN_DVBT )
 
 				elif aControlId == BUTTON_ID_EDIT_SATELLITE :
@@ -321,7 +321,7 @@ class MainMenu( BaseWindow ) :
 
 			if not CheckHdd( True ) :
 				msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
-				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+				if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )

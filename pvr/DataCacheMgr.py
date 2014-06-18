@@ -3694,7 +3694,3 @@ class DataCacheMgr( object ) :
 	def GetHbbtvStatus( self ) :
 		return self.mHbbtvStatus
 
-
-	def GetTunerType( self ) :
-		return TUNER_TYPE_DVBS
-

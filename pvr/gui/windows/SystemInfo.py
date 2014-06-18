@@ -275,7 +275,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetProductName( self ) :
-		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 			return 'PRISMCUBE JET'
 		else :
 			return 'PRISMCUBE RUBY'

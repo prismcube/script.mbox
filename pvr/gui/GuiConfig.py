@@ -20,12 +20,6 @@ FILE_NAME_HBB_TV			= '/config/hbbtv'
 RECORD_WIDTHOUT_ASKING		= True
 RECORD_ENDTIME_TRICK_MARGIN = 1
 
-# TUNER TYPE
-TUNER_TYPE_DVBS		= 0
-TUNER_TYPE_DVBT		= 1
-TUNER_TYPE_DVBC 	= 2
-TUNER_TYPE_DVBTC	= 3
-
 # WINDOW SIZE
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
@@ -214,9 +208,9 @@ E_WEST							= 0
 E_EAST							= 1
 
 # RECORD
-if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_RUBY :
+if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 	E_MAX_RECORD_COUNT				= 2
-elif pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+else :
 	E_MAX_RECORD_COUNT				= 1
 
 # Volume

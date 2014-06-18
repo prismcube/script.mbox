@@ -213,6 +213,14 @@ class PrismCubePlatform( Platform ) :
 	def __init__( self, *args, **kwargs ) :
 		Platform.__init__( self, *args, **kwargs )
 		self.mProduct = args[0]
+		if self.mProduct == PRODUCT_RUBY :
+			self.mTunerType = TUNER_TYPE_DVBS_DUAL
+		elif self.mProduct == PRODUCT_OSCAR :
+			# ToDo
+			# self.mTunerType = pvr.ElisMgr.GetInstance( ).GetCommander( ).GetTunertype( )...
+			self.mTunerType = TUNER_TYPE_DVBS_SINGLE
+		else :
+			self.mTunerType = TUNER_TYPE_DVBS_DUAL
 
 
 	def GetName( self ) :
@@ -229,6 +237,10 @@ class PrismCubePlatform( Platform ) :
 
 	def GetProduct( self ) :
 		return self.mProduct
+
+
+	def GetTunerType( self ) :
+		return self.mTunerType
 
 
 	def IsRootfUbiFs( self ) :

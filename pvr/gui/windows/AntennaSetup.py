@@ -34,7 +34,7 @@ class AntennaSetup( SettingWindow ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
 		self.LoadTunerProperty( )
 
-		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Control' ), E_LIST_TUNER_CONTROL, self.mTuner1Control, MR_LANG( 'Select a control method for tuner 1' ) )
 			self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx04, E_Input02 ]
@@ -205,7 +205,7 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def DisableControl( self, aControlID = None ) :
-		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
+		if self.mPlatform.GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
 			return
 		if aControlID == None or aControlID == E_SpinEx01 :
 			if self.mTunerConnection == E_TUNER_LOOPTHROUGH or self.mTunerConnection == E_TUNER_ONECABLE :

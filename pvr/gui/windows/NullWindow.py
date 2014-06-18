@@ -206,7 +206,7 @@ class NullWindow( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Corrupted Database' ), MR_LANG( 'Do you want to repair database? (%s)' ) % databaseName )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					userDatabasePath = pvr.Platform.GetPlatform( ).GetUserDataDir( )
+					userDatabasePath = self.mPlatform.GetUserDataDir( )
 					userDatabasePath = userDatabasePath + 'Database/'
 					databaseName = userDatabasePath + databaseName + '.db'
 					os.system( 'rm %s' % databaseName )
@@ -439,7 +439,7 @@ class NullWindow( BaseWindow ) :
 				if not CheckHdd( True ) :
 					self.CloseSubTitle( )
 					msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an internal HDD' )% NEW_LINE
-					if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+					if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 						msg = MR_LANG( 'Installing and executing XBMC add-ons%s may not work properly without an external storage' )% NEW_LINE
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
