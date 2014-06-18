@@ -275,7 +275,10 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetProductName( self ) :
-		return 'PRISMCUBE RUBY'
+		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+			return 'PRISMCUBE JET'
+		else :
+			return 'PRISMCUBE RUBY'
 
 
 	def GetSerialNymber( self ) :
