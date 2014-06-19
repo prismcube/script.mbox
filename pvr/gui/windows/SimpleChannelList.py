@@ -36,7 +36,6 @@ class SimpleChannelList( BaseWindow ) :
 		self.mOffsetTopIndex = 0
 	
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Channel List') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.CheckMediaCenter( )
@@ -104,9 +103,6 @@ class SimpleChannelList( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -176,13 +172,10 @@ class SimpleChannelList( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		pass
-		#if aControlId  == LIST_ID_BIG_CHANNEL :
-		#	self.Tune( )
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onEvent( self, aEvent ) :

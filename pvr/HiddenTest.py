@@ -17,16 +17,12 @@ class HiddenTest( BaseWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( 'Hidden Test' )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.CheckTestFile( )
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			WinMgr.GetInstance( ).CloseWindow( )
@@ -36,13 +32,11 @@ class HiddenTest( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def CheckTestFile( self ) :

@@ -10,7 +10,6 @@ class ConditionalAccess( SettingWindow ) :
 
 			
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONDITIONAL_ACCESS_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Conditional Access') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -42,9 +41,6 @@ class ConditionalAccess( SettingWindow ) :
 
 		
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		actionId = aAction.getId( )
 		self.GetFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -69,9 +65,6 @@ class ConditionalAccess( SettingWindow ) :
 			
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			pass
@@ -84,9 +77,6 @@ class ConditionalAccess( SettingWindow ) :
 				
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

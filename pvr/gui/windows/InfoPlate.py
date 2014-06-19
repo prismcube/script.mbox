@@ -69,7 +69,6 @@ class InfoPlate( LivePlateWindow ) :
 
 	def onInit( self ) :
 		self.setFocusId( E_INFO_PLATE_DEFAULT_FOCUS_ID )
-		self.SetActivate( True )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( WinMgr.WIN_ID_INFO_PLATE * E_BASE_WINDOW_UNIT + E_BASE_WINDOW_ID )
@@ -124,9 +123,6 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			self.RestartAutomaticHide( )
@@ -226,9 +222,6 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE )
 
@@ -237,8 +230,7 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def LoadInit( self ):

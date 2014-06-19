@@ -127,7 +127,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetSingleWindowPosition( E_CHANNEL_LIST_BASE_ID )
 
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Channel List') )
 		self.SetHeaderTitle( MR_LANG( 'Channel List' ) )
 		
@@ -263,9 +262,6 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -441,10 +437,6 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onClick(self, aControlId):
-		#LOG_TRACE( '[ChannelList] onclick focusID[%d]'% aControlId )
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				try:
@@ -536,9 +528,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onFocus(self, controlId):
-		#LOG_TRACE( '[ChannelList] control %d' % controlId )
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def SetEditMode( self, aMode = False ) :

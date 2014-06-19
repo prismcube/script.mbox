@@ -155,7 +155,6 @@ class EPGWindow( BaseWindow ) :
 		self.mEnableAysncTimer = True
 		self.mFirstTune = False
 
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('EPG') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -248,9 +247,6 @@ class EPGWindow( BaseWindow ) :
 	
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -437,11 +433,6 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		LOG_TRACE( 'aControlId=%d' %aControlId )
-		if self.IsActivate( ) == False  :
-			return
-
-
 		if aControlId  == LIST_ID_GRID_CHANNEL :
 			self.Tune( )
 			"""
@@ -506,10 +497,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
-		LOG_TRACE('TEST focusId=%d' %self.getFocusId() )
+		pass
 
 
 	def onEvent( self, aEvent ) :

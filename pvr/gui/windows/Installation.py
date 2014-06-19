@@ -26,7 +26,6 @@ class Installation( BaseWindow ) :
 
 	def onInit( self ) :
 		self.SetTitleDes( )
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Installation') )
 		self.SetHeaderTitle( MR_LANG( 'Installation' ) )
@@ -75,9 +74,6 @@ class Installation( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -88,9 +84,6 @@ class Installation( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		if self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_SINGLE and self.mPlatform.GetTunerType( ) != TUNER_TYPE_DVBS_DUAL :
 			if selectedId > MENU_ID_CHANNEL_SEARCH :
@@ -136,6 +129,5 @@ class Installation( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 

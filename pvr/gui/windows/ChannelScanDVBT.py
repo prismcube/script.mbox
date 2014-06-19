@@ -23,7 +23,6 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('DVBT Scan') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -39,9 +38,6 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -73,9 +69,6 @@ class ChannelScanDVBT( SettingWindow ) :
 		
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		# Manual Setup
@@ -189,9 +182,6 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

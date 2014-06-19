@@ -31,7 +31,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 	def onInit( self ) :
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		self.SetActivate( True )
 		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 		self.mDataCache.Player_AVBlank( True )
 		
@@ -65,9 +64,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -116,9 +112,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		#Satellite
@@ -279,9 +272,6 @@ class SatelliteConfigMotorized12( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

@@ -16,7 +16,6 @@ class Favorites( BaseWindow ) :
 
 	def onInit( self ) :
 		self.setProperty( 'SetBackgroundColor', '%s' %int( 0x2f2f2f ) )	
-		self.SetActivate( True )
 		self.mIsPlaying = False
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetFrontdisplayMessage( MR_LANG('Favorites') )
@@ -33,9 +32,6 @@ class Favorites( BaseWindow ) :
 
 	
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
@@ -45,13 +41,12 @@ class Favorites( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
+
 
 	def RestartCheckTimer( self, aTimeout=E_TIMEOUT_INTERVAL ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )

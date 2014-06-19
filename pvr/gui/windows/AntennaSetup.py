@@ -23,7 +23,6 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_ANTENNA_SETUP_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Antenna Setup') )
 
@@ -80,9 +79,6 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -130,9 +126,6 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 or groupId == E_Input02 :
 			self.OpenConfigureWindow( groupId )
@@ -150,9 +143,6 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

@@ -16,7 +16,6 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_TUNER_CONFIGURATION_BASE_ID )
 		self.mCtrlMainList = self.getControl( E_MAIN_LIST_ID )
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
@@ -36,9 +35,6 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -78,9 +74,6 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if aControlId == E_MAIN_LIST_ID : 
 			position = self.mCtrlMainList.getSelectedPosition( )
 
@@ -178,9 +171,6 @@ class TunerConfiguration( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized == False :
 			return
 

@@ -28,7 +28,6 @@ class TimerWindow( BaseWindow ) :
 
 	
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG( 'Timer List' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -88,9 +87,6 @@ class TimerWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -116,10 +112,6 @@ class TimerWindow( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		LOG_TRACE( 'aControlId=%d' %aControlId )
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId == LIST_ID_BIG_TIMER :
 			if self.mSelectedWeeklyTimer == 0 :
 				self.GoChildTimer( )
@@ -134,8 +126,7 @@ class TimerWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onEvent( self, aEvent ) :

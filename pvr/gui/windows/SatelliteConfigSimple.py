@@ -26,7 +26,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 		self.mDataCache.Player_AVBlank( True )
 		
@@ -58,9 +57,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -108,9 +104,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		#Satellite
@@ -263,9 +256,6 @@ class SatelliteConfigSimple( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

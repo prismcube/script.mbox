@@ -83,9 +83,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onInit( self )  :
-		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )		
-		self.SetActivate( True )
-		self.SetFrontdisplayMessage( MR_LANG('System Info') )		
+		self.SetFrontdisplayMessage( MR_LANG('System Info') )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
 		self.SetSingleWindowPosition( E_SYSTEM_INFO_BASE_ID )
@@ -126,12 +124,10 @@ class SystemInfo( SettingWindow ) :
 		self.SetListControl( )
 		self.mPrevListItemID = -1
 		self.mInitialized = True
+		self.setFocusId( E_SYSTEM_INFO_DEFAULT_FOCUS_ID )
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -177,14 +173,10 @@ class SystemInfo( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized == False :
 			return
 

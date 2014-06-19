@@ -12,8 +12,6 @@ E_CONFIGURE_SETUPMENU_GROUP_ID	=  E_CONFIGURE_BASE_ID + 9010
 E_CONFIGURE_SUBMENU_LIST_ID		=  E_CONFIGURE_BASE_ID + 9000
 E_CONFIGURE_SETTING_DESCRIPTION	=  E_CONFIGURE_BASE_ID + 1003
 
-
-E_CONFIGURE_DEFAULT_FOCUS_ID    =  E_CONFIGURE_SUBMENU_LIST_ID
 E_GROUP_ID_SHOW_INFO            =  E_CONFIGURE_BASE_ID + 1300
 E_PROGRESS_NETVOLUME            =  E_CONFIGURE_BASE_ID + 1301
 E_LABEL_ID_USE_INFO             =  E_CONFIGURE_BASE_ID + 1302
@@ -138,8 +136,6 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Restore your system to factory settings' ),
 		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 	
-		self.setFocusId( E_CONFIGURE_DEFAULT_FOCUS_ID )
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CONFIGURE_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Configuration') )
 		self.SetHeaderTitle( "%s - %s" % ( MR_LANG( 'Installation' ), MR_LANG( 'Configuration' ) ) )
@@ -168,6 +164,7 @@ class Configure( SettingWindow ) :
 		self.CloseBusyDialog( )
 
 		self.mEventBus.Register( self )
+		self.setFocusId( E_CONFIGURE_SUBMENU_LIST_ID )
 
 
 	def Close( self ) :
@@ -186,9 +183,6 @@ class Configure( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -237,9 +231,6 @@ class Configure( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
@@ -623,9 +614,6 @@ class Configure( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized == False :
 			return
 

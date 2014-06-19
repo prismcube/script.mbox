@@ -296,7 +296,6 @@ gTestWinid = [
 	WinMgr.WIN_ID_CONFIGURE,
 	WinMgr.WIN_ID_ARCHIVE_WINDOW,
 	WinMgr.WIN_ID_SYSTEM_INFO,
-	WinMgr.WIN_ID_MEDIACENTER,
 	WinMgr.WIN_ID_EPG_WINDOW,
 	#WinMgr.WIN_ID_TIMESHIFT_PLATE,
 	#WinMgr.WIN_ID_INFO_PLATE,
@@ -336,9 +335,6 @@ class AllNavigation( object ) :
 					code = KeyCode[ 'VKEY_INFO' ]
 				elif winid == WinMgr.WIN_ID_ARCHIVE_WINDOW :
 					code = KeyCode[ 'VKEY_ARCHIVE' ]
-				elif winid == WinMgr.WIN_ID_MEDIACENTER :
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( False )
-					code = KeyCode[ 'VKEY_MEDIA' ]
 				elif winid == WinMgr.WIN_ID_EPG_WINDOW :
 					code = KeyCode[ 'VKEY_EPG' ]
 

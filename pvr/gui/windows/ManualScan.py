@@ -19,7 +19,6 @@ class ManualScan( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Manual Scan') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -62,9 +61,6 @@ class ManualScan( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -102,9 +98,6 @@ class ManualScan( SettingWindow ) :
 		
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		# Satellite		
@@ -224,9 +217,6 @@ class ManualScan( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

@@ -87,7 +87,6 @@ class LivePlate( LivePlateWindow ) :
 	def onInit( self ) :
 		self.mEnableBlickingTimer = False
 		self.setFocusId( E_CONTROL_ID_BUTTON_CHANNEL_LIST )
-		self.SetActivate( True )
 		self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -188,11 +187,6 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
-		LOG_TRACE( 'action=%d' %aAction.getId( ) )	
-		if self.IsActivate( ) == False  :
-			LOG_TRACE( 'SKIP' )		
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -409,9 +403,6 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		self.StopAutomaticHide( )
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
 			self.GlobalAction( Action.ACTION_MUTE  )
@@ -432,8 +423,7 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onFocus(self, aControlId):
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def LoadInit( self ):

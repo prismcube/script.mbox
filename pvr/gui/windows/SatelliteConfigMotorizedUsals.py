@@ -15,10 +15,6 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
-		
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %s Config : Motorized, Usals' ) % ( self.tunerIndex + 1 ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
@@ -36,9 +32,6 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -76,9 +69,6 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		# My Longitude
@@ -134,9 +124,6 @@ class SatelliteConfigMotorizedUsals( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 			

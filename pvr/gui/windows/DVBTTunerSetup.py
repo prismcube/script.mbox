@@ -18,7 +18,6 @@ class DVBTTunerSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Tuner Setup') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -43,9 +42,6 @@ class DVBTTunerSetup( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -73,9 +69,6 @@ class DVBTTunerSetup( SettingWindow ) :
 		
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		# Tuner type
@@ -87,8 +80,5 @@ class DVBTTunerSetup( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if self.mInitialized :
 			self.ShowDescription( aControlId )

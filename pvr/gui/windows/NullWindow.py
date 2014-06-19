@@ -59,7 +59,6 @@ class NullWindow( BaseWindow ) :
 			self.mNewEPGAlarmEnabled = True
 		self.setProperty( 'ShowClock', GetSetting( 'DISPLAY_CLOCK_NULLWINDOW' ) )
 		self.setProperty( 'LiveStream', GetSetting( 'LIVE_STREAM' ) )
-		self.SetActivate( True )
 		self.setFocusId( E_BUTTON_ID_FAKE )
 		self.SetSingleWindowPosition( E_NULL_WINDOW_BASE_ID )
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
@@ -217,11 +216,6 @@ class NullWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		LOG_TRACE( 'action=%d' % aAction.getId( ) )
-		if self.IsActivate( ) == False  :
-			LOG_TRACE( 'SKIP' )
-			return
-
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) and actionId != Action.ACTION_MBOX_RESERVED22   :
 			return
@@ -451,7 +445,6 @@ class NullWindow( BaseWindow ) :
 				self.SetMediaCenter( )
 			else :
 				self.SetMediaCenter( True )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 			LOG_ERR('self.mWinId = %s xbmcgui.getCurrentWindowId( ) = %s, self.mMediaPlayerStarted = %s' % (self.mWinId, xbmcgui.getCurrentWindowId( ),self.mMediaPlayerStarted ) )
 			if self.mWinId == xbmcgui.getCurrentWindowId( ) and self.mMediaPlayerStarted == False:
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )
@@ -613,72 +606,7 @@ class NullWindow( BaseWindow ) :
 				LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
-
-		"""
-		#test
-		elif actionId == Action.ACTION_MOVE_DOWN :
-			from pvr.gui.windows.SystemUpdate import SCRIPTClass, PVSClass
-			iPVSData = PVSClass( )
-			iPVSData.mFileName = 'update_ruby_1.0.0.rc2_Update_Test.zip'
-			iPVSData.mMd5 = 'a62064abd41c2a59c4703cd174a463de'
-			iPVSData.mSize = 189322973
-			iPVSData.mShellScript.mScriptFileName = 'updater7.sh'
-			iPVSData.mActions = 'sleep 1\necho Test1\necho Test2\nsleep 2\necho Action end'
-			basedir = '/mnt/hdd0/program/download'
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_UPDATE_PROGRESS )
-			dialog.SetDialogProperty( MR_LANG( 'System Update' ), basedir, iPVSData )
-			dialog.doModal( )
-
-			shell = dialog.GetResult( )
-			if shell == 0 :
-				InitFlash( )
-			LOG_TRACE( '--------------result[%s]'% shell )
-
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			print 'youn check ation right'
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE1 )
-			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_DIALOG ).doModal( )
-
-		elif actionId == Action.ACTION_MOVE_UP :
-			print 'youn check ation up'
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
-
-		elif actionId == Action.ACTION_MOVE_DOWN :
-			print 'youn check ation up'
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE2 )
-
-		elif actionId == Action.REMOTE_3:  #TEST : start Record
-			print 'open record dialog'
-			
-			runningCount = self.mCommander.Record_GetRunningRecorderCount( )
-			LOG_TRACE( 'runningCount=%d' %runningCount)
-			if  runningCount < E_MAX_RECORD_COUNT :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
-			else:
-				msg = 'Already %d recording(s) running' %runningCount
-				xbmcgui.Dialog( ).ok('Information', msg )
-				
-		
-		elif actionId == Action.REMOTE_4:  #TEST : stop Record
-			print 'open record dialog'
-			runningCount = self.mCommander.Record_GetRunningRecorderCount( )
-			LOG_TRACE( 'runningCount=%d' %runningCount )
-
-			if  runningCount > 0 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal( )
-
-		elif actionId == Action.REMOTE_1:  #TEST : bg test
-			pass
-		"""
-
-
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		self.Close( )
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -688,11 +616,7 @@ class NullWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
-		#print "onFocus( ): control %s" % aControlId
-		#self.mLastFocusId = aControlId
+		pass
 
 
 	def onEvent( self, aEvent ) :

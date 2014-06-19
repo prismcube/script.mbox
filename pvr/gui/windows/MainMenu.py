@@ -100,7 +100,6 @@ class MainMenu( BaseWindow ) :
 			self.getControl( BUTTON_ID_EDIT_TRANSPONDER).setVisible( False )
 
 		self.setFocusId( E_MAIN_MENU_DEFAULT_FOCUS_ID )	
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_MAIN_MENU_BASE_ID )
 		self.setProperty( 'RssShow', GetSetting( 'RSS_FEED_MAIN_MENU' ) )
 		self.setProperty( 'YoutubeTV', GetSetting( 'YOUTUBE_TV' ) )
@@ -119,9 +118,6 @@ class MainMenu( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False :
-			return
-
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -155,10 +151,6 @@ class MainMenu( BaseWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
-		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_ADVANCED :
 			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				if self.mPlatform.GetXBMCVersion( ) < self.mPlatform.GetFrodoVersion( ) :
@@ -331,7 +323,6 @@ class MainMenu( BaseWindow ) :
 			#self.mDataCache.SetAVBlankByArchive( True )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				xbmc.executebuiltin( 'ActivateWindow(Home)' )
-				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 			elif aControlId == BUTTON_ID_MEDIA_WEATHER :
 				xbmc.executebuiltin( 'ActivateWindow(Weather)' )
 			elif aControlId == BUTTON_ID_MEDIA_PICTURES :
@@ -376,9 +367,6 @@ class MainMenu( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId >= BUTTON_ID_FIRSTINSTALLATION and aControlId <= BUTTON_ID_ADVANCED :
 			self.getControl( LABEL_ID_SUB_DESCRIPTION ).setLabel( self.mSubDescriptionInstall[ aControlId - 1 - BUTTON_ID_INSTALLATION ] )
 

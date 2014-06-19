@@ -106,7 +106,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		if playingRecord :
 			self.SetFrontdisplayMessage( playingRecord.mRecordName )
@@ -215,9 +214,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -461,9 +457,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onClick( self, aControlId ):
-		if self.IsActivate( ) == False  :
-			return
-	
 		if aControlId >= E_CONTROL_ID_BUTTON_REWIND and aControlId <= E_CONTROL_ID_BUTTON_JUMP_FF :
 			self.StopAutomaticHide( )
 			ret = self.TimeshiftAction( aControlId )
@@ -503,9 +496,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ):
-		#LOG_TRACE( 'control %d' % controlId )
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onEvent( self, aEvent ) :
@@ -2234,7 +2225,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def AsyncUpdateCurrentMove( self, aStartOnLeft = False ) :
-		self.SetActivate( False )
 		try :
 			if self.mFlagUserMove :
 				if aStartOnLeft :
@@ -2258,7 +2248,6 @@ class TimeShiftPlate( BaseWindow ) :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]'% e )
 
-		self.SetActivate( True )
 		self.UpdatePropertyGUI( 'IsShift', 'False' )
 
 

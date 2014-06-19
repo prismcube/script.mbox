@@ -48,7 +48,6 @@ WIN_ID_EDIT_TRANSPONDER				= 22
 WIN_ID_ARCHIVE_WINDOW				= 23
 WIN_ID_SYSTEM_INFO					= 24
 WIN_ID_INSTALLATION					= 25
-WIN_ID_MEDIACENTER					= 26
 WIN_ID_EPG_WINDOW					= 27
 WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
@@ -57,7 +56,6 @@ WIN_ID_INFO_PLATE					= 31
 WIN_ID_FAVORITES					= 32
 WIN_ID_SYSTEM_UPDATE				= 33
 WIN_ID_EPG_SEARCH					= 34
-WIN_ID_ZOOM							= 35
 WIN_ID_SIMPLE_CHANNEL_LIST			= 36
 WIN_ID_FAST_SCAN					= 37
 WIN_ID_PIP_WINDOW					= 38
@@ -66,10 +64,6 @@ WIN_ID_CHANNEL_SCAN_DVBT			= 40
 WIN_ID_DVBT_TUNER_SETUP				= 41
 
 WIN_ID_HIDDEN_TEST					= 99
-
-WIN_ID_TIMESHIFT_INFO_PLATE			= 101
-WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
-WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
 gWindowMgr = None
 
@@ -265,14 +259,12 @@ class WindowMgr( object ) :
 			from pvr.gui.windows.SystemInfo import SystemInfo
 			from pvr.gui.windows.ArchiveWindow import ArchiveWindow
 			from pvr.gui.windows.EPGWindow import EPGWindow
-			from pvr.gui.windows.MediaCenter import MediaCenter
 			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			from pvr.gui.windows.InfoPlate import InfoPlate
 			from pvr.gui.windows.Favorites import Favorites
 			from pvr.gui.windows.SystemUpdate import SystemUpdate
 			from pvr.gui.windows.EPGSearchWindow import EPGSearchWindow
-			from pvr.gui.windows.Zoom import Zoom
 			from pvr.gui.windows.SimpleChannelList import SimpleChannelList
 			from pvr.gui.windows.FastScan import FastScan
 			from pvr.gui.windows.Advanced import Advanced
@@ -307,7 +299,6 @@ class WindowMgr( object ) :
 			self.mWindows[WIN_ID_SYSTEM_INFO] = SystemInfo( self.mRootWindow )
 			self.mWindows[WIN_ID_ARCHIVE_WINDOW] = ArchiveWindow( self.mRootWindow )
 			self.mWindows[WIN_ID_EPG_WINDOW] = EPGWindow( self.mRootWindow )
-			self.mWindows[WIN_ID_MEDIACENTER] = MediaCenter( self.mRootWindow )
 			self.mWindows[WIN_ID_CONDITIONAL_ACCESS] = ConditionalAccess( self.mRootWindow )
 			self.mWindows[WIN_ID_FIRST_INSTALLATION] = FirstInstallation( self.mRootWindow )
 			self.mWindows[WIN_ID_TIMER_WINDOW] = TimerWindow( self.mRootWindow )
@@ -315,7 +306,6 @@ class WindowMgr( object ) :
 			self.mWindows[WIN_ID_FAVORITES] = Favorites( self.mRootWindow )
 			self.mWindows[WIN_ID_SYSTEM_UPDATE] = SystemUpdate( self.mRootWindow )
 			self.mWindows[WIN_ID_EPG_SEARCH] = EPGSearchWindow( self.mRootWindow )
-			self.mWindows[WIN_ID_ZOOM] = Zoom( self.mRootWindow )
 			self.mWindows[WIN_ID_SIMPLE_CHANNEL_LIST] = SimpleChannelList( self.mRootWindow )
 			self.mWindows[WIN_ID_FAST_SCAN] = FastScan( self.mRootWindow  )
 			self.mWindows[WIN_ID_CHANNEL_SCAN_DVBT] = ChannelScanDVBT( self.mRootWindow )

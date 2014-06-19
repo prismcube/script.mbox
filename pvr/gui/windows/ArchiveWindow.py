@@ -79,7 +79,6 @@ class ArchiveWindow( BaseWindow ) :
 	def onInit( self ) :
 		self.setProperty( 'SetBackgroundColor', '1' )
 		self.setFocusId( E_ARCHIVE_WINDOW_DEFAULT_FOCUS_ID )
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG('Archive') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -167,9 +166,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -255,9 +251,6 @@ class ArchiveWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId == BUTTON_ID_VIEW_MODE :
 			self.RestoreLastRecordKey( )		
 			self.mViewMode += 1
@@ -341,9 +334,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def onFocus( self, controlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		if self.mInitialized == False :
 			return
 

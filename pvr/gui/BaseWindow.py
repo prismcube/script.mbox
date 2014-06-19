@@ -195,18 +195,6 @@ class BaseWindow( BaseObjectWindow ) :
 		return cls.__name__
 
 
-	def IsActivate( self ) :
-		return True	#not use
-		#return self.mIsActivate
-		
-
-	def SetActivate( self, aActivate ) :
-		return
-		SetLock2( True )
-		self.mIsActivate = aActivate
-		SetLock2( False )
-
-
 	def SetHeaderTitle( self, aLabel, isDefaultControlId = 1 ) :
 		if isDefaultControlId == 0 :
 			self.getControl( E_ARCHIVE_HEADER_TITLE ).setLabel( aLabel )

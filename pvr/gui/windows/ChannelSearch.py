@@ -9,7 +9,6 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_CHANNEL_SEARCH_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG( 'Channel Search' ) )
 		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
@@ -42,9 +41,6 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -69,9 +65,6 @@ class ChannelSearch( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			self.ResetAllControl( )
@@ -87,9 +80,6 @@ class ChannelSearch( SettingWindow ) :
 				
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

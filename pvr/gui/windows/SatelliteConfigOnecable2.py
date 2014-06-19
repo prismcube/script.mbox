@@ -21,8 +21,6 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
-		
 		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : UniCable' ) % ( tunerIndex + 1 ) )
 		if self.getProperty( 'IsFTI' ) == 'True' :
@@ -42,9 +40,6 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 
 		self.GlobalSettingAction( self, actionId )
@@ -81,9 +76,6 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_SpinEx01 :
@@ -174,9 +166,6 @@ class SatelliteConfigOnecable2( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

@@ -192,7 +192,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onInit( self )  :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG( 'System Update' ) )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -226,9 +225,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
@@ -269,9 +265,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		#LOG_TRACE( '-----------click id[%s]'% groupId )
 		if groupId == E_Input01 :
@@ -359,9 +352,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

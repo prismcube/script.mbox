@@ -20,7 +20,6 @@ class FastScan( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_FAST_SCAN_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Fast Scan') )		
 
@@ -34,9 +33,6 @@ class FastScan( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -60,9 +56,6 @@ class FastScan( SettingWindow ) :
 			
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		
 		# TunerIndex
@@ -111,9 +104,6 @@ class FastScan( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

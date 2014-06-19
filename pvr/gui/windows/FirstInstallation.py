@@ -68,7 +68,6 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.SetSingleWindowPosition( E_FIRST_INSTALLATION_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('First Installation') )
@@ -103,9 +102,6 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -142,9 +138,6 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 
 		if self.GetFTIStep( ) == E_STEP_SELECT_LANGUAGE :
@@ -256,9 +249,6 @@ class FirstInstallation( FTIWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 

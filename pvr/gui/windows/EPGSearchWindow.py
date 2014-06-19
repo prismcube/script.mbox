@@ -29,7 +29,6 @@ class EPGSearchWindow( BaseWindow ) :
 		self.mLock = thread.allocate_lock( )
 	
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetFrontdisplayMessage( MR_LANG( 'EPG Search' ) )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
@@ -87,9 +86,6 @@ class EPGSearchWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		self.GetFocusId( )
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
@@ -140,16 +136,12 @@ class EPGSearchWindow( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
-		if self.IsActivate( ) == False  :
-			return
-
 		if aControlId == BUTTON_ID_EPG_MODE :
 			self.Close( )
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
+		pass
 
 
 	def onEvent( self, aEvent ) :

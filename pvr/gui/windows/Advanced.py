@@ -5,9 +5,6 @@ E_ADVANCED_SUBMENU_LIST_ID		=  E_ADVANCED_BASE_ID + 9000
 E_ADVANCED_SETTING_DESCRIPTION	=  E_ADVANCED_BASE_ID + 1003
 
 
-E_ADVANCED_DEFAULT_FOCUS_ID	=  E_ADVANCED_SUBMENU_LIST_ID
-
-
 E_APPEARANCE			= 0
 E_LIVESTREAM			= 1
 E_CEC					= 2
@@ -28,7 +25,6 @@ class Advanced( SettingWindow ) :
 
 	def onInit( self ) :
 		self.getControl( E_SETTING_CONTROL_GROUPID ).setVisible( False )
-
 		leftGroupItems			= [
 		MR_LANG( 'Appearance' ),
 		MR_LANG( 'Experimental' ),
@@ -43,8 +39,6 @@ class Advanced( SettingWindow ) :
 		MR_LANG( 'WARNING : Problems may arise from using experimental features and there is no guarantee that your system will stay usable' ),
 		MR_LANG( 'Control PRISMCUBE using your existing TV remote when connected via HDMI' ) ]
 	
-		self.setFocusId( E_ADVANCED_DEFAULT_FOCUS_ID )
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_ADVANCED_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Advanced') )
 		self.SetHeaderTitle( "%s - %s" % ( MR_LANG( 'Installation' ), MR_LANG( 'Advanced' ) ) )
@@ -57,6 +51,7 @@ class Advanced( SettingWindow ) :
 
 		self.SetListControl( )
 		self.mInitialized = True
+		self.setFocusId( E_ADVANCED_SUBMENU_LIST_ID )
 
 
 	def Close( self ) :
@@ -80,9 +75,6 @@ class Advanced( SettingWindow ) :
 
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -125,9 +117,6 @@ class Advanced( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-
 		groupId = self.GetGroupId( aControlId )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
@@ -189,9 +178,6 @@ class Advanced( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized == False :
 			return
 

@@ -19,7 +19,6 @@ class EditTransponder( SettingWindow ) :
 
 			
 	def onInit( self ) :
-		self.SetActivate( True )
 		self.SetSingleWindowPosition( E_EDIT_TRANSPONDER_BASE_ID )
 		self.SetFrontdisplayMessage( MR_LANG('Edit Transponder') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -54,9 +53,6 @@ class EditTransponder( SettingWindow ) :
 		
 
 	def onAction( self, aAction ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		if self.GlobalAction( actionId ) :
@@ -99,9 +95,6 @@ class EditTransponder( SettingWindow ) :
 			
 
 	def onClick( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		groupId = self.GetGroupId( aControlId )
 		
 		# Select Satellite
@@ -301,9 +294,6 @@ class EditTransponder( SettingWindow ) :
 
 		
 	def onFocus( self, aControlId ) :
-		if self.IsActivate( ) == False  :
-			return
-	
 		if self.mInitialized :
 			self.ShowDescription( aControlId )
 	
