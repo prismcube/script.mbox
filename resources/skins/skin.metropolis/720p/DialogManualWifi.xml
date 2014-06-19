@@ -5,7 +5,7 @@
 	<controls>
 		<control type="group" id="8000">
 			<include>DefaultDialogCloseEffect</include>
-			<control type="image" id="9001">
+<!--			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -13,18 +13,19 @@
 				<height>380</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>-16</posx>
 				<posy>-17</posy>
 				<width>648</width>
-				<height>514</height>
+				<height>614</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
+				<posy>-13</posy>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
 				<include>DialogSpinEx03</include>
@@ -35,6 +36,7 @@
 				<include>DialogInput05</include>
 				<control type="group">
 					<posx>-17</posx>
+					<posy>-13</posy>
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>
 			</control>

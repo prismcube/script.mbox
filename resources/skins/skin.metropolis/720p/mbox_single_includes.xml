@@ -403,12 +403,12 @@
 		</control>
 -->		<control type="button" id="1006995">
 			<description>Close Window button</description>
-			<posx>535</posx>
-			<posy>18</posy>
-			<width>45</width>
-			<height>45</height>
-			<texturefocus>new/buex3.png</texturefocus>
-			<texturenofocus>new/bu.png</texturenofocus>
+			<posx>560</posx>
+			<posy>20</posy>
+			<width>25</width>
+			<height>25</height>
+			<texturefocus>new/exitbuttonFO.png</texturefocus>
+			<texturenofocus>new/exitbutton.png</texturenofocus>
 			<onleft>1006997</onleft>
 			<onright>1006999</onright>
 		</control>
@@ -6797,8 +6797,7 @@
 					<height>18</height>
 					<texture>IconFastScan.png</texture>
 					<textcolor>white</textcolor>
-
-<!--					<visible>substring(ListItem.Property(iFastScan),true)</visible>-->
+					<visible>substring(ListItem.Property(iFastScan),true)</visible>
 				</control>
 				<control type="label">
 					<posx>30</posx>

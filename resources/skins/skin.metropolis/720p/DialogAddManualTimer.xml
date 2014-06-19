@@ -50,7 +50,7 @@
 				<!-- Record path -->
 				<include>DialogInput04</include>
 				<control type="group">
-					<posx>-10</posx>
+					<posx>-20</posx>
 					<posy>390</posy>
 					<control type="group" id="300">
 						<posx>0</posx>
@@ -101,7 +101,7 @@
 					</control>
 				</control>
 				<control type="group">
-					<posx>0</posx>
+					<posx>-20</posx>
 					<posy>40</posy>
 
 					<!-- OK/Cancel -->

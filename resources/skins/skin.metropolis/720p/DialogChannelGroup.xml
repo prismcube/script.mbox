@@ -7,7 +7,7 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>370</posx>
 			<posy>55</posy>
-			<control type="image">
+<!--			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -15,7 +15,7 @@
 				<height>550</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image">
 				<description>background image</description>
 				<posx>-20</posx>
 				<posy>-35</posy>
@@ -35,13 +35,13 @@
 			</control>
 -->			<control type="button" id="3901">
 				<description>Close Window button</description>
-				<posx>440</posx>
-				<posy>3</posy>
-				<width>64</width>
-				<height>32</height>
+				<posx>500</posx>
+				<posy>13</posy>
+				<width>25</width>
+				<height>25</height>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>3904</onup>

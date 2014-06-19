@@ -8,7 +8,7 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>360</posx>
 			<posy>50</posy>
-			<control type="image">
+<!--			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -16,10 +16,10 @@
 				<height>565</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image">
 				<posx>-5</posx>
-				<posy>-25</posy>
-				<width>622</width>
+				<posy>-27</posy>
+				<width>624</width>
 				<height>620</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
@@ -34,13 +34,13 @@
 			</control>
 -->			<control type="button" id="109">
 				<description>Close Window button</description>
-				<posx>520</posx>
-				<posy>9</posy>
-				<width>64</width>
-				<height>32</height>
+				<posx>558</posx>
+				<posy>20</posy>
+				<width>25</width>
+				<height>25</height>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
 				<onleft>9001</onleft>
 				<onright>8001</onright>
 				<onup>100</onup>
@@ -116,7 +116,7 @@
 				</control>
 			</control>
 			<control type="list" id="9001">
-				<posx>30</posx>
+				<posx>25</posx>
 				<posy>60</posy>
 				<width>600</width>
 				<height>420</height>
@@ -131,7 +131,7 @@
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(8001)">Conditional</animation>
 				<itemlayout height="70" width="590">
 					<control type="image">
-						<posx>0</posx>
+						<posx>5</posx>
 						<posy>0</posy>
 						<width>530</width>
 						<height>68</height>
@@ -139,7 +139,7 @@
 					</control>
 					<!-- Mark -->					
 					<control type="image">
-						<posx>0</posx>
+						<posx>5</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -148,7 +148,7 @@
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
-						<posx>40</posx>
+						<posx>45</posx>
 						<posy>3</posy>
 						<width>360</width>
 						<height>30</height>
@@ -161,7 +161,7 @@
 					</control>
 					<!-- Record Name-->
 					<control type="label">
-						<posx>40</posx>
+						<posx>45</posx>
 						<posy>32</posy>
 						<width>360</width>
 						<height>30</height>
@@ -174,7 +174,7 @@
 					</control>
 					<!-- Date -->
 					<control type="label">
-						<posx>500</posx>
+						<posx>505</posx>
 						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
@@ -187,7 +187,7 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>500</posx>
+						<posx>505</posx>
 						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>
@@ -201,9 +201,9 @@
 				</itemlayout>
 				<focusedlayout height="70" width="590">
 					<control type="image">
-						<posx>-2</posx>
+						<posx>0</posx>
 						<posy>-2</posy>
-						<width>534</width>
+						<width>539</width>
 						<height>72</height>
 <!--						<texture border="5">StackFO_white2.png</texture>-->
 						<texture border="1">ButtonFO2Wide.png</texture>
@@ -211,7 +211,7 @@
 					</control>
 					<!-- Mark -->					
 					<control type="image">
-						<posx>0</posx>
+						<posx>5</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -220,7 +220,7 @@
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
-						<posx>40</posx>
+						<posx>45</posx>
 						<posy>3</posy>
 						<width>360</width>
 						<height>30</height>
@@ -233,7 +233,7 @@
 					</control>
 					<!-- Record Name-->
 					<control type="label">
-						<posx>40</posx>
+						<posx>45</posx>
 						<posy>32</posy>
 						<width>360</width>
 						<height>30</height>
@@ -246,7 +246,7 @@
 					</control>
 					<!-- StartTime -->
 					<control type="label">
-						<posx>500</posx>
+						<posx>505</posx>
 						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
@@ -259,7 +259,7 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>500</posx>
+						<posx>505</posx>
 						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>

@@ -6,7 +6,7 @@
 			<posx>-30</posx>
 			<posy>-15</posy>
 			<include>DefaultDialogCloseEffect</include>
-			<control type="image" id="9001">
+<!--			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -25,7 +25,7 @@
 			</control>
 -->			<animation effect="slide" end="0,-300" time="300" reversible="false" condition="Window.IsActive(extendedprogressdialog)">Conditional</animation>
 			<!-- Background Panel -->
-			<control type="image">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>-10</posy>

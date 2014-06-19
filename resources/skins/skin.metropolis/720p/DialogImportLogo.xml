@@ -7,7 +7,7 @@
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
-		<control type="image">
+<!--		<control type="image">
 			<description>background image</description>
 			<posx>0</posx>
 			<posy>0</posy>
@@ -15,7 +15,7 @@
 			<height>500</height>
 			<texture border="40">DialogBack.png</texture>
 		</control>
-<!--		<control type="image">
+		<control type="image">
 			<description>Dialog Header image</description>
 			<posx>40</posx>
 			<posy>16</posy>
@@ -46,15 +46,15 @@
 		</control>
 		<control type="button">
 			<description>Close Window button</description>
-			<posx>710</posx>
-			<posy>15</posy>
-			<width>64</width>
-			<height>32</height>
+			<posx>735</posx>
+			<posy>20</posy>
+			<width>25</width>
+			<height>25</height>
 			<label>-</label>
 			<font>-</font>
 			<onclick>PreviousMenu</onclick>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<texturefocus>new/exitbuttonFo.png</texturefocus>
+			<texturenofocus>new/exitbutton.png</texturenofocus>
 			<onleft>10</onleft>
 			<onright>10</onright>
 			<onup>10</onup>
@@ -87,7 +87,7 @@
 			<aligny>center</aligny>
 <!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->			<texturefocus>ButtonFO2Wide.png</texturefocus>
+-->			<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 			<texturenofocus>-</texturenofocus>
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
@@ -141,7 +141,7 @@
 					<aligny>center</aligny>
 <!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+-->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>110</onup>
 					<ondown>114</ondown>
 					<textcolor>white</textcolor>
@@ -159,7 +159,7 @@
 					<aligny>center</aligny>
 <!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+-->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>111</onup>
 					<ondown>115</ondown>
 					<textcolor>white</textcolor>
@@ -177,7 +177,7 @@
 					<aligny>center</aligny>
 <!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+-->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>114</onup>
 					<ondown>119</ondown>
 					<textcolor>white</textcolor>

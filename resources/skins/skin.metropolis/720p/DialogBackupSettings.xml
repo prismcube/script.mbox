@@ -8,20 +8,23 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>320</posx>
 			<posy>173</posy>
-			<control type="image" id="9001">
+<!--			<control type="image" id="9001">
 				<description>background image</description>
 				<width>610</width>
 				<height>250</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image" id="9001">
 				<posy>-23</posy>
 				<width>640</width>
 				<height>300</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posx>15</posx>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
 				<control type="radiobutton" id ="1007463">
 					<description>XBMC</description>

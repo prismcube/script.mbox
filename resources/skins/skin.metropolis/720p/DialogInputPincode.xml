@@ -7,14 +7,14 @@
 			<posx>480</posx>
 			<posy>145</posy>
             <include>DefaultDialogCloseEffect</include>
-			<control type="image">
+<!--			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>380</width>
 				<height>310</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-<!--			<control type="image">
+			<control type="image">
 				<posx>10</posx>
 				<posy>10</posy>
 				<width>360</width>
@@ -24,15 +24,15 @@
 			</control>
 -->			<control type="image">
 				<posx>-20</posx>
-				<posy>-5</posy>
+				<posy>-8</posy>
 				<width>418</width>
-				<height>314</height>
+				<height>322</height>
 				<texture>frames/Dialog_Glass2PanelMedium.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="image">
 				<posx>30</posx>
-				<posy>70</posy>
+				<posy>75</posy>
 				<width>320</width>
 				<height>50</height>
 				<aspectratio>stretch</aspectratio>
@@ -41,7 +41,7 @@
 			<control type="label" id="4">
 				<description>Edit Text</description>
 				<posx>35</posx>
-				<posy>70</posy>
+				<posy>75</posy>
 				<width>310</width>
 				<height>50</height>
 				<font>METF_DialogLarge</font>
@@ -53,7 +53,7 @@
 			<control type="label" id="1">
 				<description>dialog Heading</description>
 				<posx>20</posx>
-				<posy>20</posy>
+				<posy>23</posy>
 				<width>340</width>
 				<height>40</height>
 				<font>METF_Menu</font>
@@ -65,7 +65,7 @@
 			</control>
 			<control type="group">
 				<posx>40</posx>
-				<posy>150</posy>
+				<posy>153</posy>
 				<control type="button" id="101">
 					<description>1 button</description>
 					<posx>0</posx>
