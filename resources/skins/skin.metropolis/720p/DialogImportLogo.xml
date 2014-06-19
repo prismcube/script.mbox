@@ -88,6 +88,7 @@
 <!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 -->			<texturefocus>ButtonFO2Wide.png</texturefocus>
+			<texturenofocus>-</texturenofocus>
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
 			<ondown>111</ondown>
@@ -98,7 +99,7 @@
 			<control type="label" id="104">
 				<description>select way label</description>
 				<posx>20</posx>
-				<posy>65</posy>
+				<posy>70</posy>
 				<width>760</width>
 				<height>30</height>
 				<align>center</align>
@@ -107,7 +108,7 @@
 				<textcolor>ee3c95c8</textcolor>
 <!--				<shadowcolor>black</shadowcolor>-->
 			</control>
-			<control type="image">
+<!--			<control type="image">
 				<description>load item image</description>
 				<posx>40</posx>
 				<posy>245</posy>
@@ -115,7 +116,7 @@
 				<height>40</height>
 				<texture border="5">button-nofocus.png</texture>
 			</control>
-			<control type="label" id="117">
+-->			<control type="label" id="117">
 				<description>load item label</description>
 				<posx>40</posx>
 				<posy>245</posy>
@@ -192,7 +193,7 @@
 				<description>Ok Button</description>
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>200</width>
+				<width>230</width>
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -213,7 +214,7 @@
 				<description>Cancel Button</description>
 				<posx>210</posx>
 				<posy>0</posy>
-				<width>200</width>
+				<width>230</width>
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>

@@ -403,12 +403,12 @@
 		</control>
 -->		<control type="button" id="1006995">
 			<description>Close Window button</description>
-			<posx>520</posx>
-			<posy>13</posy>
-			<width>64</width>
-			<height>32</height>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<posx>535</posx>
+			<posy>18</posy>
+			<width>45</width>
+			<height>45</height>
+			<texturefocus>new/buex3.png</texturefocus>
+			<texturenofocus>new/bu.png</texturenofocus>
 			<onleft>1006997</onleft>
 			<onright>1006999</onright>
 		</control>
@@ -429,7 +429,7 @@
 	<include name="DefaultSettingDialogButtonOKCancel">
 		<control type="button" id="1006997">
 			<description>Yes button</description>
-			<width>210</width>
+			<width>230</width>
 			<height>40</height>
 			<font>METF_DialogLargeBold</font>
 			<textcolor>white</textcolor>
@@ -443,7 +443,7 @@
 		</control>
 		<control type="button" id="1006999">
 			<description>Cancel button</description>
-			<width>210</width>
+			<width>230</width>
 			<height>40</height>
 			<font>METF_DialogLargeBold</font>
 			<textcolor>white</textcolor>
@@ -4435,11 +4435,13 @@
 
 	<include name="DefaultSideBladeLeft">
 		<control type="image">
-			<posx>-820</posx>
-			<posy>0</posy>
-			<width>846</width>
-			<height>720</height>
-			<texture>HomeBlade.png</texture>
+			<posx>-520</posx>
+			<posy>20</posy>
+			<width>520</width>
+			<height>680</height>
+<!--			<texture>HomeBlade.png</texture>-->
+			<texture>frames/Menu_Glass2b.png</texture>
+			<colordiffuse>DialogBackgroundColor</colordiffuse>
 			<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
 		</control>
@@ -6729,7 +6731,7 @@
 	<include name="DefaultSelectGroup">
 		<control type="list" id="1003960">
 			<posx>20</posx>
-			<posy>67</posy>
+			<posy>60</posy>
 			<width>480</width>
 			<height>414</height>
 			<onleft>3904</onleft>
@@ -6743,17 +6745,17 @@
 			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
 			<visible>true</visible>
 			<itemlayout height="46" width="480">
-				<control type="image">
+<!--				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>480</width>
 					<height>40</height>
 					<texture border="5">button-nofocus.png</texture>
 				</control>
-				<!-- is fastScan? -->
+-->				<!-- is fastScan? -->
 				<control type="image">
 					<posx>440</posx>
-					<posy>12</posy>
+					<posy>14</posy>
 					<width>26</width>
 					<height>18</height>
 					<texture>IconFastScan.png</texture>
@@ -6761,46 +6763,49 @@
 				</control>
 				<control type="label">
 					<posx>30</posx>
-					<posy>0</posy>
+					<posy>2</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_MediaDetailsSmall</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
 			</itemlayout>
 			<focusedlayout height="46" width="480">
-				<control type="image">
+<!--				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>480</width>
 					<height>40</height>
 					<texture border="5">button-nofocus.png</texture>
 				</control>
-				<control type="image">
-					<posx>0</posx>
+-->				<control type="image">
+					<posx>10</posx>
 					<posy>0</posy>
-					<width>480</width>
-					<height>40</height>
-					<texture border="5">button-focus2.png</texture>
+					<width>470</width>
+					<height>45</height>
+<!--					<texture border="5">button-focus2.png</texture>-->
+					<texture border="1">ButtonFO2Wide.png</texture>
 				</control>
 				<!-- is fastScan? -->
 				<control type="image">
 					<posx>440</posx>
-					<posy>12</posy>
+					<posy>14</posy>
 					<width>26</width>
 					<height>18</height>
 					<texture>IconFastScan.png</texture>
-					<visible>substring(ListItem.Property(iFastScan),true)</visible>
+					<textcolor>white</textcolor>
+
+<!--					<visible>substring(ListItem.Property(iFastScan),true)</visible>-->
 				</control>
 				<control type="label">
 					<posx>30</posx>
-					<posy>0</posy>
+					<posy>2</posy>
 					<width>400</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>

@@ -23,16 +23,16 @@
 				<texture>GlassTitleBar.png</texture>
 			</control>
 -->			<control type="image">
-				<posx>-4</posx>
+				<posx>-20</posx>
 				<posy>-5</posy>
-				<width>327</width>
-				<height>438</height>
+				<width>360</width>
+				<height>466</height>
 				<texture>frames/Dialog_Glass2PanelMedium.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="image">
 				<posx>30</posx>
-				<posy>70</posy>
+				<posy>93</posy>
 				<width>260</width>
 				<height>50</height>
 				<aspectratio>stretch</aspectratio>
@@ -41,10 +41,10 @@
 			<control type="label" id="101">
 				<description>dialog Heading</description>
 				<posx>20</posx>
-				<posy>20</posy>
+				<posy>35</posy>
 				<width>280</width>
 				<height>40</height>
-				<font>METF_Menu</font>
+				<font>METF_PlotText</font>
 				<textcolor>DialogTextFO</textcolor>
 <!--				<shadowcolor>black</shadowcolor>-->
 				<align>center</align>
@@ -54,12 +54,12 @@
 			<control type="label" id="102">
 				<description>Edit Text</description>
 				<posx>35</posx>
-				<posy>70</posy>
+				<posy>90</posy>
 				<width>250</width>
 				<height>50</height>
 				<font>METF_DialogLarge</font>
-				<textcolor>selected</textcolor>
-				<disabledcolor>grey2</disabledcolor>
+				<textcolor>white</textcolor>
+				<disabledcolor>FFff5858</disabledcolor>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
@@ -82,7 +82,7 @@
 			</control>
 -->			<control type="group">
 				<posx>40</posx>
-				<posy>150</posy>
+				<posy>165</posy>
 				<control type="button" id="111">
 					<description>1 button</description>
 					<posx>0</posx>
@@ -262,7 +262,7 @@
 					<posy>120</posy>
 					<width>60</width>
 					<height>120</height>
-					<font>METF_PlotText</font>
+					<font>METF_MediaDetailsSmall</font>
 					<align>center</align>
 					<aligny>center</aligny>
 					<texturenofocus flipx="true" border="5,5,25,25">KeyboardCornerBottomNF.png</texturenofocus>
@@ -282,7 +282,7 @@
 					<posy>180</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font30</font>
+					<font>METF_MediaDetails</font>
 					<label>&lt;</label>
 					<focusedcolor>black</focusedcolor>
 					<align>center</align>
@@ -317,7 +317,7 @@
 					<posy>180</posy>
 					<width>60</width>
 					<height>60</height>
-					<font>font30</font>
+					<font>METF_MediaDetails</font>
 					<label>&gt;</label>
 					<focusedcolor>black</focusedcolor>
 					<align>center</align>

@@ -15,10 +15,10 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<posx>-4</posx>
+				<posx>-20</posx>
 				<posy>-18</posy>
-				<width>618</width>
-				<height>310</height>
+				<width>670</width>
+				<height>313</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>

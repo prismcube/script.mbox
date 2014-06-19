@@ -17,6 +17,14 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
+				<posx>-5</posx>
+				<posy>-25</posy>
+				<width>622</width>
+				<height>620</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+<!--			<control type="image">
 				<posx>40</posx>
 				<posy>10</posy>
 				<width>600</width>
@@ -24,7 +32,7 @@
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
-			<control type="button" id="109">
+-->			<control type="button" id="109">
 				<description>Close Window button</description>
 				<posx>520</posx>
 				<posy>9</posy>
@@ -44,47 +52,49 @@
 				<posy>20</posy>
 				<width>570</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>METF_Menu</font>
 				<label>$INFO[Control.GetLabel]</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>DialogTextFO</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label">
 				<posx>570</posx>
-				<posy>480</posy>
+				<posy>475</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>METF_PlotText</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(9001).CurrentPage]/$INFO[Container(9001).NumPages][/COLOR])</label>
+				<textcolor>WeatherHeading</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(9001).CurrentPage]/$INFO[Container(9001).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(9001)</visible>
 			</control>
+			<!-- ok button -->
 			<control type="button" id="100">
-				<posx>20</posx>
+				<posx>40</posx>
 				<posy>490</posy>
-				<width>200</width>
+				<width>230</width>
 				<height>40</height>
 				<label>SCRIPT1022</label>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-				<texturenofocus>MenuItemNF.png</texturenofocus>
+				<texturefocus>ButtonFO2.png</texturefocus>
+<!--				<texturenofocus>MenuItemNF.png</texturenofocus>
 				<texturefocus>button-focus.png</texturefocus>
-				<onleft>9001</onleft>
+-->				<onleft>9001</onleft>
 				<onright>8001</onright>
 				<onup>9001</onup>
 				<ondown>3800</ondown>
 			</control>
 			<!-- left key comment -->
 			<control type="group">
-				<posx>20</posx>
-				<posy>530</posy>
+				<posx>40</posx>
+				<posy>532</posy>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -97,11 +107,11 @@
 					<posy>0</posy>
 					<width>570</width>
 					<height>30</height>
-					<font>font10</font>
+					<font>METF_DialogSmall</font>
 					<align>left</align>
 					<scroll>true</scroll>
-					<textcolor>grey3</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>white</textcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 					<label>SCRIPT1138</label>
 				</control>
 			</control>
@@ -139,12 +149,12 @@
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>white</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -152,25 +162,25 @@
 					<!-- Record Name-->
 					<control type="label">
 						<posx>40</posx>
-						<posy>30</posy>
+						<posy>32</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>white</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 					</control>
-					<!-- StartTime -->
+					<!-- Date -->
 					<control type="label">
 						<posx>500</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>white</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>						
 						<label>$INFO[ListItem.Property(StartTime)]</label>
@@ -178,11 +188,11 @@
 					<!-- Duration -->
 					<control type="label">
 						<posx>500</posx>
-						<posy>30</posy>
+						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13_title</font>
-						<textcolor>grey2</textcolor>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -191,11 +201,12 @@
 				</itemlayout>
 				<focusedlayout height="70" width="590">
 					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>530</width>
-						<height>68</height>
-						<texture border="5">StackFO_white2.png</texture>
+						<posx>-2</posx>
+						<posy>-2</posy>
+						<width>534</width>
+						<height>72</height>
+<!--						<texture border="5">StackFO_white2.png</texture>-->
+						<texture border="1">ButtonFO2Wide.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<!-- Mark -->					
@@ -210,10 +221,10 @@
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>left</align>
@@ -223,10 +234,10 @@
 					<!-- Record Name-->
 					<control type="label">
 						<posx>40</posx>
-						<posy>30</posy>
+						<posy>32</posy>
 						<width>360</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>left</align>
@@ -236,10 +247,10 @@
 					<!-- StartTime -->
 					<control type="label">
 						<posx>500</posx>
-						<posy>0</posy>
+						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -249,10 +260,10 @@
 					<!-- Duration -->
 					<control type="label">
 						<posx>500</posx>
-						<posy>30</posy>
+						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>font13_title</font>
+						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>

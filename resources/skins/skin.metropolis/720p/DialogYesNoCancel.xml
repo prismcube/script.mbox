@@ -16,10 +16,10 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<posx>-6</posx>
-				<posy>-13</posy>
-				<width>612</width>
-				<height>252</height>
+				<posx>-20</posx>
+				<posy>-85</posy>
+				<width>640</width>
+				<height>300</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
@@ -33,32 +33,32 @@
 			</control>
 -->			<control type="label" id="100">
 				<description>header label</description>
-				<posx>20</posx>
-				<posy>18</posy>
+				<posx>30</posx>
+				<posy>-40</posy>
 				<width>560</width>
 				<height>30</height>
 				<font>METF_Menu</font>
-				<align>center</align>
+				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
 <!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="200">
 				<description>dialog message</description>
-				<posx>20</posx>
-				<posy>50</posy>
-				<width>560</width>
-				<height>100</height>
+				<posx>30</posx>
+				<posy>0</posy>
+				<width>530</width>
+				<height>30</height>
 				<!--align>left</align-->				
-				<align>center</align>
+				<align>left</align>
 				<aligny>center</aligny>
 				<font>METF_PlotText</font>
 			</control>
 			<control type="button" id="301">
 				<description>Yes button</description>
-				<posx>75</posx>
-				<posy>165</posy>
-				<width>200</width>
+				<posx>50</posx>
+				<posy>130</posy>
+				<width>230</width>
 				<height>40</height>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
@@ -75,9 +75,9 @@
 			</control>
 			<control type="button" id="302">
 				<description>No button</description>
-				<posx>325</posx>
-				<posy>165</posy>
-				<width>200</width>
+				<posx>320</posx>
+				<posy>130</posy>
+				<width>230</width>
 				<height>40</height>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
@@ -96,7 +96,7 @@
 			<control type="button" id="303">
 				<description>Close Window button</description>
 				<posx>520</posx>
-				<posy>15</posy>
+				<posy>-60</posy>
 				<width>64</width>
 				<height>32</height>
 				<label>-</label>

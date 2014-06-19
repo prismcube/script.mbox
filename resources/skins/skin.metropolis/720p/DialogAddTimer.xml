@@ -6,8 +6,8 @@
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>335</posx>
-			<posy>100</posy>
+			<posx>320</posx>
+			<posy>150</posy>
             <include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<description>background image</description>
@@ -18,16 +18,14 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<posx>-4</posx>
-				<posy>90</posy>
-				<width>618</width>
-				<height>254</height>
+				<width>640</width>
+				<height>300</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posy>100</posy>
-<!--				<control type="image">
+<!--				<posy>100</posy>
+				<control type="image">
 					<posx>40</posx>
 					<posy>11</posy>
 					<width>530</width>
@@ -38,7 +36,7 @@
 -->				<control type="button" id="6995">
 					<description>Close Window button</description>
 					<posx>520</posx>
-					<posy>13</posy>
+					<posy>20</posy>
 					<width>64</width>
 					<height>32</height>
 					<texturefocus>DialogCloseButton-focus.png</texturefocus>
@@ -48,9 +46,9 @@
 				</control>
 				<control type="label" id="3005">
 					<description>header label</description>
-					<posx>20</posx>
-					<posy>22</posy>
-					<width>570</width>
+					<posx>50</posx>
+					<posy>45</posy>
+					<width>530</width>
 					<height>30</height>
 					<font>METF_Menu</font>
 					<align>center</align>
@@ -63,10 +61,10 @@
 			<!-- Channel Name -->
 			<control type="label" id="101">
 				<description>Record Name</description>
-				<posx>20</posx>
-				<posy>180</posy>
-				<width>570</width>
-				<height>20</height>
+				<posx>40</posx>
+				<posy>85</posy>
+				<width>530</width>
+				<height>30</height>
 				<font>METF_MediaDetailsSmall</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -78,10 +76,10 @@
 			<!-- Record Name -->
 			<control type="label" id="102">
 				<description>EPG Start Time</description>
-				<posx>40</posx>
-				<posy>220</posy>
+				<posx>50</posx>
+				<posy>115</posy>
 				<width>530</width>
-				<height>20</height>
+				<height>30</height>
 				<font>METF_MediaDetailsSmall</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -93,8 +91,8 @@
 			<control type="button" id="200">
 				<description>Yes button</description>
 				<posx>70</posx>
-				<posy>270</posy>				
-				<width>200</width>
+				<posy>215</posy>
+				<width>230</width>
 				<height>40</height>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
@@ -111,8 +109,8 @@
 			<control type="button" id="202">
 				<description>Cancel button</description>
 				<posx>340</posx>
-				<posy>270</posy>				
-				<width>200</width>
+				<posy>215</posy>
+				<width>230</width>
 				<height>40</height>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>

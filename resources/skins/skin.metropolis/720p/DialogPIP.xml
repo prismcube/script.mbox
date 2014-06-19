@@ -39,7 +39,7 @@
 							<posx>0</posx>
 							<posy>0</posy>
 							<animation effect="fade" time="300">VisibleChange</animation>
-							<visible>substring(Window(10000).Property(InputNumber),true)</visible>
+<!--							<visible>substring(Window(10000).Property(InputNumber),true)</visible>-->
 							<control type="image" id="4801101">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -50,11 +50,11 @@
 							</control>
 							<control type="label" id="4801102">
 								<posx>0</posx>
-								<posy>0</posy>
+								<posy>-2</posy>
 								<width>425</width>
 								<height>30</height>
-								<font>font14</font>
-								<textcolor>grey</textcolor>
+								<font>METF_MediaDetailsSmall</font>
+								<textcolor>ee3c95c8</textcolor>
 								<scroll>false</scroll>
 								<align>center</align>
 								<aligny>center</aligny>
@@ -65,8 +65,8 @@
 								<posy>0</posy>
 								<width>425</width>
 								<height>30</height>
-								<font>font12</font>
-								<textcolor>grey</textcolor>
+								<font>METF_PlotText</font>
+								<textcolor>eef8cd22</textcolor>
 								<scroll>false</scroll>
 								<align>center</align>
 								<aligny>center</aligny>
@@ -77,13 +77,14 @@
 					<control type="group" id="4802000">
 						<posx>0</posx>
 						<posy>0</posy>
+						<!-- Channel name -->
 						<control type="label" id="4802001">
 							<posx>10</posx>
 							<posy>-30</posy>
 							<width>425</width>
 							<height>30</height>
-							<font>font12</font>
-							<textcolor>grey</textcolor>
+							<font>METF_PlotTextMedium</font>
+							<textcolor>white</textcolor>
 							<scroll>false</scroll>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -94,9 +95,11 @@
 							<posy>-1</posy>
 							<width>370</width>
 							<height>65</height>
-							<texture>black-back_noAlpha.png</texture>
+							<texture>new/BackLower.png</texture>
+							<colordiffuse>BackgroundColor</colordiffuse>
+<!--							<texture>black-back_noAlpha.png</texture>
 							<colordiffuse>EFFFFFFF</colordiffuse>
-						</control>
+-->						</control>
 						<control type="grouplist" id="4808000">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -231,21 +234,21 @@
 								<visible>Control.IsVisible(4803000)</visible>
 								<control type="label">
 									<posx>0</posx>
-									<posy>-30</posy>
+									<posy>-25</posy>
 									<width>400</width>
 									<height>50</height>
-									<font>font12_title</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextMedium</font>
+									<textcolor>white</textcolor>
 									<scroll>false</scroll>
 									<label>$INFO[Window.Property(SetContextAction)]</label>
 								</control>
 								<control type="label">
 									<posx>0</posx>
-									<posy>0</posy>
+									<posy>-5</posy>
 									<width>400</width>
 									<height>50</height>
-									<font>font12_title</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextMedium</font>
+									<textcolor>white</textcolor>
 									<scroll>false</scroll>
 									<label>SCRIPT1010</label>
 								</control>
@@ -264,12 +267,12 @@
 								</control>
 								<control type="label">
 									<posx>45</posx>
-									<posy>2</posy>
+									<posy>4</posy>
 									<width>50</width>
 									<height>20</height>
 									<align>left</align>
-									<font>font12</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>PIP</label>
 								</control>
 							</control>
@@ -282,8 +285,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1011</label>
 									<visible>Control.HasFocus(4808001)</visible>
 								</control>
@@ -293,8 +296,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1012</label>
 									<visible>Control.HasFocus(4808002)</visible>
 								</control>
@@ -304,8 +307,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1013</label>
 									<visible>Control.HasFocus(4808003)</visible>
 								</control>
@@ -315,8 +318,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1015</label>
 									<visible>Control.HasFocus(4808004)</visible>
 								</control>
@@ -326,8 +329,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1023</label>
 									<visible>Control.HasFocus(4808005)</visible>
 								</control>
@@ -337,8 +340,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1025</label>
 									<visible>Control.HasFocus(4808006)</visible>
 								</control>
@@ -348,8 +351,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1042</label>
 									<visible>Control.HasFocus(4808007)</visible>
 								</control>
@@ -359,8 +362,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1046</label>
 									<visible>Control.HasFocus(4808008)</visible>
 								</control>
@@ -370,8 +373,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1077</label>
 									<visible>Control.HasFocus(4808009)</visible>
 								</control>
@@ -381,8 +384,8 @@
 									<width>400</width>
 									<height>28</height>
 									<align>left</align>
-									<font>font10</font>
-									<textcolor>grey</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<label>SCRIPT1045</label>
 									<visible>Control.HasFocus(4808010)</visible>
 								</control>
@@ -402,7 +405,7 @@
 								<posy>0</posy>
 								<width>30</width>
 								<height>40</height>
-								<texture>Arrow2_left.png</texture>
+								<texture>Arrow2Left.png</texture>
 							</control>
 						</control>
 						<control type="group">
@@ -413,7 +416,7 @@
 								<posy>0</posy>
 								<width>30</width>
 								<height>40</height>
-								<texture>Arrow2_right.png</texture>
+								<texture>Arrow2Right.png</texture>
 							</control>
 						</control>
 						<control type="group">
@@ -424,7 +427,7 @@
 								<posy>0</posy>
 								<width>40</width>
 								<height>30</height>
-								<texture>Arrow2_up.png</texture>
+								<texture>Arrow2Up.png</texture>
 							</control>
 						</control>
 						<control type="group">
@@ -435,7 +438,7 @@
 								<posy>0</posy>
 								<width>40</width>
 								<height>30</height>
-								<texture>Arrow2_down.png</texture>
+								<texture>Arrow2Down.png</texture>
 							</control>
 						</control>
 					</control>
@@ -452,11 +455,13 @@
 					<posy>-7</posy>
 					<width>370</width>
 					<height>740</height>
-					<texture>black-back_noAlpha.png</texture>
+					<texture>background.png</texture>
+					<colordiffuse>BackgroundColor</colordiffuse>
+<!--					<texture>black-back_noAlpha.png</texture>
 					<colordiffuse>DFFFFFFF</colordiffuse>
-				</control>
+-->				</control>
 				<control type="group">
-					<control type="label">
+<!--					<control type="label">
 						<description>time label</description>
 						<posx>380</posx>
 						<posy>0</posy>
@@ -465,13 +470,13 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<font>font13_title</font>
-						<textcolor>grey</textcolor>
+						<textcolor>white</textcolor>
 						<shadowcolor>black</shadowcolor>
 						<label>$INFO[System.Time]</label>
 						<include>DefaultWindowOpenCloseAnimation</include>
 						<animation effect="slide" start="0,0" end="-40,0" time="100" condition="Window.IsVisible(Mutebug)">conditional</animation>
 					</control>
-					<!--control type="label">
+-->					<!--control type="label">
 						<posx>380</posx>
 						<posy>30</posy>
 						<width>200</width>
@@ -492,7 +497,7 @@
 					<posy>25</posy>
 					<width>300</width>
 					<height>30</height>
-					<control type="image">
+<!--					<control type="image">
 						<description>Header image - TV</description>
 						<posx>0</posx>
 						<posy>5</posy>
@@ -502,15 +507,15 @@
 						<texture>icon_tv3.png</texture>
 						<colordiffuse>8F00FFFF</colordiffuse>
 					</control>
-					<control type="label">
+-->					<control type="label">
 						<description>Header name</description>
-						<posx>42</posx>
-						<posy>2</posy>
+						<posx>0</posx>
+						<posy>-18</posy>
 						<width>340</width>
 						<height>30</height>
-						<font>font14</font>
-						<textcolor>blue</textcolor>
-						<shadowcolor>green</shadowcolor>
+						<font>METF_HomeMenuSmall</font>
+						<textcolor>FFc89008</textcolor>
+<!--						<shadowcolor>green</shadowcolor>-->
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -533,8 +538,8 @@
 						<posy>250</posy>
 						<width>340</width>
 						<height>30</height>
-						<font>font35_title</font>
-						<textcolor>grey</textcolor>
+						<font>METF_MusicVizTitle</font>
+						<textcolor>white</textcolor>
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -554,15 +559,15 @@
 						<viewtype label="535">list</viewtype>
 						<!--pagecontrol>4803851</pagecontrol-->
 						<scrolltime>0</scrolltime>
-						<itemlayout height="54" width="340">
-							<control type="image">
+						<itemlayout height="54" width="400">
+<!--							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>340</width>
 								<height>50</height>
 								<texture border="10">button-nofocus.png</texture>
 							</control>
-							<control type="group">
+-->							<control type="group">
 								<posx>7</posx>
 								<posy>7</posy>
 								<control type="image">
@@ -591,7 +596,7 @@
 									<height>28</height>
 									<texture>OverlayLocked.png</texture>
 									<colordiffuse>8FFFFFFF</colordiffuse>
-									<visible>substring(ListItem.Property(iLock),true)</visible>
+<!--									<visible>substring(ListItem.Property(iLock),true)</visible>-->
 								</control>
 								<!-- is hd? -->
 								<control type="image">
@@ -600,7 +605,7 @@
 									<width>24</width>
 									<height>18</height>
 									<texture>IconHD1g.png</texture>
-									<visible>substring(ListItem.Property(iHD),true)</visible>
+<!--									<visible>substring(ListItem.Property(iHD),true)</visible>-->
 								</control>
 								<!-- is cas? -->
 								<control type="image">
@@ -609,16 +614,19 @@
 									<width>26</width>
 									<height>18</height>
 									<texture>IconCas1g.png</texture>
-									<visible>substring(ListItem.Property(iCas),true)</visible>
+<!--									<visible>substring(ListItem.Property(iCas),true)</visible>-->
 								</control>
 								<control type="progress">
 									<posx>12</posx>
 									<posy>30</posy>
 									<width>70</width>
 									<height>9</height>
-									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+									<midtexture border="14,0,14,0">osd/osd_progress_mid3.png</midtexture>
+									<colordiffuse>DialogProgressBar</colordiffuse>
+<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
-									<progress>percent</progress>
+-->									<progress>percent</progress>
 									<visible>substring(ListItem.Property(HasEvent),true)</visible>
 								</control>
 							</control>
@@ -628,9 +636,9 @@
 								<posy>0</posy>
 								<width>190</width>
 								<height>30</height>
-								<font>font12</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<font>METF_PlotText</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -642,9 +650,9 @@
 								<posy>25</posy>
 								<width>190</width>
 								<height>20</height>
-								<font>font12</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<font>METF_PlotText</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -652,13 +660,14 @@
 								<scrollspeed>150</scrollspeed>
 							</control>
 						</itemlayout>
-						<focusedlayout height="54" width="340">
+						<focusedlayout height="54" width="400">
 							<control type="image">
-								<posx>0</posx>
+								<posx>-10</posx>
 								<posy>0</posy>
-								<width>340</width>
+								<width>400</width>
 								<height>50</height>
-								<texture border="10">StackFO_white3.png</texture>
+								<texture>ButtonFo.png</texture>
+<!--								<texture border="10">StackFO_white3.png</texture>-->
 							</control>
 							<control type="group">
 								<posx>7</posx>
@@ -713,9 +722,12 @@
 									<posy>30</posy>
 									<width>70</width>
 									<height>9</height>
-									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+									<midtexture border="14,0,14,0">osd/osd_progress_mid3.png</midtexture>
+									<colordiffuse>DialogProgressBar</colordiffuse>
+<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
-									<progress>percent</progress>
+-->									<progress>percent</progress>
 									<visible>substring(ListItem.Property(HasEvent),true)</visible>
 								</control>
 							</control>
@@ -725,9 +737,9 @@
 								<posy>0</posy>
 								<width>190</width>
 								<height>30</height>
-								<font>font12</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<font>METF_PlotText</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
@@ -739,9 +751,9 @@
 								<posy>25</posy>
 								<width>190</width>
 								<height>20</height>
-								<font>font12</font>
-								<textcolor>grey2</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<font>METF_PlotText</font>
+								<textcolor>white</textcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -757,12 +769,12 @@
 					<posy>28r</posy>
 					<width>340</width>
 					<height>20</height>
-					<font>font10</font>
-					<textcolor>grey</textcolor>
+					<font>METF_DialogVerySmall</font>
+					<textcolor>WeatherHeading</textcolor>
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=blue]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=ee3c95c8]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
 				</control>
 				<control type="image">
 					<posx>320</posx>
@@ -840,8 +852,8 @@
 								<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
-								<textcolor>grey2</textcolor>
-								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),False)</visible>
+								<textcolor>red</textcolor>
+<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),False)</visible>-->
 							</control>
 							<control type="label">
 								<posx>0</posx>
@@ -852,8 +864,8 @@
 								<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
-								<textcolor>grey2</textcolor>
-								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>
+								<textcolor>blue</textcolor>
+<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>-->
 							</control>
 							<control type="label">
 								<posx>0</posx>
@@ -864,8 +876,8 @@
 								<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
-								<textcolor>grey2</textcolor>
-								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),NoService)</visible>
+								<textcolor>white</textcolor>
+<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),NoService)</visible>-->
 							</control>
 						</control>
 					</control>
@@ -897,9 +909,11 @@
 							<posy>5</posy>
 							<width>335</width>
 							<height>15</height>
-							<font>font14</font>
+							<font>METF_MediaDetailsSmall</font>
+							<textcolor>ee3c95c8</textcolor>
+<!--							<font>font14</font>
 							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
+-->							<scroll>false</scroll>
 							<align>center</align>
 							<aligny>center</aligny>
 							<label>$INFO[Control.GetLabel(4801102)]</label>
@@ -909,9 +923,11 @@
 							<posy>22</posy>
 							<width>340</width>
 							<height>30</height>
-							<font>font12</font>
+							<font>METF_PlotText</font>
+							<textcolor>eef8cd22</textcolor>
+<!--							<font>font12</font>
 							<textcolor>grey</textcolor>
-							<scroll>false</scroll>
+-->							<scroll>false</scroll>
 							<align>center</align>
 							<aligny>center</aligny>
 							<label>$INFO[Control.GetLabel(4801103)]</label>
@@ -925,9 +941,11 @@
 					<posy>215</posy>
 					<width>335</width>
 					<height>30</height>
-					<font>font12</font>
+					<font>METF_PlotTextSmall</font>
+					<textcolor>white</textcolor>
+<!--					<font>font12</font>
 					<textcolor>grey</textcolor>
-					<scroll>false</scroll>
+-->					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel(4802001)]</label>

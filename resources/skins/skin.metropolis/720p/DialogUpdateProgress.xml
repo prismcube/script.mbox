@@ -16,6 +16,15 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
+				<description>background image</description>
+				<posx>-20</posx>
+				<posy>-40</posy>
+				<width>640</width>
+				<height>230</height>
+				<texture>frames/Dialog_Glass2.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+<!--			<control type="image">
 				<description>Dialog Header image</description>
 				<posx>40</posx>
 				<posy>16</posy>
@@ -23,7 +32,7 @@
 				<height>40</height>
 				<texture>dialogheader.png</texture>
 			</control>
-			<control type="label" id="10">
+-->			<control type="label" id="10">
 				<description>fake heading label</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -38,12 +47,12 @@
 				<posy>20</posy>
 				<width>530</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>METF_Menu</font>
 				<label>-</label>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>selected</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>DialogTextFO</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="button" id="301">
 				<description>Close Window button</description>
@@ -98,12 +107,12 @@
 				<description>Cancel button</description>
 				<posx>205</posx>
 				<posy>255</posy>
-				<width>200</width>
+				<width>230</width>
 				<height>40</height>
 				<label>222</label>
-				<font>font12_title</font>
+				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
 				<onleft>61</onleft>
 				<onright>61</onright>

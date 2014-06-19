@@ -23,9 +23,9 @@
 				<texture>GlassTitleBar.png</texture>
 			</control>
 -->			<control type="image">
-				<posx>-4</posx>
+				<posx>-20</posx>
 				<posy>-5</posy>
-				<width>388</width>
+				<width>418</width>
 				<height>314</height>
 				<texture>frames/Dialog_Glass2PanelMedium.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>

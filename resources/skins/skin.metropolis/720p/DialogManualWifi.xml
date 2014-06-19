@@ -13,6 +13,15 @@
 				<height>380</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>-16</posx>
+				<posy>-17</posy>
+				<width>648</width>
+				<height>514</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
@@ -24,7 +33,10 @@
 				<include>DialogInput03</include>
 				<include>DialogInput04</include>
 				<include>DialogInput05</include>
-				<include>DefaultSettingDialogButtonOKCancel</include>
+				<control type="group">
+					<posx>-17</posx>
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
 			</control>
 		</control>
 	</controls>

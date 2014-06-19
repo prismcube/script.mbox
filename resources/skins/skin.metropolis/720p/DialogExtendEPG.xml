@@ -5,14 +5,23 @@
 	<controls>
 		<control type="group" id="300">
 		<include>DefaultDialogCloseEffect</include>			
-			<posx>90</posx>
-			<posy>30</posy>
+			<posx>82</posx>
+			<posy>15</posy>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1100</width>
 				<height>520</height>
 				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>-4</posx>
+				<posy>-33</posy>
+				<width>1120</width>
+				<height>580</height>
+				<texture>frames/Dialog_Glass2PanelLarge.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
 				<control type="button" id="301">
@@ -48,8 +57,8 @@
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
+					<font>METF_HelpText</font>
+					<textcolor>FFc89008</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>SCRIPT1091</label>
@@ -60,8 +69,8 @@
 					<posy>458</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>grey2</textcolor>
+					<font>METF_HelpText</font>
+					<textcolor>FFc89008</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 					<label>SCRIPT1092</label>
@@ -72,8 +81,8 @@
 					<posy>458</posy>
 					<width>200</width>
 					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
+					<font>METF_DialogLarge</font>
+					<textcolor>FFc89008</textcolor>
 					<aligny>center</aligny>
 					<label>$INFO[Window.Property(EPGIndex)]</label>
 					<visible>Control.IsVisible(301) | Control.IsVisible(302)</visible>
@@ -87,9 +96,9 @@
 				  <width>950</width>
 				  <height>100</height>
 				  <visible>true</visible>
-				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font35_title</font>
-				  <textcolor>FFFFFFFF</textcolor>
+<!--				  <colordiffuse>FFFFFFFF</colordiffuse>-->
+				  <font>METF_MusicVizTitle</font>
+				  <textcolor>white</textcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
 			</control>
 
@@ -100,9 +109,9 @@
 				  <width>950</width>
 				  <height>320</height>
 				  <visible>true</visible>
-				  <colordiffuse>FFFFFFFF</colordiffuse>
-				  <font>font13</font>
-				  <textcolor>FFFFFFFF</textcolor>
+<!--				  <colordiffuse>FFFFFFFF</colordiffuse>-->
+				  <font>METF_DialogLarge</font>
+				  <textcolor>white</textcolor>
 				  <wrapmultiline>true</wrapmultiline>
 				  <pagecontrol>110</pagecontrol>
 				  <autoscroll delay="3000" time="1000" repeat="10000">!Control.HasFocus(110)</autoscroll>
@@ -110,7 +119,7 @@
 			</control>
 			<!-- Scrollbar -->
 			<control type="scrollbar" id="110">
-				<posx>1050</posx>
+				<posx>1043</posx>
 				<posy>135</posy>
 				<width>25</width>
 				<height>321</height>
@@ -131,21 +140,21 @@
 				<posx>830</posx>
 				<posy>102</posy>
 				<description>start time</description>
-				<font>font13</font>
+				<font>METF_HeadingDetails</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>
 			<control type="label">
 				<posx>830</posx>
 				<posy>82</posy>
 				<description>epg date</description>
-				<font>font13</font>
+				<font>METF_HeadingDetails</font>
 				<label>$INFO[Window.Property(EPGDate)]</label>
 			</control>
 			<control type="label">
 				<posx>970</posx>
 				<posy>102</posy>
 				<description>epg duration</description>
-				<font>font13</font>
+				<font>METF_HeadingDetails</font>
 				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 

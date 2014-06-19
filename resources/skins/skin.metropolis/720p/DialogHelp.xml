@@ -6,13 +6,23 @@
 	<controls>
 		<control type="image">
 			<description>Normal Default Background Image</description>
+			<posx>-20</posx>
+			<posy>-20</posy>
+			<width>1400</width>
+			<height>750</height>
+			<texture>DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<description>Normal Default Background Image</description>
 			<posx>-13</posx>
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+<!--			<texture>backgrounds/SKINDEFAULT.jpg</texture>-->
+			<texture>new/background.png</texture>
+			<colordiffuse>ee3c95c8</colordiffuse>
 		</control>
-		<control type="image">
+<!--		<control type="image">
 			<description>Background for the Header</description>
 			<posx>-13</posx>
 			<posy>-7</posy>
@@ -28,7 +38,7 @@
 			<height>192</height>
 			<texture border="0,0,20,0">FooterBack.png</texture>
 		</control>
-
+-->
 		<control type="group" id="9000">
 			<include>DefaultDialogCloseEffect</include>
 			<control type="group">
@@ -38,10 +48,10 @@
 					<posy>5</posy>
 					<width>820</width>
 					<height>30</height>
-					<font>font14</font>
+					<font>METF_Heading</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<textcolor>blue</textcolor>
+					<textcolor>ee3c95c8</textcolor>
 				</control>
 				<control type="label" id="1003">
 					<description>Label for Source</description>
@@ -49,7 +59,7 @@
 					<posy>5</posy>
 					<width>500</width>
 					<height>30</height>
-					<font>font10</font>
+					<font>METF_DialogVerySmall</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
@@ -60,8 +70,8 @@
 					<posy>5</posy>
 					<width>100</width>
 					<height>30</height>
-					<font>font12_title</font>
-					<textcolor>white</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>WeatherHeading</textcolor>
 					<align>right</align>
 					<aligny>center</aligny>
 				</control>
@@ -75,7 +85,7 @@
 				</control>
 				<control type="textbox" id="200">
 					<description>Left Textbox</description>
-					<font>font12</font>
+					<font>METF_DialogSmall</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Window.Property(label1)]</label>
 					<visible>Control.IsVisible(8500)</visible>
@@ -85,7 +95,7 @@
 				</control>
 				<control type="textbox" id="201">
 					<description>Right Textbox</description>
-					<font>font12</font>
+					<font>METF_DialogSmall</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Window.Property(label2)]</label>
 					<visible>Control.IsVisible(8500)</visible>

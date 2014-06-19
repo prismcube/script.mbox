@@ -3,8 +3,8 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
-			<posx>340</posx>
-			<posy>260</posy>
+			<posx>-30</posx>
+			<posy>-15</posy>
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
@@ -14,62 +14,110 @@
 				<height>160</height>
 				<texture border="20">OverlayDialogBackground.png</texture>
 			</control>
-			<control type="label" id="100">
-				<description>dialog line 1</description>
-				<posx>20</posx>
-				<posy>60</posy>
-				<width>560</width>
+<!--			<control type="image">
+				<description>background image</description>
+				<posx>-20</posx>
+				<posy>-40</posy>
+				<width>640</width>
+				<height>230</height>
+				<texture>frames/Dialog_Glass2.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+-->			<animation effect="slide" end="0,-300" time="300" reversible="false" condition="Window.IsActive(extendedprogressdialog)">Conditional</animation>
+			<!-- Background Panel -->
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>-10</posy>
+				<width>1100</width>
+				<height>67</height>
+				<texture>dialogs/DialogBG_DropdownWide2.png</texture>
+				<colordiffuse>DialogDropdownColor</colordiffuse>
+			</control>
+			<control type="grouplist">
+				<posx>235</posx>
+				<posy>16</posy>
+				<width>835</width>
 				<height>30</height>
 				<align>left</align>
-				<aligny>center</aligny>
-				<haspath>true</haspath>
-				<font>font13</font>
-			</control>
-			<control type="label" id="200">
-				<description>header label</description>
-				<posx>20</posx>
-				<posy>18</posy>
-				<width>560</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>blue</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
-			<control type="label" id="201">
-				<description>page</description>
-				<posx>580</posx>
-				<posy>18</posy>
-				<width>100</width>
-				<height>30</height>
-				<font>font13</font>
-				<align>right</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
-
-			<control type="label" id="300">
-				<description>dialog line 2</description>
-				<posx>20</posx>
-				<posy>85</posy>
-				<width>560</width>
-				<height>30</height>
-				<align>left</align>
-				<aligny>center</aligny>
-				<haspath>true</haspath>
-				<font>font13</font>
+				<itemgap>10</itemgap>
+				<control type="label" id="100">
+					<description>dialog line 1</description>
+	<!--				<posx>20</posx>
+					<posy>60</posy>
+					<width>560</width>
+					<height>30</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<haspath>true</haspath>
+					<font>METF_MediaDetailsSmall</font>
+				</control>
+	-->				<width min="25" max="835">auto</width>
+					<height>30</height>
+					<aligny>center</aligny>
+					<font>METF_DialogSmallBold</font>
+					<textcolor>TextNF</textcolor>
+				</control>
+				<control type="label" id="200">
+					<description>header label</description>
+<!--					<posx>20</posx>
+					<posy>18</posy>
+					<width>560</width>
+					<height>30</height>
+					<font>METF_Menu</font>
+					<align>left</align>
+					<aligny>center</aligny>
+					<textcolor>DialogTextFO</textcolor>
+					<shadowcolor>black</shadowcolor>
+-->					<width min="25" max="835">auto</width>
+					<height>30</height>
+					<aligny>center</aligny>
+					<font>METF_DialogSmallBold</font>
+					<textcolor>DialogTextFO</textcolor>
+				</control>
+				<control type="label" id="201">
+					<description>page</description>
+					<posx>580</posx>
+					<posy>18</posy>
+					<width>100</width>
+					<height>30</height>
+					<font>METF_MediaDetailsSmall</font>
+					<align>right</align>
+					<aligny>center</aligny>
+					<textcolor>white</textcolor>
+	<!--				<shadowcolor>black</shadowcolor>-->
+				</control>
+				<control type="label" id="300">
+					<description>dialog line 2</description>
+	<!--				<posx>20</posx>
+					<posy>85</posy>
+					<width>560</width>
+					<height>30</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<haspath>true</haspath>
+					<font>METF_MediaDetailsSmall</font>
+	-->				<width min="25" max="835">auto</width>
+					<height>30</height>
+					<aligny>center</aligny>
+					<font>METF_DialogSmall</font>
+					<textcolor>TextNF</textcolor>
+				</control>
 			</control>
 			<control type="progress" id="400">
 				<description>Progressbar</description>
-				<posx>20</posx>
-				<posy>120</posy>
-				<width>560</width>
-				<height>12</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<posx>50</posx>
+				<posy>24</posy>
+				<width>175</width>
+				<height>17</height>
+				<texturebg>osd/osd_progress_back3.png</texturebg>
+				<lefttexture>osd/osd_progress_left3.png</lefttexture>
+				<midtexture>osd/osd_progress_mid3.png</midtexture>
+				<righttexture>osd/osd_progress_right3.png</righttexture>
+				<colordiffuse>DialogProgressBar</colordiffuse>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
-			</control>
+-->			</control>
 		</control>
 	</controls>
 </window>

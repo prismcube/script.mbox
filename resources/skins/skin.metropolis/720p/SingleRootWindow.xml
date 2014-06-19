@@ -2171,12 +2171,12 @@ Search for window name
 				<control type="group">
 					<control type="image">
 	                    <posx>-500</posx>
-	                    <posy>0</posy>
+	                    <posy>60</posy>
 	                    <width>500</width>
-	                    <height>720</height>
-						<texture>frames/Dialog_Glass2Panel.png</texture>
+	                    <height>610</height>
+						<texture>frames/Menu_Glass2b.png</texture>
 						<colordiffuse>DialogBackgroundColor</colordiffuse>
-	                    <animation effect="slide" start="0,0" end="250,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
+	                    <animation effect="slide" start="0,0" end="280,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
 <!--	                <control type="image">
@@ -2206,7 +2206,7 @@ Search for window name
 				<control type="group" id="1300110">
 					<posx>-250</posx>
 					<posy>0</posy>
-					<control type="image">
+<!--					<control type="image">
 						<description>LOGO</description>
 						<posx>20</posx>
 						<posy>50</posy>
@@ -2215,7 +2215,7 @@ Search for window name
 						<aspectratio>keep</aspectratio>
 						<texture>Confluence_Logo.png</texture>
 					</control>
-					<control type="button" id="1300103">
+-->					<control type="button" id="1300103">
 						<description>Sort by button</description>
 						<posx>0</posx>
 						<posy>115</posy>
@@ -2224,8 +2224,8 @@ Search for window name
 						<textoffsetx>10</textoffsetx>
 						<textwidth>215</textwidth>
 						<aligny>center</aligny>
-						<font>font13caps</font>
-						<texturefocus border="5">button-focus.png</texturefocus>
+						<font>METF_SettingsDetail</font>
+						<texturefocus border="1">ButtonFO2.png</texturefocus>
 						<texturenofocus>-</texturenofocus>
 						<pulseonselect>false</pulseonselect>
 						<onleft>1300049</onleft>
@@ -2243,7 +2243,7 @@ Search for window name
 						<onup>1300103</onup>
 						<ondown>1300201</ondown>
 						<scrolltime>300</scrolltime>
-						<textcolor>grey3</textcolor>
+						<textcolor>red</textcolor>
 						<movement>10</movement>
 						<itemlayout height="40" width="255">
 							<control type="label">
@@ -2251,7 +2251,7 @@ Search for window name
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-								<font>font13caps</font>
+								<font>METF_SettingsDetail</font>
 								<textcolor>white</textcolor>
 								<align>left</align>
 								<aligny>center</aligny>
@@ -2259,20 +2259,22 @@ Search for window name
 							</control>
 						</itemlayout>
 						<focusedlayout height="40" width="255">
+							<!--sblee-All channel~Mode-->
 							<control type="image">
 								<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Control.HasFocus(1300102)]">conditional</animation>
 								<posx>0</posx>
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-								<texture>button-focus.png</texture>
+<!--								<texture>button-focus.png</texture>-->
+								<texture border="1">ButtonFO2.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-								<font>font13caps</font>
+								<font>METF_SettingsDetail</font>
 								<align>left</align>
 								<aligny>center</aligny>
 								<textcolor>white</textcolor>
@@ -2283,7 +2285,7 @@ Search for window name
 								<posy>32</posy>
 								<width>18</width>
 								<height>18</height>
-								<texture>HomeHasSub.png</texture>
+								<texture>Arrow2Right.png</texture>
 								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
@@ -2338,6 +2340,7 @@ Search for window name
 							<height>40</height>
 							<width>250</width>
 							<control type="button" id="1300201">
+								<description>Search</description>
 								<posx>0</posx>
 								<posy>0</posy>
 								<height>40</height>
@@ -2345,8 +2348,8 @@ Search for window name
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
-								<font>font13caps</font>
-								<texturefocus border="5">button-focus.png</texturefocus>
+								<font>METF_SettingsDetail</font>
+								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<label>SCRIPT1029</label>
 								<pulseonselect>false</pulseonselect>
@@ -2360,6 +2363,7 @@ Search for window name
 							<height>40</height>
 							<width>250</width>
 							<control type="button" id="1300202">
+								<description>Misc option</description>
 								<posx>0</posx>
 								<posy>0</posy>
 								<height>40</height>
@@ -2367,8 +2371,8 @@ Search for window name
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
-								<font>font13caps</font>
-								<texturefocus border="5">button-focus.png</texturefocus>
+								<font>METF_SettingsDetail</font>
+								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<label>SCRIPT1009</label>
 								<pulseonselect>false</pulseonselect>
@@ -2383,7 +2387,7 @@ Search for window name
 								<posy>11</posy>
 								<width>18</width>
 								<height>18</height>
-								<texture>HomeHasSub.png</texture>
+								<texture>Arrow2Right.png</texture>
 								<visible>Control.HasFocus(1300202) | ControlGroup(1300120).HasFocus</visible>
 							</control>
 						</control>
@@ -2392,7 +2396,7 @@ Search for window name
 
 					<!-- sub main (fav) -->
 					<control type="group" id="1309001">
-						<posx>-240</posx>
+						<posx>-250</posx>
 						<posy>0</posy>
 						<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1309001).HasFocus | ControlGroup(1300200).HasFocus">conditional</animation>
 						<animation effect="slide" start="0,0" end="-500,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus">Conditional</animation>
@@ -2432,15 +2436,15 @@ Search for window name
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>font12_title</font>
-									<textcolor>grey3</textcolor>
+									<font>METF_MediaDetailsSmall</font>
+									<textcolor>white</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
 							</itemlayout>
 							<focusedlayout height="40" width="230">
-								<control type="image">
+<!--								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>230</width>
@@ -2448,12 +2452,12 @@ Search for window name
 									<texture border="0,2,0,2">MenuItemNF.png</texture>
 									<visible>!Control.HasFocus(1300112)</visible>
 								</control>
-								<control type="image">
+-->								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>230</width>
 									<height>41</height>
-									<texture border="0,2,0,2">MenuItemFO.png</texture>
+									<texture border="1">ButtonFO2.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
 								<!-- is FastScan -->
@@ -2462,7 +2466,7 @@ Search for window name
 									<posy>12</posy>
 									<width>26</width>
 									<height>18</height>
-									<visible>substring(ListItem.Property(iFastScan),true)</visible>
+<!--									<visible>substring(ListItem.Property(iFastScan),true)</visible>-->
 									<texture>IconFastScan.png</texture>
 								</control>
 								<control type="label">
@@ -2470,7 +2474,7 @@ Search for window name
 									<posy>0</posy>
 									<width>190</width>
 									<height>40</height>
-									<font>font12_title</font>
+									<font>METF_MediaDetailsSmall</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<shadowcolor>ff000000</shadowcolor>
@@ -2513,11 +2517,11 @@ Search for window name
 									<textoffsetx>20</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>font12_title</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<font>METF_MediaDetailsSmall</font>
+									<texturefocus border="1">ButtonFO2.png</texturefocus>
+									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
-									<textcolor>grey3</textcolor>
+									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1006</label>
 									<onleft>1300102</onleft>
@@ -2533,11 +2537,11 @@ Search for window name
 									<textoffsetx>20</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>font12_title</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<font>METF_MediaDetailsSmall</font>
+									<texturefocus border="1">ButtonFO2.png</texturefocus>
+									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
-									<textcolor>grey3</textcolor>
+									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1007</label>
 									<onleft>1300102</onleft>
@@ -2546,6 +2550,7 @@ Search for window name
 									<ondown>1300113</ondown>
 								</control>
 							</control>
+							<!--sblee-Misc Option-->
 							<control type="group" id="1300120">
 								<posx>0</posx>
 								<posy>85</posy>
@@ -2555,7 +2560,7 @@ Search for window name
 									<posy>0</posy>
 									<width>40</width>
 									<height>40</height>
-									<texture>MediaSubSet.png</texture>
+									<texture>METF_SettingsDetail.png</texture>
 								</control>
 								<control type="radiobutton" id="1300121">
 									<posx>0</posx>
@@ -2565,11 +2570,11 @@ Search for window name
 									<textoffsetx>20</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>font12_title</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<font>METF_MediaDetailsSmall</font>
+									<texturefocus border="1">ButtonFO2.png</texturefocus>
+									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
-									<textcolor>grey3</textcolor>
+									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1151</label>
 									<onleft>1300202</onleft>
@@ -2585,11 +2590,11 @@ Search for window name
 									<textoffsetx>20</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>font12_title</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<font>METF_MediaDetailsSmall</font>
+									<texturefocus border="1">ButtonFO2.png</texturefocus>
+									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
-									<textcolor>grey3</textcolor>
+									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>SCRIPT1165</label>
 									<onleft>1300202</onleft>
@@ -2605,11 +2610,11 @@ Search for window name
 									<textoffsetx>20</textoffsetx>
 									<textwidth>195</textwidth>
 									<aligny>center</aligny>
-									<font>font12_title</font>
-									<texturefocus>MenuItemFO.png</texturefocus>
-									<texturenofocus>MenuItemNF.png</texturenofocus>
+									<font>METF_MediaDetailsSmall</font>
+									<texturefocus border="1">ButtonFO2.png</texturefocus>
+									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
-									<textcolor>grey3</textcolor>
+									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
 									<label>Search by AllChannels</label>
 									<onleft>1300202</onleft>
@@ -4662,8 +4667,8 @@ Search for window name
 			<control type="group">
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<include>DefaultSettingWindowEffect</include>
-				<posx>80</posx>
-				<posy>110</posy>
+				<posx>130</posx>
+				<posy>82</posy>
 				<control type="list" id="1709000">
 					<posx>0</posx>
 					<posy>58</posy>
@@ -4690,7 +4695,7 @@ Search for window name
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>font13</font>
+							<font>METF_ContextValue</font>
 							<textcolor>white</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -4701,9 +4706,10 @@ Search for window name
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>750</width>
+							<width>700</width>
 							<height>40</height>
-							<texture border="0,2,0,2">MenuItemFO.png</texture>
+<!--							<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+							<texture>ButtonFo.png</texture>
 							<visible>Control.HasFocus(1709000)</visible>
 							<!--<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>-->
 						</control>
@@ -4713,7 +4719,7 @@ Search for window name
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>font13</font>
+							<font>METF_ContextValue</font>
 							<textcolor>white</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
@@ -4725,8 +4731,8 @@ Search for window name
 							<posy>0</posy>
 							<width>680</width>
 							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey2</textcolor>
+							<font>METF_ContextValue</font>
+							<textcolor>white</textcolor>
 							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>

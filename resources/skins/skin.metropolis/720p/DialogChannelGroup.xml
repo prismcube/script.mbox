@@ -5,8 +5,8 @@
 	<controls>
 		<control type="group" id="3900">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>375</posx>
-			<posy>85</posy>
+			<posx>370</posx>
+			<posy>55</posy>
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
@@ -16,18 +16,27 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
+				<description>background image</description>
+				<posx>-20</posx>
+				<posy>-35</posy>
+				<width>580</width>
+				<height>628</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+<!--			<control type="image">
 				<posx>40</posx>
 				<posy>16</posy>
 				<width>430</width>
 				<height>40</height>
 				<!--aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture-->
-				<texture>dialogheader.png</texture>
+<!--				<texture>dialogheader.png</texture>
 			</control>
-			<control type="button" id="3901">
+-->			<control type="button" id="3901">
 				<description>Close Window button</description>
 				<posx>440</posx>
-				<posy>15</posy>
+				<posy>3</posy>
 				<width>64</width>
 				<height>32</height>
 				<font>-</font>
@@ -41,60 +50,60 @@
 			<control type="label" id="3902">
 				<description>header label</description>
 				<posx>20</posx>
-				<posy>20</posy>
+				<posy>13</posy>
 				<width>470</width>
 				<height>30</height>
-				<font>font13_title</font>
+				<font>METF_Menu</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>selected</textcolor>
-				<shadowcolor>black</shadowcolor>
+				<textcolor>DialogTextFO</textcolor>
+<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="3903">
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
 			</control>
 			<control type="label">
 				<posx>500</posx>
-				<posy>468</posy>
+				<posy>440</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>METF_HeadingDetails</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<textcolor>FFc89008</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
 			<control type="label">
 				<posx>500</posx>
-				<posy>500</posy>
+				<posy>472</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>font12</font>
+				<font>METF_HeadingDetails</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<textcolor>FFc89008</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
 				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
 
 			<!-- ok button and key comment -->
 			<control type="button" id="3904">
 				<posx>20</posx>
-				<posy>485</posy>
+				<posy>483</posy>
 				<width>200</width>
 				<height>35</height>
 				<label>SCRIPT1022</label>
-				<font>font12_title</font>
+				<font>METF_MediaDetailsSmall</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
 				<texturenofocus>MenuItemNF.png</texturenofocus>
-				<texturefocus>button-focus.png</texturefocus>
+				<texturefocus>ButtonFO2Wide.png</texturefocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>1003950</onup>
@@ -103,8 +112,8 @@
 			</control>
 			<!-- left key comment -->
 			<control type="group">
-				<posx>20</posx>
-				<posy>540</posy>
+				<posx>15</posx>
+				<posy>532</posy>
 				<visible>Control.IsVisible(3904)</visible>
 				<control type="image">
 					<posx>0</posx>
@@ -118,11 +127,11 @@
 					<posy>0</posy>
 					<width>470</width>
 					<height>30</height>
-					<font>font10</font>
+					<font>METF_DialogSmall</font>
 					<align>left</align>
 					<scroll>true</scroll>
-					<textcolor>grey3</textcolor>
-					<shadowcolor>black</shadowcolor>
+					<textcolor>white</textcolor>
+<!--					<shadowcolor>black</shadowcolor>-->
 					<label>SCRIPT1138</label>
 				</control>
 			</control>
@@ -130,7 +139,7 @@
 			<!-- color info -->
 			<control type="group">
 				<posx>20</posx>
-				<posy>510</posy>
+				<posy>508</posy>
 				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
 				<control type="group">
 					<posx>0</posx>
@@ -148,7 +157,7 @@
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
-						<font>font10</font>
+						<font>METF_DialogVerySmall</font>
 						<align>left</align>
 						<label>Satellite</label>
 					</control>
@@ -169,7 +178,7 @@
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
-						<font>font10</font>
+						<font>METF_DialogVerySmall</font>
 						<align>left</align>
 						<label>FTA/CAS</label>
 					</control>
@@ -190,7 +199,7 @@
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
-						<font>font10</font>
+						<font>METF_DialogVerySmall</font>
 						<align>left</align>
 						<label>Provider</label>
 					</control>
@@ -211,7 +220,7 @@
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
-						<font>font10</font>
+						<font>METF_DialogVerySmall</font>
 						<align>left</align>
 						<label>Favorite</label>
 					</control>

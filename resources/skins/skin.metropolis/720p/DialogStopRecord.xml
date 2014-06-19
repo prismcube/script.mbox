@@ -5,8 +5,8 @@
 	<controls>
 		<control type="group">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>335</posx>
-			<posy>90</posy>
+			<posx>320</posx>
+			<posy>173</posy>
             <!--include>DefaultDialogCloseEffect</include-->
 			<control type="image" id="100">
 				<description>background image</description>
@@ -17,15 +17,13 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<posx>-4</posx>
-				<posy>82</posy>
-				<width>618</width>
-				<height>280</height>
+				<posy>-23</posy>
+				<width>640</width>
+				<height>300</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posy>100</posy>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
 		</control>
@@ -182,8 +180,8 @@
 			<control type="group" id="520">		
 				<posx>0</posx>
 				<posy>70</posy>
-				<width>550</width>
-				<height>70</height>
+				<width>250</width>
+				<height>40</height>
 				<control type="button" id="521">
 					<description>cancel button</description>
 					<posx>160</posx>
