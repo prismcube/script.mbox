@@ -21,7 +21,7 @@
 				<posx>-33</posx>
 				<posy>-30</posy>
 				<width>661</width>
-				<height>650</height>
+				<height>637</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
@@ -36,7 +36,7 @@
 -->			<control type="button" id="3800">
 				<description>Close Window button</description>
 				<posx>565</posx>
-				<posy>18</posy>
+				<posy>21</posy>
 				<width>25</width>
 				<height>25</height>
 				<font>-</font>
@@ -50,7 +50,7 @@
 			<control type="label" id="3801">
 				<description>header label</description>
 				<posx>20</posx>
-				<posy>20</posy>
+				<posy>23</posy>
 				<width>570</width>
 				<height>30</height>
 				<font>METF_Menu</font>
@@ -62,7 +62,7 @@
 			</control>
 			<control type="label" id="3805">
 				<posx>20</posx>
-				<posy>70</posy>
+				<posy>73</posy>
 				<width>570</width>
 				<height>30</height>
 				<font>METF_MediaDetailsSmall</font>
@@ -79,7 +79,7 @@
 			</control>
 			<control type="label">
 				<posx>550</posx>
-				<posy>465</posy>
+				<posy>470</posy>
 				<width>300</width>
 				<height>35</height>
 				<font>METF_HeadingDetails</font>
@@ -87,15 +87,15 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>WeatherHeading</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3803)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3803)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 			<control type="button" id="3802">
 				<posx>30</posx>
-				<posy>490</posy>
+				<posy>493</posy>
 				<width>230</width>
 				<height>40</height>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>DialogTextFO</focusedcolor>
@@ -110,7 +110,7 @@
 			<!-- left key comment -->
 			<control type="group">
 				<posx>30</posx>
-				<posy>535</posy>
+				<posy>539</posy>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -128,12 +128,12 @@
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
 <!--					<shadowcolor>black</shadowcolor>-->
-					<label>SCRIPT1138</label>
+					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
 			<control type="list" id="3850">
 				<posx>20</posx>
-				<posy>120</posy>
+				<posy>123</posy>
 				<width>600</width>
 				<height>350</height>
 				<onleft>3802</onleft>
@@ -337,7 +337,7 @@
 			</control>
 			<control type="scrollbar" id="3851">
 				<posx>560</posx>
-				<posy>120</posy>
+				<posy>123</posy>
 				<width>25</width>
 				<height>350</height>
 				<include>DefaultWindowFade</include>

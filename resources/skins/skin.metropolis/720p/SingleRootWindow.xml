@@ -139,7 +139,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
@@ -148,7 +148,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -157,7 +157,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -166,7 +166,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -175,7 +175,7 @@ Search for window name
 				<posy>660</posy>
 				<width>500</width>
 				<font>METF_HeadingDetails</font>
-				<label>$LOCALIZE[SCRIPT1200]</label>
+				<label>$ADDON[script.mbox 1200]</label>
 				<textcolor>white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -323,7 +323,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -332,7 +332,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -341,7 +341,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -417,39 +417,39 @@ Search for window name
 						</control>
 -->						<control type="button" id="1290101">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1050</label>
+							<label>$ADDON[script.mbox 1050]</label>
 						</control>
 						<control type="button" id="1290102">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1051</label>
+							<label>$ADDON[script.mbox 1051]</label>
 						</control>
 						<control type="button" id="1290103">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1052</label>
+							<label>$ADDON[script.mbox 1052]</label>
 						</control>
 						<control type="button" id="1290104">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1053</label>
+							<label>$ADDON[script.mbox 1053]</label>
 						</control>
 						<control type="button" id="1290105">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1054</label>
+							<label>$ADDON[script.mbox 1054]</label>
 						</control>
 						<control type="button" id="1290106">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1055</label>
+							<label>$ADDON[script.mbox 1055]</label>
 						</control>
 						<control type="button" id="1290107">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1056</label>
+							<label>$ADDON[script.mbox 1056]</label>
 						</control>
 						<control type="button" id="1290108">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1103</label>
+							<label>$ADDON[script.mbox 1103]</label>
 						</control>
 						<control type="button" id="1290109">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Advanced</label>
+							<label>$ADDON[script.mbox 1168]</label>
 						</control>
 <!--						<control type="image" id="1290110">
 							<width>35</width>
@@ -481,53 +481,53 @@ Search for window name
 						</control>
 -->						<control type="button" id="1290601">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1057</label>
+							<label>$ADDON[script.mbox 1057]</label>
 							<!--onclick>ActivateWindow(Weather)</onclick-->
 						</control>
 						<control type="button" id="1290602">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1058</label>
+							<label>$ADDON[script.mbox 1058]</label>
 							<!--onclick>ActivateWindow(Pictures)</onclick-->
 						</control>
 						<control type="button" id="1290603">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1059</label>
+							<label>$ADDON[script.mbox 1059]</label>
 							<!--onclick>ActivateWindow(Music)</onclick-->
 						</control>
 						<control type="button" id="1290604">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1060</label>
+							<label>$ADDON[script.mbox 1060]</label>
 							<!--onclick>ActivateWindow(Videos)</onclick-->
 						</control>
 						<control type="button" id="1290605">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1061</label>
+							<label>$ADDON[script.mbox 1061]</label>
 							<!--onclick>ActivateWindow(Programs,Addons,return)</onclick-->
 						</control>
 						<control type="button" id="1290606">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1062</label>
+							<label>$ADDON[script.mbox 1062]</label>
 							<!--onclick>ActivateWindow(Settings)</onclick-->
 						</control>
 						<control type="button" id="1290607">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1063</label>
+							<label>$ADDON[script.mbox 1063]</label>
 							<!--onclick>ActivateWindow(FileManager)</onclick-->
 						</control>
 						<control type="button" id="1290608">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1064</label>
+							<label>$ADDON[script.mbox 1064]</label>
 							<!--onclick>ActivateWindow(Profiles)</onclick-->
 							<visible>False</visible>
 						</control>
 						<control type="button" id="1290609">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1121</label>
+							<label>$ADDON[script.mbox 1121]</label>
 							<!--onclick>ActivateWindow(Profiles)</onclick-->
 						</control>
 						<control type="button" id="1290610">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1065</label>
+							<label>$ADDON[script.mbox 1065]</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
 <!--						<control type="image" id="1290611">
@@ -560,19 +560,19 @@ Search for window name
 						</control>
 -->						<control type="button" id="1290312">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1162</label>
+							<label>$ADDON[script.mbox 1162]</label>
 						</control>
 						<control type="button" id="1290313">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1074</label>
+							<label>$ADDON[script.mbox 1074]</label>
 						</control>
 						<control type="button" id="1290314">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1163</label>
+							<label>$ADDON[script.mbox 1163]</label>
 						</control>
 						<control type="button" id="1290315">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1164</label>
+							<label>$ADDON[script.mbox 1164]</label>
 						</control>
 <!--						<control type="image" id="1290316">
 							<width>35</width>
@@ -604,11 +604,11 @@ Search for window name
 						</control>
 -->						<control type="button" id="1290912">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1135</label>
+							<label>$ADDON[script.mbox 1135]</label>
 						</control>
 						<control type="button" id="1290913">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1136</label>
+							<label>$ADDON[script.mbox 1136]</label>
 						</control>
 <!--						<control type="image" id="1290914">
 							<width>35</width>
@@ -641,15 +641,15 @@ Search for window name
 						</control>
 -->						<control type="button" id="1290413">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1120</label>
+							<label>$ADDON[script.mbox 1120]</label>
 						</control>
 						<control type="button" id="1290412">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1075</label>
+							<label>$ADDON[script.mbox 1075]</label>
 						</control>
 						<control type="button" id="1290414">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>SCRIPT1125</label>
+							<label>$ADDON[script.mbox 1125]</label>
 						</control>
 <!--						<control type="image" id="1290415">
 							<width>35</width>
@@ -813,32 +813,32 @@ Search for window name
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT1073</label>
-							<label2>SCRIPT1066</label2>
+							<label>$ADDON[script.mbox 1073]</label>
+							<label2>$ADDON[script.mbox 1066]</label2>
 							<onclick>SendClick(1290100)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT1043</label>
-							<label2>SCRIPT1067</label2>
+							<label>$ADDON[script.mbox 1043]</label>
+							<label2>$ADDON[script.mbox 1067]</label2>
 							<onclick>SendClick(1290200)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT1044</label>
-							<label2>SCRIPT1068</label2>
+							<label>$ADDON[script.mbox 1044]</label>
+							<label2>$ADDON[script.mbox 1068]</label2>
 							<onclick>SendClick(1290300)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="9">
-							<label>SCRIPT1133</label>
-							<label2>SCRIPT1134</label2>
+							<label>$ADDON[script.mbox 1133]</label>
+							<label2>$ADDON[script.mbox 1134]</label2>
 							<onclick>SendClick(1290900)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT1074</label>
-							<label2>SCRIPT1069</label2>
+							<label>$ADDON[script.mbox 1074]</label>
+							<label2>$ADDON[script.mbox 1069]</label2>
 							<onclick>SendClick(1290400)</onclick>
 							<visible>true</visible>
 						</item>
@@ -850,21 +850,28 @@ Search for window name
 							<visible>true</visible>
 						</item>
 						-->
+						<item id="5">
+							<label>$ADDON[script.mbox 1169]</label>
+							<label2>$ADDON[script.mbox 1170]</label2>
+							<onclick>SendClick(1290500)</onclick>
+							<visible>substring(Window.Property(YoutubeTV),true)</visible>
+						</item>
 						<item id="6">
-							<label>SCRIPT1076</label>
-							<label2>SCRIPT1070</label2>
+							<!--label>$ADDON[script.mbox 1076]</label-->
+							<label>XBMC</label>
+							<label2>$ADDON[script.mbox 1070]</label2>
 							<onclick>SendClick(1290600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="7">
-							<label>SCRIPT1048</label>
-							<label2>SCRIPT1071</label2>
+							<label>$ADDON[script.mbox 1048]</label>
+							<label2>$ADDON[script.mbox 1071]</label2>
 							<onclick>SendClick(1290700)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="8">
-							<label>SCRIPT1049</label>
-							<label2>SCRIPT1072</label2>
+							<label>$ADDON[script.mbox 1049]</label>
+							<label2>$ADDON[script.mbox 1072]</label2>
 							<onclick>SendClick(1290800)</onclick>
 							<visible>true</visible>
 						</item>
@@ -1141,7 +1148,7 @@ Search for window name
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
-						<label>SCRIPT1101</label>
+						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -1161,7 +1168,7 @@ Search for window name
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
-						<label>SCRIPT1139</label>
+						<label>$ADDON[script.mbox 1139]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -1181,7 +1188,7 @@ Search for window name
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
-						<label>SCRIPT1202</label>
+						<label>$ADDON[script.mbox 1202]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -1201,7 +1208,7 @@ Search for window name
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
-						<label>SCRIPT1203</label>
+						<label>$ADDON[script.mbox 1203]</label>
 					</control>
 				</control>
 			</control>
@@ -1866,7 +1873,7 @@ Search for window name
 							<posy>75</posy>
 						<font>METF_PlotTextSmall</font>
 						<textcolor>75FFFFFF</textcolor>
-							<label>SCRIPT1014</label>
+							<label>$ADDON[script.mbox 1014]</label>
 						</control>
 					</control>
 				</control>
@@ -1920,7 +1927,7 @@ Search for window name
 							<posy>0</posy>
 							<font>METF_PlotTextMedium</font>
 							<textcolor>75FFFFFF</textcolor>
-							<label>SCRIPT1014</label>
+							<label>$ADDON[script.mbox 1014]</label>
 						</control>
 					</control>
 					<!--sblee- about EPG Info-->
@@ -2144,7 +2151,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 				<!--sblee- ()Move Psoition ???-->
@@ -2158,7 +2165,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(1300401)][/COLOR])$LOCALIZE[SCRIPT1108]</label>
+					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(1300401)][/COLOR])$ADDON[script.mbox 1108]</label>
 					<visible>substring(Window(10000).Property(isMove),true)</visible>
 				</control>
 			</control>
@@ -2291,32 +2298,32 @@ Search for window name
 						</focusedlayout>
 						<content>
 							<item id="1">
-								<label>SCRIPT1001</label>
+								<label>$ADDON[script.mbox 1001]</label>
 								<onclick>SendClick(1300700)</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="2">
-								<label>SCRIPT1002</label>
+								<label>$ADDON[script.mbox 1002]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="3">
-								<label>SCRIPT1003</label>
+								<label>$ADDON[script.mbox 1003]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="4">
-								<label>SCRIPT1152</label>
+								<label>$ADDON[script.mbox 1152]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="5">
-								<label>SCRIPT1004</label>
+								<label>$ADDON[script.mbox 1004]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
 							<item id="6">
-								<label>SCRIPT1005</label>
+								<label>$ADDON[script.mbox 1005]</label>
 								<onclick>right</onclick>
 								<visible>true</visible>
 							</item>
@@ -2351,7 +2358,7 @@ Search for window name
 								<font>METF_SettingsDetail</font>
 								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1029</label>
+								<label>$ADDON[script.mbox 1029]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1300049</onright>
@@ -2374,7 +2381,7 @@ Search for window name
 								<font>METF_SettingsDetail</font>
 								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
-								<label>SCRIPT1009</label>
+								<label>$ADDON[script.mbox 1009]</label>
 								<pulseonselect>false</pulseonselect>
 								<onleft>1300049</onleft>
 								<onright>1309002</onright>
@@ -2523,7 +2530,7 @@ Search for window name
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1006</label>
+									<label>$ADDON[script.mbox 1006]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300114</onup>
@@ -2543,7 +2550,7 @@ Search for window name
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1007</label>
+									<label>$ADDON[script.mbox 1007]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
 									<onup>1300113</onup>
@@ -2576,7 +2583,7 @@ Search for window name
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1151</label>
+									<label>$ADDON[script.mbox 1151]</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
 									<onup>1300122</onup>
@@ -2596,7 +2603,7 @@ Search for window name
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
 									<focusedcolor>white</focusedcolor>
-									<label>SCRIPT1165</label>
+									<label>$ADDON[script.mbox 1165]</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
 									<onup>1300121</onup>
@@ -2798,7 +2805,7 @@ Search for window name
 						<align>center</align>
 						<font>METF_Heading</font><!--sblee-MET_FontinSansSmallCaps,25pt-->
 						<textcolor>red</textcolor>
-						<label>SCRIPT1123</label>
+						<label>$ADDON[script.mbox 1123]</label>
 						<visible>substring(Window.Property(InfoPlateName),true)</visible><!--sblee-PLAYBACK-->
 					</control>
 					<control type="image">
@@ -2890,7 +2897,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1045</label>
+							<label>$ADDON[script.mbox 1045]</label>
 							<visible>Control.HasFocus(1003630)</visible>
 						</control>
 						<control type="label">
@@ -2902,7 +2909,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1032</label>
+							<label>$ADDON[script.mbox 1032]</label>
 							<visible>Control.HasFocus(1003621)</visible>
 						</control>
 						<control type="label">
@@ -2914,7 +2921,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1033</label>
+							<label>$ADDON[script.mbox 1033]</label>
 							<visible>Control.HasFocus(1003622)</visible>
 						</control>
 						<control type="label">
@@ -2926,7 +2933,7 @@ Search for window name
 							<aligny>METF_PlotText</aligny>
 							<font>font12</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1034</label>
+							<label>$ADDON[script.mbox 1034]</label>
 							<visible>Control.HasFocus(1003623)</visible>
 						</control>
 						<control type="label">
@@ -2938,7 +2945,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1035</label>
+							<label>$ADDON[script.mbox 1035]</label>
 							<visible>Control.HasFocus(1003624)</visible>
 						</control>
 						<control type="label">
@@ -2950,7 +2957,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1036</label>
+							<label>$ADDON[script.mbox 1036]</label>
 							<visible>Control.HasFocus(1003625)</visible>
 						</control>
 						<control type="label">
@@ -2962,7 +2969,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1037</label>
+							<label>$ADDON[script.mbox 1037]</label>
 							<visible>Control.HasFocus(1003626)</visible>
 						</control>
 						<control type="label">
@@ -2974,7 +2981,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1038</label>
+							<label>$ADDON[script.mbox 1038]</label>
 							<visible>Control.HasFocus(1003627)</visible>
 						</control>
 						<control type="label">
@@ -2986,7 +2993,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1039</label>
+							<label>$ADDON[script.mbox 1039]</label>
 							<visible>Control.HasFocus(1003628)</visible>
 						</control>
 						<control type="label">
@@ -2998,7 +3005,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1040</label>
+							<label>$ADDON[script.mbox 1040]</label>
 							<visible>Control.HasFocus(1400702)</visible>
 						</control>
 						<control type="label">
@@ -3010,7 +3017,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1041</label>
+							<label>$ADDON[script.mbox 1041]</label>
 							<visible>Control.HasFocus(1400706)</visible>
 						</control>
 						<control type="label">
@@ -3022,7 +3029,7 @@ Search for window name
 							<aligny>center</aligny>
 							<font>METF_PlotText</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1153</label>
+							<label>$ADDON[script.mbox 1153]</label>
 							<visible>Control.HasFocus(1003631)</visible>
 						</control>
 					</control>
@@ -3141,7 +3148,7 @@ Search for window name
 									<height>30</height>
 									<font>METF_DialogSmall</font>
 									<align>center</align>
-									<label>SCRIPT1039</label>
+									<label>$ADDON[script.mbox 1039]</label>
 								</control>
 							</control>
 							<control type="group">
@@ -3160,7 +3167,7 @@ Search for window name
 									<height>30</height>
 									<font>METF_DialogSmall</font>
 									<align>center</align>
-									<label>SCRIPT1039</label>
+									<label>$ADDON[script.mbox 1039]</label>
 								</control>
 							</control>
 							<control type="group" id="1400530">
@@ -3179,7 +3186,7 @@ Search for window name
 									<height>30</height>
 									<font>METF_DialogSmall</font>
 									<align>center</align>
-									<label>SCRIPT1124</label>
+									<label>$ADDON[script.mbox 1124]</label>
 								</control>
 							</control>
 							<control type="group" id="1400540">
@@ -3198,7 +3205,7 @@ Search for window name
 									<height>30</height>
 									<font>METF_DialogSmall</font>
 									<align>center</align>
-									<label>SCRIPT1060</label>
+									<label>$ADDON[script.mbox 1060]</label>
 								</control>
 							</control>
 						</control>
@@ -3486,7 +3493,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -3495,7 +3502,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -3504,7 +3511,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -3727,7 +3734,7 @@ Search for window name
 							<height>10</height>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1122</label>
+							<label>$ADDON[script.mbox 1122]</label>
 						</control>
 						<control type="image">
 							<posx>80</posx>
@@ -3743,7 +3750,7 @@ Search for window name
 							<posy>0</posy>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
-							<label>SCRIPT1129</label>
+							<label>$ADDON[script.mbox 1129]</label>
 							<visible>substring(Window.Property(BookMarkShow),true)</visible>
 						</control>
 
@@ -3795,7 +3802,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_DialogSmall</font>
 								<align>center</align>
-								<label>SCRIPT1039</label>
+								<label>$ADDON[script.mbox 1039]</label>
 							</control>
 						</control>
 						<control type="group">
@@ -3814,7 +3821,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_DialogSmall</font>
 								<align>center</align>
-								<label>SCRIPT1039</label>
+								<label>$ADDON[script.mbox 1039]</label>
 							</control>
 						</control>
 
@@ -3834,7 +3841,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_DialogSmall</font>
 								<align>center</align>
-								<label>SCRIPT1124</label>
+								<label>$ADDON[script.mbox 1124]</label>
 							</control>
 						</control>
 						<control type="group" id="2900540">
@@ -3853,7 +3860,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_DialogSmall</font>
 								<align>center</align>
-								<label>SCRIPT1060</label>
+								<label>$ADDON[script.mbox 1060]</label>
 							</control>
 						</control>
 					</control>
@@ -4878,7 +4885,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1101</label>
+					<label>$ADDON[script.mbox 1101]</label>
 				</control>
 			</control>
 
@@ -4902,7 +4909,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1139</label>
+					<label>$ADDON[script.mbox 1139]</label>
 				</control>
 			</control>
 
@@ -4981,7 +4988,7 @@ Search for window name
 							<description>Stack Toggle</description>
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT1008</label>
+							<label>$ADDON[script.mbox 1008]</label>
 						</control>
 						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
 					</control>
@@ -5118,7 +5125,7 @@ Search for window name
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>SCRIPT1009</label>
+						<label>$ADDON[script.mbox 1009]</label>
 						<onleft condition="substring(Window.Property(ViewMode),common)">1003400</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),thumbnail)">1003410</onleft>
 						<onleft condition="substring(Window.Property(ViewMode),posterwrap)">1003420</onleft>
@@ -5226,7 +5233,7 @@ Search for window name
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+					<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -5237,7 +5244,7 @@ Search for window name
 					<posy>-82</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+					<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -5304,7 +5311,7 @@ Search for window name
 						<posy>0</posy>
 						<font>METF_PlotTextSmall</font>
 						<textcolor>75FFFFFF</textcolor>
-						<label>SCRIPT1014</label>
+						<label>$ADDON[script.mbox 1014]</label>
 					</control>
 				</control>
 
@@ -5521,7 +5528,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003400).CurrentPage]/$INFO[Container(1003400).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),common) </visible>
 				</control>
 
@@ -5536,7 +5543,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003410).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003410).CurrentPage]/$INFO[Container(1003410).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 				</control>
 
@@ -5551,7 +5558,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003420).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003420).CurrentPage]/$INFO[Container(1003420).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 				</control>
 
@@ -5566,7 +5573,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] /$INFO[Container(1003430).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003430).CurrentPage]/$INFO[Container(1003430).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(ViewMode),fanart) </visible>
 				</control>
 			</control>
@@ -5672,7 +5679,7 @@ Search for window name
 					<width>590</width>
 					<height>45</height>
 					<font>METF_InfoText</font>
-					<label>SCRIPT1087</label>
+					<label>$ADDON[script.mbox 1087]</label>
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
@@ -5893,7 +5900,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1101</label>
+					<label>$ADDON[script.mbox 1101]</label>
 				</control>
 			</control>
 			<control type="group">
@@ -5916,7 +5923,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1139</label>
+					<label>$ADDON[script.mbox 1139]</label>
 				</control>
 			</control>
 
@@ -6864,12 +6871,12 @@ Search for window name
 							<description>Stack Toggle</description>
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT1008</label>
+							<label>$ADDON[script.mbox 1008]</label>
 						</control-->
 						<control type="button" id="3700202">
 							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>SCRIPT1029</label>
+							<label>$ADDON[script.mbox 1029]</label>
 						</control>
 					</control>
 				</control>
@@ -6917,7 +6924,7 @@ Search for window name
 						<radioposy>12</radioposy>
 						<textureradiofocus>HomeHasSub.png</textureradiofocus>
 						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>SCRIPT1009</label>
+						<label>$ADDON[script.mbox 1009]</label>
 						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
 						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
 						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
@@ -6949,7 +6956,7 @@ Search for window name
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+					<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -6960,7 +6967,7 @@ Search for window name
 					<posy>-84</posy>
 					<width>120</width>
 					<height>40</height>
-					<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+					<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<textcolor>grey2</textcolor>
@@ -7009,7 +7016,7 @@ Search for window name
 				 	<height>86</height>
 					<font>METF_PlotTextSmall</font>
 					<textcolor>white</textcolor>
-					<label>SCRIPT1030</label>
+					<label>$ADDON[script.mbox 1030]</label>
 					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				</control>
 
@@ -7182,7 +7189,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003500).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003500).CurrentPage]/$INFO[Container(1003500).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),channel) </visible>
 			</control>
 
@@ -7198,7 +7205,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003510).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003510).CurrentPage]/$INFO[Container(1003510).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)</visible>
 			</control>
 
@@ -7214,7 +7221,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3702000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(3702000).CurrentPage]/$INFO[Container(3702000).NumPages][/COLOR])</label>
 				<!--label>([COLOR=blue]$INFO[Window.Property(GridSelectedPosition)] / $INFO[Window.Property(GridNumItems)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Window.Property(GridCurrentPage)]/$INFO[Window.Property(GridNumPages)][/COLOR])</label-->
 				<visible>substring(Window.Property(EPGMode), grid)</visible>
 			</control>
@@ -7283,7 +7290,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1101</label>
+					<label>$ADDON[script.mbox 1101]</label>
 				</control>
 			</control>
 
@@ -7307,7 +7314,7 @@ Search for window name
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
-					<label>SCRIPT1139</label>
+					<label>$ADDON[script.mbox 1139]</label>
 				</control>
 			</control>
 
@@ -7357,7 +7364,7 @@ Search for window name
 						<posx>0</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
-						<label>SCRIPT1021</label>
+						<label>$ADDON[script.mbox 1021]</label>
 						<onleft>1003610</onleft>
 						<onright>1003610</onright>
 						<onup>1003610</onup>
@@ -7429,7 +7436,7 @@ Search for window name
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(1003610).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003610).CurrentPage]/$INFO[Container(1003610).NumPages][/COLOR])</label>
 			</control>
 		</control>
 
@@ -7586,7 +7593,7 @@ Search for window name
 						<textcolor>WeatherHeading</textcolor>
 <!--						<align>left</align>-->
 						<width>550</width>
-						<label>SCRIPT1101</label>
+						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
 			</control>
@@ -7663,7 +7670,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1119] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
@@ -7672,7 +7679,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -7681,7 +7688,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -7690,7 +7697,7 @@ Search for window name
 				<posy>330</posy>
 				<width>500</width>
 				<font>METF_TitleTextMedium</font>
-				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
@@ -7856,7 +7863,7 @@ Search for window name
 							<textcolor>white</textcolor>
 							<font>METF_DialogVerySmall</font>
 							<align>left</align>
-							<label>SCRIPT1204</label>
+							<label>$ADDON[script.mbox 1204]</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7878,7 +7885,7 @@ Search for window name
 							<textcolor>white</textcolor>
 							<font>METF_DialogVerySmall</font>
 							<align>left</align>
-							<label>SCRIPT1003</label>
+							<label>$ADDON[script.mbox 1003]</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7900,7 +7907,7 @@ Search for window name
 							<textcolor>white</textcolor>
 							<font>METF_DialogVerySmall</font>
 							<align>left</align>
-							<label>SCRIPT1205</label>
+							<label>$ADDON[script.mbox 1205]</label>
 						</control>
 					</control>
 					<control type="group">
@@ -7922,7 +7929,7 @@ Search for window name
 							<textcolor>white</textcolor>
 							<font>METF_DialogVerySmall</font>
 							<align>left</align>
-							<label>SCRIPT1206</label>
+							<label>$ADDON[script.mbox 1206]</label>
 						</control>
 					</control>
 				</control>
@@ -8083,7 +8090,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>center</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 
@@ -8213,7 +8220,7 @@ Search for window name
 					<scroll>false</scroll>
 					<align>center</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
 				</control>
 			</control>
@@ -8296,7 +8303,7 @@ Search for window name
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
+						<label>[I]$ADDON[script.mbox 1014] [/I]</label>
 						<visible>Control.IsVisible(1002003)</visible>
 					</control>
 					<control type="label" id="1002005">
@@ -8305,7 +8312,7 @@ Search for window name
 						<width>425</width>
 						<height>30</height>
 						<font>METF_HeadingDetails</font>
-						<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+						<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
@@ -8317,7 +8324,7 @@ Search for window name
 						<width>425</width>
 						<height>30</height>
 						<font>METF_HeadingDetails</font>
-						<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+						<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
@@ -8329,7 +8336,7 @@ Search for window name
 						<width>425</width>
 						<height>30</height>
 						<font>METF_HeadingDetails</font>
-						<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+						<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
@@ -8507,7 +8514,7 @@ Search for window name
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
-					<label>SCRIPT1031</label>
+					<label>$ADDON[script.mbox 1031]</label>
 					<align>left</align>
 					<textcolor>red</textcolor>
 					<shadowcolor>black</shadowcolor>
@@ -8574,7 +8581,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -8586,7 +8593,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -8598,7 +8605,7 @@ Search for window name
 				<width>200</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -8648,7 +8655,7 @@ Search for window name
 				<textcolor>WeatherHeading</textcolor>
 				<width>550</width>
 <!--				<align>left</align>-->
-				<label>SCRIPT1101</label>
+				<label>$ADDON[script.mbox 1101]</label>
 			</control>
 		</control>
 

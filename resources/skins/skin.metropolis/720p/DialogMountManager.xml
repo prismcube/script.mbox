@@ -6,7 +6,7 @@
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
             <include>DefaultDialogCloseEffect</include>
-			<control type="image" id="9001">
+<!--			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -14,7 +14,7 @@
 				<height>400</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image" id="9001">
 				<posx>-16</posx>
 				<posy>-50</posy>
 				<width>643</width>
@@ -29,7 +29,7 @@
 			</control>
 			<control type="group" id="9000">
 				<posx>40</posx>
-				<posy>-20</posy>
+				<posy>-30</posy>
 				<include>DialogInput03</include>
 				<include>DialogInput02</include>
 <!--				<control type="image">
@@ -47,7 +47,7 @@
 					<include>DialogSpinEx02</include>
 					<!--include>DialogInput04</include-->
 					<control type="group">
-						<posx>0</posx>
+						<posx>-20</posx>
 						<posy>272</posy>
 						<control type="group" id="300">
 							<posx>0</posx>
@@ -58,8 +58,13 @@
 								<posy>15</posy>
 								<width>100</width>
 								<height>16</height>
-								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+-->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<lefttexture>osd/osd_progress_left3.png</lefttexture>
+								<midtexture>osd/osd_progress_mid3.png</midtexture>
+								<righttexture>osd/osd_progress_right3.png</righttexture>
+								<colordiffuse>DialogProgressBar</colordiffuse>
 							</control>
 							<control type="label" id="302">
 								<posx>105</posx>

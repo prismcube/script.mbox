@@ -101,7 +101,7 @@
 					</control>
 				</control>
 				<control type="group">
-					<posx>-20</posx>
+					<posx>-17</posx>
 					<posy>40</posy>
 
 					<!-- OK/Cancel -->

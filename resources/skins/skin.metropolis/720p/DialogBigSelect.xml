@@ -69,7 +69,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>WeatherHeading</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(9001).CurrentPage]/$INFO[Container(9001).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(9001).CurrentPage]/$INFO[Container(9001).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(9001)</visible>
 			</control>
 			<!-- ok button -->
@@ -78,7 +78,7 @@
 				<posy>490</posy>
 				<width>230</width>
 				<height>40</height>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<font>METF_DialogLargeBold</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>DialogTextFO</focusedcolor>
@@ -112,7 +112,7 @@
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
 <!--					<shadowcolor>black</shadowcolor>-->
-					<label>SCRIPT1138</label>
+					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
 			<control type="list" id="9001">

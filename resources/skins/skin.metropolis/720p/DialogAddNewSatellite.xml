@@ -31,7 +31,7 @@
 				<include>DialogInput02</include>
 				<include>DialogSpinEx02</include>
 				<control type="group">
-					<posx>-20</posx>
+					<posx>-17</posx>
 					<posy>-13</posy>
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>

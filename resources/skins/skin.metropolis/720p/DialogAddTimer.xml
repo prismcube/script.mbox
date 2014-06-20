@@ -90,7 +90,7 @@
 
 			<control type="button" id="200">
 				<description>Yes button</description>
-				<posx>70</posx>
+				<posx>340</posx>
 				<posy>215</posy>
 				<width>230</width>
 				<height>40</height>
@@ -103,12 +103,12 @@
 -->				<texturefocus>ButtonFO2.png</texturefocus>
 				<onleft>202</onleft>
 				<onright>202</onright>
-				<label>[B]$LOCALIZE[SCRIPT1109][/B]</label>
+				<label>[B]$ADDON[script.mbox 1109][/B]</label>
 			</control>
 
 			<control type="button" id="202">
 				<description>Cancel button</description>
-				<posx>340</posx>
+				<posx>70</posx>
 				<posy>215</posy>
 				<width>230</width>
 				<height>40</height>
@@ -121,7 +121,7 @@
 -->				<texturefocus>ButtonFO2.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<label>[B]$LOCALIZE[SCRIPT1026][/B]</label>
+				<label>[B]$ADDON[script.mbox 1026][/B]</label>
 			</control>
 		</control>
 	</controls>

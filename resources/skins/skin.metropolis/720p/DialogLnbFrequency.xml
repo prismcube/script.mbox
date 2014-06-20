@@ -33,6 +33,7 @@
 				<include>DialogInput02</include>
 				<include>DialogInput03</include>
 				<control type="group">
+					<posx>-17</posx>
 					<posy>-13</posy>
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>

@@ -74,7 +74,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>FFc89008</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
 			<control type="label">
@@ -87,7 +87,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>FFc89008</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
 				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
 

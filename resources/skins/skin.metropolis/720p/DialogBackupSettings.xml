@@ -91,7 +91,7 @@
 				-->
 				<control type="button" id="1006997">
 					<description>Yes button</description>
-					<posx>70</posx>
+					<posx>340</posx>
 					<posy>192</posy>
 					<width>230</width>
 					<height>40</height>
@@ -109,7 +109,7 @@
 				</control>
 				<control type="button" id="1006999">
 					<description>Cancel button</description>
-					<posx>340</posx>
+					<posx>70</posx>
 					<posy>192</posy>
 					<width>230</width>
 					<height>40</height>
