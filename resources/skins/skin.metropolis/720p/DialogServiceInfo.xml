@@ -7,25 +7,25 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
 			<posx>345</posx>
-			<posy>130</posy>
-			<control type="image">
+			<posy>80</posy>
+<!--			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>590</width>
 				<height>360</height>
 				<texture border="20">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image">
 				<posx>-5</posx>
-				<posy>-12</posy>
+				<posy>44</posy>
 				<width>605</width>
-				<height>380</height>
+				<height>370</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posx>15</posx>
-				<posy>15</posy>
+				<posx>25</posx>
+				<posy>-480</posy>
 				<control type="label" id="400">
 					<description>Video PID</description>
 					<posx>30</posx>
@@ -38,7 +38,7 @@
 				<control type="label" id="401">
 					<description>Audio PID</description>
 					<posx>30</posx>
-					<posy>60</posy>
+					<posy>90</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -47,7 +47,7 @@
 				<control type="label" id="402">
 					<description>PCR PID</description>
 					<posx>30</posx>
-					<posy>90</posy>
+					<posy>150</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -56,7 +56,7 @@
 				<control type="label" id="403">
 					<description>TSID</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>210</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -65,7 +65,7 @@
 				<control type="label" id="404">
 					<description>ONID</description>
 					<posx>30</posx>
-					<posy>150</posy>
+					<posy>270</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -74,7 +74,7 @@
 				<control type="label" id="405">
 					<description>SID</description>
 					<posx>30</posx>
-					<posy>180</posy>
+					<posy>330</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -83,7 +83,7 @@
 				<control type="label" id="500">
 					<description>Strength</description>
 					<posx>30</posx>
-					<posy>210</posy>
+					<posy>390</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -92,7 +92,7 @@
 				<control type="label" id="501">
 					<description>Quality</description>
 					<posx>30</posx>
-					<posy>240</posy>
+					<posy>450</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -101,7 +101,7 @@
 				<control type="label" id="502">
 					<description>Resolution</description>
 					<posx>30</posx>
-					<posy>270</posy>
+					<posy>510</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -110,7 +110,7 @@
 				<control type="label" id="503">
 					<description>Audio</description>
 					<posx>30</posx>
-					<posy>300</posy>
+					<posy>570</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -119,8 +119,8 @@
 			</control>
 
 			<control type="group">
-				<posx>370</posx>
-				<posy>15</posy>
+				<posx>360</posx>
+				<posy>-480</posy>
 				<control type="label" id="4000">
 					<description>Video PID</description>
 					<posx>30</posx>
@@ -134,7 +134,7 @@
 				<control type="label" id="4001">
 					<description>Audio PID</description>
 					<posx>30</posx>
-					<posy>60</posy>
+					<posy>90</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -144,7 +144,7 @@
 				<control type="label" id="4002">
 					<description>PCR PID</description>
 					<posx>30</posx>
-					<posy>90</posy>
+					<posy>150</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -154,7 +154,7 @@
 				<control type="label" id="4003">
 					<description>TSID</description>
 					<posx>30</posx>
-					<posy>120</posy>
+					<posy>210</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -164,7 +164,7 @@
 				<control type="label" id="4004">
 					<description>ONID</description>
 					<posx>30</posx>
-					<posy>150</posy>
+					<posy>270</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -174,7 +174,7 @@
 				<control type="label" id="4005">
 					<description>SID</description>
 					<posx>30</posx>
-					<posy>180</posy>
+					<posy>330</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -184,7 +184,7 @@
 				<control type="label" id="5000">
 					<description>Strength</description>
 					<posx>30</posx>
-					<posy>210</posy>
+					<posy>390</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -194,7 +194,7 @@
 				<control type="label" id="5001">
 					<description>Quality</description>
 					<posx>30</posx>
-					<posy>240</posy>
+					<posy>450</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -204,7 +204,7 @@
 				<control type="label" id="5002">
 					<description>Resolution</description>
 					<posx>30</posx>
-					<posy>270</posy>
+					<posy>510</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>
@@ -214,7 +214,7 @@
 				<control type="label" id="5003">
 					<description>Audio</description>
 					<posx>30</posx>
-					<posy>300</posy>
+					<posy>570</posy>
 					<font>METF_MediaDetailsSmall</font>
 					<label></label>
 					<align>left</align>

@@ -44,7 +44,7 @@
 -->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>SCRIPT1089</label>
+					<label>$ADDON[script.mbox 1089]</label>
 					<onup>1006997</onup>
 					<ondown>1007464</ondown>
 				</control>
@@ -65,7 +65,7 @@
 -->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>SCRIPT1090</label>
+					<label>$ADDON[script.mbox 1090]</label>
 					<onup>1007463</onup>
 					<ondown>1007465</ondown>
 				</control>
@@ -86,13 +86,13 @@
 -->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
-					<label>SCRIPT1126</label>
+					<label>$ADDON[script.mbox 1126]</label>
 					<onup>1007464</onup>
 					<ondown>1006997</ondown>
 				</control>
 				<control type="button" id="1006997">
 					<description>Yes button</description>
-					<posx>70</posx>
+					<posx>340</posx>
 					<posy>215</posy>
 					<width>230</width>
 					<height>40</height>
@@ -110,7 +110,7 @@
 				</control>
 				<control type="button" id="1006999">
 					<description>Cancel button</description>
-					<posx>340</posx>
+					<posx>70</posx>
 					<posy>215</posy>
 					<width>230</width>
 					<height>40</height>
