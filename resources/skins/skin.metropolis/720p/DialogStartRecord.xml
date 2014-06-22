@@ -6,7 +6,7 @@
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -14,24 +14,24 @@
 				<height>420</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
--->			<control type="image" id="9001">
-				<posx>-10</posx>
-				<posy>-18</posy>
-				<width>630</width>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-14</posy>
+				<width>622</width>
 				<height>474</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>35</posx>
+				<posx>30</posx>
 				<!-- Recording Name -->
 				<control type="label" id ="101">
 					<posx>0</posx>
-					<posy>-15</posy>
+					<posy>0</posy>
 					<width>550</width>
 					<height>40</height>
-					<font>METF_InfoTextLarger</font>
+					<font>font13</font>
 					<textcolor>white</textcolor>
 					<align>center</align>
 					<aligny>center</aligny>
@@ -52,14 +52,14 @@
 				<include>DialogInput06</include>
 				<control type="group">
 					<posx>-10</posx>
-					<posy>295</posy>
+					<posy>310</posy>
 					<control type="group" id="300">
-						<posx>-20</posx>
+						<posx>0</posx>
 						<posy>0</posy>
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
 						<control type="progress" id="301">
 							<description>Progressbar</description>
-							<posx>-20</posx>
+							<posx>0</posx>
 							<posy>15</posy>
 							<width>100</width>
 							<height>16</height>
@@ -67,7 +67,7 @@
 							<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
 						</control>
 						<control type="label" id="302">
-							<posx>85</posx>
+							<posx>105</posx>
 							<posy>2</posy>
 							<width>150</width>
 							<height>40</height>
@@ -78,7 +78,7 @@
 							<font>METF_DialogSmall</font>
 						</control>
 						<control type="image">
-							<posx>-50</posx>
+							<posx>-30</posx>
 							<posy>10</posy>
 							<width>25</width>
 							<height>25</height>
@@ -86,7 +86,7 @@
 							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
 						</control>
 						<control type="image">
-							<posx>-50</posx>
+							<posx>-30</posx>
 							<posy>10</posy>
 							<width>25</width>
 							<height>25</height>
@@ -96,8 +96,8 @@
 					</control>
 				</control>
 				<control type="group">
-					<posx>-14</posx>
-					<posy>-23</posy>
+					<posx>0</posx>
+					<posy>10</posy>
 					<!-- OK/Cancel -->
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>

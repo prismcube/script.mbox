@@ -142,7 +142,7 @@
 <!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
 -->				<texturefocus>ButtonFO2.png</texturefocus>
-				<label>$ADDON[script.mbox 1022]</label>
+				<label>SCRIPT1022</label>
 			</control>
 		</control>
 	</controls>

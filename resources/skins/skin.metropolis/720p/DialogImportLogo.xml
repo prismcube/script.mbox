@@ -35,7 +35,7 @@
 		<control type="label" id="102">
 			<description>header label</description>
 			<posx>40</posx>
-			<posy>22</posy>
+			<posy>20</posy>
 			<width>720</width>
 			<height>30</height>
 			<font>METF_Menu</font>
@@ -47,7 +47,7 @@
 		<control type="button">
 			<description>Close Window button</description>
 			<posx>735</posx>
-			<posy>22</posy>
+			<posy>20</posy>
 			<width>25</width>
 			<height>25</height>
 			<label>-</label>
@@ -187,11 +187,11 @@
 			</control>
 		</control>
 		<control type="group" id="9001">
-			<posx>80</posx>
-			<posy>432</posy>
+			<posx>190</posx>
+			<posy>435</posy>
 			<control type="button" id="118">
 				<description>Ok Button</description>
-				<posx>340</posx>
+				<posx>0</posx>
 				<posy>0</posy>
 				<width>230</width>
 				<height>40</height>
@@ -212,7 +212,7 @@
 			</control>
 			<control type="button" id="119">
 				<description>Cancel Button</description>
-				<posx>70</posx>
+				<posx>210</posx>
 				<posy>0</posy>
 				<width>230</width>
 				<height>40</height>
@@ -221,7 +221,7 @@
 <!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
 -->				<texturefocus>ButtonFO2.png</texturefocus>
-				<label>$ADDON[script.mbox 1026]</label>
+				<label>$LOCALIZE[SCRIPT1026]</label>
 				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>
 				<onleft>118</onleft>

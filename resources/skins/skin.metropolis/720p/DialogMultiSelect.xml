@@ -5,9 +5,9 @@
 	<controls>
 		<control type="group" id="3900">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
-			<posx>330</posx>
-			<posy>60</posy>
-<!--			<control type="image">
+			<posx>350</posx>
+			<posy>50</posy>
+			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -22,25 +22,17 @@
 				<height>40</height>
 				<!--aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture-->
-<!--				<texture>dialogheader.png</texture>
-			</control>
--->			<control type="image">
-				<posx>-15</posx>
-				<posy>-43</posy>
-				<width>670</width>
-				<height>650</height>
-				<texture>frames/Menu_Glass2c.png</texture>
-				<colordiffuse>DialogBackgroundColor</colordiffuse>
+				<texture>dialogheader.png</texture>
 			</control>
 			<control type="button" id="3901">
 				<description>Close Window button</description>
-				<posx>580</posx>
-				<posy>10</posy>
-				<width>25</width>
-				<height>25</height>
+				<posx>540</posx>
+				<posy>15</posy>
+				<width>64</width>
+				<height>32</height>
 				<font>-</font>
-				<texturefocus>new/exitbuttonFO.png</texturefocus>
-				<texturenofocus>new/exitbutton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>3904</onup>
@@ -49,47 +41,46 @@
 			<control type="label" id="3902">
 				<description>header label</description>
 				<posx>20</posx>
-				<posy>10</posy>
+				<posy>20</posy>
 				<width>570</width>
 				<height>30</height>
-				<font>METF_Menu</font>
+				<font>font13_title</font>
 				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
+				<textcolor>selected</textcolor>
+				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="label" id="3903">
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>$INFO[Control.GetLabel]</label>
 				<visible>false</visible>
 			</control>
 			<control type="group">
 				<control type="label">
 					<posx>600</posx>
-					<posy>467</posy>
-					<width>400</width>
+					<posy>577</posy>
+					<width>300</width>
 					<height>35</height>
-					<font>METF_HeadingDetails</font>
+					<font>font12</font>
 					<align>right</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
-					<textcolor>FFc89008</textcolor>
-					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003950).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages][/COLOR])</label>
+					<textcolor>grey</textcolor>
+					<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003950).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages][/COLOR])</label>
 				</control>
 			</control>
 			<control type="button" id="3904">
-				<posx>30</posx>
-				<posy>505</posy>
-				<width>230</width>
-				<height>40</height>
-				<label>$ADDON[script.mbox 1022]</label>
-				<font>METF_DialogLargeBold</font>
+				<posx>20</posx>
+				<posy>585</posy>
+				<width>200</width>
+				<height>35</height>
+				<label>SCRIPT1022</label>
+				<font>font12_title</font>
 				<textcolor>white</textcolor>
-				<focusedcolor>DialogTextFO</focusedcolor>
+				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-<!--				<texturenofocus>MenuItemNF.png</texturenofocus>
+				<texturenofocus>MenuItemNF.png</texturenofocus>
 				<texturefocus>button-focus.png</texturefocus>
--->				<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>1003950</onup>
@@ -97,8 +88,8 @@
 			</control>
 			<!-- left key comment -->
 			<control type="group">
-				<posx>30</posx>
-				<posy>545</posy>
+				<posx>20</posx>
+				<posy>620</posy>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -111,12 +102,12 @@
 					<posy>0</posy>
 					<width>570</width>
 					<height>30</height>
-					<font>METF_DialogSmall</font>
+					<font>font10</font>
 					<align>left</align>
 					<scroll>true</scroll>
-					<textcolor>white</textcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
-					<label>$ADDON[script.mbox 1138]</label>
+					<textcolor>grey3</textcolor>
+					<shadowcolor>black</shadowcolor>
+					<label>SCRIPT1138</label>
 				</control>
 			</control>
 			<include>DefaultSelectList</include>

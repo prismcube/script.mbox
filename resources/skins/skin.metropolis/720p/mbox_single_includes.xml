@@ -429,7 +429,6 @@
 	<include name="DefaultSettingDialogButtonOKCancel">
 		<control type="button" id="1006997">
 			<description>Yes button</description>
-			<posx>100</posx>
 			<width>230</width>
 			<height>40</height>
 			<font>METF_DialogLargeBold</font>
@@ -444,7 +443,6 @@
 		</control>
 		<control type="button" id="1006999">
 			<description>Cancel button</description>
-			<posx>0</posx>
 			<width>230</width>
 			<height>40</height>
 			<font>METF_DialogLargeBold</font>
@@ -6838,9 +6836,9 @@
 	<include name="DefaultSelectList">
 		<control type="list" id="1003950">
 			<posx>20</posx>
-			<posy>47</posy>
+			<posy>57</posy>
 			<width>570</width>
-			<height>401</height>
+			<height>521</height>
 			<onleft>3904</onleft>
 			<onright>1003951</onright>
 			<onup>1003950</onup>
@@ -6852,132 +6850,12 @@
 			<visible>true</visible>
 			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
 			<itemlayout height="40" width="580">
-<!--				<control type="image">
+				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>590</width>
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
-				</control>
--->				<!-- is skip? -->
-				<control type="image">
-					<posx>485</posx>
-					<posy>13</posy>
-					<width>26</width>
-					<height>18</height>
-					<texture>DI_Skip1g.png</texture>
-					<visible>substring(ListItem.Property(iSkip),true)</visible>
-				</control>
-				<!-- is hd? -->
-				<control type="image">
-					<posx>513</posx>
-					<posy>12</posy>
-					<width>24</width>
-					<height>18</height>
-					<texture>IconHD1g.png</texture>
-					<visible>substring(ListItem.Property(iHD),true)</visible>
-				</control>
-				<!-- is cas? -->
-				<control type="image">
-					<posx>540</posx>
-					<posy>12</posy>
-					<width>26</width>
-					<height>18</height>
-					<texture>IconCas1g.png</texture>
-					<visible>substring(ListItem.Property(iCas),true)</visible>
-				</control>
-				<!-- is lock? -->
-				<control type="image">
-					<posx>4</posx>
-					<posy>9</posy>
-					<width>35</width>
-					<height>25</height>
-					<texture>OverlayLocked.png</texture>
-					<visible>substring(ListItem.Property(iLock),true)</visible>
-				</control>
-				<!-- is mark? -->
-				<control type="image">
-					<posx>-3</posx>
-					<posy>10</posy>
-					<width>20</width>
-					<height>20</height>
-					<texture>OverlayWatched.png</texture>
-					<visible>substring(ListItem.Property(iMark),true)</visible>
-				</control>
-				<!-- is recording? -->
-				<control type="image">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>30</width>
-					<height>30</height>
-					<texture>IconPlateRec.png</texture>
-					<visible>substring(ListItem.Property(iRec),true)</visible>
-				</control>
-				<control type="label">
-					<posx>30</posx>
-					<posy>0</posy>
-					<width>60</width>
-					<height>40</height>
-					<font>METF_MediaDetailsSmall</font>
-					<textcolor>white</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-				</control>
-				<!-- is Align < 10,000 ? -->
-				<control type="label">
-					<posx>90</posx>
-					<posy>0</posy>
-					<width>350</width>
-					<height>40</height>
-					<font>METF_PlotText</font>
-					<textcolor>white</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label2]</label>
-					<visible>substring(ListItem.Property(iAlign),false)</visible>
-				</control>
-				<!-- is Align > 10,000 ? -->
-				<control type="label">
-					<posx>100</posx>
-					<posy>0</posy>
-					<width>350</width>
-					<height>40</height>
-					<font>METF_PlotText</font>
-					<textcolor>white</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label2]</label>
-					<visible>substring(ListItem.Property(iAlign),true)</visible>
-				</control>
-				<control type="label">
-					<posx>440</posx>
-					<posy>0</posy>
-					<width>100</width>
-					<height>40</height>
-					<font>METF_PlotText</font>
-					<textcolor>white</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Property(iHDLabel)]</label>
-				</control>
-			</itemlayout>
-			<focusedlayout height="40" width="580">
-<!--				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>590</width>
-					<height>41</height>
-					<texture border="0,2,0,2">MenuItemNF.png</texture>
-				</control>
--->				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>570</width>
-					<height>41</height>
-<!--					<texture border="0,2,0,2">MenuItemFO.png</texture>-->
-					<texture border="1">ButtonFO2Wide.png</texture>
 				</control>
 				<!-- is skip? -->
 				<control type="image">
@@ -7038,7 +6916,126 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>METF_PlotText</font>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+				</control>
+				<!-- is Align < 10,000 ? -->
+				<control type="label">
+					<posx>90</posx>
+					<posy>0</posy>
+					<width>350</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),false)</visible>
+				</control>
+				<!-- is Align > 10,000 ? -->
+				<control type="label">
+					<posx>100</posx>
+					<posy>0</posy>
+					<width>350</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+					<visible>substring(ListItem.Property(iAlign),true)</visible>
+				</control>
+				<control type="label">
+					<posx>440</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Property(iHDLabel)]</label>
+				</control>
+			</itemlayout>
+			<focusedlayout height="40" width="580">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>590</width>
+					<height>41</height>
+					<texture border="0,2,0,2">MenuItemNF.png</texture>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>580</width>
+					<height>41</height>
+					<texture border="0,2,0,2">MenuItemFO.png</texture>
+				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>485</posx>
+					<posy>13</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>DI_Skip1g.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
+				</control>
+				<!-- is hd? -->
+				<control type="image">
+					<posx>513</posx>
+					<posy>12</posy>
+					<width>24</width>
+					<height>18</height>
+					<texture>IconHD1g.png</texture>
+					<visible>substring(ListItem.Property(iHD),true)</visible>
+				</control>
+				<!-- is cas? -->
+				<control type="image">
+					<posx>540</posx>
+					<posy>12</posy>
+					<width>26</width>
+					<height>18</height>
+					<texture>IconCas1g.png</texture>
+					<visible>substring(ListItem.Property(iCas),true)</visible>
+				</control>
+				<!-- is lock? -->
+				<control type="image">
+					<posx>4</posx>
+					<posy>9</posy>
+					<width>35</width>
+					<height>25</height>
+					<texture>OverlayLocked.png</texture>
+					<visible>substring(ListItem.Property(iLock),true)</visible>
+				</control>
+				<!-- is mark? -->
+				<control type="image">
+					<posx>-3</posx>
+					<posy>10</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture>OverlayWatched.png</texture>
+					<visible>substring(ListItem.Property(iMark),true)</visible>
+				</control>
+				<!-- is recording? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>IconPlateRec.png</texture>
+					<visible>substring(ListItem.Property(iRec),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>60</width>
+					<height>40</height>
+					<font>font13</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7051,7 +7048,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>METF_PlotText</font>
+					<font>font13</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7065,7 +7062,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>METF_PlotText</font>
+					<font>font13</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7078,8 +7075,8 @@
 					<posy>0</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>METF_PlotText</font>
-					<textcolor>white</textcolor>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Property(iHDLabel)]</label>
@@ -7090,7 +7087,7 @@
 			<posx>590</posx>
 			<posy>65</posy>
 			<width>25</width>
-			<height>401</height>
+			<height>521</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

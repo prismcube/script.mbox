@@ -7,14 +7,14 @@
 			<posx>480</posx>
 			<posy>145</posy>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image">
+			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>320</width>
 				<height>430</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
--->			<control type="image">
+			<control type="image">
 				<posx>-20</posx>
 				<posy>-5</posy>
 				<width>360</width>

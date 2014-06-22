@@ -8,7 +8,7 @@
 			<posx>340</posx>
 			<posy>235</posy>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -16,7 +16,7 @@
 				<height>230</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
--->			<control type="image" id="9001">
+			<control type="image">
 				<posx>-20</posx>
 				<posy>-85</posy>
 				<width>640</width>
@@ -42,7 +42,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
-				<label>'Automatic Power Down'<label>
 <!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="200">
@@ -54,7 +53,6 @@
 				<align>center</align>				
 				<aligny>center</aligny>
 				<font>METF_PlotText</font>
-				<label>'Start automatic power down after %s sec'</label>
 			</control>
 			<control type="button" id="301">
 				<description>OK button</description>
