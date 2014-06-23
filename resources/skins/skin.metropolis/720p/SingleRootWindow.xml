@@ -1343,11 +1343,11 @@ Search for window name
 							<control type="progress">
 								<posx>8</posx>
 								<posy>20</posy>
-								<width>80</width>
+								<width>81</width>
 								<height>10</height>
 <!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 								<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
--->								<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+-->								<texturebg>osd/osd_progress_back3.png</texturebg>
 								<lefttexture>osd/osd_progress_left3.png</lefttexture>
 								<midtexture>osd/osd_progress_mid3.png</midtexture>
 								<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1377,7 +1377,7 @@ Search for window name
 								<description>Channel Name</description>
 								<posx>90</posx>
 								<posy>0</posy>
-								<width>550</width>
+								<width>540</width>
 								<height>40</height>
 								<font>METF_HomeMenuSmall</font>
 								<textcolor>white</textcolor>
@@ -1391,7 +1391,7 @@ Search for window name
 								<description>Channel Name</description>
 								<posx>100</posx>
 								<posy>0</posy>
-								<width>540</width>
+								<width>530</width>
 								<height>40</height>
 								<font>METF_HomeMenuSmall</font>
 								<textcolor>white</textcolor>
@@ -1536,11 +1536,11 @@ Search for window name
 								<control type="progress">
 									<posx>8</posx>
 									<posy>20</posy>
-									<width>80</width>
+									<width>81</width>
 									<height>10</height>
 <!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
--->									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+-->									<texturebg>osd/osd_progress_back3.png</texturebg>
 									<lefttexture>osd/osd_progress_left3.png</lefttexture>
 									<midtexture>osd/osd_progress_mid3.png</midtexture>
 									<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1570,7 +1570,7 @@ Search for window name
 									<description>Channel Name</description>
 									<posx>90</posx>
 									<posy>0</posy>
-									<width>550</width>
+									<width>540</width>
 									<height>40</height>
 									<font>METF_HomeMenuSmall</font>
 									<textcolor>white</textcolor>
@@ -1585,7 +1585,7 @@ Search for window name
 									<description>Channel Name</description>
 									<posx>100</posx>
 									<posy>0</posy>
-									<width>540</width>
+									<width>530</width>
 									<height>40</height>
 									<font>METF_HomeMenuSmall</font>
 									<textcolor>white</textcolor>
@@ -1671,11 +1671,11 @@ Search for window name
 								<control type="progress">
 									<posx>8</posx>
 									<posy>20</posy>
-									<width>80</width>
+									<width>81</width>
 									<height>10</height>
 <!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
--->									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+-->									<texturebg>osd/osd_progress_back3.png</texturebg>
 									<lefttexture>osd/osd_progress_left3.png</lefttexture>
 									<midtexture>osd/osd_progress_mid3.png</midtexture>
 									<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1704,7 +1704,7 @@ Search for window name
 									<description>Channel Name</description>
 									<posx>90</posx>
 									<posy>0</posy>
-									<width>550</width>
+									<width>540</width>
 									<height>40</height>
 									<font>METF_HomeMenuSmall</font>
 									<textcolor>white</textcolor>
@@ -1719,7 +1719,7 @@ Search for window name
 									<description>Channel Name</description>
 									<posx>100</posx>
 									<posy>0</posy>
-									<width>540</width>
+									<width>530</width>
 									<height>40</height>
 									<font>METF_HomeMenuSmall</font>
 									<textcolor>white</textcolor>
@@ -1933,7 +1933,7 @@ Search for window name
 					<control type="group">
 						<posx>0</posx>
 						<posy>240</posy>
-<!--						<visible>substring(Window.Property(iLock),True)</visible>-->
+						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>-2</posx>
 							<posy>0</posy>
@@ -2197,9 +2197,9 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<control type="group">
 					<control type="image">
-	                    <posx>-500</posx>
+	                    <posx>-558</posx>
 	                    <posy>50</posy>
-	                    <width>490</width>
+	                    <width>540</width>
 	                    <height>620</height>
 						<texture>frames/Menu_Glass2b.png</texture>
 						<colordiffuse>DialogBackgroundColor</colordiffuse>
@@ -2250,6 +2250,7 @@ Search for window name
 						<width>250</width>
 						<textoffsetx>10</textoffsetx>
 						<textwidth>215</textwidth>
+						<align>left</align>
 						<aligny>center</aligny>
 						<font>METF_SettingsDetail</font>
 						<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -2353,7 +2354,7 @@ Search for window name
 					<control type="grouplist" id="1300200">
 						<posx>-25</posx>
 						<posy>450</posy>
-						<width>260</width>
+						<width>265</width>
 						<height>90</height>
 						<align>center</align>
 						<onleft>1300049</onleft>
@@ -2365,13 +2366,14 @@ Search for window name
 						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 						<control type="group">
 							<height>40</height>
-							<width>260</width>
+							<width>265</width>
 							<control type="button" id="1300201">
 								<description>Search</description>
 								<posx>25</posx>
 								<posy>0</posy>
 								<height>40</height>
-								<width>260</width>
+								<width>265</width>
+								<align>left</align>
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
@@ -2388,13 +2390,14 @@ Search for window name
 						</control>
 						<control type="group">
 							<height>40</height>
-							<width>260</width>
+							<width>265</width>
 							<control type="button" id="1300202">
 								<description>Misc option</description>
 								<posx>25</posx>
 								<posy>0</posy>
 								<height>40</height>
-								<width>260</width>
+								<width>265</width>
+								<align>left</align>
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
@@ -2451,7 +2454,7 @@ Search for window name
 								</control>
 								<!-- is FastScan -->
 								<control type="image">
-									<posx>200</posx>
+									<posx>197</posx>
 									<posy>12</posy>
 									<width>26</width>
 									<height>18</height>
@@ -2461,9 +2464,9 @@ Search for window name
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>190</width>
+									<width>180</width>
 									<height>40</height>
-									<font>METF_MediaDetailsSmall</font>
+									<font>METF_PlotText</font>
 									<textcolor>white</textcolor>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -2482,26 +2485,26 @@ Search for window name
 -->								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
-									<width>237</width>
+									<width>235</width>
 									<height>41</height>
 									<texture border="1">ButtonFO2.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
 								<!-- is FastScan -->
 								<control type="image">
-									<posx>200</posx>
+									<posx>197</posx>
 									<posy>12</posy>
 									<width>26</width>
 									<height>18</height>
-<!--									<visible>substring(ListItem.Property(iFastScan),true)</visible>-->
+									<visible>substring(ListItem.Property(iFastScan),true)</visible>
 									<texture>IconFastScan.png</texture>
 								</control>
 								<control type="label">
 									<posx>10</posx>
 									<posy>0</posy>
-									<width>190</width>
+									<width>180</width>
 									<height>40</height>
-									<font>METF_MediaDetailsSmall</font>
+									<font>METF_PlotText</font>
 									<textcolor>white</textcolor>
 									<selectedcolor>selected</selectedcolor>
 									<shadowcolor>ff000000</shadowcolor>
@@ -2514,7 +2517,7 @@ Search for window name
 
 						<!-- sub main 2 (mode) -->
 						<control type="grouplist" id="1309002">
-							<posx>18</posx>
+							<posx>12</posx>
 							<posy>90</posy>
 							<width>240</width>
 							<height>430</height>
@@ -2594,8 +2597,8 @@ Search for window name
 									<posy>51</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textoffsetx>15</textoffsetx>
+									<textwidth>168</textwidth>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -2615,7 +2618,7 @@ Search for window name
 									<width>237</width>
 									<height>40</height>
 									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textwidth>190</textwidth>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -2654,9 +2657,9 @@ Search for window name
 						</control>
 						<!-- Scrollbar -->
 						<control type="scrollbar" id="1300503">
-							<posx>242</posx>
+							<posx>240</posx>
 							<posy>150</posy>
-							<width>20</width>
+							<width>18</width>
 							<height>401</height>
 							<visible>![Container(1300102).HasFocus(6) | ControlGroup(1300200).HasFocus]</visible>
 							<include>DefaultWindowFade</include>
@@ -6361,7 +6364,7 @@ Search for window name
 
 					<!-- cas -->
 					<control type="group">
-						<posx>-269</posx>
+						<posx>-329</posx>
 						<posy>640</posy>
 						<include>CASInfo</include>
 					</control>
@@ -6853,139 +6856,6 @@ Search for window name
 					</control>
 				</control>
 			</control>
-			
-			<control type="group">
-				<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
-				<control type="group">
-					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>720</height>
-						<texture>black-back_noAlpha.png</texture>
-						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
-					</control>
-					<control type="image">
-						<posx>1</posx>
-						<posy>0</posy>
-						<width>12</width>
-						<height>720</height>
-						<texture>MediaBladeSub_Part2.png</texture>
-						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
-					</control>
-				</control>
-				<control type="group" id="3709001">
-					<posx>-220</posx>
-					<posy>0</posy>
-					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3709001).HasFocus + !Control.HasFocus(3700101)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">WindowClose</animation>
-					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
-
-					<control type="button">
-						<description>Fake button for mouse control</description>
-						<posx>-15</posx>
-						<posy>0</posy>
-						<width>245</width>
-						<height>720</height>
-						<label>-</label>
-						<font>-</font>
-						<texturenofocus>-</texturenofocus>
-						<texturefocus>-</texturefocus>
-						<visible>true</visible>
-					</control>
-
-					<control type="image">
-						<posx>185</posx>
-						<posy>120</posy>
-						<width>40</width>
-						<height>40</height>
-						<texture>MediaSubSet.png</texture>
-					</control>
-					<control type="grouplist" id="3709010">
-						<posx>10</posx>
-						<posy>170</posy>
-						<width>240</width>
-						<height>550</height>
-						<onleft>3709000</onleft>
-						<onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright>
-						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
-						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
-						<onup>3709010</onup>
-						<ondown>3709010</ondown>
-						<itemgap>0</itemgap>
-						<!--control type="radiobutton" id="3700200">
-							<description>Stack Toggle</description>
-							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>$ADDON[script.mbox 1008]</label>
-						</control-->
-						<control type="button" id="3700202">
-							<textwidth>170</textwidth>
-							<include>DefaultButtonMediaSubCommonValues</include>
-							<label>$ADDON[script.mbox 1029]</label>
-						</control>
-					</control>
-				</control>
-				<include>DefaultSideBladeLeft</include>
-<!--				<control type="image">
-					<description>LOGO</description>
-					<posx>-230</posx>
-					<posy>50</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>Confluence_Logo.png</texture>
-				</control>
--->				<control type="group" id="3709000">
-					<posx>-250</posx>
-					<posy>130</posy>
-					<!--
-					<include>CommonNowPlaying</include>
-					-->
-					<control type="button" id="3700100">
-						<description>View As button</description>
-						<posx>0</posx>
-						<posy>0</posy>
-						<include>DefaultButtonCommonValues</include>
-						<label></label>
-						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
-						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
-						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
-						<!--onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright-->
-						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
-						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
-						<onup>3700101</onup>
-						<ondown>3700101</ondown>
-					</control>
-
-					<control type="radiobutton" id="3700101">
-						<description>Extra Options</description>
-						<hitrect x="0" y="120" w="265" h="40" />
-						<posx>0</posx>
-						<posy>40</posy>
-						<include>DefaultButtonCommonValues</include>
-						<radiowidth>18</radiowidth>
-						<radioheight>18</radioheight>
-						<radioposx>222</radioposx>
-						<radioposy>12</radioposy>
-						<textureradiofocus>HomeHasSub.png</textureradiofocus>
-						<textureradionofocus>HomeHasSub.png</textureradionofocus>
-						<label>$ADDON[script.mbox 1009]</label>
-						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
-						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
-						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
-						<onright>3709010</onright>
-						<onup>3700100</onup>
-						<ondown>3700100</ondown>
-						<visible>!substring(Window.Property(EPGMode),search)</visible>						
-					</control>
-
-				</control>
-			</control>
 
 			<control type="group">
 				<include>DefaultWindowFade</include>
@@ -7275,7 +7145,144 @@ Search for window name
 				<!--label>([COLOR=blue]$INFO[Window.Property(GridSelectedPosition)] / $INFO[Window.Property(GridNumItems)][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=blue]$INFO[Window.Property(GridCurrentPage)]/$INFO[Window.Property(GridNumPages)][/COLOR])</label-->
 				<visible>substring(Window.Property(EPGMode), grid)</visible>
 			</control>
-			
+
+			<control type="group">
+				<animation effect="slide" start="0,0" end="260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
+				<control type="group">
+					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+					<animation effect="slide" start="-20,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>40</posy>
+						<width>1</width>
+						<height>580</height>
+<!--						<texture>black-back_noAlpha.png</texture>-->
+						<texture>frames/Menu_Glass2b.png</texture>
+						<colordiffuse>DialogBackgroundColor</colordiffuse>
+						<animation effect="zoom" start="-20,0,0,580" end="-20,0,245,580" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
+					</control>
+<!--					<control type="image">
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>12</width>
+						<height>720</height>
+						<texture>MediaBladeSub_Part2.png</texture>
+						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
+					</control>
+-->				</control>
+				<control type="group" id="3709001">
+					<posx>-217</posx>
+					<posy>0</posy>
+					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(3709001).HasFocus + !Control.HasFocus(3700101)">conditional</animation>
+					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
+					<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">WindowClose</animation>
+					<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">conditional</animation>
+
+					<control type="button">
+						<description>Fake button for mouse control</description>
+						<posx>-15</posx>
+						<posy>0</posy>
+						<width>245</width>
+						<height>720</height>
+						<label>-</label>
+						<font>-</font>
+						<texturenofocus>-</texturenofocus>
+						<texturefocus>-</texturefocus>
+						<visible>true</visible>
+					</control>
+
+					<control type="image">
+						<posx>185</posx>
+						<posy>120</posy>
+						<width>40</width>
+						<height>40</height>
+						<texture>MediaSubSet.png</texture>
+					</control>
+					<control type="grouplist" id="3709010">
+						<posx>10</posx>
+						<posy>170</posy>
+						<width>240</width>
+						<height>550</height>
+						<onleft>3709000</onleft>
+						<onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright>
+						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
+						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
+						<onup>3709010</onup>
+						<ondown>3709010</ondown>
+						<itemgap>0</itemgap>
+						<!--control type="radiobutton" id="3700200">
+							<description>Stack Toggle</description>
+							<textwidth>170</textwidth>
+							<include>DefaultButtonMediaSubCommonValues</include>
+							<label>$ADDON[script.mbox 1008]</label>
+						</control-->
+						<control type="button" id="3700202">
+							<textwidth>170</textwidth>
+							<posx>20</posx>
+							<include>DefaultButtonMediaSubCommonValues</include>
+							<label>$ADDON[script.mbox 1029]</label>
+						</control>
+					</control>
+				</control>
+				<include>DefaultSideBladeLeft</include>
+<!--				<control type="image">
+					<description>LOGO</description>
+					<posx>-230</posx>
+					<posy>50</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>Confluence_Logo.png</texture>
+				</control>
+-->				<control type="group" id="3709000">
+					<posx>-260</posx>
+					<posy>130</posy>
+					<!--
+					<include>CommonNowPlaying</include>
+					-->
+					<control type="button" id="3700100">
+						<description>View As button</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<include>DefaultButtonCommonValues</include>
+						<label></label>
+						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
+						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
+						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
+						<!--onright condition="substring(Window.Property(EPGMode),grid)">3702000</onright-->
+						<onright condition="substring(Window.Property(EPGMode),channel)">1003500</onright>
+						<onright condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onright>
+						<onup>3700101</onup>
+						<ondown>3700101</ondown>
+					</control>
+
+					<control type="radiobutton" id="3700101">
+						<description>Extra Options</description>
+						<hitrect x="0" y="120" w="265" h="40" />
+						<posx>0</posx>
+						<posy>40</posy>
+						<include>DefaultButtonCommonValues</include>
+						<radiowidth>18</radiowidth>
+						<radioheight>18</radioheight>
+						<radioposx>198</radioposx>
+						<radioposy>12</radioposy>
+<!--						<textureradiofocus>HomeHasSub.png</textureradiofocus>
+						<textureradionofocus>HomeHasSub.png</textureradionofocus>
+-->						<textureradiofocus>Arrow2Right.png</textureradiofocus>
+						<textureradionofocus>Arrow2Right.png</textureradionofocus>
+						<label>$ADDON[script.mbox 1009]</label>
+						<!--onleft condition="substring(Window.Property(EPGMode),grid)">3702000</onleft-->
+						<onleft condition="substring(Window.Property(EPGMode),channel)">1003500</onleft>
+						<onleft condition="substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(EPGMode),search)">1003510</onleft>
+						<onright>3709010</onright>
+						<onup>3700100</onup>
+						<ondown>3700100</ondown>
+						<visible>!substring(Window.Property(EPGMode),search)</visible>
+					</control>
+
+				</control>
+			</control>
 		</control>
 		
 
