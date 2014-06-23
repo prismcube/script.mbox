@@ -1344,9 +1344,14 @@ Search for window name
 								<posx>8</posx>
 								<posy>20</posy>
 								<width>80</width>
-								<height>9</height>
-								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+								<height>10</height>
+<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 								<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
+-->								<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+								<lefttexture>osd/osd_progress_left3.png</lefttexture>
+								<midtexture>osd/osd_progress_mid3.png</midtexture>
+								<righttexture>osd/osd_progress_right3.png</righttexture>
+								<colordiffuse>DialogProgressBar</colordiffuse>
 								<progress>percent</progress>
 								<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
 							</control>
@@ -1532,9 +1537,14 @@ Search for window name
 									<posx>8</posx>
 									<posy>20</posy>
 									<width>80</width>
-									<height>9</height>
-									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<height>10</height>
+<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
+-->									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+									<lefttexture>osd/osd_progress_left3.png</lefttexture>
+									<midtexture>osd/osd_progress_mid3.png</midtexture>
+									<righttexture>osd/osd_progress_right3.png</righttexture>
+									<colordiffuse>DialogProgressBar</colordiffuse>
 									<progress>percent</progress>
 									<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
 								</control>
@@ -1662,9 +1672,14 @@ Search for window name
 									<posx>8</posx>
 									<posy>20</posy>
 									<width>80</width>
-									<height>9</height>
-									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+									<height>10</height>
+<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
+-->									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
+									<lefttexture>osd/osd_progress_left3.png</lefttexture>
+									<midtexture>osd/osd_progress_mid3.png</midtexture>
+									<righttexture>osd/osd_progress_right3.png</righttexture>
+									<colordiffuse>DialogProgressBar</colordiffuse>
 									<progress>percent</progress>
 									<visible>substring(Window.Property(ShowExtendInfo),True) + substring(ListItem.Property(iPos),true)</visible>
 								</control>
@@ -1814,18 +1829,23 @@ Search for window name
 							<label></label>
 						</control>
 						<control type="progress" id="1300306">
-							<posx>-199</posx>
-							<posy>-18</posy>
+							<posx>-198</posx>
+							<posy>-19</posy>
 							<width>150</width>
 							<height>15</height>
-							<color>grey</color>
+<!--							<color>grey</color>-->
 							<border>0</border>
-							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 							<lefttexture>-</lefttexture>
 							<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 							<righttexture>-</righttexture>
-							<overlaytexture>-</overlaytexture>
-						</control>
+-->							<overlaytexture>-</overlaytexture>
+							<texturebg border="6,0,6,0">osd/osd_progress_back2.png</texturebg>
+							<lefttexture>osd/osd_progress_left2.png</lefttexture>
+							<midtexture>osd/osd_progress_mid2.png</midtexture>
+							<righttexture>osd/osd_progress_right2.png</righttexture>
+							<colordiffuse>DialogProgressBar</colordiffuse>
+							</control>
 					</control>
 					<!--sblee-basic EPG Info-current program name-->					
 					<control type="label" id="1300304">
@@ -3454,14 +3474,19 @@ Search for window name
 					<control type="progress" id="1400707">
 						<description>progress control</description>
 						<posx>36</posx>
-						<posy>52</posy>
+						<posy>48</posy>
 						<width>190</width>
-						<height>8</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<height>12</height>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<lefttexture></lefttexture>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 						<righttexture></righttexture>
-						<overlaytexture></overlaytexture>
+-->						<overlaytexture></overlaytexture>
+						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 					</control>
 					<control type="label" id="1400705">
 						<description>EPG End Time</description>
@@ -3677,7 +3702,7 @@ Search for window name
 						<control type="label" id="2900011">
 							<posx>116</posx>
 							<posy>7</posy>
-							<font>font12caps</font>
+							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -3704,7 +3729,7 @@ Search for window name
 						<control type="label" id="2900016">
 							<posx>95</posx>
 							<posy>7</posy>
-							<font>font12caps</font>
+							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
 						</control>
@@ -3902,10 +3927,15 @@ Search for window name
 						<posy>595</posy>
 						<width>780</width>
 						<height>16</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<lefttexture>-</lefttexture>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 						<righttexture>-</righttexture>
+-->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_righ2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<overlaytexture>-</overlaytexture>
 					</control>
 					<control type="grouplist" id="1003620">
@@ -3973,12 +4003,12 @@ Search for window name
 						<width>100</width>
 						<height>15</height>
 						<textcolor>white</textcolor>
-						<font>METF_PlotTextMedium</font>
+						<font>METF_PlotTextSmall</font>
 						<label>00:00:00</label>
 					</control>
 					<control type="label" id="2900222">
 						<description>end</description>
-						<posx>890</posx>
+						<posx>885</posx>
 						<posy>0</posy>
 						<width>100</width>
 						<height>15</height>
@@ -4463,8 +4493,13 @@ Search for window name
 								<posy>15</posy>
 								<width>100</width>
 								<height>16</height>
-								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
+-->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<lefttexture>osd/osd_progress_left3.png</lefttexture>
+								<midtexture>osd/osd_progress_mid3.png</midtexture>
+								<righttexture>osd/osd_progress_right3.png</righttexture>
+								<colordiffuse>DialogProgressBar</colordiffuse>
 							</control>
 							<control type="label" id="1501302">
 								<posx>105</posx>
@@ -5765,8 +5800,13 @@ Search for window name
 						<posy>240</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<visible>Control.IsVisible(3402602)</visible>
 					</control>
 					<control type="label" id="3402603">
@@ -5782,8 +5822,13 @@ Search for window name
 						<posy>297</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<visible>Control.IsVisible(3402603)</visible>
 					</control>
 					<control type="label" id="3402604">
@@ -5799,8 +5844,13 @@ Search for window name
 						<posy>354</posy>
 						<width>350</width>
 						<height>18</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<visible>Control.IsVisible(3402604)</visible>
 					</control>
 				</control>
@@ -7171,7 +7221,7 @@ Search for window name
 
 			<!-- cas -->
 			<control type="group">
-				<posx>80</posx>
+				<posx>20</posx>
 				<posy>650</posy>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<include>CASInfo</include>
@@ -7474,8 +7524,13 @@ Search for window name
 						<height>15</height>
 						<color>white</color>
 						<border>0</border>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 					</control>
 					<control type="label" id="4300052">
 						<description>download percent</description>
@@ -7988,10 +8043,15 @@ Search for window name
 								<posx>310</posx>
 								<posy>17</posy>
 								<width>70</width>
-								<height>9</height>
+								<height>10</height>
 								<progress>percent</progress>
-								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+-->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<lefttexture>osd/osd_progress_left3.png</lefttexture>
+								<midtexture>osd/osd_progress_mid3.png</midtexture>
+								<righttexture>osd/osd_progress_right3.png</righttexture>
+								<colordiffuse>DialogProgressBar</colordiffuse>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -8002,7 +8062,7 @@ Search for window name
 								<height>20</height>
 								<font>METF_MediaDetailsSmall</font>
 								<textcolor>white</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
@@ -8057,10 +8117,15 @@ Search for window name
 								<posx>310</posx>
 								<posy>17</posy>
 								<width>70</width>
-								<height>9</height>
+								<height>10</height>
 								<progress>percent</progress>
-								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 								<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
+-->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<lefttexture>osd/osd_progress_left3.png</lefttexture>
+								<midtexture>osd/osd_progress_mid3.png</midtexture>
+								<righttexture>osd/osd_progress_right3.png</righttexture>
+								<colordiffuse>DialogProgressBar</colordiffuse>
 								<visible>substring(ListItem.Property(HasEvent),true)</visible>
 							</control>
 							<!-- EPG -->
@@ -8147,7 +8212,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_PlotText</font>
 								<textcolor>white</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>

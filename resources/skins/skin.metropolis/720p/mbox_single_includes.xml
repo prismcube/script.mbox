@@ -334,8 +334,13 @@
 				<posy>400</posy>
 				<width>350</width>
 				<height>18</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->				<texturebg>osd/osd_progress_back2.png</texturebg>
+				<lefttexture>osd/osd_progress_left2.png</lefttexture>
+				<midtexture>osd/osd_progress_mid2.png</midtexture>
+				<righttexture>osd/osd_progress_right2.png</righttexture>
+				<colordiffuse>DialogProgressBar</colordiffuse>
 			</control>
 			<control type="label" id="1001009">
 				<description>Quality</description>
@@ -365,8 +370,13 @@
 				<posy>460</posy>
 				<width>350</width>
 				<height>18</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->				<texturebg>osd/osd_progress_back2.png</texturebg>
+				<lefttexture>osd/osd_progress_left2.png</lefttexture>
+				<midtexture>osd/osd_progress_mid2.png</midtexture>
+				<righttexture>osd/osd_progress_right2.png</righttexture>
+				<colordiffuse>DialogProgressBar</colordiffuse>
 			</control>
 		</control>
 	</include>
@@ -5996,7 +6006,12 @@
 						<width>130</width>
 						<height>14</height>
 						<progress>percent</progress>
-						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
+<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
+						<texturebg>osd/osd_progress_back3.png</texturebg>
+						<lefttexture>osd/osd_progress_left3.png</lefttexture>
+						<midtexture>osd/osd_progress_mid3.png</midtexture>
+						<righttexture>osd/osd_progress_right3.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</itemlayout>
@@ -6139,7 +6154,12 @@
 						<width>130</width>
 						<height>14</height>
 						<progress>percent</progress>
-						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>
+<!--						<midtexture border="6,0,6,0">OSDProgressMid1.png</midtexture>-->
+						<texturebg>osd/osd_progress_back3.png</texturebg>
+						<lefttexture>osd/osd_progress_left3.png</lefttexture>
+						<midtexture>osd/osd_progress_mid3.png</midtexture>
+						<righttexture>osd/osd_progress_right3.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>
 				</focusedlayout>
