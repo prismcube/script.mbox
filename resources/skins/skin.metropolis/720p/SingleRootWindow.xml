@@ -2116,7 +2116,7 @@ Search for window name
 
 				<!-- cas -->
 				<control type="group">
-					<posx>-775</posx>
+					<posx>-835</posx>
 					<posy>533</posy>
 					<include>CASInfo</include>
 				</control>
@@ -2732,7 +2732,7 @@ Search for window name
 
 		<!-- Rec info -->
 				<control type="group">
-					<posx>710</posx>
+					<posx>740</posx>
 					<posy>620</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 					<control type="group">
@@ -2757,7 +2757,7 @@ Search for window name
 						<control type="label" id="1400011">
 							<posx>55</posx>
 							<posy>-16</posy>
-							<width>290</width>
+							<width>260</width>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2785,7 +2785,7 @@ Search for window name
 						<control type="label" id="1400016">
 							<posx>55</posx>
 							<posy>13</posy>
-							<width>290</width>
+							<width>260</width>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.GetLabel]</label>
@@ -2810,8 +2810,8 @@ Search for window name
 					</control>
 					<control type="image">
 						<description>Channel Logo Background</description>
-						<posx>384</posx>
-						<posy>64</posy>
+						<posx>-20</posx>
+						<posy>-45</posy>
 						<width>87</width>
 						<height>49</height>
 						<texture>Logo_Background.png</texture>
@@ -2820,8 +2820,8 @@ Search for window name
 					</control>
 					<control type="image">
 						<description>Channel Logo Icon</description>
-						<posx>384</posx>
-						<posy>64</posy>
+						<posx>-20</posx>
+						<posy>-45</posy>
 						<width>87</width>
 						<height>49</height>
 						<texture>$INFO[Window.Property(iChannelLogo)]</texture>
@@ -2830,7 +2830,7 @@ Search for window name
 					</control>
 					<control type="label" id="1400601">
 						<description>Channel Number</description>
-						<posx>-20</posx>
+						<posx>69</posx>
 						<posy>-47</posy>
 						<width>300</width>
 						<height>50</height>
@@ -2843,7 +2843,7 @@ Search for window name
 					<control type="label" id="1400602">
 						<description>Channel Name</description>
 						<posx>-20</posx>
-						<posy>-2</posy>
+						<posy>4</posy>
 						<width>340</width>
 						<height>50</height>
 						<scroll>true</scroll>
@@ -3096,7 +3096,7 @@ Search for window name
 
 							<!-- cas -->
 							<control type="group">
-								<posx>111</posx>
+								<posx>171</posx>
 								<posy>0</posy>
 								<include>CASInfo</include>
 							</control>
@@ -3106,7 +3106,7 @@ Search for window name
 					<!-- color key -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
-							<posx>400</posx>
+							<posx>460</posx>
 							<posy>-2</posy>
 							<width>300</width>
 							<height>40</height>
@@ -3213,7 +3213,7 @@ Search for window name
 
 					<!-- components -->
 					<control type="group">
-						<posx>375</posx>
+						<posx>437</posx>
 						<posy>62</posy>
 						<control type="grouplist">
 							<posx>0</posx>
@@ -3223,7 +3223,7 @@ Search for window name
 							<itemgap>4</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
-							<control type="group">
+<!--							<control type="group">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>90</width>
@@ -3236,7 +3236,7 @@ Search for window name
 									<visible>substring(Window.Property(InfoPlateName),true)</visible>
 								</control>
 							</control>
-							<control type="group">
+-->							<control type="group">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>90</width>
@@ -3407,11 +3407,11 @@ Search for window name
 		<!-- epg section -->
 				<control type="group" id="1400700">
 					<posx>70</posx>
-					<posy>620</posy>
+					<posy>625</posy>
 					<control type="label" id="1400701">
 						<description>Longitude info</description>
 						<posx>-40</posx>
-						<posy>65</posy>
+						<posy>63</posy>
 						<width>270</width>
 						<height>15</height>
 						<font>METF_PlotTextMedium</font>
@@ -3437,7 +3437,7 @@ Search for window name
 					<control type="label" id="1400703">
 						<description>EPG Name</description>
 						<posx>-42</posx>
-						<posy>13</posy>
+						<posy>15</posy>
 						<width>340</width>
 						<font>METF_SettingsDetail</font><!--sblee-METF_TitleText-->
 						<textcolor>white</textcolor>

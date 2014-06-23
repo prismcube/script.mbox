@@ -6466,7 +6466,7 @@
 
 	<include name="DefaultInfoPlateGroup">
 		<control type="grouplist" id="1003620">
-			<posx>379</posx>
+			<posx>439</posx>
 			<posy>-40</posy>
 			<width>380</width>
 			<height>40</height>
@@ -7160,7 +7160,7 @@
 
 	<include name="CASInfo">
 		<control type="grouplist">
-			<posx>0</posx>
+			<posx>60</posx>
 			<posy>10</posy>
 			<width>350</width>
 			<height>30</height>
