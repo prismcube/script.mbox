@@ -28,10 +28,10 @@
 			</control>
 			<control type="button" id="103">
 				<description>Close Window button</description>
-				<posx>350</posx>
-				<posy>-18</posy>
-				<width>25</width>
-				<height>25</height>
+				<posx>378</posx>
+				<posy>-17</posy>
+				<width>15</width>
+				<height>15</height>
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<onleft>102</onleft>

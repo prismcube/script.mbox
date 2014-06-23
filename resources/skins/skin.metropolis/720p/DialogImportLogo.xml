@@ -35,7 +35,7 @@
 		<control type="label" id="102">
 			<description>header label</description>
 			<posx>40</posx>
-			<posy>20</posy>
+			<posy>22</posy>
 			<width>720</width>
 			<height>30</height>
 			<font>METF_Menu</font>
@@ -47,7 +47,7 @@
 		<control type="button">
 			<description>Close Window button</description>
 			<posx>735</posx>
-			<posy>20</posy>
+			<posy>22</posy>
 			<width>25</width>
 			<height>25</height>
 			<label>-</label>

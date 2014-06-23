@@ -9,7 +9,7 @@
 			<posx>600</posx>
 			<posy>200</posy>
 			<include>DefaultDialogCloseEffect</include>
-			<control type="image">
+<!--			<control type="image">
 				<description>background top image</description>
 				<posx>0</posx>
 				<posy>-30</posy>
@@ -31,26 +31,51 @@
 				<height>25</height>
 				<texture border="20,0,19,20">DialogContextBottom.png</texture>
 			</control>
+-->			<control type="image">
+				<description>background top image</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>370</width>
+				<height>30</height>
+				<texture>dialogs/ContextMenu_Top.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>370</width>
+				<texture>dialogs/ContextMenu_Middle.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="image" id="101">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<width>370</width>
+				<height>30</height>
+				<texture>dialogs/ContextMenu_Bottom.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
 			<control type="label" id="103">
-				<posx>20</posx>
-				<posy>-5</posy>
+				<posx>30</posx>
+				<posy>0</posy>
 				<width>310</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-				<font>font14</font>
+				<font>METF_InfoTextLarger</font>
 			</control>
 			<control type="list" id="102">
 				<posx>20</posx>
 				<posy>33</posy>
-				<width>310</width>
+				<width>320</width>
 				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
 					<control type="image">
-						<posx>0</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change Property ItemHeight-->
@@ -58,56 +83,57 @@
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="image">
-						<posx>0</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>38</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>METF_MediaDetailsSmall</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<texture>$INFO[ListItem.Property(HotKey)]</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>160</posx>
 						<posy>0</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>METF_MediaDetailsSmall</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 				</itemlayout>
-				<focusedlayout width="297" height="40">		<!--Change ProPerty ItemHeight-->
+				<focusedlayout width="320" height="40">		<!--Change ProPerty ItemHeight-->
 					<control type="image">
-						<posx>0</posx>
+						<posx>6</posx>
 						<posy>0</posy>
-						<width>310</width>
+						<width>318</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<texture border="5">button-focus.png</texture>
+<!--						<texture border="5">button-focus.png</texture>-->
+						<texture border="1">ButtonFO2.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="image">
-						<posx>0</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>38</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>METF_MediaDetailsSmall</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<texture>$INFO[ListItem.Property(HotKey)]</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>150</posx>
+						<posx>160</posx>
 						<posy>0</posy>
 						<width>310</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-						<font>fontContextMenu</font>
+						<font>METF_MediaDetailsSmall</font>
 						<align>center</align>
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>

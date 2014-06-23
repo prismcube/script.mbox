@@ -132,7 +132,7 @@
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
 <!--					<shadowcolor>black</shadowcolor>-->
-					<label>SCRIPT1138</label>
+					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
 

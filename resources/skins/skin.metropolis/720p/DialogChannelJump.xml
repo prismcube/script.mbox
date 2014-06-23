@@ -64,7 +64,7 @@
 				<height>15</height>
 <!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
--->				<texturebg>osd/osd_progress_back3.png</texturebg>
+-->				<texturebg>osd/osd_progress_back2.png</texturebg>
 				<lefttexture>osd/osd_progress_left2.png</lefttexture>
 				<midtexture>osd/osd_progress_mid2.png</midtexture>
 				<righttexture>osd/osd_progress_right2.png</righttexture>

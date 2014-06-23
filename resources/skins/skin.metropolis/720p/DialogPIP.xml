@@ -39,7 +39,7 @@
 							<posx>0</posx>
 							<posy>0</posy>
 							<animation effect="fade" time="300">VisibleChange</animation>
-<!--							<visible>substring(Window(10000).Property(InputNumber),true)</visible>-->
+							<visible>substring(Window(10000).Property(InputNumber),true)</visible>
 							<control type="image" id="4801101">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -250,7 +250,7 @@
 									<font>METF_PlotTextMedium</font>
 									<textcolor>white</textcolor>
 									<scroll>false</scroll>
-									<label>SCRIPT1010</label>
+									<label>$ADDON[script.mbox 1010]</label>
 								</control>
 							</control>
 							<!-- indicate audio -->
@@ -287,7 +287,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1011</label>
+									<label>$ADDON[script.mbox 1011]</label>
 									<visible>Control.HasFocus(4808001)</visible>
 								</control>
 								<control type="label">
@@ -298,7 +298,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1012</label>
+									<label>$ADDON[script.mbox 1012]</label>
 									<visible>Control.HasFocus(4808002)</visible>
 								</control>
 								<control type="label">
@@ -309,7 +309,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1013</label>
+									<label>$ADDON[script.mbox 1013]</label>
 									<visible>Control.HasFocus(4808003)</visible>
 								</control>
 								<control type="label">
@@ -320,7 +320,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1015</label>
+									<label>$ADDON[script.mbox 1015]</label>
 									<visible>Control.HasFocus(4808004)</visible>
 								</control>
 								<control type="label">
@@ -331,7 +331,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1023</label>
+									<label>$ADDON[script.mbox 1023]</label>
 									<visible>Control.HasFocus(4808005)</visible>
 								</control>
 								<control type="label">
@@ -342,7 +342,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1025</label>
+									<label>$ADDON[script.mbox 1025]</label>
 									<visible>Control.HasFocus(4808006)</visible>
 								</control>
 								<control type="label">
@@ -353,7 +353,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1042</label>
+									<label>$ADDON[script.mbox 1042]</label>
 									<visible>Control.HasFocus(4808007)</visible>
 								</control>
 								<control type="label">
@@ -364,7 +364,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1046</label>
+									<label>$ADDON[script.mbox 1046]</label>
 									<visible>Control.HasFocus(4808008)</visible>
 								</control>
 								<control type="label">
@@ -375,7 +375,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1077</label>
+									<label>$ADDON[script.mbox 1077]</label>
 									<visible>Control.HasFocus(4808009)</visible>
 								</control>
 								<control type="label">
@@ -386,7 +386,7 @@
 									<align>left</align>
 									<font>METF_PlotTextSmall</font>
 									<textcolor>white</textcolor>
-									<label>SCRIPT1045</label>
+									<label>$ADDON[script.mbox 1045]</label>
 									<visible>Control.HasFocus(4808010)</visible>
 								</control>
 							</control>
@@ -519,7 +519,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[SCRIPT1201]</label>
+						<label>$ADDON[script.mbox 1201]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -543,7 +543,7 @@
 						<scroll>false</scroll>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>$LOCALIZE[SCRIPT1166]...</label>
+						<label>$ADDON[script.mbox 1166]...</label>
 						<visible>!substring(Window.Property(ReadyToListPIP),true)</visible>
 					</control>
 					<control type="list" id="4803850">
@@ -596,7 +596,7 @@
 									<height>28</height>
 									<texture>OverlayLocked.png</texture>
 									<colordiffuse>8FFFFFFF</colordiffuse>
-<!--									<visible>substring(ListItem.Property(iLock),true)</visible>-->
+									<visible>substring(ListItem.Property(iLock),true)</visible>
 								</control>
 								<!-- is hd? -->
 								<control type="image">
@@ -605,7 +605,7 @@
 									<width>24</width>
 									<height>18</height>
 									<texture>IconHD1g.png</texture>
-<!--									<visible>substring(ListItem.Property(iHD),true)</visible>-->
+									<visible>substring(ListItem.Property(iHD),true)</visible>
 								</control>
 								<!-- is cas? -->
 								<control type="image">
@@ -614,15 +614,17 @@
 									<width>26</width>
 									<height>18</height>
 									<texture>IconCas1g.png</texture>
-<!--									<visible>substring(ListItem.Property(iCas),true)</visible>-->
+									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
 								<control type="progress">
 									<posx>12</posx>
 									<posy>30</posy>
 									<width>70</width>
 									<height>9</height>
-									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
-									<midtexture border="14,0,14,0">osd/osd_progress_mid3.png</midtexture>
+									<texturebg>osd/osd_progress_back3.png</texturebg>
+									<lefttexture>osd/osd_progress_left3.png</lefttexture>
+									<midtexture>osd/osd_progress_mid3.png</midtexture>
+									<righttexture>osd/osd_progress_right3.png</righttexture>
 									<colordiffuse>DialogProgressBar</colordiffuse>
 <!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
@@ -634,7 +636,7 @@
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
-								<width>190</width>
+								<width>180</width>
 								<height>30</height>
 								<font>METF_PlotText</font>
 								<textcolor>white</textcolor>
@@ -648,7 +650,7 @@
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>190</width>
+								<width>180</width>
 								<height>20</height>
 								<font>METF_PlotText</font>
 								<textcolor>white</textcolor>
@@ -722,8 +724,10 @@
 									<posy>30</posy>
 									<width>70</width>
 									<height>9</height>
-									<texturebg border="14,0,14,0">osd/osd_progress_back3.png</texturebg>
-									<midtexture border="14,0,14,0">osd/osd_progress_mid3.png</midtexture>
+									<texturebg>osd/osd_progress_back3.png</texturebg>
+									<lefttexture>osd/osd_progress_left3.png</lefttexture>
+									<midtexture>osd/osd_progress_mid3.png</midtexture>
+									<righttexture>osd/osd_progress_right3.png</righttexture>
 									<colordiffuse>DialogProgressBar</colordiffuse>
 <!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
 									<midtexture border="14,0,14,0">OSDProgressMid2.png</midtexture>
@@ -735,7 +739,7 @@
 							<control type="label">
 								<posx>70</posx>
 								<posy>0</posy>
-								<width>190</width>
+								<width>180</width>
 								<height>30</height>
 								<font>METF_PlotText</font>
 								<textcolor>white</textcolor>
@@ -749,7 +753,7 @@
 							<control type="label">
 								<posx>70</posx>
 								<posy>25</posy>
-								<width>190</width>
+								<width>180</width>
 								<height>20</height>
 								<font>METF_PlotText</font>
 								<textcolor>white</textcolor>
@@ -774,7 +778,7 @@
 					<scroll>false</scroll>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - ([COLOR=ee3c95c8]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $LOCALIZE[SCRIPT1107]</label>
+					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4803850).NumItems][/COLOR]) $ADDON[script.mbox 1106] - ([COLOR=ee3c95c8]$INFO[Container(4803850).CurrentPage] / $INFO[Container(4803850).NumPages][/COLOR]) $ADDON[script.mbox 1107]</label>
 				</control>
 				<control type="image">
 					<posx>320</posx>
@@ -835,12 +839,12 @@
 									<posy>80</posy>
 									<width>335</width>
 									<height>30</height>
-									<font>font12</font>
-									<textcolor>grey2</textcolor>
+									<font>METF_PlotTextSmall</font>
+									<textcolor>white</textcolor>
 									<scroll>false</scroll>
 									<align>center</align>
 									<aligny>center</aligny>
-									<label>[I]$LOCALIZE[SCRIPT1014] [/I]</label>
+									<label>[I]$ADDON[script.mbox 1014] [/I]</label>
 								</control>
 							</control>
 							<control type="label">
@@ -848,36 +852,36 @@
 								<posy>80</posy>
 								<width>335</width>
 								<height>30</height>
-								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1104] [/I]</label>
+								<font>METF_PlotTextSmall</font>
+								<label>[I]$ADDON[script.mbox 1104] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
-								<textcolor>red</textcolor>
-<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),False)</visible>-->
+								<textcolor>white</textcolor>
+								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),False)</visible>
 							</control>
 							<control type="label">
 								<posx>0</posx>
 								<posy>80</posy>
 								<width>335</width>
 								<height>30</height>
-								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1105] [/I]</label>
+								<font>METF_PlotTextSmall</font>
+								<label>[I]$ADDON[script.mbox 1105] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
-								<textcolor>blue</textcolor>
-<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>-->
+								<textcolor>white</textcolor>
+								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),Scramble)</visible>
 							</control>
 							<control type="label">
 								<posx>0</posx>
 								<posy>100</posy>
 								<width>335</width>
 								<height>30</height>
-								<font>font12</font>
-								<label>[I]$LOCALIZE[SCRIPT1127] [/I]</label>
+								<font>METF_PlotTextSmall</font>
+								<label>[I]$ADDON[script.mbox 1127] [/I]</label>
 								<align>center</align>
 								<aligny>center</aligny>
 								<textcolor>white</textcolor>
-<!--								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),NoService)</visible>-->
+								<visible>!substring(Window(10000).Property(iLockPIP),true) + substring(Window(10000).Property(PIPSignal),NoService)</visible>
 							</control>
 						</control>
 					</control>

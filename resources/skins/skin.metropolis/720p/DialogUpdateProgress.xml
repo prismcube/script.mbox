@@ -7,21 +7,20 @@
 			<posx>340</posx>
 			<posy>195</posy>
 			<include>DefaultDialogCloseEffect</include>
-
-			<control type="image">
+<!--			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
 				<height>320</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image">
 				<description>background image</description>
-				<posx>-20</posx>
-				<posy>-40</posy>
-				<width>640</width>
-				<height>230</height>
-				<texture>frames/Dialog_Glass2.png</texture>
+				<posx>-10</posx>
+				<posy>-30</posy>
+				<width>630</width>
+				<height>370</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 <!--			<control type="image">
@@ -44,7 +43,7 @@
 			<control type="label" id="200">
 				<description>header label</description>
 				<posx>40</posx>
-				<posy>20</posy>
+				<posy>18</posy>
 				<width>530</width>
 				<height>30</height>
 				<font>METF_Menu</font>
@@ -56,14 +55,16 @@
 			</control>
 			<control type="button" id="301">
 				<description>Close Window button</description>
-				<posx>520</posx>
-				<posy>15</posy>
-				<width>64</width>
-				<height>32</height>
+				<posx>555</posx>
+				<posy>23</posy>
+				<width>25</width>
+				<height>25</height>
 				<label>-</label>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+<!--				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
+-->				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
 				<onleft>300</onleft>
 				<onright>300</onright>
 				<onup>300</onup>
@@ -79,7 +80,7 @@
 				<aligny>center</aligny>
 				<label>-</label>
 				<haspath>true</haspath>
-				<font>font13</font>
+				<font>METF_PlotText</font>
 			</control>
 			<control type="textbox" id="202">
 				<posx>30</posx>
@@ -88,8 +89,8 @@
 				<height>120</height>
 				<visible>true</visible>
 				<colordiffuse>FFFFFFFF</colordiffuse>
-				<font>font12</font>
-				<textcolor>grey3</textcolor>
+				<font>METF_PlotText</font>
+				<textcolor>white</textcolor>
 				<wrapmultiline>true</wrapmultiline>
 				<!--pagecontrol>61</pagecontrol-->
 				<label>$INFO[Window.Property(ShellDescription)]</label>
@@ -100,8 +101,13 @@
 				<posy>228</posy>
 				<width>550</width>
 				<height>16</height>
-				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+<!--				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+-->				<texturebg>osd/osd_progress_back2.png</texturebg>
+				<lefttexture>osd/osd_progress_left2.png</lefttexture>
+				<midtexture>osd/osd_progress_mid2.png</midtexture>
+				<righttexture>osd/osd_progress_right2.png</righttexture>
+				<colordiffuse>DialogProgressBar</colordiffuse>
 			</control>
 			<control type="button" id="300">
 				<description>Cancel button</description>
@@ -143,18 +149,17 @@
 		</control>
 		<control type="label">
 			<posx>390</posx>
-			<posy>330</posy>
+			<posy>340</posy>
 			<width>500</width>
 			<height>50</height>
-			<font>font35_title</font>
+			<font>METF_MusicVizTitle</font>
 			<align>center</align>
 			<aligny>center</aligny>
-			<textcolor>grey2</textcolor>
+			<textcolor>white</textcolor>
 			<label>$INFO[Window.Property(ShowStatusLabel)]</label>
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<visible>substring(Window.Property(StatusLabel),true)</visible>
 		</control>
-
 	</controls>
 </window>
 

@@ -7,7 +7,7 @@
 			<posx>340</posx>
 			<posy>235</posy>
 			<include>DefaultDialogCloseEffect</include>
-			<control type="image" id="9001">
+<!--			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -15,7 +15,7 @@
 				<height>230</height>
 				<texture border="40">DialogBack.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image" id="9001">
 				<posx>-20</posx>
 				<posy>-85</posy>
 				<width>640</width>
@@ -86,7 +86,7 @@
 <!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
 -->				<texturefocus>ButtonFO2.png</texturefocus>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<onleft>302</onleft>
 				<onright>302</onright>
 				<onup>303</onup>

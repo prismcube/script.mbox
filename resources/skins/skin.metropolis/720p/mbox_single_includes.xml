@@ -6837,8 +6837,8 @@
 		<control type="list" id="1003950">
 			<posx>20</posx>
 			<posy>57</posy>
-			<width>570</width>
-			<height>521</height>
+			<width>580</width>
+			<height>401</height>
 			<onleft>3904</onleft>
 			<onright>1003951</onright>
 			<onup>1003950</onup>
@@ -6850,14 +6850,14 @@
 			<visible>true</visible>
 			<animation effect="fade" start="100" end="20" time="100" condition="Control.HasFocus(3901)">Conditional</animation>
 			<itemlayout height="40" width="580">
-				<control type="image">
+<!--				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>590</width>
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 				</control>
-				<!-- is skip? -->
+-->				<!-- is skip? -->
 				<control type="image">
 					<posx>485</posx>
 					<posy>13</posy>
@@ -6895,7 +6895,7 @@
 				</control>
 				<!-- is mark? -->
 				<control type="image">
-					<posx>-3</posx>
+					<posx>8</posx>
 					<posy>10</posy>
 					<width>20</width>
 					<height>20</height>
@@ -6904,7 +6904,7 @@
 				</control>
 				<!-- is recording? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>3</posx>
 					<posy>5</posy>
 					<width>30</width>
 					<height>30</height>
@@ -6916,8 +6916,8 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
@@ -6929,8 +6929,8 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
@@ -6942,8 +6942,8 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label2]</label>
@@ -6954,27 +6954,28 @@
 					<posy>0</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Property(iHDLabel)]</label>
 				</control>
 			</itemlayout>
 			<focusedlayout height="40" width="580">
-				<control type="image">
+<!--				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>590</width>
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 				</control>
-				<control type="image">
+-->				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>580</width>
+					<width>576</width>
 					<height>41</height>
-					<texture border="0,2,0,2">MenuItemFO.png</texture>
+<!--					<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+					<texture border="1">ButtonFO2Wide.png</texture>
 				</control>
 				<!-- is skip? -->
 				<control type="image">
@@ -7014,7 +7015,7 @@
 				</control>
 				<!-- is mark? -->
 				<control type="image">
-					<posx>-3</posx>
+					<posx>8</posx>
 					<posy>10</posy>
 					<width>20</width>
 					<height>20</height>
@@ -7023,7 +7024,7 @@
 				</control>
 				<!-- is recording? -->
 				<control type="image">
-					<posx>0</posx>
+					<posx>3</posx>
 					<posy>5</posy>
 					<width>30</width>
 					<height>30</height>
@@ -7035,7 +7036,7 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>METF_PlotText</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7048,7 +7049,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>METF_PlotText</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7062,7 +7063,7 @@
 					<posy>0</posy>
 					<width>350</width>
 					<height>40</height>
-					<font>font13</font>
+					<font>METF_PlotText</font>
 					<textcolor>white</textcolor>
 					<selectedcolor>selected</selectedcolor>
 					<align>left</align>
@@ -7075,8 +7076,8 @@
 					<posy>0</posy>
 					<width>100</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Property(iHDLabel)]</label>
@@ -7084,10 +7085,10 @@
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="1003951">
-			<posx>590</posx>
+			<posx>592</posx>
 			<posy>65</posy>
 			<width>25</width>
-			<height>521</height>
+			<height>401</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
