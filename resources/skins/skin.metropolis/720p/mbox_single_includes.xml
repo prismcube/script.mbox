@@ -1948,8 +1948,8 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
 				<onclick>Control.Move(1001903,1)</onclick>
 				<onup>1001901</onup>
 				<ondown>1001901</ondown>
@@ -1961,8 +1961,8 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>ArrowUpNF.png</texturenofocus>
+				<texturefocus>ArrowUpFo.png</texturefocus>
 				<onclick>Control.Move(1001903,-1)</onclick>
 				<onup>1001902</onup>
 				<ondown>1001902</ondown>
@@ -1976,7 +1976,7 @@
 				<itemlayout height="1" width="720">
 				</itemlayout>
 				<focusedlayout height="40" width="720">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>750</width>
@@ -1984,12 +1984,13 @@
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
-					<control type="image">
+-->					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
+						<width>700</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+<!--						<texture border="0,2,0,2">MenuItemFO.png</texture>-->
+						<texture>ButtonFo.png</texture>
 						<visible>[Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 					<control type="label">
@@ -4258,9 +4259,10 @@
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+				<texturefocus>ButtonFO2Wide.png</texturefocus>
+<!--				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			</control>
+-->			</control>
 			<control type="list" id="1006293">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
