@@ -19,7 +19,7 @@
 				<description>background image</description>
 				<posx>-20</posx>
 				<posy>-35</posy>
-				<width>580</width>
+				<width>575</width>
 				<height>628</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
@@ -35,7 +35,7 @@
 			</control>
 -->			<control type="button" id="3901">
 				<description>Close Window button</description>
-				<posx>500</posx>
+				<posx>495</posx>
 				<posy>13</posy>
 				<width>25</width>
 				<height>25</height>

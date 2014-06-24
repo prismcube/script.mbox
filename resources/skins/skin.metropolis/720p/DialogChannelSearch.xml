@@ -33,12 +33,12 @@
 			</control>
 -->			<control type="button" id="104">
 				<description>Close Window button</description>
-				<posx>1100</posx>
+				<posx>1130</posx>
 				<posy>14</posy>
-				<width>64</width>
-				<height>32</height>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<width>25</width>
+				<height>25</height>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<onup>400</onup>
@@ -52,7 +52,7 @@
 				<width>1200</width>
 				<height>40</height>
 				<font>METF_Menu</font>
-				<label>SCRIPT1017</label>
+				<label>$ADDON[script.mbox 1017]</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
@@ -65,7 +65,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>SCRIPT1018</label>
+				<label>$ADDON[script.mbox 1018]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>ee3c95c8</textcolor>
@@ -78,7 +78,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>SCRIPT1019</label>
+				<label>$ADDON[script.mbox 1019]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>ee3c95c8</textcolor>
@@ -168,7 +168,7 @@
             <!-- TV Scrollbar -->
 			<control type="scrollbar" id="401">
 				<posx>550</posx>
-				<posy>95</posy>
+				<posy>97</posy>
 				<width>25</width>
 				<height>335</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
@@ -189,12 +189,12 @@
 				<posy>425</posy>
 				<width>300</width>
 				<height>35</height>
-				<font>METF_MediaDetailsSmall</font>
+				<font>METF_HeadingDetails</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>WeatherHeading</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Container(400).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Container(400).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(400)</visible>
 			</control>
 			
@@ -282,7 +282,7 @@
 	        <!-- Radio Scrollbar -->
 			<control type="scrollbar" id="403">
 				<posx>1082</posx>
-				<posy>95</posy>
+				<posy>97</posy>
 				<width>25</width>
 				<height>335</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
@@ -308,7 +308,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>WeatherHeading</textcolor>
-				<label>([COLOR=ee3c95c8]$INFO[Container(402).NumItems][/COLOR]) $LOCALIZE[SCRIPT1106] - $LOCALIZE[SCRIPT1107] ([COLOR=ee3c95c8]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<label>([COLOR=ee3c95c8]$INFO[Container(402).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(402)</visible>
 			</control>
 
@@ -320,7 +320,7 @@
 				<width>1000</width>
 				<height>40</height>
 				<font>METF_HeadingDetails</font>
-				<label>SCRIPT1020</label>
+				<label>$ADDON[script.mbox 1020]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

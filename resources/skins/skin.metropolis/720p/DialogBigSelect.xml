@@ -19,7 +19,7 @@
 -->			<control type="image">
 				<posx>-5</posx>
 				<posy>-27</posy>
-				<width>624</width>
+				<width>625</width>
 				<height>620</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
@@ -34,7 +34,7 @@
 			</control>
 -->			<control type="button" id="109">
 				<description>Close Window button</description>
-				<posx>558</posx>
+				<posx>545</posx>
 				<posy>20</posy>
 				<width>25</width>
 				<height>25</height>
@@ -131,15 +131,15 @@
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(8001)">Conditional</animation>
 				<itemlayout height="70" width="590">
 					<control type="image">
-						<posx>5</posx>
+						<posx>15</posx>
 						<posy>0</posy>
-						<width>530</width>
+						<width>515</width>
 						<height>68</height>
 						<texture border="5">button-nofocus.png</texture>
 					</control>
 					<!-- Mark -->					
 					<control type="image">
-						<posx>5</posx>
+						<posx>10</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -150,7 +150,7 @@
 					<control type="label">
 						<posx>45</posx>
 						<posy>3</posy>
-						<width>360</width>
+						<width>340</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -163,7 +163,7 @@
 					<control type="label">
 						<posx>45</posx>
 						<posy>32</posy>
-						<width>360</width>
+						<width>340</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -178,7 +178,7 @@
 						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>METF_DialogLarge</font>
+						<font>METF_MediaDetailsSmall</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -191,7 +191,7 @@
 						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>METF_DialogLarge</font>
+						<font>METF_MediaDetailsSmall</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
@@ -201,9 +201,9 @@
 				</itemlayout>
 				<focusedlayout height="70" width="590">
 					<control type="image">
-						<posx>0</posx>
+						<posx>11</posx>
 						<posy>-2</posy>
-						<width>539</width>
+						<width>524</width>
 						<height>72</height>
 <!--						<texture border="5">StackFO_white2.png</texture>-->
 						<texture border="1">ButtonFO2Wide.png</texture>
@@ -211,7 +211,7 @@
 					</control>
 					<!-- Mark -->					
 					<control type="image">
-						<posx>5</posx>
+						<posx>10</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
@@ -222,7 +222,7 @@
 					<control type="label">
 						<posx>45</posx>
 						<posy>3</posy>
-						<width>360</width>
+						<width>340</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -235,7 +235,7 @@
 					<control type="label">
 						<posx>45</posx>
 						<posy>32</posy>
-						<width>360</width>
+						<width>340</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -250,7 +250,7 @@
 						<posy>3</posy>
 						<width>250</width>
 						<height>30</height>
-						<font>METF_DialogLarge</font>
+						<font>METF_MediaDetailsSmall</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -263,7 +263,7 @@
 						<posy>33</posy>
 						<width>200</width>
 						<height>30</height>
-						<font>METF_DialogLarge</font>
+						<font>METF_MediaDetailsSmall</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>white</selectedcolor>
 						<align>right</align>
@@ -273,10 +273,10 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="8001">
-				<posx>560</posx>
-				<posy>60</posy>
+				<posx>554</posx>
+				<posy>53</posy>
 				<width>25</width>
-				<height>420</height>
+				<height>434</height>
 				<include>DefaultWindowFade</include>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

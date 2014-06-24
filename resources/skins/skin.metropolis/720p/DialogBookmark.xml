@@ -336,10 +336,10 @@
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="3851">
-				<posx>560</posx>
-				<posy>123</posy>
+				<posx>558</posx>
+				<posy>120</posy>
 				<width>25</width>
-				<height>350</height>
+				<height>363</height>
 				<include>DefaultWindowFade</include>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

@@ -4779,9 +4779,9 @@
 			</control>
 			<control type="scrollbar" id="1003401">
 				<posx>800</posx>
-				<posy>90</posy>
+				<posy>102</posy>
 				<width>25</width>
-				<height>425</height>
+				<height>423</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
@@ -5074,10 +5074,10 @@
 				<font>METF_MediaDetailsSmall</font>
 			</control>
 			<control type="scrollbar" id="1003411">
-				<posx>1200</posx>
-				<posy>80</posy>
+				<posx>1217</posx>
+				<posy>98</posy>
 				<width>25</width>
-				<height>460</height>
+				<height>435</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="2,16,2,16">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="2,16,2,16">ScrollBarV_bar_focus.png</texturesliderbarfocus>
@@ -5839,9 +5839,9 @@
 			</control>
 			<control type="scrollbar" id="1003501">
 				<posx>800</posx>
-				<posy>100</posy>
+				<posy>102</posy>
 				<width>25</width>
-				<height>420</height>
+				<height>428</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
@@ -6170,9 +6170,9 @@
 			</control>
 			<control type="scrollbar" id="1003511">
 				<posx>800</posx>
-				<posy>70</posy>
+				<posy>101</posy>
 				<width>25</width>
-				<height>450</height>
+				<height>424</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
@@ -6217,9 +6217,9 @@
 			<visible>substring(Window.Property(TimerMode),true)</visible>
 			<control type="list" id="1003610">
 				<posx>72</posx>
-				<posy>107</posy>
+				<posy>108</posy>
 				<width>1200</width>
-				<height>560</height>
+				<height>411</height>
 				<onleft>4009000</onleft>
 				<onright>1003611</onright>
 				<onup>1003610</onup>
@@ -6227,13 +6227,15 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>1003611</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<itemlayout height="70" width="610">
+				<itemlayout height="68" width="610">
 					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>730</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<posx>36</posx>
+						<posy>2</posy>
+						<width>677</width>
+						<height>2</height>
+<!--						<texture border="0,2,0,2">MenuItemNF.png</texture>-->
+						<texture>new/VideoInfoLine.png</texture>
+						<colordiffuse>FilesDividerDiffuse</colordiffuse>
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
@@ -6242,7 +6244,7 @@
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-<!--						<visible>substring(ListItem.Property(TimerType),Running)</visible>-->
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
@@ -6251,7 +6253,7 @@
 						<width>25</width>
 						<height>25</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
-<!--						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>-->
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
 					<!-- Schedule ViewTimer Icon-->
 					<control type="image">
@@ -6260,13 +6262,13 @@
 						<width>25</width>
 						<height>25</height>
 						<texture border="0,2,0,2">IconTimerV.png</texture>
-<!--						<visible>substring(ListItem.Property(ViewTimer),true)</visible>-->
+						<visible>substring(ListItem.Property(ViewTimer),true)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
-						<width>540</width>
+						<width>470</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -6277,7 +6279,7 @@
 					</control>
 					<!-- start time-->
 					<control type="label">
-						<posx>710</posx>
+						<posx>713</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
@@ -6292,7 +6294,7 @@
 					<control type="label">
 						<posx>40</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>470</width>
 						<height>40</height>
 						<font>METF_HomeMenuSmall</font>
 						<textcolor>white</textcolor>
@@ -6304,9 +6306,9 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>710</posx>
-						<posy>40</posy>
-						<width>210</width>
+						<posx>713</posx>
+						<posy>35</posy>
+						<width>200</width>
 						<height>30</height>
 						<font>METF_PlotText</font>
 						<textcolor>white</textcolor>
@@ -6317,21 +6319,23 @@
 						<visible>substring(Window.Property(TimerMode),true)</visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="70" width="610">
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>720</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+				<focusedlayout height="68" width="610">
+					<control type="image">
+						<posx>36</posx>
+						<posy>2</posy>
+						<width>677</width>
+						<height>2</height>
+<!--						<texture border="0,2,0,2">MenuItemNF.png</texture>-->
+						<texture>new/VideoInfoLine.png</texture>
+						<colordiffuse>FilesDividerDiffuse</colordiffuse>
 						<visible>!Control.HasFocus(1003610) + substring(Window.Property(TimerMode),true)</visible>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
--->					<control type="image">
+					<control type="image">
 						<posx>34</posx>
-						<posy>0</posy>
-						<width>685</width>
-						<height>71</height>
+						<posy>2</posy>
+						<width>687</width>
+						<height>69</height>
 						<texture>new/FocusLine.png</texture>
 						<colordiffuse>FocusBar</colordiffuse>
 						<include>DefaultVisibleFadeEffect</include>
@@ -6374,7 +6378,7 @@
 					<control type="label">
 						<posx>40</posx>
 						<posy>5</posy>
-						<width>540</width>
+						<width>470</width>
 						<height>30</height>
 						<font>METF_DialogLarge</font>
 						<textcolor>white</textcolor>
@@ -6385,7 +6389,7 @@
 					</control>
 					<!-- start time  -->
 					<control type="label">
-						<posx>710</posx>
+						<posx>713</posx>
 						<posy>5</posy>
 						<width>210</width>
 						<height>30</height>
@@ -6400,7 +6404,7 @@
 					<control type="label">
 						<posx>40</posx>
 						<posy>30</posy>
-						<width>540</width>
+						<width>470</width>
 						<height>40</height>
 						<font>METF_HomeMenuSmall</font>
 						<textcolor>white</textcolor>
@@ -6412,9 +6416,9 @@
 					</control>
 					<!-- Duration -->
 					<control type="label">
-						<posx>710</posx>
-						<posy>40</posy>
-						<width>210</width>
+						<posx>713</posx>
+						<posy>35</posy>
+						<width>200</width>
 						<height>30</height>
 						<font>METF_PlotText</font>
 						<textcolor>white</textcolor>
@@ -6428,9 +6432,9 @@
 			</control>
 			<control type="scrollbar" id="1003611">
 				<posx>800</posx>
-				<posy>70</posy>
+				<posy>102</posy>
 				<width>25</width>
-				<height>565</height>
+				<height>423</height>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
@@ -6838,10 +6842,10 @@
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="1003961">
-			<posx>495</posx>
-			<posy>65</posy>
+			<posx>498</posx>
+			<posy>56</posy>
 			<width>25</width>
-			<height>414</height>
+			<height>424</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
@@ -6940,8 +6944,8 @@
 					<posy>0</posy>
 					<width>60</width>
 					<height>40</height>
-					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<font>METF_PlotText</font>
+					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
@@ -7110,9 +7114,9 @@
 		</control>
 		<control type="scrollbar" id="1003951">
 			<posx>592</posx>
-			<posy>65</posy>
+			<posy>53</posy>
 			<width>25</width>
-			<height>401</height>
+			<height>411</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
