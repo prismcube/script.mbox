@@ -720,7 +720,8 @@
 		<pulseonselect>false</pulseonselect>-->
 	</include>
 
-	<include name="DefaultButtonCommonValues">
+	<include name="DefaultButtonCommonValues"><!--sblee-sub list-->
+		<posx>-30</posx>
 		<height>40</height>
 		<width>220</width>
 		<textoffsetx>10</textoffsetx>
@@ -4459,9 +4460,9 @@
 		</control>
 	</include>
 
-	<include name="DefaultButtonMediaSubCommonValues">
+	<include name="DefaultButtonMediaSubCommonValues"> <!--sblee-Misc option sub-->
 		<height>40</height>
-		<width>221</width>
+		<width>210</width>
 		<textoffsetx>20</textoffsetx>
 		<textwidth>195</textwidth>
 		<aligny>center</aligny>

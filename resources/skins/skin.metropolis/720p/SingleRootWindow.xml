@@ -2546,14 +2546,14 @@ Search for window name
 							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 							<control type="group">
 								<visible>Container(1300102).HasFocus(6) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
-								<control type="image">
+<!--								<control type="image">
 									<posx>190</posx>
 									<posy>0</posy>
 									<width>40</width>
 									<height>40</height>
 									<texture>MediaSubSet.png</texture>
 								</control>
-								<control type="radiobutton" id="1300113">
+-->								<control type="radiobutton" id="1300113">
 									<posx>0</posx>
 									<posy>51</posy>
 									<width>237</width>
@@ -5372,20 +5372,20 @@ Search for window name
 			</control>
 
 			<control type="group">
-				<animation effect="slide" start="0,0" end="260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">WindowClose</animation>
+				<animation effect="slide" start="0,0" end="268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3309000).HasFocus | ControlGroup(3309001).HasFocus">WindowClose</animation>
 				<control type="group">
 					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 					<control type="image">
-						<posx>0</posx>
-						<posy>40</posy>
-						<width>1</width>
-						<height>580</height>
+						<posx>-570</posx>
+						<posy>50</posy>
+						<width>540</width>
+						<height>620</height>
 <!--						<texture>black-back_noAlpha.png</texture>-->
 						<texture>frames/Menu_Glass2b.png</texture>
 						<colordiffuse>DialogBackgroundColor</colordiffuse>
-						<animation effect="zoom" start="0,0,1,580" end="0,0,245,580" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="290,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3300104) | Control.HasFocus(3300105) | ControlGroup(3309001).HasFocus">Conditional</animation>
 					</control>
 <!--					<control type="image">
 						<posx>1</posx>
@@ -5416,17 +5416,17 @@ Search for window name
 						<visible>true</visible>
 					</control>
 
-					<control type="image">
+<!--					<control type="image">
 						<posx>185</posx>
 						<posy>160</posy>
 						<width>40</width>
 						<height>40</height>
 						<texture>MediaSubSet.png</texture>
 					</control>
-					<control type="grouplist" id="3309010">
-						<posx>10</posx>
+-->					<control type="grouplist" id="3309010">
+						<posx>2</posx>
 						<posy>210</posy>
-						<width>240</width>
+						<width>210</width>
 						<height>550</height>
 						<onleft>3309000</onleft>
 						<onright condition="substring(Window.Property(ViewMode),common)">1003400</onright>
@@ -5445,7 +5445,7 @@ Search for window name
 						<visible>Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus</visible>
 					</control>
 					<control type="list" id="3309050">
-						<posx>20</posx>
+						<posx>2</posx>
 						<posy>210</posy>
 						<width>240</width>
 						<height>550</height>
@@ -7164,20 +7164,20 @@ Search for window name
 			</control>
 
 			<control type="group">
-				<animation effect="slide" start="0,0" end="260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
+				<animation effect="slide" start="0,0" end="268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(3709000).HasFocus | ControlGroup(3709001).HasFocus">WindowClose</animation>
 				<control type="group">
 					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 					<control type="image">
-						<posx>0</posx>
-						<posy>40</posy>
-						<width>1</width>
-						<height>580</height>
+						<posx>-570</posx>
+						<posy>50</posy>
+						<width>540</width>
+						<height>620</height>
 <!--						<texture>black-back_noAlpha.png</texture>-->
 						<texture>frames/Menu_Glass2b.png</texture>
 						<colordiffuse>DialogBackgroundColor</colordiffuse>
-						<animation effect="zoom" start="0,0,1,580" end="0,0,250,580" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
+						<animation effect="slide" start="0,0" end="290,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(3700101) | ControlGroup(3709001).HasFocus">Conditional</animation>
 					</control>
 <!--					<control type="image">
 						<posx>1</posx>
@@ -7209,15 +7209,15 @@ Search for window name
 						<visible>true</visible>
 					</control>
 
-					<control type="image">
+<!--					<control type="image">
 						<posx>185</posx>
 						<posy>120</posy>
 						<width>40</width>
 						<height>40</height>
 						<texture>MediaSubSet.png</texture>
 					</control>
-					<control type="grouplist" id="3709010">
-						<posx>10</posx>
+-->					<control type="grouplist" id="3709010">
+						<posx>0</posx>
 						<posy>170</posy>
 						<width>240</width>
 						<height>550</height>
@@ -7398,20 +7398,22 @@ Search for window name
 			</control>
 
 			<control type="group">
-				<animation effect="slide" start="0,0" end="260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
-				<animation effect="slide" start="0,0" end="-260,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
+				<animation effect="slide" start="0,0" end="268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="0,0" end="-268,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(4009000).HasFocus | ControlGroup(4009001).HasFocus">WindowClose</animation>
 				<control type="group">
 					<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 					<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>1</width>
-						<height>720</height>
-						<texture>MediaBladeSub_Part1.png</texture>
-						<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
-					</control>
 					<control type="image">
+						<posx>-570</posx>
+						<posy>50</posy>
+						<width>540</width>
+						<height>620</height>
+<!--						<texture>MediaBladeSub_Part1.png</texture>-->
+						<texture>frames/Menu_Glass2b.png</texture>
+						<colordiffuse>DialogBackgroundColor</colordiffuse>
+						<animation effect="slide" start="0,0" end="290,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(4000101) | ControlGroup(4009001).HasFocus">Conditional</animation>
+					</control>
+<!--					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>12</width>
@@ -7435,7 +7437,7 @@ Search for window name
 					<posy>130</posy>
 					<control type="button" id="4000100">
 						<description>View As button</description>
-						<posx>-8</posx>
+						<posx>-10</posx>
 						<posy>0</posy>
 						<include>DefaultButtonCommonValues</include>
 						<label>$ADDON[script.mbox 1021]</label>
