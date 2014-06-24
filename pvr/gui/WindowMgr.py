@@ -396,6 +396,9 @@ class WindowMgr( object ) :
 
 
 	def CopyIncludeFile( self ) :
+		if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) > pvr.Platform.GetPlatform( ).GetFrodoVersion( ) :	# for Gotham
+			return
+
 		skinName = self.mSkinName
 		print 'skinName=%s' %skinName
 
