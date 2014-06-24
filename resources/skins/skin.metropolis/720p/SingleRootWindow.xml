@@ -36,6 +36,15 @@ Search for window name
 			<posx>-13</posx>
 			<posy>-7</posy>
 			<width>1306</width>
+			<height>673430</height>
+			<texture>background.png</texture>
+			<colordiffuse>BackgroundColor</colordiffuse>
+		</control>
+		<control type="image">
+			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
 			<height>734</height>
 			<texture>new/background.png</texture>
 			<colordiffuse>ee3c95c8</colordiffuse>
@@ -227,6 +236,14 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
+				<texture>background.png</texture>
+<!--				<colordiffuse>BackgroundColor</colordiffuse>-->
+			</control>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture>new/background.png</texture>
 				<colordiffuse>ee3c95c8</colordiffuse>
 			</control>
@@ -356,7 +373,7 @@ Search for window name
 				<animation effect="fade" time="250">Visible</animation>
 				<animation effect="fade" time="250">Hidden</animation>
 			</control>
--->			<control type="image">
+			<control type="image">
 				<description>LOGO</description>
 				<posx>20</posx>
 				<posy>5</posy>
@@ -367,7 +384,7 @@ Search for window name
 				<include>DefaultVisibleFadeEffect</include>
 				<include>DefaultWindowOpenCloseAnimation</include>
 			</control>
-
+-->
 			<!-- Sub Menu -->
 			<control type="group">
 <!--				<posy>400</posy>-->
@@ -2145,8 +2162,8 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<!--sblee- selected item number-->
 				<control type="label" id="1300401">
-					<posx>65r</posx>
-					<posy>15</posy>
+					<posx>28r</posx>
+					<posy>19</posy>
 					<width>100</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -2159,8 +2176,8 @@ Search for window name
 					<visible>false</visible>
 				</control>
 				<control type="label">
-					<posx>65r</posx>
-					<posy>15</posy>
+					<posx>28r</posx>
+					<posy>19</posy>
 					<width>400</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -2173,8 +2190,8 @@ Search for window name
 				</control>
 				<!--sblee- ()Move Psoition ???-->
 				<control type="label">
-					<posx>65r</posx>
-					<posy>15</posy>
+					<posx>28r</posx>
+					<posy>19</posy>
 					<width>400</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -4382,11 +4399,11 @@ Search for window name
 -->				<control type="image">
 					<posx>330</posx>
 					<posy>490</posy>
-					<width>18</width>
-					<height>19</height>
-					<texture>HomeHasSub.png</texture>
-					<colordiffuse>FFFFFFFF</colordiffuse>
-					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+					<width>20</width>
+					<height>20</height>
+					<texture>Arrow2Down.png</texture>
+<!--					<colordiffuse>FFFFFFFF</colordiffuse>
+					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>-->
 				</control>
 				<control type="list" id="1509000">
 					<posx>3</posx>
@@ -4406,7 +4423,7 @@ Search for window name
 -->						<control type="label">
 							<posx>348</posx>
 							<posy>8</posy>
-							<width>270</width>
+							<width>290</width>
 							<height>38</height>
 							<font>METF_TitleTextMedium</font>
 							<textcolor>white</textcolor>
@@ -4426,7 +4443,7 @@ Search for window name
 						<control type="label">
 							<posx>348</posx>
 							<posy>8</posy>
-							<width>270</width>
+							<width>290</width>
 							<height>38</height>
 							<font>METF_TitleTextMedium</font>
 							<textcolor>eef8cd22</textcolor>
@@ -4886,8 +4903,8 @@ Search for window name
 			<control type="label" id="1009551">
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
-				<posx>65</posx>
-				<posy>5</posy>
+				<posx>29</posx>
+				<posy>14</posy>
 				<width min="0" max="800">auto</width>
 				<height>30</height>
 				<font>METF_HeadingDetails</font><!--sblee-METF_Heading=25pt,METF_HeadingDetails=23pt-->
@@ -5296,7 +5313,7 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<control type="label">
 					<posx>28r</posx>
-					<posy>10</posy>
+					<posy>19</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -5311,7 +5328,7 @@ Search for window name
 				<!-- Item Position and Page Number for thumbnail list-->
 				<control type="label">
 					<posx>28r</posx>
-					<posy>10</posy>
+					<posy>19</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -5326,7 +5343,7 @@ Search for window name
 				<!-- Item Position and Page Number for posterwrap list-->
 				<control type="label">
 					<posx>28r</posx>
-					<posy>10</posy>
+					<posy>19</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -5341,7 +5358,7 @@ Search for window name
 				<!-- Item Position and Page Number for fanart list-->
 				<control type="label">
 					<posx>28r</posx>
-					<posy>10</posy>
+					<posy>19</posy>
 					<width>340</width>
 					<height>20</height>
 					<font>METF_HeadingDetails</font>
@@ -7101,7 +7118,7 @@ Search for window name
 			<control type="label">
 				<include>DefaultWindowFade</include>
 				<posx>28r</posx>
-				<posy>10</posy>
+				<posy>19</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>METF_HeadingDetails</font>
@@ -7117,7 +7134,7 @@ Search for window name
 			<control type="label">
 				<include>DefaultWindowFade</include>
 				<posx>28r</posx>
-				<posy>10</posy>
+				<posy>19</posy>
 				<width>340</width>
 				<height>20</height>
 				<font>METF_HeadingDetails</font>
@@ -7485,7 +7502,7 @@ Search for window name
 			<control type="label">
 				<include>DefaultWindowFade</include>
 				<posx>28r</posx>
-				<posy>10</posy>
+				<posy>19</posy>
 				<width>300</width>
 				<height>20</height>
 				<font>METF_HeadingDetails</font>
@@ -8646,8 +8663,8 @@ Search for window name
 					<texture>GlassTitleBar.png</texture>
 				</control>
 -->				<control type="label">
-					<posx>30</posx>
-					<posy>10</posy>
+					<posx>28</posx>
+					<posy>16</posy>
 					<width>450</width>
 					<height>30</height>
 					<align>left</align>
