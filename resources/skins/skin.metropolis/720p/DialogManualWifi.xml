@@ -17,14 +17,14 @@
 				<description>background image</description>
 				<posx>-16</posx>
 				<posy>-17</posy>
-				<width>648</width>
+				<width>645</width>
 				<height>614</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>40</posx>
+				<posx>43</posx>
 				<posy>-13</posy>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>

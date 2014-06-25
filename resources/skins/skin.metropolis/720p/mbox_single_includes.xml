@@ -853,7 +853,7 @@
 			<defaultcontrol always="true">1001101</defaultcontrol>
 			<control type="list" id="1001103">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -956,7 +956,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -969,7 +969,7 @@
 			<control type="button" id="1001102">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001100)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -989,7 +989,7 @@
 			<defaultcontrol always="true">1001201</defaultcontrol>
 			<control type="list" id="1001203">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1092,7 +1092,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1106,7 +1106,7 @@
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001200)</visible>
 				<description>Menu Item Prev Button</description>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1126,7 +1126,7 @@
 			<defaultcontrol always="true">1001301</defaultcontrol>
 			<control type="list" id="1001303">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1229,7 +1229,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1242,7 +1242,7 @@
 			<control type="button" id="1001302">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001300)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1262,7 +1262,7 @@
 			<defaultcontrol always="true">1001401</defaultcontrol>
 			<control type="list" id="1001403">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1365,7 +1365,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1378,7 +1378,7 @@
 			<control type="button" id="1001402">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001400)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1398,7 +1398,7 @@
 			<defaultcontrol always="true">1001501</defaultcontrol>
 			<control type="list" id="1001503">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1501,7 +1501,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1514,7 +1514,7 @@
 			<control type="button" id="1001502">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001500)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1534,7 +1534,7 @@
 			<defaultcontrol always="true">1001601</defaultcontrol>
 			<control type="list" id="1001603">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1637,7 +1637,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1650,7 +1650,7 @@
 			<control type="button" id="1001602">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001600)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1670,7 +1670,7 @@
 			<defaultcontrol always="true">1001701</defaultcontrol>
 			<control type="list" id="1001703">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1773,7 +1773,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1786,7 +1786,7 @@
 			<control type="button" id="1001702">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001700)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1806,7 +1806,7 @@
 			<defaultcontrol always="true">1001801</defaultcontrol>
 			<control type="list" id="1001803">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>50</posx>
+				<posx>57</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1909,7 +1909,7 @@
 				<description>Menu Item Next Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
 				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
+				<posx>677</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1922,7 +1922,7 @@
 			<control type="button" id="1001802">
 				<description>Menu Item Prev Button</description>
 				<visible>Control.IsVisible(1001800)</visible>
-				<posx>703</posx>
+				<posx>710</posx>
 				<posy>-11</posy>
 				<width>33</width>
 				<height>22</height>
@@ -2899,33 +2899,6 @@
 			<width>540</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006111</defaultcontrol>
-			<control type="button" id="1006111">
-				<description>Menu Item Next Button</description>
-				<visible>Control.IsVisible(1006110)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowDownNF.png</texturenofocus>
-				<texturefocus>ArrowDownFo.png</texturefocus>
-				<onclick>Control.Move(1006113,1)</onclick>
-				<onup>1006111</onup>
-				<ondown>1006111</ondown>
-			</control>
-			<control type="button" id="1006112">
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1006110)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowUpNF.png</texturenofocus>
-				<texturefocus>ArrowUpFo.png</texturefocus>
-				<onclick>Control.Move(1006113,-1)</onclick>
-				<onup>1006112</onup>
-				<ondown>1006112</ondown>
-			</control>
 			<control type="list" id="1006113">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>-10</posx>
@@ -3025,6 +2998,33 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="button" id="1006111">
+				<description>Menu Item Next Button</description>
+				<visible>Control.IsVisible(1006110)</visible>
+				<hitrect x="0" y="0" w="503" h="40" />
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
+				<onclick>Control.Move(1006113,1)</onclick>
+				<onup>1006111</onup>
+				<ondown>1006111</ondown>
+			</control>
+			<control type="button" id="1006112">
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1006110)</visible>
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowUpNF.png</texturenofocus>
+				<texturefocus>ArrowUpFo.png</texturefocus>
+				<onclick>Control.Move(1006113,-1)</onclick>
+				<onup>1006112</onup>
+				<ondown>1006112</ondown>
+			</control>
 		</control>
 	</include>
 
@@ -3033,33 +3033,6 @@
 			<width>550</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006121</defaultcontrol>
-			<control type="button" id="1006121">
-				<description>Menu Item Next Button</description>
-				<visible>Control.IsVisible(1006120)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowDownNF.png</texturenofocus>
-				<texturefocus>ArrowDownFo.png</texturefocus>
-				<onclick>Control.Move(1006123,1)</onclick>
-				<onup>1006121</onup>
-				<ondown>1006121</ondown>
-			</control>
-			<control type="button" id="1006122">
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1006120)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowUpNF.png</texturenofocus>
-				<texturefocus>ArrowUpFo.png</texturefocus>
-				<onclick>Control.Move(1006123,-1)</onclick>
-				<onup>1006122</onup>
-				<ondown>1006122</ondown>
-			</control>
 			<control type="list" id="1006123">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>-10</posx>
@@ -3160,6 +3133,34 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="button" id="1006121">
+				<description>Menu Item Next Button</description>
+				<visible>Control.IsVisible(1006120)</visible>
+				<hitrect x="0" y="0" w="503" h="40" />
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
+				<onclick>Control.Move(1006123,1)</onclick>
+				<onup>1006121</onup>
+				<ondown>1006121</ondown>
+			</control>
+			<control type="button" id="1006122">
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1006120)</visible>
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowUpNF.png</texturenofocus>
+				<texturefocus>ArrowUpFo.png</texturefocus>
+				<onclick>Control.Move(1006123,-1)</onclick>
+				<onup>1006122</onup>
+				<ondown>1006122</ondown>
+			</control>
+
 		</control>
 	</include>
 
@@ -3168,33 +3169,6 @@
 			<width>550</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006131</defaultcontrol>
-			<control type="button" id="1006131">
-				<description>Menu Item Next Button</description>
-				<visible>Control.IsVisible(1006130)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowDownNF.png</texturenofocus>
-				<texturefocus>ArrowDownFo.png</texturefocus>
-				<onclick>Control.Move(1006133,1)</onclick>
-				<onup>1006131</onup>
-				<ondown>1006131</ondown>
-			</control>
-			<control type="button" id="1006132">
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1006130)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1001300)</visible>
-				<onclick>Control.Move(1006133,-1)</onclick>
-				<onup>1006132</onup>
-				<ondown>1006132</ondown>
-			</control>
 			<control type="list" id="1006133">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>-10</posx>
@@ -3294,6 +3268,33 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="button" id="1006131">
+				<description>Menu Item Next Button</description>
+				<visible>Control.IsVisible(1006130)</visible>
+				<hitrect x="0" y="0" w="503" h="40" />
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
+				<onclick>Control.Move(1006133,1)</onclick>
+				<onup>1006131</onup>
+				<ondown>1006131</ondown>
+			</control>
+			<control type="button" id="1006132">
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1006130)</visible>
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1001300)</visible>
+				<onclick>Control.Move(1006133,-1)</onclick>
+				<onup>1006132</onup>
+				<ondown>1006132</ondown>
+			</control>
 		</control>
 	</include>
 
@@ -3302,33 +3303,6 @@
 			<width>550</width>
 			<height>40</height>
 			<defaultcontrol always="true">1006141</defaultcontrol>
-			<control type="button" id="1006141">
-				<description>Menu Item Next Button</description>
-				<visible>Control.IsVisible(1006140)</visible>
-				<hitrect x="0" y="0" w="503" h="40" />
-				<posx>470</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowDownNF.png</texturenofocus>
-				<texturefocus>ArrowDownFo.png</texturefocus>
-				<onclick>Control.Move(1006143,1)</onclick>
-				<onup>1006141</onup>
-				<ondown>1006141</ondown>
-			</control>
-			<control type="button" id="1006142">
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1006140)</visible>
-				<posx>503</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowUpNF.png</texturenofocus>
-				<texturefocus>ArrowUpFo.png</texturefocus>
-				<onclick>Control.Move(1006143,-1)</onclick>
-				<onup>1006142</onup>
-				<ondown>1006142</ondown>
-			</control>
 			<control type="list" id="1006143">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>-10</posx>
@@ -3427,6 +3401,33 @@
 						<visible>Control.IsEnabled(1006140) + [Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="button" id="1006141">
+				<description>Menu Item Next Button</description>
+				<visible>Control.IsVisible(1006140)</visible>
+				<hitrect x="0" y="0" w="503" h="40" />
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
+				<onclick>Control.Move(1006143,1)</onclick>
+				<onup>1006141</onup>
+				<ondown>1006141</ondown>
+			</control>
+			<control type="button" id="1006142">
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1006140)</visible>
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowUpNF.png</texturenofocus>
+				<texturefocus>ArrowUpFo.png</texturefocus>
+				<onclick>Control.Move(1006143,-1)</onclick>
+				<onup>1006142</onup>
+				<ondown>1006142</ondown>
 			</control>
 		</control>
 	</include>

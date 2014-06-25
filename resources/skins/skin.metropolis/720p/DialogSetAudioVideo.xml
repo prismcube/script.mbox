@@ -24,7 +24,7 @@
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
-				<posx>40</posx>
+				<posx>42</posx>
 				<posy>-20</posy>
 				<include>DialogInput01</include>
 				<control type="image">
@@ -37,12 +37,12 @@
 					<colordiffuse>FilesDividerDiffuse</colordiffuse>
 				</control>
 				<control type="group">
-					<posx>0</posx>
+					<posx>2</posx>
 					<posy>12</posy>
 					<include>DialogInput02</include>
 				</control>
 				<control type="group">
-					<posx>0</posx>
+					<posx>2</posx>
 					<posy>12</posy>
 					<include>DialogSpinEx01</include>
 					<include>DialogSpinEx02</include>
