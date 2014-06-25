@@ -5102,7 +5102,7 @@
 			<posy>70</posy>
 			<control type="wraplist" id="1003420">
 				<visible>true</visible>
-				<posx>-100</posx>
+				<posx>-114</posx>
 				<posy>0</posy>
 				<width>1526</width>
 				<height>460</height>
@@ -5115,7 +5115,7 @@
 				<focusposition>1</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="245" width="197">
+				<itemlayout height="245" width="200">
 					<control type="image">
 						<posx>141</posx>
 						<posy>121</posy>
@@ -5201,7 +5201,7 @@
 				</itemlayout>
 				<focusedlayout height="400" width="265">
 					<control type="image">
-						<posx>133</posx>
+						<posx>134</posx>
 						<posy>71</posy>
 						<width>240</width>
 						<height>353</height>
@@ -5222,7 +5222,7 @@
 						</animation>
 					</control>
 					<control type="image">
-						<posx>118</posx>
+						<posx>119</posx>
 						<posy>50</posy>
 						<width>271</width>
 						<height>395</height>
@@ -5319,7 +5319,7 @@
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<control type="label">
 				<description>Record Name</description>
-				<posx>510</posx>
+				<posx>505</posx>
 				<posy>450</posy>
 				<width>1035</width>
 				<height>35</height>
@@ -5331,7 +5331,7 @@
 			</control>
 			<control type="label">
 				<description>Channel Name</description>
-				<posx>510</posx>
+				<posx>505</posx>
 				<posy>484</posy>
 				<width>760</width>
 				<height>20</height>
@@ -5343,7 +5343,7 @@
 			</control>
 			<control type="label">
 				<description>Date(rec duration)</description>
-				<posx>249</posx>
+				<posx>242</posx>
 				<posy>512</posy>
 				<width min="100" max="300">auto</width>
 				<height>20</height>
@@ -5356,7 +5356,7 @@
 			<!-- NetVolume -->
 			<control type="label">
 				<description>rec Path</description>
-				<posx>510</posx>
+				<posx>505</posx>
 				<posy>500</posy>
 				<width>1035</width>
 				<height>40</height>

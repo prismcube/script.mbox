@@ -388,7 +388,7 @@ Search for window name
 			<!-- Sub Menu -->
 			<control type="group">
 <!--				<posy>400</posy>-->
-				<posy>40</posy>
+				<posy>45</posy>
 <!--				<animation type="Visible" reversible="false">
 					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
 					<effect type="fade" start="0" end="100" time="300" />
@@ -718,7 +718,7 @@ Search for window name
 <!--					<include>DefaultVisibleFadeEffect</include>-->
 <!--					<itemgap>0</itemgap>-->
 					<orientation>vertical</orientation>
-					<itemlayout width="200" height="30">
+					<itemlayout width="200" height="32">
 							<!--sblee-Main Menu List Seperator-->
 <!--						<control type="image">
 							<posx>0</posx>
@@ -739,7 +739,7 @@ Search for window name
 							<posx>205</posx>
 							<posy>0</posy>
 							<width>215</width>
-							<height>30</height>
+							<height>32</height>
 <!--							<font>font_MainMenu</font>
 							<textcolor>grey3</textcolor>-->
 							<font>METF_Heading</font> <!--sblee-font size: METF_HomeMenu=27, METF_TitleTextMedium= 26, METF_Heading=25, METF_TitleText=24-->
@@ -749,7 +749,7 @@ Search for window name
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 					</itemlayout>
-					<focusedlayout height="30" width="215">
+					<focusedlayout height="32" width="215">
 <!--						<control type="image">
 							<posx>0</posx>
 							<posy>4</posy>
@@ -786,7 +786,7 @@ Search for window name
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
-							<width>215</width>
+							<width>210</width>
 							<height>32</height>
 							<aligny>center</aligny>
 							<texture flipx="true">new/FocusLine.png</texture>
@@ -800,7 +800,7 @@ Search for window name
 							<posx>205</posx>
 							<posy>0</posy>
 							<width>200</width>							
-							<height>30</height>
+							<height>32</height>
 <!--							<height>60</height>
 							<font>font_MainMenu</font>
 							<textcolor>red</textcolor>
@@ -818,7 +818,7 @@ Search for window name
 							<posx>205</posx>
 							<posy>0</posy>
 							<width>200</width>
-							<height>30</height>
+							<height>32</height>
 							<align>right</align>
 							<aligny>center</aligny>
 							<font>METF_Heading</font>
@@ -4834,6 +4834,14 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
+				<texture>black-back_noAlpha.png</texture>
+				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
+			</control>
+			<control type="image">
+				<posx>-13</posx>
+				<posy>-7</posy>
+				<width>1306</width>
+				<height>734</height>
 				<texture background="true">new/background.png</texture>
 				<colordiffuse>BackgroundColor</colordiffuse>
 				<visible>substring(Window.Property(ViewMode),common) | [substring(Window.Property(ViewMode),thumbnail) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),posterwrap) +  substring(Window.Property(PvrPlay),False)] | [substring(Window.Property(ViewMode),fanart) +  substring(Window.Property(PvrPlay),False)]</visible>
@@ -7691,14 +7699,14 @@ Search for window name
 				<texture>background.png</texture>
 				<colordiffuse>BackgroundColor</colordiffuse>
 			</control>
-			<control type="image">
+<!--			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
 				<texture>black-back.png</texture>
 			</control>
-			<control type="image">
+-->			<control type="image">
 				<description>top left mover</description>
 				<posx>0</posx>
 				<posy>0</posy>

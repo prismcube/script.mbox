@@ -54,7 +54,7 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturenofocus border="0,2,0,2">-</texturenofocus>
 					<texturefocus border="0,2,0,2">ButtonFO2Wide.png</texturefocus>
 					<onleft></onleft>
 					<onright></onright>
@@ -128,7 +128,7 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturenofocus border="0,2,0,2">-</texturenofocus>
 					<texturefocus border="0,2,0,2">ButtonFO2Wide.png</texturefocus>
 					<onleft></onleft>
 					<onright></onright>
