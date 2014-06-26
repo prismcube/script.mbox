@@ -36,7 +36,7 @@ Search for window name
 			<posx>-13</posx>
 			<posy>-7</posy>
 			<width>1306</width>
-			<height>673430</height>
+			<height>734</height>
 			<texture>background.png</texture>
 			<colordiffuse>BackgroundColor</colordiffuse>
 		</control>
@@ -236,7 +236,7 @@ Search for window name
 				<posy>-7</posy>
 				<width>1306</width>
 				<height>734</height>
-				<texture>background.png</texture>
+				<texture>black-back_noAlpha.png</texture>
 <!--				<colordiffuse>BackgroundColor</colordiffuse>-->
 			</control>
 			<control type="image">
@@ -8066,7 +8066,7 @@ Search for window name
 								<height>30</height>
 								<font>METF_HeadingDetails</font>
 								<textcolor>white</textcolor>
-								<selectedcolor>grey2</selectedcolor>
+								<selectedcolor>white</selectedcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
