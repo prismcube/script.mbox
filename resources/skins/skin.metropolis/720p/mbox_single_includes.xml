@@ -11,7 +11,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture>backgrounds/SKINDEFAULT.jpg</texture>
+<!--			<texture>backgrounds/SKINDEFAULT.jpg</texture>-->
 			<include>DefaultSettingWindowEffect</include>
 			<!--
 			<animation effect="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" condition="!Control.HasFocus(1000999)">Conditional</animation>

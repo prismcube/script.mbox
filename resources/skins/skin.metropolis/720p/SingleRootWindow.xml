@@ -241,15 +241,24 @@ Search for window name
 			</control>
 			<control type="image">
 				<posx>-13</posx>
-				<posy>-7</posy>
+				<posy>0</posy>
 				<width>1306</width>
-				<height>734</height>
+				<height>720</height>
 				<texture>new/background.png</texture>
 				<colordiffuse>ee3c95c8</colordiffuse>
 			</control>
 			<include>Global_Weather</include>
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
+
+			<!--sblee-main middle image frame live area-->
+			<control type="image">
+				<posx>240</posx>
+				<posy>50</posy>
+				<width>800</width>
+				<height>450</height>
+				<texture>video_pig_overlay.png</texture>
+			</control>
 
 			<!--sblee-main middle image frame-->
 			<control type="image">
@@ -258,14 +267,6 @@ Search for window name
 				<width>848</width>
 				<height>507</height>
 				<texture>frames/ClassicFrame_Fanart.png</texture>
-			</control>
-			<!--sblee-main middle image frame live area-->
-			<control type="image">
-				<posx>240</posx>
-				<posy>50</posy>
-				<width>800</width>
-				<height>450</height>
-				<texture>video_pig_overlay.png</texture>
 			</control>
 
 			<control type="image">
