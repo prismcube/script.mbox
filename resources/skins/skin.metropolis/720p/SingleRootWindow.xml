@@ -37,8 +37,8 @@ Search for window name
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-			<texture>background.png</texture>
-			<colordiffuse>BackgroundColor</colordiffuse>
+			<texture>black-back_noAlpha.png</texture>
+<!--			<colordiffuse>BackgroundColor</colordiffuse>-->
 		</control>
 		<control type="image">
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
@@ -241,9 +241,9 @@ Search for window name
 			</control>
 			<control type="image">
 				<posx>-13</posx>
-				<posy>0</posy>
+				<posy>-7</posy>
 				<width>1306</width>
-				<height>720</height>
+				<height>734</height>
 				<texture>new/background.png</texture>
 				<colordiffuse>ee3c95c8</colordiffuse>
 			</control>
@@ -918,16 +918,16 @@ Search for window name
 				<posy>33r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
 				<!--sblee-main menu description-->
-				<control type="label">
+				<control type="textbox">
 					<description>MainMenuDescription</description>
 					<visible>Control.HasFocus(1209000)</visible>
 <!--					<posx>1250</posx>
 					<posy>-27</posy>
--->					<posx>60</posx>
-					<posy>-120</posy>
-					<width>1145</width>
-					<height>50</height>
-					<font>METF_InfoText</font> <!--sblee-METF_HomeMenuSmall=MET_FontinSansSmallCaps/23pt,METF_InfoText=MET_UbuntuRegular.ttf/19pt-->
+-->					<posx>340</posx>
+					<posy>-130</posy>
+					<width>600</width>
+<!--					<height>50</height>-->
+					<font>METF_SettingsDetail</font> <!--sblee-METF_HomeMenuSmall=MET_FontinSansSmallCaps/23pt,METF_InfoText=MET_UbuntuRegular.ttf/19pt-->
 					<label>$INFO[Container(1209000).ListItem.Label2]</label>
 					<align>center</align>
 					<textcolor>white</textcolor>
@@ -937,10 +937,10 @@ Search for window name
 					<description>MainMenuDescription</description>
 					<visible>!Control.HasFocus(1209000)</visible>
 					<posx>60</posx>
-					<posy>-120</posy>
+					<posy>-130</posy>
 					<width>1145</width>
 					<height>50</height>
-					<font>METF_InfoText</font>
+					<font>METF_SettingsDetail</font>
 					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
@@ -4490,7 +4490,7 @@ Search for window name
 						<posy>-3</posy>
 						<width>590</width>
 						<height>45</height>
-						<font>METF_InfoText</font>
+						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4693,7 +4693,7 @@ Search for window name
 						<posy>-3</posy>
 						<width>590</width>
 						<height>45</height>
-						<font>METF_InfoText</font>
+						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -5003,7 +5003,7 @@ Search for window name
 					<posy>16</posy>
 					<width>150</width>
 					<height>10</height>
-					<visible>substring(Window.Property(ViewMode),common)</visible>
+					<visible>substring(Window.Property(PvrPlay),True)</visible>
 				</control>
 				<!-- Play Start Time  -->
 				<control type="label" id="3300403">
@@ -5447,7 +5447,7 @@ Search for window name
 						<itemgap>0</itemgap>
 						<control type="radiobutton" id="3300200">
 							<description>Stack Toggle</description>
-							<textwidth>170</textwidth>
+							<textwidth>150</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
 							<label>$ADDON[script.mbox 1008]</label>
 						</control>

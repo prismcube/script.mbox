@@ -4467,7 +4467,7 @@
 		<height>40</height>
 		<width>210</width>
 		<textoffsetx>20</textoffsetx>
-		<textwidth>195</textwidth>
+		<textwidth>150</textwidth>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
 <!--		<texturefocus border="5">button-focus.png</texturefocus>
