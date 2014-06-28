@@ -123,8 +123,6 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onInit(self):
-		self.setFocusId( E_CHANNEL_LIST_DEFAULT_FOCUS_ID )
-
 		self.SetSingleWindowPosition( E_CHANNEL_LIST_BASE_ID )
 
 		self.SetFrontdisplayMessage( MR_LANG('Channel List') )
@@ -257,6 +255,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mAsyncTuneTimer = None
 		self.mAsyncSortTimer = None
+
+		self.setFocusId( E_CHANNEL_LIST_DEFAULT_FOCUS_ID )
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 
