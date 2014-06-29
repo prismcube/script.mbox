@@ -10,15 +10,15 @@
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
-				<posy>3</posy>
-				<width>1200</width>
-				<height>640</height>
-				<texture border="40">DialogBack.png</texture>
+				<posy>8</posy>
+				<width>1180</width>
+				<height>625</height>
+				<texture>black-back_noAlpha.png</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
-				<posy>8</posy>
-				<width>1200</width>
+				<posy>3</posy>
+				<width>1180</width>
 				<height>630</height>
 				<texture border="20">background.png</texture>
 				<colordiffuse>BackgroundColor</colordiffuse>

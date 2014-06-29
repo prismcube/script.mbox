@@ -41,23 +41,6 @@
 				<height>30</height>
 				<align>left</align>
 				<itemgap>10</itemgap>
-				<control type="label" id="100">
-					<description>dialog line 1</description>
-	<!--				<posx>20</posx>
-					<posy>60</posy>
-					<width>560</width>
-					<height>30</height>
-					<align>left</align>
-					<aligny>center</aligny>
-					<haspath>true</haspath>
-					<font>METF_MediaDetailsSmall</font>
-				</control>
-	-->				<width min="25" max="835">auto</width>
-					<height>30</height>
-					<aligny>center</aligny>
-					<font>METF_DialogSmallBold</font>
-					<textcolor>TextNF</textcolor>
-				</control>
 				<control type="label" id="200">
 					<description>header label</description>
 <!--					<posx>20</posx>
@@ -75,14 +58,32 @@
 					<font>METF_DialogSmallBold</font>
 					<textcolor>DialogTextFO</textcolor>
 				</control>
+				<control type="label" id="100">
+					<description>dialog line 1</description>
+	<!--				<posx>20</posx>
+					<posy>60</posy>
+					<width>560</width>
+					<height>30</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<haspath>true</haspath>
+					<font>METF_MediaDetailsSmall</font>
+				</control>
+	-->				<width min="25" max="835">auto</width>
+					<posx>500</posx>
+					<height>30</height>
+					<aligny>center</aligny>
+					<font>METF_DialogSmallBold</font>
+					<textcolor>TextNF</textcolor>
+				</control>
 				<control type="label" id="201">
 					<description>page</description>
-					<posx>580</posx>
+<!--					<posx>580</posx>
 					<posy>18</posy>
 					<width>100</width>
-					<height>30</height>
+-->					<height>30</height>
 					<font>METF_MediaDetailsSmall</font>
-					<align>right</align>
+<!--					<align>right</align>-->
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
 	<!--				<shadowcolor>black</shadowcolor>-->

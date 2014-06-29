@@ -2268,6 +2268,7 @@ Search for window name
 						<align>left</align>
 						<aligny>center</aligny>
 						<font>METF_SettingsDetail</font>
+						<focusedcolor>eef8cd22</focusedcolor>
 						<texturefocus border="1">ButtonFO2.png</texturefocus>
 						<texturenofocus>-</texturenofocus>
 						<pulseonselect>false</pulseonselect>
@@ -2320,8 +2321,20 @@ Search for window name
 								<font>METF_MediaDetailsSmall</font>
 								<align>left</align>
 								<aligny>center</aligny>
+								<textcolor>eef8cd22</textcolor>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>21</posy>
+								<width>250</width>
+								<height>40</height>
+								<font>METF_MediaDetailsSmall</font>
+								<align>left</align>
+								<aligny>center</aligny>
 								<textcolor>white</textcolor>
 								<label>$INFO[ListItem.Label]</label>
+								<visible>[ControlGroup(1300200).HasFocus + Container(1300102).HasFocus(1)] | [Control.HasFocus(1300103) + Container(1300102).HasFocus(1)] | [ControlGroup(1300200).HasFocus + Container(1300102).HasFocus(6)] | [Control.HasFocus(1300103) + Container(1300102).HasFocus(6)]</visible>
 							</control>
 							<control type="image">
 								<posx>30r</posx>
@@ -2329,7 +2342,7 @@ Search for window name
 								<width>18</width>
 								<height>18</height>
 								<texture>Arrow2Right.png</texture>
-								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
+								<visible>![ControlGroup(1300200).HasFocus | ControlGroup(1300120).HasFocus | Control.HasFocus(1300103)] + [Container(1300102).HasFocus(2) | Container(1300102).HasFocus(3) | Container(1300102).HasFocus(4) | Container(1300102).HasFocus(5) | Container(1300102).HasFocus(6)]</visible>
 							</control>
 						</focusedlayout>
 						<content>
@@ -2393,6 +2406,7 @@ Search for window name
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
 								<font>METF_SettingsDetail</font>
+								<focusedcolor>eef8cd22</focusedcolor>
 								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<label>$ADDON[script.mbox 1029]</label>
@@ -2417,6 +2431,7 @@ Search for window name
 								<textwidth>215</textwidth>
 								<aligny>center</aligny>
 								<font>METF_SettingsDetail</font>
+								<focusedcolor>eef8cd22</focusedcolor>
 								<texturefocus border="1">ButtonFO2.png</texturefocus>
 								<texturenofocus>-</texturenofocus>
 								<label>$ADDON[script.mbox 1009]</label>
@@ -2520,9 +2535,8 @@ Search for window name
 									<width>180</width>
 									<height>40</height>
 									<font>METF_PlotText</font>
-									<textcolor>white</textcolor>
-									<selectedcolor>selected</selectedcolor>
-									<shadowcolor>ff000000</shadowcolor>
+									<textcolor>eef8cd22</textcolor>
+<!--									<shadowcolor>ff000000</shadowcolor>-->
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -2567,7 +2581,7 @@ Search for window name
 									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
-									<focusedcolor>white</focusedcolor>
+									<focusedcolor>eef8cd22</focusedcolor>
 									<label>$ADDON[script.mbox 1006]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
@@ -2587,7 +2601,7 @@ Search for window name
 									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
-									<focusedcolor>white</focusedcolor>
+									<focusedcolor>eef8cd22</focusedcolor>
 									<label>$ADDON[script.mbox 1007]</label>
 									<onleft>1300102</onleft>
 									<onright>1300049</onright>
@@ -2600,27 +2614,21 @@ Search for window name
 								<posx>0</posx>
 								<posy>85</posy>
 								<visible>Control.HasFocus(1300202) | Control.HasFocus(1300121) | Control.HasFocus(1300122)</visible>
-								<control type="image">
-									<posx>190</posx>
-									<posy>0</posy>
-									<width>40</width>
-									<height>40</height>
-									<texture>METF_SettingsDetail.png</texture>
-								</control>
 								<control type="radiobutton" id="1300121">
 									<posx>0</posx>
 									<posy>51</posy>
 									<width>237</width>
 									<height>40</height>
 									<textoffsetx>15</textoffsetx>
-									<textwidth>168</textwidth>
+									<textwidth>185</textwidth>
+									<align>left</align>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
 									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
-									<focusedcolor>white</focusedcolor>
+									<focusedcolor>eef8cd22</focusedcolor>
 									<label>$ADDON[script.mbox 1151]</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
@@ -2632,15 +2640,16 @@ Search for window name
 									<posy>90</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>190</textwidth>
+									<textoffsetx>30</textoffsetx>
+									<textwidth>185</textwidth>
+									<align>left</align>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
 									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
-									<focusedcolor>white</focusedcolor>
+									<focusedcolor>eef8cd22</focusedcolor>
 									<label>$ADDON[script.mbox 1165]</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
@@ -2660,7 +2669,7 @@ Search for window name
 									<texturenofocus>-</texturenofocus>
 									<pulseonselect>false</pulseonselect>
 									<textcolor>white</textcolor>
-									<focusedcolor>white</focusedcolor>
+									<focusedcolor>eef8cd22</focusedcolor>
 									<label>Search by AllChannels</label>
 									<onleft>1300202</onleft>
 									<onright>1300049</onright>
@@ -5740,7 +5749,7 @@ Search for window name
 -->				<control type="label">
 					<description>header label</description>
 					<posx>465</posx>
-					<posy>160r</posy>
+					<posy>170r</posy>
 					<width>590</width>
 					<height>45</height>
 					<font>METF_InfoText</font>

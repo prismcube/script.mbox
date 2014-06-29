@@ -30,19 +30,19 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>119</posy>
-					<width>510</width>
+					<width>520</width>
 					<height>3</height>
 <!--					<texture>separator2.png</texture>-->
 					<texture>VideoInfoLine.png</texture>
 					<colordiffuse>FilesDividerDiffuse</colordiffuse>
 				</control>
 				<control type="group">
-					<posx>2</posx>
+					<posx>0</posx>
 					<posy>12</posy>
 					<include>DialogInput02</include>
 				</control>
 				<control type="group">
-					<posx>2</posx>
+					<posx>0</posx>
 					<posy>12</posy>
 					<include>DialogSpinEx01</include>
 					<include>DialogSpinEx02</include>

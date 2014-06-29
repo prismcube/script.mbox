@@ -729,7 +729,7 @@
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
-		<focusedcolor>FFc89008</focusedcolor>
+		<focusedcolor>eef8cd22</focusedcolor>
 <!--		<texturefocus border="5">button-focus.png</texturefocus>-->
 		<texturefocus border="1">ButtonFO2.png</texturefocus>
 		<texturenofocus>-</texturenofocus>
@@ -885,7 +885,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -921,7 +921,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1021,7 +1021,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1057,7 +1057,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1158,7 +1158,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1194,7 +1194,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1294,7 +1294,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1330,7 +1330,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1430,7 +1430,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1466,7 +1466,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1566,7 +1566,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1602,7 +1602,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1702,7 +1702,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1738,7 +1738,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1838,7 +1838,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1874,7 +1874,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2103,7 +2103,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2139,7 +2139,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2206,7 +2206,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2242,7 +2242,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2309,7 +2309,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2345,7 +2345,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2412,7 +2412,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2448,7 +2448,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2515,7 +2515,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2550,7 +2550,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>METF_ContextValue</font>
+						<font>FFff5858</font>
 						<textcolor>ddFFFFFF</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2618,7 +2618,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2653,7 +2653,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>METF_ContextValue</font>
+						<font>FFff5858</font>
 						<textcolor>ddFFFFFF</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -2721,7 +2721,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2757,7 +2757,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2824,7 +2824,7 @@
 						<width>680</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2860,7 +2860,7 @@
 						<width>640</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2931,7 +2931,7 @@
 						<width>480</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -2967,7 +2967,7 @@
 						<width>440</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -3066,7 +3066,7 @@
 						<width>480</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3102,7 +3102,7 @@
 						<width>440</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -3201,7 +3201,7 @@
 						<width>480</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3237,7 +3237,7 @@
 						<width>440</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -3335,7 +3335,7 @@
 						<width>480</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3371,7 +3371,7 @@
 						<width>440</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -3464,7 +3464,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3495,19 +3495,19 @@
 						<visible>Control.IsEnabled(1006210) + Control.HasFocus(1006211)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006210)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3519,7 +3519,7 @@
 						<visible>Control.IsEnabled(1006210) + ![Control.HasFocus(1006211)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3566,7 +3566,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3597,19 +3597,19 @@
 						<visible>Control.IsEnabled(1006220) + Control.HasFocus(1006221)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006220)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3621,7 +3621,7 @@
 						<visible>Control.IsEnabled(1006220) + ![Control.HasFocus(1006221)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3668,7 +3668,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3699,19 +3699,19 @@
 						<visible>Control.IsEnabled(1006230) + Control.HasFocus(1006231)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006230)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3723,7 +3723,7 @@
 						<visible>Control.IsEnabled(1006230) + ![Control.HasFocus(1006231)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3770,7 +3770,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3801,19 +3801,19 @@
 						<visible>Control.IsEnabled(1006240) + Control.HasFocus(1006241)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006240)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3825,7 +3825,7 @@
 						<visible>Control.IsEnabled(1006240) + ![Control.HasFocus(1006241)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3872,7 +3872,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -3903,19 +3903,19 @@
 						<visible>Control.IsEnabled(1006250) + Control.HasFocus(1006251)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006250)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3927,7 +3927,7 @@
 						<visible>Control.IsEnabled(1006250) + ![Control.HasFocus(1006251)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -3974,7 +3974,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4005,19 +4005,19 @@
 						<visible>Control.IsEnabled(1006260) + Control.HasFocus(1006261)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006260)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4029,7 +4029,7 @@
 						<visible>Control.IsEnabled(1006260) + ![Control.HasFocus(1006261)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4076,7 +4076,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4107,19 +4107,19 @@
 						<visible>Control.IsEnabled(1006270) + Control.HasFocus(1006271)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006270)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4131,7 +4131,7 @@
 						<visible>Control.IsEnabled(1006270) + ![Control.HasFocus(1006271)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4178,7 +4178,7 @@
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4209,19 +4209,19 @@
 						<visible>Control.IsEnabled(1006280) + Control.HasFocus(1006281)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
 						<font>METF_ContextValue</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006280)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4233,7 +4233,7 @@
 						<visible>Control.IsEnabled(1006280) + ![Control.HasFocus(1006281)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
@@ -4278,8 +4278,8 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4290,8 +4290,8 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>ddFFFFFF</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4302,7 +4302,7 @@
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>METF_ContextValue</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4310,35 +4310,35 @@
 						<visible>Control.IsEnabled(1006290) + Control.HasFocus(1006291)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>!Control.IsEnabled(1006290)</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>ddFFFFFF</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 						<visible>Control.IsEnabled(1006290) + ![Control.HasFocus(1006291)]</visible>
 					</control>
 					<control type="label">
-						<posx>530</posx>
+						<posx>537</posx>
 						<posy>0</posy>
 						<width>300</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>METF_ContextValue</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4360,7 +4360,7 @@
 				<posy>0</posy>
 				<width>135</width>
 				<height>40</height>
-				<font>font13</font>
+				<font>METF_ContextValue</font>
 				<textcolor>grey2</textcolor>
 				<selectedcolor>selected</selectedcolor>
 				<align>left</align>
@@ -4472,7 +4472,7 @@
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
-		<focusedcolor>FFc89008</focusedcolor>
+		<focusedcolor>eef8cd22</focusedcolor>
 <!--		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 -->		<texturefocus border="1">ButtonFO2.png</texturefocus>
