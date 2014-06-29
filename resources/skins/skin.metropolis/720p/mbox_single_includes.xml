@@ -4356,12 +4356,12 @@
 			<height>40</height>
 			<defaultcontrol always="true">1006302</defaultcontrol>
 			<control type="label" id="1006301">
-				<posx>10</posx>
+				<posx>0</posx>
 				<posy>0</posy>
 				<width>135</width>
 				<height>40</height>
 				<font>METF_ContextValue</font>
-				<textcolor>grey2</textcolor>
+				<textcolor>white</textcolor>
 				<selectedcolor>selected</selectedcolor>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -4376,7 +4376,7 @@
 				<orientation>horizontal</orientation>
 				<visible>Control.IsVisible(1006300)</visible>
 				<itemlayout height="40" width="55">
-					<control type="image">
+<!--					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>55</width>
@@ -4385,25 +4385,25 @@
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 					</control>
-					<control type="label">
-						<posx>25</posx>
+-->					<control type="label">
+						<posx>28</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>28</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>FFFF0000</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FF3c95c8</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4415,31 +4415,32 @@
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>55</width>
-						<height>40</height>
-						<bordertexture border="5">folder-focus.png</bordertexture>
+						<height>40</height>ButtonFO2Wide
+<!--						<bordertexture border="5">folder-focus.png</bordertexture>-->
+						<bordertexture border="1">ButtonFO2.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 						<texture background="true">button-nofocus.png</texture>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>28</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<visible>substring(ListItem.Property(Used),False)</visible>
 					</control>
 					<control type="label">
-						<posx>25</posx>
+						<posx>28</posx>
 						<posy>0</posy>
 						<width>55</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>FFFF0000</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FF3c95c8</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
