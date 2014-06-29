@@ -2378,11 +2378,11 @@ Search for window name
 							</item>
 						</content>
 					</control>
-
+					<!-- Search & Misc Option Buttons -->
 					<control type="grouplist" id="1300200">
 						<posx>-25</posx>
 						<posy>450</posy>
-						<width>265</width>
+						<width>275</width>
 						<height>90</height>
 						<align>center</align>
 						<onleft>1300049</onleft>
@@ -2394,13 +2394,13 @@ Search for window name
 						<animation effect="fade" end="0,0" time="300">WindowClose</animation>
 						<control type="group">
 							<height>40</height>
-							<width>265</width>
+							<width>250</width>
 							<control type="button" id="1300201">
 								<description>Search</description>
 								<posx>25</posx>
 								<posy>0</posy>
 								<height>40</height>
-								<width>265</width>
+								<width>250</width>
 								<align>left</align>
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
@@ -2419,13 +2419,13 @@ Search for window name
 						</control>
 						<control type="group">
 							<height>40</height>
-							<width>265</width>
+							<width>250</width>
 							<control type="button" id="1300202">
 								<description>Misc option</description>
 								<posx>25</posx>
 								<posy>0</posy>
 								<height>40</height>
-								<width>265</width>
+								<width>250</width>
 								<align>left</align>
 								<textoffsetx>10</textoffsetx>
 								<textwidth>215</textwidth>
@@ -4497,7 +4497,7 @@ Search for window name
 					<control type="label" id="1501003"><!--sblee-config menu description-->
 						<posx>40</posx>
 						<posy>-3</posy>
-						<width>590</width>
+						<width>655</width>
 						<height>45</height>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
@@ -4696,18 +4696,18 @@ Search for window name
 				</control>
 				<control type="group" id="4909010">
 					<posx>400</posx>
-					<posy>160r</posy>
+					<posy>168r</posy>
 					<control type="label" id="4901003">
 						<posx>40</posx>
 						<posy>-3</posy>
-						<width>590</width>
+						<width>655</width>
 						<height>45</height>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<scroll>true</scroll>
-						<scrollspeed>150</scrollspeed>
+						<scrollspeed>100</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 					</control>
 					<!--
@@ -5750,9 +5750,9 @@ Search for window name
 					<description>header label</description>
 					<posx>465</posx>
 					<posy>170r</posy>
-					<width>590</width>
+					<width>655</width>
 					<height>45</height>
-					<font>METF_InfoText</font>
+					<font>METF_SettingsDetail</font>
 					<label>$ADDON[script.mbox 1087]</label>
 					<align>left</align>
 					<aligny>center</aligny>

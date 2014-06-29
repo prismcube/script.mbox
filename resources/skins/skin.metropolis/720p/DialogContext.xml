@@ -73,7 +73,7 @@
 			</control>
 			<control type="list" id="102">
 				<posx>33</posx>
-				<posy>5</posy>
+				<posy>1</posy>
 				<width>358</width>
 				<height>520</height>						<!--Change Property ItemHeight * MAX_ITEM(13) -->
 				<onup>102</onup>

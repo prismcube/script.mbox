@@ -234,7 +234,7 @@
 			</control>
 			<control type="label" id="1001003">
 				<posx>140</posx>
-				<posy>108</posy>
+				<posy>100</posy>
 				<width>665</width>
 				<height>40</height>
 				<font>METF_HomeMenuSmall</font>
