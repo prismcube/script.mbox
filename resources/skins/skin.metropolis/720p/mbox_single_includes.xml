@@ -729,6 +729,7 @@
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
+		<focusedcolor>FFc89008</focusedcolor>
 <!--		<texturefocus border="5">button-focus.png</texturefocus>-->
 		<texturefocus border="1">ButtonFO2.png</texturefocus>
 		<texturenofocus>-</texturenofocus>
@@ -4468,8 +4469,10 @@
 		<width>210</width>
 		<textoffsetx>20</textoffsetx>
 		<textwidth>150</textwidth>
+		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
+		<focusedcolor>FFc89008</focusedcolor>
 <!--		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 -->		<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -5066,8 +5069,21 @@
 				<info>Container(1003410).ListItem.Label</info>
 			</control>
 			<control type="label">
+				<description>Date(rec duration)</description>
 				<posx>350</posx>
 				<posy>100r</posy>
+				<width>600</width>
+				<height>25</height>
+				<font>METF_MediaDetailsSmall</font>
+				<textcolor>eef8cd22</textcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>$INFO[Container(1003410).ListItem(0).Property(RecDate)] ($INFO[Container(1003410).ListItem(0).Property(RecDuration)])</label>
+				<visible>!substring(Container(1003410).CurrentPage,0)</visible>
+			</control>
+			<control type="label">
+				<posx>350</posx>
+				<posy>75r</posy>
 				<width>600</width>
 				<height>25</height>
 				<align>center</align>

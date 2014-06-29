@@ -5465,6 +5465,7 @@ Search for window name
 						<onright condition="substring(Window.Property(ViewMode),fanart)">1003430</onright>
 						<onup>3309020</onup>
 						<ondown>3309020</ondown>
+						<!--NAS sub menu-->
 						<visible>![Control.HasFocus(3300104)|ControlGroup(3309010).HasFocus]</visible>
 						<itemlayout height="40" width="150">
 <!--							<control type="image">
