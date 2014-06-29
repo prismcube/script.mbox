@@ -854,7 +854,7 @@
 			<defaultcontrol always="true">1001101</defaultcontrol>
 			<control type="list" id="1001103">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -990,7 +990,7 @@
 			<defaultcontrol always="true">1001201</defaultcontrol>
 			<control type="list" id="1001203">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1127,7 +1127,7 @@
 			<defaultcontrol always="true">1001301</defaultcontrol>
 			<control type="list" id="1001303">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1263,7 +1263,7 @@
 			<defaultcontrol always="true">1001401</defaultcontrol>
 			<control type="list" id="1001403">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1399,7 +1399,7 @@
 			<defaultcontrol always="true">1001501</defaultcontrol>
 			<control type="list" id="1001503">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1535,7 +1535,7 @@
 			<defaultcontrol always="true">1001601</defaultcontrol>
 			<control type="list" id="1001603">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1671,7 +1671,7 @@
 			<defaultcontrol always="true">1001701</defaultcontrol>
 			<control type="list" id="1001703">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
@@ -1807,7 +1807,7 @@
 			<defaultcontrol always="true">1001801</defaultcontrol>
 			<control type="list" id="1001803">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>57</posx>
+				<posx>50</posx>
 				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
