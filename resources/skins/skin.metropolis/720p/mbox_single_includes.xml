@@ -4509,8 +4509,9 @@
 						<posx>0</posx>
 						<posy>2</posy>
 						<width>677</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<height>2</height>
+						<texture>new/VideoInfoLine.png</texture>
+						<colordiffuse>FilesDividerDiffuse</colordiffuse>
 						<visible>!Control.HasFocus(1003400)+substring(Window.Property(ViewMode),common)</visible>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
@@ -4841,6 +4842,7 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<!-- Recording Name -->
 			<control type="label">
 				<posx>250</posx>
 				<posy>150r</posy>
@@ -4853,6 +4855,7 @@
 				<aligny>center</aligny>
 				<info>Container(1003410).ListItem.Label2</info>
 			</control>
+			<!-- Channel Name -->
 			<control type="label">
 				<posx>350</posx>
 				<posy>125r</posy>
@@ -5115,11 +5118,12 @@
 		</control>
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
+			<!-- Recording Name -->
 			<control type="label">
 				<description>Record Name</description>
 				<posx>505</posx>
 				<posy>450</posy>
-				<width>1035</width>
+				<width>650</width>
 				<height>35</height>
 				<font>METF_TitleTextLarge</font>
 				<textcolor>white</textcolor>
@@ -5127,11 +5131,12 @@
 				<aligny>center</aligny>
 				<info>Container(1003420).ListItem(0).Label2</info>
 			</control>
+			<!-- Channel Name -->
 			<control type="label">
 				<description>Channel Name</description>
 				<posx>505</posx>
 				<posy>484</posy>
-				<width>760</width>
+				<width>700</width>
 				<height>20</height>
 				<font>METF_MediaDetailsSmall</font>
 				<textcolor>MediaDetailsGenre</textcolor>
@@ -5203,7 +5208,7 @@
 						<texture>new/ClassicFrame_PosterSmall.png</texture>
 						<fadetime>200</fadetime>
 						<aspectratio scalediffuse="false">stretch</aspectratio>
-						<visible>!IsEmpty(ListItem.Title)</visible>
+<!--						<visible>!IsEmpty(ListItem.Title)</visible>-->
 					</control>
 
 					<!-- Mark -->
@@ -5283,7 +5288,7 @@
 						<posy>31</posy>
 						<width>646</width>
 						<height>362</height>
-						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+<!--						<texture>$INFO[ListItem.Property(RecIcon)]</texture>-->
 						<texture diffuse="frames/ClassicFrame_SegmentedDiffuse.png">$INFO[ListItem.Property(RecIcon)]</texture>
 						<fadetime>200</fadetime>
 						<aspectratio scalediffuse="false">stretch</aspectratio>
@@ -5291,7 +5296,7 @@
 							<effect type="zoom" center="auto" start="70" end="100" time="400" tween="back" easing="out" />
 							<effect type="fade" start="0" end="100" time="300" />
 						</animation>
-						<visible>!IsEmpty(ListItem.Title) + !Skin.HasSetting(NoSegmentedFanart)</visible>
+<!--						<visible>!IsEmpty(ListItem.Title) + !Skin.HasSetting(NoSegmentedFanart)</visible>-->
 					</control>
 					<control type="image">
 						<posx>-143</posx>
@@ -5363,11 +5368,12 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<!-- Recording Name -->
 			<control type="label">
 				<description>recode Name</description>
-				<posx>40</posx>
+				<posx>190</posx>
 				<posy>395</posy>
-				<width>1200</width>
+				<width>900</width>
 				<height>50</height>
 				<font>METF_TitleTextLarge</font>
 				<textcolor>white</textcolor>
@@ -5406,7 +5412,7 @@
 			</control>			
 			<control type="label">
 				<posx>250</posx>
-				<posy>474</posy>
+				<posy>473</posy>
 				<width>770</width>
 				<height>40</height>
 				<align>center</align>
