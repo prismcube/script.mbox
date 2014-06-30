@@ -5,7 +5,7 @@ Search for window name
  E_ChannelList
  E_LIVEWindow
  E_Timeshift
- E_Configure
+ E_Configuration
  E_Advanced
  E_TunerConfiguration
  E_Archive
@@ -31,26 +31,12 @@ Search for window name
 	<controls>
 
 		<!-- Default BackgroundImage -->
-		<control type="image">
+		<control type="group">
+			<include>DefaultSettingsBackground</include>
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
-			<posx>-13</posx>
-			<posy>-7</posy>
-			<width>1306</width>
-			<height>734</height>
-			<texture>black-back_noAlpha.png</texture>
-<!--			<colordiffuse>BackgroundColor</colordiffuse>-->
-		</control>
-		<control type="image">
-			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
-			<posx>-13</posx>
-			<posy>-7</posy>
-			<width>1306</width>
-			<height>734</height>
-			<texture>new/background.png</texture>
-			<colordiffuse>ee3c95c8</colordiffuse>
 		</control>
 
-		<!-- Window Header Title  -->
+		<!-- Window Header Title -->
 		<include>DefaultHeaderTitle</include>
 
 		<!-- Fake button for animation -->
@@ -86,15 +72,11 @@ Search for window name
 				<texturenofocus>black-back.png</texturenofocus>
 				<texturefocus>black-back.png</texturefocus>
 			</control>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
-				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
-				<visible>substring(Window.Property(TVRadio),true)</visible>
-			</control>
+
+			<!-- Radio Background Image -->
+			<include>DefaultRadioBackground</include>
+
+			<!-- Starting Recording Icon & Multi-feed Icon -->
 			<control type="image">
 				<posx>1200</posx>
 				<posy>50</posy>
@@ -114,25 +96,8 @@ Search for window name
 					<height>51</height>
 					<texture>multifeed.png</texture>
 				</control>
-				<!--control type="image">
-					<posx>-5</posx>
-					<posy>0</posy>
-					<width>160</width>
-					<height>50</height>
-					<texture>black-back_noAlpha.png</texture>
-				</control>
-				<control type="label">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>150</width>
-					<height>50</height>					
-					<font>font13_title</font>
-					<label>Multi-Feed</label>
-					<align>center</align>					
-					<textcolor>white</textcolor>
-				</control-->
 			</control>
-			
+
 			<!-- HbbTV RED button -->
 			<control type="image">
 				<posx>200r</posx>
@@ -142,44 +107,45 @@ Search for window name
 				<texture>hbbtv4.png</texture>
 				<visible>substring(Window.Property(EnableHbbTV),True)</visible>				
 			</control>
-			
+
+			<!-- Not Available Action Icon -->
+			<control type="image">
+				<posx>30r</posx>
+				<posy>0</posy>
+				<width>30</width>
+				<height>30</height>
+				<texture>IconNotAvailable.png</texture>
+				<visible>substring(Window.Property(NotAvail),true)</visible>
+			</control>
+
+			<!-- Signal Condition Notification -->
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>Playback</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1119] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window(10000).Property(RadioPlayback),true)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>No Signal</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>Scrambled</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>No Service</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
+
 			<control type="label">
+				<description>Live Streaming</description>
 				<posx>1000</posx>
 				<posy>660</posy>
 				<width>500</width>
@@ -190,15 +156,8 @@ Search for window name
 				<aligny>center</aligny>
 				<visible>substring(Window.Property(LiveStream),true)</visible>
 			</control>
-			<control type="image">
-				<posx>30r</posx>
-				<posy>0</posy>
-				<width>30</width>
-				<height>30</height>
-				<texture>IconNotAvailable.png</texture>
-				<visible>substring(Window.Property(NotAvail),true)</visible>
-			</control>
-			<!-- Restart GUI -->
+
+			<!-- Restart GUI Notification-->
 			<control type="group">
 				<posx>400</posx>
 				<posy>245</posy>
@@ -224,34 +183,28 @@ Search for window name
 			</control>
 		</control>
 
-
 		<!-- *********** E_MainMenu ********** -->
 		<control type="group" id="1200000">
 			<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
 			<!--<animation effect="fade" start="100" end="0" time="100">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1200000)</visible>
 			<defaultcontrol always="true">1209000</defaultcontrol>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>black-back_noAlpha.png</texture>
-<!--				<colordiffuse>BackgroundColor</colordiffuse>-->
+
+			<!-- Radio Background Image -->
+			<include>DefaultRadioBackground</include>
+
+			<!-- Background Image -->
+			<control type="group">
+				<include>DefaultSettingsBackground</include>
+				<visible>substring(Window.Property(CurrentWindow),1200000) | [substring(Window.Property(CurrentWindow),1200000) + substring(Window.Property(TVRadio),true)]</visible>
 			</control>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>new/background.png</texture>
-				<colordiffuse>ee3c95c8</colordiffuse>
-			</control>
+
+			<!-- Global Info -->
 			<include>Global_Weather</include>
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
-			<!--sblee-main middle image frame live area-->
+			<!-- Middle Frame Image & Live Area -->
 			<control type="image">
 				<posx>240</posx>
 				<posy>50</posy>
@@ -259,24 +212,12 @@ Search for window name
 				<height>450</height>
 				<texture>video_pig_overlay.png</texture>
 			</control>
-
-			<!--sblee-main middle image frame-->
 			<control type="image">
 				<posx>215</posx>
 				<posy>25</posy>
 				<width>848</width>
 				<height>507</height>
 				<texture>frames/ClassicFrame_Fanart.png</texture>
-			</control>
-
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
-				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
-				<visible>substring(Window.Property(TVRadio),true)</visible>
 			</control>
 
 			<!-- Help Text for LEFT side of Home screen -->
@@ -307,6 +248,7 @@ Search for window name
 					<label>$LOCALIZE[1034]</label>
 				</control>
 			</control>
+
 			<!-- Help Text for RIGHT side of Home screen -->
 			<control type="group">
 				<posx>0</posx>
@@ -334,84 +276,39 @@ Search for window name
 					<textcolor>HelpText</textcolor>
 					<label>$LOCALIZE[33061]</label>
 				</control>
-			</control>			
-			<!--sblee-Signal state description-->
+			</control>
+
+			<!-- Signal Condition Notification -->
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>No Signal</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>Scrambled</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<description>No Service</description>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
-			<!--sblee-main menu floor bar-->
-<!--			
-			<control type="image">
-				<posx>-13</posx>
-				<posy>80r</posy>
-				<width>1306</width>
-				<height>90</height>
-				<texture>floor.png</texture>
-				<animation effect="fade" time="250">Visible</animation>
-				<animation effect="fade" time="250">Hidden</animation>
-			</control>
-			<control type="image">
-				<description>LOGO</description>
-				<posx>20</posx>
-				<posy>5</posy>
-				<width>170</width>
-				<height>100</height>
-				<aspectratio aligny="top" align="left">keep</aspectratio>
-				<texture>Prismcube_Logo.png</texture>
-				<include>DefaultVisibleFadeEffect</include>
-				<include>DefaultWindowOpenCloseAnimation</include>
-			</control>
--->
-			<!-- Sub Menu -->
+
+			<!-- Submenu -->
 			<control type="group">
-<!--				<posy>400</posy>-->
 				<posy>45</posy>
-<!--				<animation type="Visible" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
-				<animation type="Hidden" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>
--->				<!--sblee-sub manu position-->
+				<!-- Submenu Position -->
 				<control type="group" id="1209001">
-<!--					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(1209001).HasFocus + Skin.HasSetting(HomeStats)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="ControlGroup(1209001).HasFocus + Skin.HasSetting(HomeStats)">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(1209001).HasFocus">WindowClose</animation>
-					<include>Animation_OpenCloseFade</include>
-					<include>Animation_FadedByMenu</include>
-<!--					<posx>0</posx>-->
 					<posx>1060</posx>
 					<posy>5</posy>
 					<onup>1209000</onup>
 					<ondown>1200101</ondown>
 
-					<!-- Install Sub -->
+					<!-- Installation Submenu-->
 					<control type="grouplist" id="1209010">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -421,19 +318,11 @@ Search for window name
 						<onup>1209010</onup>
 						<ondown>1209010</ondown>
 						<itemgap>0</itemgap>
-<!--						<orientation>Horizontal</orientation>
-						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
--->						<orientation>Vertical</orientation>
+						<orientation>Vertical</orientation>
 						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(1)</visible>
-<!--						<control type="image" id="1290001">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
--->						<control type="button" id="1290101">
+					<control type="button" id="1290101">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1050]</label>
 						</control>
@@ -469,14 +358,9 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1168]</label>
 						</control>
-<!--						<control type="image" id="1290110">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
--->					</control>
+					</control>
 
-					<!-- Media center Sub-->
+					<!-- XBMC Submenu-->
 					<control type="grouplist" id="1209016">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -487,17 +371,10 @@ Search for window name
 						<ondown>1209016</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
--->						<onleft>1209000</onleft>
+						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(6)</visible>
-<!--						<control type="image" id="1290002">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
--->						<control type="button" id="1290601">
+						<control type="button" id="1290601">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1057]</label>
 							<!--onclick>ActivateWindow(Weather)</onclick-->
@@ -548,14 +425,9 @@ Search for window name
 							<label>$ADDON[script.mbox 1065]</label>
 							<!--onclick>ActivateWindow(SystemInfo)</onclick-->
 						</control>
-<!--						<control type="image" id="1290611">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
--->					</control>
+					</control>
 
-					<!-- EPG Sub -->
+					<!-- EPG Submenu -->
 					<control type="grouplist" id="1209012">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -566,17 +438,10 @@ Search for window name
 						<ondown>1209012</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
--->						<onleft>1209000</onleft>
+						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(3)</visible>
-<!--						<control type="image" id="1290311">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
--->						<control type="button" id="1290312">
+						<control type="button" id="1290312">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1162]</label>
 						</control>
@@ -592,14 +457,9 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1164]</label>
 						</control>
-<!--						<control type="image" id="1290316">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
--->					</control>
+					</control>
 
-					<!-- Timer Sub -->
+					<!-- Timer Submenu -->
 					<control type="grouplist" id="1209013">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -610,17 +470,10 @@ Search for window name
 						<ondown>1209013</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
--->						<onleft>1209000</onleft>
+						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(9)</visible>
-<!--						<control type="image" id="1290911">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
--->						<control type="button" id="1290912">
+						<control type="button" id="1290912">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1135]</label>
 						</control>
@@ -628,15 +481,9 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1136]</label>
 						</control>
-<!--						<control type="image" id="1290914">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
--->					</control>
-					
+					</control>
 
-					<!-- Channel List Sub -->
+					<!-- Channel List Submenu -->
 					<control type="grouplist" id="1209011">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -647,17 +494,10 @@ Search for window name
 						<ondown>1209011</ondown>
 						<itemgap>0</itemgap>
 						<orientation>Vertical</orientation>
-<!--						<animation effect="slide" start="0,-40" end="0,0" delay="200" time="200" tween="quadratic" easing="out">Visible</animation>
-						<animation effect="slide" start="0,0" end="0,-40" time="200" tween="quadratic" easing="out">Hidden</animation>
--->						<onleft>1209000</onleft>
+						<onleft>1209000</onleft>
 						<onright>1209000</onright>
 						<visible>Container(1209000).HasFocus(4)</visible>
-<!--						<control type="image" id="1290411">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3" flipx="true">HomeSubEnd.png</texture>
-						</control>
--->						<control type="button" id="1290413">
+						<control type="button" id="1290413">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1120]</label>
 						</control>
@@ -669,81 +509,27 @@ Search for window name
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>$ADDON[script.mbox 1125]</label>
 						</control>
-<!--						<control type="image" id="1290415">
-							<width>35</width>
-							<height>35</height>
-							<texture border="0,0,0,3">HomeSubEnd.png</texture>
-						</control>
--->					</control>
+					</control>
 				</control>
-
 
 				<!-- Main Menu List -->
-				<!--sblee-Main Menu List frame-->
-<!--				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1280</width>
-					<height>75</height>
-					<texture border="0,6,0,6">HomeBack.png</texture>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>1280</width>
-					<height>6</height>
-					<texture>HomeOverlay1.png</texture>
-				</control>
-	-->			<control type="list" id="1209000">
-<!--					<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(1209000).HasFocus + Skin.HasSetting(HomeStats)">conditional</animation>
-					<animation effect="fade" start="0" end="100" delay="300" time="200" condition="ControlGroup(1209000).HasFocus + Skin.HasSetting(HomeStats)">conditional</animation>
-					<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(1209000).HasFocus">WindowClose</animation>
-					<include>Animation_OpenCloseFade</include>
-					<include>Animation_FadedByMenu</include>
--->					<posx>10</posx>
+				<control type="list" id="1209000">
+					<posx>10</posx>
 					<posy>5</posy>
 					<width>215</width>
 					<height>500</height>
-					<!--sblee-1209000=null, 1200101=fav, 1209001=sub menu-->
-<!--					<onleft>1209000</onleft>-->
 					<onright>1209001</onright>
 					<onup>1200101</onup>
 					<ondown>1200101</ondown>
-<!--					<ondown condition="Control.IsVisible(1209001)">1209001</ondown>
-					<ondown condition="!Control.IsVisible(1209001)">1200101</ondown>
-<!--				<pagecontrol>-</pagecontrol>
-					<scrolltime>300</scrolltime>
-				<focusposition>2</focusposition>
-<!--					<movement>1</movement>
-					<viewtype>list</viewtype>-->
-<!--					<include>DefaultVisibleFadeEffect</include>-->
-<!--					<itemgap>0</itemgap>-->
 					<orientation>vertical</orientation>
 					<itemlayout width="200" height="32">
-							<!--sblee-Main Menu List Seperator-->
-<!--						<control type="image">
-							<posx>0</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="image">
-							<posx>299</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
--->						<!--sblee-main menu list label-->
+						<!-- Main Menu List Label -->
 						<control type="label">
 							<posx>205</posx>
 							<posy>0</posy>
 							<width>215</width>
 							<height>32</height>
-<!--							<font>font_MainMenu</font>
-							<textcolor>grey3</textcolor>-->
-							<font>METF_Heading</font> <!--sblee-font size: METF_HomeMenu=27, METF_TitleTextMedium= 26, METF_Heading=25, METF_TitleText=24-->
+							<font>METF_Heading</font>
 							<textcolor>HomeMenuText</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -751,39 +537,7 @@ Search for window name
 						</control>
 					</itemlayout>
 					<focusedlayout height="32" width="215">
-<!--						<control type="image">
-							<posx>0</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						<control type="image">
-							<posx>299</posx>
-							<posy>4</posy>
-							<width>1</width>
-							<height>52</height>
-							<texture>HomeSeperator.png</texture>
-						</control>
-						
--->						<!--sblee-menu focus state when the fav addons selected-->
-<!--						<control type="label">
-							<posx>150</posx>
-							<posy>0</posy>
-							<width>290</width>
-							<height>30</height>
-<!--							<height>60</height>
-							<font>font_MainMenu</font>
-							<textcolor>red</textcolor>
-							<align>center</align>
---><!--							<font>METF_HomeMenu</font>
-							<textcolor>HomeMenuTextFocused</textcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
--->
-						<!--sblee- Focus iamage area-->
+						<!-- Focused Area-->
 						<control type="image">
 							<posx>0</posx>
 							<posy>0</posy>
@@ -793,28 +547,22 @@ Search for window name
 							<texture flipx="true">new/FocusLine.png</texture>
 							<colordiffuse>FocusBar</colordiffuse>
 							<!--remove the FocusLine.png when it move to sub menu-->
-<!--							<visible>!ControlGroup(1209001).HasFocus()</visible>-->
-							<visible>Control.HasFocus(1209000)|Control.HasFocus(1200101)|Control.HasFocus(1200102)</visible>
+							<visible>Control.HasFocus(1209000)</visible>
 						</control>
-						<!--sblee- show the menu name when it focused-->
+						<!-- Show the menu name when it focused-->
 						<control type="label">
 							<posx>205</posx>
 							<posy>0</posy>
 							<width>200</width>							
 							<height>32</height>
-<!--							<height>60</height>
-							<font>font_MainMenu</font>
-							<textcolor>red</textcolor>
-							<align>center</align>
--->							<font>METF_Heading</font>
+							<font>METF_Heading</font>
 							<textcolor>FocusBarText</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>
 							<visible>!Control.HasFocus(1209001)</visible>
-<!--							<include>VisibleFadeEffect</include>-->
 						</control>
-						<!--sblee- change the menu text color to yellow when the sub menu focused-->
+						<!-- Change the menu text color to yellow when submenu is focused-->
 						<control type="label">
 							<posx>205</posx>
 							<posy>0</posy>
@@ -825,7 +573,7 @@ Search for window name
 							<font>METF_Heading</font>
 							<textcolor>HomeMenuTextFocused</textcolor>
 							<label>$INFO[ListItem.Label]</label>
-							<!-- change the text color to white when menu is focused-->
+							<!-- Change the text color to white when menu is focused-->
 							<visible>ControlGroup(1209001).HasFocus()</visible>
 						</control>
 					</focusedlayout>
@@ -895,44 +643,25 @@ Search for window name
 						</item>
 					</content>
 				</control>
-				<!--sblee- main menu frame the left/right side-->
-<!--				<control type="image">
-					<posx>0</posx>
-					<posy>6</posy>
-					<width>128</width>
-					<height>50</height>
-					<texture>SideFade.png</texture>
-				</control>
-				<control type="image">
-					<posx>128r</posx>
-					<posy>6</posy>
-					<width>128</width>
-					<height>60</height>
-					<texture flipx="true">SideFade.png</texture>
-				</control>
--->			</control>
+			</control>
 
-			<!-- RSS and Description -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>33r</posy>
 				<include>DefaultWindowOpenCloseAnimation</include>
-				<!--sblee-main menu description-->
+				<!-- Main Menu Descriptions -->
 				<control type="textbox">
 					<description>MainMenuDescription</description>
 					<visible>Control.HasFocus(1209000)</visible>
-<!--					<posx>1250</posx>
-					<posy>-27</posy>
--->					<posx>340</posx>
+					<posx>340</posx>
 					<posy>-130</posy>
 					<width>600</width>
-<!--					<height>50</height>-->
-					<font>METF_SettingsDetail</font> <!--sblee-METF_HomeMenuSmall=MET_FontinSansSmallCaps/23pt,METF_InfoText=MET_UbuntuRegular.ttf/19pt-->
+					<font>METF_SettingsDetail</font>
 					<label>$INFO[Container(1209000).ListItem.Label2]</label>
 					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
-				<!--sblee-sub menu description-->
+				<!-- Submenu Description -->
 				<control type="label" id="1200100">
 					<description>MainMenuDescription</description>
 					<visible>!Control.HasFocus(1209000)</visible>
@@ -944,6 +673,7 @@ Search for window name
 					<align>center</align>
 					<textcolor>white</textcolor>
 				</control>
+				<!-- RSS Feed & Background Image -->
 				<control type="rss">
 					<description>RSS feed</description>
 					<posx>90</posx>
@@ -968,7 +698,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Favorite addons -->
+			<!-- Favorite Addons Button-->
 			<control type="group">
 				<posx>30</posx>
 				<posy>55r</posy>
@@ -980,12 +710,9 @@ Search for window name
 					<width>45</width>
 					<height>45</height>
 					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-<!--					<texturenofocus border="5">floor_button.png</texturenofocus>-->
 					<onleft>1200102</onleft>
 					<onright>1200102</onright>
-<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
--->					<onup>1209000</onup>
+					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
 				<control type="image">
@@ -999,7 +726,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- power off -->
+			<!-- Power Off Button -->
 			<control type="group">
 				<posx>75</posx>
 				<posy>55r</posy>
@@ -1010,12 +737,9 @@ Search for window name
 					<width>45</width>
 					<height>45</height>
 					<texturefocus border="5">floor_buttonFO.png</texturefocus>
-<!--					<texturenofocus border="5">floor_button.png</texturenofocus>-->
 					<onleft>1200101</onleft>
 					<onright>1200101</onright>
-<!--					<onup condition="Control.IsVisible(1209001)">1209001</onup>
-					<onup condition="!Control.IsVisible(1209001)">1209000</onup>
--->					<onup>1209000</onup>
+					<onup>1209000</onup>
 					<ondown>1209000</ondown>
 				</control>
 				<control type="image">
@@ -1029,7 +753,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Menu Fake Buttons -->
+			<!-- Hidden Menu Buttons -->
 			<control type="button" id="1290100">
 				<label>Install</label>
 				<onclick>-</onclick>
@@ -1077,59 +801,11 @@ Search for window name
 			</control>
 		</control>
 
-
 		<!-- *********** E_ChannelList ********** -->	
 		<control type="group" id="1300000">
 			<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
-			<!--<animation effect="fade" start="0" end="100" time="300">Visible</animation>-->
 			<defaultcontrol always="true">1300049</defaultcontrol>
 
-<!--			<control type="group">
-				<include>DefaultWindowFade</include>
-				<control type="image">
-					<posx>-13</posx>
-					<posy>100r</posy>
-					<width>1306</width>
-					<height>115</height>
-					<texture>floor.png</texture>
-					<include>DefaultVisibleFadeEffect</include>
-				</control>
-				<!--sblee-channel list behind panel-->
-<!--				<control type="group">
-					<include>DefaultVisibleFadeEffect</include>
-					<visible>true</visible>
-					<control type="image">
-						<posx>40</posx>
-						<posy>40</posy>
-						<width>1200</width>
-						<height>620</height>
-						<texture border="20">ContentPanel.png</texture>
-						<!--visible>!substring(Window(10000).Property(isEdit),true)</visible-->
-<!--					</control>
-				</control>
-				<!--control type="group">
-					<include>DefaultVisibleFadeEffect</include>
-					<visible>true</visible>
-					<control type="image">
-						<posx>40</posx>
-						<posy>40</posy>
-						<width>1200</width>
-						<height>620</height>
-						<texture border="20">ContentPanel.png</texture>
-						<texture border="20">ContentPanelRED.png</texture>
-						<visible>substring(Window(10000).Property(isEdit),true)</visible>
-					</control>
-				</control-->
-<!--				<control type="image">
-					<posx>40</posx>
-					<posy>653</posy>
-					<width>1200</width>
-					<height>64</height>
-					<texture border="15">ContentPanelMirror.png</texture>
-				</control>
-			</control>
--->
-			<!--sblee-- where???-->
 			<control type="label" id="1300601">
 				<posx>30</posx>
 				<posy>30</posy>
@@ -1138,7 +814,7 @@ Search for window name
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 
-			<!--sblee-time and date-->
+			<!-- Global Info -->
 			<include>Global_Weather</include>
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
@@ -1231,8 +907,7 @@ Search for window name
 				</control>
 			</control>
 
-
-			<!-- middle left -->
+			<!-- Channels List-->
 			<control type="group" id="1300049">
 				<posx>75</posx>
 				<posy>90</posy>
@@ -1253,7 +928,6 @@ Search for window name
 					<visible>true</visible>
 					<enable>!Control.HasFocus(1300101) | !Control.HasFocus(1300102) | !ControlGroup(1309001).HasFocus</enable>
 					<itemlayout height="41" width="810">
-						<!--sblee-List Line Item Divider -->
 						<control type="image">
 							<posx>30</posx>
 							<posy>0</posy>
@@ -1264,8 +938,7 @@ Search for window name
 							<colordiffuse>FilesDividerDiffuse</colordiffuse>
 							<texture border="0,2,0,2">MenuItemNF.png</texture>
 						</control>
-
-						<!-- is locked? -->
+						<!-- Lock Icon -->
 						<control type="image">
 							<posx>4</posx>
 							<posy>9</posy>
@@ -1274,7 +947,7 @@ Search for window name
 							<texture>OverlayLocked.png</texture>
 							<visible>substring(ListItem.Property(iLock),true)</visible>
 						</control>
-						<!-- is recording? -->
+						<!-- Recording Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>5</posy>
@@ -1283,7 +956,7 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
-						<!-- is marked? -->
+						<!-- Selection Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>10</posy>
@@ -1292,7 +965,7 @@ Search for window name
 							<texture>OverlayWatched.png</texture>
 							<visible>substring(ListItem.Property(iMark),true)</visible>
 						</control>
-						<!-- is move? -->
+						<!-- Move Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>13</posy>
@@ -1304,7 +977,7 @@ Search for window name
 						<control type="group">
 							<posx>618</posx>
 							<posy>8</posy>
-							<!-- is skip? -->
+							<!-- Skip Icon -->
 							<control type="image">
 								<posx>-18</posx>
 								<posy>0</posy>
@@ -1313,7 +986,7 @@ Search for window name
 								<texture>DI_Skip1g.png</texture>
 								<visible>substring(ListItem.Property(iSkip),true)</visible>
 							</control>
-							<!-- is hd? -->
+							<!-- HD Icon -->
 							<control type="image">
 								<posx>8</posx>
 								<posy>0</posy>
@@ -1322,7 +995,7 @@ Search for window name
 								<texture>IconHD1g.png</texture>
 								<visible>substring(ListItem.Property(iHD),true)</visible>
 							</control>
-							<!-- is cas? -->
+							<!-- CAS Icon -->
 							<control type="image">
 								<posx>34</posx>
 								<posy>0</posy>
@@ -1331,7 +1004,7 @@ Search for window name
 								<texture>IconCas1g.png</texture>
 								<visible>substring(ListItem.Property(iCas),true)</visible>
 							</control>
-							<!-- is Tuner1 -->
+							<!-- Tuner1 Icon -->
 							<control type="image">
 								<posx>62</posx>
 								<posy>0</posy>
@@ -1340,7 +1013,7 @@ Search for window name
 								<visible>substring(ListItem.Property(iTuner1),true)</visible>
 								<texture>IconT1g.png</texture>
 							</control>
-							<!-- is Tuner2 -->
+							<!-- Tuner2 Icon -->
 							<control type="image">
 								<posx>62</posx>
 								<posy>0</posy>
@@ -1349,7 +1022,7 @@ Search for window name
 								<visible>substring(ListItem.Property(iTuner2),true)</visible>
 								<texture>IconT2g.png</texture>
 							</control>
-							<!-- is Tuner1 & Tuner2 -->
+							<!-- Tuner1 & Tuner2 Ico -->
 							<control type="image">
 								<posx>62</posx>
 								<posy>0</posy>
@@ -1363,9 +1036,7 @@ Search for window name
 								<posy>20</posy>
 								<width>81</width>
 								<height>10</height>
-<!--								<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-								<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
--->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<texturebg>osd/osd_progress_back3.png</texturebg>
 								<lefttexture>osd/osd_progress_left3.png</lefttexture>
 								<midtexture>osd/osd_progress_mid3.png</midtexture>
 								<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1378,7 +1049,7 @@ Search for window name
 							<posx>0</posx>
 							<posy>0</posy>
 							<control type="label">
-								<!--sblee-channellist all channel number-->
+							<!-- Channel Number-->
 								<description>Channel Number</description>
 								<posx>37</posx>
 								<posy>0</posy>
@@ -1390,7 +1061,7 @@ Search for window name
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
 							</control>
-							<!-- is Align < 10,000 ? -->
+							<!-- Channel Name Position when Channel Number < 10,000 -->
 							<control type="label">
 								<description>Channel Name</description>
 								<posx>90</posx>
@@ -1404,7 +1075,7 @@ Search for window name
 								<label>$INFO[ListItem.Label2]</label>
 								<visible>substring(ListItem.Property(iAlign),false)</visible>
 							</control>
-							<!-- is Align > 10,000 ? -->
+							<!-- Channel Name Position when Channel Number > 10,000 -->
 							<control type="label">
 								<description>Channel Name</description>
 								<posx>100</posx>
@@ -1418,7 +1089,7 @@ Search for window name
 								<label>$INFO[ListItem.Label2]</label>
 								<visible>substring(ListItem.Property(iAlign),true)</visible>
 							</control>
-							<!--sblee-where???-->
+							<!-- Channel HD -->
 							<control type="label">
 								<description>Channel HD</description>
 								<posx>440</posx>
@@ -1433,7 +1104,6 @@ Search for window name
 							</control>
 						</control>
 					</itemlayout>
-					<!--sblee-focus bar-->
 					<focusedlayout height="41" width="810">
 						<control type="image">
 							<posx>30</posx>
@@ -1441,8 +1111,6 @@ Search for window name
 							<width>677</width>
 							<height>42</height>
 							<visible>!substring(Window(10000).Property(isEdit),true) + !substring(Window(10000).Property(isEmpty),true)</visible>
-<!--							<texture border="0,2,0,2">MenuItemFO.png</texture>-->
-							<!--sblee-focus bar edit-->
 							<align>left</align>
 							<texture border="0,2,0,2">new/FocusLine.png</texture>
 							<colordiffuse>FocusBar</colordiffuse>							
@@ -1456,7 +1124,7 @@ Search for window name
 							<texture border="0,2,0,2">new/FocusLine.png</texture>
 							<colordiffuse>FFff5858</colordiffuse>
 						</control>
-						<!-- is locked? -->
+						<!-- Lock Icon -->
 						<control type="image">
 							<posx>4</posx>
 							<posy>9</posy>
@@ -1465,7 +1133,7 @@ Search for window name
 							<texture>OverlayLocked.png</texture>
 							<visible>substring(ListItem.Property(iLock),true)</visible>
 						</control>
-						<!-- is recording? -->
+						<!-- Recording Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>5</posy>
@@ -1474,7 +1142,7 @@ Search for window name
 							<texture>IconPlateRec.png</texture>
 							<visible>substring(ListItem.Property(iRec),true)</visible>
 						</control>
-						<!-- is move? -->
+						<!-- Move Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>13</posy>
@@ -1483,7 +1151,7 @@ Search for window name
 							<texture>DI_Move.png</texture>
 							<visible>substring(ListItem.Property(iMove),true)</visible>
 						</control>
-						<!-- is marked? -->
+						<!-- Selection Icon -->
 						<control type="image">
 							<posx>0</posx>
 							<posy>10</posy>
@@ -1497,7 +1165,7 @@ Search for window name
 							<control type="group">
 								<posx>618</posx>
 								<posy>8</posy>
-								<!-- is skip? -->
+								<!-- Skip Icon -->
 								<control type="image">
 									<posx>-18</posx>
 									<posy>0</posy>
@@ -1506,7 +1174,7 @@ Search for window name
 									<texture>DI_Skip1g.png</texture>
 									<visible>substring(ListItem.Property(iSkip),true)</visible>
 								</control>
-								<!-- is hd? -->
+								<!-- HD Icon -->
 								<control type="image">
 									<posx>8</posx>
 									<posy>0</posy>
@@ -1515,7 +1183,7 @@ Search for window name
 									<texture>IconHD1w.png</texture>
 									<visible>substring(ListItem.Property(iHD),true)</visible>
 								</control>
-								<!-- is cas? -->
+								<!-- CAS Icon -->
 								<control type="image">
 									<posx>34</posx>
 									<posy>0</posy>
@@ -1524,7 +1192,7 @@ Search for window name
 									<texture>IconCas1w.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
-								<!-- is Tuner1 -->
+								<!-- Tuner1 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1533,7 +1201,7 @@ Search for window name
 									<visible>substring(ListItem.Property(iTuner1),true)</visible>
 									<texture>IconT1w_new.png</texture>
 								</control>
-								<!-- is Tuner2 -->
+								<!-- Tuner2 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1542,7 +1210,7 @@ Search for window name
 									<visible>substring(ListItem.Property(iTuner2),true)</visible>
 									<texture>IconT2w_new.png</texture>
 								</control>
-								<!-- is Tuner1 & Tuner2 -->
+								<!-- Tuner1 & Tuner2 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1556,9 +1224,7 @@ Search for window name
 									<posy>20</posy>
 									<width>81</width>
 									<height>10</height>
-<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
--->									<texturebg>osd/osd_progress_back3.png</texturebg>
+									<texturebg>osd/osd_progress_back3.png</texturebg>
 									<lefttexture>osd/osd_progress_left3.png</lefttexture>
 									<midtexture>osd/osd_progress_mid3.png</midtexture>
 									<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1583,7 +1249,7 @@ Search for window name
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
-								<!-- is Align < 10,000 ? -->
+								<!-- Channel Name Position when Channel Number < 10,000 -->
 								<control type="label">
 									<description>Channel Name</description>
 									<posx>90</posx>
@@ -1598,7 +1264,7 @@ Search for window name
 									<label>$INFO[ListItem.Label2]</label>
 									<visible>substring(ListItem.Property(iAlign),false)</visible>
 								</control>
-								<!-- is Align > 10,000 ? -->
+								<!-- Channel Name Position when Channel Number > 10,000 -->
 								<control type="label">
 									<description>Channel Name</description>
 									<posx>100</posx>
@@ -1632,7 +1298,7 @@ Search for window name
 							<control type="group">
 								<posx>618</posx>
 								<posy>8</posy>
-								<!-- is skip? -->
+								<!-- Skip Icon -->
 								<control type="image">
 									<posx>-18</posx>
 									<posy>0</posy>
@@ -1641,7 +1307,7 @@ Search for window name
 									<texture>DI_Skip1g.png</texture>
 									<visible>substring(ListItem.Property(iSkip),true)</visible>
 								</control>
-								<!-- is hd? -->
+								<!-- HD Icon -->
 								<control type="image">
 									<posx>8</posx>
 									<posy>0</posy>
@@ -1650,7 +1316,7 @@ Search for window name
 									<texture>IconHD1g.png</texture>
 									<visible>substring(ListItem.Property(iHD),true)</visible>
 								</control>
-								<!-- is cas? -->
+								<!-- CAS Icon -->
 								<control type="image">
 									<posx>34</posx>
 									<posy>0</posy>
@@ -1659,7 +1325,7 @@ Search for window name
 									<texture>IconCas1g.png</texture>
 									<visible>substring(ListItem.Property(iCas),true)</visible>
 								</control>
-								<!-- is Tuner1 -->
+								<!-- Tuner1 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1668,7 +1334,7 @@ Search for window name
 									<visible>substring(ListItem.Property(iTuner1),true)</visible>
 									<texture>IconT1g.png</texture>
 								</control>
-								<!-- is Tuner2 -->
+								<!-- Tuner2 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1677,7 +1343,7 @@ Search for window name
 									<visible>substring(ListItem.Property(iTuner2),true)</visible>
 									<texture>IconT2g.png</texture>
 								</control>
-								<!-- is Tuner1 & Tuner2 -->
+								<!-- Tuner1 & Tuner2 Icon -->
 								<control type="image">
 									<posx>62</posx>
 									<posy>0</posy>
@@ -1691,9 +1357,7 @@ Search for window name
 									<posy>20</posy>
 									<width>81</width>
 									<height>10</height>
-<!--									<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-									<midtexture border="14,0,14,0">OSDProgressMidLight.png</midtexture>
--->									<texturebg>osd/osd_progress_back3.png</texturebg>
+									<texturebg>osd/osd_progress_back3.png</texturebg>
 									<lefttexture>osd/osd_progress_left3.png</lefttexture>
 									<midtexture>osd/osd_progress_mid3.png</midtexture>
 									<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -1717,7 +1381,7 @@ Search for window name
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
 								</control>
-								<!-- is Align < 10,000 ? -->
+								<!-- Channel Name Position when Channel Number < 10,000 -->
 								<control type="label">
 									<description>Channel Name</description>
 									<posx>90</posx>
@@ -1732,7 +1396,7 @@ Search for window name
 									<label>$INFO[ListItem.Label2]</label>
 									<visible>substring(ListItem.Property(iAlign),false)</visible>
 								</control>
-								<!-- is Align > 10,000 ? -->
+								<!-- Channel Name Position when Channel Number > 10,000 -->
 								<control type="label">
 									<description>Channel Name</description>
 									<posx>100</posx>
@@ -1746,6 +1410,7 @@ Search for window name
 									<label>$INFO[ListItem.Label2]</label>
 									<visible>substring(ListItem.Property(iAlign),true)</visible>
 								</control>
+								<!-- Channel HD -->
 								<control type="label">
 									<description>Channel HD</description>
 									<posx>440</posx>
@@ -1781,8 +1446,9 @@ Search for window name
 				<onup>1300061</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				</control>
-			<!--  Path Info -->
+			</control>
+
+			<!-- Channel Mode & Sorting Info -->
 			<control type="group" id="1300020">
 				<posx>5</posx>
 				<posy>-30</posy>
@@ -1808,18 +1474,21 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- middle right -->
+			<!-- PIG & Info -->
 			<control type="group" id="1300300">
 				<posx>850</posx>
 				<posy>122</posy>
 				<width>430</width>
 				<height>600</height>
 				<include>DefaultWindowFade</include>
+				<!-- PIG -->
 				<control type="group">
 					<posx>5</posx>
 					<posy>-40</posy>
 					<visible>Control.IsVisible(8899)</visible>
+					<!-- PIG Channel Name -->
 					<control type="label" id="1300303">
+						<description>Channel Name</description>
 						<posx>0</posx>
 						<posy>207</posy>
 						<width>350</width>
@@ -1827,19 +1496,21 @@ Search for window name
 						<font>METF_HomeMenuSmall</font>
 						<textcolor>white</textcolor>
 						<label>TV - zdf-neo HD$INFO[Control.GetLabel]</label>
-						<description>ch name</description>
 						<visible>substring(Window.Property(Signal),True)</visible>
 					</control>
 				</control>
+
+				<!-- Short EPG Info Mode -->
 				<control type="group">
 					<posx>-461</posx>
 					<posy>471</posy>
 					<visible>!substring(Window.Property(ShowExtendInfo),True)</visible>
 					<control type="group">
+						<!-- EPG Time & Progress Bar -->
 						<control type="label" id="1300305">
 							<posx>-314</posx>
 							<posy>-23</posy>
-							<font>METF_PlotTextSmall</font> <!--sblee-METF_InfoText=19pt, METF_PlotTextSmall=18pt -->
+							<font>METF_PlotTextSmall</font>
 							<textcolor>white</textcolor>
 							<label></label>
 						</control>
@@ -1848,13 +1519,8 @@ Search for window name
 							<posy>-19</posy>
 							<width>150</width>
 							<height>15</height>
-<!--							<color>grey</color>-->
 							<border>0</border>
-<!--							<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-							<lefttexture>-</lefttexture>
-							<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
-							<righttexture>-</righttexture>
--->							<overlaytexture>-</overlaytexture>
+							<overlaytexture>-</overlaytexture>
 							<texturebg border="6,0,6,0">osd/osd_progress_back2.png</texturebg>
 							<lefttexture>osd/osd_progress_left2.png</lefttexture>
 							<midtexture>osd/osd_progress_mid2.png</midtexture>
@@ -1862,9 +1528,9 @@ Search for window name
 							<colordiffuse>DialogProgressBar</colordiffuse>
 							</control>
 					</control>
-					<!--sblee-basic EPG Info-current program name-->					
+					<!-- EPG Info-->
 					<control type="label" id="1300304">
-						<description>EPG Info</description>
+						<description>current program name</description>
 						<posx>-313</posx>
 						<posy>2</posy>
 						<width>350</width>
@@ -1873,7 +1539,7 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
-
+					<!-- Satellite Info -->
 					<control type="label" id="1300307">
 						<description>satellite info</description>
 						<posx>-315</posx>
@@ -1882,6 +1548,7 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
+					<!-- Transponder Info -->
 					<control type="label" id="1300308">
 						<description>career info</description>
 						<posx>-315</posx>
@@ -1890,6 +1557,7 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
+					<!-- Lock Icon & Label -->
 					<control type="group" id="1300309">
 						<posx>-315</posx>
 						<posy>15</posy>
@@ -1913,22 +1581,13 @@ Search for window name
 					</control>
 				</control>
 
-				<!--sblee-ExtendInfo edit-->
+				<!-- Extend EPG Info Mode -->
 				<control type="group">
 					<posx>-776</posx>
 					<posy>320</posy>
 					<width>390</width>
 					<visible>substring(Window.Property(ShowExtendInfo),True)</visible>
-					<!--control type="label">
-						<description>EPG Info</description>
-						<posx>0</posx>
-						<posy>50</posy>
-						<width>350</width>
-						<height>15</height>
-						<font>font13caps</font>
-						<textcolor>grey</textcolor>
-						<label>$INFO[Control.GetLabel(1300304)]</label>
-					</control-->
+					<!-- Satellite Info -->
 					<control type="label">
 						<description>satellite info</description>
 						<posx>0</posx>
@@ -1937,6 +1596,7 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel(1300307)]</label>
 					</control>
+					<!-- Transponder Info -->
 					<control type="label">
 						<description>career info</description>
 						<posx>0</posx>
@@ -1945,6 +1605,7 @@ Search for window name
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel(1300308)]</label>
 					</control>
+					<!-- Lock Icon & Label -->
 					<control type="group">
 						<posx>0</posx>
 						<posy>240</posy>
@@ -1965,12 +1626,12 @@ Search for window name
 							<label>$ADDON[script.mbox 1014]</label>
 						</control>
 					</control>
-					<!--sblee- about EPG Info-->
+					<!-- EPG Info -->
 					<control type="group">
 						<posx>1</posx>
 						<posy>117</posy>
 						<include>DefaultWindowFade</include>
-						<!--sblee-EPG start/end time info-->
+						<!-- EPG Start & End Time -->
 						<control type="label">
 							<posx>0</posx>
 							<posy>10</posy>
@@ -1978,6 +1639,7 @@ Search for window name
 							<textcolor>white</textcolor>
 							<label>$INFO[Control.getLabel(1300305)]</label>
 						</control>
+						<!-- EPG Duration -->
 						<control type="label">
 							<description>EPG duration</description>
 							<posx>140</posx>
@@ -1986,13 +1648,14 @@ Search for window name
 							<textcolor>white</textcolor>
 							<label>$INFO[Window.Property(EPGDuration)]</label>
 						</control>
+						<!-- EPG Summary -->
 						<control type="textbox">
 							<description>EPG information</description>
 							<posx>319</posx>
 							<posy>13</posy>
 							<width>663</width>
 						 	<height>86</height>
-							<font>METF_DialogSmall</font> <!--sblee-METF_PlotTextMedium=19pt, METF_PlotTextSmall=18, METF_DialogSmall=17pt-->
+							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
 							<label>$INFO[Window.Property(EPGDescription)]</label>
 							<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
@@ -2000,10 +1663,10 @@ Search for window name
 					</control>
 				</control>
 
+				<!-- AV Info -->
 				<control type="group">
 					<posx>-460</posx>
 					<posy>540</posy>
-					<!-- components -->
 					<control type="grouplist">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -2037,7 +1700,7 @@ Search for window name
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>METF_PlotTextSmall</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -2149,19 +1812,18 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- cas -->
+				<!-- CAS Icons -->
 				<control type="group">
 					<posx>-835</posx>
 					<posy>533</posy>
 					<include>CASInfo</include>
 				</control>
-
 			</control>
 
-			<!--  page -->
+			<!-- Item & Page Number -->
 			<control type="group">
 				<include>DefaultWindowFade</include>
-				<!--sblee- selected item number-->
+				<!-- Selected item number -->
 				<control type="label" id="1300401">
 					<posx>28r</posx>
 					<posy>19</posy>
@@ -2172,7 +1834,6 @@ Search for window name
 					<scroll>false</scroll>
 					<align>right</align>
 					<aligny>center</aligny>
-					<!--label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label-->
 					<label>$INFO[Control.GetLabel]</label>
 					<visible>false</visible>
 				</control>
@@ -2189,7 +1850,6 @@ Search for window name
 					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(1300401)] / $INFO[Container(1300050).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1300050).CurrentPage]/$INFO[Container(1300050).NumPages][/COLOR])</label>
 					<visible>!substring(Window(10000).Property(isMove),true)</visible>
 				</control>
-				<!--sblee- ()Move Psoition ???-->
 				<control type="label">
 					<posx>28r</posx>
 					<posy>19</posy>
@@ -2205,7 +1865,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- Main Menu -->
+			<!-- Slide Menu -->
 			<control type="group" id="1300100">
 				<animation effect="slide" start="0,0" end="290,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1300101) | Control.HasFocus(1300102) | ControlGroup(1300110).HasFocus | ControlGroup(1309001).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="-290,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
@@ -2221,16 +1881,7 @@ Search for window name
 	                    <animation effect="slide" start="0,0" end="290,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
 						<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
 	                </control>
-<!--	                <control type="image">
-	                    <posx>-12</posx>
-	                    <posy>0</posy>
-	                    <width>12</width>
-	                    <height>720</height>
-	                    <texture>MediaBladeSub_Part2.png</texture>
-	                    <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="[!Container(1300102).HasFocus(1) + Control.HasFocus(1300102)] | Control.HasFocus(1300101) | Control.HasFocus(1300202) | ControlGroup(1309001).HasFocus">Conditional</animation>
-						<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1300049).HasFocus | Control.HasFocus(1300103) | Control.HasFocus(1300201)">Conditional</animation>
-	                </control>
--->				</control>
+				</control>
 				<control type="button" id="1300101">
 					<description>Fake button for mouse control</description>
 					<posx>-285</posx>
@@ -2248,16 +1899,7 @@ Search for window name
 				<control type="group" id="1300110">
 					<posx>-285</posx>
 					<posy>0</posy>
-<!--					<control type="image">
-						<description>LOGO</description>
-						<posx>20</posx>
-						<posy>50</posy>
-						<width>220</width>
-						<height>80</height>
-						<aspectratio>keep</aspectratio>
-						<texture>Confluence_Logo.png</texture>
-					</control>
--->					<control type="button" id="1300103">
+					<control type="button" id="1300103">
 						<description>Sort by button</description>
 						<posx>0</posx>
 						<posy>115</posy>
@@ -2277,6 +1919,8 @@ Search for window name
 						<onup>1300202</onup>
 						<ondown>Control.SetFocus(1300102,0)</ondown>
 					</control>
+
+					<!-- Main Slide Menu -->
 					<control type="list" id="1300102">
 						<posx>0</posx>
 						<posy>150</posy>
@@ -2287,7 +1931,7 @@ Search for window name
 						<onup>1300103</onup>
 						<ondown>1300201</ondown>
 						<scrolltime>300</scrolltime>
-						<textcolor>red</textcolor>
+						<textcolor>white</textcolor>
 						<movement>10</movement>
 						<itemlayout height="40" width="255">
 							<control type="label">
@@ -2303,14 +1947,13 @@ Search for window name
 							</control>
 						</itemlayout>
 						<focusedlayout height="40" width="255">
-							<!--sblee-All channel~Mode-->
+							<!-- List From All Channels to Mode -->
 							<control type="image">
 								<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Control.HasFocus(1300102)]">conditional</animation>
 								<posx>0</posx>
 								<posy>21</posy>
 								<width>250</width>
 								<height>40</height>
-<!--								<texture>button-focus.png</texture>-->
 								<texture border="1">ButtonFO2.png</texture>
 							</control>
 							<control type="label">
@@ -2378,6 +2021,7 @@ Search for window name
 							</item>
 						</content>
 					</control>
+
 					<!-- Search & Misc Option Buttons -->
 					<control type="grouplist" id="1300200">
 						<posx>-25</posx>
@@ -2453,8 +2097,7 @@ Search for window name
 						</control>
 					</control>
 
-
-					<!-- sub main (fav) -->
+					<!-- Fav. Submenus -->
 					<control type="group" id="1309001">
 						<posx>-230</posx>
 						<posy>0</posy>
@@ -2482,7 +2125,7 @@ Search for window name
 									<width>230</width>
 									<height>41</height>
 								</control>
-								<!-- is FastScan -->
+								<!-- FastScan Icon -->
 								<control type="image">
 									<posx>197</posx>
 									<posy>12</posy>
@@ -2504,15 +2147,7 @@ Search for window name
 								</control>
 							</itemlayout>
 							<focusedlayout height="40" width="240">
-<!--								<control type="image">
-									<posx>0</posx>
-									<posy>0</posy>
-									<width>230</width>
-									<height>41</height>
-									<texture border="0,2,0,2">MenuItemNF.png</texture>
-									<visible>!Control.HasFocus(1300112)</visible>
-								</control>
--->								<control type="image">
+								<control type="image">
 									<posx>0</posx>
 									<posy>0</posy>
 									<width>235</width>
@@ -2520,7 +2155,7 @@ Search for window name
 									<texture border="1">ButtonFO2.png</texture>
 									<visible>Control.HasFocus(1300112)</visible>
 								</control>
-								<!-- is FastScan -->
+								<!-- FastScan Icon -->
 								<control type="image">
 									<posx>197</posx>
 									<posy>12</posy>
@@ -2536,7 +2171,6 @@ Search for window name
 									<height>40</height>
 									<font>METF_PlotText</font>
 									<textcolor>eef8cd22</textcolor>
-<!--									<shadowcolor>ff000000</shadowcolor>-->
 									<align>left</align>
 									<aligny>center</aligny>
 									<label>$INFO[ListItem.Label]</label>
@@ -2544,7 +2178,7 @@ Search for window name
 							</focusedlayout>
 						</control>
 
-						<!-- sub main 2 (mode) -->
+						<!-- Mode & Misc Option Submenus -->
 						<control type="grouplist" id="1309002">
 							<posx>12</posx>
 							<posy>90</posy>
@@ -2559,22 +2193,17 @@ Search for window name
 							<visible>!Control.HasFocus(1300103)</visible>
 							<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 							<animation effect="fade" end="0,0" time="300">WindowClose</animation>
+							<!-- Mode Submenus -->
 							<control type="group">
 								<visible>Container(1300102).HasFocus(6) + ![ControlGroup(1300200).HasFocus | Control.HasFocus(1300121) | Control.HasFocus(1300122)]</visible>
-<!--								<control type="image">
-									<posx>190</posx>
-									<posy>0</posy>
-									<width>40</width>
-									<height>40</height>
-									<texture>MediaSubSet.png</texture>
-								</control>
--->								<control type="radiobutton" id="1300113">
+								<control type="radiobutton" id="1300113">
 									<posx>0</posx>
 									<posy>51</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
-									<textwidth>195</textwidth>
+									<textoffsetx>10</textoffsetx>
+									<textwidth>200</textwidth>
+									<align>left</align>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -2593,8 +2222,9 @@ Search for window name
 									<posy>90</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>20</textoffsetx>
+									<textoffsetx>10</textoffsetx>
 									<textwidth>195</textwidth>
+									<align>left</align>
 									<aligny>center</aligny>
 									<font>METF_MediaDetailsSmall</font>
 									<texturefocus border="1">ButtonFO2.png</texturefocus>
@@ -2609,7 +2239,7 @@ Search for window name
 									<ondown>1300113</ondown>
 								</control>
 							</control>
-							<!--sblee-Misc Option-->
+							<!-- Misc Option Submenus -->
 							<control type="group" id="1300120">
 								<posx>0</posx>
 								<posy>85</posy>
@@ -2619,7 +2249,7 @@ Search for window name
 									<posy>51</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>15</textoffsetx>
+									<textoffsetx>10</textoffsetx>
 									<textwidth>185</textwidth>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -2640,7 +2270,7 @@ Search for window name
 									<posy>90</posy>
 									<width>237</width>
 									<height>40</height>
-									<textoffsetx>30</textoffsetx>
+									<textoffsetx>10</textoffsetx>
 									<textwidth>185</textwidth>
 									<align>left</align>
 									<aligny>center</aligny>
@@ -2703,7 +2333,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- fake button -->
+			<!-- Hidden Button -->
 			<control type="button" id="1300700">
 				<label>EPG</label>
 				<onclick>-</onclick>
@@ -2711,23 +2341,15 @@ Search for window name
 			</control>
 		</control>
 
-
 		<!-- *********** E_LIVEWindow ********** -->	
 		<control type="group" id="1400000">
-			<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
-			<!--<animation effect="fade" start="100" end="0" time="200">Hidden</animation>-->
 			<visible>substring(Window.Property(CurrentWindow),1400000) | substring(Window.Property(CurrentWindow),4100000)</visible>
 			<defaultcontrol always="true">1003630</defaultcontrol>
-			<control type="image">
-				<include>DefaultWindowFade</include>
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
-				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
-				<visible>substring(Window.Property(TVRadio),true)</visible>
-			</control>
+
+			<!-- Radio Background Image -->
+			<include>DefaultRadioBackground</include>
+
+			<!-- Starting Recording Icon -->
 			<control type="image" id="1400100">
 				<posx>1200</posx>
 				<posy>50</posy>
@@ -2736,7 +2358,9 @@ Search for window name
 				<texture>i_record.png</texture>
 				<visible>substring(Window(10000).Property(RecordBlinkingIcon),true)</visible>
 			</control>
+
 			<control type="group">
+				<!-- Lower Background Image -->
 				<control type="image">
 					<description>media info background image</description>
 					<posx>-13</posx>
@@ -2746,54 +2370,19 @@ Search for window name
 					<texture>new/BackLower.png</texture>
 					<colordiffuse>BackgroundColor</colordiffuse>
 				</control>
+
+				<!-- Global Info -->
 				<include>Global_Weather</include>
 				<include>Global_Time</include>
 				<include>Global_Heading</include>
-		<!-- common date time -->
-				<!--control type="group">
-					<posx>190r</posx>
-					<posy>563</posy>
-					<control type="image">
-						<description>time background</description>
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>240</width>
-						<height>35</height>
-						<texture flipx="true" border="32,0,0,0">header.png</texture>
-					</control>
-					<control type="label">
-						<description>time label</description>
-						<posx>60</posx>
-						<posy>0</posy>
-						<width>200</width>
-						<height>28</height>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<shadowcolor>black</shadowcolor>
-						<label>$INFO[System.Time]</label>
-					</control>
-				</control-->
 
-
-		<!-- Rec info -->
+				<!-- Recording Info -->
 				<control type="group">
 					<posx>740</posx>
 					<posy>620</posy>
 					<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(1400010) | Control.IsVisible(1400015)">conditional</animation>
 					<control type="group">
-<!--						<posx>-10</posx>
-						<posy>-5</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>450</width>
-							<height>35</height>
-							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
-							<visible>Control.IsVisible(1400010)</visible>
-						</control>
--->						<control type="image" id="1400010">
+						<control type="image" id="1400010">
 							<posx>0</posx>
 							<posy>-15</posy>
 							<width>50</width>
@@ -2811,17 +2400,7 @@ Search for window name
 						</control>
 					</control>
 					<control type="group">
-<!--						<posx>-10</posx>
-						<posy>-51</posy>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>450</width>
-							<height>35</height>
-							<texture flipy="true" flipx="true" border="50,0,32,0">header.png</texture>
-							<visible>Control.IsVisible(1400015)</visible>
-						</control>
--->						<control type="image" id="1400015">
+						<control type="image" id="1400015">
 							<posx>0</posx>
 							<posy>13</posy>
 							<width>50</width>
@@ -2840,20 +2419,21 @@ Search for window name
 					</control>
 				</control>
 
-		<!-- info section -->
+				<!-- Channel Info -->
 				<control type="group" id="1400600">
 					<posx>50</posx>
 					<posy>605</posy>
 					<control type="label">
+						<description>PLAYBACK</description>
 						<posx>-40</posx>
 						<posy>-30</posy>
 						<width>300</width>
 						<height>50</height>
 						<align>center</align>
-						<font>METF_Heading</font><!--sblee-MET_FontinSansSmallCaps,25pt-->
+						<font>METF_Heading</font>
 						<textcolor>red</textcolor>
 						<label>$ADDON[script.mbox 1123]</label>
-						<visible>substring(Window.Property(InfoPlateName),true)</visible><!--sblee-PLAYBACK-->
+						<visible>substring(Window.Property(InfoPlateName),true)</visible>
 					</control>
 					<control type="image">
 						<description>Channel Logo Background</description>
@@ -3081,7 +2661,7 @@ Search for window name
 						</control>
 					</control>
 -->
-		<!-- button control -->
+					<!-- Button Icons -->
 					<include>DefaultInfoPlateGroup</include>
 
 					<control type="group">
@@ -3141,7 +2721,7 @@ Search for window name
 								<visible>substring(Window.Property(iCas),true)</visible>
 							</control-->
 
-							<!-- cas -->
+							<!-- CAS Icons -->
 							<control type="group">
 								<posx>171</posx>
 								<posy>0</posy>
@@ -3150,7 +2730,7 @@ Search for window name
 						</control>
 					</control>
 
-					<!-- color key -->
+					<!-- Color Keys -->
 					<control type="group" id="1400509">
 						<control type="grouplist">
 							<posx>460</posx>
@@ -3258,7 +2838,7 @@ Search for window name
 						</control>
 					</control>
 
-					<!-- components -->
+					<!-- AV Info -->
 					<control type="group">
 						<posx>437</posx>
 						<posy>62</posy>
@@ -3270,20 +2850,7 @@ Search for window name
 							<itemgap>4</itemgap>
 							<visible>true</visible>
 							<orientation>horizontal</orientation>
-<!--							<control type="group">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>90</width>
-								<height>62</height>
-								<control type="image">
-									<width>104</width>
-									<height>54</height>
-									<colordiffuse>MediaFlagBoxDiffuse</colordiffuse>
-									<texture>new/flags/flag_frame.png</texture>
-									<visible>substring(Window.Property(InfoPlateName),true)</visible>
-								</control>
-							</control>
--->							<control type="group">
+							<control type="group">
 								<posx>0</posx>
 								<posy>0</posy>
 								<width>90</width>
@@ -3451,7 +3018,7 @@ Search for window name
 					</control>
 				</control>
 
-		<!-- epg section -->
+				<!-- EPG Info -->
 				<control type="group" id="1400700">
 					<posx>70</posx>
 					<posy>625</posy>
@@ -3486,7 +3053,7 @@ Search for window name
 						<posx>-42</posx>
 						<posy>15</posy>
 						<width>340</width>
-						<font>METF_SettingsDetail</font><!--sblee-METF_TitleText-->
+						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -3504,11 +3071,7 @@ Search for window name
 						<posy>48</posy>
 						<width>190</width>
 						<height>12</height>
-<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<lefttexture></lefttexture>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
-						<righttexture></righttexture>
--->						<overlaytexture></overlaytexture>
+						<overlaytexture></overlaytexture>
 						<texturebg>osd/osd_progress_back2.png</texturebg>
 						<lefttexture>osd/osd_progress_left2.png</lefttexture>
 						<midtexture>osd/osd_progress_mid2.png</midtexture>
@@ -3540,6 +3103,8 @@ Search for window name
 					</control>
 				</control>
 			</control>
+
+			<!-- Signal Condition -->
 			<control type="label">
 				<posx>550</posx>
 				<posy>330</posy>
@@ -3571,20 +3136,12 @@ Search for window name
 
 		<!-- *********** E_Timeshift ********** -->
 		<control type="group" id="2900000">
-			<!--
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<animation effect="fade" start="100" end="0" time="200">Hidden</animation>
-			-->
 			<visible>substring(Window.Property(CurrentWindow),2900000)</visible>
-			<control type="image">
-				<posx>-13</posx>
-				<posy>-7</posy>
-				<width>1306</width>
-				<height>734</height>
-				<texture>backgrounds/RADIOSKIN.jpg</texture>
-				<!--visible>substring(Window.Property(TVRadio),true) + substring(Window.Property(Signal),True)</visible-->
-				<visible>substring(Window.Property(TVRadio),true)</visible>
-			</control>
+
+			<!-- Radio Background Image-->
+			<include>DefaultRadioBackground</include>
+
+			<!-- Starting Recording Icon -->
 			<control type="image" id="2900100">
 				<posx>1200</posx>
 				<posy>50</posy>
@@ -3599,6 +3156,7 @@ Search for window name
 				<animation effect="slide" start="0,0" end="0,70r" time="300" tween="quadratic" easing="out" condition="!ControlGroup(1003750).HasFocus">Conditional</animation>
 				<animation effect="slide" start="0,0" end="0,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(1003750).HasFocus">Conditional</animation>
 				<control type="group">
+					<!-- Lower Background Image -->
 					<control type="image">
 						<description>media info background image</description>
 						<posx>-13</posx>
@@ -3610,7 +3168,7 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- bookmark thumbnail-->
+				<!-- Bookmark Thumbnails -->
 				<control type="group">
 					<posx>0</posx>
 					<posy>460</posy>
@@ -3702,7 +3260,7 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- Rec info -->
+				<!-- Recording Info -->
 				<control type="group">
 					<posx>450r</posx>
 					<posy>540</posy>
@@ -3763,7 +3321,7 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- info section -->
+				<!-- More & Show Bookmarks Labels -->
 				<control type="group">
 					<posx>0</posx>
 					<posy>590</posy>
@@ -3809,7 +3367,7 @@ Search for window name
 					</control>
 				</control>
 
-			<!-- color key -->
+				<!-- Color Keys -->
 				<control type="group" id="2900509">
 					<control type="grouplist">
 						<posx>210r</posx>
@@ -3918,8 +3476,7 @@ Search for window name
 					</control>
 				</control>
 
-
-				<!-- play section -->
+				<!-- Funtion Buttons -->
 				<control type="group">
 					<posx>230</posx>
 					<posy>575</posy>
@@ -3931,7 +3488,7 @@ Search for window name
 					<include>DefaultTimeshiftPlateGroup</include>
 				</control>
 
-			<!-- EPG section -->
+				<!-- EPG Progress Bar & Info -->
 				<control type="group">
 					<!--control type="progress" id="2900200">
 						<description>progress review</description>
@@ -3954,11 +3511,7 @@ Search for window name
 						<posy>595</posy>
 						<width>780</width>
 						<height>16</height>
-<!--						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-						<lefttexture>-</lefttexture>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
-						<righttexture>-</righttexture>
--->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<texturebg>osd/osd_progress_back2.png</texturebg>
 						<lefttexture>osd/osd_progress_left2.png</lefttexture>
 						<midtexture>osd/osd_progress_mid2.png</midtexture>
 						<righttexture>osd/osd_progress_righ2.png</righttexture>
@@ -3985,6 +3538,7 @@ Search for window name
 						<include>TimeshiftSliderBG</include>
 						<include>TimeshiftSliderBG</include>
 					</control>
+					<!-- Current Playing Position -->
 					<control type="button" id="2900202">
 						<description>play time</description>
 						<posx>400</posx>
@@ -3998,6 +3552,7 @@ Search for window name
 						<onup>2900500</onup>
 						<ondown>1003750</ondown>
 					</control>
+					<!-- Current Playing Time -->
 					<control type="label" id="2900204">
 						<description>start</description>
 						<posx>410</posx>
@@ -4020,6 +3575,7 @@ Search for window name
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
+				<!-- Start & End Time -->
 				<control type="group">
 					<posx>300</posx>
 					<posy>590</posy>
@@ -4045,7 +3601,7 @@ Search for window name
 					</control>
 				</control>
 
-				<!-- bookmark point-->
+				<!-- Bookmark Points -->
 				<control type="group">
 					<posx>395</posx>
 					<posy>600</posy>
@@ -4377,44 +3933,29 @@ Search for window name
 			</control>
 		</control>
 
-
-		<!-- *********** E_Configure ********** -->	
+		<!-- *********** E_Configuration ********** -->
 		<control type="group" id="1500000">
 			<visible>substring(Window.Property(CurrentWindow),1500000)</visible>
 			<defaultcontrol always="true">1509000</defaultcontrol>
+
+			<!-- Global Info -->
 			<include>Global_Weather</include>
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
+
 			<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
-<!--				<posx>90</posx>
-				<posy>50</posy>
+				<!--Manu List Arrow -->
 				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1100</width>
-					<height>640</height>
-					<texture border="20">DialogBack.png</texture>
-				</control>
-				<control type="image">
-					<description>LOGO</description>
-					<posx>30</posx>
-					<posy>15</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>Confluence_Logo.png</texture>
-				</control>
--->				<control type="image">
 					<posx>330</posx>
 					<posy>490</posy>
 					<width>20</width>
 					<height>20</height>
 					<texture>Arrow2Down.png</texture>
-<!--					<colordiffuse>FFFFFFFF</colordiffuse>
-					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>-->
 				</control>
+
+				<!-- Menu List -->
 				<control type="list" id="1509000">
 					<posx>3</posx>
 					<posy>130</posy>
@@ -4423,14 +3964,7 @@ Search for window name
 					<onup>1509000</onup>
 					<ondown>1509000</ondown>
 					<itemlayout height="50" width="270">
-<!--						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>260</width>
-							<height>60</height>
-							<texture border="5">MenuItemNF.png</texture>
-						</control>
--->						<control type="label">
+					<control type="label">
 							<posx>348</posx>
 							<posy>8</posy>
 							<width>290</width>
@@ -4463,22 +3997,9 @@ Search for window name
 						</control>
 					</focusedlayout>
 				</control>
-<!--				<control type="image">
-					<posx>268</posx>
-					<posy>14</posy>
-					<width>800</width>
-					<height>612</height>
-					<texture border="5">black-back2.png</texture>
-				</control>
-				<control type="image">
-					<posx>266</posx>
-					<posy>15</posy>
-					<width>804</width>
-					<height>90</height>
-					<aspectratio>stretch</aspectratio>
-					<texture>GlassTitleBar.png</texture>
-				</control>
--->				<control type="label">
+
+				<!-- Menu Title  -->
+				<control type="label">
 					<description>header label</description>
 					<posx>30r</posx>
 					<posy>10</posy>
@@ -4494,7 +4015,8 @@ Search for window name
 				<control type="group" id="1509010">
 					<posx>400</posx>
 					<posy>160r</posy>
-					<control type="label" id="1501003"><!--sblee-config menu description-->
+					<!-- Config Menu Description-->
+					<control type="label" id="1501003">
 						<posx>40</posx>
 						<posy>-3</posy>
 						<width>655</width>
@@ -4520,9 +4042,7 @@ Search for window name
 								<posy>15</posy>
 								<width>100</width>
 								<height>16</height>
-<!--								<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-								<midtexture border="6,0,6,0">OSDProgressMidLight.png</midtexture>
--->								<texturebg>osd/osd_progress_back3.png</texturebg>
+								<texturebg>osd/osd_progress_back3.png</texturebg>
 								<lefttexture>osd/osd_progress_left3.png</lefttexture>
 								<midtexture>osd/osd_progress_mid3.png</midtexture>
 								<righttexture>osd/osd_progress_right3.png</righttexture>
@@ -4557,21 +4077,6 @@ Search for window name
 							</control>
 						</control>
 					</control>
-					<!--
-					<include>SpinEx01</include>
-					<include>SpinEx02</include>
-					<include>SpinEx03</include>
-					<include>SpinEx04</include>
-					<include>SpinEx05</include>
-					<include>SpinEx06</include>
-					<include>Input01</include>
-					<include>Input02</include>
-					<include>Input03</include>
-					<include>Input04</include>
-					<include>Input05</include>
-					<include>Input06</include>
-					<include>Input07</include>
-					-->
 				</control>
 			</control>
 		</control>
@@ -4580,41 +4085,17 @@ Search for window name
 		<control type="group" id="4900000">
 			<visible>substring(Window.Property(CurrentWindow),4900000)</visible>
 			<defaultcontrol always="true">4909000</defaultcontrol>
+
+			<!-- Global Info -->
 			<include>Global_Weather</include>
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
+
 			<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
-<!--				<posx>20</posx>
-				<posy>20</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1100</width>
-					<height>640</height>
-					<texture border="20">DialogBack.png</texture>
-				</control>
-				<control type="image">
-					<description>LOGO</description>
-					<posx>30</posx>
-					<posy>15</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>Confluence_Logo.png</texture>
-				</control>
--->				<!--
-				<control type="image">
-					<posx>233</posx>
-					<posy>581</posy>
-					<width>18</width>
-					<height>19</height>
-					<texture>HomeHasSub.png</texture>
-					<colordiffuse>FFFFFFFF</colordiffuse>
-					<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
-				</control>
-				-->
+
+				<!-- Menu List -->
 				<control type="list" id="4909000">
 					<posx>3</posx>
 					<posy>130</posy>
@@ -4623,14 +4104,7 @@ Search for window name
 					<onup>4909000</onup>
 					<ondown>4909000</ondown>
 					<itemlayout height="50" width="300">
-<!--						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>260</width>
-							<height>60</height>
-							<texture border="5">MenuItemNF.png</texture>
-						</control>
--->						<control type="label">
+						<control type="label">
 							<posx>348</posx>
 							<posy>15</posy>
 							<width>240</width>
@@ -4650,9 +4124,7 @@ Search for window name
 							<height>50</height>
 							<align>left</align>
 							<texture>ButtonFo.png</texture>
-<!--							<texture border="5">MenuItemFO.png</texture>
-							<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(4909000)">Conditional</animation>
--->						</control>
+						</control>
 						<control type="label">
 							<posx>348</posx>
 							<posy>15</posy>
@@ -4666,22 +4138,9 @@ Search for window name
 						</control>
 					</focusedlayout>
 				</control>
-<!--				<control type="image">
-					<posx>268</posx>
-					<posy>14</posy>
-					<width>800</width>
-					<height>612</height>
-					<texture border="5">black-back2.png</texture>
-				</control>
-				<control type="image">
-					<posx>266</posx>
-					<posy>15</posy>
-					<width>804</width>
-					<height>90</height>
-					<aspectratio>stretch</aspectratio>
-					<texture>GlassTitleBar.png</texture>
-				</control>
--->				<control type="label">
+
+				<!-- Menu Title  -->
+				<control type="label">
 					<description>header label</description>
 					<posx>30r</posx>
 					<posy>10</posy>
@@ -4694,6 +4153,8 @@ Search for window name
 					<aligny>center</aligny>
 					<textcolor>FFc89008</textcolor>
 				</control>
+
+				<!-- Menu Description -->
 				<control type="group" id="4909010">
 					<posx>400</posx>
 					<posy>168r</posy>
@@ -4710,21 +4171,6 @@ Search for window name
 						<scrollspeed>100</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 					</control>
-					<!--
-					<include>SpinEx01</include>
-					<include>SpinEx02</include>
-					<include>SpinEx03</include>
-					<include>SpinEx04</include>
-					<include>SpinEx05</include>
-					<include>SpinEx06</include>
-					<include>Input01</include>
-					<include>Input02</include>
-					<include>Input03</include>
-					<include>Input04</include>
-					<include>Input05</include>
-					<include>Input06</include>
-					<include>Input07</include>
-					-->
 				</control>
 			</control>
 		</control>
@@ -4752,14 +4198,7 @@ Search for window name
 					<onright>1709001</onright>
 					<pagecontrol>1709001</pagecontrol>
 					<itemlayout height="40" width="720">
-<!--						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>750</width>
-							<height>40</height>
-							<texture border="0,2,0,2">MenuItemNF.png</texture>
-						</control>
--->						<control type="label">
+						<control type="label">
 							<posx>10</posx>
 							<posy>0</posy>
 							<width>680</width>
@@ -4777,7 +4216,6 @@ Search for window name
 							<posy>0</posy>
 							<width>700</width>
 							<height>40</height>
-<!--							<texture border="0,2,0,2">MenuItemFO.png</texture>-->
 							<texture>ButtonFo.png</texture>
 							<visible>Control.HasFocus(1709000)</visible>
 							<!--<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(1709000)">Conditional</animation>-->
@@ -5456,7 +4894,7 @@ Search for window name
 						<itemgap>0</itemgap>
 						<control type="radiobutton" id="3300200">
 							<description>Stack Toggle</description>
-							<textwidth>150</textwidth>
+							<textwidth>170</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
 							<label>$ADDON[script.mbox 1008]</label>
 						</control>
@@ -5485,10 +4923,11 @@ Search for window name
 								<texture border="5">button-nofocus.png</texture>
 							</control>
 -->							<control type="label">
-								<posx>5</posx>
+								<posx>10</posx>
 								<posy>0</posy>
 								<width>210</width>
 								<height>40</height>
+<!--								<textoffsetx>10</textoffsetx>-->
 								<align>left</align>
 								<aligny>center</aligny>
 								<font>METF_SettingsDetail</font>
@@ -5514,7 +4953,7 @@ Search for window name
 								<visible>!Control.HasFocus(3309050)</visible>
 							</control>
 							<control type="label">
-								<posx>5</posx>
+								<posx>10</posx>
 								<posy>0</posy>
 								<width>210</width>
 								<height>40</height>

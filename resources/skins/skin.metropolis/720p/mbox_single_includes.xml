@@ -6,20 +6,38 @@
 	</include>
 
 	<include name="DefaultSettingsBackground">
+		<posx>-13</posx>
+		<posy>-7</posy>
+		<width>1306</width>
+		<height>734</height>
 		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-<!--			<texture>backgrounds/SKINDEFAULT.jpg</texture>-->
+			<texture>black-back_noAlpha.png</texture>
 			<include>DefaultSettingWindowEffect</include>
-			<!--
-			<animation effect="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" condition="!Control.HasFocus(1000999)">Conditional</animation>
-			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(1000999)">Conditional</animation>
-			<animation effect="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" condition="Control.HasFocus(1000999)">Conditional</animation>
-			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(1000999)">Conditional</animation>
-			-->
 		</control>
+		<control type="image">
+			<texture>new/background.png</texture>
+			<colordiffuse>ee3c95c8</colordiffuse>
+		</control>
+	</include>
+
+	<include name="DefaultRadioBackground">
+		<control type="image">
+			<description>Radio Background</description>
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
+			<texture>backgrounds/RADIOSKIN.jpg</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
+	</include>
+
+	<include name="DefaultSignalConditionValues">
+		<posx>570</posx>
+		<posy>330</posy>
+		<width>500</width>
+		<font>METF_TitleTextMedium</font>
+		<textcolor>white</textcolor>
 	</include>
 
 	<include name="DefaultMiniTitle">
@@ -4468,8 +4486,8 @@
 	<include name="DefaultButtonMediaSubCommonValues"> <!--sblee-Misc option sub-->
 		<height>40</height>
 		<width>210</width>
-		<textoffsetx>20</textoffsetx>
-		<textwidth>150</textwidth>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>170</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
