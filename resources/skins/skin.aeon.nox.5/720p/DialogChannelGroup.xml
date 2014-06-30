@@ -44,7 +44,7 @@
 			</control>
 
 			<!-- Channels -->
-			<include>DefaultSelectGroup</include>
+			<include>ChannelGroupList</include>
 
 			<!-- Item & Page Number -->
 			<!--control type="label">
