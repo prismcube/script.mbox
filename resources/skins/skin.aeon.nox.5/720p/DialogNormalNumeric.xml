@@ -1,0 +1,161 @@
+<window>
+	<defaultcontrol always="true">121</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group">
+			<posx>920</posx>
+			<posy>230</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>189</width>
+				<height>263</height>
+				<texture>keyboard/numeric_back.png</texture>
+			</control>
+			<control type="label" id="101">
+				<description>dialog Heading</description>
+				<visible>false</visible>
+				<posx>17</posx>
+				<posy>191</posy>
+				<width>155</width>
+				<height>31</height>
+			</control>
+			<control type="label" id="102">
+				<description>Edit Text</description>
+				<posx>17</posx>
+				<posy>210</posy>
+				<width>155</width>
+				<height>31</height>
+				<font>Font_Reg19</font>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="group">
+				<posx>17</posx>
+				<posy>17</posy>
+				<control type="group">
+					<posy>0</posy>
+					<control type="button" id="111">
+						<description>1 button</description>
+						<posx>0</posx>
+						<onleft>113</onleft>
+						<onright>112</onright>
+						<onup>117</onup>
+						<ondown>114</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="112">
+						<description>2 button</description>
+						<posx>42</posx>
+						<onleft>111</onleft>
+						<onright>113</onright>
+						<onup>110</onup>
+						<ondown>115</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="113">
+						<description>3 button</description>
+						<posx>84</posx>
+						<onleft>112</onleft>
+						<onright>111</onright>
+						<onup>119</onup>
+						<ondown>116</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+				</control>
+				<control type="group">
+					<posy>42</posy>
+					<control type="button" id="114">
+						<description>4 button</description>
+						<posx>0</posx>
+						<onleft>116</onleft>
+						<onright>115</onright>
+						<onup>111</onup>
+						<ondown>117</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="115">
+						<description>5 button</description>
+						<posx>42</posx>
+						<onleft>114</onleft>
+						<onright>116</onright>
+						<onup>112</onup>
+						<ondown>118</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="116">
+						<description>6 button</description>
+						<posx>84</posx>
+						<onleft>115</onleft>
+						<onright>114</onright>
+						<onup>113</onup>
+						<ondown>119</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+				</control>
+				<control type="group">
+					<posy>84</posy>
+					<control type="button" id="117">
+						<description>7 button</description>
+						<posx>0</posx>
+						<onleft>119</onleft>
+						<onright>118</onright>
+						<onup>114</onup>
+						<ondown>123</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="118">
+						<description>8 button</description>
+						<posx>42</posx>
+						<onleft>117</onleft>
+						<onright>119</onright>
+						<onup>115</onup>
+						<ondown>110</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="119">
+						<description>9 button</description>
+						<posx>84</posx>
+						<onleft>118</onleft>
+						<onright>117</onright>
+						<onup>116</onup>
+						<ondown>121</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+				</control>
+				<control type="group">
+					<posy>126</posy>
+					<control type="button" id="123">
+						<description>Cancel button</description>
+						<posx>0</posx>
+						<onleft>121</onleft>
+						<onright>110</onright>
+						<onup>117</onup>
+						<ondown>111</ondown>
+						<label>C</label>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="110">
+						<description>0 button</description>
+						<posx>42</posx>
+						<onleft>123</onleft>
+						<onright>121</onright>
+						<onup>118</onup>
+						<ondown>112</ondown>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+					<control type="button" id="121">
+						<description>OK button</description>
+						<posx>84</posx>
+						<onleft>110</onleft>
+						<onright>123</onright>
+						<onup>119</onup>
+						<ondown>113</ondown>
+						<label>OK</label>
+						<include>Objects_SingleKeyOff_720</include>
+					</control>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

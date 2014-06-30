@@ -1,0 +1,312 @@
+<window>
+	<defaultcontrol always="true">3850</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>340</posx>
+			<posy>60</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>-20</posy>
+				<width>610</width>
+				<height>625</height>
+				<include>DialogBackground</include>
+			</control>
+			<control type="label">
+				<description>Title</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>60</height>
+				<font>font15_title</font>
+				<textcolor>grey3</textcolor>
+				<label>$ADDON[script.mbox 1129]</label>
+				<align>center</align>
+				<textoffsetx>45</textoffsetx>
+			</control>
+			<control type="button" id="3800">
+				<description>Close</description>
+				<posx>550</posx>
+				<posy>20</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3802</onup>
+				<ondown>3850</ondown>
+			</control>
+			<control type="label" id="3801">
+				<description>Channel Number</description>
+				<posx>20</posx>
+				<posy>55</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>font13</font>
+				<label>$INFO[Control.GetLabel]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="3805">
+				<description>Channel Name</description>
+				<posx>20</posx>
+				<posy>80</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>font13</font>
+				<label>$INFO[Control.GetLabel]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="3803">
+				<textcolor>grey2</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+			</control>
+			<control type="list" id="3850">
+				<posx>20</posx>
+				<posy>120</posy>
+				<width>600</width>
+				<height>350</height>
+				<onleft>3802</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>3850</ondown>
+				<pagecontrol>3851</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<focusposition>0</focusposition>
+				<movement>2</movement>
+				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
+				<itemlayout height="70" width="590">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>530</width>
+						<height>71</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<!-- Thumbnail and Lock -->
+					<control type="image">
+						<posx>15</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Item Selection -->					
+					<control type="image">
+						<posx>10</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(iMark),True)</visible>
+					</control>
+					<control type="image">
+						<posx>15</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
+					<!-- Bookmark Time -->
+					<control type="label">
+						<posx>215</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Total -->
+					<control type="label">
+						<posx>315</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>/  $INFO[ListItem.Property(RecTotal)]</label>
+					</control>
+					<control type="progress">
+						<posx>150</posx>
+						<posy>45</posy>
+						<width>380</width>
+						<height>18</height>
+						<progress>percent</progress>
+						<texturebg border="2">osd/texturebg2.png</texturebg>
+						<visible>substring(ListItem.Property(iPos),true)</visible>
+					</control>
+					<!-- Recording Date -->
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="70" width="590">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>71</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<include>DefaultVisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>76</height>
+						<texture border="4">listselect_fo.png</texture>
+						<include>DefaultVisibleFadeEffect</include>
+					</control>
+					<!-- Thumbnail and Lock -->
+					<control type="image">
+						<posx>15</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Item Selection -->
+					<control type="image">
+						<posx>10</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(iMark),True)</visible>
+					</control>
+					<!-- Bookmark Time -->
+					<control type="label">
+						<posx>215</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Total -->
+					<control type="label">
+						<posx>315</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>/  $INFO[ListItem.Property(RecTotal)]</label>
+					</control>
+					<control type="progress">
+						<description>progress control</description>
+						<posx>150</posx>
+						<posy>45</posy>
+						<width>380</width>
+						<height>18</height>
+						<progress>percent</progress>
+						<texturebg border="2">osd/texturebg2.png</texturebg>
+						<visible>substring(ListItem.Property(iPos),true)</visible>
+					</control>
+					<!-- Recording Date -->
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="3851">
+				<include>DefaultWindowFade</include>
+				<posx>575</posx>
+				<posy>120</posy>
+				<width>18</width>
+				<height>350</height>
+				<texturesliderbackground>-</texturesliderbackground>
+				<texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+				<texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+				<onleft>3850</onleft>
+				<onright>3850</onright>
+				<ondown></ondown>
+				<onup></onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+
+			<control type="button" id="3802">
+				<description>OK</description>
+				<posx>30</posx>
+				<posy>490</posy>
+				<width>180</width>
+				<height>35</height>
+				<label>$ADDON[script.mbox 1022]</label>
+                <font>font14</font>
+                <textcolor>grey2</textcolor>
+				<texturenofocus border="5">button-nofocus.png</texturenofocus>
+                <focusedcolor>white</focusedcolor>
+                <align>center</align>
+				<textoffsetx>30</textoffsetx>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>3800</ondown>
+			</control>
+
+			<!-- Hotkey -->
+			<control type="group">
+				<posx>30</posx>
+				<posy>535</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>3</posy>
+					<width>25</width>
+					<height>25</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>font12</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>grey2</textcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

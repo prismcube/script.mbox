@@ -1,0 +1,114 @@
+<window>
+	<defaultcontrol always="true">7001</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<onload>SetProperty(HelpString,Help_String.xml)</onload>
+	<controls>
+		<!-- Background Image -->
+		<include>DefaultSettingsBackground</include>
+
+		<!-- Top Bar Image -->
+		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>51</height>
+			<texture border="1">topbar.png</texture>
+		</control>
+
+		<!-- Bottom Bar -->
+		<control type="image">
+			<posx>-18</posx>
+			<posy>525</posy>
+			<width>1316</width>
+			<height>220</height>
+			<include>DialogBackground</include>
+		</control>
+
+		<control type="group" id="9000">
+			<control type="group">
+				<!-- Page Title -->
+				<control type="label" id="1002">
+					<posx>230</posx>
+					<posy>-5</posy>
+					<width>820</width>
+					<height>30</height>
+					<font>font13_title</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<textcolor>FF6db9e5</textcolor>
+				</control>
+
+				<!-- Path -->
+				<control type="label" id="1003">
+					<posx>20</posx>
+					<posy>-5</posy>
+					<width>500</width>
+					<height>30</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+
+				<!-- Current Page /Last Page -->
+				<control type="label" id="1004">
+					<posx>1260</posx>
+					<posy>-5</posy>
+					<width>100</width>
+					<height>30</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+				</control>
+			</control>
+
+			<!-- Content -->
+			<control type="group" id="8500">
+				<control type="image" id="100">
+					<visible>Control.IsVisible(8500)</visible>
+					<texture>$INFO[Window.Property(imagepath)]</texture>
+				</control>
+				<control type="group">
+					<visible>Control.IsVisible(8500)</visible>
+					<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					<control type="textbox" id="200">
+						<align>left</align>
+						<aligny>top</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Window.Property(label1)]</label>
+					</control>
+					<control type="textbox" id="201">
+						<align>left</align>
+						<aligny>top</aligny>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Window.Property(label2)]</label>
+					</control>
+				</control>
+			</control>
+
+			<!-- Prev & Next Buttons -->
+			<control type="group">
+				<control type="button" id="7000">
+					<posx>60</posx>
+					<posy>290</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-left.png</texturenofocus>
+					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
+				</control>
+				<control type="button" id="7001">
+					<posx>1140</posx>
+					<posy>290</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-right.png</texturenofocus>
+					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+

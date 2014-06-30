@@ -1,0 +1,123 @@
+<window>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,35)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<control type="image">
+				<description>Top Panel</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>365</width>
+				<height>30</height>
+				<texture border="30,20,32,2">dialog_top2.png</texture>
+			</control>
+			<control type="image" id="100">
+				<description>Middle Panel</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>365</width>
+				<texture border="30">dialog_middle2.png</texture>
+			</control>
+			<control type="image" id="101">
+				<description>Bottom Panel</description>
+				<posx>0</posx>
+				<width>365</width>
+				<height>25</height>
+				<texture border="31,2,31,30">dialog_bottom2.png</texture>
+			</control>
+			<control type="image">
+				<posx>27</posx>
+				<posy>-2</posy>
+				<width>310</width>
+				<height>35</height>
+				<texture border="5">button_middle3.png</texture>
+			</control>
+			<control type="label" id="103">
+				<posx>25</posx>
+				<posy>0</posy>
+				<width>310</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<font>font14</font>
+			</control>
+			<control type="list" id="102">
+				<posx>27</posx>
+				<posy>32</posy>
+				<width>310</width>
+				<height>520</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<itemlayout width="310" height="35" >		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<texture border="5">button_middle3.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>155</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout width="310" height="35">		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<texture border="5">button_middle_focus.png</texture>
+                        <animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<texture>$INFO[ListItem.Property(HotKey)]</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>155</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,105 @@
+<window>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,35)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<control type="image">
+				<description>Top Panel</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>362</width>
+				<height>30</height>
+				<texture border="20,13,21,1">dialog_top2.png</texture>
+			</control>
+			<control type="image" id="100">
+				<description>Middle Panel</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>362</width>
+				<texture border="20">dialog_middle2.png</texture>
+			</control>
+			<control type="image" id="101">
+				<description>Bottom Panel</description>
+				<posx>0</posx>
+				<width>362</width>
+				<height>30</height>
+				<texture border="20,1,21,13">dialog_bottom2.png</texture>
+			</control>
+			<control type="list" id="102">
+				<posx>25</posx>
+				<posy>1</posy>
+				<width>310</width>
+				<height>455</height>						<!--Change Property ItemHeight * MAX_ITEM(13) -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<onleft>103</onleft>
+				<onright>103</onright>
+				<itemlayout width="310" height="35" >		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<texture border="5">button_middle3.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<!-- Item Selection -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
+					</control>
+					<control type="label">
+						<posx>155</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey2</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>		
+				</itemlayout>
+				<focusedlayout width="310" height="35">		<!--Change Property ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>
+						<texture border="5">button_middle_focus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<!-- Item Selection -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
+					</control>
+					<control type="label">
+						<posx>155</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>					<!--Change Property ItemHeight-->
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</controls>
+</window>
