@@ -63,7 +63,7 @@
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
 						<control type="progress" id="301">
 							<description>Progressbar</description>
-							<posx>-20</posx>
+							<posx>-11</posx>
 							<posy>15</posy>
 							<width>100</width>
 							<height>16</height>
@@ -76,7 +76,7 @@
 							<colordiffuse>DialogProgressBar</colordiffuse>
 						</control>
 						<control type="label" id="302">
-							<posx>85</posx>
+							<posx>98</posx>
 							<posy>2</posy>
 							<width>150</width>
 							<height>40</height>
@@ -87,7 +87,7 @@
 							<font>METF_DialogSmall</font>
 						</control>
 						<control type="image">
-							<posx>-50</posx>
+							<posx>-39</posx>
 							<posy>10</posy>
 							<width>25</width>
 							<height>25</height>
@@ -95,7 +95,7 @@
 							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
 						</control>
 						<control type="image">
-							<posx>-50</posx>
+							<posx>-39</posx>
 							<posy>10</posy>
 							<width>25</width>
 							<height>25</height>
