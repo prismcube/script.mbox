@@ -221,7 +221,7 @@
 <!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">button-focus.png</texturefocus>
 -->				<texturefocus>ButtonFO2.png</texturefocus>
-				<label>$LOCALIZE[SCRIPT1026]</label>
+				<label>$ADDON[script.mbox 1026]</label>
 				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>
 				<onleft>118</onleft>

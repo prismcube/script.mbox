@@ -97,7 +97,7 @@
 				<posy>483</posy>
 				<width>200</width>
 				<height>35</height>
-				<label>SCRIPT1022</label>
+				<label>$ADDON[script.mbox 1022]</label>
 				<font>METF_MediaDetailsSmall</font>
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
