@@ -9,15 +9,7 @@
 			<posx>600</posx>
 			<posy>200</posy>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image">
-				<description>background top image</description>
-				<posx>0</posx>
-				<posy>-30</posy>
-				<width>370</width>
-				<height>30</height>
-				<texture border="20,19,20,0">DialogContextTop.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<description>background top image</description>
 				<posx>0</posx>
 				<posy>-30</posy>
@@ -41,14 +33,7 @@
 				<texturefocus>new/exitbuttonFO.png</texturefocus>
 				<texturenofocus>new/exitbutton.png</texturenofocus>
 			</control>
-<!--			<control type="image" id="100">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>370</width>
-				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
-			</control>
--->			<control type="image" id="100">
+			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
@@ -56,14 +41,7 @@
 				<texture>dialogs/ContextMenu_Middle.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-<!--			<control type="image" id="101">
-				<description>background bottom image</description>
-				<posx>0</posx>
-				<width>370</width>
-				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
-			</control>
--->			<control type="image" id="101">
+			<control type="image" id="101">
 				<description>background bottom image</description>
 				<posx>0</posx>
 				<width>425</width>
@@ -81,15 +59,7 @@
 				<onleft>103</onleft>
 				<onright>103</onright>
 				<itemlayout width="350" height="36" >		<!--Change Property ItemHeight-->
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>330</width>
-						<height>35</height>					<!--Change Property ItemHeight-->
-<!--						<texture border="5">button-nofocus.png</texture>
-						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
-					</control>
--->					<!-- is mark? -->
+					<!-- is mark? -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>10</posy>
@@ -116,7 +86,6 @@
 						<posy>0</posy>
 						<width>355</width>
 						<height>36</height>					<!--Change Property ItemHeight-->
-<!--						<texture border="5">button-focus.png</texture>-->
 						<texture border="1">ButtonFO2Wide.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>

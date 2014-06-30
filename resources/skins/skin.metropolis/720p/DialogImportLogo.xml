@@ -7,23 +7,7 @@
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
-<!--		<control type="image">
-			<description>background image</description>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>800</width>
-			<height>500</height>
-			<texture border="40">DialogBack.png</texture>
-		</control>
 		<control type="image">
-			<description>Dialog Header image</description>
-			<posx>40</posx>
-			<posy>16</posy>
-			<width>720</width>
-			<height>40</height>
-			<texture>dialogheader.png</texture>
-		</control>
--->		<control type="image">
 			<description>background image</description>
 			<posx>-9</posx>
 			<posy>-20</posy>
@@ -42,11 +26,10 @@
 			<align>center</align>
 			<aligny>center</aligny>
 			<textcolor>DialogTextFO</textcolor>
-<!--			<shadowcolor>black</shadowcolor>-->
 		</control>
 		<control type="button">
 			<description>Close Window button</description>
-			<posx>735</posx>
+			<posx>740</posx>
 			<posy>22</posy>
 			<width>25</width>
 			<height>25</height>
@@ -71,7 +54,6 @@
 			<aligny>center</aligny>
 			<font>METF_PlotText</font>
 			<textcolor>ee3c95c8</textcolor>
-<!--			<shadowcolor>black</shadowcolor>-->
 		</control>
 		<control type="radiobutton" id ="110">
 			<description>Channel activated</description>
@@ -85,9 +67,7 @@
 			<shadowcolor>black</shadowcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-<!--			<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->			<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+			<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 			<texturenofocus>-</texturenofocus>
 			<pulseonselect>no</pulseonselect>
 			<onup>119</onup>
@@ -106,17 +86,8 @@
 				<aligny>center</aligny>
 				<font>METF_PlotText</font>
 				<textcolor>ee3c95c8</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
-<!--			<control type="image">
-				<description>load item image</description>
-				<posx>40</posx>
-				<posy>245</posy>
-				<width>720</width>
-				<height>40</height>
-				<texture border="5">button-nofocus.png</texture>
-			</control>
--->			<control type="label" id="117">
+			<control type="label" id="117">
 				<description>load item label</description>
 				<posx>40</posx>
 				<posy>245</posy>
@@ -139,9 +110,7 @@
 					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>110</onup>
 					<ondown>114</ondown>
 					<textcolor>white</textcolor>
@@ -157,9 +126,7 @@
 					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>111</onup>
 					<ondown>115</ondown>
 					<textcolor>white</textcolor>
@@ -175,9 +142,7 @@
 					<font>METF_DialogLarge</font>
 					<align>center</align>
 					<aligny>center</aligny>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<onup>114</onup>
 					<ondown>119</ondown>
 					<textcolor>white</textcolor>
@@ -197,9 +162,7 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
--->				<texturefocus>ButtonFO2.png</texturefocus>
+				<texturefocus>ButtonFO2.png</texturefocus>
 				<label>$ADDON[script.mbox 1022]</label>
 				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>
@@ -218,9 +181,7 @@
 				<height>40</height>
 				<align>center</align>
 				<aligny>center</aligny>
-<!--				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">button-focus.png</texturefocus>
--->				<texturefocus>ButtonFO2.png</texturefocus>
+				<texturefocus>ButtonFO2.png</texturefocus>
 				<label>$ADDON[script.mbox 1026]</label>
 				<font>METF_DialogLargeBold</font>
 				<onup>115</onup>

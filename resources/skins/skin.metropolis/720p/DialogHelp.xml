@@ -18,27 +18,9 @@
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-<!--			<texture>backgrounds/SKINDEFAULT.jpg</texture>-->
 			<texture>new/background.png</texture>
 			<colordiffuse>ee3c95c8</colordiffuse>
 		</control>
-<!--		<control type="image">
-			<description>Background for the Header</description>
-			<posx>-13</posx>
-			<posy>-7</posy>
-			<width>1306</width>
-			<height>62</height>
-			<texture border="0,0,20,0">HeaderBack.png</texture>
-		</control>
-		<control type="image">
-			<description>Background for the Foooter</description>
-			<posx>-13</posx>
-			<posy>535</posy>
-			<width>1306</width>
-			<height>192</height>
-			<texture border="0,0,20,0">FooterBack.png</texture>
-		</control>
--->
 		<control type="group" id="9000">
 			<include>DefaultDialogCloseEffect</include>
 			<control type="group">

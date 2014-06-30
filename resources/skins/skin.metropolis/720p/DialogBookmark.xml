@@ -8,15 +8,7 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>350</posx>
 			<posy>50</posy>
-<!--			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>565</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<description>background image</description>
 				<posx>-33</posx>
 				<posy>-30</posy>
@@ -25,18 +17,10 @@
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-<!--			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>600</width>
-				<height>120</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
--->			<control type="button" id="3800">
+			<control type="button" id="3800">
 				<description>Close Window button</description>
-				<posx>565</posx>
-				<posy>21</posy>
+				<posx>568</posx>
+				<posy>20</posy>
 				<width>25</width>
 				<height>25</height>
 				<font>-</font>
@@ -58,7 +42,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="3805">
 				<posx>20</posx>
@@ -70,7 +53,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="3803">
 				<textcolor>white</textcolor>
@@ -100,7 +82,6 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-<!--				<texturenofocus>MenuItemNF.png</texturenofocus>-->
 				<texturefocus>ButtonFO2.png</texturefocus>
 				<onleft>3850</onleft>
 				<onright>3851</onright>
@@ -127,7 +108,6 @@
 					<align>left</align>
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
@@ -146,14 +126,7 @@
 				<movement>2</movement>
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
 				<itemlayout height="70" width="590">
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>530</width>
-						<height>71</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
-					</control>
--->					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail  and  Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -170,16 +143,7 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(iMark),True)</visible>
 					</control>
-<!--					<control type="image">
-						<posx>5</posx>
-						<posy>5</posy>
-						<width>112</width>
-						<height>63</height>
-						<aspectratio>stretch</aspectratio>
-						<texture>black-back.png</texture>
-						<colordiffuse>AAFFFFFF</colordiffuse>
-					</control>
--->
+
 					<!-- bookmark offset-->
 					<control type="label">
 						<posx>220</posx>
@@ -211,9 +175,7 @@
 						<posy>45</posy>
 						<width>380</width>
 						<height>18</height>
-<!--						<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-						<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
--->						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<texturebg>osd/osd_progress_back2.png</texturebg>
 						<lefttexture>osd/osd_progress_left2.png</lefttexture>
 						<midtexture>osd/osd_progress_mid2.png</midtexture>
 						<righttexture>osd/osd_progress_right2.png</righttexture>
@@ -251,16 +213,8 @@
 						<width>530</width>
 						<height>71</height>
 						<texture>ButtonFO2Wide.png</texture>
-<!--						<include>DefaultVisibleFadeEffect</include>-->
 					</control>
-<!--					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>530</width>
-						<height>61</height>
-						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					</control>
--->					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail  and  Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -315,9 +269,7 @@
 						<midtexture>osd/osd_progress_mid2.png</midtexture>
 						<righttexture>osd/osd_progress_right2.png</righttexture>
 						<colordiffuse>DialogProgressBar</colordiffuse>
-<!--						<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
-						<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
--->						<progress>percent</progress>
+						<progress>percent</progress>
 						<visible>substring(ListItem.Property(iPos),true)</visible>
 					</control>
 					<!-- Rec date -->
@@ -339,7 +291,7 @@
 				<posx>558</posx>
 				<posy>120</posy>
 				<width>25</width>
-				<height>363</height>
+				<height>361</height>
 				<include>DefaultWindowFade</include>
 				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

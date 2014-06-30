@@ -7,22 +7,7 @@
 			<posx>480</posx>
 			<posy>145</posy>
             <include>DefaultDialogCloseEffect</include>
-<!--			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>380</width>
-				<height>310</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
 			<control type="image">
-				<posx>10</posx>
-				<posy>10</posy>
-				<width>360</width>
-				<height>70</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
--->			<control type="image">
 				<posx>-20</posx>
 				<posy>-8</posy>
 				<width>418</width>
@@ -58,7 +43,6 @@
 				<height>40</height>
 				<font>METF_Menu</font>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 				<align>center</align>
 				<aligny>center</aligny>
 				<wrapmultiline>true</wrapmultiline>

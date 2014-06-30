@@ -9,29 +9,7 @@
 			<posx>600</posx>
 			<posy>200</posy>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image">
-				<description>background top image</description>
-				<posx>0</posx>
-				<posy>-30</posy>
-				<width>350</width>
-				<height>30</height>
-				<texture border="45,45,45,0">DialogContextTop.png</texture>
-			</control>
-			<control type="image" id="100">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>350</width>
-				<texture border="25,5,25,5">DialogContextMiddle.png</texture>
-			</control>
-			<control type="image" id="101">
-				<description>background bottom image</description>
-				<posx>0</posx>
-				<width>350</width>
-				<height>25</height>
-				<texture border="20,0,19,20">DialogContextBottom.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<description>background top image</description>
 				<posx>0</posx>
 				<posy>-30</posy>
@@ -112,7 +90,6 @@
 						<posy>0</posy>
 						<width>318</width>
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
-<!--						<texture border="5">button-focus.png</texture>-->
 						<texture border="1">ButtonFO2.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>

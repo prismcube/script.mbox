@@ -8,13 +8,7 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>320</posx>
 			<posy>173</posy>
-<!--			<control type="image" id="9001">
-				<description>background image</description>
-				<width>610</width>
-				<height>290</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posy>-23</posy>
 				<width>640</width>
@@ -36,12 +30,9 @@
 					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
 					<label>$ADDON[script.mbox 1089]</label>
@@ -57,12 +48,9 @@
 					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
 					<label>$ADDON[script.mbox 1090]</label>
@@ -78,12 +66,9 @@
 					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
 					<label>$ADDON[script.mbox 1126]</label>
@@ -100,9 +85,7 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007465</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006999</onleft>
@@ -118,9 +101,7 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007464</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006997</onleft>

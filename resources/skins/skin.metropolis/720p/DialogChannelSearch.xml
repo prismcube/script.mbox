@@ -23,15 +23,7 @@
 				<texture border="20">background.png</texture>
 				<colordiffuse>BackgroundColor</colordiffuse>
 			</control>
-<!--			<control type="image">
-				<posx>10</posx>
-				<posy>12</posy>
-				<width>1180</width>
-				<height>93</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
--->			<control type="button" id="104">
+			<control type="button" id="104">
 				<description>Close Window button</description>
 				<posx>1130</posx>
 				<posy>14</posy>
@@ -56,7 +48,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="101">
 				<description>TV List</description>
@@ -69,7 +60,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>ee3c95c8</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="103">
 				<description>Radio List</description>
@@ -82,7 +72,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>ee3c95c8</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<!-- TV List -->
 			<control type="list" id="400">
@@ -215,7 +204,6 @@
 						<posy>0</posy>
 						<width>465</width>
 						<height>2</height>
-<!--						<texture border="0,2,0,2">MenuItemNF.png</texture>-->
 						<texture>VideoInfoLine.png</texture>
 						<colordiffuse>FilesDividerDiffuse</colordiffuse>
 					</control>
@@ -324,7 +312,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<!-- Progress Bar -->
 			<control type="progress" id="200">
@@ -344,7 +331,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>HelpText</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="image">
 				<posx>55</posx>

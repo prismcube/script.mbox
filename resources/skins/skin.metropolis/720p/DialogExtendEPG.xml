@@ -7,14 +7,7 @@
 		<include>DefaultDialogCloseEffect</include>			
 			<posx>82</posx>
 			<posy>15</posy>
-<!--			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1100</width>
-				<height>520</height>
-				<texture border="20">DialogBack.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<description>background image</description>
 				<posx>-4</posx>
 				<posy>-33</posy>
@@ -96,7 +89,6 @@
 				  <width>950</width>
 				  <height>100</height>
 				  <visible>true</visible>
-<!--				  <colordiffuse>FFFFFFFF</colordiffuse>-->
 				  <font>METF_MusicVizTitle</font>
 				  <textcolor>white</textcolor>
 				  <label>$INFO[Window.Property(EPGTitle)]</label>
@@ -109,7 +101,6 @@
 				  <width>950</width>
 				  <height>320</height>
 				  <visible>true</visible>
-<!--				  <colordiffuse>FFFFFFFF</colordiffuse>-->
 				  <font>METF_DialogLarge</font>
 				  <textcolor>white</textcolor>
 				  <wrapmultiline>true</wrapmultiline>
@@ -229,7 +220,6 @@
 					</control>
 				</control>
 			</control>
-
 		</control>
 	</controls>
 </window>

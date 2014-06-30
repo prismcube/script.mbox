@@ -459,9 +459,7 @@
 			<textcolor>white</textcolor>
 			<focusedcolor>DialogTextFO</focusedcolor>
 			<align>center</align>
-<!--			<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-			<texturefocus border="5">button-focus.png</texturefocus>
--->			<texturefocus>ButtonFO2.png</texturefocus>
+			<texturefocus border="1">ButtonFO2.png</texturefocus>
 			<onleft>1006999</onleft>
 			<onright>1006999</onright>
 		</control>
@@ -473,9 +471,7 @@
 			<textcolor>white</textcolor>
 			<focusedcolor>DialogTextFO</focusedcolor>
 			<align>center</align>
-<!--			<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-			<texturefocus border="5">button-focus.png</texturefocus>
--->			<texturefocus>ButtonFO2.png</texturefocus>
+			<texturefocus border="1">ButtonFO2.png</texturefocus>
 			<onleft>1006997</onleft>
 			<onright>1006997</onright>
 		</control>
@@ -5400,7 +5396,7 @@
 			<control type="label">
 				<description>Date(rec duration)</description>
 				<posx>240</posx>
-				<posy>459</posy>
+				<posy>460</posy>
 				<width>800</width>
 				<height>20</height>
 				<font>METF_MediaDetailsSmall</font>

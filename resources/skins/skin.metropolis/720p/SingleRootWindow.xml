@@ -2948,30 +2948,19 @@ Search for window name
 
 			<!-- Signal Condition -->
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
+				<include>DefaultSignalConditionValues</include>
 				<font>METF_TitleTextMedium</font>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 		</control>
@@ -6554,30 +6543,18 @@ Search for window name
 
 			<!-- Signal Condition -->
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1104] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1105] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
-				<posx>550</posx>
-				<posy>330</posy>
-				<width>500</width>
-				<font>METF_TitleTextMedium</font>
+				<include>DefaultSignalConditionValues</include>
 				<label>[I]$ADDON[script.mbox 1127] [/I]</label>
-				<textcolor>white</textcolor>
 				<visible>substring(Window.Property(Signal),NoService) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 

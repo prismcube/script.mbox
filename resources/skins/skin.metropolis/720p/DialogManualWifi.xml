@@ -5,15 +5,7 @@
 	<controls>
 		<control type="group" id="8000">
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image" id="9001">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>380</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>-16</posx>
 				<posy>-17</posy>

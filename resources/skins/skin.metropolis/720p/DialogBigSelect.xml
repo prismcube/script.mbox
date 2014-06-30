@@ -8,15 +8,7 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>360</posx>
 			<posy>50</posy>
-<!--			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>565</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<posx>-5</posx>
 				<posy>-27</posy>
 				<width>625</width>
@@ -24,18 +16,10 @@
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-<!--			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>600</width>
-				<height>120</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
--->			<control type="button" id="109">
+			<control type="button" id="109">
 				<description>Close Window button</description>
-				<posx>545</posx>
-				<posy>20</posy>
+				<posx>561</posx>
+				<posy>21</posy>
 				<width>25</width>
 				<height>25</height>
 				<font>-</font>
@@ -57,7 +41,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label">
 				<posx>570</posx>
@@ -84,9 +67,7 @@
 				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
 				<texturefocus>ButtonFO2.png</texturefocus>
-<!--				<texturenofocus>MenuItemNF.png</texturenofocus>
-				<texturefocus>button-focus.png</texturefocus>
--->				<onleft>9001</onleft>
+				<onleft>9001</onleft>
 				<onright>8001</onright>
 				<onup>9001</onup>
 				<ondown>3800</ondown>
@@ -111,7 +92,6 @@
 					<align>left</align>
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>
@@ -205,7 +185,6 @@
 						<posy>-2</posy>
 						<width>524</width>
 						<height>72</height>
-<!--						<texture border="5">StackFO_white2.png</texture>-->
 						<texture border="1">ButtonFO2Wide.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>

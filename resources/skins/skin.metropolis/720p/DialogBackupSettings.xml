@@ -8,39 +8,31 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>320</posx>
 			<posy>173</posy>
-<!--			<control type="image" id="9001">
-				<description>background image</description>
-				<width>610</width>
-				<height>250</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<posy>-23</posy>
-				<width>640</width>
+				<width>620</width>
 				<height>300</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posx>15</posx>
+				<posx>5</posx>
+				<posy>-2</posy>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
 			<control type="group" id="9000">
 				<control type="radiobutton" id ="1007463">
 					<description>XBMC</description>
-					<posx>45</posx>
+					<posx>35</posx>
 					<posy>80</posy>
 					<width>550</width>
 					<height>40</height>
 					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
 					<label></label>
@@ -49,19 +41,16 @@
 				</control>
 				<control type="radiobutton" id ="1007464">
 					<description>Configure</description>
-					<posx>45</posx>
+					<posx>35</posx>
 					<posy>120</posy>
 					<width>550</width>
 					<height>40</height>
 					<font>METF_MediaDetailsSmall</font>
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<align>left</align>
 					<aligny>center</aligny>
-<!--					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
--->					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>no</pulseonselect>
 					<label></label>
@@ -91,7 +80,7 @@
 				-->
 				<control type="button" id="1006997">
 					<description>Yes button</description>
-					<posx>340</posx>
+					<posx>60</posx>
 					<posy>192</posy>
 					<width>230</width>
 					<height>40</height>
@@ -99,9 +88,7 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007464</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006999</onleft>
@@ -109,7 +96,7 @@
 				</control>
 				<control type="button" id="1006999">
 					<description>Cancel button</description>
-					<posx>70</posx>
+					<posx>330</posx>
 					<posy>192</posy>
 					<width>230</width>
 					<height>40</height>
@@ -117,9 +104,7 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+					<texturefocus>ButtonFO2.png</texturefocus>
 					<onup>1007464</onup>
 					<ondown>1007463</ondown>
 					<onleft>1006997</onleft>
