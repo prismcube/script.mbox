@@ -4,7 +4,7 @@
 	<onload>SetProperty(HelpString,Help_String.xml)</onload>
 	<controls>
 		<!-- Background Image -->
-		<include>DefaultSettingsBackground</include>
+		<include>DefaultBackground</include>
 
 		<!-- Top Bar Image -->
 		<control type="image">
@@ -42,12 +42,13 @@
 				<control type="label" id="1003">
 					<posx>20</posx>
 					<posy>-5</posy>
-					<width>500</width>
+					<width>450</width>
 					<height>30</height>
-					<font>font13_title</font>
+					<font>font12_title</font>
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
+					<scroll>true</scroll>
 				</control>
 
 				<!-- Current Page /Last Page -->
@@ -75,14 +76,14 @@
 					<control type="textbox" id="200">
 						<align>left</align>
 						<aligny>top</aligny>
-						<font>font13</font>
+						<font>font12_textbox</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label1)]</label>
 					</control>
 					<control type="textbox" id="201">
 						<align>left</align>
 						<aligny>top</aligny>
-						<font>font13</font>
+						<font>font12_textbox</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label2)]</label>
 					</control>
