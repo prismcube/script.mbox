@@ -8,31 +8,31 @@
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>189</width>
-				<height>263</height>
-				<texture>keyboard/numeric_back.png</texture>
+				<width>200</width>
+				<height>310</height>
+				<texture border="40,100,40,100">dialog_back.png</texture>
 			</control>
 			<control type="label" id="101">
-				<description>dialog Heading</description>
-				<visible>false</visible>
-				<posx>17</posx>
-				<posy>191</posy>
-				<width>155</width>
-				<height>31</height>
+				<description>Title</description>
+				<posx>30</posx>
+				<posy>25</posy>
+				<width>150</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<textcolor>grey2</textcolor>
 			</control>
 			<control type="label" id="102">
-				<description>Edit Text</description>
-				<posx>17</posx>
-				<posy>210</posy>
+				<posx>25</posx>
+				<posy>260</posy>
 				<width>155</width>
-				<height>31</height>
-				<font>Font_Reg19</font>
+				<height>30</height>
+				<font>font15</font>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
 			<control type="group">
-				<posx>17</posx>
-				<posy>17</posy>
+				<posx>30</posx>
+				<posy>60</posy>
 				<control type="group">
 					<posy>0</posy>
 					<control type="button" id="111">
@@ -40,13 +40,13 @@
 						<posx>0</posx>
 						<onleft>113</onleft>
 						<onright>112</onright>
-						<onup>117</onup>
+						<onup>123</onup>
 						<ondown>114</ondown>
 						<include>Objects_SingleKeyOff_720</include>
 					</control>
 					<control type="button" id="112">
 						<description>2 button</description>
-						<posx>42</posx>
+						<posx>47</posx>
 						<onleft>111</onleft>
 						<onright>113</onright>
 						<onup>110</onup>
@@ -55,16 +55,16 @@
 					</control>
 					<control type="button" id="113">
 						<description>3 button</description>
-						<posx>84</posx>
+						<posx>94</posx>
 						<onleft>112</onleft>
 						<onright>111</onright>
-						<onup>119</onup>
+						<onup>121</onup>
 						<ondown>116</ondown>
 						<include>Objects_SingleKeyOff_720</include>
 					</control>
 				</control>
 				<control type="group">
-					<posy>42</posy>
+					<posy>47</posy>
 					<control type="button" id="114">
 						<description>4 button</description>
 						<posx>0</posx>
@@ -76,7 +76,7 @@
 					</control>
 					<control type="button" id="115">
 						<description>5 button</description>
-						<posx>42</posx>
+						<posx>47</posx>
 						<onleft>114</onleft>
 						<onright>116</onright>
 						<onup>112</onup>
@@ -85,7 +85,7 @@
 					</control>
 					<control type="button" id="116">
 						<description>6 button</description>
-						<posx>84</posx>
+						<posx>94</posx>
 						<onleft>115</onleft>
 						<onright>114</onright>
 						<onup>113</onup>
@@ -94,7 +94,7 @@
 					</control>
 				</control>
 				<control type="group">
-					<posy>84</posy>
+					<posy>94</posy>
 					<control type="button" id="117">
 						<description>7 button</description>
 						<posx>0</posx>
@@ -106,7 +106,7 @@
 					</control>
 					<control type="button" id="118">
 						<description>8 button</description>
-						<posx>42</posx>
+						<posx>47</posx>
 						<onleft>117</onleft>
 						<onright>119</onright>
 						<onup>115</onup>
@@ -115,7 +115,7 @@
 					</control>
 					<control type="button" id="119">
 						<description>9 button</description>
-						<posx>84</posx>
+						<posx>94</posx>
 						<onleft>118</onleft>
 						<onright>117</onright>
 						<onup>116</onup>
@@ -124,7 +124,7 @@
 					</control>
 				</control>
 				<control type="group">
-					<posy>126</posy>
+					<posy>141</posy>
 					<control type="button" id="123">
 						<description>Cancel button</description>
 						<posx>0</posx>
@@ -137,7 +137,7 @@
 					</control>
 					<control type="button" id="110">
 						<description>0 button</description>
-						<posx>42</posx>
+						<posx>47</posx>
 						<onleft>123</onleft>
 						<onright>121</onright>
 						<onup>118</onup>
@@ -146,13 +146,24 @@
 					</control>
 					<control type="button" id="121">
 						<description>OK button</description>
-						<posx>84</posx>
+						<posx>94</posx>
 						<onleft>110</onleft>
 						<onright>123</onright>
 						<onup>119</onup>
 						<ondown>113</ondown>
 						<label>OK</label>
-						<include>Objects_SingleKeyOff_720</include>
+						<width>47</width>
+						<height>47</height>
+						<texturefocus border="4">button_middle_focus.png</texturefocus>
+						<texturenofocus border="3">thumbs/panel_border.png</texturenofocus>
+						<textoffsety>14</textoffsety>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textwidth>80</textwidth>
+						<textcolor>grey2</textcolor>
+						<focusedcolor>white</focusedcolor>
+						<selectedcolor>grey2</selectedcolor>
 					</control>
 				</control>
 			</control>

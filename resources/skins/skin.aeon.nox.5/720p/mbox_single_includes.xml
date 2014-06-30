@@ -6671,20 +6671,21 @@
 	</include>
 
 	<include name="Objects_SingleKeyOff_720">
-		<width>68</width>
-		<height>68</height>
-		<texturefocus>keyboard/keyboard_singlef.png</texturefocus>
-		<texturenofocus>keyboard/keyboard_singlenf.png</texturenofocus>
+		<width>47</width>
+		<height>47</height>
+		<texturefocus border="4">button_middle_focus.png</texturefocus>
+		<texturenofocus border="3">thumbs/panel_border.png</texturenofocus>
 		<include>Objects_KeyOffVars_720</include>
 	</include>
 
 	<include name="Objects_KeyOffVars_720">
-		<textcolor>grey2</textcolor>
-		<selectedcolor>grey2</selectedcolor>
+		<textoffsety>14</textoffsety>
 		<align>center</align>
 		<aligny>center</aligny>
-		<textoffsety>22</textoffsety>
-		<font>font15</font>
+		<font>font13</font>
+		<textcolor>grey2</textcolor>
+		<focusedcolor>white</focusedcolor>
+		<selectedcolor>grey2</selectedcolor>
 	</include>
 
 	<include name="LivePlateButtonDescriptionValues">
