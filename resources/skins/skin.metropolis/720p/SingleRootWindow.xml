@@ -16,7 +16,6 @@ Search for window name
  E_Favorite
  E_SystemUpdate
  E_SimpleChannelList
- E_PIPWindow
 -->
 <window id="3000">
 	<defaultcontrol always="true">1100000</defaultcontrol>
@@ -30,7 +29,7 @@ Search for window name
 	<onload>SetProperty(fwAlarmIcon,DefaultIconInfo.png)</onload>
 	<controls>
 
-		<!-- Default BackgroundImage -->
+		<!-- Default Background Image -->
 		<control type="group">
 			<include>DefaultSettingsBackground</include>
 			<visible>substring(Window.Property(DafultBackgroundImage),True)</visible>
@@ -56,7 +55,6 @@ Search for window name
 			</control>
 		</control>
 
-
 		<!-- *********** E_NullWindow ********** -->
 		<control type="group" id="1100000">
 			<visible>substring(Window.Property(CurrentWindow),1100000)</visible>
@@ -64,7 +62,7 @@ Search for window name
 			<allowoverlay>yes</allowoverlay>
 			<backgroundcolor>0x00ffffff</backgroundcolor>
 			<control type="button" id="1109000">
-				<description>empty button</description>
+				<description>Invisible Button</description>
 				<posx>-1000</posx>
 				<posy>0</posy>
 				<width>1</width>
@@ -98,7 +96,7 @@ Search for window name
 				</control>
 			</control>
 
-			<!-- HbbTV RED button -->
+			<!-- HbbTV RED Button -->
 			<control type="image">
 				<posx>200r</posx>
 				<posy>80r</posy>
@@ -149,6 +147,7 @@ Search for window name
 				<posx>1000</posx>
 				<posy>660</posy>
 				<width>500</width>
+				<height>30</height>
 				<font>METF_HeadingDetails</font>
 				<label>$ADDON[script.mbox 1200]</label>
 				<textcolor>white</textcolor>
@@ -200,7 +199,7 @@ Search for window name
 			</control>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -519,7 +518,7 @@ Search for window name
 					<width>215</width>
 					<height>500</height>
 					<onright>1209001</onright>
-					<onup>1200101</onup>
+					<onup>-</onup>
 					<ondown>1200101</ondown>
 					<orientation>vertical</orientation>
 					<itemlayout width="200" height="32">
@@ -713,7 +712,7 @@ Search for window name
 					<onleft>1200102</onleft>
 					<onright>1200102</onright>
 					<onup>1209000</onup>
-					<ondown>1209000</ondown>
+					<ondown>-</ondown>
 				</control>
 				<control type="image">
 					<description>Favourites Icon</description>
@@ -740,7 +739,7 @@ Search for window name
 					<onleft>1200101</onleft>
 					<onright>1200101</onright>
 					<onup>1209000</onup>
-					<ondown>1209000</ondown>
+					<ondown>-</ondown>
 				</control>
 				<control type="image">
 					<description>power Icon</description>
@@ -815,7 +814,7 @@ Search for window name
 			</control>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -2381,7 +2380,7 @@ Search for window name
 				</control>
 
 				<!-- Global Info -->
-				<include>Global_Weather</include>
+				<!--include>Global_Weather</include-->
 				<include>Global_Time</include>
 				<include>Global_Heading</include>
 
@@ -2492,7 +2491,17 @@ Search for window name
 					<control type = "group">
 						<posx>265</posx>
 						<posy>-35</posy>
-<!--					<control type="image" id="1400604">
+						<control type="image" id="1400603">
+							<posx>0</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>70</width>
+							<height>30</height>
+							<texture>tv.png</texture>
+							<!--visible>substring(Window.Property(ServiceTypeTV),true)</visible-->
+							<visible>false</visible>
+						</control>
+						<control type="image" id="1400604">
 							<posx>0</posx>
 							<posy>0</posy>
 							<align>left</align>
@@ -2501,7 +2510,7 @@ Search for window name
 							<texture>icon_radio2.png</texture>
 							<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
 						</control>
--->					</control>
+					</control>
 
 					<!-- Button Icons -->
 					<include>DefaultInfoPlateGroup</include>
@@ -3770,7 +3779,7 @@ Search for window name
 			<defaultcontrol always="true">1509000</defaultcontrol>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -3918,7 +3927,7 @@ Search for window name
 			<defaultcontrol always="true">4909000</defaultcontrol>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -4108,7 +4117,7 @@ Search for window name
 			</control>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -4196,10 +4205,10 @@ Search for window name
 
 			<control type="group" id="3309003">
 				<include>DefaultWindowFade</include>
-				<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
-				<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
+				<include>DefaultCommonArchiveView</include> 	<!-- Default common View id = 3400 -->
+				<include>DefaultThumbnailArchiveView</include> 	<!-- Default thumbnail View id = 3410 -->
 				<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->
-				<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->
+				<include>DefaultFanartArchiveView</include> 	<!-- Default Fanart View id = 3430 -->
 			</control>
 
 			<!-- Recording List Info-->
@@ -4296,7 +4305,7 @@ Search for window name
 					<posx>0</posx>
 					<posy>24</posy>
 					<width>320</width>
-<!--					<height>160</height>-->
+					<!--height>160</height-->
 					<font>METF_PlotTextMedium</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Window.Property(RecName)]</label>
@@ -4788,7 +4797,7 @@ Search for window name
 			<defaultcontrol always="true">3409000</defaultcontrol>
 
 			<!--Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -4981,6 +4990,190 @@ Search for window name
 			</control>
 		</control>
 
+		<!-- *********** E_Installation ********** -->
+		<control type="group" id="3500000">
+			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
+			<defaultcontrol always="true">3509000</defaultcontrol>
+
+				<include>DefaultSettingsBackground</include>
+
+				<!-- Global Info -->
+				<control type="group">
+					<posx>13</posx>
+					<posy>7</posy>
+					<!--include>Global_Weather</include-->
+					<include>Global_Time</include>
+					<include>Global_Heading</include>
+				</control>
+
+				<!-- Menu List -->
+				<control type="group">
+				<include>DefaultSettingWindowEffect</include>
+				<visible>substring(Window.Property(SettingBackground),True)</visible>
+				<control type="wraplist" id="3509000">
+					<posx>20</posx>
+					<posy>75</posy>
+					<width>1260</width>
+					<height>450</height>
+					<onleft>3509000</onleft>
+					<onright>3509000</onright>
+					<orientation>horizontal</orientation>
+					<focusposition>3</focusposition>
+					<scrolltime>200</scrolltime>
+					<preloaditems>2</preloaditems>
+					<viewtype label="536">list</viewtype>
+  					<itemlayout height="450" width="180">
+						<control type="image">
+							<posx>15</posx>
+							<posy>75</posy>
+							<width>150</width>
+							<height>300</height>
+							<texture>$INFO[ListItem.Icon]</texture>
+							<aspectratio>stretch</aspectratio>
+						</control>
+						<control type="image">
+							<posx>5</posx>
+							<posy>59</posy>
+							<width>180</width>
+							<height>335</height>
+							<texture>frames/ClassicFrame_Tall.png</texture>
+							<aspectratio>stretch</aspectratio>
+						</control>
+					</itemlayout>
+					<focusedlayout height="450" width="180">
+						<control type="image">
+							<posx>15</posx>
+							<posy>75</posy>
+							<width>150</width>
+							<height>300</height>
+							<texture>$INFO[ListItem.Icon]</texture>
+							<aspectratio>stretch</aspectratio>
+							<animation reversible="false" effect="zoom" center="auto" start="100" end="112" time="200" tween="sine" easing="inout">focus</animation>
+							<animation reversible="false" effect="zoom" center="auto" start="112" end="100" time="200" tween="sine" easing="inout">unfocus</animation>
+						</control>
+						<control type="image">
+							<posx>5</posx>
+							<posy>59</posy>
+							<width>180</width>
+							<height>335</height>
+							<texture>frames/ClassicFrame_Tall.png</texture>
+							<aspectratio>stretch</aspectratio>
+							<animation reversible="false" effect="zoom" center="auto" start="100" end="112" time="200" tween="sine" easing="inout">focus</animation>
+							<animation reversible="false" effect="zoom" center="auto" start="112" end="100" time="200" tween="sine" easing="inout">unfocus</animation>
+						</control>
+						<control type="image">
+							<posx>5</posx>
+							<posy>75</posy>
+							<width>150</width>
+							<height>300</height>
+							<texture>$INFO[ListItem.Label]</texture>
+							<aspectratio>stretch</aspectratio>
+						</control>
+						<control type="label">
+							<animation effect="fade" time="20">focus</animation>>
+							<!--animation effect="fade" start="0" end="0" time="0">unfocus</animation-->
+							<posx>90</posx>
+							<posy>423</posy>
+							<width>600</width>
+							<align>center</align>
+							<font>METF_SettingsHeading</font>
+							<textcolor>FFc89008</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="0">
+							<description>First Installation</description>
+							<label>$ADDON[script.mbox 1050]</label>
+							<label2>$ADDON[script.mbox 1111]</label2>
+							<icon>settings/settings_system.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="1">
+							<description>Antenna Setup</description>
+							<label>$ADDON[script.mbox 1051]</label>
+							<label2>$ADDON[script.mbox 1112]</label2>
+							<icon>home_icons/tvshows.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="2">
+							<description>Channel Search</description>
+							<label>$ADDON[script.mbox 1052]</label>
+							<label2>$ADDON[script.mbox 1113]</label2>
+							<icon>settings/settings_livetv.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="3">
+							<description>Edit Satellite</description>
+							<label>$ADDON[script.mbox 1053]</label>
+							<label2>$ADDON[script.mbox 1114]</label2>
+							<icon>settings/settings_appearance.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="4">
+							<description>Edit Transponder</description>
+							<label>$ADDON[script.mbox 1054]</label>
+							<label2>$ADDON[script.mbox 1115]</label2>
+							<icon>settings/settings_pictures.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="5">
+							<description>Configuration</description>
+							<label>$ADDON[script.mbox 1055]</label>
+							<label2>$ADDON[script.mbox 1116]</label2>
+							<icon>settings/settings_network.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="6">
+							<description>CAS</description>
+							<label>$ADDON[script.mbox 1056]</label>
+							<label2>$ADDON[script.mbox 1117]</label2>
+							<icon>settings/settings_systeminfo.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="7">
+							<description>Update</description>
+							<label>$ADDON[script.mbox 1103]</label>
+							<label2>$ADDON[script.mbox 1118]</label2>
+							<icon>settings/settings_skin.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+						<item id="8">
+							<description>Advanced</description>
+							<label>$ADDON[script.mbox 1168]</label>
+							<label2>$ADDON[script.mbox 1088]</label2>
+							<icon>settings/settings_profiles.png</icon>
+							<onclick>SendClick(1290100)</onclick>
+						</item>
+					</content>
+				</control>
+
+				<!-- Window Title -->
+				<control type="label">
+					<posx>28</posx>
+					<posy>16</posy>
+					<width>450</width>
+					<height>30</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>METF_Heading</font>
+					<textcolor>GlobalHeading</textcolor>
+					<label>$ADDON[script.mbox 1073]</label>
+				</control>
+
+				<!-- Menu Descriptions -->
+				<control type="textbox">
+					<description>Appearance Description</description>
+					<posx>340</posx>
+					<posy>564</posy>
+					<width>600</width>
+					<align>center</align>
+					<font>METF_SettingsDetail</font>
+					<label>$INFO[Container(3509000).ListItem.Label2]</label>
+					<textcolor>eeFFFFFF</textcolor>
+				</control>
+			</control>
+		</control>
 
 		<!-- *********** E_EPG *********** or *********** E_EPG_SEARCH *********** -->
 		<control type="group" id="3709999">
@@ -4994,12 +5187,12 @@ Search for window name
 					<width>1306</width>
 					<height>734</height>
 					<visible>substring(Window.Property(EPGMode),grid)</visible>			
-					<texture>new/background.png</texture>
+					<texture>backgrounds/SKINDEFAULT.png</texture>
 					<colordiffuse>BackgroundColor</colordiffuse>
 				</control>
 
 				<!-- Global Info -->
-				<include>Global_Weather</include>
+				<!--include>Global_Weather</include-->
 				<include>Global_Time</include>
 				<include>Global_Heading</include>
 				
@@ -5097,8 +5290,8 @@ Search for window name
 
 			<control type="group" id="3709003">
 				<include>DefaultWindowFade</include>
-				<include>DefaultCommonEPGView</include> <!-- Default common View id = 3500 -->
-				<include>DefaultBigEPGView</include> <!-- Default Big View id = 3510 -->
+				<include>DefaultCommonEPGView</include> 	<!-- Default common View id = 3500 -->
+				<include>DefaultBigEPGView</include>		<!-- Default Big View id = 3510 -->
 			</control>
 
 			<!-- Grid -->
@@ -6163,7 +6356,7 @@ Search for window name
 			<defaultcontrol always="true">4009003</defaultcontrol>
 
 			<!-- Global Info -->
-			<include>Global_Weather</include>
+			<!--include>Global_Weather</include-->
 			<include>Global_Time</include>
 			<include>Global_Heading</include>
 
@@ -6325,16 +6518,6 @@ Search for window name
 			</control>
 		</control>
 
-		<!-- *********** E_Favorite ********** -->
-		<!--
-		<control type="group" id="4200000">
-			<include>DefaultSettingWindowEffect</include>
-			<visible>substring(Window.Property(CurrentWindow),4200000)</visible>
-			<defaultcontrol always="true">4209000</defaultcontrol>
-			<allowoverlay>no</allowoverlay>
-		</control>
-		-->
-
 		<!-- *********** E_SystemUpdate ********** -->
 		<control type="group" id="4300000">
 			<include>DefaultSettingWindowEffect</include>
@@ -6477,51 +6660,6 @@ Search for window name
 			</control>
 		</control>
 
-		<!-- Video Calibration -->
-		<control type="group" id="4500000">
-			<visible>substring(Window.Property(CurrentWindow),4500000)</visible>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture>background.png</texture>
-				<colordiffuse>BackgroundColor</colordiffuse>
-			</control>
-			<control type="image">
-				<description>top left mover</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>128</width>
-				<height>128</height>
-				<texture>CalibrateTopLeft.png</texture>
-			</control>
-			<control type="image">
-				<description>right bottom mover</description>
-				<posx>1152</posx>
-				<posy>592</posy>
-				<width>128</width>
-				<height>128</height>
-				<texture>CalibrateBottomRight.png</texture>
-			</control>
-			<control type="image">
-				<posx>510</posx>
-				<posy>230</posy>
-				<width>260</width>
-				<height>260</height>
-				<texture>CalibratePixelRatio.png</texture>
-			</control>
-			<control type="label" id="4500100">
-				<posx>445</posx>
-				<posy>100</posy>
-				<font>METF_MediaDetailsSmall</font>
-				<textcolor>white</textcolor>
-				<align>left</align>
-				<width>600</width>
-				<height>40</height>
-			</control>
-		</control>
-
 		<!-- *********** E_SimpleChannelList  *********** -->
 		<control type="group" id="4600000">
 			<visible>substring(Window.Property(CurrentWindow),4600000)</visible>
@@ -6589,7 +6727,7 @@ Search for window name
 					<posy>-7</posy>
 					<width>500</width>
 					<height>740</height>
-					<texture>background.png</texture>
+					<texture>backgrounds/SKINDEFAULT.png</texture>
 					<colordiffuse>BackgroundColor</colordiffuse>
 				</control>
 				<control type="group">
@@ -7049,7 +7187,7 @@ Search for window name
 		<include>NullWindowDataTime</include>
 		<include>DefaultCommonLiveStatus</include>
 
-		<!-- PIG Image & Radio Image -->
+		<!-- PIP in Radio Mode -->
 		<control type="group">
 			<control type="image" id="1008800">
 				<visible>substring(Window.Property(Signal),True) + substring(Window.Property(TVRadio),true) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),2900000)</visible>
@@ -7060,7 +7198,7 @@ Search for window name
 				<texture>backgrounds/RADIOSKIN.jpg</texture>
 			</control>
 			<control type="image" id="8899">
-				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000)</visible>
+				<visible>!Control.IsVisible(1008800) + substring(Window.Property(SettingPIG),True) + !substring(Window.Property(CurrentWindow),2900000) + !substring(Window.Property(CurrentWindow),3500000)</visible>
 				<posx>857</posx>
 				<posy>170</posy>
 				<width>352</width>
@@ -7150,195 +7288,9 @@ Search for window name
 			</control>
 		</control>
 
-		<!-- *********** E_Installation ********** -->
-		<control type="group" id="3500000">
-			<visible>substring(Window.Property(CurrentWindow),3500000)</visible>
-			<defaultcontrol always="true">3509000</defaultcontrol>
-
-				<include>DefaultSettingsBackground</include>
-
-				<!-- Global Info -->
-				<control type="group">
-					<posx>13</posx>
-					<posy>7</posy>
-					<include>Global_Weather</include>
-					<include>Global_Time</include>
-					<include>Global_Heading</include>
-				</control>
-
-				<!-- Menu List -->
-				<control type="group">
-				<include>DefaultSettingWindowEffect</include>
-				<visible>substring(Window.Property(SettingBackground),True)</visible>
-				<control type="wraplist" id="3509000">
-					<posx>20</posx>
-					<posy>75</posy>
-					<width>1260</width>
-					<height>450</height>
-					<onleft>3509000</onleft>
-					<onright>3509000</onright>
-					<orientation>horizontal</orientation>
-					<focusposition>3</focusposition>
-					<scrolltime>200</scrolltime>
-					<preloaditems>2</preloaditems>
-					<viewtype label="536">list</viewtype>
-  					<itemlayout height="450" width="180">
-						<control type="image">
-							<posx>15</posx>
-							<posy>75</posy>
-							<width>150</width>
-							<height>300</height>
-							<texture>$INFO[ListItem.Icon]</texture>
-							<aspectratio>stretch</aspectratio>
-						</control>
-						<control type="image">
-							<posx>5</posx>
-							<posy>59</posy>
-							<width>180</width>
-							<height>335</height>
-							<texture>frames/ClassicFrame_Tall.png</texture>
-							<aspectratio>stretch</aspectratio>
-						</control>
-					</itemlayout>
-					<focusedlayout height="450" width="180">
-						<control type="image">
-							<posx>15</posx>
-							<posy>75</posy>
-							<width>150</width>
-							<height>300</height>
-							<texture>$INFO[ListItem.Icon]</texture>
-							<aspectratio>stretch</aspectratio>
-							<animation reversible="false" effect="zoom" center="auto" start="100" end="112" time="200" tween="sine" easing="inout">focus</animation>
-							<animation reversible="false" effect="zoom" center="auto" start="112" end="100" time="200" tween="sine" easing="inout">unfocus</animation>
-						</control>
-						<control type="image">
-							<posx>5</posx>
-							<posy>59</posy>
-							<width>180</width>
-							<height>335</height>
-							<texture>frames/ClassicFrame_Tall.png</texture>
-							<aspectratio>stretch</aspectratio>
-							<animation reversible="false" effect="zoom" center="auto" start="100" end="112" time="200" tween="sine" easing="inout">focus</animation>
-							<animation reversible="false" effect="zoom" center="auto" start="112" end="100" time="200" tween="sine" easing="inout">unfocus</animation>
-						</control>
-						<control type="image">
-							<posx>5</posx>
-							<posy>75</posy>
-							<width>150</width>
-							<height>300</height>
-							<texture>$INFO[ListItem.Label]</texture>
-							<aspectratio>stretch</aspectratio>
-						</control>
-						<control type="label">
-<!--							<animation effect="fade" time="20">focus</animation>-->
-							<animation effect="fade" start="0" end="0" time="0">unfocus</animation>
-							<posx>90</posx>
-							<posy>423</posy>
-							<width>600</width>
-							<align>center</align>
-							<font>METF_SettingsHeading</font>
-							<textcolor>FFc89008</textcolor>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-					</focusedlayout>
-					<content>
-						<item id="0">
-							<description>First Installation</description>
-							<label>$ADDON[script.mbox 1050]</label>
-							<label2>$ADDON[script.mbox 1111]</label2>
-							<icon>settings/settings_system.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="1">
-							<description>Antenna Setup</description>
-							<label>$ADDON[script.mbox 1051]</label>
-							<label2>$ADDON[script.mbox 1112]</label2>
-							<icon>home_icons/tvshows.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="2">
-							<description>Channel Search</description>
-							<label>$ADDON[script.mbox 1052]</label>
-							<label2>$ADDON[script.mbox 1113]</label2>
-							<icon>settings/settings_livetv.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="3">
-							<description>Edit Satellite</description>
-							<label>$ADDON[script.mbox 1053]</label>
-							<label2>$ADDON[script.mbox 1114]</label2>
-							<icon>settings/settings_appearance.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="4">
-							<description>Edit Transponder</description>
-							<label>$ADDON[script.mbox 1054]</label>
-							<label2>$ADDON[script.mbox 1115]</label2>
-							<icon>settings/settings_pictures.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="5">
-							<description>Configuration</description>
-							<label>$ADDON[script.mbox 1055]</label>
-							<label2>$ADDON[script.mbox 1116]</label2>
-							<icon>settings/settings_network.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="6">
-							<description>CAS</description>
-							<label>$ADDON[script.mbox 1056]</label>
-							<label2>$ADDON[script.mbox 1117]</label2>
-							<icon>settings/settings_systeminfo.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="7">
-							<description>Update</description>
-							<label>$ADDON[script.mbox 1103]</label>
-							<label2>$ADDON[script.mbox 1118]</label2>
-							<icon>settings/settings_skin.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-						<item id="8">
-							<description>Advanced</description>
-							<label>$ADDON[script.mbox 1168]</label>
-							<label2>Set the advanced preferences that can customize the box to your specific needs</label2>
-							<icon>settings/settings_profiles.png</icon>
-							<onclick>SendClick(1290100)</onclick>
-						</item>
-					</content>
-				</control>
-
-				<!-- Header Title -->
-				<control type="label">
-					<posx>28</posx>
-					<posy>16</posy>
-					<width>450</width>
-					<height>30</height>
-					<align>left</align>
-					<aligny>center</aligny>
-					<font>METF_Heading</font>
-					<textcolor>GlobalHeading</textcolor>
-					<label>$ADDON[script.mbox 1073]</label>
-				</control>
-
-				<!-- Menu Descriptions -->
-				<control type="textbox">
-					<description>Appearance Description</description>
-					<posx>340</posx>
-					<posy>564</posy>
-					<width>600</width>
-					<align>center</align>
-					<font>METF_SettingsDetail</font>
-					<label>$INFO[Container(3509000).ListItem.Label2]</label>
-					<textcolor>eeFFFFFF</textcolor>
-				</control>
-			</control>
-		</control>
-
-
 		<!-- No Signal Label -->
 		<control type="group">
-			<visible>substring(Window.Property(SettingPIG),True) + substring(Window.Property(PvrPlay),False) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000)</visible>
+			<visible>substring(Window.Property(SettingPIG),True) + substring(Window.Property(PvrPlay),False) + !substring(Window.Property(CurrentWindow),2400000) + !substring(Window.Property(CurrentWindow),2500000) + !substring(Window.Property(CurrentWindow),1900000) + !substring(Window.Property(CurrentWindow),1800000) + !substring(Window.Property(CurrentWindow),2800000) + !substring(Window.Property(CurrentWindow),3200000) + !substring(Window.Property(CurrentWindow),3500000)</visible>
 			<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 			<animation effect="fade" start="100" end="0" time="300">Hidden</animation>
 			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(1000999)" type="conditional">Conditional</animation>
@@ -7422,16 +7374,16 @@ Search for window name
 				<font>METF_HelpText</font>
 				<textcolor>WeatherHeading</textcolor>
 				<width>550</width>
-<!--				<align>left</align>-->
+				<!--align>left</align-->
 				<label>$ADDON[script.mbox 1101]</label>
 			</control>
 		</control>
 
-		<!-- Re-draw Invisible PIP Channel Name -->
+		<!-- Re-draw Channel Name on PIG -->
 		<control type="group">
 			<include>DefaultWindowFade</include>
 			<control type="group">
-				<description>ChannelList Channel Name</description>
+				<description>PIG on Channel List Window</description>
 				<visible>substring(Window.Property(CurrentWindow),1300000)</visible>
 				<control type="label">
 					<posx>850</posx>
@@ -7445,7 +7397,7 @@ Search for window name
 				</control>
 			</control>
 			<control type="group">
-				<description>Archive Name or Live Channel Name</description>
+				<description>PIG on Archive Window</description>
 				<visible>substring(Window.Property(CurrentWindow),3300000)</visible>
 				<control type="label">
 					<posx>850</posx>
@@ -7459,7 +7411,7 @@ Search for window name
 				</control>
 			</control>
 			<control type="group">
-				<description>EPGWindow Channel Name</description>
+				<description>PIG on EPG Window</description>
 				<visible>substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)</visible>
 				<control type="label">
 					<posx>850</posx>
@@ -7474,4 +7426,3 @@ Search for window name
 		</control>
 	</controls>
 </window>
-

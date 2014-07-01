@@ -18,7 +18,7 @@
 				<texture>dialogs/ContextMenu_Top.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-			<!--control type="button" id="103">
+			<control type="button" id="103">
 				<description>Close Window button</description>
 				<posx>260</posx>
 				<posy>-24</posy>
@@ -30,9 +30,9 @@
 				<onright>102</onright>
 				<label>-</label>
 				<font>-</font>
-				<texturefocus>DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>DialogCloseButton.png</texturenofocus>
-			</control-->
+				<texturefocus>exitbuttonFO.png</texturefocus>
+				<texturenofocus>exitbutton.png</texturenofocus>
+			</control>
 			<control type="image" id="100">
 				<description>background image</description>
 				<posx>0</posx>
@@ -56,8 +56,8 @@
 				<height>500</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
-				<!--onleft>103</onleft>
-				<onright>103</onright-->
+				<onleft>102</onleft>
+				<onright>102</onright>
 				<itemlayout width="310" height="40" >		<!--Change ProPerty ItemHeight-->
 					<control type="image">
 						<posx>5</posx>

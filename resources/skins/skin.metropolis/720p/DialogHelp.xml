@@ -18,7 +18,7 @@
 			<posy>-7</posy>
 			<width>1306</width>
 			<height>734</height>
-			<texture>new/background.png</texture>
+			<texture>backgrounds/SKINDEFAULT.png</texture>
 			<colordiffuse>ee3c95c8</colordiffuse>
 		</control>
 		<control type="group" id="9000">

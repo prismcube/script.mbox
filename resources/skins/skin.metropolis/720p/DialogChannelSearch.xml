@@ -20,7 +20,7 @@
 				<posy>3</posy>
 				<width>1180</width>
 				<height>630</height>
-				<texture border="20">background.png</texture>
+				<texture border="20">backgrounds/SKINDEFAULT.png</texture>
 				<colordiffuse>BackgroundColor</colordiffuse>
 			</control>
 			<control type="button" id="104">
