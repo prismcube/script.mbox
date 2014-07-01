@@ -666,9 +666,9 @@ Search for window name
 					<description>MainMenuDescription</description>
 					<visible>!Control.HasFocus(1209000)</visible>
 					<posx>60</posx>
-					<posy>-130</posy>
+					<posy>-128</posy>
 					<width>1145</width>
-					<height>50</height>
+					<height>30</height>
 					<font>METF_SettingsDetail</font>
 					<align>center</align>
 					<textcolor>white</textcolor>
@@ -3851,7 +3851,7 @@ Search for window name
 						<posx>40</posx>
 						<posy>-3</posy>
 						<width>655</width>
-						<height>45</height>
+						<height>30</height>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
@@ -3988,12 +3988,12 @@ Search for window name
 				<!-- Menu Description -->
 				<control type="group" id="4909010">
 					<posx>400</posx>
-					<posy>168r</posy>
+					<posy>160r</posy>
 					<control type="label" id="4901003">
 						<posx>40</posx>
 						<posy>-3</posy>
 						<width>655</width>
-						<height>45</height>
+						<height>30</height>
 						<font>METF_SettingsDetail</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
@@ -4840,9 +4840,9 @@ Search for window name
 				<control type="label">
 					<description>header label</description>
 					<posx>465</posx>
-					<posy>170r</posy>
+					<posy>162r</posy>
 					<width>655</width>
-					<height>45</height>
+					<height>30</height>
 					<font>METF_SettingsDetail</font>
 					<label>$ADDON[script.mbox 1087]</label>
 					<align>left</align>
@@ -7158,16 +7158,20 @@ Search for window name
 				<include>DefaultSettingsBackground</include>
 
 				<!-- Global Info -->
-				<include>Global_Weather</include>
-				<include>Global_Time</include>
-				<include>Global_Heading</include>
+				<control type="group">
+					<posx>13</posx>
+					<posy>7</posy>
+					<include>Global_Weather</include>
+					<include>Global_Time</include>
+					<include>Global_Heading</include>
+				</control>
 
 				<!-- Menu List -->
 				<control type="group">
 				<include>DefaultSettingWindowEffect</include>
 				<visible>substring(Window.Property(SettingBackground),True)</visible>
 				<control type="wraplist" id="3509000">
-					<posx>10</posx>
+					<posx>20</posx>
 					<posy>75</posy>
 					<width>1260</width>
 					<height>450</height>
@@ -7226,6 +7230,8 @@ Search for window name
 							<aspectratio>stretch</aspectratio>
 						</control>
 						<control type="label">
+<!--							<animation effect="fade" time="20">focus</animation>-->
+							<animation effect="fade" start="0" end="0" time="0">unfocus</animation>
 							<posx>90</posx>
 							<posy>423</posy>
 							<width>600</width>
@@ -7301,6 +7307,8 @@ Search for window name
 						</item>
 					</content>
 				</control>
+
+				<!-- Header Title -->
 				<control type="label">
 					<posx>28</posx>
 					<posy>16</posy>
@@ -7317,7 +7325,7 @@ Search for window name
 				<control type="textbox">
 					<description>Appearance Description</description>
 					<posx>340</posx>
-					<posy>558</posy>
+					<posy>564</posy>
 					<width>600</width>
 					<align>center</align>
 					<font>METF_SettingsDetail</font>
