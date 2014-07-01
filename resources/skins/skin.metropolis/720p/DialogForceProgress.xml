@@ -32,13 +32,14 @@
 					<font>METF_DialogSmallBold</font>
 					<textcolor>DialogTextFO</textcolor>
 				</control>
-<!--				<control type="label" id="100">
+				<control type="label" id="100">
 					<description>dialog line 1</description>
 					<width min="25" max="835">auto</width>
 					<height>30</height>
 					<aligny>center</aligny>
 					<font>METF_DialogSmallBold</font>
 					<textcolor>TextNF</textcolor>
+					<visible>false</visible>
 				</control>
 				<control type="label" id="300">
 					<description>dialog line 2</description>
@@ -47,6 +48,7 @@
 					<aligny>center</aligny>
 					<font>METF_DialogSmall</font>
 					<textcolor>TextNF</textcolor>
+					<visible>false</visible>
 				</control>
 				<control type="label" id="201">
 					<description>page</description>
@@ -54,10 +56,11 @@
 					<font>METF_MediaDetailsSmall</font>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
+					<visible>false</visible>
 				</control>
--->			</control>
+			</control>
 			<control type="progress" id="400">
-				<description>Progressbar</description>
+				<description>Progress Bar</description>
 				<posx>50</posx>
 				<posy>24</posy>
 				<width>175</width>
