@@ -66,8 +66,6 @@ class DialogAddNewSatellite( SettingDialog ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mLongitude = dialog.GetNumber( )
 				self.DrawItem( )
-				time.sleep( 0.2 )
-				self.SetControlLabel2String( E_DialogInput02, '200' )
 
 		elif groupId == E_DialogSpinEx02 :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
