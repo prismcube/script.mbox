@@ -8,14 +8,7 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>345</posx>
 			<posy>80</posy>
-<!--			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>590</width>
-				<height>360</height>
-				<texture border="20">DialogBack.png</texture>
-			</control>
--->			<control type="image">
+			<control type="image">
 				<posx>-5</posx>
 				<posy>44</posy>
 				<width>605</width>

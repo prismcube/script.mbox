@@ -7,24 +7,7 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>330</posx>
 			<posy>60</posy>
-<!--			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>630</width>
-				<height>660</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
 			<control type="image">
-				<posx>40</posx>
-				<posy>16</posy>
-				<width>530</width>
-				<height>40</height>
-				<!--aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture-->
-<!--				<texture>dialogheader.png</texture>
-			</control>
--->			<control type="image">
 				<posx>-15</posx>
 				<posy>-43</posy>
 				<width>670</width>
@@ -34,7 +17,7 @@
 			</control>
 			<control type="button" id="3901">
 				<description>Close Window button</description>
-				<posx>580</posx>
+				<posx>590</posx>
 				<posy>9</posy>
 				<width>25</width>
 				<height>25</height>
@@ -56,7 +39,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 			</control>
 			<control type="label" id="3903">
 				<textcolor>white</textcolor>
@@ -87,9 +69,7 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>DialogTextFO</focusedcolor>
 				<align>center</align>
-<!--				<texturenofocus>MenuItemNF.png</texturenofocus>
-				<texturefocus>button-focus.png</texturefocus>
--->				<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+				<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
 				<onleft>1003950</onleft>
 				<onright>1003951</onright>
 				<onup>1003950</onup>
@@ -115,7 +95,6 @@
 					<align>left</align>
 					<scroll>true</scroll>
 					<textcolor>white</textcolor>
-<!--					<shadowcolor>black</shadowcolor>-->
 					<label>$ADDON[script.mbox 1138]</label>
 				</control>
 			</control>

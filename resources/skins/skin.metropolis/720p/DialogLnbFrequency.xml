@@ -9,17 +9,17 @@
 			<control type="image" id="9001">
 				<posx>-20</posx>
 				<posy>-18</posy>
-				<width>670</width>
+				<width>630</width>
 				<height>313</height>
 				<texture>frames/Dialog_Glass2Panel.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posx>15</posx>
+				<posx>-5</posx>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
 			<control type="group" id="9000">
-				<posx>50</posx>
+				<posx>30</posx>
 				<posy>-13</posy>
 				<include>DialogInput01</include>
 				<include>DialogInput02</include>

@@ -9,18 +9,18 @@
 			<control type="image" id="9001">
 				<posx>-16</posx>
 				<posy>-50</posy>
-				<width>643</width>
+				<width>623</width>
 				<height>425</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
-				<posx>0</posx>
-				<posy>-37</posy>
+				<posx>-10</posx>
+				<posy>-36</posy>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
 			<control type="group" id="9000">
-				<posx>40</posx>
+				<posx>30</posx>
 				<posy>-30</posy>
 				<include>DialogInput03</include>
 				<include>DialogInput02</include>
@@ -32,7 +32,7 @@
 					<include>DialogSpinEx02</include>
 					<!--include>DialogInput04</include-->
 					<control type="group">
-						<posx>-20</posx>
+						<posx>0</posx>
 						<posy>272</posy>
 						<control type="group" id="300">
 							<posx>0</posx>
@@ -61,7 +61,7 @@
 								<font>METF_DialogSmall</font>
 							</control>
 							<control type="image">
-								<posx>-46</posx>
+								<posx>-48</posx>
 								<posy>10</posy>
 								<width>25</width>
 								<height>25</height>
@@ -69,7 +69,7 @@
 								<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
 							</control>
 							<control type="image">
-								<posx>-46</posx>
+								<posx>-48</posx>
 								<posy>10</posy>
 								<width>25</width>
 								<height>25</height>

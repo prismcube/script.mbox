@@ -2943,7 +2943,7 @@
 				<itemlayout height="1" width="550">
 				</itemlayout>
 				<focusedlayout height="40" width="550">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
@@ -2951,7 +2951,7 @@
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006121) | Control.HasFocus(1006122)]</visible>
 					</control>
-					<control type="image">
+-->					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
@@ -3078,7 +3078,7 @@
 				<itemlayout height="1" width="550">
 				</itemlayout>
 				<focusedlayout height="40" width="550">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
@@ -3086,7 +3086,7 @@
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006131) | Control.HasFocus(1006132)]</visible>
 					</control>
-					<control type="image">
+-->					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
@@ -3212,7 +3212,7 @@
 				<itemlayout height="1" width="550">
 				</itemlayout>
 				<focusedlayout height="40" width="550">
-					<control type="image">
+<!--					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
@@ -3220,7 +3220,7 @@
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1006141) | Control.HasFocus(1006142)]</visible>
 					</control>
-					<control type="image">
+-->					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>

@@ -7,16 +7,20 @@
 			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
-				<posx>-16</posx>
+				<posx>-13</posx>
 				<posy>-17</posy>
-				<width>645</width>
+				<width>635</width>
 				<height>614</height>
 				<texture>frames/Menu_Glass2c.png</texture>
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posx>3</posx>
+				<posy>2</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<control type="group" id="9000">
-				<posx>43</posx>
+				<posx>39</posx>
 				<posy>-13</posy>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>

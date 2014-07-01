@@ -56,7 +56,7 @@
 			</control>
 			<control type="button" id="303">
 				<description>Close Window button</description>
-				<posx>555</posx>
+				<posx>565</posx>
 				<posy>-43</posy>
 				<width>25</width>
 				<height>25</height>

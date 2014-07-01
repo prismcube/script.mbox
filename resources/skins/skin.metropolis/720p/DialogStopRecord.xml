@@ -7,16 +7,7 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>320</posx>
 			<posy>173</posy>
-            <!--include>DefaultDialogCloseEffect</include-->
-<!--			<control type="image" id="100">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>100</posy>
-				<width>610</width>
-				<height>310</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image" id="100">
+			<control type="image" id="100">
 				<posx>10</posx>
 				<posy>-20</posy>
 				<width>620</width>
@@ -25,6 +16,7 @@
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="group">
+				<posx>13</posx>
 				<posy>10</posy>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
@@ -59,15 +51,7 @@
 					<onleft></onleft>
 					<onright></onright>
 				</control>
-<!--				<control type="image">
-					<posx>350</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>71</height>
-					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					<visible>Control.HasFocus(501)</visible>
-				</control>
--->				<control type="label" id="502">
+				<control type="label" id="502">
 					<description>Channel name</description>
 					<posx>10</posx>
 					<posy>5</posy>
@@ -133,15 +117,7 @@
 					<onleft></onleft>
 					<onright></onright>
 				</control>
-<!--				<control type="image">
-					<posx>350</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>71</height>
-					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-					<visible>Control.HasFocus(511)</visible>
-				</control>
--->				<control type="label" id="512">
+				<control type="label" id="512">
 					<posx>10</posx>
 					<posy>5</posy>
 					<width>400</width>
@@ -204,9 +180,7 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>DialogTextFO</focusedcolor>
 					<align>center</align>
-<!--					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">button-focus.png</texturefocus>
--->					<texturefocus>ButtonFO2.png</texturefocus>
+					<texturefocus>ButtonFO2.png</texturefocus>
 					<label>[B]$ADDON[script.mbox 1026][/B]</label>
 				</control>
 			</control>

@@ -7,22 +7,7 @@
 			<posx>480</posx>
 			<posy>145</posy>
 			<include>DefaultDialogCloseEffect</include>
-<!--			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>320</width>
-				<height>430</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
 			<control type="image">
-				<posx>10</posx>
-				<posy>10</posy>
-				<width>300</width>
-				<height>70</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
--->			<control type="image">
 				<posx>-20</posx>
 				<posy>-5</posy>
 				<width>360</width>
@@ -46,7 +31,6 @@
 				<height>40</height>
 				<font>METF_PlotText</font>
 				<textcolor>DialogTextFO</textcolor>
-<!--				<shadowcolor>black</shadowcolor>-->
 				<align>center</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
@@ -63,24 +47,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
-<!--			<control type="image">
-				<posx>40</posx>
-				<posy>120</posy>
-				<width>240</width>
-				<height>30</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
-			<control type="image">
-				<posx>40</posx>
-				<posy>380</posy>
-				<width>240</width>
-				<height>40</height>
-				<aspectratio>stretch</aspectratio>
-				<colordiffuse>AAFFFFFF</colordiffuse>
-				<texture flipy="true">GlassTitleBar.png</texture>
-			</control>
--->			<control type="group">
+			<control type="group">
 				<posx>40</posx>
 				<posy>165</posy>
 				<control type="button" id="111">

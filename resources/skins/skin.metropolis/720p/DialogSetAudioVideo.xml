@@ -6,15 +6,7 @@
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
             <include>DefaultDialogCloseEffect</include>
-<!--			<control type="image" id="9001">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>610</width>
-				<height>400</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
--->			<control type="image" id="9001">
+			<control type="image" id="9001">
 				<posx>-4</posx>
 				<posy>-26</posy>
 				<width>618</width>
@@ -32,7 +24,6 @@
 					<posy>119</posy>
 					<width>520</width>
 					<height>3</height>
-<!--					<texture>separator2.png</texture>-->
 					<texture>VideoInfoLine.png</texture>
 					<colordiffuse>FilesDividerDiffuse</colordiffuse>
 				</control>
