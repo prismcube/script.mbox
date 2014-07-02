@@ -174,6 +174,7 @@
 				<posx>1000</posx>
 				<posy>660</posy>
 				<width>500</width>
+				<height>30</height>
 				<align>left</align>
 				<aligny>center</aligny>
 				<font>font48</font>
@@ -377,7 +378,7 @@
 						</control>
 					</control>
 
-					<!-- Media Center Submenu -->
+					<!-- XBMC Submenu -->
 					<control type="grouplist" id="1209016">
 						<include>SubMainMenu</include>
 						<onleft>1209016</onleft>
@@ -3085,7 +3086,6 @@
 								<label>$ADDON[script.mbox 1039]</label>
 							</control>
 						</control>
-
 						<control type="group" id="2900530">
 							<width>48</width>
 							<height>30</height>

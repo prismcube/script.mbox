@@ -4569,6 +4569,14 @@
 						<posx>620</posx>
 						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>-2</posx>
+							<posy>2</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconUSB.png</texture>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -4683,6 +4691,14 @@
 						<posx>620</posx>
 						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>-2</posx>
+							<posy>2</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconUSB.png</texture>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -4806,6 +4822,15 @@
 						<posx>160</posx>
 						<posy>5</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconUSB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -4874,6 +4899,15 @@
 						<posx>160</posx>
 						<posy>5</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconUSB.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -4967,6 +5001,15 @@
 						<posx>160</posx>
 						<posy>256</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconEmpty.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -5021,6 +5064,15 @@
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<animation reversible="true" effect="slide" start="0,0" end="70,-130" time="300">focus</animation>
 						<animation reversible="true" effect="slide" end="0,0" start="70,-130" time="300">unfocus</animation>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>26</height>
+							<texture>IconEmpty.png</texture>
+							<colordiffuse>75FFFFFF</colordiffuse>
+							<visible>!substring(ListItem.Property(iNetVolumeUSB),True)</visible>
+						</control>
 						<control type="label">
 							<posx>5</posx>
 							<posy>-8</posy>
@@ -5586,6 +5638,7 @@
 						<height>50</height>
 						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 					</control>
+					<!-- EPG Channel Name -->
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
@@ -5690,9 +5743,9 @@
 						<posy>10</posy>
 						<width>80</width>
 						<height>50</height>
-						<!--colordiffuse>00FFFFFF</colordiffuse-->
 						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 					</control>
+					<!-- EPG Channel Name -->
 					<control type="label">
 						<posx>130</posx>
 						<posy>5</posy>
