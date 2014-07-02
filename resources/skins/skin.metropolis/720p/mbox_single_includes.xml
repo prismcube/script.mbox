@@ -44,9 +44,8 @@
 			<height>30</height>
 			<align>left</align>
 			<aligny>center</aligny>
-			<font>font28_title</font>
+			<font>METF_HeadingDetails</font>
 			<textcolor>white</textcolor>
-			<shadowcolor>black</shadowcolor>
 			<label>$INFO[Window(10000).Property(PlayStatusLabel)]</label>
 			<include>DefaultWindowOpenCloseAnimation</include>
 		</control>
@@ -537,7 +536,7 @@
 		<textwidth>185</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
-		<font>font12_title</font>
+		<font>METF_MediaDetailsSmall</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -556,7 +555,7 @@
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>
 		<aligny>center</aligny>
-		<font>font12</font>
+		<font>METF_PlotText</font>
 		<texturefocus border="5">StackFO_white2.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -569,7 +568,7 @@
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>
 		<aligny>center</aligny>
-		<font>font12</font>
+		<font>METF_PlotText</font>
 		<texturefocus border="5">StackFO_white2.png</texturefocus>
 		<texturenofocus border="5">StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -582,7 +581,7 @@
 		<textoffsetx>5</textoffsetx>
 		<align>center</align>
 		<aligny>center</aligny>
-		<font>font12</font>
+		<font>METF_PlotText</font>
 		<texturefocus>StackFO_white2.png</texturefocus>
 		<texturenofocus>StackNF.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
@@ -1638,36 +1637,10 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1001901</defaultcontrol>
-			<control type="button" id="1001901">
-				<description>Menu Item Next Button</description>
-				<visible>Control.IsVisible(1001900)</visible>
-				<hitrect x="0" y="0" w="703" h="40" />
-				<posx>670</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowDownNF.png</texturenofocus>
-				<texturefocus>ArrowDownFo.png</texturefocus>
-				<onclick>Control.Move(1001903,1)</onclick>
-				<onup>1001901</onup>
-				<ondown>1001901</ondown>
-			</control>
-			<control type="button" id="1001902">
-				<description>Menu Item Prev Button</description>
-				<visible>Control.IsVisible(1001900)</visible>
-				<posx>703</posx>
-				<posy>9</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>ArrowUpNF.png</texturenofocus>
-				<texturefocus>ArrowUpFo.png</texturefocus>
-				<onclick>Control.Move(1001903,-1)</onclick>
-				<onup>1001902</onup>
-				<ondown>1001902</ondown>
-			</control>
 			<control type="list" id="1001903">
 				<hitrect x="0" y="0" w="0" h="0" />
-				<posx>0</posx>
+				<posx>50</posx>
+				<posy>-20</posy>
 				<width>750</width>
 				<height>40</height>
 				<scrolltime>0</scrolltime>
@@ -1687,8 +1660,8 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1699,8 +1672,8 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>ddFFFFFF</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1711,7 +1684,7 @@
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>METF_ContextValue</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -1723,8 +1696,8 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1735,8 +1708,8 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>ddFFFFFF</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -1747,7 +1720,7 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>METF_ContextValue</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -1755,6 +1728,33 @@
 						<visible>Control.IsEnabled(1001900) + [Control.HasFocus(1001901) | Control.HasFocus(1001902)]</visible>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="button" id="1001901">
+				<description>Menu Item Next Button</description>
+				<visible>Control.IsVisible(1001900)</visible>
+				<hitrect x="0" y="0" w="703" h="40" />
+				<posx>677</posx>
+				<posy>-11</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowDownNF.png</texturenofocus>
+				<texturefocus>ArrowDownFo.png</texturefocus>
+				<onclick>Control.Move(1001903,1)</onclick>
+				<onup>1001901</onup>
+				<ondown>1001901</ondown>
+			</control>
+			<control type="button" id="1001902">
+				<description>Menu Item Prev Button</description>
+				<visible>Control.IsVisible(1001900)</visible>
+				<posx>710</posx>
+				<posy>-11</posy>
+				<width>33</width>
+				<height>22</height>
+				<texturenofocus>ArrowUpNF.png</texturenofocus>
+				<texturefocus>ArrowUpFo.png</texturefocus>
+				<onclick>Control.Move(1001903,-1)</onclick>
+				<onup>1001902</onup>
+				<ondown>1001902</ondown>
 			</control>
 		</control>
 	</include>
@@ -2228,8 +2228,8 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>FFff5858</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -2329,8 +2329,8 @@
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
-						<font>FFff5858</font>
-						<textcolor>ddFFFFFF</textcolor>
+						<font>METF_ContextValue</font>
+						<textcolor>FFff5858</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>

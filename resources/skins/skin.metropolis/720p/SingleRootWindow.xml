@@ -778,8 +778,8 @@ Search for window name
 			<control type="label" id="1300601">
 				<posx>30</posx>
 				<posy>30</posy>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
+				<font>METF_ContextValue</font>
+				<textcolor>white</textcolor>
 				<visible>substring(Window(10000).Property(isMove),true)</visible>
 			</control>
 
@@ -2663,7 +2663,7 @@ Search for window name
 									<posy>6</posy>
 									<width>50</width>
 									<height>10</height>
-									<font>font15</font>
+									<font>METF_PlotTextSmall</font>
 									<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 								</control>
 							</control>
@@ -3287,9 +3287,8 @@ Search for window name
 						<posy>580</posy>
 						<width>210</width>
 						<height>20</height>
-						<font>font24_title</font>
-						<textcolor>red</textcolor>
-						<shadowcolor>black</shadowcolor>
+						<font>METF_HomeMenuSmall</font>
+						<textcolor>FFB2D4F5</textcolor>
 						<align>center</align>
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
@@ -5825,7 +5824,7 @@ Search for window name
 						<textwidth>185</textwidth>
 						<align>left</align>
 						<aligny>center</aligny>
-						<font>font12_title</font>
+						<font>METF_PlotText</font>
 						<texturefocus border="5">StackFO_white2.png</texturefocus>
 						<texturenofocus border="5">StackFO_white2.png</texturenofocus>
 						<pulseonselect>false</pulseonselect>
@@ -5941,7 +5940,7 @@ Search for window name
 								<posy>3</posy>
 								<width>50</width>
 								<height>10</height>
-								<font>font12</font>
+								<font>METF_PlotTextSmall</font>
 								<label>[B]$INFO[Window.Property(EPGAgeRating)][/B]</label>
 							</control>
 						</control>
@@ -6101,7 +6100,7 @@ Search for window name
 				<posy>160r</posy>
 				<width>340</width>
 				<height>20</height>
-				<font>METF_PlotText</font>
+				<font>METF_HeadingDetails</font>
 				<textcolor>FFc89008</textcolor>
 				<scroll>false</scroll>
 				<align>left</align>
@@ -6919,7 +6918,7 @@ Search for window name
 					<font>METF_PlotText</font>
 					<textcolor>WeatherHeading</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
+					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(4601000).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(4601000).CurrentPage]/$INFO[Container(4601000).NumPages][/COLOR])</label>
 					<visible>!substring(Window.Property(SimpleChannelGroup),true)</visible>
@@ -7035,7 +7034,7 @@ Search for window name
 					<font>METF_PlotText</font>
 					<textcolor>WeatherHeading</textcolor>
 					<scroll>false</scroll>
-					<align>center</align>
+					<align>left</align>
 					<aligny>center</aligny>
 					<label>([COLOR=ee3c95c8]$INFO[Window.Property(SelectedGroup)] / $INFO[Container(4601001).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(4601001).CurrentPage]/$INFO[Container(4601001).NumPages][/COLOR])</label>
 					<visible>substring(Window.Property(SimpleChannelGroup),true)</visible>
