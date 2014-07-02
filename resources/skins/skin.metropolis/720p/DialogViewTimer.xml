@@ -1,7 +1,6 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -43,4 +42,3 @@
 		</control>
 	</controls>
 </window>
-

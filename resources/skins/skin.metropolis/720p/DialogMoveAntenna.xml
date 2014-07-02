@@ -2,7 +2,6 @@
 	<defaultcontrol always="true">102</defaultcontrol>
 	<onload>SetProperty(ItemHeight,40)</onload>					<!--Input Item Height-->
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="9000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -97,7 +96,6 @@
 						<posy>0</posy>
 						<width>319</width>
 						<height>40</height>					<!--Change ProPerty ItemHeight-->
-<!--						<texture border="5">button-focus.png</texture>-->
 						<texture border="1">ButtonFO2.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
@@ -130,5 +128,3 @@
 		</control>
 	</controls>
 </window>
-
-

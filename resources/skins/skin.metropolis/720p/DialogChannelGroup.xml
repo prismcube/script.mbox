@@ -1,7 +1,5 @@
 <window>
-	<!--defaultcontrol always="true">1003850</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="3900">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -31,7 +29,7 @@
 				<ondown>1003950</ondown>
 			</control>
 			<control type="label" id="3902">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>13</posy>
 				<width>470</width>
@@ -73,7 +71,7 @@
 				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
 
-			<!-- ok button and key comment -->
+			<!-- OK Button and Key Comment -->
 			<control type="button" id="3904">
 				<posx>20</posx>
 				<posy>483</posy>
@@ -92,7 +90,7 @@
 				<ondown>3901</ondown>
 				<visible>false</visible>
 			</control>
-			<!-- left key comment -->
+			<!-- Left Key Comment -->
 			<control type="group">
 				<posx>15</posx>
 				<posy>532</posy>
@@ -117,7 +115,7 @@
 				</control>
 			</control>
 
-			<!-- color info -->
+			<!-- Color Keys -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>508</posy>

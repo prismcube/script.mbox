@@ -1,7 +1,6 @@
 <window>
 	<defaultcontrol always="true">1007463</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -57,27 +56,6 @@
 					<onup>1007463</onup>
 					<ondown>1006997</ondown>
 				</control>
-				<!--
-				<control type="radiobutton" id ="1007465">
-					<description>Script activated</description>
-					<posx>30</posx>
-					<posy>150</posy>
-					<width>550</width>
-					<height>40</height>
-					<font>font12_title</font>
-					<textcolor>white</textcolor>
-					<focusedcolor>white</focusedcolor>
-					<shadowcolor>black</shadowcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-					<pulseonselect>no</pulseonselect>
-					<label></label>
-					<onup>1007464</onup>
-					<ondown>1006997</ondown>
-				</control>
-				-->
 				<control type="button" id="1006997">
 					<description>Yes button</description>
 					<posx>60</posx>
@@ -114,4 +92,3 @@
 		</control>
 	</controls>
 </window>
-

@@ -2,7 +2,6 @@
 	<defaultcontrol always="true">102</defaultcontrol>
 	<onload>SetProperty(ItemHeight,40)</onload>					<!--Input Item Height-->
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="9000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -122,5 +121,3 @@
 		</control>
 	</controls>
 </window>
-
-

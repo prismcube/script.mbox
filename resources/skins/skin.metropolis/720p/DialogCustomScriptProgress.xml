@@ -1,6 +1,5 @@
 <window>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">300</defaultcontrol>
 	<controls>
 		<control type="group">
@@ -16,7 +15,7 @@
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="label" id="200">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>40</posx>
 				<posy>20</posy>
 				<width>530</width>

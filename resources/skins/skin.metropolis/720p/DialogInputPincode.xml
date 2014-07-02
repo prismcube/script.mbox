@@ -1,7 +1,6 @@
 <window>
 	<defaultcontrol always="true">103</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
 			<posx>480</posx>
@@ -224,4 +223,3 @@
 		</control>
 	</controls>
 </window>
-

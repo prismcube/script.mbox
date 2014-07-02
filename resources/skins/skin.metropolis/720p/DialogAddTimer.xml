@@ -1,7 +1,6 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">200</defaultcontrol>	
 	<controls>
 		<control type="group" id="8000">
@@ -28,7 +27,7 @@
 					<onright>202</onright>
 				</control>
 				<control type="label" id="3005">
-					<description>header label</description>
+					<description>Title</description>
 					<posx>50</posx>
 					<posy>45</posy>
 					<width>530</width>
@@ -42,7 +41,6 @@
 
 			<!-- Channel Name -->
 			<control type="label" id="101">
-				<description>Record Name</description>
 				<posx>50</posx>
 				<posy>85</posy>
 				<width>530</width>
@@ -56,7 +54,6 @@
 
 			<!-- Recording Name -->
 			<control type="label" id="102">
-				<description>EPG Start Time</description>
 				<posx>50</posx>
 				<posy>115</posy>
 				<width>530</width>
@@ -69,7 +66,7 @@
 			</control>
 
 			<control type="button" id="200">
-				<description>Yes button</description>
+				<description>Yes</description>
 				<posx>70</posx>
 				<posy>215</posy>
 				<width>230</width>
@@ -85,7 +82,7 @@
 			</control>
 
 			<control type="button" id="202">
-				<description>Cancel button</description>
+				<description>Cancel</description>
 				<posx>340</posx>
 				<posy>215</posy>
 				<width>230</width>
@@ -102,4 +99,3 @@
 		</control>
 	</controls>
 </window>
-

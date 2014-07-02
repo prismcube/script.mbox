@@ -2,7 +2,6 @@
 	<defaultcontrol always="true">301</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<zorder>99</zorder>	
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
 			<posx>300</posx>
@@ -17,7 +16,7 @@
 				<colordiffuse>DialogBackgroundColor</colordiffuse>
 			</control>
 			<control type="label" id="100">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>30</posx>
 				<posy>-40</posy>
 				<width>560</width>
@@ -28,7 +27,7 @@
 				<textcolor>DialogTextFO</textcolor>
 			</control>
 			<control type="label" id="200">
-				<description>dialog message</description>
+				<description>Message</description>
 				<posx>30</posx>
 				<posy>0</posy>
 				<width>530</width>

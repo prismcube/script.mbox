@@ -1,7 +1,6 @@
 <window>
 	<defaultcontrol always="true">3850</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -32,7 +31,7 @@
 				<ondown>3850</ondown>
 			</control>
 			<control type="label" id="3801">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>23</posy>
 				<width>570</width>
@@ -88,7 +87,7 @@
 				<onup>3850</onup>
 				<ondown>3800</ondown>
 			</control>
-			<!-- left key comment -->
+			<!-- Left Key Comment -->
 			<control type="group">
 				<posx>30</posx>
 				<posy>539</posy>
@@ -126,7 +125,7 @@
 				<movement>2</movement>
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
 				<itemlayout height="70" width="590">
-					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -134,7 +133,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->					
+					<!-- Selection Icon -->					
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -144,7 +143,7 @@
 						<visible>substring(ListItem.Property(iMark),True)</visible>
 					</control>
 
-					<!-- bookmark offset-->
+					<!-- Bookmark Time -->
 					<control type="label">
 						<posx>220</posx>
 						<posy>5</posy>
@@ -184,7 +183,7 @@
 						<visible>substring(ListItem.Property(iPos),true)</visible>
 					</control>
 
-					<!-- Rec date -->
+					<!-- Recording Date -->
 					<control type="label">
 						<posx>510</posx>
 						<posy>5</posy>
@@ -214,7 +213,7 @@
 						<height>71</height>
 						<texture>ButtonFO2Wide.png</texture>
 					</control>
-					<!-- Thumbnail  and  Lock -->
+					<!-- Thumbnail and Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -222,7 +221,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -231,7 +230,7 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(iMark),True)</visible>
 					</control>
-					<!-- bookmark offset-->
+					<!-- Bookmark Time -->
 					<control type="label">
 						<posx>220</posx>
 						<posy>5</posy>
@@ -272,7 +271,7 @@
 						<progress>percent</progress>
 						<visible>substring(ListItem.Property(iPos),true)</visible>
 					</control>
-					<!-- Rec date -->
+					<!-- Recording Date -->
 					<control type="label">
 						<posx>510</posx>
 						<posy>5</posy>

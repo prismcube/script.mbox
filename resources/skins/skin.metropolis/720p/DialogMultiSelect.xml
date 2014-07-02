@@ -1,7 +1,5 @@
 <window>
-	<!--defaultcontrol always="true">1003850</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="3900">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
@@ -30,7 +28,7 @@
 				<ondown>1003950</ondown>
 			</control>
 			<control type="label" id="3902">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>10</posy>
 				<width>570</width>

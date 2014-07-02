@@ -2,7 +2,6 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
 			<posx>340</posx>

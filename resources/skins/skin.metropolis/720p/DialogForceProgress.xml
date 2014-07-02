@@ -1,6 +1,5 @@
 <window>
 	<allowoverlay>yes</allowoverlay>
-	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
 			<posx>-30</posx>
@@ -25,7 +24,7 @@
 				<align>left</align>
 				<itemgap>10</itemgap>
 				<control type="label" id="200">
-					<description>header label</description>
+					<description>Title</description>
 					<width min="25" max="835">auto</width>
 					<height>30</height>
 					<aligny>center</aligny>

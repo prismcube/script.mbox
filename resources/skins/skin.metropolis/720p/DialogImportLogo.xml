@@ -17,7 +17,7 @@
 			<colordiffuse>DialogBackgroundColor</colordiffuse>
 		</control>
 		<control type="label" id="102">
-			<description>header label</description>
+			<description>Title</description>
 			<posx>40</posx>
 			<posy>22</posy>
 			<width>720</width>
