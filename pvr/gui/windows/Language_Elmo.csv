@@ -165,8 +165,8 @@
 "LOADING";"LADEN";;;;"Načítání";;"Ładowanie";;"Загрузка";;;"Načítavanie";;1166
 "Automatic 1080 24p";"Automatisch 1080 24p";;;;"Automaticky 1080 24p";;"Automatyczny format 1080 24p";;"Автоматически 1080 24p";;;"Automaticky 1080 24p";;1167
 "Advanced";"Erweitert";;;;"Rozšířené";;"Zaawansowane";;"Продвинутый";;;"Rozšírené";;1168
-"YouTube";;;;;;;;;;;;;;1169
-"Watch YouTube videos";;;;;;;;;;;;;;1170
+"YouTube";;;;;;;"YouTube";;;;;;;1169
+"Watch YouTube videos";;;;;;;"Oglądaj filmy z YouTube";;;;;;;1170
 "Live Streaming";"Live Streaming";;;;"Živé streamování";;"Streaming kanałów";;"Вещание в локальную сеть";;;"Živé streamovanie";;1200
 "PIP Channel List";"PIP Senderliste";;;;"PIP seznam programů";;"PIP Lista kanałów";;"Список Каналов PIP";;;"PIP zoznam programov";;1201
 "Previous Group";"Vorherige Gruppe";;;;"Předchozí skupina";;"Poprzednia grupa";;"Предыдущая группа";;;"Predchádzajúca skupina";;1202
@@ -174,8 +174,8 @@
 "Satellite";"Satellit und Position";"Satellite";"Satellite";"Satelite y posicion";"Satelit";"Satelliet en positie";"Satelita";"Uydu ve konumu";"Спутник";"Satellite";"Satellite";"Satelit";"Супутник";1204
 "Provider";"Anbieter";"Fournisseur";"Provider";"Proveedor";"Provajder";"Provider";"Operator";"Provider";"Провайдер";"Provider";"Provider";"Provajder";"Provider";1205
 "Favorite";"Favoriten";"Favoris";"Favoriti";"Favoritos";"Oblíbený";"Favorite";"Ulubione";"Favorite";"Любимые";"Favorite";"Favorite";"Obľúbený";"Улюблені";1206
-"NAS GROUPS";;;;;;;;;;;;;;176
-"ALL ARCHIVES";;;;;;;;;;;;;;177
+"NAS GROUPS";;;;;;;"NAS";;;;;;;176
+"ALL ARCHIVES";;;;;;;"WSZYSTKIE ARCHIWA";;;;;;;177
 "Last ServiceType";"Letzte Service Methode";"Dernier type de service";"Ultima tipologia del servizio";"Ultimo ServiceType";"Poslední ServiceType";"Last ServiceType";"Ostatni typ serwisu";"Last ServiceType";"Тип Последнего Сервиса";"Last ServiceType";"Last ServiceType";"Posledný ServiceType";"Тип Останнього Сервісу";2001
 "CurrentVoutResolution";"Aktuelle Videoauflösung";"Résolution Vout actuelle";"Risoluzione corrente";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Aktualne napięcie wyjścia";"CurrentVoutResolution";"Текущее Разрешение";"CurrentVoutResolution";"CurrentVoutResolution";"CurrentVoutResolution";"Поточне розширення";2002
 "1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";"1080p";2003
@@ -535,8 +535,8 @@
 "LCN Search";"LCN Suche";;;;;;"Wyszukiwanie LCN";;"LCN Поиск";;;;;2357
 "Record Default Path Change";"Standart Aufnahmepfad ändern";;;;;;"Zmień domyślną ścieżkę nagrywania";;;;;;;2358
 "Internal";"Intern";;;;;;"Internal";;;;;;;2359
-"Cross EPG Enabled";;;;;;;;;;;;;;2360
-"Cross EPG ByStandby";;;;;;;;;;;;;;2361
+"Cross EPG Enabled";;;;;;;"Cross EPG włączony";;;;;;;2360
+"Cross EPG ByStandby";;;;;;;"Cross EPG w czuwaniu";;;;;;;2361
 "No EPG information available";"Keine EPG Informationen verfügbar";"Aucune information EPG disponible";"Nessuna informazione disponibile";"Información EPG no disponible";"Žádná EPG informace není k dispozici";"No EPG information available";"Brak dostępnych informacji EPG";"No EPG information available";"Нет данных ТВ Гида";"No EPG information available";"No EPG information available";"Žiadna EPG informácia nie je k dispozícii";"Немає даних ТВ Гіда";3001
 "That recording conflicts with";"Diese Aufnahme kollidiert mit";"Cet enregistrement se heurte avec";"Registrazione in conflitto con";"Conflictos de grabacion con";"Záznam je v rozporu s";"That recording conflicts with";"Nagranie w konflikcie z";"That recording conflicts with";"Таймер конфликтует с";"That recording conflicts with";"That recording conflicts with";"Záznam je v rozpore s";"Таймер конфліктує з";3002
 "Error";"Fehler";"Erreur";"Errore";"Error";"Chyba";"Error";"Błąd";"Error";"Ошибка";"Error";"Error";"Chyba";"Помилка";3003
@@ -1518,17 +1518,17 @@
 "South";"Süd";"Sud";"Sud";"Sur";"Jih";"South";"Południe";"South";"Юг";"South";"South";"Juh";"Південь";3979
 "Finish";"Ende";"Terminer";"Terminare";"Final";"Dokončit";"Finish";"Zakończ";"Finish";"Окончание";"Finish";"Finish";"Dokončiť";"Закінчення";3980
 "Go to the channel search setup page";"Gehen Sie zur Sendersuchlauf Setup Seite ";"Aller à la page de configuration de recherche de canal";"Vai alla pagina di configurazione ricerca canali";"Ir al la pagina de busqueda de canales";"Přejít na stránku nastavení vyhledávání kanálů";"Go to the channel search setup page";"Przejdź do konfiguracji wyszukiwania kanałów";"Go to the channel search setup page";"Перейти к поиску каналов";"Go to the channel search setup page";"Go to the channel search setup page";"Prejsť na stránku nastavenia vyhľadávania kanálov";"Перейти до пошуку каналів";3981
-"No access permission";;;;;;;;;;;;;;3982
-"Try the following path instead";;;;;;;;;;;;;;3983
-"No recording path";;;;;;;;;;;;;;3984
-"Please check your recording path setting";;;;;;;;;;;;;;3985
-"Recordings will be temporarily stored on your hard drive";;;;;;;;;;;;;;3986
-"Do you want to set the recording path now?";;;;;;;;;;;;;;3987
-"CrossEPG";;;;;;;;;;;;;;3988
-"Download complete";;;;;;;;;;;;;;3989
-"Check your NAS configuration";;;;;;;;;;;;;;3990
-"Operation not allowed";;;;;;;;;;;;;;3991
-"EPG download is in progress";;;;;;;;;;;;;;3992
-"While downloading EPG data";;;;;;;;;;;;;;3993
-"Not allowed operation";;;;;;;;;;;;;;3994
-"Add or remove a record storage location for NAS";;;;;;;;;;;;;;3995
+"No access permission";;;;;;;"Brak uprawnień dostępu";;;;;;;3982
+"Try the following path instead";;;;;;;"Wybierz następującą lokalizację";;;;;;;3983
+"No recording path";;;;;;;"Brak ścieżki nagrywania";;;;;;;3984
+"Please check your recording path setting";;;;;;;"Sprawdź ustawienia ścieżki nagrywania";;;;;;;3985
+"Recordings will be temporarily stored on your hard drive";;;;;;;"Nagrania będą tymczasowo przechowywane na dysku twardym";;;;;;;3986
+"Do you want to set the recording path now?";;;;;;;"Czy chcesz teraz ustawić ścieżkę nagrywania?";;;;;;;3987
+"CrossEPG";;;;;;;"CrossEPG";;;;;;;3988
+"Download complete";;;;;;;"Pobieranie ukończone";;;;;;;3989
+"Check your NAS configuration";;;;;;;"Sprawdź konfigurację NAS";;;;;;;3990
+"Operation not allowed";;;;;;;"Operacja nie jest dozwolona";;;;;;;3991
+"EPG download is in progress";;;;;;;"EPG w trakcie pobierania";;;;;;;3992
+"While downloading EPG data";;;;;;;"Podczas pobierania danych EPG";;;;;;;3993
+"Not allowed operation";;;;;;;"Niedozwolona operacja";;;;;;;3994
+"Add or remove a record storage location for NAS";;;;;;;"Dodaj, lub usuń miejsce przechowywania nagrań dla NAS";;;;;;;3995
