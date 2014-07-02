@@ -3059,7 +3059,7 @@ Search for window name
 					<posy>590</posy>
 					<control type="group">
 						<posx>40</posx>
-						<posy>30</posy>
+						<posy>35</posy>
 						<visible>!ControlGroup(1003750).HasFocus</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -3090,7 +3090,7 @@ Search for window name
 						<control type="label">
 							<posx>105</posx>
 							<posy>0</posy>
-							<width>50</width>
+							<width>150</width>
 							<height>10</height>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
