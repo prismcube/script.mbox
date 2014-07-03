@@ -1,0 +1,85 @@
+<window>
+	<defaultcontrol always="true">200</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>380</posx>
+			<posy>235</posy>
+			<control type="image" id="9001">
+				<include>SmallDialogBackground</include>
+			</control>
+			<control type="label" id="3005">
+				<description>Title</description>
+				<posx>0</posx>
+				<posy>10</posy>
+				<width>520</width>
+				<height>60</height>
+				<font>font15_title</font>
+				<align>center</align>
+				<textcolor>grey3</textcolor>
+				<textoffsetx>45</textoffsetx>
+			</control>
+
+			<!-- Channel Name -->
+			<control type="label" id="101">
+				<posx>20</posx>
+				<posy>80</posy>
+				<width>480</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label></label>
+			</control>
+
+			<!-- Record Name -->
+			<control type="label" id="102">
+				<posx>20</posx>
+				<posy>120</posy>
+				<width>480</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label></label>
+			</control>
+
+			<control type="button" id="200">
+				<description>Yes</description>
+				<posx>80</posx>
+				<posy>165</posy>				
+				<width>180</width>
+				<height>35</height>                
+                <font>font14</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
+				<onleft>202</onleft>
+				<onright>202</onright>
+				<label>$ADDON[script.mbox 1109]</label>
+			</control>
+
+			<control type="button" id="202">
+				<description>Cancel</description>
+				<posx>260</posx>
+				<posy>165</posy>				
+				<width>180</width>
+				<height>35</height>
+                <font>font14</font>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white</focusedcolor>
+                <align>center</align>
+                <textoffsetx>30</textoffsetx>
+                <textoffsety></textoffsety>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<label>$ADDON[script.mbox 1026]</label>
+			</control>
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,211 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="3900">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>370</posx>
+			<posy>55</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>-20</posx>
+				<posy>-35</posy>
+				<width>575</width>
+				<height>628</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="button" id="3901">
+				<description>Close Window button</description>
+				<posx>497</posx>
+				<posy>13</posy>
+				<width>25</width>
+				<height>25</height>
+				<font>-</font>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>3904</onup>
+				<ondown>1003950</ondown>
+			</control>
+			<control type="label" id="3902">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>13</posy>
+				<width>470</width>
+				<height>30</height>
+				<font>METF_Menu</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>DialogTextFO</textcolor>
+			</control>
+			<control type="label" id="3903">
+				<textcolor>white</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
+			</control>
+			<control type="label">
+				<posx>500</posx>
+				<posy>440</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>METF_HeadingDetails</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>FFc89008</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
+			</control>
+			<control type="label">
+				<posx>500</posx>
+				<posy>472</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>METF_HeadingDetails</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>FFc89008</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
+				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
+			</control>
+
+			<!-- OK Button and Key Comment -->
+			<control type="button" id="3904">
+				<posx>20</posx>
+				<posy>483</posy>
+				<width>200</width>
+				<height>35</height>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>METF_MediaDetailsSmall</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus>MenuItemNF.png</texturenofocus>
+				<texturefocus>ButtonFO2Wide.png</texturefocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>1003950</onup>
+				<ondown>3901</ondown>
+				<visible>false</visible>
+			</control>
+			<!-- Left Key Comment -->
+			<control type="group">
+				<posx>15</posx>
+				<posy>532</posy>
+				<visible>Control.IsVisible(3904)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>20</posx>
+					<posy>0</posy>
+					<width>470</width>
+					<height>30</height>
+					<font>METF_DialogSmall</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>white</textcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
+			</control>
+
+			<!-- Color Keys -->
+			<control type="group">
+				<posx>20</posx>
+				<posy>508</posy>
+				<visible>substring(Window.Property(ZappingModeInfo),true)</visible>
+				<control type="group">
+					<posx>0</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>15</width>
+						<height>15</height>
+						<colordiffuse>FFFF0000</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>METF_DialogVerySmall</font>
+						<align>left</align>
+						<label>Satellite</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>120</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>15</width>
+						<height>15</height>
+						<colordiffuse>FF00FF00</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>METF_DialogVerySmall</font>
+						<align>left</align>
+						<label>FTA/CAS</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>240</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>15</width>
+						<height>15</height>
+						<colordiffuse>FFFFFF00</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>METF_DialogVerySmall</font>
+						<align>left</align>
+						<label>Provider</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>360</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>3</posy>
+						<width>15</width>
+						<height>15</height>
+						<colordiffuse>FF0050FF</colordiffuse>
+						<texture>Logo_Background.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width>100</width>
+						<height>15</height>
+						<font>METF_DialogVerySmall</font>
+						<align>left</align>
+						<label>Favorite</label>
+					</control>
+				</control>
+			</control>
+			<include>DefaultSelectGroup</include>
+		</control>
+	</controls>
+</window>

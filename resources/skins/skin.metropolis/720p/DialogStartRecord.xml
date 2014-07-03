@@ -1,0 +1,105 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<posx>-9</posx>
+				<posy>-14</posy>
+				<width>622</width>
+				<height>489</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="group" id="9000">
+				<posx>-10</posx>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+			<control type="group" id="9000">
+				<posx>35</posx>
+				<posy>-23</posy>
+				<!-- Recording Name -->
+				<control type="label" id ="101">
+					<posx>0</posx>
+					<posy>-15</posy>
+					<width>550</width>
+					<height>40</height>
+					<font>METF_InfoTextLarger</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<!-- Recording -->
+				<include>DialogSpinEx01</include>
+				<!-- Timeshift Duration -->
+				<include>DialogInput04</include>
+				<!--StartTime -->
+				<include>DialogInput01</include>
+				<!--EndTim -->
+				<include>DialogInput02</include>
+				<!-- Duration -->
+				<include>DialogInput03</include>
+				<!-- Record path -->
+				<include>DialogInput05</include>
+				<include>DialogInput06</include>
+				<control type="group">
+					<posx>-10</posx>
+					<posy>295</posy>
+					<control type="group" id="300">
+						<posx>0</posx>
+						<posy>-20</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="progress" id="301">
+							<description>Progressbar</description>
+							<posx>-11</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg>osd/osd_progress_back3.png</texturebg>
+							<lefttexture>osd/osd_progress_left3.png</lefttexture>
+							<midtexture>osd/osd_progress_mid3.png</midtexture>
+							<righttexture>osd/osd_progress_right3.png</righttexture>
+							<colordiffuse>DialogProgressBar</colordiffuse>
+						</control>
+						<control type="label" id="302">
+							<posx>98</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>white</textcolor>
+							<font>METF_DialogSmall</font>
+						</control>
+						<control type="image">
+							<posx>-39</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-39</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+					</control>
+				</control>
+				<control type="group">
+					<posx>-14</posx>
+					<posy>5</posy>
+					<!-- OK/Cancel -->
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

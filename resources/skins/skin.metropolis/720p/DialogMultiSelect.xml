@@ -1,0 +1,102 @@
+<window>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="3900">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>330</posx>
+			<posy>60</posy>
+			<control type="image">
+				<posx>-15</posx>
+				<posy>-43</posy>
+				<width>670</width>
+				<height>646</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="button" id="3901">
+				<description>Close Window button</description>
+				<posx>590</posx>
+				<posy>9</posy>
+				<width>25</width>
+				<height>25</height>
+				<font>-</font>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>3904</onup>
+				<ondown>1003950</ondown>
+			</control>
+			<control type="label" id="3902">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>10</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>METF_Menu</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>DialogTextFO</textcolor>
+			</control>
+			<control type="label" id="3903">
+				<textcolor>white</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
+			</control>
+			<control type="group">
+				<control type="label">
+					<posx>600</posx>
+					<posy>460</posy>
+					<width>400</width>
+					<height>35</height>
+					<font>METF_HeadingDetails</font>
+					<align>right</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<textcolor>FFc89008</textcolor>
+					<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003950).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(1003950).CurrentPage]/$INFO[Container(1003950).NumPages][/COLOR])</label>
+				</control>
+			</control>
+			<control type="button" id="3904">
+				<posx>30</posx>
+				<posy>498</posy>
+				<width>230</width>
+				<height>40</height>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>METF_DialogLargeBold</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<align>center</align>
+				<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+				<onleft>1003950</onleft>
+				<onright>1003951</onright>
+				<onup>1003950</onup>
+				<ondown>3901</ondown>
+			</control>
+			<!-- left key comment -->
+			<control type="group">
+				<posx>30</posx>
+				<posy>539</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>20</posx>
+					<posy>0</posy>
+					<width>570</width>
+					<height>30</height>
+					<font>METF_DialogSmall</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>white</textcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
+			</control>
+			<include>DefaultSelectList</include>
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,188 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>320</posx>
+			<posy>173</posy>
+			<control type="image" id="100">
+				<posx>10</posx>
+				<posy>-20</posy>
+				<width>620</width>
+				<height>360</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="group">
+				<posx>13</posx>
+				<posy>10</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+		</control>
+
+		<control type="grouplist" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<onleft>9000</onleft>
+			<itemgap>0</itemgap>
+			<posx>365</posx>
+			<posy>270</posy>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
+			<defaultcontrol always="true">500</defaultcontrol>
+			
+			<!-- RECORD 1 -->
+			<control type="group" id="500">		
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>550</width>
+				<height>70</height>
+				<visible>true</visible>				
+				<defaultcontrol always="true">501</defaultcontrol>
+				<control type="button" id="501">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">-</texturenofocus>
+					<texturefocus border="0,2,0,2">ButtonFO2Wide.png</texturefocus>
+					<onleft></onleft>
+					<onright></onright>
+				</control>
+				<control type="label" id="502">
+					<description>Channel name</description>
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>METF_ContextValue</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="503">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>METF_MediaDetailsSmall</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="504">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>METF_MediaDetailsSmall</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$ADDON[script.mbox 1024]</label>
+				</control>
+				<control type="progress" id="505" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+					<texturebg>osd/osd_progress_back2.png</texturebg>
+					<lefttexture>osd/osd_progress_left2.png</lefttexture>
+					<midtexture>osd/osd_progress_mid2.png</midtexture>
+					<righttexture>osd/osd_progress_right2.png</righttexture>
+					<colordiffuse>DialogProgressBar</colordiffuse>
+				</control>					
+			</control>
+
+			<!-- RECORD 2 -->			
+			<control type="group" id="510">		
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>550</width>
+				<height>70</height>
+				<defaultcontrol always="true">511</defaultcontrol>
+				<control type="button" id="511">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">-</texturenofocus>
+					<texturefocus border="0,2,0,2">ButtonFO2Wide.png</texturefocus>
+					<onleft></onleft>
+					<onright></onright>
+				</control>
+				<control type="label" id="512">
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>METF_ContextValue</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="513">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>METF_MediaDetailsSmall</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				<control type="label" id="514">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>METF_MediaDetailsSmall</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$ADDON[script.mbox 1024]</label>
+				</control>
+				<control type="progress" id="515" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+					<texturebg>osd/osd_progress_back2.png</texturebg>
+					<lefttexture>osd/osd_progress_left2.png</lefttexture>
+					<midtexture>osd/osd_progress_mid2.png</midtexture>
+					<righttexture>osd/osd_progress_right2.png</righttexture>
+					<colordiffuse>DialogProgressBar</colordiffuse>
+				</control>					
+			</control>
+			
+			<!-- CANCEL -->			
+			<control type="group" id="520">		
+				<posx>0</posx>
+				<posy>60</posy>
+				<width>230</width>
+				<height>40</height>
+				<control type="button" id="521">
+					<description>cancel button</description>
+					<posx>160</posx>
+					<posy>17</posy>				
+					<width>230</width>
+					<height>40</height>
+					<font>METF_DialogLargeBold</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>DialogTextFO</focusedcolor>
+					<align>center</align>
+					<texturefocus>ButtonFO2.png</texturefocus>
+					<label>[B]$ADDON[script.mbox 1026][/B]</label>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

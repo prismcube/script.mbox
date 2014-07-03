@@ -1,0 +1,57 @@
+<window>
+	<defaultcontrol always="true">301</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<zorder>99</zorder>	
+	<controls>
+		<control type="group">
+			<posx>380</posx>
+			<posy>235</posy>
+			<control type="image" id="9001">
+				<include>SmallDialogBackground</include>
+			</control>
+			<control type="label" id="100">
+				<include>SmallDialogTitle</include>
+			</control>
+			<control type="label" id="200">
+				<description>Message</description>
+				<posx>20</posx>
+				<posy>90</posy>
+				<width>480</width>
+				<height>30</height>
+				<align>center</align>				
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="button" id="301">
+				<description>Cancel</description>
+				<posx>170</posx>
+				<posy>168</posy>
+				<width>180</width>
+				<height>35</height>
+				<font>font14</font>
+				<textcolor>grey2</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<label>$ADDON[script.mbox 1026]</label>
+				<onleft>303</onleft>
+				<onright>303</onright>
+				<onup>303</onup>
+				<ondown>303</ondown>
+			</control>
+			<control type="button" id="303">
+				<description>Close</description>
+				<posx>470</posx>
+				<posy>20</posy>
+				<width>20</width>
+				<height>20</height>
+				<texturefocus>close.png</texturefocus>
+				<texturenofocus>close_nofocus.png</texturenofocus>
+				<onleft>301</onleft>
+				<onright>301</onright>
+				<onup>301</onup>
+				<ondown>301</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

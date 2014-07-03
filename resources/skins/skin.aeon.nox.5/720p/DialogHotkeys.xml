@@ -1,0 +1,124 @@
+<window>
+	<defaultcontrol always="true">301</defaultcontrol>
+	<onload>SetProperty(ItemHeight,35)</onload>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="9000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>600</posx>
+			<posy>200</posy>
+			<control type="image">
+				<description>Top Panel</description>
+				<posx>0</posx>
+				<posy>-30</posy>
+				<width>362</width>
+				<height>30</height>
+				<texture border="20,13,21,1">dialog_top2.png</texture>
+			</control>
+			<control type="image" id="100">
+				<description>Middle Panel</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>362</width>
+				<texture border="30">button_shutdown_nofocus.png</texture>
+			</control>
+			<control type="image" id="101">
+				<description>Bottom Panel</description>
+				<posx>0</posx>
+				<width>362</width>
+				<height>25</height>
+				<texture border="20,1,21,13">dialog_bottom2.png</texture>
+			</control>
+			<control type="list" id="102">
+				<posx>25</posx>
+				<posy>-1</posy>
+				<width>310</width>
+				<height>420</height>						<!--Change Property ItemHeight * MAX_ITEM(12) -->
+				<itemlayout width="310" height="35" >
+					<control type="image">
+						<posx>0</posx>
+						<posy>1</posy>
+						<width>310</width>
+						<height>35</height>
+						<texture border="5">button_middle3.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>
+						<texture>$INFO[ListItem.Property(KeyIcon1)]</texture>
+					</control>
+					<control type="image">
+						<posx>38</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>
+						<texture>$INFO[ListItem.Property(KeyIcon2)]</texture>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>grey</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+					</control>		
+				</itemlayout>
+				<focusedlayout width="310" height="35">
+					<control type="image">
+						<posx>0</posx>
+						<posy>1</posy>
+						<width>310</width>
+						<height>35</height>
+						<texture border="5">button_middle3.png</texture>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>
+						<texture>$INFO[ListItem.Property(KeyIcon1)]</texture>
+					</control>
+					<control type="image">
+						<posx>38</posx>
+						<posy>0</posy>
+						<width>35</width>
+						<height>35</height>
+						<texture>$INFO[ListItem.Property(KeyIcon2)]</texture>
+					</control>
+					<control type="label">
+						<posx>165</posx>
+						<posy>0</posy>
+						<width>310</width>
+						<height>35</height>
+						<font>font13</font>
+						<align>center</align>
+						<aligny>center</aligny>
+						<textcolor>white</textcolor>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="button" id="301">
+				<description>OK</description>
+				<posx>0</posx>
+				<posy>270</posy>
+				<width>180</width>
+				<height>26</height>
+				<font>font14</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texture border="4">listselect_fo.png</texture>
+				<label>$ADDON[script.mbox 1022]</label>
+			</control>
+		</control>
+	</controls>
+</window>

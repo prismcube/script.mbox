@@ -1,0 +1,101 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<defaultcontrol always="true">200</defaultcontrol>	
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<posx>320</posx>
+			<posy>150</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<width>640</width>
+				<height>300</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="group">
+				<control type="button" id="6995">
+					<description>Close Window button</description>
+					<posx>585</posx>
+					<posy>41</posy>
+					<width>25</width>
+					<height>25</height>
+					<texturefocus>new/exitbuttonFO.png</texturefocus>
+					<texturenofocus>new/exitbutton.png</texturenofocus>
+					<onleft>200</onleft>
+					<onright>202</onright>
+				</control>
+				<control type="label" id="3005">
+					<description>Title</description>
+					<posx>50</posx>
+					<posy>45</posy>
+					<width>530</width>
+					<height>30</height>
+					<font>METF_Menu</font>
+					<align>LEFT</align>
+					<aligny>center</aligny>
+					<textcolor>DialogTextFO</textcolor>
+				</control>
+			</control>
+
+			<!-- Channel Name -->
+			<control type="label" id="101">
+				<posx>50</posx>
+				<posy>85</posy>
+				<width>530</width>
+				<height>30</height>
+				<font>METF_MediaDetailsSmall</font>
+				<align>LEFT</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label></label>
+			</control>
+
+			<!-- Recording Name -->
+			<control type="label" id="102">
+				<posx>50</posx>
+				<posy>115</posy>
+				<width>530</width>
+				<height>30</height>
+				<font>METF_MediaDetailsSmall</font>
+				<align>LEFT</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label></label>
+			</control>
+
+			<control type="button" id="200">
+				<description>Yes</description>
+				<posx>70</posx>
+				<posy>215</posy>
+				<width>230</width>
+				<height>40</height>
+				<font>METF_DialogLargeBold</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<align>center</align>
+				<texturefocus>ButtonFO2.png</texturefocus>
+				<onleft>202</onleft>
+				<onright>202</onright>
+				<label>[B]$ADDON[script.mbox 1109][/B]</label>
+			</control>
+
+			<control type="button" id="202">
+				<description>Cancel</description>
+				<posx>340</posx>
+				<posy>215</posy>
+				<width>230</width>
+				<height>40</height>
+				<font>METF_DialogLargeBold</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<align>center</align>
+				<texturefocus>ButtonFO2.png</texturefocus>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<label>[B]$ADDON[script.mbox 1026][/B]</label>
+			</control>
+		</control>
+	</controls>
+</window>

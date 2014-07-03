@@ -1,0 +1,97 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<control type="image" id="9001">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>480</height>
+				<include>DialogBackground</include>
+			</control>
+			<control type="group">
+				<posy>8</posy>
+				<include>DialogCommonSetting</include>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>-20</posy>
+				<!-- Recording Name -->
+				<control type="label" id ="101">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>540</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<!-- Recording -->
+				<include>DialogSpinEx01</include>
+				<!-- Timeshift Duration -->
+				<include>DialogInput04</include>
+				<!-- Start Time -->
+				<include>DialogInput01</include>
+				<!-- End Time -->
+				<include>DialogInput02</include>
+				<!-- Duration -->
+				<include>DialogInput03</include>
+				<!-- Record Path -->
+				<include>DialogInput05</include>
+				<include>DialogInput06</include>
+				<control type="group">
+					<posx>-15</posx>
+					<posy>310</posy>
+					<control type="group" id="300">
+						<posx>0</posx>
+						<posy>0</posy>
+						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<texture>connected.png</texture>
+							<visible>substring(Window.Property(NetVolumeConnect),true)</visible>
+						</control>
+						<control type="image">
+							<posx>-30</posx>
+							<posy>10</posy>
+							<width>25</width>
+							<height>25</height>
+							<visible>!substring(Window.Property(NetVolumeConnect),true)</visible>
+							<texture>disconnected.png</texture>
+						</control>
+						<control type="progress" id="301">
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>100</width>
+							<height>16</height>
+							<texturebg border="2">osd/texturebg2.png</texturebg>
+						</control>
+						<control type="label" id="302">
+							<posx>110</posx>
+							<posy>2</posy>
+							<width>150</width>
+							<height>40</height>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[Window.Property(NetVolumeUse)]</label>
+							<textcolor>grey3</textcolor>
+							<font>font13</font>
+						</control>
+					</control>
+				</control>
+			</control>
+			<control type="group">
+				<posx>35</posx>
+				<posy>5</posy>
+				<include>DialogButtonOKCancel</include>
+			</control>
+		</control>
+	</controls>
+</window>

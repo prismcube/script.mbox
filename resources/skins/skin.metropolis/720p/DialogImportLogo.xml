@@ -1,0 +1,197 @@
+<window>
+	<defaultcontrol>110</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>240</posx>
+		<posy>100</posy>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+		<control type="image">
+			<description>background image</description>
+			<posx>-9</posx>
+			<posy>-20</posy>
+			<width>820</width>
+			<height>536</height>
+			<texture>frames/Menu_Glass2c.png</texture>
+			<colordiffuse>DialogBackgroundColor</colordiffuse>
+		</control>
+		<control type="label" id="102">
+			<description>Title</description>
+			<posx>40</posx>
+			<posy>22</posy>
+			<width>720</width>
+			<height>30</height>
+			<font>METF_Menu</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>DialogTextFO</textcolor>
+		</control>
+		<control type="button">
+			<description>Close Window button</description>
+			<posx>740</posx>
+			<posy>22</posy>
+			<width>25</width>
+			<height>25</height>
+			<label>-</label>
+			<font>-</font>
+			<onclick>PreviousMenu</onclick>
+			<texturefocus>new/exitbuttonFo.png</texturefocus>
+			<texturenofocus>new/exitbutton.png</texturenofocus>
+			<onleft>10</onleft>
+			<onright>10</onright>
+			<onup>10</onup>
+			<ondown>10</ondown>
+			<visible>system.getbool(input.enablemouse)</visible>
+		</control>
+		<control type="label" id="103">
+			<description>enable label</description>
+			<posx>20</posx>
+			<posy>65</posy>
+			<width>760</width>
+			<height>30</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>METF_PlotText</font>
+			<textcolor>ee3c95c8</textcolor>
+		</control>
+		<control type="radiobutton" id ="110">
+			<description>Channel activated</description>
+			<posx>40</posx>
+			<posy>110</posy>
+			<width>720</width>
+			<height>40</height>
+			<font>METF_DialogLarge</font>
+			<textcolor>white</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<shadowcolor>black</shadowcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+			<texturenofocus>-</texturenofocus>
+			<pulseonselect>no</pulseonselect>
+			<onup>119</onup>
+			<ondown>111</ondown>
+			<disabledcolor>grey3</disabledcolor>
+		</control>
+		<control type="group">
+			<posy>100</posy>
+			<control type="label" id="104">
+				<description>select way label</description>
+				<posx>20</posx>
+				<posy>70</posy>
+				<width>760</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>METF_PlotText</font>
+				<textcolor>ee3c95c8</textcolor>
+			</control>
+			<control type="label" id="117">
+				<description>load item label</description>
+				<posx>40</posx>
+				<posy>245</posy>
+				<width>720</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>METF_DialogLarge</font>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>110</posy>
+				<control type="button" id="111">
+					<description>USB Button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>METF_DialogLarge</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<onup>110</onup>
+					<ondown>114</ondown>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<disabledcolor>FFff5858</disabledcolor>
+				</control>
+				<control type="button" id="114">
+					<description>Internet Button</description>
+					<posx>0</posx>
+					<posy>45</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>METF_DialogLarge</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<onup>111</onup>
+					<ondown>115</ondown>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<disabledcolor>FFff5858</disabledcolor>
+				</control>
+				<control type="button" id="115">
+					<description>Clear Button</description>
+					<posx>0</posx>
+					<posy>90</posy>
+					<width>720</width>
+					<height>40</height>
+					<font>METF_DialogLarge</font>
+					<align>center</align>
+					<aligny>center</aligny>
+					<texturefocus border="1">ButtonFO2Wide.png</texturefocus>
+					<onup>114</onup>
+					<ondown>119</ondown>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<disabledcolor>FFff5858</disabledcolor>
+				</control>
+			</control>
+		</control>
+		<control type="group" id="9001">
+			<posx>190</posx>
+			<posy>435</posy>
+			<control type="button" id="118">
+				<description>Ok Button</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>230</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>ButtonFO2.png</texturefocus>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>METF_DialogLargeBold</font>
+				<onup>115</onup>
+				<onleft>119</onleft>
+				<onright>119</onright>
+				<ondown>110</ondown>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<disabledcolor>FFff5858</disabledcolor>
+			</control>
+			<control type="button" id="119">
+				<description>Cancel Button</description>
+				<posx>210</posx>
+				<posy>0</posy>
+				<width>230</width>
+				<height>40</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<texturefocus>ButtonFO2.png</texturefocus>
+				<label>$ADDON[script.mbox 1026]</label>
+				<font>METF_DialogLargeBold</font>
+				<onup>115</onup>
+				<onleft>118</onleft>
+				<onright>118</onright>
+				<ondown>110</ondown>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<disabledcolor>FFff5858</disabledcolor>
+			</control>
+		</control>
+	</controls>
+</window>

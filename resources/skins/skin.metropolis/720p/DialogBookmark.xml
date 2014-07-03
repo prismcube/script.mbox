@@ -1,0 +1,309 @@
+<window>
+	<defaultcontrol always="true">3850</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<include>DefaultDialogCloseEffect</include>
+			<posx>350</posx>
+			<posy>50</posy>
+			<control type="image">
+				<description>background image</description>
+				<posx>-33</posx>
+				<posy>-30</posy>
+				<width>661</width>
+				<height>637</height>
+				<texture>frames/Menu_Glass2c.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="button" id="3800">
+				<description>Close Window button</description>
+				<posx>568</posx>
+				<posy>20</posy>
+				<width>25</width>
+				<height>25</height>
+				<font>-</font>
+				<texturefocus>new/exitbuttonFO.png</texturefocus>
+				<texturenofocus>new/exitbutton.png</texturenofocus>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3802</onup>
+				<ondown>3850</ondown>
+			</control>
+			<control type="label" id="3801">
+				<description>Title</description>
+				<posx>20</posx>
+				<posy>23</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>METF_Menu</font>
+				<label>$INFO[Control.GetLabel]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>DialogTextFO</textcolor>
+			</control>
+			<control type="label" id="3805">
+				<posx>20</posx>
+				<posy>73</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>METF_MediaDetailsSmall</font>
+				<label>$INFO[Control.GetLabel]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+			</control>
+			<control type="label" id="3803">
+				<textcolor>white</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
+			</control>
+			<control type="label">
+				<posx>550</posx>
+				<posy>470</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>METF_HeadingDetails</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>WeatherHeading</textcolor>
+				<label>([COLOR=ee3c95c8]$INFO[Control.GetLabel(3803)][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=ee3c95c8]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(3850)</visible>
+			</control>
+			<control type="button" id="3802">
+				<posx>21</posx>
+				<posy>493</posy>
+				<width>230</width>
+				<height>40</height>
+				<label>$ADDON[script.mbox 1022]</label>
+				<font>METF_DialogLargeBold</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>DialogTextFO</focusedcolor>
+				<align>center</align>
+				<texturefocus>ButtonFO2.png</texturefocus>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>3800</ondown>
+			</control>
+			<!-- Left Key Comment -->
+			<control type="group">
+				<posx>21</posx>
+				<posy>539</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture flipx="true">OSDPlayNF.png</texture>
+				</control>
+				<control type="label">
+					<posx>20</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>30</height>
+					<font>METF_DialogSmall</font>
+					<align>left</align>
+					<scroll>true</scroll>
+					<textcolor>white</textcolor>
+					<label>$ADDON[script.mbox 1138]</label>
+				</control>
+			</control>
+			<control type="list" id="3850">
+				<posx>20</posx>
+				<posy>123</posy>
+				<width>600</width>
+				<height>350</height>
+				<onleft>3802</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>3850</ondown>
+				<pagecontrol>3851</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<focusposition>0</focusposition>
+				<movement>2</movement>
+				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
+				<itemlayout height="70" width="590">
+					<!-- Thumbnail and Lock -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Selection Icon -->					
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(iMark),True)</visible>
+					</control>
+
+					<!-- Bookmark Time -->
+					<control type="label">
+						<posx>220</posx>
+						<posy>5</posy>
+						<width>200</width>
+						<height>30</height>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Total -->
+					<control type="label">
+						<posx>320</posx>
+						<posy>5</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>/ $INFO[ListItem.Property(RecTotal)]</label>
+					</control>
+					<control type="progress">
+						<posx>130</posx>
+						<posy>45</posy>
+						<width>380</width>
+						<height>18</height>
+						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
+						<progress>percent</progress>
+						<visible>substring(ListItem.Property(iPos),true)</visible>
+					</control>
+
+					<!-- Recording Date -->
+					<control type="label">
+						<posx>510</posx>
+						<posy>5</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>METF_HeadingDetails</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="70" width="590">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>530</width>
+						<height>71</height>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<include>DefaultVisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>530</width>
+						<height>71</height>
+						<texture>ButtonFO2Wide.png</texture>
+					</control>
+					<!-- Thumbnail and Lock -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Selection Icon -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(iMark),True)</visible>
+					</control>
+					<!-- Bookmark Time -->
+					<control type="label">
+						<posx>220</posx>
+						<posy>5</posy>
+						<width>200</width>
+						<height>30</height>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- Total -->
+					<control type="label">
+						<posx>320</posx>
+						<posy>5</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>METF_DialogLarge</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>/ $INFO[ListItem.Property(RecTotal)]</label>
+					</control>
+
+					<control type="progress">
+						<description>progress control</description>
+						<posx>130</posx>
+						<posy>45</posy>
+						<width>380</width>
+						<height>18</height>
+						<texturebg>osd/osd_progress_back2.png</texturebg>
+						<lefttexture>osd/osd_progress_left2.png</lefttexture>
+						<midtexture>osd/osd_progress_mid2.png</midtexture>
+						<righttexture>osd/osd_progress_right2.png</righttexture>
+						<colordiffuse>DialogProgressBar</colordiffuse>
+						<progress>percent</progress>
+						<visible>substring(ListItem.Property(iPos),true)</visible>
+					</control>
+					<!-- Recording Date -->
+					<control type="label">
+						<posx>510</posx>
+						<posy>5</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>METF_HeadingDetails</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="3851">
+				<posx>558</posx>
+				<posy>120</posy>
+				<width>25</width>
+				<height>361</height>
+				<include>DefaultWindowFade</include>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+				<onleft>3850</onleft>
+				<onright>3850</onright>
+				<ondown></ondown>
+				<onup></onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control>
+		</control>
+	</controls>
+</window>
