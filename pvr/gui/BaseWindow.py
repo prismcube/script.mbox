@@ -530,16 +530,16 @@ class BaseWindow( BaseObjectWindow ) :
 
 		isAvail = E_DEFAULT_RECORD_PATH_NOT_AVAILABLE
 		hddStatus = CheckHdd( )
-		defPath = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		defPath = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		LOG_TRACE( 'Record Default Path Change enum[%s] hdd[%s]'% ( defPath, hddStatus ) )
 
-		if defPath == 'Internal' :
+		if defPath == 0 : #'Internal'
 			if hddStatus :
 				isAvail = E_DEFAULT_RECORD_PATH_RESERVED
 			else :
 				isAvail = E_DEFAULT_RECORD_PATH_NOT_AVAILABLE
 
-		elif defPath == 'Network' :
+		elif defPath == 1 : #'Network'
 			netVolumeList = self.mDataCache.Record_GetNetworkVolume( True )
 			if netVolumeList and len( netVolumeList ) > 0 :
 				isDefaultSet = False

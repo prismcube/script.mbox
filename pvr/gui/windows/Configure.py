@@ -844,7 +844,7 @@ class Configure( SettingWindow ) :
 		xbmc.executebuiltin( 'ActivateWindow(busydialog)' )
 
 		RemoveDirectory( E_DEFAULT_NETWORK_VOLUME_SHELL )
-		defPath_old = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		defPath_old = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		volumeCount = len( volumeList )
 		defVolume = None
 		count = 0
@@ -916,7 +916,7 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Fail' ), failItem[1:] )
 			dialog.doModal( )
 
-		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		if defPath_old != defPath_cur :
 			lblLine = MR_LANG( 'Recordings will be temporarily stored on your hard drive' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

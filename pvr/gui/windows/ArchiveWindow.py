@@ -1008,11 +1008,11 @@ class ArchiveWindow( BaseWindow ) :
 
 	def DoRefreshNetVolume( self, aExtenal = False ) :
 		self.OpenBusyDialog( )
-		defPath_old = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		defPath_old = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		retVal, lblLine = self.mDataCache.InitNetworkVolume( )
 		self.CloseBusyDialog( )
 
-		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetPropString( )
+		defPath_cur = ElisPropertyEnum( 'Record Default Path Change', self.mCommander ).GetProp( )
 		if defPath_old != defPath_cur :
 			lblLine = MR_LANG( 'Recordings will be temporarily stored on your hard drive' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
