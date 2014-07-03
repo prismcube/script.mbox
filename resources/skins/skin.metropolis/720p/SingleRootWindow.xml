@@ -2637,6 +2637,14 @@ Search for window name
 									<colordiffuse>89FFFFFF</colordiffuse>
 									<visible>substring(Window.Property(iTuner2),true)</visible>
 								</control>
+								<control type="image">
+									<posx>12</posx>
+									<posy>8</posy>
+									<width>80</width>
+									<height>40</height>
+									<texture>dvb_T.png</texture>
+									<visible>substring(Window.Property(iTuner_T),true)</visible>
+								</control>
 							</control>
 							<control type="group">
 								<posx>0</posx>
