@@ -56,7 +56,7 @@
 			</control>
 			<!-- OK Button -->
 			<control type="button" id="100">
-				<posx>40</posx>
+				<posx>46</posx>
 				<posy>490</posy>
 				<width>230</width>
 				<height>40</height>
@@ -73,7 +73,7 @@
 			</control>
 			<!-- Left Key Comment -->
 			<control type="group">
-				<posx>40</posx>
+				<posx>46</posx>
 				<posy>532</posy>
 				<control type="image">
 					<posx>0</posx>
