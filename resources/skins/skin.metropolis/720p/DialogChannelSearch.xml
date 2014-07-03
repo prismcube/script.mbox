@@ -321,7 +321,7 @@
 				<height>30</height>
 			</control>
 			<control type="label" id="405">
-				<description>TransponderInfo</description>
+				<description>Back Button Description</description>
 				<posx>90</posx>
 				<posy>583</posy>
 				<width>1000</width>

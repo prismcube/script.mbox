@@ -72,7 +72,7 @@
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 			<control type="button" id="3802">
-				<posx>30</posx>
+				<posx>21</posx>
 				<posy>493</posy>
 				<width>230</width>
 				<height>40</height>
@@ -89,7 +89,7 @@
 			</control>
 			<!-- Left Key Comment -->
 			<control type="group">
-				<posx>30</posx>
+				<posx>21</posx>
 				<posy>539</posy>
 				<control type="image">
 					<posx>0</posx>

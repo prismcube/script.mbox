@@ -3090,7 +3090,7 @@ Search for window name
 						<control type="label">
 							<posx>105</posx>
 							<posy>0</posy>
-							<width>150</width>
+							<width>160</width>
 							<height>10</height>
 							<font>METF_DialogSmall</font>
 							<textcolor>white</textcolor>
@@ -4481,7 +4481,7 @@ Search for window name
 						<!-- Misc Option Submanu -->
 						<control type="radiobutton" id="3300200">
 							<description>Stack Toggle</description>
-							<textwidth>170</textwidth>
+							<textwidth>160</textwidth>
 							<include>DefaultButtonMediaSubCommonValues</include>
 							<label>$ADDON[script.mbox 1008]</label>
 						</control>

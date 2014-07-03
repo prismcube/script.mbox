@@ -493,7 +493,7 @@
 		<height>40</height>
 		<width>220</width>
 		<textoffsetx>10</textoffsetx>
-		<textwidth>235</textwidth>
+		<textwidth>200</textwidth>
 		<align>left</align>
 		<aligny>center</aligny>
 		<font>METF_SettingsDetail</font>
