@@ -1,0 +1,45 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<posx>-4</posx>
+				<posy>-26</posy>
+				<width>618</width>
+				<height>370</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
+			<control type="group" id="9000">
+				<posx>42</posx>
+				<posy>-20</posy>
+				<include>DialogInput01</include>
+				<control type="image">
+					<posx>0</posx>
+					<posy>119</posy>
+					<width>520</width>
+					<height>3</height>
+					<texture>VideoInfoLine.png</texture>
+					<colordiffuse>FilesDividerDiffuse</colordiffuse>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>12</posy>
+					<include>DialogInput02</include>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>12</posy>
+					<include>DialogSpinEx01</include>
+					<include>DialogSpinEx02</include>
+					<include>DialogSpinEx03</include>
+					<include>DialogSpinEx04</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

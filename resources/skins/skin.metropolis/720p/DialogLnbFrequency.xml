@@ -1,0 +1,34 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<posx>-20</posx>
+				<posy>-18</posy>
+				<width>630</width>
+				<height>313</height>
+				<texture>frames/Dialog_Glass2Panel.png</texture>
+				<colordiffuse>DialogBackgroundColor</colordiffuse>
+			</control>
+			<control type="group">
+				<posx>-5</posx>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+			<control type="group" id="9000">
+				<posx>30</posx>
+				<posy>-13</posy>
+				<include>DialogInput01</include>
+				<include>DialogInput02</include>
+				<include>DialogInput03</include>
+				<control type="group">
+					<posx>-17</posx>
+					<posy>-13</posy>
+					<include>DefaultSettingDialogButtonOKCancel</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
