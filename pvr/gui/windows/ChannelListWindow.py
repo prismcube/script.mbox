@@ -2333,7 +2333,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mShowEPGInfo and self.mViewMode != WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 					epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 					if epgEvent :
-						channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
+						channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_YELLOW, epgEvent.mEventName, E_TAG_COLOR_END )
 
 				listItem = xbmcgui.ListItem( '%04d'% iChNumber, '%s %s'% ( channelName, hdLabel ) )
 				if len( iChannel.mName ) > 30 :
@@ -2721,7 +2721,7 @@ class ChannelListWindow( BaseWindow ) :
 						channelName = '%s'% self.mNavChannel.mName
 						epgEvent = self.GetEPGByIds( self.mNavChannel.mSid, self.mNavChannel.mTsid, self.mNavChannel.mOnid )
 						if epgEvent :
-							channelName = '%s %s(%s)%s'% ( self.mNavChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
+							channelName = '%s %s(%s)%s'% ( self.mNavChannel.mName, E_TAG_COLOR_YELLOW, epgEvent.mEventName, E_TAG_COLOR_END )
 
 						iChNumber = self.mNavChannel.mNumber
 						if E_V1_2_APPLY_PRESENTATION_NUMBER :
@@ -2818,7 +2818,7 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mShowEPGInfo :
 						epgEvent = self.GetEPGByIds( iChannel.mSid, iChannel.mTsid, iChannel.mOnid )
 						if epgEvent :
-							channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_GREEN, epgEvent.mEventName, E_TAG_COLOR_END )
+							channelName = '%s %s(%s)%s'% ( iChannel.mName, E_TAG_COLOR_YELLOW, epgEvent.mEventName, E_TAG_COLOR_END )
 							listItem.setProperty( 'percent', '%s'% self.GetEPGDurationProgress( epgEvent.mStartTime, epgEvent.mDuration ) )
 							listItem.setProperty( 'iPos', E_TAG_TRUE )
 						else :

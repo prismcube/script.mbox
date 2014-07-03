@@ -416,6 +416,7 @@ E_TAG_COLOR_RED   			= '[COLOR red]'
 E_TAG_COLOR_GREEN 			= '[COLOR green]'
 E_TAG_COLOR_BLUE 			= '[COLOR blue]'
 E_TAG_COLOR_GREY 			= '[COLOR grey]'
+E_TAG_COLOR_YELLOW			= '[COLOR=FFDAA520]'
 E_TAG_COLOR_END   			= '[/COLOR]'
 E_TAG_COLOR_HD_LABEL        = '[COLOR orange]%s[/COLOR]'% ( '<HD>' )
 E_TAG_SET_SELECT_POSITION 	= 'selectItem'
