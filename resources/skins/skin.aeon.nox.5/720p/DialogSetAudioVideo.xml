@@ -1,0 +1,37 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<controls>
+		<control type="group" id="8000">
+			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
+			<control type="image" id="9001">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>400</height>
+				<include>DialogBackground</include>
+			</control>
+			<control type="group">
+				<posy>5</posy>
+				<include>DialogCommonSetting</include>
+			</control>
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<include>DialogInput01</include>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogInput02</include>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>20</posy>
+					<include>DialogSpinEx01</include>
+					<include>DialogSpinEx02</include>
+					<include>DialogSpinEx03</include>
+					<include>DialogSpinEx04</include>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>

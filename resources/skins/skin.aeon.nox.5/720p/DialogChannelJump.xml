@@ -1,0 +1,57 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="group">
+			<posx>400</posx>
+			<posy>245</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>480</width>
+				<height>230</height>
+				<include>DialogBackground</include>
+			</control>
+			<control type="label" id="210">
+				<description>Channel Number</description>
+				<posx>30</posx>
+				<posy>35</posy>
+				<width>420</width>
+				<height>30</height>
+				<font>font16</font>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="label" id="211">
+				<description>Channel Name</description>
+				<posx>30</posx>
+				<posy>80</posy>
+				<width>420</width>
+				<height>30</height>
+				<font>font30</font>
+				<textcolor>FF6db9e5</textcolor>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>		
+			<control type="label" id="212">
+				<description>EPG Name</description>
+				<posx>30</posx>
+				<posy>125</posy>
+				<width>420</width>
+				<height>30</height>
+				<font>font15</font>
+				<label>$ADDON[script.mbox 1016]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="progress" id="213">
+				<posx>40</posx>
+				<posy>170</posy>
+				<width>400</width>
+				<height>15</height>
+				<texturebg border="2">osd/texturebg2.png</texturebg>
+			</control>
+		</control>
+	</controls>
+</window>
