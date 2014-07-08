@@ -4401,7 +4401,7 @@
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>4</posx>
+							<posx>5</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
@@ -4541,7 +4541,7 @@
 							<visible>substring(ListItem.Property(iNetVolumeUSB),True)</visible>
 						</control>
 						<control type="label">
-							<posx>4</posx>
+							<posx>5</posx>
 							<posy>-8</posy>
 							<width>50</width>
 							<height>40</height>
