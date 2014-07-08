@@ -9,8 +9,8 @@
 			<posx>335</posx>
 			<posy>100</posy>
             <include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>100</posy>
 				<width>610</width>
@@ -28,7 +28,7 @@
 					<texture>GlassTitleBar.png</texture>
 				</control>
 				<control type="button" id="6995">
-					<description>Close Window button</description>
+					<description>Close Window</description>
 					<posx>520</posx>
 					<posy>13</posy>
 					<width>64</width>
@@ -39,7 +39,7 @@
 					<onright>202</onright>
 				</control>
 				<control type="label" id="3005">
-					<description>header label</description>
+					<description>Title</description>
 					<posx>20</posx>
 					<posy>22</posy>
 					<width>570</width>
@@ -83,7 +83,7 @@
 			</control>
 
 			<control type="button" id="200">
-				<description>Yes button</description>
+				<description>Yes</description>
 				<posx>70</posx>
 				<posy>270</posy>				
 				<width>200</width>
@@ -100,7 +100,7 @@
 			</control>
 
 			<control type="button" id="202">
-				<description>Cancel button</description>
+				<description>Cancel</description>
 				<posx>340</posx>
 				<posy>270</posy>				
 				<width>200</width>
@@ -118,4 +118,3 @@
 		</control>
 	</controls>
 </window>
-

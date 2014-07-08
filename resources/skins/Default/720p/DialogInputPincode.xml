@@ -7,6 +7,7 @@
 			<posx>480</posx>
 			<posy>145</posy>
             <include>DefaultDialogCloseEffect</include>
+            <!-- Panel -->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -43,7 +44,7 @@
 				<aligny>center</aligny>
 			</control>
 			<control type="label" id="1">
-				<description>dialog Heading</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>20</posy>
 				<width>340</width>
@@ -59,7 +60,7 @@
 				<posx>40</posx>
 				<posy>150</posy>
 				<control type="button" id="101">
-					<description>1 button</description>
+					<description>1</description>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>60</width>
@@ -76,7 +77,7 @@
 					<ondown>106</ondown>
 				</control>
 				<control type="button" id="102">
-					<description>2 button</description>
+					<description>2</description>
 					<posx>60</posx>
 					<posy>0</posy>
 					<width>60</width>
@@ -93,7 +94,7 @@
 					<ondown>107</ondown>
 				</control>
 				<control type="button" id="103">
-					<description>3 button</description>
+					<description>3</description>
 					<posx>120</posx>
 					<posy>0</posy>
 					<width>60</width>
@@ -110,7 +111,7 @@
 					<ondown>108</ondown>
 				</control>
 				<control type="button" id="104">
-					<description>4 button</description>
+					<description>4</description>
 					<posx>180</posx>
 					<posy>0</posy>
 					<width>60</width>
@@ -127,7 +128,7 @@
 					<ondown>109</ondown>
 				</control>
 				<control type="button" id="105">
-					<description>5 button</description>
+					<description>5</description>
 					<posx>240</posx>
 					<posy>0</posy>
 					<width>60</width>
@@ -144,7 +145,7 @@
 					<ondown>100</ondown>
 				</control>
 				<control type="button" id="106">
-					<description>6 button</description>
+					<description>6</description>
 					<posx>0</posx>
 					<posy>60</posy>
 					<width>60</width>
@@ -161,7 +162,7 @@
 					<ondown>101</ondown>
 				</control>
 				<control type="button" id="107">
-					<description>7 button</description>
+					<description>7</description>
 					<posx>60</posx>
 					<posy>60</posy>
 					<width>60</width>
@@ -178,7 +179,7 @@
 					<ondown>102</ondown>
 				</control>
 				<control type="button" id="108">
-					<description>6 button</description>
+					<description>8</description>
 					<posx>120</posx>
 					<posy>60</posy>
 					<width>60</width>
@@ -195,7 +196,7 @@
 					<ondown>103</ondown>
 				</control>
 				<control type="button" id="109">
-					<description>7 button</description>
+					<description>9</description>
 					<posx>180</posx>
 					<posy>60</posy>
 					<width>60</width>
@@ -212,7 +213,7 @@
 					<ondown>104</ondown>
 				</control>
 				<control type="button" id="100">
-					<description>0 button</description>
+					<description>0</description>
 					<posx>240</posx>
 					<posy>60</posy>
 					<width>60</width>
@@ -232,4 +233,3 @@
 		</control>
 	</controls>
 </window>
-

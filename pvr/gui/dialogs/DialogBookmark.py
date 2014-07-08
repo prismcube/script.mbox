@@ -327,20 +327,17 @@ class DialogBookmark( BaseDialog ) :
 
 		aPos = self.mCtrlList.getSelectedPosition( )
 
-		#aready mark is mark delete
 		for i in self.mMarkList :
 			if i == aPos :
 				self.mMarkList.pop( idx )
 				isExist = True
 			idx += 1
 
-		#do not exist is append mark
 		if isExist == False : 
 			self.mMarkList.append( aPos )
 
 		listItem = self.mCtrlList.getListItem( aPos )
 
-		#mark toggle: disable/enable
 		if listItem.getProperty( E_XML_PROPERTY_MARK ) == E_TAG_TRUE : 
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 		else :

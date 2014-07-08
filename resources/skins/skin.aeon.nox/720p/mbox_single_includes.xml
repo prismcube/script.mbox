@@ -931,7 +931,7 @@
 	<include name="DefaultFooterLabelValues">
 		<posx>34</posx>
 		<posy>0</posy>
-		<width>170</width>
+		<width>160</width>
 		<height>20</height>
 		<font>Font_Reg14</font>
 	</include>

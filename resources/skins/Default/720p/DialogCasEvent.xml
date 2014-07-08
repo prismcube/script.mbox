@@ -8,8 +8,8 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>335</posx>
 			<posy>160</posy>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
@@ -25,7 +25,7 @@
 				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="button" id="300">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>520</posx>
 				<posy>9</posy>
 				<width>64</width>
@@ -40,7 +40,7 @@
 				<ondown>9000</ondown>
 			</control>
 			<control type="label" id="301">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>80</posx>
 				<posy>21</posy>
 				<width>440</width>

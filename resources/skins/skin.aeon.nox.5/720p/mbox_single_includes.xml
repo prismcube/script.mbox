@@ -760,7 +760,7 @@
 	<include name="FooterLabelCommonValues">
 		<posx>34</posx>
 		<posy>0</posy>
-		<width>170</width>
+		<width>160</width>
 		<height>20</height>
 		<font>font13</font>
 	</include>

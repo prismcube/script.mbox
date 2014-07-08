@@ -7,9 +7,8 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>335</posx>
 			<posy>90</posy>
-            <!--include>DefaultDialogCloseEffect</include-->
+			<!-- Panel -->
 			<control type="image" id="100">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>100</posy>
 				<width>610</width>
@@ -31,8 +30,7 @@
 			<onup>9000</onup>
 			<ondown>9000</ondown>
 			<defaultcontrol always="true">500</defaultcontrol>
-			
-			<!-- RECORD 1 -->
+			<!-- Recording #1 -->
 			<control type="group" id="500">		
 				<posx>0</posx>
 				<posy>0</posy>
@@ -41,7 +39,6 @@
 				<visible>true</visible>				
 				<defaultcontrol always="true">501</defaultcontrol>
 				<control type="button" id="501">
-					<description>Button Icon</description>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>550</width>
@@ -93,7 +90,6 @@
 					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="505" >
-					<description>progress control</description>
 					<posx>430</posx>
 					<posy>10</posy>
 					<width>100</width>
@@ -101,7 +97,7 @@
 				</control>					
 			</control>
 
-			<!-- RECORD 2 -->			
+			<!-- Recording #2 -->
 			<control type="group" id="510">		
 				<posx>0</posx>
 				<posy>0</posy>
@@ -109,7 +105,6 @@
 				<height>70</height>
 				<defaultcontrol always="true">511</defaultcontrol>
 				<control type="button" id="511">
-					<description>Button Icon</description>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>550</width>
@@ -161,7 +156,6 @@
 					<label>$ADDON[script.mbox 1024]</label>
 				</control>
 				<control type="progress" id="515" >
-					<description>progress control</description>
 					<posx>430</posx>
 					<posy>10</posy>
 					<width>100</width>
@@ -169,14 +163,13 @@
 				</control>					
 			</control>
 			
-			<!-- CANCEL -->			
 			<control type="group" id="520">		
 				<posx>0</posx>
 				<posy>70</posy>
 				<width>550</width>
 				<height>70</height>
 				<control type="button" id="521">
-					<description>Yes button</description>
+					<description>Cancel</description>
 					<posx>160</posx>
 					<posy>17</posy>				
 					<width>250</width>
@@ -193,5 +186,3 @@
 		</control>
 	</controls>
 </window>
-
-

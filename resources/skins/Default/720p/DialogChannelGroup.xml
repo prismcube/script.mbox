@@ -1,5 +1,4 @@
 <window>
-	<!--defaultcontrol always="true">1003850</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
@@ -7,8 +6,8 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>375</posx>
 			<posy>85</posy>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>530</width>
@@ -20,12 +19,10 @@
 				<posy>16</posy>
 				<width>430</width>
 				<height>40</height>
-				<!--aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture-->
 				<texture>dialogheader.png</texture>
 			</control>
 			<control type="button" id="3901">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>440</posx>
 				<posy>15</posy>
 				<width>64</width>
@@ -39,7 +36,7 @@
 				<ondown>1003950</ondown>
 			</control>
 			<control type="label" id="3902">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>20</posy>
 				<width>470</width>
@@ -81,9 +78,8 @@
 				<label>([COLOR=blue]$INFO[Control.GetLabel(3903)]/$INFO[Container(1003960).NumItems][/COLOR]) $ADDON[script.mbox 1106] - $ADDON[script.mbox 1107] ([COLOR=blue]$INFO[Container(1003960).CurrentPage]/$INFO[Container(1003960).NumPages][/COLOR])</label>
 				<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
 			</control>
-
-			<!-- ok button and key comment -->
 			<control type="button" id="3904">
+				<description>OK</description>
 				<posx>20</posx>
 				<posy>485</posy>
 				<width>200</width>
@@ -101,7 +97,8 @@
 				<ondown>3901</ondown>
 				<visible>false</visible>
 			</control>
-			<!-- left key comment -->
+
+			<!-- Hotkey -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>540</posy>
@@ -127,7 +124,7 @@
 				</control>
 			</control>
 
-			<!-- color info -->
+			<!-- Color Keys -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>510</posy>
@@ -217,6 +214,7 @@
 					</control>
 				</control>
 			</control>
+			<!-- Channels -->
 			<include>DefaultSelectGroup</include>
 		</control>
 	</controls>

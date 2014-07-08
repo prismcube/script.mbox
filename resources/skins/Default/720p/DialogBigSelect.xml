@@ -8,8 +8,8 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>360</posx>
 			<posy>50</posy>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>600</width>
@@ -25,7 +25,7 @@
 				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="button" id="109">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>520</posx>
 				<posy>9</posy>
 				<width>64</width>
@@ -39,7 +39,7 @@
 				<ondown>9001</ondown>
 			</control>
 			<control type="label" id="101">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>20</posy>
 				<width>570</width>
@@ -127,7 +127,7 @@
 						<height>68</height>
 						<texture border="5">button-nofocus.png</texture>
 					</control>
-					<!-- Mark -->					
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -162,7 +162,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 					</control>
-					<!-- StartTime -->
+					<!-- Start Time -->
 					<control type="label">
 						<posx>500</posx>
 						<posy>0</posy>
@@ -198,7 +198,7 @@
 						<texture border="5">StackFO_white2.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
-					<!-- Mark -->					
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -233,7 +233,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 					</control>
-					<!-- StartTime -->
+					<!-- Start Time -->
 					<control type="label">
 						<posx>500</posx>
 						<posy>0</posy>
@@ -282,4 +282,3 @@
 		</control>
 	</controls>
 </window>
-

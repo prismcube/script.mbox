@@ -7,6 +7,7 @@
 		<include>DefaultDialogCloseEffect</include>			
 			<posx>90</posx>
 			<posy>30</posy>
+			<!-- Panel -->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -16,7 +17,7 @@
 			</control>
 			<control type="group">
 				<control type="button" id="301">
-					<description>Prev button</description>
+					<description>Prev</description>
 					<posx>80</posx>
 					<posy>450</posy>
 					<width>60</width>
@@ -30,7 +31,7 @@
 					<visible>substring(Window.Property(EPGPrev),true)</visible>
 				</control>
 				<control type="button" id="302">
-					<description>Next button</description>
+					<description>Next</description>
 					<posx>970</posx>
 					<posy>450</posy>
 					<width>60</width>
@@ -128,27 +129,28 @@
 				<orientation>vertical</orientation>
 			</control>
 			<control type="label" id="102">
+				<description>Start Time</description>
 				<posx>830</posx>
 				<posy>102</posy>
-				<description>start time</description>
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGTime)]</label>
 			</control>
 			<control type="label">
+				<description>EPG Date</description>
 				<posx>830</posx>
 				<posy>82</posy>
-				<description>epg date</description>
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGDate)]</label>
 			</control>
 			<control type="label">
+				<description>EPG Duration</description>
 				<posx>970</posx>
 				<posy>102</posy>
-				<description>epg duration</description>
 				<font>font13</font>
 				<label>$INFO[Window.Property(EPGDuration)]</label>
 			</control>
 
+			<!-- AV Info -->
 			<control type="group">
 				<control type="grouplist">
 					<posx>300</posx>
@@ -220,7 +222,6 @@
 					</control>
 				</control>
 			</control>
-
 		</control>
 	</controls>
 </window>

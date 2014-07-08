@@ -807,7 +807,7 @@ Search for window name
 					<control type="label">
 						<posx>55</posx>
 						<posy>4</posy>
-						<width>550</width>
+						<width>160</width>
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
@@ -827,7 +827,7 @@ Search for window name
 					<control type="label">
 						<posx>70</posx>
 						<posy>4</posy>
-						<width>550</width>
+						<width>160</width>
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
@@ -847,7 +847,7 @@ Search for window name
 					<control type="label">
 						<posx>70</posx>
 						<posy>4</posy>
-						<width>550</width>
+						<width>160</width>
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
@@ -867,7 +867,7 @@ Search for window name
 					<control type="label">
 						<posx>70</posx>
 						<posy>4</posy>
-						<width>550</width>
+						<width>160</width>
 						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
@@ -4054,7 +4054,7 @@ Search for window name
 				<control type="label">
 					<posx>55</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -4078,7 +4078,7 @@ Search for window name
 				<control type="label">
 					<posx>70</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -5098,7 +5098,7 @@ Search for window name
 				<control type="label">
 					<posx>55</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -5121,7 +5121,7 @@ Search for window name
 				<control type="label">
 					<posx>70</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -6253,7 +6253,7 @@ Search for window name
 				<control type="label">
 					<posx>58</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -6277,7 +6277,7 @@ Search for window name
 				<control type="label">
 					<posx>73</posx>
 					<posy>4</posy>
-					<width>550</width>
+					<width>160</width>
 					<height>20</height>
 					<font>METF_HelpText</font>
 					<textcolor>WeatherHeading</textcolor>
@@ -6519,9 +6519,10 @@ Search for window name
 					<control type="label">
 						<posx>55</posx>
 						<posy>4</posy>
+						<width>160</width>
+						<height>20</height>
 						<font>METF_HelpText</font>
 						<textcolor>WeatherHeading</textcolor>
-						<width>550</width>
 						<label>$ADDON[script.mbox 1101]</label>
 					</control>
 				</control>
@@ -7238,10 +7239,10 @@ Search for window name
 			<control type="label">
 				<posx>55</posx>
 				<posy>4</posy>
+				<width>160</width>
+				<height>20</height>
 				<font>METF_HelpText</font>
 				<textcolor>WeatherHeading</textcolor>
-				<width>550</width>
-				<!--align>left</align-->
 				<label>$ADDON[script.mbox 1101]</label>
 			</control>
 		</control>

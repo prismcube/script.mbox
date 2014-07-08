@@ -7,6 +7,7 @@
 			<posx>340</posx>
 			<posy>195</posy>
 			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -15,7 +16,7 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
-				<description>Dialog Header image</description>
+				<description>Dialog Header Image</description>
 				<posx>40</posx>
 				<posy>16</posy>
 				<width>530</width>
@@ -23,7 +24,7 @@
 				<texture>dialogheader.png</texture>
 			</control>
 			<control type="label" id="200">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>40</posx>
 				<posy>20</posy>
 				<width>530</width>
@@ -36,7 +37,7 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="button" id="301">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>520</posx>
 				<posy>15</posy>
 				<width>64</width>
@@ -51,7 +52,7 @@
 				<ondown>300</ondown>
 			</control>
 			<control type="label" id="201">
-				<description>dialog line 1</description>
+				<description>Dialog Message 1</description>
 				<posx>30</posx>
 				<posy>200</posy>
 				<width>550</width>
@@ -74,7 +75,6 @@
 				<label>$INFO[Window.Property(ShellDescription)]</label>
 			</control>
 			<control type="progress" id="400">
-				<description>Progressbar</description>
 				<posx>30</posx>
 				<posy>228</posy>
 				<width>550</width>
@@ -83,7 +83,7 @@
 				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 			</control>
 			<control type="button" id="300">
-				<description>Cancel button</description>
+				<description>Cancel</description>
 				<posx>205</posx>
 				<posy>255</posy>
 				<width>200</width>
@@ -100,4 +100,3 @@
 		</control>
 	</controls>
 </window>
-

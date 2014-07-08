@@ -1,5 +1,4 @@
 <window>
-	<!--defaultcontrol always="true">1003850</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
@@ -7,8 +6,8 @@
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<posx>350</posx>
 			<posy>50</posy>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>630</width>
@@ -20,12 +19,10 @@
 				<posy>16</posy>
 				<width>530</width>
 				<height>40</height>
-				<!--aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture-->
 				<texture>dialogheader.png</texture>
 			</control>
 			<control type="button" id="3901">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>540</posx>
 				<posy>15</posy>
 				<width>64</width>
@@ -39,7 +36,7 @@
 				<ondown>1003950</ondown>
 			</control>
 			<control type="label" id="3902">
-				<description>header label</description>
+				<description>Title</description>
 				<posx>20</posx>
 				<posy>20</posy>
 				<width>570</width>
@@ -86,7 +83,7 @@
 				<onup>1003950</onup>
 				<ondown>3901</ondown>
 			</control>
-			<!-- left key comment -->
+			<!-- Hotkeys -->
 			<control type="group">
 				<posx>20</posx>
 				<posy>620</posy>
