@@ -797,7 +797,7 @@ def copyLanguage(srcDir, langDir) :
 # resource/../strings.xml to CSV
 def Make_NewCSV( ) :
 	#langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
-	langPack = ["ENGLISH","GERMAN","CZECH","SLOVAK","POLISH","FRENCH","ITALIAN","SPANISH","RUSSIAN","UKRAINIAN","DUTCH","TURKISH","ARABIC","KOREAN"]
+	langPack = ["ENGLISH","GERMAN","CZECH","SLOVAK","POLISH","RUSSIAN","UKRAINIAN","FRENCH","ITALIAN","SPANISH","DUTCH","TURKISH","ARABIC","KOREAN"]
 
 	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
 	langDir = mboxDir + '/resources/language'
