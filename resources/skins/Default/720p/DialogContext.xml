@@ -72,7 +72,7 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>160</posx>
+						<posx>165</posx>
 						<posy>0</posy>
 						<width>330</width>
 						<height>35</height>					<!--Change Property ItemHeight-->
@@ -102,7 +102,7 @@
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
-						<posx>160</posx>
+						<posx>165</posx>
 						<posy>0</posy>
 						<width>330</width>
 						<height>35</height>					<!--Change Property ItemHeight-->

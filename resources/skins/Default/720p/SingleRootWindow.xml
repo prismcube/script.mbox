@@ -881,7 +881,7 @@ Search for window name
 						<posx>40</posx>
 						<posy>40</posy>
 						<width>1200</width>
-						<height>620</height>
+						<height>623</height>
 						<texture border="20">ContentPanel.png</texture>
 					</control>
 				</control>
@@ -934,7 +934,7 @@ Search for window name
 					<posx>200</posx>
 					<posy>0</posy>
 					<control type="image">
-						<posx>35</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width>30</width>
 						<height>30</height>
@@ -942,7 +942,7 @@ Search for window name
 					</control>
 					<control type="label">
 						<description>Extra Options</description>
-						<posx>73</posx>
+						<posx>58</posx>
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
@@ -954,7 +954,7 @@ Search for window name
 					<posx>400</posx>
 					<posy>0</posy>
 					<control type="image">
-						<posx>35</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width>30</width>
 						<height>30</height>
@@ -962,7 +962,7 @@ Search for window name
 					</control>
 					<control type="label">
 						<description>Previous Group</description>
-						<posx>73</posx>
+						<posx>58</posx>
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
@@ -974,7 +974,7 @@ Search for window name
 					<posx>600</posx>
 					<posy>0</posy>
 					<control type="image">
-						<posx>35</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width>30</width>
 						<height>30</height>
@@ -982,7 +982,7 @@ Search for window name
 					</control>
 					<control type="label">
 						<description>Next Group</description>
-						<posx>73</posx>
+						<posx>58</posx>
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
@@ -1061,7 +1061,7 @@ Search for window name
 							<posy>8</posy>
 							<!-- Skip Icon -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>-2</posx>
 								<posy>0</posy>
 								<width>26</width>
 								<height>18</height>
@@ -1241,7 +1241,7 @@ Search for window name
 								<posy>8</posy>
 								<!-- Skip Icon -->
 								<control type="image">
-									<posx>0</posx>
+									<posx>-2</posx>
 									<posy>0</posy>
 									<width>26</width>
 									<height>18</height>
@@ -1629,13 +1629,13 @@ Search for window name
 					<!-- Lock Icon & Label -->
 					<control type="group" id="1300309">
 						<posx>-10</posx>
-						<posy>80</posy>
+						<posy>75</posy>
 						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>0</posx>
-							<posy>72</posy>
-							<width>40</width>
-							<height>30</height>
+							<posy>75</posy>
+							<width>35</width>
+							<height>25</height>
 							<texture>OverlayLocked.png</texture>
 						</control>
 						<control type="label">
@@ -1663,7 +1663,7 @@ Search for window name
 						<height>30</height>
 						<width>332</width>
 						<font>font12_title</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel(1300307)]</label>
 					</control>
 					<!-- Transponder Info -->
@@ -1673,15 +1673,13 @@ Search for window name
 						<height>30</height>
 						<width>332</width>
 						<font>font12_title</font>
-						<textcolor>grey3</textcolor>
+						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel(1300308)]</label>
 					</control>
 					<!-- Lock Icon & Label -->
 					<control type="group">
 						<posx>-10</posx>
-						<posy>270</posy>
-						<height>30</height>
-						<width>350</width>
+						<posy>230</posy>
 						<visible>substring(Window.Property(iLock),True)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -1689,7 +1687,6 @@ Search for window name
 							<width>35</width>
 							<height>25</height>
 							<texture>OverlayLocked.png</texture>
-							<colordiffuse>75FFFFFF</colordiffuse>
 						</control>
 						<control type="label">
 							<posx>32</posx>
@@ -1703,7 +1700,7 @@ Search for window name
 					</control>
 					<control type="group">
 						<posx>0</posx>
-						<posy>238</posy>
+						<posy>240</posy>
 						<height>200</height>
 						<width>350</width>
 						<include>DefaultWindowFade</include>
@@ -1712,17 +1709,18 @@ Search for window name
 							<posx>0</posx>
 							<posy>10</posy>
 							<height>30</height>
-							<width>100</width>
+							<width>200</width>
 							<font>font12_title</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Control.getLabel(1300305)]</label>
 						</control>
 						<!-- EPG Duration -->
 						<control type="label">
-							<posx>0</posx>
-							<posy>30</posy>
+							<posx>352</posx>
+							<posy>10</posy>
 							<height>30</height>
-							<width>100</width>
+							<width>80</width>
+							<align>right</align>
 							<font>font12_title</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Window.Property(EPGDuration)]</label>
@@ -1730,9 +1728,9 @@ Search for window name
 						<!-- EPG Summary -->
 						<control type="textbox">
 							<posx>0</posx>
-							<posy>60</posy>
+							<posy>40</posy>
 							<width>352</width>
-						 	<height>164</height>
+						 	<height>182</height>
 							<font>font12_title</font>
 							<textcolor>grey2</textcolor>
 							<label>$INFO[Window.Property(EPGDescription)]</label>
@@ -1743,7 +1741,7 @@ Search for window name
 
 				<!-- AV Info -->
 				<control type="group">
-					<posx>-5</posx>
+					<posx>-2</posx>
 					<posy>472</posy>
 					<control type="grouplist">
 						<posx>0</posx>
@@ -4005,13 +4003,13 @@ Search for window name
 			</control>
 
 			<control type="group" id="1509010">
-				<posx>290</posx>
+				<posx>310</posx>
 				<posy>60</posy>
 				<!-- Setting Description -->
 				<control type="label" id="1501003">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>745</width>
+					<width>715</width>
 					<height>45</height>
 					<font>font13_title</font>
 					<textcolor>blue</textcolor>
@@ -4019,7 +4017,7 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
-					<scrollspeed>150</scrollspeed>
+					<scrollspeed>100</scrollspeed>
 					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 				<!-- NAS -->
@@ -4178,12 +4176,12 @@ Search for window name
 
 			<!-- Setting Description -->
 			<control type="group" id="4909010">
-				<posx>290</posx>
+				<posx>310</posx>
 				<posy>60</posy>
 				<control type="label" id="4901003">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>745</width>
+					<width>715</width>
 					<height>45</height>
 					<font>font13_title</font>
 					<textcolor>blue</textcolor>
@@ -4191,7 +4189,7 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
-					<scrollspeed>150</scrollspeed>
+					<scrollspeed>100</scrollspeed>
 					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 			</control>
@@ -4342,7 +4340,7 @@ Search for window name
 						<posx>40</posx>
 						<posy>40</posy>
 						<width>1200</width>
-						<height>620</height>
+						<height>623</height>
 						<texture border="20">ContentPanel.png</texture>
 					</control>
 					<control type="image">
@@ -5410,10 +5408,10 @@ Search for window name
 					<texture>floor.png</texture>		
 				</control>
 				<control type="image">
-					<posx>40</posx>
+					<posx>37</posx>
 					<posy>40</posy>
-					<width>1200</width>
-					<height>620</height>
+					<width>1206</width>
+					<height>623</height>
 					<texture border="15">ContentPanel.png</texture>
 					<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				</control>
@@ -5500,7 +5498,7 @@ Search for window name
 					<height>32</height>
 					<visible>substring(Window.Property(EPGFootor),True) + [substring(Window.Property(CurrentWindow),3700000) | substring(Window.Property(CurrentWindow),4400000)]</visible>
 					<control type="image">
-						<posx>35</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width>30</width>
 						<height>30</height>
@@ -5508,7 +5506,7 @@ Search for window name
 					</control>
 					<control type="label">
 						<description>Extra Options</description>
-						<posx>73</posx>
+						<posx>58</posx>
 						<posy>5</posy>
 						<width>160</width>
 						<height>20</height>
@@ -5696,24 +5694,14 @@ Search for window name
 			<!-- EPG Info -->
 			<control type="group" id="3709020">
 				<posx>850</posx>
-				<posy>360</posy>
+				<posy>325</posy>
 				<height>300</height>
 				<width>332</width>
 				<visible>!substring(Window.Property(EPGMode),grid)</visible>
 				<include>DefaultWindowFade</include>
-				<control type="label" id="3700300">
-					<description>Start & End Time</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<height>30</height>
-					<width>332</width>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<label>00:00-00:00</label>
-				</control>
 				<control type="label" id="3700301">
 					<description>Date</description>
-					<posx>150</posx>
+					<posx>0</posx>
 					<posy>0</posy>
 					<height>30</height>
 					<width>332</width>
@@ -5721,12 +5709,23 @@ Search for window name
 					<textcolor>grey</textcolor>
 					<label></label>
 				</control>
-				<control type="label" id="3700302">
-					<description>Duration</description>
+				<control type="label" id="3700300">
+					<description>Start & End Time</description>
 					<posx>0</posx>
 					<posy>30</posy>
 					<height>30</height>
+					<width>200</width>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>00:00-00:00</label>
+				</control>
+				<control type="label" id="3700302">
+					<description>Duration</description>
+					<posx>350</posx>
+					<posy>30</posy>
+					<height>30</height>
 					<width>100</width>
+					<align>right</align>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<label></label>
@@ -5736,7 +5735,7 @@ Search for window name
 					<posx>0</posx>
 					<posy>60</posy>
 					<width>352</width>
-				 	<height>164</height>
+				 	<height>200</height>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<label>$ADDON[script.mbox 1030]</label>
@@ -5748,7 +5747,7 @@ Search for window name
 					<include>DefaultWindowFade</include>
 					<control type="grouplist">
 						<posx>-5</posx>
-						<posy>234</posy>
+						<posy>265</posy>
 						<width>360</width>
 						<height>30</height>
 						<itemgap>8</itemgap>
@@ -5917,11 +5916,10 @@ Search for window name
 				<control type="image">
 					<posx>0</posx>
 					<posy>100r</posy>
-					<width>1280</width>
-					<height>100</height>
+					<width>1306</width>
+					<height>115</height>
 					<texture>floor.png</texture>
 					<include>DefaultVisibleFadeEffect</include>
-					<visible>true</visible>
 				</control>
 				<control type="group">
 					<include>DefaultVisibleFadeEffect</include>
@@ -5930,7 +5928,7 @@ Search for window name
 						<posx>40</posx>
 						<posy>40</posy>
 						<width>1200</width>
-						<height>620</height>
+						<height>623</height>
 						<texture border="20">ContentPanel.png</texture>
 					</control>
 					<control type="image">
