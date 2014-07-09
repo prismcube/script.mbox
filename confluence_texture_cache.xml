@@ -4,6 +4,7 @@
 	<!-- background -->
 	<texture>backgrounds/SKINDEFAULT.jpg</texture>
 	<texture>special://skin/backgrounds/SKINDEFAULT.jpg</texture>
+	<texture>special://skin/backgrounds/settings.jpg</texture>
 	<!-- null window -->
 	<texture>multifeed.png</texture>
 	<texture>hbbtv4.png</texture>
@@ -101,6 +102,8 @@
 	<texture>IconTimer.png</texture>
 	<texture>IconTimerV.png</texture>
 	<texture>OSDProgressMid1.png</texture>
+	<texture>DefaultLogo.png</texture>
+	<texture>IconEmpty.png</texture>
 	<!-- channel list-->
 	<texture>IconCas1g.png</texture>
 	<texture>IconHD1g.png</texture>
@@ -118,6 +121,8 @@
 	<texture>MenuItemFO_edit.png</texture>
 	<texture>DI_Move.png</texture>
 	<texture>DI_Skip1g.png</texture>
+	<!-- timer -->
+	<texture>MediaBladeSub_Part1.png</texture>
 	<!-- live plate -->
 	<texture>MediaInfoBackLower.png</texture>
 	<texture>header.png</texture>
@@ -134,6 +139,8 @@
 	<texture>OSDSubtitlesNF.png</texture>
 	<texture>OSDPresetSettingsFO.png</texture>
 	<texture>OSDPresetSettingsNF.png</texture>
+	<texture>OSDserviceFO.png</texture>
+	<texture>OSDserviceNF.png</texture>
 	<texture>t1.png</texture>
 	<texture>t2.png</texture>
 	<texture>dolbydigital1.png</texture>
@@ -173,6 +180,9 @@
 	<texture>OSDNextTrackNF.png</texture>
 	<texture>OSDBookmarksFO.png</texture>
 	<texture>OSDBookmarksNF.png</texture>
+	<!-- help -->
+	<texture>HeaderBack.png</texture>
+	<texture>FooterBack.png</texture>
 	<!-- pip -->
 	<texture>StackFO_white2.png</texture>
 	<texture>StackNF.png</texture>
@@ -197,7 +207,7 @@
 	<texture>InfoMessagePanel.png</texture>
 	<texture>VolumeIcon.png</texture>
 	<texture>icon-mute.png</texture>
-	<!-- media center -->
+	<!-- xbmc -->
 	<texture>arrow-big-left.png</texture>
 	<texture>arrow-big-right.png</texture>
 	<texture>HomeSubFO.png</texture>
@@ -252,6 +262,12 @@
 	<texture>HomeNowPlayingBack.png</texture>
 	<texture>rating0.png</texture>
 	<texture>DefaultFolderBack.png</texture>
+	<texture>DefaultFolder.png</texture>
+	<texture>special://skin/backgrounds/media-overlay.jpg</texture>
+	<texture>separator2.png</texture>
+	<texture>icon_player.png</texture>
+	<texture>OSDRepeatNF.png</texture>
+	<texture>ThumbBorder.png</texture>
 	<!-- info icons -->
 	<texture>USB.png</texture>
 	<texture>DefaultIconInfo.png</texture>
@@ -264,4 +280,28 @@
 	<texture>KeyboardCornerBottom.png</texture>
 	<texture>KeyboardCornerBottomNF.png</texture>
 	<texture>KeyboardEditArea.png</texture>
+	<!-- video osd -->
+	<texture>seekslider2.png</texture>
+	<texture>OSDChannelListFO.png</texture>
+	<texture>OSDChannelListNF.png</texture>
+	<texture>OSDepgFO.png</texture>
+	<texture>OSDepgNF.png</texture>
+	<texture>OSDStereoscopicFO.png</texture>
+	<texture>OSDStereoscopicNF.png</texture>
+	<texture>OSDVideoFO.png</texture>
+	<texture>OSDVideoNF.png</texture>
+	<texture>OSDAudioFO.png</texture>
+	<texture>OSDAudioNF.png</texture>
+	<texture>OSDDvdFO.png</texture>
+	<texture>OSDDvdNF.png</texture>
+	<texture>OSDTeleTextFO.png</texture>
+	<texture>OSDTeleTextNF.png</texture>
+	<texture>OSDRecordOnFO.png</texture>
+	<texture>OSDRecordOnNF.png</texture>
+	<texture>OSDSeekFrame.png</texture>
+	<texture>OSDPause.png</texture>
+	<texture>SubMenuBack-MiddleFO.png</texture>
+	<texture>SubMenuBack-MiddleNF.png</texture>
+	<texture>SubMenuBack-Footer.png</texture>
+	<texture>SubMenuBack-Header.png</texture>
 </textures>

@@ -1826,7 +1826,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mCtrlBookMarkList.addItems( listItems )
 		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
-		#2.show mark on progress
+		#2.show selction icon on progress
 		self.UpdateBookmarkByPoint( )
 
 

@@ -25,6 +25,25 @@ E_FILE_MBOX_STRING_ID = 'MboxStringsID.py'
 E_DEBUG_NONE_STRING_WRITE = False
 E_DEBUG_EMPTY_STRING_WRITE = True
 
+E_COLOR_INDEX = {
+    'white':      "\x1b[37m",
+    'yellow':     "\x1b[33m",
+    'green':      "\x1b[32m",
+    'blue':       "\x1b[34m",
+    'cyan':       "\x1b[36m",
+    'red':        "\x1b[31m",
+    'magenta':    "\x1b[35m",
+    'black':      "\x1b[30m",
+    'darkwhite':  "\x1b[37m",
+    'darkyellow': "\x1b[33m",
+    'darkgreen':  "\x1b[32m",
+    'darkblue':   "\x1b[34m",
+    'darkcyan':   "\x1b[36m",
+    'darkred':    "\x1b[31m",
+    'darkmagenta':"\x1b[35m",
+    'darkblack':  "\x1b[30m",
+    'off':        "\x1b[0m"
+}
 
 def EucToUtf( aSource ) :
 	if aSource == None :
@@ -491,6 +510,7 @@ def findStringInXML(soup, reqStr) :
 
 
 gStringHash = {}
+gStringAllHash = {}
 gTagString = []
 gTagProperty = []
 gTagXmlString = []
@@ -508,7 +528,7 @@ def parseStringInXML(xmlFile, tagName) :
 
 		for node in soup.findAll(tagName) :
 			for element in node.findAll('string') :
-				elementry = [ int(element['id']), repr(element.string), '%s\r\n'% repr(element) ]
+				elementry = [ int(element['id']), element.string, '%s\r\n'% repr(element) ]
 				lines.append(elementry)
 
 				if gStringHash.get( element.string, -1 ) == -1 :
@@ -546,7 +566,11 @@ def parseProperty( elisDir, stringXML ):
 
 	countTot = 0
 	countNew = 0
-	countContinue = ID_NODE_PROPERTY + len( gTagProperty ) + 1
+	countContinue = 1
+	if gTagProperty and len( gTagProperty ) > 0 :
+		countContinue += gTagProperty[len( gTagProperty )-1][0]
+	if countContinue < ID_NODE_PROPERTY :
+		countContinue += ID_NODE_PROPERTY
 	countRepeat=0
 	repeatWord = ''
 	for prop in _propertyMapEnum :
@@ -566,9 +590,13 @@ def parseProperty( elisDir, stringXML ):
 				digitStr = re.sub(':', '', element)
 				digitStr = re.sub('\s', '', digitStr)
 
+				if reservedHash.get(element, -1) == -1 and \
+				   ( not element.isdigit() ) and ( not timeStr ) and ( not digitStr.isdigit() ) :
+					gStringAllHash[element] = countContinue
+
 				#if reservedHash.get(element) != None or ( soup and findStringInXML(soup, element) ) or \
 				if gStringHash.get( element, -1 ) != -1 or reservedHash.get(element) != None or \
-					element.isdigit() or timeStr or unitStr or digitStr.isdigit() :
+				   element.isdigit() or timeStr or unitStr or digitStr.isdigit() :
 					repeatWord = '%s\n%s'% (repeatWord, element)
 					countRepeat += 1
 
@@ -577,6 +605,7 @@ def parseProperty( elisDir, stringXML ):
 					listElement = [ countContinue, element, line ]
 					gTagProperty.append( listElement )
 					gStringHash[element] = countContinue
+					gStringAllHash[element] = countContinue
 
 					countContinue += 1
 					countNew += 1
@@ -658,7 +687,11 @@ def parseSource(sourceFile):
 
 	countTot = 0
 	countNew = 0
-	countContinue = ID_NODE_MRLANG + len( gTagString ) + 1
+	countContinue = 1
+	if gTagString and len( gTagString ) > 0 :
+		countContinue += gTagString[len( gTagString )-1][0]
+	if countContinue < ID_NODE_MRLANG :
+		countContinue += ID_NODE_MRLANG
 	countRepeat=0
 	repeatWord = ''
 
@@ -704,8 +737,12 @@ def parseSource(sourceFile):
 		if element[0] == "'" :
 			element = element[1:len(element)-1]
 
+		if reservedHash.get(element, -1) == -1 and \
+		   ( not element.isdigit() ) and ( not timeStr ) and ( not digitStr.isdigit() ) :
+			gStringAllHash[element] = countContinue
+
 		if gStringHash.get( element, -1 ) != -1 or reservedHash.get(element) != None or \
-			element.isdigit() or timeStr or digitStr.isdigit() :
+		   element.isdigit() or timeStr or digitStr.isdigit() :
 			repeatWord = '%s\n%s'% (repeatWord, element)
 			countRepeat += 1
 
@@ -714,6 +751,7 @@ def parseSource(sourceFile):
 			listElement = [ countContinue, element, line ]
 			gTagString.append( listElement )
 			gStringHash[element] = countContinue
+			gStringAllHash[element] = countContinue
 			countContinue += 1
 			countNew += 1
 
@@ -758,7 +796,8 @@ def copyLanguage(srcDir, langDir) :
 
 # resource/../strings.xml to CSV
 def Make_NewCSV( ) :
-	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
+	#langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","ARABIC","KOREAN","SLOVAK","UKRAINIAN"]
+	langPack = ["ENGLISH","GERMAN","CZECH","SLOVAK","POLISH","RUSSIAN","UKRAINIAN","FRENCH","ITALIAN","SPANISH","DUTCH","TURKISH","ARABIC","KOREAN"]
 
 	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
 	langDir = mboxDir + '/resources/language'
@@ -863,6 +902,8 @@ def updateCSV( ) :
 	stringXML = []
 	csvString = [[],[],[]]
 	csvHash = {}
+	xmlHashBackup = {}
+	csvHashBackup = {}
 
 	# 1--------- 'hash mboxString.xml'
 	for tagName in tagList :
@@ -871,6 +912,7 @@ def updateCSV( ) :
 			for element in node.findAll('string') :
 				elementry = [ int(element['id']), element.string ]
 				tags.append( elementry )
+				xmlHashBackup[element.string] = int(element['id'])
 
 			stringXML.append( tags )
 
@@ -891,6 +933,8 @@ def updateCSV( ) :
 		strid = int( ret[len(ret) - 1] )
 		csvHash[csvStr[0]] = strid
 
+		csvHashBackup[csvline] = csvStr[0]
+
 		if strid < ID_NODE_PROPERTY :
 			csvString[0].append( csvline )
 		elif strid >= ID_NODE_PROPERTY and strid < ID_NODE_MRLANG :
@@ -907,21 +951,32 @@ def updateCSV( ) :
 			if csvHash.get( stringEng[1], -1 ) == -1 :
 				newString.append( stringEng )
 
-				temp = '\"%s\";;;;;;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
+				#temp = '\"%s\";;;;;;;;;;;;;;%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
+				temp = '\"%s\";;;;;;;;;;;;;;%s\r\n'% ( stringEng[1], stringEng[0] )
 				csvString[tags].append( temp )
-				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
+				csvHashBackup[temp] = stringEng[1]
+				print 'newString id[%s] lang[%s]'% ( stringEng[0], stringEng[1] )
 
-	if newString and len( newString ) > 0 :
-		wf = open( tempFile, 'w' )
-		wf.writelines( title )
-		for tags in range( len(csvString) ) :
-			for strings in csvString[tags] :
+	#if newString and len( newString ) > 0 :
+	deleteCSV = []
+	wf = open( tempFile, 'w' )
+	wf.writelines( title )
+	for tags in range( len(csvString) ) :
+		for strings in csvString[tags] :
+			stringEng = csvHashBackup.get( strings, '' )
+			stringId = xmlHashBackup.get(stringEng, -1 )
+			if stringEng and stringId != -1 :
 				wf.writelines( strings )
+			else :
+				deleteCSV.append([csvHash.get(stringEng, -1),strings.rstrip()])
 
-		wf.close()
-		os.rename(tempFile, openFile)
+	for stringId, strings in deleteCSV :
+		print '%s delete csv : oldString id[%s] name[%s]%s'% ( E_COLOR_INDEX['red'], stringId, strings, E_COLOR_INDEX['off'] )
 
-		print '\033[1;33m update newString[%s]\033[1;m'% len( newString )
+	wf.close()
+	os.rename(tempFile, openFile)
+
+	print '\033[1;33m update newString[%s]\033[1;m'% len( newString )
 
 
 def updateXML( ) :
@@ -939,14 +994,16 @@ def updateXML( ) :
 	if gTagProperty :
 		wf.writelines( '<%s>\r\n'% TAG_NAME_PROPERTY )
 		for line in gTagProperty :
-			wf.writelines( '\t%s'% line[2] )
+			if gStringAllHash.get( line[1], -1 ) != -1 :
+				wf.writelines( '\t%s'% line[2] )
 		wf.writelines( '</%s>\r\n'% TAG_NAME_PROPERTY )
 
 	#3. <strings>
 	if gTagString :
 		wf.writelines( '<%s>\r\n'% TAG_NAME_STRINGS )
 		for line in gTagString :
-			wf.writelines( '\t%s'% line[2] )
+			if gStringAllHash.get( line[1], -1 ) != -1 :
+				wf.writelines( '\t%s'% line[2] )
 		wf.writelines( '</%s>\r\n'% TAG_NAME_STRINGS )
 
 	wf.close( )
@@ -970,7 +1027,7 @@ def AutoMakeLanguage() :
 	#print elisDir
 	stringFile = mboxDir + '/pvr/gui/windows/%s'% E_FILE_MBOX_STRING
 	propertyFile = elisDir + '/lib/elisinterface/%s'% E_FILE_PROPERTY
-	global gTagString, gTagProperty, gTagXmlString, gStringHash
+	global gTagString, gTagProperty, gTagXmlString, gStringHash, gStringAllHash
 	#makeLanguage(mboxDir + '/pvr/gui/windows/test.xml')
 	#return
 
@@ -990,6 +1047,8 @@ def AutoMakeLanguage() :
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
 	print '\nfindAll *.py files[%s]'% gCount
+
+	#print gStringAllHash.keys( )
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update xml : %s'% E_FILE_MBOX_STRING )
 	updateXML( )
@@ -1132,7 +1191,35 @@ def test6():
 	ret = re.findall('"([^"]*)"', var)
 	ret2= re.split('",', var )
 	print ret2, len(ret2)
-	
+
+
+def test7():
+	soup, tagOldString = parseStringInXML('test.xml', 'strings_old' )
+	soup, tagNewString = parseStringInXML('test.xml', 'strings_new' )
+	print '---------old[%s] new[%s]'% ( len(tagOldString), len(tagNewString) )
+
+	oldHash = {}
+	newHash = {}
+	for element in tagOldString :
+		oldHash[element[1]]=element[0]
+
+	for element in tagNewString :
+		newHash[element[1]]=element[0]
+
+	notFind = []
+	for element in tagOldString :
+		fEle = newHash.get( element[1], -1 )
+		if fEle != -1 :
+			print 'find [%s] oldID[%s] newID[%s]'% ( element[1], element[0], fEle )
+		else :
+			notFind.append([element[1], element[0], fEle])
+
+	for ele in notFind :
+		print '>>>>>>>not [%s] oldID[%s] newID[%s]'% ( ele[0],ele[1],ele[2] )
+
+	print '---------notFind[%s]'% len(notFind)
+	print '---------old[%s] new[%s]'% ( len(tagOldString), len(tagNewString) )
+
 
 if __name__ == "__main__":
 

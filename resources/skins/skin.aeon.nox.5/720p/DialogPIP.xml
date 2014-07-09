@@ -610,7 +610,7 @@
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
 								<scroll>false</scroll>
-								<scrollspeed>150</scrollspeed>
+								<scrollspeed>100</scrollspeed>
 							</control>
 						</itemlayout>
 						<focusedlayout height="54" width="337">

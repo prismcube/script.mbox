@@ -444,7 +444,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.SetMoveMode( FLAG_OPT_MOVE_OK )
 						return
 
-					#Mark mode
+					#selection mode
 					if self.mIsMark == True :
 						if self.mChannelList :
 							idx = self.mCtrlListCHList.getSelectedPosition( )
@@ -2996,7 +2996,7 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( '[Edit] last position[%s]'% lastPos )
 
 				#self.mMarkList.sort( )
-				LOG_TRACE( '[Edit] 1. mark[%s]'% self.mMarkList )
+				LOG_TRACE( '[Edit] 1. selection[%s]'% self.mMarkList )
 				self.mMarkListBackup = deepcopy( self.mMarkList )
 
 				#2. make listing of ichannel in marked idx
@@ -3012,7 +3012,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNewChannelList.insert( nextIdx, self.mMoveList[idx] )
 					#LOG_TRACE( 'pop : findIdx[%s] chNum[%s] delIdx[%s]    insert : nextIdx[%s] chNum[%s]'% ( findIdx, self.mMoveList[idx], delNum, nextIdx, self.mMoveList[idx] ) )
 				#LOG_TRACE( 'newList[%s]'% self.mNewChannelList )
-				LOG_TRACE( '[Edit] 2. mark[%s] move[%s]'% ( self.mMarkList, self.mMoveList ) )
+				LOG_TRACE( '[Edit] 2. selection[%s] move[%s]'% ( self.mMarkList, self.mMoveList ) )
 
 				self.mMoveFlag = True
 				self.mListItems = []
@@ -3029,7 +3029,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mViewFirst = chCount - self.mItemCount
 					self.mViewEnd = chCount
 
-				LOG_TRACE( '[Edit] 3. mark[%s] view[%s]~[%s]'% ( self.mMarkList, self.mViewFirst, self.mViewEnd ) )
+				LOG_TRACE( '[Edit] 3. selection[%s] view[%s]~[%s]'% ( self.mMarkList, self.mViewFirst, self.mViewEnd ) )
 				self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_TRUE )
 
@@ -3046,7 +3046,7 @@ class ChannelListWindow( BaseWindow ) :
 				makeNumber = idxFirst + 1
 				makeFavidx = idxFirst + 1
 				#LOG_TRACE( '[Edit] insert makeFavidx[%s], makeNumber[%s]'% ( makeFavidx, makeNumber ) )
-				#LOG_TRACE( '[Edit] mark[%s]'% self.mMarkList )
+				#LOG_TRACE( '[Edit] selection[%s]'% self.mMarkList )
 
 				#moveList = []
 				#for objChannel in self.mMoveList :
@@ -3104,7 +3104,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mCtrlListCHList.reset( )
 				self.ShowMoveToGUI( 0, len( self.mChannelList ), True )
-				#LOG_TRACE ( '[Edit] move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
+				#LOG_TRACE ( '[Edit] move exit ===selection[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
 
 				self.mCtrlListCHList.setVisible( False )
 
@@ -3302,14 +3302,12 @@ class ChannelListWindow( BaseWindow ) :
 		idx = 0
 		isExist = False
 
-		#aready mark is mark delete
 		for i in self.mMarkList :
 			if i == aPos :
 				self.mMarkList.pop(idx)
 				isExist = True
 			idx += 1
 
-		#do not exist is append mark
 		if isExist == False : 
 			self.mMarkList.append( aPos )
 
@@ -3320,7 +3318,6 @@ class ChannelListWindow( BaseWindow ) :
 		if iChannel.mIsHD :
 			hdLabel = E_TAG_COLOR_HD_LABEL
 
-		#mark toggle: disable/enable
 		if listItem.getProperty( E_XML_PROPERTY_MARK ) == E_TAG_TRUE : 
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 			if len( iChannel.mName ) > 30 :
@@ -3557,12 +3554,12 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( '[Edit] groupName[%s] lastPos[%s]'% ( aGroupName, lastPos ) )
 
 		if self.mChannelList :
-			#1.no mark : set current position item
+			#1.no selection : set current position item
 			if not self.mMarkList :
 				isNomark = True
 				self.mMarkList.append( lastPos )
 
-			#2.set mark : list all
+			#2.set selection : list all
 			isRefreshCurrentChannel = False
 			for idx in self.mMarkList :
 				iChannel = self.mChannelList[idx]
@@ -3856,7 +3853,7 @@ class ChannelListWindow( BaseWindow ) :
 		channelList = self.mChannelList
 
 		#if aMode == FLAG_OPT_LIST and self.mChannelList :
-		#1.no mark : set current position item
+		#1.no selection : set current position item
 		if not mMarkList :
 			lastPos = self.mCtrlListCHList.getSelectedPosition( )
 			mMarkList.append( lastPos )

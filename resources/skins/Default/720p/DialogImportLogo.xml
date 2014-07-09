@@ -7,8 +7,8 @@
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
+		<!-- Panel -->
 		<control type="image">
-			<description>background image</description>
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>800</width>
@@ -16,7 +16,7 @@
 			<texture border="40">DialogBack.png</texture>
 		</control>
 		<control type="image">
-			<description>Dialog Header image</description>
+			<description>Dialog Header Image</description>
 			<posx>40</posx>
 			<posy>16</posy>
 			<width>720</width>
@@ -24,7 +24,7 @@
 			<texture>dialogheader.png</texture>
 		</control>
 		<control type="label" id="102">
-			<description>header label</description>
+			<description>Title</description>
 			<posx>40</posx>
 			<posy>20</posy>
 			<width>720</width>
@@ -36,7 +36,7 @@
 			<shadowcolor>black</shadowcolor>
 		</control>
 		<control type="button">
-			<description>Close Window button</description>
+			<description>Close Window</description>
 			<posx>710</posx>
 			<posy>15</posy>
 			<width>64</width>
@@ -53,7 +53,7 @@
 			<visible>system.getbool(input.enablemouse)</visible>
 		</control>
 		<control type="label" id="103">
-			<description>enable label</description>
+			<description>Enable</description>
 			<posx>20</posx>
 			<posy>65</posy>
 			<width>760</width>
@@ -65,7 +65,7 @@
 			<shadowcolor>black</shadowcolor>
 		</control>
 		<control type="radiobutton" id ="110">
-			<description>Channel activated</description>
+			<description>Channel Activated</description>
 			<posx>40</posx>
 			<posy>110</posy>
 			<width>720</width>
@@ -86,7 +86,7 @@
 		<control type="group">
 			<posy>100</posy>
 			<control type="label" id="104">
-				<description>select way label</description>
+				<description>Select</description>
 				<posx>20</posx>
 				<posy>65</posy>
 				<width>760</width>
@@ -98,7 +98,7 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="image">
-				<description>load item image</description>
+				<description>Load</description>
 				<posx>40</posx>
 				<posy>245</posy>
 				<width>720</width>
@@ -106,7 +106,7 @@
 				<texture border="5">button-nofocus.png</texture>
 			</control>
 			<control type="label" id="117">
-				<description>load item label</description>
+				<description>Load</description>
 				<posx>40</posx>
 				<posy>245</posy>
 				<width>720</width>
@@ -120,7 +120,7 @@
 				<posx>40</posx>
 				<posy>110</posy>
 				<control type="button" id="111">
-					<description>USB Button</description>
+					<description>USB</description>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>720</width>
@@ -137,7 +137,7 @@
 					<disabledcolor>grey3</disabledcolor>
 				</control>
 				<control type="button" id="114">
-					<description>Internet Button</description>
+					<description>Internet</description>
 					<posx>0</posx>
 					<posy>45</posy>
 					<width>720</width>
@@ -154,7 +154,7 @@
 					<disabledcolor>grey3</disabledcolor>
 				</control>
 				<control type="button" id="115">
-					<description>Clear Button</description>
+					<description>Clear</description>
 					<posx>0</posx>
 					<posy>90</posy>
 					<width>720</width>
@@ -176,7 +176,7 @@
 			<posx>190</posx>
 			<posy>435</posy>
 			<control type="button" id="118">
-				<description>Ok Button</description>
+				<description>Ok</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>200</width>
@@ -196,7 +196,7 @@
 				<disabledcolor>grey3</disabledcolor>
 			</control>
 			<control type="button" id="119">
-				<description>Cancel Button</description>
+				<description>Cancel</description>
 				<posx>210</posx>
 				<posy>0</posy>
 				<width>200</width>

@@ -556,7 +556,6 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '' )
-		self.UpdatePropertyGUI( 'DescriptionTitle', '' )
 		self.UpdatePropertyGUI( 'UpdateDescription', '' )
 		self.UpdatePropertyGUI( 'VersionInfo', E_TAG_FALSE )
 
@@ -645,7 +644,6 @@ class SystemUpdate( SettingWindow ) :
 				lblSize = '%s MB'% int( iPVS.mSize / (1024*1024) )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'Size' ), lblSize ) )
-			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'Description' ) )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
 			self.UpdatePropertyGUI( 'VersionInfo', E_TAG_TRUE )
 

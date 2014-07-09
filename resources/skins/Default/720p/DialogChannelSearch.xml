@@ -7,8 +7,8 @@
 			<posx>40</posx>
 			<posy>60</posy>
 			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
 			<control type="image">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1200</width>
@@ -24,7 +24,7 @@
 				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="button" id="104">
-				<description>Close Window button</description>
+				<description>Close Window</description>
 				<posx>1100</posx>
 				<posy>14</posy>
 				<width>64</width>
@@ -285,7 +285,7 @@
 
 			<!--  Transponder Info -->
 			<control type="label" id="404">
-				<description>TransponderInfo</description>
+				<description>Transponder Info</description>
 				<posx>55</posx>
 				<posy>510</posy>
 				<width>1000</width>
@@ -299,14 +299,13 @@
 			</control>
 			<!-- Progress Bar -->
 			<control type="progress" id="200">
-				<description>Progressbar</description>
 				<posx>55</posx>
 				<posy>550</posy>
 				<width>1090</width>
 				<height>30</height>
 			</control>
 			<control type="label" id="405">
-				<description>TransponderInfo</description>
+				<description>Transponder Info</description>
 				<posx>90</posx>
 				<posy>583</posy>
 				<width>1000</width>

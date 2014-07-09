@@ -8,8 +8,8 @@
 			<include>DefaultDialogCloseEffect</include>
 			<posx>335</posx>
 			<posy>215</posy>
+			<!-- Panel -->
 			<control type="image" id="9001">
-				<description>background image</description>
 				<width>610</width>
 				<height>290</height>
 				<texture border="40">DialogBack.png</texture>
@@ -17,7 +17,7 @@
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<control type="radiobutton" id ="1007463">
-					<description>Channel activated</description>
+					<description>Channel Activated</description>
 					<posx>30</posx>
 					<posy>70</posy>
 					<width>550</width>
@@ -36,7 +36,7 @@
 					<ondown>1007464</ondown>
 				</control>
 				<control type="radiobutton" id ="1007464">
-					<description>Network activated</description>
+					<description>Network Activated</description>
 					<posx>30</posx>
 					<posy>110</posy>
 					<width>550</width>
@@ -55,7 +55,7 @@
 					<ondown>1007465</ondown>
 				</control>
 				<control type="radiobutton" id ="1007465">
-					<description>Script activated</description>
+					<description>Script Activated</description>
 					<posx>30</posx>
 					<posy>150</posy>
 					<width>550</width>
@@ -74,7 +74,7 @@
 					<ondown>1006997</ondown>
 				</control>
 				<control type="button" id="1006997">
-					<description>Yes button</description>
+					<description>Yes</description>
 					<posx>95</posx>
 					<posy>215</posy>
 					<width>180</width>
@@ -91,7 +91,7 @@
 					<onright>1006999</onright>
 				</control>
 				<control type="button" id="1006999">
-					<description>Cancel button</description>
+					<description>Cancel</description>
 					<posx>315</posx>
 					<posy>215</posy>
 					<width>180</width>
@@ -111,4 +111,3 @@
 		</control>
 	</controls>
 </window>
-

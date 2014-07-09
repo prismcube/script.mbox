@@ -6,8 +6,8 @@
 		<control type="group" id="8000">
 			<visible>substring(Window.Property(DialogDrawFinished),True)</visible>
 			<include>DefaultDialogCloseEffect</include>
+			<!-- Panel -->
 			<control type="image" id="9001">
-				<description>background image</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>610</width>
@@ -17,29 +17,21 @@
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
-
 				<!-- Timer Mode -->
 				<include>DialogSpinEx03</include>
-
 				<!-- Recording Type -->
 				<include>DialogSpinEx01</include>
-				
 				<!-- Recording Name -->
 				<include>DialogInput01</include>
-
 				<!-- Weekly -->
 				<include>DialogSpinDay</include>
-
 				<!-- Date -->
 				<include>DialogSpinEx02</include>
-
-				<!--StartTime -->
+				<!-- Start Time -->
 				<include>DialogInput02</include>
-
-				<!--EndTim -->
+				<!-- End Time -->
 				<include>DialogInput03</include>
-
-				<!-- Record path -->
+				<!-- Recording Path -->
 				<include>DialogInput04</include>
 				<control type="group">
 					<posx>0</posx>
@@ -47,7 +39,6 @@
 					<control type="group" id="300">
 						<posx>0</posx>
 						<posy>0</posy>
-						<!--visible>Control.IsVisible(1006240)</visible-->
 						<visible>substring(Window.Property(NetVolumeInfo),true)</visible>
 						<control type="progress" id="301">
 							<description>Progressbar</description>
@@ -90,15 +81,10 @@
 				<control type="group">
 					<posx>0</posx>
 					<posy>40</posy>
-
-					<!-- OK/Cancel -->
+					<!-- OK & Cancel Buttons -->
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>
-
 			</control>
-
-
 		</control>
 	</controls>
 </window>
-
