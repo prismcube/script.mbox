@@ -118,7 +118,5 @@
 			<include>DefaultWindowOpenCloseAnimation</include>
 			<visible>substring(Window.Property(StatusLabel),true)</visible>
 		</control>
-
 	</controls>
 </window>
-

@@ -30,6 +30,7 @@
 		<posx>570</posx>
 		<posy>330</posy>
 		<width>500</width>
+		<height>50</height>
 		<font>METF_TitleTextMedium</font>
 		<textcolor>white</textcolor>
 	</include>
@@ -5096,7 +5097,6 @@
 			</control>
 			<!-- Recording Name -->
 			<control type="label">
-				<description>recode Name</description>
 				<posx>190</posx>
 				<posy>395</posy>
 				<width>900</width>

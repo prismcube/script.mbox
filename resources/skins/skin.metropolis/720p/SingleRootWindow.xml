@@ -3749,7 +3749,7 @@ Search for window name
 						<align>left</align>
 						<aligny>center</aligny>
 						<scroll>true</scroll>
-						<scrollspeed>150</scrollspeed>
+						<scrollspeed>100</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 					</control>
 					<control type="group">
@@ -5291,7 +5291,7 @@ Search for window name
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label2]</label>
 								<scroll>false</scroll>
-								<scrollspeed>150</scrollspeed>
+								<scrollspeed>100</scrollspeed>
 							</control>
 						</itemlayout>
 						<focusedlayout height="63" width="270">
@@ -5374,7 +5374,7 @@ Search for window name
 						<align>left</align>						
 						<aligny>center</aligny>
 						<scroll>true</scroll>
-						<scrollspeed>150</scrollspeed>
+						<scrollspeed>100</scrollspeed>
 						<scrollsuffix>  |  </scrollsuffix>
 						<label></label>
 					</control>

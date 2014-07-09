@@ -70,7 +70,7 @@
 				<onup>303</onup>
 				<ondown>303</ondown>
 			</control>
-			<!--control type="button" id="303">
+			<control type="button" id="303">
 				<description>Close</description>
 				<posx>520</posx>
 				<posy>20</posy>
@@ -82,7 +82,8 @@
 				<onright>302</onright>
 				<onup>301</onup>
 				<ondown>301</ondown>
-			</control-->
+				<visible>false</visible>
+			</control>
 		</control>
 	</controls>
 </window>

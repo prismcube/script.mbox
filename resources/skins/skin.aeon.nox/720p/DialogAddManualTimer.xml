@@ -33,13 +33,13 @@
 				<!-- Date -->
 				<include>DialogSpinEx02</include>
 
-				<!--StartTime -->
+				<!-- Start Time -->
 				<include>DialogInput02</include>
 
-				<!--EndTim -->
+				<!-- End Time -->
 				<include>DialogInput03</include>
 
-				<!-- Record path -->
+				<!-- Record Path -->
 				<include>DialogInput04</include>
 				<control type="group">
 					<posx>-15</posx>
@@ -91,11 +91,7 @@
 					<!-- OK/Cancel -->
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>
-
 			</control>
-
-
 		</control>
 	</controls>
 </window>
-

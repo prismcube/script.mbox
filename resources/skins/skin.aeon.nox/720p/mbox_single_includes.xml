@@ -1,10 +1,4 @@
 <includes>
-	<include name="DefaultSettingHeaderWindow">
-		<!--<include>DefaultSettingsBackground</include>-->
-		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonTime</include>
-	</include>
-
 	<include name="DefaultSettingsBackground">
 		<control type="image">
 			<posx>-13</posx>
@@ -40,22 +34,21 @@
     </include>
 
     <include name="DefaultSettingFloor">	        		<!--Archive, Channel List, Timer Window -->
-		<control type="group">
-			<include>Animation_OpenClose_Furniture</include>
-			<control type="image">
-				<width>1280</width>
-				<height>260</height>
-				<posy>477</posy>
-				<texture>views/showcase_floor.png</texture>
-				<colordiffuse>$VAR[ExtendedColorDiffuseVar]</colordiffuse>
-			</control>
-			<control type="image">
-				<width>1280</width>
-				<height>83</height>
-				<posy>650</posy>
-				<texture>views/panel_spot.png</texture>
-				<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
-			</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>477</posy>
+			<width>1280</width>
+			<height>260</height>
+			<texture>views/showcase_floor.png</texture>
+			<colordiffuse>$VAR[ExtendedColorDiffuseVar]</colordiffuse>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>650</posy>
+			<width>1280</width>
+			<height>83</height>
+			<texture>views/panel_spot.png</texture>
+			<colordiffuse>$VAR[SpotColorVar2]</colordiffuse>
 		</control>
 	</include>
 
@@ -123,6 +116,7 @@
 			<posy>160</posy>
 			<include>Animation_ListSlideRight</include>
 			<control type="image">
+				<posx>0</posx>
 				<posy>170</posy>
 				<width>355</width>
 				<height>345</height>
@@ -130,6 +124,7 @@
 				<texture background="true" diffuse="thumbs/cdcover_mask_aa.png">diffuseoverlay.png</texture>
 			</control>
 			<control type="image">
+				<posx>0</posx>
 				<posy>515</posy>
 				<width>355</width>
 				<height>345</height>
@@ -140,34 +135,11 @@
 		</control>
 	</include>
 
-	<include name="DefaultMiniTitle">
-		<control type="group">
-			<posx>60</posx>
-			<posy>0</posy>
-			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(1000999)">Conditional</animation>
-			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(1000999)">Conditional</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>250</width>
-				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
-				<visible>false</visible>
-			</control>
-			<control type="label" id="1001001">
-				<include>DefaultWindowTitleCommons</include>
-				<posx>220</posx>
-				<visible>false</visible>
-			</control>
-		</control>
-	</include>
-
 	<include name="DefaultSignalConditionValues">
 		<posx>550</posx>
 		<posy>330</posy>
 		<width>500</width>
+		<height>50</height>
 		<font>Font_Reg38</font>
 		<textcolor>grey2</textcolor>
 	</include>
@@ -193,8 +165,6 @@
 		<height>20</height>
 		<texturefocus>special://skin/media/close.png</texturefocus>
 		<texturenofocus>close_nofocus.png</texturenofocus>
-		<!--onleft>1200101</onleft>
-		<onright>1200101</onright-->
 		<onup condition="Control.IsVisible(1209001)">1209001</onup>
 		<onup condition="!Control.IsVisible(1209001)">1209000</onup>
 		<ondown>1209000</ondown>
@@ -302,8 +272,10 @@
 
 	<include name="DefaultSettingMainWindow">
 		<control type="group">
-			<include>DefaultSettingsTopBar</include>
-			<include>DefaultSettingFloor</include>
+			<control type="group">
+				<include>DefaultSettingsTopBar</include>
+				<include>DefaultSettingFloor</include>
+			</control>
 			<control type="group">
 				<control type="image">
 					<posx>70</posx>
@@ -326,6 +298,7 @@
 				<posy>220</posy>
 				<include>Animation_ListSlideRight</include>
 				<control type="image">
+					<posx>0</posx>
 					<posy>170</posy>
 					<width>355</width>
 					<height>285</height>
@@ -333,6 +306,7 @@
 					<texture background="true" diffuse="thumbs/cdcover_mask_aa.png">diffuseoverlay.png</texture>
 				</control>
 				<control type="image">
+					<posx>0</posx>
 					<posy>455</posy>
 					<width>355</width>
 					<height>345</height>
@@ -780,43 +754,6 @@
 	<include name="DefaultDialogCloseEffect">
 		<!--<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>-->
 	</include>
-
-	<!--
-	<include name="DefaultBehindDialogFadeOut">
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture>black-back.png</texture>
-			<animation effect="fade" start="100" end="0" time="200" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
-		</control>
-	</include>
-	-->
-
-	<!--
-	<include name="DefaultDialogBusyBackgroud">
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture>black-back.png</texture>
-			<visible>substring(Window.Property(BusyDialogBackground),True)</visible>
-		</control>
-	</include>
-	-->
-
-	<include name="DefaultWindowTitleCommons">
-		<posy>0</posy>
-		<width>1060</width>
-		<height>28</height>
-		<font>Font_Reg19</font>
-		<textcolor>white</textcolor>
-		<scroll>false</scroll>
-		<align>right</align>
-		<aligny>center</aligny>
-	</include>
 	
 	<include name="DefaultSubMainMenuFrontValues">
 		<posx>0</posx>
@@ -889,28 +826,6 @@
 			<width>100</width>
 			<height>5</height>
 			<texture>osd_slider_bg.png</texture>
-		</control>
-	</include>
-
-	<include name="DefaultEPGBackground">
-		<control type="group">
-			<include>DefaultVisibleFadeEffect</include>
-			<visible>substring(Window.Property(EPGMode),grid) | ! substring(Window.Property(EPGMode),grid)</visible>
-			<posx>40</posx>
-			<posy>40</posy>
-			<control type="image">
-				<width>1200</width>
-				<height>719</height>
-				<texture>wall/wall_bg.png</texture>
-				<colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-			</control>
-			<!--control type="image">
-				<posx>0</posx>
-				<posy>2</posy>
-				<width>1200</width>
-				<height>760</height>
-				<texture>wall/wall_bg_reflection.png</texture>
-			</control-->
 		</control>
 	</include>
 
@@ -4764,8 +4679,8 @@
 							<colordiffuse>75FFFFFF</colordiffuse>
 						</control>
 						<control type="label">
-							<posx>5</posx>
-							<posy>-8</posy>
+							<posx>4</posx>
+							<posy>-10</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -4802,7 +4717,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
@@ -4811,7 +4726,7 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
-					<!-- Playing -->
+					<!-- Playback -->
 					<control type="image">
 						<posx>30</posx>
 						<posy>5</posy>
@@ -4827,8 +4742,7 @@
 						<width>460</width>
 						<height>30</height>
 						<font>Font_Reg19</font>
-						<textcolor>white3</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -4840,8 +4754,7 @@
 						<width>210</width>
 						<height>30</height>
 						<font>Font_Reg19</font>
-						<textcolor>white3</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDate)]</label>
@@ -4853,8 +4766,7 @@
 						<width>460</width>
 						<height>40</height>
 						<font>Font_Reg19</font>
-						<textcolor>white3</textcolor>
-						<selectedcolor>selected</selectedcolor>
+						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
@@ -4887,8 +4799,8 @@
 							<texture>StackFO_white3NF.png</texture>
 						</control>
 						<control type="label">
-							<posx>5</posx>
-							<posy>-8</posy>
+							<posx>4</posx>
+							<posy>-10</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -5019,7 +4931,7 @@
 						<texture>OSDPlayNF.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>160</posx>
 						<posy>5</posy>
@@ -5062,7 +4974,7 @@
 						<width>200</width>
 						<height>25</height>
 						<font>Font_Reg17</font>
-						<textcolor>white3</textcolor>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label2</info>
@@ -5073,7 +4985,7 @@
 						<width>200</width>
 						<height>25</height>
 						<font>Font_Reg17</font>
-						<textcolor>white3</textcolor>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
@@ -5084,7 +4996,7 @@
 						<width>200</width>
 						<height>25</height>
 						<font>Font_Reg17</font>
-						<textcolor>white3</textcolor>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
@@ -5106,7 +5018,7 @@
 						<texture>OSDPlayFO.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>160</posx>
 						<posy>5</posy>
@@ -5126,7 +5038,7 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<font>Font_Reg19</font>
-							<textcolor>white3</textcolor>
+							<textcolor>white</textcolor>
 							<label>$INFO[ListItem.Property(iNetVolumeType)]</label>
 						</control>
 					</control>
@@ -5208,7 +5120,7 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>160</posx>
 						<posy>256</posy>
@@ -5223,7 +5135,7 @@
 						</control>
 						<control type="label">
 							<posx>5</posx>
-							<posy>-8</posy>
+							<posy>-9</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -5268,7 +5180,7 @@
 						<animation reversible="true" effect="zoom" start="62,266,84,84" end="54,168,100,100" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="62,266,84,84" start="54,168,100,100" time="300">unfocus</animation>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>160</posx>
 						<posy>256</posy>
@@ -5284,7 +5196,7 @@
 						</control>
 						<control type="label">
 							<posx>5</posx>
-							<posy>-8</posy>
+							<posy>-9</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -5298,7 +5210,7 @@
 			</control>
 			<control type="scrollbar" id="1003421">
 				<posx>180</posx>
-				<posy>490</posy>
+				<posy>500</posy>
 				<width>880</width>
 				<height>25</height>
 	            <texturesliderbackground>views/scrollbarbacklist2.png</texturesliderbackground>
@@ -5319,7 +5231,10 @@
 			<posy>520</posy>
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<control type="label">
+				<posx>0</posx>
+				<posy>0</posy>
 				<width>1035</width>
+				<height>30</height>
 				<font>Font_Reg25</font>
 				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
@@ -5329,8 +5244,10 @@
 				<info>Container(1003420).ListItem(0).Label2</info>
 			</control>
 			<control type="label">
+				<posx>0</posx>
 				<posy>40</posy>
 				<width>1035</width>
+				<height>30</height>
 				<font>Font_Reg19</font>
 				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
@@ -5340,8 +5257,10 @@
 				<info>Container(1003420).ListItem(0).Label</info>
 			</control>
 			<control type="label">
+				<posx>0</posx>
 				<posy>62</posy>
 				<width>1035</width>
+				<height>30</height>
 				<font>Font_Reg19</font>
 				<textcolor>white3</textcolor>
 				<shadowcolor>black</shadowcolor>
@@ -5351,10 +5270,12 @@
 				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)] ($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
 				<visible>!substring(Container(1003420).CurrentPage,0)</visible>
 			</control>
-			<!-- NetVolume -->
+			<!-- NAS -->
 			<control type="label">
+				<posx>0</posx>
 				<posy>84</posy>
 				<width>1035</width>
+				<height>30</height>
 				<font>Font_Reg19</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -5396,7 +5317,7 @@
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>105</posy>
@@ -5422,7 +5343,7 @@
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>95</posx>
 						<posy>105</posy>
@@ -5437,7 +5358,7 @@
 						</control>
 						<control type="label">
 							<posx>5</posx>
-							<posy>-8</posy>
+							<posy>-9</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -5461,7 +5382,7 @@
 						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
 						<animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,117" time="300">unfocus</animation>
 					</control>
-					<!-- Mark -->
+					<!-- Selection Icon -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>105</posy>
@@ -5482,7 +5403,7 @@
 						<animation reversible="true" effect="zoom" start="40,108,64,64" end="22,48,100,100" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="40,108,64,64" start="22,48,100,100" time="300">unfocus</animation>
 					</control>
-					<!-- NetVolume -->
+					<!-- NAS -->
 					<control type="group">
 						<posx>90</posx>
 						<posy>105</posy>
@@ -5498,7 +5419,7 @@
 						</control>
 						<control type="label">
 							<posx>5</posx>
-							<posy>-8</posy>
+							<posy>-9</posy>
 							<width>50</width>
 							<height>40</height>
 							<align>left</align>
@@ -5514,7 +5435,10 @@
 				<posx>100</posx>
 				<posy>203</posy>
 				<control type="label">
+					<posx>0</posx>
+					<posy>0</posy>
 					<width>770</width>
+					<height>30</height>
 					<font>Font_Reg25</font>
 					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
@@ -5524,8 +5448,10 @@
 					<info>Container(1003430).ListItem(0).Label2</info>
 				</control>
 				<control type="label">
+					<posx>0</posx>
 					<posy>30</posy>
 					<width>770</width>
+					<height>30</height>
 					<font>Font_Reg19</font>
 					<textcolor>white3</textcolor>
 					<shadowcolor>black</shadowcolor>
@@ -5536,8 +5462,10 @@
 					<visible>!substring(Container(1003430).CurrentPage,0)</visible>
 				</control>
 				<control type="label">
+					<posx>0</posx>
 					<posy>60</posy>
 					<width>770</width>
+					<height>30</height>
 					<align>center</align>
 					<aligny>center</aligny>
 					<font>Font_Reg19</font>
@@ -5562,7 +5490,7 @@
 				<ondown>3300100</ondown>
 				<showonepage>false</showonepage>
 				<orientation>horizontal</orientation>
-				<visible>substring(Window.Property(ViewMode),panart)</visible>
+				<visible>false</visible>
 			</control>
 		</control>
 	</include>
@@ -5961,7 +5889,6 @@
 						<posy>10</posy>
 						<width>80</width>
 						<height>50</height>
-						<!--colordiffuse>00FFFFFF</colordiffuse-->
 						<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
 					</control>
 					<control type="label">
@@ -6000,9 +5927,8 @@
 						<label>$INFO[ListItem.Label2]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					<!-- Progress Bar -->
+					<!-- EPG Progress Bar -->
 					<control type="progress" >
-						<description>EPG progress control</description>
 						<posx>645</posx>
 						<posy>45</posy>
 						<width>100</width>
@@ -6052,6 +5978,685 @@
 					<aspectratio aligny="top">keep</aspectratio>
 					<fadetime>IconCrossfadeTime</fadetime>
 					<texture diffuse="diffuse_mirror3.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+				</control>
+			</control>
+		</control>
+	</include>
+
+	<include name="DefaultGridEPGView">
+		<control type="group">
+			<!-- Timeline -->
+			<control type="grouplist" id="3701000">
+				<posx>65</posx>
+				<posy>54</posy>
+				<width>1170</width>
+				<height>30</height>
+				<align>left</align>
+				<itemgap>0</itemgap>
+				<orientation>Horizontal</orientation>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+				<control type="button" id="3701010">
+					<height>30</height>
+					<width>270</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>250</textwidth>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Reg19</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+				</control>
+				<control type="button" id="3701001">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701002">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701003">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701004">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701005">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701006">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701007">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701008">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+			</control>
+			<control type="group">
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+				<control type="list" id="3702000">
+					<posx>65</posx>
+					<posy>110</posy>
+					<width>270</width>
+					<height>504</height>
+					<align>left</align>
+					<onleft></onleft>
+					<onright></onright>
+					<onup>3702000</onup>
+					<ondown>3702000</ondown>
+					<viewtype label="535">list</viewtype>
+					<scrolltime>0</scrolltime>
+					<itemlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>2</posy>
+							<width>185</width>
+							<height>30</height>
+							<font>Font_Reg19</font>
+							<textcolor>grey2</textcolor>
+							<selectedcolor>grey2</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>32</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>Font_Reg19</font>
+							<textcolor>grey2</textcolor>
+							<selectedcolor>grey2</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+							<scrollspeed>100</scrollspeed>
+						</control>
+					</itemlayout>
+					<focusedlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>2</posy>
+							<width>185</width>
+							<height>30</height>
+							<font>Font_Reg19</font>
+							<textcolor>grey2</textcolor>
+							<selectedcolor>grey2</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>32</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>Font_Reg19</font>
+							<textcolor>grey2</textcolor>
+							<selectedcolor>grey2</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			
+			<control type="group" id="3703000">
+				<posx>335</posx>
+				<posy>110</posy>
+				<width>800</width>
+				<height>550</height>
+				<align>left</align>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+				<!-- CAS -->
+				<control type="group">
+					<posx>-269</posx>
+					<posy>504</posy>
+					<include>CASInfo</include>
+				</control>
+
+				<!-- EPG Info -->
+				<control type="label" id="3703503">
+					<posx>0</posx>
+					<posy>501</posy>
+					<width>800</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>FF6db9e5</textcolor>
+					<align>left</align>						
+					<aligny>center</aligny>
+					<label></label>
+				</control>
+				
+				<!-- Running Timer -->
+				<control type="button" id="3703601">
+					<include>DefaultButtonRunningRecValues</include>
+				</control>
+				<control type="button" id="3703602">
+					<include>DefaultButtonRunningRecValues</include>
+				</control>
+
+				<!-- Scheduled Timer -->
+				<control type="button" id="3703701">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703702">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703703">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703704">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703705">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703706">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703707">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703708">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703709">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703710">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+
+				<control type="button" id="3703711">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703712">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703713">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703714">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703715">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703716">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703717">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703718">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703719">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703720">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+
+				<!-- Scheduled ViewTimer -->
+				<control type="button" id="3703801">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703802">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703803">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703804">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703805">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703806">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703807">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703808">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703809">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703810">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+
+				<control type="button" id="3703811">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703812">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703813">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703814">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703815">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703816">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703817">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703818">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703819">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703820">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+
+				<!-- Normal Grid EPG -->					
+				<control type="button" id="3703001">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703002">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703003">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703004">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703005">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703006">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703007">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703008">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703009">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703010">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703011">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703012">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703013">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703014">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703015">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703016">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703017">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703018">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703019">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703020">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703021">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703022">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703023">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703024">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703025">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703026">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703027">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703028">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703029">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703030">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				
+				<control type="button" id="3703031">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703032">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703033">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703034">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703035">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703036">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703037">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703038">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703039">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703040">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703041">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703042">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703043">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703044">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703045">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703046">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703047">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703048">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703049">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703050">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703051">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703052">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703053">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703054">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703055">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703056">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703057">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703058">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703059">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703060">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703061">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703062">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703063">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703064">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703065">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703066">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703067">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703068">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703069">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703070">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703071">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703072">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703073">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703074">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703075">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703076">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703077">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703078">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703079">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703080">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703081">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703082">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703083">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703084">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703085">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703086">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703087">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703088">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703089">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703090">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703091">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703092">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703093">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703094">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703095">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703096">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703097">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703098">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703099">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703100">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<!-- Hidden Focus Button -->
+				<control type="button" id="3703501">
+					<height>60</height>
+					<width>270</width>
+					<textoffsetx>85</textoffsetx>
+					<textwidth>185</textwidth>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Reg19</font>
+					<texturefocus border="5">StackFO_white2.png</texturefocus>
+					<texturenofocus border="5">StackFO_white2.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<colordiffuse>75FFFFFF</colordiffuse>
+				</control>				
+
+				<!-- Current Time Indicator -->
+				<control type="image" id="3703500">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>498</height>
+					<texture>HomeSeperatorRed.png</texture>
+					<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
 				</control>
 			</control>
 		</control>
@@ -6714,7 +7319,7 @@
 					<height>41</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 				</control>
-				<!-- is skip? -->
+				<!-- Skip Icon -->
 				<control type="image">
 					<posx>485</posx>
 					<posy>13</posy>
@@ -6723,7 +7328,7 @@
 					<texture>DI_Skip1g.png</texture>
 					<visible>substring(ListItem.Property(iSkip),true)</visible>
 				</control>
-				<!-- is hd? -->
+				<!-- HD Icon -->
 				<control type="image">
 					<posx>513</posx>
 					<posy>12</posy>
@@ -6732,7 +7337,7 @@
 					<texture>IconHD1g.png</texture>
 					<visible>substring(ListItem.Property(iHD),true)</visible>
 				</control>
-				<!-- is cas? -->
+				<!-- CAS Icon -->
 				<control type="image">
 					<posx>540</posx>
 					<posy>12</posy>
@@ -6741,7 +7346,7 @@
 					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
-				<!-- is lock? -->
+				<!-- Lock Icon -->
 				<control type="image">
 					<posx>4</posx>
 					<posy>9</posy>
@@ -6750,7 +7355,7 @@
 					<texture>OverlayLocked.png</texture>
 					<visible>substring(ListItem.Property(iLock),true)</visible>
 				</control>
-				<!-- is mark? -->
+				<!-- Selection Icon -->
 				<control type="image">
 					<posx>-3</posx>
 					<posy>10</posy>
@@ -6759,7 +7364,7 @@
 					<texture>OverlayWatched.png</texture>
 					<visible>substring(ListItem.Property(iMark),true)</visible>
 				</control>
-				<!-- is recording? -->
+				<!-- Recording Icon -->
 				<control type="image">
 					<posx>0</posx>
 					<posy>5</posy>
@@ -6780,7 +7385,7 @@
 					<label>$INFO[ListItem.Label]</label>
 					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 				</control>
-				<!-- is Align < 10,000 ? -->
+				<!-- Channel Name if number of channel is less than 10,000 -->
 				<control type="label">
 					<posx>90</posx>
 					<posy>0</posy>
@@ -6793,7 +7398,7 @@
 					<label>$INFO[ListItem.Label2]</label>
 					<visible>substring(ListItem.Property(iAlign),false)</visible>
 				</control>
-				<!-- is Align > 10,000 ? -->
+				<!-- Channel Name if number of channel is more than 10,000 -->
 				<control type="label">
 					<posx>100</posx>
 					<posy>0</posy>
@@ -6834,7 +7439,7 @@
 					<texture border="6">views/tripanel/listselect_fo.png</texture>
 					<colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
 				</control>
-				<!-- is skip? -->
+				<!-- Skip Icon -->
 				<control type="image">
 					<posx>485</posx>
 					<posy>13</posy>
@@ -6843,7 +7448,7 @@
 					<texture>DI_Skip1g.png</texture>
 					<visible>substring(ListItem.Property(iSkip),true)</visible>
 				</control>
-				<!-- is hd? -->
+				<!-- HD Icon -->
 				<control type="image">
 					<posx>513</posx>
 					<posy>12</posy>
@@ -6852,7 +7457,7 @@
 					<texture>IconHD1g.png</texture>
 					<visible>substring(ListItem.Property(iHD),true)</visible>
 				</control>
-				<!-- is cas? -->
+				<!-- CAS Icon -->
 				<control type="image">
 					<posx>540</posx>
 					<posy>12</posy>
@@ -6861,7 +7466,7 @@
 					<texture>IconCas1g.png</texture>
 					<visible>substring(ListItem.Property(iCas),true)</visible>
 				</control>
-				<!-- is lock? -->
+				<!-- Lock Icon -->
 				<control type="image">
 					<posx>4</posx>
 					<posy>9</posy>
@@ -6870,7 +7475,7 @@
 					<texture>OverlayLocked.png</texture>
 					<visible>substring(ListItem.Property(iLock),true)</visible>
 				</control>
-				<!-- is mark? -->
+				<!-- Selection Icon -->
 				<control type="image">
 					<posx>-3</posx>
 					<posy>10</posy>
@@ -6879,7 +7484,7 @@
 					<texture>OverlayWatched.png</texture>
 					<visible>substring(ListItem.Property(iMark),true)</visible>
 				</control>
-				<!-- is recording? -->
+				<!-- Recording Icon -->
 				<control type="image">
 					<posx>0</posx>
 					<posy>5</posy>
@@ -6900,7 +7505,7 @@
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
 				</control>
-				<!-- is Align < 10,000 ? -->
+				<!-- Channel Name if number of channel is less than 10,000 -->
 				<control type="label">
 					<posx>90</posx>
 					<posy>0</posy>
@@ -6914,7 +7519,7 @@
 					<label>$INFO[ListItem.Label2]</label>
 					<visible>substring(ListItem.Property(iAlign),false)</visible>
 				</control>
-				<!-- is Align < 10,000 ? -->
+				<!-- Channel Name if number of channel is more than 10,000 -->
 				<control type="label">
 					<posx>100</posx>
 					<posy>0</posy>
