@@ -911,6 +911,10 @@ class ChannelListWindow( BaseWindow ) :
 						if isDelete :
 							self.mFlag_DeleteAll_Fav = True
 
+							#default mode allchannels
+							self.mUserMode.mMode = ElisEnum.E_MODE_ALL
+							self.mUserSlidePos.mMain = E_SLIDE_ACTION_MAIN
+
 				else :
 					LOG_TRACE( '[ChannelList] except, no provider idx[%s] providerList[%s]'% ( idxSub, self.mListProvider ) )
 
