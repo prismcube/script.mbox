@@ -750,10 +750,8 @@ class DialogAddManualTimer( SettingDialog ) :
 						self.SetEnableControl( E_DialogInput02, True )
 						self.SetEnableControl( E_DialogInput03, True )
 
-				#if self.mTimerMode == E_VIEW_MODE :
-				#	self.SetFocus( E_DialogSpinEx03 )
-				#else :
-				#	self.SetFocus( E_DialogSpinEx01 )
+			if self.mTimerMode == E_VIEW_MODE :
+				self.SetEnableControl( E_DialogInput03, False )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )		
