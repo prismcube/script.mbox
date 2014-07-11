@@ -63,7 +63,7 @@ E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 60
 E_GRID_DEFAULT_GAP				= 5
 
-E_CURRENT_MAX_ROW_COUNT		= 8
+E_CURRENT_MAX_ROW_COUNT			= 8
 
 E_DIR_CURRENT					= 0
 E_DIR_LINE_UP					= 1
@@ -71,6 +71,8 @@ E_DIR_LINE_DOWN					= 2
 E_DIR_PAGE_UP					= 3
 E_DIR_PAGE_DOWN					= 4
 
+E_RECORD_MODE 					= 0
+E_VIEW_MODE   					= 1
 
 BUTTON_ID_BASE_TIME_LINE		= E_EPG_WINDOW_BASE_ID + 1001
 BUTTON_ID_BASE_CHANNEL			= E_EPG_WINDOW_BASE_ID + 2001
@@ -1530,7 +1532,9 @@ class EPGWindow( BaseWindow ) :
 			self.ShowHotkeys( )
 
 		elif aContextAction == CONTEXT_ADD_VIEW_TIMER :
-			self.ShowViewTimer( )
+			#self.ShowViewTimer( )
+			epg = self.GetSelectedEPG( )
+			self.ShowManualTimer( epg, None, E_VIEW_MODE )
 
 
 	def ShowHotkeys( self ) :
@@ -1612,9 +1616,9 @@ class EPGWindow( BaseWindow ) :
 				timer = self.CheckExistViewTimer( selectedEPG, None, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
+				#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				#	self.ShowViewTimer( timer )
+				#else :
 					self.ShowManualTimer( selectedEPG, timer )
 
 		else :
@@ -1635,9 +1639,9 @@ class EPGWindow( BaseWindow ) :
 				timer = self.CheckExistViewTimer( None, iChannel, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
+				#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				#	self.ShowViewTimer( timer )
+				#else :
 					self.ShowManualTimer( None, timer )
 
 
@@ -1750,7 +1754,7 @@ class EPGWindow( BaseWindow ) :
 		return timer
 
 
-	def ShowManualTimer( self, aEPG=None, aTimer=None ) :
+	def ShowManualTimer( self, aEPG=None, aTimer=None, aMode = E_RECORD_MODE ) :
 
 		"""
 		if aTimer :
@@ -1776,6 +1780,8 @@ class EPGWindow( BaseWindow ) :
 
 		if aTimer :
 			dialog.SetTimer( aTimer, self.IsRunningTimer( aTimer ) )
+			if aTimer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				aMode = E_VIEW_MODE
 
 		"""
 		if aEPG :
@@ -1785,8 +1791,9 @@ class EPGWindow( BaseWindow ) :
 			dialog.SetEPG( aEPG  )
 		else :
 			dialog.SetEPG( None  )
-			
+
 		channel = None
+		dialog.SetTimerMode( aMode )
 
 		if self.mEPGMode == E_VIEW_GRID  :
 			selectedPos = self.GridGetSelectedPosition( )
@@ -2449,9 +2456,9 @@ class EPGWindow( BaseWindow ) :
 					return
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
+				#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				#	self.ShowViewTimer( timer )
+				#else :
 					self.ShowManualTimer( selectedEPG, timer )
 
 			else : # Add EPG Timer
@@ -2478,9 +2485,9 @@ class EPGWindow( BaseWindow ) :
 					return
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
+				#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				#	self.ShowViewTimer( timer )
+				#else :
 					self.ShowManualTimer( None, timer )
 
 			else :	# Add Manual Timer

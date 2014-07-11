@@ -17,8 +17,8 @@ E_ONCE						= 0
 E_WEEKLY					= 1
 E_DAILY						= 2
 
-E_RECORD_MODE				= 0
-E_VIEW_MODE				= 1
+E_RECORD_MODE 				= 0
+E_VIEW_MODE   				= 1
 
 
 WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
@@ -85,15 +85,17 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mFreeHDD  = self.mCommander.Record_GetFreeMBSize( )
 
 		defaultFocus = E_DialogSpinEx03
-		if self.mTimer :
-			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
-			netVolumeID = self.mTimer.mVolumeID
-			defaultFocus = E_DialogInput03
-		else :
-			self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
+		#if self.mTimer :
+		#	#self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
+		#	netVolumeID = self.mTimer.mVolumeID
+		#	defaultFocus = E_DialogInput03
+		#else :
+		#	self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
 
 		if self.mTimer :
 			self.mRecordName = self.mTimer.mName
+			netVolumeID = self.mTimer.mVolumeID
+			defaultFocus = E_DialogSpinEx02
 		elif self.mEPG  :
 			self.mRecordName = self.mEPG.mEventName
 		else :
@@ -136,7 +138,7 @@ class DialogAddManualTimer( SettingDialog ) :
 				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
 				self.Reload( )
 				self.ChangeRecordMode( )
-				self.UpdateLocation( )
+				self.UpdateLocation( 0, 20 )
 
 			elif groupId == E_DialogSpinEx02 :
 				selectIndex = self.GetSelectedIndex( E_DialogSpinEx02 )
@@ -152,9 +154,9 @@ class DialogAddManualTimer( SettingDialog ) :
 					self.mRecordingMode = E_ONCE
 					self.Reload( )
 					self.ChangeRecordMode( )
-					self.UpdateLocation( )
+					self.UpdateLocation( 0, 20 )
 			
-				self.ChangeTimerMode()
+				self.DrawItem( )
 
 			elif groupId == E_DialogSpinDay :
 				if self.mRecordingMode == E_WEEKLY  and self.mIsRunningTimer == True:
@@ -232,6 +234,10 @@ class DialogAddManualTimer( SettingDialog ) :
 	def SetTimer( self, aTimer, aIsRunningTimer=False ) :
 		self.mTimer = aTimer
 		self.mIsRunningTimer = aIsRunningTimer		
+
+
+	def SetTimerMode( self, aMode ) :
+		self.mTimerMode = aMode
 
 
 	def IsOK( self ) :
@@ -430,7 +436,7 @@ class DialogAddManualTimer( SettingDialog ) :
 							self.mUsedWeeklyList[i].mDuration = compareDuration
 					
 				else :
-					self.mRecordingMode == E_ONCE 
+					self.mRecordingMode = E_ONCE
 					
 			else :
 				startTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -488,6 +494,10 @@ class DialogAddManualTimer( SettingDialog ) :
 					usedTimer.mDuration = duration
 					self.mUsedWeeklyList.append( usedTimer )
 
+			isEnableControls = True
+			if self.mTimerMode == E_VIEW_MODE :
+				isEnableControls = False
+			self.SetEnableControls( [E_DialogInput03], isEnableControls )
 			
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex)
@@ -502,18 +512,36 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		try :
 			self.ResetAllControl( )
-			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), [ MR_LANG( 'Record' ),  MR_LANG( 'View' ) ], 0 )
+
+			defaultFocus = E_DialogSpinEx03
+			isVisibleControls = True
+			isEnableControls = True
+			modeName = MR_LANG( 'Recording' )
+			mTitle = MR_LANG( 'Add Manual Timer' )
+			modeList = [ MR_LANG( 'Record' ) ]
+
+			if E_V1_2_APPLY_VIEW_TIMER :
+				modeList.append( MR_LANG( 'View' ) )
+
+			if self.mTimerMode == E_VIEW_MODE :
+				isVisibleControls = False
+				isEnableControls = False
+				modeName = MR_LANG( 'Viewing' )
+				mTitle = MR_LANG( 'View Timer' )
+
+			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), modeList, self.mTimerMode )
 			if self.mTimer :
+				defaultFocus = E_DialogSpinEx02
+				mTitle = MR_LANG( 'Edit Timer' )
 				self.SetEnableControl( E_DialogSpinEx03, False )					
-				
-			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_RECORDING_MODE, self.mRecordingMode )
+
+			self.AddUserEnumControl( E_DialogSpinEx01, modeName, LIST_RECORDING_MODE, self.mRecordingMode )
 			if self.mEnableSelectChannel == True :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Select Channel' ),  MR_LANG( 'Record Name' ) )
 			else :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Name' ),  MR_LANG( 'Record Name' ) )
 
 			self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Start Date' ), [ MR_LANG( 'Date' ) ], 0 )			
-			#self.AddInputControl(  E_DialogSpinEx02, 'Date', 'Date' )
 			self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
 			#self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Daily' ) )
 			self.SetListControlTitle( E_DialogSpinDay, MR_LANG( 'Day of Week' ) )
@@ -521,7 +549,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.AddInputControl( E_DialogInput02, MR_LANG( 'Start Time' ),  '00:00' )
 			self.AddInputControl( E_DialogInput03, MR_LANG( 'End Time' ),  '00:00' )
 
-			if E_SUPPORT_EXTEND_RECORD_PATH :
+			if E_SUPPORT_EXTEND_RECORD_PATH and self.mTimerMode == E_RECORD_MODE :
 				lblSelect, useInfo, lblPercent, lblOnline = self.GetVolumeInfo( self.mNetVolume )
 				self.AddInputControl( E_DialogInput04, MR_LANG( 'Record Path' ), lblSelect )
 				self.setProperty( 'NetVolumeConnect', lblOnline )
@@ -532,29 +560,52 @@ class DialogAddManualTimer( SettingDialog ) :
 					#block control by Edit timer
 					self.SetEnableControl( E_DialogInput04, False )
 
-				#self.setProperty( 'NetVolumeInfo', E_TAG_TRUE )
-
 			self.AddOkCanelButton( )
 
-			self.SetAutoHeight( False )
+			self.SetHeaderLabel( mTitle )
+			self.setProperty( 'NetVolumeInfo', '%s'% isVisibleControls )
+			self.SetVisibleControls( [E_DialogInput04], isVisibleControls )
+			self.SetEnableControls( [E_DialogInput03], isEnableControls )
+
+			self.SetAutoHeight( True )
 			self.InitControl( )
 			
 			self.ChangeRecordMode( )
-			self.UpdateLocation( )
+			self.UpdateLocation( 0, 20 )
+
+			self.SetFocus( defaultFocus )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
 
 	def ChangeTimerMode( self ) :
+		isAutoHeight = False
+		isVisibleControls = True
+		modeName = MR_LANG( 'Recording' )
+		mTitle = MR_LANG( 'Add Manual Timer' )
+		if self.mTimer :
+			mTitle = MR_LANG( 'Edit Timer' )
+
 		if self.mTimerMode == E_RECORD_MODE: 
-			self.SetEnableControl( E_DialogSpinEx01, True )
+			#self.SetEnableControl( E_DialogSpinEx01, True )
 			self.SetEnableControl( E_DialogInput03, True )
 			self.SetEnableControl( E_DialogInput04, True )
 		else :
-			self.SetEnableControl( E_DialogSpinEx01, False )
+			#self.SetEnableControl( E_DialogSpinEx01, False )
 			self.SetEnableControl( E_DialogInput03, False )
 			self.SetEnableControl( E_DialogInput04, False )
+			isVisibleControls = False
+			modeName = MR_LANG( 'Viewing' )
+			mTitle = MR_LANG( 'View Timer' )
+
+		self.SetHeaderLabel( mTitle )
+		self.SetControlLabelString( E_DialogSpinEx01, modeName )
+
+		self.setProperty( 'NetVolumeInfo', '%s'% isVisibleControls )
+		self.SetVisibleControls( [E_DialogInput03, E_DialogInput04], isVisibleControls )
+		self.SetAutoHeight( isAutoHeight )
+		self.UpdateLocation( )
 
 		self.SetFocus( E_DialogSpinEx03 )
 
@@ -699,10 +750,10 @@ class DialogAddManualTimer( SettingDialog ) :
 						self.SetEnableControl( E_DialogInput02, True )
 						self.SetEnableControl( E_DialogInput03, True )
 
-				if self.mTimerMode == E_VIEW_MODE :
-					self.SetFocus( E_DialogSpinEx03 )
-				else :
-					self.SetFocus( E_DialogSpinEx01 )
+				#if self.mTimerMode == E_VIEW_MODE :
+				#	self.SetFocus( E_DialogSpinEx03 )
+				#else :
+				#	self.SetFocus( E_DialogSpinEx01 )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )		
@@ -820,7 +871,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		try :
 			if self.mTimer :
 				LOG_TRACE( 'Edit Mode' )
-				if self.mIsRunningTimer and self.mRecordingMode == E_ONCE :
+				if self.mTimerMode == E_RECORD_MODE and self.mIsRunningTimer and self.mRecordingMode == E_ONCE :
 					#if self.mRecordingMode == E_ONCE :
 					startTime = self.mTimer.mStartTime
 					endTime = startTime + self.mTimer.mDuration
@@ -875,7 +926,10 @@ class DialogAddManualTimer( SettingDialog ) :
 						endTime = tmpEndTime * 60
 						self.mTimer.mDuration = endTime - startTime
 						#aTimerId, aNewStartTime, aNewDuration
-						ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
+						if self.mTimerMode == E_RECORD_MODE :
+							ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
+						else :
+							ret = self.mDataCache.Timer_EditViewTimer( self.mTimer.mTimerId, startTime )
 
 						if ret[0].mParam == -1 or ret[0].mError == -1 :
 							self.mConflictTimer = ret
@@ -897,13 +951,20 @@ class DialogAddManualTimer( SettingDialog ) :
 									endTime = tmpEndTime * 60
 									self.mUsedWeeklyList[i].mDuration = endTime - self.mUsedWeeklyList[i].mStartTime
 
-									ret = self.mDataCache.Timer_AddOneWeeklyTimer( self.mTimer.mTimerId, self.mUsedWeeklyList[i].mDate, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
+									if self.mTimerMode == E_RECORD_MODE :
+										ret = self.mDataCache.Timer_AddOneWeeklyTimer( self.mTimer.mTimerId, self.mUsedWeeklyList[i].mDate, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
+									else :
+										pass
+										#ToDO
+										#ret = self.mDataCache.Timer_AddOneViewWeeklyTimer( self.mTimer.mTimerId, self.mUsedWeeklyList[i].mDate, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
 									LOG_TRACE( 'ret=%s' %ret )									
 							else :
 								if self.mUsedWeeklyList[i].mUsed == False : #Delete WeeklyTimer
 									LOG_TRACE( 'Edit Weekly Delete' )
-									ret = self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
-									weeklyTimer.mStartTime, weeklyTimer.mDuration )
+									if self.mTimerMode == E_RECORD_MODE :
+										ret = self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration )
+									else :
+										ret = self.mDataCache.Timer_DeleteOneViewWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration )
 									LOG_TRACE( 'ret=%s' %ret )
 								else : #Change Timer
 									LOG_TRACE( 'Edit Weekly Change' )
@@ -912,21 +973,25 @@ class DialogAddManualTimer( SettingDialog ) :
 									endTime = tmpEndTime * 60
 									self.mUsedWeeklyList[i].mDuration = endTime - self.mUsedWeeklyList[i].mStartTime
 
-									ret = self.mDataCache.Timer_EditOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
-									weeklyTimer.mStartTime, weeklyTimer.mDuration, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
+									if self.mTimerMode == E_RECORD_MODE :
+										ret = self.mDataCache.Timer_EditOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
+										weeklyTimer.mStartTime, weeklyTimer.mDuration, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
+									else :
+										ret = self.mDataCache.Timer_EditViewWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, weeklyTimer.mStartTime, self.mUsedWeeklyList[i].mStartTime ) 
+
 									LOG_TRACE( 'ret=%s' %ret )
 						
 				return True
-				
+
 			#debug
-			"""
+
 			for i in range( len(self.mUsedWeeklyList) ) :
 				LOG_TRACE('index=%d' %i )
 				LOG_TRACE('used=%d' %self.mUsedWeeklyList[i].mUsed )
 				LOG_TRACE('date=%d' %self.mUsedWeeklyList[i].mDate )
 				LOG_TRACE('startTime=%s' %TimeToString(self.mWeeklyStart, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 				LOG_TRACE('weeklyTime=%s' %TimeToString(self.mUsedWeeklyList[i].mStartTime, TimeFormatEnum.E_HH_MM ) )
-			"""
+
 
 			if self.mRecordingMode == E_ONCE :
 				startTime = self.mWeeklyStart + self.mUsedWeeklyList[0].mStartTime
@@ -935,7 +1000,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					return False
 
 				if self.mTimerMode == E_VIEW_MODE :
-					if  startTime  < self.mDataCache.Datetime_GetLocalTime( ) :
+					if startTime < self.mDataCache.Datetime_GetLocalTime( ) :
 						self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
 						return False
 					ret = self.mDataCache.Timer_AddViewTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime, self.mRecordName )
@@ -999,8 +1064,11 @@ class DialogAddManualTimer( SettingDialog ) :
 				LOG_TRACE( 'weeklyTimer=%s' %weeklyTimerList )
 				"""
 
-				ret = self.mDataCache.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList )
-				LOG_TRACE( 'ret=%s' %ret )				
+				if self.mTimerMode == E_RECORD_MODE :
+					ret = self.mDataCache.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList )
+				else :
+					ret = self.mDataCache.Timer_AddViewWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, self.mWeeklyStart, self.mWeeklyEnd, self.mRecordName, True, len( weeklyTimerList ), weeklyTimerList )
+				LOG_TRACE( 'ret=%s' %ret )
 
 				if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :
 					self.mConflictTimer = ret
