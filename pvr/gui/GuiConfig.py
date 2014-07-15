@@ -403,6 +403,9 @@ E_CHECK_PARENTLOCK		= 1
 E_PIP_STOP				= 1
 E_PIP_CHECK_FORCE		= 2
 
+E_TIMER_MODE_RECORD		= 0
+E_TIMER_MODE_VIEW 		= 1
+
 # Channel List Enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'

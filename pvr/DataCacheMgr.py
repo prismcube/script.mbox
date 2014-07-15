@@ -2621,6 +2621,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddViewWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aForceDecrypt, aWeeklyTimerCount, aWeeklyTimer )
 
 
+	def Timer_AddOneViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration = 10 ) :
+		return self.mCommander.Timer_AddViewWeeklyTimerItem( aTimerId, aDate, aStartTime, aDuration )
+
+
 	def Timer_EditViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aNewStartTime, aDuration = 10, aNewDuration = 10 ) :
 		return self.mCommander.Timer_EditViewWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration )
 
@@ -2629,7 +2633,7 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_EditOneViewWeeklyTimer( aTimerId, aStartTime, aDuration, aNewStartTime, aNewDuration )
 
 
-	def Timer_DeleteOneViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :
+	def Timer_DeleteOneViewWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration = 10 ) :
 		return self.mCommander.Timer_EditViewWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
 
 
