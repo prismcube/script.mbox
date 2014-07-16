@@ -17,14 +17,9 @@ E_ONCE						= 0
 E_WEEKLY					= 1
 E_DAILY						= 2
 
-WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
-
 #LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
 LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Weekly' ), '%s(7 %s)' %(MR_LANG( 'Weekly' ), MR_LANG( 'Days' ))  ]
 LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
-
-
-ONE_DAY_SECONDS				= 3600*24
 
 
 class UsedWeeklyTimer( ElisIWeeklyTimer ) :

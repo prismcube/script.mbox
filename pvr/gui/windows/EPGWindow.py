@@ -3054,29 +3054,8 @@ class EPGWindow( BaseWindow ) :
 		#self.setProperty( 'GridSetPocusIndex', '%d' %( self.mVisibleFocusRow + self.mVisibleFocusCol ) )
 		"""
 
-	def FindWeeklyTimer( self, aTimer ) :
-		if aTimer == None :
-			return None
-
-		weekList = {'Sun':0,'Mon':1,'Tue':2,'Wed':3,'Thu':4,'Fri':5,'Sat':6}
-		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
-		weekday = time.strftime( '%a', time.gmtime( showingTime ) )
-		LOG_TRACE( '---------------------day[%s] time[%s]'% ( weekday, TimeToString( showingTime, TimeFormatEnum.E_HH_MM ) ) )
-
-		timer = None
-		for i in range( aTimer.mWeeklyTimerCount ) :
-			weeklyTimer = aTimer.mWeeklyTimer[i]
-			weeklyTimer.printdebug( )
-
-			if aTimer.mWeeklyTimer[i].mDate == weekList.get( weekday, -1 ) :
-				timer = weeklyTimer
-				break
-
-		return timer
-
 
 	def GridUpdateTimer( self ) :
-
 		localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT		
 		recCount = 0
@@ -3089,17 +3068,12 @@ class EPGWindow( BaseWindow ) :
 					timer = self.mTimerList[i]
 					start = timer.mStartTime - localOffset
 					end = start + timer.mDuration
-					LOG_TRACE( '[EPGWindow]timer start[%s] end[%s] duration[%s]'% ( \
-					  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
-					  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
-					  TimeToString( timer.mDuration, TimeFormatEnum.E_HH_MM_SS )
-					  ) )
-
+					weekTimer = None
 					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-						LOG_TRACE( 'type[%s] ch[%s] weekly count[%s]'% ( timer.mTimerType, timer.mChannelNo, timer.mWeeklyTimerCount ) )
-						weekTimer = self.FindWeeklyTimer( timer )
+						LOG_TRACE( 'type[%s] id[%s] name[%s] weekly count[%s] showoffset[%s]'% ( timer.mTimerType, timer.mTimerId, timer.mName, timer.mWeeklyTimerCount, self.mShowingOffset ) )
+						weekTimer,weekOffset = self.FindWeeklyTimer( timer )
 						if weekTimer :
-							start = weekTimer.mStartTime + localOffset
+							start = weekTimer.mStartTime + weekOffset
 							end = start + weekTimer.mDuration
 							LOG_TRACE( '[EPGWindow]weekTimer date[%s] start[%s] end[%s] duration[%s]'% ( weekTimer.mDate, \
 							  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
@@ -3107,9 +3081,9 @@ class EPGWindow( BaseWindow ) :
 							  TimeToString( weekTimer.mDuration, TimeFormatEnum.E_HH_MM_SS )
 							  ) )
 
-					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-					#	end += 60
-					
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+						end += 60
+
 					for j in range( E_GRID_MAX_ROW_COUNT ) :
 						gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + j,0 ), None )
 						if gridMeta == None :
@@ -3129,10 +3103,28 @@ class EPGWindow( BaseWindow ) :
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start = self.mShowingGMTTime + self.mShowingOffset
+								if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+									weekTimer,weekOffset = self.FindWeeklyTimer( timer, ONE_DAY_SECONDS )
+									if weekTimer :
+										start = weekTimer.mStartTime + weekOffset
+										end = start + weekTimer.mDuration
+										if timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+											end += 60
+										#LOG_TRACE( '------------------nextdayOffset[%s][%s]'% ( TimeToString( weekOffset, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ), weekOffset ) )
+										#LOG_TRACE( '---alienceStart--- start[%s] end[%s]'% ( \
+										#  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+										#  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM )
+										#  ) )
 
 							if end > self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT :
 								end = self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
-								
+								if weekTimer :
+									end = start + weekTimer.mDuration
+									#LOG_TRACE( '---alienceEnd--- start[%s] end[%s]'% ( \
+									#  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+									#  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM )
+									#  ) )
+
 							offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset ) * self.mGridCanvasWidth / drawableTime )
 							offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
 
@@ -3239,4 +3231,35 @@ class EPGWindow( BaseWindow ) :
 			print 'Error exception[%s]'% ex
 			import traceback
 			LOG_ERR( 'traceback=%s' %traceback.format_exc( ) )
+
+
+	def FindWeeklyTimer( self, aTimer, aNextDays = 0 ) :
+		if aTimer == None :
+			return None
+
+		weekList = {'Sun':0,'Mon':1,'Tue':2,'Wed':3,'Thu':4,'Fri':5,'Sat':6}
+		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
+		#days = int( self.mDataCache.Datetime_GetLocalTime( ) / ONE_DAY_SECONDS )
+		days = int( showingTime / ONE_DAY_SECONDS )
+		currentWeekStart = ( days * ONE_DAY_SECONDS ) + aNextDays
+		weekday = time.strftime( '%a', time.gmtime( currentWeekStart ) )
+
+		#LOG_TRACE( 'currentPage: day[%s] time[%s][%s] offset[%s][%s] dalta[%s][%s]'% ( weekday, \
+		#     TimeToString( currentWeekStart, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ), currentWeekStart, \
+		#     TimeToString( self.mShowingOffset, TimeFormatEnum.E_HH_MM ), self.mShowingOffset, \
+		#     TimeToString( self.mDeltaTime, TimeFormatEnum.E_HH_MM ), self.mDeltaTime
+		#     ) )
+
+		timer = None
+		weekOffset = 0
+		for i in range( aTimer.mWeeklyTimerCount ) :
+			weeklyTimer = aTimer.mWeeklyTimer[i]
+
+			if aTimer.mWeeklyTimer[i].mDate == weekList.get( weekday, -1 ) :
+				timer = weeklyTimer
+				weekOffset = currentWeekStart# + ( ONE_DAY_SECONDS * weeklyTimer.mDate )
+				break
+
+		return timer, weekOffset
+
 
