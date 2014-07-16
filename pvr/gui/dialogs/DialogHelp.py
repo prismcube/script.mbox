@@ -34,26 +34,26 @@ class DialogHelp( SettingDialog ) :
 		self.mRoot 				=	None
 		self.mListContent			=	[]
 		self.mHelpString			=  	None
+		self.mImagePath				=	os.path.join( pvr.Platform.GetPlatform( ).GetScriptDir( ), 'resources', 'help/' )
 
 
 	def onInit( self ) :
-		self.SetFrontdisplayMessage( MR_LANG('Help') )
-		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+		self.SetFrontdisplayMessage( MR_LANG( 'Help' ) )
 		self.getControl( E_CONTROL_ID_GROUP_PAGE ).setVisible( False )
 		language = XBMC_GetCurrentLanguage( )
 
 		if self.mInitialized == False :
-			helpString = self.getProperty( 'HelpString' )
-			if helpString :
+			strings = self.getProperty( 'HelpString' )
+			if strings :
 				if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'oscar', helpString )
+					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'oscar', strings )
 					self.mLastPage = LAST_PAGE_OSCAR
 				else :
-					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'default', helpString )
+					HelpStringPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', ('%s')%language, 'help_strings', 'default', strings )
 				if CheckDirectory( HelpStringPath ) :
 					self.mHelpString = HelpStringPath
 				else :
-					self.mHelpString = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', 'English', 'default', helpString )
+					self.mHelpString = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'language', 'English', 'help_strings', 'default', strings )
 
 			self.MakeContentList( )
 			self.mInitialized = True
@@ -96,7 +96,7 @@ class DialogHelp( SettingDialog ) :
 
 	def Close( self ) :
 		self.mStepNum = FIRST_PAGE
-		self.SetFrontdisplayMessage( MR_LANG('Main Menu') )
+		self.SetFrontdisplayMessage( MR_LANG( 'Main Menu' ) )
 		self.CloseDialog( )
 
 
@@ -127,6 +127,7 @@ class DialogHelp( SettingDialog ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" % ex )
 
+
 	def ShowContents ( self, aList, aStep ) :
 		contentCount = 0
 		self.SetTextboxInvisible( MAXIMUM_TEXTBOX_NUM )
@@ -141,7 +142,7 @@ class DialogHelp( SettingDialog ) :
 					self.getControl( E_CONTROL_ID_IMAGE ).setPosition( content.mPositionX , content.mPositionY )
 					self.getControl( E_CONTROL_ID_IMAGE ).setWidth( content.mWidth )
 					self.getControl( E_CONTROL_ID_IMAGE ).setHeight( content.mHeight )
-					self.setProperty('imagepath', content.mDescription )
+					self.setProperty('imagepath', self.mImagePath + content.mDescription )
 
 				elif content.mType == "textbox" :
 					self.getControl( E_CONTROL_ID_TEXTBOX + contentCount ).setPosition( content.mPositionX , content.mPositionY )

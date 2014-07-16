@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+	<page number="1" title="Predný Panel" location="">
+		<content name="front.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>195</posy>
+			<width>785</width>
+			<height>243</height>
+		</content>
+		<content name="1. STANDBY LED TLAČIDLO : Stlačte na 1~2 sek. na prepnutie medzi operačným a standby módom.[CR][CR]2. PREDNÝ DISPLEJ : Zobrazuje názov kanála v prevádzkovom režime a zobrazuje aktuálny čas v pohotovostnom režime.[CR][CR]3. ČÍTAČKA SMART KARIET : Otvorte dvierka a vložte smart kartu do predného otvoru pre sledovanie platených služieb.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>920</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="2" title="Zadný Panel" location="">
+		<content name="rear.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>240</posy>
+			<width>780</width>
+			<height>177</height>
+		</content>
+		<content name="1. LNB 1 IN, LNB 2 IN : Pripojenie satelitnej antény.[CR]2. VIDEO, AUDIO : Pripojenie k televízoru alebo videorekordéru pomocou kábla RCA.[CR]3. S / PDIF : Pripojenie k audio systému pomocou S / PDIF kábla.[CR]4. RS–232C : Pripojenie k PC.">
+			<type>textbox</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="5. HDMI : Pripojenie k televízoru pomocou kábla HDMI.[CR]6. ETHERNET : Lokálny sieťový port.[CR]7. USB HOST : Pripojenie k pamäti USB.[CR]8. AC NAPÁJANIE : Slúži na pripojenie sieťového konektora.">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="3" title="Diaľkové Ovládanie" location="">
+		<content name="remote1.png">
+			<type>image</type>
+			<posx>479</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="1. TV POWER : Slúži na vypnutie alebo zapnutie TV.[CR]2. STANDBY : Prepínanie medzi zapnutím a pohotovostným režimom.[CR]3. FAREBNÉ : Prístup k špeciálnym funkciám v niektorých ponukách.[CR]4. ZDROJ : Ovláda výstupy TV.[CR]5. XBMC : Zobrazí XBMC Media Center.[CR]6. TV / RADIO : Prepína medzi režimami TV a rádio.">
+			<type>textbox</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="7. RECORD : Záznam živého vysielania.[CR]8. STOP : Zastaví nahrávanie alebo prejde do aktuálneho programu.[CR]9. PLAY / PAUSE : Pozastavenie živého vysielania alebo nahrávania.[CR]10. RÝCHLO PRETOČIŤ VZAD : Rýchle pretáčanie dozadu.[CR]11. RÝCHLO PRETOČIŤ VPRED : Rýchle pretáčanie dopredu.[CR]12. ARCHIV : Zobrazí okno Archívu.">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="4" title="Diaľkové Ovládanie" location="">
+		<content name="remote2.png">
+			<type>image</type>
+			<posx>478</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="13. EPG : Zobrazí sa okno EPG.[CR]14. TLAČIDLÁ SO ŠÍPKAMI : Pohyb v menu.[CR]15. OK : Vyberie položku / Zobrazí zoznam kanálov.[CR]16. SPÄŤ : Presunie jeden krok späť / Návrat na posledný kanál.[CR]17. MENU : Zobrazí sa hlavné menu.[CR]18. VOL + / VOL - : Nastavenie hlasitosti.">
+			<type>textbox</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="19. I ( Informácie ) : Zobrazí informácie o kanáli alebo kontextového menu.[CR]20. P + / P - : Zmena kanálu.[CR]21. MUTE : Slúži na stlmenie zvuku.[CR]22. TELETEXT : Zobrazuje teletextové informácie o aktuálnom kanáli.[CR]23. TITULKY : Zobrazí voľbu titulkov.[CR]24. NUM LOCK : Aktivuje číselné tlačidlá.">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>570</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="5" title="Diaľkové ovládanie - QWERTY klávesnica" location="">
+		<content name="remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>210</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="Ďiaľkové ovládanie boxu PRISMCUBE RUBY má funkciu plnej QWERTY klávesnice na zadnej strane.[CR][CR]1. Držte ovládanie horizontálne ako na obrázku hore.[CR]2. Zapnite QWERTY klávesnicu stlačením Num Lock tlačidla.[CR]3. Píšte text cez klávesnicu rýchlejšie a efektívnejšie.">
+			<type>textbox</type>
+			<posx>205</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="6" title="Pripojenie STB - Pripojenie antény" location="">
+		<content name="connect_STB.png">
+			<type>image</type>
+			<posx>245</posx>
+			<posy>245</posy>
+			<width>770</width>
+			<height>160</height>
+		</content>
+		<content name="Pre čo najlepšie využitie všetkých vlastností PRISMCUBE RUBY, odporúčame zapojiť oba tunery naraz. To vám umožní prezerať a zaznamenávať rôzne kanály a nahrávať dva kanály súčasne. Sledovanie druhého programu pri nahrávaní bude obmedzené v prípade zapojenia iba jedného tunera pomocou slučky.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="7" title="Info Plate" location="">
+		<content name="info_plate.png">
+			<type>image</type>
+			<posx>225</posx>
+			<posy>270</posy>
+			<width>800</width>
+			<height>107</height>
+		</content>
+		<content name="Informácie o kanáli sa automaticky zobrazujú na Info lište pri prepínaní kanálov.[CR][CR]1. AKTUÁLNE ČÍSLO KANÁLA A NÁZOV : Zobrazuje aktuálne číslo a názov TV / Radio kanála.[CR]2. DÁTA EPG : Stlačte tlačidlo DOLE, potom stlačte VĽAVO / VPRAVO pre zobrazenie predošlej / nasledujúcej EPG udalosti.[CR]3. PROGRESS BAR : Zobrazuje čas začiatku / konca  programu a taktiež aktuálny priebeh.[CR]4. FUNKČNÉ TLAČIDLÁ : Doplňujúce informácie, teletext, titulky, Štart / Stop záznamu, Mute a A / V nastavenia.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="8" title="PIP" location="(STLAČTE MODRÉ TLAČIDLO)">
+		<content name="pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Obraz v obraze) umožňuje sledovať dva programy nezávisle. Nejaké typy na zapamätanie počas pouzívania PIP funkcie.[CR][CR]- Zapnutie/vypnutie PIP funkcie stlačením MODRÉHO tlačidla na diaľkovom ovládači; malé okno sa zobrazí v jednom rohu obrazovky.[CR]- Prepnutie kanála v malom PIP okne stlačením čísla na diaľkovom ovládači po stlačení tlačidla Num Lock.[CR]- Audio funguje na veľkom PIP okne.[CR]- PIP je možné zapnúť a používať počas prehrávania videa v XBMC časti.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>1000</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="9" title="Prvotné Inštalácia" location="(INŠTALÁCIA > PRVOTNÁ INŠTALÁCIA)">
+		<content name="first_installation.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="Pri prvom zapnutí produktu prebehne prvotná inštalácia automaticky.[CR][CR]- NASTAVENIE JAZYKA : Môžete vybrať jazyk MENU.[CR]- NASTAVENIE VIDEO a AUDIO : Tu môžete konfigurovať video a audio výstup.[CR]- NASTAVENIE Satelitnej Antény : Môžete zvoliť nastavenie antény a LNB pre vyhľadávanie programov.[CR]- NASTAVENIE VYHĽADÁVANIA PROGRAMOV : Tu môžete vykonať vyhľadávanie programov a družíc.[CR]- NASTAVENIE ČASU A DÁTUMU : Môžete nastaviť lokálny čas pre správne funkcie časovača.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="10" title="Nastavenie Antény a Satelitov" location="(INŠTALÁCIA > NASTAVENIE ANTÉNY)">
+		<content name="antenna_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. DiSEqC 1.0 : Umožňuje viac satelitov, ktoré môžu byť pripojené k prijímaču súčasne. Môžete pripojiť až 4 satelity.[CR]2. DiSEqC 1.1 : Umožňuje pripojiť až 64 rôznych satelitov.[CR]3. DiSEqC 1.2 : Môžete nastaviť pozíciu požadovaného satelitu ak máte motorizovanú anténu.[CR]4. MOTORIZED USALS : Efektívne vyhľadávanie programov pomocou zadania vašej Zemepisnej polohy pri použití motora.[CR]5. SIMPLE LNB : Používa sa, keď je pripojený len jeden satelit.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="11" title="Vyhľadávanie Kanálov" location="(INŠTALÁCIA > VYHĽADÁVANIE KANÁLOV)">
+		<content name="channel_search.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. Automatické Vyhľadávanie : Je určená pre bežných užívateľov a najjednoduchší spôsob, ako vyhľadať kanály.[CR]2. Ručné Vyhľadávanie : Tento spôsob je vhodnejší, ak viete, ktoré satelity chcete vyhľadať a aj ich parametre.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="12" title="Zoznam kanálov - Editácia kanálov" location="(ZOZNAM KANÁLOV > KONTEXTOVÉ MENU > EDITÁCIA KANÁLOV)">
+		<content name="delete_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Môžete odstrániť, presunúť, vybrať, premenovať alebo uzamknúť kanály pohodlne v okne Zoznamu kanálov.[CR][CR]1. Stlačením tlačidla i zobrazíte zoznam kanálov a z kontextovej ponuky vyberte voľbu Upraviť kanály.[CR]2. Vyberte kanály, ktoré chcete vymazať, stlačením tlačidla OK.[CR]3. Stlačte tlačidlo i opäť, vyberte voľbu VYMAZAŤ a stlačte tlačidlo OK pre vymazanie predtým vybraných kanálov.[CR]4. Zvoľte voľbu Uložiť a Ukončiť v kontextovej ponuke.[CR]5. Ak sa zobrazí výzva na potvrdenie, stlačte tlačidlo ÁNO pre uloženie.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="13" title="Vytvorenie novej obľúbenej skupiny" location="(ÚPRAVA KANÁLOV > VYTVORIŤ NOVÚ OBĽÚBENÚ SKUPINU)">
+		<content name="create_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Niektoré kanály v zozname kanálov sú príliš často vyhľadávané. Zotrieďte kanály, ktoré sledujete častejšie do Obľúbenej skupiny kanálov.[CR][CR]1. Zvoľte možnosť Vytvoriť novú obľúbenú skupinu v kontextovom menu Zozname kanálov a stlačte tlačidlo OK.[CR]2. Zadajte názov vašej obľúbenej skupiny.[CR]3. Stlačením tlačidla Hotovo potvrďte.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="14" title="Pridanie kanálov do obľúbenej skupiny" location="(ÚPRAVA KANÁLOV > PRIDAŤ K OBĽÚBENEJ SKUPINE)">
+		<content name="add_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Vyberte kanály , ktoré chcete pridať do svojej obľúbenej skupiny.[CR]2. Zvoľte voľbu PRIDAŤ K OBĽÚBENEJ SKUPINE v kontextovej ponuke kliknite na tlačidlo OK.[CR]3. Vyberte skupinu zo zoznamu dostupných skupín obľúbených položiek a stlačte tlačidlo OK.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="15" title="Odstránenie kanálov zo skupiny obľúbených" location="(SLIDE MENU > VYBRAŤ OBĽÚBENÚ SKUPINU > VYMAZAŤ)">
+		<content name="remove_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Stlačte tlačidlo vľavo na diaľkovom ovládači a vyberte obľúbenú skupinu.[CR]2. Vyberte skupinu, z ktorej chcete odstrániť kanály.[CR]3. Vyberte kanály, ktoré chcete odstrániť stlačením tlačidla OK.[CR]4. V kontextovom menu zvoľte voľbu ODSTRÁNIŤ, pre vymazanie všetkých skôr vybraných programov.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="16" title="Premenovanie obľúbené skupiny" location="(ÚPRAVA KANÁLOV > PREMENOVAŤ OBĽÚBENÉ SKUPINY)">
+		<content name="rename_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Pre zobrazenie kontextové menu zoznamu kanálov, stlačte tlačidlo i.[CR]2. Zvoľte voľbu Premenovať obľúbenú skupinu.[CR]3. Vyberte obľúbenú skupinu, ktorú chcete premenovať, a stlačte tlačidlo OK.[CR]4. Zadajte nový názov pomocou klávesnice.[CR]5. Stlačením Hotovo potvrďte.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="17" title="Odstránenie obľúbených skupín" location="(ÚPRAVA KANÁLOV > ODSTRÁNENIE OBĽÚBENÝCH SKUPÍN)">
+		<content name="delete_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Pre zobrazenie kontextové menu zoznamu kanálov, stlačte tlačidlo i.[CR]2. Zvoľte voľbu Zmazať obľúbenú skupinu.[CR]3. Vyberte obľúbenú skupinu, ktorú chcete odstrániť.[CR]4. Stlačte OK pre potvrdenie.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="18" title="Media Center" location="(MEDIA alebo STLAČTE TLAČIDLO XBMC)">
+		<content name="xbmc.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>840</width>
+			<height>470</height>
+		</content>
+		<content name="XBMC je zábavné centrum pre digitálne médiá, ktoré možno použiť pre prehrávanie takmer všetkých populárnych audio a video formátov z pevného disku. XBMC umožňuje užívateľovi inštalovať nové doplnky, ako sú YouTube, Flickr, rovnako ako rôzne skiny z inštalovaného repozitára.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="19" title="Inštalácia aplikácie Firefox" location="(MÉDIÁ > SPRÁVCA DOPLNKOV > ZÍSKAŤ DOPLNKY)">
+		<content name="install_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>840</width>
+			<height>470</height>
+		</content>
+		<content name="Doplnky sú balíky, ktoré pridávajú rôzne vlastnosti a funkcie, ktoré zvyčajne nie sú súčasťou XBMC.[CR][CR]1. Vyberte PRISMCUBE'S doplnky a stlačte tlačidlo OK.[CR]2. Prejdite nadol na požadovanú kategóriu a stlačte tlačidlo OK.[CR]3. Vyberte doplnok, ktorý chcete nainštalovať.[CR]4. Súhrnné dialógové okno umožňuje vidieť rôzne vlastnosti doplnkov.[CR]5. Zvoľte možnosť automatického sťahovania a inštalácie.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="20" title="Aktualizácia doplnkov" location="(MÉDIA > MANAŽÉR DOPLNKOV > STLAČTE ŠÍPKU DOĽAVA alebo DOPRAVA)">
+		<content name="update_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>880</width>
+			<height>470</height>
+		</content>
+		<content name="Všetky nainštalované doplnky budú automaticky aktualizované, ak sú v repozitároch dostupné nové verzie.[CR]Ak je automatická aktualizácia vypnutá, mali by ste v Manažéri doplnkov vidieť adresár 'Dostupné aktualizácie', v ktorom je možné aktualizovať doplnky jednotlivo.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="21" title="Spustenie aplikácie Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO ALEBO PROGRAMY)">
+		<content name="addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>816</width>
+			<height>470</height>
+		</content>
+		<content name="Po ukončení sťahovania doplnku sa vás XBMC spýta, či ho chcete začať používať. Doplnky sa potom objavia v ich príslušnej časti. (Napr. Flickr v sekcii obrázky, YouTube videá v sekcii Media, atď.)">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="22" title="Získanie ďalšej pomoci" location="">
+		<content name="website.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>821</width>
+			<height>470</height>
+		</content>
+		<content name="Pre viac informácií o Prismcube Ruby, prosím navštívte naše webové stránky www.prismcube.com.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+</help>

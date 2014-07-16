@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">7001</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
-	<onload>SetProperty(HelpString,Help_String.xml)</onload>
+	<onload>SetProperty(HelpString,Help_Strings.xml)</onload>
 	<controls>
 		<!-- Background Image -->
 		<include>DefaultSettingsBackground</include>

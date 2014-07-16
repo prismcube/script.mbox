@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+	<page number="1" title="Info Plate" location="">
+		<content name="info_plate.png">
+			<type>image</type>
+			<posx>225</posx>
+			<posy>270</posy>
+			<width>800</width>
+			<height>107</height>
+		</content>
+		<content name="Informace o kanálu se automaticky zobrazují na Info liště při přepínání kanálů.[CR][CR]1. AKTUÁLNÍ ČÍSLO KANÁLU A NÁZEV : Zobrazuje aktuální číslo a název TV / Radio kanálu.[CR]2. DATA EPG : Stiskněte tlačítko DOLŮ, poté stiskněte VLEVO / VPRAVO pro zobrazení předešlé / následující EPG události.[CR]3. PROGRESS BAR : Zobrazuje čas začátku / konce programu a také aktuální průběh.[CR]4. FUNKČNÍ TLAČÍTKA : Doplňující informace, teletext, titulky, Start / Stop záznamu, Mute a A / V nastavení.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="2" title="PIP" location="(STISKNĚTE MODRÉ TLAČÍTKO)">
+		<content name="pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Obraz v obraze) umožňuje sledovat dva programy nezávisle. Nějaké typy na zapamatování při pouzívání PIP funkce.[CR][CR]- Zapnutí / vypnutí PIP funkce stiskem MODRÉHO tlačítka na dálkovém ovladači; malé okno se zobrazí v jednom rohu obrazovky.[CR]- Přepnutí kanálu v malém PIP okně stiskem čísla na dálkovém ovladači po stisknutí tlačítka Num Lock.[CR]- Audio funguje na velkém PIP okně.[CR]- PIP lze zapnout a používat během přehrávání videa v XBMC části.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>980</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="3" title="Prvotní Instalace" location="(INSTALACE > PRVOTNÍ INSTALACE)">
+		<content name="first_installation.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="Při prvním zapnutí produktu proběhne prvotní instalace automaticky.[CR][CR]- NASTAVENÍ JAZYKA : Můžete vybrat jazyk MENU.[CR]- NASTAVENÍ VIDEO a AUDIO : Zde můžete konfigurovat video a audio výstup.[CR]- NASTAVENÍ Satelitní Antény : Můžete zvolit nastavení antény a LNB pro vyhledávání programů.[CR]- NASTAVENÍ VYHLEDÁVÁNÍ PROGRAMŮ : Zde můžete provést vyhledávání programů a družic.[CR]- NASTAVENÍ ČASU A DATA : Můžete nastavit lokální čas pro správné funkce časovače.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="4" title="Nastavení Antény a Satelitů" location="(INSTALACE > NASTAVENÍ ANTÉNY)">
+		<content name="antenna_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. DiSEqC 1.0 : Umožňuje více satelitů, které mohou být připojeny k přijímači současně. Můžete připojit až 4 satelity.[CR]2. DiSEqC 1.1 : Umožňuje připojit až 64 různých satelitů.[CR]3. DiSEqC 1.2 : Můžete nastavit pozici požadovaného satelitu pokud máte motorizovanou anténu.[CR]4. MOTORIZED USALS : Efektivní vyhledávání programů pomocí zadání vaší Zeměpisné polohy při použití motoru.[CR]5. SIMPLE LNB : Používá se, když je připojen pouze jeden satelit.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="5" title="Vyhledávání Kanálů" location="(INSTALACE > VYHLEDÁVÁNÍ KANÁLŮ)">
+		<content name="channel_search.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. AUTOMATICKÉ VYHLEDÁVÁNÍ : Je určena pro běžné uživatele a nejjednodušší způsob, jak vyhledat kanály.[CR]2. RUČNÍ VYHLEDÁVÁNÍ : Tento způsob je vhodnější, pokud víte, které satelity chcete vyhledat a také jejich parametry.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="6" title="Seznam kanálů - Editace kanálů" location="(SEZNAM KANÁLŮ > KONTEXTOVÉ MENU > EDITACE KANÁLŮ)">
+		<content name="delete_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Můžete odstranit, přesunout, vybrat, přejmenovat nebo uzamknout kanály pohodlně v okně Seznamu kanálů.[CR][CR]1. Stisknutím tlačítka i zobrazíte seznam kanálů a z místní nabídky vyberte volbu Upravit kanály.[CR]2. Vyberte kanály, které chcete vymazat, stisknutím tlačítka OK.[CR]3. Stiskněte tlačítko i opět, vyberte volbu SMAZAT a stiskněte tlačítko OK pro vymazání dříve vybraných kanálů.[CR]4. Zvolte volbu Uložit a Ukončit v místní nabídce.[CR]5. Pokud se zobrazí výzva k potvrzení, stiskněte tlačítko ANO pro uložení.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="7" title="Vytvoření nové oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > VYTVOŘIT NOVOU OBLÍBENOU SKUPINU)">
+		<content name="create_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Některé kanály v seznamu kanálů jsou příliš často vyhledávány. Setřiďte kanály, které sledujete častěji do oblíbené skupiny kanálů.[CR][CR]1. Zvolte možnost Vytvořit novou oblíbenou skupinu v kontextovém menu Seznamu kanálů a stiskněte tlačítko OK.[CR]2. Zadejte název vaší oblíbené skupiny.[CR]3. Stisknutím tlačítka Hotovo potvrďte.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="8" title="Přidání kanálů do oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘIDAT K OBLÍBENÉ SKUPINĚ)">
+		<content name="add_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Vyberte kanály, které chcete přidat do své oblíbené skupiny.[CR]2. Zvolte volbu PŘIDAT K OBLÍBENÉ SKUPINĚ v místní nabídce stiskněte tlačítko OK.[CR]3. Vyberte skupinu ze seznamu dostupných skupin oblíbených položek a stiskněte tlačítko OK.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="9" title="Odstranění kanálů ze skupiny oblíbených" location="(SLIDE MENU > VYBRAT OBLÍBENOU SKUPINU > SMAZAT)">
+		<content name="remove_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Stiskněte tlačítko vlevo na dálkovém ovladači a vyberte oblíbenou skupinu.[CR]2. Vyberte skupinu, ze které chcete odstranit kanály.[CR]3. Vyberte kanály, které chcete odstranit stisknutím tlačítka OK.[CR]4. V kontextovém menu zvolte volbu ODSTRANIT, pro vymazání všech dříve vybraných programů.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="10" title="Přejmenování oblíbené skupiny" location="(ÚPRAVA KANÁLŮ > PŘEJMENOVAT OBLÍBENÉ SKUPINY)">
+		<content name="rename_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Pro zobrazení kontextového menu seznamu kanálů, stiskněte tlačítko i.[CR]2. Zvolte volbu Přejmenovat oblíbenou skupinu.[CR]3. Vyberte oblíbenou skupinu, kterou chcete přejmenovat, a stiskněte tlačítko OK.[CR]4. Zadejte nový název pomocí klávesnice.[CR]5. Stisknutím Hotovo potvrďte.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="11" title="Odstranění oblíbených skupin" location="(ÚPRAVA KANÁLŮ > ODSTRANĚNÍ OBLÍBENÝCH SKUPIN)">
+		<content name="delete_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Pro zobrazení kontextové menu seznamu kanálů, stiskněte tlačítko i.[CR]2. Zvolte volbu Smazat oblíbenou skupinu.[CR]3. Vyberte oblíbenou skupinu, kterou chcete odstranit.[CR]4. Stiskněte OK pro potvrzení.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="12" title="Media Center" location="(MEDIA nebo STISKNĚTE TLAČÍTKO XBMC)">
+		<content name="xbmc.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>840</width>
+			<height>470</height>
+		</content>
+		<content name="XBMC je zábavní centrum pro digitální média, které lze použít pro přehrávání téměř všech populárních audio a video formátů z pevného disku. XBMC umožňuje uživateli instalovat nové doplňky, jako jsou YouTube, Flickr, stejně jako různé skiny z instalovaného repozitáře.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="13" title="Instalace aplikace Firefox" location="(MÉDIA > SPRÁVCE DOPLŇKŮ > ZÍSKAT DOPLŇKY)">
+		<content name="install_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>840</width>
+			<height>470</height>
+		</content>
+		<content name="Doplňky jsou balíky, které přidávají různé vlastnosti a funkce, které obvykle nejsou součástí XBMC.[CR][CR]1. Vyberte PRISMCUBE'S doplňky a stiskněte tlačítko OK.[CR]2. Přejděte dolů na požadovanou kategorii a stiskněte tlačítko OK.[CR]3. Vyberte doplněk, který chcete nainstalovat.[CR]4. Souhrnné dialogové okno umožňuje vidět různé vlastnosti doplňků.[CR]5. Zvolte možnost automatického stahování a instalace.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="14" title="Aktualizace doplňků" location="(MÉDIA> MANAŽER DOPLŇKŮ> STISKNĚTE ŠIPKU VLEVO nebo DOPRAVA)">
+		<content name="update_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>880</width>
+			<height>470</height>
+		</content>
+		<content name="Všechny nainstalované doplňky budou automaticky aktualizovány, pokud jsou v repozitářích dostupné nové verze.[CR]Pokud je automatická aktualizace vypnutá, měli byste v Manažeři doplňků vidět adresář 'Dostupné aktualizace', ve kterém je možné aktualizovat doplňky jednotlivě.">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="15" title="Spuštění aplikace Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO NEBO PROGRAMY)">
+		<content name="addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>816</width>
+			<height>470</height>
+		</content>
+		<content name="Po ukončení stahování doplňku se vás XBMC zeptá, zda jej chcete začít používat. Doplňky se pak objeví v jejich příslušné části. (Např. Flickr v sekci obrázky, YouTube videa v sekci Media, atd.)">
+			<type>textbox</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+</help>
