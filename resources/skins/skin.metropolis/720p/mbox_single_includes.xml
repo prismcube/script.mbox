@@ -128,7 +128,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<scrollspeed>100</scrollspeed>
+				<scrollspeed>70</scrollspeed>
 				<scrollsuffix>  |  </scrollsuffix>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
@@ -5107,7 +5107,7 @@
 				<aligny>center</aligny>
 				<scrollout>false</scrollout>
 				<pauseatend>600</pauseatend>
-				<scrollspeed>20</scrollspeed>
+				<scrollspeed>70</scrollspeed>
 				<info>Container(1003430).ListItem(0).Label2</info>
 			</control>
 			<control type="label">

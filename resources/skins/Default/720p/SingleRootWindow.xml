@@ -2437,7 +2437,7 @@ Search for window name
 						<control type="label" id="1400011">
 							<posx>116</posx>
 							<posy>7</posy>
-							<width>300</width>
+							<width>320</width>
 							<height>24</height>
 							<font>font12caps</font>
 							<textcolor>white</textcolor>
@@ -2466,7 +2466,7 @@ Search for window name
 						<control type="label" id="1400016">
 							<posx>95</posx>
 							<posy>7</posy>
-							<width>300</width>
+							<width>320</width>
 							<height>24</height>
 							<font>font12caps</font>
 							<textcolor>white</textcolor>
@@ -4017,7 +4017,7 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
-					<scrollspeed>100</scrollspeed>
+					<scrollspeed>70</scrollspeed>
 					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 				<!-- NAS -->
@@ -4189,7 +4189,7 @@ Search for window name
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
-					<scrollspeed>100</scrollspeed>
+					<scrollspeed>70</scrollspeed>
 					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 			</control>
@@ -5097,13 +5097,13 @@ Search for window name
 				</control>
 				<control type="label">
 					<description>Title</description>
-					<posx>300</posx>
+					<posx>295</posx>
 					<posy>20</posy>
 					<width>740</width>
 					<height>30</height>
 					<font>font14</font>
 					<label>$ADDON[script.mbox 1087]</label>
-					<align>left</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>white</textcolor>
 					<shadowcolor>black</shadowcolor>

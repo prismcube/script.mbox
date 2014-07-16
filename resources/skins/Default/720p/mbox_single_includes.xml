@@ -178,7 +178,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
-				<scrollspeed>100</scrollspeed>
+				<scrollspeed>70</scrollspeed>
 				<scrollsuffix>  |  </scrollsuffix>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
@@ -4355,7 +4355,7 @@
 					<control type="label">
 						<posx>125</posx>
 						<posy>30</posy>
-						<width>460</width>
+						<width>440</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>grey2</textcolor>
@@ -4380,7 +4380,7 @@
 					<!-- NAS -->
 					<control type="group">
 						<posx>583</posx>
-						<posy>35</posy>
+						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4472,7 +4472,7 @@
 						<width>460</width>
 						<height>30</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -4485,7 +4485,7 @@
 						<width>210</width>
 						<height>30</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -4495,7 +4495,7 @@
 					<control type="label">
 						<posx>125</posx>
 						<posy>30</posy>
-						<width>460</width>
+						<width>440</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>
@@ -4522,7 +4522,7 @@
 					<!-- NAS -->
 					<control type="group">
 						<posx>583</posx>
-						<posy>35</posy>
+						<posy>38</posy>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
 						<control type="image">
 							<posx>0</posx>
@@ -4639,7 +4639,7 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>125</posy>
+						<posy>120</posy>
 						<width>200</width>
 						<height>25</height>
 						<font>font12</font>
@@ -4651,7 +4651,7 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>151</posy>
+						<posy>140</posy>
 						<width>200</width>
 						<height>25</height>
 						<font>font12</font>
@@ -4663,7 +4663,7 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>170</posy>
+						<posy>160</posy>
 						<width>200</width>
 						<height>25</height>
 						<align>center</align>
@@ -4739,7 +4739,7 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>125</posy>
+						<posy>120</posy>
 						<width>200</width>
 						<height>25</height>
 						<font>font12</font>
@@ -4751,11 +4751,11 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>151</posy>
+						<posy>140</posy>
 						<width>200</width>
 						<height>25</height>
 						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4763,15 +4763,15 @@
 					</control>
 					<control type="label">
 						<posx>108</posx>
-						<posy>170</posy>
+						<posy>160</posy>
 						<width>200</width>
 						<height>25</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>($INFO[ListItem.Property(iNetVolumeType)]) $INFO[ListItem.Property(iNetVolumeName)]</label>
 						<visible>substring(ListItem.Property(RecNetVolume),true)</visible>
-						<textcolor>white</textcolor>
-						<font>font12</font>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -5011,7 +5011,7 @@
 			</control>
 			<control type="scrollbar" id="1003421">
 				<posx>180</posx>
-				<posy>480</posy>
+				<posy>485</posy>
 				<width>880</width>
 				<height>25</height>
 				<texturesliderbackground border="14,0,14,0">ScrollBarH.png</texturesliderbackground>
@@ -5049,7 +5049,6 @@
 				<font>font13</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
 				<info>Container(1003420).ListItem(0).Label</info>
@@ -5062,7 +5061,6 @@
 				<font>font13</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
 				<label>$INFO[Container(1003420).ListItem(0).Property(RecDate)] ($INFO[Container(1003420).ListItem(0).Property(RecDuration)])</label>
@@ -5071,14 +5069,14 @@
 			<!-- NAS -->
 			<control type="label">
 				<posx>110</posx>
-				<posy>590</posy>
+				<posy>594</posy>
 				<width>1035</width>
-				<height>40</height>
-				<align>center</align>
-				<aligny>center</aligny>
+				<height>20</height>
 				<font>font13</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
+				<align>center</align>
+				<aligny>center</aligny>
 				<label>($INFO[Container(1003420).ListItem(0).Property(iNetVolumeType)]) $INFO[Container(1003420).ListItem(0).Property(iNetVolumeName)]</label>
 				<visible>substring(Container(1003420).ListItem(0).Property(RecNetVolume),true)</visible>
 			</control>
@@ -5254,7 +5252,7 @@
 				<posx>100</posx>
 				<posy>193</posy>
 				<width>770</width>
-				<height>30</height>
+				<height>25</height>
 				<font>font30</font>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
@@ -5279,9 +5277,9 @@
 			</control>
 			<control type="label">
 				<posx>100</posx>
-				<posy>240</posy>
+				<posy>250</posy>
 				<width>770</width>
-				<height>40</height>
+				<height>25</height>
 				<align>center</align>
 				<aligny>center</aligny>
 				<font>font12</font>
@@ -5937,7 +5935,7 @@
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label2]</label>
 							<scroll>false</scroll>
-							<scrollspeed>100</scrollspeed>
+							<scrollspeed>70</scrollspeed>
 						</control>
 					</itemlayout>
 					<focusedlayout height="63" width="270">
