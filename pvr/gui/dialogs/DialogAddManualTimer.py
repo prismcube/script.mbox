@@ -77,12 +77,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		defaultFocus = E_DialogSpinEx03
 		mTitle = MR_LANG( 'Add Manual Timer' )
-		#if self.mTimer :
-		#	#self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
-		#	netVolumeID = self.mTimer.mVolumeID
-		#	defaultFocus = E_DialogInput03
-		#else :
-		#	self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
 
 		if self.mTimer :
 			self.mRecordName = self.mTimer.mName
@@ -91,6 +85,10 @@ class DialogAddManualTimer( SettingDialog ) :
 			mTitle = MR_LANG( 'Edit Timer' )
 			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 				self.mTimerMode = E_TIMER_MODE_VIEW
+
+			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY : 
+				defaultFocus = E_DialogInput02
+
 		elif self.mEPG  :
 			self.mRecordName = self.mEPG.mEventName
 		else :
@@ -521,20 +519,18 @@ class DialogAddManualTimer( SettingDialog ) :
 				modeList.append( MR_LANG( 'View' ) )
 				if self.mTimer and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					self.mTimerMode = E_TIMER_MODE_VIEW
-					defaultFocus = E_DialogInput02
-					mTitle = MR_LANG( 'Edit Timer' )
 
 				if self.mTimerMode == E_TIMER_MODE_VIEW :
 					isVisible_NetVolume = False
 					isEnable_EndTime = False
 					modeName = MR_LANG( 'Viewing' )
-					mTitle = MR_LANG( 'View Timer' )
-					if self.mTimer and self.mTimer.mTimerType != ElisEnum.E_ITIMER_VIEWWEEKLY :
-						defaultFocus = E_DialogSpinEx02
 
 			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), modeList, self.mTimerMode )
 			if self.mTimer :
+				defaultFocus = E_DialogSpinEx02
 				self.SetEnableControl( E_DialogSpinEx03, False )
+				if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY : 
+					defaultFocus = E_DialogInput02
 
 			self.AddUserEnumControl( E_DialogSpinEx01, modeName, LIST_RECORDING_MODE, self.mRecordingMode )
 			if self.mEnableSelectChannel == True :
@@ -563,7 +559,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 			self.AddOkCanelButton( )
 
-			#self.SetHeaderLabel( mTitle )
 			self.setProperty( 'NetVolumeInfo', '%s'% isVisible_NetVolume )
 			self.SetVisibleControl( E_DialogInput04, isVisible_NetVolume )
 			self.SetEnableControl( E_DialogInput03, isEnable_EndTime )
@@ -573,7 +568,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			
 			self.ChangeRecordMode( )
 			self.UpdateLocation( 0, 20 )
-
 			self.SetFocus( defaultFocus )
 
 		except Exception, ex :

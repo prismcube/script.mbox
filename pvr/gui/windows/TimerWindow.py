@@ -402,8 +402,6 @@ class TimerWindow( BaseWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
 					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-						#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
-						#dialog.SetTimer( timer )
 						timerMode = E_TIMER_MODE_VIEW
 
 					dialog.SetTimerMode( timerMode )
@@ -428,8 +426,6 @@ class TimerWindow( BaseWindow ) :
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
 					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-						#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
-						#dialog.SetTimer( timer )
 						timerMode = E_TIMER_MODE_VIEW
 
 					dialog.SetTimerMode( timerMode )
