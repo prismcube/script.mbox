@@ -4997,10 +4997,11 @@
 
 			<control type="group" id="3709003">
 				<include>DefaultWindowFade</include>
-				<include>DefaultCommonEPGView</include> <!-- Default Common EPG View ID 	= 3500 -->
-				<include>DefaultBigEPGView</include>	<!-- Default Big EPG View ID		= 3510 -->
-				<include>DefaultGridEPGView</include>	<!-- Default Grid EPG View ID		= 2000 -->
+				<include>DefaultCommonEPGView</include> 	<!-- Common EPG View ID 	= 3500 -->
+				<include>DefaultBigEPGView</include>		<!-- Big EPG View ID		= 3510 -->
 			</control>
+
+			<include>DefaultGridEPGView</include>			<!-- Grid View id 		= 2000 -->
 
 			<!-- Current Channel Name in Channel Mode -->
 			<control type="group">
