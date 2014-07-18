@@ -325,19 +325,23 @@ class EPGSearchWindow( BaseWindow ) :
 				listItem.setProperty( 'StartTime', tempName )
 				listItem.setProperty( 'Duration', '' )
 				listItem.setProperty( 'HasEvent', 'true' )
+				listItem.setProperty( 'ViewTimer', 'None' )
 				#listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
-				timer= self.GetTimerByEPG( epgEvent )
+				timer = self.GetTimerByEPG( epgEvent )
 
 				if timer :
-					LOG_TRACE( '' )
 					if self.IsRunningTimer( timer.mTimerId ) == True :
 						listItem.setProperty( 'TimerType', 'Running' )
-						LOG_TRACE( '' )						
+
 					else :
 						listItem.setProperty( 'TimerType', 'Schedule' )
-						LOG_TRACE( '' )						
+
 				else :
 					listItem.setProperty( 'TimerType', 'None' )
+
+				if E_V1_2_APPLY_VIEW_TIMER :
+					hasTimer = '%s'% self.GetViewTimerByEPG( epgEvent, None )
+					listItem.setProperty( 'ViewTimer', hasTimer )
 
 				if E_USE_CHANNEL_LOGO == True :
 					if channel :
@@ -701,10 +705,11 @@ class EPGSearchWindow( BaseWindow ) :
 				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
 				"""				
 
-				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
-					if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
-						if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
-							return timer
+				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
+					if timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
+						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
+							if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
+								return timer
 						
 				else :
 					if timer.mFromEPG :
@@ -720,6 +725,50 @@ class EPGSearchWindow( BaseWindow ) :
 						
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
+
+		return None
+
+
+	def GetViewTimerByEPG( self, aEPG = None, aChannel = None, aIsRequestList = False ) :
+		if self.mTimerList == None :
+			return None
+
+		try :
+			reqTimerList = []
+			startTime = self.mLocalOffset
+			endTime = startTime
+			if aEPG :
+				startTime = aEPG.mStartTime + self.mLocalOffset
+				endTime = startTime + aEPG.mDuration
+				#LOG_TRACE( 'epg : start[%s] end[%s] offset[%s]'% ( startTime, endTime, self.mLocalOffset ) )
+				#LOG_TRACE( 'epg ch[%s] sid[%s] tsid[%s] onid[%s]'% ( aEPG.mEventName, aEPG.mSid, aEPG.mTsid, aEPG.mOnid ) )
+
+			for i in range( len( self.mTimerList ) ) :
+				timer = self.mTimerList[i]
+
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					#LOG_TRACE( 'timer ch[%s] sid[%s] tsid[%s] onid[%s]'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid ) )
+					if aEPG and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid and \
+					   timer.mStartTime >= startTime and timer.mStartTime < endTime :
+						if aIsRequestList :
+							reqTimerList.append( timer )
+							continue
+						#LOG_TRACE( 'start[%s] end[%s] timer[%s] ch[%s]'% ( startTime, endTime, timer.mStartTime, timer.mChannelNo ) )
+						#LOG_TRACE( '------------------- found by event id -------------------------' )
+						return True
+
+					elif aChannel and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
+						if aIsRequestList :
+							reqTimerList.append( timer )
+							continue
+						#LOG_TRACE( '------------------- found by noEpg timer-------------------------' )
+						return True
+
+			if aIsRequestList :
+				return reqTimerList
+
+		except Exception, ex :
+			LOG_ERR( 'Exception %s'% ex )
 
 		return None
 
