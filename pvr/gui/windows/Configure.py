@@ -517,7 +517,28 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.DedicatedFormat( FORMAT_SD_MEMORY )
-					return
+				return
+
+			elif groupId == E_Input05 :
+				driveList = self.mCommander.USB_GetMountPath( )
+				print 'dhkim test driveList = %s' % driveList
+				for drive in driveList :
+					print 'dhkim test drive real name = %s' % drive.mParam
+				if driveList and len( driveList ) > 0 and driveList[0].mError == 0 :
+					context = []
+					for i in range( len( driveList ) ) :
+						context.append( ContextItem( driveList[i].mParam, i ) )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+					dialog.SetProperty( context )
+					dialog.doModal( )
+					contextAction = dialog.GetSelectedAction( )
+					if contextAction >= 0 :
+						self.StartExclusiveFormat( driveList, contextAction )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a exclusive drive' ) )
+					dialog.doModal( )
+				return
 
 			if CheckHdd( ) :
 				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -554,8 +575,6 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Could not find a hard drive' ) )
 	 			dialog.doModal( )
-
-	 		
 
 		elif selectedId == E_RECORDING_OPTION :
 			if groupId == E_Input01 :
@@ -1266,6 +1285,7 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press OK button to erase your hard disk drive' ) )
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
 				self.AddInputControl( E_Input04, MR_LANG( 'Format SD Card' ), '', MR_LANG( 'Press OK button to erase your SD memory card' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Format exclusive drive' ), '', MR_LANG( 'Press OK button to erase your exclusive drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -1275,12 +1295,16 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_SpinEx07, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
+			externcontrols = [ E_Input04, E_Input05 ]
 			if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR :
-				self.SetVisibleControl( E_Input04, True )
-				self.SetEnableControl( E_Input04, True )
+				self.SetVisibleControls( externcontrols, True )
+				self.SetEnableControls( externcontrols, True )
+			else :
+				self.SetVisibleControls( externcontrols, False )
+				self.SetEnableControls( externcontrols, False )
 
 			self.InitControl( )
 
@@ -1962,6 +1986,18 @@ class Configure( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+
+
+	def StartExclusiveFormat( self, aDriveList, aNumber ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'Format your drive?' ), MR_LANG( 'Everything on your drive will be erased' ), MR_LANG( 'This will take a while' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			splitName = aDriveList[ aNumber ].mParam.split( '/' )
+			splitName = splitName[ len( splitName ) - 1 ]
+			print 'dhkim test splitName = %s' % splitName
+			self.OpenBusyDialog( )
+			self.mCommander.Make_Exclusive_HDD( splitName )
 
 
 	def ETCSetting( self, aGroupId ) :
