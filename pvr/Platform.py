@@ -218,7 +218,7 @@ class PrismCubePlatform( Platform ) :
 		elif self.mProduct == PRODUCT_OSCAR :
 			# ToDo
 			# self.mTunerType = pvr.ElisMgr.GetInstance( ).GetCommander( ).GetTunertype( )...
-			self.mTunerType = TUNER_TYPE_DVBT
+			self.mTunerType = TUNER_TYPE_DVBS_SINGLE
 		else :
 			self.mTunerType = TUNER_TYPE_DVBS_DUAL
 
