@@ -574,14 +574,15 @@ def CheckDirectory( aPath ) :
 
 def CheckHdd( aCheckForce = False ) :
 	import pvr.ElisMgr
+	mCount = 0
 	if not aCheckForce :
 		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) or \
 		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-			return False
+			mCount = 1	#1: microSD, 3: usbHDD
 
 	isMounted = False
 	retList = pvr.ElisMgr.GetInstance( ).GetCommander( ).HDD_GetMountPath( )
-	if retList and len( retList ) > 0 and retList[0].mError == 0 :
+	if retList and len( retList ) > mCount and retList[0].mError == 0 :
 		isMounted = True
 
 	return isMounted
