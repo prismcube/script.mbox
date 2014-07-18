@@ -23,10 +23,10 @@ class ChannelScanDVBT( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetFrontdisplayMessage( MR_LANG('DVBT Scan') )		
+		self.SetFrontdisplayMessage( MR_LANG('Channel Search') )		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 
-		self.SetSettingWindowLabel( MR_LANG( 'DVBT Scan' ) )
+		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
 		self.SetHeaderTitle( "%s - %s"%( MR_LANG( 'Installation' ), MR_LANG( 'Channel Search' ) ) )
 		self.SetSingleWindowPosition( E_CHANNEL_SCAN_DVBT_BASE_ID )
 
