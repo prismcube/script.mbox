@@ -405,14 +405,13 @@ class EPGWindow( BaseWindow ) :
 				self.SelectPrevChannel( )
 				self.UpdateSelectedChannel( )				
 				self.RestartEPGUpdateTimer( 0.5 )
-				#self.SelectPrevChannel( )
+				self.setFocusId( LIST_ID_COMMON_EPG )
 
-		elif actionId == Action.ACTION_MBOX_FF : #no service
+		elif actionId == Action.ACTION_MBOX_FF :
 			self.SelectNextChannel( )
 			self.UpdateSelectedChannel( )			
 			self.RestartEPGUpdateTimer( 0.5 )
-
-			#self.SelectNextChannel( )
+			self.setFocusId( LIST_ID_COMMON_EPG )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowSearchDialog( )
