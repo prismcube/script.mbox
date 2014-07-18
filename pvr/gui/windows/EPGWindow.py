@@ -1634,7 +1634,7 @@ class EPGWindow( BaseWindow ) :
 			viewList = self.GetViewTimerByEPG( None, aChannel, True )
 
 		if timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEW or \
-		   timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEWWEEKLY :
+		   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEWWEEKLY :
 			timerCount += 1
 
 		if viewList and len( viewList ) > 0 :
@@ -1759,7 +1759,8 @@ class EPGWindow( BaseWindow ) :
 
 		if aTimer :
 			dialog.SetTimer( aTimer, self.IsRunningTimer( aTimer ) )
-			if aTimer.mTimerType == ElisEnum.E_ITIMER_VIEW or aTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+			if aTimer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+			   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 				aMode = E_TIMER_MODE_VIEW
 
 		channel = None
@@ -2038,7 +2039,7 @@ class EPGWindow( BaseWindow ) :
 					timer =  self.mTimerList[i]
 
 					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
-					   aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						continue
 
 					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
@@ -2052,7 +2053,7 @@ class EPGWindow( BaseWindow ) :
 					timer =  self.mTimerList[i]
 
 					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
-					   aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						continue
 
 					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
@@ -2081,7 +2082,8 @@ class EPGWindow( BaseWindow ) :
 			for i in range( len( self.mTimerList ) ) :
 				timer = self.mTimerList[i]
 
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					#LOG_TRACE( 'timer ch[%s] sid[%s] tsid[%s] onid[%s]'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid ) )
 					if aEPG and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid and \
 					   timer.mStartTime >= startTime and timer.mStartTime < endTime :
@@ -2133,7 +2135,7 @@ class EPGWindow( BaseWindow ) :
 				"""				
 
 				if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
-				   aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					continue
 
 				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
@@ -2981,7 +2983,8 @@ class EPGWindow( BaseWindow ) :
 					start = timer.mStartTime - localOffset
 					end = start + timer.mDuration
 					weekTimer = None
-					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						LOG_TRACE( 'type[%s] id[%s] name[%s] weekly count[%s] showoffset[%s]'% ( timer.mTimerType, timer.mTimerId, timer.mName, timer.mWeeklyTimerCount, self.mShowingOffset ) )
 						weekTimer,weekOffset = self.FindWeeklyTimer( timer )
 						if weekTimer :
@@ -2993,7 +2996,8 @@ class EPGWindow( BaseWindow ) :
 							  TimeToString( weekTimer.mDuration, TimeFormatEnum.E_HH_MM_SS )
 							  ) )
 
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						end += 60
 
 					for j in range( E_GRID_MAX_ROW_COUNT ) :
@@ -3015,7 +3019,8 @@ class EPGWindow( BaseWindow ) :
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start = self.mShowingGMTTime + self.mShowingOffset
-								if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+								if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+								   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 									weekTimer,weekOffset = self.FindWeeklyTimer( timer, ONE_DAY_SECONDS )
 									if weekTimer :
 										start = weekTimer.mStartTime + weekOffset
@@ -3052,7 +3057,8 @@ class EPGWindow( BaseWindow ) :
 								break
 
 							ctrlButton = None
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+							   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 								if timerCount2 < len( self.mCtrlScheduledViewButtonList ) :
 									ctrlButton = self.mCtrlScheduledViewButtonList[timerCount2]
 									timerCount2 += 1

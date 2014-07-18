@@ -243,7 +243,8 @@ class TimerWindow( BaseWindow ) :
 					tempChannelName = '%04d %s' %( iChNumber, iChName )
 
 					timerName = '%s'% timer.mName
-					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					#   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					#	timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timerName )							
@@ -261,7 +262,8 @@ class TimerWindow( BaseWindow ) :
 						listItem.setProperty( 'TimerType', 'None' )
 
 					hasView = 'None'
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						hasView = 'True'
 					listItem.setProperty( 'ViewTimer', hasView )
 					listItem.setProperty( 'HasEvent', 'false' )
@@ -289,12 +291,14 @@ class TimerWindow( BaseWindow ) :
 					tempChannelName = '%04d %s' %( iChNumber, iChName )					
 
 					timerName = '%s'% timer.mName
-					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					#if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					#   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					#	timerName = '[%s]%s'% ( MR_LANG( 'Viewtime' ), timer.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timerName )	
 
-					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						tempName = MR_LANG( 'Weekly' )
 						listItem.setProperty( 'Duration', '' )
 						tempDuration = ''
@@ -311,7 +315,8 @@ class TimerWindow( BaseWindow ) :
 						listItem.setProperty( 'TimerType', 'None' )
 
 					hasView = 'None'
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						hasView = 'True'
 					listItem.setProperty( 'ViewTimer', hasView )
 
@@ -401,7 +406,8 @@ class TimerWindow( BaseWindow ) :
 					#timer.printdebug( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						timerMode = E_TIMER_MODE_VIEW
 
 					dialog.SetTimerMode( timerMode )
@@ -425,7 +431,8 @@ class TimerWindow( BaseWindow ) :
 		
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						timerMode = E_TIMER_MODE_VIEW
 
 					dialog.SetTimerMode( timerMode )
@@ -474,7 +481,7 @@ class TimerWindow( BaseWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					weeklyTimer = timer.mWeeklyTimer[ selectedPos-1 ]
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					if E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						self.mDataCache.Timer_DeleteOneViewWeeklyTimer( self.mSelectedWeeklyTimer, weeklyTimer.mDate, weeklyTimer.mStartTime ) 
 					else :
 						self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mSelectedWeeklyTimer, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration ) 
@@ -566,7 +573,7 @@ class TimerWindow( BaseWindow ) :
 			timer = self.mTimerList[ selectedPos ]
 
 			if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimerCount > 0 or \
-			   timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY and timer.mWeeklyTimerCount > 0 :
+			   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY and timer.mWeeklyTimerCount > 0 :
 				self.mSelectedWeeklyTimer = timer.mTimerId
 				self.UpdateList( )
 

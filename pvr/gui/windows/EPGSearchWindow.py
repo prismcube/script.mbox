@@ -705,11 +705,14 @@ class EPGSearchWindow( BaseWindow ) :
 				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
 				"""				
 
-				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
-					if timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
-						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
-							if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
-								return timer
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					continue
+
+				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
+					if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
+						if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
+							return timer
 						
 				else :
 					if timer.mFromEPG :
@@ -746,7 +749,8 @@ class EPGSearchWindow( BaseWindow ) :
 			for i in range( len( self.mTimerList ) ) :
 				timer = self.mTimerList[i]
 
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					#LOG_TRACE( 'timer ch[%s] sid[%s] tsid[%s] onid[%s]'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid ) )
 					if aEPG and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid and \
 					   timer.mStartTime >= startTime and timer.mStartTime < endTime :

@@ -53,7 +53,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		global LIST_RECORDING_MODE
 		global LIST_WEEKLY
 		#LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
-		LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Weekly' ), '%s(7 %s)' %(MR_LANG( 'Weekly' ), MR_LANG( 'Days' ))  ]
+		LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Weekly' ), '%s(7 %s)'% ( MR_LANG( 'Weekly' ), MR_LANG( 'Days' ) ) ]
 		LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
 
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -83,11 +83,11 @@ class DialogAddManualTimer( SettingDialog ) :
 			netVolumeID = self.mTimer.mVolumeID
 			defaultFocus = E_DialogSpinEx02
 			mTitle = MR_LANG( 'Edit Timer' )
-			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
-				self.mTimerMode = E_TIMER_MODE_VIEW
-
-			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY : 
+			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+			   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 				defaultFocus = E_DialogInput02
+				if E_V1_9_APPLY_WEEKLY_VIEW_TIMER and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+					self.mTimerMode = E_TIMER_MODE_VIEW
 
 		elif self.mEPG  :
 			self.mRecordName = self.mEPG.mEventName
@@ -390,7 +390,8 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mUsedWeeklyList = []
 
 			if self.mTimer :
-				if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					self.mRecordingMode = E_WEEKLY
 					self.mWeeklyStart = self.mTimer.mStartTime
 					self.mWeeklyEnd = self.mWeeklyStart + WEEKLY_DEFALUT_EXPIRE_DAYS*ONE_DAY_SECONDS - 1
@@ -511,25 +512,30 @@ class DialogAddManualTimer( SettingDialog ) :
 			defaultFocus = E_DialogSpinEx03
 			isVisible_NetVolume = True
 			isEnable_EndTime = True
+			isEnable_Weekly = True
 			modeName = MR_LANG( 'Recording' )
 			mTitle = MR_LANG( 'Add Manual Timer' )
 			modeList = [ MR_LANG( 'Record' ) ]
 
 			if E_V1_2_APPLY_VIEW_TIMER :
 				modeList.append( MR_LANG( 'View' ) )
-				if self.mTimer and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				if E_V1_9_APPLY_WEEKLY_VIEW_TIMER and self.mTimer and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					self.mTimerMode = E_TIMER_MODE_VIEW
 
 				if self.mTimerMode == E_TIMER_MODE_VIEW :
 					isVisible_NetVolume = False
 					isEnable_EndTime = False
 					modeName = MR_LANG( 'Viewing' )
+					if not E_V1_9_APPLY_WEEKLY_VIEW_TIMER :
+						self.mRecordingMode = E_ONCE
+						isEnable_Weekly = False
 
 			self.AddUserEnumControl( E_DialogSpinEx03, MR_LANG( 'Timer Mode' ), modeList, self.mTimerMode )
 			if self.mTimer :
 				defaultFocus = E_DialogSpinEx02
 				self.SetEnableControl( E_DialogSpinEx03, False )
-				if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY : 
+				if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and self.mTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					defaultFocus = E_DialogInput02
 
 			self.AddUserEnumControl( E_DialogSpinEx01, modeName, LIST_RECORDING_MODE, self.mRecordingMode )
@@ -562,6 +568,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.setProperty( 'NetVolumeInfo', '%s'% isVisible_NetVolume )
 			self.SetVisibleControl( E_DialogInput04, isVisible_NetVolume )
 			self.SetEnableControl( E_DialogInput03, isEnable_EndTime )
+			self.SetEnableControl( E_DialogSpinEx01, isEnable_Weekly )
 
 			self.SetAutoHeight( True )
 			self.InitControl( )
@@ -610,7 +617,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 			if self.mTimer :
 				self.SelectPosition( E_DialogSpinEx01, self.mRecordingMode )
-				self.SetEnableControl( E_DialogSpinEx01,  False )
+				#self.SetEnableControl( E_DialogSpinEx01,  False )
 				self.SetControlLabel2String( E_DialogInput01,  self.mTimer.mName )
 				self.SetEnableControl( E_DialogInput01,  False )
 
@@ -691,7 +698,7 @@ class DialogAddManualTimer( SettingDialog ) :
 							self.SetFocus( E_DialogInput02 )							
 
 			else :
-				self.SetEnableControl(E_DialogSpinEx01, True )
+				#self.SetEnableControl(E_DialogSpinEx01, True )
 				self.SelectPosition( E_DialogSpinEx01, self.mRecordingMode )
 
 				self.SetEnableControl( E_DialogInput01,  True )
@@ -755,9 +762,13 @@ class DialogAddManualTimer( SettingDialog ) :
 						#self.SetEnableControl( E_DialogInput03, True )
 
 			isEnable_EndTime = True
+			isEnable_Weekly = True
 			if self.mTimerMode == E_TIMER_MODE_VIEW :
 				isEnable_EndTime = False
+				if not E_V1_9_APPLY_WEEKLY_VIEW_TIMER :
+					isEnable_Weekly = False
 			self.SetEnableControl( E_DialogInput03, isEnable_EndTime )
+			self.SetEnableControl( E_DialogSpinEx01, isEnable_Weekly )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )		

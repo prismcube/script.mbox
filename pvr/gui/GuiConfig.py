@@ -531,6 +531,7 @@ E_SUPPORT_MEDIA_PLAY_AV_SWITCH = True
 E_SUPPORT_EXTEND_RECORD_PATH = True
 
 E_V1_6_PIP_SINGLE_TONE = True
+E_V1_9_APPLY_WEEKLY_VIEW_TIMER = True
 
 ############################ Global Function For GUI ############################
 
