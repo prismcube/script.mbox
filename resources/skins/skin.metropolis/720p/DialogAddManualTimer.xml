@@ -90,7 +90,7 @@
 				</control>
 				<control type="group">
 					<posx>-17</posx>
-					<posy>40</posy>
+					<posy>30</posy>
 					<!-- OK/Cancel -->
 					<include>DefaultSettingDialogButtonOKCancel</include>
 				</control>
