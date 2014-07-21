@@ -1,14 +1,18 @@
 <includes>
 	<include name="DefaultSettingsBackground">
-		<posx>-13</posx>
-		<posy>-7</posy>
-		<width>1306</width>
-		<height>734</height>
 		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
 			<texture>black-back_noAlpha.png</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 		<control type="image">
+			<posx>-13</posx>
+			<posy>-7</posy>
+			<width>1306</width>
+			<height>734</height>
 			<texture>backgrounds/SKINDEFAULT.png</texture>
 			<colordiffuse>ee3c95c8</colordiffuse>
 		</control>
