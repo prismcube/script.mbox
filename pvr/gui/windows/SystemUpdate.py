@@ -32,8 +32,10 @@ E_DEFAULT_PATH_SAMBA      = '/media/smb'
 #E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 
 if E_UPDATE_TEST_TESTBED :
-	PRISMCUBE_SERVER_FW_UPDATE  = 'http://192.168.100.158'
+	PRISMCUBE_SERVER_FW_UPDATE  = 'http://192.168.103.101'
 
+if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+	E_DEFAULT_DIR_UNZIP = 'update_oscar'
 
 #update_2nd
 E_DEFAULT_URL_PVS         = '%s/update_new.html?product=ruby'% PRISMCUBE_SERVER_FW_UPDATE
@@ -360,6 +362,7 @@ class SystemUpdate( SettingWindow ) :
 		global E_UPDATE_FIRMWARE_USE_USB, E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_HDD
 		E_UPDATE_FIRMWARE_USE_USB = False
 
+		#LOG_TRACE( '[SystemUpdate]update_folder[%s] unzip[%s]'% ( PRISMCUBE_REQUEST_FW_PATH, E_DEFAULT_DIR_UNZIP ) )
 		hddPath = self.mDataCache.HDD_GetMountPath( 'program' )
 		if hddPath and E_UPDATE_FIRMWARE_USB_ONLY == False :
 			LOG_TRACE( 'Check HDD True[%s]'% hddPath )

@@ -28,6 +28,8 @@ E_WINDOW_HEIGHT		= 720
 PRISMCUBE_SERVER_ADDON	= 'http://addon.prismcube.com'
 PRISMCUBE_SERVER_FW_UPDATE = 'http://update.prismcube.com'
 PRISMCUBE_REQUEST_FW_PATH = 'ruby_v1.xxx.xxx'
+if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+	PRISMCUBE_REQUEST_FW_PATH = 'jet_v1.xxx.xxx'
 
 # custom logo
 CUSTOM_LOGO_PATH					= xbmc.translatePath( "special://profile/channellogo" )
