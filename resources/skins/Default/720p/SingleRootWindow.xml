@@ -5554,8 +5554,9 @@ Search for window name
 				<include>DefaultWindowFade</include>
 				<include>DefaultCommonEPGView</include>		<!-- Common View id = 3500	-->
 				<include>DefaultBigEPGView</include>		<!-- Big View id = 3510		-->
-				<include>DefaultGridEPGView</include>		<!-- Grid View id = 2000		-->
 			</control>
+
+			<include>DefaultGridEPGView</include>			<!-- Grid View id = 2000		-->
 
 			<!-- Slide Menu -->
 			<control type="group">
