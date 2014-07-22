@@ -5684,6 +5684,688 @@
 		</control>
 	</include>
 
+	<include name="DefaultGridEPGView">
+		<control type="group">
+			<!-- Timeline -->
+			<control type="grouplist" id="3701000">
+				<posx>65</posx>
+				<posy>10</posy>
+				<width>1170</width>
+				<height>30</height>
+				<align>left</align>
+				<itemgap>0</itemgap>
+				<orientation>Horizontal</orientation>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+				<!-- Timeline Date -->
+				<control type="button" id="3701010">
+					<height>30</height>
+					<width>270</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>200</textwidth>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>METF_InfoTextLarger</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus border="5">button-nofocus.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+				</control>
+				<control type="button" id="3701001">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701002">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701003">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701004">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701005">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701006">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701007">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+				<control type="button" id="3701008">
+					<include>DefaultButtonTimelineValues</include>
+					<label>-</label>
+				</control>
+			</control>
+			<control type="group">
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+				<control type="list" id="3702000">
+					<posx>65</posx>
+					<posy>40</posy>
+					<width>270</width>
+					<height>504</height>
+					<align>left</align>
+					<onleft></onleft>
+					<onright></onright>
+					<onup>3702000</onup>
+					<ondown>3702000</ondown>
+					<viewtype label="535">list</viewtype>
+					<!--pagecontrol>1003501</pagecontrol-->
+					<scrolltime>0</scrolltime>
+					<itemlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>5</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>METF_HomeMenuSmall</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>white</selectedcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>30</posy>
+							<width>185</width>
+							<height>15</height>
+							<font>METF_HomeMenuSmall</font>
+							<textcolor>white</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+							<scrollspeed>70</scrollspeed>
+						</control>
+					</itemlayout>
+					<focusedlayout height="63" width="270">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>270</width>
+							<height>60</height>
+							<texture border="5">button-nofocus.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>80</width>
+							<height>50</height>
+							<texture>$INFO[ListItem.Property(ChannelLogo)]</texture>
+						</control>
+						<!-- Channel Number -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>5</posy>
+							<width>185</width>
+							<height>20</height>
+							<font>METF_HomeMenuSmall</font>
+							<textcolor>eef8cd22</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<scroll>false</scroll>
+						</control>
+						<!-- Channel Name -->
+						<control type="label">
+							<posx>85</posx>
+							<posy>30</posy>
+							<width>185</width>
+							<height>15</height>
+							<font>METF_HomeMenuSmall</font>
+							<textcolor>eef8cd22</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label2]</label>
+							<scroll>false</scroll>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+
+			<!-- Grid EPG -->
+			<control type="group" id="3703000">
+				<posx>335</posx>
+				<posy>40</posy>
+				<width>800</width>
+				<height>480</height>
+				<align>left</align>
+				<visible>substring(Window.Property(EPGMode),grid)</visible>
+
+				<!-- CAS Icon -->
+				<control type="group">
+					<posx>-329</posx>
+					<posy>640</posy>
+					<include>CASInfo</include>
+				</control>
+
+				<!-- EPG Info -->
+				<control type="label" id="3703503">
+					<description>EPG info</description>
+					<posx>0</posx>
+					<posy>560</posy>
+					<width>760</width>
+					<height>40</height>
+					<font>METF_HomeMenu</font>
+					<textcolor>eef8cd22</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<scroll>true</scroll>
+					<scrollspeed>70</scrollspeed>
+					<scrollsuffix>  |  </scrollsuffix>
+					<label></label>
+				</control>
+
+				<!-- Running Timer -->
+				<control type="button" id="3703601">
+					<include>DefaultButtonRunningRecValues</include>
+				</control>
+				<control type="button" id="3703602">
+					<include>DefaultButtonRunningRecValues</include>
+				</control>
+
+				<!-- Scheduled Timer -->
+				<control type="button" id="3703701">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703702">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703703">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703704">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703705">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703706">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703707">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703708">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703709">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703710">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+
+				<control type="button" id="3703711">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703712">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703713">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703714">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703715">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703716">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703717">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703718">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703719">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+				<control type="button" id="3703720">
+					<include>DefaultButtonScheduledValues</include>
+				</control>
+
+				<!-- Scheduled ViewTimer -->
+				<control type="button" id="3703801">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703802">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703803">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703804">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703805">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703806">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703807">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703808">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703809">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703810">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+
+				<control type="button" id="3703811">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703812">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703813">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703814">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703815">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703816">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703817">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703818">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703819">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+				<control type="button" id="3703820">
+					<include>DefaultButtonScheduledViewTimeValues</include>
+				</control>
+
+				<!-- Normal Grid EPG -->
+				<control type="button" id="3703001">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703002">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703003">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703004">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703005">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703006">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703007">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703008">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703009">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703010">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703011">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703012">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703013">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703014">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703015">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703016">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703017">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703018">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703019">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703020">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703021">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703022">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703023">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703024">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703025">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703026">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703027">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703028">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703029">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703030">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703031">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703032">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703033">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703034">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703035">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703036">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703037">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703038">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703039">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703040">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703041">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703042">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703043">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703044">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703045">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703046">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703047">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703048">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703049">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703050">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703051">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703052">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703053">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703054">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703055">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703056">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703057">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703058">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703059">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703060">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703061">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703062">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703063">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703064">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703065">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703066">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703067">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703068">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703069">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703070">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703071">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703072">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703073">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703074">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703075">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703076">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703077">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703078">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703079">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703080">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703081">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703082">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703083">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703084">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703085">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703086">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703087">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703088">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703089">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703090">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<control type="button" id="3703091">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703092">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703093">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703094">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703095">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703096">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703097">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703098">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703099">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+				<control type="button" id="3703100">
+					<include>DefaultButtonGridEPGValues</include>
+				</control>
+
+				<!-- Hidden Focus Button -->
+				<control type="button" id="3703501">
+					<height>50</height>
+					<width>270</width>
+					<textoffsetx>85</textoffsetx>
+					<textwidth>185</textwidth>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>METF_PlotText</font>
+					<texturefocus border="5">StackFO_white2.png</texturefocus>
+					<texturenofocus border="5">StackFO_white2.png</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<colordiffuse>75FFFFFF</colordiffuse>
+				</control>
+
+				<!-- Current Time Indicator -->
+				<control type="image" id="3703500">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>498</height>
+					<texture>HomeSeperatorRed.png</texture>
+					<visible>substring(Window.Property(EPGMode),grid) + substring(Window.Property(EPGTimeSeperator),True)</visible>
+				</control>
+			</control>
+		</control>
+	</include>
+
 	<include name="DefaultBigTimerView">
 		<control type="group">
 			<visible>substring(Window.Property(TimerMode),true)</visible>
