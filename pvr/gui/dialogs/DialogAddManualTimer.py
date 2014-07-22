@@ -200,7 +200,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
-		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
+		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
 			if self.DoAddTimer( ) == False :
 				self.mIsOk = E_DIALOG_STATE_ERROR
 			self.ResetAllControl( )
@@ -875,7 +875,12 @@ class DialogAddManualTimer( SettingDialog ) :
 						endTime = tmpEndTime * 60
 						self.mTimer.mDuration = endTime - startTime
 						#aTimerId, aNewStartTime, aNewDuration
-						ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration )
+
+						volumeId = 0
+						if E_SUPPORT_EXTEND_RECORD_PATH :
+							volumeId = self.mTimer.mVolumeID
+
+						ret = self.mDataCache.Timer_EditManualTimer( self.mTimer.mTimerId, self.mTimer.mStartTime, self.mTimer.mDuration, volumeId )
 
 						if ret[0].mParam == -1 or ret[0].mError == -1 :
 							self.mConflictTimer = ret

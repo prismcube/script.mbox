@@ -2523,8 +2523,14 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
 
 
-	def Timer_EditManualTimer(self , aTimerId, aNewStartTime, aNewDuration ) :
-		return self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration )	
+	def Timer_EditManualTimer(self , aTimerId, aNewStartTime, aNewDuration, aVolumeId = 0 ) :
+		ret = []
+		if E_SUPPORT_EXTEND_RECORD_PATH :
+			ret = self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration, aVolumeId )
+		else :
+			ret = self.mCommander.Timer_EditManualTimer( aTimerId, aNewStartTime, aNewDuration )
+
+		return ret
 
 
 	def Timer_ChangeChannel( self, aETimerChannel ) :
