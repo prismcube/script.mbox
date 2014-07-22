@@ -504,7 +504,7 @@ class NullWindow( BaseWindow ) :
 
 			self.CloseSubTitle( )
 			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-			if not playingRecord and ( not HasAvailableRecordingHDD( False ) ) :
+			if not playingRecord and ( not HasAvailableRecordingHDD( False, True ) ) :
 				self.CheckSubTitle( )
 				return
 			self.CheckSubTitle( )
