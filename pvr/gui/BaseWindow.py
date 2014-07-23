@@ -795,12 +795,12 @@ class BaseWindow( BaseObjectWindow ) :
 			self.setProperty( 'SettingBackground', 'True' )
 			self.setProperty( 'DafultBackgroundImage', 'True' )
 			self.setProperty( 'SettingPip', 'True' )
-			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			for i in range( len( visibleControlIds ) ) :
 				self.getControl( visibleControlIds[i] ).setVisible( True )
 				self.getControl( visibleControlIds[i] ).setEnabled( True )
 
-			hideControlIds = [ E_SpinEx06, E_SpinEx07, E_SpinEx08, E_Input05, E_Input06, E_Input07, E_Input08 ]
+			hideControlIds = [ E_SpinEx07, E_SpinEx08, E_Input05, E_Input06, E_Input07, E_Input08 ]
 			for i in range( len( hideControlIds ) ) :
 				self.getControl( hideControlIds[i] ).setVisible( False )
 

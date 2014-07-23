@@ -15,10 +15,11 @@ FILE_TERRESTRIA = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/te
 class ChannelScanDVBT( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mIsManualSetup = 0
-		self.mDVBT_Manual = ElisIDVBTCarrier( )
-		self.mDVBT_Auto = []
-		self.mTerrestria = 'None'
+		self.mIsManualSetup	= 0
+		self.mDVBT_Manual	= ElisIDVBTCarrier( )
+		self.mDVBT_Auto		= []
+		self.mTerrestria	= 'None'
+		self.mEnable5v		= 0
 		self.SetTerrestriaInfo( 0 )
 
 
@@ -138,7 +139,10 @@ class ChannelScanDVBT( SettingWindow ) :
 			self.mDVBT_Manual.mIsDVBT2 = self.GetSelectedIndex( E_SpinEx03 )
 			self.DisableControl( E_SpinEx03 )
 
-		elif groupId == E_SpinEx04 or groupId == E_SpinEx05 :
+		elif groupId == E_SpinEx04 :
+			self.mEnable5v = self.GetSelectedIndex( E_SpinEx04 )
+
+		elif groupId == E_SpinEx05 or groupId == E_SpinEx06 :
 			self.ControlSelect( )
 			return
 
@@ -214,9 +218,10 @@ class ChannelScanDVBT( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx02, 'Bandwidth', [ '6MHz','7MHz','8MHz' ], self.mDVBT_Manual.mBand, MR_LANG( 'Select bandwidth' ) )
 		self.AddUserEnumControl( E_SpinEx03, 'Tuner Type', [ MR_LANG( 'DVB-T' ), MR_LANG( 'DVB-T2' ), MR_LANG( 'DVB-C' ) ], self.mDVBT_Manual.mIsDVBT2, MR_LANG( 'Select tuner type' ) )
 		self.AddInputControl( E_Input02, MR_LANG( 'PLP ID' ), '%03d' % self.mDVBT_Manual.mPLPId, MR_LANG( 'Input PLP ID' ), aInputNumberType = TYPE_NUMBER_NORMAL, aMax = 999 )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Enable 5V for active antenna' ), USER_ENUM_LIST_ON_OFF, self.mEnable5v, MR_LANG( 'Select enable 5v for active antenna' ) )		
 		networkSearchDescription = '%s %s' % ( MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels.'), MR_LANG('If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
-		self.AddEnumControl( E_SpinEx04, 'Network Search', None, networkSearchDescription )
-		self.AddEnumControl( E_SpinEx05, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, networkSearchDescription )
+		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
 		self.AddInputControl( E_Input03, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		self.InitControl( )
