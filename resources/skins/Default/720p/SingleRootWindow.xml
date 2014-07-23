@@ -950,44 +950,143 @@ Search for window name
 						<label>$ADDON[script.mbox 1139]</label>
 					</control>
 				</control>
+
+				<!-- Color Keys : Deprecated -->
 				<control type="group">
-					<posx>400</posx>
-					<posy>0</posy>
-					<control type="image">
-						<posx>20</posx>
+					<posx>420</posx>
+					<posy>5</posy>
+					<!--visible>substring(Window.Property(ZappingModeInfo),true)</visible-->
+					<visible>false</visible>
+					<control type="group">
+						<posx>0</posx>
 						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>OSDRewindNF.png</texture>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFF0000</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1204]</label>
+						</control>
 					</control>
-					<control type="label">
-						<description>Previous Group</description>
-						<posx>58</posx>
-						<posy>5</posy>
-						<width>160</width>
-						<height>20</height>
-						<font>font10</font>
-						<label>$ADDON[script.mbox 1202]</label>
+					<control type="group">
+						<posx>120</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF00FF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1003]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>240</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FFFFFF00</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1205]</label>
+						</control>
+					</control>
+					<control type="group">
+						<posx>360</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>0</posx>
+							<posy>5</posy>
+							<width>12</width>
+							<height>12</height>
+							<colordiffuse>FF0050FF</colordiffuse>
+							<texture>Logo_Background.png</texture>
+						</control>
+						<control type="label">
+							<posx>15</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>15</height>
+							<textcolor>grey2</textcolor>
+							<font>font10</font>
+							<align>left</align>
+							<label>$ADDON[script.mbox 1206]</label>
+						</control>
 					</control>
 				</control>
 				<control type="group">
-					<posx>600</posx>
-					<posy>0</posy>
-					<control type="image">
-						<posx>20</posx>
+					<visible>!substring(Window.Property(ZappingModeInfo),true)</visible>
+					<control type="group">
+						<posx>400</posx>
 						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>OSDForwardNF.png</texture>
+						<control type="image">
+							<posx>20</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDRewindNF.png</texture>
+						</control>
+						<control type="label">
+							<description>Previous Group</description>
+							<posx>58</posx>
+							<posy>5</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>font10</font>
+							<label>$ADDON[script.mbox 1202]</label>
+						</control>
 					</control>
-					<control type="label">
-						<description>Next Group</description>
-						<posx>58</posx>
-						<posy>5</posy>
-						<width>160</width>
-						<height>20</height>
-						<font>font10</font>
-						<label>$ADDON[script.mbox 1203]</label>
+					<control type="group">
+						<posx>600</posx>
+						<posy>0</posy>
+						<control type="image">
+							<posx>20</posx>
+							<posy>0</posy>
+							<width>30</width>
+							<height>30</height>
+							<texture>OSDForwardNF.png</texture>
+						</control>
+						<control type="label">
+							<description>Next Group</description>
+							<posx>58</posx>
+							<posy>5</posy>
+							<width>160</width>
+							<height>20</height>
+							<font>font10</font>
+							<label>$ADDON[script.mbox 1203]</label>
+						</control>
 					</control>
 				</control>
 			</control>
