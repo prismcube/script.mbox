@@ -142,7 +142,8 @@ class DialogPIP( BaseDialog ) :
 
 		#init tunable list : loop though or record full
 		if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or \
-		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH :
+		   ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( ) == E_TUNER_LOOPTHROUGH or \
+		   pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
 			self.mDataCache.PIP_SetTunableList( )
 			LOG_TRACE( '[PIP] init tunable list. loopthough or rec full' )
 
@@ -687,6 +688,10 @@ class DialogPIP( BaseDialog ) :
 
 			#self.getControl( CTRL_ID_BUTTON_ACTIVE_PIP ).setEnabled( enable )
 			#self.getControl( CTRL_ID_BUTTON_MUTE_PIP ).setEnabled( enable )
+
+		#ToDO: problem audio sync in JET
+		if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
+			mute = False
 
 		self.mHotKeyAvailableGreen = full
 		self.mHotKeyAvailableYellow= mute
