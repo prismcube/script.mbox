@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Удаление Каналов из Группы Любимых" location="(СЛАЙД МЕНЮ  > ВЫБОР ГРУППЫ ЛЮБИМЫХ КАНАЛОВ)">
-		<content name="remove_channels.png">
+		<content name="remove_fav channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>

@@ -18,7 +18,7 @@
 			</control>
 			<control type="group">
 				<posx>25</posx>
-				<posy>15</posy>
+				<posy>0</posy>
 				<control type="label" id="400">
 					<description>Video PID</description>
 					<posx>30</posx>
@@ -26,7 +26,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="401">
 					<description>Audio PID</description>
@@ -35,7 +34,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="402">
 					<description>PCR PID</description>
@@ -44,7 +42,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="403">
 					<description>TSID</description>
@@ -53,7 +50,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="404">
 					<description>ONID</description>
@@ -62,7 +58,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="405">
 					<description>SID</description>
@@ -71,7 +66,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="500">
 					<description>Strength</description>
@@ -80,7 +74,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="501">
 					<description>Quality</description>
@@ -89,7 +82,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="502">
 					<description>Resolution</description>
@@ -98,7 +90,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 				<control type="label" id="503">
 					<description>Audio</description>
@@ -107,13 +98,12 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 				</control>
 			</control>
 
 			<control type="group">
 				<posx>380</posx>
-				<posy>15</posy>
+				<posy>0</posy>
 				<control type="label" id="4000">
 					<description>Video PID</description>
 					<posx>30</posx>
@@ -121,7 +111,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="4001">
@@ -131,7 +120,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="4002">
@@ -141,7 +129,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="4003">
@@ -151,7 +138,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="4004">
@@ -161,7 +147,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="4005">
@@ -171,7 +156,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="5000">
@@ -181,7 +165,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="5001">
@@ -191,7 +174,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="5002">
@@ -201,7 +183,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 				<control type="label" id="5003">
@@ -211,7 +192,6 @@
 					<font>font13</font>
 					<label></label>
 					<align>left</align>
-					<aligny>center</aligny>
 					<width>150</width>
 				</control>
 			</control>

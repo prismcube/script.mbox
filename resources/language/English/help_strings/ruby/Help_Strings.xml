@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<help>
+	<page number="1" title="Front Panel" location="( )">
+		<content name="front_ruby.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>225</posy>
+			<width>785</width>
+			<height>243</height>
+		</content>
+		<content name="1. STANDBY LED BUTTON : Switches between operation and standby modes by pressing the button for 1~2 secs.[CR][CR]2. FRONT DISPLAY : Shows the channel name in operation mode and displays the current time in standby mode.[CR][CR]3. SMARTCARD SLOT : Open the flap and insert your Smartcard into the front slot to watch pay services.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="2" title="Rear Panel" location="( )">
+		<content name="rear_ruby.png">
+			<type>image</type>
+			<posx>240</posx>
+			<posy>270</posy>
+			<width>780</width>
+			<height>177</height>
+		</content>
+		<content name="1. LNB 1 IN, LNB 2 IN : Connects a satellite antenna cable.[CR]2. VIDEO, AUDIO : Connects to the TV or VCR using an RCA cable.[CR]3. S/PDIF : Connects to the audio system using an S/PDIF cable.[CR]4. RS-232C : Connects to PC.[CR]5. HDMI : Connects to the TV using an HDMI cable.[CR]6. ETHERNET : Local area network port.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="7. USB HOST : Connects to the USB memory.[CR]8. AC MAINS : Connects to a plug in the AC mains power cord.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="3" title="Remote Control" location="( )">
+		<content name="remote1.png">
+			<type>image</type>
+			<posx>479</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="1. TV POWER : Turns your TV on or off.[CR]2. STANDBY : Switches between operation and standby modes.[CR]3. COLOR : Access special functions in some menus.[CR]4. SOURCE : Controls the outputs of TV.[CR]5. XBMC : Displays the XBMC Media Center.[CR]6. TV/RADIO : Switches between TV and radio modes.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="7. RECORD : Records live programme.[CR]8. STOP : Stops a recording or goes to the live programme.[CR]9. PLAY/PAUSE : Pauses the live programme or recording.[CR]10. FAST REWIND : Rewinds at high speed.[CR]11. FAST FORWARD : Fasts forward at high speed.[CR]12. ARCHIVE : Displays the Archive window.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="4" title="Remote Control" location="( )">
+		<content name="remote2.png">
+			<type>image</type>
+			<posx>478</posx>
+			<posy>60</posy>
+			<width>316</width>
+			<height>480</height>
+		</content>
+		<content name="13. EPG : Displays the EPG window.[CR]14. ARROWS : Navigates through the menu options.[CR]15. OK : Selects an item/Displays the channel list.[CR]16. BACK : Moves one step back/Returns to the last channel.[CR]17. MENU : Displays the main menu.[CR]18. VOL+/VOL : Adjusts the volume.">
+			<type>textbox_smallfont</type>
+			<posx>80</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+		<content name="19. i (Information) : Displays the channel information or context menu.[CR]20. P+/P- : Changes the channel.[CR]21. MUTE : Switches the sound on or off.[CR]22. TELETEXT : Displays the teletext information of the current channel.[CR]23. SUBTITLE : Displays the subtitle option.[CR]24. NUM LOCK : Allows to change the channel by number keys.">
+			<type>textbox_smallfont</type>
+			<posx>680</posx>
+			<posy>565</posy>
+			<width>540</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="5" title="Remote Control - QWERTY Keyboard" location="( )">
+		<content name="remote3.png">
+			<type>image</type>
+			<posx>380</posx>
+			<posy>240</posy>
+			<width>500</width>
+			<height>226</height>
+		</content>
+		<content name="The PRISMCUBE RUBY remote control features a full QWERTY keyboard for text input on the back. [CR][CR]1. Hold remote control horizontally as picture above.[CR]2. Turn on QWERTY keyboard by pressing Num Lock key.[CR]3. Enter text faster and efficiently with the keyboard.">
+			<type>textbox_smallfont</type>
+			<posx>205</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="6" title="Connecting Your STB - Antenna Connection" location="( )">
+		<content name="connecting_STB.png">
+			<type>image</type>
+			<posx>245</posx>
+			<posy>275</posy>
+			<width>770</width>
+			<height>160</height>
+		</content>
+		<content name="To make best use of all features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view while recording a live programme will be limited if connecting with a single cable using loop through.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="7" title="Info Plate" location="( )">
+		<content name="info_plate_ruby.png">
+			<type>image</type>
+			<posx>225</posx>
+			<posy>300</posy>
+			<width>800</width>
+			<height>107</height>
+		</content>
+		<content name="The channel information is automatically displayed on the Info plate when changing channels.[CR][CR]1. CURRENT CHANNEL NUMBER AND NAME : Displays current TV/Radio channel number and name.[CR]2. EPG DATA : Press the DOWN button then press the LEFT/RIGHT button to view previous/next EPG.[CR]3. PROGRESS BAR : Displays programme start time, end time and progress bar.[CR]4. FUNCTION BUTTONS : Extended Information, Teletext, Subtitle, Start/Stop Recording, Mute and A/V Setting.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="8" title="PIP" location="(PRESS BLUE COLOR BUTTON)">
+		<content name="pip.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="PIP (Picture in picture) is a function that allows you to watch two programmes simultaneously.[CR]Some tips to remember when using PIP are as follow.[CR][CR]- Engage the PIP feature by pressing BLUE button on the remote; a small box should appear in one corner of the screen.[CR]- Change the channel in the PIP window by pressing number keys on the remote after turning Num Lock on.[CR]- You can also access and use the PIP while you are watching video in XBMC.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="9" title="First Installation" location="(INSTALLATION > FIRST INSTALLATION)">
+		<content name="language_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="When powering on your product for the first time after purchase, the First Installation will operate automatically.[CR][CR]- LANGUAGE SETUP : You can select the language in which the menu would be displayed.[CR]- VIDEO and AUDIO SETUP : You can configure the video and audio output settings here.[CR]- ANTENNA and SATELLITE SETUP : You can select the antenna and LNB settings for channel searching.[CR]- CHANNEL SEARCH SETUP : Here, you can scan the configured satellites to search new TV/Radio channels.[CR]- TIME and DATE SETUP : You should set your local time for timer events.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="10" title="Antenna and Satellite Setup" location="(INSTALLATION > ANTENNA SETUP)">
+		<content name="antenna_setup.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. DISEQC 1.0 : It allows multiple antennas to be connected to the STB simultaneously. You can connect up to 4 satellites.[CR]2. DISEQC 1.1 : It allows you to connect up to 64 different satellites.[CR]3. MOTORIZED DISEQC 1.2 : You can set the position of your desired satellites if you have a motorized antenna.[CR]4. MOTORIZED USALS : You can set the motor antenna for efficient channel search in USALS.[CR]5. SIMPLE LNB : It is used when only one satellite is connected.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="11" title="Channel Search" location="(INSTALLATION > CHANNEL SEARCH)">
+		<content name="channel_search.png">
+			<type>image</type>
+			<posx>180</posx>
+			<posy>65</posy>
+			<width>888</width>
+			<height>470</height>
+		</content>
+		<content name="1. AUTOMATIC SCAN : It is for general users and the easiest way to search channels.[CR]2. MANUAL SCAN : This is more appropriate if you know which satellites you want to search and their parameters.[CR]3. FAST SCAN : You can search channels from service providers quickly.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="12" title="Channel List - Edit Channels" location="(CHANNEL LIST > CONTEXT MENU > EDIT CHANNELS)">
+		<content name="editing_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="You can delete, move, select, rename or lock the channels conveniently in the Channel List window.[CR][CR]1. Press the i button to display the channel list context menu and select EDIT CHANNELS.[CR]2. Select the channels you want to delete by pressing OK button.[CR]3. Press the i button again and select DELETE and press OK button to delete the channels previously selected.[CR]4. Press SAVE AND EXIT on the context menu.[CR]5. When a message asking for confirmation will appear, press YES to save.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+		
+	<page number="13" title="Creating New Favorite Group" location="(EDIT CHANNELS > CREATE NEW FAVORITE GROUP)">
+		<content name="creating_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="The entire channels in the channel list are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]1. Select CREATE NEW FAVORITE GROUP on the channel list context menu and Press OK button.[CR]2. Enter a name for your favorite channel group.[CR]3. Press DONE to confirm.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="14" title="Adding Channels to a Favorite Group" location="(EDIT CHANNELS > ADD TO FAVORITE GROUP)">
+		<content name="adding_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Select channels you want to add to your favorite group[CR]2. Choose ADD TO FAVORITE GROUP on the context menu then press OK[CR]3. Select a group from the list of available favorite groups then press OK.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="15" title="Removing Channels from a Favorite Group" location="(SLIDE MENU > SELECT FAVORITE GROUP > DELETE)">
+		<content name="removing_fav_channels.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Press the LEFT button on the remote control and select FAVORITE GROUPS.[CR]2. Select the group you want to remove channels from.[CR]3. Select the channels that you want to delete by pressing OK button.[CR]4. Select DELETE on the context menu to remove all the channels you have selected previously.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="16" title="Renaming a Favorite Group" location="(EDIT CHANNELS > RENAME FAVORITE GROUP)">
+		<content name="renaming_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. To display the channel list's context menu, press the i button.[CR]2. Select RENAME FAVORITE GROUP on the menu.[CR]3. Select the favorite group you want to rename and press OK.[CR]4. Enter a new name using the keypad.[CR]5. Press DONE to confirm.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="17" title="Deleting a Favorite Group" location="(EDIT CHANNELS > DELETE FAVORITE GROUP)">
+		<content name="deleting_fav.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="1. Display the channel list's context menu by pressing the i button.[CR]2. Select DELETE FAVORITE GROUP on the menu.[CR]3. Select the favorite group you want to delete.[CR]4. Press OK to confirm.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="18" title="XBMC" location="(MEDIA or PRESS XBMC BUTTON)">
+		<content name="xbmc.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. XBMC allows the user to install new add-ons like YouTube, Flickr, as well as skins from the repository installed.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="19" title="Installing Add-ons" location="(MEDIA > ADD-ON MANAGER > GET ADD-ONS)">
+		<content name="installing_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="Add-ons are packages that add features and functions not normally included with XBMC.[CR][CR]1. Select PRISMCUBE'S ADD-ONS and press OK.[CR]2. Scroll down to the category you want and press OK.[CR]3. Select the add-on you want to install.[CR]4. A summary dialog will be brought up allowing you see various properties of the add-on.[CR]5. Select INSTALL to begin automatic downloading and installing.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="20" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
+		<content name="updating_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="All installed add-ons will be automatically updated when new versions are available from the repositories.[CR]If Auto update is turned off you should see a folder in the Add-on manager that says Available Updates, where you can go in and one-by-one and update add-ons.">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+	
+	<page number="21" title="Running Add-ons" location="(MEDIA > PICTURES, MUSIC, VIDEO or PROGRAMS)">
+		<content name="running_addons.png">
+			<type>image</type>
+			<posx>210</posx>
+			<posy>65</posy>
+			<width>832</width>
+			<height>470</height>
+		</content>
+		<content name="When the add-on has finished downloading, XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section. ( e.g. Flickr in the pictures, YouTube in the video section of Media, etc )">
+			<type>textbox_smallfont</type>
+			<posx>180</posx>
+			<posy>565</posy>
+			<width>960</width>
+			<height>160</height>
+		</content>
+	</page>
+
+	<page number="22" title="Getting Further Help" location="( )">
+		<content name="For more information about Prismcube Ruby,[CR]please visit our website [B]www.prismcube.com[/B]">
+			<type>textbox_bigfont</type>
+			<posx>170</posx>
+			<posy>320</posy>
+			<width>940</width>
+			<height>160</height>
+		</content>
+	</page>
+</help>

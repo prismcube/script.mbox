@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Usuwanie kanałów z grupy ulubionych" location="(WYSUWANE MENU > WYBIERZ GRUPĘ ULUBIONYCH > USUŃ)">
-		<content name="remove_channels.png">
+		<content name="remove_fav channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -187,7 +187,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Media Center" location="(MEDIA lub WCIŚNIJ PRZYCISK XBMC)">
+	<page number="12" title="XBMC" location="(MEDIA lub WCIŚNIJ PRZYCISK XBMC)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
