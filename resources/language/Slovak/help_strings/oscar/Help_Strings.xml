@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Odstránenie kanálov zo skupiny obľúbených" location="(SLIDE MENU > VYBRAŤ OBĽÚBENÚ SKUPINU > VYMAZAŤ)">
-		<content name="remove_channels.png">
+		<content name="remove_fav channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -187,7 +187,7 @@
 		</content>
 	</page>
 
-	<page number="12" title="Media Center" location="(MEDIA alebo STLAČTE TLAČIDLO XBMC)">
+	<page number="12" title="XBMC" location="(MEDIA alebo STLAČTE TLAČIDLO XBMC)">
 		<content name="xbmc.png">
 			<type>image</type>
 			<posx>210</posx>
