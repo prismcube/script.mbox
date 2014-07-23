@@ -112,12 +112,18 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			self.mDataCache.Frontdisplay_SetCurrentMessage( )
 
+		#is avail timeshift
+		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) and ( not HasAvailableRecordingHDD( False, True ) ) :
+			WinMgr.GetInstance( ).CloseWindow( )
+			return
+		"""
 		if self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and ( not playingRecord ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 			return
+		"""
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )

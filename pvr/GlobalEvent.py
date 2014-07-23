@@ -65,8 +65,6 @@ class GlobalEvent( object ) :
 			return
 
 		if aEvent.getName( ) == ElisEventPIPKeyHook.getName( ) :
-			if pvr.Platform.GetPlatform( ).GetProduct( ) == PRODUCT_OSCAR :
-				return
 			#LOG_TRACE( '[GlobalEvent] eventName[%s] keycode[%s]'% ( aEvent.getName( ), aEvent.mKeyCode ) )
 			if E_SUPPORT_XBMC_PIP_FULLSCREEN_ONLY :
 				if xbmcgui.getCurrentWindowId() == 12005 or xbmcgui.getCurrentWindowId() == 12006 :

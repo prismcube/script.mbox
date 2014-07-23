@@ -606,6 +606,10 @@ class Configure( SettingWindow ) :
 			elif groupId == E_Input03 :
 				self.RefreshByVolumeList( )
 
+			else :
+				if groupId == E_SpinEx03 or groupId == E_SpinEx04 :
+					self.ControlSelect( )
+
 	 	elif selectedId == E_ETC :
 	 		self.ETCSetting( groupId )
 
@@ -970,19 +974,19 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_CONFIGURE_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
+
+			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR or \
+			   self.mPlatform.GetProduct( ) == PRODUCT_OSCAR and CheckHdd( True ) :
 				self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
 				self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )				
-			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
-			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
-			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
-
-			if self.mPlatform.GetProduct( ) != PRODUCT_OSCAR :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 				hideControlIds = [ E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			else :
 				visibleControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 				hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx06, E_SpinEx07, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
+			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
+			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
 
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )

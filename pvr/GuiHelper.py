@@ -588,13 +588,13 @@ def CheckHdd( aCheckForce = False ) :
 	return isMounted
 
 
-def	HasAvailableRecordingHDD( aCheckVolume = True ) :
+def	HasAvailableRecordingHDD( aCheckVolume = True, aCheckForce = False ) :
 	import pvr.gui.DialogMgr as DiaMgr
 	from pvr.gui.GuiConfig import E_SUPPORT_EXTEND_RECORD_PATH
 	import pvr.DataCacheMgr
 	dataCache = pvr.DataCacheMgr.GetInstance( )
 
-	if not CheckHdd( ) :
+	if not CheckHdd( aCheckForce ) :
 		if E_SUPPORT_EXTEND_RECORD_PATH and aCheckVolume and dataCache.Record_GetNetworkVolume( True ) :
 			return True
 

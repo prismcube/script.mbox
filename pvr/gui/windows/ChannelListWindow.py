@@ -2802,7 +2802,7 @@ class ChannelListWindow( BaseWindow ) :
 		updateEnd = ( updateStart + self.mItemCount )
 		if aUpdateAll :
 			updateStart = 0
-			updateEnd = len( self.mListItems ) - 1
+			updateEnd = len( self.mListItems )
 
 		#LOG_TRACE( '[ChannelList] offsetTop[%s] idxStart[%s] idxEnd[%s] listHeight[%s] itemCount[%s]'% ( GetOffsetPosition( self.mCtrlListCHList ), updateStart, updateEnd, self.mListHeight, self.mItemCount ) )
 
