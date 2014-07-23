@@ -4,7 +4,12 @@ import xbmc, xbmcaddon
 
 E_TBR_BASIC	= 0
 E_TBR_FM	= 1
-
+XBMC_WINDOW_DIALOG_BUSY = 10138
+XBMC_WINDOW_FULLSCREEN_VIDEO = 12005
+XBMC_WINDOW_DIALOG_PROGRESS = 10101
+XBMC_WINDOW_DIALOG_YES_NO =10100
+XBMC_WINDOW_DIALOG_OK = 12002
+XBMC_WINDOW_DIALOG_SELECT = 12000
 
 FILE_NAME_TEST = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/elmo_test.xml'
 
@@ -59,6 +64,7 @@ class HiddenTest( BaseWindow ) :
 		context.append( ContextItem( 'TBR FM TEST', 9996 ) )
 		context.append( ContextItem( 'PROPERTY CHECK', 9999 ) )
 		context.append( ContextItem( 'ALL Navigation', 8888 ) )
+		context.append( ContextItem( 'Addon Play TEST', 9900 ) )
 		menuCount = 0
 
 		for scenario in self.mRoot.findall( 'scenario' ) :
@@ -89,6 +95,8 @@ class HiddenTest( BaseWindow ) :
 		elif aContextAction == 9999 :
 			self.CheckProperty( )
 			WinMgr.GetInstance( ).CloseWindow( )
+		elif aContextAction == 9900 :
+			self.AddonTest( )
 		elif aContextAction == 8888 :
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			if ConnectSocket( ) :
@@ -135,6 +143,191 @@ class HiddenTest( BaseWindow ) :
 		for node in aNode :
 			loop.AddChild( self.MakeChild( node ) )
 		return loop
+
+
+	def CheckErr( self, prePath) :
+		loopTime = 0
+		limitTime = 50
+		time.sleep( 5 )
+		while loopTime < limitTime :
+			if xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_BUSY :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+			elif xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_PROGRESS :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+			elif xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_YES_NO :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+				xbmc.executebuiltin( 'Dialog.Close(yesnodialog)' )
+			elif xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_SELECT :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+				xbmc.executebuiltin( 'Dialog.Close(selectdialog)' )
+			elif xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_OK :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+				xbmc.executebuiltin( 'Dialog.Close(okdialog)' )
+				curPath = xbmc.getInfoLabel('Container.FolderPath')
+				break
+			elif (xbmc.Player( ).isPlaying( )) & (xbmcgui.getCurrentWindowId( ) == XBMC_WINDOW_FULLSCREEN_VIDEO) :
+				time.sleep( 10 )
+				xbmc.Player( ).stop( )
+				time.sleep( 8 )
+				curPath = 'done'
+				break
+			else :
+				curPath = xbmc.getInfoLabel('Container.FolderPath')
+				break
+			time.sleep( 5 )
+		time.sleep( 3 )
+
+		if  xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_PROGRESS :
+			xbmc.executebuiltin( 'Dialog.Close(progressdialog)' )
+			self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+			curPath = 'done'
+		if  xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_BUSY :
+			xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+			self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+			curPath = 'done'
+		if prePath == curPath :
+			if curPath == 'addons://sources/video/' :
+				self.SaveAddonResult( xbmc.getInfoLabel('Container( ).ListItem().Label') )
+			else :
+				self.SaveAddonResult( curPath )
+				curPath = 'done'
+		return curPath
+
+
+	def CheckViewMode( self ) :
+		if xbmc.getInfoLabel('Container.Viewmode') != ( 'List' ) :
+			xbmc.executebuiltin( 'Container.SetViewMode(50)' )
+			time.sleep( 3 )
+
+
+	def SaveAddonResult( self, context ) :
+		testResultContext  = ""
+		testResultContext += context + "\n"
+		if (testResultContext is not None and testResultContext != "") :
+			try:
+				print '[HiddenTest::AddonTest] - start.'
+				fp = file( "/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt", "a" )
+				fp.write(testResultContext)
+				fp.close()
+				print '[HiddenTest::AddonTest] - finished.'
+			except Exception, errMsg :
+				print '[HiddenTest::AddonTest] - ERROR :', errMsg
+		else :
+			print '[HiddenTest::AddonTest] - test result is empty.'
+
+
+	def DelayCheck( self ) :
+		loopTime = 0
+		limitTime = 20
+		time.sleep( 5 )
+		while loopTime < limitTime :
+			if xbmcgui.getCurrentWindowDialogId( ) == XBMC_WINDOW_DIALOG_BUSY :
+				time.sleep( 0.5 )
+				loopTime += 0.3
+				time.sleep( 0.3 )
+				xbmc.executebuiltin( 'Dialog.Close(busydialog)' )
+				time.sleep( 2 )
+			elif xbmc.Player( ).isPlaying( ) :
+				xbmc.Player( ).stop( )
+				#time.sleep( 5 )
+				fp = open( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt', 'r+' )
+				lines = fp.readlines()
+				countLine = len( lines )
+				countLine = int( countLine )
+				del lines[ countLine - 1 ]
+				fp.close
+				fp = open( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt', 'w' )
+				fp.writelines( lines )
+				fp.close
+				#break
+			else :
+				break
+
+	def AddonTest( self ) :
+		time.sleep( 2 )
+		#os.remove( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt' )
+		fp = open( '/usr/share/xbmc/addons/script.mbox/pvr/AddonTestResult.txt', 'w' )
+		xbmc.executebuiltin( 'ActivateWindow(10006,addons://sources/video/)' )
+		print 'Addons play test Start'
+		time.sleep( 8 )
+		self.CheckViewMode( )
+		totalItemNum = xbmc.getInfoLabel('Container( ).NumItems')
+		totalItemNum = int( totalItemNum )
+
+		for j in range( totalItemNum - 1 ) :
+			previousPath = 'addons://sources/video/'
+			self.DelayCheck( )
+			xbmc.executebuiltin( 'SetFocus(50,1)' )
+
+			for k in range( j ) :
+				xbmc.executebuiltin( 'Control.Move(50,1)' )
+
+			time.sleep( 5 )
+			xbmc.executebuiltin( 'xbmc.Action(Select)' )
+			previousPath = self.CheckErr( previousPath )
+			time.sleep( 5 )
+
+			if previousPath == 'addons://sources/video/' :
+				continue
+			else :
+				for i in range( 6 ) :
+					self.CheckViewMode( )
+					if xbmc.getInfoLabel('Container( ).Position') != 0 :
+						xbmc.executebuiltin( 'SetFocus(50, 0)' )
+
+					xbmc.executebuiltin( 'Control.Move(50,1)' )
+					time.sleep( 0.3 )
+					countItem = xbmc.getInfoLabel('Container( ).NumItems')
+					countItem = int( countItem )
+					time.sleep( 0.2 )
+
+					if countItem == 0 :
+						self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+						break
+
+					currenLabel = xbmc.getInfoLabel('Container( ).ListItem().Label')
+
+					if ( '..' ) in currenLabel :
+						if k == 0 :
+							self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+							break
+						#elif ( k != 0 ) & (countItem < 1) :
+							#break
+						else :
+							if countItem < 1 :
+								break
+
+					if (( 'Search' ) in currenLabel) or (( 'SEARCH' ) in currenLabel) :
+						if ( countItem == 2 ) :
+							self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+							break
+						else :
+							xbmc.executebuiltin( 'Control.Move(50,1)' )
+
+					currenLabel = xbmc.getInfoLabel('Container( ).ListItem().Label')
+
+					if (( 'Page' ) in currenLabel) or (( 'PAGE' ) in currenLabel) :
+						if ( countItem == 2 ) :
+							self.SaveAddonResult( xbmc.getInfoLabel('Container.FolderPath') )
+							break
+						else :
+							xbmc.executebuiltin( 'Control.Move(50,1)' )
+
+					xbmc.executebuiltin( 'xbmc.Action(Select)' )
+					previousPath = self.CheckErr( previousPath )
+					time.sleep( 5 )
+
+					if previousPath == 'done' :
+						break
+
+			xbmc.executebuiltin( 'ActivateWindow(10006,addons://sources/video/)' )
+			time.sleep( 8 )
+		print 'Addons play test End'
 
 
 	def CheckProperty( self ) :
