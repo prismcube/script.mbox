@@ -300,7 +300,7 @@ E_LIST_TUNER_CONNECTION				= [ MR_LANG( 'Separated' ), MR_LANG( 'Loopthrough' ),
 E_LIST_TUNER2_SIGNAL				= [ MR_LANG( 'Same with Tuner 1' ), MR_LANG( 'Different from Tuner 1' ) ]
 if pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_DUAL :
 	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ) ]
-elif pvr.Platform.GetPlatform( ).GetTunerType( ) == TUNER_TYPE_DVBS_SINGLE :
+else :
 	E_LIST_TUNER_CONTROL				= [	MR_LANG( 'Simple LNB' ), MR_LANG( 'DiSEqC 1.0' ), MR_LANG( 'DiSEqC 1.1' ), MR_LANG( 'Motorized, DiSEqC 1.2' ), MR_LANG( 'Motorized, USALS' ), MR_LANG( 'UniCable' ) ]
 
 E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
