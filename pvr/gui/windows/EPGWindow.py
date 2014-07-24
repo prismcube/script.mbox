@@ -46,7 +46,7 @@ CONTEXT_SHOW_ALL_TIMERS			= 5
 CONTEXT_EXTEND_INFOMATION		= 6
 CONTEXT_SEARCH					= 7
 CONTEXT_SELECT_CHANNEL			= 8
-CONTEXT_ADD_VIEW_TIMER			= 9
+#CONTEXT_ADD_VIEW_TIMER			= 9
 
 E_USE_FIXED_INTERVAL			= False
 
@@ -63,14 +63,13 @@ E_GRID_DEFAULT_DELTA_TIME		= 60 * 30
 E_GRID_DEFAULT_HEIGHT			= 60
 E_GRID_DEFAULT_GAP				= 5
 
-E_CURRENT_MAX_ROW_COUNT		= 8
+E_CURRENT_MAX_ROW_COUNT			= 8
 
 E_DIR_CURRENT					= 0
 E_DIR_LINE_UP					= 1
 E_DIR_LINE_DOWN					= 2
 E_DIR_PAGE_UP					= 3
 E_DIR_PAGE_DOWN					= 4
-
 
 BUTTON_ID_BASE_TIME_LINE		= E_EPG_WINDOW_BASE_ID + 1001
 BUTTON_ID_BASE_CHANNEL			= E_EPG_WINDOW_BASE_ID + 2001
@@ -1412,28 +1411,21 @@ class EPGWindow( BaseWindow ) :
 			else :
 			"""
 
+			viewTimer = None
 			timer = self.GetTimerByEPG( selectedEPG, True )
+			if E_V1_2_APPLY_VIEW_TIMER :
+				viewTimer = self.GetViewTimerByEPG( selectedEPG )
 
-			if timer :
+			if timer or viewTimer :
 				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
-			else:
-				if E_V1_2_APPLY_VIEW_TIMER :
-					viewTimer = self.GetViewTimerByEPG( selectedEPG )
-					if viewTimer :
-						context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
-						context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
-						context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
-						context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
-					else :
-						context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
-						context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
-				else :
+				if not timer :
 					context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
-					context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
-			if E_V1_2_APPLY_VIEW_TIMER :
-				context.append( ContextItem( MR_LANG( 'Add view timer' ), CONTEXT_ADD_VIEW_TIMER ) )
+			else:
+				context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
@@ -1448,6 +1440,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			channel = None
 			timer = None
+			viewTimer = None
 
 			if self.mEPGMode == E_VIEW_GRID :
 				timer = self.GetTimerByFocus( )
@@ -1461,20 +1454,14 @@ class EPGWindow( BaseWindow ) :
 					channel = self.mChannelList[ selectedPos ]
 					timer = self.GetTimerByChannel( channel, True )
 
-			if timer :
+			if E_V1_2_APPLY_VIEW_TIMER :
+				viewTimer = self.GetViewTimerByEPG( None, channel )
+
+			if timer or viewTimer :
 				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
-			else :
-				if E_V1_2_APPLY_VIEW_TIMER :
-					viewTimer = self.GetViewTimerByEPG( None, channel )
-					if viewTimer :
-						context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
-						context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
 
-				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
-
-			if E_V1_2_APPLY_VIEW_TIMER :
-				context.append( ContextItem( MR_LANG( 'Add view timer' ), CONTEXT_ADD_VIEW_TIMER ) )
+			context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	
@@ -1528,8 +1515,9 @@ class EPGWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_HOTKEYS :
 			self.ShowHotkeys( )
 
-		elif aContextAction == CONTEXT_ADD_VIEW_TIMER :
-			self.ShowViewTimer( )
+		#elif aContextAction == CONTEXT_ADD_VIEW_TIMER :
+		#	epg = self.GetSelectedEPG( )
+		#	self.ShowManualTimer( epg, None, E_TIMER_MODE_VIEW )
 
 
 	def ShowHotkeys( self ) :
@@ -1611,10 +1599,7 @@ class EPGWindow( BaseWindow ) :
 				timer = self.CheckExistViewTimer( selectedEPG, None, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
-					self.ShowManualTimer( selectedEPG, timer )
+				self.ShowManualTimer( selectedEPG, timer )
 
 		else :
 			iChannel = None
@@ -1634,10 +1619,7 @@ class EPGWindow( BaseWindow ) :
 				timer = self.CheckExistViewTimer( None, iChannel, timer )
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
-					self.ShowManualTimer( None, timer )
+				self.ShowManualTimer( None, timer )
 
 
 	def CheckExistViewTimer( self, aEPG = None, aChannel = None, aTimer = None ) :
@@ -1650,7 +1632,8 @@ class EPGWindow( BaseWindow ) :
 		if aChannel :
 			viewList = self.GetViewTimerByEPG( None, aChannel, True )
 
-		if timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEW :
+		if timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEW or \
+		   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer and timer.mTimerType != ElisEnum.E_ITIMER_VIEWWEEKLY :
 			timerCount += 1
 
 		if viewList and len( viewList ) > 0 :
@@ -1749,7 +1732,7 @@ class EPGWindow( BaseWindow ) :
 		return timer
 
 
-	def ShowManualTimer( self, aEPG=None, aTimer=None ) :
+	def ShowManualTimer( self, aEPG=None, aTimer=None, aMode = E_TIMER_MODE_RECORD ) :
 
 		"""
 		if aTimer :
@@ -1775,17 +1758,13 @@ class EPGWindow( BaseWindow ) :
 
 		if aTimer :
 			dialog.SetTimer( aTimer, self.IsRunningTimer( aTimer ) )
+			if aTimer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+			   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aTimer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+				aMode = E_TIMER_MODE_VIEW
 
-		"""
-		if aEPG :
-			dialog.SetEPG( aEPG )
-		"""
-		if aEPG :
-			dialog.SetEPG( aEPG  )
-		else :
-			dialog.SetEPG( None  )
-			
 		channel = None
+		dialog.SetEPG( aEPG  )
+		dialog.SetTimerMode( aMode )
 
 		if self.mEPGMode == E_VIEW_GRID  :
 			selectedPos = self.GridGetSelectedPosition( )
@@ -1807,61 +1786,6 @@ class EPGWindow( BaseWindow ) :
 				return
 	
 		dialog.SetChannel( channel )			
-
-		dialog.doModal( )
-
-		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
-			if dialog.GetConflictTimer( ) == None :
-				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
-				infoDialog.doModal( )
-			else :
-				RecordConflict( dialog.GetConflictTimer( ) )
-			return
-
-		#self.StopEPGUpdateTimer( )
-		self.UpdateListUpdateOnly( )
-		#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
-
-
-	def ShowViewTimer( self, aTimer = None ) :
-		#if not HasAvailableRecordingHDD( ) :
-		#	return
-
-		#1.get timer
-		timer = aTimer
-		selectedEPG = self.GetSelectedEPG( )
-
-		#2.get channel
-		channel = None
-		if self.mEPGMode == E_VIEW_GRID  :
-			selectedPos = self.GridGetSelectedPosition( )
-			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-				channel = self.mChannelList[ selectedPos ]
-			else :
-				LOG_ERR( 'Could not find the channel' )
-				return
-
-		elif self.mEPGMode == E_VIEW_CHANNEL  :
-			#channel = self.mDataCache.Channel_GetCurrent( )
-			channel = self.mSelectChannel
-		else :
-			selectedPos = self.mCtrlBigList.getSelectedPosition( )
-			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
-				channel = self.mChannelList[ selectedPos ]
-			else :
-				LOG_ERR( 'Could not find the channel' )
-				return
-
-		LOG_TRACE( '----------channel[%s]'% channel )
-		if not channel :
-			LOG_TRACE( 'Could not find the channel' )
-			return
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_VIEW_TIMER )
-		dialog.SetTimer( timer )
-		dialog.SetChannel( channel )
-		dialog.SetEPG( selectedEPG  )
 
 		dialog.doModal( )
 
@@ -2113,7 +2037,8 @@ class EPGWindow( BaseWindow ) :
 				for i in range( len( self.mTimerList ) ) :
 					timer =  self.mTimerList[i]
 
-					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						continue
 
 					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
@@ -2126,7 +2051,8 @@ class EPGWindow( BaseWindow ) :
 				for i in range( len( self.mTimerList ) ) :
 					timer =  self.mTimerList[i]
 
-					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+					if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 						continue
 
 					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
@@ -2155,7 +2081,8 @@ class EPGWindow( BaseWindow ) :
 			for i in range( len( self.mTimerList ) ) :
 				timer = self.mTimerList[i]
 
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					#LOG_TRACE( 'timer ch[%s] sid[%s] tsid[%s] onid[%s]'% ( timer.mChannelNo, timer.mSid, timer.mTsid, timer.mOnid ) )
 					if aEPG and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid and \
 					   timer.mStartTime >= startTime and timer.mStartTime < endTime :
@@ -2206,7 +2133,8 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
 				"""				
 
-				if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+				if aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+				   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and aOnlyRecordTimer and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 					continue
 
 				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
@@ -2448,10 +2376,7 @@ class EPGWindow( BaseWindow ) :
 					return
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
-					self.ShowManualTimer( selectedEPG, timer )
+				self.ShowManualTimer( selectedEPG, timer )
 
 			else : # Add EPG Timer
 				self.ShowEPGTimer( selectedEPG )
@@ -2477,10 +2402,7 @@ class EPGWindow( BaseWindow ) :
 					return
 
 			if timer and timer.mTimerId > 0 :	# Edit Mode
-				if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-					self.ShowViewTimer( timer )
-				else :
-					self.ShowManualTimer( None, timer )
+				self.ShowManualTimer( None, timer )
 
 			else :	# Add Manual Timer
 				self.ShowManualTimer( None )
@@ -2750,7 +2672,6 @@ class EPGWindow( BaseWindow ) :
 	def SetTimeline( self ) :
 		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
 		self.getControl( BUTTON_ID_SHOWING_DATE ).setLabel( TimeToString( showingTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )		
-
 		for i in range( len( self.mCtrlTimelineButtons ) ):
 			self.mCtrlTimelineButtons[i].setLabel( TimeToString( showingTime, TimeFormatEnum.E_HH_MM ) )
 			showingTime = showingTime + self.mDeltaTime
@@ -3048,7 +2969,6 @@ class EPGWindow( BaseWindow ) :
 
 
 	def GridUpdateTimer( self ) :
-
 		localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		drawableTime =  self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT		
 		recCount = 0
@@ -3061,9 +2981,24 @@ class EPGWindow( BaseWindow ) :
 					timer = self.mTimerList[i]
 					start = timer.mStartTime - localOffset
 					end = start + timer.mDuration
-					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
-						end = start + timer.mDuration + 60
-					
+					weekTimer = None
+					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+						LOG_TRACE( 'type[%s] id[%s] name[%s] weekly count[%s] showoffset[%s]'% ( timer.mTimerType, timer.mTimerId, timer.mName, timer.mWeeklyTimerCount, self.mShowingOffset ) )
+						weekTimer,weekOffset = self.FindWeeklyTimer( timer )
+						if weekTimer :
+							start = weekTimer.mStartTime + weekOffset
+							end = start + weekTimer.mDuration
+							LOG_TRACE( '[EPGWindow]weekTimer date[%s] start[%s] end[%s] duration[%s]'% ( weekTimer.mDate, \
+							  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+							  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+							  TimeToString( weekTimer.mDuration, TimeFormatEnum.E_HH_MM_SS )
+							  ) )
+
+					if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+					   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+						end += 60
+
 					for j in range( E_GRID_MAX_ROW_COUNT ) :
 						gridMeta = self.mEPGHashTable.get( '%d:%d' %( self.mVisibleTopIndex + j,0 ), None )
 						if gridMeta == None :
@@ -3078,15 +3013,34 @@ class EPGWindow( BaseWindow ) :
 							isRunning = self.IsRunningTimer( timer )
 							if isRunning :
 								if timer.mFromEPG :
-									start = start  -self.mPreRecTime
+									start = start - self.mPreRecTime
 									end = end + self.mPostRecTime
 
 							if start < self.mShowingGMTTime + self.mShowingOffset :
 								start = self.mShowingGMTTime + self.mShowingOffset
+								if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY or \
+								   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+									weekTimer,weekOffset = self.FindWeeklyTimer( timer, ONE_DAY_SECONDS )
+									if weekTimer :
+										start = weekTimer.mStartTime + weekOffset
+										end = start + weekTimer.mDuration
+										if E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
+											end += 60
+										#LOG_TRACE( '------------------nextdayOffset[%s][%s]'% ( TimeToString( weekOffset, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ), weekOffset ) )
+										#LOG_TRACE( '---alienceStart--- start[%s] end[%s]'% ( \
+										#  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+										#  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM )
+										#  ) )
 
 							if end > self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT :
 								end = self.mShowingGMTTime + self.mShowingOffset + self.mDeltaTime * E_GRID_MAX_TIMELINE_COUNT
-								
+								if weekTimer :
+									end = start + weekTimer.mDuration
+									#LOG_TRACE( '---alienceEnd--- start[%s] end[%s]'% ( \
+									#  TimeToString( start, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ),
+									#  TimeToString( end, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM )
+									#  ) )
+
 							offsetX = int( ( start - self.mShowingGMTTime - self.mShowingOffset ) * self.mGridCanvasWidth / drawableTime )
 							offsetY = gridMeta.mRow * ( self.mGridItemHeight + self.mGridItemGap )
 
@@ -3095,14 +3049,15 @@ class EPGWindow( BaseWindow ) :
 
 							drawWidth = int( ( end - start ) * self.mGridCanvasWidth / drawableTime )
 
-							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d mTimerType[%s]' %( offsetX, offsetY, drawWidth, timer.mTimerType ) )
+							LOG_TRACE( 'offsetX=%d offsetY=%d width=%d mTimerType[%s] duration[%s]' %( offsetX, offsetY, drawWidth, timer.mTimerType, timer.mDuration ) )
 
 							if drawWidth <= 0 :
 								LOG_ERR( 'drawWidth is too small' )
 								break
 
 							ctrlButton = None
-							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW :
+							if timer.mTimerType == ElisEnum.E_ITIMER_VIEW or \
+							   E_V1_9_APPLY_WEEKLY_VIEW_TIMER and timer.mTimerType == ElisEnum.E_ITIMER_VIEWWEEKLY :
 								if timerCount2 < len( self.mCtrlScheduledViewButtonList ) :
 									ctrlButton = self.mCtrlScheduledViewButtonList[timerCount2]
 									timerCount2 += 1
@@ -3193,4 +3148,35 @@ class EPGWindow( BaseWindow ) :
 			print 'Error exception[%s]'% ex
 			import traceback
 			LOG_ERR( 'traceback=%s' %traceback.format_exc( ) )
+
+
+	def FindWeeklyTimer( self, aTimer, aNextDays = 0 ) :
+		if aTimer == None :
+			return None
+
+		weekList = {'Sun':0,'Mon':1,'Tue':2,'Wed':3,'Thu':4,'Fri':5,'Sat':6}
+		showingTime = self.mShowingGMTTime + self.mShowingOffset + self.mDataCache.Datetime_GetLocalOffset( )
+		#days = int( self.mDataCache.Datetime_GetLocalTime( ) / ONE_DAY_SECONDS )
+		days = int( showingTime / ONE_DAY_SECONDS )
+		currentWeekStart = ( days * ONE_DAY_SECONDS ) + aNextDays
+		weekday = time.strftime( '%a', time.gmtime( currentWeekStart ) )
+
+		#LOG_TRACE( 'currentPage: day[%s] time[%s][%s] offset[%s][%s] dalta[%s][%s]'% ( weekday, \
+		#     TimeToString( currentWeekStart, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ), currentWeekStart, \
+		#     TimeToString( self.mShowingOffset, TimeFormatEnum.E_HH_MM ), self.mShowingOffset, \
+		#     TimeToString( self.mDeltaTime, TimeFormatEnum.E_HH_MM ), self.mDeltaTime
+		#     ) )
+
+		timer = None
+		weekOffset = 0
+		for i in range( aTimer.mWeeklyTimerCount ) :
+			weeklyTimer = aTimer.mWeeklyTimer[i]
+
+			if aTimer.mWeeklyTimer[i].mDate == weekList.get( weekday, -1 ) :
+				timer = weeklyTimer
+				weekOffset = currentWeekStart# + ( ONE_DAY_SECONDS * weeklyTimer.mDate )
+				break
+
+		return timer, weekOffset
+
 
