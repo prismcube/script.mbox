@@ -103,7 +103,7 @@
 	</page>
 		
 	<page number="7" title="Vytvorenie novej obľúbenej skupiny" location="(ÚPRAVA KANÁLOV > VYTVORIŤ NOVÚ OBĽÚBENÚ SKUPINU)">
-		<content name="create_fav.png">
+		<content name="creating_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -120,7 +120,7 @@
 	</page>
 
 	<page number="8" title="Pridanie kanálov do obľúbenej skupiny" location="(ÚPRAVA KANÁLOV > PRIDAŤ K OBĽÚBENEJ SKUPINE)">
-		<content name="add_channels.png">
+		<content name="adding_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Odstránenie kanálov zo skupiny obľúbených" location="(SLIDE MENU > VYBRAŤ OBĽÚBENÚ SKUPINU > VYMAZAŤ)">
-		<content name="remove_fav channels.png">
+		<content name="removing_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -154,7 +154,7 @@
 	</page>
 	
 	<page number="10" title="Premenovanie obľúbené skupiny" location="(ÚPRAVA KANÁLOV > PREMENOVAŤ OBĽÚBENÉ SKUPINY)">
-		<content name="rename_fav.png">
+		<content name="renaming_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -171,7 +171,7 @@
 	</page>
 	
 	<page number="11" title="Odstránenie obľúbených skupín" location="(ÚPRAVA KANÁLOV > ODSTRÁNENIE OBĽÚBENÝCH SKUPÍN)">
-		<content name="delete_fav.png">
+		<content name="deleting_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -205,7 +205,7 @@
 	</page>
 	
 	<page number="13" title="Inštalácia aplikácie Firefox" location="(MÉDIÁ > SPRÁVCA DOPLNKOV > ZÍSKAŤ DOPLNKY)">
-		<content name="install_addons.png">
+		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -222,7 +222,7 @@
 	</page>
 
 	<page number="14" title="Aktualizácia doplnkov" location="(MÉDIA > MANAŽÉR DOPLNKOV > STLAČTE ŠÍPKU DOĽAVA alebo DOPRAVA)">
-		<content name="update_addons.png">
+		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -239,7 +239,7 @@
 	</page>
 	
 	<page number="15" title="Spustenie aplikácie Firefox" location="(MEDIA > FOTOGRAFIE, HUDBA, VIDEO ALEBO PROGRAMY)">
-		<content name="addons.png">
+		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>

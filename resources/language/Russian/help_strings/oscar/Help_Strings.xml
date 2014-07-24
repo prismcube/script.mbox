@@ -103,7 +103,7 @@
 	</page>
 		
 	<page number="7" title="Создать Группу Любимых" location="(РЕДАКТИРОВАТЬ КАНАЛЫ > СОЗДАТЬ ГРУППУ ЛЮБИМЫХ)">
-		<content name="create_fav.png">
+		<content name="creating_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -120,7 +120,7 @@
 	</page>
 
 	<page number="8" title="Добавить Каналы в Группу Любимых" location="(РЕДАКТИРОВАТЬ КАНАЛЫ > ДОБАВИТЬ В ГРУППУ)">
-		<content name="add_channels.png">
+		<content name="adding_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -137,7 +137,7 @@
 	</page>
 	
 	<page number="9" title="Удаление Каналов из Группы Любимых" location="(СЛАЙД МЕНЮ  > ВЫБОР ГРУППЫ ЛЮБИМЫХ КАНАЛОВ)">
-		<content name="remove_fav channels.png">
+		<content name="removing_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -154,7 +154,7 @@
 	</page>
 	
 	<page number="10" title="Переименовать Группу Любимые" location="(РЕДАКТИРОВАТЬ КАНАЛЫ > ПЕРЕИМЕНОВАТЬ ГРУППУ ЛЮБИМЫЕ)">
-		<content name="rename_fav.png">
+		<content name="renaming_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -171,7 +171,7 @@
 	</page>
 	
 	<page number="11" title="Удалить Группу Любимые" location="(РЕДАКТИРОВАТЬ КАНАЛЫ > УДАЛИТЬ ГРУППУ ЛЮБИМЫЕ)">
-		<content name="delete_fav.png">
+		<content name="deleting_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -205,7 +205,7 @@
 	</page>
 	
 	<page number="13" title="Установка Дополнений" location="(XBMC > ДОПОЛНЕНИЯ >  ЗАГРУЗИТЬ ДОПОЛНЕНИЯ)">
-		<content name="install_addons.png">
+		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -222,7 +222,7 @@
 	</page>
 
 	<page number="14" title="Updating Add-ons" location="(MEDIA > ADD-ON MANAGER > PRESS LEFT or RIGHT BUTTON)">
-		<content name="update_addons.png">
+		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -239,7 +239,7 @@
 	</page>
 	
 	<page number="15" title="Запуск Дополнения" location="(XBMC > ФОТО, МУЗЫКА, ВИДЕО или ПРОГРАММЫ)">
-		<content name="addons.png">
+		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>

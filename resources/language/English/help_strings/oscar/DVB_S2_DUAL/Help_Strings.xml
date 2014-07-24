@@ -105,7 +105,7 @@
 	</page>
 	
 	<page number="3" title="Pluggable Tuners" location="[COLOR blue]JET[/COLOR] - SET - WATCH - XBMC">
-		<content name="tuner_jet.png">
+		<content name="pluggable_tuners.png">
 			<type>image</type>
 			<posx>305</posx>
 			<posy>30</posy>
@@ -156,7 +156,7 @@
 	</page>
 
 	<page number="6" title="First Installation - Video Calibration" location="JET - [COLOR blue]SET[/COLOR] - WATCH - XBMC">
-		<content name="calibration.png">
+		<content name="calibration_setup.png">
 			<type>image</type>
 			<posx>185</posx>
 			<posy>80</posy>
@@ -400,7 +400,7 @@
 	</page>
 		
 	<page number="15" title="Creating New Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
-		<content name="create_fav.png">
+		<content name="creating_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -417,7 +417,7 @@
 	</page>
 
 	<page number="16" title="Adding Channels to a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
-		<content name="add_channels.png">
+		<content name="adding_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -434,7 +434,7 @@
 	</page>
 	
 	<page number="17" title="Removing Channels from a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
-		<content name="remove_fav channels.png">
+		<content name="removing_fav_channels.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -451,7 +451,7 @@
 	</page>
 	
 	<page number="18" title="Renaming a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
-		<content name="rename_fav.png">
+		<content name="renaming_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -468,7 +468,7 @@
 	</page>
 	
 	<page number="19" title="Deleting a Favorite Group" location="JET - SET - [COLOR blue]WATCH[/COLOR] - XBMC">
-		<content name="delete_fav.png">
+		<content name="deleting_fav.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -519,7 +519,7 @@
 	</page>
 	
 	<page number="22" title="Installing Add-ons from a Repository" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
-		<content name="install_addons.png">
+		<content name="installing_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -536,7 +536,7 @@
 	</page>
 
 	<page number="23" title="Updating Add-ons" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
-		<content name="update_addons.png">
+		<content name="updating_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -570,7 +570,7 @@
 	</page>
 	
 	<page number="25" title="Running Add-ons" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
-		<content name="addons.png">
+		<content name="running_addons.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
@@ -587,7 +587,7 @@
 	</page>
 
 	<page number="26" title="Changing Skins" location="JET - SET - WATCH - [COLOR blue]XBMC[/COLOR]">
-		<content name="skins.png">
+		<content name="changing_skins.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>65</posy>
